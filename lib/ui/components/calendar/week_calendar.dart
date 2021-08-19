@@ -454,60 +454,73 @@ class WeekActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
-
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      height: activityOccasion.activity.fullDay ? 36.s : null,
-      foregroundDecoration: BoxDecoration(
-        border: activityOccasion.isCurrent ? currentActivityBorder : border,
-        borderRadius: borderRadius,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        color: AbiliaColors.white,
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          if (activityOccasion.activity.hasImage)
-            AnimatedOpacity(
-              duration: Duration(milliseconds: 400),
-              opacity: inactive ? 0.5 : 1.0,
-              child: FadeInAbiliaImage(
-                imageFileId: activityOccasion.activity.fileId,
-                imageFilePath: activityOccasion.activity.icon,
-                height: double.infinity,
-                width: double.infinity,
-              ),
-            )
-          else
-            Padding(
-              padding: EdgeInsets.all(3.0.s),
-              child: Center(
-                child: Tts(
-                  child: Text(
-                    activityOccasion.activity.title,
-                    overflow: TextOverflow.clip,
-                    style: abiliaTextTheme.caption.copyWith(height: 20 / 16),
-                    textAlign: TextAlign.center,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.showCategoryColor != current.showCategoryColor &&
+          previous.showCategories != current.showCategories,
+      builder: (context, settings) {
+        return Container(
+          clipBehavior: Clip.hardEdge,
+          height: activityOccasion.activity.fullDay ? 36.s : null,
+          foregroundDecoration: BoxDecoration(
+            border: getCategoryBorder(
+              inactive: inactive,
+              current: activityOccasion.isCurrent,
+              showCategoryColor: settings.showCategoryColor &&
+                  !activityOccasion.activity.fullDay,
+              category: activityOccasion.activity.category,
+            ),
+            borderRadius: borderRadius,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            color: AbiliaColors.white,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              if (activityOccasion.activity.hasImage)
+                AnimatedOpacity(
+                  duration: Duration(milliseconds: 400),
+                  opacity: inactive ? 0.5 : 1.0,
+                  child: FadeInAbiliaImage(
+                    imageFileId: activityOccasion.activity.fileId,
+                    imageFilePath: activityOccasion.activity.icon,
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                )
+              else
+                Padding(
+                  padding: EdgeInsets.all(3.0.s),
+                  child: Center(
+                    child: Tts(
+                      child: Text(
+                        activityOccasion.activity.title,
+                        overflow: TextOverflow.clip,
+                        style:
+                            abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          if (activityOccasion.isSignedOff)
-            FractionallySizedBox(
-              widthFactor: scaleFactor,
-              heightFactor: scaleFactor,
-              child: CheckMark(),
-            )
-          else if (activityOccasion.isPast)
-            FractionallySizedBox(
-              widthFactor: scaleFactor,
-              heightFactor: scaleFactor,
-              child: CrossOver(),
-            ),
-        ],
-      ),
+              if (activityOccasion.isSignedOff)
+                FractionallySizedBox(
+                  widthFactor: scaleFactor,
+                  heightFactor: scaleFactor,
+                  child: CheckMark(),
+                )
+              else if (activityOccasion.isPast)
+                FractionallySizedBox(
+                  widthFactor: scaleFactor,
+                  heightFactor: scaleFactor,
+                  child: CrossOver(),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

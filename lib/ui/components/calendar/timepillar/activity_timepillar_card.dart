@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -19,19 +17,18 @@ class ActivityTimepillarCard extends StatelessWidget {
   final TimepillarState timepillarState;
 
   const ActivityTimepillarCard({
-    Key key,
-    @required this.activityOccasion,
-    @required this.dots,
-    @required this.top,
-    @required this.column,
-    @required this.height,
-    @required this.textStyle,
-    @required this.timepillarInterval,
-    @required this.dayParts,
-    @required this.timepillarSide,
-    @required this.timepillarState,
-  })  : assert(activityOccasion != null),
-        endPos = top + height,
+    Key? key,
+    required this.activityOccasion,
+    required this.dots,
+    required this.top,
+    required this.column,
+    required this.height,
+    required this.textStyle,
+    required this.timepillarInterval,
+    required this.dayParts,
+    required this.timepillarSide,
+    required this.timepillarState,
+  })  : endPos = top + height,
         super(key: key);
 
   @override
@@ -53,9 +50,15 @@ class ActivityTimepillarCard extends StatelessWidget {
 
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.dotsInTimepillar != current.dotsInTimepillar,
+          previous.dotsInTimepillar != current.dotsInTimepillar ||
+          previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settings) {
-        final decoration = getBoxDecoration(current, inactive);
+        final decoration = getCategoryBoxDecoration(
+          current: current,
+          inactive: inactive,
+          showCategoryColor: settings.showCategoryColor,
+          category: activity.category,
+        );
         return Positioned(
           right: right ? null : column * ts.totalWidth,
           left: right ? column * ts.totalWidth : null,
@@ -79,10 +82,9 @@ class ActivityTimepillarCard extends StatelessWidget {
                 else
                   SideTime(
                     occasion: activityOccasion.occasion,
-                    category: activityOccasion.activity.category,
                     height: dotHeight +
                         (dotHeight > 0
-                            ? decoration.border.dimensions.vertical
+                            ? (decoration.border?.dimensions.vertical ?? 0)
                             : 0),
                     width: ts.width,
                   ),
@@ -151,15 +153,13 @@ class ActivityTimepillarCard extends StatelessWidget {
 
 class SideTime extends StatelessWidget {
   final Occasion occasion;
-  final int category;
   final double height;
   final double width;
   const SideTime({
-    Key key,
-    @required this.occasion,
-    @required this.category,
-    @required this.height,
-    @required this.width,
+    Key? key,
+    required this.occasion,
+    required this.height,
+    required this.width,
   }) : super(key: key);
 
   @override

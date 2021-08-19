@@ -31,7 +31,8 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayClock ||
       dayCaptionShowDayButtons;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
-  bool get showColor => settings.calendarActivityTypeShowColor;
+  bool get showCategoryColor =>
+      showCategories && settings.calendarActivityTypeShowColor;
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;

@@ -81,8 +81,7 @@ class MockAlarmBloc extends MockBloc<AlarmEvent, AlarmStateBase>
 class MockNotificationBloc extends MockBloc<NotificationAlarm, AlarmStateBase>
     implements NotificationBloc {}
 
-class MockCalendarViewBloc
-    extends MockBloc<CalendarViewEvent, CalendarViewState>
+class MockCalendarViewBloc extends MockBloc<ToggleCategory, CalendarViewState>
     implements CalendarViewBloc {}
 
 class MockLicenseBloc extends MockBloc<LicenseEvent, LicenseState>
@@ -242,7 +241,7 @@ extension OurEnterText on WidgetTester {
   }
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {
-    await longPress(finder, warnIfMissed: false);
+    await longPress(finder);
     final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first
         as String;
     if (contains != null) {

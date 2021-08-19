@@ -17,7 +17,6 @@ void main() {
 
       final splitRecurring = Activity.createNew(
         title: 'Split recurring ',
-        reminderBefore: [],
         recurs: Recurs.raw(
           Recurs.TYPE_WEEKLY,
           16383,
@@ -25,7 +24,6 @@ void main() {
         ), // Weekly every day odd and even week
         alarmType: 104, // NO_ALARM
         duration: 86399999.milliseconds(), // 23:59:59.999000
-        category: 0,
         startTime: splitStartTime,
         fullDay: true,
       );
@@ -44,11 +42,10 @@ void main() {
       final day = DateTime(2020, 06, 02);
       final splitRecurring = Activity.createNew(
         title: 'Fullday ',
-        reminderBefore: [],
         recurs: Recurs.everyDay,
         alarmType: 104, // NO_ALARM
         duration: 86399999.milliseconds(), // 23:59:59.999000
-        category: 0,
+        category: Category.right,
         startTime: DateTime(1970, 01, 01, 12, 00),
         fullDay: true,
       );

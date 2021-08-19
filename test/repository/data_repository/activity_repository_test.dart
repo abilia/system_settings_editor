@@ -21,14 +21,10 @@ void main() {
   final successActivity = Activity.createNew(
     title: 'title',
     startTime: startTime,
-    category: 0,
-    reminderBefore: [],
   ).wrapWithDbModel();
   final failedActivity = Activity.createNew(
     title: 'title2',
     startTime: startTime,
-    category: 0,
-    reminderBefore: [],
   ).wrapWithDbModel();
   final dbActivities = [successActivity, failedActivity];
   final activities = dbActivities.map((a) => a.activity);

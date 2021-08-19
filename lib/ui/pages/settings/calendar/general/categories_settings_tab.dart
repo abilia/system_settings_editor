@@ -143,6 +143,7 @@ class _CategoriesPreview extends StatelessWidget {
                         categoryName: state.categories.left.name,
                         fileId: state.categories.left.image.id,
                         maxWidth: categoryWidth,
+                        showColors: state.categories.colors,
                       ),
                     Align(
                       alignment: state.categories.show
@@ -167,6 +168,7 @@ class _CategoriesPreview extends StatelessWidget {
                         categoryName: state.categories.right.name,
                         fileId: state.categories.right.image.id,
                         maxWidth: categoryWidth,
+                        showColors: state.categories.colors,
                       ),
                   ],
                 );

@@ -8,6 +8,7 @@
       "name": "MEMOplanner Go",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
       "args": [
         "--dart-define",
         "release=alpha",
@@ -19,6 +20,7 @@
       "name": "MEMOplanner",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
       "args": [
         "--dart-define",
         "release=alpha",

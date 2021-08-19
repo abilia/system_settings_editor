@@ -137,7 +137,7 @@ class MonthDayViewCompact extends StatelessWidget {
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
-                    border: currentActivityBorder,
+                    border: currentBorder,
                     borderRadius: MonthDayView.monthDayborderRadius,
                   )
                 : dayPickerState.day.isAtSameDay(day.day)
