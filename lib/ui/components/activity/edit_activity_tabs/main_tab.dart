@@ -1,13 +1,11 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class MainTab extends StatefulWidget {
   MainTab({
-    Key key,
-    @required this.editActivityState,
-    @required this.day,
+    Key? key,
+    required this.editActivityState,
+    required this.day,
   }) : super(key: key);
 
   final EditActivityState editActivityState;
@@ -18,7 +16,7 @@ class MainTab extends StatefulWidget {
 }
 
 class _MainTabState extends State<MainTab> with EditActivityTab {
-  ScrollController _scrollController;
+  late final ScrollController _scrollController;
   @override
   void initState() {
     super.initState();

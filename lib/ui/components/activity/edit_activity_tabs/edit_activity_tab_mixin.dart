@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/ui/all.dart';
@@ -10,7 +8,7 @@ mixin EditActivityTab {
       errorBorderPadding = EdgeInsets.all(4.0.s),
       errorBorderPaddingRight = EdgeInsets.only(right: 5.0.s),
       bottomPadding = EdgeInsets.only(bottom: 56.0.s);
-  Widget errorBordered(Widget child, {@required bool errorState}) {
+  Widget errorBordered(Widget child, {required bool errorState}) {
     final decoration = errorState ? errorBoxDecoration : const BoxDecoration();
     return Container(
       decoration: decoration,
@@ -32,9 +30,9 @@ mixin EditActivityTab {
 }
 
 class Separated extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
-  const Separated({Key key, this.child}) : super(key: key);
+  const Separated({Key? key, this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
