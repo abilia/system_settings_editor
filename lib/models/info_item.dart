@@ -102,9 +102,9 @@ class Checklist extends InfoItem {
   final UnmodifiableListView<Question> questions;
   final UnmodifiableMapView<String, UnmodifiableSetView<int>> checked;
   final String fileId;
-  final String icon;
+  final String icon; // only used for groups
 
-  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+  bool get hasImage => fileId.isNotEmpty || image.isNotEmpty;
 
   Checklist({
     Iterable<Question> questions = const <Question>[],
