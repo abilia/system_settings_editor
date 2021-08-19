@@ -605,7 +605,7 @@ class _AmPmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: text,
       child: TextButton(
         key: buttonKey,

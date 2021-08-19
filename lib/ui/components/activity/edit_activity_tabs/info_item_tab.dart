@@ -140,7 +140,7 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 16.0.s),
-                    child: Tts(
+                    child: Tts.data(
                       data: Translator.of(context).translate.addNew,
                       child: RawMaterialButton(
                         constraints: BoxConstraints(minHeight: 48.0.s),

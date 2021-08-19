@@ -107,7 +107,7 @@ class _TimeBox extends StatelessWidget {
         .headline6
         ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
     final boxDecoration = _decoration;
-    return Tts(
+    return Tts.data(
       data: text,
       child: Stack(
         alignment: Alignment.center,

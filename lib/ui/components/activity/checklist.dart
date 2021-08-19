@@ -48,7 +48,9 @@ class _ChecklistViewState extends State<ChecklistView> {
             inactive: widget.preview,
             signedOff:
                 day != null && widget.checklist.isSignedOff(question, day),
-            onTap: widget.onTap?.call(question),
+            onTap: widget.onTap != null
+                ? () => widget.onTap?.call(question)
+                : null,
           );
         },
       ),
@@ -59,12 +61,12 @@ class _ChecklistViewState extends State<ChecklistView> {
 class QuestionView extends StatelessWidget {
   final Question question;
   final bool signedOff;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final bool inactive;
 
   const QuestionView(
     this.question, {
-    required this.onTap,
+    this.onTap,
     this.signedOff = false,
     key,
     this.inactive = false,

@@ -6,35 +6,30 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 
 class Tts extends StatelessWidget {
-  final Widget child;
-  final String? data;
+  final Text child;
 
   const Tts({
     Key? key,
-    this.data,
     required this.child,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final c = child;
-    if (c is Text) {
-      _Tts(
-        data: c.semanticsLabel ?? c.data,
-        child: c,
+  Widget build(BuildContext context) => _Tts(
+        data: child.semanticsLabel ?? child.data,
+        child: child,
       );
-    }
-    return _Tts(data: data, child: child);
-  }
+
+  static Widget data({
+    required data,
+    required Widget child,
+  }) =>
+      _Tts(data: data, child: child);
 
   static Widget longPress(
     String Function()? onLongPress, {
     required Widget child,
   }) =>
-      _Tts(
-        onLongPress: onLongPress,
-        child: child,
-      );
+      _Tts(onLongPress: onLongPress, child: child);
 
   static Widget fromSemantics(
     SemanticsProperties properties, {
@@ -70,7 +65,8 @@ class _Tts extends StatelessWidget {
         builder: (context, settingsState) => GestureDetector(
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,
-          onLongPress: settingsState.textToSpeech
+          onLongPress: settingsState.textToSpeech &&
+                  (onLongPress != null || data != null)
               ? () => GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data!)
               : null,
           child: child,

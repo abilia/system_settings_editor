@@ -21,7 +21,7 @@ class AppBarTitle extends StatelessWidget {
     return DefaultTextStyle(
       style: style,
       overflow: TextOverflow.ellipsis,
-      child: Tts(
+      child: Tts.data(
         data: '${rows.row1} ${rows.row2} ${rows.row3}',
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

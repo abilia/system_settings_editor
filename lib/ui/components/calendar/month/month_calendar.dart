@@ -201,7 +201,7 @@ class MonthHeading extends StatelessWidget {
                   : AbiliaColors.black,
             ),
             child: Expanded(
-              child: Tts(
+              child: Tts.data(
                 data: weekdays[weekdayindex],
                 child: Container(
                   height: 32.s,
@@ -235,7 +235,7 @@ class MonthDayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
               .format(day.day),
@@ -366,7 +366,7 @@ class WeekNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;
-    return Tts(
+    return Tts.data(
       data: '$weekTranslation ${weekNumber ?? ''}',
       child: SizedBox(
         width: 24.s,

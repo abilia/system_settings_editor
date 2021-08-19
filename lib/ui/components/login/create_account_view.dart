@@ -43,7 +43,7 @@ class GoToCreateAccountButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Tts(
+    return Tts.data(
       data: translate.createAccount,
       child: TextButton(
         style: textButtonStyleDarkGrey,

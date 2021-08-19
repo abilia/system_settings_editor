@@ -204,7 +204,7 @@ class MenuItemButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = style.textStyle.resolve({MaterialState.pressed});
-    return Tts(
+    return Tts.data(
       data: text.singleLine,
       child: AspectRatio(
         aspectRatio: 1,

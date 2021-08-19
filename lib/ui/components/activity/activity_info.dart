@@ -279,7 +279,7 @@ class CheckButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Translator.of(context).translate.check;
-    return Tts(
+    return Tts.data(
       data: text,
       child: IconTheme(
         data: lightIconThemeData,

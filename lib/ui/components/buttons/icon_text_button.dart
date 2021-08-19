@@ -18,7 +18,7 @@ class IconAndTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: text,
       child: IconTheme(
         data: lightIconThemeData,
@@ -81,7 +81,7 @@ class NextButton extends StatelessWidget {
   const NextButton({Key key, this.onPressed}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Tts(
+  Widget build(BuildContext context) => Tts.data(
         data: Translator.of(context).translate.next,
         child: TextButton(
           style: iconTextButtonStyleGreen,

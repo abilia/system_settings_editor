@@ -31,7 +31,7 @@ class _NoteBlockState extends State<NoteBlock> {
   @override
   Widget build(BuildContext context) {
     final text = widget.textWidget;
-    return Tts(
+    return Tts.data(
       data: text?.data ?? '',
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {

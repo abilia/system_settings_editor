@@ -193,7 +193,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                       child: DefaultTextStyle(
                         style: dayTheme.theme.textTheme.bodyText1
                             .copyWith(height: 18 / 16),
-                        child: Tts(
+                        child: Tts.data(
                           data: '${day.day}, ${weekDayFormat.format(day)}',
                           child: BlocBuilder<ClockBloc, DateTime>(
                             buildWhen: (previous, current) =>

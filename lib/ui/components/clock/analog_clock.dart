@@ -90,7 +90,7 @@ class _AnalogClock extends StatelessWidget {
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, time) => GestureDetector(
         onTap: onPressed,
-        child: Tts(
+        child: Tts.data(
           data: hourAndMinuteFormat(context)(time),
           child: Container(
             width: width,
