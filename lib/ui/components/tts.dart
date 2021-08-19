@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -9,35 +7,38 @@ import 'package:seagull/bloc/all.dart';
 
 class Tts extends StatelessWidget {
   final Widget child;
-  final String data;
-  final String Function() onLongPress;
+  final String? data;
 
   const Tts({
-    Key key,
-    @required this.child,
+    Key? key,
     this.data,
-    this.onLongPress,
-  })  : assert(data != null || child is Text || onLongPress != null),
-        super(key: key);
+    required this.child,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    if (onLongPress != null) {
-      return _Tts(
+    final c = child;
+    if (c is Text) {
+      _Tts(
+        data: c.semanticsLabel ?? c.data,
+        child: c,
+      );
+    }
+    return _Tts(data: data, child: child);
+  }
+
+  static Widget longPress(
+    String Function()? onLongPress, {
+    required Widget child,
+  }) =>
+      _Tts(
         onLongPress: onLongPress,
         child: child,
       );
-    }
-    final _text = (Text text) => text.semanticsLabel ?? text.data;
-    final label = data ?? _text(child);
-    return _Tts(
-      data: label,
-      child: child,
-    );
-  }
 
   static Widget fromSemantics(
     SemanticsProperties properties, {
-    @required Widget child,
+    required Widget child,
   }) {
     final semantics =
         Semantics.fromProperties(properties: properties, child: child);
@@ -53,12 +54,12 @@ class Tts extends StatelessWidget {
 
 class _Tts extends StatelessWidget {
   final Widget child;
-  final String data;
-  final String Function() onLongPress;
+  final String? data;
+  final String Function()? onLongPress;
 
   const _Tts({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.data,
     this.onLongPress,
   })  : assert(data != null || onLongPress != null),
@@ -70,7 +71,7 @@ class _Tts extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,
           onLongPress: settingsState.textToSpeech
-              ? () => GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data)
+              ? () => GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data!)
               : null,
           child: child,
         ),

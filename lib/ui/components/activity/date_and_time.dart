@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 class DateAndTimeWidget extends StatelessWidget {
   final EditActivityState editActivityState;
 
-  const DateAndTimeWidget(this.editActivityState, {Key key}) : super(key: key);
+  const DateAndTimeWidget(this.editActivityState, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -63,8 +61,8 @@ class DateAndTimeWidget extends StatelessWidget {
 
 class ReminderSwitch extends StatelessWidget {
   const ReminderSwitch({
-    Key key,
-    @required this.activity,
+    Key? key,
+    required this.activity,
   }) : super(key: key);
 
   final Activity activity;
@@ -89,11 +87,11 @@ class ReminderSwitch extends StatelessWidget {
 
 class DatePicker extends StatelessWidget {
   final DateTime date;
-  final Function(DateTime) onChange;
-  final DateTime notBefore;
+  final Function(DateTime)? onChange;
+  final DateTime? notBefore;
   const DatePicker(
     this.date, {
-    @required this.onChange,
+    required this.onChange,
     this.notBefore,
   });
 
@@ -135,7 +133,7 @@ class DatePicker extends StatelessWidget {
                   ),
                 );
                 if (newDate != null) {
-                  onChange(newDate);
+                  onChange?.call(newDate);
                 }
               },
         leading: Icon(AbiliaIcons.calendar),
@@ -154,7 +152,7 @@ class TimeIntervallPicker extends StatelessWidget {
   final TimeInterval timeInterval;
   final bool startTimeError;
   const TimeIntervallPicker(this.timeInterval,
-      {this.startTimeError = false, Key key})
+      {this.startTimeError = false, Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -217,8 +215,8 @@ class TimePicker extends StatelessWidget {
   const TimePicker(
     this.text,
     this.timeInput, {
-    Key key,
-    @required this.onTap,
+    Key? key,
+    required this.onTap,
     this.errorState = false,
   }) : super(key: key);
 
@@ -260,7 +258,7 @@ class TimePicker extends StatelessWidget {
 class Reminders extends StatelessWidget {
   final Activity activity;
 
-  const Reminders({Key key, @required this.activity}) : super(key: key);
+  const Reminders({Key? key, required this.activity}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -279,8 +277,10 @@ class Reminders extends StatelessWidget {
             (r) => SelectableField(
               text: Text(
                 r.toDurationString(translator),
-                style:
-                    Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(height: 1.5),
               ),
               selected: activity.reminders.contains(r),
               onTap: () => BlocProvider.of<EditActivityBloc>(context)

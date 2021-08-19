@@ -288,8 +288,8 @@ class _TimeInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
-      onLongPress: () => ttsText(context),
+    return Tts.longPress(
+      () => ttsText(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
