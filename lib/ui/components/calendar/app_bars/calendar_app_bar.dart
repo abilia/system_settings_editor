@@ -1,14 +1,12 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarAppBar extends StatelessWidget {
-  final Widget leftAction;
-  final Widget rightAction;
-  final Widget clockReplacement;
+  final Widget? leftAction;
+  final Widget? rightAction;
+  final Widget? clockReplacement;
   final bool showClock;
   final AppBarTitleRows rows;
   final bool crossedOver;
@@ -21,14 +19,14 @@ class CalendarAppBar extends StatelessWidget {
   static final Size size = Size.fromHeight(80.s);
 
   const CalendarAppBar({
-    Key key,
+    Key? key,
     this.leftAction,
     this.rightAction,
     this.clockReplacement,
     this.crossedOver = false,
     this.showClock = true,
-    @required this.rows,
-    @required this.day,
+    required this.rows,
+    required this.day,
     this.calendarDayColor = DayColor.noColors,
   }) : super(key: key);
 
@@ -71,7 +69,9 @@ class CalendarAppBar extends StatelessWidget {
                         ),
                         if (crossedOver)
                           CrossOver(
-                            color: Theme.of(context).textTheme.headline6.color,
+                            color:
+                                Theme.of(context).textTheme.headline6?.color ??
+                                    AbiliaColors.black,
                           ),
                       ],
                     ),

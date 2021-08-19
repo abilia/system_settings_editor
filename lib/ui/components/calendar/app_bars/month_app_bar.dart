@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MonthAppBar({Key key}) : super(key: key);
+  const MonthAppBar({Key? key}) : super(key: key);
   @override
   Size get preferredSize => CalendarAppBar.size;
 
@@ -33,7 +31,7 @@ class MonthAppBarStepper extends StatelessWidget
 
   final bool showYear, showBrowseButtons, showClock;
   const MonthAppBarStepper({
-    Key key,
+    Key? key,
     this.showYear = true,
     this.showBrowseButtons = true,
     this.showClock = false,

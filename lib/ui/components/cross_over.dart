@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/utils/scale_util.dart';
 
 class CrossOver extends StatelessWidget {
   const CrossOver({
-    Key key,
+    Key? key,
     this.color = const Color(0xFF000000),
     this.strokeWidth,
     this.fallbackWidth,
@@ -15,9 +13,9 @@ class CrossOver extends StatelessWidget {
   }) : super(key: key);
 
   final Color color;
-  final double strokeWidth;
-  final double fallbackWidth;
-  final double fallbackHeight;
+  final double? strokeWidth;
+  final double? fallbackWidth;
+  final double? fallbackHeight;
   static final double defaultStrokeWidth = 2.0.s;
   static final double defaultFallbackWidth = 215.0.s;
   static final double defaultFallbackHeight = 215.0.s;
@@ -40,8 +38,8 @@ class CrossOver extends StatelessWidget {
 
 class _CrossOverPainter extends CustomPainter {
   const _CrossOverPainter({
-    this.color,
-    this.strokeWidth,
+    required this.color,
+    required this.strokeWidth,
   });
 
   final Color color;
@@ -75,9 +73,9 @@ class WithCrossOver extends StatelessWidget {
   final EdgeInsets crossOverPadding;
   final Color color;
   const WithCrossOver({
-    Key key,
-    @required this.child,
-    @required this.applyCross,
+    Key? key,
+    required this.child,
+    required this.applyCross,
     this.crossOverPadding = EdgeInsets.zero,
     this.color = const Color(0xFF000000),
   }) : super(key: key);

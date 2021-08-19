@@ -1,22 +1,19 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget leftAction;
-  final Widget rightAction;
-  final Widget clock;
+  final Widget? leftAction;
+  final Widget? rightAction;
+
   final DateTime day;
 
   const DayAppBar({
-    Key key,
+    Key? key,
     this.leftAction,
     this.rightAction,
-    this.clock,
-    @required this.day,
+    required this.day,
   }) : super(key: key);
 
   @override
