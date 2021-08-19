@@ -91,6 +91,24 @@ void main() {
     expect(mapAgain, dbMap);
   });
 
+  test('SGC-902, null in db parses to empty string', () {
+    final dbMap = {
+      'id': 'cc8cc2c3-5fc7-4343-8bd6-4db0952cd80c',
+      'type': SortableType.imageArchive,
+      'data': '{"name":"","icon":""}',
+      'group_id': null,
+      'sort_order': 'wsdfgh',
+      'deleted': 1,
+      'is_group': 1,
+      'visible': 1,
+      'revision': 0,
+      'dirty': 0,
+    };
+    final s = DbSortable.fromDbMap(dbMap).sortable;
+    expect(s.groupId, '');
+    expect(s.data, ImageArchiveData());
+  });
+
   test('Get correct type when ImageArchiveData', () {
     final s = Sortable.createNew<ImageArchiveData>(
       data: ImageArchiveData(),
