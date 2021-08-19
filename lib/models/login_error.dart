@@ -15,6 +15,7 @@ class LoginError extends Equatable {
   });
 
   factory LoginError.fromJson(Map<String, dynamic> json) {
+    print(json.toString());
     return LoginError._(
       status: json['status'],
       message: json['message'],

@@ -84,26 +84,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on UnauthorizedException {
       yield state.failure(cause: LoginFailureCause.Credentials);
     } on WrongUserTypeException {
-      yield state.failure(cause: LoginFailureCause.WrongUserType);
+      yield state.failure(cause: LoginFailureCause.UnsupportedUserType);
     } catch (error) {
       _log.severe('could not login: $error');
       yield state.failure(cause: LoginFailureCause.NoConnection);
     }
   }
 
-  LoginFailureCause parseError(ex){
-    try{
-      final exMessage = ex.toString().substring(11);
-      final error = LoginError.fromJson(jsonDecode(exMessage));
-      if(error.status == 403 && error.errors.isNotEmpty){
-        switch(error.errors.first.code){
-          case 'WHALE-0156':
-            return LoginFailureCause.WrongUserType;
-        }
-      }
-    } catch (e){
-      _log.severe('Exception when trying to parse error', e);
-    }
-    return LoginFailureCause.NoConnection;
-  }
 }

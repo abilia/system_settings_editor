@@ -61,7 +61,7 @@ enum LoginFailureCause {
   NoConnection,
   LicenseExpired,
   NoLicense,
-  WrongUserType,
+  UnsupportedUserType,
 
 }
 
