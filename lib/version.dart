@@ -1,1 +1,1 @@
-const VERSION_SUFFIX = 'rc.4';
+const VERSION_SUFFIX = 'rc.5';
