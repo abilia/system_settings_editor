@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -20,8 +18,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
 
   final String languageTag;
   CreateAccountBloc({
-    @required this.repository,
-    @required this.languageTag,
+    required this.repository,
+    required this.languageTag,
   }) : super(CreateAccountState());
 
   @override
@@ -77,10 +75,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         );
         yield state.success();
       } on CreateAccountException catch (exception) {
-        final firstError = exception.errors.firstWhere(
-          (_) => true,
-          orElse: () => null,
-        );
+        final firstError = exception.errors.firstWhereOrNull((_) => true);
         _log.warning('creating account failed: $exception');
         yield state.failed(
           firstError?.failure ?? CreateAccountFailure.Unknown,

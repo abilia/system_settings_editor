@@ -132,7 +132,7 @@ class DbSortable extends DbModel<Sortable> {
           dbRow['id'],
           dbRow['type'],
           dbRow['data'],
-          dbRow['group_id'],
+          dbRow['group_id'] ?? '',
           dbRow['sort_order'],
           dbRow['deleted'] == 1,
           dbRow['is_group'] == 1,

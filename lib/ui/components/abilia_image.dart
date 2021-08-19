@@ -427,19 +427,13 @@ class FadeInNetworkImage extends StatelessWidget {
                 fallbackWidth: width,
               ),
               image: NetworkImage(
-                imageFileId != null
-                    ? imageThumbIdUrl(
-                        baseUrl: state.userRepository.baseUrl,
-                        userId: state.userId,
-                        imageFileId: imageFileId,
-                        size: ImageThumb.THUMB_SIZE,
-                      )
-                    : imageThumbPathUrl(
-                        baseUrl: state.userRepository.baseUrl,
-                        userId: state.userId,
-                        imagePath: imageFilePath,
-                        size: ImageThumb.THUMB_SIZE,
-                      ),
+                imageThumbUrl(
+                  baseUrl: state.userRepository.baseUrl,
+                  userId: state.userId,
+                  imagePath: imageFilePath,
+                  imageFileId: imageFileId,
+                  size: ImageThumb.THUMB_SIZE,
+                ),
                 headers: authHeader(state.token),
               ),
               fit: fit,

@@ -1,8 +1,7 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -13,11 +12,11 @@ final smallIconSize = 24.s,
     defaultIconSize = 32.s,
     hugeIconSize = 96.s;
 
-final verticalPadding = 24.0.s,
-    horizontalPadding = 16.0.s,
+final verticalPadding = 24.s,
+    horizontalPadding = 16.s,
     rightPadding = horizontalPadding,
-    leftPadding = 12.0.s,
-    seperatorPadding = 16.0.s;
+    leftPadding = 12.s,
+    seperatorPadding = 16.s;
 final ordinaryPadding = EdgeInsets.fromLTRB(
   leftPadding,
   verticalPadding,
@@ -53,14 +52,14 @@ final abiliaTheme = ThemeData(
   toggleableActiveColor: AbiliaColors.green,
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
-    endIndent: 12.0.s,
-    thickness: 1.0.s,
-    space: 0.0,
+    endIndent: 12.s,
+    thickness: 1.s,
+    space: 0,
   ),
 );
 
 final inputDecorationTheme = InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(vertical: 14.0.s, horizontal: 16.s),
+    contentPadding: EdgeInsets.symmetric(vertical: 14.s, horizontal: 16.s),
     focusedBorder: inputBorder,
     enabledBorder: inputBorder,
     errorBorder: redOutlineInputBorder,
@@ -88,45 +87,44 @@ final borderRadiusTop = BorderRadius.only(
   topRight: radius,
 );
 
+final circleRadius = BorderRadius.all(Radius.circular(24.s));
+
 // Borders
-final BorderSide borderSide =
-    BorderSide(color: AbiliaColors.white140, width: 1.0.s);
-final Border selectedActivityBorder =
-    Border.fromBorderSide(selectedsActivityBorderSide);
-final Border currentActivityBorder =
-    Border.fromBorderSide(currentActivityBorderSide);
-final BorderSide currentActivityBorderSide =
-    BorderSide(color: AbiliaColors.red, width: 2.0.s);
-final BorderSide selectedsActivityBorderSide =
-    BorderSide(color: AbiliaColors.black, width: 2.0.s);
+
+final Border selectedActivityBorder = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.black, width: 2.s),
+);
+final Border currentBorder =
+    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0.s));
 final Border errorBorder = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.red, width: 1.0.s),
+  BorderSide(color: AbiliaColors.red, width: 1.s),
 );
-final borderGreen = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.green, width: 2.0.s),
-);
+
 final borderOrange = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.orange40, width: 2.0.s),
+  BorderSide(color: AbiliaColors.orange40, width: 2.s),
 );
-final border = Border.fromBorderSide(borderSide);
+final border = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.white140, width: 1.s),
+);
+
 final ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
+  side: BorderSide(color: AbiliaColors.transparentWhite30, width: 1.s),
 );
 final darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.0.s),
+  side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.s),
 );
 final inputBorder = OutlineInputBorder(
-  borderSide: borderSide,
+  borderSide: BorderSide(color: AbiliaColors.white140, width: 1.s),
   borderRadius: borderRadius,
 );
 final redOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.red, width: 1.0.s),
+  borderSide: BorderSide(color: AbiliaColors.red, width: 1.s),
   borderRadius: borderRadius,
 );
 final transparentOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: Colors.transparent, width: 1.0.s),
+  borderSide: BorderSide(color: Colors.transparent, width: 1.s),
   borderRadius: borderRadius,
 );
 
@@ -142,17 +140,21 @@ final disabledBoxDecoration = BoxDecoration(
 final currentBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
-  border: currentActivityBorder,
+  border: Border.fromBorderSide(
+    BorderSide(color: AbiliaColors.red, width: 3.s),
+  ),
 );
 final whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: border,
 );
-final greenBoarderWhiteBoxDecoration = BoxDecoration(
+final selectedBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
-  border: borderGreen,
+  border: Border.fromBorderSide(
+    BorderSide(color: AbiliaColors.green, width: 2.s),
+  ),
 );
 final whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
@@ -164,11 +166,6 @@ final warningBoxDecoration = BoxDecoration(
   border: borderOrange,
 );
 const inactiveGrey = AbiliaColors.white110;
-final inactiveBoxDecoration = BoxDecoration(
-  color: inactiveGrey,
-  borderRadius: borderRadius,
-  border: border,
-);
 final errorBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: errorBorder,
@@ -179,18 +176,67 @@ final whiteErrorBoxDecoration = BoxDecoration(
   border: errorBorder,
 );
 
-BoxDecoration getBoxDecoration(bool current, bool inactive) => inactive
-    ? inactiveBoxDecoration
-    : current
-        ? currentBoxDecoration
-        : whiteBoxDecoration;
+BoxDecoration getCategoryBoxDecoration({
+  required bool inactive,
+  required bool current,
+  required bool showCategoryColor,
+  required int category,
+}) =>
+    BoxDecoration(
+      color: AbiliaColors.white,
+      borderRadius: borderRadius,
+      border: getCategoryBorder(
+        inactive: inactive,
+        current: current,
+        showCategoryColor: showCategoryColor,
+        category: category,
+      ),
+    );
 
-BoxDecoration selectedBoxDecoration(bool selected) =>
-    selected ? greenBoarderWhiteBoxDecoration : whiteBoxDecoration;
+Border getCategoryBorder({
+  required bool inactive,
+  required bool current,
+  required bool showCategoryColor,
+  required int category,
+}) =>
+    current
+        ? Border.fromBorderSide(
+            BorderSide(color: AbiliaColors.red, width: 3.s),
+          )
+        : Border.fromBorderSide(
+            BorderSide(
+              color: categoryColor(
+                category: category,
+                inactive: inactive,
+                showCategoryColor: showCategoryColor,
+              ),
+              width: 1.5.s,
+            ),
+          );
+
+BoxDecoration selectableBoxDecoration(bool selected) =>
+    selected ? selectedBoxDecoration : whiteBoxDecoration;
+
+final rightCategoryActiveColor = AbiliaColors.green,
+    rightCategoryInactiveColor = AbiliaColors.green40,
+    leftCategoryActiveColor = AbiliaColors.black60,
+    noCategoryColor = AbiliaColors.white140;
+
+Color categoryColor({
+  required int category,
+  bool inactive = false,
+  bool showCategoryColor = true,
+}) {
+  if (!showCategoryColor) return noCategoryColor;
+  if (category == Category.right) {
+    return inactive ? rightCategoryInactiveColor : rightCategoryActiveColor;
+  }
+  return inactive ? noCategoryColor : leftCategoryActiveColor;
+}
 
 final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
-    padding: EdgeInsetsDirectional.only(end: 16.0.s),
+    padding: EdgeInsetsDirectional.only(end: 16.s),
     child: Icon(
       AbiliaIcons.ir_error,
       color: AbiliaColors.red,
@@ -210,74 +256,74 @@ final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
     headline1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 96.0.s,
+      fontSize: 96.s,
       fontWeight: light,
     ),
     headline2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 60.0.s,
+      fontSize: 60.s,
       fontWeight: light,
       height: 72.0 / 60.0,
     ),
     headline3: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 48.0.s,
+      fontSize: 48.s,
       fontWeight: regular,
       height: 56.0 / 48.0,
     ),
     headline4: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 34.0.s,
+      fontSize: 34.s,
       fontWeight: regular,
     ),
     headline5: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 24.0.s,
+      fontSize: 24.s,
       fontWeight: regular,
     ),
     headline6: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 20.0.s,
+      fontSize: 20.s,
       fontWeight: medium,
     ),
     subtitle1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 16.0.s,
+      fontSize: 16.s,
       fontWeight: medium,
       height: 24.0 / 16.0,
     ),
     subtitle2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 14.0.s,
+      fontSize: 14.s,
       fontWeight: medium,
       height: 24.0 / 14.0,
     ),
     bodyText1: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 16.0.s,
+      fontSize: 16.s,
       fontWeight: regular,
       height: 28.0 / 16.0,
     ),
     bodyText2: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 14.0.s,
+      fontSize: 14.s,
       fontWeight: regular,
       height: 20.0 / 14.0,
     ),
     caption: TextStyle(
       color: AbiliaColors.black,
-      fontSize: 12.0.s,
+      fontSize: 12.s,
       fontWeight: regular,
       height: 16.0 / 12.0,
     ),
     button: TextStyle(
       color: AbiliaColors.white,
-      fontSize: 16.0.s,
+      fontSize: 16.s,
       fontWeight: regular,
       height: 1,
     ),
     overline: TextStyle(
-      fontSize: 10.0.s,
+      fontSize: 10.s,
       fontWeight: medium,
       height: 16.0 / 10.0,
     ),

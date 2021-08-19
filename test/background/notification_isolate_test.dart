@@ -140,12 +140,13 @@ void main() {
     // Android
     expect(
         details.android.styleInformation is BigPictureStyleInformation, isTrue);
-    final bpd = details.android.styleInformation as BigPictureStyleInformation;
-    expect(bpd.bigPicture.bitmap, fileId);
+    final bpd = (details.android.styleInformation as BigPictureStyleInformation)
+        .bigPicture as FilePathAndroidBitmap;
+    expect(bpd.data, fileId);
 
     expect(details.android.largeIcon is FilePathAndroidBitmap, isTrue);
     final largeIcon = details.android.largeIcon as FilePathAndroidBitmap;
-    expect(largeIcon.bitmap, fileId);
+    expect(largeIcon.data, fileId);
 
     expect(details.android.fullScreenIntent, isTrue);
   });

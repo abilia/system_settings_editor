@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:seagull/logging.dart';
@@ -7,9 +5,9 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ClockBloc extends Bloc<DateTime, DateTime> with Silent {
-  StreamSubscription<DateTime> _tickerSubscription;
+  StreamSubscription<DateTime>? _tickerSubscription;
 
-  ClockBloc(Stream<DateTime> ticker, {DateTime initialTime})
+  ClockBloc(Stream<DateTime> ticker, {DateTime? initialTime})
       : super((initialTime ?? DateTime.now()).onlyMinutes()) {
     _tickerSubscription = ticker.listen((tick) => add(tick));
   }
@@ -28,13 +26,13 @@ class ClockBloc extends Bloc<DateTime, DateTime> with Silent {
     return super.close();
   }
 
-  double minPerMin;
-  void setFakeTicker({DateTime initTime, double ticksPerMin}) async {
+  double? minPerMin;
+  void setFakeTicker({DateTime? initTime, double? ticksPerMin}) async {
     minPerMin = ticksPerMin ?? minPerMin ?? 1.0;
     await _tickerSubscription?.cancel();
     _tickerSubscription = _fake(
       initTime ?? state,
-      minDuration: (1 / minPerMin * 60000).toInt().milliseconds(),
+      minDuration: (1 / minPerMin! * 60000).toInt().milliseconds(),
     ).listen((tick) => add(tick));
   }
 

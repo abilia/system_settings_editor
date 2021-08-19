@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -16,13 +14,13 @@ part 'generic_state.dart';
 
 class GenericBloc extends Bloc<GenericEvent, GenericState> {
   final GenericRepository genericRepository;
-  StreamSubscription pushSubscription;
+  late final StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
 
   GenericBloc({
-    @required this.genericRepository,
-    @required PushBloc pushBloc,
-    @required this.syncBloc,
+    required this.genericRepository,
+    required PushBloc pushBloc,
+    required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
@@ -42,7 +40,8 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
       final currentState = state;
       if (currentState is GenericsLoaded) {
         final toUpdate = {
-          for (var genericData in event.genericData)
+          for (var genericData
+              in event.genericData.whereType<MemoplannerSettingData>())
             genericData.key: currentState.generics[genericData.key]
                     ?.copyWithNewData(newData: genericData) ??
                 Generic.createNew<MemoplannerSettingData>(data: genericData)
@@ -75,9 +74,7 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
 
   @override
   Future<void> close() async {
-    if (pushSubscription != null) {
-      await pushSubscription.cancel();
-    }
+    await pushSubscription.cancel();
     return super.close();
   }
 }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:math';
 
@@ -21,13 +19,13 @@ class ScrollPositionBloc
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
   final TimepillarBloc timepillarBloc;
-  StreamSubscription dayPickerBlocSubscription;
-  StreamSubscription clockBlocSubscription;
+  late final StreamSubscription dayPickerBlocSubscription;
+  late final StreamSubscription clockBlocSubscription;
 
   ScrollPositionBloc({
-    @required this.dayPickerBloc,
-    @required this.clockBloc,
-    @required this.timepillarBloc,
+    required this.dayPickerBloc,
+    required this.clockBloc,
+    required this.timepillarBloc,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
@@ -63,7 +61,7 @@ class ScrollPositionBloc
 
   Stream<ScrollPositionState> _isActivityInView(
       ScrollController scrollController,
-      DateTime scrollControllerCreatedTime) async* {
+      DateTime? scrollControllerCreatedTime) async* {
     if (!scrollController.hasClients) {
       yield Unready();
       return;
@@ -99,20 +97,20 @@ class ScrollPositionBloc
   }
 
   bool _atBottomOfList({
-    @required double scrollPosition,
-    @required double maxScrollExtent,
-    @required double nowPosition,
+    required double scrollPosition,
+    required double maxScrollExtent,
+    required double nowPosition,
   }) =>
       scrollPosition >= maxScrollExtent && nowPosition > maxScrollExtent;
 
   bool _inView({
-    @required double scrollPosition,
-    @required double nowPosition,
+    required double scrollPosition,
+    required double nowPosition,
   }) =>
       nowPosition - scrollPosition <= nowMarginBottom &&
       scrollPosition - nowPosition <= nowMarginTop;
 
-  double timeFromCreation(DateTime scrollControllerCreatedTime) {
+  double timeFromCreation(DateTime? scrollControllerCreatedTime) {
     if (scrollControllerCreatedTime != null) {
       final now = clockBloc.state;
       final diff = now.difference(scrollControllerCreatedTime);

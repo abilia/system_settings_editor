@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -15,7 +13,7 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final FutureOr<void> Function() onLogout;
+  final FutureOr<void> Function()? onLogout;
 
   AuthenticationBloc(
     UserRepository userRepository, {
@@ -77,7 +75,7 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> _logout(
     UserRepository repo, {
-    String token,
+    String? token,
     LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
   }) async* {
     try {

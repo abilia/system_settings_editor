@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,8 +9,8 @@ class AlarmSettingsCubit extends Cubit<AlarmSettingsState> {
   final GenericBloc genericBloc;
 
   AlarmSettingsCubit({
-    MemoplannerSettingsState settingsState,
-    this.genericBloc,
+    required MemoplannerSettingsState settingsState,
+    required this.genericBloc,
   }) : super(AlarmSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeAlarmSettings(AlarmSettingsState newState) => emit(newState);

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'function_settings_cubit.dart';
 
 class FunctionSettingsState extends Equatable {
@@ -17,14 +15,14 @@ class FunctionSettingsState extends Equatable {
   bool get displayMenuChangedToDisabled => !displayMenu && displayMenuInitial;
 
   FunctionSettingsState._({
-    this.displayWeek,
-    this.displayMonth,
-    this.displayNewActivity,
-    this.displayMenu,
-    this.displayMenuInitial,
-    this.timeout,
-    this.useScreensaver,
-    StartView startView,
+    required this.displayWeek,
+    required this.displayMonth,
+    required this.displayNewActivity,
+    required this.displayMenu,
+    required this.displayMenuInitial,
+    required this.timeout,
+    required this.useScreensaver,
+    required StartView startView,
   }) : startView = _startView(
           displayWeek,
           displayMonth,
@@ -65,13 +63,13 @@ class FunctionSettingsState extends Equatable {
       );
 
   FunctionSettingsState copyWith({
-    bool displayWeek,
-    bool displayMonth,
-    bool displayNewActivity,
-    bool displayMenu,
-    int timeout,
-    bool useScreensaver,
-    StartView startView,
+    bool? displayWeek,
+    bool? displayMonth,
+    bool? displayNewActivity,
+    bool? displayMenu,
+    int? timeout,
+    bool? useScreensaver,
+    StartView? startView,
   }) =>
       FunctionSettingsState._(
         displayWeek: displayWeek ?? this.displayWeek,

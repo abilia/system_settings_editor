@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'add_activity_settings_cubit.dart';
 
 class AddActivitySettingsState extends Equatable {
@@ -15,15 +13,15 @@ class AddActivitySettingsState extends Equatable {
   final DefaultsTabSettingsState defaultsTabSettingsState;
 
   AddActivitySettingsState._({
-    @required this.allowPassedStartTime,
-    @required this.addRecurringActivity,
-    @required this.showEndTime,
-    @required this.showAlarm,
-    @required this.showSilentAlarm,
-    @required this.showNoAlarm,
-    @required this.addTabEditViewSettingsState,
-    @required this.stepByStepSettingsState,
-    @required this.defaultsTabSettingsState,
+    required this.allowPassedStartTime,
+    required this.addRecurringActivity,
+    required this.showEndTime,
+    required this.showAlarm,
+    required this.showSilentAlarm,
+    required this.showNoAlarm,
+    required this.addTabEditViewSettingsState,
+    required this.stepByStepSettingsState,
+    required this.defaultsTabSettingsState,
   });
 
   factory AddActivitySettingsState.fromMemoplannerSettings(
@@ -45,15 +43,15 @@ class AddActivitySettingsState extends Equatable {
       );
 
   AddActivitySettingsState copyWith({
-    bool allowPassedStartTime,
-    bool addRecurringActivity,
-    bool showEndTime,
-    bool showAlarm,
-    bool showSilentAlarm,
-    bool showNoAlarm,
-    AddTabEditViewSettingsState addTabEditViewSettingsState,
-    StepByStepSettingsState stepByStepSettingsState,
-    DefaultsTabSettingsState defaultsTabSettingsState,
+    bool? allowPassedStartTime,
+    bool? addRecurringActivity,
+    bool? showEndTime,
+    bool? showAlarm,
+    bool? showSilentAlarm,
+    bool? showNoAlarm,
+    AddTabEditViewSettingsState? addTabEditViewSettingsState,
+    StepByStepSettingsState? stepByStepSettingsState,
+    DefaultsTabSettingsState? defaultsTabSettingsState,
   }) =>
       AddActivitySettingsState._(
         allowPassedStartTime: allowPassedStartTime ?? this.allowPassedStartTime,
@@ -119,10 +117,10 @@ class AddTabEditViewSettingsState extends Equatable {
   final bool selectDate, selectType, showBasicActivities;
 
   AddTabEditViewSettingsState._({
-    @required this.newActivityMode,
-    @required this.selectDate,
-    @required this.selectType,
-    @required this.showBasicActivities,
+    required this.newActivityMode,
+    required this.selectDate,
+    required this.selectType,
+    required this.showBasicActivities,
   });
 
   factory AddTabEditViewSettingsState.fromMemoplannerSettings(
@@ -136,10 +134,10 @@ class AddTabEditViewSettingsState extends Equatable {
       );
 
   AddTabEditViewSettingsState copyWith({
-    NewActivityMode newActivityMode,
-    bool selectDate,
-    bool selectType,
-    bool showBasicActivities,
+    NewActivityMode? newActivityMode,
+    bool? selectDate,
+    bool? selectType,
+    bool? showBasicActivities,
   }) =>
       AddTabEditViewSettingsState._(
         newActivityMode: newActivityMode ?? this.newActivityMode,
@@ -191,18 +189,18 @@ class StepByStepSettingsState extends Equatable {
       selectReminder;
 
   StepByStepSettingsState._({
-    @required this.showBasicActivities,
-    @required this.selectName,
-    @required this.selectImage,
-    @required this.setDate,
-    @required this.selectType,
-    @required this.selectCheckable,
-    @required this.selectAvailableFor,
-    @required this.selectDeleteAfter,
-    @required this.selectAlarm,
-    @required this.selectChecklist,
-    @required this.selectNote,
-    @required this.selectReminder,
+    required this.showBasicActivities,
+    required this.selectName,
+    required this.selectImage,
+    required this.setDate,
+    required this.selectType,
+    required this.selectCheckable,
+    required this.selectAvailableFor,
+    required this.selectDeleteAfter,
+    required this.selectAlarm,
+    required this.selectChecklist,
+    required this.selectNote,
+    required this.selectReminder,
   });
 
   factory StepByStepSettingsState.fromMemoplannerSettings(
@@ -224,18 +222,18 @@ class StepByStepSettingsState extends Equatable {
       );
 
   StepByStepSettingsState copyWith({
-    bool showBasicActivities,
-    selectName,
-    selectImage,
-    setDate,
-    selectType,
-    selectCheckable,
-    selectAvailableFor,
-    selectDeleteAfter,
-    selectAlarm,
-    selectChecklist,
-    selectNote,
-    selectReminder,
+    bool? showBasicActivities,
+    bool? selectName,
+    bool? selectImage,
+    bool? setDate,
+    bool? selectType,
+    bool? selectCheckable,
+    bool? selectAvailableFor,
+    bool? selectDeleteAfter,
+    bool? selectAlarm,
+    bool? selectChecklist,
+    bool? selectNote,
+    bool? selectReminder,
   }) =>
       StepByStepSettingsState._(
         showBasicActivities: showBasicActivities ?? this.showBasicActivities,
@@ -325,8 +323,8 @@ class DefaultsTabSettingsState extends Equatable {
   final bool alarmOnlyAtStartTime;
 
   DefaultsTabSettingsState._({
-    @required this.alarmType,
-    @required this.alarmOnlyAtStartTime,
+    required this.alarmType,
+    required this.alarmOnlyAtStartTime,
   });
 
   factory DefaultsTabSettingsState.fromMemoplannerSettings(
@@ -340,8 +338,8 @@ class DefaultsTabSettingsState extends Equatable {
   }
 
   DefaultsTabSettingsState copyWith({
-    AlarmType alarmType,
-    alarmOnlyAtStartTime,
+    AlarmType? alarmType,
+    bool? alarmOnlyAtStartTime,
   }) =>
       DefaultsTabSettingsState._(
         alarmType: alarmType ?? this.alarmType,

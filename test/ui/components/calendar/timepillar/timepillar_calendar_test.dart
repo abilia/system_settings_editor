@@ -38,7 +38,7 @@ void main() {
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.TIMEPILLAR.index,
+        data: DayCalendarType.timepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 
@@ -593,7 +593,7 @@ void main() {
       expect(find.byType(CrossOver), findsWidgets);
     });
 
-    testWidgets('sigend off past activity shows no CrossOver',
+    testWidgets('signed off past activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
       activityResponse = () => [
@@ -609,6 +609,112 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsNothing);
+    });
+
+    group('category colors', () {
+      testWidgets('correct color', (WidgetTester tester) async {
+        final soon = time.add(30.minutes());
+        final just = time.subtract(30.minutes());
+
+        final a1 = Activity.createNew(
+              startTime: soon,
+              title: 'left soon',
+              category: Category.left,
+            ),
+            a2 = Activity.createNew(
+              startTime: soon,
+              title: 'right soon',
+              category: Category.right,
+            ),
+            a3 = Activity.createNew(
+              startTime: just,
+              title: 'left just',
+              category: Category.left,
+            ),
+            a4 = Activity.createNew(
+              startTime: just,
+              title: 'right just',
+              category: Category.right,
+            );
+        activityResponse = () => [a1, a2, a3, a4];
+
+        void expectCorrectColor(String title, Color expectedColor) {
+          final boxDecoration = tester
+              .widget<Container>(find.descendant(
+                  of: find.widgetWithText(ActivityTimepillarCard, title),
+                  matching: find.byType(Container)))
+              .decoration as BoxDecoration;
+          expect(
+            boxDecoration.border.bottom.color,
+            expectedColor,
+          );
+        }
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        expectCorrectColor(a1.title, leftCategoryActiveColor);
+        expectCorrectColor(a2.title, rightCategoryActiveColor);
+        expectCorrectColor(a3.title, noCategoryColor);
+        expectCorrectColor(a4.title, rightCategoryInactiveColor);
+      });
+
+      testWidgets('correct no color', (WidgetTester tester) async {
+        final soon = time.add(30.minutes());
+        final just = time.subtract(30.minutes());
+
+        final a1 = Activity.createNew(
+              startTime: soon,
+              title: 'left soon',
+              category: Category.left,
+            ),
+            a2 = Activity.createNew(
+              startTime: soon,
+              title: 'right soon',
+              category: Category.right,
+            ),
+            a3 = Activity.createNew(
+              startTime: just,
+              title: 'left just',
+              category: Category.left,
+            ),
+            a4 = Activity.createNew(
+              startTime: just,
+              title: 'right just',
+              category: Category.right,
+            );
+        activityResponse = () => [a1, a2, a3, a4];
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: false,
+                  identifier:
+                      MemoplannerSettings.calendarActivityTypeShowColorKey,
+                ),
+              ),
+            ];
+
+        void expectCorrectColor(String title, Color expectedColor) {
+          final boxDecoration = tester
+              .widget<Container>(find.descendant(
+                  of: find.widgetWithText(ActivityTimepillarCard, title),
+                  matching: find.byType(Container)))
+              .decoration as BoxDecoration;
+          expect(
+            boxDecoration.border.bottom.color,
+            expectedColor,
+          );
+        }
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        expectCorrectColor(a1.title, noCategoryColor);
+        expectCorrectColor(a2.title, noCategoryColor);
+        expectCorrectColor(a3.title, noCategoryColor);
+        expectCorrectColor(a4.title, noCategoryColor);
+      });
     });
   });
 

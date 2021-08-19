@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'create_account_bloc.dart';
 
 class CreateAccountState extends Equatable {
@@ -15,11 +13,11 @@ class CreateAccountState extends Equatable {
   });
 
   CreateAccountState copyWith({
-    String username,
-    String firstPassword,
-    String secondPassword,
-    bool termsOfUse,
-    bool privacyPolicy,
+    String? username,
+    String? firstPassword,
+    String? secondPassword,
+    bool? termsOfUse,
+    bool? privacyPolicy,
   }) =>
       CreateAccountState(
         username: username ?? this.username,

@@ -35,10 +35,7 @@ class DayCalendar extends StatelessWidget {
                 if (settingState.displayEyeButton)
                   Align(
                     alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0.s),
-                      child: const EyeButton(),
-                    ),
+                    child: const EyeButtonDay(),
                   ),
                 if (state.notificationDenied)
                   Align(
@@ -140,7 +137,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                         builder: (context, memoState) => Stack(
                           children: [
                             if (memoState.dayCalendarType ==
-                                DayCalendarType.LIST)
+                                DayCalendarType.list)
                               Agenda(
                                 activityState: activityState,
                               )

@@ -63,7 +63,7 @@ void main() {
     expect(result.recurs.data, 0);
     expect(result.alarmType, 0);
     expect(result.duration, 3600000.milliseconds());
-    expect(result.category, 0);
+    expect(result.category, Category.right);
     expect(result.startTime, 1570105439424.fromMillisecondsSinceEpoch());
     expect(result.recurs.endTime, 1570109039424);
     expect(result.fullDay, false);
@@ -238,7 +238,8 @@ void main() {
     expect(deserializedActivity.id, activity.id);
     expect(deserializedActivity.seriesId, activity.seriesId);
     expect(deserializedActivity.title, activity.title);
-    expect(deserializedActivity.category, activity.category);
+    expect(deserializedActivity.category, 4);
+    expect(activity.category, 4);
     expect(deserializedActivity.duration, activity.duration);
     expect(deserializedActivity.reminderBefore, activity.reminderBefore);
     expect(deserializedActivity.startTime, activity.startTime);

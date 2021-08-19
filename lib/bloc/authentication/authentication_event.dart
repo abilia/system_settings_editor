@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {
@@ -25,7 +23,7 @@ class CheckAuthentication extends AuthenticationEvent {}
 class LoggedIn extends AuthenticationEvent {
   final String token;
 
-  const LoggedIn({@required this.token});
+  const LoggedIn({required this.token});
 
   @override
   List<Object> get props => [token];

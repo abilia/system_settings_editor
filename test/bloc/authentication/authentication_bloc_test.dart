@@ -23,6 +23,7 @@ void main() {
         tokenDb: TokenDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
+        baseUrl: 'fake',
       );
       authenticationBloc = AuthenticationBloc(
         userRepository,

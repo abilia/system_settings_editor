@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -15,19 +13,15 @@ import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final GlobalKey authedStateKey = GlobalKey(debugLabel: 'authedStateKey');
-BuildContext get authContext => authedStateKey.currentContext;
-
 class TopLevelListeners extends StatelessWidget {
   final Widget child;
   final GlobalKey<NavigatorState> navigatorKey;
-  final NotificationAlarm payload;
+  final NotificationAlarm? payload;
 
-  NavigatorState get _navigator => navigatorKey.currentState;
   const TopLevelListeners({
-    Key key,
-    this.child,
-    @required this.navigatorKey,
+    Key? key,
+    required this.child,
+    required this.navigatorKey,
     this.payload,
   }) : super(key: key);
 
@@ -51,31 +45,38 @@ class TopLevelListeners extends StatelessWidget {
                 previous.runtimeType != current.runtimeType ||
                 previous.forcedNewState != current.forcedNewState,
             listener: (context, state) async {
+              final _navigator = navigatorKey.currentState;
               if (_navigator == null) {
                 context.read<AuthenticationBloc>().add(NotReady());
                 return;
               }
               if (state is Authenticated) {
                 await Permission.notification.request();
-                await _navigator.pushAndRemoveUntil<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) {
-                      return AuthenticatedBlocsProvider(
+                final _payload = payload;
+                if (_payload == null) {
+                  await _navigator.pushAndRemoveUntil<void>(
+                    MaterialPageRoute<void>(
+                      builder: (_) {
+                        return AuthenticatedBlocsProvider(
+                          authenticatedState: state,
+                          child: AlarmListeners(
+                            child: AuthenticatedListeners(
+                              child: CalendarPage(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    (_) => false,
+                  );
+                } else {
+                  await _navigator.pushAndRemoveUntil(
+                      GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
                         authenticatedState: state,
-                        child: AlarmListeners(
-                          alarm: payload,
-                          child: payload != null
-                              ? FullScreenAlarm(alarm: payload)
-                              : AuthenticatedListeners(
-                                  key: authedStateKey,
-                                  child: CalendarPage(),
-                                ),
-                        ),
-                      );
-                    },
-                  ),
-                  (_) => false,
-                );
+                        alarm: _payload,
+                      ),
+                      (_) => false);
+                }
               } else if (state is Unauthenticated) {
                 await _navigator.pushAndRemoveUntil<void>(
                   MaterialPageRoute<void>(
@@ -96,8 +97,7 @@ class TopLevelListeners extends StatelessWidget {
 class AlarmListeners extends StatefulWidget {
   static final _log = Logger((AlarmListeners).toString());
   final Widget child;
-  final NotificationAlarm alarm;
-  const AlarmListeners({Key key, this.child, this.alarm}) : super(key: key);
+  const AlarmListeners({Key? key, required this.child}) : super(key: key);
 
   @override
   _AlarmListenersState createState() => _AlarmListenersState();
@@ -105,20 +105,17 @@ class AlarmListeners extends StatefulWidget {
 
 class _AlarmListenersState extends State<AlarmListeners>
     with WidgetsBindingObserver {
-  bool get alarmScreen => widget.alarm != null;
-  AppLifecycleState appLifecycleState;
+  AppLifecycleState? appLifecycleState;
 
-  BlocListenerCondition<AlarmStateBase> get listenWhen => alarmScreen
-      ? (_, current) => current is AlarmState && current.alarm != widget.alarm
-      : (_, __) =>
-          appLifecycleState == null ||
-          appLifecycleState == AppLifecycleState.resumed;
+  bool listenWhen(_, __) =>
+      appLifecycleState == null ||
+      appLifecycleState == AppLifecycleState.resumed;
 
   @override
   void initState() {
     super.initState();
-    appLifecycleState = WidgetsBinding.instance.lifecycleState;
-    WidgetsBinding.instance.addObserver(this);
+    appLifecycleState = WidgetsBinding.instance?.lifecycleState;
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
@@ -129,7 +126,7 @@ class _AlarmListenersState extends State<AlarmListeners>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
@@ -159,8 +156,8 @@ class _AlarmListenersState extends State<AlarmListeners>
 
 class AuthenticatedListeners extends StatefulWidget {
   const AuthenticatedListeners({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -173,7 +170,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
@@ -185,7 +182,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
@@ -269,7 +266,8 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
             current.status.containsKey(Permission.systemAlertWindow) &&
-            !current.status[Permission.systemAlertWindow].isGranted) {
+            !(current.status[Permission.systemAlertWindow]?.isGranted ??
+                false)) {
           final authState = context.read<AuthenticationBloc>().state;
           if (authState is Authenticated) {
             return authState.newlyLoggedIn;
@@ -288,6 +286,8 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
 
   bool _notificationsDenied(
           PermissionState previous, PermissionState current) =>
-      current.status[Permission.notification].isDeniedOrPermenantlyDenied &&
-      !previous.status[Permission.notification].isDeniedOrPermenantlyDenied;
+      (current.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
+          false) &&
+      !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
+          false);
 }

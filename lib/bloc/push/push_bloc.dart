@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/background/background.dart';

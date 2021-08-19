@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'month_calendar_bloc.dart';
 
 class MonthCalendarState extends Equatable {
@@ -10,9 +8,9 @@ class MonthCalendarState extends Equatable {
   int get index => firstDay.year * DateTime.monthsPerYear + firstDay.month;
 
   const MonthCalendarState({
-    @required this.firstDay,
-    @required this.occasion,
-    @required this.weeks,
+    required this.firstDay,
+    required this.occasion,
+    required this.weeks,
   });
 
   @override
@@ -38,7 +36,7 @@ abstract class MonthCalendarDay extends Equatable {}
 
 class MonthDay extends MonthCalendarDay {
   final DateTime day;
-  final ActivityDay fullDayActivity;
+  final ActivityDay? fullDayActivity;
   final int fullDayActivityCount;
   final bool hasActivities;
   final Occasion occasion;
@@ -54,7 +52,7 @@ class MonthDay extends MonthCalendarDay {
   );
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         day,
         fullDayActivity,
         hasActivities,

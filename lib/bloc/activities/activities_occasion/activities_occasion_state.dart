@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'activities_occasion_bloc.dart';
 
 abstract class ActivitiesOccasionState extends Equatable {
@@ -21,13 +19,15 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
   final List<ActivityOccasion> fullDayActivities;
   final Occasion occasion;
   final DateTime day;
+
   bool get isToday => occasion == Occasion.current;
+  bool get isTodayAndNoPast => isToday && pastActivities.isEmpty;
 
   ActivitiesOccasionLoaded({
-    @required this.activities,
-    @required this.fullDayActivities,
-    @required this.day,
-    @required this.occasion,
+    required this.activities,
+    required this.fullDayActivities,
+    required this.day,
+    required this.occasion,
   })  : pastActivities = activities.where((ao) => ao.isPast).toList(),
         notPastActivities = activities.where((ao) => !ao.isPast).toList(),
         super();
@@ -40,7 +40,7 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
         day,
         isToday,
       ];
+
   @override
-  String toString() =>
-      'ActivitiesOccasionLoaded { $occasion, [${activities.map((e) => '(${e.occasion} ${e.activity.title ?? e.activity.id} ${e.day} )')}], FullDay: $fullDayActivities, day; ${yMd(day)}, ${isToday ? 'today' : 'not today'}';
+  bool get stringify => true;
 }

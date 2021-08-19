@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +13,8 @@ class Agenda extends StatefulWidget {
   final ActivitiesOccasionLoaded activityState;
 
   const Agenda({
-    Key key,
-    @required this.activityState,
+    Key? key,
+    required this.activityState,
   }) : super(key: key);
 
   @override
@@ -24,7 +22,6 @@ class Agenda extends StatefulWidget {
 }
 
 class _AgendaState extends State<Agenda> with CalendarStateMixin {
-  final center = GlobalKey();
   var scrollController = ScrollController(
     initialScrollOffset: 0,
     keepScrollOffset: false,
@@ -45,13 +42,13 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
   }
 
   @override
-  void didUpdateWidget(Widget oldWidget) {
+  void didUpdateWidget(Agenda oldWidget) {
     super.didUpdateWidget(oldWidget);
     _addScrollViewRenderCompleteCallback();
   }
 
   void _addScrollViewRenderCompleteCallback() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       BlocProvider.of<ScrollPositionBloc>(context)
           .add(ScrollViewRenderComplete(scrollController));
     });
@@ -60,7 +57,6 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
   @override
   Widget build(BuildContext context) {
     final state = widget.activityState;
-    final todayFirstActivity = state.isToday && state.pastActivities.isEmpty;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
@@ -68,77 +64,101 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
         return RefreshIndicator(
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            buildWhen: (previous, current) =>
+                previous.showCategories != current.showCategories,
             builder: (context, memoplannerSettingsState) => Stack(
               children: <Widget>[
                 NotificationListener<ScrollNotification>(
                   onNotification: state.isToday ? onScrollNotification : null,
                   child: AbiliaScrollBar(
-                    controller: scrollController,
-                    child: CustomScrollView(
-                      center: state.isToday ? center : null,
-                      controller: scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      slivers: [
-                        if (state.activities.isEmpty &&
-                            state.fullDayActivities.isEmpty)
-                          SliverNoActivities(key: center)
-                        else ...[
-                          if (!todayFirstActivity)
-                            SliverPadding(
-                              padding: EdgeInsets.only(top: Agenda.topPadding),
-                              sliver: SliverActivityList(
-                                state.pastActivities,
-                                reversed: state.isToday,
-                                lastMargin: _lastPastPadding(
-                                  state.pastActivities,
-                                  state.notPastActivities,
-                                ),
-                                showCategories:
-                                    memoplannerSettingsState.showCategories,
-                              ),
-                            ),
-                          SliverPadding(
-                            key: center,
-                            padding: EdgeInsets.only(
-                              top: todayFirstActivity ? Agenda.topPadding : 0.0,
-                              bottom: Agenda.bottomPadding,
-                            ),
-                            sliver: SliverActivityList(
-                              state.notPastActivities,
-                              showCategories:
-                                  memoplannerSettingsState.showCategories,
-                            ),
-                          ),
-                        ],
-                      ],
+                    child: ActivityList(
+                      state: state,
+                      scrollController: scrollController,
+                      bottomPadding: Agenda.bottomPadding,
+                      topPadding: Agenda.topPadding,
                     ),
                   ),
                 ),
-                ArrowUp(
-                  controller: scrollController,
-                  collapseMargin: Agenda.topPadding,
-                ),
-                ArrowDown(
-                  controller: scrollController,
-                  collapseMargin: Agenda.bottomPadding,
-                ),
                 if (memoplannerSettingsState.showCategories) ...[
-                  CategoryLeft(
-                    maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.leftCategoryName,
-                    fileId: memoplannerSettingsState.leftCategoryImage,
-                  ),
-                  CategoryRight(
-                    maxWidth: categoryLabelWidth,
-                    categoryName: memoplannerSettingsState.rightCategoryName,
-                    fileId: memoplannerSettingsState.rightCategoryImage,
-                  ),
+                  LeftCategory(maxWidth: categoryLabelWidth),
+                  RightCategory(maxWidth: categoryLabelWidth),
                 ],
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class ActivityList extends StatelessWidget {
+  final center = GlobalKey();
+
+  ActivityList({
+    Key? key,
+    required this.state,
+    this.scrollController,
+    required this.bottomPadding,
+    required this.topPadding,
+  }) : super(key: key);
+
+  final ActivitiesOccasionLoaded state;
+
+  final ScrollController? scrollController;
+
+  final double bottomPadding, topPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    final sc = scrollController ?? ScrollController();
+    return Stack(
+      children: [
+        AbiliaScrollBar(
+          controller: sc,
+          child: CustomScrollView(
+            center: state.isToday ? center : null,
+            controller: sc,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              if (state.activities.isEmpty && state.fullDayActivities.isEmpty)
+                SliverNoActivities(key: center)
+              else ...[
+                if (!state.isTodayAndNoPast)
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: topPadding),
+                    sliver: SliverActivityList(
+                      state.pastActivities,
+                      reversed: state.isToday,
+                      lastMargin: _lastPastPadding(
+                        state.pastActivities,
+                        state.notPastActivities,
+                      ),
+                    ),
+                  ),
+                SliverPadding(
+                  key: center,
+                  padding: EdgeInsets.only(
+                    top: state.isTodayAndNoPast ? topPadding : 0.0,
+                    bottom: bottomPadding,
+                  ),
+                  sliver: SliverActivityList(
+                    state.notPastActivities,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        ArrowUp(
+          controller: sc,
+          collapseMargin: topPadding,
+        ),
+        ArrowDown(
+          controller: sc,
+          collapseMargin: bottomPadding,
+        ),
+      ],
     );
   }
 
@@ -155,7 +175,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 }
 
 class SliverNoActivities extends StatelessWidget {
-  const SliverNoActivities({Key key}) : super(key: key);
+  const SliverNoActivities({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +187,7 @@ class SliverNoActivities extends StatelessWidget {
             child: Text(
               Translator.of(context).translate.noActivities,
               style: abiliaTextTheme.bodyText1
-                  .copyWith(color: AbiliaColors.black75),
+                  ?.copyWith(color: AbiliaColors.black75),
             ),
           ),
         ),
@@ -182,13 +202,12 @@ class SliverActivityList extends StatelessWidget {
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
-  final bool showCategories;
+
   const SliverActivityList(
     this.activities, {
     this.reversed = false,
     this.lastMargin = 0.0,
-    Key key,
-    @required this.showCategories,
+    Key? key,
   })  : _maxIndex = activities.length - 1,
         super(key: key);
 
@@ -196,20 +215,28 @@ class SliverActivityList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 12.0.s),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            if (reversed) index = _maxIndex - index;
-            return ActivityCard(
-              activityOccasion: activities[index],
-              bottomPadding: showCategories
-                  ? _padding(index)
-                  : ActivityCard.cardMarginSmall,
-              showCategories: showCategories,
-            );
-          },
-          childCount: activities.length,
-        ),
+      sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.showCategories != current.showCategories ||
+            previous.showCategoryColor != current.showCategoryColor,
+        builder: (context, setting) {
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (reversed) index = _maxIndex - index;
+                return ActivityCard(
+                  activityOccasion: activities[index],
+                  bottomPadding: setting.showCategories
+                      ? _padding(index)
+                      : ActivityCard.cardMarginSmall,
+                  showCategories: setting.showCategories,
+                  showCategoryColor: setting.showCategoryColor,
+                );
+              },
+              childCount: activities.length,
+            ),
+          );
+        },
       ),
     );
   }

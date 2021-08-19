@@ -125,7 +125,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage.file != null) {
+      if (newSelectedImage is SelectedImageFile) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );
@@ -242,7 +242,6 @@ class CategoryWidget extends StatelessWidget {
                   category: Category.left,
                   radioKey: TestKey.leftCategoryRadio,
                   activity: activity,
-                  icon: AbiliaIcons.move_item_left,
                   label: state.leftCategoryName.isEmpty
                       ? Translator.of(context).translate.left
                       : state.leftCategoryName,
@@ -253,7 +252,6 @@ class CategoryWidget extends StatelessWidget {
                   category: Category.right,
                   radioKey: TestKey.rightCategoryRadio,
                   activity: activity,
-                  icon: AbiliaIcons.move_item_right,
                   label: state.rightCategoryName.isEmpty
                       ? Translator.of(context).translate.right
                       : state.rightCategoryName,
@@ -269,7 +267,6 @@ class CategoryWidget extends StatelessWidget {
 }
 
 class _CategoryRadioField extends StatelessWidget {
-  final IconData icon;
   final String label, fileId;
   final Activity activity;
   final int category;
@@ -277,7 +274,6 @@ class _CategoryRadioField extends StatelessWidget {
 
   const _CategoryRadioField({
     Key key,
-    @required this.icon,
     @required this.label,
     @required this.activity,
     @required this.category,
@@ -287,30 +283,39 @@ class _CategoryRadioField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RadioField<int>(
-        key: radioKey,
-        margin: fileId.isEmpty
-            ? EdgeInsets.symmetric(horizontal: 14.0.s, vertical: 16.0.s)
-            : EdgeInsets.all(4.s),
-        onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-            .add(ReplaceActivity(activity.copyWith(category: v))),
-        leading: fileId.isEmpty
-            ? Icon(icon)
-            : Container(
-                foregroundDecoration: BoxDecoration(
-                  borderRadius: CategoryImage.borderRadius,
-                  border: border,
-                ),
-                child: CategoryImage(fileId: fileId),
-              ),
-        text: Text(
-          label,
-          overflow: TextOverflow.ellipsis,
-        ),
-        groupValue: activity.category,
-        value: category,
-      ),
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.showCategoryColor != current.showCategoryColor,
+      builder: (context, settingState) {
+        final nothing = fileId.isEmpty && !settingState.showCategoryColor;
+        return Expanded(
+          child: RadioField<int>(
+            key: radioKey,
+            padding: nothing ? null : EdgeInsets.all(8.s),
+            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
+                .add(ReplaceActivity(activity.copyWith(category: v))),
+            leading: nothing
+                ? null
+                : Container(
+                    foregroundDecoration: BoxDecoration(
+                      borderRadius: CategoryImage.borderRadius,
+                      border: border,
+                    ),
+                    child: CategoryImage(
+                      fileId: fileId,
+                      category: category,
+                      showColors: settingState.showCategoryColor,
+                    ),
+                  ),
+            text: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+            ),
+            groupValue: activity.category,
+            value: category,
+          ),
+        );
+      },
     );
   }
 }

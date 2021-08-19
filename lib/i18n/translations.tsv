@@ -113,7 +113,7 @@ newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktivit
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
-deleteAfter	Delete after	Ta bort efteråt	Slet bagefter	Verwijderen na	Poista, kun on kulunut	am Endes des Tages löschen	Slett etterpå
+deleteAfter	Remove at the end of the day	Ta bort vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
 name	Name	Namn	Navn	Naam	Nimi	Name	Navn
 picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde
 date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato
@@ -202,7 +202,8 @@ timepillarSettings	Timepillar settings	Inställningar för tidpelare	Tidslinjein
 activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som
 dots	Dots	Prickar	Prikker	Stippen	Pisteet	Punkte	Prikker
 edge	Edge	Flärp	Flik	Rand	Reuna	Kante	Flik
-preview	Preview	Förhandsgranskning	Forhåndsvisning	Voorbeeld	Esikatselu	Vorschau	Forhåndsvisning
+monthCalendarGrid	Grid	Rutnät	Gitter	Raster	Ruudukko	Gitter	Nett
+monthCalendarPreview	Preview	Förhandsgranskning	Forhåndsvisning	Voorbeeld	Esikatselu	Vorschau	Forhåndsvisning
 textToSpeech	Speech support	Talstöd	Talestøtte	Spraakondersteuning	Puhetuki	Sprachausgabe	Talesyntese
 longpressToSpeak	Tap and hold for speech support	Tryck och håll ned för talstöd	Tryk og hold nede for talestøtte	Tik en houd vast voor spraakondersteuning	Napauta ja pidä painettuna puhetukea varten	Tippen und halten Sie für die Sprachunterstützung	Trykk og hold for talestøtte
 longPressInfoText	Tap and hold about 1½ seconds on any function to get it read to by speech synthesis	Tryck länge på någon text för att få den uppläst	Tryk og hold ca. 1½ sekund på enhver funktion for at få den læst til ved talesyntese	Tik en houd ongeveer 1½ seconde vast op een functie om deze te laten voorlezen door spraaksynthese	Napauta ja pidä painettuna noin 1,5 sekuntia mitä tahansa toimintoa saadaksesi sen lukemaan puheen synteesin avulla	Tippen und halten Sie etwa 1½ Sekunden lang auf eine Funktion, um sie durch Sprachsynthese lesen zu lassen	Trykk og hold i ca. 1½ sekund på en funksjon for å få den lest opp ved talesyntese

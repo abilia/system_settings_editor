@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -14,7 +12,8 @@ part 'recurring_week_event.dart';
 part 'recurring_week_state.dart';
 
 class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
-  StreamSubscription _editActivityBlocSubscription, _selfSubscription;
+  late final StreamSubscription _editActivityBlocSubscription,
+      _selfSubscription;
 
   RecurringWeekBloc(EditActivityBloc editActivityBloc)
       : super(RecurringWeekState.initial(editActivityBloc.state)) {

@@ -1,21 +1,46 @@
-// @dart=2.9
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+class LeftCategory extends StatelessWidget {
+  final double maxWidth;
+
+  const LeftCategory({
+    Key? key,
+    this.maxWidth = double.infinity,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.leftCategoryName != current.leftCategoryName ||
+            previous.leftCategoryImage != current.leftCategoryImage ||
+            previous.showCategoryColor != current.showCategoryColor,
+        builder: (context, memoplannerSettingsState) => CategoryLeft(
+          maxWidth: maxWidth,
+          categoryName: memoplannerSettingsState.leftCategoryName,
+          fileId: memoplannerSettingsState.leftCategoryImage,
+          showColors: memoplannerSettingsState.showCategoryColor,
+        ),
+      );
+}
+
 class CategoryLeft extends StatelessWidget {
   final String categoryName, fileId;
+  final bool showColors;
   final double maxWidth;
 
   const CategoryLeft({
-    Key key,
-    @required this.categoryName,
-    @required this.fileId,
+    Key? key,
+    required this.categoryName,
+    required this.fileId,
+    required this.showColors,
     this.maxWidth = double.infinity,
   }) : super(key: key);
 
@@ -32,20 +57,47 @@ class CategoryLeft extends StatelessWidget {
           expanded: calendarViewState.expandLeftCategory,
           icon: AbiliaIcons.navigation_previous,
           direction: TextDirection.ltr,
-          toggleCategory: const ToggleLeft(),
+          category: Category.left,
           maxWidth: maxWidth,
+          showColors: showColors,
+        ),
+      );
+}
+
+class RightCategory extends StatelessWidget {
+  final double maxWidth;
+
+  const RightCategory({
+    Key? key,
+    this.maxWidth = double.infinity,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.rightCategoryName != current.rightCategoryName ||
+            previous.rightCategoryImage != current.rightCategoryImage ||
+            previous.showCategoryColor != current.showCategoryColor,
+        builder: (context, memoplannerSettingsState) => CategoryRight(
+          maxWidth: maxWidth,
+          categoryName: memoplannerSettingsState.rightCategoryName,
+          fileId: memoplannerSettingsState.rightCategoryImage,
+          showColors: memoplannerSettingsState.showCategoryColor,
         ),
       );
 }
 
 class CategoryRight extends StatelessWidget {
   final String categoryName, fileId;
+  final bool showColors;
   final double maxWidth;
 
   const CategoryRight({
-    Key key,
-    @required this.categoryName,
-    @required this.fileId,
+    Key? key,
+    required this.categoryName,
+    required this.fileId,
+    required this.showColors,
     this.maxWidth = double.infinity,
   }) : super(key: key);
 
@@ -62,8 +114,9 @@ class CategoryRight extends StatelessWidget {
           expanded: calendarViewState.expandRightCategory,
           icon: AbiliaIcons.navigation_next,
           direction: TextDirection.rtl,
-          toggleCategory: const ToggleRight(),
+          category: Category.right,
           maxWidth: maxWidth,
+          showColors: showColors,
         ),
       );
 }
@@ -73,20 +126,22 @@ class _Category extends StatefulWidget {
   final String fileId;
   final TextDirection direction;
   final IconData icon;
-  final ToggleCategory toggleCategory;
+  final int category;
   final bool expanded;
   final double maxWidth;
+  final bool showColors;
   final int letters;
   _Category({
-    Key key,
-    @required this.label,
-    @required this.fileId,
-    @required this.expanded,
-    @required this.icon,
-    @required this.direction,
-    @required this.toggleCategory,
-    @required this.maxWidth,
-  })  : letters = fileId.isEmpty ? 1 : 0,
+    Key? key,
+    required this.label,
+    required this.fileId,
+    required this.expanded,
+    required this.icon,
+    required this.direction,
+    required this.category,
+    required this.maxWidth,
+    required this.showColors,
+  })  : letters = showColors || fileId.isNotEmpty ? 0 : 1,
         super(key: key);
 
   @override
@@ -95,11 +150,11 @@ class _Category extends StatefulWidget {
 
 class __CategoryState extends State<_Category> with TickerProviderStateMixin {
   final bool value;
-  AlignmentGeometry alignment;
-  BorderRadius borderRadius;
-  AnimationController controller;
-  Animation<Matrix4> matrixAnimation;
-  Animation<EdgeInsetsGeometry> paddingAnimation;
+  late final AlignmentGeometry alignment;
+  late final BorderRadius borderRadius;
+  late final AnimationController controller;
+  late final Animation<Matrix4> matrixAnimation;
+  late final Animation<EdgeInsetsGeometry> paddingAnimation;
 
   __CategoryState(this.value);
   @override
@@ -152,7 +207,8 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
           } else {
             controller.reverse();
           }
-          BlocProvider.of<CalendarViewBloc>(context).add(widget.toggleCategory);
+          BlocProvider.of<CalendarViewBloc>(context)
+              .add(ToggleCategory(widget.category));
         },
         child: Align(
           alignment: alignment,
@@ -197,21 +253,25 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle1
-                                    .copyWith(color: AbiliaColors.white),
+                                    ?.copyWith(color: AbiliaColors.white),
                                 softWrap: false,
                                 overflow: TextOverflow.fade,
                               )
                             : SizedBox.shrink(),
                       ),
                     ),
-                    if (widget.fileId.isNotEmpty)
+                    if (widget.fileId.isNotEmpty || widget.showColors)
                       AnimatedBuilder(
                         animation: controller,
                         builder: (context, w) => Padding(
                           padding: paddingAnimation.value,
                           child: w,
                         ),
-                        child: CategoryImage(fileId: widget.fileId),
+                        child: CategoryImage(
+                          fileId: widget.fileId,
+                          category: widget.category,
+                          showColors: widget.showColors,
+                        ),
                       )
                     else
                       SizedBox(width: 16.s)
@@ -233,16 +293,47 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
 }
 
 class CategoryImage extends StatelessWidget {
-  const CategoryImage({Key key, @required this.fileId}) : super(key: key);
+  CategoryImage({
+    Key? key,
+    required this.fileId,
+    required this.category,
+    required this.showColors,
+  })  : assert(fileId.isNotEmpty || showColors),
+        super(key: key);
 
-  static final imageSize = 36.s, borderRadius = BorderRadius.circular(18.s);
+  static final diameter = 36.s,
+      borderRadius = BorderRadius.circular(diameter / 2),
+      noColorsImageSize = 30.s,
+      noColorsImageBorderRadius = BorderRadius.circular(noColorsImageSize / 2);
   final String fileId;
-
+  final int category;
+  final bool showColors;
   @override
-  Widget build(BuildContext context) => FadeInAbiliaImage(
+  Widget build(BuildContext context) {
+    if (fileId.isNotEmpty && !showColors) {
+      return FadeInAbiliaImage(
         imageFileId: fileId,
-        width: imageSize,
-        height: imageSize,
+        width: diameter,
+        height: diameter,
         borderRadius: borderRadius,
       );
+    }
+    return Container(
+      width: diameter,
+      height: diameter,
+      decoration: BoxDecoration(
+        color: categoryColor(category: category),
+        borderRadius: borderRadius,
+      ),
+      padding: EdgeInsets.all(3.s),
+      child: fileId.isNotEmpty
+          ? FadeInAbiliaImage(
+              imageFileId: fileId,
+              width: noColorsImageSize,
+              height: noColorsImageSize,
+              borderRadius: noColorsImageBorderRadius,
+            )
+          : null,
+    );
+  }
 }

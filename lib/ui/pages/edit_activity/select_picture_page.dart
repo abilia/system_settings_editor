@@ -168,10 +168,10 @@ class ImageSourceWidget extends StatelessWidget {
 
   Future _getExternalFile(BuildContext context) async {
     try {
-      final image = await _picker.getImage(source: imageSource);
+      final image = await _picker.pickImage(source: imageSource);
       if (image != null) {
         await Navigator.of(context).maybePop(
-          SelectedImage.newFile(File(image.path)),
+          SelectedImageFile.newFile(File(image.path)),
         );
       }
     } on PlatformException catch (e) {

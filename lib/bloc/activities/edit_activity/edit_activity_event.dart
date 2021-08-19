@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'edit_activity_bloc.dart';
 
 abstract class EditActivityEvent extends Equatable {
@@ -47,12 +45,12 @@ class ChangeDate extends ActivityChangedEvent {
 }
 
 class ChangeTimeInterval extends ActivityChangedEvent {
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final TimeOfDay? startTime;
+  final TimeOfDay? endTime;
   const ChangeTimeInterval({this.startTime, this.endTime});
 
   @override
-  List<Object> get props => [startTime, endTime];
+  List<Object?> get props => [startTime, endTime];
 }
 
 class AddOrRemoveReminder extends ActivityChangedEvent {

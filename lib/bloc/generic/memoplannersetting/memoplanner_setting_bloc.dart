@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
@@ -15,20 +13,21 @@ part 'memoplanner_setting_event.dart';
 
 class MemoplannerSettingBloc
     extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
-  StreamSubscription _genericSubscription;
-  final GenericBloc genericBloc;
+  /// GenericBloc are null when faked in settings
+  final GenericBloc? genericBloc;
+  late final StreamSubscription? _genericSubscription;
 
   MemoplannerSettingBloc({this.genericBloc})
       : super(genericBloc?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
-                  (genericBloc.state as GenericsLoaded)
+                  (genericBloc?.state as GenericsLoaded)
                       .generics
                       .filterMemoplannerSettingsData(),
                 ),
               )
             : MemoplannerSettingsNotLoaded()) {
-    _genericSubscription = genericBloc?.stream?.listen((state) {
+    _genericSubscription = genericBloc?.stream.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
       } else if (state is GenericsLoadedFailed) {
@@ -51,7 +50,7 @@ class MemoplannerSettingBloc
       yield MemoplannerSettingsFailed();
     }
     if (event is SettingsUpdateEvent) {
-      genericBloc.add(GenericUpdated([event.settingData]));
+      genericBloc?.add(GenericUpdated([event.settingData]));
     }
   }
 

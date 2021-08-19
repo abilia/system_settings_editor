@@ -81,8 +81,7 @@ class MockAlarmBloc extends MockBloc<AlarmEvent, AlarmStateBase>
 class MockNotificationBloc extends MockBloc<NotificationAlarm, AlarmStateBase>
     implements NotificationBloc {}
 
-class MockCalendarViewBloc
-    extends MockBloc<CalendarViewEvent, CalendarViewState>
+class MockCalendarViewBloc extends MockBloc<ToggleCategory, CalendarViewState>
     implements CalendarViewBloc {}
 
 class MockLicenseBloc extends MockBloc<LicenseEvent, LicenseState>
@@ -146,13 +145,27 @@ class MockUserFileDb extends Mock implements UserFileDb {
 
 class MockUserDb extends Mock implements UserDb {}
 
-class MockSettingsDb extends Mock implements SettingsDb {}
+class MockSettingsDb extends Mock implements SettingsDb {
+  MockSettingsDb() {
+    when(textToSpeech).thenReturn(true);
+    when(leftCategoryExpanded).thenReturn(true);
+    when(rightCategoryExpanded).thenReturn(true);
+  }
+}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
 class MockDatabase extends Mock implements Database {
   MockDatabase() {
     when(rawQuery(any)).thenAnswer((_) => Future.value([]));
+    when(query(
+      any,
+      columns: ['dirty', 'revision'],
+      where: 'id = ?',
+      whereArgs: anyNamed('whereArgs'),
+    )).thenAnswer((_) => Future.value([]));
+    when(rawQuery(any, any)).thenAnswer((_) => Future.value([]));
+    when(batch()).thenAnswer((_) => MockBatch());
   }
 }
 
@@ -228,7 +241,7 @@ extension OurEnterText on WidgetTester {
   }
 
   Future verifyTts(Finder finder, {String contains, String exact}) async {
-    await longPress(finder, warnIfMissed: false);
+    await longPress(finder);
     final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first
         as String;
     if (contains != null) {

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'user_file_bloc.dart';
 
 abstract class UserFileState extends Equatable {
@@ -11,15 +9,15 @@ abstract class UserFileState extends Equatable {
 
   final Map<String, File> _tempFiles;
 
-  File getLoadedByIdOrPath(
+  File? getLoadedByIdOrPath(
     String fileId,
     String filePath,
     FileStorage fileStorage, {
-    @required ImageSize imageSize,
+    required ImageSize imageSize,
   }) {
-    final userFile = userFiles.firstWhere(
-        (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
-        orElse: () => null);
+    final userFile = userFiles.firstWhereOrNull(
+      (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
+    );
     return userFile != null
         ? imageSize == ImageSize.THUMB
             ? fileStorage.getImageThumb(ImageThumb(id: userFile.id))
@@ -33,7 +31,7 @@ abstract class UserFileState extends Equatable {
 
 class UserFilesLoaded extends UserFileState {
   const UserFilesLoaded(Iterable<UserFile> userFiles,
-      [Map<String, File> tempFiles])
+      [Map<String, File>? tempFiles])
       : super(userFiles, tempFiles ?? const {});
 
   @override
@@ -52,7 +50,7 @@ class UserFilesLoaded extends UserFileState {
 }
 
 class UserFilesNotLoaded extends UserFileState {
-  const UserFilesNotLoaded([Map<String, File> tempFiles])
+  const UserFilesNotLoaded([Map<String, File>? tempFiles])
       : super(const <UserFile>[], tempFiles ?? const {});
   @override
   String toString() => 'UserFilesNotLoaded { tempFiles: $_tempFiles } ';

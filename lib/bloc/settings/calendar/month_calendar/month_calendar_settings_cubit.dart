@@ -1,7 +1,4 @@
-// @dart=2.9
-
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -12,8 +9,8 @@ class MonthCalendarSettingsCubit extends Cubit<MonthCalendarSettingsState> {
   final GenericBloc genericBloc;
 
   MonthCalendarSettingsCubit({
-    MemoplannerSettingsState settingsState,
-    this.genericBloc,
+    required MemoplannerSettingsState settingsState,
+    required this.genericBloc,
   }) : super(MonthCalendarSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeMonthCalendarSettings(MonthCalendarSettingsState newState) =>

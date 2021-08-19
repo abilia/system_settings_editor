@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'my_photos_bloc.dart';
 
 abstract class MyPhotosEvent extends Equatable {}

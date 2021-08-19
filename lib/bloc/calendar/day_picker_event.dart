@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'day_picker_bloc.dart';
 
 abstract class DayPickerEvent extends Equatable {
@@ -25,7 +23,7 @@ class CurrentDay extends DayPickerEvent {
 
 class GoTo extends DayPickerEvent {
   final DateTime day;
-  GoTo({@required this.day});
+  GoTo({required this.day});
   @override
   String toString() => 'GoTo $day';
 }

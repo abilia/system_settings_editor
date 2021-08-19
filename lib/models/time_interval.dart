@@ -38,5 +38,5 @@ class TimeInterval extends Equatable {
   List<Object?> get props => [startTime, endTime, startDate.onlyDays()];
 
   @override
-  String toString() => 'TimeInterval: ${yMd(startDate)} $startTime - $endTime';
+  bool get stringify => true;
 }

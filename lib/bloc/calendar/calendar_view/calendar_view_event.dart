@@ -1,23 +1,8 @@
-// @dart=2.9
-
 part of 'calendar_view_bloc.dart';
 
-abstract class CalendarViewEvent extends Equatable {
-  const CalendarViewEvent();
+class ToggleCategory extends Equatable {
+  final int category;
+  const ToggleCategory(this.category);
   @override
-  bool get stringify => true;
-}
-
-abstract class ToggleCategory extends CalendarViewEvent {
-  const ToggleCategory();
-  @override
-  List<Object> get props => [];
-}
-
-class ToggleRight extends ToggleCategory {
-  const ToggleRight();
-}
-
-class ToggleLeft extends ToggleCategory {
-  const ToggleLeft();
+  List<Object> get props => [category];
 }

@@ -1,9 +1,7 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -13,12 +11,12 @@ part 'alarm_event.dart';
 part 'alarm_state.dart';
 
 class AlarmBloc extends Bloc<AlarmEvent, AlarmStateBase> {
-  StreamSubscription _clockSubscription;
+  late final StreamSubscription _clockSubscription;
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
   AlarmBloc({
-    @required this.activitiesBloc,
-    @required this.clockBloc,
+    required this.activitiesBloc,
+    required this.clockBloc,
   }) : super(UnInitializedAlarmState()) {
     _clockSubscription = clockBloc.stream.listen((now) => add(AlarmEvent()));
   }

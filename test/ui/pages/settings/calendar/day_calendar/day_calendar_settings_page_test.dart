@@ -155,7 +155,7 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeViewKey,
-          matcher: DayCalendarType.LIST.index,
+          matcher: DayCalendarType.list.index,
         );
       });
 

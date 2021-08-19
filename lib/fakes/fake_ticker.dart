@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -7,14 +5,14 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class FakeTicker extends StatefulWidget {
-  const FakeTicker({Key key}) : super(key: key);
+  const FakeTicker({Key? key}) : super(key: key);
 
   @override
   _FakeTickerState createState() => _FakeTickerState();
 }
 
 class _FakeTickerState extends State<FakeTicker> {
-  double minPerMin;
+  double? minPerMin;
   bool get useMockTime => minPerMin != null;
   @override
   void initState() {
@@ -51,12 +49,10 @@ class _FakeTickerState extends State<FakeTicker> {
                       DatePicker(
                         state,
                         onChange: (newDate) async {
-                          if (newDate != null) {
-                            context.read<ClockBloc>().setFakeTicker(
-                                  initTime: newDate
-                                      .withTime(TimeOfDay.fromDateTime(state)),
-                                );
-                          }
+                          context.read<ClockBloc>().setFakeTicker(
+                                initTime: newDate
+                                    .withTime(TimeOfDay.fromDateTime(state)),
+                              );
                         },
                       ),
                       TimePicker(

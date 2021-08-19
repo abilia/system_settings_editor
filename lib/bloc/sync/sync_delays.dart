@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'sync_bloc.dart';
 
 class SyncDelays {

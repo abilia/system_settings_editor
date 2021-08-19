@@ -1,16 +1,14 @@
-// @dart=2.9
-
 import 'package:seagull/models/all.dart';
 
 class FakeUserFile {
   static UserFile createNew({
-    String contentType,
-    bool deleted,
-    int fileSize,
-    String id,
-    String md5,
-    String path,
-    String sha1,
+    String? contentType,
+    bool? deleted,
+    int? fileSize,
+    String? id,
+    String? md5,
+    String? path,
+    String? sha1,
   }) {
     return UserFile(
       contentType: contentType ?? 'contentType',

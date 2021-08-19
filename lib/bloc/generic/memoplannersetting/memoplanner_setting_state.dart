@@ -1,5 +1,3 @@
-// @dart=2.9
-
 part of 'memoplanner_setting_bloc.dart';
 
 abstract class MemoplannerSettingsState extends Equatable {
@@ -33,7 +31,8 @@ abstract class MemoplannerSettingsState extends Equatable {
       activityDisplayClock ||
       dayCaptionShowDayButtons;
   bool get showCategories => settings.calendarActivityTypeShowTypes;
-  bool get showColor => settings.calendarActivityTypeShowColor;
+  bool get showCategoryColor =>
+      showCategories && settings.calendarActivityTypeShowColor;
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
@@ -80,7 +79,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.TIMEPILLAR &&
+      (dayCalendarType == DayCalendarType.timepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
@@ -130,15 +129,11 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
   ClockType get clockType => ClockType.values[settings.settingClockType];
-  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm == null
-      ? Sound.Default
-      : settings.nonCheckableActivityAlarm.toSound();
-  Sound get checkableAlarm => settings.checkableActivityAlarm == null
-      ? Sound.Default
-      : settings.checkableActivityAlarm.toSound();
-  Sound get reminderAlarm => settings.reminderAlarm == null
-      ? Sound.Default
-      : settings.reminderAlarm.toSound();
+  MonthCalendarType get monthCalendarType =>
+      MonthCalendarType.values[settings.viewOptionsMonthCalendar];
+  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm.toSound();
+  Sound get checkableAlarm => settings.checkableActivityAlarm.toSound();
+  Sound get reminderAlarm => settings.reminderAlarm.toSound();
 
   NewActivityMode get addActivityType => settings.addActivityTypeAdvanced
       ? NewActivityMode.editView
@@ -219,7 +214,6 @@ abstract class MemoplannerSettingsState extends Equatable {
           );
         }
     }
-    throw ArgumentError();
   }
 
   DayParts get dayParts => DayParts(

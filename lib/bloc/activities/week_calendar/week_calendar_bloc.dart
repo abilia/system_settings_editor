@@ -1,10 +1,7 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -15,11 +12,11 @@ part 'week_calendar_state.dart';
 class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
-  StreamSubscription _activitiesSubscription;
-  StreamSubscription _clockSubscription;
+  late final StreamSubscription _activitiesSubscription;
+  late final StreamSubscription _clockSubscription;
   WeekCalendarBloc({
-    @required this.activitiesBloc,
-    @required this.clockBloc,
+    required this.activitiesBloc,
+    required this.clockBloc,
   }) : super(activitiesBloc.state is ActivitiesLoaded
             ? _mapToState(
                 clockBloc.state.firstInWeek(),

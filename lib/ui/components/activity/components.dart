@@ -145,15 +145,14 @@ class PickField extends StatelessWidget {
 }
 
 class RadioField<T> extends StatelessWidget {
-  final Widget leading, trailing;
+  final Widget leading;
   final Text text;
   final double heigth, width;
   final T value, groupValue;
   final ValueChanged<T> onChanged;
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
   static final defaultHeight = 56.s;
-  static final defaultMargin =
-      EdgeInsets.symmetric(horizontal: 12.0.s, vertical: 16.0.s);
+  static final defaultPadding = EdgeInsets.symmetric(horizontal: 14.0.s);
 
   const RadioField({
     Key key,
@@ -162,17 +161,15 @@ class RadioField<T> extends StatelessWidget {
     @required this.onChanged,
     @required this.text,
     this.leading,
-    this.trailing,
     this.heigth,
     this.width,
-    this.margin,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectedBoxDecoration(value == groupValue);
-    final marginToUse = margin ?? defaultMargin;
-    final left = marginToUse.resolve(text.textDirection).left;
+    final decoration = selectableBoxDecoration(value == groupValue);
+    final paddingToUse = padding ?? defaultPadding;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -192,7 +189,9 @@ class RadioField<T> extends StatelessWidget {
                 height: heigth ?? defaultHeight,
                 width: width,
                 decoration: decoration,
-                padding: marginToUse.subtract(decoration.border.dimensions),
+                padding: paddingToUse
+                    .subtract(decoration.border.dimensions)
+                    .clamp(EdgeInsets.zero, EdgeInsetsGeometry.infinity),
                 child: Row(
                   children: [
                     if (leading != null) ...[
@@ -201,7 +200,9 @@ class RadioField<T> extends StatelessWidget {
                               .iconTheme
                               .copyWith(size: smallIconSize),
                           child: leading),
-                      SizedBox(width: left),
+                      SizedBox(
+                        width: paddingToUse.resolve(text.textDirection).left,
+                      ),
                     ],
                     Expanded(
                       child: DefaultTextStyle(
@@ -209,10 +210,6 @@ class RadioField<T> extends StatelessWidget {
                         child: text,
                       ),
                     ),
-                    if (trailing != null) ...[
-                      trailing,
-                      SizedBox(width: left),
-                    ],
                   ],
                 ),
               ),
@@ -332,7 +329,7 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectedBoxDecoration(selected);
+    final decoration = selectableBoxDecoration(selected);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,

@@ -228,7 +228,7 @@ abstract class Translated {
 
   final String checkable = 'Checkable';
 
-  final String deleteAfter = 'Delete after';
+  final String deleteAfter = 'Remove at the end of the day';
 
   final String name = 'Name';
 
@@ -382,7 +382,9 @@ abstract class Translated {
 
   final String edge = 'Edge';
 
-  final String preview = 'Preview';
+  final String monthCalendarGrid = 'Grid';
+
+  final String monthCalendarPreview = 'Preview';
 
   final String textToSpeech = 'Speech support';
 
@@ -975,7 +977,7 @@ class SV extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Ta bort efteråt';
+  final String deleteAfter = 'Ta bort vid slutet av dagen';
 
   @override
   final String name = 'Namn';
@@ -1205,7 +1207,10 @@ class SV extends Translated {
   final String edge = 'Flärp';
 
   @override
-  final String preview = 'Förhandsgranskning';
+  final String monthCalendarGrid = 'Rutnät';
+
+  @override
+  final String monthCalendarPreview = 'Förhandsgranskning';
 
   @override
   final String textToSpeech = 'Talstöd';
@@ -1927,7 +1932,7 @@ class DA extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Slet bagefter';
+  final String deleteAfter = 'Fjern i slutningen af dagen';
 
   @override
   final String name = 'Navn';
@@ -2157,7 +2162,10 @@ class DA extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String preview = 'Forhåndsvisning';
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -2878,7 +2886,7 @@ class NL extends Translated {
   final String checkable = 'Afvinkbaar';
 
   @override
-  final String deleteAfter = 'Verwijderen na';
+  final String deleteAfter = 'Aan het einde van de dag verwijderen';
 
   @override
   final String name = 'Naam';
@@ -3109,7 +3117,10 @@ class NL extends Translated {
   final String edge = 'Rand';
 
   @override
-  final String preview = 'Voorbeeld';
+  final String monthCalendarGrid = 'Raster';
+
+  @override
+  final String monthCalendarPreview = 'Voorbeeld';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -3831,7 +3842,7 @@ class FI extends Translated {
   final String checkable = 'Tarkistettava';
 
   @override
-  final String deleteAfter = 'Poista, kun on kulunut';
+  final String deleteAfter = 'Poista päivän päätteeksi';
 
   @override
   final String name = 'Nimi';
@@ -4062,7 +4073,10 @@ class FI extends Translated {
   final String edge = 'Reuna';
 
   @override
-  final String preview = 'Esikatselu';
+  final String monthCalendarGrid = 'Ruudukko';
+
+  @override
+  final String monthCalendarPreview = 'Esikatselu';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -5018,7 +5032,10 @@ class DE extends Translated {
   final String edge = 'Kante';
 
   @override
-  final String preview = 'Vorschau';
+  final String monthCalendarGrid = 'Gitter';
+
+  @override
+  final String monthCalendarPreview = 'Vorschau';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -5741,7 +5758,7 @@ class NB extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
-  final String deleteAfter = 'Slett etterpå';
+  final String deleteAfter = 'Fjern på slutten av dagen';
 
   @override
   final String name = 'Navn';
@@ -5971,7 +5988,10 @@ class NB extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String preview = 'Forhåndsvisning';
+  final String monthCalendarGrid = 'Nett';
+
+  @override
+  final String monthCalendarPreview = 'Forhåndsvisning';
 
   @override
   final String textToSpeech = 'Talesyntese';

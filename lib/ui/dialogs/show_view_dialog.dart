@@ -1,22 +1,17 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';
 
 /// copied from [showDialog]
-Future<T> showViewDialog<T>({
-  @required BuildContext context,
-  @required WidgetBuilder builder,
+Future<T?> showViewDialog<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
   Color barrierColor = AbiliaColors.transparentBlack90,
   bool useSafeArea = true,
   bool wrapWithAuthProviders = true,
 }) {
-  assert(builder != null);
-  assert(useSafeArea != null);
-
-  return showDialog(
+  return showDialog<T>(
     context: context,
     builder: wrapWithAuthProviders
         ? (_) => CopiedAuthProviders(

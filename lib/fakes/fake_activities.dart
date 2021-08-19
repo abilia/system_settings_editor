@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -26,40 +24,40 @@ class FakeActivity {
           duration: duration,
           alarmType: ALARM_SILENT);
 
-  static Activity reocurrsEveryDay([DateTime startDate]) =>
+  static Activity reocurrsEveryDay([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDays(List.generate(7, (d) => d + 1)),
           title: 'recurs everyday');
-  static Activity reocurrsWeekends([DateTime startDate]) => _reoccurs(
+  static Activity reocurrsWeekends([DateTime? startDate]) => _reoccurs(
       startDate, Recurs.weeklyOnDays([DateTime.saturday, DateTime.sunday]),
       title: 'recurs weekend');
-  static Activity reocurrsMondays([DateTime startDate]) =>
+  static Activity reocurrsMondays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.monday),
           title: 'recurs monday');
-  static Activity reocurrsTuedays([DateTime startDate]) =>
+  static Activity reocurrsTuedays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.tuesday),
           title: 'recurs tuesday');
-  static Activity reocurrsWednesdays([DateTime startDate]) =>
+  static Activity reocurrsWednesdays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.wednesday),
           title: 'recurs wednesday');
-  static Activity reocurrsThursdays([DateTime startDate]) =>
+  static Activity reocurrsThursdays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.thursday),
           title: 'recurs thursday');
-  static Activity reocurrsFridays([DateTime startDate]) =>
+  static Activity reocurrsFridays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.friday),
           title: 'recurs friday');
   static Activity reocurrsOnDay(int day,
-          [DateTime startDate, DateTime endDate]) =>
+          [DateTime? startDate, DateTime? endDate]) =>
       _reoccurs(startDate, Recurs.monthly(day, ends: endDate),
           title: 'recurs on month day $day');
   static Activity reocurrsOnDate(DateTime day,
-          [DateTime startTime, DateTime endTime]) =>
+          [DateTime? startTime, DateTime? endTime]) =>
       _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
           title: 'recurs on date $day');
 
   static Activity _reoccurs(
-    DateTime startTime,
+    DateTime? startTime,
     Recurs recurs, {
-    String title,
+    required String title,
   }) =>
       Activity.createNew(
           title: title,

@@ -66,6 +66,103 @@ void main() {
     expect(editActivityBloc.state.activity, MatchActivityWithoutId(activity));
   });
 
+  test('Initial state with basic activity starting at 00:00 has no start time',
+      () {
+    // Arrange
+    final basicActivity = BasicActivityDataItem.createNew(
+      title: 'basic title',
+      startTime: Duration.zero,
+    );
+    // Act
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+      day: aDay,
+      basicActivityData: basicActivity,
+    );
+    // Assert
+    expect(
+      editActivityBloc.state.activity,
+      MatchActivityWithoutId(
+        basicActivity.toActivity(
+          timezone: 'UTC',
+          day: aDay,
+        ),
+      ),
+    );
+    expect(editActivityBloc.state.timeInterval, TimeInterval(startDate: aDay));
+  });
+
+  test('Initial state with basic activity starting at 00:01 has start time',
+      () {
+    // Arrange
+    final basicActivity = BasicActivityDataItem.createNew(
+      title: 'basic title',
+      startTime: Duration(hours: 4, minutes: 4),
+      duration: Duration(hours: 4, minutes: 4),
+    );
+    // Act
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+      day: aDay,
+      basicActivityData: basicActivity,
+    );
+    // Assert
+    expect(
+        editActivityBloc.state.activity,
+        MatchActivityWithoutId(
+          basicActivity.toActivity(
+            timezone: 'UTC',
+            day: aDay,
+          ),
+        ));
+    final expected = TimeInterval(
+      startDate: aDay,
+      startTime: TimeOfDay(hour: 4, minute: 4),
+      endTime: TimeOfDay(hour: 8, minute: 8),
+    );
+    final actual = editActivityBloc.state.timeInterval;
+    expect(actual, expected);
+  });
+
+  test(
+      'Initial state with basic activity starting at 00:00 but with duration has start time',
+      () {
+    // Arrange
+    final basicActivity = BasicActivityDataItem.createNew(
+      title: 'basic title',
+      startTime: Duration.zero,
+      duration: Duration(minutes: 30),
+    );
+    // Act
+    final editActivityBloc = EditActivityBloc.newActivity(
+      activitiesBloc: mockActivitiesBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
+      clockBloc: clockBloc,
+      day: aDay,
+      basicActivityData: basicActivity,
+    );
+    // Assert
+    expect(
+        editActivityBloc.state.activity,
+        MatchActivityWithoutId(
+          basicActivity.toActivity(
+            timezone: 'UTC',
+            day: aDay,
+          ),
+        ));
+    final expected = TimeInterval(
+      startDate: aDay,
+      startTime: TimeOfDay(hour: 0, minute: 0),
+      endTime: TimeOfDay(hour: 0, minute: 30),
+    );
+    final actual = editActivityBloc.state.timeInterval;
+    expect(actual, expected);
+  });
+
   test('Initial state with no title is not saveable', () {
     // Arrange
     final activity = Activity.createNew(title: '', startTime: aTime);
