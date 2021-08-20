@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
@@ -11,7 +9,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   final bool showRedirect;
 
   const FullscreenAlarmInfoDialog({
-    Key key,
+    Key? key,
     this.showRedirect = false,
   }) : super(key: key);
   @override
@@ -39,7 +37,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
           Tts(
             child: Text(
               translate.fullScreenAlarmInfo,
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
+              style: Theme.of(context).textTheme.bodyText2?.copyWith(
                     color: AbiliaColors.black75,
                   ),
               textAlign: TextAlign.center,
@@ -50,7 +48,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
             Tts(
               child: Text(
                 translate.redirectToAndroidSettings,
-                style: Theme.of(context).textTheme.caption.copyWith(
+                style: Theme.of(context).textTheme.caption?.copyWith(
                       color: AbiliaColors.black75,
                     ),
                 textAlign: TextAlign.center,
@@ -67,7 +65,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
 
 class ActivityAlarmPreview extends StatelessWidget {
   const ActivityAlarmPreview({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
