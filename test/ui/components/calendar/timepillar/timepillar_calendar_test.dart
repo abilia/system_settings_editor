@@ -123,6 +123,7 @@ void main() {
             timepillarGeneric,
           ];
     });
+
     testWidgets('timepillar shows', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

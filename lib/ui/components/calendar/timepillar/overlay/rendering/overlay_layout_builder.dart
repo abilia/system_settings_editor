@@ -1,19 +1,16 @@
-// @dart=2.9
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import '../all.dart';
+import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
 
 class RenderOverlayLayoutBuilder extends RenderBox
     with RenderObjectWithChildMixin<RenderBox> {
   RenderOverlayLayoutBuilder({
-    LayoutCallback<OverlayConstraints> callback,
+    LayoutCallback<OverlayConstraints>? callback,
   }) : _callback = callback;
 
-  LayoutCallback<OverlayConstraints> get callback => _callback;
-  LayoutCallback<OverlayConstraints> _callback;
-  set callback(LayoutCallback<OverlayConstraints> value) {
+  LayoutCallback<OverlayConstraints>? get callback => _callback;
+  LayoutCallback<OverlayConstraints>? _callback;
+  set callback(LayoutCallback<OverlayConstraints>? value) {
     if (value == _callback) return;
     _callback = value;
     markNeedsLayout();
@@ -21,7 +18,7 @@ class RenderOverlayLayoutBuilder extends RenderBox
 
   // layout input
   @override
-  OverlayConstraints get constraints => super.constraints;
+  BoxConstraints get constraints => super.constraints;
 
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
@@ -63,7 +60,8 @@ class RenderOverlayLayoutBuilder extends RenderBox
   @override
   void performLayout() {
     assert(callback != null);
-    invokeLayoutCallback(callback);
+    invokeLayoutCallback(callback!);
+    final child = this.child;
     if (child != null) {
       child.layout(constraints, parentUsesSize: true);
       size = constraints.constrain(child.size);
@@ -73,12 +71,13 @@ class RenderOverlayLayoutBuilder extends RenderBox
   }
 
   @override
-  bool hitTestChildren(HitTestResult result, {Offset position}) {
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
     return child?.hitTest(result, position: position) ?? false;
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    final child = this.child;
     if (child != null) context.paintChild(child, offset);
   }
 }

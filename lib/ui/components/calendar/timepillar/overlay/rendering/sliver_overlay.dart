@@ -1,11 +1,8 @@
-// @dart=2.9
-
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-
-import '../all.dart';
+import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
 
 /// A sliver with a [RenderBox] as overlay and a [RenderSliver] as child.
 ///
@@ -13,42 +10,43 @@ import '../all.dart';
 /// the [child] scrolls off the viewport.
 class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
   RenderSliverOverlay({
-    RenderObject overlay,
-    RenderSliver child,
+    RenderBox? overlay,
+    RenderSliver? child,
     double height = 0.0,
   }) : _height = height {
     this.overlay = overlay;
     this.child = child;
   }
 
-  SliverOverlayState _oldState;
-  double _overlayExtent;
+  SliverOverlayState? _oldState;
+  late double _overlayExtent;
 
   double get height => _height;
   double _height;
   set height(double value) {
-    assert(value != null);
     if (_height == value) return;
     _height = value;
     markNeedsLayout();
   }
 
   /// The render object's overlay
-  RenderBox get overlay => _overlay;
-  RenderBox _overlay;
-  set overlay(RenderBox value) {
-    if (_overlay != null) dropChild(_overlay);
+  RenderBox? get overlay => _overlay;
+  RenderBox? _overlay;
+  set overlay(RenderBox? value) {
+    final overlay = _overlay;
+    if (overlay != null) dropChild(overlay);
     _overlay = value;
-    if (_overlay != null) adoptChild(_overlay);
+    if (value != null) adoptChild(value);
   }
 
   /// The render object's unique child
-  RenderSliver get child => _child;
-  RenderSliver _child;
-  set child(RenderSliver value) {
-    if (_child != null) dropChild(_child);
+  RenderSliver? get child => _child;
+  RenderSliver? _child;
+  set child(RenderSliver? value) {
+    final child = _child;
+    if (child != null) dropChild(child);
     _child = value;
-    if (_child != null) adoptChild(_child);
+    if (value != null) adoptChild(value);
   }
 
   BoxConstraints get boxConstraints => constraints.asBoxConstraints(
@@ -64,58 +62,62 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
   @override
   void attach(PipelineOwner owner) {
     super.attach(owner);
-    if (_overlay != null) _overlay.attach(owner);
-    if (_child != null) _child.attach(owner);
+    _overlay?.attach(owner);
+    _child?.attach(owner);
   }
 
   @override
   void detach() {
     super.detach();
-    if (_overlay != null) _overlay.detach();
-    if (_child != null) _child.detach();
+    _overlay?.detach();
+    _child?.detach();
   }
 
   @override
   void redepthChildren() {
-    if (_overlay != null) redepthChild(_overlay);
-    if (_child != null) redepthChild(_child);
+    final overlay = _overlay;
+    if (overlay != null) redepthChild(overlay);
+    final child = _child;
+    if (child != null) redepthChild(child);
   }
 
   @override
   void visitChildren(RenderObjectVisitor visitor) {
-    if (_overlay != null) visitor(_overlay);
-    if (_child != null) visitor(_child);
+    final overlay = _overlay;
+    if (overlay != null) visitor(overlay);
+    final child = _child;
+    if (child != null) visitor(child);
   }
 
   @override
   List<DiagnosticsNode> debugDescribeChildren() {
     final result = <DiagnosticsNode>[];
+    final overlay = _overlay;
     if (overlay != null) {
       result.add(overlay.toDiagnosticsNode(name: 'overlay'));
     }
+    final child = _child;
     if (child != null) {
       result.add(child.toDiagnosticsNode(name: 'child'));
     }
     return result;
   }
 
-  double computeOverlayExtent() {
-    if (overlay == null) return 0.0;
-    assert(overlay.hasSize);
-    assert(constraints.axis != null);
+  double computeOverlayExtent(RenderBox overlay) {
     switch (constraints.axis) {
       case Axis.vertical:
         return overlay.size.height;
       case Axis.horizontal:
         return overlay.size.width;
     }
-    return null;
   }
 
   double get overlayLogicalExtent => 0.0;
 
   @override
   void performLayout() {
+    final overlay = _overlay;
+    final child = _child;
     if (overlay == null && child == null) {
       geometry = SliverGeometry.zero;
       return;
@@ -133,7 +135,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         ),
         parentUsesSize: true,
       );
-      _overlayExtent = computeOverlayExtent();
+      _overlayExtent = computeOverlayExtent(overlay);
     }
 
     // Compute the overlay extent only one time.
@@ -166,65 +168,72 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         parentUsesSize: true,
       );
       final childLayoutGeometry = child.geometry;
-      if (childLayoutGeometry.scrollOffsetCorrection != null) {
+      final scrollOffsetCorrection =
+          childLayoutGeometry?.scrollOffsetCorrection;
+      if (scrollOffsetCorrection != null) {
         geometry = SliverGeometry(
-          scrollOffsetCorrection: childLayoutGeometry.scrollOffsetCorrection,
+          scrollOffsetCorrection: scrollOffsetCorrection,
         );
         return;
       }
 
       final paintExtent = math.min(
           overlayPaintExtent +
-              math.max(childLayoutGeometry.paintExtent,
-                  childLayoutGeometry.layoutExtent),
+              math.max(childLayoutGeometry?.paintExtent ?? 0.0,
+                  childLayoutGeometry?.layoutExtent ?? 0.0),
           constraints.remainingPaintExtent);
 
       geometry = SliverGeometry(
-        scrollExtent: overlayExtent + childLayoutGeometry.scrollExtent,
+        scrollExtent:
+            overlayExtent + (childLayoutGeometry?.scrollExtent ?? 0.0),
         paintExtent: paintExtent,
         layoutExtent: math.min(
-            overlayPaintExtent + childLayoutGeometry.layoutExtent, paintExtent),
+            overlayPaintExtent + (childLayoutGeometry?.layoutExtent ?? 0.0),
+            paintExtent),
         cacheExtent: math.min(
-            overlayCacheExtent + childLayoutGeometry.cacheExtent,
+            overlayCacheExtent + (childLayoutGeometry?.cacheExtent ?? 0.0),
             constraints.remainingCacheExtent),
-        maxPaintExtent: overlayExtent + childLayoutGeometry.maxPaintExtent,
+        maxPaintExtent:
+            overlayExtent + (childLayoutGeometry?.maxPaintExtent ?? 0.0),
         hitTestExtent: math.max(
-            overlayPaintExtent + childLayoutGeometry.paintExtent,
-            overlayPaintExtent + childLayoutGeometry.hitTestExtent),
-        hasVisualOverflow: childLayoutGeometry.hasVisualOverflow,
+            overlayPaintExtent + (childLayoutGeometry?.paintExtent ?? 0.0),
+            overlayPaintExtent + (childLayoutGeometry?.hitTestExtent ?? 0.0)),
+        hasVisualOverflow: childLayoutGeometry?.hasVisualOverflow ?? false,
       );
 
-      final SliverPhysicalParentData childParentData = child.parentData;
-      assert(constraints.axisDirection != null);
-      assert(constraints.growthDirection != null);
-      switch (axisDirection) {
-        case AxisDirection.up:
-          childParentData.paintOffset = Offset.zero;
-          break;
-        case AxisDirection.right:
-          childParentData.paintOffset = Offset(
-              calculatePaintOffset(constraints, from: 0.0, to: overlayExtent),
-              0.0);
-          break;
-        case AxisDirection.down:
-          childParentData.paintOffset = Offset(0.0,
-              calculatePaintOffset(constraints, from: 0.0, to: overlayExtent));
-          break;
-        case AxisDirection.left:
-          childParentData.paintOffset = Offset.zero;
-          break;
+      final childParentData = child.parentData;
+      if (childParentData is SliverPhysicalParentData) {
+        switch (axisDirection) {
+          case AxisDirection.up:
+            childParentData.paintOffset = Offset.zero;
+            break;
+          case AxisDirection.right:
+            childParentData.paintOffset = Offset(
+                calculatePaintOffset(constraints, from: 0.0, to: overlayExtent),
+                0.0);
+            break;
+          case AxisDirection.down:
+            childParentData.paintOffset = Offset(
+                0.0,
+                calculatePaintOffset(constraints,
+                    from: 0.0, to: overlayExtent));
+            break;
+          case AxisDirection.left:
+            childParentData.paintOffset = Offset.zero;
+            break;
+        }
       }
     }
 
-    if (overlay != null) {
-      final SliverPhysicalParentData overlayParentData = overlay.parentData;
+    final overlayParentData = overlay?.parentData;
+    if (overlay != null && overlayParentData is SliverPhysicalParentData) {
       final childScrollExtent = child?.geometry?.scrollExtent ?? 0.0;
       final overlayPosition = math.min(constraints.overlap,
           childScrollExtent - constraints.scrollOffset - _overlayExtent);
 
       // second layout if scroll percentage changed and overlay is a RenderOverlayLayoutBuilder.
       if (overlay is RenderOverlayLayoutBuilder) {
-        double scrollPercentage =
+        final scrollPercentage =
             ((overlayPosition - constraints.overlap).abs() / _overlayExtent)
                 .clamp(0.0, 1.0);
 
@@ -233,7 +242,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
           _oldState = state;
           overlay.layout(
             OverlayConstraints(
-              state: _oldState,
+              state: state,
               boxConstraints: boxConstraints,
             ),
             parentUsesSize: true,
@@ -245,8 +254,11 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
       switch (axisDirection) {
         case AxisDirection.up:
-          overlayParentData.paintOffset = Offset(crossAxisOffset,
-              geometry.paintExtent - overlayPosition - _overlayExtent);
+          overlayParentData.paintOffset = Offset(
+              crossAxisOffset,
+              (geometry?.paintExtent ?? 0.0) -
+                  overlayPosition -
+                  _overlayExtent);
           break;
         case AxisDirection.down:
           overlayParentData.paintOffset =
@@ -254,7 +266,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
           break;
         case AxisDirection.left:
           overlayParentData.paintOffset = Offset(
-              geometry.paintExtent - overlayPosition - _overlayExtent,
+              (geometry?.paintExtent ?? 0.0) - overlayPosition - _overlayExtent,
               crossAxisOffset);
           break;
         case AxisDirection.right:
@@ -267,8 +279,12 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
   @override
   bool hitTestChildren(SliverHitTestResult result,
-      {@required double mainAxisPosition, @required double crossAxisPosition}) {
-    assert(geometry.hitTestExtent > 0.0);
+      {required double mainAxisPosition, required double crossAxisPosition}) {
+    final geometry = this.geometry;
+    assert(geometry != null && geometry.hitTestExtent > 0.0);
+    final overlay = _overlay;
+    final child = _child;
+    final childGeometry = child?.geometry;
     if (overlay != null &&
         mainAxisPosition - constraints.overlap <= _overlayExtent) {
       return hitTestBoxChild(
@@ -276,12 +292,15 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
               mainAxisPosition: mainAxisPosition - constraints.overlap,
               crossAxisPosition: crossAxisPosition) ||
           (child != null &&
-              child.geometry.hitTestExtent > 0.0 &&
+              childGeometry != null &&
+              childGeometry.hitTestExtent > 0.0 &&
               child.hitTest(result,
                   mainAxisPosition:
                       mainAxisPosition - childMainAxisPosition(child),
                   crossAxisPosition: crossAxisPosition));
-    } else if (child != null && child.geometry.hitTestExtent > 0.0) {
+    } else if (child != null &&
+        childGeometry != null &&
+        childGeometry.hitTestExtent > 0.0) {
       return child.hitTest(result,
           mainAxisPosition: mainAxisPosition - childMainAxisPosition(child),
           crossAxisPosition: crossAxisPosition);
@@ -291,20 +310,20 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
   @override
   double childMainAxisPosition(RenderObject child) {
-    if (child == overlay) {
+    if (child == _overlay) {
       return 0.0;
     }
-    if (child == this.child) {
+    if (child == _child) {
       return calculatePaintOffset(constraints,
           from: 0.0, to: overlayLogicalExtent);
     }
-    return null;
+    return super.childMainAxisPosition(child);
   }
 
   @override
-  double childScrollOffset(RenderObject child) {
+  double? childScrollOffset(RenderObject child) {
     assert(child.parent == this);
-    if (child == this.child) {
+    if (child == _child) {
       return _overlayExtent;
     } else {
       return super.childScrollOffset(child);
@@ -313,22 +332,25 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
 
   @override
   void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    assert(child != null);
-    final SliverPhysicalParentData childParentData = child.parentData;
+    final childParentData = child.parentData as SliverPhysicalParentData;
     childParentData.applyPaintTransform(transform);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (geometry.visible) {
-      if (child != null && child.geometry.visible) {
-        final SliverPhysicalParentData childParentData = child.parentData;
+    if (geometry?.visible == true) {
+      final child = _child;
+      final childParentData = child?.parentData;
+      if (child != null &&
+          child.geometry?.visible == true &&
+          childParentData is SliverPhysicalParentData) {
         context.paintChild(child, offset + childParentData.paintOffset);
       }
 
       // The overlay must be draw over the sliver.
-      if (overlay != null) {
-        final SliverPhysicalParentData overlayParentData = overlay.parentData;
+      final overlay = _overlay;
+      final overlayParentData = overlay?.parentData;
+      if (overlay != null && overlayParentData is SliverPhysicalParentData) {
         context.paintChild(overlay, offset + overlayParentData.paintOffset);
       }
     }
