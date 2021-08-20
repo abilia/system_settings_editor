@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -8,8 +6,8 @@ class EditNotePage extends StatefulWidget {
   final String text;
   static const padding = EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0);
   const EditNotePage({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -17,8 +15,8 @@ class EditNotePage extends StatefulWidget {
 }
 
 class _EditNotePageState extends State<EditNotePage> {
-  TextEditingController _textEditingController;
-  ScrollController _scrollController;
+  late TextEditingController _textEditingController;
+  late ScrollController _scrollController;
   static const _bottomBottomNavigationHeight = 84.0;
   static const _bottomPadding =
       EdgeInsets.only(bottom: _bottomBottomNavigationHeight);
@@ -73,7 +71,7 @@ class _EditNotePageState extends State<EditNotePage> {
             final textRenderSize =
                 _textEditingController.text.calulcateTextRenderSize(
               constraints: constraints,
-              textStyle: abiliaTextTheme.bodyText1,
+              textStyle: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
               padding: EditNotePage.padding,
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
             );

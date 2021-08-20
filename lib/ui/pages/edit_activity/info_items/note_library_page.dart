@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class NoteLibraryPage extends StatelessWidget {
-  const NoteLibraryPage({Key key}) : super(key: key);
+  const NoteLibraryPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => LibraryPage<NoteData>(
         libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
@@ -20,7 +18,7 @@ class NoteLibraryPage extends StatelessWidget {
 
 class LibraryNote extends StatelessWidget {
   final String content;
-  const LibraryNote({Key key, @required this.content}) : super(key: key);
+  const LibraryNote({Key? key, required this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class LibraryNote extends StatelessWidget {
                 lineHeight: content
                     .calulcateTextRenderSize(
                       constraints: constraints,
-                      textStyle: abiliaTextTheme.caption,
+                      textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )
                     .scaledLineHeight,
                 numberOfLines: 6,
@@ -61,8 +59,8 @@ class LibraryNote extends StatelessWidget {
 
 class FullScreenNote extends StatelessWidget {
   const FullScreenNote({
-    Key key,
-    @required this.noteData,
+    Key? key,
+    required this.noteData,
   }) : super(key: key);
   final NoteData noteData;
 

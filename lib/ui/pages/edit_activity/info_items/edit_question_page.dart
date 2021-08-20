@@ -1,20 +1,19 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditQuestionPage extends StatelessWidget {
-  final Question question;
+  final Question? question;
 
   const EditQuestionPage({
     this.question,
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final question = this.question;
     return EditImageAndName(
       maxLines: 8,
       minLines: 1,
