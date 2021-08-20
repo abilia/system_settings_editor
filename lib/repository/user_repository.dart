@@ -61,7 +61,7 @@ class UserRepository extends Repository {
         },
       ),
     );
-    switch(response.statusCode){
+    switch (response.statusCode) {
       case 200:
         var login = Login.fromJson(json.decode(response.body));
         return login.token;
@@ -72,9 +72,9 @@ class UserRepository extends Repository {
         if (errorMessage.errors.isNotEmpty &&
             errorMessage.errors.first.code == Error.UNSUPPORTED_USER_TYPE) {
           throw WrongUserTypeException();
-        } else {
-          throw Exception(response.body);
         }
+        continue defaultException;
+      defaultException:
       default:
         throw Exception(response.body);
     }

@@ -88,5 +88,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield state.failure(cause: LoginFailureCause.NoConnection);
     }
   }
-
 }

@@ -21,10 +21,10 @@ class LoginError extends Equatable {
       errorId: json['errorId'] ?? -1,
       errors: json['errors'] != null
           ? List<Error>.from(
-        json['errors'].map(
-              (x) => Error.fromJson(x),
-        ),
-      )
+              json['errors'].map(
+                (x) => Error.fromJson(x),
+              ),
+            )
           : List<Error>.empty(),
     );
   }
@@ -34,15 +34,11 @@ class LoginError extends Equatable {
 }
 
 class Error extends Equatable {
-
   static const String UNSUPPORTED_USER_TYPE = 'WHALE-0156';
 
   final String code;
   final String message;
-  Error._({
-    required this.code,
-    required this.message
-  });
+  Error._({required this.code, required this.message});
 
   factory Error.fromJson(Map<String, dynamic> json) {
     return Error._(
@@ -52,7 +48,5 @@ class Error extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [code, message];
-
 }
