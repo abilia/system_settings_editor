@@ -10,8 +10,8 @@ wrongCredentials	Username or password doesn\'t match.\nVerify your credentials a
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
-userTypeNotSupported	Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia
-
+userTypeNotSupported	Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia					
+							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
 createAccount	Create Account	Skapa konto	Opret konto	Maak account	Luo tili	Benutzerkonto erstellen	Opprett konto
