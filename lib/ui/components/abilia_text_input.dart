@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
@@ -10,8 +8,8 @@ import 'package:seagull/ui/all.dart';
 class AbiliaTextInput extends StatelessWidget {
   final String initialValue;
   final bool errorState;
-  final TextInputType keyboardType;
-  final Key formKey;
+  final TextInputType? keyboardType;
+  final Key? formKey;
   final IconData icon;
   final String heading;
   final String inputHeading;
@@ -19,17 +17,17 @@ class AbiliaTextInput extends StatelessWidget {
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
   final bool autoCorrect;
-  final bool Function(String) inputValid;
-  final void Function(String) onChanged;
+  final bool Function(String)? inputValid;
+  final void Function(String)? onChanged;
 
   const AbiliaTextInput({
-    Key key,
+    Key? key,
     this.formKey,
-    @required this.icon,
-    @required this.heading,
-    @required this.inputHeading,
-    @required this.initialValue,
-    @required this.onChanged,
+    required this.icon,
+    required this.heading,
+    required this.inputHeading,
+    required this.initialValue,
+    required this.onChanged,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const <TextInputFormatter>[],
@@ -37,11 +35,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.maxLines = 1,
     this.autoCorrect = true,
     this.inputValid,
-  })  : assert(icon != null),
-        assert(heading != null),
-        assert(inputHeading != null),
-        assert(initialValue != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +66,7 @@ class AbiliaTextInput extends StatelessWidget {
               );
 
               if (newText != null) {
-                onChanged(newText);
+                onChanged?.call(newText);
               }
             },
             child: Container(
@@ -100,24 +94,24 @@ class AbiliaTextInput extends StatelessWidget {
 
 class DefaultTextInputPage extends StatefulWidget {
   DefaultTextInputPage({
-    Key key,
-    @required this.inputHeading,
-    @required this.icon,
-    @required this.text,
-    @required this.heading,
-    @required this.keyboardType,
-    @required this.inputFormatters,
-    @required this.textCapitalization,
-    @required this.maxLines,
-    @required this.inputValid,
-    @required this.autocorrect,
+    Key? key,
+    required this.inputHeading,
+    required this.icon,
+    required this.text,
+    required this.heading,
+    this.keyboardType,
+    required this.inputFormatters,
+    required this.textCapitalization,
+    required this.maxLines,
+    required this.inputValid,
+    required this.autocorrect,
   }) : super(key: key);
 
   final String inputHeading;
   final IconData icon;
   final String text;
   final String heading;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final List<TextInputFormatter> inputFormatters;
   final TextCapitalization textCapitalization;
   final int maxLines;
@@ -130,7 +124,7 @@ class DefaultTextInputPage extends StatefulWidget {
 
 class _DefaultInputPageState
     extends StateWithFocusOnResume<DefaultTextInputPage> {
-  TextEditingController controller;
+  late TextEditingController controller;
   bool _validInput = false;
   @override
   void initState() {
@@ -214,17 +208,17 @@ class _DefaultInputPageState
 
 abstract class StateWithFocusOnResume<T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
-  FocusNode focusNode;
+  late FocusNode focusNode;
   @override
   void initState() {
     super.initState();
     focusNode = FocusNode();
-    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
   }
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 
