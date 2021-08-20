@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:math';
 import 'dart:ui';
 import 'package:seagull/utils/all.dart';
@@ -31,15 +29,15 @@ class ClockPainter extends CustomPainter {
   final Color numberColor;
   final Color borderColor;
   final Color centerPointColor;
-  final double centerPointRadius;
+  final double? centerPointRadius;
   final bool showBorder;
   final bool showMinuteHand;
   final bool showNumber;
-  final double hourHandLength;
-  final double minuteHandLength;
-  final double fontSize;
+  final double? hourHandLength;
+  final double? minuteHandLength;
+  final double? fontSize;
   final List<String> hourNumbers;
-  final double _borderWidth;
+  final double? _borderWidth;
   final TextPainter _hourTextPainter = TextPainter(
     textAlign: TextAlign.center,
     textDirection: TextDirection.ltr,
@@ -62,9 +60,8 @@ class ClockPainter extends CustomPainter {
     this.fontSize,
     this.hourHandLength,
     this.minuteHandLength,
-    double borderWidth,
-  })  : assert(hourNumbers == null || hourNumbers.length == 12),
-        _borderWidth = borderWidth;
+    double? borderWidth,
+  }) : _borderWidth = borderWidth;
 
   @override
   void paint(Canvas canvas, Size size) {

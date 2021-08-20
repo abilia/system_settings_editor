@@ -1,13 +1,11 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DigitalClock extends StatelessWidget {
-  final TextStyle style;
-  const DigitalClock({Key key, this.style}) : super(key: key);
+  final TextStyle? style;
+  const DigitalClock({Key? key, this.style}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

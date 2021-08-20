@@ -1,5 +1,3 @@
-// @dart=2.9
-
 library flutter_analog_clock;
 
 import 'package:flutter/material.dart';
@@ -13,7 +11,7 @@ import 'clock_painter.dart';
 
 class AnalogClock extends StatelessWidget {
   const AnalogClock({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -34,32 +32,30 @@ class AnalogClock extends StatelessWidget {
 
 // A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class _AnalogClock extends StatelessWidget {
-  final VoidCallback onPressed;
-  final DateTime dateTime;
+  final VoidCallback? onPressed;
   final Color dialPlateColor;
   final Color hourHandColor;
   final Color minuteHandColor;
   final Color numberColor;
   final Color borderColor;
   final Color centerPointColor;
-  final double centerPointRadius;
+  final double? centerPointRadius;
   final bool showBorder;
   final bool showMinuteHand;
   final bool showNumber;
-  final double borderWidth;
+  final double? borderWidth;
   final double hourNumberScale;
   final List<String> hourNumbers;
   final bool isLive;
   final double width;
   final double height;
-  final double fontSize;
-  final double minuteHandLength;
-  final double hourHandLength;
+  final double? fontSize;
+  final double? minuteHandLength;
+  final double? hourHandLength;
   final BoxDecoration decoration;
-  final Widget child;
+  final Widget? child;
 
   const _AnalogClock({
-    this.dateTime,
     this.dialPlateColor = AbiliaColors.white,
     this.hourHandColor = AbiliaColors.black,
     this.minuteHandColor = AbiliaColors.black,
@@ -82,7 +78,7 @@ class _AnalogClock extends StatelessWidget {
     this.minuteHandLength,
     this.child,
     this.onPressed,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
