@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart' hide CloseButton;
 import 'package:seagull/ui/all.dart';
 
@@ -9,9 +7,9 @@ class FullscreenImageDialog extends StatelessWidget {
   final String fileId;
   final String filePath;
   const FullscreenImageDialog({
-    Key key,
-    @required this.fileId,
-    @required this.filePath,
+    Key? key,
+    required this.fileId,
+    required this.filePath,
   }) : super(key: key);
 
   @override

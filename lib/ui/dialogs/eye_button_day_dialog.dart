@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -14,11 +12,11 @@ class EyeButtonDayDialog extends StatefulWidget {
   final TimepillarIntervalType currentDayInterval;
 
   const EyeButtonDayDialog({
-    Key key,
-    @required this.currentCalendarType,
-    @required this.currentDotsInTimepillar,
-    @required this.currentZoom,
-    @required this.currentDayInterval,
+    Key? key,
+    required this.currentCalendarType,
+    required this.currentDotsInTimepillar,
+    required this.currentZoom,
+    required this.currentDayInterval,
   }) : super(key: key);
 
   @override
@@ -37,10 +35,10 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
   DayCalendarType calendarType;
 
   _EyeButtonDayDialogState({
-    @required this.calendarType,
-    @required this.dotsInTimePillar,
-    @required this.timepillarZoom,
-    @required this.dayInterval,
+    required this.calendarType,
+    required this.dotsInTimePillar,
+    required this.timepillarZoom,
+    required this.dayInterval,
   });
 
   @override
