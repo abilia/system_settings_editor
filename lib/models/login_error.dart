@@ -15,11 +15,10 @@ class LoginError extends Equatable {
   });
 
   factory LoginError.fromJson(Map<String, dynamic> json) {
-    print(json.toString());
     return LoginError._(
-      status: json['status'],
-      message: json['message'],
-      errorId: json['errorId'],
+      status: json['status'] ?? -1,
+      message: json['message'] ?? '',
+      errorId: json['errorId'] ?? -1,
       errors: json['errors'] != null
           ? List<Error>.from(
         json['errors'].map(
@@ -35,6 +34,9 @@ class LoginError extends Equatable {
 }
 
 class Error extends Equatable {
+
+  static const String UNSUPPORTED_USER_TYPE = 'WHALE-0156';
+
   final String code;
   final String message;
   Error._({

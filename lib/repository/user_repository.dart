@@ -70,7 +70,7 @@ class UserRepository extends Repository {
       case 403:
         var errorMessage = LoginError.fromJson(json.decode(response.body));
         if (errorMessage.errors.isNotEmpty &&
-            errorMessage.errors.first.code == 'WHALE-0156') {
+            errorMessage.errors.first.code == Error.UNSUPPORTED_USER_TYPE) {
           throw WrongUserTypeException();
         } else {
           throw Exception(response.body);
