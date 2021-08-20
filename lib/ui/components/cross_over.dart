@@ -71,7 +71,7 @@ class WithCrossOver extends StatelessWidget {
   final Widget child;
   final bool applyCross;
   final EdgeInsets crossOverPadding;
-  final Color color;
+  final Color? color;
   const WithCrossOver({
     Key? key,
     required this.child,
@@ -89,7 +89,7 @@ class WithCrossOver extends StatelessWidget {
           Padding(
             padding: crossOverPadding,
             child: CrossOver(
-              color: color,
+              color: color ?? Color(0xFF000000),
             ),
           ),
       ],
