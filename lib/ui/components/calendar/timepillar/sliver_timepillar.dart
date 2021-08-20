@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class SliverTimePillar extends SingleChildRenderObjectWidget {
   SliverTimePillar({
-    Key key,
-    Widget child,
+    Key? key,
+    Widget? child,
   }) : super(key: key, child: child);
   @override
   RenderObject createRenderObject(BuildContext context) =>
@@ -15,14 +13,15 @@ class SliverTimePillar extends SingleChildRenderObjectWidget {
 
 /// Adapted from [RenderSliverToBoxAdapter]
 class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
-  Offset trailingEdgeOffset;
+  Offset? trailingEdgeOffset;
 
   RenderSliverTimePillar({
-    RenderBox child,
+    RenderBox? child,
   }) : super(child: child);
 
   @override
   void performLayout() {
+    final child = this.child;
     if (child == null) {
       geometry = SliverGeometry.zero;
       return;
@@ -38,7 +37,6 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
         childExtent = child.size.height;
         break;
     }
-    assert(childExtent != null);
 
     final paintedChildSize =
         calculatePaintOffset(constraints, from: 0.0, to: childExtent);
@@ -49,7 +47,7 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
         ? constraints.scrollOffset
         : -(childExtent - constraints.remainingPaintExtent);
 
-    geometry = SliverGeometry(
+    final _geometry = SliverGeometry(
       scrollExtent: childExtent,
       paintExtent: paintedChildSize,
       maxPaintExtent: childExtent,
@@ -57,30 +55,37 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
       hasVisualOverflow: true,
       visible: true,
     );
-    setChildParentData(child, constraints, geometry);
-    final SliverPhysicalParentData childParentData = child.parentData;
-    childParentData.paintOffset += Offset(paintOrigin, 0);
+    geometry = _geometry;
+    setChildParentData(child, constraints, _geometry);
+
+    final childParentData = child.parentData;
+    if (childParentData is SliverPhysicalParentData) {
+      childParentData.paintOffset += Offset(paintOrigin, 0);
+    }
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child != null && geometry.visible) {
-      final SliverPhysicalParentData childParentData = child.parentData;
+    final child = this.child;
+    if (child != null && geometry?.visible == true) {
+      final childParentData = child.parentData;
+      if (childParentData is SliverPhysicalParentData) {
+        if (!offTrailingEdge && startedClippiing) {
+          trailingEdgeOffset = offset + childParentData.paintOffset;
+        }
 
-      if (!offTrailingEdge && startedClippiing) {
-        trailingEdgeOffset = offset + childParentData.paintOffset;
+        final _trailingEdgeOffset = trailingEdgeOffset;
+        if (offTrailingEdge && _trailingEdgeOffset != null) {
+          context.paintChild(child, _trailingEdgeOffset);
+          return;
+        }
+
+        context.paintChild(child, offset + childParentData.paintOffset);
       }
-
-      if (offTrailingEdge && trailingEdgeOffset != null) {
-        context.paintChild(child, trailingEdgeOffset);
-        return;
-      }
-
-      context.paintChild(child, offset + childParentData.paintOffset);
     }
   }
 
   bool get offTrailingEdge => constraints.remainingPaintExtent <= 0;
   bool get startedClippiing =>
-      constraints.remainingPaintExtent < geometry.maxPaintExtent;
+      constraints.remainingPaintExtent < (geometry?.maxPaintExtent ?? 0.0);
 }

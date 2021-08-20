@@ -50,7 +50,7 @@ final headline1 = TextStyle(
     ),
     headline6 = TextStyle(
       color: AbiliaColors.black,
-      fontSize: 20.s,
+      fontSize: headline6FontSize,
       fontWeight: medium,
     ),
     subtitle1 = TextStyle(
@@ -95,7 +95,7 @@ final headline1 = TextStyle(
       height: 16.0 / 10.0,
     );
 
-final catptionFontSize = 12.s;
+final headline6FontSize = 20.s, catptionFontSize = 12.s;
 const FontWeight light = FontWeight.w300;
 const FontWeight regular = FontWeight.w400;
 const FontWeight medium = FontWeight.w500;
