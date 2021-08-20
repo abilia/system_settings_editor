@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -45,10 +43,10 @@ class BackEndButton extends StatelessWidget {
 
   const BackEndButton(
     this.text, {
-    @required this.userRepository,
-    this.backEndUrl,
-    @required this.client,
-    Key key,
+    required this.userRepository,
+    required this.backEndUrl,
+    required this.client,
+    Key? key,
   }) : super(key: key);
 
   @override

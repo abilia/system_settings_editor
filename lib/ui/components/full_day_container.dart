@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -7,9 +5,9 @@ import 'package:seagull/ui/all.dart';
 
 class FullDayContainer extends StatelessWidget {
   const FullDayContainer({
-    Key key,
-    @required this.fullDayActivities,
-    @required this.day,
+    Key? key,
+    required this.fullDayActivities,
+    required this.day,
   }) : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
@@ -62,9 +60,9 @@ class FullDayContainer extends StatelessWidget {
 
 class ShowAllFullDayActivitiesButton extends StatelessWidget {
   const ShowAllFullDayActivitiesButton({
-    Key key,
-    @required this.fullDayActivities,
-    @required this.day,
+    Key? key,
+    required this.fullDayActivities,
+    required this.day,
   }) : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;

@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class ErrorMessage extends StatelessWidget {
   const ErrorMessage({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   final Text text;
@@ -24,7 +22,7 @@ class ErrorMessage extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 horizontal: horizontalPadding, vertical: 20.s),
             child: DefaultTextStyle(
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyText2 ?? bodyText2,
               child: text,
             ),
           ),

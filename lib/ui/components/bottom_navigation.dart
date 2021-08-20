@@ -1,22 +1,21 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class BottomNavigation extends StatelessWidget {
   final Widget backNavigationWidget;
-  final Widget forwardNavigationWidget;
+  final Widget? forwardNavigationWidget;
   final bool useSafeArea;
 
   const BottomNavigation({
-    Key key,
-    @required this.backNavigationWidget,
+    Key? key,
+    required this.backNavigationWidget,
     this.forwardNavigationWidget,
     this.useSafeArea = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final forwardNavigationWidget = this.forwardNavigationWidget;
     return _BottomNavigation(
       useSafeArea: useSafeArea,
       child: Row(
@@ -37,8 +36,8 @@ class BottomNavigation extends StatelessWidget {
 class _BottomNavigation extends StatelessWidget {
   final bool useSafeArea;
   const _BottomNavigation({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.useSafeArea = true,
   }) : super(key: key);
 

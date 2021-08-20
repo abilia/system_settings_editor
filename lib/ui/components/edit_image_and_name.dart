@@ -1,18 +1,16 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditImageAndName extends StatefulWidget {
-  final ImageAndName imageAndName;
-  final PreferredSizeWidget appBar;
-  final int maxLines, minLines;
+  final ImageAndName? imageAndName;
+  final PreferredSizeWidget? appBar;
+  final int? maxLines, minLines;
   final bool allowEmpty;
-  final String hintText;
+  final String? hintText;
   const EditImageAndName({
-    Key key,
+    Key? key,
     this.imageAndName,
     this.appBar,
     this.maxLines,
@@ -22,15 +20,18 @@ class EditImageAndName extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EditImageAndNameState createState() => imageAndName == null
-      ? _EditImageAndNameState(ImageAndName.empty)
-      : _EditImageAndNameState(imageAndName);
+  _EditImageAndNameState createState() {
+    final imageAndName = this.imageAndName;
+    return imageAndName == null
+        ? _EditImageAndNameState(ImageAndName.empty)
+        : _EditImageAndNameState(imageAndName);
+  }
 }
 
 class _EditImageAndNameState extends State<EditImageAndName> {
   _EditImageAndNameState(this.imageAndName);
   ImageAndName imageAndName;
-  TextEditingController txtEditController;
+  late TextEditingController txtEditController;
 
   @override
   void initState() {

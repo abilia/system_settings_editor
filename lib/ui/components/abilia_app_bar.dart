@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,20 +5,20 @@ import 'package:seagull/ui/all.dart';
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final IconData iconData;
-  final Widget trailing;
-  final PreferredSizeWidget bottom;
+  final Widget? trailing;
+  final PreferredSizeWidget? bottom;
 
   @override
   final Size preferredSize;
 
   AbiliaAppBar({
-    Key key,
-    @required this.title,
-    @required this.iconData,
+    Key? key,
+    required this.title,
+    required this.iconData,
     this.bottom,
     this.trailing,
   })  : preferredSize =
-            Size.fromHeight(height + (bottom?.preferredSize?.height ?? 0.0)),
+            Size.fromHeight(height + (bottom?.preferredSize.height ?? 0.0)),
         super(key: key);
 
   static final Size size = Size.fromHeight(height);
