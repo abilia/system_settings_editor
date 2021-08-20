@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
+import 'package:seagull/models/login_error.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
@@ -60,13 +61,22 @@ class UserRepository extends Repository {
         },
       ),
     );
-    if (response.statusCode == 200) {
-      var login = Login.fromJson(json.decode(response.body));
-      return login.token;
-    } else if (response.statusCode == 401) {
-      throw UnauthorizedException();
-    } else {
-      throw Exception(response.body);
+    switch (response.statusCode) {
+      case 200:
+        var login = Login.fromJson(json.decode(response.body));
+        return login.token;
+      case 401:
+        throw UnauthorizedException();
+      case 403:
+        var errorMessage = LoginError.fromJson(json.decode(response.body));
+        if (errorMessage.errors.isNotEmpty &&
+            errorMessage.errors.first.code == Error.UNSUPPORTED_USER_TYPE) {
+          throw WrongUserTypeException();
+        }
+        continue defaultException;
+      defaultException:
+      default:
+        throw Exception(response.body);
     }
   }
 

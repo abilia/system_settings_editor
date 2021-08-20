@@ -41,6 +41,9 @@ abstract class Translated {
 
   final String enterPassword = 'Enter password';
 
+  final String userTypeNotSupported =
+      "Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia";
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
@@ -697,6 +700,10 @@ class SV extends Translated {
 
   @override
   final String enterPassword = 'Ange ditt lösenord';
+
+  @override
+  final String userTypeNotSupported =
+      'Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';

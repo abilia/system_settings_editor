@@ -19,7 +19,8 @@ class Fakes {
       name = 'Testcase user',
       username = 'username',
       type = 'testcase',
-      incorrectPassword = 'wrongwrong';
+      incorrectPassword = 'wrongwrong',
+      supportUserName = 'supportUser';
 
   static MockClient client({
     ActivityResponse? activityResponse,
@@ -35,10 +36,14 @@ class Fakes {
             final authHeaders = r.headers[HttpHeaders.authorizationHeader];
             final incorrect =
                 'Basic ${base64Encode(utf8.encode('$username:$incorrectPassword'))}';
+            final supportUserHeader =
+                'Basic ${base64Encode(utf8.encode('$supportUserName:$incorrectPassword'))}';
             if (authHeaders == incorrect) {
               response = Response(
                   '{"timestamp":"${DateTime.now()}","status":401,"error":"Unauthorized","message":"Unable to authorize","path":"//api/v1/auth/client/me"}',
                   401);
+            } else if (authHeaders == supportUserHeader) {
+              response = unsupportedUserTypeResponse;
             } else {
               response = clientMeSuccessResponse;
             }
@@ -140,4 +145,8 @@ class Fakes {
       }
     ]
   ''', 200);
+
+  static Response unsupportedUserTypeResponse = Response('''
+  {"status":403,"message":"Clients can only be registered with entities of type 'user'","errorId":217,"errors":[{"code":"WHALE-0156","message":"Clients can only be registered with entities of type 'user'"}]}''',
+      403);
 }

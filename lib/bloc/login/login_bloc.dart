@@ -81,6 +81,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } on UnauthorizedException {
       yield state.failure(cause: LoginFailureCause.Credentials);
+    } on WrongUserTypeException {
+      yield state.failure(cause: LoginFailureCause.UnsupportedUserType);
     } catch (error) {
       _log.severe('could not login: $error');
       yield state.failure(cause: LoginFailureCause.NoConnection);
