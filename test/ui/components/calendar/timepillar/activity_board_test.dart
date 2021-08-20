@@ -12,7 +12,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../mocks.dart';

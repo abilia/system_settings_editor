@@ -2,9 +2,8 @@
 
 import 'dart:math';
 import 'dart:ui';
-import 'package:seagull/ui/colors.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/theme.dart';
+import 'package:seagull/ui/themes/all.dart';
 
 import 'package:flutter/material.dart';
 
