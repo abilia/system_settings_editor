@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class WeekCalendarSettingsPage extends StatelessWidget {
-  const WeekCalendarSettingsPage({Key key}) : super(key: key);
+  const WeekCalendarSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WeekCalendarSettingsCubit>(

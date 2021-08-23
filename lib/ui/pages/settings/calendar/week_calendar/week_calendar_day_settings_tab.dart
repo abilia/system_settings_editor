@@ -1,22 +1,20 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class WeekSettingsTab extends StatelessWidget {
-  const WeekSettingsTab({Key key}) : super(key: key);
+  const WeekSettingsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
         builder: (context, state) {
-      final onDisplaDaysChanged = (WeekDisplayDays w) => context
+      final onDisplaDaysChanged = (WeekDisplayDays? w) => context
           .read<WeekCalendarSettingsCubit>()
           .changeWeekCalendarSettings(state.copyWith(weekDisplayDays: w));
-      final onWeekColorChanged = (WeekColor w) => context
+      final onWeekColorChanged = (WeekColor? w) => context
           .read<WeekCalendarSettingsCubit>()
           .changeWeekCalendarSettings(state.copyWith(weekColor: w));
       return SettingsTab(
@@ -55,7 +53,7 @@ class WeekSettingsTab extends StatelessWidget {
 }
 
 class WeekCalendarDisplay extends StatelessWidget {
-  const WeekCalendarDisplay({Key key}) : super(key: key);
+  const WeekCalendarDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +103,9 @@ class DayHeading extends StatelessWidget {
   final DateTime day;
   final DayColor dayColor;
   const DayHeading({
-    Key key,
-    @required this.day,
-    @required this.dayColor,
+    Key? key,
+    required this.day,
+    required this.dayColor,
   }) : super(key: key);
 
   @override
@@ -153,9 +151,9 @@ class DayColumn extends StatelessWidget {
   final DayColor dayColor;
 
   const DayColumn({
-    Key key,
-    @required this.day,
-    @required this.dayColor,
+    Key? key,
+    required this.day,
+    required this.dayColor,
   }) : super(key: key);
 
   @override
