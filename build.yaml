@@ -5,6 +5,8 @@ targets:
         generate_for:
             - lib/i18n/translations.tsv
         enabled: True
+      mockito|mockBuilder:
+        enabled: false
 
 builders:
   translatorBuilder:
