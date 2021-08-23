@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'themes/all.dart';
 export 'components/all.dart';
 export 'widget_test_keys.dart';

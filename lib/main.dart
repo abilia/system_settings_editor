@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:io';
 
@@ -59,7 +57,9 @@ Future<String> initServices() async {
   await configureLocalTimeZone(log: _log);
   final currentLocale = await Devicelocale.currentLocale;
   final settingsDb = SettingsDb(preferences);
-  await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
+  if (currentLocale != null) {
+    await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
+  }
   final baseUrlDb = BaseUrlDb(preferences);
   GetItInitializer()
     ..documentsDirectory = documentDirectory
@@ -75,12 +75,12 @@ Future<String> initServices() async {
   return await baseUrlDb.initialize();
 }
 
-Future<NotificationAlarm> getOrAddPayloadToStream() async {
+Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   final notificationAppLaunchDetails =
       await notificationPlugin.getNotificationAppLaunchDetails();
   try {
-    final payload = notificationAppLaunchDetails.payload;
-    if (notificationAppLaunchDetails.didNotificationLaunchApp) {
+    final payload = notificationAppLaunchDetails?.payload;
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp == true) {
       _log.info('Notification Launched App with payload: $payload');
       if (payload != null) {
         if (Platform.isAndroid) {
@@ -100,13 +100,13 @@ Future<NotificationAlarm> getOrAddPayloadToStream() async {
 }
 
 class App extends StatelessWidget {
-  final PushBloc pushBloc;
+  final PushBloc? pushBloc;
   final String baseUrl;
-  final NotificationAlarm payload;
+  final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   App({
-    Key key,
+    Key? key,
     this.baseUrl = 'mock',
     this.payload,
     this.pushBloc,
@@ -130,17 +130,19 @@ class SeagullApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
 
   const SeagullApp({
-    Key key,
-    @required this.navigatorKey,
+    Key? key,
+    required this.navigatorKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         navigatorKey: navigatorKey,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: child,
-        ),
+        builder: (context, child) => child != null
+            ? MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child,
+              )
+            : const SplashPage(),
         title: Config.flavor.name,
         theme: abiliaTheme,
         darkTheme: abiliaTheme.copyWith(
