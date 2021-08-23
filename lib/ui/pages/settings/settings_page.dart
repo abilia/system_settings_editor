@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/ui/pages/settings/image_picker_settings_page.dart';
 import 'package:seagull/ui/pages/settings/menu_settings_page.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key key}) : super(key: key);
+  const SettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -78,7 +76,7 @@ class SettingsPage extends StatelessWidget {
 }
 
 class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key key}) : super(key: key);
+  const TextToSpeechSwitch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +107,7 @@ class TextToSpeechSwitch extends StatelessWidget {
 }
 
 class PermissionPickField extends StatelessWidget {
-  const PermissionPickField({Key key}) : super(key: key);
+  const PermissionPickField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

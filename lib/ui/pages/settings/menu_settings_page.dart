@@ -1,19 +1,17 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MenuSettingsPage extends StatefulWidget {
-  const MenuSettingsPage({Key key}) : super(key: key);
+  const MenuSettingsPage({Key? key}) : super(key: key);
 
   @override
   _MenuSettingsPageState createState() => _MenuSettingsPageState();
 }
 
 class _MenuSettingsPageState extends State<MenuSettingsPage> {
-  bool camera,
+  late bool camera,
       myPhotos,
       photoCalendar,
       countdown,

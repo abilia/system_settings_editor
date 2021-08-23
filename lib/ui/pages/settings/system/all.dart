@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'logout_page.dart';
 export 'system_settings_page.dart';
 export 'permissions_page.dart';

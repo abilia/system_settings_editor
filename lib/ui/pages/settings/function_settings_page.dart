@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class FunctionSettingsPage extends StatelessWidget {
-  const FunctionSettingsPage({Key key}) : super(key: key);
+  const FunctionSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -66,8 +64,8 @@ class FunctionSettingsPage extends StatelessWidget {
 
 class _SettingsTab extends StatelessWidget {
   const _SettingsTab({
-    Key key,
-    @required this.hint,
+    Key? key,
+    required this.hint,
     this.children = const [],
   }) : super(key: key);
   final List<Widget> children;
@@ -83,7 +81,7 @@ class _SettingsTab extends StatelessWidget {
 }
 
 class ToolbarSettingsTab extends StatelessWidget {
-  const ToolbarSettingsTab({Key key}) : super(key: key);
+  const ToolbarSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -138,7 +136,7 @@ class ToolbarSettingsTab extends StatelessWidget {
 }
 
 class HomeScreenSettingsTab extends StatelessWidget {
-  const HomeScreenSettingsTab({Key key}) : super(key: key);
+  const HomeScreenSettingsTab({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
@@ -197,7 +195,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
 }
 
 class TimeoutSettingsTab extends StatelessWidget {
-  const TimeoutSettingsTab({Key key}) : super(key: key);
+  const TimeoutSettingsTab({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {
@@ -208,7 +206,7 @@ class TimeoutSettingsTab extends StatelessWidget {
           hint: t.timeoutSettingsHint,
           children: [
             ...[0, 10, 5, 1].map((d) => d.minutes()).map(
-                  (d) => RadioField(
+                  (d) => RadioField<int>(
                     text: Text(
                       d.inMilliseconds == 0
                           ? t.noTimeout
