@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:intl/intl.dart';
@@ -9,7 +7,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class MyPhotosPage extends StatelessWidget {
-  const MyPhotosPage({Key key}) : super(key: key);
+  const MyPhotosPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +52,7 @@ class MyPhotosPage extends StatelessWidget {
 
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -64,7 +62,8 @@ class AddPhotoButton extends StatelessWidget {
           builder: (context, time) => ActionButtonLight(
             onPressed: () async {
               if (permissionState
-                  .status[Permission.camera].isPermanentlyDenied) {
+                      .status[Permission.camera]?.isPermanentlyDenied ==
+                  true) {
                 await showViewDialog(
                     useSafeArea: false,
                     context: context,
@@ -101,7 +100,7 @@ class Photo extends StatelessWidget {
   final Sortable<ImageArchiveData> sortable;
   final imageHeight, imageWidth;
   const Photo(
-      {Key key, @required this.sortable, this.imageHeight, this.imageWidth})
+      {Key? key, required this.sortable, this.imageHeight, this.imageWidth})
       : super(key: key);
 
   @override
@@ -113,7 +112,8 @@ class Photo extends StatelessWidget {
     return Tts.fromSemantics(
       SemanticsProperties(
         label: imageArchiveData.name,
-        image: imageArchiveData.fileId != null || imageArchiveData.file != null,
+        image: imageArchiveData.fileId.isNotEmpty ||
+            imageArchiveData.file.isNotEmpty,
         button: true,
       ),
       child: Container(
