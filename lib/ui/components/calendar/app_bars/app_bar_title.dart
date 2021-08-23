@@ -15,7 +15,8 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.headline6!;
+    final style = Theme.of(context).textTheme.headline6 ?? headline6;
+    final fontSize = style.fontSize;
     return DefaultTextStyle(
       style: style,
       overflow: TextOverflow.ellipsis,
@@ -26,11 +27,11 @@ class AppBarTitle extends StatelessWidget {
           children: [
             if (rows.row1.isNotEmpty) Text(rows.row1),
             if (rows.row2.isNotEmpty) Text(rows.row2),
-            if (rows.row3.isNotEmpty)
+            if (rows.row3.isNotEmpty && fontSize != null)
               AutoSizeText(
                 rows.row3,
                 maxLines: 1,
-                minFontSize: style.fontSize,
+                minFontSize: fontSize,
                 overflowReplacement:
                     rows.row3Short.isNotEmpty ? Text(rows.row3Short) : null,
               ),

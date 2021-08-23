@@ -195,7 +195,7 @@ class MonthHeading extends StatelessWidget {
           final dayTheme = dayThemes[weekday];
           final textTheme = dayTheme.theme.textTheme;
           return DefaultTextStyle(
-            style: textTheme.button!.copyWith(
+            style: (textTheme.button ?? button).copyWith(
               color: dayTheme.isColor
                   ? textTheme.subtitle2?.color
                   : AbiliaColors.black,

@@ -107,7 +107,8 @@ class UserRepository extends Repository {
   Future<List<License>> getLicenses() async {
     try {
       final token = getToken();
-      final fromApi = await getLicensesFromApi(token!);
+      if (token == null) throw 'token is null';
+      final fromApi = await getLicensesFromApi(token);
       await licenseDb.persistLicenses(fromApi);
     } catch (e) {
       _log.warning('Could not fetch licenses from backend', e);

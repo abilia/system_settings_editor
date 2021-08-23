@@ -31,33 +31,32 @@ final _log = Logger('NotificationIsolate');
 
 @visibleForTesting
 FlutterLocalNotificationsPlugin? notificationsPluginInstance;
-FlutterLocalNotificationsPlugin get notificationPlugin {
-  ensureNotificationPluginInitialized();
-  return notificationsPluginInstance!;
-}
+FlutterLocalNotificationsPlugin get notificationPlugin =>
+    ensureNotificationPluginInitialized();
 
-void ensureNotificationPluginInitialized() {
-  if (notificationsPluginInstance == null) {
-    _log.finer('initialize notification plugin... ');
-    notificationsPluginInstance = FlutterLocalNotificationsPlugin();
-    notificationsPluginInstance!.initialize(
-      InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-        iOS: IOSInitializationSettings(
-          requestSoundPermission: false,
-          requestBadgePermission: false,
-          requestAlertPermission: false,
-        ),
+FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
+  var pluginInstance = notificationsPluginInstance;
+  if (pluginInstance != null) return pluginInstance;
+  _log.finer('initialize notification plugin... ');
+  pluginInstance = FlutterLocalNotificationsPlugin();
+  pluginInstance.initialize(
+    InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      iOS: IOSInitializationSettings(
+        requestSoundPermission: false,
+        requestBadgePermission: false,
+        requestAlertPermission: false,
       ),
-      onSelectNotification: (String? payload) async {
-        if (payload != null) {
-          _log.fine('notification payload: ' + payload);
-          selectNotificationSubject.add(payload);
-        }
-      },
-    );
-    _log.finer('notification plugin initialize');
-  }
+    ),
+    onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        _log.fine('notification payload: ' + payload);
+        selectNotificationSubject.add(payload);
+      }
+    },
+  );
+  _log.finer('notification plugin initialize');
+  return pluginInstance;
 }
 
 Future scheduleAlarmNotifications(
@@ -317,10 +316,10 @@ String _subtitle(
       : Locales.language.keys.first;
   initializeDateFormatting(locale.languageCode);
   final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
-  final translater = Locales.language[locale]!;
+  final translater = Locales.language[locale];
   final ad = notificationAlarm.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
-  final extra = _extra(notificationAlarm, translater);
+  final extra = translater != null ? _extra(notificationAlarm, translater) : '';
   return tf(ad.start) + endTime + extra;
 }
 
