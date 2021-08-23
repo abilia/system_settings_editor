@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
@@ -8,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
-  const CategoriesSettingsTab({Key key}) : super(key: key);
+  const CategoriesSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GeneralCalendarSettingsCubit,
@@ -74,10 +72,10 @@ class _CategoryPickField extends StatelessWidget {
   final CategoriesSettingState Function(ImageAndName) onResult;
 
   const _CategoryPickField({
-    Key key,
-    this.imageAndName,
-    this.defaultName,
-    this.onResult,
+    Key? key,
+    required this.imageAndName,
+    required this.defaultName,
+    required this.onResult,
   }) : super(key: key);
 
   @override
@@ -117,8 +115,8 @@ class _CategoryPickField extends StatelessWidget {
 
 class _CategoriesPreview extends StatelessWidget {
   const _CategoriesPreview({
-    Key key,
-    this.state,
+    Key? key,
+    required this.state,
   }) : super(key: key);
   final GeneralCalendarSettingsState state;
 

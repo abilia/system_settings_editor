@@ -1,19 +1,16 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditCategoryPage extends StatelessWidget {
-  final ImageAndName imageAndName;
+  final ImageAndName? imageAndName;
   final String hintText;
 
   const EditCategoryPage({
     this.imageAndName,
-    @required this.hintText,
-    Key key,
-  })  : assert(hintText != null),
-        super(key: key);
+    required this.hintText,
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return EditImageAndName(
