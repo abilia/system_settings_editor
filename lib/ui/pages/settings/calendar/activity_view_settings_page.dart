@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:collection';
 
@@ -9,7 +7,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityViewSettingsPage extends StatelessWidget {
-  const ActivityViewSettingsPage({Key key}) : super(key: key);
+  const ActivityViewSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -92,8 +90,8 @@ class _FakeMemoplannerSetting extends StatelessWidget {
   final Widget child;
 
   const _FakeMemoplannerSetting({
-    Key key,
-    this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -141,7 +139,7 @@ class _FakeMemoplannerSetting extends StatelessWidget {
 
 class ActivityPagePreview extends StatelessWidget {
   const ActivityPagePreview({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
