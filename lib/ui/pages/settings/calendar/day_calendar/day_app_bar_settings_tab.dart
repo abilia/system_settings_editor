@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DayAppBarSettingsTab extends StatelessWidget {
-  const DayAppBarSettingsTab({Key key}) : super(key: key);
+  const DayAppBarSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -57,7 +55,7 @@ class DayAppBarSettingsTab extends StatelessWidget {
 }
 
 class DayAppBarPreview extends StatelessWidget {
-  const DayAppBarPreview({Key key}) : super(key: key);
+  const DayAppBarPreview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
