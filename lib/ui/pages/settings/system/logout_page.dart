@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -12,7 +10,7 @@ import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LogoutPage extends StatelessWidget {
-  const LogoutPage({Key key}) : super(key: key);
+  const LogoutPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,45 +42,50 @@ class ProfilePictureNameAndEmail extends StatefulWidget {
 class _ProfilePictureNameAndEmailState
     extends State<ProfilePictureNameAndEmail> {
   bool showVersion = false;
-  final User user;
+  final User? user;
   final String enviorment;
   _ProfilePictureNameAndEmailState({
-    this.user,
-    String baseUrl,
-  }) : enviorment = backEndEnviorments.map((k, v) => MapEntry(v, k))[baseUrl];
+    required this.user,
+    required String baseUrl,
+  }) : enviorment =
+            backEndEnviorments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
   @override
   Widget build(BuildContext context) {
+    final user = this.user;
+
     return Column(
       children: <Widget>[
-        GestureDetector(
-          onLongPress: () => Config.beta
-              ? DatabaseRepository.logAll(GetIt.I<Database>())
-              : GetIt.I<SeagullLogger>().sendLogsToBackend(),
-          onDoubleTap: () => setState(() => showVersion = !showVersion),
-          child: ProfilePicture(
-            GetIt.I<BaseUrlDb>().getBaseUrl(),
-            user,
-          ),
-        ),
-        SizedBox(height: 24.0.s),
-        Tts(
-          child: Text(
-            user.name,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        SizedBox(height: 4.0.s),
-        if (user.username != null)
-          Tts(
-            child: Text(
-              user.username,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: AbiliaColors.black75),
+        if (user != null) ...[
+          GestureDetector(
+            onLongPress: () => Config.beta
+                ? DatabaseRepository.logAll(GetIt.I<Database>())
+                : GetIt.I<SeagullLogger>().sendLogsToBackend(),
+            onDoubleTap: () => setState(() => showVersion = !showVersion),
+            child: ProfilePicture(
+              enviorment,
+              user,
             ),
           ),
-        if (showVersion) Text('${user.id} ($enviorment)'),
+          SizedBox(height: 24.0.s),
+          Tts(
+            child: Text(
+              user.name,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          SizedBox(height: 4.0.s),
+          if (user.username.isNotEmpty)
+            Tts(
+              child: Text(
+                user.username,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(color: AbiliaColors.black75),
+              ),
+            ),
+          if (showVersion) Text('${user.id} ($enviorment)'),
+        ]
       ],
     );
   }
