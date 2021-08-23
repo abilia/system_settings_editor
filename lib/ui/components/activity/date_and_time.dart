@@ -223,15 +223,16 @@ class TimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeFormat = hourAndMinuteFormat(context);
-    final time = timeInput.startTime == null
+    final startTime = timeInput.startTime;
+    final endTime = timeInput.endTime;
+    final time = startTime == null
         ? ''
-        : timeFormat(DateTime(0, 0, 0, timeInput.startTime.hour,
-                timeInput.startTime.minute)) +
-            (timeInput.endTime == null
+        : timeFormat(DateTime(0, 0, 0, startTime.hour, startTime.minute)) +
+            (endTime == null
                 ? ''
                 : ' - ' +
-                    timeFormat(DateTime(0, 0, 0, timeInput.endTime.hour,
-                        timeInput.endTime.minute)));
+                    timeFormat(
+                        DateTime(0, 0, 0, endTime.hour, endTime.minute)));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

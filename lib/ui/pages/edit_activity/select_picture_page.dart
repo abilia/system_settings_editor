@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -18,8 +16,8 @@ class SelectPicturePage extends StatelessWidget {
   final SelectedImage selectedImage;
 
   const SelectPicturePage({
-    Key key,
-    this.selectedImage,
+    Key? key,
+    required this.selectedImage,
   }) : super(key: key);
 
   @override
@@ -120,10 +118,10 @@ class SelectPicturePage extends StatelessWidget {
 
 class ImageSourceWidget extends StatelessWidget {
   ImageSourceWidget({
-    Key key,
-    @required this.imageSource,
-    @required this.permission,
-    @required this.text,
+    Key? key,
+    required this.imageSource,
+    required this.permission,
+    required this.text,
   }) : super(key: key);
 
   final ImageSource imageSource;
@@ -142,12 +140,14 @@ class ImageSourceWidget extends StatelessWidget {
                 key: ObjectKey(imageSource),
                 leading: permission.icon,
                 text: Text(text),
-                onTap: permissionState.status[permission].isPermanentlyDenied
-                    ? null
-                    : () async => await _getExternalFile(context),
+                onTap:
+                    permissionState.status[permission]?.isPermanentlyDenied ==
+                            true
+                        ? null
+                        : () async => await _getExternalFile(context),
               ),
             ),
-            if (permissionState.status[permission].isPermanentlyDenied)
+            if (permissionState.status[permission]?.isPermanentlyDenied == true)
               Padding(
                 padding: EdgeInsets.only(left: 8.0.s),
                 child: InfoButton(

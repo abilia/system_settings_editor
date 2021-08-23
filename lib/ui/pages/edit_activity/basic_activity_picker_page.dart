@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -7,8 +5,8 @@ import 'package:seagull/ui/all.dart';
 
 class BasicActivityPickerPage extends StatelessWidget {
   const BasicActivityPickerPage({
-    Key key,
-    @required this.day,
+    Key? key,
+    required this.day,
   }) : super(key: key);
   final DateTime day;
 
@@ -17,33 +15,42 @@ class BasicActivityPickerPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
-      builder: (innerContext, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.basic_activity,
-          title: state.allById[state.currentFolderId]?.data?.title() ??
-              translate.basicActivities,
-        ),
-        body: SortableLibrary<BasicActivityData>(
-          (Sortable<BasicActivityData> s) =>
-              BasicActivityLibraryItem(sortable: s),
-          translate.noBasicActivities,
-        ),
-        bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: PreviousButton(
-            onPressed: state.isAtRoot
-                ? Navigator.of(context).maybePop
-                : () => BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(
-                        context)
-                    .add(NavigateUp()),
+      builder: (innerContext, state) {
+        final selected = state.selected;
+        return Scaffold(
+          appBar: AbiliaAppBar(
+            iconData: AbiliaIcons.basic_activity,
+            title: state.allById[state.currentFolderId]?.data.title() ??
+                translate.basicActivities,
           ),
-          forwardNavigationWidget: NextButton(
-            onPressed: state.isSelected
-                ? () => Navigator.of(context)
-                    .pop<BasicActivityData>(state.selected.data)
-                : null,
+          body: SortableLibrary<BasicActivityData>(
+            (Sortable<BasicActivityData> s) =>
+                s is Sortable<BasicActivityDataItem>
+                    ? BasicActivityLibraryItem(sortable: s)
+                    : CrossOver(
+                        fallbackHeight: BasicActivityLibraryItem.imageHeight,
+                        fallbackWidth: BasicActivityLibraryItem.imageWidth,
+                      ),
+            translate.noBasicActivities,
           ),
-        ),
-      ),
+          bottomNavigationBar: BottomNavigation(
+            backNavigationWidget: PreviousButton(
+              onPressed: state.isAtRoot
+                  ? Navigator.of(context).maybePop
+                  : () =>
+                      BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(
+                              context)
+                          .add(NavigateUp()),
+            ),
+            forwardNavigationWidget: NextButton(
+              onPressed: selected != null
+                  ? () => Navigator.of(context)
+                      .pop<BasicActivityData>(selected.data)
+                  : null,
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -52,12 +59,11 @@ class BasicActivityLibraryItem extends StatelessWidget {
   final Sortable<BasicActivityDataItem> sortable;
 
   BasicActivityLibraryItem({
-    Key key,
-    @required this.sortable,
+    Key? key,
+    required this.sortable,
   }) : super(key: key);
 
-  final imageHeight = 86.s;
-  final imageWidth = 84.s;
+  static final imageHeight = 86.s, imageWidth = 84.s;
   @override
   Widget build(BuildContext context) {
     final basicActivityData = sortable.data;
@@ -68,7 +74,8 @@ class BasicActivityLibraryItem extends StatelessWidget {
     return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
       builder: (innerContext, state) {
-        final selected = state.selected == sortable;
+        final selected = state.selected;
+        final isSelected = selected == sortable;
         return Tts.fromSemantics(
           SemanticsProperties(label: name),
           child: Material(
@@ -86,14 +93,14 @@ class BasicActivityLibraryItem extends StatelessWidget {
                   AnimatedContainer(
                     duration: const Duration(microseconds: 400),
                     decoration:
-                        selected ? selectedBoxDecoration : boxDecoration,
+                        isSelected ? selectedBoxDecoration : boxDecoration,
                     padding: EdgeInsets.all(4.s).subtract(
-                      selected ? EdgeInsets.all(1.s) : EdgeInsets.zero,
+                      isSelected ? EdgeInsets.all(1.s) : EdgeInsets.zero,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        if (name != null)
+                        if (name.isNotEmpty)
                           Text(
                             name,
                             overflow: TextOverflow.ellipsis,
@@ -118,12 +125,16 @@ class BasicActivityLibraryItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  PositionedRadio<Sortable<BasicActivityDataItem>>(
+                  PositionedRadio<Sortable>(
                     value: sortable,
                     groupValue: state.selected,
-                    onChanged: (v) => context
-                        .read<SortableArchiveBloc<BasicActivityData>>()
-                        .add(SortableSelected(v)),
+                    onChanged: (v) {
+                      if (v != null) {
+                        context
+                            .read<SortableArchiveBloc<BasicActivityData>>()
+                            .add(SortableSelected(v));
+                      }
+                    },
                   ),
                 ],
               ),

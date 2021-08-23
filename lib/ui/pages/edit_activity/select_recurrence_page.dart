@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
@@ -9,7 +7,7 @@ import 'package:seagull/utils/all.dart';
 class SelectRecurrencePage extends StatefulWidget {
   final RecurrentType recurrentType;
 
-  const SelectRecurrencePage({Key key, @required this.recurrentType})
+  const SelectRecurrencePage({Key? key, required this.recurrentType})
       : super(key: key);
 
   @override
@@ -46,12 +44,10 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
             ].map(
               (type) => Padding(
                 padding: EdgeInsets.only(bottom: 8.0.s),
-                child: RadioField(
+                child: RadioField<RecurrentType>(
                   groupValue: newType,
                   onChanged: (v) {
-                    setState(() {
-                      newType = v;
-                    });
+                    if (v != null) setState(() => newType = v);
                   },
                   value: type,
                   leading: Icon(type.iconData()),
