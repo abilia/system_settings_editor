@@ -103,10 +103,10 @@ class NoteData extends SortableData {
   factory NoteData.fromJson(String data) {
     final sortableData = json.decode(data);
     return NoteData(
-      name: sortableData['name'],
-      text: sortableData['text'],
-      icon: sortableData['icon'],
-      fileId: sortableData['fileId'],
+      name: sortableData['name'] ?? '',
+      text: sortableData['text'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
     );
   }
 
@@ -139,10 +139,10 @@ class ChecklistData extends SortableData {
   factory ChecklistData.fromJson(String data) {
     final sortableData = json.decode(data);
     final checklist = Checklist(
-      image: sortableData['image'],
-      fileId: sortableData['fileId'],
-      icon: sortableData['icon'],
-      name: sortableData['name'],
+      image: sortableData['image'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      name: sortableData['name'] ?? '',
       questions: sortableData['checkItems'] != null
           ? List<Question>.from(
               sortableData['checkItems'].map(
@@ -202,9 +202,9 @@ class BasicActivityDataItem extends BasicActivityData {
       fileId: sortableData['fileId'] ?? '',
       icon: sortableData['icon'] ?? '',
       info: sortableData['info'] ?? '',
-      reminders: sortableData['reminders'],
-      activityTitle: sortableData['title'],
-      name: sortableData['name'],
+      reminders: sortableData['reminders'] ?? '',
+      activityTitle: sortableData['title'] ?? '',
+      name: sortableData['name'] ?? '',
     );
   }
 
