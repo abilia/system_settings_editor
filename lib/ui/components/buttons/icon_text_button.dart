@@ -181,3 +181,17 @@ class NoButton extends StatelessWidget {
     );
   }
 }
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({Key key, this.onPressed}) : super(key: key);
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      text: Translator.of(context).translate.save,
+      icon: AbiliaIcons.ok,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
+    );
+  }
+}

@@ -7,11 +7,13 @@ import 'package:seagull/ui/all.dart';
 class EditActivityListeners extends StatelessWidget {
   final Widget child;
   final int nrTabs;
+  final bool scroll;
 
   const EditActivityListeners({
     Key key,
     @required this.child,
-    @required this.nrTabs,
+    this.nrTabs = 0,
+    this.scroll = true,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class EditActivityListeners extends StatelessWidget {
     )) {
       return await _mainPageError(errors, context);
     } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
-      await _scrollToTab(context, nrTabs - 2);
+      if (scroll) await _scrollToTab(context, nrTabs - 2);
       return await showViewDialog(
         context: context,
         builder: (context) => ErrorDialog(
@@ -59,7 +61,7 @@ class EditActivityListeners extends StatelessWidget {
 
   Future _mainPageError(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    await _scrollToTab(context, 0);
+    if (scroll) await _scrollToTab(context, 0);
     var text = '';
 
     if (errors.containsAll(

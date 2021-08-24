@@ -17,10 +17,6 @@ class AddActivityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.advancedActivityTemplate !=
-                current.advancedActivityTemplate ||
-            previous.addActivityType != current.addActivityType,
         builder: (context, state) => ActionButtonLight(
           onPressed: () => Navigator.of(context).push(
             state.addActivityType == NewActivityMode.stepByStep
@@ -29,7 +25,9 @@ class AddActivityButton extends StatelessWidget {
                       blocContext: context,
                       child: BlocProvider(
                         create: (context) => ActivityWizardCubit(
-                            memoplannerSettingsState: state),
+                          memoplannerSettingsState: state,
+                          editActivityBloc: context.read<EditActivityBloc>(),
+                        ),
                         child: ActivityWizardPage(),
                       ),
                     ),

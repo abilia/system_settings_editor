@@ -100,7 +100,6 @@ class SelectPictureWidget extends StatelessWidget {
     return Tts.fromSemantics(
       SemanticsProperties(button: true, label: heading),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SubHeading(heading),
