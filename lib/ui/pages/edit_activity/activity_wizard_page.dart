@@ -100,15 +100,17 @@ class DatePickerWiz extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Builder(
-            builder: (context) => WizardBottomNavigation(
-                  nextButton: NextButton(
-                    onPressed: () {
-                      context.read<EditActivityBloc>().add(
-                          ChangeDate(context.read<DayPickerBloc>().state.day));
-                      context.read<ActivityWizardCubit>().next();
-                    },
-                  ),
-                )),
+          builder: (context) => WizardBottomNavigation(
+            nextButton: NextButton(
+              onPressed: () {
+                context
+                    .read<EditActivityBloc>()
+                    .add(ChangeDate(context.read<DayPickerBloc>().state.day));
+                context.read<ActivityWizardCubit>().next();
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -140,10 +142,11 @@ class NameAndImageWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) => Scaffold(
         appBar: AbiliaAppBar(
-          title: 'Enter name and image',
+          title: translate.enterTitleAndImage,
           iconData: AbiliaIcons.edit,
         ),
         body: Padding(

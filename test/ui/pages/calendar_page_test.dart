@@ -154,6 +154,37 @@ void main() {
         expect(find.byType(EditActivityPage), findsOneWidget);
       });
 
+      testWidgets('New activity with wizard', (WidgetTester tester) async {
+        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+          ),
+        );
+        when(mockGenericDb.getAllNonDeletedMaxRevision())
+            .thenAnswer((_) => Future.value([wizardSetting]));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddActivityButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(NameAndPictureWidget), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+        expect(find.text(translate.missingTitleOrImage), findsOneWidget);
+        await tester.tapAt(Offset.zero);
+        await tester.pumpAndSettle();
+
+        await tester.enterText_(
+            find.byKey(TestKey.editTitleTextFormField), 'title');
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimeWiz), findsOneWidget);
+      });
+
       group('basic activity', () {
         testWidgets('No option for basic activity when option set',
             (WidgetTester tester) async {
