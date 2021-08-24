@@ -7,8 +7,6 @@ import 'package:package_info/package_info.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/background/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/default_http_client.dart';
 import 'package:seagull/storage/file_storage.dart';
@@ -42,10 +40,6 @@ class GetItInitializer {
 
   late Ticker _ticker = Ticker();
   set ticker(Ticker ticker) => _ticker = ticker;
-
-  late AlarmScheduler _alarmScheduler = scheduleAlarmNotificationsIsolated;
-  set alarmScheduler(AlarmScheduler alarmScheduler) =>
-      _alarmScheduler = alarmScheduler;
 
   BaseUrlDb? _baseUrlDb;
   set baseUrlDb(BaseUrlDb baseUrlDb) => _baseUrlDb = baseUrlDb;
@@ -110,7 +104,6 @@ class GetItInitializer {
     ..registerSingleton<Database>(_database)
     ..registerSingleton<SeagullLogger>(_seagullLogger)
     ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
-    ..registerSingleton<AlarmScheduler>(_alarmScheduler)
     ..registerSingleton<Ticker>(_ticker)
     ..registerSingleton<AlarmNavigator>(_alarmNavigator)
     ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))

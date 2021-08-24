@@ -56,7 +56,7 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
     },
   );
   _log.finer('notification plugin initialize');
-  return pluginInstance;
+  return notificationsPluginInstance = pluginInstance;
 }
 
 Future scheduleAlarmNotifications(
@@ -80,7 +80,7 @@ Future scheduleAlarmNotifications(
   );
 }
 
-Future scheduleAlarmNotificationsIsolated(
+late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
@@ -105,7 +105,7 @@ Future scheduleAlarmNotificationsIsolated(
     fileStorage,
     now,
   );
-}
+};
 
 @visibleForTesting
 List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {

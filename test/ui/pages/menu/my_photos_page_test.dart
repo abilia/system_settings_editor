@@ -25,6 +25,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     sortableDb = MockSortableDb();
     when(sortableDb.getAllNonDeleted())
@@ -46,7 +47,6 @@ void main() {
         initialTime: initialTime,
       )
       ..client = Fakes.client()
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = MockGenericDb()

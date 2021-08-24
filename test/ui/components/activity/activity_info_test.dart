@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:seagull/background/all.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -67,10 +68,10 @@ void main() {
 
   setUp(() async {
     await initializeDateFormatting();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     mockedAuthenticationBloc = MockAuthenticationBloc();
     GetItInitializer()
       ..fileStorage = MockFileStorage()
-      ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
       ..sharedPreferences = await MockSharedPreferences.getInstance()
