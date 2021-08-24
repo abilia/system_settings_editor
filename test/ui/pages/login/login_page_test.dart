@@ -326,6 +326,22 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
+  testWidgets('Error message when incorrect user type',
+      (WidgetTester tester) async {
+    await tester.pumpApp();
+    await tester.pumpAndSettle();
+
+    await tester.enterText_(find.byType(UsernameInput), Fakes.supportUserName);
+    await tester.enterText_(
+        find.byType(PasswordInput), Fakes.incorrectPassword);
+    await tester.pump();
+    await tester.tap(find.byType(LoginButton));
+    await tester.pumpAndSettle();
+    expect(find.byType(CalendarPage), findsNothing);
+    expect(find.byType(ErrorDialog), findsOneWidget);
+    expect(find.text(translate.userTypeNotSupported), findsOneWidget);
+  });
+
   group('permissions', () {
     testWidgets(
         'when fullscreen notification is NOT granted: show FullscreenAlarmInfoDialog',
