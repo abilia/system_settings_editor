@@ -12,7 +12,7 @@ class ErrorMessage extends StatelessWidget {
   final Text text;
 
   @override
-  Widget build(BuildContext context) => Tts(
+  Widget build(BuildContext context) => Tts.data(
         data: text.data,
         child: Container(
           decoration: BoxDecoration(

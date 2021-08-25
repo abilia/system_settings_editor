@@ -288,8 +288,8 @@ class _TimeInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
-      onLongPress: () => ttsText(context),
+    return Tts.longPress(
+      () => ttsText(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -605,7 +605,7 @@ class _AmPmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: text,
       child: TextButton(
         key: buttonKey,

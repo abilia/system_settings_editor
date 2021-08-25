@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +6,11 @@ import 'package:seagull/utils/all.dart';
 
 class NoteBlock extends StatefulWidget {
   final String text;
-  final TextStyle textStyle;
-  final Text textWidget;
-  final ScrollController scrollController;
+  final TextStyle? textStyle;
+  final Text? textWidget;
+  final ScrollController? scrollController;
   const NoteBlock({
-    Key key,
+    Key? key,
     this.text = '',
     this.textStyle,
     this.textWidget,
@@ -22,7 +20,7 @@ class NoteBlock extends StatefulWidget {
   @override
   _NoteBlockState createState() => _NoteBlockState(
       scrollController ?? ScrollController(),
-      textStyle ?? abiliaTextTheme.bodyText1);
+      textStyle ?? abiliaTextTheme.bodyText1!);
 }
 
 class _NoteBlockState extends State<NoteBlock> {
@@ -32,8 +30,9 @@ class _NoteBlockState extends State<NoteBlock> {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
-      data: widget.textWidget.data,
+    final text = widget.textWidget;
+    return Tts.data(
+      data: text?.data ?? '',
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final textRenderingSize = widget.text.calulcateTextRenderSize(
@@ -51,7 +50,7 @@ class _NoteBlockState extends State<NoteBlock> {
                 controller: controller,
                 child: Stack(
                   children: [
-                    if (widget.textWidget != null) widget.textWidget,
+                    if (text != null) text,
                     Lines(
                       lineHeight: textRenderingSize.scaledLineHeight,
                       numberOfLines: textRenderingSize.numberOfLines,
@@ -71,9 +70,9 @@ class Lines extends StatelessWidget {
   final double lineHeight;
   final int numberOfLines;
   const Lines({
-    Key key,
-    @required this.lineHeight,
-    @required this.numberOfLines,
+    Key? key,
+    required this.lineHeight,
+    required this.numberOfLines,
   }) : super(key: key);
 
   @override

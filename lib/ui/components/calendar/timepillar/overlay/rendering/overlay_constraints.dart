@@ -1,18 +1,12 @@
-// @dart=2.9
-
 import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
-
-import '../all.dart';
+import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
 
 /// Immutable layout constraints for overlay
 class OverlayConstraints extends BoxConstraints {
   OverlayConstraints({
-    @required this.state,
-    @required BoxConstraints boxConstraints,
-  })  : assert(state != null),
-        assert(boxConstraints != null),
-        super(
+    required this.state,
+    required BoxConstraints boxConstraints,
+  }) : super(
           minWidth: boxConstraints.minWidth,
           maxWidth: boxConstraints.maxWidth,
           minHeight: boxConstraints.minHeight,
@@ -32,13 +26,12 @@ class OverlayConstraints extends BoxConstraints {
     assert(debugAssertIsValid());
     if (identical(this, other)) return true;
     if (other is! OverlayConstraints) return false;
-    final OverlayConstraints typedOther = other;
-    assert(typedOther.debugAssertIsValid());
-    return state == typedOther.state &&
-        minWidth == typedOther.minWidth &&
-        maxWidth == typedOther.maxWidth &&
-        minHeight == typedOther.minHeight &&
-        maxHeight == typedOther.maxHeight;
+    assert(other.debugAssertIsValid());
+    return state == other.state &&
+        minWidth == other.minWidth &&
+        maxWidth == other.maxWidth &&
+        minHeight == other.minHeight &&
+        maxHeight == other.maxHeight;
   }
 
   @override

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -11,9 +9,9 @@ class Timeline extends StatelessWidget {
   final TimepillarState timepillarState;
   static final double timelineHeight = 2.s;
   const Timeline({
-    Key key,
-    @required this.width,
-    @required this.timepillarState,
+    Key? key,
+    required this.width,
+    required this.timepillarState,
     this.offset = 0,
   }) : super(key: key);
 

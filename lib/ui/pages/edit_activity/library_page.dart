@@ -84,7 +84,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: heading,
       child: Padding(
         padding: EdgeInsets.only(right: 12.s),

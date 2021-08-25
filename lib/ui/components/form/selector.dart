@@ -90,7 +90,7 @@ class _SelectButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: text,
       child: TextButton(
         onPressed: onPressed,

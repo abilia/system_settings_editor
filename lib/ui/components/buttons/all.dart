@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'action_button.dart';
 export 'add_activity_button.dart';
 export 'go_to_now_button.dart';

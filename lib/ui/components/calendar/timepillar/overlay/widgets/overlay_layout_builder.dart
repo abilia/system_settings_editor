@@ -1,9 +1,6 @@
-// @dart=2.9
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import '../all.dart';
+import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
 
 typedef OverlayLayoutWidgetBuilder = Widget Function(
     BuildContext context, OverlayConstraints constraints);
@@ -17,10 +14,9 @@ class OverlayLayoutBuilder extends RenderObjectWidget {
   ///
   /// The [builder] argument must not be null.
   const OverlayLayoutBuilder({
-    Key key,
-    @required this.builder,
-  })  : assert(builder != null),
-        super(key: key);
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
 
   /// Called at layout time to construct the widget tree. The builder must not
   /// return null.
@@ -40,16 +36,21 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   _OvlerlayLayoutBuilderElement(OverlayLayoutBuilder widget) : super(widget);
 
   @override
-  OverlayLayoutBuilder get widget => super.widget;
+  RenderObjectWidget get widget => super.widget;
+  OverlayLayoutBuilder get overlayLayoutBuilder =>
+      widget as OverlayLayoutBuilder;
 
   @override
-  RenderOverlayLayoutBuilder get renderObject => super.renderObject;
+  RenderObject get renderObject => super.renderObject;
+  RenderOverlayLayoutBuilder get renderOverlayLayoutBuilder =>
+      renderObject as RenderOverlayLayoutBuilder;
 
-  Element _child;
+  Element? _child;
 
   @override
   void visitChildren(ElementVisitor visitor) {
-    if (_child != null) visitor(_child);
+    final child = _child;
+    if (child != null) visitor(child);
   }
 
   @override
@@ -60,9 +61,9 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   }
 
   @override
-  void mount(Element parent, dynamic newSlot) {
+  void mount(Element? parent, Object? newSlot) {
     super.mount(parent, newSlot); // Creates the renderObject.
-    renderObject.callback = _layout;
+    renderOverlayLayoutBuilder.callback = _layout;
   }
 
   @override
@@ -70,7 +71,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
     assert(widget != newWidget);
     super.update(newWidget);
     assert(widget == newWidget);
-    renderObject.callback = _layout;
+    renderOverlayLayoutBuilder.callback = _layout;
     renderObject.markNeedsLayout();
   }
 
@@ -85,22 +86,22 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
 
   @override
   void unmount() {
-    renderObject.callback = null;
+    renderOverlayLayoutBuilder.callback = null;
     super.unmount();
   }
 
   void _layout(OverlayConstraints constraints) {
-    owner.buildScope(this, () {
+    owner?.buildScope(this, () {
       Widget built;
-      if (widget.builder != null) {
-        try {
-          built = widget.builder(this, constraints);
-          debugWidgetBuilderValue(widget, built);
-        } catch (e, stack) {
-          built = ErrorWidget.builder(
-              _debugReportException('building $widget', e, stack));
-        }
+
+      try {
+        built = overlayLayoutBuilder.builder(this, constraints);
+        debugWidgetBuilderValue(widget, built);
+      } catch (e, stack) {
+        built = ErrorWidget.builder(
+            _debugReportException('building $widget', e, stack));
       }
+
       try {
         _child = updateChild(_child, built, null);
         assert(_child != null);
@@ -116,7 +117,7 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   void insertRenderObjectChild(
       covariant RenderObject child, covariant dynamic slot) {
     final RenderObjectWithChildMixin<RenderObject> renderObject =
-        this.renderObject;
+        renderOverlayLayoutBuilder;
     assert(slot == null);
     assert(renderObject.debugValidateChild(child));
     renderObject.child = child;
@@ -133,8 +134,8 @@ class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   void removeRenderObjectChild(
       covariant RenderObject child, covariant dynamic slot) {
     final renderObject = this.renderObject;
-    assert(renderObject.child == child);
-    renderObject.child = null;
+    assert(renderOverlayLayoutBuilder.child == child);
+    renderOverlayLayoutBuilder.child = null;
     assert(renderObject == this.renderObject);
   }
 }

@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class GoToNowButton extends StatelessWidget {
-  const GoToNowButton({Key key}) : super(key: key);
+  const GoToNowButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<ScrollPositionBloc, ScrollPositionState>(
@@ -38,10 +36,10 @@ class GoToNowButton extends StatelessWidget {
 
 class GoToCurrentActionButton extends StatelessWidget {
   const GoToCurrentActionButton({
-    Key key,
+    Key? key,
     this.onPressed,
   }) : super(key: key);
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

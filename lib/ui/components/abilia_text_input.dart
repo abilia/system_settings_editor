@@ -50,7 +50,7 @@ class AbiliaTextInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SubHeading(heading),
-        Tts(
+        Tts.data(
           data: initialValue.isNotEmpty ? initialValue : heading,
           child: GestureDetector(
             onTap: () async {

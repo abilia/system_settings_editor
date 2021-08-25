@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:seagull/models/all.dart';
@@ -9,19 +7,19 @@ import 'package:intl/intl.dart';
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
-    Key key,
-    @required this.rows,
+    Key? key,
+    required this.rows,
   }) : super(key: key);
 
   final AppBarTitleRows rows;
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.headline6;
+    final style = Theme.of(context).textTheme.headline6!;
     return DefaultTextStyle(
       style: style,
       overflow: TextOverflow.ellipsis,
-      child: Tts(
+      child: Tts.data(
         data: '${rows.row1} ${rows.row2} ${rows.row3}',
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -62,11 +60,11 @@ class AppBarTitleRows {
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
-    @required DateTime currentTime,
-    @required DateTime day,
-    @required DayParts dayParts,
-    @required String langCode,
-    @required Translated translator,
+    required DateTime currentTime,
+    required DateTime day,
+    required DayParts dayParts,
+    required String langCode,
+    required Translated translator,
   }) {
     final weekday = displayWeekDay ? DateFormat.EEEE(langCode).format(day) : '';
     final daypart = displayPartOfDay
@@ -109,12 +107,12 @@ class AppBarTitleRows {
   }
 
   factory AppBarTitleRows.week({
-    @required DateTime selectedWeekStart,
-    @required DateTime selectedDay,
-    @required bool showWeekNumber,
-    @required bool showYear,
-    @required String langCode,
-    @required Translated translator,
+    required DateTime selectedWeekStart,
+    required DateTime selectedDay,
+    required bool showWeekNumber,
+    required bool showYear,
+    required String langCode,
+    required Translated translator,
   }) {
     final displayWeekDay = selectedDay.isSameWeek(selectedWeekStart);
     final day =
@@ -130,9 +128,9 @@ class AppBarTitleRows {
   }
 
   factory AppBarTitleRows.month({
-    @required DateTime currentTime,
-    @required String langCode,
-    @required bool showYear,
+    required DateTime currentTime,
+    required String langCode,
+    required bool showYear,
   }) =>
       AppBarTitleRows._(
         DateFormat.MMMM(langCode).format(currentTime),

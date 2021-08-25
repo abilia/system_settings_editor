@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'timepillar_calendar.dart';
 export 'timepillar.dart';
 export 'timeline.dart';

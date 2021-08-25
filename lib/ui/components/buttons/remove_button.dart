@@ -1,16 +1,14 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/ui/all.dart';
 
 class RemoveButton extends StatelessWidget {
-  final GestureTapCallback onTap;
-  final Widget icon;
-  final String text;
+  final GestureTapCallback? onTap;
+  final Widget? icon;
+  final String? text;
 
   const RemoveButton({
-    Key key,
+    Key? key,
     this.onTap,
     this.icon,
     this.text,
@@ -18,40 +16,41 @@ class RemoveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts.fromSemantics(
-      SemanticsProperties(
-        button: true,
-        label: text,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: borderRadius,
-          onTap: onTap,
-          child: Container(
-            decoration: BoxDecoration(
-              color: AbiliaColors.transparentRed[80],
-              borderRadius: borderRadius,
-              border: Border.all(color: AbiliaColors.red, width: 1.s),
-            ),
-            padding: EdgeInsets.fromLTRB(8.s, 6.s, 8.s, 6.s),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                icon ?? Container(),
-                SizedBox(
-                  width: 4,
-                ),
-                text == null
-                    ? Container()
-                    : Text(text,
-                        style: abiliaTextTheme.bodyText1
-                            .copyWith(color: AbiliaColors.white, height: 1)),
-              ],
-            ),
+    final t = text;
+    final i = icon;
+    final b = Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: borderRadius,
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AbiliaColors.transparentRed[80],
+            borderRadius: borderRadius,
+            border: Border.all(color: AbiliaColors.red, width: 1.s),
+          ),
+          padding: EdgeInsets.fromLTRB(8.s, 6.s, 8.s, 6.s),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (i != null) i,
+              SizedBox(
+                width: 4,
+              ),
+              if (t != null)
+                Text(t,
+                    style: abiliaTextTheme.bodyText1
+                        ?.copyWith(color: AbiliaColors.white, height: 1)),
+            ],
           ),
         ),
       ),
     );
+    return t != null
+        ? Tts.fromSemantics(
+            SemanticsProperties(button: true, label: t),
+            child: b,
+          )
+        : b;
   }
 }
