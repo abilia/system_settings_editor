@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'calendar/all.dart';
 export 'system/all.dart';
 export 'settings_page.dart';

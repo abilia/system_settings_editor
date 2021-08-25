@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -12,7 +10,7 @@ class IntervalsSettingsTab extends StatelessWidget {
     DayPart.evening,
     DayPart.night,
   ];
-  const IntervalsSettingsTab({Key key}) : super(key: key);
+  const IntervalsSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => ListView.separated(
         padding: EdgeInsets.symmetric(vertical: 12.s),
@@ -28,7 +26,7 @@ class IntervalStepper extends StatelessWidget {
   static Key leftStepKey(DayPart part) => Key('$part-Left');
   static Key rightStepKey(DayPart part) => Key('$part-Right');
 
-  const IntervalStepper({Key key, @required this.part}) : super(key: key);
+  const IntervalStepper({Key? key, required this.part}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

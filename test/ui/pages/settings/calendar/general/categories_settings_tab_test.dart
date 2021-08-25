@@ -39,6 +39,7 @@ void main() {
     tz.initializeTimeZones();
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [];
     sortable = [];
 
@@ -70,7 +71,6 @@ void main() {
         genericResponse: () => generics,
         sortableResponse: () => sortable,
       )
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb

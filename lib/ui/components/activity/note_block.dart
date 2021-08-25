@@ -19,8 +19,7 @@ class NoteBlock extends StatefulWidget {
 
   @override
   _NoteBlockState createState() => _NoteBlockState(
-      scrollController ?? ScrollController(),
-      textStyle ?? abiliaTextTheme.bodyText1!);
+      scrollController ?? ScrollController(), textStyle ?? bodyText1);
 }
 
 class _NoteBlockState extends State<NoteBlock> {

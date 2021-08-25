@@ -98,8 +98,10 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
 
   @override
   void visitChildren(ElementVisitor visitor) {
-    if (_overlay != null) visitor(_overlay!);
-    if (_sliver != null) visitor(_sliver!);
+    final overlay = _overlay;
+    if (overlay != null) visitor(overlay);
+    final sliver = _sliver;
+    if (sliver != null) visitor(sliver);
   }
 
   @override

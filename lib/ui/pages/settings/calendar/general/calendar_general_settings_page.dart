@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/bloc/all.dart';
 
 class CalendarGeneralSettingsPage extends StatelessWidget {
-  const CalendarGeneralSettingsPage({Key key}) : super(key: key);
+  const CalendarGeneralSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;

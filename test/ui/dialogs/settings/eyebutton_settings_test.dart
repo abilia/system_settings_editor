@@ -29,6 +29,7 @@ void main() {
     ActivityResponse activityResponse = () => [];
 
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockTicker = StreamController<DateTime>();
     final mockFirebasePushService = MockFirebasePushService();
@@ -67,7 +68,6 @@ void main() {
       ..userFileDb = mockUserFileDb
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
-      ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
       ..init();

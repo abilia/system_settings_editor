@@ -15,7 +15,8 @@ class LicenseDb {
   List<License> getLicenses() {
     try {
       final licensesString = prefs.getString(_licenseKey);
-      return (json.decode(licensesString!) as List)
+      if (licensesString == null) throw 'licenses is null';
+      return (json.decode(licensesString) as List)
           .map((e) => License.fromJson(e))
           .toList();
     } catch (_) {

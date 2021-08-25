@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -10,11 +8,11 @@ import 'package:seagull/ui/all.dart';
 
 class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
-  final Widget previewImage;
+  final Widget? previewImage;
 
   ActivityPage({
-    Key key,
-    @required this.occasion,
+    Key? key,
+    required this.occasion,
     this.previewImage,
   }) : super(key: key);
 
@@ -50,8 +48,8 @@ class ActivityPage extends StatelessWidget {
 
 class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   const ActivityBottomAppBar({
-    Key key,
-    @required this.activityOccasion,
+    Key? key,
+    required this.activityOccasion,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;

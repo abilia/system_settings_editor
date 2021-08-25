@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/calendar/add_activity/add_activity_settings_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AddActivityDefaultSettingsTab extends StatelessWidget {
-  const AddActivityDefaultSettingsTab({Key key}) : super(key: key);
+  const AddActivityDefaultSettingsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
 
     return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
         builder: (context, state) {
-      final onAlarmTypeChanged = (AlarmType alarmType) => context
+      final onAlarmTypeChanged = (AlarmType? alarmType) => context
           .read<AddActivitySettingsCubit>()
           .changeAddActivitySettings(state.copyWith(
               defaultsTabSettingsState: state.defaultsTabSettingsState

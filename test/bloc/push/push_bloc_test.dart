@@ -21,6 +21,7 @@ void main() {
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
       final time = DateTime(2020, 06, 05, 13, 23);
 
@@ -51,7 +52,6 @@ void main() {
         ..userFileDb = mockUserFileDb
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
-        ..alarmScheduler = noAlarmScheduler
         ..database = MockDatabase()
         ..init();
     });

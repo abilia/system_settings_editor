@@ -128,7 +128,8 @@ class PickField extends StatelessWidget {
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,
-                    style: abiliaTextTheme.bodyText1!.copyWith(height: 1.0),
+                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                        .copyWith(height: 1.0),
                     child: text,
                   ),
                 ),
@@ -206,7 +207,9 @@ class RadioField<T> extends StatelessWidget {
                     ],
                     Expanded(
                       child: DefaultTextStyle(
-                        style: abiliaTextTheme.bodyText1!.copyWith(height: 1.0),
+                        style:
+                            (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                                .copyWith(height: 1.0),
                         child: text,
                       ),
                     ),

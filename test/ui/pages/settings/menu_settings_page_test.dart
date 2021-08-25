@@ -27,6 +27,7 @@ void main() {
     setupPermissions();
     tz.initializeTimeZones();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [];
 
     final mockBatch = MockBatch();
@@ -49,7 +50,6 @@ void main() {
         initialTime: initialTime,
       )
       ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb

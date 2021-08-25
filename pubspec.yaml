@@ -12,10 +12,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  android_intent_plus: ^1.0.2
+  android_intent_plus: ^2.0.0
   audioplayers: ^0.19.1
-  auto_size_text: ^2.1.0
-  collection: ^1.15.0-nullsafety.4
+  auto_size_text: ^3.0.0-nullsafety.0
+  collection: ^1.15.0
   devicelocale: ^0.4.2
   dotted_border: ^2.0.0
   dotted_line: ^3.0.0

@@ -67,7 +67,8 @@ class _Tts extends StatelessWidget {
           excludeFromSemantics: true,
           onLongPress: settingsState.textToSpeech &&
                   (onLongPress != null || data != null)
-              ? () => GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data!)
+              ? () =>
+                  GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data ?? '')
               : null,
           child: child,
         ),

@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ImagePickerSettingsPage extends StatefulWidget {
-  const ImagePickerSettingsPage({Key key}) : super(key: key);
+  const ImagePickerSettingsPage({Key? key}) : super(key: key);
 
   @override
   _ImagePickerSettingsPageState createState() =>
@@ -13,7 +11,7 @@ class ImagePickerSettingsPage extends StatefulWidget {
 }
 
 class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
-  bool displayPhotos, displayCamera;
+  late bool displayPhotos, displayCamera;
 
   @override
   void initState() {

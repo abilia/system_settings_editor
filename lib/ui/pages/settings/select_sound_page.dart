@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -12,10 +10,10 @@ class SelectSoundPage extends StatefulWidget {
   final bool noSoundOption;
 
   const SelectSoundPage({
-    Key key,
-    @required this.sound,
-    @required this.appBarIcon,
-    @required this.appBarTitle,
+    Key? key,
+    required this.sound,
+    required this.appBarIcon,
+    required this.appBarTitle,
     this.noSoundOption = false,
   }) : super(key: key);
 
@@ -24,7 +22,7 @@ class SelectSoundPage extends StatefulWidget {
 }
 
 class _SelectSoundPageState extends State<SelectSoundPage> {
-  Sound selectedSound;
+  Sound? selectedSound;
 
   @override
   void initState() {
@@ -80,5 +78,5 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
     );
   }
 
-  void setSelectedSound(Sound s) => setState(() => selectedSound = s);
+  void setSelectedSound(Sound? s) => setState(() => selectedSound = s);
 }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
@@ -8,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ClockSettingsTab extends StatelessWidget {
-  const ClockSettingsTab({Key key}) : super(key: key);
+  const ClockSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final is24h = MediaQuery.of(context).alwaysUse24HourFormat;
@@ -62,7 +60,7 @@ class ClockSettingsTab extends StatelessWidget {
               child: Text(t.twelveHourFormat),
             ),
             const SizedBox.shrink(),
-            RadioField(
+            RadioField<bool>(
                 text: Text(t.oneDot),
                 value: false,
                 groupValue: tpState.columnOfDots,
@@ -70,7 +68,7 @@ class ClockSettingsTab extends StatelessWidget {
                     .read<GeneralCalendarSettingsCubit>()
                     .changeTimepillarSettings(
                         tpState.copyWith(columnOfDots: value))),
-            RadioField(
+            RadioField<bool>(
               text: Text(t.columnOfDots),
               value: true,
               groupValue: tpState.columnOfDots,
@@ -102,7 +100,7 @@ class ClockSettingsTab extends StatelessWidget {
 }
 
 class PreviewTimePillar extends StatelessWidget {
-  const PreviewTimePillar({Key key}) : super(key: key);
+  const PreviewTimePillar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

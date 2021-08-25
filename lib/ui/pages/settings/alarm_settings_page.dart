@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/alarm_settings/alarm_settings_cubit.dart';
 import 'package:seagull/models/all.dart';
@@ -9,7 +7,7 @@ import 'package:seagull/ui/pages/settings/select_alarm_duration_page.dart';
 import 'package:seagull/ui/pages/settings/select_sound_page.dart';
 
 class AlarmSettingsPage extends StatelessWidget {
-  const AlarmSettingsPage({Key key}) : super(key: key);
+  const AlarmSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
@@ -100,11 +98,11 @@ class AlarmSelector extends StatelessWidget {
   final ValueChanged<Sound> onChanged;
   final bool noSoundOption;
   const AlarmSelector({
-    Key key,
-    @required this.heading,
-    @required this.icon,
-    @required this.sound,
-    @required this.onChanged,
+    Key? key,
+    required this.heading,
+    required this.icon,
+    required this.sound,
+    required this.onChanged,
     this.noSoundOption = false,
   }) : super(key: key);
 
@@ -156,8 +154,8 @@ class AlarmSelector extends StatelessWidget {
 class AlarmDurationSelector extends StatelessWidget {
   final AlarmDuration duration;
   const AlarmDurationSelector({
-    Key key,
-    @required this.duration,
+    Key? key,
+    required this.duration,
   }) : super(key: key);
 
   @override

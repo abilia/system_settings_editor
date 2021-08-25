@@ -33,6 +33,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [timepillarGeneric];
 
     final mockBatch = MockBatch();
@@ -55,7 +56,6 @@ void main() {
         initialTime: initialTime,
       )
       ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb

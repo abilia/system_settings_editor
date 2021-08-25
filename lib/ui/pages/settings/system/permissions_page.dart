@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -37,7 +35,7 @@ class PermissionSetting extends StatelessWidget {
 
   PermissionSetting(
     MapEntry<Permission, PermissionStatus> entry, {
-    Key key,
+    Key? key,
   })  : permission = entry.key,
         status = entry.value,
         super(key: key);
@@ -52,9 +50,9 @@ class PermissionSetting extends StatelessWidget {
 
 class PermissionSwitch extends StatelessWidget {
   const PermissionSwitch({
-    Key key,
-    @required this.permission,
-    @required this.status,
+    Key? key,
+    required this.permission,
+    required this.status,
   }) : super(key: key);
 
   final Permission permission;
@@ -83,8 +81,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
   final PermissionStatus status;
 
   const NotificationPermissionSwitch({
-    Key key,
-    this.status,
+    Key? key,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -156,8 +154,8 @@ class FullscreenPermissionSwitch extends StatelessWidget {
   final PermissionStatus status;
 
   const FullscreenPermissionSwitch({
-    Key key,
-    this.status,
+    Key? key,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -236,7 +234,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
           Tts(
             child: Text(
               translate.redirectToAndroidSettings,
-              style: Theme.of(context).textTheme.caption.copyWith(
+              style: Theme.of(context).textTheme.caption?.copyWith(
                     color: AbiliaColors.black75,
                   ),
             ),
