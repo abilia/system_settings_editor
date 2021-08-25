@@ -146,7 +146,8 @@ class RadioField<T> extends StatelessWidget {
   final Widget? leading;
   final Text text;
   final double? heigth, width;
-  final T value, groupValue;
+  final T value;
+  final T? groupValue;
   final ValueChanged<T?>? onChanged;
   final EdgeInsetsGeometry? padding;
   static final defaultHeight = 56.s;
@@ -236,7 +237,7 @@ class PositionedRadio<T> extends StatelessWidget {
   }) : super(key: key);
 
   final T value;
-  final T groupValue;
+  final T? groupValue;
   final ValueChanged<T?>? onChanged;
   final Key? radioKey;
 

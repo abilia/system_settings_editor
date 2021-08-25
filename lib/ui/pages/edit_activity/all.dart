@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'basic_activity_picker_page.dart';
 export 'create_activity_page.dart';
 export 'edit_activity_page.dart';

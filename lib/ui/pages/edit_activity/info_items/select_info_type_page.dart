@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 class SelectInfoTypePage extends StatefulWidget {
   final Type infoItemType;
 
-  const SelectInfoTypePage({Key key, @required this.infoItemType})
+  const SelectInfoTypePage({Key? key, required this.infoItemType})
       : super(key: key);
 
   @override
@@ -15,7 +13,7 @@ class SelectInfoTypePage extends StatefulWidget {
 }
 
 class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
-  Type infoItemType;
+  late Type infoItemType;
 
   @override
   void initState() {
@@ -77,5 +75,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
     );
   }
 
-  void setSelectedType(Type t) => setState(() => infoItemType = t);
+  void setSelectedType(Type? t) {
+    if (t != null) setState(() => infoItemType = t);
+  }
 }

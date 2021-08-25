@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
@@ -13,9 +11,9 @@ class TimeInputPage extends StatefulWidget {
   final bool is24HoursFormat;
 
   const TimeInputPage({
-    Key key,
-    @required this.timeInput,
-    @required this.is24HoursFormat,
+    Key? key,
+    required this.timeInput,
+    required this.is24HoursFormat,
   }) : super(key: key);
 
   @override
@@ -28,16 +26,16 @@ String pad0(String s) => s.padLeft(2, '0');
 class _TimeInputPageState extends State<TimeInputPage>
     with WidgetsBindingObserver {
   final bool twelveHourClock;
-  TextEditingController startTimeController;
-  TextEditingController endTimeController;
-  DayPeriod startTimePeriod;
-  DayPeriod endTimePeriod;
-  FocusNode startTimeFocus;
-  FocusNode endTimeFocus;
-  String validatedNewStartTime;
-  String valiedatedNewEndTime;
+  late TextEditingController startTimeController;
+  late TextEditingController endTimeController;
+  late DayPeriod startTimePeriod;
+  late DayPeriod endTimePeriod;
+  late FocusNode startTimeFocus;
+  late FocusNode endTimeFocus;
+  late String validatedNewStartTime;
+  late String valiedatedNewEndTime;
 
-  _TimeInputPageState({@required this.twelveHourClock});
+  _TimeInputPageState({required this.twelveHourClock});
 
   bool _startTimeFocus = true, _paused = false;
 
@@ -59,7 +57,7 @@ class _TimeInputPageState extends State<TimeInputPage>
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WidgetsBinding.instance.addObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
 
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
@@ -116,7 +114,7 @@ class _TimeInputPageState extends State<TimeInputPage>
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance.removeObserver(this);
+    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
     startTimeController.dispose();
     endTimeController.dispose();
     super.dispose();
@@ -125,13 +123,15 @@ class _TimeInputPageState extends State<TimeInputPage>
   static bool valid(TextEditingController controller) =>
       controller.text.length == 4;
 
-  TimeOfDay newTime(TextEditingController controller, DayPeriod period) =>
-      valid(controller)
-          ? TimeOfDay(
-              hour: in24HourClock(
-                  int.tryParse(controller.text.substring(0, 2)), period),
-              minute: int.tryParse(controller.text.substring(2, 4)))
-          : null;
+  TimeOfDay? newTime(TextEditingController controller, DayPeriod period) {
+    if (valid(controller)) {
+      final hour = int.tryParse(controller.text.substring(0, 2));
+      final minute = int.tryParse(controller.text.substring(2, 4));
+      if (hour != null && minute != null) {
+        return TimeOfDay(hour: in24HourClock(hour, period), minute: minute);
+      }
+    }
+  }
 
   TimeInput get newTimeInput => TimeInput(
         newTime(startTimeController, startTimePeriod),
@@ -262,17 +262,17 @@ class _TimeInputPageState extends State<TimeInputPage>
 
 class _TimeInput extends StatelessWidget {
   const _TimeInput({
-    Key key,
-    @required this.heading,
-    @required this.controller,
-    @required this.focusNode,
-    @required this.twelveHourClock,
-    @required this.period,
-    @required this.onPeriodChanged,
-    @required this.amRadioFieldKey,
-    @required this.pmRadioFieldKey,
-    @required this.inputKey,
-    @required this.onDone,
+    Key? key,
+    required this.heading,
+    required this.controller,
+    required this.focusNode,
+    required this.twelveHourClock,
+    required this.period,
+    required this.onPeriodChanged,
+    required this.amRadioFieldKey,
+    required this.pmRadioFieldKey,
+    required this.inputKey,
+    required this.onDone,
     this.onTimeChanged,
   }) : super(key: key);
 
@@ -281,7 +281,7 @@ class _TimeInput extends StatelessWidget {
   final bool twelveHourClock;
   final DayPeriod period;
   final ValueChanged<DayPeriod> onPeriodChanged;
-  final ValueChanged<String> onTimeChanged;
+  final ValueChanged<String>? onTimeChanged;
   final String heading;
   final Key amRadioFieldKey, pmRadioFieldKey, inputKey;
   final VoidCallback onDone;
@@ -328,17 +328,17 @@ class _TimeInput extends StatelessWidget {
 class _TimeInputStack extends StatefulWidget {
   final TextEditingController editingController;
   final FocusNode editFocus;
-  final ValueChanged<String> onTimeChanged;
+  final ValueChanged<String>? onTimeChanged;
   final VoidCallback onDone;
   final bool twelveHourClock;
-  final Key inputKey;
+  final Key? inputKey;
 
   _TimeInputStack({
     this.inputKey,
-    @required this.editingController,
-    @required this.editFocus,
-    @required this.twelveHourClock,
-    @required this.onDone,
+    required this.editingController,
+    required this.editFocus,
+    required this.twelveHourClock,
+    required this.onDone,
     this.onTimeChanged,
   });
   @override
@@ -346,13 +346,11 @@ class _TimeInputStack extends StatefulWidget {
 }
 
 class _TimeInputStackState extends State<_TimeInputStack> {
-  _TimeInputStackState();
-
   final displayFocus = FocusNode(
     canRequestFocus: false,
   );
 
-  TextEditingController displayController;
+  late TextEditingController displayController;
 
   TextEditingController get editController => widget.editingController;
   FocusNode get editFocus => widget.editFocus;
@@ -380,11 +378,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
             keyboardType: TextInputType.number,
             showCursor: false,
             controller: editController,
-            onChanged: (value) {
-              if (widget.onTimeChanged != null) {
-                widget.onTimeChanged(value);
-              }
-            },
+            onChanged: (value) => widget.onTimeChanged?.call(value),
             onSubmitted: (v) => widget.onDone(),
             textInputAction: TextInputAction.done,
             inputFormatters: [
@@ -475,7 +469,9 @@ class LeadingZeroInputFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final intVal = int.tryParse(newValue.text);
-    if (newValue.text.length == 1 && intVal > (twelveHourClock ? 1 : 2)) {
+    if (newValue.text.length == 1 &&
+        intVal != null &&
+        intVal > (twelveHourClock ? 1 : 2)) {
       return TextEditingValue(
         text: pad0(newValue.text),
         selection: TextSelection.collapsed(offset: 2),
@@ -501,29 +497,30 @@ class TimeInputFormatter extends TextInputFormatter {
   }
 
   bool validTimeInput(String input) {
-    if (input.isEmpty) {
-      return true;
-    }
+    if (input.isEmpty) return true;
     final intVal = int.tryParse(input);
-    if (input.length == 1) {
-      return twelveHourClock ? intVal <= 1 : intVal <= 2;
+    if (intVal == null) return false;
+
+    switch (input.length) {
+      case 1:
+        return twelveHourClock ? intVal <= 1 : intVal <= 2;
+      case 2:
+        return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
+      case 3:
+        final sub = int.tryParse(input.substring(2, 3));
+        return sub != null && sub <= 5;
+      case 4:
+        final sub = int.tryParse(input.substring(2, 4));
+        return sub != null && sub <= 59;
+      default:
+        return false;
     }
-    if (input.length == 2) {
-      return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
-    }
-    if (input.length == 3) {
-      return int.tryParse(input.substring(2, 3)) <= 5;
-    }
-    if (input.length == 4) {
-      return int.tryParse(input.substring(2, 4)) <= 59;
-    }
-    return false;
   }
 }
 
 class TimeInput {
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final TimeOfDay? startTime;
+  final TimeOfDay? endTime;
 
   TimeInput(this.startTime, this.endTime);
 
@@ -535,7 +532,7 @@ class TimeInput {
     return rawTimeOfDay(endTime, twelveHourClock);
   }
 
-  String rawTimeOfDay(TimeOfDay tod, bool twelveHourClock) {
+  String rawTimeOfDay(TimeOfDay? tod, bool twelveHourClock) {
     return tod == null
         ? ''
         : ((twelveHourClock
@@ -549,13 +546,13 @@ class TimeInput {
 class AmPmSelector extends StatelessWidget {
   final DayPeriod groupValue;
   final ValueChanged<DayPeriod> onChanged;
-  final Key amRadioFieldKey;
-  final Key pmRadioFieldKey;
+  final Key? amRadioFieldKey;
+  final Key? pmRadioFieldKey;
 
   const AmPmSelector({
-    Key key,
-    @required this.groupValue,
-    @required this.onChanged,
+    Key? key,
+    required this.groupValue,
+    required this.onChanged,
     this.amRadioFieldKey,
     this.pmRadioFieldKey,
   }) : super(key: key);
@@ -592,15 +589,15 @@ class _AmPmButton extends StatelessWidget {
   final String text;
   final BorderRadius borderRadius;
   final VoidCallback onPressed;
-  final Key buttonKey;
+  final Key? buttonKey;
 
   const _AmPmButton({
-    @required this.buttonKey,
-    @required this.onPressed,
-    @required this.value,
-    @required this.groupValue,
-    @required this.text,
-    @required this.borderRadius,
+    required this.buttonKey,
+    required this.onPressed,
+    required this.value,
+    required this.groupValue,
+    required this.text,
+    required this.borderRadius,
   });
 
   @override

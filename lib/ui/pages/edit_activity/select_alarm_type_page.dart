@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -8,17 +6,17 @@ import 'package:seagull/utils/all.dart';
 
 class _SelectAlarmTypePage extends StatelessWidget {
   final AlarmType alarm;
-  final ValueChanged<AlarmType> onChanged;
+  final ValueChanged<AlarmType?> onChanged;
   final List<Widget> trailing;
-  final GestureTapCallback onOk;
+  final GestureTapCallback? onOk;
 
-  const _SelectAlarmTypePage(
-      {Key key,
-      @required this.alarm,
-      @required this.onChanged,
-      this.trailing = const <Widget>[],
-      this.onOk})
-      : super(key: key);
+  const _SelectAlarmTypePage({
+    Key? key,
+    required this.alarm,
+    required this.onChanged,
+    this.trailing = const <Widget>[],
+    this.onOk,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -81,7 +79,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
 class SelectAlarmTypePage extends StatefulWidget {
   final AlarmType alarm;
 
-  const SelectAlarmTypePage({Key key, @required this.alarm}) : super(key: key);
+  const SelectAlarmTypePage({Key? key, required this.alarm}) : super(key: key);
 
   @override
   _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState(alarm);
@@ -93,22 +91,19 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
   _SelectAlarmTypePageState(this.newAlarm);
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
-        alarm: newAlarm,
-        onOk: newAlarm != widget.alarm
-            ? () => Navigator.of(context).maybePop(newAlarm)
-            : null,
-        onChanged: (v) {
-          setState(() {
-            newAlarm = v;
-          });
-        },
-      );
+      alarm: newAlarm,
+      onOk: newAlarm != widget.alarm
+          ? () => Navigator.of(context).maybePop(newAlarm)
+          : null,
+      onChanged: (v) {
+        if (v != null) setState(() => newAlarm = v);
+      });
 }
 
 class SelectAlarmPage extends StatefulWidget {
   final Alarm alarm;
 
-  const SelectAlarmPage({Key key, @required this.alarm}) : super(key: key);
+  const SelectAlarmPage({Key? key, required this.alarm}) : super(key: key);
 
   @override
   _SelectAlarmPageState createState() => _SelectAlarmPageState(alarm);
@@ -138,7 +133,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
     );
   }
 
-  void _changeType(AlarmType type) =>
+  void _changeType(AlarmType? type) =>
       setState(() => alarm = alarm.copyWith(type: type));
   void _changeStartTime(bool onStart) =>
       setState(() => alarm = alarm.copyWith(onlyStart: onStart));
