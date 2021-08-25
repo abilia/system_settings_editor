@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/gestures.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -7,8 +5,8 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
   final GestureTapCallback onOk;
 
   const NotificationPermissionOffWarningDialog({
-    Key key,
-    @required this.onOk,
+    Key? key,
+    required this.onOk,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodyText2
-                .copyWith(color: AbiliaColors.black75),
+                ?.copyWith(color: AbiliaColors.black75),
             textAlign: TextAlign.center,
           ),
         ),
@@ -50,7 +48,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
 
 class NotificationPermissionWarningDialog extends StatelessWidget {
   const NotificationPermissionWarningDialog({
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => ViewDialog(
@@ -66,7 +64,8 @@ class NotificationPermissionWarningDialog extends StatelessWidget {
 }
 
 class _WarningContent extends StatelessWidget {
-  const _WarningContent({Key key, this.heading, this.body}) : super(key: key);
+  const _WarningContent({Key? key, required this.heading, required this.body})
+      : super(key: key);
   final String heading;
   final Widget body;
   @override
@@ -93,14 +92,14 @@ class _WarningContent extends StatelessWidget {
 
 @visibleForTesting
 class NotificationBodyTextWarning extends StatelessWidget {
-  const NotificationBodyTextWarning({Key key}) : super(key: key);
+  const NotificationBodyTextWarning({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final b1 = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(color: AbiliaColors.black75);
+        ?.copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Tts.fromSemantics(
       SemanticsProperties(

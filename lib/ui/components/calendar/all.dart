@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'app_bars/all.dart';
 export 'timepillar/all.dart';
 export 'agenda.dart';

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:photo_view/photo_view.dart';
@@ -15,23 +13,23 @@ class ActivityImage extends StatelessWidget {
   final bool past;
   final ImageSize imageSize;
   final BoxFit fit;
-  final double size;
+  final double? size;
   static const duration = Duration(milliseconds: 400);
   static const crossPadding = 8.0;
 
   const ActivityImage({
-    Key key,
-    @required this.activityDay,
+    Key? key,
+    required this.activityDay,
     this.size,
     this.past = false,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
   });
 
-  static ActivityImage fromActivityOccasion({
-    Key key,
-    ActivityOccasion activityOccasion,
-    double size,
+  static Widget fromActivityOccasion({
+    Key? key,
+    required ActivityOccasion activityOccasion,
+    double? size,
     ImageSize imageSize = ImageSize.THUMB,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
@@ -57,6 +55,7 @@ class ActivityImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = this.size;
     final activity = activityDay.activity;
     final signedOff = activityDay.isSignedOff, inactive = past || signedOff;
     final image = activity.hasImage
@@ -145,11 +144,11 @@ class ActivityImage extends StatelessWidget {
 
 class CheckedImageWithImagePopup extends StatelessWidget {
   final ActivityDay activityDay;
-  final double size;
+  final double? size;
 
   const CheckedImageWithImagePopup({
-    Key key,
-    this.activityDay,
+    Key? key,
+    required this.activityDay,
     this.size,
   }) : super(key: key);
 
@@ -187,12 +186,12 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 class PhotoCalendarImage extends StatelessWidget {
   final String fileId;
   final String filePath;
-  final Widget errorContent;
+  final Widget? errorContent;
 
   const PhotoCalendarImage({
-    Key key,
-    @required this.fileId,
-    @required this.filePath,
+    Key? key,
+    required this.fileId,
+    required this.filePath,
     this.errorContent,
   }) : super(key: key);
 
@@ -236,13 +235,13 @@ class PhotoCalendarImage extends StatelessWidget {
 class FullScreenImage extends StatelessWidget {
   final String fileId;
   final String filePath;
-  final Decoration backgroundDecoration;
-  final GestureTapCallback onTap;
+  final BoxDecoration? backgroundDecoration;
+  final GestureTapCallback? onTap;
 
   const FullScreenImage({
-    Key key,
-    @required this.fileId,
-    @required this.filePath,
+    Key? key,
+    required this.fileId,
+    required this.filePath,
     this.backgroundDecoration,
     this.onTap,
   }) : super(key: key);
@@ -261,21 +260,25 @@ class FullScreenImage extends StatelessWidget {
             GetIt.I<FileStorage>(),
             imageSize: ImageSize.ORIGINAL,
           );
+          ImageProvider getProvider() {
+            if (file != null) return FileImage(file);
+            if (state is Authenticated) {
+              return NetworkImage(
+                imageThumbUrl(
+                  baseUrl: state.userRepository.baseUrl,
+                  userId: state.userId,
+                  imageFileId: fileId,
+                  imagePath: filePath,
+                ),
+                headers: authHeader(state.token),
+              );
+            }
+            return MemoryImage(kTransparentImage);
+          }
+
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
-            imageProvider: file != null
-                ? FileImage(file)
-                : (state is Authenticated)
-                    ? NetworkImage(
-                        imageThumbUrl(
-                          baseUrl: state.userRepository.baseUrl,
-                          userId: state.userId,
-                          imageFileId: fileId,
-                          imagePath: filePath,
-                        ),
-                        headers: authHeader(state.token),
-                      )
-                    : MemoryImage(kTransparentImage),
+            imageProvider: getProvider(),
           );
         });
       }),
@@ -285,13 +288,13 @@ class FullScreenImage extends StatelessWidget {
 
 class FadeInCalendarImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
-  final double width, height;
+  final double? width, height;
   final ImageSize imageSize;
   final BoxFit fit;
   FadeInCalendarImage({
-    Key key,
-    @required this.imageFileId,
-    @required this.imageFilePath,
+    Key? key,
+    required this.imageFileId,
+    required this.imageFilePath,
     this.width,
     this.height,
     this.imageSize = ImageSize.THUMB,
@@ -304,8 +307,7 @@ class FadeInCalendarImage extends StatelessWidget {
       width: width,
     );
 
-    if ((imageFileId == null || imageFileId.isEmpty) &&
-        (imageFilePath == null || imageFilePath.isEmpty)) {
+    if (imageFileId.isEmpty && imageFilePath.isEmpty) {
       return emptyImage;
     }
 
@@ -341,15 +343,15 @@ class FadeInCalendarImage extends StatelessWidget {
 
 class FadeInAbiliaImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
-  final double width, height;
+  final double? width, height;
   final BoxFit fit;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
   final radius = BorderRadius.circular(12.s);
 
   FadeInAbiliaImage({
-    Key key,
-    @required this.imageFileId,
-    this.imageFilePath,
+    Key? key,
+    required this.imageFileId,
+    this.imageFilePath = '',
     this.height,
     this.width,
     this.fit = BoxFit.cover,
@@ -363,8 +365,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       width: width,
     );
 
-    if ((imageFileId == null || imageFileId.isEmpty) &&
-        (imageFilePath == null || imageFilePath.isEmpty)) {
+    if (imageFileId.isEmpty && imageFilePath.isEmpty) {
       return emptyImage;
     }
 
@@ -401,11 +402,11 @@ class FadeInAbiliaImage extends StatelessWidget {
 
 class FadeInNetworkImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
-  final double width, height;
+  final double? width, height;
   final BoxFit fit;
   FadeInNetworkImage({
-    @required this.imageFileId,
-    @required this.imageFilePath,
+    required this.imageFileId,
+    required this.imageFilePath,
     this.fit = BoxFit.cover,
     this.width,
     this.height,

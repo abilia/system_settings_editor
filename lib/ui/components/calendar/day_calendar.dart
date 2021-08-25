@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DayCalendar extends StatelessWidget {
-  const DayCalendar({Key key}) : super(key: key);
+  const DayCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +65,18 @@ class DayCalendar extends StatelessWidget {
 }
 
 class Calendars extends StatefulWidget {
-  const Calendars({Key key}) : super(key: key);
+  const Calendars({Key? key}) : super(key: key);
 
   @override
   _CalendarsState createState() => _CalendarsState();
 }
 
 class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
-  PageController pageController;
+  late PageController pageController;
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     pageController = PageController(
       initialPage: context.read<DayPickerBloc>().state.index,
     );
@@ -86,7 +84,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     pageController.dispose();
     super.dispose();
   }

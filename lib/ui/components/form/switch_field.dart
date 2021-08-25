@@ -1,21 +1,19 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class SwitchField extends StatelessWidget {
-  final ValueChanged<bool> onChanged;
-  final Widget leading;
+  final ValueChanged<bool>? onChanged;
+  final Widget? leading;
   final Widget child;
-  final String ttsData;
-  final double heigth, width;
+  final String? ttsData;
+  final double? heigth, width;
   final bool value;
-  final Decoration decoration;
+  final Decoration? decoration;
   static final defaultHeight = 56.s;
 
   const SwitchField({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.onChanged,
     this.leading,
     this.heigth,
@@ -23,12 +21,13 @@ class SwitchField extends StatelessWidget {
     this.value = false,
     this.decoration,
     this.ttsData,
-  })  : assert(child != null),
-        assert(child is Text || ttsData != null),
+  })  : assert(child is Text || ttsData != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final leading = this.leading;
+    final onChanged = this.onChanged;
     final switchToggle = Switch(
       value: value,
       onChanged: onChanged,
@@ -59,14 +58,17 @@ class SwitchField extends StatelessWidget {
                   children: <Widget>[
                     if (leading != null) ...[
                       IconTheme(
-                          data: Theme.of(context)
-                              .iconTheme
-                              .copyWith(size: smallIconSize),
-                          child: leading),
+                        data: Theme.of(context)
+                            .iconTheme
+                            .copyWith(size: smallIconSize),
+                        child: leading,
+                      ),
                       SizedBox(width: 12.s),
                     ],
                     DefaultTextStyle(
-                      style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                      style:
+                          (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                              .copyWith(height: 1.0),
                       child: child,
                     ),
                   ],

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -37,7 +35,8 @@ class LongPressInfoDialog extends StatelessWidget {
             child: Text(
               translate.longPressInfoText,
               textAlign: TextAlign.center,
-              style: abiliaTextTheme.bodyText2.copyWith(
+              style:
+                  (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
                 color: AbiliaColors.black75,
               ),
             ),

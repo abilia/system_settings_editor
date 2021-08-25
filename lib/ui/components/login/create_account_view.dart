@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -12,9 +10,10 @@ class MEMOplannerLoginFooter extends StatelessWidget {
         Tts(
           child: Text(
             Translator.of(context).translate.createAccountHint,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: AbiliaColors.black75,
-                ),
+            style:
+                (Theme.of(context).textTheme.bodyText1 ?? bodyText1).copyWith(
+              color: AbiliaColors.black75,
+            ),
           ),
         ),
         Padding(
@@ -38,7 +37,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
 }
 
 class GoToCreateAccountButton extends StatelessWidget {
-  const GoToCreateAccountButton({Key key}) : super(key: key);
+  const GoToCreateAccountButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
