@@ -113,7 +113,7 @@ class PreviewTimePillar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TimepillarBloc.fake(state: ts),
+          create: (context) => TimepillarBloc.fixed(state: ts),
         ),
         BlocProvider(
           create: (context) => ClockBloc(
@@ -148,7 +148,6 @@ class PreviewTimePillar extends StatelessWidget {
                         use12h: tpState.use12h,
                         nightParts: [],
                         interval: interval,
-                        showTimeLine: tpState.timeline,
                         columnOfDots: tpState.columnOfDots,
                       ),
                     ),
