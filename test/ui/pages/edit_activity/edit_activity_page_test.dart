@@ -2000,6 +2000,7 @@ text''';
       await tester.goToRecurrenceTab();
 
       // Assert -- date picker visible
+      await tester.scrollDown();
       await tester.tap(find.byType(EndDateWidget));
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
@@ -2333,12 +2334,12 @@ text''';
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
-          exact: translate.name);
+          exact: translate.name, warnIfMissed: false);
 
       await tester.enterText_(find.byKey(TestKey.editTitleTextFormField), name);
 
       await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
-          exact: name);
+          exact: name, warnIfMissed: false);
     });
 
     testWidgets('image', (WidgetTester tester) async {
@@ -2417,10 +2418,16 @@ text''';
         await tester.pumpAndSettle();
 
         // Assert
-        await tester.verifyTts(endTimeInputFinder,
-            exact: '${translate.endTime} 02:55 PM');
-        await tester.verifyTts(startTimeInputFinder,
-            exact: '${translate.startTime} 11:55 AM');
+        await tester.verifyTts(
+          endTimeInputFinder,
+          exact: '${translate.endTime} 02:55 PM',
+          warnIfMissed: false,
+        );
+        await tester.verifyTts(
+          startTimeInputFinder,
+          exact: '${translate.startTime} 11:55 AM',
+          warnIfMissed: false,
+        );
 
         // Act change to period
         await tester.tap(startTimePmRadioFinder);
@@ -2429,10 +2436,16 @@ text''';
         await tester.pumpAndSettle();
 
         // Assert
-        await tester.verifyTts(endTimeInputFinder,
-            exact: '${translate.endTime} 02:55 AM');
-        await tester.verifyTts(startTimeInputFinder,
-            exact: '${translate.startTime} 11:55 PM');
+        await tester.verifyTts(
+          endTimeInputFinder,
+          exact: '${translate.endTime} 02:55 AM',
+          warnIfMissed: false,
+        );
+        await tester.verifyTts(
+          startTimeInputFinder,
+          exact: '${translate.startTime} 11:55 PM',
+          warnIfMissed: false,
+        );
       });
 
       testWidgets('start/endtime 24h', (WidgetTester tester) async {
@@ -2458,10 +2471,16 @@ text''';
         await tester.pumpAndSettle();
 
         // Assert
-        await tester.verifyTts(startTimeInputFinder,
-            exact: '${translate.startTime} 11:55');
-        await tester.verifyTts(endTimeInputFinder,
-            exact: '${translate.endTime} 14:55');
+        await tester.verifyTts(
+          startTimeInputFinder,
+          exact: '${translate.startTime} 11:55',
+          warnIfMissed: false,
+        );
+        await tester.verifyTts(
+          endTimeInputFinder,
+          exact: '${translate.endTime} 14:55',
+          warnIfMissed: false,
+        );
       });
 
       testWidgets('invalid input tts', (WidgetTester tester) async {
@@ -2487,10 +2506,12 @@ text''';
         await tester.verifyTts(
           startTimeInputFinder,
           exact: translate.startTime,
+          warnIfMissed: false,
         );
         await tester.verifyTts(
           endTimeInputFinder,
           exact: translate.endTime,
+          warnIfMissed: false,
         );
       });
     });

@@ -129,6 +129,7 @@ setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	V
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
 save	Save	Spara	Spare	Sparen	Tallentaa	Sparen	Spare
 endBeforeStartError	End date can't be before start date	Slutdatum kan inte vara före startdatum	Slutdato kan ikke være før startdato	Einddatum mag niet voor startdatum liggen	Päättymispäivä ei voi olla ennen alkamispäivää	Das Enddatum kann nicht vor dem Startdatum liegen	Sluttdato kan ikke være før startdato
+enterTitleAndImage	Enter title and image	Välj title och bild 					
 							
 ### Errors & warnings							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil

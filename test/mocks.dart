@@ -240,8 +240,9 @@ extension OurEnterText on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future verifyTts(Finder finder, {String contains, String exact}) async {
-    await longPress(finder);
+  Future verifyTts(Finder finder,
+      {String contains, String exact, bool warnIfMissed = true}) async {
+    await longPress(finder, warnIfMissed: warnIfMissed);
     final arg = verify(GetIt.I<FlutterTts>().speak(captureAny)).captured.first
         as String;
     if (contains != null) {

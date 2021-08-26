@@ -261,6 +261,8 @@ abstract class Translated {
 
   final String endBeforeStartError = "End date can't be before start date";
 
+  final String enterTitleAndImage = 'Enter title and image';
+
   final String error = 'Error';
 
   final String warning = 'Warning';
@@ -1027,6 +1029,9 @@ class SV extends Translated {
 
   @override
   final String endBeforeStartError = 'Slutdatum kan inte vara före startdatum';
+
+  @override
+  final String enterTitleAndImage = 'Välj title och bild ';
 
   @override
   final String error = 'Fel';
