@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/all.dart';
 
 part 'activity_wizard_state.dart';
 
