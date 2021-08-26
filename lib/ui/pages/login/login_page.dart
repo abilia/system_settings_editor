@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -12,14 +10,14 @@ class LoginPage extends StatelessWidget {
   final Unauthenticated authState;
 
   const LoginPage({
-    Key key,
-    @required this.authState,
+    Key? key,
+    required this.authState,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    if (authState?.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
+    if (authState.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
       Future.delayed(
         Duration.zero,
         () => showViewDialog(

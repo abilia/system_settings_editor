@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class WeekAppBarSettingsTab extends StatelessWidget {
-  const WeekAppBarSettingsTab({Key key}) : super(key: key);
+  const WeekAppBarSettingsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
 }
 
 class WeekAppBarPreview extends StatelessWidget {
-  const WeekAppBarPreview({Key key}) : super(key: key);
+  const WeekAppBarPreview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

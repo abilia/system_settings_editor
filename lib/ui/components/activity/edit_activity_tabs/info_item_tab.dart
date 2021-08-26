@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -7,8 +5,8 @@ import 'package:seagull/ui/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   InfoItemTab({
-    Key key,
-    @required this.state,
+    Key? key,
+    required this.state,
   }) : super(key: key);
 
   final EditActivityState state;
@@ -73,10 +71,10 @@ class EditChecklistWidget extends StatelessWidget {
   final GestureTapCallback onTap;
 
   const EditChecklistWidget({
-    Key key,
-    @required this.activity,
-    @required this.checklist,
-    @required this.onTap,
+    Key? key,
+    required this.activity,
+    required this.checklist,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -142,7 +140,7 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 16.0.s),
-                    child: Tts(
+                    child: Tts.data(
                       data: Translator.of(context).translate.addNew,
                       child: RawMaterialButton(
                         constraints: BoxConstraints(minHeight: 48.0.s),
@@ -167,7 +165,7 @@ class EditChecklistWidget extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
-                                  .copyWith(height: 1),
+                                  ?.copyWith(height: 1),
                             ),
                           ],
                         ),
@@ -262,10 +260,10 @@ class EditNoteWidget extends StatelessWidget {
   final GestureTapCallback onTap;
 
   const EditNoteWidget({
-    Key key,
-    @required this.activity,
-    @required this.infoItem,
-    @required this.onTap,
+    Key? key,
+    required this.activity,
+    required this.infoItem,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -316,7 +314,7 @@ class EditNoteWidget extends StatelessWidget {
                     ? Text(
                         Translator.of(context).translate.typeSomething,
                         style: abiliaTextTheme.bodyText1
-                            .copyWith(color: const Color(0xff747474)),
+                            ?.copyWith(color: const Color(0xff747474)),
                       )
                     : Text(infoItem.text),
               ),
@@ -361,9 +359,9 @@ class EditNoteWidget extends StatelessWidget {
 }
 
 class _LibraryButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
-  const _LibraryButton({Key key, this.onPressed}) : super(key: key);
+  const _LibraryButton({Key? key, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(

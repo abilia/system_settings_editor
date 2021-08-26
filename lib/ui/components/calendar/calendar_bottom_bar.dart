@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
   static final barHeigt = 64.0.s;
-  const CalendarBottomBar({Key key}) : super(key: key);
+  const CalendarBottomBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

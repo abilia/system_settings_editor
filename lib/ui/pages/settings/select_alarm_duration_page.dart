@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
@@ -11,10 +9,10 @@ class SelectAlarmDurationPage extends StatefulWidget {
   final String appBarTitle;
 
   const SelectAlarmDurationPage({
-    Key key,
-    @required this.duration,
-    @required this.appBarIcon,
-    @required this.appBarTitle,
+    Key? key,
+    required this.duration,
+    required this.appBarIcon,
+    required this.appBarTitle,
   }) : super(key: key);
 
   @override
@@ -23,7 +21,7 @@ class SelectAlarmDurationPage extends StatefulWidget {
 }
 
 class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
-  AlarmDuration selectedAlarmDuration;
+  late AlarmDuration selectedAlarmDuration;
 
   @override
   void initState() {
@@ -71,6 +69,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
     );
   }
 
-  void setSelectedAlarmDuration(AlarmDuration d) =>
-      setState(() => selectedAlarmDuration = d);
+  void setSelectedAlarmDuration(AlarmDuration? d) {
+    if (d != null) setState(() => selectedAlarmDuration = d);
+  }
 }

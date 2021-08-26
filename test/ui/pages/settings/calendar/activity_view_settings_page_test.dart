@@ -31,6 +31,7 @@ void main() {
     generics = [];
     activities = [];
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockBatch = MockBatch();
     when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
@@ -62,7 +63,6 @@ void main() {
         genericResponse: () => generics,
         activityResponse: () => activities,
       )
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb

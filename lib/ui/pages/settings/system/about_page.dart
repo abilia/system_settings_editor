@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
@@ -8,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/version.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key key}) : super(key: key);
+  const AboutPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -19,7 +17,7 @@ class AboutPage extends StatelessWidget {
         iconData: AbiliaIcons.information,
       ),
       body: DefaultTextStyle(
-        style: textTheme.bodyText1,
+        style: textTheme.bodyText1 ?? bodyText1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,11 +26,11 @@ class AboutPage extends StatelessWidget {
               Text(
                 translate.version,
                 style:
-                    textTheme.bodyText2.copyWith(color: AbiliaColors.black75),
+                    textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
               ),
               SizedBox(height: 8.0.s),
               DefaultTextStyle(
-                style: textTheme.headline6,
+                style: textTheme.headline6 ?? headline6,
                 child: Version(),
               ),
               Divider(height: 32.0.s),
@@ -40,7 +38,7 @@ class AboutPage extends StatelessWidget {
               Text(
                 translate.producer,
                 style:
-                    textTheme.bodyText2.copyWith(color: AbiliaColors.black75),
+                    textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
               ),
               SizedBox(height: 8.0.s),
               Text(
@@ -81,7 +79,7 @@ class AboutPage extends StatelessWidget {
 }
 
 class Version extends StatelessWidget {
-  const Version({Key key}) : super(key: key);
+  const Version({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) =>
       Tts(child: Text(_versionText(GetIt.I<PackageInfo>())));

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -9,23 +7,24 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage({
-    Key key,
-    @required this.selectedItemGenerator,
-    @required this.libraryItemGenerator,
-    @required this.emptyLibraryMessage,
-    @required this.onOk,
+    Key? key,
+    required this.selectedItemGenerator,
+    required this.libraryItemGenerator,
+    required this.emptyLibraryMessage,
+    required this.onOk,
     this.libraryFolderGenerator,
     this.onCancel,
     this.appBar,
     this.rootHeading,
   }) : super(key: key);
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget? appBar;
   final Function(Sortable<T>) onOk;
-  final VoidCallback onCancel;
+  final VoidCallback? onCancel;
   final LibraryItemGenerator<T> selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final LibraryItemGenerator<T> libraryFolderGenerator;
-  final String emptyLibraryMessage, rootHeading;
+  final LibraryItemGenerator<T>? libraryFolderGenerator;
+  final String emptyLibraryMessage;
+  final String? rootHeading;
 
   @override
   Widget build(BuildContext context) {
@@ -34,39 +33,42 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
-        builder: (context, state) => Scaffold(
-          appBar: appBar ??
-              AbiliaAppBar(
-                iconData: AbiliaIcons.documents,
-                title: Translator.of(context).translate.selectFromLibrary,
-              ),
-          body: Column(
-            children: [
-              if (!state.isAtRootAndNoSelection || rootHeading != null)
-                LibraryHeading<T>(
-                  sortableArchiveState: state,
-                  rootHeading: rootHeading,
+        builder: (context, state) {
+          final selected = state.selected;
+          return Scaffold(
+            appBar: appBar ??
+                AbiliaAppBar(
+                  iconData: AbiliaIcons.documents,
+                  title: Translator.of(context).translate.selectFromLibrary,
                 ),
-              Expanded(
-                child: state.isSelected
-                    ? selectedItemGenerator(state.selected)
-                    : SortableLibrary<T>(
-                        libraryItemGenerator,
-                        emptyLibraryMessage,
-                        libraryFolderGenerator: libraryFolderGenerator,
-                      ),
-              ),
-            ],
-          ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(onPressed: onCancel),
-            forwardNavigationWidget: state.isSelected
-                ? OkButton(
-                    onPressed: () => onOk(state.selected),
-                  )
-                : null,
-          ),
-        ),
+            body: Column(
+              children: [
+                if (!state.isAtRootAndNoSelection || rootHeading != null)
+                  LibraryHeading<T>(
+                    sortableArchiveState: state,
+                    rootHeading: rootHeading,
+                  ),
+                Expanded(
+                  child: selected != null
+                      ? selectedItemGenerator(selected)
+                      : SortableLibrary<T>(
+                          libraryItemGenerator,
+                          emptyLibraryMessage,
+                          libraryFolderGenerator: libraryFolderGenerator,
+                        ),
+                ),
+              ],
+            ),
+            bottomNavigationBar: BottomNavigation(
+              backNavigationWidget: CancelButton(onPressed: onCancel),
+              forwardNavigationWidget: selected != null
+                  ? OkButton(
+                      onPressed: () => onOk(selected),
+                    )
+                  : null,
+            ),
+          );
+        },
       ),
     );
   }
@@ -74,17 +76,17 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
   LibraryHeading({
-    Key key,
-    @required this.sortableArchiveState,
-    String rootHeading,
-  })  : heading = _getLibraryHeading(sortableArchiveState, rootHeading),
+    Key? key,
+    required this.sortableArchiveState,
+    required String? rootHeading,
+  })  : heading = _getLibraryHeading(sortableArchiveState, rootHeading) ?? '',
         super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String heading;
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: heading,
       child: Padding(
         padding: EdgeInsets.only(right: 12.s),
@@ -114,15 +116,17 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     );
   }
 
-  static String _getLibraryHeading(
-      SortableArchiveState state, String rootHeading) {
+  static String? _getLibraryHeading(
+    SortableArchiveState state,
+    String? rootHeading,
+  ) {
     if (state.isAtRootAndNoSelection) {
       return rootHeading;
     }
     if (state.isSelected) {
-      return state.selected.data.title() ?? '';
+      return state.selected?.data.title();
     }
-    return state.allById[state.currentFolderId]?.data?.title();
+    return state.allById[state.currentFolderId]?.data.title();
   }
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
@@ -139,7 +143,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
 class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final LibraryItemGenerator<T> libraryFolderGenerator;
+  final LibraryItemGenerator<T>? libraryFolderGenerator;
   final String emptyLibraryMessage;
 
   SortableLibrary(
@@ -154,7 +158,7 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
 
 class _SortableLibraryState<T extends SortableData>
     extends State<SortableLibrary<T>> {
-  ScrollController _controller;
+  late ScrollController _controller;
 
   @override
   void initState() {
@@ -166,7 +170,7 @@ class _SortableLibraryState<T extends SortableData>
   Widget build(BuildContext context) {
     return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final List<Sortable<T>> currentFolderContent =
+        final currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         if (currentFolderContent.isEmpty) {
@@ -175,6 +179,7 @@ class _SortableLibraryState<T extends SortableData>
             rootFolder: archiveState.isAtRoot,
           );
         }
+        final libraryFolderGenerator = widget.libraryFolderGenerator;
         return VerticalScrollArrows(
           controller: _controller,
           child: GridView.count(
@@ -199,13 +204,13 @@ class _SortableLibraryState<T extends SortableData>
                               BlocProvider.of<SortableArchiveBloc<T>>(context)
                                   .add(FolderChanged(sortable.id));
                             },
-                            child: widget.libraryFolderGenerator == null
+                            child: libraryFolderGenerator == null
                                 ? LibraryFolder(
                                     title: sortable.data.title(),
                                     fileId: sortable.data.folderFileId(),
                                     filePath: sortable.data.folderFilePath(),
                                   )
-                                : widget.libraryFolderGenerator(sortable),
+                                : libraryFolderGenerator(sortable),
                           ),
                         )
                       : Material(
@@ -229,9 +234,9 @@ class _SortableLibraryState<T extends SortableData>
 
 class EmptyLibraryMessage extends StatelessWidget {
   const EmptyLibraryMessage({
-    Key key,
-    @required this.emptyLibraryMessage,
-    @required this.rootFolder,
+    Key? key,
+    required this.emptyLibraryMessage,
+    required this.rootFolder,
   }) : super(key: key);
 
   final String emptyLibraryMessage;
@@ -251,7 +256,7 @@ class EmptyLibraryMessage extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
-                .copyWith(color: AbiliaColors.black75),
+                ?.copyWith(color: AbiliaColors.black75),
           ),
         ),
       ),
@@ -261,13 +266,13 @@ class EmptyLibraryMessage extends StatelessWidget {
 
 class LibraryFolder extends StatelessWidget {
   final String title, fileId, filePath;
-  final Color color;
+  final Color? color;
 
   const LibraryFolder({
-    Key key,
-    @required this.title,
-    this.fileId,
-    this.filePath,
+    Key? key,
+    required this.title,
+    this.fileId = '',
+    this.filePath = '',
     this.color,
   }) : super(key: key);
 

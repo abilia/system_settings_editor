@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -9,7 +7,7 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   final EditActivityState state;
-  const ActivityNameAndPictureWidget(this.state, {Key key}) : super(key: key);
+  const ActivityNameAndPictureWidget(this.state, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +33,22 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 
 class NameAndPictureWidget extends StatelessWidget {
   final SelectedImage selectedImage;
-  final void Function(SelectedImage) onImageSelected;
-  final void Function(String) onTextEdit;
+  final void Function(SelectedImage)? onImageSelected;
+  final void Function(String)? onTextEdit;
   final bool errorState;
   final String text;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
 
   const NameAndPictureWidget({
-    Key key,
-    this.selectedImage,
+    Key? key,
+    required this.selectedImage,
     this.onImageSelected,
     this.onTextEdit,
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
-    this.text,
+    required this.text,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -84,13 +82,13 @@ class SelectPictureWidget extends StatelessWidget {
   static final imageSize = 84.0.s, padding = 4.0.s;
   final SelectedImage selectedImage;
 
-  final void Function(SelectedImage) onImageSelected;
+  final void Function(SelectedImage)? onImageSelected;
   final bool errorState;
 
   const SelectPictureWidget({
-    Key key,
-    @required this.selectedImage,
-    @required this.onImageSelected,
+    Key? key,
+    required this.selectedImage,
+    this.onImageSelected,
     this.errorState = false,
   }) : super(key: key);
 
@@ -141,7 +139,7 @@ class SelectPictureWidget extends StatelessWidget {
 }
 
 class SelectedImageWidget extends StatelessWidget {
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final SelectedImage selectedImage;
 
   final bool errorState;
@@ -150,8 +148,8 @@ class SelectedImageWidget extends StatelessWidget {
       SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
 
   const SelectedImageWidget({
-    Key key,
-    @required this.selectedImage,
+    Key? key,
+    required this.selectedImage,
     this.errorState = false,
     this.onTap,
   }) : super(key: key);
@@ -190,8 +188,8 @@ class SelectedImageWidget extends StatelessWidget {
 
 class NameInput extends StatelessWidget {
   const NameInput({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.onEdit,
     this.errorState = false,
     this.maxLines = 1,
@@ -199,7 +197,7 @@ class NameInput extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final Function(String) onEdit;
+  final Function(String)? onEdit;
   final bool errorState;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
@@ -224,7 +222,7 @@ class NameInput extends StatelessWidget {
 class CategoryWidget extends StatelessWidget {
   final Activity activity;
 
-  const CategoryWidget(this.activity, {Key key}) : super(key: key);
+  const CategoryWidget(this.activity, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -272,12 +270,12 @@ class _CategoryRadioField extends StatelessWidget {
   final Key radioKey;
 
   const _CategoryRadioField({
-    Key key,
-    @required this.label,
-    @required this.activity,
-    @required this.category,
-    @required this.radioKey,
-    @required this.fileId,
+    Key? key,
+    required this.label,
+    required this.activity,
+    required this.category,
+    required this.radioKey,
+    required this.fileId,
   }) : super(key: key);
 
   @override
@@ -322,7 +320,7 @@ class _CategoryRadioField extends StatelessWidget {
 class AlarmWidget extends StatelessWidget {
   final Activity activity;
 
-  const AlarmWidget(this.activity, {Key key}) : super(key: key);
+  const AlarmWidget(this.activity, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -373,9 +371,9 @@ class AlarmWidget extends StatelessWidget {
 
 class AlarmOnlyAtStartSwitch extends StatelessWidget {
   const AlarmOnlyAtStartSwitch({
-    Key key,
-    @required this.alarm,
-    @required this.onChanged,
+    Key? key,
+    required this.alarm,
+    required this.onChanged,
   }) : super(key: key);
 
   final Alarm alarm;
@@ -397,7 +395,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
 class CheckableAndDeleteAfterWidget extends StatelessWidget {
   final Activity activity;
 
-  const CheckableAndDeleteAfterWidget(this.activity, {Key key})
+  const CheckableAndDeleteAfterWidget(this.activity, {Key? key})
       : super(key: key);
 
   @override
@@ -437,7 +435,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
 class AvailableForWidget extends StatelessWidget {
   final Activity activity;
 
-  const AvailableForWidget(this.activity, {Key key}) : super(key: key);
+  const AvailableForWidget(this.activity, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final secret = activity.secret;
@@ -473,7 +471,7 @@ class AvailableForWidget extends StatelessWidget {
 class RecurrenceWidget extends StatelessWidget {
   final EditActivityState state;
 
-  const RecurrenceWidget(this.state, {Key key}) : super(key: key);
+  const RecurrenceWidget(this.state, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -540,7 +538,7 @@ class RecurrenceWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  const EndDateWidget({Key key}) : super(key: key);
+  const EndDateWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -608,7 +606,7 @@ class WeekDays extends StatelessWidget {
   final Set<int> selectedWeekDays;
   const WeekDays(
     this.selectedWeekDays, {
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -621,7 +619,7 @@ class WeekDays extends StatelessWidget {
           text: Text(
             Translator.of(context).translate.shortWeekday(d),
             style:
-                Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5.s),
+                Theme.of(context).textTheme.bodyText1?.copyWith(height: 1.5.s),
           ),
           selected: selectedWeekDays.contains(d),
           onTap: () =>
@@ -637,7 +635,7 @@ class MonthDays extends StatelessWidget {
 
   const MonthDays(
     this.activity, {
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -651,7 +649,7 @@ class MonthDays extends StatelessWidget {
             text: Text(
               '$d',
               style:
-                  Theme.of(context).textTheme.bodyText1.copyWith(height: 1.5),
+                  Theme.of(context).textTheme.bodyText1?.copyWith(height: 1.5),
             ),
             selected: selectedMonthDays.contains(d),
             onTap: () {

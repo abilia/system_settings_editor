@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DayColorsSettingsTab extends StatelessWidget {
-  const DayColorsSettingsTab({Key key}) : super(key: key);
+  const DayColorsSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
@@ -27,7 +25,7 @@ class DayColorsSettingsTab extends StatelessWidget {
               ),
             ),
             ...DayColor.values.map(
-              (dc) => RadioField(
+              (dc) => RadioField<DayColor>(
                 key: Key('$dc'),
                 text: Text(_title(dc, Translator.of(context).translate)),
                 value: dc,

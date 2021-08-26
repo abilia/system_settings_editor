@@ -8,5 +8,6 @@ typedef AlarmScheduler = Future Function(
   String language,
   bool alwaysUse24HourFormat,
   MemoplannerSettings settings,
-  FileStorage fileStorage,
-);
+  FileStorage fileStorage, {
+  DateTime Function()? now,
+});

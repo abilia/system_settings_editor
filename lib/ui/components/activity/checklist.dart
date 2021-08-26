@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +6,8 @@ import 'package:seagull/ui/all.dart';
 
 class ChecklistView extends StatefulWidget {
   final Checklist checklist;
-  final DateTime day;
-  final Function(Question) onTap;
+  final DateTime? day;
+  final Function(Question)? onTap;
   final EdgeInsetsGeometry padding;
   final bool preview;
 
@@ -17,9 +15,9 @@ class ChecklistView extends StatefulWidget {
     this.checklist, {
     this.day,
     this.onTap,
-    Key key,
     this.padding = EdgeInsets.zero,
     this.preview = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -27,7 +25,7 @@ class ChecklistView extends StatefulWidget {
 }
 
 class _ChecklistViewState extends State<ChecklistView> {
-  ScrollController _controller;
+  late final ScrollController _controller;
   @override
   void initState() {
     super.initState();
@@ -44,12 +42,15 @@ class _ChecklistViewState extends State<ChecklistView> {
         itemCount: widget.checklist.questions.length,
         itemBuilder: (context, i) {
           final question = widget.checklist.questions[i];
+          final day = widget.day;
           return QuestionView(
             question,
             inactive: widget.preview,
-            signedOff: widget.day != null &&
-                widget.checklist.isSignedOff(question, widget.day),
-            onTap: widget.onTap != null ? () => widget.onTap(question) : null,
+            signedOff:
+                day != null && widget.checklist.isSignedOff(question, day),
+            onTap: widget.onTap != null
+                ? () => widget.onTap?.call(question)
+                : null,
           );
         },
       ),
@@ -60,12 +61,12 @@ class _ChecklistViewState extends State<ChecklistView> {
 class QuestionView extends StatelessWidget {
   final Question question;
   final bool signedOff;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final bool inactive;
 
   const QuestionView(
     this.question, {
-    @required this.onTap,
+    this.onTap,
     this.signedOff = false,
     key,
     this.inactive = false,
@@ -80,7 +81,7 @@ class QuestionView extends StatelessWidget {
     final textTheme = theme.textTheme;
     final selectedTheme = theme.copyWith(
       textTheme: textTheme.copyWith(
-        bodyText1: textTheme.bodyText1.copyWith(
+        bodyText1: textTheme.bodyText1?.copyWith(
           color: AbiliaColors.white140,
           decoration: TextDecoration.lineThrough,
         ),
@@ -150,7 +151,7 @@ class QuestionView extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
-                                  .copyWith(height: 1.0),
+                                  ?.copyWith(height: 1.0),
                             ),
                           ),
                         ),

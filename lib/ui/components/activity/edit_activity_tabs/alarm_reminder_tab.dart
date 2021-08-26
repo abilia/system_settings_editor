@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AlarmAndReminderTab extends StatefulWidget {
   AlarmAndReminderTab({
-    Key key,
-    @required this.activity,
+    Key? key,
+    required this.activity,
   }) : super(key: key);
 
   final Activity activity;
@@ -17,7 +15,7 @@ class AlarmAndReminderTab extends StatefulWidget {
 
 class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
     with EditActivityTab {
-  ScrollController _scrollController;
+  late final ScrollController _scrollController;
   @override
   void initState() {
     super.initState();

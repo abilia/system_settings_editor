@@ -41,6 +41,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
@@ -70,7 +71,6 @@ void main() {
       ..client = Fakes.client()
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
-      ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
       ..syncDelay = SyncDelays.zero

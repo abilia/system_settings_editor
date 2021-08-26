@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -14,9 +12,9 @@ import 'package:seagull/ui/all.dart';
 class ActivityBoard extends StatelessWidget {
   const ActivityBoard(
     this.boardData, {
-    @required this.categoryMinWidth,
-    @required this.timepillarWidth,
-    Key key,
+    required this.categoryMinWidth,
+    required this.timepillarWidth,
+    Key? key,
   }) : super(key: key);
 
   final ActivityBoardData boardData;
@@ -42,8 +40,8 @@ class ActivityBoard extends StatelessWidget {
         ts.dotDistance +
         ts.imageHeight +
         ts.padding * 2 +
-        textStyle.fontSize *
-            textStyle.height *
+        (textStyle.fontSize ?? catptionFontSize) *
+            (textStyle.height ?? 1.0) *
             ActivityTimepillarCard.maxTitleLines;
 
     activities.sort((a1, a2) => a1.start.compareTo(a2.start));
@@ -91,7 +89,7 @@ class ActivityBoard extends StatelessWidget {
 
       final top = topOffset + TimepillarCalendar.topMargin + ts.topPadding;
 
-      Widget card(int col) => ActivityTimepillarCard(
+      ActivityTimepillarCard card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),
             activityOccasion: ao,
             dots: dots,
@@ -129,7 +127,7 @@ class ActivityBoardData {
 
   ActivityBoardData(
     this.cards, {
-    this.columns,
+    required this.columns,
   }) : heigth = cards.fold(
             0.0, (previousValue, card) => max(card.endPos, previousValue));
 }

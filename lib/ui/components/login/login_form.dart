@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key key}) : super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class LoginForm extends StatelessWidget {
                         ? translate.loginHintMPGO
                         : translate.loginHintMP,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyText1
+                    style: (theme.textTheme.bodyText1 ?? bodyText1)
                         .copyWith(color: AbiliaColors.black75),
                   ),
                 ),
@@ -74,17 +72,17 @@ class LoginForm extends StatelessWidget {
 
 class UsernameInput extends StatelessWidget {
   const UsernameInput({
-    Key key,
-    this.initialValue,
-    this.errorState,
+    Key? key,
+    required this.initialValue,
+    this.errorState = false,
     this.onChanged,
     this.inputValid,
   }) : super(key: key);
 
   final String initialValue;
   final bool errorState;
-  final void Function(String) onChanged;
-  final bool Function(String) inputValid;
+  final void Function(String)? onChanged;
+  final bool Function(String)? inputValid;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +103,7 @@ class UsernameInput extends StatelessWidget {
 }
 
 class MEMOplannerLogo extends StatelessWidget {
-  const MEMOplannerLogo({Key key}) : super(key: key);
+  const MEMOplannerLogo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +139,12 @@ class MEMOplannerLogo extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({Key key}) : super(key: key);
+  const LoginButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return Tts(
+    return Tts.data(
       data: translate.login,
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) => TextButton(

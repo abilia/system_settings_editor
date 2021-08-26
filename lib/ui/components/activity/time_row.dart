@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -8,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TimeRow extends StatelessWidget {
-  const TimeRow(this.activityDay, {Key key}) : super(key: key);
+  const TimeRow(this.activityDay, {Key? key}) : super(key: key);
 
   final ActivityDay activityDay;
 
@@ -78,9 +76,9 @@ class TimeRow extends StatelessWidget {
 
   Widget _timeText(
     BuildContext context, {
-    @required DateTime date,
-    @required DateTime now,
-    @required Key key,
+    required DateTime date,
+    required DateTime now,
+    required Key key,
   }) =>
       _TimeBox(
         key: key,
@@ -91,9 +89,9 @@ class TimeRow extends StatelessWidget {
 
 class _TimeBox extends StatelessWidget {
   const _TimeBox({
-    Key key,
-    @required this.text,
-    @required Occasion occasion,
+    Key? key,
+    required this.text,
+    required Occasion occasion,
   })  : current = occasion == Occasion.current,
         past = occasion == Occasion.past,
         future = occasion == Occasion.future,
@@ -107,9 +105,9 @@ class _TimeBox extends StatelessWidget {
     final textStyle = Theme.of(context)
         .textTheme
         .headline6
-        .copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
+        ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
     final boxDecoration = _decoration;
-    return Tts(
+    return Tts.data(
       data: text,
       child: Stack(
         alignment: Alignment.center,
@@ -141,8 +139,9 @@ class _TimeBox extends StatelessWidget {
       : past
           ? pastDecration
           : boxDecoration;
-  EdgeInsets get _padding => EdgeInsets.fromLTRB(21.0.s, 14.0.s, 20.0.s, 14.0.s)
-      .add(future ? EdgeInsets.all(1.0.s) : EdgeInsets.zero);
+  EdgeInsets get _padding =>
+      EdgeInsets.fromLTRB(21.0.s, 14.0.s, 20.0.s, 14.0.s) +
+      (future ? EdgeInsets.all(1.0.s) : EdgeInsets.zero);
 }
 
 final pastDecration = BoxDecoration(

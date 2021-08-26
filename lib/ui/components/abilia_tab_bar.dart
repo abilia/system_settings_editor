@@ -1,22 +1,20 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
-    Key key,
-    @required this.tabs,
+    Key? key,
+    required this.tabs,
     this.height,
     this.collapsedCondition,
     this.onTabTap,
   }) : super(key: key);
 
   final List<Widget> tabs;
-  final double height;
+  final double? height;
 
-  final bool Function(int index) collapsedCondition;
-  final void Function(int index) onTabTap;
+  final bool Function(int index)? collapsedCondition;
+  final void Function(int index)? onTabTap;
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
@@ -25,17 +23,19 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     var offset = 0;
+    final tabController = DefaultTabController.of(context);
     final wrappedTabs = [
-      for (var i = 0; i < tabs.length; i++)
-        _Tab(
-          index: i,
-          offset: isCollapsed(i) ? offset++ : offset,
-          last: (tabs.length - 1) == i,
-          collapsed: () => isCollapsed(i),
-          controller: DefaultTabController.of(context),
-          onTabTap: onTabTap,
-          child: tabs[i],
-        )
+      if (tabController != null)
+        for (var i = 0; i < tabs.length; i++)
+          _Tab(
+            index: i,
+            offset: isCollapsed(i) ? offset++ : offset,
+            last: (tabs.length - 1) == i,
+            collapsed: () => isCollapsed(i),
+            controller: tabController,
+            onTabTap: onTabTap,
+            child: tabs[i],
+          )
     ];
 
     return Material(
@@ -51,14 +51,14 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
 
 class _Tab extends StatefulWidget {
   const _Tab({
-    Key key,
-    @required this.index,
-    @required this.offset,
-    @required this.last,
-    @required this.collapsed,
-    @required this.child,
-    @required this.controller,
-    @required this.onTabTap,
+    Key? key,
+    required this.index,
+    required this.offset,
+    required this.last,
+    required this.collapsed,
+    required this.child,
+    required this.controller,
+    this.onTabTap,
   }) : super(key: key);
 
   final int index, offset;
@@ -66,7 +66,7 @@ class _Tab extends StatefulWidget {
   final Widget child;
   final TabController controller;
   final bool Function() collapsed;
-  final void Function(int index) onTabTap;
+  final void Function(int index)? onTabTap;
 
   @override
   _TabState createState() => _TabState(collapsed());
@@ -74,8 +74,8 @@ class _Tab extends StatefulWidget {
 
 class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   _TabState(this.collapsed);
-  AnimationController _collapsedController;
-  Animation<double> _scaleAnimation;
+  late AnimationController _collapsedController;
+  late Animation<double> _scaleAnimation;
   bool collapsed;
 
   @override
@@ -113,8 +113,10 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
+    final controllerAnimation = widget.controller.animation;
+    if (controllerAnimation == null) throw 'TabController missing animation';
     return _AnimatedTab(
-      selectedTabAnimation: widget.controller.animation,
+      selectedTabAnimation: controllerAnimation,
       scaleAnimation: _scaleAnimation,
       listenable:
           Listenable.merge([widget.controller.animation, _collapsedController]),
@@ -144,18 +146,18 @@ class _AnimatedTab extends AnimatedWidget {
   static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius);
   _AnimatedTab({
-    Key key,
-    @required this.child,
-    @required this.scaleAnimation,
-    @required this.selectedTabAnimation,
-    @required this.beginIconThemeData,
-    @required this.endIconThemeData,
-    @required Listenable listenable,
-    @required this.index,
-    @required this.offset,
-    @required this.last,
-    @required this.first,
-    @required this.onTap,
+    Key? key,
+    required this.child,
+    required this.scaleAnimation,
+    required this.selectedTabAnimation,
+    required this.beginIconThemeData,
+    required this.endIconThemeData,
+    required Listenable listenable,
+    required this.index,
+    required this.offset,
+    required this.last,
+    required this.first,
+    required this.onTap,
   })  : beginDecoration = first
             ? BoxDecoration(
                 borderRadius: firstBorderRadius,

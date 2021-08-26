@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/models/all.dart';
@@ -10,7 +8,7 @@ class ProfilePicture extends StatelessWidget {
   final String baseUrl;
   final User user;
   static final radius = 84.0.s;
-  const ProfilePicture(this.baseUrl, this.user, {Key key}) : super(key: key);
+  const ProfilePicture(this.baseUrl, this.user, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final widhtHeight = radius * 2;
@@ -32,7 +30,7 @@ class ProfilePicture extends StatelessWidget {
                 color: AbiliaColors.black75,
                 size: hugeIconSize,
               ),
-              if (user?.image?.isNotEmpty == true && baseUrl != null)
+              if (user.image.isNotEmpty && baseUrl.isNotEmpty)
                 FadeInImage.memoryNetwork(
                   fit: BoxFit.cover,
                   placeholder: kTransparentImage,

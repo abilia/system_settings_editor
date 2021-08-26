@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -10,8 +8,8 @@ class EditActivityListeners extends StatelessWidget {
   final bool scroll;
 
   const EditActivityListeners({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.nrTabs = 0,
     this.scroll = true,
   }) : super(key: key);
@@ -87,11 +85,11 @@ class EditActivityListeners extends StatelessWidget {
 
   Future _scrollToTab(BuildContext context, int tabIndex) async {
     final tabController = DefaultTabController.of(context);
-    if (tabController.index != tabIndex) {
+    if (tabController != null && tabController.index != tabIndex) {
       tabController.animateTo(tabIndex);
     } else {
       final sc = PrimaryScrollController.of(context);
-      if (sc?.hasClients == true) {
+      if (sc != null && sc.hasClients) {
         await sc.animateTo(0.0,
             duration: kTabScrollDuration, curve: Curves.ease);
       }
@@ -101,17 +99,18 @@ class EditActivityListeners extends StatelessWidget {
   Future _inputNeeded(Set<SaveError> errors, EditActivityState state,
       BuildContext context) async {
     final translate = Translator.of(context).translate;
-    SaveActivity saveEvent;
+    SaveActivity? saveEvent;
 
     if (errors.contains(SaveError.STORED_RECURRING)) {
       if (state is StoredActivityState) {
-        final applyTo =
-            await Navigator.of(context).push<ApplyTo>(MaterialPageRoute(
-          builder: (_) => SelectRecurrentTypePage(
-            heading: translate.editRecurringActivity,
-            headingIcon: AbiliaIcons.edit,
+        final applyTo = await Navigator.of(context).push<ApplyTo>(
+          MaterialPageRoute(
+            builder: (_) => SelectRecurrentTypePage(
+              heading: translate.editRecurringActivity,
+              headingIcon: AbiliaIcons.edit,
+            ),
           ),
-        ));
+        );
         if (applyTo == null) return;
         saveEvent = SaveRecurringActivity(applyTo, state.day);
       }

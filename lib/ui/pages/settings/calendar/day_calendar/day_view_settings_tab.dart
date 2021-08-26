@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DayViewSettingsTab extends StatelessWidget {
-  const DayViewSettingsTab({Key key}) : super(key: key);
+  const DayViewSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;

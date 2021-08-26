@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:intl/intl.dart';
@@ -10,7 +8,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({Key key}) : super(key: key);
+  const MenuPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +44,7 @@ class MenuPage extends StatelessWidget {
 }
 
 class CameraButton extends StatelessWidget {
-  const CameraButton({Key key}) : super(key: key);
+  const CameraButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +58,8 @@ class CameraButton extends StatelessWidget {
             icon: AbiliaIcons.camera_photo,
             onPressed: () async {
               if (permissionState
-                  .status[Permission.camera].isPermanentlyDenied) {
+                      .status[Permission.camera]?.isPermanentlyDenied ==
+                  true) {
                 await showViewDialog(
                     useSafeArea: false,
                     context: context,
@@ -97,7 +96,7 @@ class CameraButton extends StatelessWidget {
 }
 
 class MyPhotosButton extends StatelessWidget {
-  const MyPhotosButton({Key key}) : super(key: key);
+  const MyPhotosButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +117,7 @@ class MyPhotosButton extends StatelessWidget {
 }
 
 class PhotoCalendarButton extends StatelessWidget {
-  const PhotoCalendarButton({Key key}) : super(key: key);
+  const PhotoCalendarButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +138,7 @@ class PhotoCalendarButton extends StatelessWidget {
 }
 
 class CountdownButton extends StatelessWidget {
-  const CountdownButton({Key key}) : super(key: key);
+  const CountdownButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +152,7 @@ class CountdownButton extends StatelessWidget {
 }
 
 class QuickSettingsButton extends StatelessWidget {
-  const QuickSettingsButton({Key key}) : super(key: key);
+  const QuickSettingsButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +166,7 @@ class QuickSettingsButton extends StatelessWidget {
 }
 
 class SettingsButton extends StatelessWidget {
-  const SettingsButton({Key key}) : super(key: key);
+  const SettingsButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,17 +193,19 @@ class MenuItemButton extends StatelessWidget {
   final ButtonStyle style;
   final IconData icon;
   const MenuItemButton({
-    Key key,
-    @required this.onPressed,
-    @required this.text,
-    @required this.icon,
-    @required this.style,
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    required this.icon,
+    required this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = style.textStyle.resolve({MaterialState.pressed});
-    return Tts(
+    final textStyle = style.textStyle?.resolve({MaterialState.pressed});
+    final fontSize = textStyle?.fontSize;
+    final textHeight = textStyle?.height;
+    return Tts.data(
       data: text.singleLine,
       child: AspectRatio(
         aspectRatio: 1,
@@ -214,7 +215,9 @@ class MenuItemButton extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: textStyle.fontSize * textStyle.height * 2,
+                height: fontSize != null && textHeight != null
+                    ? fontSize * textHeight * 2
+                    : null,
                 child: Text(
                   text,
                   textAlign: TextAlign.center,

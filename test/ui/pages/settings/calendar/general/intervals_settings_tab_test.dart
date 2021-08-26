@@ -49,7 +49,6 @@ void main() {
         initialTime: initialTime,
       )
       ..client = Fakes.client(genericResponse: () => generics)
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb

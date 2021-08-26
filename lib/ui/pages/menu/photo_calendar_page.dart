@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class PhotoCalendarPage extends StatelessWidget {
-  const PhotoCalendarPage({Key key}) : super(key: key);
+  const PhotoCalendarPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,7 @@ class PhotoCalendarPage extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(vertical: 20.s),
                                   child: DigitalClock(
                                     style:
-                                        theme.theme.textTheme.caption.copyWith(
+                                        theme.theme.textTheme.caption?.copyWith(
                                       fontSize: 32.s,
                                       height: 1,
                                     ),
@@ -99,18 +97,18 @@ class SlideShow extends StatelessWidget {
       ),
       child: BlocBuilder<SlideShowCubit, SlideShowState>(
         builder: (context, state) {
+          final currentFileId = state.currentFileId;
+          final currentPath = state.currentPath;
           return AnimatedSwitcher(
             duration: Duration(seconds: 1),
             child: GestureDetector(
-              key: Key(state.currentFileId),
-              onDoubleTap: () {
-                context.read<SlideShowCubit>().next();
-              },
+              key: currentFileId != null ? Key(currentFileId) : null,
+              onDoubleTap: () => context.read<SlideShowCubit>().next(),
               child: SizedBox.expand(
-                child: state.slideShowFolderContent.isNotEmpty
+                child: currentFileId != null && currentPath != null
                     ? PhotoCalendarImage(
-                        fileId: state.currentFileId,
-                        filePath: state.currentPath,
+                        fileId: currentFileId,
+                        filePath: currentPath,
                         errorContent: poppyImage,
                       )
                     : poppyImage,
@@ -126,7 +124,7 @@ class SlideShow extends StatelessWidget {
 class PhotoCalendarAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const PhotoCalendarAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

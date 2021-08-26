@@ -1,23 +1,21 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/ui/all.dart';
 
 class ViewDialog extends StatelessWidget {
   final Widget backNavigationWidget;
-  final Widget forwardNavigationWidget;
-  final Widget heading;
+  final Widget? forwardNavigationWidget;
+  final Widget? heading;
   final Widget body;
-  final EdgeInsets bodyPadding;
+  final EdgeInsets? bodyPadding;
   final bool expanded;
   static final horizontalPadding = 20.s;
   const ViewDialog({
-    Key key,
+    Key? key,
     this.heading,
-    this.body,
+    required this.body,
     this.expanded = false,
-    @required this.backNavigationWidget,
+    required this.backNavigationWidget,
     this.forwardNavigationWidget,
     this.bodyPadding,
   }) : super(key: key);
@@ -33,7 +31,7 @@ class ViewDialog extends StatelessWidget {
           ),
       child: Center(
         child: DefaultTextStyle(
-          style: abiliaTextTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
           textAlign: TextAlign.center,
           child: body,
         ),
@@ -77,11 +75,11 @@ class ViewDialog extends StatelessWidget {
 
 class ErrorDialog extends StatelessWidget {
   final String text;
-  final Widget backNavigationWidget;
+  final Widget? backNavigationWidget;
 
   const ErrorDialog({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
     this.backNavigationWidget,
   }) : super(key: key);
 
@@ -99,11 +97,11 @@ class ErrorDialog extends StatelessWidget {
 class YesNoDialog extends StatelessWidget {
   final String text;
   final String heading;
-  final IconData headingIcon;
+  final IconData? headingIcon;
   const YesNoDialog({
-    Key key,
-    @required this.text,
-    @required this.heading,
+    Key? key,
+    required this.text,
+    required this.heading,
     this.headingIcon,
   }) : super(key: key);
 
@@ -124,8 +122,8 @@ class YesNoDialog extends StatelessWidget {
 class WarningDialog extends StatelessWidget {
   final String text;
   const WarningDialog({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
   }) : super(key: key);
 
   @override

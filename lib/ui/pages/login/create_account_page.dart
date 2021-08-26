@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/gestures.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,7 +8,7 @@ import 'package:seagull/utils/all.dart';
 class CreateAccountPage extends StatelessWidget {
   final UserRepository userRepository;
 
-  const CreateAccountPage({Key key, @required this.userRepository})
+  const CreateAccountPage({Key? key, required this.userRepository})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -156,12 +154,12 @@ class AcceptTermsSwitch extends StatelessWidget {
   final bool errorState;
 
   const AcceptTermsSwitch({
-    Key key,
-    @required this.linkText,
-    @required this.url,
-    @required this.value,
-    @required this.onChanged,
-    @required this.errorState,
+    Key? key,
+    required this.linkText,
+    required this.url,
+    required this.value,
+    required this.onChanged,
+    required this.errorState,
   }) : super(key: key);
 
   @override
@@ -198,7 +196,7 @@ class AcceptTermsSwitch extends StatelessWidget {
 }
 
 class MyAbiliaLogo extends StatelessWidget {
-  const MyAbiliaLogo({Key key}) : super(key: key);
+  const MyAbiliaLogo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +226,7 @@ class MyAbiliaLogo extends StatelessWidget {
 }
 
 class BackToLoginButton extends StatelessWidget {
-  const BackToLoginButton({Key key}) : super(key: key);
+  const BackToLoginButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +239,7 @@ class BackToLoginButton extends StatelessWidget {
 }
 
 class CreateAccountButton extends StatelessWidget {
-  const CreateAccountButton({Key key}) : super(key: key);
+  const CreateAccountButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

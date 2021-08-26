@@ -40,7 +40,6 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
       Permission.notification,
       if (!Platform.isIOS) ...[
         Permission.systemAlertWindow,
-        Permission.storage,
       ],
       if (!Platform.isAndroid) ...[
         Permission.photos,

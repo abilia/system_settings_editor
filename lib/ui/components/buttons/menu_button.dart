@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

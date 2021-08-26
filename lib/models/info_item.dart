@@ -22,13 +22,18 @@ abstract class InfoItem extends Equatable {
       if (base64 == null || base64.isEmpty) return NoInfoItem();
       final jsonString = utf8.decode(base64Decode(base64));
       return fromJsonString(jsonString);
-    } catch (e) {
-      _log.severe('Exception when trying to create info item', e);
+    } catch (e, stacktrace) {
+      _log.severe(
+        'Exception when trying to utf8/base64 decode info item: $base64',
+        e,
+        stacktrace,
+      );
     }
     return NoInfoItem();
   }
 
   static InfoItem fromJsonString(String jsonString) {
+    if (jsonString.isEmpty) return NoInfoItem();
     try {
       final json = jsonDecode(jsonString);
       final infoItem = json['info-item'][0];
@@ -42,8 +47,12 @@ abstract class InfoItem extends Equatable {
         default:
           _log.warning('unknown info item type', type);
       }
-    } catch (e) {
-      _log.severe('Exception when trying to create info item', e);
+    } catch (e, stacktrace) {
+      _log.severe(
+        'Exception when trying to json decode info item: $jsonString',
+        e,
+        stacktrace,
+      );
     }
     return NoInfoItem();
   }
@@ -227,7 +236,7 @@ class Question extends Equatable {
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json['id'],
         name: json['name'] ?? '',
-        image: json['image'] ?? '',
+        image: json['image'] ?? json['imageName'] ?? '',
         fileId: json['fileId'] ?? '',
         checked: json['checked'] ?? false,
       );

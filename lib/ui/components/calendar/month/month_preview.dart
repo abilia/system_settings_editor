@@ -87,7 +87,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
     final text =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
-    return Tts(
+    return Tts.data(
       data: text,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.s),
@@ -126,7 +126,7 @@ class MonthDayViewCompact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
               .format(day.day),

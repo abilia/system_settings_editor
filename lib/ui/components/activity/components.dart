@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,7 +7,7 @@ import 'package:seagull/utils/all.dart';
 
 class SubHeading extends StatelessWidget {
   final String data;
-  const SubHeading(this.data, {Key key}) : super(key: key);
+  const SubHeading(this.data, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Tts.fromSemantics(
@@ -24,7 +22,7 @@ class SubHeading extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyText2
-              .copyWith(color: AbiliaColors.black75),
+              ?.copyWith(color: AbiliaColors.black75),
         ),
       ),
     );
@@ -33,13 +31,13 @@ class SubHeading extends StatelessWidget {
 
 class LinedBorder extends StatelessWidget {
   final Widget child;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final EdgeInsets padding;
   final bool errorState;
   const LinedBorder({
-    Key key,
-    @required this.child,
-    this.padding,
+    Key? key,
+    required this.child,
+    required this.padding,
     this.onTap,
     this.errorState = false,
   }) : super(key: key);
@@ -76,18 +74,18 @@ class PickField extends StatelessWidget {
     size: defaultIconSize,
     color: AbiliaColors.black60,
   );
-  final GestureTapCallback onTap;
-  final Widget leading, trailing;
+  final GestureTapCallback? onTap;
+  final Widget? leading, trailing;
   final Text text;
-  final double heigth;
-  final EdgeInsets padding;
+  final double? heigth;
+  final EdgeInsets? padding;
   final bool errorState;
-  final String semanticsLabel;
+  final String? semanticsLabel;
   static final defaultHeigth = 56.s;
 
   const PickField({
-    @required this.text,
-    Key key,
+    required this.text,
+    Key? key,
     this.leading,
     this.trailing,
     this.onTap,
@@ -98,9 +96,10 @@ class PickField extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final l = leading;
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data.isEmpty ? semanticsLabel : text.data,
+        label: text.data?.isEmpty == true ? semanticsLabel : text.data,
         button: true,
       ),
       child: Material(
@@ -118,22 +117,22 @@ class PickField extends StatelessWidget {
             padding: padding ?? EdgeInsets.all(12.s),
             child: Row(
               children: <Widget>[
-                if (leading != null)
+                if (l != null)
                   IconTheme(
                     data: Theme.of(context)
                         .iconTheme
                         .copyWith(size: smallIconSize),
-                    child: leading,
+                    child: l,
                   ),
                 SizedBox(width: 12.s),
-                if (text != null)
-                  Expanded(
-                    child: DefaultTextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
-                      child: text,
-                    ),
+                Expanded(
+                  child: DefaultTextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                        .copyWith(height: 1.0),
+                    child: text,
                   ),
+                ),
                 trailing ?? trailingArrow,
               ],
             ),
@@ -145,21 +144,22 @@ class PickField extends StatelessWidget {
 }
 
 class RadioField<T> extends StatelessWidget {
-  final Widget leading;
+  final Widget? leading;
   final Text text;
-  final double heigth, width;
-  final T value, groupValue;
-  final ValueChanged<T> onChanged;
-  final EdgeInsetsGeometry padding;
+  final double? heigth, width;
+  final T value;
+  final T? groupValue;
+  final ValueChanged<T?>? onChanged;
+  final EdgeInsetsGeometry? padding;
   static final defaultHeight = 56.s;
   static final defaultPadding = EdgeInsets.symmetric(horizontal: 14.0.s);
 
   const RadioField({
-    Key key,
-    @required this.value,
-    @required this.groupValue,
-    @required this.onChanged,
-    @required this.text,
+    Key? key,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
+    required this.text,
     this.leading,
     this.heigth,
     this.width,
@@ -170,6 +170,7 @@ class RadioField<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = selectableBoxDecoration(value == groupValue);
     final paddingToUse = padding ?? defaultPadding;
+    final l = leading;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -180,7 +181,7 @@ class RadioField<T> extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => onChanged(value),
+          onTap: onChanged != null ? () => onChanged?.call(value) : null,
           borderRadius: borderRadius,
           child: Stack(
             clipBehavior: Clip.none,
@@ -190,23 +191,25 @@ class RadioField<T> extends StatelessWidget {
                 width: width,
                 decoration: decoration,
                 padding: paddingToUse
-                    .subtract(decoration.border.dimensions)
+                    .subtract(decoration.border?.dimensions ?? EdgeInsets.zero)
                     .clamp(EdgeInsets.zero, EdgeInsetsGeometry.infinity),
                 child: Row(
                   children: [
-                    if (leading != null) ...[
+                    if (l != null) ...[
                       IconTheme(
                           data: Theme.of(context)
                               .iconTheme
                               .copyWith(size: smallIconSize),
-                          child: leading),
+                          child: l),
                       SizedBox(
                         width: paddingToUse.resolve(text.textDirection).left,
                       ),
                     ],
                     Expanded(
                       child: DefaultTextStyle(
-                        style: abiliaTextTheme.bodyText1.copyWith(height: 1.0),
+                        style:
+                            (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                                .copyWith(height: 1.0),
                         child: text,
                       ),
                     ),
@@ -229,17 +232,17 @@ class RadioField<T> extends StatelessWidget {
 
 class PositionedRadio<T> extends StatelessWidget {
   const PositionedRadio({
-    Key key,
-    @required this.value,
-    @required this.groupValue,
-    @required this.onChanged,
+    Key? key,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
     this.radioKey,
   }) : super(key: key);
 
   final T value;
-  final T groupValue;
-  final ValueChanged<T> onChanged;
-  final Key radioKey;
+  final T? groupValue;
+  final ValueChanged<T?>? onChanged;
+  final Key? radioKey;
 
   @override
   Widget build(BuildContext context) {
@@ -275,9 +278,9 @@ class CollapsableWidget extends StatelessWidget {
   final Axis axis;
 
   const CollapsableWidget({
-    Key key,
-    @required this.child,
-    @required this.collapsed,
+    Key? key,
+    required this.child,
+    required this.collapsed,
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.topLeft,
     this.axis = Axis.vertical,
@@ -290,7 +293,7 @@ class CollapsableWidget extends StatelessWidget {
     return TweenAnimationBuilder(
       duration: 300.milliseconds(),
       tween: Tween<double>(begin: begin, end: begin),
-      builder: (context, value, widget) => ClipRect(
+      builder: (context, double value, widget) => ClipRect(
         child: Align(
           alignment: alignment,
           heightFactor: verical ? value : null,
@@ -313,16 +316,16 @@ class CollapsableWidget extends StatelessWidget {
 
 class SelectableField extends StatelessWidget {
   final Text text;
-  final double heigth, width;
+  final double? heigth, width;
   final bool selected;
   final GestureTapCallback onTap;
 
   static final defaultHeigth = 48.s;
   const SelectableField({
-    Key key,
-    @required this.selected,
-    @required this.onTap,
-    @required this.text,
+    Key? key,
+    required this.selected,
+    required this.onTap,
+    required this.text,
     this.heigth,
     this.width,
   }) : super(key: key);
@@ -349,9 +352,9 @@ class SelectableField extends StatelessWidget {
                 height: heigth ?? defaultHeigth,
                 width: width,
                 decoration: decoration,
-                padding: EdgeInsets.fromLTRB(
-                        12.0.s, 10.0.s, 26.0.s, decoration.border.bottom.width)
-                    .subtract(decoration.border.dimensions),
+                padding: EdgeInsets.fromLTRB(12.0.s, 10.0.s, 26.0.s,
+                        decoration.border?.bottom.width ?? 0.0)
+                    .subtract(decoration.border?.dimensions ?? EdgeInsets.zero),
                 child: text,
               ),
               Positioned(
@@ -406,10 +409,10 @@ class AbiliaRadio<T> extends StatefulWidget {
   static final outerRadius = 11.5.s;
   static final innerRadius = 8.5.s;
   const AbiliaRadio({
-    Key key,
-    @required this.value,
-    @required this.groupValue,
-    @required this.onChanged,
+    Key? key,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
     this.mouseCursor,
     this.toggleable = false,
     this.activeColor,
@@ -422,25 +425,38 @@ class AbiliaRadio<T> extends StatefulWidget {
     this.visualDensity,
     this.focusNode,
     this.autofocus = false,
-  })  : assert(autofocus != null),
-        assert(toggleable != null),
-        super(key: key);
+  }) : super(key: key);
 
   final T value;
-  final T groupValue;
-  final ValueChanged<T> onChanged;
-  final MouseCursor mouseCursor;
+
+  final T? groupValue;
+
+  final ValueChanged<T?>? onChanged;
+
+  final MouseCursor? mouseCursor;
+
   final bool toggleable;
-  final Color activeColor;
-  final MaterialStateProperty<Color> fillColor;
-  final MaterialTapTargetSize materialTapTargetSize;
-  final VisualDensity visualDensity;
-  final Color focusColor;
-  final Color hoverColor;
-  final MaterialStateProperty<Color> overlayColor;
-  final double splashRadius;
-  final FocusNode focusNode;
+
+  final Color? activeColor;
+
+  final MaterialStateProperty<Color?>? fillColor;
+
+  final MaterialTapTargetSize? materialTapTargetSize;
+
+  final VisualDensity? visualDensity;
+
+  final Color? focusColor;
+
+  final Color? hoverColor;
+
+  final MaterialStateProperty<Color?>? overlayColor;
+
+  final double? splashRadius;
+
+  final FocusNode? focusNode;
+
   final bool autofocus;
+
   bool get _selected => value == groupValue;
 
   @override
@@ -451,13 +467,13 @@ class _RadioState<T> extends State<AbiliaRadio<T>>
     with TickerProviderStateMixin, ToggleableStateMixin {
   final _RadioPainter _painter = _RadioPainter();
 
-  void _handleChanged(bool selected) {
+  void _handleChanged(bool? selected) {
     if (selected == null) {
-      widget.onChanged(null);
+      widget.onChanged!(null);
       return;
     }
     if (selected) {
-      widget.onChanged(widget.value);
+      widget.onChanged!(widget.value);
     }
   }
 
@@ -476,16 +492,16 @@ class _RadioState<T> extends State<AbiliaRadio<T>>
   }
 
   @override
-  ValueChanged<bool> get onChanged =>
+  ValueChanged<bool?>? get onChanged =>
       widget.onChanged != null ? _handleChanged : null;
 
   @override
   bool get tristate => widget.toggleable;
 
   @override
-  bool get value => widget._selected;
+  bool? get value => widget._selected;
 
-  MaterialStateProperty<Color> get _widgetFillColor {
+  MaterialStateProperty<Color?> get _widgetFillColor {
     return MaterialStateProperty.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
         return null;
@@ -534,13 +550,15 @@ class _RadioState<T> extends State<AbiliaRadio<T>>
 
     final effectiveMouseCursor = MaterialStateProperty.resolveWith<MouseCursor>(
         (Set<MaterialState> states) {
-      return MaterialStateProperty.resolveAs<MouseCursor>(
+      return MaterialStateProperty.resolveAs<MouseCursor?>(
               widget.mouseCursor, states) ??
           themeData.radioTheme.mouseCursor?.resolve(states) ??
           MaterialStateProperty.resolveAs<MouseCursor>(
               MaterialStateMouseCursor.clickable, states);
     });
 
+    // Colors need to be resolved in selected and non selected states separately
+    // so that they can be lerped between.
     final activeStates = states..add(MaterialState.selected);
     final inactiveStates = states..remove(MaterialState.selected);
     final effectiveActiveColor = widget.fillColor?.resolve(activeStates) ??
@@ -582,27 +600,28 @@ class _RadioState<T> extends State<AbiliaRadio<T>>
       inMutuallyExclusiveGroup: true,
       checked: widget._selected,
       child: buildToggleable(
-          focusNode: widget.focusNode,
-          autofocus: widget.autofocus,
-          mouseCursor: effectiveMouseCursor,
-          size: size,
-          painter: _painter
-            ..position = position
-            ..reaction = reaction
-            ..reactionFocusFade = reactionFocusFade
-            ..reactionHoverFade = reactionHoverFade
-            ..inactiveReactionColor = effectiveInactivePressedOverlayColor
-            ..reactionColor = effectiveActivePressedOverlayColor
-            ..hoverColor = effectiveHoverOverlayColor
-            ..focusColor = effectiveFocusOverlayColor
-            ..splashRadius = widget.splashRadius ??
-                themeData.radioTheme.splashRadius ??
-                kRadialReactionRadius
-            ..downPosition = downPosition
-            ..isFocused = states.contains(MaterialState.focused)
-            ..isHovered = states.contains(MaterialState.hovered)
-            ..activeColor = effectiveActiveColor
-            ..inactiveColor = effectiveInactiveColor),
+        focusNode: widget.focusNode,
+        autofocus: widget.autofocus,
+        mouseCursor: effectiveMouseCursor,
+        size: size,
+        painter: _painter
+          ..position = position
+          ..reaction = reaction
+          ..reactionFocusFade = reactionFocusFade
+          ..reactionHoverFade = reactionHoverFade
+          ..inactiveReactionColor = effectiveInactivePressedOverlayColor
+          ..reactionColor = effectiveActivePressedOverlayColor
+          ..hoverColor = effectiveHoverOverlayColor
+          ..focusColor = effectiveFocusOverlayColor
+          ..splashRadius = widget.splashRadius ??
+              themeData.radioTheme.splashRadius ??
+              kRadialReactionRadius
+          ..downPosition = downPosition
+          ..isFocused = states.contains(MaterialState.focused)
+          ..isHovered = states.contains(MaterialState.hovered)
+          ..activeColor = effectiveActiveColor
+          ..inactiveColor = effectiveInactiveColor,
+      ),
     );
   }
 }
@@ -616,7 +635,7 @@ class _RadioPainter extends ToggleablePainter {
 
     // Outer circle
     final paint = Paint()
-      ..color = Color.lerp(inactiveColor, activeColor, position.value)
+      ..color = Color.lerp(inactiveColor, activeColor, position.value)!
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
     canvas.drawCircle(center, AbiliaRadio.outerRadius, paint);

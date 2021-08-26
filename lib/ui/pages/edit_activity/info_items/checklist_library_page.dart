@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ChecklistLibraryPage extends StatelessWidget {
-  const ChecklistLibraryPage({Key key}) : super(key: key);
+  const ChecklistLibraryPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => LibraryPage<ChecklistData>(
         libraryItemGenerator: (checklist) =>
@@ -21,7 +19,7 @@ class ChecklistLibraryPage extends StatelessWidget {
 
 class LibraryChecklist extends StatelessWidget {
   final Checklist checklist;
-  const LibraryChecklist({Key key, @required this.checklist}) : super(key: key);
+  const LibraryChecklist({Key? key, required this.checklist}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,7 @@ class LibraryChecklist extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            if (name != null)
+            if (name.isNotEmpty)
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
@@ -70,8 +68,8 @@ class LibraryChecklist extends StatelessWidget {
 
 class FullScreenChecklist extends StatelessWidget {
   const FullScreenChecklist({
-    Key key,
-    @required this.checklist,
+    Key? key,
+    required this.checklist,
   }) : super(key: key);
   final Checklist checklist;
 

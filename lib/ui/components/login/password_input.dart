@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,14 +10,14 @@ class PasswordInput extends StatelessWidget {
   final Function(String) onPasswordChange;
   final bool Function(String value) validator;
   final bool errorState;
-  final String inputHeading;
+  final String? inputHeading;
 
   const PasswordInput({
-    Key key,
-    @required this.password,
-    @required this.onPasswordChange,
-    @required this.errorState,
-    @required this.validator,
+    Key? key,
+    required this.password,
+    required this.onPasswordChange,
+    required this.errorState,
+    required this.validator,
     this.inputHeading,
   }) : super(key: key);
 
@@ -97,12 +95,13 @@ class PasswordInput extends StatelessWidget {
 
 class PasswordInputPage extends StatefulWidget {
   PasswordInputPage({
-    Key key,
-    @required this.password,
-    @required this.inputHeading,
+    Key? key,
+    required this.password,
+    this.inputHeading,
   }) : super(key: key);
 
-  final String password, inputHeading;
+  final String password;
+  final String? inputHeading;
 
   @override
   _PasswordInputPageState createState() => _PasswordInputPageState();
@@ -110,7 +109,7 @@ class PasswordInputPage extends StatefulWidget {
 
 class _PasswordInputPageState
     extends StateWithFocusOnResume<PasswordInputPage> {
-  TextEditingController controller;
+  late TextEditingController controller;
   @override
   void initState() {
     super.initState();
@@ -206,7 +205,7 @@ class _PasswordInputPageState
 
 class HidePasswordButton extends StatelessWidget {
   const HidePasswordButton({
-    Key key,
+    Key? key,
     this.padding = EdgeInsets.zero,
   }) : super(key: key);
 

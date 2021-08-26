@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/providers.dart';
 import 'package:seagull/ui/all.dart';
 
 class HiddenSetting extends StatefulWidget {
-  const HiddenSetting(this.showCategories, {Key key}) : super(key: key);
+  const HiddenSetting(this.showCategories, {Key? key}) : super(key: key);
   final bool showCategories;
 
   @override

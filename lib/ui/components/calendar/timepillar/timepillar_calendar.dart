@@ -110,11 +110,13 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
     final screenWidth = mediaData.size.width;
     final categoryMinWidth = (screenWidth - ts.timePillarTotalWidth) / 2;
 
-    final fontSize = Theme.of(context).textTheme.caption?.fontSize;
+    final fontSize =
+        Theme.of(context).textTheme.caption?.fontSize ?? catptionFontSize;
     final textStyle = Theme.of(context)
-        .textTheme
-        .caption
-        ?.copyWith(fontSize: (fontSize ?? 1) * ts.zoom);
+            .textTheme
+            .caption
+            ?.copyWith(fontSize: fontSize * ts.zoom) ??
+        caption;
     final textScaleFactor = mediaData.textScaleFactor;
     final timepillarActivities = interval.getForInterval(activities);
     final leftBoardData = ActivityBoard.positionTimepillarCards(

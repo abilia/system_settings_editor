@@ -1,14 +1,14 @@
 extension ThowsafeMap<E> on Iterable<E> {
-  Iterable<T> exceptionSafeMap<T>(
+  Iterable<T?> exceptionSafeMap<T>(
     T Function(E) function, {
-    required T Function(dynamic, E) onException,
+    required Null Function(Object, StackTrace, E, T Function(E)) onException,
   }) =>
       map(
-        (e) {
+        (element) {
           try {
-            return function(e);
-          } catch (exception) {
-            return onException(exception, e);
+            return function(element);
+          } catch (exception, stacktrace) {
+            return onException(exception, stacktrace, element, function);
           }
         },
       );

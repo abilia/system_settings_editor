@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -9,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class WeekCalendarTab extends StatelessWidget {
   const WeekCalendarTab({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -26,7 +24,7 @@ class WeekCalendarTab extends StatelessWidget {
 }
 
 class WeekCalendar extends StatelessWidget {
-  const WeekCalendar({Key key}) : super(key: key);
+  const WeekCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,7 @@ class WeekCalendar extends StatelessWidget {
 }
 
 class WeekCalendarTop extends StatelessWidget {
-  const WeekCalendarTop({Key key}) : super(key: key);
+  const WeekCalendarTop({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +90,8 @@ class WeekCalendarDayHeading extends StatelessWidget {
   final DateTime day;
 
   const WeekCalendarDayHeading({
-    Key key,
-    @required this.day,
+    Key? key,
+    required this.day,
   }) : super(key: key);
 
   @override
@@ -128,11 +126,11 @@ class WeekCalendarDayHeading extends StatelessWidget {
 
 class WeekCalenderHeadingContent extends StatelessWidget {
   const WeekCalenderHeadingContent({
-    Key key,
-    @required this.day,
-    @required this.dayTheme,
-    @required this.selected,
-    @required this.today,
+    Key? key,
+    required this.day,
+    required this.dayTheme,
+    required this.selected,
+    required this.today,
   }) : super(key: key);
 
   final DateTime day;
@@ -151,6 +149,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
             : dayTheme.borderColor;
     final thickBorder = selected || today;
     final borderSize = thickBorder ? 2.s : 1.s;
+    final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1);
 
     return Flexible(
       flex: selected ? 77 : 45,
@@ -191,15 +190,14 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     SizedBox(
                       height: 44.s,
                       child: DefaultTextStyle(
-                        style: dayTheme.theme.textTheme.bodyText1
-                            .copyWith(height: 18 / 16),
-                        child: Tts(
+                        style: _bodyText1.copyWith(height: 18 / 16),
+                        child: Tts.data(
                           data: '${day.day}, ${weekDayFormat.format(day)}',
                           child: BlocBuilder<ClockBloc, DateTime>(
                             buildWhen: (previous, current) =>
                                 !previous.isAtSameDay(current),
                             builder: (context, now) => WithCrossOver(
-                              color: dayTheme.theme.textTheme.bodyText1.color,
+                              color: _bodyText1.color,
                               crossOverPadding:
                                   EdgeInsets.fromLTRB(4.s, 4.s, 4.s, 12.s),
                               applyCross: day.isBefore(now.onlyDays()),
@@ -239,7 +237,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
 class FullDayActivies extends StatelessWidget {
   final int weekdayIndex;
 
-  const FullDayActivies({Key key, this.weekdayIndex}) : super(key: key);
+  const FullDayActivies({Key? key, required this.weekdayIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -249,8 +248,9 @@ class FullDayActivies extends StatelessWidget {
           current.currentWeekActivities[weekdayIndex],
       builder: (context, state) {
         final fullDayActivities = state.currentWeekActivities[weekdayIndex]
-            .where((a) => a.activity.fullDay)
-            .toList();
+                ?.where((a) => a.activity.fullDay)
+                .toList() ??
+            [];
         if (fullDayActivities.length > 1) {
           return FullDayStack(numberOfActivities: fullDayActivities.length);
         } else if (fullDayActivities.length == 1) {
@@ -265,8 +265,8 @@ class FullDayActivies extends StatelessWidget {
 class FullDayStack extends StatelessWidget {
   final int numberOfActivities;
   const FullDayStack({
-    Key key,
-    @required this.numberOfActivities,
+    Key? key,
+    required this.numberOfActivities,
   }) : super(key: key);
 
   @override
@@ -302,7 +302,7 @@ class FullDayStack extends StatelessWidget {
 }
 
 class WeekCalendarBody extends StatelessWidget {
-  const WeekCalendarBody({Key key}) : super(key: key);
+  const WeekCalendarBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -343,7 +343,7 @@ class WeekCalendarBody extends StatelessWidget {
 
 class WeekDayColumn extends StatelessWidget {
   final DateTime day;
-  const WeekDayColumn({Key key, @required this.day}) : super(key: key);
+  const WeekDayColumn({Key? key, required this.day}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +375,7 @@ class WeekDayColumn extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
-                  DefaultTabController.of(context).animateTo(0);
+                  DefaultTabController.of(context)?.animateTo(0);
                 },
                 child: Padding(
                   padding: EdgeInsets.only(right: 2.s, left: 2.s, bottom: 4.s),
@@ -413,19 +413,20 @@ class WeekDayColumn extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               ...state.currentWeekActivities[day.weekday - 1]
-                                  .where((ao) => !ao.activity.fullDay)
-                                  .map(
-                                    (ao) => Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 2.s),
-                                      child: AspectRatio(
-                                        aspectRatio: 1,
-                                        child: WeekActivityContent(
-                                          activityOccasion: ao,
+                                      ?.where((ao) => !ao.activity.fullDay)
+                                      .map(
+                                        (ao) => Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2.s),
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: WeekActivityContent(
+                                              activityOccasion: ao,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
+                                      ) ??
+                                  [],
                             ],
                           ),
                         ),
@@ -444,8 +445,8 @@ class WeekDayColumn extends StatelessWidget {
 
 class WeekActivityContent extends StatelessWidget {
   const WeekActivityContent({
-    Key key,
-    @required this.activityOccasion,
+    Key? key,
+    required this.activityOccasion,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
@@ -498,8 +499,8 @@ class WeekActivityContent extends StatelessWidget {
                       child: Text(
                         activityOccasion.activity.title,
                         overflow: TextOverflow.clip,
-                        style:
-                            abiliaTextTheme.caption.copyWith(height: 20 / 16),
+                        style: (Theme.of(context).textTheme.caption ?? caption)
+                            .copyWith(height: 20 / 16),
                         textAlign: TextAlign.center,
                       ),
                     ),

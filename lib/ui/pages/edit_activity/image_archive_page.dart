@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
-  const ImageArchivePage({Key key}) : super(key: key);
+  const ImageArchivePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -36,8 +34,8 @@ class ImageArchivePage extends StatelessWidget {
         ..maybePop(),
       onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
         SelectedImage.from(
-          id: selected?.data?.fileId,
-          path: selected?.data?.file,
+          id: selected.data.fileId,
+          path: selected.data.file,
         ),
       ),
     );
@@ -46,7 +44,7 @@ class ImageArchivePage extends StatelessWidget {
 
 class ArchiveImage extends StatelessWidget {
   final Sortable<ImageArchiveData> sortable;
-  const ArchiveImage({Key key, @required this.sortable}) : super(key: key);
+  const ArchiveImage({Key? key, required this.sortable}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,8 @@ class ArchiveImage extends StatelessWidget {
     return Tts.fromSemantics(
       SemanticsProperties(
         label: imageArchiveData.name,
-        image: imageArchiveData.fileId != null || imageArchiveData.file != null,
+        image: imageArchiveData.fileId.isNotEmpty ||
+            imageArchiveData.file.isNotEmpty,
         button: true,
       ),
       child: Container(
@@ -68,7 +67,7 @@ class ArchiveImage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            if (name != null) ...[
+            if (name.isNotEmpty) ...[
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
@@ -91,8 +90,8 @@ class ArchiveImage extends StatelessWidget {
 
 class FullScreenArchiveImage extends StatelessWidget {
   const FullScreenArchiveImage({
-    Key key,
-    @required this.selected,
+    Key? key,
+    required this.selected,
   }) : super(key: key);
   final ImageArchiveData selected;
 

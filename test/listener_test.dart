@@ -44,6 +44,7 @@ void main() {
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     await clearNotificationSubject();
@@ -79,7 +80,6 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
       ..syncDelay = SyncDelays.zero
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..alarmNavigator = AlarmNavigator()
       ..sortableDb = MockSortableDb()

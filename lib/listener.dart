@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:seagull/background/all.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -207,7 +208,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           listener: (context, activitiesState) async {
             final settingsState = context.read<MemoplannerSettingBloc>().state;
             if (settingsState is! MemoplannerSettingsNotLoaded) {
-              await GetIt.I<AlarmScheduler>()(
+              await scheduleAlarmNotificationsIsolated(
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
@@ -226,7 +227,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           listener: (context, state) async {
             final activitiesState = context.read<ActivitiesBloc>().state;
             if (activitiesState is ActivitiesLoaded) {
-              await GetIt.I<AlarmScheduler>()(
+              await scheduleAlarmNotificationsIsolated(
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,

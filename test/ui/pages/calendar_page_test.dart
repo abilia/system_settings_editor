@@ -92,6 +92,7 @@ void main() {
     setupPermissions();
     tz.initializeTimeZones();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     final mockFirebasePushService = MockFirebasePushService();
@@ -131,7 +132,6 @@ void main() {
       ..settingsDb = mockSettingsDb
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
-      ..alarmScheduler = noAlarmScheduler
       ..database = db
       ..flutterTts = MockFlutterTts()
       ..init();

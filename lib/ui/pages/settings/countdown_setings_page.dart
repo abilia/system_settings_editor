@@ -1,9 +1,7 @@
-// @dart=2.9
-
 import 'package:seagull/ui/all.dart';
 
 class CountdownSettingsPage extends StatelessWidget {
-  const CountdownSettingsPage({Key key}) : super(key: key);
+  const CountdownSettingsPage({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/gestures.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,14 +9,15 @@ class PermissionInfoDialog extends StatelessWidget {
   final Permission permission;
 
   const PermissionInfoDialog({
-    Key key,
-    this.permission,
+    Key? key,
+    required this.permission,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocListener<PermissionBloc, PermissionState>(
-      listenWhen: (previous, current) => current.status[permission].isGranted,
+      listenWhen: (previous, current) =>
+          current.status[permission]?.isGranted ?? true,
       listener: (context, state) => Navigator.of(context).maybePop(),
       child: ViewDialog(
         expanded: true,
@@ -66,8 +65,8 @@ class PermissionInfoDialog extends StatelessWidget {
 
 class PermissionInfoBodyText extends StatelessWidget {
   const PermissionInfoBodyText({
-    Key key,
-    this.allowAccessBodyText,
+    Key? key,
+    required this.allowAccessBodyText,
   }) : super(key: key);
 
   final String allowAccessBodyText;
@@ -76,7 +75,7 @@ class PermissionInfoBodyText extends StatelessWidget {
     final bodyText2 = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(color: AbiliaColors.black75);
+        ?.copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0.s),
@@ -111,7 +110,7 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               Navigator.of(context).pop();
-              return Navigator.of(context).push(
+              Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
                     blocContext: context,

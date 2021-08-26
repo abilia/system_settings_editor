@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/calendar/add_activity/add_actitivy_default_settings_tab.dart';
@@ -7,7 +5,7 @@ import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_add
 import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_general_settings_tab.dart';
 
 class AddActivitySettingsPage extends StatelessWidget {
-  const AddActivitySettingsPage({Key key}) : super(key: key);
+  const AddActivitySettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

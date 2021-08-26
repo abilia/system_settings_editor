@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -10,10 +8,10 @@ class SelectRecurrentTypePage extends StatefulWidget {
   final IconData headingIcon;
 
   const SelectRecurrentTypePage({
-    Key key,
+    Key? key,
     this.allDaysVisible = false,
-    @required this.heading,
-    @required this.headingIcon,
+    required this.heading,
+    required this.headingIcon,
   }) : super(key: key);
   @override
   _SelectRecurrentTypePageState createState() =>

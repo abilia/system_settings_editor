@@ -1,16 +1,9 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaClock extends StatelessWidget {
-  final double height, width;
-  const AbiliaClock({
-    Key key,
-    this.height,
-    this.width,
-  }) : super(key: key);
+  const AbiliaClock({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -22,11 +15,11 @@ class AbiliaClock extends StatelessWidget {
 
 class FittedAbiliaClock extends StatelessWidget {
   final ClockType clockType;
-  final double height, width;
+  final double? height, width;
 
   const FittedAbiliaClock(
     this.clockType, {
-    Key key,
+    Key? key,
     this.height,
     this.width,
   }) : super(key: key);

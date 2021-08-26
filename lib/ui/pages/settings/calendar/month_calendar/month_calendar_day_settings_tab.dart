@@ -1,19 +1,17 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MonthDisplaySettingsTab extends StatelessWidget {
-  const MonthDisplaySettingsTab({Key key}) : super(key: key);
+  const MonthDisplaySettingsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
       builder: (context, state) {
-        final onWeekColorChanged = (WeekColor w) => context
+        final onWeekColorChanged = (WeekColor? w) => context
             .read<MonthCalendarSettingsCubit>()
             .changeMonthCalendarSettings(state.copyWith(color: w));
         return SettingsTab(
@@ -44,7 +42,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
 }
 
 class _MonthCalendarPreview extends StatelessWidget {
-  const _MonthCalendarPreview({Key key}) : super(key: key);
+  const _MonthCalendarPreview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +67,8 @@ class _MonthCalendarPreview extends StatelessWidget {
 class _MonthDayView extends StatelessWidget {
   final DayTheme dayTheme;
   const _MonthDayView({
-    Key key,
-    @required this.dayTheme,
+    Key? key,
+    required this.dayTheme,
   }) : super(key: key);
 
   @override

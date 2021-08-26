@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -7,8 +5,8 @@ import 'package:seagull/bloc/all.dart';
 class PlaySoundButton extends StatelessWidget {
   final Sound sound;
   const PlaySoundButton({
-    Key key,
-    @required this.sound,
+    Key? key,
+    required this.sound,
   }) : super(key: key);
 
   @override

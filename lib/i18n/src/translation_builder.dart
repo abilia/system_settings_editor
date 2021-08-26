@@ -46,7 +46,7 @@ class TranslationBuilder extends Builder {
           ..modifier = FieldModifier.final$
           ..type = refer('String')
           ..name = id
-          ..assignment = _getTranslation(fallbackLang, id),
+          ..assignment = _getTranslation(fallbackLang[id]),
       ),
     );
 
@@ -56,8 +56,9 @@ class TranslationBuilder extends Builder {
       ..fields.addAll(fields)).accept(emitter));
 
     // generate translations
-    for (var lang in languages) {
-      final dictionary = translations[lang]!;
+    for (var entry in translations.entries) {
+      final dictionary = entry.value;
+      final lang = entry.key;
       final overrideFields = lang == languages.first
           ? <Field>[]
           : fields.where((f) => dictionary.containsKey(f.name)).map(
@@ -65,7 +66,7 @@ class TranslationBuilder extends Builder {
                   (fb) => fb
                     ..annotations = ListBuilder<Expression>(
                         [CodeExpression(Code('override'))])
-                    ..assignment = _getTranslation(dictionary, f.name),
+                    ..assignment = _getTranslation(dictionary[f.name]),
                 ),
               );
 
@@ -80,11 +81,10 @@ class TranslationBuilder extends Builder {
         DartFormatter().format(buffer.toString()));
   }
 
-  Code _getTranslation(Map<String, String> translations, String key) {
-    final translation = translations[key]!;
-    return Code(
-        translation.contains("'") ? '''"$translation"''' : "'$translation'");
-  }
+  Code? _getTranslation(String? translation) => translation != null
+      ? Code(
+          translation.contains("'") ? '''"$translation"''' : "'$translation'")
+      : null;
 
   Map<String, Map<String, String>> _parseTranslationsAndWriteMissing(
     String content,

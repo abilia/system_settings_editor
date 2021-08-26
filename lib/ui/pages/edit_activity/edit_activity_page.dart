@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditActivityPage extends StatelessWidget {
   static PageRoute<bool> route(BuildContext context, DateTime day,
-          [BasicActivityData basicActivity]) =>
+          [BasicActivityDataItem? basicActivity]) =>
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
@@ -29,11 +27,11 @@ class EditActivityPage extends StatelessWidget {
       );
 
   final DateTime day;
-  final String title;
+  final String? title;
   const EditActivityPage({
-    @required this.day,
+    required this.day,
     this.title,
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

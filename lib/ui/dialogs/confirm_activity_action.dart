@@ -1,16 +1,14 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CheckActivityConfirmDialog extends StatelessWidget {
   final ActivityOccasion activityOccasion;
-  final String message;
+  final String? message;
 
   const CheckActivityConfirmDialog({
-    Key key,
-    @required this.activityOccasion,
+    Key? key,
+    required this.activityOccasion,
     this.message,
   }) : super(key: key);
 

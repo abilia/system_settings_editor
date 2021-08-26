@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 
@@ -26,14 +24,14 @@ class TimePillar extends StatelessWidget {
   final bool preview;
 
   const TimePillar({
-    Key key,
-    @required this.interval,
-    @required this.dayOccasion,
-    @required this.showTimeLine,
-    @required this.use12h,
-    @required this.nightParts,
-    @required this.dayParts,
-    @required this.columnOfDots,
+    Key? key,
+    required this.interval,
+    required this.dayOccasion,
+    required this.showTimeLine,
+    required this.use12h,
+    required this.nightParts,
+    required this.dayParts,
+    required this.columnOfDots,
     this.preview = false,
   }) : super(key: key);
 
@@ -46,11 +44,11 @@ class TimePillar extends StatelessWidget {
             : _futureDots;
 
     final formatHour = onlyHourFormat(context, use12h: use12h);
-    final theme = Theme.of(context);
     final topMargin = preview ? 0.0 : TimepillarCalendar.topMargin;
     return BlocBuilder<TimepillarBloc, TimepillarState>(
       builder: (context, ts) => DefaultTextStyle(
-        style: theme.textTheme.headline6.copyWith(color: AbiliaColors.black),
+        style: (Theme.of(context).textTheme.headline6 ?? headline6)
+            .copyWith(color: AbiliaColors.black),
         child: Stack(
           clipBehavior: Clip.none,
           children: <Widget>[
@@ -140,11 +138,11 @@ class TimePillar extends StatelessWidget {
 
 class Hour extends StatelessWidget {
   const Hour({
-    Key key,
-    @required this.hour,
-    @required this.dots,
-    @required this.isNight,
-    @required this.timepillarState,
+    Key? key,
+    required this.hour,
+    required this.dots,
+    required this.isNight,
+    required this.timepillarState,
   }) : super(key: key);
 
   final String hour;
@@ -154,16 +152,17 @@ class Hour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontSize = Theme.of(context).textTheme.headline6.fontSize;
+    final h6 = Theme.of(context).textTheme.headline6 ?? headline6;
+    final fontSize = h6.fontSize ?? headline6FontSize;
     final ts = timepillarState;
-    final dayTheme = Theme.of(context).textTheme.headline6.copyWith(
-          color: AbiliaColors.black,
-          fontSize: fontSize * ts.zoom,
-        );
-    final nightTheme = Theme.of(context).textTheme.headline6.copyWith(
-          color: AbiliaColors.white,
-          fontSize: fontSize * ts.zoom,
-        );
+    final dayTheme = h6.copyWith(
+      color: AbiliaColors.black,
+      fontSize: fontSize * ts.zoom,
+    );
+    final nightTheme = h6.copyWith(
+      color: AbiliaColors.white,
+      fontSize: fontSize * ts.zoom,
+    );
     return Container(
       height: context.read<TimepillarBloc>().state.hourHeight,
       padding: EdgeInsets.symmetric(vertical: ts.hourPadding),

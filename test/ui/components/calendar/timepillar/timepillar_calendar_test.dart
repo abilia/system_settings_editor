@@ -45,6 +45,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     final mockFirebasePushService = MockFirebasePushService();
@@ -83,7 +84,6 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..userFileDb = mockUserFileDb
       ..syncDelay = SyncDelays.zero
-      ..alarmScheduler = noAlarmScheduler
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
       ..init();
@@ -123,6 +123,7 @@ void main() {
             timepillarGeneric,
           ];
     });
+
     testWidgets('timepillar shows', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

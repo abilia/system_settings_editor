@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
@@ -9,8 +7,8 @@ import 'package:seagull/ui/all.dart';
 class CreateActivityPage extends StatefulWidget {
   final DateTime day;
   const CreateActivityPage({
-    Key key,
-    @required this.day,
+    Key? key,
+    required this.day,
   }) : super(key: key);
 
   @override
@@ -18,7 +16,7 @@ class CreateActivityPage extends StatefulWidget {
 }
 
 class _CreateActivityPageState extends State<CreateActivityPage> {
-  bool pickBasicActivityView;
+  bool? pickBasicActivityView;
 
   _CreateActivityPageState(this.pickBasicActivityView);
   @override
@@ -34,7 +32,7 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            RadioField(
+            RadioField<bool>(
               key: TestKey.newActivityChoice,
               leading: Icon(AbiliaIcons.new_icon),
               text: Text(translate.newActivityChoice),
@@ -43,7 +41,7 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
               onChanged: (v) => setState(() => pickBasicActivityView = v),
             ),
             SizedBox(height: 8.0.s),
-            RadioField(
+            RadioField<bool>(
               key: TestKey.basicActivityChoice,
               leading: Icon(AbiliaIcons.folder),
               text: Text(translate.fromBasicActivity),
@@ -62,7 +60,7 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
   }
 
   Future nextButtonPressed() async {
-    if (pickBasicActivityView) {
+    if (pickBasicActivityView == true) {
       final basicActivity = await Navigator.of(context).push<BasicActivityData>(
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
@@ -76,7 +74,7 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
           ),
         ),
       );
-      if (basicActivity != null) {
+      if (basicActivity != null && basicActivity is BasicActivityDataItem) {
         await navigateToEditActivityPage(basicActivity);
       }
     } else {
@@ -84,7 +82,8 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
     }
   }
 
-  Future navigateToEditActivityPage([BasicActivityData basicActivity]) async {
+  Future navigateToEditActivityPage(
+      [BasicActivityDataItem? basicActivity]) async {
     final saved = await Navigator.of(context).push(
       EditActivityPage.route(context, widget.day, basicActivity),
     );

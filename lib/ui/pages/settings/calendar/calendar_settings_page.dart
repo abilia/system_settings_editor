@@ -1,9 +1,7 @@
-// @dart=2.9
-
 import 'package:seagull/ui/all.dart';
 
 class CalendarSettingsPage extends StatelessWidget {
-  const CalendarSettingsPage({Key key}) : super(key: key);
+  const CalendarSettingsPage({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
   @override
   Widget build(BuildContext context) {

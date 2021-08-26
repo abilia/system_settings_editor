@@ -1,24 +1,22 @@
-// @dart=2.9
-
 import 'package:seagull/ui/all.dart';
 
 class IconAndTextButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final ButtonStyle style;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const IconAndTextButton({
-    Key key,
-    @required this.text,
-    @required this.icon,
-    @required this.style,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.style,
+    this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Tts(
+    return Tts.data(
       data: text,
       child: IconTheme(
         data: lightIconThemeData,
@@ -34,14 +32,14 @@ class IconAndTextButton extends StatelessWidget {
 }
 
 class GreyButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final IconData icon;
 
   const GreyButton({
-    Key key,
-    @required this.text,
-    @required this.icon,
+    Key? key,
+    required this.text,
+    required this.icon,
     this.onPressed,
   }) : super(key: key);
 
@@ -55,14 +53,14 @@ class GreyButton extends StatelessWidget {
 }
 
 class GreenButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final IconData icon;
 
   const GreenButton({
-    Key key,
-    @required this.text,
-    @required this.icon,
+    Key? key,
+    required this.text,
+    required this.icon,
     this.onPressed,
   }) : super(key: key);
 
@@ -76,12 +74,12 @@ class GreenButton extends StatelessWidget {
 }
 
 class NextButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
-  const NextButton({Key key, this.onPressed}) : super(key: key);
+  const NextButton({Key? key, this.onPressed}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Tts(
+  Widget build(BuildContext context) => Tts.data(
         data: Translator.of(context).translate.next,
         child: TextButton(
           style: iconTextButtonStyleGreen,
@@ -102,9 +100,9 @@ class NextButton extends StatelessWidget {
 }
 
 class OkButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   const OkButton({
-    Key key,
+    Key? key,
     this.onPressed,
   }) : super(key: key);
 
@@ -119,8 +117,8 @@ class OkButton extends StatelessWidget {
 }
 
 class PreviousButton extends StatelessWidget {
-  const PreviousButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+  const PreviousButton({Key? key, this.onPressed}) : super(key: key);
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +131,8 @@ class PreviousButton extends StatelessWidget {
 }
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+  const CancelButton({Key? key, this.onPressed}) : super(key: key);
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +145,8 @@ class CancelButton extends StatelessWidget {
 }
 
 class CloseButton extends StatelessWidget {
-  const CloseButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+  const CloseButton({Key? key, this.onPressed}) : super(key: key);
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +181,8 @@ class NoButton extends StatelessWidget {
 }
 
 class SaveButton extends StatelessWidget {
-  const SaveButton({Key key, this.onPressed}) : super(key: key);
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  const SaveButton({this.onPressed});
 
   @override
   Widget build(BuildContext context) {

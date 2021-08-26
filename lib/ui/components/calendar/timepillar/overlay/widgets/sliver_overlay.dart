@@ -1,17 +1,13 @@
-// @dart=2.9
-
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import '../all.dart';
+import 'package:seagull/ui/components/calendar/timepillar/overlay/all.dart';
 
 typedef SliverOverlayWidgetBuilder = Widget Function(
     BuildContext context, SliverOverlayState state);
 
 @immutable
 class SliverOverlayState {
-  const SliverOverlayState(
-    this.scrollPercentage,
-  ) : assert(scrollPercentage != null);
+  const SliverOverlayState(this.scrollPercentage);
 
   final double scrollPercentage;
 
@@ -19,7 +15,7 @@ class SliverOverlayState {
   bool operator ==(dynamic other) {
     if (identical(this, other)) return true;
     if (other is! SliverOverlayState) return false;
-    final SliverOverlayState typedOther = other;
+    final typedOther = other;
     return scrollPercentage == typedOther.scrollPercentage;
   }
 
@@ -32,10 +28,10 @@ class SliverOverlayState {
 
 class SliverOverlay extends RenderObjectWidget {
   SliverOverlay({
-    Key key,
-    @required this.overlay,
-    @required this.sliver,
-    this.height,
+    Key? key,
+    required this.overlay,
+    required this.sliver,
+    required this.height,
   }) : super(key: key);
 
   final Widget overlay;
@@ -64,12 +60,11 @@ class SliverOverlay extends RenderObjectWidget {
 
 class SliverOverlayBuilder extends StatelessWidget {
   const SliverOverlayBuilder({
-    Key key,
-    @required this.builder,
-    @required this.sliver,
-    this.height,
-  })  : assert(builder != null),
-        super(key: key);
+    Key? key,
+    required this.builder,
+    required this.sliver,
+    required this.height,
+  }) : super(key: key);
 
   final SliverOverlayWidgetBuilder builder;
 
@@ -94,16 +89,19 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   SliverOverlayRenderObjectElement(SliverOverlay widget) : super(widget);
 
   @override
-  SliverOverlay get widget => super.widget;
+  RenderObjectWidget get widget => super.widget;
+  SliverOverlay get sliverOverlay => widget as SliverOverlay;
 
-  Element _overlay;
+  Element? _overlay;
 
-  Element _sliver;
+  Element? _sliver;
 
   @override
   void visitChildren(ElementVisitor visitor) {
-    if (_overlay != null) visitor(_overlay);
-    if (_sliver != null) visitor(_sliver);
+    final overlay = _overlay;
+    if (overlay != null) visitor(overlay);
+    final sliver = _sliver;
+    if (sliver != null) visitor(sliver);
   }
 
   @override
@@ -114,26 +112,29 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   }
 
   @override
-  void mount(Element parent, dynamic newSlot) {
+  void mount(Element? parent, Object? newSlot) {
     super.mount(parent, newSlot);
-    _overlay = updateChild(_overlay, widget.overlay, 0);
-    _sliver = updateChild(_sliver, widget.sliver, 1);
+    _overlay = updateChild(_overlay, sliverOverlay.overlay, 0);
+    _sliver = updateChild(_sliver, sliverOverlay.sliver, 1);
   }
 
   @override
   void update(SliverOverlay newWidget) {
     super.update(newWidget);
     assert(widget == newWidget);
-    _overlay = updateChild(_overlay, widget.overlay, 0);
-    _sliver = updateChild(_sliver, widget.sliver, 1);
+    _overlay = updateChild(_overlay, sliverOverlay.overlay, 0);
+    _sliver = updateChild(_sliver, sliverOverlay.sliver, 1);
   }
 
   @override
   void insertRenderObjectChild(
       covariant RenderObject child, covariant dynamic slot) {
-    final RenderSliverOverlay renderObject = this.renderObject;
-    if (slot == 0) renderObject.overlay = child;
-    if (slot == 1) renderObject.child = child;
+    final renderObject = this.renderObject;
+    if (renderObject is RenderSliverOverlay) {
+      if (slot == 0) renderObject.overlay = child as RenderBox;
+      if (slot == 1) renderObject.child = child as RenderSliver;
+    }
+
     assert(renderObject == this.renderObject);
   }
 
@@ -146,9 +147,12 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   @override
   void removeRenderObjectChild(
       covariant RenderObject child, covariant dynamic slot) {
-    final RenderSliverOverlay renderObject = this.renderObject;
-    if (renderObject.overlay == child) renderObject.overlay = null;
-    if (renderObject.child == child) renderObject.child = null;
+    final renderObject = this.renderObject;
+    if (renderObject is RenderSliverOverlay) {
+      if (renderObject.overlay == child) renderObject.overlay = null;
+      if (renderObject.child == child) renderObject.child = null;
+    }
+
     assert(renderObject == this.renderObject);
   }
 }

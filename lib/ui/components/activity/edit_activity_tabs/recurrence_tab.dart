@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class RecurrenceTab extends StatelessWidget with EditActivityTab {
-  const RecurrenceTab({Key key}) : super(key: key);
+  const RecurrenceTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +89,8 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
 class Weekly extends StatelessWidget with EditActivityTab {
   final bool errorState;
   Weekly({
-    Key key,
-    @required this.errorState,
+    Key? key,
+    required this.errorState,
   }) : super(key: key);
 
   @override

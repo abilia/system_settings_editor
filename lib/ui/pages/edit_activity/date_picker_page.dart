@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/calendar_type.dart';
 import 'package:seagull/ui/all.dart';
@@ -7,11 +5,11 @@ import 'package:seagull/utils/all.dart';
 
 class DatePickerPage extends StatelessWidget {
   final DateTime date;
-  final DateTime notBefore;
+  final DateTime? notBefore;
 
   const DatePickerPage({
-    Key key,
-    @required this.date,
+    Key? key,
+    required this.date,
     this.notBefore,
   }) : super(key: key);
 
@@ -35,7 +33,8 @@ class DatePickerPage extends StatelessWidget {
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: BlocBuilder<DayPickerBloc, DayPickerState>(
           builder: (context, state) => OkButton(
-            onPressed: () {
+            onPressed: () async {
+              final notBefore = this.notBefore;
               if (notBefore != null && state.day.isDayBefore(notBefore)) {
                 return showViewDialog(
                   context: context,

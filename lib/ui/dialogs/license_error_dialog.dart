@@ -1,16 +1,14 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
 class LicenseErrorDialog extends StatelessWidget {
-  final String heading;
+  final String? heading;
   final String message;
 
   const LicenseErrorDialog({
-    Key key,
+    Key? key,
     this.heading,
-    @required this.message,
+    required this.message,
   }) : super(key: key);
 
   @override

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
@@ -8,11 +6,11 @@ import 'package:seagull/ui/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
-  final Widget previewImage;
+  final Widget? previewImage;
 
   const ActivityInfoWithDots(
     this.activityDay, {
-    Key key,
+    Key? key,
     this.previewImage,
   }) : super(key: key);
 
@@ -43,15 +41,19 @@ class ActivityInfoWithDots extends StatelessWidget {
 class ActivityInfo extends StatefulWidget {
   static final margin = 12.0.s;
   final ActivityDay activityDay;
-  final Widget previewImage;
-  final NotificationAlarm alarm;
+  final Widget? previewImage;
+  final NotificationAlarm? alarm;
   ActivityInfo(
     this.activityDay, {
-    Key key,
+    Key? key,
     this.previewImage,
     this.alarm,
   }) : super(key: key);
-  factory ActivityInfo.from({Activity activity, DateTime day, Key key}) =>
+  factory ActivityInfo.from({
+    required Activity activity,
+    required DateTime day,
+    Key? key,
+  }) =>
       ActivityInfo(ActivityDay(activity, day), key: key);
 
   static const animationDuration = Duration(milliseconds: 500);
@@ -104,10 +106,10 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 
 mixin ActivityMixin {
   static final _log = Logger((ActivityMixin).toString());
-  Future<bool> checkConfirmation(
+  Future<bool?> checkConfirmation(
     BuildContext context,
     ActivityOccasion activityOccasion, {
-    String message,
+    String? message,
   }) async {
     final check = await showViewDialog<bool>(
       context: context,
@@ -134,15 +136,15 @@ mixin ActivityMixin {
 
 class ActivityContainer extends StatelessWidget {
   const ActivityContainer({
-    Key key,
-    @required this.activityDay,
-    @required this.alarm,
+    Key? key,
+    required this.activityDay,
+    this.alarm,
     this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
-  final Widget previewImage;
-  final NotificationAlarm alarm;
+  final Widget? previewImage;
+  final NotificationAlarm? alarm;
 
   @override
   Widget build(BuildContext context) {
@@ -214,12 +216,12 @@ class ActivityContainer extends StatelessWidget {
 class Attachment extends StatelessWidget with ActivityMixin {
   static final padding = EdgeInsets.fromLTRB(18.0.s, 10.0.s, 14.0.s, 24.0.s);
   final ActivityDay activityDay;
-  final NotificationAlarm alarm;
+  final NotificationAlarm? alarm;
 
   const Attachment({
-    Key key,
-    @required this.activityDay,
-    @required this.alarm,
+    Key? key,
+    required this.activityDay,
+    this.alarm,
   }) : super(key: key);
 
   @override
@@ -255,8 +257,9 @@ class Attachment extends StatelessWidget with ActivityMixin {
                   .toOccasion(DateTime.now()),
               message: translate.checklistDoneInfo,
             );
-            if (alarm != null && checked == true) {
-              await popAlarm(context, alarm);
+            final a = alarm;
+            if (a != null && checked == true) {
+              await popAlarm(context, a);
             }
           }
         },
@@ -267,7 +270,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
 }
 
 class CheckButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const CheckButton({
     this.onPressed,
@@ -276,7 +279,7 @@ class CheckButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Translator.of(context).translate.check;
-    return Tts(
+    return Tts.data(
       data: text,
       child: IconTheme(
         data: lightIconThemeData,
@@ -301,8 +304,8 @@ class CheckButton extends StatelessWidget {
 
 class TopInfo extends StatelessWidget {
   const TopInfo({
-    Key key,
-    @required this.activityDay,
+    Key? key,
+    required this.activityDay,
   }) : super(key: key);
 
   final ActivityDay activityDay;
