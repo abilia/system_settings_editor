@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -15,7 +13,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
@@ -23,7 +23,7 @@ void main() {
   Future pumpActivityCard(
     WidgetTester tester,
     Activity activity, [
-    Occasion occasion,
+    Occasion? occasion,
   ]) =>
       tester
           .pumpWidget(
@@ -37,13 +37,13 @@ void main() {
               home: MultiBlocProvider(
                 providers: [
                   BlocProvider<AuthenticationBloc>(
-                      create: (context) => MockAuthenticationBloc()),
+                      create: (context) => FakeAuthenticationBloc()),
                   BlocProvider<UserFileBloc>(
                     create: (context) => UserFileBloc(
-                      fileStorage: MockFileStorage(),
-                      pushBloc: MockPushBloc(),
-                      syncBloc: MockSyncBloc(),
-                      userFileRepository: MockUserFileRepository(),
+                      fileStorage: FakeFileStorage(),
+                      pushBloc: FakePushBloc(),
+                      syncBloc: FakeSyncBloc(),
+                      userFileRepository: FakeUserFileRepository(),
                     ),
                   ),
                   BlocProvider<ClockBloc>(
@@ -53,7 +53,7 @@ void main() {
                   ),
                   BlocProvider<SettingsBloc>(
                     create: (context) => SettingsBloc(
-                      settingsDb: MockSettingsDb(),
+                      settingsDb: FakeSettingsDb(),
                     ),
                   ),
                 ],
@@ -69,12 +69,12 @@ void main() {
           .then((_) => tester.pumpAndSettle());
 
   setUp(() async {
+    setupFakeTts();
     await initializeDateFormatting();
     GetItInitializer()
-      ..fileStorage = MockFileStorage()
-      ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..fileStorage = FakeFileStorage()
+      ..database = FakeDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
   });
 
@@ -105,6 +105,7 @@ void main() {
         startTime: startTime,
       ),
     );
+    tester.takeException();
 
     // Assert image
     expect(find.byType(ActivityCard), findsOneWidget);
@@ -121,6 +122,7 @@ void main() {
         startTime: startTime,
       ),
     );
+    tester.takeException();
 
     // Assert title and image
     expect(find.byType(ActivityCard), findsOneWidget);
@@ -237,7 +239,7 @@ void main() {
     );
     final animatedcontainer =
         tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
-    expect(animatedcontainer.margin.horizontal, greaterThan(0.0));
+    expect(animatedcontainer.margin?.horizontal, greaterThan(0.0));
   });
 
   testWidgets('category left has category offset', (WidgetTester tester) async {
@@ -251,7 +253,7 @@ void main() {
     );
     final animatedcontainer =
         tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
-    expect(animatedcontainer.margin.horizontal, greaterThan(0.0));
+    expect(animatedcontainer.margin?.horizontal, greaterThan(0.0));
   });
 
   testWidgets('current activity is not crossed over',
@@ -276,6 +278,7 @@ void main() {
         Occasion.past);
     expect(find.byType(CrossOver), findsOneWidget);
   });
+
   testWidgets('past activity with image is crossed over',
       (WidgetTester tester) async {
     await pumpActivityCard(
@@ -286,6 +289,7 @@ void main() {
           fileId: Uuid().v4(),
         ),
         Occasion.past);
+    tester.takeException();
     expect(find.byType(CrossOver), findsOneWidget);
   });
 
@@ -301,6 +305,7 @@ void main() {
           signedOffDates: [startTime.onlyDays()],
         ),
         Occasion.past);
+    tester.takeException();
     expect(find.byType(CrossOver), findsNothing);
   });
 
@@ -313,6 +318,7 @@ void main() {
       signedOffDates: [startTime.onlyDays()],
     );
     await pumpActivityCard(tester, activity, Occasion.past);
+    tester.takeException();
     await tester.verifyTts(find.byType(ActivityCard), contains: activity.title);
   });
 }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -14,13 +12,16 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
+import '../../mocks/shared.mocks.dart';
+import '../../test_helpers/fake_shared_preferences.dart';
+import '../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
-  final mockTimepillarBloc = MockTimepillarBloc();
+  final mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
+
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -40,11 +41,11 @@ void main() {
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(
-                settingsDb: MockSettingsDb(),
+                settingsDb: FakeSettingsDb(),
               ),
             ),
             BlocProvider<TimepillarBloc>(
-              create: (context) => mockTimepillarBloc,
+              create: (context) => FakeTimepillarBloc(),
             ),
           ],
           child: widget,
@@ -52,13 +53,14 @@ void main() {
       );
 
   setUp(() async {
+    setupFakeTts();
     // When settings are not loaded the default value will be used
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
     await initializeDateFormatting();
 
     GetItInitializer()
-      ..flutterTts = MockFlutterTts()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = MockDatabase()
       ..init();
@@ -117,6 +119,7 @@ void main() {
       // Assert
       expect(find.text(expectedText), findsWidgets);
     });
+
     testWidgets('Side dots shows for future activity',
         (WidgetTester tester) async {
       // Arrange

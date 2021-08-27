@@ -22,6 +22,7 @@ import 'package:seagull/storage/all.dart';
   SyncBloc,
   PushBloc,
   GenericBloc,
+  MemoplannerSettingBloc,
   ScrollController,
   MultipartRequestBuilder,
   MultipartRequest,
@@ -52,6 +53,8 @@ class FakeSyncBloc extends Fake implements SyncBloc {
   Stream<SyncState> get stream => Stream.empty();
   @override
   void add(SyncEvent event) {}
+  @override
+  Future<void> close() async {}
 }
 
 class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
@@ -74,6 +77,8 @@ class FakeGenericBloc extends Fake implements GenericBloc {
   Stream<GenericState> get stream => Stream.empty();
   @override
   void add(GenericEvent event) {}
+  @override
+  Future<void> close() async {}
 }
 
 class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
@@ -83,6 +88,8 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
   ActivitiesState get state => ActivitiesNotLoaded();
   @override
   void add(ActivitiesEvent event) {}
+  @override
+  Future<void> close() async {}
 }
 
 class FakeMemoplannerSettingsBloc extends Fake
@@ -92,6 +99,8 @@ class FakeMemoplannerSettingsBloc extends Fake
   @override
   MemoplannerSettingsState get state =>
       MemoplannerSettingsLoaded(MemoplannerSettings());
+  @override
+  Future<void> close() async {}
 }
 
 class FakeTimepillarBloc extends Fake implements TimepillarBloc {
@@ -105,6 +114,8 @@ class FakeTimepillarBloc extends Fake implements TimepillarBloc {
         ),
         1,
       );
+  @override
+  Future<void> close() async {}
 }
 
 class FakeSettingsDb extends Fake implements SettingsDb {
@@ -116,6 +127,8 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setLeftCategoryExpanded(bool expanded) async {}
   @override
   Future setRightCategoryExpanded(bool expanded) async {}
+  @override
+  bool get textToSpeech => true;
 }
 
 class FakeUserFileDb extends Fake implements UserFileDb {
@@ -137,6 +150,66 @@ class FakeSortableBloc extends Fake implements SortableBloc {
   Stream<SortableState> get stream => Stream.empty();
   @override
   SortableState get state => SortablesNotLoaded();
+  @override
+  Future<void> close() async {}
 }
 
 class FakeGenericRepository extends Fake implements GenericRepository {}
+
+class FakeFileStorage extends Fake implements FileStorage {}
+
+class FakeUserFileRepository extends Fake implements UserFileRepository {}
+
+class FakeSettingsBloc extends Fake implements SettingsBloc {}
+
+class FakeUserFileBloc extends Fake implements UserFileBloc {}
+
+class FakeDayPickerBloc extends Fake implements DayPickerBloc {
+  @override
+  Stream<DayPickerState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeDayActivitiesBloc extends Fake implements DayActivitiesBloc {
+  @override
+  Stream<DayActivitiesState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeActivitiesOccasionBloc extends Fake
+    implements ActivitiesOccasionBloc {
+  @override
+  Stream<ActivitiesOccasionState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeAlarmBloc extends Fake implements AlarmBloc {
+  @override
+  Stream<AlarmStateBase> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeNotificationBloc extends Fake implements NotificationBloc {
+  @override
+  Stream<AlarmStateBase> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeCalendarViewBloc extends Fake implements CalendarViewBloc {
+  @override
+  Stream<CalendarViewState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeLicenseBloc extends Fake implements LicenseBloc {
+  @override
+  Stream<LicenseState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
