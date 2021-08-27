@@ -43,16 +43,16 @@ class _ProfilePictureNameAndEmailState
     extends State<ProfilePictureNameAndEmail> {
   bool showVersion = false;
   final User? user;
-  final String enviorment;
+  final String baseUrl;
+  final String environment;
   _ProfilePictureNameAndEmailState({
     required this.user,
-    required String baseUrl,
-  }) : enviorment =
-            backEndEnviorments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
+    required this.baseUrl,
+  }) : environment =
+            backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
   @override
   Widget build(BuildContext context) {
     final user = this.user;
-
     return Column(
       children: <Widget>[
         if (user != null) ...[
@@ -62,7 +62,7 @@ class _ProfilePictureNameAndEmailState
                 : GetIt.I<SeagullLogger>().sendLogsToBackend(),
             onDoubleTap: () => setState(() => showVersion = !showVersion),
             child: ProfilePicture(
-              enviorment,
+              baseUrl,
               user,
             ),
           ),
@@ -84,7 +84,7 @@ class _ProfilePictureNameAndEmailState
                     ?.copyWith(color: AbiliaColors.black75),
               ),
             ),
-          if (showVersion) Text('${user.id} ($enviorment)'),
+          if (showVersion) Text('${user.id} ($environment)'),
         ]
       ],
     );
