@@ -72,7 +72,7 @@ void main() {
     );
 
     getItInitializer
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService

@@ -74,7 +74,7 @@ void main() {
       ..fileStorage = MockFileStorage()
       ..database = MockDatabase()
       ..flutterTts = MockFlutterTts()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
   });
 

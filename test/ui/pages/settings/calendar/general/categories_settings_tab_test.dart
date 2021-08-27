@@ -62,7 +62,7 @@ void main() {
     when(sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..ticker = Ticker(
         stream: StreamController<DateTime>().stream,
         initialTime: initialTime,

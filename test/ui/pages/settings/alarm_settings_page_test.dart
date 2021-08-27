@@ -50,7 +50,7 @@ void main() {
           .thenAnswer((_) => Future.value(true));
 
       GetItInitializer()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker(
           stream: StreamController<DateTime>().stream,
           initialTime: initialTime,

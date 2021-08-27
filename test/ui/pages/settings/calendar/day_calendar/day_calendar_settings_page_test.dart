@@ -33,7 +33,7 @@ void main() {
           .thenAnswer((_) => Future.value(generics));
 
       GetItInitializer()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker(
           stream: StreamController<DateTime>().stream,
           initialTime: initialTime,

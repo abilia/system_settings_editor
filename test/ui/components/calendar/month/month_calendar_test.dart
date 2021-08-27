@@ -46,7 +46,7 @@ void main() {
     when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(
           stream: StreamController<DateTime>().stream, initialTime: initialDay)

@@ -869,7 +869,7 @@ Internal improvements to tests and examples.''';
       setUp(() async {
         GetItInitializer()
           ..fileStorage = MockFileStorage()
-          ..sharedPreferences = await MockSharedPreferences.getInstance()
+          ..sharedPreferences = await FakeSharedPreferences.getInstance()
           ..database = MockDatabase()
           ..init();
       });
@@ -2324,7 +2324,7 @@ text''';
       GetItInitializer()
         ..flutterTts = MockFlutterTts()
         ..database = MockDatabase()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..init();
     });
     testWidgets('title', (WidgetTester tester) async {

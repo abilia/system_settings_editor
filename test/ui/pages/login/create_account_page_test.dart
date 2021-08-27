@@ -20,7 +20,7 @@ void main() {
       setUp(() async {
         GetItInitializer()
           ..sharedPreferences =
-              await MockSharedPreferences.getInstance(loggedIn: false)
+              await FakeSharedPreferences.getInstance(loggedIn: false)
           ..ticker = Ticker(
             stream: StreamController<DateTime>().stream,
             initialTime: DateTime(2021, 05, 13, 11, 29),

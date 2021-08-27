@@ -87,7 +87,7 @@ void main() {
     when(activitiesOccasionBlocMock.state).thenReturn(expected);
     GetItInitializer()
       ..flutterTts = MockFlutterTts()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = MockDatabase()
       ..init();
     when(memoplannerSettingsBlocMock.state)

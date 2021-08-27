@@ -15,7 +15,7 @@ import 'package:seagull/ui/components/all.dart';
 import '../../mocks/shared.dart';
 import '../../mocks/shared.mocks.dart';
 import '../../test_helpers/alarm_schedualer.dart';
-import '../../test_helpers/extensions.dart';
+import '../../test_helpers/fake_shared_preferences.dart';
 import '../../test_helpers/permission.dart';
 
 void main() {
@@ -42,7 +42,7 @@ void main() {
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
       GetItInitializer()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..activityDb = mockActivityDb
         ..client = Fakes.client(
             activityResponse: () => serverActivityAnswers.removeAt(0))

@@ -8,7 +8,7 @@ import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
 import '../../mocks/shared.mocks.dart';
-import '../../test_helpers/extensions.dart';
+import '../../test_helpers/fake_shared_preferences.dart';
 
 void main() {
   late AuthenticationBloc authenticationBloc;
@@ -16,7 +16,7 @@ void main() {
   group('AuthenticationBloc event order', () {
     late UserRepository userRepository;
     setUp(() async {
-      final prefs = await MockSharedPreferences.getInstance(loggedIn: false);
+      final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       userRepository = UserRepository(
         client: Fakes.client(),
         tokenDb: TokenDb(prefs),

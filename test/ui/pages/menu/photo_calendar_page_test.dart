@@ -29,7 +29,7 @@ void main() {
       when(db.batch()).thenReturn(mockBatch);
 
       GetItInitializer()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..ticker = Ticker(
           stream: StreamController<DateTime>().stream,
           initialTime: initialTime,

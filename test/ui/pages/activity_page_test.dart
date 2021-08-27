@@ -77,7 +77,7 @@ void main() {
     );
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(
           initialTime: startTime, stream: StreamController<DateTime>().stream)

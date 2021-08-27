@@ -42,7 +42,7 @@ void main() {
           packageName: 'packageName',
           version: 'version',
           buildNumber: 'buildNumber')
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = MockDatabase()
       ..init();
   });

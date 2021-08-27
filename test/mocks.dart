@@ -26,7 +26,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 export 'test_helpers/verify_generic.dart';
-export 'test_helpers/extensions.dart';
+export 'test_helpers/fake_shared_preferences.dart';
 export 'test_helpers/permission.dart';
 export 'test_helpers/alarm_schedualer.dart';
 

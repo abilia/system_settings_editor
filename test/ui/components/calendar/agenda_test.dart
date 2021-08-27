@@ -61,7 +61,7 @@ void main() {
     );
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
       ..ticker =

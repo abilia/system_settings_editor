@@ -58,7 +58,7 @@ void main() {
         .thenAnswer((_) => Future.value([timepillarGeneric]));
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initTime)
       ..baseUrlDb = MockBaseUrlDb()

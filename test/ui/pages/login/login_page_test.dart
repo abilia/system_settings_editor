@@ -50,7 +50,7 @@ void main() {
 
     GetItInitializer()
       ..sharedPreferences =
-          await MockSharedPreferences.getInstance(loggedIn: false)
+          await FakeSharedPreferences.getInstance(loggedIn: false)
       ..activityDb = mockActivityDb
       ..fireBasePushService = mockFirebasePushService
       ..ticker = Ticker(

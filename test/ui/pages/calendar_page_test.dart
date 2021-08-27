@@ -122,7 +122,7 @@ void main() {
     final db = MockDatabase();
     when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
