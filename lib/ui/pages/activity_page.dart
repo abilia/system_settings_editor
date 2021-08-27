@@ -23,7 +23,7 @@ class ActivityPage extends StatelessWidget {
         final activityOccasion = occasion.fromActivitiesState(state);
         return Scaffold(
           appBar: DayAppBar(
-            day: activityOccasion.day,
+            day: activityOccasion.activity.startTime,
             leftAction: ActionButton(
               key: TestKey.activityBackButton,
               onPressed: () => Navigator.of(context).maybePop(),
