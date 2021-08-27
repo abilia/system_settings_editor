@@ -18,7 +18,7 @@ class BackendSwitchesDialog extends StatelessWidget {
         builder: (context, state) => Wrap(
           spacing: 8.s,
           children: [
-            ...backEndEnviorments.entries.map(
+            ...backEndEnvironments.entries.map(
               (kvp) => BackEndButton(
                 kvp.key,
                 userRepository: state.userRepository,

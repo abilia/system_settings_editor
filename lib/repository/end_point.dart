@@ -5,7 +5,7 @@ const PROD = 'https://myabilia.com',
     WHALE = 'https://whale.abilia-gbg.se',
     T1 = 'https://t1.abilia-gbg.se',
     DEBUG = 'https://debug.abilia-gbg.se';
-const Map<String, String> backEndEnviorments = {
+const Map<String, String> backEndEnvironments = {
   'Prod': PROD,
   'Whale': WHALE,
   'T1': T1,
