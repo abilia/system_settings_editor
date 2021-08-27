@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -10,15 +8,14 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
-  UserFileBloc userFileBloc;
-  UserFileRepository mockUserFileRepository;
-  MockFileStorage mockedFileStorage;
+  late UserFileBloc userFileBloc;
+  late MockUserFileRepository mockUserFileRepository;
 
   final userFile = UserFile(
     id: '',
@@ -37,17 +34,20 @@ void main() {
 
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
-    mockedFileStorage = MockFileStorage();
-    when(mockUserFileRepository.save(any)).thenAnswer((_) => Future.value());
+    when(mockUserFileRepository.save(any))
+        .thenAnswer((_) => Future.value(true));
     when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value([]));
+    when(mockUserFileRepository.fetchIntoDatabaseSynchronized())
+        .thenAnswer((_) async {});
+    final mockedFileStorage = MockFileStorage();
     when(mockedFileStorage.storeFile(any, any))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
       userFileRepository: mockUserFileRepository,
-      pushBloc: MockPushBloc(),
+      pushBloc: FakePushBloc(),
       fileStorage: mockedFileStorage,
-      syncBloc: MockSyncBloc(),
+      syncBloc: FakeSyncBloc(),
     );
   });
 

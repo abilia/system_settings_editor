@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -8,21 +6,26 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../mocks/shared.mocks.dart';
 import '../../test_helpers/matchers.dart';
-import '../../mocks.dart';
 
 void main() {
   final anyTime = DateTime(2020, 03, 28, 15, 20);
   final anyDay = DateTime(2020, 03, 28);
 
-  ActivitiesBloc activitiesBloc;
-  MockActivityRepository mockActivityRepository;
-  MockPushBloc mockPushBloc;
-  MockSyncBloc mockSyncBloc;
+  late ActivitiesBloc activitiesBloc;
+  late MockActivityRepository mockActivityRepository;
+  late PushBloc mockPushBloc;
+  late SyncBloc mockSyncBloc;
   setUp(() {
     mockActivityRepository = MockActivityRepository();
     mockPushBloc = MockPushBloc();
     mockSyncBloc = MockSyncBloc();
+    when(mockPushBloc.stream).thenAnswer((_) => Stream.empty());
+    when(mockActivityRepository.load())
+        .thenAnswer((_) => Future.value(<Activity>[]));
+    when(mockActivityRepository.save(any))
+        .thenAnswer((_) => Future.value(true));
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
@@ -74,8 +77,6 @@ void main() {
     });
 
     test('calls add activities on mockActivityRepostitory', () async {
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.starts(anyTime);
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
@@ -89,8 +90,6 @@ void main() {
 
     test('AddActivity calls add activities on mockActivityRepostitory',
         () async {
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[]));
       final anActivity = FakeActivity.starts(anyTime);
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);

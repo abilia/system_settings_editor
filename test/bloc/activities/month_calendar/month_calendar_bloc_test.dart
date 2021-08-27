@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,15 +7,16 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
 
 void main() {
-  MonthCalendarBloc monthCalendarBloc;
-  ActivitiesBloc activitiesBloc;
-  ActivityRepository mockActivityRepository;
+  late MonthCalendarBloc monthCalendarBloc;
+  late ActivitiesBloc activitiesBloc;
+  late ActivityRepository mockActivityRepository;
 
-  ClockBloc clockBloc;
-  StreamController<DateTime> clock;
+  late ClockBloc clockBloc;
+  late StreamController<DateTime> clock;
   final initial = DateTime(2021, 03, 19, 09, 45);
 
   setUp(() {
@@ -27,8 +26,8 @@ void main() {
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
-      syncBloc: MockSyncBloc(),
-      pushBloc: MockPushBloc(),
+      syncBloc: FakeSyncBloc(),
+      pushBloc: FakePushBloc(),
     );
   });
 

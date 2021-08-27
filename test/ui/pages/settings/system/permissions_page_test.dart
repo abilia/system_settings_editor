@@ -184,20 +184,24 @@ void main() {
     });
 
     testWidgets(
-        'Permission has switches undetermined tapped calls for request permission',
+        'Permission has switches denied tapped calls for request permission',
         (WidgetTester tester) async {
-      setupPermissions();
+      final allPermissions = PermissionBloc.allPermissions.toSet()
+        ..remove(Permission.systemAlertWindow)
+        ..remove(Permission.notification);
+
+      setupPermissions(
+          {for (var k in allPermissions) k: PermissionStatus.denied});
       await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
-      final allPermissions = PermissionBloc.allPermissions.toSet()
-        ..remove(Permission.systemAlertWindow);
 
       for (final permission in allPermissions) {
         await tester.tap(find.byKey(ObjectKey(permission)));
         await tester.pumpAndSettle();
       }
+
       expect(requestedPermissions, containsAll(allPermissions));
     });
 

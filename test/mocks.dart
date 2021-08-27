@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,12 +12,11 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/fakes/all.dart';
+
 import 'package:seagull/logging.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
@@ -27,21 +26,9 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 export 'test_helpers/verify_generic.dart';
-
-extension MockSharedPreferences on SharedPreferences {
-  static Future<SharedPreferences> getInstance({bool loggedIn = true}) {
-    SharedPreferences.setMockInitialValues({
-      if (loggedIn) TokenDb.tokenKey: Fakes.token,
-    });
-    return SharedPreferences.getInstance();
-  }
-}
-
-int alarmSchedualCalls = 0;
-AlarmScheduler get noAlarmScheduler {
-  alarmSchedualCalls = 0;
-  return ((a, b, c, d, e, {now}) async => alarmSchedualCalls++);
-}
+export 'test_helpers/extensions.dart';
+export 'test_helpers/permission.dart';
+export 'test_helpers/alarm_schedualer.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -296,59 +283,6 @@ extension TapLink on CommonFinders {
     return byWidgetPredicate(
       (widget) => widget is RichText && _tapTextSpan(widget, text),
     );
-  }
-}
-
-// https://github.com/Baseflow/flutter-permission-handler/issues/262#issuecomment-702691396
-Set<Permission> checkedPermissions = {};
-Set<Permission> requestedPermissions = {};
-int openAppSettingsCalls = 0;
-void setupPermissions(
-    [Map<Permission, PermissionStatus> permissions = const {}]) {
-  checkedPermissions = {};
-  requestedPermissions = {};
-  openAppSettingsCalls = 0;
-  MethodChannel('flutter.baseflow.com/permissions/methods')
-      .setMockMethodCallHandler(
-    (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'requestPermissions':
-          requestedPermissions.addAll(
-            (methodCall.arguments as List)
-                .cast<int>()
-                .map((i) => Permission.values[i]),
-          );
-          return permissions
-              .map((key, value) => MapEntry<int, int>(key.value, value.value));
-        case 'checkPermissionStatus':
-          final askedPermission =
-              Permission.values[methodCall.arguments as int];
-          checkedPermissions.add(askedPermission);
-          return (permissions[askedPermission]).value;
-        case 'openAppSettings':
-          openAppSettingsCalls++;
-          break;
-      }
-    },
-  );
-}
-
-extension PermissionStatusValue on PermissionStatus {
-  int get value {
-    switch (this) {
-      case PermissionStatus.denied:
-        return 0;
-      case PermissionStatus.granted:
-        return 1;
-      case PermissionStatus.restricted:
-        return 2;
-      case PermissionStatus.limited:
-        return 3;
-      case PermissionStatus.permanentlyDenied:
-        return 4;
-      default:
-        return 3;
-    }
   }
 }
 

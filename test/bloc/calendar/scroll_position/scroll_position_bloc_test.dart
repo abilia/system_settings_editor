@@ -9,9 +9,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
-
-class MockScrollController extends Mock implements ScrollController {}
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
 
 class MockScrollPosition extends Mock implements ScrollPosition {}
 
@@ -19,7 +18,7 @@ void main() {
   ScrollPositionBloc scrollPositionBloc;
   MockScrollController mockScrollController;
   MockScrollPosition mockScrollPosition;
-  MockTimepillarBloc mockTimepillarBloc;
+  TimepillarBloc mockTimepillarBloc;
   StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
@@ -29,7 +28,7 @@ void main() {
     final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
-    mockTimepillarBloc = MockTimepillarBloc();
+    mockTimepillarBloc = FakeTimepillarBloc();
 
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
@@ -38,15 +37,6 @@ void main() {
     );
     when(mockScrollController.position).thenReturn(mockScrollPosition);
     when(mockScrollController.hasClients).thenReturn(true);
-    when(mockTimepillarBloc.state).thenReturn(
-      TimepillarState(
-        TimepillarInterval(
-          start: DateTime.now(),
-          end: DateTime.now(),
-        ),
-        1,
-      ),
-    );
   });
 
   test('initial state is Unready', () {

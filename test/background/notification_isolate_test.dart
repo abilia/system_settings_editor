@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -13,11 +11,12 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
-import '../mocks.dart';
+import '../mocks/shared.mocks.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
   final mockedFileStorage = MockFileStorage();
+  late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
   final fileId = Uuid().v4();
   final allActivities = [
     Activity.createNew(title: 'passed', startTime: now.subtract(1.minutes())),
@@ -54,7 +53,8 @@ void main() {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance =
+        mockedNotificationsPlugin = MockFlutterLocalNotificationsPlugin();
     when(mockedFileStorage.copyImageThumbForNotification(fileId))
         .thenAnswer((_) => Future.value(File(fileId)));
     when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
@@ -83,8 +83,8 @@ void main() {
       mockedFileStorage,
       now: () => now,
     );
-    verify(notificationsPluginInstance.cancelAll());
-    verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
+    verify(mockedNotificationsPlugin.cancelAll());
+    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
             uiLocalNotificationDateInterpretation:
@@ -100,8 +100,8 @@ void main() {
       mockedFileStorage,
       now: () => now,
     );
-    verify(notificationsPluginInstance.cancelAll());
-    verify(notificationsPluginInstance.zonedSchedule(any, any, any, any, any,
+    verify(mockedNotificationsPlugin.cancelAll());
+    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
             uiLocalNotificationDateInterpretation:
@@ -118,12 +118,12 @@ void main() {
       mockedFileStorage,
       now: () => now,
     );
-    verify(notificationsPluginInstance.cancelAll());
+    verify(mockedNotificationsPlugin.cancelAll());
     verify(mockedFileStorage.copyImageThumbForNotification(fileId));
     verify(mockedFileStorage.getFile(fileId));
     verify(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
-    final details = verify(notificationsPluginInstance.zonedSchedule(
+    final details = verify(mockedNotificationsPlugin.zonedSchedule(
             any, any, any, any, captureAny,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
@@ -133,21 +133,22 @@ void main() {
         .single as NotificationDetails;
 
     // iOS
-    expect(details.iOS.attachments.length, 1);
-    final attachment = details.iOS.attachments.first;
-    expect(attachment.filePath, fileId);
-    expect(attachment.identifier, fileId);
+    expect(details.iOS?.attachments?.length, 1);
+    final attachment = details.iOS?.attachments?.first;
+    expect(attachment?.filePath, fileId);
+    expect(attachment?.identifier, fileId);
     // Android
-    expect(
-        details.android.styleInformation is BigPictureStyleInformation, isTrue);
-    final bpd = (details.android.styleInformation as BigPictureStyleInformation)
-        .bigPicture as FilePathAndroidBitmap;
+    expect(details.android?.styleInformation,
+        isInstanceOf<BigPictureStyleInformation>());
+    final bpd =
+        (details.android?.styleInformation as BigPictureStyleInformation)
+            .bigPicture as FilePathAndroidBitmap;
     expect(bpd.data, fileId);
 
-    expect(details.android.largeIcon is FilePathAndroidBitmap, isTrue);
-    final largeIcon = details.android.largeIcon as FilePathAndroidBitmap;
+    expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
+    final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
     expect(largeIcon.data, fileId);
 
-    expect(details.android.fullScreenIntent, isTrue);
+    expect(details.android?.fullScreenIntent, isTrue);
   });
 }

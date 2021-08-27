@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -7,19 +5,20 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
   final activityRepository = MockActivityRepository();
   final userFileRepository = MockUserFileRepository();
   final sortableRepository = MockSortableRepository();
-  final genericRepository = MockGenericRepository();
+
   group('happy caseas', () {
     final syncBloc = SyncBloc(
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
-      genericRepository: genericRepository,
+      genericRepository: FakeGenericRepository(),
       syncDelay: SyncDelays.zero,
     );
     setUp(() {
@@ -51,7 +50,7 @@ void main() {
       activityRepository: activityRepository,
       userFileRepository: userFileRepository,
       sortableRepository: sortableRepository,
-      genericRepository: genericRepository,
+      genericRepository: FakeGenericRepository(),
       syncDelay:
           SyncDelays(betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
     );
@@ -95,7 +94,7 @@ void main() {
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
-        genericRepository: genericRepository,
+        genericRepository: FakeGenericRepository(),
         syncDelay: SyncDelays(
           betweenSync: stallTime,
           retryDelay: stallTime,

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -8,25 +6,23 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/models/user.dart';
-import 'package:seagull/repository/user_repository.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
   group('LoginBloc event order', () {
-    LoginBloc loginBloc;
-    AuthenticationBloc authenticationBloc;
-    MockFirebasePushService mockFirebasePushService;
+    late LoginBloc loginBloc;
+    late AuthenticationBloc authenticationBloc;
     final mockUserRepository = MockUserRepository();
 
     final pushToken = 'pushToken';
 
     setUp(() {
-      authenticationBloc = AuthenticationBloc(mockUserRepository);
-      mockFirebasePushService = MockFirebasePushService();
+      final mockFirebasePushService = MockFirebasePushService();
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
 
+      authenticationBloc = AuthenticationBloc(mockUserRepository);
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
@@ -49,6 +45,7 @@ void main() {
         pushToken: anyNamed('pushToken'),
         time: anyNamed('time'),
       )).thenAnswer((_) => Future.value(loginToken));
+      when(mockUserRepository.getToken()).thenReturn('token');
 
       when(mockUserRepository.me(loginToken)).thenAnswer((_) => Future.value(
             User(
@@ -157,14 +154,13 @@ void main() {
   });
 
   group('LoginBloc side effect', () {
-    LoginBloc loginBloc;
-    AuthenticationBloc authenticationBloc;
-    UserRepository mockedUserRepository;
-    MockFirebasePushService mockFirebasePushService;
+    late LoginBloc loginBloc;
+    late MockUserRepository mockedUserRepository;
+    late MockFirebasePushService mockFirebasePushService;
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      authenticationBloc = AuthenticationBloc(mockedUserRepository)
+      final authenticationBloc = AuthenticationBloc(mockedUserRepository)
         ..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
       loginBloc = LoginBloc(
@@ -212,11 +208,6 @@ void main() {
       ));
       await untilCalled(mockedUserRepository.me(any));
       await untilCalled(mockedUserRepository.persistToken(any));
-    });
-
-    tearDown(() {
-      authenticationBloc.close();
-      loginBloc.close();
     });
   });
 }

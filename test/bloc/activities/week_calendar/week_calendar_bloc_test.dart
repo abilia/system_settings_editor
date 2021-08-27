@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -8,15 +6,16 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
 
 void main() {
-  WeekCalendarBloc weekCalendarBloc;
-  ActivitiesBloc activitiesBloc;
-  MockActivityRepository mockActivityRepository;
-  ClockBloc clockBloc;
+  late WeekCalendarBloc weekCalendarBloc;
+  late ActivitiesBloc activitiesBloc;
+  late MockActivityRepository mockActivityRepository;
+  late ClockBloc clockBloc;
+  late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2021, 03, 12, 10, 00);
-  StreamController<DateTime> mockedTicker;
   group('WeekCalendarBlocTest', () {
     setUp(() {
       mockedTicker = StreamController<DateTime>();
@@ -24,13 +23,13 @@ void main() {
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        syncBloc: MockSyncBloc(),
-        pushBloc: MockPushBloc(),
+        syncBloc: FakeSyncBloc(),
+        pushBloc: FakePushBloc(),
       );
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        syncBloc: MockSyncBloc(),
-        pushBloc: MockPushBloc(),
+        syncBloc: FakeSyncBloc(),
+        pushBloc: FakePushBloc(),
       );
       weekCalendarBloc = WeekCalendarBloc(
         activitiesBloc: activitiesBloc,

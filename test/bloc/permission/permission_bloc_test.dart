@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/permission/permission_bloc.dart';
 
-import '../../mocks.dart';
+import '../../test_helpers/permission.dart';
 
 void main() {
   setUp(() {

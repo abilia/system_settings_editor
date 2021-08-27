@@ -5,13 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
 
 void main() {
-  final authBloc = MockAuthenticationBloc();
   Widget wrapWithAuthBlocProvider(Widget child) =>
       BlocProvider<AuthenticationBloc>(
-        create: (context) => authBloc,
+        create: (context) => FakeAuthenticationBloc(),
         child: child,
       );
 

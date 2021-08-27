@@ -346,7 +346,7 @@ void main() {
     testWidgets(
         'when fullscreen notification is NOT granted: show FullscreenAlarmInfoDialog',
         (WidgetTester tester) async {
-      setupPermissions();
+      setupPermissions({Permission.systemAlertWindow: PermissionStatus.denied});
       await tester.pumpApp();
       await tester.pumpAndSettle();
       await tester.enterText_(find.byType(PasswordInput), secretPassword);

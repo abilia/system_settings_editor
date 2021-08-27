@@ -1,11 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
 import '../../../test_helpers/types.dart';
 
 void main() {
@@ -13,7 +12,7 @@ void main() {
     final settingsState = MemoplannerSettingsNotLoaded();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: settingsState,
-      genericBloc: MockGenericBloc(),
+      genericBloc: FakeGenericBloc(),
     );
 
     expect(
@@ -49,7 +48,7 @@ void main() {
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: MemoplannerSettingsNotLoaded(),
-      genericBloc: MockGenericBloc(),
+      genericBloc: FakeGenericBloc(),
     );
 
     functionSettingsCubit.changeFunctionSettings(
@@ -95,7 +94,7 @@ void main() {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: MemoplannerSettingsNotLoaded(),
-      genericBloc: MockGenericBloc(),
+      genericBloc: FakeGenericBloc(),
     );
 
     // Act -- Change to week calendar

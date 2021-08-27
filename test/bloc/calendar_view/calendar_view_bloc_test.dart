@@ -1,16 +1,15 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
 
 void main() {
-  CalendarViewBloc calendarViewBloc;
-  MockSettingsDb settingsDb;
+  late CalendarViewBloc calendarViewBloc;
+  SettingsDb settingsDb;
   setUp(() {
-    settingsDb = MockSettingsDb();
+    settingsDb = FakeSettingsDb();
     calendarViewBloc = CalendarViewBloc(settingsDb);
   });
   test('initial state', () {

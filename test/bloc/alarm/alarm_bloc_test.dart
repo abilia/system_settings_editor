@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,25 +7,25 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
-  ClockBloc clockBloc;
-  ActivitiesBloc activitiesBloc;
-  AlarmBloc alarmBloc;
+  late ClockBloc clockBloc;
+  late ActivitiesBloc activitiesBloc;
+  late AlarmBloc alarmBloc;
+  late MockActivityRepository mockActivityRepository;
+  late StreamController<DateTime> mockedTicker;
+
   final thisMinute = DateTime(2006, 06, 06, 06, 06).onlyMinutes();
   final nextMinute = thisMinute.add(Duration(minutes: 1));
   final inTwoMin = thisMinute.add(Duration(minutes: 2));
   final day = thisMinute.onlyDays();
-  MockActivityRepository mockActivityRepository;
-  StreamController<DateTime> mockedTicker;
 
   Future _tick() async {
-    final nextMin = clockBloc?.state?.add(Duration(minutes: 1));
-    if (nextMin != null) {
-      mockedTicker?.add(nextMin);
-      await clockBloc.stream.firstWhere((d) => d == nextMin);
-    }
+    final nextMin = clockBloc.state.add(Duration(minutes: 1));
+    mockedTicker.add(nextMin);
+    await clockBloc.stream.firstWhere((d) => d == nextMin);
   }
 
   setUp(() {
@@ -36,8 +34,8 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
-      syncBloc: MockSyncBloc(),
-      pushBloc: MockPushBloc(),
+      syncBloc: FakeSyncBloc(),
+      pushBloc: FakePushBloc(),
     );
     alarmBloc = AlarmBloc(clockBloc: clockBloc, activitiesBloc: activitiesBloc);
   });
