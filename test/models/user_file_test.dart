@@ -1,12 +1,10 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 
 void main() {
   UserFile userFileWith({
-    String path,
-    String contentType,
+    String path = '',
+    String? contentType,
   }) {
     return UserFile(
       contentType: contentType,
@@ -14,15 +12,15 @@ void main() {
       fileSize: 1,
       id: 'id',
       md5: 'md5',
-      path: path ?? '',
+      path: path,
       sha1: 'sha1',
       fileLoaded: true,
     );
   }
 
   test('Test isImage', () {
-    expect(userFileWith(path: null, contentType: null).isImage, false);
-    expect(userFileWith(path: 'apa.jpg', contentType: null).isImage, true);
+    expect(userFileWith().isImage, false);
+    expect(userFileWith(path: 'apa.jpg').isImage, true);
     expect(
         userFileWith(path: 'apa.jpg', contentType: 'image/png').isImage, true);
     expect(

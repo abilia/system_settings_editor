@@ -13,7 +13,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../matchers.dart';
+import '../../../test_helpers/matchers.dart';
 import '../../../mocks.dart';
 
 void main() {

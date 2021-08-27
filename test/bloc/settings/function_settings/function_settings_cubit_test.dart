@@ -6,7 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
 import '../../../mocks.dart';
-import '../../../utils/types.dart';
+import '../../../test_helpers/types.dart';
 
 void main() {
   test('initial state', () {

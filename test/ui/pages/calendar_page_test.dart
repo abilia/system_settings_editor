@@ -21,7 +21,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks.dart';
-import '../../utils/types.dart';
+import '../../test_helpers/types.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page),

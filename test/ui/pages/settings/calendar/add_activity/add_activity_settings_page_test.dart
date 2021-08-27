@@ -16,7 +16,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/calendar/add_activity/add_activity_general_settings_tab.dart';
 
 import '../../../../../mocks.dart';
-import '../../../../../utils/verify_generic.dart';
+import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   group('New activity settings page', () {

@@ -16,7 +16,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../mocks.dart';
-import '../../../../../utils/verify_generic.dart';
+import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 23, 13, 37);

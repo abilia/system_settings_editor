@@ -39,7 +39,7 @@ class DataRevisionUpdate extends Equatable {
       DataRevisionUpdate(
         id: json['id'],
         revision: json['newRevision'],
-        oldRevision: json['oldRevision'],
+        oldRevision: json['oldRevision'] ?? -1,
       );
 
   @override

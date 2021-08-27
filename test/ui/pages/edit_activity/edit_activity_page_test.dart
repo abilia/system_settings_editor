@@ -20,7 +20,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../../mocks.dart';
-import '../../../utils/types.dart';
+import '../../../test_helpers/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
