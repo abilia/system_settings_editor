@@ -28,18 +28,9 @@ void main() {
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-      final mockBatch = MockBatch();
-      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-      final db = MockDatabase();
-      when(db.batch()).thenReturn(mockBatch);
-      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-
       genericDb = MockGenericDb();
       when(genericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value(generics));
-      when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-      when(genericDb.insertAndAddDirty(any))
-          .thenAnswer((_) => Future.value(true));
 
       GetItInitializer()
         ..sharedPreferences = await MockSharedPreferences.getInstance()
@@ -48,7 +39,7 @@ void main() {
           initialTime: initialTime,
         )
         ..client = Fakes.client(genericResponse: () => generics)
-        ..database = db
+        ..database = MockDatabase()
         ..syncDelay = SyncDelays.zero
         ..genericDb = genericDb
         ..init();
@@ -212,7 +203,9 @@ void main() {
           matcher: isFalse,
         );
       });
+    });
 
+    group('Eyebutton tab', () {
       testWidgets('Hide type of display in eye button', (tester) async {
         await tester.goToEyeButtonSwitches();
         await tester.tap(find.byKey(TestKey.showTypeOfDisplaySwitch));

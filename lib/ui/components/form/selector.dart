@@ -71,7 +71,7 @@ class Selector<T> extends StatelessWidget {
 }
 
 class _SelectButton<T> extends StatelessWidget {
-  final T value;
+  final T? value;
   final T? groupValue;
   final String text;
   final IconData icon;
