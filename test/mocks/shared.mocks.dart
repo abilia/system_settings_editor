@@ -3,7 +3,9 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i9;
+import 'dart:convert' as _i23;
 import 'dart:io' as _i8;
+import 'dart:typed_data' as _i22;
 import 'dart:ui' as _i21;
 
 import 'package:bloc/bloc.dart' as _i20;
@@ -30,7 +32,7 @@ import 'package:seagull/repository/all.dart' as _i6;
 import 'package:seagull/storage/all.dart' as _i7;
 import 'package:shared_preferences/shared_preferences.dart' as _i13;
 
-import 'shared.dart' as _i22;
+import 'shared.dart' as _i24;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -105,12 +107,24 @@ class _FakeGenericState_25 extends _i2.Fake implements _i10.GenericState {}
 
 class _FakeScrollPosition_26 extends _i2.Fake implements _i12.ScrollPosition {}
 
-class _FakeBatch_27 extends _i2.Fake implements _i3.Batch {}
+class _FakeMultipartRequest_27 extends _i2.Fake
+    implements _i5.MultipartRequest {}
 
-class _FakeSharedPreferences_28 extends _i2.Fake
+class _FakeUri_28 extends _i2.Fake implements Uri {}
+
+class _FakeByteStream_29 extends _i2.Fake implements _i5.ByteStream {}
+
+class _FakeStreamedResponse_30 extends _i2.Fake
+    implements _i5.StreamedResponse {}
+
+class _FakeBatch_31 extends _i2.Fake implements _i3.Batch {}
+
+class _FakeResponse_32 extends _i2.Fake implements _i5.Response {}
+
+class _FakeSharedPreferences_33 extends _i2.Fake
     implements _i13.SharedPreferences {}
 
-class _FakeDatabase_29 extends _i2.Fake implements _i3.Database {}
+class _FakeDatabase_34 extends _i2.Fake implements _i3.Database {}
 
 /// A class which mocks [ActivityRepository].
 ///
@@ -1337,6 +1351,104 @@ class MockScrollController extends _i2.Mock implements _i12.ScrollController {
           returnValueForMissingStub: null);
 }
 
+/// A class which mocks [MultipartRequestBuilder].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMultipartRequestBuilder extends _i2.Mock
+    implements _i6.MultipartRequestBuilder {
+  MockMultipartRequestBuilder() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.MultipartRequest generateFileMultipartRequest(
+          {Uri? uri, _i22.Uint8List? bytes, String? authToken, String? sha1}) =>
+      (super.noSuchMethod(
+          Invocation.method(#generateFileMultipartRequest, [],
+              {#uri: uri, #bytes: bytes, #authToken: authToken, #sha1: sha1}),
+          returnValue: _FakeMultipartRequest_27()) as _i5.MultipartRequest);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [MultipartRequest].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMultipartRequest extends _i2.Mock implements _i5.MultipartRequest {
+  MockMultipartRequest() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  Map<String, String> get fields =>
+      (super.noSuchMethod(Invocation.getter(#fields),
+          returnValue: <String, String>{}) as Map<String, String>);
+  @override
+  List<_i5.MultipartFile> get files =>
+      (super.noSuchMethod(Invocation.getter(#files),
+          returnValue: <_i5.MultipartFile>[]) as List<_i5.MultipartFile>);
+  @override
+  int get contentLength =>
+      (super.noSuchMethod(Invocation.getter(#contentLength), returnValue: 0)
+          as int);
+  @override
+  set contentLength(int? value) =>
+      super.noSuchMethod(Invocation.setter(#contentLength, value),
+          returnValueForMissingStub: null);
+  @override
+  String get method =>
+      (super.noSuchMethod(Invocation.getter(#method), returnValue: '')
+          as String);
+  @override
+  Uri get url =>
+      (super.noSuchMethod(Invocation.getter(#url), returnValue: _FakeUri_28())
+          as Uri);
+  @override
+  Map<String, String> get headers =>
+      (super.noSuchMethod(Invocation.getter(#headers),
+          returnValue: <String, String>{}) as Map<String, String>);
+  @override
+  bool get persistentConnection =>
+      (super.noSuchMethod(Invocation.getter(#persistentConnection),
+          returnValue: false) as bool);
+  @override
+  set persistentConnection(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#persistentConnection, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get followRedirects => (super
+          .noSuchMethod(Invocation.getter(#followRedirects), returnValue: false)
+      as bool);
+  @override
+  set followRedirects(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#followRedirects, value),
+          returnValueForMissingStub: null);
+  @override
+  int get maxRedirects =>
+      (super.noSuchMethod(Invocation.getter(#maxRedirects), returnValue: 0)
+          as int);
+  @override
+  set maxRedirects(int? value) =>
+      super.noSuchMethod(Invocation.setter(#maxRedirects, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get finalized =>
+      (super.noSuchMethod(Invocation.getter(#finalized), returnValue: false)
+          as bool);
+  @override
+  _i5.ByteStream finalize() =>
+      (super.noSuchMethod(Invocation.method(#finalize, []),
+          returnValue: _FakeByteStream_29()) as _i5.ByteStream);
+  @override
+  _i9.Future<_i5.StreamedResponse> send() => (super.noSuchMethod(
+          Invocation.method(#send, []),
+          returnValue:
+              Future<_i5.StreamedResponse>.value(_FakeStreamedResponse_30()))
+      as _i9.Future<_i5.StreamedResponse>);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [Database].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -1472,7 +1584,88 @@ class MockDatabase extends _i2.Mock implements _i3.Database {
           returnValue: Future<int>.value(0)) as _i9.Future<int>);
   @override
   _i3.Batch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
-      returnValue: _FakeBatch_27()) as _i3.Batch);
+      returnValue: _FakeBatch_31()) as _i3.Batch);
+}
+
+/// A class which mocks [BaseClient].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
+  MockBaseClient() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.Future<_i5.Response> head(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> get(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> post(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i23.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#post, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> put(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i23.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#put, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> patch(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i23.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#patch, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> delete(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i23.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#delete, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_32()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
+          returnValue: Future<String>.value('')) as _i9.Future<String>);
+  @override
+  _i9.Future<_i22.Uint8List> readBytes(Uri? url,
+          {Map<String, String>? headers}) =>
+      (super.noSuchMethod(
+              Invocation.method(#readBytes, [url], {#headers: headers}),
+              returnValue: Future<_i22.Uint8List>.value(_i22.Uint8List(0)))
+          as _i9.Future<_i22.Uint8List>);
+  @override
+  _i9.Future<_i5.StreamedResponse> send(_i5.BaseRequest? request) =>
+      (super.noSuchMethod(Invocation.method(#send, [request]),
+          returnValue: Future<_i5.StreamedResponse>.value(
+              _FakeStreamedResponse_30())) as _i9.Future<_i5.StreamedResponse>);
+  @override
+  void close() => super.noSuchMethod(Invocation.method(#close, []),
+      returnValueForMissingStub: null);
+  @override
+  String toString() => super.toString();
 }
 
 /// A class which mocks [SettingsDb].
@@ -1486,7 +1679,7 @@ class MockSettingsDb extends _i2.Mock implements _i3.SettingsDb {
   @override
   _i13.SharedPreferences get preferences =>
       (super.noSuchMethod(Invocation.getter(#preferences),
-          returnValue: _FakeSharedPreferences_28()) as _i13.SharedPreferences);
+          returnValue: _FakeSharedPreferences_33()) as _i13.SharedPreferences);
   @override
   String get language =>
       (super.noSuchMethod(Invocation.getter(#language), returnValue: '')
@@ -1555,7 +1748,7 @@ class MockActivityDb extends _i2.Mock implements _i3.ActivityDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_29()) as _i3.Database);
+      returnValue: _FakeDatabase_34()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -1648,7 +1841,7 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_29()) as _i3.Database);
+      returnValue: _FakeDatabase_34()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -1725,10 +1918,86 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
   String toString() => super.toString();
 }
 
+/// A class which mocks [UserDb].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserDb extends _i2.Mock implements _i3.UserDb {
+  MockUserDb() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i13.SharedPreferences get prefs =>
+      (super.noSuchMethod(Invocation.getter(#prefs),
+          returnValue: _FakeSharedPreferences_33()) as _i13.SharedPreferences);
+  @override
+  _i9.Future<dynamic> insertUser(_i1.User? user) =>
+      (super.noSuchMethod(Invocation.method(#insertUser, [user]),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  _i9.Future<dynamic> deleteUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteUser, []),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [TokenDb].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTokenDb extends _i2.Mock implements _i3.TokenDb {
+  MockTokenDb() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i13.SharedPreferences get prefs =>
+      (super.noSuchMethod(Invocation.getter(#prefs),
+          returnValue: _FakeSharedPreferences_33()) as _i13.SharedPreferences);
+  @override
+  _i9.Future<dynamic> persistToken(String? token) =>
+      (super.noSuchMethod(Invocation.method(#persistToken, [token]),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  _i9.Future<dynamic> delete() =>
+      (super.noSuchMethod(Invocation.method(#delete, []),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [LicenseDb].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLicenseDb extends _i2.Mock implements _i3.LicenseDb {
+  MockLicenseDb() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i13.SharedPreferences get prefs =>
+      (super.noSuchMethod(Invocation.getter(#prefs),
+          returnValue: _FakeSharedPreferences_33()) as _i13.SharedPreferences);
+  @override
+  _i9.Future<dynamic> persistLicenses(List<_i1.License>? licenses) =>
+      (super.noSuchMethod(Invocation.method(#persistLicenses, [licenses]),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  List<_i1.License> getLicenses() =>
+      (super.noSuchMethod(Invocation.method(#getLicenses, []),
+          returnValue: <_i1.License>[]) as List<_i1.License>);
+  @override
+  _i9.Future<dynamic> delete() =>
+      (super.noSuchMethod(Invocation.method(#delete, []),
+          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [Notification].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNotification extends _i2.Mock implements _i22.Notification {
+class MockNotification extends _i2.Mock implements _i24.Notification {
   MockNotification() {
     _i2.throwOnMissingStub(this);
   }

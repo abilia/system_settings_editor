@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -12,12 +10,12 @@ import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
-  final mockClient = MockedClient();
-  GenericRepository genericRepository;
-  GenericDb genericDb;
+  final mockClient = MockBaseClient();
+  late GenericRepository genericRepository;
+  late GenericDb genericDb;
 
   setUp(() async {
     final db = await DatabaseRepository.createInMemoryFfiDb();
@@ -149,8 +147,8 @@ void main() {
             data: 100,
             identifier: MemoplannerSettings.viewOptionsZoomKey,
           ),
-        ).wrapWithDbModel(revision: 1),
-        data2.wrapWithDbModel(revision: 2),
+        ).wrapWithDbModel(revision: 1) as DbModel<Generic<GenericData>>,
+        data2.wrapWithDbModel(revision: 2) as DbModel<Generic<GenericData>>,
       ]);
 
       // Act
@@ -197,7 +195,9 @@ void main() {
     });
 
     test('revision >0 stores only syncable generics', () async {
-      await genericDb.insert([unsynced.wrapWithDbModel(revision: 1)]);
+      await genericDb.insert([
+        unsynced.wrapWithDbModel(revision: 1) as DbModel<Generic<GenericData>>
+      ]);
 
       final res = await genericRepository.load();
       final all = await genericDb.getAll();

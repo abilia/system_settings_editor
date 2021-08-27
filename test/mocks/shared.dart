@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -22,11 +23,17 @@ import 'package:seagull/storage/all.dart';
   PushBloc,
   GenericBloc,
   ScrollController,
+  MultipartRequestBuilder,
+  MultipartRequest,
   // ScrollPosition,
   Database,
+  BaseClient,
   SettingsDb,
   ActivityDb,
   UserFileDb,
+  UserDb,
+  TokenDb,
+  LicenseDb,
   Notification,
 ])
 class Notification {
