@@ -18,7 +18,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 
 import 'package:seagull/logging.dart';
-import 'package:seagull/main.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -29,6 +29,8 @@ export 'test_helpers/verify_generic.dart';
 export 'test_helpers/fake_shared_preferences.dart';
 export 'test_helpers/permission.dart';
 export 'test_helpers/alarm_schedualer.dart';
+export 'test_helpers/enter_text.dart';
+export 'test_helpers/app_pumper.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -217,16 +219,7 @@ class MockBloc<E, S> extends Mock {
   Stream<S> get stream => Stream.empty();
 }
 
-extension OurEnterText on WidgetTester {
-  Future<void> enterText_(Finder finder, String text) async {
-    await tap(finder, warnIfMissed: false);
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), text);
-    await pumpAndSettle();
-    await tap(find.byKey(TestKey.inputOk));
-    await pumpAndSettle();
-  }
-
+extension TtsVerifier on WidgetTester {
   Future verifyTts(Finder finder,
       {String contains, String exact, bool warnIfMissed = true}) async {
     await longPress(finder, warnIfMissed: warnIfMissed);
@@ -244,25 +237,6 @@ extension OurEnterText on WidgetTester {
   Future verifyNoTts(Finder finder) async {
     await longPress(finder);
     verifyNever(GetIt.I<FlutterTts>().speak(any));
-  }
-}
-
-extension IncreaseSizeOnMp on WidgetTester {
-  Future<void> pumpApp({bool use24 = false, PushBloc pushBloc}) async {
-    if (Config.isMP) {
-      binding.window.physicalSizeTestValue = Size(800, 1280);
-      binding.window.devicePixelRatioTestValue = 1;
-
-      // resets the screen to its orinal size after the test end
-      addTearDown(binding.window.clearPhysicalSizeTestValue);
-      addTearDown(binding.window.clearDevicePixelRatioTestValue);
-    }
-    if (use24) {
-      binding.window.alwaysUse24HourFormatTestValue = use24;
-      addTearDown(binding.window.clearAlwaysUse24HourTestValue);
-    }
-    await pumpWidget(App(pushBloc: pushBloc));
-    await pumpAndSettle();
   }
 }
 

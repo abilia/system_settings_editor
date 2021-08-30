@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +14,12 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/alarm_schedualer.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final now = DateTime(2020, 06, 04, 11, 24);
@@ -40,25 +43,17 @@ void main() {
 
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
     final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
+
     final mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
-
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -66,13 +61,11 @@ void main() {
       ..genericDb = mockGenericDb
       ..ticker =
           Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
-      ..baseUrlDb = MockBaseUrlDb()
-      ..fireBasePushService = mockFirebasePushService
+      ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client()
       ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
+      ..userFileDb = FakeUserFileDb()
       ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
       ..syncDelay = SyncDelays.zero
       ..init();
   });
@@ -707,7 +700,7 @@ void main() {
                 skipOffstage: false))
             .decoration as BoxDecoration;
         expect(
-          boxDecoration.border.bottom.color,
+          boxDecoration.border?.bottom.color,
           expectedColor,
         );
       }
@@ -776,7 +769,7 @@ void main() {
                 skipOffstage: false))
             .decoration as BoxDecoration;
         expect(
-          boxDecoration.border.bottom.color,
+          boxDecoration.border?.bottom.color,
           expectedColor,
         );
       }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,25 +13,25 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/shared.dart';
+import '../../../../mocks/shared.mocks.dart';
+import '../../../../test_helpers/fake_shared_preferences.dart';
+import '../../../../test_helpers/permission.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
-  MockActivityDb mockActivityDb;
-  MockGenericDb mockGenericDb;
+  late MockGenericDb mockGenericDb;
 
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
-  final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();
-  when(defaultMemoSettingsBloc.state)
-      .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
 
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
 
-    mockActivityDb = MockActivityDb();
+    final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
@@ -41,9 +39,10 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(mockGenericDb.insertAndAddDirty(any))
         .thenAnswer((_) => Future.value(false));
-
-    final db = MockDatabase();
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([]));
+    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
+    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -52,9 +51,8 @@ void main() {
           stream: StreamController<DateTime>().stream, initialTime: initialDay)
       ..syncDelay = SyncDelays.zero
       ..client = Fakes.client(activityResponse: activityResponse)
-      ..database = db
+      ..database = FakeDatabase()
       ..genericDb = mockGenericDb
-      ..flutterTts = MockFlutterTts()
       ..ticker = Ticker(stream: Stream.empty(), initialTime: initialDay)
       ..init();
   });

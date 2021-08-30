@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -15,39 +13,52 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/shared.dart';
+import '../../../../mocks/shared.mocks.dart';
+import '../../../../test_helpers/fake_shared_preferences.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
 
-  StreamController<DateTime> streamController;
-  Stream<DateTime> stream;
-  MockSettingsDb mockSettingsDb;
-  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
-  final textStyle = abiliaTextTheme.caption;
+  late Stream<DateTime> stream;
+  late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUp(() async {
-    streamController = StreamController<DateTime>();
-    stream = streamController.stream;
-    mockSettingsDb = MockSettingsDb();
-    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    setupFakeTts();
+
+    stream = StreamController<DateTime>().stream;
+    // mockSettingsDb = MockSettingsDb();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
       dotsInTimepillar: true,
     )));
+
+    when(mockMemoplannerSettingsBloc.stream).thenAnswer(
+      (_) => Stream.fromIterable(
+        [
+          MemoplannerSettingsLoaded(
+            MemoplannerSettings(
+              dotsInTimepillar: true,
+            ),
+          )
+        ],
+      ),
+    );
+
     GetItInitializer()
-      ..flutterTts = MockFlutterTts()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 
   tearDown(GetIt.I.reset);
 
   Widget multiWrap(List<ActivityOccasion> activityOccasions,
-      {DateTime initialTime}) {
+      {DateTime? initialTime}) {
     final startInterval = (initialTime ?? startTime).onlyDays();
     final interval = TimepillarInterval(
       start: startInterval,
@@ -57,6 +68,10 @@ void main() {
     final ts = TimepillarState(interval, 1);
     when(mockTimepillarBloc.state).thenReturn(TimepillarState(
         TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
+    when(mockTimepillarBloc.stream).thenAnswer((_) => Stream.fromIterable([
+          TimepillarState(
+              TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
+        ]));
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -67,7 +82,7 @@ void main() {
                   ClockBloc(stream, initialTime: initialTime ?? startTime),
             ),
             BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+              create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
@@ -86,7 +101,7 @@ void main() {
               ActivityBoard(
                 ActivityBoard.positionTimepillarCards(
                   activityOccasions,
-                  textStyle,
+                  caption,
                   1.0,
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
@@ -102,8 +117,9 @@ void main() {
     );
   }
 
-  Widget wrap(ActivityOccasion activityOccasion, {DateTime initialTime}) =>
+  Widget wrap(ActivityOccasion activityOccasion, {DateTime? initialTime}) =>
       multiWrap([activityOccasion], initialTime: initialTime);
+
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
       wrap(
@@ -335,7 +351,7 @@ void main() {
       );
       final boardData = ActivityBoard.positionTimepillarCards(
         activities,
-        textStyle,
+        caption,
         1.0,
         DayParts.standard(),
         TimepillarSide.RIGHT,

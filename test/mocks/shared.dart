@@ -17,12 +17,13 @@ import 'package:seagull/storage/all.dart';
   UserFileRepository,
   FirebasePushService,
   FileStorage,
-  FlutterLocalNotificationsPlugin,
+  FlutterLocalNotificationsPlugin, // TODO Make fake instead?
   ActivitiesBloc,
   SyncBloc,
   PushBloc,
   GenericBloc,
   MemoplannerSettingBloc,
+  TimepillarBloc,
   ScrollController,
   MultipartRequestBuilder,
   MultipartRequest,
@@ -32,6 +33,7 @@ import 'package:seagull/storage/all.dart';
   SettingsDb,
   ActivityDb,
   UserFileDb,
+  GenericDb,
   UserDb,
   TokenDb,
   LicenseDb,
@@ -138,11 +140,34 @@ class FakeUserFileDb extends Fake implements UserFileDb {
   Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
 }
 
+class FakeSortableDb extends Fake implements SortableDb {
+  @override
+  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
+      Future.value([]);
+}
+
+class FakeGenericDb extends Fake implements GenericDb {
+  @override
+  Future<Iterable<Generic<GenericData>>> getAllNonDeletedMaxRevision() =>
+      Future.value([]);
+}
+
 class FakeDatabase extends Fake implements Database {
   @override
   Future<List<Map<String, Object?>>> rawQuery(String sql,
           [List<Object?>? arguments]) =>
       Future.value([]);
+  @override
+  Batch batch() => FakeBatch();
+}
+
+class FakeBatch extends Fake implements Batch {
+  @override
+  Future<List<Object?>> commit(
+          {bool? exclusive, bool? noResult, bool? continueOnError}) =>
+      Future.value([]);
+  @override
+  void delete(String table, {String? where, List<Object?>? whereArgs}) {}
 }
 
 class FakeSortableBloc extends Fake implements SortableBloc {
@@ -212,4 +237,9 @@ class FakeLicenseBloc extends Fake implements LicenseBloc {
   Stream<LicenseState> get stream => Stream.empty();
   @override
   Future<void> close() async {}
+}
+
+class FakeFirebasePushService extends Fake implements FirebasePushService {
+  @override
+  Future<String?> initPushToken() => Future.value('fakeToken');
 }

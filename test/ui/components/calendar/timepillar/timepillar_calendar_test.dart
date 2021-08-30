@@ -21,6 +21,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../mocks.dart';
+import '../../../../test_helpers/fake_shared_preferences.dart';
 
 void main() {
   MockActivityDb mockActivityDb;
