@@ -144,6 +144,8 @@ PODS:
   - "permission_handler (5.1.0+2)":
     - Flutter
   - PromisesObjC (2.0.0)
+  - record (0.0.1):
+    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.2):
@@ -171,6 +173,7 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - record (from `.symlinks/plugins/record/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -227,6 +230,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  record:
+    :path: ".symlinks/plugins/record/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
@@ -265,11 +270,12 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  record: 7ee2393532f8553bbb09fa19e95478323b7c0a99
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: f220918c2467d057af08d36c2a2125a03c2c1461
+PODFILE CHECKSUM: dae55f7b2323c9535667b8223587cd4ace696d43
 
 COCOAPODS: 1.10.1
