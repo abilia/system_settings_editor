@@ -87,7 +87,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                             : 0),
                     width: ts.width,
                     category: activity.category,
-                    showCategoryColor: !current && settings.showCategoryColor,
+                    showCategoryColor: settings.showCategoryColor,
                   ),
                 GestureDetector(
                   onTap: () {
