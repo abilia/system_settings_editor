@@ -187,9 +187,11 @@ class SideTime extends StatelessWidget {
       case Occasion.past:
         return AbiliaColors.white140;
       default:
-        return showCategoryColor
-            ? categoryColor(category: category)
-            : AbiliaColors.black60;
+        return categoryColor(
+          category: category,
+          inactive: occasion == Occasion.past,
+          showCategoryColor: showCategoryColor,
+        );```
     }
   }
 }
