@@ -22,6 +22,7 @@ import 'package:seagull/storage/all.dart';
   SyncBloc,
   PushBloc,
   GenericBloc,
+  SortableBloc,
   MemoplannerSettingBloc,
   TimepillarBloc,
   ScrollController,
@@ -32,6 +33,7 @@ import 'package:seagull/storage/all.dart';
   BaseClient,
   SettingsDb,
   ActivityDb,
+  SortableDb,
   UserFileDb,
   GenericDb,
   UserDb,
@@ -131,7 +133,13 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setRightCategoryExpanded(bool expanded) async {}
   @override
   bool get textToSpeech => true;
+  @override
+  Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
 }
+
+class FakeTokenDb extends Fake implements TokenDb {}
+
+class FakeUserDb extends Fake implements UserDb {}
 
 class FakeUserFileDb extends Fake implements UserFileDb {
   @override
@@ -150,6 +158,13 @@ class FakeGenericDb extends Fake implements GenericDb {
   @override
   Future<Iterable<Generic<GenericData>>> getAllNonDeletedMaxRevision() =>
       Future.value([]);
+}
+
+class FakeActivityDb extends Fake implements ActivityDb {
+  @override
+  Future<int> getLastRevision() => Future.value(0);
+  @override
+  Future<Iterable<Activity>> getAllNonDeleted() => Future.value([]);
 }
 
 class FakeDatabase extends Fake implements Database {

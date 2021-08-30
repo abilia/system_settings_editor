@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/gestures.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -237,26 +236,6 @@ extension TtsVerifier on WidgetTester {
   Future verifyNoTts(Finder finder) async {
     await longPress(finder);
     verifyNever(GetIt.I<FlutterTts>().speak(any));
-  }
-}
-
-extension TapLink on CommonFinders {
-  bool _tapTextSpan(RichText richText, String text) {
-    return !richText.text.visitChildren(
-      (InlineSpan visitor) {
-        if (visitor is TextSpan && visitor.text == text) {
-          (visitor.recognizer as TapGestureRecognizer).onTap();
-          return false;
-        }
-        return true;
-      },
-    );
-  }
-
-  Finder tapTextSpan(String text) {
-    return byWidgetPredicate(
-      (widget) => widget is RichText && _tapTextSpan(widget, text),
-    );
   }
 }
 

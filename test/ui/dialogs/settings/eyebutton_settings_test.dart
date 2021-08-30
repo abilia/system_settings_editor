@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -16,15 +14,22 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks.dart';
+// import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/alarm_schedualer.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/verify_generic.dart';
 
 void main() {
   final translate = Locales.language.values.first;
-  MockGenericDb mockGenericDb;
+  late MockGenericDb mockGenericDb;
 
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
     final initTime = DateTime(2020, 07, 23, 11, 29);
     ActivityResponse activityResponse = () => [];
 
@@ -32,20 +37,11 @@ void main() {
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockTicker = StreamController<DateTime>();
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
+
     final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
@@ -56,20 +52,21 @@ void main() {
     mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([timepillarGeneric]));
+    when(mockGenericDb.getLastRevision()).thenAnswer((_) => Future.value(0));
+    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
+    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initTime)
-      ..baseUrlDb = MockBaseUrlDb()
-      ..fireBasePushService = mockFirebasePushService
+      ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(activityResponse: activityResponse)
-      ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
+      ..fileStorage = FakeFileStorage()
+      ..userFileDb = FakeUserFileDb()
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
-      ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
+      ..database = FakeDatabase()
       ..init();
   });
 

@@ -11,6 +11,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../mocks.dart';
 
+import '../../../test_helpers/tap_link.dart';
+
 void main() {
   group(
     'create account',

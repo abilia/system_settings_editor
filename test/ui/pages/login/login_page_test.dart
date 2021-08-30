@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -14,7 +12,13 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final secretPassword = 'pwfafawfa';
@@ -25,34 +29,15 @@ void main() {
 
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
+    setupFakeTts();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
-
-    final mockDatabase = MockDatabase();
-    final batch = MockBatch();
-    when(batch.commit()).thenAnswer((_) => Future.value([]));
-    when(mockDatabase.batch()).thenReturn(batch);
-
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
-    final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([]));
-    setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
-
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
 
     GetItInitializer()
       ..sharedPreferences =
           await FakeSharedPreferences.getInstance(loggedIn: false)
-      ..activityDb = mockActivityDb
-      ..fireBasePushService = mockFirebasePushService
+      ..activityDb = FakeActivityDb()
+      ..fireBasePushService = FakeFirebasePushService()
       ..ticker = Ticker(
         stream: StreamController<DateTime>().stream,
         initialTime: time,
@@ -61,11 +46,10 @@ void main() {
         activityResponse: () => [],
         licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
       )
-      ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
-      ..database = mockDatabase
-      ..flutterTts = MockFlutterTts()
-      ..genericDb = MockGenericDb()
+      ..fileStorage = FakeFileStorage()
+      ..userFileDb = FakeUserFileDb()
+      ..database = FakeDatabase()
+      ..genericDb = FakeGenericDb()
       ..syncDelay = SyncDelays.zero
       ..init();
   });

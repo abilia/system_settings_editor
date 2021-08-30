@@ -1,15 +1,14 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/config.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
+
+import '../mocks/shared.mocks.dart';
 
 void verifySyncGeneric(
   WidgetTester tester,
-  GenericDb genericDb, {
-  String key,
+  MockGenericDb genericDb, {
+  required String key,
   dynamic matcher,
 }) {
   final v = verify(genericDb.insertAndAddDirty(captureAny));
@@ -22,8 +21,8 @@ void verifySyncGeneric(
 
 void verifyUnsyncGeneric(
   WidgetTester tester,
-  GenericDb genericDb, {
-  String key,
+  MockGenericDb genericDb, {
+  required String key,
   dynamic matcher,
 }) {
   if (Config.isMP) {
@@ -41,8 +40,8 @@ void verifyUnsyncGeneric(
 
 void verifyGenerics(
   WidgetTester tester,
-  GenericDb genericDb, {
-  Map<String, dynamic> keyMatch,
+  MockGenericDb genericDb, {
+  required Map<String, dynamic> keyMatch,
 }) {
   final v = verify(genericDb.insertAndAddDirty(captureAny));
   expect(v.callCount, 1);

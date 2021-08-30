@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/ui/widget_test_keys.dart';
 
 String? spoken;
 void setupFakeTts() {
@@ -17,15 +16,6 @@ void setupFakeTts() {
 }
 
 extension VerifyTts on WidgetTester {
-  Future<void> enterText_(Finder finder, String text) async {
-    await tap(finder, warnIfMissed: false);
-    await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), text);
-    await pumpAndSettle();
-    await tap(find.byKey(TestKey.inputOk));
-    await pumpAndSettle();
-  }
-
   Future verifyTts(Finder finder,
       {String? contains, String? exact, bool warnIfMissed = true}) async {
     await longPress(finder, warnIfMissed: warnIfMissed);

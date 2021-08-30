@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
@@ -10,7 +8,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -20,8 +17,16 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks/shared.dart';
+import '../../mocks/shared.mocks.dart';
+import '../../test_helpers/alarm_schedualer.dart';
+import '../../test_helpers/fake_shared_preferences.dart';
+import '../../test_helpers/permission.dart';
+import '../../test_helpers/tts.dart';
 import '../../test_helpers/types.dart';
+import '../../test_helpers/enter_text.dart';
+import '../../test_helpers/tap_link.dart';
+import '../../test_helpers/verify_generic.dart';
 
 void main() {
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page),
@@ -42,26 +47,22 @@ void main() {
   final licenseDb = MockLicenseDb();
   final userRepository = UserRepository(
     client: Fakes.client(),
-    tokenDb: MockTokenDb(),
-    userDb: MockUserDb(),
+    tokenDb: FakeTokenDb(),
+    userDb: FakeUserDb(),
     licenseDb: licenseDb,
     baseUrl: 'fake',
   );
 
-  final defaultMemoSettingsBloc = MockMemoplannerSettingsBloc();
-  when(defaultMemoSettingsBloc.state)
-      .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-
   Widget wrapWithMaterialApp(
     Widget widget, {
-    MemoplannerSettingBloc memoplannerSettingBloc,
-    SortableBloc sortableBloc,
+    MemoplannerSettingBloc? memoplannerSettingBloc,
+    SortableBloc? sortableBloc,
   }) =>
       TopLevelBlocsProvider(
         baseUrl: 'test',
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc:
-              memoplannerSettingBloc ?? defaultMemoSettingsBloc,
+              memoplannerSettingBloc ?? FakeMemoplannerSettingsBloc(),
           sortableBloc: sortableBloc,
           authenticatedState: Authenticated(
             token: '',
@@ -81,29 +82,35 @@ void main() {
         ),
       );
 
-  MockActivityDb mockActivityDb;
-  SettingsDb mockSettingsDb;
-  MockGenericDb mockGenericDb;
-  StreamController<DateTime> mockTicker;
+  late MockActivityDb mockActivityDb;
+  late MockGenericDb mockGenericDb;
+
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
     tz.initializeTimeZones();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    mockTicker = StreamController<DateTime>();
     final mockFirebasePushService = MockFirebasePushService();
     when(mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
+
     mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    mockSettingsDb = MockSettingsDb();
+    when(mockActivityDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
+
     mockGenericDb = MockGenericDb();
+    when(mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([]));
+    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
+    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
 
     when(licenseDb.getLicenses()).thenReturn([
       License(
@@ -112,28 +119,21 @@ void main() {
           endTime: initialDay.add(100.days()))
     ]);
 
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
-
     final db = MockDatabase();
     when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialDay)
+      ..ticker = Ticker(
+          stream: StreamController<DateTime>().stream, initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(activityResponse: activityResponse)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
-      ..settingsDb = mockSettingsDb
+      ..userFileDb = FakeUserFileDb()
+      ..settingsDb = FakeSettingsDb()
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..database = db
-      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
@@ -232,6 +232,8 @@ void main() {
               data: BasicActivityDataItem.createNew(title: title),
             ),
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
@@ -272,6 +274,8 @@ void main() {
               ),
             ),
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
 
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
               sortableBloc: sortableBlocMock));
@@ -309,6 +313,8 @@ void main() {
                 groupId: folder.id),
             folder,
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
@@ -391,6 +397,8 @@ void main() {
               ),
             ),
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
@@ -434,6 +442,8 @@ void main() {
               data: BasicActivityDataItem.createNew(title: title),
             ),
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
@@ -477,6 +487,8 @@ void main() {
               data: BasicActivityDataItem.createNew(title: title),
             ),
           ]));
+          when(sortableBlocMock.stream)
+              .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
@@ -627,6 +639,7 @@ void main() {
         identifier: MemoplannerSettings.viewOptionsTimeViewKey,
       ),
     );
+
     testWidgets('no settings shows agenda', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -662,11 +675,12 @@ void main() {
   });
 
   group('MemoPlanner settings', () {
-    MemoplannerSettingBloc memoplannerSettingBlocMock;
+    late MemoplannerSettingBloc memoplannerSettingBlocMock;
 
     setUp(() {
       initializeDateFormatting();
-      memoplannerSettingBlocMock = MockMemoplannerSettingsBloc();
+      memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
+      when(memoplannerSettingBlocMock.stream).thenAnswer((_) => Stream.empty());
     });
 
     testWidgets(
