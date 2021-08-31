@@ -149,6 +149,7 @@ class PreviewTimePillar extends StatelessWidget {
                         nightParts: [],
                         interval: interval,
                         columnOfDots: tpState.columnOfDots,
+                        topMargin: 0.0,
                       ),
                     ),
                     if (tpState.timeline)

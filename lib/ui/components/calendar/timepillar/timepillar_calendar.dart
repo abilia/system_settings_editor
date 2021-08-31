@@ -67,8 +67,9 @@ class OneTimepillarCalendar extends StatefulWidget {
       displayTimeline,
       showCategoryLabels;
   final DayParts dayParts;
+  final double topMargin, bottomMargin;
 
-  const OneTimepillarCalendar({
+  OneTimepillarCalendar({
     Key? key,
     required this.activityState,
     required this.timepillarState,
@@ -76,8 +77,12 @@ class OneTimepillarCalendar extends StatefulWidget {
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
+    double? topMargin,
+    double? bottomMargin,
     bool? showCategoryLabels,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
+        topMargin = topMargin ?? TimepillarCalendar.topMargin,
+        bottomMargin = bottomMargin ?? TimepillarCalendar.bottomMargin,
         super(key: key);
 
   @override
@@ -93,6 +98,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   bool get isToday => widget.activityState.isToday;
   bool get showTimeLine => isToday && widget.displayTimeline;
   TimepillarState get ts => widget.timepillarState;
+  double get topMargin => widget.topMargin;
+  double get bottomMargin => widget.topMargin;
 
   List<ActivityOccasion> get activities => widget.activityState.activities;
   TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
@@ -142,6 +149,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
       widget.dayParts,
       TimepillarSide.LEFT,
       ts,
+      topMargin,
+      bottomMargin,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
       widget.showCategories
@@ -154,12 +163,12 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
       widget.dayParts,
       TimepillarSide.RIGHT,
       ts,
+      topMargin,
+      bottomMargin,
     );
-    final calendarHeight = max(
-        timePillarHeight(ts), max(leftBoardData.heigth, rightBoardData.heigth));
 
     final np = interval.intervalPart == IntervalPart.DAY_AND_NIGHT
-        ? nightParts(widget.dayParts, ts)
+        ? nightParts(widget.dayParts, ts, topMargin)
         : <NightPart>[];
 
     // Anchor is the starting point of the central sliver (timepillar).
@@ -172,6 +181,9 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             (ts.timePillarTotalWidth / 2) / maxWidth;
         final horizontalAnchor =
             widget.showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
+        final tsHeight = timePillarHeight(ts) + topMargin + bottomMargin;
+        final calendarHeight =
+            max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
         final height = max(calendarHeight, boxConstraints.maxHeight);
         return RefreshIndicator(
           onRefresh: refresh,
@@ -208,7 +220,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                             if (widget.displayHourLines)
                               Padding(
                                 padding: EdgeInsets.only(
-                                    top: TimepillarCalendar.topMargin),
+                                  top: topMargin,
+                                ),
                                 child: HourLines(
                                   numberOfLines: interval.lengthInHours + 1,
                                   hourHeight: ts.hourHeight,
@@ -219,7 +232,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 width: boxConstraints.maxWidth,
                                 offset: hoursToPixels(interval.startTime.hour,
                                         ts.dotDistance) -
-                                    TimepillarCalendar.topMargin,
+                                    topMargin,
                                 timepillarState: ts,
                               ),
                             CustomScrollView(
@@ -261,6 +274,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       nightParts: np,
                                       dayParts: widget.dayParts,
                                       columnOfDots: memoSettings.columnOfDots,
+                                      topMargin: topMargin,
                                     ),
                                   ),
                                 ),
@@ -289,12 +303,18 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                   controller: horizontalScrollController,
                   collapseMargin: ts.padding,
                 ),
-                ArrowUp(controller: verticalScrollController),
+                ArrowUp(
+                  controller: verticalScrollController,
+                  collapseMargin: topMargin,
+                ),
                 ArrowRight(
                   controller: horizontalScrollController,
                   collapseMargin: ts.padding,
                 ),
-                ArrowDown(controller: verticalScrollController),
+                ArrowDown(
+                  controller: verticalScrollController,
+                  collapseMargin: bottomMargin,
+                ),
               ],
             ),
           ),
@@ -303,21 +323,26 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     );
   }
 
-  List<NightPart> nightParts(DayParts dayParts, TimepillarState ts) {
+  List<NightPart> nightParts(
+    DayParts dayParts,
+    TimepillarState ts,
+    double topMargin,
+  ) {
     final interval = ts.timepillarInterval;
     final intervalDay = interval.startTime.onlyDays();
     return <NightPart>[
       if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
         NightPart(
-            0,
-            hoursToPixels(
-                    intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
-                TimepillarCalendar.topMargin),
+          0,
+          hoursToPixels(
+                  intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
+              topMargin,
+        ),
       if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
             hoursToPixels(
                     intervalDay.add(dayParts.night).hour, ts.dotDistance) +
-                TimepillarCalendar.topMargin,
+                topMargin,
             hoursToPixels(
                 interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
                 ts.dotDistance))

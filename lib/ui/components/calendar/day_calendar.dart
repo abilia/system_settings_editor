@@ -144,15 +144,13 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                                 activityState: activityState,
                                 type: memoState.dayCalendarType,
                               ),
-                            if (memoState.dayCalendarType !=
-                                DayCalendarType.two_timepillars)
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 32.0.s),
-                                  child: GoToNowButton(),
-                                ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 32.0.s),
+                                child: GoToNowButton(),
                               ),
+                            ),
                           ],
                         ),
                       ),

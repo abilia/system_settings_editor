@@ -106,6 +106,8 @@ void main() {
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
                   ts,
+                  TimepillarCalendar.topMargin,
+                  TimepillarCalendar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: ts.totalWidth,
@@ -356,6 +358,8 @@ void main() {
         DayParts.standard(),
         TimepillarSide.RIGHT,
         TimepillarState(interval, 1),
+        TimepillarCalendar.topMargin,
+        TimepillarCalendar.bottomMargin,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

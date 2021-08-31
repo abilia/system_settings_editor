@@ -7,10 +7,8 @@ import 'package:seagull/utils/all.dart';
 
 double timePillarHeight(TimepillarState ts) =>
     (ts.timepillarInterval.lengthInHours +
-            1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
-        ts.hourHeight +
-    TimepillarCalendar.topMargin +
-    TimepillarCalendar.bottomMargin;
+        1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
+    ts.hourHeight;
 
 class TimePillar extends StatelessWidget {
   final TimepillarInterval interval;
@@ -21,8 +19,9 @@ class TimePillar extends StatelessWidget {
   bool get today => dayOccasion == Occasion.current;
   final bool columnOfDots;
   final bool preview;
+  final double topMargin;
 
-  TimePillar({
+  const TimePillar({
     Key? key,
     required this.interval,
     required this.dayOccasion,
@@ -30,6 +29,7 @@ class TimePillar extends StatelessWidget {
     required this.nightParts,
     required this.dayParts,
     required this.columnOfDots,
+    required this.topMargin,
     this.preview = false,
   }) : super(key: key);
 
@@ -42,7 +42,6 @@ class TimePillar extends StatelessWidget {
             : _futureDots;
 
     final formatHour = onlyHourFormat(context, use12h: use12h);
-    final topMargin = preview ? 0.0 : TimepillarCalendar.topMargin;
     return BlocBuilder<TimepillarBloc, TimepillarState>(
       builder: (context, ts) => Stack(
         clipBehavior: Clip.none,
