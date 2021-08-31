@@ -3,7 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
-import '../mocks/shared.mocks.dart';
+import '../mocks_and_fakes/shared.mocks.dart';
 
 void verifySyncGeneric(
   WidgetTester tester,

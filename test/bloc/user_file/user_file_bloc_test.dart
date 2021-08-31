@@ -10,8 +10,8 @@ import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/shared.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks_and_fakes/fakes_blocs.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   late UserFileBloc userFileBloc;

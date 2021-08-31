@@ -9,7 +9,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks/shared.dart';
+import '../../../../mocks_and_fakes/fakes_blocs.dart';
 
 void main() {
   final day = DateTime(2020, 10, 06);

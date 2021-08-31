@@ -7,8 +7,8 @@ import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
-import '../../mocks/shared.mocks.dart';
-import '../../test_helpers/fake_shared_preferences.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/fake_shared_preferences.dart';
 
 void main() {
   late AuthenticationBloc authenticationBloc;

@@ -11,7 +11,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
-import '../mocks/shared.mocks.dart';
+import '../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);

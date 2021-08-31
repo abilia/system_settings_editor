@@ -7,10 +7,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks/shared.dart';
-import '../../../mocks/shared.mocks.dart';
-
-// class MockScrollPosition extends Mock implements ScrollPosition {}
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   late ScrollPositionBloc scrollPositionBloc;

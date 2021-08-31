@@ -13,10 +13,11 @@ import 'package:seagull/ui/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../mocks/shared.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
 import '../../../test_helpers/enter_text.dart';
-import '../../../test_helpers/fake_authenticated_blocs_provider.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
-import '../../mocks/shared.dart';
+import '../../mocks_and_fakes/fakes_blocs.dart';
 
 void main() {
   Widget wrapWithAuthBlocProvider(Widget child) =>

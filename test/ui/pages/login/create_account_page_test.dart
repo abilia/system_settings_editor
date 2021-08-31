@@ -8,10 +8,10 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../mocks/shared.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
-import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
 import '../../../test_helpers/tap_link.dart';
 
 void main() {

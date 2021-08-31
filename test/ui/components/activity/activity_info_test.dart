@@ -15,10 +15,11 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks/shared.dart';
-import '../../../test_helpers/alarm_schedualer.dart';
-import '../../../test_helpers/fake_authenticated_blocs_provider.dart';
-import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {

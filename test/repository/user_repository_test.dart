@@ -7,7 +7,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'dart:async';
 
-import '../mocks/shared.mocks.dart';
+import '../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   final url = 'oneUrl';

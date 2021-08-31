@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/permission/permission_bloc.dart';
 
-import '../../test_helpers/permission.dart';
+import '../../mocks_and_fakes/permission.dart';
 
 void main() {
   setUp(() {

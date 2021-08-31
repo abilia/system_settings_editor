@@ -3,7 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../mocks/shared.dart';
+import '../../mocks_and_fakes/fake_db_and_repository.dart';
 
 void main() {
   late CalendarViewBloc calendarViewBloc;

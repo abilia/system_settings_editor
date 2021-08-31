@@ -12,11 +12,11 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../../mocks/shared.dart';
-import '../../../../../mocks/shared.mocks.dart';
+import '../../../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../../../mocks_and_fakes/permission.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../test_helpers/fake_shared_preferences.dart';
-import '../../../../../test_helpers/permission.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {

@@ -10,11 +10,11 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../mocks/shared.dart';
-import '../../../../mocks/shared.mocks.dart';
-import '../../../../test_helpers/fake_authenticated_blocs_provider.dart';
-import '../../../../test_helpers/fake_shared_preferences.dart';
-import '../../../../test_helpers/permission.dart';
+import '../../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../../mocks_and_fakes/permission.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {

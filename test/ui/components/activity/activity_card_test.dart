@@ -13,8 +13,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
-import '../../../mocks/shared.dart';
-import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {

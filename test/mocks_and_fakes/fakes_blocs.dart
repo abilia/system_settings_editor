@@ -1,57 +1,8 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/storage/all.dart';
-
-@GenerateMocks([
-  ActivityRepository,
-  UserRepository,
-  SortableRepository,
-  UserFileRepository,
-  FirebasePushService,
-  FileStorage,
-  FlutterLocalNotificationsPlugin, // TODO Make fake instead?
-  ActivitiesBloc,
-  ActivitiesOccasionBloc,
-  SyncBloc,
-  PushBloc,
-  GenericBloc,
-  SortableBloc,
-  MemoplannerSettingBloc,
-  TimepillarBloc,
-  UserFileBloc,
-  ScrollController,
-  MultipartRequestBuilder,
-  MultipartRequest,
-  HttpClient,
-  HttpClientRequest,
-  HttpClientResponse,
-  HttpHeaders,
-  ScrollPosition,
-  Database,
-  BaseClient,
-  SettingsDb,
-  ActivityDb,
-  SortableDb,
-  UserFileDb,
-  GenericDb,
-  UserDb,
-  TokenDb,
-  LicenseDb,
-  Notification,
-])
-class Notification {
-  Future mockCancelAll() => Future.value();
-}
+import 'fake_db_and_repository.dart';
 
 class FakePushBloc extends Fake implements PushBloc {
   @override
@@ -79,9 +30,13 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   Future<void> close() async {}
 }
 
-class FakeUserRepository extends Fake implements UserRepository {
+class FakeSortableBloc extends Fake implements SortableBloc {
   @override
-  String get baseUrl => 'fake.url';
+  Stream<SortableState> get stream => Stream.empty();
+  @override
+  SortableState get state => SortablesNotLoaded();
+  @override
+  Future<void> close() async {}
 }
 
 class FakeGenericBloc extends Fake implements GenericBloc {
@@ -129,84 +84,6 @@ class FakeTimepillarBloc extends Fake implements TimepillarBloc {
   @override
   Future<void> close() async {}
 }
-
-class FakeSettingsDb extends Fake implements SettingsDb {
-  @override
-  bool get leftCategoryExpanded => true;
-  @override
-  bool get rightCategoryExpanded => true;
-  @override
-  Future setLeftCategoryExpanded(bool expanded) async {}
-  @override
-  Future setRightCategoryExpanded(bool expanded) async {}
-  @override
-  bool get textToSpeech => true;
-  @override
-  Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
-}
-
-class FakeTokenDb extends Fake implements TokenDb {}
-
-class FakeUserDb extends Fake implements UserDb {}
-
-class FakeUserFileDb extends Fake implements UserFileDb {
-  @override
-  Future<Iterable<UserFile>> getMissingFiles({int? limit}) => Future.value([]);
-  @override
-  Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
-}
-
-class FakeSortableDb extends Fake implements SortableDb {
-  @override
-  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
-      Future.value([]);
-}
-
-class FakeGenericDb extends Fake implements GenericDb {
-  @override
-  Future<Iterable<Generic<GenericData>>> getAllNonDeletedMaxRevision() =>
-      Future.value([]);
-}
-
-class FakeActivityDb extends Fake implements ActivityDb {
-  @override
-  Future<int> getLastRevision() => Future.value(0);
-  @override
-  Future<Iterable<Activity>> getAllNonDeleted() => Future.value([]);
-}
-
-class FakeDatabase extends Fake implements Database {
-  @override
-  Future<List<Map<String, Object?>>> rawQuery(String sql,
-          [List<Object?>? arguments]) =>
-      Future.value([]);
-  @override
-  Batch batch() => FakeBatch();
-}
-
-class FakeBatch extends Fake implements Batch {
-  @override
-  Future<List<Object?>> commit(
-          {bool? exclusive, bool? noResult, bool? continueOnError}) =>
-      Future.value([]);
-  @override
-  void delete(String table, {String? where, List<Object?>? whereArgs}) {}
-}
-
-class FakeSortableBloc extends Fake implements SortableBloc {
-  @override
-  Stream<SortableState> get stream => Stream.empty();
-  @override
-  SortableState get state => SortablesNotLoaded();
-  @override
-  Future<void> close() async {}
-}
-
-class FakeGenericRepository extends Fake implements GenericRepository {}
-
-class FakeFileStorage extends Fake implements FileStorage {}
-
-class FakeUserFileRepository extends Fake implements UserFileRepository {}
 
 class FakeSettingsBloc extends Fake implements SettingsBloc {
   @override
@@ -268,9 +145,4 @@ class FakeLicenseBloc extends Fake implements LicenseBloc {
   Stream<LicenseState> get stream => Stream.empty();
   @override
   Future<void> close() async {}
-}
-
-class FakeFirebasePushService extends Fake implements FirebasePushService {
-  @override
-  Future<String?> initPushToken() => Future.value('fakeToken');
 }

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 
-import '../mocks/shared.dart';
+import 'fakes_blocs.dart';
 
 class FakeAuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;

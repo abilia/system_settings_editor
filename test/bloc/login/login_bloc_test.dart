@@ -7,7 +7,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/models/user.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   group('LoginBloc event order', () {

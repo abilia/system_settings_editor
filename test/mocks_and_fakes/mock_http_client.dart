@@ -1,10 +1,19 @@
 import 'dart:io';
 
+import 'package:http/http.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../mocks/shared.mocks.dart';
+import 'mock_http_client.mocks.dart';
 
+@GenerateMocks([
+  MultipartRequest,
+  HttpClient,
+  HttpClientRequest,
+  HttpClientResponse,
+  HttpHeaders,
+])
 R provideMockedNetworkImages<R>(R Function() body) => HttpOverrides.runZoned(
       body,
       createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
