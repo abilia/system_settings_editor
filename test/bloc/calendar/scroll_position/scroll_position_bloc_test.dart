@@ -1,10 +1,8 @@
-// @dart=2.9
-
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -12,13 +10,13 @@ import 'package:seagull/utils/all.dart';
 import '../../../mocks/shared.dart';
 import '../../../mocks/shared.mocks.dart';
 
-class MockScrollPosition extends Mock implements ScrollPosition {}
+// class MockScrollPosition extends Mock implements ScrollPosition {}
 
 void main() {
-  ScrollPositionBloc scrollPositionBloc;
-  MockScrollController mockScrollController;
-  MockScrollPosition mockScrollPosition;
-  StreamController<DateTime> ticker;
+  late ScrollPositionBloc scrollPositionBloc;
+  late MockScrollController mockScrollController;
+  late MockScrollPosition mockScrollPosition;
+  late StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
   setUp(() {

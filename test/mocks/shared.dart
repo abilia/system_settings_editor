@@ -36,7 +36,7 @@ import 'package:seagull/storage/all.dart';
   HttpClientRequest,
   HttpClientResponse,
   HttpHeaders,
-  // ScrollPosition,
+  ScrollPosition,
   Database,
   BaseClient,
   SettingsDb,
