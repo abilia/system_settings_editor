@@ -2141,7 +2141,7 @@ text''';
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
 
-      expect(find.byType(PickField), findsOneWidget);
+      expect(find.byType(PickField), findsNWidgets(3));
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 
@@ -2161,7 +2161,7 @@ text''';
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
 
-      expect(find.byType(PickField), findsOneWidget);
+      expect(find.byType(PickField), findsNWidgets(3));
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 

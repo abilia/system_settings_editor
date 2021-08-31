@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/models/activity/activity_extras.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
@@ -117,7 +118,7 @@ void main() {
     expect(result.reminders, []);
     expect(result.fileId, '');
     expect(result.timezone, '');
-    expect(result.extras, '');
+    expect(result.extras, Extras.empty);
     for (var p in result.props) {
       expect(p, isNotNull);
     }
@@ -202,7 +203,7 @@ void main() {
     expect(result.reminders, []);
     // expect(result.extras, null);
     expect(result.fileId, '');
-    expect(result.extras, '');
+    expect(result.extras, Extras.empty);
   });
 
   test('create, serialize and deserialize test', () {
@@ -229,7 +230,7 @@ void main() {
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
       infoItem: infoItem,
-      extras: 'extra',
+      extras: Extras(startTimeExtraAlarm: 'startTimeExtraAlarm'),
     );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
@@ -282,7 +283,7 @@ void main() {
       title: 'Title',
       startTime: now,
       fileId: '',
-      extras: 'åäö',
+      extras: Extras(startTimeExtraAlarm: 'startTimeExtraAlarm'),
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();

@@ -221,6 +221,8 @@ abstract class Translated {
 
   final String ok = 'OK';
 
+  final String record = 'Record';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -260,6 +262,18 @@ abstract class Translated {
   final String save = 'Save';
 
   final String endBeforeStartError = "End date can't be before start date";
+
+  final String speech = 'Speech';
+
+  final String speechOnStart = 'Speech at Start time';
+
+  final String speechOnEnd = 'Speech at End time';
+
+  final String duration = 'Duration';
+
+  final String stop = 'Stop';
+
+  final String play = 'Play';
 
   final String enterTitleAndImage = 'Enter title and image';
 
@@ -971,6 +985,9 @@ class SV extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Spela in';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1031,7 +1048,25 @@ class SV extends Translated {
   final String endBeforeStartError = 'Slutdatum kan inte vara före startdatum';
 
   @override
-  final String enterTitleAndImage = 'Välj title och bild ';
+  final String speech = 'Röst';
+
+  @override
+  final String speechOnStart = 'Röst vid Start';
+
+  @override
+  final String speechOnEnd = 'Röst vid Slut';
+
+  @override
+  final String duration = 'Längd';
+
+  @override
+  final String stop = 'Stoppa';
+
+  @override
+  final String play = 'Spela upp';
+
+  @override
+  final String enterTitleAndImage = 'Välj title och bild';
 
   @override
   final String error = 'Fel';

@@ -104,6 +104,11 @@ final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   shape: noBorder,
 );
 
+final iconTextButtonStyleDark = iconTextButtonStyle.copyWith(
+  backgroundColor: buttonBackgroundDarkGrey,
+  shape: MaterialStateProperty.all(ligthShapeBorder),
+);
+
 final actionIconTextButtonStyleRed = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
   textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
@@ -127,6 +132,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
 
 final double actionButtonMinSize = 48.0.s;
 final double secondaryActionButtonMinSize = 40.0.s;
+final double smallButtonMinSize = 30.0.s;
 
 final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
@@ -260,6 +266,23 @@ final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
     secondaryActionButtonMinSize,
     secondaryActionButtonMinSize,
   )),
+);
+
+final actionButtonStyleSmall = _actionButtonStyle.copyWith(
+  minimumSize:
+      MaterialStateProperty.all(Size(smallButtonMinSize, smallButtonMinSize)),
+  backgroundColor: buttonBackgroundDarkGrey,
+  shape: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return noBorderShape;
+      }
+      return RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: BorderSide(color: AbiliaColors.black60, width: 1.0.s),
+      );
+    },
+  ),
 );
 
 ButtonStyle tabButtonStyle({

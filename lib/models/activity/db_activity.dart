@@ -44,7 +44,11 @@ class DbActivity extends DbModel<Activity> {
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
           timezone: json['timezone'] ?? '',
-          extras: json['extras'] ?? '',
+          extras: json['extras'] is String
+              ? Extras.fromJsonString(json['extras'])
+              : json['extras'] is Map
+                  ? Extras.fromJson(json['extras'])
+                  : Extras.empty,
         ),
         revision: json['revision'],
         dirty: 0,
@@ -75,7 +79,11 @@ class DbActivity extends DbModel<Activity> {
           alarmType: dbRow['alarm_type'] ?? AlarmType.NoAlarm,
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
           timezone: dbRow['timezone'] ?? '',
-          extras: dbRow['extras'] ?? '',
+          extras: dbRow['extras'] is String
+              ? Extras.fromJsonString(dbRow['extras'])
+              : dbRow['extras'] is Map
+                  ? Extras.fromJson(dbRow['extras'])
+                  : Extras.empty,
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -105,7 +113,7 @@ class DbActivity extends DbModel<Activity> {
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
-        'extras': activity.extras,
+        'extras': activity.extras.toJsonString(),
       };
 
   @override
@@ -131,7 +139,7 @@ class DbActivity extends DbModel<Activity> {
         'alarm_type': activity.alarmType,
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
-        'extras': activity.extras,
+        'extras': activity.extras.toJsonString(),
         'revision': revision,
         'dirty': dirty,
       };

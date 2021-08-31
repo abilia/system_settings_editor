@@ -34,7 +34,7 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
           separatedAndPadded(
             AlarmWidget(widget.activity),
           ),
-          padded(
+          separatedAndPadded(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -48,6 +48,9 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
                 ),
               ],
             ),
+          ),
+          padded(
+            RecordAudioWidget(widget.activity),
           ),
         ],
       ),

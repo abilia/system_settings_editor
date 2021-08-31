@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/activity/activity_extras.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/models/all.dart';
@@ -31,7 +32,7 @@ class Activity extends DataModel {
           ? (signedOffDates.toList()..remove(day))
           : signedOffDates.followedBy([day]));
 
-  final String seriesId, title, fileId, icon, timezone, extras;
+  final String seriesId, title, fileId, icon, timezone;
   final DateTime startTime;
   final Duration duration;
   final int category, alarmType;
@@ -40,6 +41,7 @@ class Activity extends DataModel {
   final UnmodifiableListView<DateTime> signedOffDates;
   final InfoItem infoItem;
   final Recurs recurs;
+  final Extras extras;
   const Activity._({
     required String id,
     required this.seriesId,
@@ -82,7 +84,7 @@ class Activity extends DataModel {
     Iterable<int> reminderBefore = const [],
     Iterable<DateTime> signedOffDates = const [],
     String timezone = '',
-    String extras = '',
+    Extras extras = Extras.empty,
   }) {
     final id = Uuid().v4();
     return Activity._(
@@ -142,7 +144,7 @@ class Activity extends DataModel {
     InfoItem? infoItem,
     Iterable<DateTime>? signedOffDates,
     String? timezone,
-    String? extras,
+    Extras? extras,
   }) =>
       Activity._(
         id: newId ? Uuid().v4() : id,
@@ -208,6 +210,7 @@ class Activity extends DataModel {
         timezone: other.timezone,
         recurs:
             recurs.isRecurring ? other.recurs.changeEnd(recurs.end) : recurs,
+        extras: other.extras,
       );
 
   @override

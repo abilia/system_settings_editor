@@ -73,6 +73,27 @@ class GreenButton extends StatelessWidget {
       );
 }
 
+class DarkButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String text;
+  final IconData icon;
+
+  const DarkButton({
+    Key? key,
+    required this.text,
+    required this.icon,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: iconTextButtonStyleDark,
+      );
+}
+
 class NextButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
@@ -176,6 +197,75 @@ class NoButton extends StatelessWidget {
       text: Translator.of(context).translate.no,
       icon: AbiliaIcons.close_program,
       onPressed: () => Navigator.of(context).maybePop(false),
+    );
+  }
+}
+
+class RecordAudioButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const RecordAudioButton({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: Translator.of(context).translate.record,
+        icon: AbiliaIcons.record,
+        onPressed: onPressed,
+        style: iconTextButtonStyleRed,
+      );
+}
+
+class DeleteButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  const DeleteButton({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        icon: AbiliaIcons.remove,
+        text: '',
+        onPressed: onPressed,
+        style: actionButtonStyleSmall,
+      );
+}
+
+class StopButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const StopButton({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DarkButton(
+      text: Translator.of(context).translate.stop,
+      icon: AbiliaIcons.stop,
+      onPressed: onPressed,
+    );
+  }
+}
+
+class PlaySpeechButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const PlaySpeechButton({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DarkButton(
+      text: Translator.of(context).translate.play,
+      icon: AbiliaIcons.play_sound,
+      onPressed: onPressed,
     );
   }
 }
