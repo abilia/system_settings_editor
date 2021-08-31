@@ -47,7 +47,6 @@ class ActivityTimepillarCard extends StatelessWidget {
     final dotHeight = dots * ts.dotDistance;
 
     final right = TimepillarSide.RIGHT == timepillarSide;
-
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.dotsInTimepillar != current.dotsInTimepillar ||
@@ -87,6 +86,8 @@ class ActivityTimepillarCard extends StatelessWidget {
                             ? (decoration.border?.dimensions.vertical ?? 0)
                             : 0),
                     width: ts.width,
+                    category: activity.category,
+                    showCategoryColor: settings.showCategoryColor,
                   ),
                 GestureDetector(
                   onTap: () {
@@ -155,11 +156,15 @@ class SideTime extends StatelessWidget {
   final Occasion occasion;
   final double height;
   final double width;
+  final int category;
+  final bool showCategoryColor;
   const SideTime({
     Key? key,
     required this.occasion,
     required this.height,
     required this.width,
+    required this.category,
+    required this.showCategoryColor,
   }) : super(key: key);
 
   @override
@@ -179,10 +184,12 @@ class SideTime extends StatelessWidget {
     switch (occasion) {
       case Occasion.current:
         return AbiliaColors.red;
-      case Occasion.past:
-        return AbiliaColors.white140;
       default:
-        return AbiliaColors.black60;
+        return categoryColor(
+          category: category,
+          inactive: occasion == Occasion.past,
+          showCategoryColor: showCategoryColor,
+        );
     }
   }
 }
