@@ -53,3 +53,13 @@ void verifyGenerics(
     expect(d.data.data, kvp.value);
   }
 }
+
+Generic<MemoplannerSettingData> memoplannerSetting(
+    bool value, String identifier) {
+  return Generic.createNew<MemoplannerSettingData>(
+    data: MemoplannerSettingData.fromData(
+      data: value,
+      identifier: identifier,
+    ),
+  );
+}

@@ -49,6 +49,7 @@ void main() {
           ends: now.add(5.days())),
     ),
   ];
+
   setUp(() {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
@@ -91,6 +92,7 @@ void main() {
                 UILocalNotificationDateInterpretation.wallClockTime))
         .called(11);
   });
+
   test('scheduleAlarmNotifications', () async {
     await scheduleAlarmNotifications(
       allActivities,

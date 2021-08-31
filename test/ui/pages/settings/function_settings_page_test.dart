@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -7,31 +5,30 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/alarm_schedualer.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/verify_generic.dart';
 
 void main() {
   final translate = Locales.language.values.first;
   final initialTime = DateTime(2021, 04, 17, 09, 20);
   Iterable<Generic> generics = [];
-  GenericDb genericDb;
+  late MockGenericDb genericDb;
 
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
 
     genericDb = MockGenericDb();
     when(genericDb.getAllNonDeletedMaxRevision())
@@ -47,7 +44,7 @@ void main() {
         initialTime: initialTime,
       )
       ..client = Fakes.client(genericResponse: () => generics)
-      ..database = db
+      ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
       ..init();

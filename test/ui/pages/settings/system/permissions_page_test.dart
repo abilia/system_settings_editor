@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -12,13 +10,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/shared.dart';
+import '../../../../mocks/shared.mocks.dart';
+import '../../../../test_helpers/fake_authenticated_blocs_provider.dart';
+import '../../../../test_helpers/fake_shared_preferences.dart';
+import '../../../../test_helpers/permission.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
-  MockSettingsDb mockSettingsDb;
-  MockAuthenticationBloc mockAuthenticationBloc;
-  MockActivitiesBloc mockActivitiesBloc;
-  MockTimepillarBloc mockTimepillarBloc;
   final user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -27,16 +26,12 @@ void main() {
 
   final translate = Locales.language.values.first;
   setUp(() async {
+    setupFakeTts();
     await initializeDateFormatting();
-    mockSettingsDb = MockSettingsDb();
-    mockAuthenticationBloc = MockAuthenticationBloc();
-    mockTimepillarBloc = MockTimepillarBloc();
-    mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+
     final userDb = MockUserDb();
     when(userDb.getUser()).thenReturn(user);
     GetItInitializer()
-      ..flutterTts = MockFlutterTts()
       ..userDb = userDb
       ..packageInfo = PackageInfo(
           appName: 'appName',
@@ -56,22 +51,22 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        builder: (context, child) => MockAuthenticatedBlocsProvider(
+        builder: (context, child) => FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
               BlocProvider<AuthenticationBloc>(
-                  create: (context) => mockAuthenticationBloc),
+                  create: (context) => FakeAuthenticationBloc()),
               BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+                create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
               ),
               BlocProvider<ActivitiesBloc>(
-                create: (context) => mockActivitiesBloc,
+                create: (context) => FakeActivitiesBloc(),
               ),
               BlocProvider<TimepillarBloc>(
-                create: (context) => mockTimepillarBloc,
+                create: (context) => FakeTimepillarBloc(),
               )
             ],
-            child: child,
+            child: child!,
           ),
         ),
         home: widget,

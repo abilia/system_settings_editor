@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
@@ -19,15 +21,21 @@ import 'package:seagull/storage/all.dart';
   FileStorage,
   FlutterLocalNotificationsPlugin, // TODO Make fake instead?
   ActivitiesBloc,
+  ActivitiesOccasionBloc,
   SyncBloc,
   PushBloc,
   GenericBloc,
   SortableBloc,
   MemoplannerSettingBloc,
   TimepillarBloc,
+  UserFileBloc,
   ScrollController,
   MultipartRequestBuilder,
   MultipartRequest,
+  HttpClient,
+  HttpClientRequest,
+  HttpClientResponse,
+  HttpHeaders,
   // ScrollPosition,
   Database,
   BaseClient,
@@ -200,9 +208,17 @@ class FakeFileStorage extends Fake implements FileStorage {}
 
 class FakeUserFileRepository extends Fake implements UserFileRepository {}
 
-class FakeSettingsBloc extends Fake implements SettingsBloc {}
+class FakeSettingsBloc extends Fake implements SettingsBloc {
+  @override
+  Stream<SettingsState> get stream => Stream.empty();
+}
 
-class FakeUserFileBloc extends Fake implements UserFileBloc {}
+class FakeUserFileBloc extends Fake implements UserFileBloc {
+  @override
+  Stream<UserFileState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}
 
 class FakeDayPickerBloc extends Fake implements DayPickerBloc {
   @override

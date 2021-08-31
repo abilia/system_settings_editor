@@ -360,7 +360,7 @@ void main() {
       });
 
       test(
-          'recurrance spanning over midnight two days in a row should show up twice',
+          'recurrance spanning over midnight two days in a row should show up twice 1',
           () {
         final startTime = DateTime(2010, 01, 01, 21, 00);
         final wednesday = DateTime(2020, 05, 27);
@@ -388,7 +388,7 @@ void main() {
       });
 
       test(
-          'recurrance spanning over midnight two days in a row should show up twice',
+          'recurrance spanning over midnight two days in a row should show up twice 2',
           () {
         final startTime = DateTime(2010, 01, 01, 21, 00);
         final wednesday = DateTime(2020, 05, 27);
@@ -479,13 +479,13 @@ void main() {
         expect(weekly, expected);
       });
 
-      test('Weekly on days', () {
+      test('Weekly on days 1,2,3', () {
         final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 903, Recurs.NO_END);
         final weekly = Recurs.weeklyOnDays([1, 2, 3]);
         expect(weekly, expected);
       });
 
-      test('Weekly on days', () {
+      test('Biweekly on days', () {
         final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 1, Recurs.NO_END);
         final weekly = Recurs.biWeeklyOnDays(evens: [1]);
         expect(weekly, expected);

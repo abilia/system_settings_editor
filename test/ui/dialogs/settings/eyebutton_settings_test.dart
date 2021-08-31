@@ -55,6 +55,9 @@ void main() {
     when(mockGenericDb.getLastRevision()).thenAnswer((_) => Future.value(0));
     when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
     when(mockGenericDb.insert(any)).thenAnswer((_) async {});
+    when(mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(mockGenericDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

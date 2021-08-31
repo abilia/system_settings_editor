@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -19,7 +17,13 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/fake_authenticated_blocs_provider.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/types.dart';
 
 void main() {
@@ -35,36 +39,41 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
-  MockSortableBloc mockSortableBloc;
-  MockUserFileBloc mockUserFileBloc;
-  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
-  MockActivitiesBloc mockActivitiesBloc;
+  late MockSortableBloc mockSortableBloc;
+  late MockUserFileBloc mockUserFileBloc;
+  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
+    when(mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
-    mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
-    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
+    when(mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
 
-  Widget wrapWithMaterialApp(Widget widget,
-      {Activity givenActivity, bool use24H = false, bool newActivity = false}) {
+  Widget wrapWithMaterialApp(
+    Widget widget, {
+    Activity? givenActivity,
+    bool use24H = false,
+    bool newActivity = false,
+  }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-          .firstWhere((l) => l.languageCode == locale.languageCode,
+          .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
-        child: MockAuthenticatedBlocsProvider(
+        child: FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ClockBloc>(
@@ -75,7 +84,7 @@ void main() {
               BlocProvider<MemoplannerSettingBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
+              BlocProvider<ActivitiesBloc>.value(value: FakeActivitiesBloc()),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -103,7 +112,7 @@ void main() {
               ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
-                  settingsDb: MockSettingsDb(),
+                  settingsDb: FakeSettingsDb(),
                 ),
               ),
               BlocProvider<PermissionBloc>(
@@ -117,7 +126,7 @@ void main() {
                 ),
               )
             ],
-            child: child,
+            child: child!,
           ),
         ),
       ),
@@ -882,7 +891,7 @@ Internal improvements to tests and examples.''';
       final checklist = Checklist(
           name: 'a checklist',
           questions:
-              questions.keys.map((k) => Question(id: k, name: questions[k])));
+              questions.keys.map((k) => Question(id: k, name: questions[k]!)));
 
       final activityWithChecklist = Activity.createNew(
           title: 'null', startTime: startTime, infoItem: checklist);
@@ -913,9 +922,9 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        expect(find.text(questions[0]), findsOneWidget);
-        expect(find.text(questions[1]), findsOneWidget);
-        expect(find.text(questions[2]), findsOneWidget);
+        expect(find.text(questions[0]!), findsOneWidget);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
@@ -1020,19 +1029,19 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        expect(find.text(questions[0]), findsOneWidget);
-        expect(find.text(questions[1]), findsOneWidget);
-        expect(find.text(questions[2]), findsOneWidget);
-        expect(find.text(questions[3], skipOffstage: false), findsOneWidget);
-        await tester.tap(find.text(questions[0]));
+        expect(find.text(questions[0]!), findsOneWidget);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
+        expect(find.text(questions[3]!, skipOffstage: false), findsOneWidget);
+        await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(RemoveButton));
         await tester.pumpAndSettle();
-        expect(find.text(questions[0]), findsNothing);
-        expect(find.text(questions[1]), findsOneWidget);
-        expect(find.text(questions[2]), findsOneWidget);
-        expect(find.text(questions[3]), findsOneWidget);
+        expect(find.text(questions[0]!), findsNothing);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
+        expect(find.text(questions[3]!), findsOneWidget);
       });
 
       testWidgets('Can edit question', (WidgetTester tester) async {
@@ -1043,7 +1052,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.text(questions[0]));
+        await tester.tap(find.text(questions[0]!));
 
         await tester.pumpAndSettle();
 
@@ -1052,7 +1061,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
 
-        expect(find.text(questions[0]), findsNothing);
+        expect(find.text(questions[0]!), findsNothing);
         expect(find.text(newQuestionName), findsOneWidget);
       });
 
@@ -1073,7 +1082,7 @@ question''',
             infoItem: Checklist(
                 name: 'a checklist',
                 questions: questions.keys
-                    .map((k) => Question(id: k, name: questions[k]))));
+                    .map((k) => Question(id: k, name: questions[k]!))));
         final newQuestionName = '''
 yet
 more
@@ -1087,8 +1096,8 @@ text''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        expect(find.text(questions[0]), findsOneWidget);
-        await tester.tap(find.text(questions[1]));
+        expect(find.text(questions[0]!), findsOneWidget);
+        await tester.tap(find.text(questions[1]!));
 
         await tester.pumpAndSettle();
 
@@ -1097,7 +1106,7 @@ text''';
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
 
-        expect(find.text(questions[1]), findsNothing);
+        expect(find.text(questions[1]!), findsNothing);
         expect(find.text(newQuestionName), findsOneWidget);
       });
 
@@ -1568,11 +1577,11 @@ text''';
       await tester.pumpAndSettle();
 
       expect(
-        tester.widget<TextField>(startTimeInputFinder).focusNode.hasFocus,
+        tester.widget<TextField>(startTimeInputFinder).focusNode?.hasFocus,
         isTrue,
       );
       expect(
-        tester.widget<TextField>(endTimeInputFinder).focusNode.hasFocus,
+        tester.widget<TextField>(endTimeInputFinder).focusNode?.hasFocus,
         isFalse,
       );
 
@@ -1580,11 +1589,11 @@ text''';
       await tester.pumpAndSettle();
 
       expect(
-        tester.widget<TextField>(endTimeInputFinder).focusNode.hasFocus,
+        tester.widget<TextField>(endTimeInputFinder).focusNode?.hasFocus,
         isTrue,
       );
       expect(
-        tester.widget<TextField>(startTimeInputFinder).focusNode.hasFocus,
+        tester.widget<TextField>(startTimeInputFinder).focusNode?.hasFocus,
         isFalse,
       );
 
@@ -2321,9 +2330,9 @@ text''';
 
   group('tts', () {
     setUp(() async {
+      setupFakeTts();
       GetItInitializer()
-        ..flutterTts = MockFlutterTts()
-        ..database = MockDatabase()
+        ..database = FakeDatabase()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..init();
     });

@@ -111,6 +111,9 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
     when(mockGenericDb.insert(any)).thenAnswer((_) async {});
+    when(mockGenericDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
+    when(mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     when(licenseDb.getLicenses()).thenReturn([
       License(
@@ -1005,7 +1008,6 @@ void main() {
       activityResponse = () => fullDayActivities;
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(fullDayActivities));
-      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     });
 
     testWidgets('Show full days activity', (WidgetTester tester) async {
@@ -1149,7 +1151,6 @@ void main() {
       activityResponse = () => activities;
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
-      when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     });
     testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
       await tester.pumpWidget(App());

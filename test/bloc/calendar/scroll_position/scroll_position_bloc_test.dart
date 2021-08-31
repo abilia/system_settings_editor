@@ -18,7 +18,6 @@ void main() {
   ScrollPositionBloc scrollPositionBloc;
   MockScrollController mockScrollController;
   MockScrollPosition mockScrollPosition;
-  TimepillarBloc mockTimepillarBloc;
   StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
@@ -28,12 +27,11 @@ void main() {
     final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
-    mockTimepillarBloc = FakeTimepillarBloc();
 
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
-      timepillarBloc: mockTimepillarBloc,
+      timepillarBloc: FakeTimepillarBloc(),
     );
     when(mockScrollController.position).thenReturn(mockScrollPosition);
     when(mockScrollController.hasClients).thenReturn(true);

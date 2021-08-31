@@ -1,13 +1,11 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -16,31 +14,25 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/pages/settings/select_alarm_duration_page.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks/shared.dart';
+import '../../../mocks/shared.mocks.dart';
+import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/alarm_schedualer.dart';
+import '../../../test_helpers/fake_shared_preferences.dart';
+import '../../../test_helpers/permission.dart';
+import '../../../test_helpers/verify_generic.dart';
 
 void main() {
   group('Alarm setting spage', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
-    GenericDb genericDb;
+    late MockGenericDb genericDb;
 
     setUp(() async {
       setupPermissions();
       notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-
-      final mockBatch = MockBatch();
-      when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-      final db = MockDatabase();
-      when(db.batch()).thenReturn(mockBatch);
-      when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
-      when(db.query(
-        any,
-        columns: anyNamed('columns'),
-        where: anyNamed('where'),
-        whereArgs: anyNamed('whereArgs'),
-      )).thenAnswer((realInvocation) => Future.value([]));
 
       genericDb = MockGenericDb();
       when(genericDb.getAllNonDeletedMaxRevision())
@@ -48,6 +40,8 @@ void main() {
       when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
       when(genericDb.insertAndAddDirty(any))
           .thenAnswer((_) => Future.value(true));
+      when(genericDb.getById(any)).thenAnswer((_) => Future.value(null));
+      when(genericDb.insert(any)).thenAnswer((_) async {});
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -56,7 +50,7 @@ void main() {
           initialTime: initialTime,
         )
         ..client = Fakes.client(genericResponse: () => generics)
-        ..database = db
+        ..database = FakeDatabase()
         ..syncDelay = SyncDelays.zero
         ..genericDb = genericDb
         ..init();
@@ -73,17 +67,18 @@ void main() {
 
     testWidgets('Select non checkable alarm sound', (tester) async {
       await tester.goToAlarmSettingsPage();
-      expect(find.text(Sound.Default.displayName(null)), findsNWidgets(3));
-      expect(find.text(Sound.AfloatSynth.displayName(null)), findsNothing);
+      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(3));
+      expect(find.text(Sound.AfloatSynth.displayName(translate)), findsNothing);
       await tester.tap(find.byKey(TestKey.nonCheckableAlarmSelector));
       await tester.pumpAndSettle();
       expect(find.byType(SelectSoundPage), findsOneWidget);
-      await tester.tap(find.text(Sound.AfloatSynth.displayName(null)));
+      await tester.tap(find.text(Sound.AfloatSynth.displayName(translate)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(find.text(Sound.Default.displayName(null)), findsNWidgets(2));
-      expect(find.text(Sound.AfloatSynth.displayName(null)), findsOneWidget);
+      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(2));
+      expect(
+          find.text(Sound.AfloatSynth.displayName(translate)), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifyUnsyncGeneric(
@@ -98,7 +93,7 @@ void main() {
       await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.checkableAlarmSelector));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(Sound.BreathlessPiano.displayName(null)));
+      await tester.tap(find.text(Sound.BreathlessPiano.displayName(translate)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -116,7 +111,7 @@ void main() {
       await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.reminderAlarmSelector));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(Sound.GibsonGuitar.displayName(null)));
+      await tester.tap(find.text(Sound.GibsonGuitar.displayName(translate)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();

@@ -2,6 +2,8 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:test/test.dart';
 
+import '../test_helpers/verify_generic.dart';
+
 void main() {
   late Database db;
   late GenericDb genericDb;
@@ -40,14 +42,4 @@ void main() {
   tearDown(() {
     DatabaseRepository.clearAll(db);
   });
-}
-
-Generic<MemoplannerSettingData> memoplannerSetting(
-    bool value, String identifier) {
-  return Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
-      data: value,
-      identifier: identifier,
-    ),
-  );
 }
