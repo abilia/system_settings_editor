@@ -65,7 +65,8 @@ class OneTimepillarCalendar extends StatefulWidget {
   final bool showCategories,
       displayHourLines,
       displayTimeline,
-      showCategoryLabels;
+      showCategoryLabels,
+      scrollToTimeOffset;
   final DayParts dayParts;
   final double topMargin, bottomMargin;
 
@@ -77,6 +78,7 @@ class OneTimepillarCalendar extends StatefulWidget {
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
+    this.scrollToTimeOffset = true,
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
@@ -107,19 +109,23 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   @override
   void initState() {
     super.initState();
-    verticalScrollController = _initVerticalScroll();
+    verticalScrollController = widget.scrollToTimeOffset
+        ? _timeOffsetVerticalScroll()
+        : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
-    WidgetsBinding.instance?.addPostFrameCallback(
-      (_) => BlocProvider.of<ScrollPositionBloc>(context).add(
-        ScrollViewRenderComplete(
-          verticalScrollController,
-          createdTime: context.read<ClockBloc>().state,
-        ),
-      ),
-    );
+    if (widget.scrollToTimeOffset) {
+      WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => context.read<ScrollPositionBloc>().add(
+              ScrollViewRenderComplete(
+                verticalScrollController,
+                createdTime: context.read<ClockBloc>().state,
+              ),
+            ),
+      );
+    }
   }
 
-  ScrollController _initVerticalScroll() {
+  ScrollController _timeOffsetVerticalScroll() {
     final now = context.read<ClockBloc>().state;
     final scrollOffset = widget.activityState.isToday
         ? timeToPixels(now.hour, now.minute, ts.dotDistance) -
@@ -228,12 +234,24 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 ),
                               ),
                             if (showTimeLine)
-                              Timeline(
-                                width: boxConstraints.maxWidth,
-                                offset: hoursToPixels(interval.startTime.hour,
-                                        ts.dotDistance) -
-                                    topMargin,
-                                timepillarState: ts,
+                              BlocBuilder<ClockBloc, DateTime>(
+                                builder: (context, now) {
+                                  if (now.inRangeWithInclusiveStart(
+                                      startDate:
+                                          ts.timepillarInterval.startTime,
+                                      endDate: ts.timepillarInterval.endTime)) {
+                                    return Timeline(
+                                      now: now,
+                                      width: boxConstraints.maxWidth,
+                                      offset: hoursToPixels(
+                                              interval.startTime.hour,
+                                              ts.dotDistance) -
+                                          topMargin,
+                                      timepillarState: ts,
+                                    );
+                                  }
+                                  return SizedBox.shrink();
+                                },
                               ),
                             CustomScrollView(
                               anchor: horizontalAnchor,
@@ -241,9 +259,9 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                               scrollDirection: Axis.horizontal,
                               controller: horizontalScrollController,
                               slivers: <Widget>[
-                                if (widget.showCategoryLabels)
+                                if (widget.showCategories)
                                   category(
-                                    widget.showCategories
+                                    widget.showCategoryLabels
                                         ? LeftCategory()
                                         : null,
                                     height: boxConstraints.maxHeight,

@@ -4,7 +4,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TwoTimepillarCalendar extends StatelessWidget {
-  const TwoTimepillarCalendar({
+  TwoTimepillarCalendar({
     Key? key,
     required this.activityState,
     required this.timepillarState,
@@ -26,6 +26,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
   final DayParts dayParts;
   final MemoplannerSettingsState memoplannerSettingsState;
 
+  final verticalMargin = 24.s;
+
   @override
   Widget build(BuildContext context) {
     final day = activityState.day;
@@ -36,61 +38,81 @@ class TwoTimepillarCalendar extends StatelessWidget {
         ),
         0.5);
     final nightTimepillarState = TimepillarState(
-        TimepillarInterval(
-          start: day.add(memoplannerSettingsState.dayParts.night),
-          end: day.nextDay().add(
-                memoplannerSettingsState.dayParts.morningStart.milliseconds(),
-              ),
-          intervalPart: IntervalPart.NIGHT,
-        ),
-        0.5);
-    return Row(
-      children: [
-        Flexible(
-          flex: 232,
-          child: BlocProvider<TimepillarBloc>.value(
-            value: TimepillarBloc.fixed(state: dayTimepillarState),
-            child: OneTimepillarCalendar(
-              activityState: activityState,
-              timepillarState: dayTimepillarState,
-              dayParts: memoplannerSettingsState.dayParts,
-              displayTimeline: memoplannerSettingsState.displayTimeline,
-              showCategories: memoplannerSettingsState.showCategories,
-              showCategoryLabels: false,
-              displayHourLines: memoplannerSettingsState.displayHourLines,
-              topMargin: 20.s,
-              bottomMargin: 0.0,
+      TimepillarInterval(
+        start: day.add(memoplannerSettingsState.dayParts.night),
+        end: day.nextDay().add(
+              memoplannerSettingsState.dayParts.morningStart.milliseconds(),
             ),
-          ),
-        ),
-        SizedBox(width: 4.s),
-        Flexible(
-          flex: 135,
-          child: BlocProvider<TimepillarBloc>.value(
-            value: TimepillarBloc.fixed(state: nightTimepillarState),
-            child: Container(
-              clipBehavior: Clip.hardEdge,
-              height: 242.s,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(9.s),
+        intervalPart: IntervalPart.NIGHT,
+      ),
+      0.5,
+    );
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        final categoryLabelWidth =
+            (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
+        final nightTimepillarHeight =
+            timePillarHeight(nightTimepillarState) + verticalMargin * 2;
+        return Stack(
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  flex: 232,
+                  child: BlocProvider<TimepillarBloc>.value(
+                    value: TimepillarBloc.fixed(state: dayTimepillarState),
+                    child: OneTimepillarCalendar(
+                      activityState: activityState,
+                      timepillarState: dayTimepillarState,
+                      dayParts: memoplannerSettingsState.dayParts,
+                      displayTimeline: memoplannerSettingsState.displayTimeline,
+                      showCategories: memoplannerSettingsState.showCategories,
+                      showCategoryLabels: false,
+                      scrollToTimeOffset: false,
+                      displayHourLines:
+                          memoplannerSettingsState.displayHourLines,
+                      topMargin: verticalMargin,
+                      bottomMargin: verticalMargin,
+                    ),
+                  ),
                 ),
-              ),
-              child: OneTimepillarCalendar(
-                activityState: activityState,
-                timepillarState: nightTimepillarState,
-                dayParts: memoplannerSettingsState.dayParts,
-                displayTimeline: memoplannerSettingsState.displayTimeline,
-                showCategories: memoplannerSettingsState.showCategories,
-                showCategoryLabels: false,
-                displayHourLines: memoplannerSettingsState.displayHourLines,
-                topMargin: 20.s,
-                bottomMargin: 0.0,
-              ),
+                SizedBox(width: 4.s),
+                Flexible(
+                  flex: 135,
+                  child: BlocProvider<TimepillarBloc>.value(
+                    value: TimepillarBloc.fixed(state: nightTimepillarState),
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      height: nightTimepillarHeight,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(9.s)),
+                      ),
+                      child: OneTimepillarCalendar(
+                        activityState: activityState,
+                        timepillarState: nightTimepillarState,
+                        dayParts: memoplannerSettingsState.dayParts,
+                        displayTimeline:
+                            memoplannerSettingsState.displayTimeline,
+                        showCategories: memoplannerSettingsState.showCategories,
+                        showCategoryLabels: false,
+                        scrollToTimeOffset: false,
+                        displayHourLines:
+                            memoplannerSettingsState.displayHourLines,
+                        topMargin: verticalMargin,
+                        bottomMargin: verticalMargin,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
-      ],
+            if (memoplannerSettingsState.showCategories) ...[
+              LeftCategory(maxWidth: categoryLabelWidth),
+              RightCategory(maxWidth: categoryLabelWidth),
+            ],
+          ],
+        );
+      },
     );
   }
 }

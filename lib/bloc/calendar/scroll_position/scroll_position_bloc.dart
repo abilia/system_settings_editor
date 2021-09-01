@@ -43,6 +43,7 @@ class ScrollPositionBloc
     final s = state;
     if (event is GoToNow) {
       await _jumpToActivity(s);
+      yield Unready();
     } else if (!dayPickerBloc.state.isToday) {
       yield WrongDay();
     } else if (event is ScrollViewRenderComplete) {

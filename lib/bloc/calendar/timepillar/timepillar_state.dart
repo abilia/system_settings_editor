@@ -17,7 +17,7 @@ final double _dotDistance = _dotSize + _dotPadding;
 
 // Timepillar
 final double _timePillarPadding = 4.0.s;
-final double _timePillarWidth = 42.0.s;
+final double defaultTimePillarWidth = 42.s;
 
 class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;
@@ -44,9 +44,9 @@ class TimepillarState extends Equatable {
 
   // Timepillar
   double get timePillarPadding => _timePillarPadding * zoom;
-  double get timePillarWidth => _timePillarWidth * zoom;
+  double get timePillarWidth => defaultTimePillarWidth * zoom;
   double get timePillarTotalWidth =>
-      (_timePillarWidth + _timePillarPadding * 2) * zoom;
+      (defaultTimePillarWidth + _timePillarPadding * 2) * zoom;
   double get topPadding => 2 * hourPadding;
 
   @override
