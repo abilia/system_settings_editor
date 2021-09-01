@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:audioplayers/audioplayers.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/activities/record_speech_cubit.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:uuid/uuid.dart';
 
 enum RecordPageState { StoppedEmpty, Recording, StoppedNotEmpty, Playing }
 
@@ -15,150 +10,54 @@ final String SOUND_NAME_PREAMBLE = 'voice_recording_';
 class RecordingWidget extends StatefulWidget {
   final String originalSoundFile;
   final ValueChanged<String> onSoundRecorded;
+  final RecordPageState state;
 
   const RecordingWidget(
-      {required this.originalSoundFile, required this.onSoundRecorded});
+      {required this.state,
+      required this.originalSoundFile,
+      required this.onSoundRecorded});
 
   @override
   State<StatefulWidget> createState() {
     return _RecordingWidgetState(
-        recordedFilePath: originalSoundFile, onSoundRecorded: onSoundRecorded);
+        onSoundRecorded: onSoundRecorded, state: state);
   }
 }
 
 class _RecordingWidgetState extends State<RecordingWidget> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  final Record _recorder = Record();
   final MAX_DURATION = 30.0;
   final ValueChanged<String> onSoundRecorded;
-  double _soundDuration = 30.0;
-  RecordPageState state = RecordPageState.StoppedEmpty;
-  Timer? _recordTimer;
-  double _progress = 0.0;
-  String recordedFilePath;
+  final double _soundDuration = 30.0;
+  RecordPageState state;
+  final double _progress = 0.0;
 
-  _RecordingWidgetState(
-      {required this.recordedFilePath, required this.onSoundRecorded}) {
-    state = recordedFilePath != ''
-        ? RecordPageState.StoppedNotEmpty
-        : RecordPageState.StoppedEmpty;
+  _RecordingWidgetState({required this.onSoundRecorded, required this.state}) {
+    ;
   }
 
   @override
   Widget build(BuildContext context) {
-    var actionRowState = _createActionRowFromState(state);
+    var actionRowState = ActionRowProvider(state: state);
     var progressIndicator = _progress / _soundDuration;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _TimeDisplay(timeElapsed: _progress),
-        _TimeProgressIndicator(
-            progressIndicator, AlwaysStoppedAnimation(Colors.red)),
-        SizedBox(height: 24.0.s),
-        actionRowState,
-      ],
-    );
-  }
-
-  void _buttonPressInChildWidget(RecordPageState newState) {
-    setState(() {
-      state = newState;
-    });
-    switch (state) {
-      case RecordPageState.Recording:
-        _startRecording();
-        break;
-      case RecordPageState.StoppedNotEmpty:
-        _stopRecording();
-        break;
-      case RecordPageState.StoppedEmpty:
-        _deleteRecording();
-        break;
-      case RecordPageState.Playing:
-        _playSound();
-        break;
-      default:
-        break;
-    }
-  }
-
-  StatelessWidget _createActionRowFromState(RecordPageState state) {
-    switch (state) {
-      case RecordPageState.StoppedNotEmpty:
-        return StoppedState(
-            soundExists: true, notifyParent: _buttonPressInChildWidget);
-      case RecordPageState.StoppedEmpty:
-        return StoppedState(
-            soundExists: false, notifyParent: _buttonPressInChildWidget);
-      case RecordPageState.Playing:
-        return PlayingState(notifyParent: _buttonPressInChildWidget);
-      case RecordPageState.Recording:
-        return RecordingState(buttonPressCallback: _buttonPressInChildWidget);
-    }
-  }
-
-  Future<void> _startRecording() async {
-    var result = await _recorder.hasPermission();
-    if (result) {
-      var tempDir = await getApplicationDocumentsDirectory();
-      var tempPath = tempDir.path;
-      var fileName = SOUND_NAME_PREAMBLE + Uuid().v4();
-      _soundDuration = MAX_DURATION;
-      _progress = 0.0;
-      await _recorder.start(
-        path: '$tempPath/$fileName.$SOUND_EXTENSION', // required
-        encoder: AudioEncoder.AAC, // by default
-        bitRate: 128000, // by default
-      );
-      _startTimer(_soundDuration);
-    }
-  }
-
-  Future<void> _stopRecording() async {
-    recordedFilePath = (await _recorder.stop())!;
-    onSoundRecorded(recordedFilePath);
-    _stopTimer();
-    _soundDuration = _progress;
-    setState(() {
-      state = RecordPageState.StoppedNotEmpty;
-    });
-  }
-
-  Future<void> _deleteRecording() async {
-    var f = File(recordedFilePath);
-    await f.delete();
-    _progress = 0.0;
-  }
-
-  Future<void> _playSound() async {
-    _progress = 0.0;
-    await _audioPlayer.play(recordedFilePath);
-    _startTimer(_soundDuration);
-  }
-
-  void _startTimer(double maxDuration) {
-    _recordTimer =
-        Timer.periodic(Duration(milliseconds: 100), (Timer recordTimer) {
-          setState(() {
-            _progress += 0.1;
-            if (_progress > maxDuration) {
-              _stopRecording();
-              recordTimer.cancel();
-              return;
-            }
-          });
+    return BlocListener<RecordSpeechCubit, RecordPageState>(
+      listener: (context, state) {
+        this.state = state;
+        setState(() {
+          // state: state;
         });
-  }
-
-  void _stopTimer() {
-    _recordTimer?.cancel();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _recordTimer?.cancel();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _TimeDisplay(timeElapsed: _progress),
+          _TimeProgressIndicator(
+              progressIndicator, AlwaysStoppedAnimation(Colors.red)),
+          SizedBox(height: 24.0.s),
+          actionRowState,
+        ],
+      ),
+    );
   }
 }
 
@@ -208,17 +107,36 @@ class _TimeDisplay extends StatelessWidget {
 class _TimeProgressIndicator extends LinearProgressIndicator {
   const _TimeProgressIndicator(double value, Animation<Color> anim)
       : super(
-      value: value,
-      backgroundColor: Colors.grey,
-      valueColor: anim,
-      minHeight: 6);
+            value: value,
+            backgroundColor: Colors.grey,
+            valueColor: anim,
+            minHeight: 6);
+}
+
+class ActionRowProvider extends StatelessWidget {
+  final RecordPageState state;
+
+  const ActionRowProvider({Key? key, required this.state}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('ActionRowProvider ' + state.toString());
+    switch (state) {
+      case RecordPageState.StoppedNotEmpty:
+        return StoppedState(soundExists: true);
+      case RecordPageState.StoppedEmpty:
+        return StoppedState(soundExists: false);
+      case RecordPageState.Playing:
+        return PlayingState();
+      case RecordPageState.Recording:
+        return RecordingState();
+      default:
+        return StoppedState(soundExists: false);
+    }
+  }
 }
 
 class PlayingState extends StatelessWidget {
-  final ValueChanged<RecordPageState> notifyParent;
-
-  PlayingState({required this.notifyParent});
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -226,7 +144,7 @@ class PlayingState extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         StopButton(onPressed: () {
-          notifyParent(RecordPageState.StoppedNotEmpty);
+          context.read<RecordSpeechCubit>().stopPlaying();
         })
       ],
     );
@@ -234,63 +152,72 @@ class PlayingState extends StatelessWidget {
 }
 
 class RecordingState extends StatelessWidget {
-  final ValueChanged<RecordPageState> buttonPressCallback;
-
-  RecordingState({required this.buttonPressCallback});
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: StopButton(onPressed: () {
-            buttonPressCallback(RecordPageState.StoppedNotEmpty);
-          }),
-        ),
-      ],
-    );
+    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+        builder: (context, state) {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: StopButton(
+                onPressed: () {
+                  context.read<RecordSpeechCubit>().stopRecording();
+                },
+              ),
+            ),
+          ]);
+    });
   }
 }
 
 class StoppedState extends StatelessWidget {
-  final ValueChanged<RecordPageState> notifyParent;
   final bool soundExists;
 
-  StoppedState({required this.soundExists, required this.notifyParent});
+  StoppedState({required this.soundExists});
 
   @override
   Widget build(BuildContext context) {
     if (soundExists) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: PlaySpeechButton(onPressed: () {
-              notifyParent(RecordPageState.Playing);
-            }),
-          ),
-          ActionButton(
-              onPressed: () {
-                notifyParent(RecordPageState.StoppedEmpty);
-              },
-              child: Icon(AbiliaIcons.delete_all_clear))
-        ],
-      );
+      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+          builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: PlaySpeechButton(
+                onPressed: () {
+                  context.read<RecordSpeechCubit>().playRecording();
+                },
+              ),
+            ),
+            ActionButton(
+                onPressed: () {
+                  context.read<RecordSpeechCubit>().deleteRecording();
+                },
+                child: Icon(AbiliaIcons.delete_all_clear))
+          ],
+        );
+      });
     } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: RecordAudioButton(onPressed: () {
-              notifyParent(RecordPageState.Recording);
-            }),
-          ),
-        ],
-      );
+      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+          builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: RecordAudioButton(
+                onPressed: () {
+                  context.read<RecordSpeechCubit>().startRecording();
+                },
+              ),
+            ),
+          ],
+        );
+      });
     }
   }
 }

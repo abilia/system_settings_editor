@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/activities/record_speech_cubit.dart';
 import 'package:seagull/models/user_file.dart';
 import 'package:seagull/ui/components/activity/record_speech.dart';
 
@@ -29,9 +31,10 @@ class RecordSpeechPageState extends State<RecordSpeechPage> {
                 .maybePop(_createUserFile(_recordedSoundFile))
             : null,
         onSoundRecorded: (s) {
-          setState(() {
-            _recordedSoundFile = s;
-          });
+          //TODO:
+          // setState(() {
+          //   _recordedSoundFile = s;
+          // });
         });
   }
 
@@ -67,6 +70,7 @@ class _RecordSpeechPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
+    var blocState = RecordPageState.StoppedEmpty;
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.speech,
@@ -78,25 +82,23 @@ class _RecordSpeechPage extends StatelessWidget {
             data: theme.copyWith(
                 textTheme: theme.textTheme
                     .copyWith(subtitle1: abiliaTextTheme.headline4)),
-            child: Padding(
-              padding: EdgeInsets.all(32.0.s),
+            child: BlocProvider(
+              create: (context) => RecordSpeechCubit(
+                onSoundRecorded: onSoundRecorded,
+                recordedFilePath: originalSoundFile,
+              ),
               child: RecordingWidget(
+                  state: blocState,
                   originalSoundFile: originalSoundFile,
                   onSoundRecorded: onSoundRecorded),
             ),
           ),
-
         ],
       ),
-      bottomNavigationBar: Positioned(
-        bottom: 0.0,
-        left: 0.0,
-        right: 0.0,
-        child: BottomNavigation(
-          backNavigationWidget: CancelButton(),
-          forwardNavigationWidget: OkButton(
-            onPressed: save,
-          ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: CancelButton(),
+        forwardNavigationWidget: OkButton(
+          onPressed: save,
         ),
       ),
     );

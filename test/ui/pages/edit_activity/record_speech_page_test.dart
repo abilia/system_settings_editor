@@ -18,60 +18,60 @@ void main() {
     final mockNavigatorObserver = MockNavigatorObserver();
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-      supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
-      navigatorObservers: [mockNavigatorObserver],
-      localeResolutionCallback: (locale, supportedLocales) =>
-          supportedLocales.firstWhere(
+          supportedLocales: Translator.supportedLocals,
+          localizationsDelegates: [Translator.delegate],
+          navigatorObservers: [mockNavigatorObserver],
+          localeResolutionCallback: (locale, supportedLocales) =>
+              supportedLocales.firstWhere(
                   (l) => l.languageCode == locale?.languageCode,
-              orElse: () => supportedLocales.first),
-      builder: (context, child) => MockAuthenticatedBlocsProvider(
-        child: MultiBlocProvider(providers: [
-          BlocProvider<SortableBloc>.value(
-            value: mockSortableBloc,
+                  orElse: () => supportedLocales.first),
+          builder: (context, child) => MockAuthenticatedBlocsProvider(
+            child: MultiBlocProvider(providers: [
+              BlocProvider<SortableBloc>.value(
+                value: mockSortableBloc,
+              ),
+              BlocProvider<UserFileBloc>(
+                create: (context) => UserFileBloc(
+                  fileStorage: MockFileStorage(),
+                  pushBloc: MockPushBloc(),
+                  syncBloc: MockSyncBloc(),
+                  userFileRepository: MockUserFileRepository(),
+                ),
+              ),
+              BlocProvider<SettingsBloc>(
+                create: (context) => SettingsBloc(
+                  settingsDb: MockSettingsDb(),
+                ),
+              ),
+            ], child: child),
           ),
-          BlocProvider<UserFileBloc>(
-            create: (context) => UserFileBloc(
-              fileStorage: MockFileStorage(),
-              pushBloc: MockPushBloc(),
-              syncBloc: MockSyncBloc(),
-              userFileRepository: MockUserFileRepository(),
-            ),
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
-              settingsDb: MockSettingsDb(),
-            ),
-          ),
-        ], child: child),
-      ),
-      home: widget,
-    );
+          home: widget,
+        );
 
     testWidgets('record page smoke test no previous file',
-            (WidgetTester tester) async {
-          when(mockSortableBloc.state)
-              .thenAnswer((_) => SortablesLoaded(sortables: []));
-          await tester.pumpWidget(
-              wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
-          await tester.pumpAndSettle();
-          expect(find.byType(RecordSpeechPage), findsOneWidget);
-          expect(find.byType(StoppedState), findsOneWidget);
-          expect(find.byType(RecordAudioButton), findsOneWidget);
-        });
+        (WidgetTester tester) async {
+      when(mockSortableBloc.state)
+          .thenAnswer((_) => SortablesLoaded(sortables: []));
+      await tester.pumpWidget(
+          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
+      await tester.pumpAndSettle();
+      expect(find.byType(RecordSpeechPage), findsOneWidget);
+      expect(find.byType(StoppedState), findsOneWidget);
+      expect(find.byType(RecordAudioButton), findsOneWidget);
+    });
 
     testWidgets('record page smoke test existing previous file',
-            (WidgetTester tester) async {
-          when(mockSortableBloc.state)
-              .thenAnswer((_) => SortablesLoaded(sortables: []));
-          await tester.pumpWidget(
-              wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
-          await tester.pumpAndSettle();
-          expect(find.byType(RecordSpeechPage), findsOneWidget);
-          expect(find.byType(StoppedState), findsOneWidget);
-          expect(find.byType(PlaySpeechButton), findsOneWidget);
-          expect(find.byType(ActionButton), findsOneWidget);
-        });
+        (WidgetTester tester) async {
+      when(mockSortableBloc.state)
+          .thenAnswer((_) => SortablesLoaded(sortables: []));
+      await tester.pumpWidget(
+          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
+      await tester.pumpAndSettle();
+      expect(find.byType(RecordSpeechPage), findsOneWidget);
+      expect(find.byType(StoppedState), findsOneWidget);
+      expect(find.byType(PlaySpeechButton), findsOneWidget);
+      expect(find.byType(ActionButton), findsOneWidget);
+    });
 
     testWidgets('record delete file', (WidgetTester tester) async {
       when(mockSortableBloc.state)

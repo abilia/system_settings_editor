@@ -10,9 +10,9 @@ class Extras extends Equatable {
 
   const Extras(
       {this.startTimeExtraAlarm = '',
-        this.startTimeExtraAlarmFileId = '',
-        this.endTimeExtraAlarm = '',
-        this.endTimeExtraAlarmFileId = ''});
+      this.startTimeExtraAlarmFileId = '',
+      this.endTimeExtraAlarm = '',
+      this.endTimeExtraAlarmFileId = ''});
 
   Extras copyWith({
     String? startTimeExtraAlarm,
@@ -23,10 +23,10 @@ class Extras extends Equatable {
       Extras(
         startTimeExtraAlarm: startTimeExtraAlarm ?? this.startTimeExtraAlarm,
         startTimeExtraAlarmFileId:
-        startTimeExtraAlarmFileId ?? this.startTimeExtraAlarmFileId,
+            startTimeExtraAlarmFileId ?? this.startTimeExtraAlarmFileId,
         endTimeExtraAlarm: endTimeExtraAlarm ?? this.startTimeExtraAlarm,
         endTimeExtraAlarmFileId:
-        endTimeExtraAlarmFileId ?? this.endTimeExtraAlarmFileId,
+            endTimeExtraAlarmFileId ?? this.endTimeExtraAlarmFileId,
       );
 
   static Extras fromBase64(String? base64) {
@@ -38,8 +38,8 @@ class Extras extends Equatable {
   static Extras fromJsonString(String jsonString) {
     return jsonString.isNotEmpty
         ? jsonString.startsWith('{')
-        ? Extras.fromJson(jsonDecode(jsonString))
-        : Extras.fromBase64(jsonString)
+            ? Extras.fromJson(jsonDecode(jsonString))
+            : Extras.fromBase64(jsonString)
         : empty;
   }
 
@@ -55,11 +55,11 @@ class Extras extends Equatable {
   static const Extras empty = Extras();
 
   Map<String, dynamic> toJson() => {
-    'startTimeExtraAlarm': startTimeExtraAlarm,
-    'startTimeExtraAlarmFileId': startTimeExtraAlarmFileId,
-    'endTimeExtraAlarm': endTimeExtraAlarm,
-    'endTimeExtraAlarmFileId': endTimeExtraAlarmFileId,
-  }..removeWhere((key, value) => value == '' || value == null);
+        'startTimeExtraAlarm': startTimeExtraAlarm,
+        'startTimeExtraAlarmFileId': startTimeExtraAlarmFileId,
+        'endTimeExtraAlarm': endTimeExtraAlarm,
+        'endTimeExtraAlarmFileId': endTimeExtraAlarmFileId,
+      }..removeWhere((key, value) => value == '' || value == null);
 
   String toJsonString() {
     return json.encode(
@@ -68,19 +68,19 @@ class Extras extends Equatable {
   }
 
   String? toBase64() => base64Encode(
-    utf8.encode(toJsonString()),
-  );
+        utf8.encode(toJsonString()),
+      );
 
   bool get hasStartTimeExtraAlarm =>
       startTimeExtraAlarm.isNotEmpty || startTimeExtraAlarmFileId.isNotEmpty;
 
   @override
   List<Object?> get props => [
-    startTimeExtraAlarm,
-    startTimeExtraAlarmFileId,
-    endTimeExtraAlarm,
-    endTimeExtraAlarmFileId
-  ];
+        startTimeExtraAlarm,
+        startTimeExtraAlarmFileId,
+        endTimeExtraAlarm,
+        endTimeExtraAlarmFileId
+      ];
 
   @override
   bool get stringify => true;

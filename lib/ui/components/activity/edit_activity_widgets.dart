@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/edit_activity/record_speech_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
@@ -52,6 +51,7 @@ class NameAndPictureWidget extends StatelessWidget {
     this.inputFormatters = const <TextInputFormatter>[],
     required this.text,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -225,6 +225,7 @@ class CategoryWidget extends StatelessWidget {
   final Activity activity;
 
   const CategoryWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -323,6 +324,7 @@ class AlarmWidget extends StatelessWidget {
   final Activity activity;
 
   const AlarmWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -438,6 +440,7 @@ class AvailableForWidget extends StatelessWidget {
   final Activity activity;
 
   const AvailableForWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final secret = activity.secret;
@@ -474,6 +477,7 @@ class RecurrenceWidget extends StatelessWidget {
   final EditActivityState state;
 
   const RecurrenceWidget(this.state, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -541,6 +545,7 @@ class RecurrenceWidget extends StatelessWidget {
 
 class EndDateWidget extends StatelessWidget {
   const EndDateWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -606,10 +611,12 @@ class EndDateWidget extends StatelessWidget {
 
 class WeekDays extends StatelessWidget {
   final Set<int> selectedWeekDays;
+
   const WeekDays(
     this.selectedWeekDays, {
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -639,6 +646,7 @@ class MonthDays extends StatelessWidget {
     this.activity, {
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final selectedMonthDays = activity.recurs.monthDays;
@@ -669,94 +677,4 @@ class MonthDays extends StatelessWidget {
       }),
     );
   }
-}
-
-class RecordAudioWidget extends StatelessWidget {
-  final Activity activity;
-
-  const RecordAudioWidget(this.activity, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.abilityToSelectAlarm != current.abilityToSelectAlarm,
-      builder: (context, memoSettingsState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(translator.speech),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            Expanded(
-              child: PickField(
-                key: TestKey.speechAtStart,
-                leading: Icon(activity.extras.startTimeExtraAlarm != ''
-                    ? AbiliaIcons.sms_sound
-                    : AbiliaIcons.dictaphone),
-                text: Text(translator.speechOnStart),
-                onTap: memoSettingsState.abilityToSelectAlarm
-                    ? () async {
-                        final result = await Navigator.of(context)
-                            .push<UserFile>(MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
-                            child: RecordSpeechPage(
-                                originalSoundFile:
-                                    activity.extras.startTimeExtraAlarm),
-                          ),
-                          settings: RouteSettings(name: 'SelectSpeechPage'),
-                        ));
-                        if (result != null) {
-                          BlocProvider.of<EditActivityBloc>(context).add(
-                              ReplaceActivity(activity.copyWith(
-                                  extras: activity.extras.copyWith(
-                                      startTimeExtraAlarm: result.path,
-                                      startTimeExtraAlarmFileId: result.id))));
-                        }
-                      }
-                    : null,
-              ),
-            ),
-          ]),
-          SizedBox(height: 8.0.s),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: PickField(
-                  key: TestKey.speechAtEnd,
-                  leading: Icon(activity.extras.endTimeExtraAlarm != ''
-                      ? AbiliaIcons.sms_sound
-                      : AbiliaIcons.dictaphone),
-                  text: Text(translator.speechOnEnd),
-                  onTap: memoSettingsState.abilityToSelectAlarm
-                      ? () async {
-                          final result = await Navigator.of(context)
-                              .push<UserFile>(MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: RecordSpeechPage(
-                                  originalSoundFile:
-                                      activity.extras.endTimeExtraAlarm),
-                            ),
-                            settings: RouteSettings(name: 'SelectSpeechPage'),
-                          ));
-                          if (result != null) {
-                            BlocProvider.of<EditActivityBloc>(context).add(
-                                ReplaceActivity(activity.copyWith(
-                                    extras: activity.extras.copyWith(
-                                        endTimeExtraAlarm: result.path,
-                                        endTimeExtraAlarmFileId: result.id),),),);
-                          }
-                        }
-                      : null,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
 }

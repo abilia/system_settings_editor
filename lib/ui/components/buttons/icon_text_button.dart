@@ -73,27 +73,6 @@ class GreenButton extends StatelessWidget {
       );
 }
 
-class DarkButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String text;
-  final IconData icon;
-
-  const DarkButton({
-    Key? key,
-    required this.text,
-    required this.icon,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => IconAndTextButton(
-        text: text,
-        icon: icon,
-        onPressed: onPressed,
-        style: iconTextButtonStyleDark,
-      );
-}
-
 class NextButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
@@ -230,7 +209,7 @@ class DeleteButton extends StatelessWidget {
         icon: AbiliaIcons.remove,
         text: '',
         onPressed: onPressed,
-        style: actionButtonStyleSmall,
+        style: actionButtonStyleBlack,
       );
 }
 
@@ -244,7 +223,7 @@ class StopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DarkButton(
+    return GreyButton(
       text: Translator.of(context).translate.stop,
       icon: AbiliaIcons.stop,
       onPressed: onPressed,
@@ -262,7 +241,7 @@ class PlaySpeechButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DarkButton(
+    return GreyButton(
       text: Translator.of(context).translate.play,
       icon: AbiliaIcons.play_sound,
       onPressed: onPressed,
