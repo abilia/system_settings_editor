@@ -31,10 +31,9 @@ class RecordSpeechPageState extends State<RecordSpeechPage> {
                 .maybePop(_createUserFile(_recordedSoundFile))
             : null,
         onSoundRecorded: (s) {
-          //TODO:
-          // setState(() {
-          //   _recordedSoundFile = s;
-          // });
+          setState(() {
+            _recordedSoundFile = s;
+          });
         });
   }
 
@@ -70,7 +69,6 @@ class _RecordSpeechPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    var blocState = RecordPageState.StoppedEmpty;
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.speech,
@@ -88,7 +86,7 @@ class _RecordSpeechPage extends StatelessWidget {
                 recordedFilePath: originalSoundFile,
               ),
               child: RecordingWidget(
-                  state: blocState,
+                state: originalSoundFile != '' ? RecordPageState.StoppedNotEmpty : RecordPageState.StoppedEmpty,
                   originalSoundFile: originalSoundFile,
                   onSoundRecorded: onSoundRecorded),
             ),

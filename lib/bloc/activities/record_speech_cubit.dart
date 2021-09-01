@@ -20,12 +20,14 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
   final Record _recorder = Record();
   final MAX_DURATION = 30.0;
   final ValueChanged<String> onSoundRecorded;
-  double _soundDuration = 30.0;
+  double soundDuration = 30.0;
 
   // RecordPageState recordState = RecordPageState.StoppedEmpty;
   Timer? _recordTimer;
-  double _progress = 0.0;
+  double progress = 0.0;
   String recordedFilePath;
+
+
 
   Future<void> startRecording() async {
     var result = await _recorder.hasPermission();
@@ -33,14 +35,14 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
       var tempDir = await getApplicationDocumentsDirectory();
       var tempPath = tempDir.path;
       var fileName = SOUND_NAME_PREAMBLE + Uuid().v4();
-      _soundDuration = MAX_DURATION;
-      _progress = 0.0;
+      soundDuration = MAX_DURATION;
+      progress = 0.0;
       await _recorder.start(
         path: '$tempPath/$fileName.$SOUND_EXTENSION', // required
         encoder: AudioEncoder.AAC, // by default
         bitRate: 128000, // by default
       );
-      _startTimer(_soundDuration);
+      _startTimer(soundDuration);
       emit(RecordPageState.Recording);
     }
   }
@@ -49,21 +51,23 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
     recordedFilePath = (await _recorder.stop())!;
     onSoundRecorded(recordedFilePath);
     _stopTimer();
-    _soundDuration = _progress;
+    soundDuration = progress;
     emit(RecordPageState.StoppedNotEmpty);
   }
 
   Future<void> deleteRecording() async {
     var f = File(recordedFilePath);
     await f.delete();
-    _progress = 0.0;
+    progress = 0.0;
+    recordedFilePath = '';
     emit(RecordPageState.StoppedEmpty);
   }
 
   Future<void> playRecording() async {
-    _progress = 0.0;
+    progress = 0.0;
     await _audioPlayer.play(recordedFilePath);
-    _startTimer(_soundDuration);
+    _startTimer(soundDuration);
+    emit(RecordPageState.Playing);
   }
 
   Future<void> stopPlaying() async {
@@ -74,13 +78,14 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
   void _startTimer(double maxDuration) {
     _recordTimer =
         Timer.periodic(Duration(milliseconds: 100), (Timer recordTimer) {
-      _progress += 0.1;
-      if (_progress > maxDuration) {
+      progress += 0.1;
+      if (progress > maxDuration) {
         stopRecording();
         recordTimer.cancel();
         return;
       } else {
-        emit(state);
+        state == RecordPageState.Recording ? emit(RecordPageState.Recording2) : emit(RecordPageState.Recording);
+        return;
       }
     });
   }
@@ -89,8 +94,5 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
     _recordTimer?.cancel();
   }
 
-  @override
-  void dispose() {
-    _recordTimer?.cancel();
-  }
+
 }

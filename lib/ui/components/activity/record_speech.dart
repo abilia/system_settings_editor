@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/record_speech_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
-enum RecordPageState { StoppedEmpty, Recording, StoppedNotEmpty, Playing }
+enum RecordPageState { StoppedEmpty, Recording, StoppedNotEmpty, Playing, Recording2 }
 
 final String SOUND_EXTENSION = 'm4a';
 final String SOUND_NAME_PREAMBLE = 'voice_recording_';
@@ -27,9 +27,9 @@ class RecordingWidget extends StatefulWidget {
 class _RecordingWidgetState extends State<RecordingWidget> {
   final MAX_DURATION = 30.0;
   final ValueChanged<String> onSoundRecorded;
-  final double _soundDuration = 30.0;
+  double _soundDuration = 30.0;
   RecordPageState state;
-  final double _progress = 0.0;
+  double _progress = 0.0;
 
   _RecordingWidgetState({required this.onSoundRecorded, required this.state}) {
     ;
@@ -41,9 +41,11 @@ class _RecordingWidgetState extends State<RecordingWidget> {
     var progressIndicator = _progress / _soundDuration;
     return BlocListener<RecordSpeechCubit, RecordPageState>(
       listener: (context, state) {
-        this.state = state;
         setState(() {
-          // state: state;
+          print('state ' + state.toString());
+          this.state = state;
+          _progress = context.read<RecordSpeechCubit>().progress;
+          _soundDuration = context.read<RecordSpeechCubit>().soundDuration;
         });
       },
       child: Column(
@@ -120,18 +122,18 @@ class ActionRowProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ActionRowProvider ' + state.toString());
     switch (state) {
       case RecordPageState.StoppedNotEmpty:
-        return StoppedState(soundExists: true);
+        return StoppedNotEmptyState();
       case RecordPageState.StoppedEmpty:
-        return StoppedState(soundExists: false);
+        return StoppedEmptyState();
       case RecordPageState.Playing:
         return PlayingState();
       case RecordPageState.Recording:
+      case RecordPageState.Recording2:
         return RecordingState();
       default:
-        return StoppedState(soundExists: false);
+        return StoppedEmptyState();
     }
   }
 }
@@ -172,14 +174,31 @@ class RecordingState extends StatelessWidget {
   }
 }
 
-class StoppedState extends StatelessWidget {
-  final bool soundExists;
-
-  StoppedState({required this.soundExists});
-
+class StoppedEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (soundExists) {
+      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+          builder: (context, state) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: RecordAudioButton(
+                    onPressed: () {
+                      context.read<RecordSpeechCubit>().startRecording();
+                    },
+                  ),
+                ),
+              ],
+            );
+          });
+  }
+}
+
+class StoppedNotEmptyState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
       return BlocBuilder<RecordSpeechCubit, RecordPageState>(
           builder: (context, state) {
         return Row(
@@ -201,23 +220,5 @@ class StoppedState extends StatelessWidget {
           ],
         );
       });
-    } else {
-      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
-          builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: RecordAudioButton(
-                onPressed: () {
-                  context.read<RecordSpeechCubit>().startRecording();
-                },
-              ),
-            ),
-          ],
-        );
-      });
     }
-  }
 }
