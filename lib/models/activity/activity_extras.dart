@@ -41,8 +41,12 @@ class Extras extends Equatable {
 
   static Extras fromBase64(String? base64) {
     if (base64 == null || base64.isEmpty) return empty;
-    final jsonString = utf8.decode(base64Decode(base64));
-    return fromJsonString(jsonString);
+    try {
+      final jsonString = utf8.decode(base64Decode(base64));
+      return fromJsonString(jsonString);
+    } on FormatException catch (_, ex) {
+      return Extras.empty;
+    }
   }
 
   static Extras fromJsonString(String jsonString) {
@@ -61,6 +65,16 @@ class Extras extends Equatable {
       endTimeExtraAlarm: json['endTimeExtraAlarm'] ?? '',
       endTimeExtraAlarmFileId: json['endTimeExtraAlarmFileId'] ?? '',
     );
+  }
+
+  factory Extras.fromUnknown(Object object) {
+    if (object is String) {
+      return Extras.fromJsonString(object);
+    } else if (object is Map<String, dynamic>) {
+      return Extras.fromJson(object);
+    } else {
+      return Extras.empty;
+    }
   }
 
   static const Extras empty = Extras();

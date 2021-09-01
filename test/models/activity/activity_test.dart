@@ -73,7 +73,7 @@ void main() {
     expect(result.secret, false);
     expect(result.fileId, '1a1b1678-781e-4b6f-9518-b6858560433f');
     expect(result.timezone, 'Europe/Stockholm');
-    expect(result.extras, 'extra extra');
+    expect(result.extras, Extras.empty);
   });
 
   test('parse json with nulls test', () {
