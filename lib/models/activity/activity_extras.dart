@@ -3,28 +3,38 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class Extras extends Equatable {
+  final Map<String, dynamic> extrasMap;
   final String startTimeExtraAlarm;
   final String startTimeExtraAlarmFileId;
   final String endTimeExtraAlarm;
   final String endTimeExtraAlarmFileId;
 
-  const Extras(
-      {this.startTimeExtraAlarm = '',
-      this.startTimeExtraAlarmFileId = '',
-      this.endTimeExtraAlarm = '',
-      this.endTimeExtraAlarmFileId = ''});
+  const Extras({
+    this.extrasMap = const {
+      'startTimeExtraAlarm': '',
+      'startTimeExtraAlarmFileId': '',
+      'endTimeExtraAlarm': '',
+      'endTimeExtraAlarmFileId': '',
+    },
+    this.startTimeExtraAlarm = '',
+    this.startTimeExtraAlarmFileId = '',
+    this.endTimeExtraAlarm = '',
+    this.endTimeExtraAlarmFileId = '',
+  });
 
   Extras copyWith({
+    Map<String, dynamic>? extrasMap,
     String? startTimeExtraAlarm,
     String? startTimeExtraAlarmFileId,
     String? endTimeExtraAlarm,
     String? endTimeExtraAlarmFileId,
   }) =>
       Extras(
+        extrasMap: extrasMap ?? this.extrasMap,
         startTimeExtraAlarm: startTimeExtraAlarm ?? this.startTimeExtraAlarm,
         startTimeExtraAlarmFileId:
             startTimeExtraAlarmFileId ?? this.startTimeExtraAlarmFileId,
-        endTimeExtraAlarm: endTimeExtraAlarm ?? this.startTimeExtraAlarm,
+        endTimeExtraAlarm: endTimeExtraAlarm ?? this.endTimeExtraAlarm,
         endTimeExtraAlarmFileId:
             endTimeExtraAlarmFileId ?? this.endTimeExtraAlarmFileId,
       );
@@ -45,6 +55,7 @@ class Extras extends Equatable {
 
   factory Extras.fromJson(Map<String, dynamic> json) {
     return Extras(
+      extrasMap: json,
       startTimeExtraAlarm: json['startTimeExtraAlarm'] ?? '',
       startTimeExtraAlarmFileId: json['startTimeExtraAlarmFileId'] ?? '',
       endTimeExtraAlarm: json['endTimeExtraAlarm'] ?? '',
@@ -54,12 +65,15 @@ class Extras extends Equatable {
 
   static const Extras empty = Extras();
 
-  Map<String, dynamic> toJson() => {
-        'startTimeExtraAlarm': startTimeExtraAlarm,
-        'startTimeExtraAlarmFileId': startTimeExtraAlarmFileId,
-        'endTimeExtraAlarm': endTimeExtraAlarm,
-        'endTimeExtraAlarmFileId': endTimeExtraAlarmFileId,
-      }..removeWhere((key, value) => value == '' || value == null);
+  Map<String, dynamic> toJson() {
+    var newMap = <String, dynamic>{};
+    newMap.addAll(extrasMap);
+    newMap['startTimeExtraAlarm'] = startTimeExtraAlarm;
+    newMap['startTimeExtraAlarmFileId'] = startTimeExtraAlarmFileId;
+    newMap['endTimeExtraAlarm'] = endTimeExtraAlarm;
+    newMap['endTimeExtraAlarmFileId'] = endTimeExtraAlarmFileId;
+    return newMap..removeWhere((key, value) => value == '' || value == null);
+  }
 
   String toJsonString() {
     return json.encode(
