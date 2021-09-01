@@ -2,7 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/record_speech_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
-enum RecordPageState { StoppedEmpty, Recording, StoppedNotEmpty, Playing, Recording2 }
+enum RecordPageState {
+  StoppedEmpty,
+  Recording,
+  StoppedNotEmpty,
+  Playing,
+  Recording2
+}
 
 final String SOUND_EXTENSION = 'm4a';
 final String SOUND_NAME_PREAMBLE = 'voice_recording_';
@@ -177,48 +183,48 @@ class RecordingState extends StatelessWidget {
 class StoppedEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
-          builder: (context, state) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: RecordAudioButton(
-                    onPressed: () {
-                      context.read<RecordSpeechCubit>().startRecording();
-                    },
-                  ),
-                ),
-              ],
-            );
-          });
+    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+        builder: (context, state) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: RecordAudioButton(
+              onPressed: () {
+                context.read<RecordSpeechCubit>().startRecording();
+              },
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
 
 class StoppedNotEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      return BlocBuilder<RecordSpeechCubit, RecordPageState>(
-          builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: PlaySpeechButton(
-                onPressed: () {
-                  context.read<RecordSpeechCubit>().playRecording();
-                },
-              ),
+    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+        builder: (context, state) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: PlaySpeechButton(
+              onPressed: () {
+                context.read<RecordSpeechCubit>().playRecording();
+              },
             ),
-            ActionButton(
-                onPressed: () {
-                  context.read<RecordSpeechCubit>().deleteRecording();
-                },
-                child: Icon(AbiliaIcons.delete_all_clear))
-          ],
-        );
-      });
-    }
+          ),
+          ActionButton(
+              onPressed: () {
+                context.read<RecordSpeechCubit>().deleteRecording();
+              },
+              child: Icon(AbiliaIcons.delete_all_clear))
+        ],
+      );
+    });
+  }
 }

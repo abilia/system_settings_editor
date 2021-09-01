@@ -27,8 +27,6 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
   double progress = 0.0;
   String recordedFilePath;
 
-
-
   Future<void> startRecording() async {
     var result = await _recorder.hasPermission();
     if (result) {
@@ -84,7 +82,9 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
         recordTimer.cancel();
         return;
       } else {
-        state == RecordPageState.Recording ? emit(RecordPageState.Recording2) : emit(RecordPageState.Recording);
+        state == RecordPageState.Recording
+            ? emit(RecordPageState.Recording2)
+            : emit(RecordPageState.Recording);
         return;
       }
     });
@@ -93,6 +93,4 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
   void _stopTimer() {
     _recordTimer?.cancel();
   }
-
-
 }

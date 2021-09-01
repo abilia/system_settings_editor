@@ -69,27 +69,27 @@ void main() {
     });
 
     // These won't work for some reason. The cubit isn't emitting?
-  //   testWidgets('record delete file', (WidgetTester tester) async {
-  //     await tester.pumpWidget(
-  //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
-  //     await tester.pumpAndSettle();
-  //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-  //     await tester.tap(find.byType(ActionButton));
-  //     await tester.pumpAndSettle();
-  //     expect(find.byType(StoppedEmptyState), findsOneWidget);
-  //     expect(find.byType(RecordAudioButton), findsOneWidget);
-  //   });
-  //
-  //   testWidgets('test record', (WidgetTester tester) async {
-  //     await tester.pumpWidget(
-  //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
-  //     await tester.pumpAndSettle();
-  //     await tester.tap(find.byType(RecordAudioButton));
-  //     await tester.pumpAndSettle();
-  //     expect(find.byType(RecordingState), findsOneWidget);
-  //     await tester.tap(find.byType(StopButton));
-  //     await tester.pumpAndSettle();
-  //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-  //   });
+    //   testWidgets('record delete file', (WidgetTester tester) async {
+    //     await tester.pumpWidget(
+    //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
+    //     await tester.pumpAndSettle();
+    //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
+    //     await tester.tap(find.byType(ActionButton));
+    //     await tester.pumpAndSettle();
+    //     expect(find.byType(StoppedEmptyState), findsOneWidget);
+    //     expect(find.byType(RecordAudioButton), findsOneWidget);
+    //   });
+    //
+    //   testWidgets('test record', (WidgetTester tester) async {
+    //     await tester.pumpWidget(
+    //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
+    //     await tester.pumpAndSettle();
+    //     await tester.tap(find.byType(RecordAudioButton));
+    //     await tester.pumpAndSettle();
+    //     expect(find.byType(RecordingState), findsOneWidget);
+    //     await tester.tap(find.byType(StopButton));
+    //     await tester.pumpAndSettle();
+    //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
+    //   });
   });
 }

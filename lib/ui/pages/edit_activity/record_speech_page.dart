@@ -86,7 +86,9 @@ class _RecordSpeechPage extends StatelessWidget {
                 recordedFilePath: originalSoundFile,
               ),
               child: RecordingWidget(
-                state: originalSoundFile != '' ? RecordPageState.StoppedNotEmpty : RecordPageState.StoppedEmpty,
+                  state: originalSoundFile != ''
+                      ? RecordPageState.StoppedNotEmpty
+                      : RecordPageState.StoppedEmpty,
                   originalSoundFile: originalSoundFile,
                   onSoundRecorded: onSoundRecorded),
             ),
