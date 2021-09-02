@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -10,22 +8,20 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
-  SortableDb sortableDb;
   final baseUrl = 'url';
-  final mockClient = MockedClient();
+  final mockClient = MockBaseClient();
   final userId = 1;
-  SortableRepository sortableRepository;
+  late SortableRepository sortableRepository;
   setUp(() async {
     final db = await DatabaseRepository.createInMemoryFfiDb();
-    sortableDb = SortableDb(db);
     sortableRepository = SortableRepository(
       authToken: Fakes.token,
       baseUrl: baseUrl,
       client: mockClient,
-      sortableDb: sortableDb,
+      sortableDb: SortableDb(db),
       userId: userId,
     );
   });

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -10,12 +8,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   final baseUrl = 'oneUrl';
-  final mockClient = MockedClient();
+  final mockClient = MockBaseClient();
   final mockActivityDb = MockActivityDb();
+  when(mockActivityDb.insertAndAddDirty(any))
+      .thenAnswer((_) => Future.value(true));
   final userId = 1;
   final startTime = DateTime(2020, 12, 12, 12, 12);
   final successActivity = Activity.createNew(

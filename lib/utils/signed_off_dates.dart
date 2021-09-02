@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 
 @visibleForTesting
@@ -24,7 +25,7 @@ extension DeserializeSignOffDates on String {
       ?.split(';')
       .map((d) => '20' + d)
       .map(DateTime.tryParse)
-      .where((d) => d != null) as Iterable<DateTime>;
+      .whereNotNull();
 
   @visibleForTesting
   String? tryUnzipAndDecode() {

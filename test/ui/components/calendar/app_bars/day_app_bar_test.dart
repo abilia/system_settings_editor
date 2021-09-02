@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -12,13 +10,15 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
   final defaultClockBloc =
       ClockBloc(StreamController<DateTime>().stream, initialTime: day);
-  final memoplannerSettingsBlocMock = MockMemoplannerSettingsBloc();
+  final memoplannerSettingsBlocMock = MockMemoplannerSettingBloc();
+  when(memoplannerSettingsBlocMock.stream).thenAnswer((_) => Stream.empty());
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -34,7 +34,7 @@ void main() {
           ),
           BlocProvider<SettingsBloc>(
             create: (context) => SettingsBloc(
-              settingsDb: MockSettingsDb(),
+              settingsDb: FakeSettingsDb(),
             ),
           ),
         ], child: widget),

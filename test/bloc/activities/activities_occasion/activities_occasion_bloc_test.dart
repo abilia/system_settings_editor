@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,20 +7,21 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
-  DayActivitiesBloc dayActivitiesBloc;
-  DayPickerBloc dayPickerBloc;
-  ClockBloc clockBloc;
-  ActivitiesBloc activitiesBloc;
-  ActivitiesOccasionBloc activitiesOccasionBloc;
+  late DayActivitiesBloc dayActivitiesBloc;
+  late DayPickerBloc dayPickerBloc;
+  late ClockBloc clockBloc;
+  late ActivitiesBloc activitiesBloc;
+  late ActivitiesOccasionBloc activitiesOccasionBloc;
+  late MockActivityRepository mockActivityRepository;
+  late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
   final initialDay = initialMinutes.onlyDays();
   final nextDay = initialDay.nextDay();
   final previusDay = initialDay.previousDay();
-  MockActivityRepository mockActivityRepository;
-  StreamController<DateTime> mockedTicker;
 
   setUp(() {
     mockedTicker = StreamController<DateTime>();
@@ -31,8 +30,8 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
-      syncBloc: MockSyncBloc(),
-      pushBloc: MockPushBloc(),
+      syncBloc: FakeSyncBloc(),
+      pushBloc: FakePushBloc(),
     );
     dayActivitiesBloc = DayActivitiesBloc(
         dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);

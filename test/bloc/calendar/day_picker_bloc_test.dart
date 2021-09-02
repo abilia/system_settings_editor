@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -7,14 +5,14 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
 void main() {
-  DayPickerBloc dayPickerBloc;
+  late DayPickerBloc dayPickerBloc;
+  late ClockBloc clockBloc;
+  late StreamController<DateTime> streamController;
   final theTime = DateTime(1987, 10, 06, 04, 34, 55, 55, 55);
   final theDay = DateTime(1987, 10, 06);
   final thedayBefore = DateTime(1987, 10, 05);
   final theDayAfter = DateTime(1987, 10, 07);
   final theDayAfterTomorrow = DateTime(1987, 10, 08);
-  ClockBloc clockBloc;
-  StreamController<DateTime> streamController;
 
   setUp(() {
     streamController = StreamController();

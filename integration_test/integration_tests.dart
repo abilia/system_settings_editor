@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -163,7 +161,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await showKeyboard(find.byKey(TestKey.input));
     await pumpAndSettle();
-    await enterText(find.byKey(TestKey.input), password ?? 'password');
+    await enterText(find.byKey(TestKey.input), password);
     await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();

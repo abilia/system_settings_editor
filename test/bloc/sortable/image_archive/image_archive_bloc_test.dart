@@ -1,20 +1,16 @@
-// @dart=2.9
-
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
 
 void main() {
-  SortableArchiveBloc<ImageArchiveData> imageArchiveBloc;
-  SortableBloc sortableBlocMock;
+  late SortableArchiveBloc<ImageArchiveData> imageArchiveBloc;
 
   setUp(() {
-    sortableBlocMock = MockSortableBloc();
     imageArchiveBloc = SortableArchiveBloc<ImageArchiveData>(
-      sortableBloc: sortableBlocMock,
+      sortableBloc: FakeSortableBloc(),
     );
   });
 

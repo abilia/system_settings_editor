@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -17,10 +15,16 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import 'mocks.dart';
+import 'mocks_and_fakes/fake_db_and_repository.dart';
+import 'mocks_and_fakes/shared.mocks.dart';
+import 'mocks_and_fakes/alarm_schedualer.dart';
+import 'test_helpers/enter_text.dart';
+import 'test_helpers/app_pumper.dart';
+import 'mocks_and_fakes/fake_shared_preferences.dart';
+import 'mocks_and_fakes/permission.dart';
 
 void main() {
-  StreamController<DateTime> mockTicker;
+  late StreamController<DateTime> mockTicker;
   final mockActivityDb = MockActivityDb();
   final getItInitializer = GetItInitializer();
   final translater = Locales.language.values.first;
@@ -49,41 +53,27 @@ void main() {
     mockTicker = StreamController<DateTime>();
     await clearNotificationSubject();
 
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
-
     final response = [activity];
 
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(response));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-
-    final db = MockDatabase();
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    when(db.batch()).thenReturn(mockBatch);
-
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
+    when(mockActivityDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
 
     getItInitializer
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
-      ..fireBasePushService = mockFirebasePushService
+      ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(activityResponse: () => response)
       ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
+      ..userFileDb = FakeUserFileDb()
       ..syncDelay = SyncDelays.zero
-      ..database = db
+      ..database = FakeDatabase()
       ..alarmNavigator = AlarmNavigator()
-      ..sortableDb = MockSortableDb()
-      ..genericDb = MockGenericDb()
+      ..sortableDb = FakeSortableDb()
+      ..genericDb = FakeGenericDb()
       ..init();
   });
 

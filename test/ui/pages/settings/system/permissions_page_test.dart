@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -12,13 +10,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../../mocks_and_fakes/permission.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
-  MockSettingsDb mockSettingsDb;
-  MockAuthenticationBloc mockAuthenticationBloc;
-  MockActivitiesBloc mockActivitiesBloc;
-  MockTimepillarBloc mockTimepillarBloc;
   final user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -27,23 +27,19 @@ void main() {
 
   final translate = Locales.language.values.first;
   setUp(() async {
+    setupFakeTts();
     await initializeDateFormatting();
-    mockSettingsDb = MockSettingsDb();
-    mockAuthenticationBloc = MockAuthenticationBloc();
-    mockTimepillarBloc = MockTimepillarBloc();
-    mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+
     final userDb = MockUserDb();
     when(userDb.getUser()).thenReturn(user);
     GetItInitializer()
-      ..flutterTts = MockFlutterTts()
       ..userDb = userDb
       ..packageInfo = PackageInfo(
           appName: 'appName',
           packageName: 'packageName',
           version: 'version',
           buildNumber: 'buildNumber')
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = MockDatabase()
       ..init();
   });
@@ -56,22 +52,22 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        builder: (context, child) => MockAuthenticatedBlocsProvider(
+        builder: (context, child) => FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
               BlocProvider<AuthenticationBloc>(
-                  create: (context) => mockAuthenticationBloc),
+                  create: (context) => FakeAuthenticationBloc()),
               BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+                create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
               ),
               BlocProvider<ActivitiesBloc>(
-                create: (context) => mockActivitiesBloc,
+                create: (context) => FakeActivitiesBloc(),
               ),
               BlocProvider<TimepillarBloc>(
-                create: (context) => mockTimepillarBloc,
+                create: (context) => FakeTimepillarBloc(),
               )
             ],
-            child: child,
+            child: child!,
           ),
         ),
         home: widget,
@@ -184,20 +180,24 @@ void main() {
     });
 
     testWidgets(
-        'Permission has switches undetermined tapped calls for request permission',
+        'Permission has switches denied tapped calls for request permission',
         (WidgetTester tester) async {
-      setupPermissions();
+      final allPermissions = PermissionBloc.allPermissions.toSet()
+        ..remove(Permission.systemAlertWindow)
+        ..remove(Permission.notification);
+
+      setupPermissions(
+          {for (var k in allPermissions) k: PermissionStatus.denied});
       await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
-      final allPermissions = PermissionBloc.allPermissions.toSet()
-        ..remove(Permission.systemAlertWindow);
 
       for (final permission in allPermissions) {
         await tester.tap(find.byKey(ObjectKey(permission)));
         await tester.pumpAndSettle();
       }
+
       expect(requestedPermissions, containsAll(allPermissions));
     });
 

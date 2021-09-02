@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
@@ -9,11 +7,11 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'dart:async';
 
-import '../mocks.dart';
+import '../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   final url = 'oneUrl';
-  final mockClient = MockedClient();
+  final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
   final userRepo = UserRepository(
@@ -23,6 +21,7 @@ void main() {
     userDb: mockUserDb,
     licenseDb: MockLicenseDb(),
   );
+
   test('copyWith with new', () {
     // Arrange
     final newClient = Fakes.client();
@@ -37,6 +36,7 @@ void main() {
     expect(newUserRepo.tokenDb, userRepo.tokenDb);
     expect(newUserRepo.userDb, userRepo.userDb);
   });
+
   test('copyWith with old', () {
     // Act
     final newUserRepo = userRepo.copyWith();
@@ -112,6 +112,8 @@ void main() {
   test('logout deletes token', () async {
     // Arrange
     final token = Fakes.token;
+    when(mockTokenDb.delete()).thenAnswer((_) async {});
+    when(mockUserDb.deleteUser()).thenAnswer((_) async {});
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenAnswer((_) => Future.value(Response('body', 200)));
@@ -132,6 +134,8 @@ void main() {
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenThrow(Exception());
+    when(mockTokenDb.delete()).thenAnswer((_) async {});
+    when(mockUserDb.deleteUser()).thenAnswer((_) async {});
 
     // Act
     await userRepo.logout(token);
