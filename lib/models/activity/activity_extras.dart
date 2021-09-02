@@ -44,7 +44,7 @@ class Extras extends Equatable {
     try {
       final jsonString = utf8.decode(base64Decode(base64));
       return fromJsonString(jsonString);
-    } on FormatException catch (_, ex) {
+    } on FormatException catch (_) {
       return Extras.empty;
     }
   }
