@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,6 +13,9 @@ void main() {
     final mockSortableBloc = MockSortableBloc();
 
     final mockNavigatorObserver = MockNavigatorObserver();
+
+    final emptyFileRecordingPage = RecordSpeechPage(originalSoundFile: '');
+    final preExistingFileRecordingPage = RecordSpeechPage(originalSoundFile: 'testfile');
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
@@ -42,7 +43,7 @@ void main() {
                   settingsDb: MockSettingsDb(),
                 ),
               ),
-            ], child: child),
+            ], child: child ?? emptyFileRecordingPage),
           ),
           home: widget,
         );
@@ -50,7 +51,7 @@ void main() {
     testWidgets('record page smoke test no previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
+          wrapWithMaterialApp(emptyFileRecordingPage));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedEmptyState), findsOneWidget);
@@ -60,7 +61,7 @@ void main() {
     testWidgets('record page smoke test existing previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
+          wrapWithMaterialApp(preExistingFileRecordingPage));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedNotEmptyState), findsOneWidget);
