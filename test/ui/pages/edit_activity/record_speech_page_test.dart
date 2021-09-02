@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -13,9 +15,6 @@ void main() {
     final mockSortableBloc = MockSortableBloc();
 
     final mockNavigatorObserver = MockNavigatorObserver();
-
-    final emptyFileRecordingPage = RecordSpeechPage(originalSoundFile: '');
-    final preExistingFileRecordingPage = RecordSpeechPage(originalSoundFile: 'testfile');
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
@@ -43,7 +42,7 @@ void main() {
                   settingsDb: MockSettingsDb(),
                 ),
               ),
-            ], child: child ?? emptyFileRecordingPage),
+            ], child: child),
           ),
           home: widget,
         );
@@ -51,7 +50,7 @@ void main() {
     testWidgets('record page smoke test no previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-          wrapWithMaterialApp(emptyFileRecordingPage));
+          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedEmptyState), findsOneWidget);
@@ -61,7 +60,7 @@ void main() {
     testWidgets('record page smoke test existing previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-          wrapWithMaterialApp(preExistingFileRecordingPage));
+          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedNotEmptyState), findsOneWidget);
@@ -70,27 +69,27 @@ void main() {
     });
 
     // These won't work for some reason. The cubit isn't emitting?
-    //   testWidgets('record delete file', (WidgetTester tester) async {
-    //     await tester.pumpWidget(
-    //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
-    //     await tester.pumpAndSettle();
-    //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-    //     await tester.tap(find.byType(ActionButton));
-    //     await tester.pumpAndSettle();
-    //     expect(find.byType(StoppedEmptyState), findsOneWidget);
-    //     expect(find.byType(RecordAudioButton), findsOneWidget);
-    //   });
-    //
-    //   testWidgets('test record', (WidgetTester tester) async {
-    //     await tester.pumpWidget(
-    //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
-    //     await tester.pumpAndSettle();
-    //     await tester.tap(find.byType(RecordAudioButton));
-    //     await tester.pumpAndSettle();
-    //     expect(find.byType(RecordingState), findsOneWidget);
-    //     await tester.tap(find.byType(StopButton));
-    //     await tester.pumpAndSettle();
-    //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-    //   });
+  //   testWidgets('record delete file', (WidgetTester tester) async {
+  //     await tester.pumpWidget(
+  //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
+  //     await tester.pumpAndSettle();
+  //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
+  //     await tester.tap(find.byType(ActionButton));
+  //     await tester.pumpAndSettle();
+  //     expect(find.byType(StoppedEmptyState), findsOneWidget);
+  //     expect(find.byType(RecordAudioButton), findsOneWidget);
+  //   });
+  //
+  //   testWidgets('test record', (WidgetTester tester) async {
+  //     await tester.pumpWidget(
+  //         wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
+  //     await tester.pumpAndSettle();
+  //     await tester.tap(find.byType(RecordAudioButton));
+  //     await tester.pumpAndSettle();
+  //     expect(find.byType(RecordingState), findsOneWidget);
+  //     await tester.tap(find.byType(StopButton));
+  //     await tester.pumpAndSettle();
+  //     expect(find.byType(StoppedNotEmptyState), findsOneWidget);
+  //   });
   });
 }
