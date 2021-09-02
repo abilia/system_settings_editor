@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,19 +7,24 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../test_helpers/app_pumper.dart';
+import '../../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../mocks_and_fakes/permission.dart';
+import '../../../test_helpers/verify_generic.dart';
 
 void main() {
   final initialTime = DateTime(2021, 04, 13, 10, 04);
   Iterable<Generic> generics = [];
-  GenericDb genericDb;
+  late MockGenericDb genericDb;
 
   setUp(() async {
     setupPermissions();
@@ -29,12 +32,6 @@ void main() {
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [];
-
-    final mockBatch = MockBatch();
-    when(mockBatch.commit()).thenAnswer((realInvocation) => Future.value([]));
-    final db = MockDatabase();
-    when(db.batch()).thenReturn(mockBatch);
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
 
     genericDb = MockGenericDb();
     when(genericDb.getAllNonDeletedMaxRevision())
@@ -44,13 +41,13 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..ticker = Ticker(
         stream: StreamController<DateTime>().stream,
         initialTime: initialTime,
       )
       ..client = Fakes.client(genericResponse: () => generics)
-      ..database = db
+      ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
       ..init();

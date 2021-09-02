@@ -1,25 +1,22 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/data_repository/sortable_repository.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/fakes_blocs.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
-  SortableBloc sortableBloc;
-  SortableRepository mockSortableRepository;
+  late SortableBloc sortableBloc;
+  late MockSortableRepository mockSortableRepository;
 
   setUp(() {
     mockSortableRepository = MockSortableRepository();
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
-      pushBloc: MockPushBloc(),
-      syncBloc: MockSyncBloc(),
+      pushBloc: FakePushBloc(),
+      syncBloc: FakeSyncBloc(),
     );
   });
 
@@ -47,6 +44,8 @@ void main() {
 
   test('Defaults are created for MP', () async {
     when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
+    when(mockSortableRepository.save(any))
+        .thenAnswer((_) => Future.value(true));
     sortableBloc.add(LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
@@ -65,6 +64,8 @@ void main() {
 
   test('Defaults are created for MPGO', () async {
     when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
+    when(mockSortableRepository.save(any))
+        .thenAnswer((_) => Future.value(true));
     sortableBloc.add(LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
@@ -90,6 +91,8 @@ void main() {
     );
     when(mockSortableRepository.load())
         .thenAnswer((_) => Future.value([uploadFolder]));
+    when(mockSortableRepository.save(any))
+        .thenAnswer((_) => Future.value(true));
     final imageId = 'id1';
     final imageName = 'nameOfImage';
     final imagePath = 'path/to/image/$imageName.jpg';

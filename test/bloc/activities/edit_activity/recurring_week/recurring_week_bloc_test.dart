@@ -1,33 +1,20 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks_and_fakes/fakes_blocs.dart';
 
 void main() {
-  ActivitiesBloc mockActivitiesBloc;
-  MemoplannerSettingBloc mockMemoplannerSettingsBloc;
-
-  ClockBloc clockBloc;
   final day = DateTime(2020, 10, 06);
 
-  setUp(() {
-    mockActivitiesBloc = MockActivitiesBloc();
-    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
-    clockBloc = ClockBloc(StreamController<DateTime>().stream);
-    tz.initializeTimeZones();
-    when(mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-  });
+  setUp(tz.initializeTimeZones);
 
   test('Initial state', () {
     // Arrange
@@ -39,9 +26,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -73,9 +60,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -132,9 +119,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -193,9 +180,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -241,9 +228,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -290,9 +277,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -351,9 +338,9 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingsBloc,
-      clockBloc: clockBloc,
+      activitiesBloc: FakeActivitiesBloc(),
+      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialState = editActivityBloc.state;
 

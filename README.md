@@ -1,4 +1,4 @@
-# seagull
+# MEMOPlanner gen 4
 
 ## Building for android
 
@@ -7,19 +7,13 @@ The following environmental variables needs to be defined:
 - APPCENTER_KEYSTORE_PASSWORD
 - APPCENTER_KEY_PASSWORD
 
-### Running MEMOplanner Go
+## Running MEMOplanner Go
 
 `$ flutter run --flavor mpgo`
 
-### Running MEMOplanner
+## Running MEMOplanner
 
 `$ flutter run --flavor mp --dart-define flavor=mp`
-
-#### Setting Device admin for MEMOplanner
-
-`$ adb shell dpm set-device-owner com.abilia.memoplanner/.DeviceAdminReceiver`
-
-`$ adb shell am startservice -n com.abilia.memoplanner/.LockService`
 
 ## Working with translations strings
 
@@ -67,6 +61,7 @@ To run a tests as a MEMOplanner:
 `$ flutter test --dart-define flavor=mp`
 
 For adding flavor specific tests, add skip to test or group: `skip: !Config.isMP);` or `skip: !Config.isMPGO);`
+
 Example:
 
 ```dart

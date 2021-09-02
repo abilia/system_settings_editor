@@ -1,26 +1,20 @@
-// @dart=2.9
-
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
-
-class MockScrollController extends Mock implements ScrollController {}
-
-class MockScrollPosition extends Mock implements ScrollPosition {}
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
-  ScrollPositionBloc scrollPositionBloc;
-  MockScrollController mockScrollController;
-  MockScrollPosition mockScrollPosition;
-  MockTimepillarBloc mockTimepillarBloc;
-  StreamController<DateTime> ticker;
+  late ScrollPositionBloc scrollPositionBloc;
+  late MockScrollController mockScrollController;
+  late MockScrollPosition mockScrollPosition;
+  late StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
   setUp(() {
@@ -29,24 +23,14 @@ void main() {
     final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
-    mockTimepillarBloc = MockTimepillarBloc();
 
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
-      timepillarBloc: mockTimepillarBloc,
+      timepillarBloc: FakeTimepillarBloc(),
     );
     when(mockScrollController.position).thenReturn(mockScrollPosition);
     when(mockScrollController.hasClients).thenReturn(true);
-    when(mockTimepillarBloc.state).thenReturn(
-      TimepillarState(
-        TimepillarInterval(
-          start: DateTime.now(),
-          end: DateTime.now(),
-        ),
-        1,
-      ),
-    );
   });
 
   test('initial state is Unready', () {

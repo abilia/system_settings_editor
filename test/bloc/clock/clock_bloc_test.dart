@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -7,8 +5,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/utils/all.dart';
 
 void main() {
-  ClockBloc clockBloc;
-  StreamController<DateTime> mockedTicker;
+  late ClockBloc clockBloc;
+  late StreamController<DateTime> mockedTicker;
   final initTime = DateTime(2019, 12, 12, 12, 12, 12, 12, 12);
 
   setUp(() {

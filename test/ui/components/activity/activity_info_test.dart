@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -17,28 +15,30 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  MockAuthenticationBloc mockedAuthenticationBloc;
   final infoItemWithTestNote = InfoItem.fromBase64(
           'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19')
       as NoteInfoItem;
   final translate = Locales.language.values.first;
 
-  Widget wrapWithMaterialApp(Widget widget) => MockAuthenticatedBlocsProvider(
+  Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<AuthenticationBloc>(
-                create: (context) => mockedAuthenticationBloc),
             BlocProvider<UserFileBloc>(
               create: (context) => UserFileBloc(
-                fileStorage: MockFileStorage(),
-                pushBloc: MockPushBloc(),
-                syncBloc: MockSyncBloc(),
-                userFileRepository: MockUserFileRepository(),
+                fileStorage: FakeFileStorage(),
+                pushBloc: FakePushBloc(),
+                syncBloc: FakeSyncBloc(),
+                userFileRepository: FakeUserFileRepository(),
               ),
             ),
             BlocProvider<ClockBloc>(
@@ -47,11 +47,11 @@ void main() {
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(
-                settingsDb: MockSettingsDb(),
+                settingsDb: FakeSettingsDb(),
               ),
             ),
             BlocProvider<TimepillarBloc>(
-              create: (context) => MockTimepillarBloc(),
+              create: (context) => FakeTimepillarBloc(),
             ),
           ],
           child: MaterialApp(
@@ -68,13 +68,12 @@ void main() {
 
   setUp(() async {
     await initializeDateFormatting();
+    setupFakeTts();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-    mockedAuthenticationBloc = MockAuthenticationBloc();
     GetItInitializer()
-      ..fileStorage = MockFileStorage()
-      ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..fileStorage = FakeFileStorage()
+      ..database = FakeDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..init();
   });
 
@@ -172,6 +171,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(CheckedImageWithImagePopup), findsOneWidget);
   });
@@ -254,6 +254,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(ActivityImage), findsOneWidget);
     expect(find.text(activity.title), findsOneWidget);
@@ -279,6 +280,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(ActivityImage), findsOneWidget);
     expect(find.text(activity.title), findsOneWidget);
@@ -303,6 +305,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(Hero), findsOneWidget);
   });
@@ -324,6 +327,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(NoteBlock), findsOneWidget);
     expect(find.text('Test'), findsOneWidget);
@@ -348,6 +352,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.text('shorts'), findsOneWidget);
@@ -397,6 +402,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
     expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsOneWidget);
     expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
@@ -427,6 +433,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsNWidgets(2));
@@ -463,6 +470,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byType(ChecklistView), findsOneWidget);
     expect(find.byType(QuestionView), findsNWidgets(2));
@@ -491,6 +499,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    tester.takeException();
 
     expect(find.byKey(TestKey.viewImage), findsOneWidget);
     await tester.tap(find.byKey(TestKey.viewImage));
@@ -504,7 +513,6 @@ void main() {
     final activity = Activity.createNew(
         startTime: startTime,
         checkable: true,
-        fileId: Uuid().v4(),
         infoItem: Checklist(questions: [
           Question(id: 0, name: 'checked'),
           Question(id: 1, name: 'unchecked'),
@@ -535,7 +543,6 @@ void main() {
       startTime: startTime,
       duration: 1.hours(),
       checkable: true,
-      fileId: Uuid().v4(),
       infoItem: infoItemWithTestNote,
     );
 

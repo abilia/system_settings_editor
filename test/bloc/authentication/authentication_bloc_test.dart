@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -9,15 +7,16 @@ import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/fake_shared_preferences.dart';
 
 void main() {
-  AuthenticationBloc authenticationBloc;
+  late AuthenticationBloc authenticationBloc;
 
   group('AuthenticationBloc event order', () {
-    UserRepository userRepository;
+    late UserRepository userRepository;
     setUp(() async {
-      final prefs = await MockSharedPreferences.getInstance(loggedIn: false);
+      final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       userRepository = UserRepository(
         client: Fakes.client(),
         tokenDb: TokenDb(prefs),
@@ -95,12 +94,14 @@ void main() {
   });
 
   group('AuthenticationBloc token side effect', () {
-    UserRepository mockedUserRepository;
-    NotificationMock notificationMock;
+    late MockUserRepository mockedUserRepository;
+    late MockNotification notificationMock;
 
     setUp(() async {
       mockedUserRepository = MockUserRepository();
-      notificationMock = NotificationMock();
+      when(mockedUserRepository.logout(any))
+          .thenAnswer((realInvocation) => Future.value());
+      notificationMock = MockNotification();
       when(mockedUserRepository.getToken()).thenReturn(Fakes.token);
       when(mockedUserRepository.me(any))
           .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
@@ -183,9 +184,3 @@ void main() {
     });
   });
 }
-
-class Notification {
-  Future mockCancelAll() => Future.value();
-}
-
-class NotificationMock extends Mock implements Notification {}

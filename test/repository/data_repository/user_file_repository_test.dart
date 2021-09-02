@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -13,13 +11,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/mock_http_client.mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
   final baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
-  final mockClient = MockedClient();
+  final mockClient = MockBaseClient();
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
   final userId = 1;
   final userFileRepository = UserFileRepository(
@@ -39,6 +38,8 @@ void main() {
   });
 
   test('Save saves to db', () async {
+    when(mockUserFileDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
     final userFile1 = FakeUserFile.createNew(id: 'fakeId1');
     await userFileRepository.save([userFile1]);
     verify(mockUserFileDb.insertAndAddDirty([userFile1]));
@@ -46,6 +47,8 @@ void main() {
 
   test('Load saves to db and stores to file storage', () async {
     // Arrange
+    when(mockUserFileDb.getAllLoadedFiles())
+        .thenAnswer((_) => Future.value([]));
     final revision = 99;
     when(mockUserFileDb.getLastRevision())
         .thenAnswer((_) => Future.value(revision));

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -13,16 +11,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../mocks_and_fakes/fakes_blocs.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../test_helpers/tts.dart';
 
 void main() {
-  AuthenticationBloc mockAuthenticationBloc = MockAuthenticationBloc();
   final day = DateTime(2111, 11, 11);
-  final clocBloc =
-      ClockBloc(StreamController<DateTime>().stream, initialTime: day);
   final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
-  final memoplannerSettingsBlocMock = MockMemoplannerSettingsBloc();
-
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -31,22 +28,23 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
-              create: (context) => mockAuthenticationBloc),
+              create: (context) => FakeAuthenticationBloc()),
           BlocProvider<ActivitiesOccasionBloc>(
             create: (context) => activitiesOccasionBlocMock,
           ),
           BlocProvider<ActivitiesBloc>(
-            create: (context) => MockActivitiesBloc(),
+            create: (context) => FakeActivitiesBloc(),
           ),
           BlocProvider<ClockBloc>(
-            create: (context) => clocBloc,
+            create: (context) => ClockBloc(StreamController<DateTime>().stream,
+                initialTime: day),
           ),
           BlocProvider<MemoplannerSettingBloc>(
-            create: (context) => memoplannerSettingsBlocMock,
+            create: (context) => FakeMemoplannerSettingsBloc(),
           ),
           BlocProvider<SettingsBloc>(
             create: (context) => SettingsBloc(
-              settingsDb: MockSettingsDb(),
+              settingsDb: FakeSettingsDb(),
             ),
           ),
         ], child: widget),
@@ -58,6 +56,7 @@ void main() {
       title3 = 'allDay3';
   setUp(() async {
     await initializeDateFormatting();
+    setupFakeTts();
     final allDayActivities = [
       Activity.createNew(
         title: title0,
@@ -85,13 +84,12 @@ void main() {
     );
 
     when(activitiesOccasionBlocMock.state).thenReturn(expected);
+    when(activitiesOccasionBlocMock.stream)
+        .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
-      ..flutterTts = MockFlutterTts()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..database = FakeDatabase()
       ..init();
-    when(memoplannerSettingsBlocMock.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
   });
 
   tearDown(GetIt.I.reset);

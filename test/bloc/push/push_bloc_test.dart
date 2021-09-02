@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +12,11 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../mocks_and_fakes/permission.dart';
 
 void main() {
   group('Push integration test', () {
@@ -39,20 +41,16 @@ void main() {
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
-      final mockUserFileDb = MockUserFileDb();
-      when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
-          .thenAnswer((_) => Future.value([]));
-
       GetItInitializer()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..activityDb = mockActivityDb
         ..client = Fakes.client(
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
-        ..userFileDb = mockUserFileDb
+        ..userFileDb = FakeUserFileDb()
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
-        ..database = MockDatabase()
+        ..database = FakeDatabase()
         ..init();
     });
 

@@ -1,12 +1,12 @@
-// @dart=2.9
-
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:test/test.dart';
 
+import '../test_helpers/verify_generic.dart';
+
 void main() {
-  Database db;
-  GenericDb genericDb;
+  late Database db;
+  late GenericDb genericDb;
 
   setUp(() async {
     db = await DatabaseRepository.createInMemoryFfiDb();
@@ -21,8 +21,10 @@ void main() {
         memoplannerSetting(true, MemoplannerSettings.displayDeleteButtonKey);
     final g2 =
         memoplannerSetting(false, MemoplannerSettings.displayDeleteButtonKey);
-    await genericDb.insert([g1.wrapWithDbModel(revision: 1)]);
-    await genericDb.insert([g2.wrapWithDbModel(revision: 2)]);
+    await genericDb.insert([g1.wrapWithDbModel(revision: 1)]
+        .whereType<DbModel<Generic<GenericData>>>());
+    await genericDb.insert([g2.wrapWithDbModel(revision: 2)]
+        .whereType<DbModel<Generic<GenericData>>>());
 
     final allSettings = await genericDb.getAllNonDeleted();
     expect(allSettings.length, 2);
@@ -40,14 +42,4 @@ void main() {
   tearDown(() {
     DatabaseRepository.clearAll(db);
   });
-}
-
-Generic<MemoplannerSettingData> memoplannerSetting(
-    bool value, String identifier) {
-  return Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
-      data: value,
-      identifier: identifier,
-    ),
-  );
 }

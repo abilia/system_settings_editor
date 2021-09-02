@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -15,7 +13,11 @@ import 'package:seagull/ui/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../test_helpers/enter_text.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -29,36 +31,34 @@ void main() {
   final timeFieldFinder = find.byType(TimeIntervallPicker);
   final okButtonFinder = find.byType(OkButton);
 
-  MockSortableBloc mockSortableBloc;
-  MockUserFileBloc mockUserFileBloc;
-  MockActivitiesBloc mockActivitiesBloc;
-  MockMemoplannerSettingsBloc mockMemoplannerSettingsBloc;
+  late MockActivitiesBloc mockActivitiesBloc;
+
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
-    mockSortableBloc = MockSortableBloc();
-    mockUserFileBloc = MockUserFileBloc();
     mockActivitiesBloc = MockActivitiesBloc();
     when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
-    mockMemoplannerSettingsBloc = MockMemoplannerSettingsBloc();
-    when(mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+    when(mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
 
-  Widget wrapWithMaterialApp(Widget widget,
-      {Activity givenActivity, bool use24H = false, bool newActivity = false}) {
+  Widget wrapWithMaterialApp(
+    Widget widget, {
+    Activity? givenActivity,
+    bool use24H = false,
+    bool newActivity = false,
+  }) {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
       localizationsDelegates: [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-          .firstWhere((l) => l.languageCode == locale.languageCode,
+          .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
-        child: MockAuthenticatedBlocsProvider(
+        child: FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ClockBloc>(
@@ -67,7 +67,7 @@ void main() {
                     initialTime: startTime),
               ),
               BlocProvider<MemoplannerSettingBloc>.value(
-                value: mockMemoplannerSettingsBloc,
+                value: FakeMemoplannerSettingsBloc(),
               ),
               BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
               BlocProvider<EditActivityBloc>(
@@ -88,8 +88,8 @@ void main() {
                             BlocProvider.of<MemoplannerSettingBloc>(context),
                       ),
               ),
-              BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+              BlocProvider<SortableBloc>.value(value: FakeSortableBloc()),
+              BlocProvider<UserFileBloc>.value(value: FakeUserFileBloc()),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),
@@ -97,7 +97,7 @@ void main() {
               ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
-                  settingsDb: MockSettingsDb(),
+                  settingsDb: FakeSettingsDb(),
                 ),
               ),
               BlocProvider<PermissionBloc>(
@@ -111,7 +111,7 @@ void main() {
                 ),
               )
             ],
-            child: child,
+            child: child!,
           ),
         ),
       ),
