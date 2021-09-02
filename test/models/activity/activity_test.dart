@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/activity/activity_extras.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
@@ -228,7 +227,7 @@ void main() {
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
       infoItem: infoItem,
-      extras: Extras(startTimeExtraAlarm: 'startTimeExtraAlarm'),
+      extras: Extras.createNew(startTimeExtraAlarm: 'startTimeExtraAlarm'),
     );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
@@ -275,25 +274,27 @@ void main() {
     expect(copy.fileId, '');
   });
 
-  test('same values in db and json', () {
+  test(
+      'same values in db and json, except extras which is base64 encoded as json',
+      () {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
     final a = Activity.createNew(
       title: 'Title',
       startTime: now,
       fileId: '',
-      extras: Extras(startTimeExtraAlarm: 'startTimeExtraAlarm'),
+      extras: Extras.createNew(startTimeExtraAlarm: 'startTimeExtraAlarm'),
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
+    final jsonExtras = json.remove('extras');
     final db = dbModel.toMapForDb()..remove('dirty');
+    final dbExtras = base64Encode(utf8.encode(db.remove('extras')));
     final jsonWithoutBool = json.values
         .map((value) => value is bool ? (value ? 1 : 0) : value)
         .toList();
 
-    expect(
-      jsonWithoutBool,
-      containsAll(db.values),
-    );
+    expect(jsonWithoutBool, containsAll(db.values));
+    expect(jsonExtras, dbExtras);
   });
 
   test('infoItem is null or empty (Bug SGC-328)', () {
@@ -334,6 +335,11 @@ void main() {
   });
 
   test('Bug SGC-867 extras not saved on change', () {
+    final extras = base64Encode(
+      utf8.encode(
+        '{"startTimeExtraAlarm":"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav","startTimeExtraAlarmFileId":"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0"}',
+      ),
+    );
     final response = '''{
       "id": "13e4085c-dfbc-4d8c-8c81-7bad32a0a8b4",
       "owner": 356,
@@ -348,7 +354,7 @@ void main() {
       "signedOffDates": null,
       "infoItem": "",
       "reminderBefore": "",
-      "extras": "{\\"startTimeExtraAlarm\\":\\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\\",\\"startTimeExtraAlarmFileId\\":\\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\\"}",
+      "extras": "$extras",
       "recurrentType": 0,
       "recurrentData": 0,
       "alarmType": 100,

@@ -3,15 +3,15 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i9;
-import 'dart:convert' as _i21;
+import 'dart:convert' as _i19;
 import 'dart:io' as _i8;
 import 'dart:typed_data' as _i16;
-import 'dart:ui' as _i19;
+import 'dart:ui' as _i20;
 
 import 'package:bloc/bloc.dart' as _i15;
 import 'package:flutter/gestures.dart' as _i14;
 import 'package:flutter/material.dart' as _i13;
-import 'package:flutter/rendering.dart' as _i20;
+import 'package:flutter/rendering.dart' as _i21;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
     as _i18;
 import 'package:http/http.dart' as _i5;
@@ -131,26 +131,26 @@ class _FakeDatabase_37 extends _i2.Fake implements _i3.Database {}
 class _FakeMultipartRequest_38 extends _i2.Fake
     implements _i5.MultipartRequest {}
 
-class _FakeScrollPosition_39 extends _i2.Fake implements _i13.ScrollPosition {}
+class _FakeResponse_39 extends _i2.Fake implements _i5.Response {}
 
-class _FakeScrollPhysics_40 extends _i2.Fake implements _i13.ScrollPhysics {}
+class _FakeStreamedResponse_40 extends _i2.Fake
+    implements _i5.StreamedResponse {}
 
-class _FakeScrollContext_41 extends _i2.Fake implements _i13.ScrollContext {}
+class _FakeScrollPosition_41 extends _i2.Fake implements _i13.ScrollPosition {}
 
-class _FakeValueNotifier_42<T> extends _i2.Fake
+class _FakeScrollPhysics_42 extends _i2.Fake implements _i13.ScrollPhysics {}
+
+class _FakeScrollContext_43 extends _i2.Fake implements _i13.ScrollContext {}
+
+class _FakeValueNotifier_44<T> extends _i2.Fake
     implements _i13.ValueNotifier<T> {}
 
-class _FakeScrollHoldController_43 extends _i2.Fake
+class _FakeScrollHoldController_45 extends _i2.Fake
     implements _i13.ScrollHoldController {}
 
-class _FakeDrag_44 extends _i2.Fake implements _i14.Drag {}
+class _FakeDrag_46 extends _i2.Fake implements _i14.Drag {}
 
-class _FakeScrollMetrics_45 extends _i2.Fake implements _i13.ScrollMetrics {}
-
-class _FakeResponse_46 extends _i2.Fake implements _i5.Response {}
-
-class _FakeStreamedResponse_47 extends _i2.Fake
-    implements _i5.StreamedResponse {}
+class _FakeScrollMetrics_47 extends _i2.Fake implements _i13.ScrollMetrics {}
 
 /// A class which mocks [ActivityRepository].
 ///
@@ -2601,6 +2601,87 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
   String toString() => super.toString();
 }
 
+/// A class which mocks [BaseClient].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
+  MockBaseClient() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.Future<_i5.Response> head(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> get(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> post(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i19.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#post, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> put(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i19.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#put, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> patch(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i19.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#patch, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<_i5.Response> delete(Uri? url,
+          {Map<String, String>? headers,
+          Object? body,
+          _i19.Encoding? encoding}) =>
+      (super.noSuchMethod(
+              Invocation.method(#delete, [url],
+                  {#headers: headers, #body: body, #encoding: encoding}),
+              returnValue: Future<_i5.Response>.value(_FakeResponse_39()))
+          as _i9.Future<_i5.Response>);
+  @override
+  _i9.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
+      (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
+          returnValue: Future<String>.value('')) as _i9.Future<String>);
+  @override
+  _i9.Future<_i16.Uint8List> readBytes(Uri? url,
+          {Map<String, String>? headers}) =>
+      (super.noSuchMethod(
+              Invocation.method(#readBytes, [url], {#headers: headers}),
+              returnValue: Future<_i16.Uint8List>.value(_i16.Uint8List(0)))
+          as _i9.Future<_i16.Uint8List>);
+  @override
+  _i9.Future<_i5.StreamedResponse> send(_i5.BaseRequest? request) =>
+      (super.noSuchMethod(Invocation.method(#send, [request]),
+          returnValue: Future<_i5.StreamedResponse>.value(
+              _FakeStreamedResponse_40())) as _i9.Future<_i5.StreamedResponse>);
+  @override
+  void close() => super.noSuchMethod(Invocation.method(#close, []),
+      returnValueForMissingStub: null);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [ScrollController].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -2628,7 +2709,7 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
   @override
   _i13.ScrollPosition get position =>
       (super.noSuchMethod(Invocation.getter(#position),
-          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_41()) as _i13.ScrollPosition);
   @override
   double get offset =>
       (super.noSuchMethod(Invocation.getter(#offset), returnValue: 0.0)
@@ -2666,7 +2747,7 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       (super.noSuchMethod(
           Invocation.method(
               #createScrollPosition, [physics, context, oldPosition]),
-          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_41()) as _i13.ScrollPosition);
   @override
   String toString() => super.toString();
   @override
@@ -2674,11 +2755,11 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       Invocation.method(#debugFillDescription, [description]),
       returnValueForMissingStub: null);
   @override
-  void addListener(_i19.VoidCallback? listener) =>
+  void addListener(_i20.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i19.VoidCallback? listener) =>
+  void removeListener(_i20.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -2698,11 +2779,11 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   _i13.ScrollPhysics get physics =>
       (super.noSuchMethod(Invocation.getter(#physics),
-          returnValue: _FakeScrollPhysics_40()) as _i13.ScrollPhysics);
+          returnValue: _FakeScrollPhysics_42()) as _i13.ScrollPhysics);
   @override
   _i13.ScrollContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
-          returnValue: _FakeScrollContext_41()) as _i13.ScrollContext);
+          returnValue: _FakeScrollContext_43()) as _i13.ScrollContext);
   @override
   bool get keepScrollOffset =>
       (super.noSuchMethod(Invocation.getter(#keepScrollOffset),
@@ -2710,7 +2791,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   _i13.ValueNotifier<bool> get isScrollingNotifier => (super.noSuchMethod(
       Invocation.getter(#isScrollingNotifier),
-      returnValue: _FakeValueNotifier_42<bool>()) as _i13.ValueNotifier<bool>);
+      returnValue: _FakeValueNotifier_44<bool>()) as _i13.ValueNotifier<bool>);
   @override
   double get minScrollExtent =>
       (super.noSuchMethod(Invocation.getter(#minScrollExtent), returnValue: 0.0)
@@ -2748,9 +2829,9 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       (super.noSuchMethod(Invocation.getter(#allowImplicitScrolling),
           returnValue: false) as bool);
   @override
-  _i20.ScrollDirection get userScrollDirection =>
+  _i21.ScrollDirection get userScrollDirection =>
       (super.noSuchMethod(Invocation.getter(#userScrollDirection),
-          returnValue: _i20.ScrollDirection.idle) as _i20.ScrollDirection);
+          returnValue: _i21.ScrollDirection.idle) as _i21.ScrollDirection);
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
@@ -2894,16 +2975,16 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#jumpToWithoutSettling, [value]),
           returnValueForMissingStub: null);
   @override
-  _i13.ScrollHoldController hold(_i19.VoidCallback? holdCancelCallback) =>
+  _i13.ScrollHoldController hold(_i20.VoidCallback? holdCancelCallback) =>
       (super.noSuchMethod(Invocation.method(#hold, [holdCancelCallback]),
-              returnValue: _FakeScrollHoldController_43())
+              returnValue: _FakeScrollHoldController_45())
           as _i13.ScrollHoldController);
   @override
   _i14.Drag drag(_i13.DragStartDetails? details,
-          _i19.VoidCallback? dragCancelCallback) =>
+          _i20.VoidCallback? dragCancelCallback) =>
       (super.noSuchMethod(
           Invocation.method(#drag, [details, dragCancelCallback]),
-          returnValue: _FakeDrag_44()) as _i14.Drag);
+          returnValue: _FakeDrag_46()) as _i14.Drag);
   @override
   void beginActivity(_i13.ScrollActivity? newActivity) =>
       super.noSuchMethod(Invocation.method(#beginActivity, [newActivity]),
@@ -2925,7 +3006,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#didOverscrollBy, [value]),
           returnValueForMissingStub: null);
   @override
-  void didUpdateScrollDirection(_i20.ScrollDirection? direction) => super
+  void didUpdateScrollDirection(_i21.ScrollDirection? direction) => super
       .noSuchMethod(Invocation.method(#didUpdateScrollDirection, [direction]),
           returnValueForMissingStub: null);
   @override
@@ -2946,11 +3027,11 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   String toString() => super.toString();
   @override
-  void addListener(_i19.VoidCallback? listener) =>
+  void addListener(_i20.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i19.VoidCallback? listener) =>
+  void removeListener(_i20.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -2968,86 +3049,5 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
             #viewportDimension: viewportDimension,
             #axisDirection: axisDirection
           }),
-          returnValue: _FakeScrollMetrics_45()) as _i13.ScrollMetrics);
-}
-
-/// A class which mocks [BaseClient].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
-  MockBaseClient() {
-    _i2.throwOnMissingStub(this);
-  }
-
-  @override
-  _i9.Future<_i5.Response> head(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<_i5.Response> get(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<_i5.Response> post(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i21.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#post, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<_i5.Response> put(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i21.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#put, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<_i5.Response> patch(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i21.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#patch, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<_i5.Response> delete(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i21.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#delete, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_46()))
-          as _i9.Future<_i5.Response>);
-  @override
-  _i9.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
-          returnValue: Future<String>.value('')) as _i9.Future<String>);
-  @override
-  _i9.Future<_i16.Uint8List> readBytes(Uri? url,
-          {Map<String, String>? headers}) =>
-      (super.noSuchMethod(
-              Invocation.method(#readBytes, [url], {#headers: headers}),
-              returnValue: Future<_i16.Uint8List>.value(_i16.Uint8List(0)))
-          as _i9.Future<_i16.Uint8List>);
-  @override
-  _i9.Future<_i5.StreamedResponse> send(_i5.BaseRequest? request) =>
-      (super.noSuchMethod(Invocation.method(#send, [request]),
-          returnValue: Future<_i5.StreamedResponse>.value(
-              _FakeStreamedResponse_47())) as _i9.Future<_i5.StreamedResponse>);
-  @override
-  void close() => super.noSuchMethod(Invocation.method(#close, []),
-      returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
+          returnValue: _FakeScrollMetrics_47()) as _i13.ScrollMetrics);
 }

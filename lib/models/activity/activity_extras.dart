@@ -1,114 +1,77 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
+part of 'activity.dart';
 
 class Extras extends Equatable {
-  final Map<String, dynamic> extrasMap;
-  final String startTimeExtraAlarm;
-  final String startTimeExtraAlarmFileId;
-  final String endTimeExtraAlarm;
-  final String endTimeExtraAlarmFileId;
+  static const startTimeExtraAlarmKey = 'startTimeExtraAlarm',
+      startTimeExtraAlarmFileIdKey = 'startTimeExtraAlarmFileId',
+      endTimeExtraAlarmKey = 'endTimeExtraAlarm',
+      endTimeExtraAlarmFileIdKey = 'endTimeExtraAlarmFileId';
 
-  const Extras({
-    this.extrasMap = const {
-      'startTimeExtraAlarm': '',
-      'startTimeExtraAlarmFileId': '',
-      'endTimeExtraAlarm': '',
-      'endTimeExtraAlarmFileId': '',
-    },
-    this.startTimeExtraAlarm = '',
-    this.startTimeExtraAlarmFileId = '',
-    this.endTimeExtraAlarm = '',
-    this.endTimeExtraAlarmFileId = '',
-  });
+  String get startTimeExtraAlarm => _extrasMap[startTimeExtraAlarmKey] ?? '';
+  String get startTimeExtraAlarmFileId =>
+      _extrasMap[startTimeExtraAlarmFileIdKey] ?? '';
+  String get endTimeExtraAlarm => _extrasMap['endTimeExtraAlarm'] ?? '';
+  String get endTimeExtraAlarmFileId =>
+      _extrasMap['endTimeExtraAlarmFileId'] ?? '';
 
-  Extras copyWith({
-    Map<String, dynamic>? extrasMap,
+  final Map<String, dynamic> _extrasMap;
+  const Extras._(Map<String, dynamic> extrasMap) : _extrasMap = extrasMap;
+
+  static const Extras empty = Extras._({});
+
+  factory Extras.createNew({
     String? startTimeExtraAlarm,
     String? startTimeExtraAlarmFileId,
     String? endTimeExtraAlarm,
     String? endTimeExtraAlarmFileId,
   }) =>
-      Extras(
-        extrasMap: extrasMap ?? this.extrasMap,
-        startTimeExtraAlarm: startTimeExtraAlarm ?? this.startTimeExtraAlarm,
-        startTimeExtraAlarmFileId:
-            startTimeExtraAlarmFileId ?? this.startTimeExtraAlarmFileId,
-        endTimeExtraAlarm: endTimeExtraAlarm ?? this.endTimeExtraAlarm,
-        endTimeExtraAlarmFileId:
-            endTimeExtraAlarmFileId ?? this.endTimeExtraAlarmFileId,
-      );
+      Extras._({
+        startTimeExtraAlarmKey: startTimeExtraAlarm,
+        startTimeExtraAlarmFileIdKey: startTimeExtraAlarmFileId,
+        endTimeExtraAlarmKey: endTimeExtraAlarm,
+        endTimeExtraAlarmFileIdKey: endTimeExtraAlarmFileId
+      });
+
+  Extras copyWith({
+    String? startTimeExtraAlarm,
+    String? startTimeExtraAlarmFileId,
+    String? endTimeExtraAlarm,
+    String? endTimeExtraAlarmFileId,
+  }) =>
+      Extras._(Map.from(_extrasMap)
+        ..addAll(
+          {
+            if (startTimeExtraAlarm != null)
+              startTimeExtraAlarmKey: startTimeExtraAlarm,
+            if (startTimeExtraAlarmFileId != null)
+              startTimeExtraAlarmFileIdKey: startTimeExtraAlarmFileId,
+            if (endTimeExtraAlarm != null)
+              endTimeExtraAlarmKey: endTimeExtraAlarm,
+            if (endTimeExtraAlarmFileId != null)
+              endTimeExtraAlarmFileIdKey: endTimeExtraAlarmFileId,
+          },
+        )
+        ..removeWhere((key, value) => value is String && value.isEmpty));
+
+  static Extras fromJsonString(String? jsonString) {
+    if (jsonString == null || jsonString.isEmpty) return Extras.empty;
+    return Extras._(jsonDecode(jsonString));
+  }
 
   static Extras fromBase64(String? base64) {
-    if (base64 == null || base64.isEmpty) return empty;
+    if (base64 == null || base64.isEmpty) return Extras.empty;
     try {
-      final jsonString = utf8.decode(base64Decode(base64));
-      return fromJsonString(jsonString);
+      return fromJsonString(utf8.decode(base64Decode(base64)));
     } on FormatException catch (_) {
       return Extras.empty;
     }
   }
 
-  static Extras fromJsonString(String jsonString) {
-    return jsonString.isNotEmpty
-        ? jsonString.startsWith('{')
-            ? Extras.fromJson(jsonDecode(jsonString))
-            : Extras.fromBase64(jsonString)
-        : empty;
-  }
+  String toJsonString() => json.encode(_extrasMap);
 
-  factory Extras.fromJson(Map<String, dynamic> json) {
-    return Extras(
-      extrasMap: json,
-      startTimeExtraAlarm: json['startTimeExtraAlarm'] ?? '',
-      startTimeExtraAlarmFileId: json['startTimeExtraAlarmFileId'] ?? '',
-      endTimeExtraAlarm: json['endTimeExtraAlarm'] ?? '',
-      endTimeExtraAlarmFileId: json['endTimeExtraAlarmFileId'] ?? '',
-    );
-  }
-
-  factory Extras.fromUnknown(Object object) {
-    if (object is String) {
-      return Extras.fromJsonString(object);
-    } else if (object is Map<String, dynamic>) {
-      return Extras.fromJson(object);
-    } else {
-      return Extras.empty;
-    }
-  }
-
-  static const Extras empty = Extras();
-
-  Map<String, dynamic> toJson() {
-    var newMap = <String, dynamic>{};
-    newMap.addAll(extrasMap);
-    newMap['startTimeExtraAlarm'] = startTimeExtraAlarm;
-    newMap['startTimeExtraAlarmFileId'] = startTimeExtraAlarmFileId;
-    newMap['endTimeExtraAlarm'] = endTimeExtraAlarm;
-    newMap['endTimeExtraAlarmFileId'] = endTimeExtraAlarmFileId;
-    return newMap..removeWhere((key, value) => value == '' || value == null);
-  }
-
-  String toJsonString() {
-    return json.encode(
-      toJson(),
-    );
-  }
-
-  String? toBase64() => base64Encode(
-        utf8.encode(toJsonString()),
-      );
-
-  bool get hasStartTimeExtraAlarm =>
-      startTimeExtraAlarm.isNotEmpty || startTimeExtraAlarmFileId.isNotEmpty;
+  String toBase64() => base64Encode(utf8.encode(toJsonString()));
 
   @override
-  List<Object?> get props => [
-        startTimeExtraAlarm,
-        startTimeExtraAlarmFileId,
-        endTimeExtraAlarm,
-        endTimeExtraAlarmFileId
-      ];
+  List<Object?> get props => [_extrasMap];
 
   @override
   bool get stringify => true;
