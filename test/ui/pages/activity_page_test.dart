@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -17,12 +15,18 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../db/generic_db_test.dart';
-import '../../mocks.dart';
+import '../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../test_helpers/enter_text.dart';
+import '../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../mocks_and_fakes/permission.dart';
+import '../../test_helpers/tts.dart';
+import '../../test_helpers/verify_generic.dart';
 
 void main() {
-  MockActivityDb mockActivityDb;
-  MockGenericDb mockGenericDb;
+  late MockActivityDb mockActivityDb;
+  late MockGenericDb mockGenericDb;
 
   final translate = Locales.language.values.first;
   final startTime = DateTime(2111, 11, 11, 11, 11);
@@ -57,43 +61,34 @@ void main() {
 
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
-
     mockActivityDb = MockActivityDb();
-    mockGenericDb = MockGenericDb();
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
-
-    final mockUserFileDb = MockUserFileDb();
-    when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
-    ).thenAnswer(
-      (value) => Future.value([]),
-    );
+    when(mockActivityDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
+    mockGenericDb = MockGenericDb();
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..ticker = Ticker(
           initialTime: startTime, stream: StreamController<DateTime>().stream)
-      ..fireBasePushService = mockFirebasePushService
+      ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: activityResponse,
         licenseResponse: () =>
             Fakes.licenseResponseExpires(startTime.add(5.days())),
       )
-      ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..genericDb = mockGenericDb
-      ..userFileDb = mockUserFileDb
-      ..sortableDb = MockSortableDb()
+      ..userFileDb = FakeUserFileDb()
+      ..sortableDb = FakeSortableDb()
       ..syncDelay = SyncDelays.zero
-      ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
+      ..database = FakeDatabase()
       ..init();
   });
 

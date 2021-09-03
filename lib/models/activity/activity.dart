@@ -1,8 +1,8 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/models/activity/activity_extras.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/models/all.dart';
@@ -10,6 +10,7 @@ import 'package:seagull/utils/all.dart';
 
 part 'recurs.dart';
 part 'db_activity.dart';
+part 'activity_extras.dart';
 
 class Activity extends DataModel {
   Alarm get alarm => Alarm.fromInt(alarmType);

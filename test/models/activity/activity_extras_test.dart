@@ -1,16 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/activity/activity_extras.dart';
+import 'package:seagull/models/activity/activity.dart';
 
 void main() {
   test('test creating extras object', () {
     final jsonString =
         '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
 
-    final extras = Extras(
-        startTimeExtraAlarm: 'abcdef',
-        startTimeExtraAlarmFileId: 'ghijkl',
-        endTimeExtraAlarm: 'mnopqrs',
-        endTimeExtraAlarmFileId: 'tuvwxyz');
+    final extras = Extras.createNew(
+      startTimeExtraAlarm: 'abcdef',
+      startTimeExtraAlarmFileId: 'ghijkl',
+      endTimeExtraAlarm: 'mnopqrs',
+      endTimeExtraAlarmFileId: 'tuvwxyz',
+    );
 
     expect(extras.startTimeExtraAlarm, 'abcdef');
     expect(extras.startTimeExtraAlarmFileId, 'ghijkl');
@@ -68,10 +69,11 @@ void main() {
     final extras = Extras.empty;
 
     var extrasChanged = extras.copyWith(
-        startTimeExtraAlarm: 'abcdef',
-        startTimeExtraAlarmFileId: 'ghijkl',
-        endTimeExtraAlarm: 'mnopqrs',
-        endTimeExtraAlarmFileId: 'tuvwxyz');
+      startTimeExtraAlarm: 'abcdef',
+      startTimeExtraAlarmFileId: 'ghijkl',
+      endTimeExtraAlarm: 'mnopqrs',
+      endTimeExtraAlarmFileId: 'tuvwxyz',
+    );
 
     expect(extrasChanged.startTimeExtraAlarm, 'abcdef');
     expect(extrasChanged.startTimeExtraAlarmFileId, 'ghijkl');

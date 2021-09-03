@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,22 +7,22 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks.dart';
+import '../../mocks_and_fakes/fakes_blocs.dart';
+import '../../mocks_and_fakes/shared.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  LicenseBloc licenseBloc;
-  UserRepository userRepository;
-  AuthenticationBloc authenticationBloc;
+  late LicenseBloc licenseBloc;
+  late UserRepository userRepository;
 
   setUp(() {
     userRepository = MockUserRepository();
-    authenticationBloc = AuthenticationBloc(userRepository);
     licenseBloc = LicenseBloc(
-        userRepository: userRepository,
-        clockBloc: ClockBloc(StreamController<DateTime>().stream),
-        pushBloc: MockPushBloc(),
-        authenticationBloc: authenticationBloc);
+      userRepository: userRepository,
+      clockBloc: ClockBloc(StreamController<DateTime>().stream),
+      pushBloc: FakePushBloc(),
+      authenticationBloc: AuthenticationBloc(userRepository),
+    );
   });
 
   test('Test initial state', () {

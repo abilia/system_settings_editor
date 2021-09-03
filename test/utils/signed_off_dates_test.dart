@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/utils/signed_off_dates.dart';
 
@@ -74,7 +72,7 @@ void main() {
       final dates = <DateTime>[];
       // Act
       final intermediet = dates.tryEncodeSignedOffDates();
-      final result = intermediet.tryDecodeSignedOffDates();
+      final result = intermediet?.tryDecodeSignedOffDates();
       // Assert
       expect(result, null);
     });
@@ -86,7 +84,7 @@ void main() {
       ];
       // Act
       final intermediet = dates.tryEncodeSignedOffDates();
-      final result = intermediet.tryDecodeSignedOffDates();
+      final result = intermediet?.tryDecodeSignedOffDates();
       // Assert
       expect(result, dates);
     });
@@ -100,7 +98,7 @@ void main() {
       ];
       // Act
       final intermediet = dates.tryEncodeSignedOffDates();
-      final result = intermediet.tryDecodeSignedOffDates();
+      final result = intermediet?.tryDecodeSignedOffDates();
       // Assert
       expect(result, dates);
     });

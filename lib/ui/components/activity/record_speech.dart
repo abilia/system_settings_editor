@@ -1,14 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/record_speech_cubit.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-
-enum RecordPageState {
-  StoppedEmpty,
-  Recording,
-  StoppedNotEmpty,
-  Playing,
-  Recording2
-}
 
 final String SOUND_EXTENSION = 'm4a';
 final String SOUND_NAME_PREAMBLE = 'voice_recording_';
@@ -18,10 +9,11 @@ class RecordingWidget extends StatefulWidget {
   final ValueChanged<String> onSoundRecorded;
   final RecordPageState state;
 
-  const RecordingWidget(
-      {required this.state,
-      required this.originalSoundFile,
-      required this.onSoundRecorded});
+  const RecordingWidget({
+    required this.state,
+    required this.originalSoundFile,
+    required this.onSoundRecorded,
+  });
 
   @override
   State<StatefulWidget> createState() {

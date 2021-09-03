@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -10,19 +8,25 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks.dart';
-import '../../../utils/types.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
+import '../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../test_helpers/navigation_observer.dart';
+import '../../../test_helpers/tts.dart';
+import '../../../test_helpers/types.dart';
 
 void main() {
   group('Image archive test', () {
     final translate = Locales.language.values.first;
     setUp(() async {
+      setupFakeTts();
       GetItInitializer()
-        ..fileStorage = MockFileStorage()
-        ..database = MockDatabase()
-        ..flutterTts = MockFlutterTts()
-        ..sharedPreferences = await MockSharedPreferences.getInstance()
-        ..database = MockDatabase()
+        ..fileStorage = FakeFileStorage()
+        ..database = FakeDatabase()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..database = FakeDatabase()
         ..init();
     });
 
@@ -51,36 +55,37 @@ void main() {
           '''), groupId: folder.id);
 
     final mockSortableBloc = MockSortableBloc();
+    when(mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
 
-    final mockNavigatorObserver = MockNavigatorObserver();
+    final navObserver = NavObserver();
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
           localizationsDelegates: [Translator.delegate],
-          navigatorObservers: [mockNavigatorObserver],
+          navigatorObservers: [navObserver],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(
                   (l) => l.languageCode == locale?.languageCode,
                   orElse: () => supportedLocales.first),
-          builder: (context, child) => MockAuthenticatedBlocsProvider(
+          builder: (context, child) => FakeAuthenticatedBlocsProvider(
             child: MultiBlocProvider(providers: [
               BlocProvider<SortableBloc>.value(
                 value: mockSortableBloc,
               ),
               BlocProvider<UserFileBloc>(
                 create: (context) => UserFileBloc(
-                  fileStorage: MockFileStorage(),
-                  pushBloc: MockPushBloc(),
-                  syncBloc: MockSyncBloc(),
-                  userFileRepository: MockUserFileRepository(),
+                  fileStorage: FakeFileStorage(),
+                  pushBloc: FakePushBloc(),
+                  syncBloc: FakeSyncBloc(),
+                  userFileRepository: FakeUserFileRepository(),
                 ),
               ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
-                  settingsDb: MockSettingsDb(),
+                  settingsDb: FakeSettingsDb(),
                 ),
               ),
-            ], child: child),
+            ], child: child!),
           ),
           home: widget,
         );
@@ -127,11 +132,9 @@ void main() {
       expect(find.byType(GreenButton), findsOneWidget);
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
-      final poped =
-          verify(mockNavigatorObserver.didPop(captureAny, any)).captured;
+      final poped = navObserver.routesPoped;
       expect(poped, hasLength(1));
-      final selectedImageRoute = poped.first as Route;
-      final res = await selectedImageRoute.popped;
+      final res = await poped.first.popped;
       expect(res, SelectedImage.from(id: fileId, path: path));
     });
 

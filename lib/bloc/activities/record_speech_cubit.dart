@@ -9,20 +9,28 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/record_speech.dart';
 import 'package:uuid/uuid.dart';
 
+enum RecordPageState {
+  StoppedEmpty,
+  Recording,
+  StoppedNotEmpty,
+  Playing,
+  Recording2
+}
+
 class RecordSpeechCubit extends Cubit<RecordPageState> {
-  RecordSpeechCubit(
-      {required this.onSoundRecorded, required this.recordedFilePath})
-      : super(recordedFilePath != ''
+  RecordSpeechCubit({
+    required this.onSoundRecorded,
+    required this.recordedFilePath,
+  }) : super(recordedFilePath != ''
             ? RecordPageState.StoppedNotEmpty
             : RecordPageState.StoppedEmpty);
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  final Record _recorder = Record();
+  final _audioPlayer = AudioPlayer();
+  final _recorder = Record();
   final MAX_DURATION = 30.0;
   final ValueChanged<String> onSoundRecorded;
   double soundDuration = 30.0;
 
-  // RecordPageState recordState = RecordPageState.StoppedEmpty;
   Timer? _recordTimer;
   double progress = 0.0;
   String recordedFilePath;
@@ -35,11 +43,7 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
       var fileName = SOUND_NAME_PREAMBLE + Uuid().v4();
       soundDuration = MAX_DURATION;
       progress = 0.0;
-      await _recorder.start(
-        path: '$tempPath/$fileName.$SOUND_EXTENSION', // required
-        encoder: AudioEncoder.AAC, // by default
-        bitRate: 128000, // by default
-      );
+      await _recorder.start(path: '$tempPath/$fileName.$SOUND_EXTENSION');
       _startTimer(soundDuration);
       emit(RecordPageState.Recording);
     }

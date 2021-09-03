@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:ui';
 
@@ -20,11 +18,15 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../../mocks_and_fakes/permission.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
-  MockActivityDb mockActivityDb;
-  StreamController<DateTime> mockTicker;
+  late StreamController<DateTime> mockTicker;
   final time = DateTime(2007, 08, 09, 13, 11);
   final leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
@@ -44,17 +46,19 @@ void main() {
 
   setUp(() async {
     setupPermissions();
+    setupFakeTts();
+
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
-    final mockFirebasePushService = MockFirebasePushService();
-    when(mockFirebasePushService.initPushToken())
-        .thenAnswer((_) => Future.value('fakeToken'));
-    mockActivityDb = MockActivityDb();
+    final mockActivityDb = MockActivityDb();
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(mockActivityDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
+
     final mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
@@ -71,21 +75,20 @@ void main() {
         ];
 
     GetItInitializer()
-      ..sharedPreferences = await MockSharedPreferences.getInstance()
+      ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
-      ..sortableDb = MockSortableDb()
+      ..sortableDb = FakeSortableDb()
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
-      ..fireBasePushService = mockFirebasePushService
+      ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: activityResponse,
         genericResponse: genericResponse,
       )
       ..fileStorage = MockFileStorage()
-      ..userFileDb = mockUserFileDb
+      ..userFileDb = FakeUserFileDb()
       ..syncDelay = SyncDelays.zero
       ..database = MockDatabase()
-      ..flutterTts = MockFlutterTts()
       ..init();
   });
 
@@ -646,7 +649,7 @@ void main() {
                   matching: find.byType(Container)))
               .decoration as BoxDecoration;
           expect(
-            boxDecoration.border.bottom.color,
+            boxDecoration.border?.bottom.color,
             expectedColor,
           );
         }
@@ -703,7 +706,7 @@ void main() {
                   matching: find.byType(Container)))
               .decoration as BoxDecoration;
           expect(
-            boxDecoration.border.bottom.color,
+            boxDecoration.border?.bottom.color,
             expectedColor,
           );
         }

@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -8,41 +6,38 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/record_speech.dart';
 import 'package:seagull/ui/pages/edit_activity/record_speech_page.dart';
 
-import '../../../mocks.dart';
+import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../mocks_and_fakes/fakes_blocs.dart';
 
 void main() {
   group('Record page test', () {
-    final mockSortableBloc = MockSortableBloc();
-
-    final mockNavigatorObserver = MockNavigatorObserver();
-
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
           localizationsDelegates: [Translator.delegate],
-          navigatorObservers: [mockNavigatorObserver],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(
                   (l) => l.languageCode == locale?.languageCode,
                   orElse: () => supportedLocales.first),
-          builder: (context, child) => MockAuthenticatedBlocsProvider(
+          builder: (context, child) => FakeAuthenticatedBlocsProvider(
             child: MultiBlocProvider(providers: [
               BlocProvider<SortableBloc>.value(
-                value: mockSortableBloc,
+                value: FakeSortableBloc(),
               ),
               BlocProvider<UserFileBloc>(
                 create: (context) => UserFileBloc(
-                  fileStorage: MockFileStorage(),
-                  pushBloc: MockPushBloc(),
-                  syncBloc: MockSyncBloc(),
-                  userFileRepository: MockUserFileRepository(),
+                  fileStorage: FakeFileStorage(),
+                  pushBloc: FakePushBloc(),
+                  syncBloc: FakeSyncBloc(),
+                  userFileRepository: FakeUserFileRepository(),
                 ),
               ),
               BlocProvider<SettingsBloc>(
                 create: (context) => SettingsBloc(
-                  settingsDb: MockSettingsDb(),
+                  settingsDb: FakeSettingsDb(),
                 ),
               ),
-            ], child: child),
+            ], child: child!),
           ),
           home: widget,
         );

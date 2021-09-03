@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +7,12 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../../mocks.dart';
+
+import '../../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/enter_text.dart';
+import '../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../test_helpers/tap_link.dart';
 
 void main() {
   group(
@@ -20,13 +23,13 @@ void main() {
       setUp(() async {
         GetItInitializer()
           ..sharedPreferences =
-              await MockSharedPreferences.getInstance(loggedIn: false)
+              await FakeSharedPreferences.getInstance(loggedIn: false)
           ..ticker = Ticker(
             stream: StreamController<DateTime>().stream,
             initialTime: DateTime(2021, 05, 13, 11, 29),
           )
           ..client = Fakes.client()
-          ..database = MockDatabase()
+          ..database = FakeDatabase()
           ..init();
       });
 

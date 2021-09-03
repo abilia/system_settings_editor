@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -12,14 +10,14 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final aTime = DateTime(1999, 12, 20, 20, 12);
   final aDay = aTime.onlyDays();
-  ReplaySubject<String> notificationSelected;
-  NotificationBloc notificationBloc;
+  late ReplaySubject<String> notificationSelected;
+  late NotificationBloc notificationBloc;
 
   setUp(() {
     notificationSelected = ReplaySubject<String>();
 
     notificationBloc = NotificationBloc(
-      selectedNotificationSubject: notificationSelected.stream,
+      selectedNotificationSubject: notificationSelected,
     );
   });
 
