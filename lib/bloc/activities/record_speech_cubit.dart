@@ -50,6 +50,7 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
     onSoundRecorded(recordedFilePath);
     _stopTimer();
     soundDuration = progress;
+    print('duration ' + (await _audioPlayer.getDuration()).toString());
     emit(RecordPageState.StoppedNotEmpty);
   }
 
@@ -64,6 +65,7 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
   Future<void> playRecording() async {
     progress = 0.0;
     await _audioPlayer.play(recordedFilePath);
+    print('duration ' + (await _audioPlayer.getDuration()).toString());
     _startTimer(soundDuration);
     emit(RecordPageState.Playing);
   }

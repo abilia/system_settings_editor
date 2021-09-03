@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -6,6 +8,8 @@ import 'package:seagull/utils/all.dart';
 
 class RecordAudioWidget extends StatelessWidget {
   final Activity activity;
+  final String SOUND_EXTENSION = 'm4a';
+  final String SOUND_NAME_PREAMBLE = 'voice_recording_';
 
   const RecordAudioWidget(this.activity, {Key? key}) : super(key: key);
 
@@ -15,50 +19,76 @@ class RecordAudioWidget extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.abilityToSelectAlarm != current.abilityToSelectAlarm,
-      builder: (context, memoSettingsState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(translator.speech),
-          RecordAndPlayAudio(
-            activity: activity,
-            label: translator.speechOnStart,
-            memoSettingsState: memoSettingsState,
-            onAudioRecordedCallback: (UserFile? result) {
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    extras: activity.extras.copyWith(
-                        startTimeExtraAlarm: result != null ? result.path : '',
-                        startTimeExtraAlarmFileId:
-                            result != null ? result.id : ''),
+      builder: (context, memoSettingsState) =>
+          BlocBuilder<UserFileBloc, UserFileState>(
+        builder: (context, state) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.speech),
+            RecordAndPlayAudio(
+              activity: activity,
+              label: translator.speechOnStart,
+              memoSettingsState: memoSettingsState,
+              onAudioRecordedCallback: (String result) async {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      extras: activity.extras.copyWith(
+                          startTimeExtraAlarm: result,
+                          startTimeExtraAlarmFileId:
+                              _getFileNameFromResult(result)),
+                    ),
                   ),
-                ),
-              );
-            },
-            recordedAudio: activity.extras.startTimeExtraAlarm,
-          ),
-          SizedBox(height: 8.0.s),
-          RecordAndPlayAudio(
-            activity: activity,
-            label: translator.speechOnEnd,
-            memoSettingsState: memoSettingsState,
-            onAudioRecordedCallback: (UserFile? result) {
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    extras: activity.extras.copyWith(
-                        endTimeExtraAlarm: result != null ? result.path : '',
-                        endTimeExtraAlarmFileId:
-                            result != null ? result.id : ''),
+                );
+                if (result != '') {
+                  var soundFile = File(result);
+                  var bytes = await soundFile.readAsBytes();
+                  await context.read<UserFileBloc>().handleAudio(
+                      List.from(bytes), _getFileNameFromResult(result), result);
+                }
+              },
+              recordedAudio: activity.extras.startTimeExtraAlarm,
+            ),
+            SizedBox(height: 8.0.s),
+            RecordAndPlayAudio(
+              activity: activity,
+              label: translator.speechOnEnd,
+              memoSettingsState: memoSettingsState,
+              onAudioRecordedCallback: (String result) async {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      extras: activity.extras.copyWith(
+                          endTimeExtraAlarm: result,
+                          endTimeExtraAlarmFileId:
+                              _getFileNameFromResult(result)),
+                    ),
                   ),
-                ),
-              );
-            },
-            recordedAudio: activity.extras.endTimeExtraAlarm,
-          ),
-        ],
+                );
+                if (result != '') {
+                  var soundFile = File(result);
+                  var bytes = await soundFile.readAsBytes();
+                  await context.read<UserFileBloc>().handleAudio(
+                      List.from(bytes), _getFileNameFromResult(result), result);
+                }
+              },
+              recordedAudio: activity.extras.endTimeExtraAlarm,
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  String _getFileNameFromResult(String result) {
+    if (result == '') {
+      return '';
+    }
+    return result
+        .split('/')
+        .last
+        .replaceFirst(SOUND_NAME_PREAMBLE, '')
+        .replaceFirst('.$SOUND_EXTENSION', '');
   }
 }
 
@@ -67,7 +97,7 @@ class RecordAndPlayAudio extends StatelessWidget {
   final MemoplannerSettingsState memoSettingsState;
   final String label;
   final String recordedAudio;
-  final ValueChanged<UserFile?> onAudioRecordedCallback;
+  final ValueChanged<String> onAudioRecordedCallback;
 
   const RecordAndPlayAudio({
     Key? key,
@@ -93,7 +123,7 @@ class RecordAndPlayAudio extends StatelessWidget {
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
                     final result = await Navigator.of(context)
-                        .push<UserFile>(MaterialPageRoute(
+                        .push<String>(MaterialPageRoute(
                       builder: (_) => CopiedAuthProviders(
                         blocContext: context,
                         child:
@@ -101,7 +131,7 @@ class RecordAndPlayAudio extends StatelessWidget {
                       ),
                       settings: RouteSettings(name: 'SelectSpeechPage'),
                     ));
-                    onAudioRecordedCallback.call(result);
+                    onAudioRecordedCallback.call(result!);
                   }
                 : null,
           ),
@@ -110,11 +140,10 @@ class RecordAndPlayAudio extends StatelessWidget {
     );
 
     if (recordedAudio != '') {
-      var value = ActionButton(
-          onPressed: () {}, child: Icon(AbiliaIcons.delete_all_clear));
+      var value =
+          ActionButton(onPressed: () {}, child: Icon(AbiliaIcons.play_sound));
       row.children.add(value);
     }
-
     return row;
   }
 }

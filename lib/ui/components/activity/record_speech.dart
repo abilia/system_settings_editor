@@ -37,9 +37,7 @@ class _RecordingWidgetState extends State<RecordingWidget> {
   RecordPageState state;
   double _progress = 0.0;
 
-  _RecordingWidgetState({required this.onSoundRecorded, required this.state}) {
-    ;
-  }
+  _RecordingWidgetState({required this.onSoundRecorded, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +46,6 @@ class _RecordingWidgetState extends State<RecordingWidget> {
     return BlocListener<RecordSpeechCubit, RecordPageState>(
       listener: (context, state) {
         setState(() {
-          print('state ' + state.toString());
           this.state = state;
           _progress = context.read<RecordSpeechCubit>().progress;
           _soundDuration = context.read<RecordSpeechCubit>().soundDuration;

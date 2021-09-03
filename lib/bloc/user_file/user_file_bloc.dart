@@ -115,4 +115,12 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     await userFileRepository.save([userFile]);
     return userFile;
   }
+
+  Future<UserFile> handleAudio(
+      List<int> originalBytes, String id, String path) async {
+    await fileStorage.storeFile(originalBytes, id);
+    final userFile = generateUserFile(id, path, originalBytes);
+    await userFileRepository.save([userFile]);
+    return userFile;
+  }
 }

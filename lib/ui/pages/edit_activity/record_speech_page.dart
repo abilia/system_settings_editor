@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/record_speech_cubit.dart';
-import 'package:seagull/models/user_file.dart';
 import 'package:seagull/ui/components/activity/record_speech.dart';
 
 import '../../all.dart';
@@ -27,8 +26,7 @@ class RecordSpeechPageState extends State<RecordSpeechPage> {
     return _RecordSpeechPage(
         originalSoundFile: originalSoundFile,
         save: _recordedSoundFile != widget.originalSoundFile
-            ? () => Navigator.of(context)
-                .maybePop(_createUserFile(_recordedSoundFile))
+            ? () => Navigator.of(context).maybePop(_recordedSoundFile)
             : null,
         onSoundRecorded: (s) {
           setState(() {
@@ -37,22 +35,22 @@ class RecordSpeechPageState extends State<RecordSpeechPage> {
         });
   }
 
-  UserFile _createUserFile(String recordedSoundFile) {
-    return UserFile(
-      contentType: SOUND_EXTENSION,
-      deleted: false,
-      fileSize: 1,
-      id: recordedSoundFile
-          .split('/')
-          .last
-          .replaceFirst(SOUND_NAME_PREAMBLE, '')
-          .replaceFirst('.$SOUND_EXTENSION', ''),
-      md5: '',
-      path: recordedSoundFile,
-      sha1: '',
-      fileLoaded: true,
-    );
-  }
+  // UserFile _createUserFile(String recordedSoundFile) {
+  //   return UserFile(
+  //     contentType: SOUND_EXTENSION,
+  //     deleted: false,
+  //     fileSize: 1,
+  //     id: recordedSoundFile
+  //         .split('/')
+  //         .last
+  //         .replaceFirst(SOUND_NAME_PREAMBLE, '')
+  //         .replaceFirst('.$SOUND_EXTENSION', ''),
+  //     md5: '',
+  //     path: recordedSoundFile,
+  //     sha1: '',
+  //     fileLoaded: true,
+  //   );
+  // }
 }
 
 class _RecordSpeechPage extends StatelessWidget {
