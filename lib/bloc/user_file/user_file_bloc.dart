@@ -40,12 +40,16 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> mapEventToState(
     UserFileEvent event,
   ) async* {
-    if (event is ImageAdded) {
+    if (event is FileAdded) {
       yield state.addTempFile(
-        event.selectedImage.id,
-        event.selectedImage.file,
+        event.unstoredFile.id,
+        event.unstoredFile.file,
       );
-      yield* _mapImageAddedToState(event);
+      if (event is ImageAdded) {
+        yield* _mapImageAddedToState(event);
+      } else if (event is RecordingAdded) {
+        // TODO Store recording
+      }
     }
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
@@ -75,11 +79,11 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> _mapImageAddedToState(
     ImageAdded event,
   ) async* {
-    final originalBytes = await event.selectedImage.file.readAsBytes();
+    final originalBytes = await event.unstoredFile.file.readAsBytes();
     final userFile = await handleImage(
       originalBytes,
-      event.selectedImage.id,
-      event.selectedImage.file.path,
+      event.unstoredFile.id,
+      event.unstoredFile.file.path,
     );
     syncBloc.add(FileSaved());
     yield state.add(userFile);

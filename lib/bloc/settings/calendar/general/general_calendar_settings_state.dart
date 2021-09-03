@@ -145,11 +145,11 @@ class CategoriesSettingState extends Equatable {
         state.settings.calendarActivityTypeShowColor,
         ImageAndName(
           state.leftCategoryName,
-          SelectedImage.from(id: state.leftCategoryImage),
+          AbiliaFile.from(id: state.leftCategoryImage),
         ),
         ImageAndName(
           state.rightCategoryName,
-          SelectedImage.from(id: state.rightCategoryImage),
+          AbiliaFile.from(id: state.rightCategoryImage),
         ),
       );
 

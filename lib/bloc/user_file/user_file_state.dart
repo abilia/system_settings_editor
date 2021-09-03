@@ -9,11 +9,14 @@ abstract class UserFileState extends Equatable {
 
   final Map<String, File> _tempFiles;
 
+  File? getFile(AbiliaFile abiliaFile, FileStorage fileStorage) =>
+      getLoadedByIdOrPath(abiliaFile.id, abiliaFile.path, fileStorage);
+
   File? getLoadedByIdOrPath(
     String fileId,
     String filePath,
     FileStorage fileStorage, {
-    required ImageSize imageSize,
+    ImageSize imageSize = ImageSize.ORIGINAL,
   }) {
     final userFile = userFiles.firstWhereOrNull(
       (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,

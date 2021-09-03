@@ -32,8 +32,8 @@ class ImageArchivePage extends StatelessWidget {
       onCancel: () => Navigator.of(context)
         ..pop()
         ..maybePop(),
-      onOk: (selected) => Navigator.of(context).pop<SelectedImage>(
-        SelectedImage.from(
+      onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
+        AbiliaFile.from(
           id: selected.data.fileId,
           path: selected.data.file,
         ),

@@ -2,38 +2,38 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/activity/record_speech.dart';
+import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
-enum RecordPageState {
-  StoppedEmpty,
-  Recording,
-  StoppedNotEmpty,
-  Playing,
-  Recording2
-}
+part 'record_speech_state.dart';
 
-class RecordSpeechCubit extends Cubit<RecordPageState> {
+const SOUND_EXTENSION = 'm4a', SOUND_NAME_PREAMBLE = 'voice_recording_';
+
+class RecordSpeechCubit extends Cubit<RecordSpeechState> {
   RecordSpeechCubit({
     required this.onSoundRecorded,
-    required this.recordedFilePath,
-  }) : super(recordedFilePath != ''
-            ? RecordPageState.StoppedNotEmpty
-            : RecordPageState.StoppedEmpty);
+    required this.recordedFile,
+  }) : super(
+          RecordSpeechState(
+            recordedFile.isEmpty
+                ? RecordState.StoppedNotEmpty
+                : RecordState.StoppedEmpty,
+          ),
+        );
 
   final _audioPlayer = AudioPlayer();
   final _recorder = Record();
   final MAX_DURATION = 30.0;
-  final ValueChanged<String> onSoundRecorded;
+  final void Function(AbiliaFile value) onSoundRecorded;
   double soundDuration = 30.0;
 
   Timer? _recordTimer;
   double progress = 0.0;
-  String recordedFilePath;
+  AbiliaFile recordedFile;
 
   Future<void> startRecording() async {
     var result = await _recorder.hasPermission();
@@ -45,36 +45,45 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
       progress = 0.0;
       await _recorder.start(path: '$tempPath/$fileName.$SOUND_EXTENSION');
       _startTimer(soundDuration);
-      emit(RecordPageState.Recording);
+      emit(RecordSpeechState(RecordState.Recording));
     }
   }
 
   Future<void> stopRecording() async {
-    recordedFilePath = (await _recorder.stop())!;
-    onSoundRecorded(recordedFilePath);
-    _stopTimer();
-    soundDuration = progress;
-    emit(RecordPageState.StoppedNotEmpty);
+    final recordedFilePath = await _recorder.stop();
+
+    if (recordedFilePath != null) {
+      final uri = Uri.tryParse(recordedFilePath);
+      if (uri != null) {
+        final file = File.fromUri(uri);
+        onSoundRecorded(
+          UnstoredAbiliaFile.newFile(file),
+        );
+      }
+      _stopTimer();
+      soundDuration = progress;
+      emit(RecordSpeechState(RecordState.StoppedNotEmpty));
+    }
   }
 
   Future<void> deleteRecording() async {
-    var f = File(recordedFilePath);
+    var f = File(recordedFile.path);
     await f.delete();
     progress = 0.0;
-    recordedFilePath = '';
-    emit(RecordPageState.StoppedEmpty);
+    recordedFile = AbiliaFile.empty;
+    emit(RecordSpeechState(RecordState.StoppedEmpty));
   }
 
   Future<void> playRecording() async {
     progress = 0.0;
-    await _audioPlayer.play(recordedFilePath);
+    await _audioPlayer.play(recordedFile.path);
     _startTimer(soundDuration);
-    emit(RecordPageState.Playing);
+    emit(RecordSpeechState(RecordState.Playing));
   }
 
   Future<void> stopPlaying() async {
     _stopTimer();
-    emit(RecordPageState.StoppedNotEmpty);
+    emit(RecordSpeechState(RecordState.StoppedNotEmpty));
   }
 
   void _startTimer(double maxDuration) {
@@ -86,9 +95,9 @@ class RecordSpeechCubit extends Cubit<RecordPageState> {
         recordTimer.cancel();
         return;
       } else {
-        state == RecordPageState.Recording
-            ? emit(RecordPageState.Recording2)
-            : emit(RecordPageState.Recording);
+        state.state == RecordState.Recording
+            ? emit(RecordSpeechState(RecordState.Recording2))
+            : emit(RecordSpeechState(RecordState.Recording));
         return;
       }
     });

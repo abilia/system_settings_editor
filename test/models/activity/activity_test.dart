@@ -227,7 +227,9 @@ void main() {
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
       infoItem: infoItem,
-      extras: Extras.createNew(startTimeExtraAlarm: 'startTimeExtraAlarm'),
+      extras: Extras.createNew(
+        startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
+      ),
     );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
@@ -282,7 +284,8 @@ void main() {
       title: 'Title',
       startTime: now,
       fileId: '',
-      extras: Extras.createNew(startTimeExtraAlarm: 'startTimeExtraAlarm'),
+      extras: Extras.createNew(
+          startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm')),
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();

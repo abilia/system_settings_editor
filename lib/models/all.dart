@@ -17,7 +17,7 @@ export 'time_interval.dart';
 export 'license.dart';
 export 'generic/generic.dart';
 export 'calendar_type.dart';
-export 'selected_image.dart';
+export 'abilia_file.dart';
 export 'eye_button_settings.dart';
 export 'day_parts.dart';
 export 'sound.dart';
