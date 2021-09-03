@@ -21,7 +21,7 @@ class EditQuestionPage extends StatelessWidget {
       imageAndName: question != null
           ? ImageAndName(
               question.name,
-              SelectedImage.from(
+              AbiliaFile.from(
                 path: question.image,
                 id: question.fileId,
               ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -19,6 +21,11 @@ class SoundCubit extends Cubit<SoundState> {
     });
   }
 
+  Future<void> play(Object sound) async {
+    if (sound is Sound) return playSound(sound);
+    if (sound is File) return playFile(sound);
+  }
+
   Future<void> playSound(Sound sound) async {
     if (sound == Sound.Default) {
       await FlutterRingtonePlayer.playNotification();
@@ -27,6 +34,11 @@ class SoundCubit extends Cubit<SoundState> {
       await audioCache.play('sounds/${sound.fileName()}.mp3');
       emit(SoundState(currentSound: sound));
     }
+  }
+
+  Future<void> playFile(File speech) async {
+    await audioCache.playBytes(await speech.readAsBytes());
+    emit(SoundState(currentSound: speech));
   }
 
   Future<void> stopSound() async {

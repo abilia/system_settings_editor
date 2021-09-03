@@ -1,13 +1,11 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-final String SOUND_EXTENSION = 'm4a';
-final String SOUND_NAME_PREAMBLE = 'voice_recording_';
-
 class RecordingWidget extends StatefulWidget {
-  final String originalSoundFile;
-  final ValueChanged<String> onSoundRecorded;
-  final RecordPageState state;
+  final AbiliaFile originalSoundFile;
+  final ValueChanged<AbiliaFile> onSoundRecorded;
+  final RecordState state;
 
   const RecordingWidget({
     required this.state,
@@ -24,21 +22,24 @@ class RecordingWidget extends StatefulWidget {
 
 class _RecordingWidgetState extends State<RecordingWidget> {
   final MAX_DURATION = 30.0;
-  final ValueChanged<String> onSoundRecorded;
+  final ValueChanged<AbiliaFile> onSoundRecorded;
   double _soundDuration = 30.0;
-  RecordPageState state;
+  RecordState state;
   double _progress = 0.0;
 
-  _RecordingWidgetState({required this.onSoundRecorded, required this.state});
+  _RecordingWidgetState({required this.onSoundRecorded, required this.state}) {
+    ;
+  }
 
   @override
   Widget build(BuildContext context) {
     var actionRowState = ActionRowProvider(state: state);
     var progressIndicator = _progress / _soundDuration;
-    return BlocListener<RecordSpeechCubit, RecordPageState>(
+    return BlocListener<RecordSpeechCubit, RecordSpeechState>(
       listener: (context, state) {
         setState(() {
-          this.state = state;
+          print('state ' + state.toString());
+          this.state = state.state;
           _progress = context.read<RecordSpeechCubit>().progress;
           _soundDuration = context.read<RecordSpeechCubit>().soundDuration;
         });
@@ -111,21 +112,21 @@ class _TimeProgressIndicator extends LinearProgressIndicator {
 }
 
 class ActionRowProvider extends StatelessWidget {
-  final RecordPageState state;
+  final RecordState state;
 
   const ActionRowProvider({Key? key, required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     switch (state) {
-      case RecordPageState.StoppedNotEmpty:
+      case RecordState.StoppedNotEmpty:
         return StoppedNotEmptyState();
-      case RecordPageState.StoppedEmpty:
+      case RecordState.StoppedEmpty:
         return StoppedEmptyState();
-      case RecordPageState.Playing:
+      case RecordState.Playing:
         return PlayingState();
-      case RecordPageState.Recording:
-      case RecordPageState.Recording2:
+      case RecordState.Recording:
+      case RecordState.Recording2:
         return RecordingState();
       default:
         return StoppedEmptyState();
@@ -151,7 +152,7 @@ class PlayingState extends StatelessWidget {
 class RecordingState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+    return BlocBuilder<RecordSpeechCubit, RecordSpeechState>(
         builder: (context, state) {
       return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +173,7 @@ class RecordingState extends StatelessWidget {
 class StoppedEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+    return BlocBuilder<RecordSpeechCubit, RecordSpeechState>(
         builder: (context, state) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -194,7 +195,7 @@ class StoppedEmptyState extends StatelessWidget {
 class StoppedNotEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSpeechCubit, RecordPageState>(
+    return BlocBuilder<RecordSpeechCubit, RecordSpeechState>(
         builder: (context, state) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,

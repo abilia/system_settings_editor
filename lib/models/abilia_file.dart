@@ -5,40 +5,40 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:uuid/uuid.dart';
 
-class SelectedImage extends Equatable {
+class AbiliaFile extends Equatable {
   final String id;
   final String path;
 
   bool get isEmpty => id.isEmpty && path.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
-  const SelectedImage._(
+  const AbiliaFile._(
     this.id,
     this.path,
   );
 
-  factory SelectedImage.from({String? id, String? path}) =>
-      SelectedImage._(id ?? '', path ?? '');
+  factory AbiliaFile.from({String? id, String? path}) =>
+      AbiliaFile._(id ?? '', path ?? '');
 
-  static const empty = SelectedImage._('', '');
+  static const empty = AbiliaFile._('', '');
 
   @override
   List<Object?> get props => [id, path];
 }
 
-class SelectedImageFile extends SelectedImage {
+class UnstoredAbiliaFile extends AbiliaFile {
   final File file;
 
-  const SelectedImageFile._(
+  const UnstoredAbiliaFile._(
     String id,
     String path,
     this.file,
   ) : super._(id, path);
 
-  factory SelectedImageFile.newFile(File file) {
+  factory UnstoredAbiliaFile.newFile(File file) {
     assert(file.existsSync());
     final id = Uuid().v4();
-    return SelectedImageFile._(
+    return UnstoredAbiliaFile._(
       id,
       '${FileStorage.folder}/$id',
       file,
@@ -46,8 +46,8 @@ class SelectedImageFile extends SelectedImage {
   }
 
   @visibleForTesting
-  factory SelectedImageFile.forTest(String id, String path, File file) =>
-      SelectedImageFile._(id, path, file);
+  factory UnstoredAbiliaFile.forTest(String id, String path, File file) =>
+      UnstoredAbiliaFile._(id, path, file);
 
   @override
   List<Object?> get props => [...super.props, file];

@@ -13,3 +13,4 @@ export 'edit_activity_listeners.dart';
 export 'available_for_page.dart';
 export 'date_picker_page.dart';
 export 'activity_wizard_page.dart';
+export 'record_speech_page.dart';

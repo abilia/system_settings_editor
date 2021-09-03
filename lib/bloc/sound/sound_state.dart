@@ -1,7 +1,7 @@
 part of 'sound_cubit.dart';
 
 class SoundState extends Equatable {
-  final Sound? currentSound;
+  final Object? currentSound;
 
   SoundState({this.currentSound});
 

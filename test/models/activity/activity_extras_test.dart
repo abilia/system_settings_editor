@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/activity/activity.dart';
+import 'package:seagull/models/all.dart';
 
 void main() {
   test('test creating extras object', () {
@@ -7,16 +8,20 @@ void main() {
         '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
 
     final extras = Extras.createNew(
-      startTimeExtraAlarm: 'abcdef',
-      startTimeExtraAlarmFileId: 'ghijkl',
-      endTimeExtraAlarm: 'mnopqrs',
-      endTimeExtraAlarmFileId: 'tuvwxyz',
+      startTimeExtraAlarm: AbiliaFile.from(
+        id: 'ghijkl',
+        path: 'abcdef',
+      ),
+      endTimeExtraAlarm: AbiliaFile.from(
+        id: 'tuvwxyz',
+        path: 'mnopqrs',
+      ),
     );
 
-    expect(extras.startTimeExtraAlarm, 'abcdef');
-    expect(extras.startTimeExtraAlarmFileId, 'ghijkl');
-    expect(extras.endTimeExtraAlarm, 'mnopqrs');
-    expect(extras.endTimeExtraAlarmFileId, 'tuvwxyz');
+    expect(extras.startTimeExtraAlarm.path, 'abcdef');
+    expect(extras.startTimeExtraAlarm.id, 'ghijkl');
+    expect(extras.endTimeExtraAlarm.path, 'mnopqrs');
+    expect(extras.endTimeExtraAlarm.id, 'tuvwxyz');
     expect(extras.toJsonString(), jsonString);
   });
 
@@ -26,12 +31,12 @@ void main() {
 
     final extras = Extras.fromJsonString(jsonString);
 
-    expect(extras.startTimeExtraAlarm,
+    expect(extras.startTimeExtraAlarm.path,
         '/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav');
-    expect(extras.startTimeExtraAlarmFileId,
-        '30ee75a1-6c2f-4fcd-9f06-d2365e6012b0');
-    expect(extras.endTimeExtraAlarm, 'higjhvvh');
-    expect(extras.endTimeExtraAlarmFileId, '734871297863');
+    expect(
+        extras.startTimeExtraAlarm.id, '30ee75a1-6c2f-4fcd-9f06-d2365e6012b0');
+    expect(extras.endTimeExtraAlarm.path, 'higjhvvh');
+    expect(extras.endTimeExtraAlarm.id, '734871297863');
     expect(extras.toJsonString(), jsonString);
   });
 
@@ -39,13 +44,14 @@ void main() {
     final jsonString =
         '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
     final modifiendJsonString =
-        '''{\"startTimeExtraAlarm\":\"new startTimeExtraAlarm\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+        '''{\"startTimeExtraAlarm\":\"new startTimeExtraAlarm\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
 
     final extras = Extras.fromJsonString(jsonString);
 
-    var extrasChanged =
-        extras.copyWith(startTimeExtraAlarm: 'new startTimeExtraAlarm');
-    expect(extrasChanged.startTimeExtraAlarm, 'new startTimeExtraAlarm');
+    var extrasChanged = extras.copyWith(
+        startTimeExtraAlarm: AbiliaFile.from(path: 'new startTimeExtraAlarm'));
+    expect(extrasChanged.startTimeExtraAlarm,
+        AbiliaFile.from(path: 'new startTimeExtraAlarm'));
     expect(extrasChanged.toJsonString(), modifiendJsonString);
   });
 
@@ -53,12 +59,14 @@ void main() {
     final jsonString =
         '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
     final modifiendJsonString =
-        '''{\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+        '''{\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
 
     final extras = Extras.fromJsonString(jsonString);
 
-    var extrasChanged = extras.copyWith(startTimeExtraAlarm: '');
-    expect(extrasChanged.startTimeExtraAlarm, '');
+    var extrasChanged = extras.copyWith(startTimeExtraAlarm: AbiliaFile.empty);
+    expect(extrasChanged.startTimeExtraAlarm.id, '');
+    expect(extrasChanged.startTimeExtraAlarm.path, '');
+    expect(extrasChanged.startTimeExtraAlarm.isEmpty, isTrue);
     expect(extrasChanged.toJsonString(), modifiendJsonString);
   });
 
@@ -69,16 +77,19 @@ void main() {
     final extras = Extras.empty;
 
     var extrasChanged = extras.copyWith(
-      startTimeExtraAlarm: 'abcdef',
-      startTimeExtraAlarmFileId: 'ghijkl',
-      endTimeExtraAlarm: 'mnopqrs',
-      endTimeExtraAlarmFileId: 'tuvwxyz',
-    );
+        startTimeExtraAlarm: AbiliaFile.from(
+          path: 'abcdef',
+          id: 'ghijkl',
+        ),
+        endTimeExtraAlarm: AbiliaFile.from(
+          path: 'mnopqrs',
+          id: 'tuvwxyz',
+        ));
 
-    expect(extrasChanged.startTimeExtraAlarm, 'abcdef');
-    expect(extrasChanged.startTimeExtraAlarmFileId, 'ghijkl');
-    expect(extrasChanged.endTimeExtraAlarm, 'mnopqrs');
-    expect(extrasChanged.endTimeExtraAlarmFileId, 'tuvwxyz');
+    expect(extrasChanged.startTimeExtraAlarm.path, 'abcdef');
+    expect(extrasChanged.startTimeExtraAlarm.id, 'ghijkl');
+    expect(extrasChanged.endTimeExtraAlarm.path, 'mnopqrs');
+    expect(extrasChanged.endTimeExtraAlarm.id, 'tuvwxyz');
     expect(extrasChanged.toJsonString(), jsonString);
   });
 }

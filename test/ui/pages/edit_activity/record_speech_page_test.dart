@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/record_speech.dart';
@@ -44,8 +45,8 @@ void main() {
 
     testWidgets('record page smoke test no previous file',
         (WidgetTester tester) async {
-      await tester.pumpWidget(
-          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: '')));
+      await tester.pumpWidget(wrapWithMaterialApp(
+          RecordSpeechPage(originalSoundFile: AbiliaFile.from(path: ''))));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedEmptyState), findsOneWidget);
@@ -54,8 +55,8 @@ void main() {
 
     testWidgets('record page smoke test existing previous file',
         (WidgetTester tester) async {
-      await tester.pumpWidget(
-          wrapWithMaterialApp(RecordSpeechPage(originalSoundFile: 'testfile')));
+      await tester.pumpWidget(wrapWithMaterialApp(RecordSpeechPage(
+          originalSoundFile: AbiliaFile.from(path: 'testfile'))));
       await tester.pumpAndSettle();
       expect(find.byType(RecordSpeechPage), findsOneWidget);
       expect(find.byType(StoppedNotEmptyState), findsOneWidget);

@@ -10,11 +10,19 @@ class LoadUserFiles extends UserFileEvent {}
 
 class _DownloadUserFiles extends UserFileEvent {}
 
-class ImageAdded extends UserFileEvent {
-  final SelectedImageFile selectedImage;
+abstract class FileAdded extends UserFileEvent {
+  final UnstoredAbiliaFile unstoredFile;
 
-  const ImageAdded(this.selectedImage);
+  const FileAdded(this.unstoredFile);
 
   @override
-  List<Object> get props => [selectedImage];
+  List<Object> get props => [unstoredFile];
+}
+
+class ImageAdded extends FileAdded {
+  const ImageAdded(UnstoredAbiliaFile selectedImage) : super(selectedImage);
+}
+
+class RecordingAdded extends FileAdded {
+  const RecordingAdded(UnstoredAbiliaFile selectedImage) : super(selectedImage);
 }

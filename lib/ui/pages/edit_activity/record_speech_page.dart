@@ -1,30 +1,27 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/record_speech_cubit.dart';
-import 'package:seagull/ui/components/activity/record_speech.dart';
-
-import '../../all.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class RecordSpeechPage extends StatefulWidget {
-  final String originalSoundFile;
+  final AbiliaFile originalSoundFile;
 
   RecordSpeechPage({required this.originalSoundFile});
 
   @override
   State<StatefulWidget> createState() {
-    return RecordSpeechPageState(originalSoundFile: originalSoundFile);
+    return RecordSpeechPageState();
   }
 }
 
 class RecordSpeechPageState extends State<RecordSpeechPage> {
-  String originalSoundFile;
-  String _recordedSoundFile = '';
+  AbiliaFile _recordedSoundFile = AbiliaFile.empty;
 
-  RecordSpeechPageState({this.originalSoundFile = ''});
+  RecordSpeechPageState();
 
   @override
   Widget build(BuildContext context) {
     return _RecordSpeechPage(
-        originalSoundFile: originalSoundFile,
+        originalSoundFile: widget.originalSoundFile,
         save: _recordedSoundFile != widget.originalSoundFile
             ? () => Navigator.of(context).maybePop(_recordedSoundFile)
             : null,
@@ -34,29 +31,12 @@ class RecordSpeechPageState extends State<RecordSpeechPage> {
           });
         });
   }
-
-  // UserFile _createUserFile(String recordedSoundFile) {
-  //   return UserFile(
-  //     contentType: SOUND_EXTENSION,
-  //     deleted: false,
-  //     fileSize: 1,
-  //     id: recordedSoundFile
-  //         .split('/')
-  //         .last
-  //         .replaceFirst(SOUND_NAME_PREAMBLE, '')
-  //         .replaceFirst('.$SOUND_EXTENSION', ''),
-  //     md5: '',
-  //     path: recordedSoundFile,
-  //     sha1: '',
-  //     fileLoaded: true,
-  //   );
-  // }
 }
 
 class _RecordSpeechPage extends StatelessWidget {
   final GestureTapCallback? save;
-  final ValueChanged<String> onSoundRecorded;
-  final String originalSoundFile;
+  final ValueChanged<AbiliaFile> onSoundRecorded;
+  final AbiliaFile originalSoundFile;
 
   _RecordSpeechPage(
       {required this.originalSoundFile,
@@ -81,12 +61,12 @@ class _RecordSpeechPage extends StatelessWidget {
             child: BlocProvider(
               create: (context) => RecordSpeechCubit(
                 onSoundRecorded: onSoundRecorded,
-                recordedFilePath: originalSoundFile,
+                recordedFile: originalSoundFile,
               ),
               child: RecordingWidget(
-                  state: originalSoundFile != ''
-                      ? RecordPageState.StoppedNotEmpty
-                      : RecordPageState.StoppedEmpty,
+                  state: originalSoundFile.isNotEmpty
+                      ? RecordState.StoppedNotEmpty
+                      : RecordState.StoppedEmpty,
                   originalSoundFile: originalSoundFile,
                   onSoundRecorded: onSoundRecorded),
             ),

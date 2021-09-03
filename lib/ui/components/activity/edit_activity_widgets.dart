@@ -33,8 +33,8 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 }
 
 class NameAndPictureWidget extends StatelessWidget {
-  final SelectedImage selectedImage;
-  final void Function(SelectedImage)? onImageSelected;
+  final AbiliaFile selectedImage;
+  final void Function(AbiliaFile)? onImageSelected;
   final void Function(String)? onTextEdit;
   final bool errorState;
   final String text;
@@ -82,9 +82,9 @@ class NameAndPictureWidget extends StatelessWidget {
 
 class SelectPictureWidget extends StatelessWidget {
   static final imageSize = 84.0.s, padding = 4.0.s;
-  final SelectedImage selectedImage;
+  final AbiliaFile selectedImage;
 
-  final void Function(SelectedImage)? onImageSelected;
+  final void Function(AbiliaFile)? onImageSelected;
   final bool errorState;
 
   const SelectPictureWidget({
@@ -114,7 +114,7 @@ class SelectPictureWidget extends StatelessWidget {
   }
 
   void imageClick(BuildContext context) async {
-    final newSelectedImage = await Navigator.of(context).push<SelectedImage>(
+    final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
@@ -124,7 +124,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage is SelectedImageFile) {
+      if (newSelectedImage is UnstoredAbiliaFile) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );
@@ -142,7 +142,7 @@ class SelectPictureWidget extends StatelessWidget {
 
 class SelectedImageWidget extends StatelessWidget {
   final GestureTapCallback? onTap;
-  final SelectedImage selectedImage;
+  final AbiliaFile selectedImage;
 
   final bool errorState;
 

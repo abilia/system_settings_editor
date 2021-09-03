@@ -6,12 +6,15 @@ class Extras extends Equatable {
       endTimeExtraAlarmKey = 'endTimeExtraAlarm',
       endTimeExtraAlarmFileIdKey = 'endTimeExtraAlarmFileId';
 
-  String get startTimeExtraAlarm => _extrasMap[startTimeExtraAlarmKey] ?? '';
-  String get startTimeExtraAlarmFileId =>
-      _extrasMap[startTimeExtraAlarmFileIdKey] ?? '';
-  String get endTimeExtraAlarm => _extrasMap['endTimeExtraAlarm'] ?? '';
-  String get endTimeExtraAlarmFileId =>
-      _extrasMap['endTimeExtraAlarmFileId'] ?? '';
+  AbiliaFile get startTimeExtraAlarm => AbiliaFile.from(
+        id: _extrasMap[startTimeExtraAlarmFileIdKey],
+        path: _extrasMap[startTimeExtraAlarmKey],
+      );
+
+  AbiliaFile get endTimeExtraAlarm => AbiliaFile.from(
+        id: _extrasMap['endTimeExtraAlarmFileId'],
+        path: _extrasMap['endTimeExtraAlarm'],
+      );
 
   final Map<String, dynamic> _extrasMap;
   const Extras._(Map<String, dynamic> extrasMap) : _extrasMap = extrasMap;
@@ -19,35 +22,35 @@ class Extras extends Equatable {
   static const Extras empty = Extras._({});
 
   factory Extras.createNew({
-    String? startTimeExtraAlarm,
-    String? startTimeExtraAlarmFileId,
-    String? endTimeExtraAlarm,
-    String? endTimeExtraAlarmFileId,
+    AbiliaFile? startTimeExtraAlarm,
+    AbiliaFile? endTimeExtraAlarm,
   }) =>
       Extras._({
-        startTimeExtraAlarmKey: startTimeExtraAlarm,
-        startTimeExtraAlarmFileIdKey: startTimeExtraAlarmFileId,
-        endTimeExtraAlarmKey: endTimeExtraAlarm,
-        endTimeExtraAlarmFileIdKey: endTimeExtraAlarmFileId
+        if (startTimeExtraAlarm != null) ...{
+          startTimeExtraAlarmKey: startTimeExtraAlarm.path,
+          startTimeExtraAlarmFileIdKey: startTimeExtraAlarm.id,
+        },
+        if (endTimeExtraAlarm != null) ...{
+          endTimeExtraAlarmKey: endTimeExtraAlarm.path,
+          endTimeExtraAlarmFileIdKey: endTimeExtraAlarm.id,
+        }
       });
 
   Extras copyWith({
-    String? startTimeExtraAlarm,
-    String? startTimeExtraAlarmFileId,
-    String? endTimeExtraAlarm,
-    String? endTimeExtraAlarmFileId,
+    AbiliaFile? startTimeExtraAlarm,
+    AbiliaFile? endTimeExtraAlarm,
   }) =>
       Extras._(Map.from(_extrasMap)
         ..addAll(
           {
-            if (startTimeExtraAlarm != null)
-              startTimeExtraAlarmKey: startTimeExtraAlarm,
-            if (startTimeExtraAlarmFileId != null)
-              startTimeExtraAlarmFileIdKey: startTimeExtraAlarmFileId,
-            if (endTimeExtraAlarm != null)
-              endTimeExtraAlarmKey: endTimeExtraAlarm,
-            if (endTimeExtraAlarmFileId != null)
-              endTimeExtraAlarmFileIdKey: endTimeExtraAlarmFileId,
+            if (startTimeExtraAlarm != null) ...{
+              startTimeExtraAlarmKey: startTimeExtraAlarm.path,
+              startTimeExtraAlarmFileIdKey: startTimeExtraAlarm.id,
+            },
+            if (endTimeExtraAlarm != null) ...{
+              endTimeExtraAlarmKey: endTimeExtraAlarm.path,
+              endTimeExtraAlarmFileIdKey: endTimeExtraAlarm.id,
+            }
           },
         )
         ..removeWhere((key, value) => value is String && value.isEmpty));
