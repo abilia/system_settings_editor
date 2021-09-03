@@ -36,39 +36,96 @@ extension RecursExtensions on RecurrentType {
 extension RecurringActivityExtension on Activity {
   List<ActivityDay> dayActivitiesForDay(DateTime day) {
     if (!isRecurring) {
-      if (day.isAtSameDay(startTime) ||
-          (!fullDay &&
-              day.inExclusiveRange(
-                  startDate: startTime, endDate: noneRecurringEnd))) {
-        return [ActivityDay(this, startTime.onlyDays())];
-      }
-      return [];
+      return [
+        if (
+        // Either if start time is on start day
+        day.isAtSameDay(startTime) ||
+            // or the activities spans over this midnight
+            (!fullDay &&
+                day.inExclusiveRange(
+                  startDate: startTime,
+                  endDate: noneRecurringEnd,
+                )))
+          ActivityDay(this, startTime.onlyDays())
+      ];
     }
 
+    // If the day is fully outside the span of the recurring
     if (!day.inInclusiveRange(
-        startDate: startTime.onlyDays(), endDate: recurs.end.onlyDays())) {
-      return [];
+      startDate: startTime.onlyDays(),
+      endDate: recurs.end.onlyDays(),
+    )) {
+      return const [];
     }
 
     if (fullDay) {
-      if (recursOnDay(day)) {
-        return [ActivityDay(this, day)];
-      }
-      return [];
+      return [
+        if (recursOnDay(day)) ActivityDay(this, day),
+      ];
     }
 
-    final result = <ActivityDay>[];
-    for (var dayIterator = day;
-        endClock(dayIterator).isAfter(day);
-        dayIterator = dayIterator.previousDay()) {
-      if (recursOnDay(dayIterator)) {
-        result.add(ActivityDay(this, dayIterator));
-      }
+    return [
+      // Starting with this day, we step back one day
+      for (var dayIterator = day;
+          // until the end time of this recurring acitvity is before the start of the day
+          endClock(dayIterator).isAfter(day);
+          dayIterator = dayIterator.previousDay())
+        // Add if this day recurs on that day
+        if (recursOnDay(dayIterator)) ActivityDay(this, dayIterator)
+    ];
+  }
+
+  List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) {
+    // Don't care about full days on night
+    if (fullDay) {
+      return const [];
     }
-    return result;
+
+    final nextDay = day.nextDay();
+    final nightEnd = nextDay.add(dayParts.morning);
+    final nightStart = day.add(dayParts.night);
+
+    if (!isRecurring) {
+      return [
+        if (startTime.inExclusiveRange(
+              startDate: nightStart,
+              endDate: nightEnd,
+            ) ||
+            noneRecurringEnd.inExclusiveRange(
+              startDate: nightStart,
+              endDate: nightEnd,
+            ))
+          ActivityDay(this, startTime.onlyDays())
+      ];
+    }
+
+    // If the day is fully outside the span of the recurring
+    if (recurs.end.isBefore(nightStart) || startTime.isAfter(nightEnd)) {
+      return const [];
+    }
+
+    return [
+      // Starting with this next day, we step back one day
+      for (var dayIterator = nextDay;
+          // until the end time of this recurring acitvity is before the start of the day
+          day.isAfter(endClock(dayIterator));
+          dayIterator = dayIterator.previousDay())
+
+        // Add if this day recurs on that day
+        if (recursOnDay(day) &&
+            recursOnNight(dayIterator, nightStart, nightEnd))
+          ActivityDay(this, dayIterator)
+    ];
   }
 
   bool recursOnDay(DateTime day) {
     return recurs.recursOnDay(day);
+  }
+
+  bool recursOnNight(DateTime day, DateTime nightStart, DateTime nightEnd) {
+    return startClock(day)
+            .inExclusiveRange(startDate: nightStart, endDate: nightEnd) ||
+        endClock(day)
+            .inExclusiveRange(startDate: nightStart, endDate: nightEnd);
   }
 }

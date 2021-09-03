@@ -25,7 +25,7 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
 
   ActivitiesOccasionLoaded({
     required this.activities,
-    required this.fullDayActivities,
+    this.fullDayActivities = const [],
     required this.day,
     required this.occasion,
   })  : pastActivities = activities.where((ao) => ao.isPast).toList(),

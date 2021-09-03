@@ -132,13 +132,15 @@ void main() {
   });
 
   group('timepillar dots', () {
-    testWidgets('Current dots shows', (WidgetTester tester) async {
+    testWidgets('Current and future dots shows', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byType(PastDots), findsNothing);
       expect(find.byType(AnimatedDot), findsWidgets);
-      expect(find.byType(FutureDots), findsNothing);
+      expect(find.byType(CurrentDots), findsWidgets);
+      expect(find.byType(FutureDots), findsWidgets);
     });
+
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -149,6 +151,7 @@ void main() {
       expect(find.byType(AnimatedDot), findsNothing);
       expect(find.byType(FutureDots), findsNothing);
     });
+
     testWidgets('Tomorrow shows only future dots', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -491,6 +494,8 @@ void main() {
             ),
           ];
     });
+
+    // TODO test activities on night timepillar shows
 
     testWidgets('Shows activity', (WidgetTester tester) async {
       // Act

@@ -48,6 +48,19 @@ class TimepillarState extends Equatable {
   double get timePillarTotalWidth =>
       (defaultTimePillarWidth + _timePillarPadding * 2) * zoom;
   double get topPadding => 2 * hourPadding;
+  bool get intervalSpansMidnight =>
+      timepillarInterval.endTime.isDayAfter(timepillarInterval.startTime);
+
+  double topOffset(DateTime hour) {
+    if (intervalSpansMidnight &&
+        hour.hour < timepillarInterval.startTime.hour) {
+      return hoursToPixels(
+        timepillarInterval.startTime.hour - Duration.hoursPerDay,
+        dotDistance,
+      );
+    }
+    return hoursToPixels(timepillarInterval.startTime.hour, dotDistance);
+  }
 
   @override
   List<Object> get props => [timepillarInterval, zoom];

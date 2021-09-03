@@ -243,10 +243,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                     return Timeline(
                                       now: now,
                                       width: boxConstraints.maxWidth,
-                                      offset: hoursToPixels(
-                                              interval.startTime.hour,
-                                              ts.dotDistance) -
-                                          topMargin,
+                                      offset: ts.topOffset(now) - topMargin,
                                       timepillarState: ts,
                                     );
                                   }

@@ -83,7 +83,7 @@ class ActivityBoard extends StatelessWidget {
           ? 0
           : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
                   ts.dotDistance) -
-              hoursToPixels(interval.startTime.hour, ts.dotDistance);
+              ts.topOffset(startTime);
 
       var height = max(dotHeight, renderedHeight);
 

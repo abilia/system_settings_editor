@@ -16,7 +16,6 @@ class TimePillar extends StatelessWidget {
   final bool use12h;
   final List<NightPart> nightParts;
   final DayParts dayParts;
-  bool get today => dayOccasion == Occasion.current;
   final bool columnOfDots;
   final bool preview;
   final double topMargin;
@@ -35,8 +34,8 @@ class TimePillar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dots = today
-        ? _todayDots
+    final dots = dayOccasion == Occasion.current
+        ? _currentDots
         : dayOccasion == Occasion.past
             ? _pastDots
             : _futureDots;
@@ -113,8 +112,8 @@ class TimePillar extends StatelessWidget {
     );
   }
 
-  Widget _todayDots(DateTime hour, bool isNight, bool columnOfDots) =>
-      TodayDots(
+  Widget _currentDots(DateTime hour, bool isNight, bool columnOfDots) =>
+      CurrentDots(
         hour: hour,
         isNight: isNight,
         columnOfDots: columnOfDots,

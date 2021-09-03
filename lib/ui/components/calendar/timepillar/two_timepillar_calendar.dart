@@ -59,8 +59,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 232,
-                  child: BlocProvider<TimepillarBloc>.value(
-                    value: TimepillarBloc.fixed(state: dayTimepillarState),
+                  child: BlocProvider<TimepillarBloc>(
+                    create: (_) =>
+                        TimepillarBloc.fixed(state: dayTimepillarState),
                     child: OneTimepillarCalendar(
                       activityState: activityState,
                       timepillarState: dayTimepillarState,
@@ -79,27 +80,45 @@ class TwoTimepillarCalendar extends StatelessWidget {
                 SizedBox(width: 4.s),
                 Flexible(
                   flex: 135,
-                  child: BlocProvider<TimepillarBloc>.value(
-                    value: TimepillarBloc.fixed(state: nightTimepillarState),
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider<TimepillarBloc>(
+                        create: (_) =>
+                            TimepillarBloc.fixed(state: nightTimepillarState),
+                      ),
+                      BlocProvider<NightActivitiesCubit>(
+                        create: (context) => NightActivitiesCubit(
+                          activitiesBloc: context.read<ActivitiesBloc>(),
+                          clockBloc: context.read<ClockBloc>(),
+                          dayPickerBloc: context.read<DayPickerBloc>(),
+                          memoplannerSettingBloc:
+                              context.read<MemoplannerSettingBloc>(),
+                        ),
+                      ),
+                    ],
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       height: nightTimepillarHeight,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
-                      child: OneTimepillarCalendar(
-                        activityState: activityState,
-                        timepillarState: nightTimepillarState,
-                        dayParts: memoplannerSettingsState.dayParts,
-                        displayTimeline:
-                            memoplannerSettingsState.displayTimeline,
-                        showCategories: memoplannerSettingsState.showCategories,
-                        showCategoryLabels: false,
-                        scrollToTimeOffset: false,
-                        displayHourLines:
-                            memoplannerSettingsState.displayHourLines,
-                        topMargin: verticalMargin,
-                        bottomMargin: verticalMargin,
+                      child: BlocBuilder<NightActivitiesCubit,
+                          ActivitiesOccasionLoaded>(
+                        builder: (context, nightState) => OneTimepillarCalendar(
+                          activityState: nightState,
+                          timepillarState: nightTimepillarState,
+                          dayParts: memoplannerSettingsState.dayParts,
+                          displayTimeline:
+                              memoplannerSettingsState.displayTimeline,
+                          showCategories:
+                              memoplannerSettingsState.showCategories,
+                          showCategoryLabels: false,
+                          scrollToTimeOffset: false,
+                          displayHourLines:
+                              memoplannerSettingsState.displayHourLines,
+                          topMargin: verticalMargin,
+                          bottomMargin: verticalMargin,
+                        ),
                       ),
                     ),
                   ),
