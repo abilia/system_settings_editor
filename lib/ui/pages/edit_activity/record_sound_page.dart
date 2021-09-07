@@ -1,33 +1,34 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/models/timer/ticker.dart';
 import 'package:seagull/ui/all.dart';
 
-class RecordSpeechPage extends StatefulWidget {
+class RecordSoundPage extends StatefulWidget {
   final AbiliaFile originalSoundFile;
 
-  RecordSpeechPage({required this.originalSoundFile});
+  RecordSoundPage({required this.originalSoundFile});
 
   @override
   State<StatefulWidget> createState() {
-    return RecordSpeechPageState();
+    return RecordSoundPageState(recordedSoundFile: originalSoundFile);
   }
 }
 
-class RecordSpeechPageState extends State<RecordSpeechPage> {
-  AbiliaFile _recordedSoundFile = AbiliaFile.empty;
+class RecordSoundPageState extends State<RecordSoundPage> {
+  AbiliaFile recordedSoundFile = AbiliaFile.empty;
 
-  RecordSpeechPageState();
+  RecordSoundPageState({required this.recordedSoundFile});
 
   @override
   Widget build(BuildContext context) {
     return _RecordSpeechPage(
         originalSoundFile: widget.originalSoundFile,
-        save: _recordedSoundFile != widget.originalSoundFile
-            ? () => Navigator.of(context).maybePop(_recordedSoundFile)
+        save: recordedSoundFile != widget.originalSoundFile
+            ? () => Navigator.of(context).maybePop(recordedSoundFile)
             : null,
         onSoundRecorded: (s) {
           setState(() {
-            _recordedSoundFile = s;
+            recordedSoundFile = s;
           });
         });
   }
@@ -47,6 +48,7 @@ class _RecordSpeechPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
+
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.speech,
@@ -58,17 +60,21 @@ class _RecordSpeechPage extends StatelessWidget {
             data: theme.copyWith(
                 textTheme: theme.textTheme
                     .copyWith(subtitle1: abiliaTextTheme.headline4)),
-            child: BlocProvider(
-              create: (context) => RecordSpeechCubit(
-                onSoundRecorded: onSoundRecorded,
-                recordedFile: originalSoundFile,
-              ),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => TimerBloc(ticker: AudioTicker()),
+                ),
+                BlocProvider(
+                  create: (context) => RecordSoundCubit(
+                    onSoundRecorded: onSoundRecorded,
+                    recordedFile: originalSoundFile,
+                  ),
+                ),
+              ],
               child: RecordingWidget(
-                  state: originalSoundFile.isNotEmpty
-                      ? RecordState.StoppedNotEmpty
-                      : RecordState.StoppedEmpty,
-                  originalSoundFile: originalSoundFile,
-                  onSoundRecorded: onSoundRecorded),
+                state: RecordSoundState(RecordState.Stopped, originalSoundFile),
+              ),
             ),
           ),
         ],

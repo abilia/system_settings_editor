@@ -231,24 +231,6 @@ class StopButton extends StatelessWidget {
   }
 }
 
-class PlaySpeechButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  const PlaySpeechButton({
-    Key? key,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GreyButton(
-      text: Translator.of(context).translate.play,
-      icon: AbiliaIcons.play_sound,
-      onPressed: onPressed,
-    );
-  }
-}
-
 class SaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
   const SaveButton({this.onPressed});

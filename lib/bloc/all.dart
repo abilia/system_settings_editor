@@ -31,4 +31,5 @@ export 'slide_show/slide_show_cubit.dart';
 export 'sortable/my_photos/my_photos_bloc.dart';
 export 'sound/sound_cubit.dart';
 export 'activities/activity_wizard/activity_wizard_cubit.dart';
-export 'activities/record_speech/record_speech_cubit.dart';
+export 'activities/record_sound/record_sound_cubit.dart';
+export 'timer/timer_bloc.dart';

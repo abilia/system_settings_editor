@@ -24,6 +24,7 @@ class SoundCubit extends Cubit<SoundState> {
   Future<void> play(Object sound) async {
     if (sound is Sound) return playSound(sound);
     if (sound is File) return playFile(sound);
+    if (sound is AbiliaFile) return playAbiliaFile(sound);
   }
 
   Future<void> playSound(Sound sound) async {
@@ -38,6 +39,12 @@ class SoundCubit extends Cubit<SoundState> {
 
   Future<void> playFile(File speech) async {
     await audioCache.playBytes(await speech.readAsBytes());
+    emit(SoundState(currentSound: speech));
+  }
+
+  Future<void> playAbiliaFile(AbiliaFile speech) async {
+    await audioCache
+        .playBytes(await File(speech.path + '/' + speech.id).readAsBytes());
     emit(SoundState(currentSound: speech));
   }
 
