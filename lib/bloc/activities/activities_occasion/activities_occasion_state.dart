@@ -38,7 +38,6 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
         activities,
         fullDayActivities,
         day,
-        isToday,
       ];
 
   @override

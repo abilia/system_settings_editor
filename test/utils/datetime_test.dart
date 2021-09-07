@@ -223,10 +223,10 @@ void main() {
   group('DayPart', () {
     test('Correct day part', () {
       final dayParts = DayParts(
-        6.hours().inMilliseconds,
-        10.hours().inMilliseconds,
-        18.hours().inMilliseconds,
-        23.hours().inMilliseconds,
+        morningStart: 6.hours().inMilliseconds,
+        dayStart: 10.hours().inMilliseconds,
+        eveningStart: 18.hours().inMilliseconds,
+        nightStart: 23.hours().inMilliseconds,
       );
       expect(DateTime(2020, 10, 07, 00, 00).dayPart(dayParts), DayPart.night);
       expect(DateTime(2020, 10, 07, 02, 00).dayPart(dayParts), DayPart.night);

@@ -459,7 +459,395 @@ void main() {
       });
     });
   });
+
   group('Activities for night span', () {
-    // TODO write test for nigth span
+    group('bounderies', () {
+      test('starting on night start', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final start = day.add(dayParts.night);
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, day)]);
+      });
+
+      test('starting on minute before night start', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final start = day.add(dayParts.night).subtract(1.minutes());
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+
+        expect(res, isEmpty);
+      });
+
+      test('starting on minute before night start witht 2 min duration', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final start = day.add(dayParts.night).subtract(1.minutes());
+        final activity = Activity.createNew(
+          startTime: start,
+          duration: 2.minutes(),
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+
+        expect(res, [ActivityDay(activity, day)]);
+      });
+
+      test('starting on morning start', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final start = day.nextDay().add(dayParts.morning);
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('starting 12 at day before, ends 12 day after included', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final previusDay = day.previousDay();
+        final start = previusDay.add(12.hours());
+        final activity = Activity.createNew(
+          startTime: start,
+          duration: 24.hours(),
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, previusDay)]);
+      });
+
+      test('starting on minute before morning start ', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final start = nextDay.add(dayParts.morning).subtract(1.minutes());
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, nextDay)]);
+      });
+
+      test('ending on night start', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final duration = 30.minutes();
+        final start = day.add(dayParts.night).subtract(duration);
+        final activity = Activity.createNew(
+          startTime: start,
+          duration: duration,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('ending on minute after night start', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final duration = 30.minutes();
+        final start =
+            day.add(dayParts.night).subtract(duration).add(1.minutes());
+        final activity = Activity.createNew(
+          startTime: start,
+          duration: duration,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, day)]);
+      });
+      test('spanning past whole span', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+
+        final start = day.add(dayParts.evening);
+        final activity = Activity.createNew(
+          startTime: start,
+          duration: 24.hours(),
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, day)]);
+      });
+    });
+
+    group('other DayParts', () {
+      test('early night', () {
+        final dayParts = DayParts(nightStart: DayParts.nightLimit.min);
+        final day = DateTime(2021, 09, 03);
+        final start = day.add(dayParts.night);
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity, day)]);
+      });
+
+      test('late night', () {
+        final dayParts = DayParts(nightStart: DayParts.nightLimit.max);
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final start = day.add(dayParts.night);
+        final activity1 = Activity.createNew(startTime: start);
+        final activity2 = Activity.createNew(
+          startTime: start.subtract(1.minutes()),
+        );
+        final res = activity1.nightActivitiesForDay(day, dayParts);
+        expect(res, [ActivityDay(activity1, nextDay)]);
+        final res2 = activity2.nightActivitiesForDay(day, dayParts);
+        expect(res2, isEmpty);
+      });
+
+      test('early morning', () {
+        final dayParts = DayParts(morningStart: DayParts.morningLimit.min);
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final start = nextDay.add(dayParts.morning);
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+
+        final start2 = start.subtract(1.minutes());
+        final activity2 = Activity.createNew(startTime: start2);
+        final res2 = activity2.nightActivitiesForDay(day, dayParts);
+        expect(res2, [ActivityDay(activity2, nextDay)]);
+      });
+
+      test('late morning', () {
+        final dayParts = DayParts(
+          morningStart: DayParts.morningLimit.max,
+          dayStart: DayParts.dayDefault + Duration.millisecondsPerHour,
+        );
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final start = nextDay.add(dayParts.morning);
+        final activity = Activity.createNew(startTime: start);
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+
+        final start2 = start.subtract(1.minutes());
+        final activity2 = Activity.createNew(startTime: start2);
+        final res2 = activity2.nightActivitiesForDay(day, dayParts);
+        expect(res2, [ActivityDay(activity2, nextDay)]);
+      });
+    });
+
+    group('fullday', () {
+      test('on day ', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final activity = Activity.createNew(
+          startTime: day,
+          duration: 24.hours() - 1.milliseconds(),
+          fullDay: true,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('on next day ', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final activity = Activity.createNew(
+          startTime: nextDay,
+          duration: 24.hours() - 1.milliseconds(),
+          fullDay: true,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('on day - recurring', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final activity = Activity.createNew(
+          startTime: day,
+          duration: 24.hours() - 1.milliseconds(),
+          fullDay: true,
+          recurs: Recurs.everyDay,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('on next day ', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final activity = Activity.createNew(
+          startTime: nextDay,
+          duration: 24.hours() - 1.milliseconds(),
+          fullDay: true,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+
+      test('on next day - recurring', () {
+        final dayParts = DayParts.standard();
+        final day = DateTime(2021, 09, 03);
+        final nextDay = day.nextDay();
+        final activity = Activity.createNew(
+          startTime: nextDay,
+          duration: 24.hours() - 1.milliseconds(),
+          fullDay: true,
+          recurs: Recurs.everyDay,
+        );
+        final res = activity.nightActivitiesForDay(day, dayParts);
+        expect(res, isEmpty);
+      });
+    });
+
+    group('recurring', () {
+      test(
+          'Activity with endtime before start time does not shows ( bug SGC-148 )',
+          () {
+        final dayParts = DayParts.standard();
+        // Arrange
+        final splitStartTime = DateTime(2020, 04, 01, 23, 30, 00, 00);
+        final splitEndTime = DateTime(2020, 03, 30, 23, 59, 59, 999);
+        final day = DateTime(2020, 04, 01);
+
+        final splitRecurring = Activity.createNew(
+          title: 'test',
+          recurs: Recurs.raw(
+            Recurs.TYPE_WEEKLY,
+            16383,
+            splitEndTime.millisecondsSinceEpoch,
+          ),
+          startTime: splitStartTime,
+        );
+        // Act
+        final result = splitRecurring.nightActivitiesForDay(day, dayParts);
+
+        // Assert
+        expect(result, isEmpty);
+      });
+
+      group('bounderies', () {
+        group('monthly', () {
+          test('monthly on day before midnight', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 09, 03);
+            final start = DateTime(2001, 01, 01).add(
+              dayParts.night,
+            );
+            final activity = Activity.createNew(
+              startTime: start,
+              recurs: Recurs.monthly(day.day),
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [ActivityDay(activity, day)]);
+          });
+
+          test('monthly on day before midnight out of range', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 09, 03);
+            final start = DateTime(2001, 01, 01)
+                .add(
+                  dayParts.night,
+                )
+                .subtract(1.minutes());
+            final activity = Activity.createNew(
+              startTime: start,
+              recurs: Recurs.monthly(day.day),
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, isEmpty);
+          });
+
+          test('monthly on day after midnight at 24', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 09, 03);
+            final nextDay = day.nextDay();
+            final start = DateTime(2001, 01, 01);
+            final activity = Activity.createNew(
+              startTime: start,
+              recurs: Recurs.monthly(nextDay.day),
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [ActivityDay(activity, nextDay)]);
+          });
+
+          test('monthly on day after midnight when night starts at 24', () {
+            final dayParts =
+                DayParts(nightStart: 23 * Duration.millisecondsPerHour);
+            final day = DateTime(2021, 09, 03);
+            final nextDay = day.nextDay();
+            final start = DateTime(2001, 01, 01);
+            final activity = Activity.createNew(
+              startTime: start,
+              recurs: Recurs.monthly(nextDay.day),
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [ActivityDay(activity, nextDay)]);
+          });
+
+          test('monthly on day before midnight starts before ends in night',
+              () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 09, 03);
+            final start = DateTime(2001, 01, 01)
+                .add(
+                  dayParts.night,
+                )
+                .subtract(30.minutes());
+            final activity = Activity.createNew(
+                startTime: start,
+                recurs: Recurs.monthly(day.day),
+                duration: 31.minutes());
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [ActivityDay(activity, day)]);
+          });
+
+          test('monthly on day before midnight and spans over midnight', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 09, 03);
+            final nextday = day.nextDay();
+            final start = DateTime(2001, 01, 01)
+                .add(dayParts.night)
+                .subtract(30.minutes());
+
+            final activity = Activity.createNew(
+                startTime: start,
+                recurs: Recurs.monthlyOnDays([day.day, nextday.day]),
+                duration: 4.hours());
+
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [ActivityDay(activity, day)]);
+          });
+        });
+
+        group('weekly', () {
+          test('start 12:00 end 12:00 next day recurs once', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 12, 12);
+
+            final activity = Activity.createNew(
+              startTime: DateTime(2020, 01, 01, 12),
+              duration: 24.hours(),
+              recurs: Recurs.everyDay,
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [
+              ActivityDay(activity, day),
+            ]);
+          });
+
+          test('start 00:00 end 24:00 next day recurs every day twice', () {
+            final dayParts = DayParts.standard();
+            final day = DateTime(2021, 12, 12);
+            final previusDay = day.previousDay();
+            final nextDay = day.nextDay();
+
+            final activity = Activity.createNew(
+              startTime: DateTime(2020),
+              duration: 48.hours(),
+              recurs: Recurs.everyDay,
+            );
+            final res = activity.nightActivitiesForDay(day, dayParts);
+            expect(res, [
+              ActivityDay(activity, previusDay),
+              ActivityDay(activity, day),
+              ActivityDay(activity, nextDay),
+            ]);
+          });
+        });
+      });
+    });
   });
 }

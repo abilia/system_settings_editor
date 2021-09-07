@@ -476,17 +476,18 @@ void main() {
     final leftActivityFinder = find.text(leftTitle);
     final rightActivityFinder = find.text(rightTitle);
     final cardFinder = find.byType(ActivityTimepillarCard);
+    final atNightTime = time.add(12.hours());
     setUp(() {
       activityResponse = () => [
             Activity.createNew(
-              startTime: time,
+              startTime: atNightTime,
               duration: 1.hours(),
               alarmType: ALARM_SILENT,
               title: rightTitle,
               checkable: true,
             ),
             Activity.createNew(
-              startTime: time,
+              startTime: atNightTime,
               duration: 1.hours(),
               alarmType: ALARM_SILENT,
               title: leftTitle,
@@ -494,8 +495,6 @@ void main() {
             ),
           ];
     });
-
-    // TODO test activities on night timepillar shows
 
     testWidgets('Shows activity', (WidgetTester tester) async {
       // Act
@@ -514,22 +513,6 @@ void main() {
       // Assert
       await tester.verifyTts(leftActivityFinder, contains: leftTitle);
       await tester.verifyTts(rightActivityFinder, contains: rightTitle);
-    });
-
-    testWidgets('Activities is right or left of timeline',
-        (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-
-      // Act
-      final timelineXPostion = tester.getCenter(find.byType(Timeline).first).dx;
-      final leftActivityXPostion = tester.getCenter(leftActivityFinder).dx;
-      final rightActivityXPostion = tester.getCenter(rightActivityFinder).dx;
-
-      // Assert
-      expect(leftActivityXPostion, lessThan(timelineXPostion));
-      expect(rightActivityXPostion, greaterThan(timelineXPostion));
     });
 
     testWidgets('tapping activity shows activity info',

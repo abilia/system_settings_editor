@@ -32,22 +32,29 @@ class NightActivitiesCubit extends Cubit<ActivitiesOccasionLoaded> {
           ),
         ) {
     _clockSubscription = clockBloc.stream.listen((now) => _nowChange(now));
-    _activitiesSubscription = activitiesBloc.stream.listen((_) => _newState());
-    _daypickerSubscription = dayPickerBloc.stream.listen((_) => _newState());
+    _activitiesSubscription = activitiesBloc.stream
+        .listen((s) => _newState(activities: s.activities));
+    _daypickerSubscription =
+        dayPickerBloc.stream.listen((s) => _newState(day: s.day));
     _memoplannerSettingsSubscription = memoplannerSettingBloc.stream
         .where((settingsState) => settingsState.dayParts != _dayParts)
         .listen((settingsState) {
       _dayParts = settingsState.dayParts;
-      _newState();
+      _newState(dayParts: settingsState.dayParts);
     });
   }
 
-  void _newState() => emit(
+  void _newState({
+    List<Activity>? activities,
+    DateTime? day,
+    DayParts? dayParts,
+  }) =>
+      emit(
         _stateFromActivities(
-          activitiesBloc.state.activities,
-          dayPickerBloc.state.day,
+          activities ?? activitiesBloc.state.activities,
+          day ?? dayPickerBloc.state.day,
           clockBloc.state,
-          memoplannerSettingBloc.state.dayParts,
+          dayParts ?? memoplannerSettingBloc.state.dayParts,
         ),
       );
 
