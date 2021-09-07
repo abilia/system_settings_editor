@@ -92,20 +92,17 @@ void main() {
     expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
   });
 
-  testWidgets('all days activity tts', (WidgetTester tester) async {
-    final activity = Activity.createNew(
-        title: 'fuyllday',
-        startTime: time.onlyDays(),
-        duration: 1.days() - 1.milliseconds(),
-        fullDay: true,
-        reminderBefore: [60 * 60 * 1000],
-        alarmType: NO_ALARM);
-    activityResponse = () => [activity];
+  testWidgets('Go to now button shows for next day but not when going back',
+      (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(find.byType(FullDayContainer), findsOneWidget);
-    await tester.verifyTts(find.byType(FullDayContainer),
-        contains: activity.title);
+    expect(find.byKey(TestKey.goToNowButton), findsNothing);
+    await tester.tap(nextDayButtonFinder);
+    await tester.pumpAndSettle();
+    expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    await tester.tap(previusDayButtonFinder);
+    await tester.pumpAndSettle();
+    expect(find.byKey(TestKey.goToNowButton), findsNothing);
   });
 
   group('timepillar', () {

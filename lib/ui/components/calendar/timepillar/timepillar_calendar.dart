@@ -97,8 +97,10 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   late final ScrollController horizontalScrollController;
   final Key center = Key('center');
 
-  bool get isToday => widget.activityState.isToday;
-  bool get showTimeLine => isToday && widget.displayTimeline;
+  bool get enableScrollNotification =>
+      widget.activityState.isToday && widget.scrollToTimeOffset;
+  bool get showTimeLine =>
+      widget.activityState.isToday && widget.displayTimeline;
   TimepillarState get ts => widget.timepillarState;
   double get topMargin => widget.topMargin;
   double get bottomMargin => widget.topMargin;
@@ -113,16 +115,14 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         ? _timeOffsetVerticalScroll()
         : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
-    if (widget.scrollToTimeOffset) {
-      WidgetsBinding.instance?.addPostFrameCallback(
-        (_) => context.read<ScrollPositionBloc>().add(
-              ScrollViewRenderComplete(
-                verticalScrollController,
-                createdTime: context.read<ClockBloc>().state,
-              ),
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) => context.read<ScrollPositionBloc>().add(
+            ScrollViewRenderComplete(
+              verticalScrollController,
+              createdTime: context.read<ClockBloc>().state,
             ),
-      );
-    }
+          ),
+    );
   }
 
   ScrollController _timeOffsetVerticalScroll() {
@@ -200,7 +200,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             child: Stack(
               children: <Widget>[
                 NotificationListener<ScrollNotification>(
-                  onNotification: isToday ? onScrollNotification : null,
+                  onNotification:
+                      enableScrollNotification ? onScrollNotification : null,
                   child: SingleChildScrollView(
                     controller: verticalScrollController,
                     physics: const AlwaysScrollableScrollPhysics(),

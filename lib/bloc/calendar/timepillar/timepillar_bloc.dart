@@ -13,7 +13,7 @@ part 'timepillar_state.dart';
 
 class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
   /// All fields are null when TimepillarBloc is fixed
-  /// in Timepillar settings (`PreviewTimePillar`), or `TimepillarCalendar`
+  /// in Timepillar settings (`PreviewTimePillar`), or `TwoTimepillarCalendar`
   final ClockBloc? clockBloc;
   final MemoplannerSettingBloc? memoSettingsBloc;
   final DayPickerBloc? dayPickerBloc;
