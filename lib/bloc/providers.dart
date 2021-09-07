@@ -254,50 +254,50 @@ class CopiedAuthProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SyncBloc>.value(
-          value: blocContext.read<SyncBloc>(),
+        BlocProvider<SyncBloc>(
+          create: (_) => blocContext.read<SyncBloc>(),
         ),
-        BlocProvider<ActivitiesBloc>.value(
-          value: blocContext.read<ActivitiesBloc>(),
+        BlocProvider<ActivitiesBloc>(
+          create: (_) => blocContext.read<ActivitiesBloc>(),
         ),
-        BlocProvider<UserFileBloc>.value(
-          value: blocContext.read<UserFileBloc>(),
+        BlocProvider<UserFileBloc>(
+          create: (_) => blocContext.read<UserFileBloc>(),
         ),
-        BlocProvider<SortableBloc>.value(
-          value: blocContext.read<SortableBloc>(),
+        BlocProvider<SortableBloc>(
+          create: (_) => blocContext.read<SortableBloc>(),
         ),
-        BlocProvider<GenericBloc>.value(
-          value: blocContext.read<GenericBloc>(),
+        BlocProvider<GenericBloc>(
+          create: (_) => blocContext.read<GenericBloc>(),
         ),
-        BlocProvider<MemoplannerSettingBloc>.value(
-          value: blocContext.read<MemoplannerSettingBloc>(),
+        BlocProvider<MemoplannerSettingBloc>(
+          create: (_) => blocContext.read<MemoplannerSettingBloc>(),
         ),
-        BlocProvider<DayPickerBloc>.value(
-          value: blocContext.read<DayPickerBloc>(),
+        BlocProvider<DayPickerBloc>(
+          create: (_) => blocContext.read<DayPickerBloc>(),
         ),
-        BlocProvider<DayActivitiesBloc>.value(
-          value: blocContext.read<DayActivitiesBloc>(),
+        BlocProvider<DayActivitiesBloc>(
+          create: (_) => blocContext.read<DayActivitiesBloc>(),
         ),
-        BlocProvider<ActivitiesOccasionBloc>.value(
-          value: blocContext.read<ActivitiesOccasionBloc>(),
+        BlocProvider<ActivitiesOccasionBloc>(
+          create: (_) => blocContext.read<ActivitiesOccasionBloc>(),
         ),
-        BlocProvider<AlarmBloc>.value(
-          value: blocContext.read<AlarmBloc>(),
+        BlocProvider<AlarmBloc>(
+          create: (_) => blocContext.read<AlarmBloc>(),
         ),
-        BlocProvider<NotificationBloc>.value(
-          value: blocContext.read<NotificationBloc>(),
+        BlocProvider<NotificationBloc>(
+          create: (_) => blocContext.read<NotificationBloc>(),
         ),
-        BlocProvider<CalendarViewBloc>.value(
-          value: blocContext.read<CalendarViewBloc>(),
+        BlocProvider<CalendarViewBloc>(
+          create: (_) => blocContext.read<CalendarViewBloc>(),
         ),
-        BlocProvider<LicenseBloc>.value(
-          value: blocContext.read<LicenseBloc>(),
+        BlocProvider<LicenseBloc>(
+          create: (_) => blocContext.read<LicenseBloc>(),
         ),
-        BlocProvider<PermissionBloc>.value(
-          value: blocContext.read<PermissionBloc>(),
+        BlocProvider<PermissionBloc>(
+          create: (_) => blocContext.read<PermissionBloc>(),
         ),
-        BlocProvider<TimepillarBloc>.value(
-          value: blocContext.read<TimepillarBloc>(),
+        BlocProvider<TimepillarBloc>(
+          create: (_) => blocContext.read<TimepillarBloc>(),
         ),
       ],
       child: child,
