@@ -17,20 +17,25 @@ class RecordSoundPage extends StatefulWidget {
 class RecordSoundPageState extends State<RecordSoundPage> {
   AbiliaFile recordedSoundFile = AbiliaFile.empty;
 
-  RecordSoundPageState({required this.recordedSoundFile});
+  RecordSoundPageState({
+    required this.recordedSoundFile,
+  });
 
   @override
   Widget build(BuildContext context) {
     return _RecordSpeechPage(
-        originalSoundFile: widget.originalSoundFile,
-        save: recordedSoundFile != widget.originalSoundFile
-            ? () => Navigator.of(context).maybePop(recordedSoundFile)
-            : null,
-        onSoundRecorded: (s) {
-          setState(() {
+      originalSoundFile: widget.originalSoundFile,
+      save: recordedSoundFile != widget.originalSoundFile
+          ? () => Navigator.of(context).maybePop(recordedSoundFile)
+          : null,
+      onSoundRecorded: (s) {
+        setState(
+          () {
             recordedSoundFile = s;
-          });
-        });
+          },
+        );
+      },
+    );
   }
 }
 
@@ -39,10 +44,11 @@ class _RecordSpeechPage extends StatelessWidget {
   final ValueChanged<AbiliaFile> onSoundRecorded;
   final AbiliaFile originalSoundFile;
 
-  _RecordSpeechPage(
-      {required this.originalSoundFile,
-      this.save,
-      required this.onSoundRecorded});
+  _RecordSpeechPage({
+    required this.originalSoundFile,
+    this.save,
+    required this.onSoundRecorded,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +64,15 @@ class _RecordSpeechPage extends StatelessWidget {
         children: [
           Theme(
             data: theme.copyWith(
-                textTheme: theme.textTheme
-                    .copyWith(subtitle1: abiliaTextTheme.headline4)),
+              textTheme: theme.textTheme
+                  .copyWith(subtitle1: abiliaTextTheme.headline4),
+            ),
             child: MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => TimerBloc(ticker: AudioTicker()),
+                  create: (context) => TimerBloc(
+                    ticker: AudioTicker(),
+                  ),
                 ),
                 BlocProvider(
                   create: (context) => RecordSoundCubit(

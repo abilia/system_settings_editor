@@ -2820,6 +2820,25 @@ text''';
       await tester.pumpAndSettle();
     });
   });
+
+  group('Sound on alarm', () {
+    testWidgets('Sound selectors show up', (WidgetTester tester) async {
+      final activity = Activity.createNew(
+          title: '', startTime: DateTime(2000, 11, 22, 11, 55));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          EditActivityPage(day: today),
+          givenActivity: activity,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.attention));
+      await tester.pumpAndSettle();
+      expect(find.byType(RecordSoundWidget), findsOneWidget);
+      expect(find.byKey(TestKey.speechAtStart), findsOneWidget);
+      expect(find.byKey(TestKey.speechAtEnd), findsOneWidget);
+    });
+  });
 }
 
 extension on WidgetTester {

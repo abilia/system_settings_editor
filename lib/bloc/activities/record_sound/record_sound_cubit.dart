@@ -12,15 +12,15 @@ import 'package:uuid/uuid.dart';
 part 'record_sound_state.dart';
 
 class RecordSoundCubit extends Cubit<RecordSoundState> {
+  final _recorder = Record();
+  final void Function(AbiliaFile value) onSoundRecorded;
+
   RecordSoundCubit({
     required this.onSoundRecorded,
     required recordedFile,
   }) : super(
           RecordSoundState(RecordState.Stopped, recordedFile),
         );
-
-  final _recorder = Record();
-  final void Function(AbiliaFile value) onSoundRecorded;
 
   Future<void> startRecording() async {
     var result = await _recorder.hasPermission();
