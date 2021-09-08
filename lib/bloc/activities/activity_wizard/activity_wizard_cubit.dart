@@ -9,24 +9,26 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   ActivityWizardCubit({
     required MemoplannerSettingsState memoplannerSettingsState,
     required this.editActivityBloc,
-  }) : super(ActivityWizardState(
-          0,
-          [
-            if (memoplannerSettingsState.wizardDatePickerStep)
-              WizardPage.DatePicker,
-            WizardPage.NameAndImage,
-            WizardPage.Time,
-          ],
-        ));
+  }) : super(
+          ActivityWizardState(
+            0,
+            [
+              if (memoplannerSettingsState.wizardDatePickerStep)
+                WizardStep.date,
+              WizardStep.name,
+              WizardStep.time,
+            ],
+          ),
+        );
 
   void next() {
-    final errors =
-        state.currentPage().validateNextFunction()(editActivityBloc.state);
-    if (errors.isEmpty) {
+    final error =
+        state.currentPage.validateNextFunction(editActivityBloc.state);
+    if (error == null) {
       emit(state.copyWith(
           newStep: (state.step + 1).clamp(0, state.pages.length - 1)));
     } else {
-      emit(state.copyWith(newStep: state.step, errors: errors));
+      emit(state.copyWith(newStep: state.step, error: error));
     }
   }
 
@@ -36,23 +38,18 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   }
 }
 
-enum WizardPage { DatePicker, NameAndImage, Time }
-
-extension SelectedColorExtension on WizardPage {
-  Set<SaveError> Function(EditActivityState eas) validateNextFunction() {
+extension WizardStepExtension on WizardStep {
+  SaveError? validateNextFunction(EditActivityState eas) {
     switch (this) {
-      case WizardPage.DatePicker:
-        return (EditActivityState eas) => <SaveError>{};
-      case WizardPage.NameAndImage:
-        return (EditActivityState eas) {
-          if (eas.hasTitleOrImage) {
-            return <SaveError>{};
-          } else {
-            return {SaveError.NO_TITLE_OR_IMAGE};
-          }
-        };
-      case WizardPage.Time:
-        return (EditActivityState eas) => <SaveError>{};
+      case WizardStep.name:
+      case WizardStep.image:
+        if (!eas.hasTitleOrImage) return SaveError.NO_TITLE_OR_IMAGE;
+        break;
+      case WizardStep.time:
+        if (eas.hasStartTime) return SaveError.NO_START_TIME;
+        break;
+      default:
     }
+    return null;
   }
 }

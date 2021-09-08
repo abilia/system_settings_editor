@@ -26,7 +26,8 @@ class ActivityWizardPage extends StatelessWidget {
           scroll: false,
           child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
             listener: (context, state) {
-              if (state.currentErrors.isEmpty) {
+              final error = state.currentError;
+              if (error == null) {
                 pageController.animateToPage(state.step,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeOutQuad);
@@ -34,31 +35,31 @@ class ActivityWizardPage extends StatelessWidget {
                 showViewDialog(
                   context: context,
                   builder: (context) => ErrorDialog(
-                      text: state.currentErrors
-                          .toMessage(Translator.of(context).translate)),
+                      text: error.toMessage(Translator.of(context).translate)),
                 );
               }
             },
             child: PageView.builder(
                 controller: pageController,
-                itemBuilder: (context, index) {
-                  return getPage(
-                      context.read<ActivityWizardCubit>().state.currentPage());
-                }),
+                itemBuilder: (context, index) => getPage(
+                    context.read<ActivityWizardCubit>().state.currentPage)),
           ),
         ),
       ),
     );
   }
 
-  Widget getPage(WizardPage p) {
+  Widget getPage(WizardStep p) {
     switch (p) {
-      case WizardPage.DatePicker:
+      case WizardStep.date:
         return DatePickerWiz();
-      case WizardPage.NameAndImage:
+      case WizardStep.name:
+      case WizardStep.image:
         return NameAndImageWiz();
-      case WizardPage.Time:
+      case WizardStep.time:
         return TimeWiz();
+      default:
+        throw 'not implemented yet';
     }
   }
 }
@@ -170,11 +171,11 @@ class WizardBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigation(
       backNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isFirstStep()
+          context.read<ActivityWizardCubit>().state.isFirstStep
               ? CancelButton()
               : PreviousWizardStepButton(),
       forwardNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isLastStep()
+          context.read<ActivityWizardCubit>().state.isLastStep
               ? SaveActivityButton()
               : nextButton ?? NextWizardStepButton(),
     );
