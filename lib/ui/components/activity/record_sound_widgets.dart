@@ -172,24 +172,39 @@ class _RecordingWidgetState extends State<RecordingWidget> {
                     (TimerBloc bloc) => bloc.state.duration / bloc.maxDuration),
                 AlwaysStoppedAnimation(Colors.red)),
             SizedBox(height: 24.0.s),
-            ActionRowProvider(state: state),
+            _getActionRow(state),
           ],
         ),
       ),
     );
   }
+
+  Widget _getActionRow(RecordSoundState state) {
+    switch (state.state) {
+      case RecordState.Stopped:
+        return state.recordedFile.isEmpty
+            ? StoppedEmptyState()
+            : StoppedNotEmptyState();
+      case RecordState.Playing:
+        return PlayingState();
+      case RecordState.Recording:
+        return RecordingState();
+      default:
+        return StoppedEmptyState();
+    }
+  }
 }
 
 class _TimeDisplay extends StatelessWidget {
   final double timeElapsed;
-  final double millisPerSecond = 1000.0;
+  final double _millisPerSecond = 1000.0;
 
   _TimeDisplay({this.timeElapsed = 0.0});
 
   @override
   Widget build(BuildContext context) {
     var seconds = timeElapsed.floor();
-    var milliseconds = ((timeElapsed - seconds) * millisPerSecond).floor();
+    var milliseconds = ((timeElapsed - seconds) * _millisPerSecond).floor();
     final duration = Duration(seconds: seconds, milliseconds: milliseconds);
     var timeText = _formatTime(duration);
     final translator = Translator.of(context).translate;
@@ -230,28 +245,6 @@ class _TimeProgressIndicator extends LinearProgressIndicator {
             backgroundColor: Colors.grey,
             valueColor: anim,
             minHeight: 6);
-}
-
-class ActionRowProvider extends StatelessWidget {
-  final RecordSoundState state;
-
-  const ActionRowProvider({Key? key, required this.state}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    switch (state.state) {
-      case RecordState.Stopped:
-        return state.recordedFile.isEmpty
-            ? StoppedEmptyState()
-            : StoppedNotEmptyState();
-      case RecordState.Playing:
-        return PlayingState();
-      case RecordState.Recording:
-        return RecordingState();
-      default:
-        return StoppedEmptyState();
-    }
-  }
 }
 
 class PlayingState extends StatelessWidget {
