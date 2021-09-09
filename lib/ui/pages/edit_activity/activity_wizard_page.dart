@@ -22,8 +22,7 @@ class ActivityWizardPage extends StatelessWidget {
               context.read<MemoplannerSettingBloc>().state,
           editActivityBloc: context.read<EditActivityBloc>(),
         ),
-        child: EditActivityListeners(
-          scroll: false,
+        child: ErrorPopupListener(
           child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
             listener: (context, state) {
               final error = state.currentError;

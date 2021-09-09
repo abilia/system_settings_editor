@@ -62,13 +62,6 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
           ),
         );
 
-  static const NO_GO_ERRORS = {
-    SaveError.NO_START_TIME,
-    SaveError.NO_TITLE_OR_IMAGE,
-    SaveError.START_TIME_BEFORE_NOW,
-    SaveError.NO_RECURRING_DAYS,
-  };
-
   Set<SaveError> saveErrors(SaveActivity event) => {
         if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
         if (!state.hasStartTime) SaveError.NO_START_TIME,

@@ -55,44 +55,53 @@ class EditActivityPage extends StatelessWidget {
             if (displayRecurrence) const RecurrenceTab(),
             InfoItemTab(state: state),
           ];
-          return DefaultTabController(
-            initialIndex: 0,
-            length: tabs.length,
-            child: Scaffold(
-              appBar: AbiliaAppBar(
-                iconData: AbiliaIcons.plus,
-                title: title ?? translate.newActivity,
-                bottom: AbiliaTabBar(
-                  collapsedCondition: (i) {
-                    switch (i) {
-                      case 1:
-                        return fullDay;
-                      case 2:
-                        return !displayRecurrence;
-                      default:
-                        return false;
-                    }
-                  },
-                  tabs: <Widget>[
-                    Icon(AbiliaIcons.my_photos),
-                    Icon(AbiliaIcons.attention),
-                    Icon(AbiliaIcons.repeat),
-                    Icon(AbiliaIcons.attachment),
-                  ],
-                ),
-              ),
-              body: EditActivityListeners(
-                nrTabs: tabs.length,
-                child: TabBarView(children: tabs),
-              ),
-              bottomNavigationBar: BottomNavigation(
-                backNavigationWidget: const PreviousButton(),
-                forwardNavigationWidget: GreenButton(
-                  key: TestKey.finishEditActivityButton,
-                  icon: AbiliaIcons.ok,
-                  text: translate.save,
-                  onPressed: () => BlocProvider.of<EditActivityBloc>(context)
-                      .add(SaveActivity()),
+          return BlocListener<EditActivityBloc, EditActivityState>(
+            listenWhen: (_, current) => current.sucessfullSave == true,
+            listener: (context, state) => Navigator.of(context).pop(true),
+            child: ErrorPopupListener(
+              child: DefaultTabController(
+                initialIndex: 0,
+                length: tabs.length,
+                child: ScrollToErrorPageListener(
+                  nrTabs: tabs.length,
+                  child: Scaffold(
+                    appBar: AbiliaAppBar(
+                      iconData: AbiliaIcons.plus,
+                      title: title ?? translate.newActivity,
+                      bottom: AbiliaTabBar(
+                        collapsedCondition: (i) {
+                          switch (i) {
+                            case 1:
+                              return fullDay;
+                            case 2:
+                              return !displayRecurrence;
+                            default:
+                              return false;
+                          }
+                        },
+                        tabs: <Widget>[
+                          Icon(AbiliaIcons.my_photos),
+                          Icon(AbiliaIcons.attention),
+                          Icon(AbiliaIcons.repeat),
+                          Icon(AbiliaIcons.attachment),
+                        ],
+                      ),
+                    ),
+                    body: TabBarView(
+                      children: tabs,
+                    ),
+                    bottomNavigationBar: BottomNavigation(
+                      backNavigationWidget: const PreviousButton(),
+                      forwardNavigationWidget: GreenButton(
+                        key: TestKey.finishEditActivityButton,
+                        icon: AbiliaIcons.ok,
+                        text: translate.save,
+                        onPressed: () =>
+                            BlocProvider.of<EditActivityBloc>(context)
+                                .add(SaveActivity()),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
