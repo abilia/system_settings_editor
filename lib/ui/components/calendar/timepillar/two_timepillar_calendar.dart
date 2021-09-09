@@ -32,11 +32,12 @@ class TwoTimepillarCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final day = activityState.day;
     final dayTimepillarState = TimepillarState(
-        TimepillarInterval(
-          start: day.add(memoplannerSettingsState.dayParts.morning),
-          end: day.add(memoplannerSettingsState.dayParts.night),
-        ),
-        0.5);
+      TimepillarInterval(
+        start: day.add(memoplannerSettingsState.dayParts.morning),
+        end: day.add(memoplannerSettingsState.dayParts.night),
+      ),
+      0.5,
+    );
     final nightTimepillarState = TimepillarState(
       TimepillarInterval(
         start: day.add(memoplannerSettingsState.dayParts.night),

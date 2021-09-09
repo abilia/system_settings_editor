@@ -193,6 +193,9 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         final height = max(calendarHeight, boxConstraints.maxHeight);
         return RefreshIndicator(
           onRefresh: refresh,
+          notificationPredicate: (scrollNotification) =>
+              widget.scrollToTimeOffset &&
+              defaultScrollNotificationPredicate(scrollNotification),
           child: Container(
             color: interval.intervalPart == IntervalPart.NIGHT
                 ? TimepillarCalendar.nightBackgroundColor
