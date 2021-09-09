@@ -8,20 +8,16 @@ class ErrorPopupListener extends StatelessWidget {
   const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<EditActivityBloc, EditActivityState>(
-          listenWhen: (_, current) => current.saveErrors.isNotEmpty,
-          listener: (context, state) async {
-            final errors = state.saveErrors;
-            if (errors.noGoErrors) {
-              return _noProceed(errors, context);
-            } else {
-              return _inputNeeded(errors, state, context);
-            }
-          },
-        ),
-      ],
+    return BlocListener<EditActivityBloc, EditActivityState>(
+      listenWhen: (_, current) => current.saveErrors.isNotEmpty,
+      listener: (context, state) async {
+        final errors = state.saveErrors;
+        if (errors.noGoErrors) {
+          return _noProceed(errors, context);
+        } else {
+          return _inputNeeded(errors, state, context);
+        }
+      },
       child: child,
     );
   }

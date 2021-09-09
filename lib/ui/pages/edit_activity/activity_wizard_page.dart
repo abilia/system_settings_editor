@@ -3,60 +3,41 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActivityWizardPage extends StatelessWidget {
-  ActivityWizardPage({Key? key}) : super(key: key);
+  const ActivityWizardPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
-    return BlocProvider<EditActivityBloc>(
-      create: (_) => EditActivityBloc.newActivity(
-        activitiesBloc: BlocProvider.of<ActivitiesBloc>(context),
-        clockBloc: BlocProvider.of<ClockBloc>(context),
-        memoplannerSettingBloc:
-            BlocProvider.of<MemoplannerSettingBloc>(context),
-        day: context.read<DayPickerBloc>().state.day,
-      ),
-      child: BlocProvider(
-        create: (context) => ActivityWizardCubit(
-          memoplannerSettingsState:
-              context.read<MemoplannerSettingBloc>().state,
-          editActivityBloc: context.read<EditActivityBloc>(),
-        ),
-        child: ErrorPopupListener(
-          child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
-            listener: (context, state) {
-              final error = state.currentError;
-              if (error == null) {
-                pageController.animateToPage(state.step,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeOutQuad);
-              } else {
-                showViewDialog(
-                  context: context,
-                  builder: (context) => ErrorDialog(
-                      text: error.toMessage(Translator.of(context).translate)),
-                );
-              }
-            },
-            child: PageView.builder(
-                controller: pageController,
-                itemBuilder: (context, index) => getPage(
-                    context.read<ActivityWizardCubit>().state.currentPage)),
-          ),
+    return ErrorPopupListener(
+      child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
+        listenWhen: (previous, current) =>
+            current.currentPage != previous.currentPage,
+        listener: (context, state) => pageController.animateToPage(state.step,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad),
+        child: PageView.builder(
+          controller: pageController,
+          itemBuilder: (context, _) => getPage(context),
         ),
       ),
     );
   }
 
-  Widget getPage(WizardStep p) {
-    switch (p) {
+  Widget getPage(BuildContext context) {
+    switch (context.read<ActivityWizardCubit>().state.currentPage) {
+      case WizardStep.basic:
+        return BasicActivityStepPage();
       case WizardStep.date:
         return DatePickerWiz();
-      case WizardStep.name:
+      case WizardStep.title:
       case WizardStep.image:
         return NameAndImageWiz();
       case WizardStep.time:
         return TimeWiz();
+      case WizardStep.advance:
+        return EditActivityPage(
+          title: Translator.of(context).translate.newActivity,
+        );
       default:
         throw 'not implemented yet';
     }
@@ -64,7 +45,7 @@ class ActivityWizardPage extends StatelessWidget {
 }
 
 class DatePickerWiz extends StatelessWidget {
-  const DatePickerWiz();
+  const DatePickerWiz({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,65 +136,6 @@ class NameAndImageWiz extends StatelessWidget {
         ),
         bottomNavigationBar: WizardBottomNavigation(),
       ),
-    );
-  }
-}
-
-class WizardBottomNavigation extends StatelessWidget {
-  final Widget? nextButton;
-  const WizardBottomNavigation({
-    Key? key,
-    this.nextButton,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigation(
-      backNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isFirstStep
-              ? CancelButton()
-              : PreviousWizardStepButton(),
-      forwardNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isLastStep
-              ? SaveActivityButton()
-              : nextButton ?? NextWizardStepButton(),
-    );
-  }
-}
-
-class SaveActivityButton extends StatelessWidget {
-  const SaveActivityButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SaveButton(
-      onPressed: () {
-        context.read<EditActivityBloc>().add(SaveActivity());
-      },
-    );
-  }
-}
-
-class PreviousWizardStepButton extends StatelessWidget {
-  const PreviousWizardStepButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PreviousButton(
-      onPressed: () => context.read<ActivityWizardCubit>().previous(),
-    );
-  }
-}
-
-class NextWizardStepButton extends StatelessWidget {
-  const NextWizardStepButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return NextButton(
-      onPressed: () {
-        context.read<ActivityWizardCubit>().next();
-      },
     );
   }
 }

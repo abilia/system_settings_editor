@@ -75,7 +75,7 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
+      // TODO basicActivityData: basicActivity,
     );
     // Assert
     expect(
@@ -104,7 +104,7 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
+      // TODO basicActivityData: basicActivity,
     );
     // Assert
     expect(
@@ -139,7 +139,7 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
+      // TODO basicActivityData: basicActivity,
     );
     // Assert
     expect(

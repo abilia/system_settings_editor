@@ -19,13 +19,15 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
   final MemoplannerSettingBloc memoplannerSettingBloc;
+  final DateTime day;
 
   EditActivityBloc(
     ActivityDay activityDay, {
     required this.activitiesBloc,
     required this.clockBloc,
     required this.memoplannerSettingBloc,
-  }) : super(
+  })  : day = activityDay.day,
+        super(
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
@@ -43,22 +45,16 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     required this.clockBloc,
     required this.memoplannerSettingBloc,
     required DateTime day,
-    BasicActivityDataItem? basicActivityData,
-  }) : super(
+  })  : day = day,
+        super(
           UnstoredActivityState(
-            basicActivityData == null
-                ? Activity.createNew(
-                    title: '',
-                    startTime: day,
-                    timezone: tz.local.name,
-                    alarmType:
-                        memoplannerSettingBloc.state.defaultAlarmTypeSetting,
-                  )
-                : basicActivityData.toActivity(
-                    timezone: tz.local.name, day: day),
-            basicActivityData == null
-                ? TimeInterval(startDate: day)
-                : basicActivityData.toTimeInterval(startDate: day),
+            Activity.createNew(
+              title: '',
+              startTime: day,
+              timezone: tz.local.name,
+              alarmType: memoplannerSettingBloc.state.defaultAlarmTypeSetting,
+            ),
+            TimeInterval(startDate: day),
           ),
         );
 
@@ -115,6 +111,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     }
     if (event is ChangeInfoItemType) {
       yield* _mapChangeInfoItemTypeToState(event);
+    }
+    if (event is AddBasiActivity) {
+      yield* _mapAddBasicActivityToState(event);
     }
   }
 
@@ -202,6 +201,14 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
       ),
       infoItems: infoItems,
+    );
+  }
+
+  Stream<EditActivityState> _mapAddBasicActivityToState(
+      AddBasiActivity event) async* {
+    yield UnstoredActivityState(
+      event.basicActivityData.toActivity(timezone: tz.local.name, day: day),
+      event.basicActivityData.toTimeInterval(startDate: day),
     );
   }
 
