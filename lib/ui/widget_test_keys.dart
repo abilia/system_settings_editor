@@ -10,7 +10,6 @@ class TestKey {
       activityCheckButton = Key('activityCheckButton'),
       attachment = Key('attachment'),
       editTitleTextFormField = Key('editTitleTextFormField'),
-      finishEditActivityButton = Key('finishEditActivityButton'),
       fullDaySwitch = Key('fullDaySwitch'),
       startTimeInput = Key('startTimeInput'),
       endTimeInput = Key('endTimeInput'),

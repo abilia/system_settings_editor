@@ -43,8 +43,7 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  Widget wrapWithMaterialApp(
-    Widget widget, {
+  Widget createEditActivityPage({
     Activity? givenActivity,
     bool use24H = false,
     bool newActivity = false,
@@ -66,10 +65,13 @@ void main() {
                     StreamController<DateTime>().stream,
                     initialTime: startTime),
               ),
-              BlocProvider<MemoplannerSettingBloc>.value(
-                value: FakeMemoplannerSettingsBloc(),
+              BlocProvider<MemoplannerSettingBloc>(
+                create: (_) => FakeMemoplannerSettingsBloc(),
               ),
               BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
+              BlocProvider<ActivityWizardCubit>(
+                create: (context) => ActivityWizardCubit(),
+              ),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -88,8 +90,8 @@ void main() {
                             BlocProvider.of<MemoplannerSettingBloc>(context),
                       ),
               ),
-              BlocProvider<SortableBloc>.value(value: FakeSortableBloc()),
-              BlocProvider<UserFileBloc>.value(value: FakeUserFileBloc()),
+              BlocProvider<SortableBloc>(create: (_) => FakeSortableBloc()),
+              BlocProvider<UserFileBloc>(create: (_) => FakeUserFileBloc()),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),
@@ -115,16 +117,17 @@ void main() {
           ),
         ),
       ),
-      home: widget,
+      home: ErrorPopupListener(
+        child: EditActivityPage(),
+      ),
     );
   }
 
-  final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
+  final submitButtonFinder = find.byType(SaveActivityButton);
   testWidgets('pressing add activity button with no title nor time shows error',
       (WidgetTester tester) async {
     // Act press submit
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     await tester.tap(submitButtonFinder);
@@ -145,8 +148,7 @@ void main() {
     final newActivtyName = 'new activity name';
 
     // Act press submit
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act enter title
@@ -169,8 +171,7 @@ void main() {
 
   testWidgets('pressing add activity button with no title shows error',
       (WidgetTester tester) async {
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
     // Act press fullday
     await tester.scrollDown(dy: -150);
@@ -193,8 +194,7 @@ void main() {
   testWidgets(
       'pressing add activity on other tab scrolls back to main page on error',
       (WidgetTester tester) async {
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act go to tab
@@ -221,8 +221,7 @@ void main() {
 
   testWidgets('pressing add activity before now shows warning',
       (WidgetTester tester) async {
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act enter title
@@ -281,8 +280,7 @@ void main() {
   testWidgets(
       'pressing add activity before now with no title shows error no warning',
       (WidgetTester tester) async {
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act -- Change input to new start time
@@ -338,9 +336,7 @@ void main() {
       startTime: startTime.subtract(40.days()),
       recurs: Recurs.everyDay,
     );
-    await tester.pumpWidget(
-      wrapWithMaterialApp(EditActivityPage(), givenActivity: edit),
-    );
+    await tester.pumpWidget(createEditActivityPage(givenActivity: edit));
     await tester.pumpAndSettle();
 
     // Act -- Change input to new start time
@@ -385,8 +381,7 @@ void main() {
       duration: 30.minutes(),
     );
     when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([conflicting]));
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act enter title
@@ -452,8 +447,7 @@ void main() {
     );
     when(mockActivitiesBloc.state)
         .thenReturn(ActivitiesLoaded([conflictingActivity]));
-    await tester
-        .pumpWidget(wrapWithMaterialApp(EditActivityPage(), newActivity: true));
+    await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
     // Act enter title

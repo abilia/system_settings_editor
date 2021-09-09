@@ -91,7 +91,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await tap(find.byType(SaveActivityButton));
     await pumpAndSettle();
     await tap(find.byKey(TestKey.activityBackButton));
     await pumpAndSettle();
@@ -141,7 +141,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await tap(find.byType(SaveActivityButton));
     await pumpAndSettle();
   }
 
