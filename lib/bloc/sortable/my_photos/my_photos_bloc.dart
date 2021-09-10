@@ -82,22 +82,6 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     }
   }
 
-  Sortable<ImageArchiveData> generateMyPhotosFolder(
-      Iterable<Sortable<ImageArchiveData>> sortables) {
-    final sortOrder = sortables.firstSortOrderInFolder();
-
-    final sortableData = ImageArchiveData(myPhotos: true);
-
-    final myPhotos = Sortable.createNew<ImageArchiveData>(
-      data: sortableData,
-      isGroup: true,
-      sortOrder: sortOrder,
-    );
-
-    sortableBloc.add(SortableUpdated(myPhotos));
-    return myPhotos;
-  }
-
   @override
   Future<void> close() async {
     await sortableSubscription.cancel();
