@@ -142,6 +142,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                             else
                               TimepillarCalendar(
                                 activityState: activityState,
+                                type: memoState.dayCalendarType,
                               ),
                             Align(
                               alignment: Alignment.topCenter,

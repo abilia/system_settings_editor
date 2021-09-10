@@ -639,7 +639,7 @@ void main() {
   group('Choosen calendar setting', () {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.timepillar.index,
+        data: DayCalendarType.one_timepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey,
       ),
     );
@@ -673,7 +673,7 @@ void main() {
         tester,
         mockGenericDb,
         key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.timepillar.index,
+        matcher: DayCalendarType.one_timepillar.index,
       );
     });
   });
@@ -945,7 +945,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: false,
-            viewOptionsTimeView: DayCalendarType.timepillar.index,
+            viewOptionsTimeView: DayCalendarType.one_timepillar.index,
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -966,7 +966,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: true,
-            viewOptionsTimeView: DayCalendarType.timepillar.index,
+            viewOptionsTimeView: DayCalendarType.one_timepillar.index,
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(

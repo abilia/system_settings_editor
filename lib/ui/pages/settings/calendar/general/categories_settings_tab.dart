@@ -157,8 +157,8 @@ class _CategoriesPreview extends StatelessWidget {
                           start: DateTime(2021, 1, 1, 7),
                           end: DateTime(2021, 1, 1, 10),
                         ),
-                        showTimeLine: false,
                         columnOfDots: state.timepillar.columnOfDots,
+                        topMargin: 0.0,
                       ),
                     ),
                     if (state.categories.show)

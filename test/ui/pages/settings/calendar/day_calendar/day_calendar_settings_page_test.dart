@@ -157,6 +157,23 @@ void main() {
         );
       });
 
+      testWidgets('Select two timepillars', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.two_timelines));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.viewOptionsTimeViewKey,
+          matcher: DayCalendarType.two_timepillars.index,
+        );
+      });
+
       testWidgets('Set timepillar interval', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
         await tester.tap(find.byIcon(AbiliaIcons.menu_setup));

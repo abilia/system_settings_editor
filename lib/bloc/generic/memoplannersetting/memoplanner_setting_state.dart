@@ -79,7 +79,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.timepillar &&
+      (dayCalendarType == DayCalendarType.one_timepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
@@ -217,10 +217,10 @@ abstract class MemoplannerSettingsState extends Equatable {
   }
 
   DayParts get dayParts => DayParts(
-        morningStart,
-        dayStart,
-        eveningStart,
-        nightStart,
+        morningStart: morningStart,
+        dayStart: dayStart,
+        eveningStart: eveningStart,
+        nightStart: nightStart,
       );
 
   String get leftCategoryName => settings.calendarActivityTypeLeft;

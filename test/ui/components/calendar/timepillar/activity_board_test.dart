@@ -23,14 +23,11 @@ void main() {
   final title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
 
-  late Stream<DateTime> stream;
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUp(() async {
     setupFakeTts();
 
-    stream = StreamController<DateTime>().stream;
-    // mockSettingsDb = MockSettingsDb();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
@@ -78,8 +75,9 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  ClockBloc(stream, initialTime: initialTime ?? startTime),
+              create: (context) => ClockBloc(
+                  StreamController<DateTime>().stream,
+                  initialTime: initialTime ?? startTime),
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
@@ -94,6 +92,7 @@ void main() {
           child: Stack(
             children: <Widget>[
               Timeline(
+                now: initialTime ?? startTime,
                 width: 40,
                 offset: -TimepillarCalendar.topMargin,
                 timepillarState: ts,
@@ -106,6 +105,8 @@ void main() {
                   MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
                   TimepillarSide.RIGHT,
                   ts,
+                  TimepillarCalendar.topMargin,
+                  TimepillarCalendar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: ts.totalWidth,
@@ -356,6 +357,8 @@ void main() {
         DayParts.standard(),
         TimepillarSide.RIGHT,
         TimepillarState(interval, 1),
+        TimepillarCalendar.topMargin,
+        TimepillarCalendar.bottomMargin,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

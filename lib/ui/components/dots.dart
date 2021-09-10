@@ -39,8 +39,8 @@ class PastDots extends StatelessWidget {
       : Dots(decoration: pastDotShape);
 }
 
-class TodayDots extends StatelessWidget {
-  const TodayDots({
+class CurrentDots extends StatelessWidget {
+  const CurrentDots({
     Key? key,
     required this.hour,
     required this.isNight,

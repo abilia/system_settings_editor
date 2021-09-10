@@ -24,9 +24,14 @@ class DayViewSettingsTab extends StatelessWidget {
                   DayCalendarType.list,
                 ),
                 SelectorItem(
-                  t.timePillarView,
+                  t.oneTimePillarView,
                   AbiliaIcons.timeline,
-                  DayCalendarType.timepillar,
+                  DayCalendarType.one_timepillar,
+                ),
+                SelectorItem(
+                  t.twoTimePillarsView,
+                  AbiliaIcons.two_timelines,
+                  DayCalendarType.two_timepillars,
                 ),
               ],
               onChanged: (type) => cubit.changeDayCalendarSettings(

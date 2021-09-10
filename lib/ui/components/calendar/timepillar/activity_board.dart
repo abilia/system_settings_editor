@@ -35,8 +35,12 @@ class ActivityBoard extends StatelessWidget {
     DayParts dayParts,
     TimepillarSide timepillarSide,
     TimepillarState ts,
+    double topMargin,
+    double bottomMargin,
   ) {
     final maxEndPos = timePillarHeight(ts) +
+        topMargin +
+        bottomMargin +
         ts.dotDistance +
         ts.imageHeight +
         ts.padding * 2 +
@@ -79,7 +83,7 @@ class ActivityBoard extends StatelessWidget {
           ? 0
           : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
                   ts.dotDistance) -
-              hoursToPixels(interval.startTime.hour, ts.dotDistance);
+              ts.topOffset(startTime);
 
       var height = max(dotHeight, renderedHeight);
 
@@ -87,7 +91,7 @@ class ActivityBoard extends StatelessWidget {
         height = maxEndPos - topOffset;
       }
 
-      final top = topOffset + TimepillarCalendar.topMargin + ts.topPadding;
+      final top = topOffset + topMargin + ts.topPadding;
 
       ActivityTimepillarCard card(int col) => ActivityTimepillarCard(
             key: ObjectKey(ao),

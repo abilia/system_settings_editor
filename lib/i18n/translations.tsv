@@ -198,7 +198,8 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
-timePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
+oneTimePillarView	1 timepillar	1 tidpelare	1 tidslinje	1 tijdlijn	1 aikajana	1 Zeitstrahl	1 tidslinje
+twoTimePillarsView	2 timepillars	2 tidspelare	2 tidslinjer	2 tijdlijnen	2 aikajanaa	2 Zeitstrahlen	2 tidslinjer
 listView	List	Lista	Liste	Lijst	Luettelo	Liste	Liste
 timepillarSettings	Timepillar settings	Inställningar för tidpelare	Tidslinjeindstillinger	Tijdlijn instellingen	Aikajanan asetukset	Zeitstrahl einstellungen	Innstillinger for tidslinje
 activityDuration	Activity duration	Visa tid som	Vis tiden som	Laat de tijd zien als	Näytä aika muodossa	Zeit anzeigen als	Vise tiden som

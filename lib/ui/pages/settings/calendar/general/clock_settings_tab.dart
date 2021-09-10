@@ -101,6 +101,7 @@ class ClockSettingsTab extends StatelessWidget {
 
 class PreviewTimePillar extends StatelessWidget {
   const PreviewTimePillar({Key? key}) : super(key: key);
+  static final _time = DateTime(2021, 1, 1, 13, 30);
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +114,12 @@ class PreviewTimePillar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TimepillarBloc.fake(state: ts),
+          create: (context) => TimepillarBloc.fixed(state: ts),
         ),
         BlocProvider(
           create: (context) => ClockBloc(
             StreamController<DateTime>().stream,
-            initialTime: DateTime(2021, 1, 1, 13, 30),
+            initialTime: _time,
           ),
         ),
       ],
@@ -148,12 +149,13 @@ class PreviewTimePillar extends StatelessWidget {
                         use12h: tpState.use12h,
                         nightParts: [],
                         interval: interval,
-                        showTimeLine: tpState.timeline,
                         columnOfDots: tpState.columnOfDots,
+                        topMargin: 0.0,
                       ),
                     ),
                     if (tpState.timeline)
                       Timeline(
+                        now: _time,
                         width: ts.timePillarTotalWidth * 3,
                         timepillarState: ts,
                         offset: hoursToPixels(

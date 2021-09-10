@@ -16,7 +16,8 @@ class EyeButtonSettingsTab extends StatelessWidget {
             child: _buildSelector(
               [
                 SelectorItem(t.listView, AbiliaIcons.calendar_list),
-                SelectorItem(t.timePillarView, AbiliaIcons.timeline),
+                SelectorItem(t.oneTimePillarView, AbiliaIcons.timeline),
+                SelectorItem(t.twoTimePillarsView, AbiliaIcons.timeline),
               ],
             ),
           ),
