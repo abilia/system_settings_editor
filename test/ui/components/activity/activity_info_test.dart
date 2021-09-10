@@ -568,4 +568,51 @@ void main() {
 
     await tester.verifyTts(find.byKey(TestKey.endTime));
   });
+
+
+  testWidgets('Play speech button is not shown', (WidgetTester tester) async{
+    final activity = Activity.createNew(
+      title: 'a title',
+      startTime: startTime,
+      duration: 1.hours(),
+      checkable: true,
+    );
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PlaySoundButton), findsNothing);
+
+  });
+
+  testWidgets('Play speech button is shown', (WidgetTester tester) async{
+    final activity = Activity.createNew(
+      title: 'a title',
+      startTime: startTime,
+      duration: 1.hours(),
+      checkable: true,
+      extras: Extras.createNew(startTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound'), endTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound')),
+    );
+
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        ActivityInfo.from(
+          activity: activity,
+          day: day,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PlaySoundButton), findsNWidgets(2));
+
+  });
+
 }
