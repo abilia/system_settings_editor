@@ -2832,7 +2832,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.attention));
+      await tester.goToAlarmTab();
       await tester.pumpAndSettle();
       expect(find.byType(RecordSoundWidget), findsOneWidget);
       expect(find.byKey(TestKey.speechAtStart), findsOneWidget);

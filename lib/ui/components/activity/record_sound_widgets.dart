@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/buttons/green_play_button.dart';
 import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
@@ -100,7 +101,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                       ),
                     );
                     if (result is UnstoredAbiliaFile && result.isNotEmpty) {
-                      context.read<UserFileBloc>().add(RecordingAdded(result));
+                      context.read<UserFileBloc>().add(
+                            RecordingAdded(result),
+                          );
                     }
                     onAudioRecordedCallback.call(result!);
                   }
@@ -159,21 +162,24 @@ class _RecordingWidgetState extends State<RecordingWidget> {
       },
       child: BlocProvider(
         create: (_) => SoundCubit(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _TimeDisplay(
-              timeElapsed: context
-                  .select((TimerBloc bloc) => bloc.state.duration / 1000.0),
-            ),
-            _TimeProgressIndicator(
-                context.select(
-                    (TimerBloc bloc) => bloc.state.duration / bloc.maxDuration),
-                AlwaysStoppedAnimation(Colors.red)),
-            SizedBox(height: 24.0.s),
-            _getActionRow(state),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _TimeDisplay(
+                timeElapsed: context
+                    .select((TimerBloc bloc) => bloc.state.duration / 1000.0),
+              ),
+              _TimeProgressIndicator(
+                  context.select((TimerBloc bloc) =>
+                      bloc.state.duration / bloc.maxDuration),
+                  AlwaysStoppedAnimation(Colors.red)),
+              SizedBox(height: 24.0.s),
+              _getActionRow(state),
+            ],
+          ),
         ),
       ),
     );
@@ -255,7 +261,9 @@ class PlayingState extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         StopButton(onPressed: () {
-          context.read<TimerBloc>().add(TimerPaused());
+          context.read<TimerBloc>().add(
+                TimerPaused(),
+              );
         })
       ],
     );
@@ -276,8 +284,9 @@ class RecordingState extends StatelessWidget {
                 onPressed: () {
                   context.read<RecordSoundCubit>().stopRecording(
                       context.read<TimerBloc>().maxDuration / 1000);
-                  context.read<SoundCubit>().stopSound();
-                  context.read<TimerBloc>().add(TimerPaused());
+                  context.read<TimerBloc>().add(
+                        TimerPaused(),
+                      );
                 },
               ),
             ),
@@ -299,7 +308,9 @@ class StoppedEmptyState extends StatelessWidget {
             child: RecordAudioButton(
               onPressed: () {
                 context.read<RecordSoundCubit>().startRecording();
-                context.read<TimerBloc>().add(TimerStarted(duration: 30000));
+                context.read<TimerBloc>().add(
+                      TimerStarted(duration: 30000),
+                    );
               },
             ),
           ),
@@ -312,55 +323,52 @@ class StoppedEmptyState extends StatelessWidget {
 class StoppedNotEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSoundCubit, RecordSoundState>(
+    return BlocListener<SoundCubit, SoundState>(
+      listener: (context, state) {
+        state.currentSound != null
+            ? context.read<TimerBloc>().add(
+                  TimerStarted(duration: 30000),
+                )
+            : context.read<TimerBloc>().add(
+                  TimerReset(),
+                );
+      },
+      child: BlocBuilder<RecordSoundCubit, RecordSoundState>(
         builder: (context, state) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            // child: GreyButton(
-            //   onPressed: () async {
-            //     await context
-            //         .read<SoundCubit>()
-            //         .playFile(state.recordedFile is UnstoredAbiliaFile
-            //             ? (state.recordedFile as UnstoredAbiliaFile).file
-            //             : context.read<UserFileBloc>().state.getFile(
-            //                   state.recordedFile,
-            //                   GetIt.I<FileStorage>(),
-            //                 )!);
-            //     await context.read<RecordSoundCubit>().playRecording();
-            //     // context.read<TimerBloc>().add(
-            //     //     TimerStarted(duration: (state.duration * 1000).toInt()));
-            //   },
-            //   text: Translator.of(context).translate.play,
-            //   icon: AbiliaIcons.play_sound,
-            // ),
-            child: PlaySoundButton(
-              sound: state.recordedFile is UnstoredAbiliaFile
-                  ? (state.recordedFile as UnstoredAbiliaFile).file
-                  : context.read<UserFileBloc>().state.getFile(
-                        state.recordedFile,
-                        GetIt.I<FileStorage>(),
-                      ),
-            ),
-          ),
-          ActionButton(
-            onPressed: () {
-              state.recordedFile is UnstoredAbiliaFile
-                  ? (state.recordedFile as UnstoredAbiliaFile).file.delete()
-                  : (context.read<UserFileBloc>().state.getFile(
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: GreenPlaySoundButton(
+                  sound: state.recordedFile is UnstoredAbiliaFile
+                      ? (state.recordedFile as UnstoredAbiliaFile).file
+                      : context.read<UserFileBloc>().state.getFile(
                             state.recordedFile,
                             GetIt.I<FileStorage>(),
-                          ))!
-                      .delete();
-              context.read<RecordSoundCubit>().deleteRecording();
-              context.read<TimerBloc>().add(TimerReset());
-            },
-            child: Icon(AbiliaIcons.delete_all_clear),
-          ),
-        ],
-      );
-    });
+                          ),
+                ),
+              ),
+              ActionButton(
+                onPressed: () {
+                  state.recordedFile is UnstoredAbiliaFile
+                      ? (state.recordedFile as UnstoredAbiliaFile).file.delete()
+                      : (context.read<UserFileBloc>().state.getFile(
+                                state.recordedFile,
+                                GetIt.I<FileStorage>(),
+                              ))!
+                          .delete();
+                  context.read<RecordSoundCubit>().deleteRecording();
+                  context.read<TimerBloc>().add(
+                        TimerReset(),
+                      );
+                },
+                child: Icon(AbiliaIcons.delete_all_clear),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

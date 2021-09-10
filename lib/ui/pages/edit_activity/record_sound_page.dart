@@ -23,7 +23,7 @@ class RecordSoundPageState extends State<RecordSoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _RecordSpeechPage(
+    return _RecordSoundPage(
       originalSoundFile: widget.originalSoundFile,
       save: recordedSoundFile != widget.originalSoundFile
           ? () => Navigator.of(context).maybePop(recordedSoundFile)
@@ -39,12 +39,12 @@ class RecordSoundPageState extends State<RecordSoundPage> {
   }
 }
 
-class _RecordSpeechPage extends StatelessWidget {
+class _RecordSoundPage extends StatelessWidget {
   final GestureTapCallback? save;
   final ValueChanged<AbiliaFile> onSoundRecorded;
   final AbiliaFile originalSoundFile;
 
-  _RecordSpeechPage({
+  _RecordSoundPage({
     required this.originalSoundFile,
     this.save,
     required this.onSoundRecorded,

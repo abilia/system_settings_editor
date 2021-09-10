@@ -191,7 +191,7 @@ class RecordAudioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconAndTextButton(
         text: Translator.of(context).translate.record,
-        icon: AbiliaIcons.record,
+        icon: AbiliaIcons.dictaphone,
         onPressed: onPressed,
         style: iconTextButtonStyleRed,
       );

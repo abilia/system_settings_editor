@@ -6,6 +6,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/buttons/green_play_button.dart';
 import 'package:seagull/ui/pages/edit_activity/record_sound_page.dart';
 
 import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
@@ -70,7 +71,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(RecordSoundPage), findsOneWidget);
       expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-      expect(find.byType(PlaySoundButton), findsOneWidget);
+      expect(find.byType(GreenPlaySoundButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.delete_all_clear), findsOneWidget);
     });
 
@@ -83,7 +84,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(StoppedNotEmptyState), findsOneWidget);
-      expect(find.byType(PlaySoundButton), findsOneWidget);
+      expect(find.byType(GreenPlaySoundButton), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.delete_all_clear));
       await tester.pumpAndSettle();
       expect(find.byType(StoppedEmptyState), findsOneWidget);
