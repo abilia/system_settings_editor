@@ -12,12 +12,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../../fakes/all.dart';
+import '../../../../../mocks/shared.mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../mocks_and_fakes/alarm_schedualer.dart';
-import '../../../../../mocks_and_fakes/fake_shared_preferences.dart';
-import '../../../../../mocks_and_fakes/permission.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -154,6 +151,23 @@ void main() {
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeViewKey,
           matcher: DayCalendarType.list.index,
+        );
+      });
+
+      testWidgets('Select two timepillars', (tester) async {
+        await tester.goToDayCalendarSettingsPage(pump: true);
+        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.two_timelines));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        verifySyncGeneric(
+          tester,
+          genericDb,
+          key: MemoplannerSettings.viewOptionsTimeViewKey,
+          matcher: DayCalendarType.two_timepillars.index,
         );
       });
 

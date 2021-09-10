@@ -15,42 +15,59 @@ class TimepillarCalendar extends StatelessWidget {
   static final bottomMargin = 64.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
   final ActivitiesOccasionLoaded activityState;
+  final DayCalendarType type;
 
   const TimepillarCalendar({
     Key? key,
     required this.activityState,
+    required this.type,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimepillarBloc, TimepillarState>(
-      builder: (context, state) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.dayParts != current.dayParts ||
-            previous.displayTimeline != current.displayTimeline ||
-            previous.showCategories != current.showCategories ||
-            previous.displayHourLines != current.displayHourLines,
-        builder: (context, memoplannerSettingsState) => _TimepillarCalendar(
-          key: ValueKey(state.timepillarInterval),
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.dayParts != current.dayParts ||
+          previous.displayTimeline != current.displayTimeline ||
+          previous.showCategories != current.showCategories ||
+          previous.displayHourLines != current.displayHourLines,
+      builder: (context, memoplannerSettingsState) {
+        if (type == DayCalendarType.one_timepillar) {
+          return BlocBuilder<TimepillarBloc, TimepillarState>(
+            builder: (context, timepillarState) => OneTimepillarCalendar(
+              key: ValueKey(timepillarState.timepillarInterval),
+              activityState: activityState,
+              timepillarState: timepillarState,
+              dayParts: memoplannerSettingsState.dayParts,
+              displayTimeline: memoplannerSettingsState.displayTimeline,
+              showCategories: memoplannerSettingsState.showCategories,
+              displayHourLines: memoplannerSettingsState.displayHourLines,
+            ),
+          );
+        }
+        return TwoTimepillarCalendar(
           activityState: activityState,
-          timepillarState: state,
-          dayParts: memoplannerSettingsState.dayParts,
-          displayTimeline: memoplannerSettingsState.displayTimeline,
           showCategories: memoplannerSettingsState.showCategories,
           displayHourLines: memoplannerSettingsState.displayHourLines,
-        ),
-      ),
+          displayTimeline: memoplannerSettingsState.displayTimeline,
+          dayParts: memoplannerSettingsState.dayParts,
+        );
+      },
     );
   }
 }
 
-class _TimepillarCalendar extends StatefulWidget {
+class OneTimepillarCalendar extends StatefulWidget {
   final ActivitiesOccasionLoaded activityState;
   final TimepillarState timepillarState;
-  final bool showCategories, displayHourLines, displayTimeline;
+  final bool showCategories,
+      displayHourLines,
+      displayTimeline,
+      showCategoryLabels,
+      scrollToTimeOffset;
   final DayParts dayParts;
+  final double topMargin, bottomMargin;
 
-  const _TimepillarCalendar({
+  OneTimepillarCalendar({
     Key? key,
     required this.activityState,
     required this.timepillarState,
@@ -58,65 +75,70 @@ class _TimepillarCalendar extends StatefulWidget {
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
-  }) : super(key: key);
+    this.scrollToTimeOffset = true,
+    double? topMargin,
+    double? bottomMargin,
+    bool? showCategoryLabels,
+  })  : showCategoryLabels = showCategoryLabels ?? showCategories,
+        topMargin = topMargin ?? TimepillarCalendar.topMargin,
+        bottomMargin = bottomMargin ?? TimepillarCalendar.bottomMargin,
+        super(key: key);
 
   @override
-  _TimepillarCalendarState createState() => _TimepillarCalendarState();
+  _OneTimepillarCalendarState createState() => _OneTimepillarCalendarState();
 }
 
-class _TimepillarCalendarState extends State<_TimepillarCalendar>
+class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     with CalendarStateMixin {
   late final ScrollController verticalScrollController;
   late final ScrollController horizontalScrollController;
   final Key center = Key('center');
 
-  bool get isToday => widget.activityState.isToday;
-  bool get showTimeLine => isToday && widget.displayTimeline;
+  bool get enableScrollNotification =>
+      widget.activityState.isToday && widget.scrollToTimeOffset;
+  bool get showTimeLine =>
+      widget.activityState.isToday && widget.displayTimeline;
+  TimepillarState get ts => widget.timepillarState;
+  double get topMargin => widget.topMargin;
+  double get bottomMargin => widget.topMargin;
 
   List<ActivityOccasion> get activities => widget.activityState.activities;
   TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
 
   @override
   void initState() {
-    initVerticalScroll();
+    super.initState();
+    verticalScrollController = widget.scrollToTimeOffset
+        ? _timeOffsetVerticalScroll()
+        : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
     WidgetsBinding.instance?.addPostFrameCallback(
-      (_) => BlocProvider.of<ScrollPositionBloc>(context).add(
-        ScrollViewRenderComplete(
-          verticalScrollController,
-          createdTime: context.read<ClockBloc>().state,
-        ),
-      ),
+      (_) => context.read<ScrollPositionBloc>().add(
+            ScrollViewRenderComplete(
+              verticalScrollController,
+              createdTime: context.read<ClockBloc>().state,
+            ),
+          ),
     );
-    super.initState();
   }
 
-  void initVerticalScroll() {
+  ScrollController _timeOffsetVerticalScroll() {
     final now = context.read<ClockBloc>().state;
-    final ts = context.read<TimepillarBloc>().state;
     final scrollOffset = widget.activityState.isToday
         ? timeToPixels(now.hour, now.minute, ts.dotDistance) -
             ts.hourHeight * 2 -
             hoursToPixels(interval.startTime.hour, ts.dotDistance)
         : ts.hourHeight * widget.dayParts.morning.inHours;
-    verticalScrollController =
-        ScrollController(initialScrollOffset: max(scrollOffset, 0));
+    return ScrollController(initialScrollOffset: max(scrollOffset, 0));
   }
 
   @override
   Widget build(BuildContext context) {
-    final ts = widget.timepillarState;
     final mediaData = MediaQuery.of(context);
-    final screenWidth = mediaData.size.width;
-    final categoryMinWidth = (screenWidth - ts.timePillarTotalWidth) / 2;
 
-    final fontSize =
-        Theme.of(context).textTheme.caption?.fontSize ?? catptionFontSize;
-    final textStyle = Theme.of(context)
-            .textTheme
-            .caption
-            ?.copyWith(fontSize: fontSize * ts.zoom) ??
-        caption;
+    final textTheme = Theme.of(context).textTheme.caption ?? caption;
+    final fontSize = textTheme.fontSize ?? catptionFontSize;
+    final textStyle = textTheme.copyWith(fontSize: fontSize * ts.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final timepillarActivities = interval.getForInterval(activities);
     final leftBoardData = ActivityBoard.positionTimepillarCards(
@@ -130,6 +152,8 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
       widget.dayParts,
       TimepillarSide.LEFT,
       ts,
+      topMargin,
+      bottomMargin,
     );
     final rightBoardData = ActivityBoard.positionTimepillarCards(
       widget.showCategories
@@ -142,25 +166,33 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
       widget.dayParts,
       TimepillarSide.RIGHT,
       ts,
+      topMargin,
+      bottomMargin,
     );
-    final calendarHeight = max(
-        timePillarHeight(ts), max(leftBoardData.heigth, rightBoardData.heigth));
 
     final np = interval.intervalPart == IntervalPart.DAY_AND_NIGHT
-        ? nightParts(widget.dayParts, ts)
+        ? nightParts(widget.dayParts, ts, topMargin)
         : <NightPart>[];
 
     // Anchor is the starting point of the central sliver (timepillar).
     // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
-    final timePillarPercentOfTotalScreen =
-        (ts.timePillarTotalWidth / 2) / screenWidth;
-    final horizontalAnchor =
-        widget.showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
+        final maxWidth = boxConstraints.maxWidth;
+        final categoryMinWidth = (maxWidth - ts.timePillarTotalWidth) / 2;
+        final timePillarPercentOfTotalScreen =
+            (ts.timePillarTotalWidth / 2) / maxWidth;
+        final horizontalAnchor =
+            widget.showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
+        final tsHeight = timePillarHeight(ts) + topMargin + bottomMargin;
+        final calendarHeight =
+            max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
         final height = max(calendarHeight, boxConstraints.maxHeight);
         return RefreshIndicator(
           onRefresh: refresh,
+          notificationPredicate: (scrollNotification) =>
+              widget.scrollToTimeOffset &&
+              defaultScrollNotificationPredicate(scrollNotification),
           child: Container(
             color: interval.intervalPart == IntervalPart.NIGHT
                 ? TimepillarCalendar.nightBackgroundColor
@@ -168,7 +200,8 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
             child: Stack(
               children: <Widget>[
                 NotificationListener<ScrollNotification>(
-                  onNotification: isToday ? onScrollNotification : null,
+                  onNotification:
+                      enableScrollNotification ? onScrollNotification : null,
                   child: SingleChildScrollView(
                     controller: verticalScrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -194,19 +227,29 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                             if (widget.displayHourLines)
                               Padding(
                                 padding: EdgeInsets.only(
-                                    top: TimepillarCalendar.topMargin),
+                                  top: topMargin,
+                                ),
                                 child: HourLines(
                                   numberOfLines: interval.lengthInHours + 1,
                                   hourHeight: ts.hourHeight,
                                 ),
                               ),
                             if (showTimeLine)
-                              Timeline(
-                                width: boxConstraints.maxWidth,
-                                offset: hoursToPixels(interval.startTime.hour,
-                                        ts.dotDistance) -
-                                    TimepillarCalendar.topMargin,
-                                timepillarState: ts,
+                              BlocBuilder<ClockBloc, DateTime>(
+                                builder: (context, now) {
+                                  if (now.inRangeWithInclusiveStart(
+                                      startDate:
+                                          ts.timepillarInterval.startTime,
+                                      endDate: ts.timepillarInterval.endTime)) {
+                                    return Timeline(
+                                      now: now,
+                                      width: boxConstraints.maxWidth,
+                                      offset: ts.topOffset(now) - topMargin,
+                                      timepillarState: ts,
+                                    );
+                                  }
+                                  return SizedBox.shrink();
+                                },
                               ),
                             CustomScrollView(
                               anchor: horizontalAnchor,
@@ -216,7 +259,7 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                               slivers: <Widget>[
                                 if (widget.showCategories)
                                   category(
-                                    widget.showCategories
+                                    widget.showCategoryLabels
                                         ? LeftCategory()
                                         : null,
                                     height: boxConstraints.maxHeight,
@@ -242,17 +285,17 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                                       interval: interval,
                                       dayOccasion:
                                           widget.activityState.occasion,
-                                      showTimeLine: showTimeLine,
                                       use12h:
                                           memoSettings.timepillar12HourFormat,
                                       nightParts: np,
                                       dayParts: widget.dayParts,
                                       columnOfDots: memoSettings.columnOfDots,
+                                      topMargin: topMargin,
                                     ),
                                   ),
                                 ),
                                 category(
-                                  widget.showCategories
+                                  widget.showCategoryLabels
                                       ? RightCategory()
                                       : null,
                                   height: boxConstraints.maxHeight,
@@ -276,12 +319,18 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
                   controller: horizontalScrollController,
                   collapseMargin: ts.padding,
                 ),
-                ArrowUp(controller: verticalScrollController),
+                ArrowUp(
+                  controller: verticalScrollController,
+                  collapseMargin: topMargin,
+                ),
                 ArrowRight(
                   controller: horizontalScrollController,
                   collapseMargin: ts.padding,
                 ),
-                ArrowDown(controller: verticalScrollController),
+                ArrowDown(
+                  controller: verticalScrollController,
+                  collapseMargin: bottomMargin,
+                ),
               ],
             ),
           ),
@@ -290,21 +339,26 @@ class _TimepillarCalendarState extends State<_TimepillarCalendar>
     );
   }
 
-  List<NightPart> nightParts(DayParts dayParts, TimepillarState ts) {
+  List<NightPart> nightParts(
+    DayParts dayParts,
+    TimepillarState ts,
+    double topMargin,
+  ) {
     final interval = ts.timepillarInterval;
     final intervalDay = interval.startTime.onlyDays();
     return <NightPart>[
       if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
         NightPart(
-            0,
-            hoursToPixels(
-                    intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
-                TimepillarCalendar.topMargin),
+          0,
+          hoursToPixels(
+                  intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
+              topMargin,
+        ),
       if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
             hoursToPixels(
                     intervalDay.add(dayParts.night).hour, ts.dotDistance) +
-                TimepillarCalendar.topMargin,
+                topMargin,
             hoursToPixels(
                 interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
                 ts.dotDistance))

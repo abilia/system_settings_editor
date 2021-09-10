@@ -14,11 +14,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../mocks_and_fakes/shared.mocks.dart';
-import '../../../mocks_and_fakes/alarm_schedualer.dart';
-import '../../../mocks_and_fakes/fake_shared_preferences.dart';
-import '../../../mocks_and_fakes/permission.dart';
+import '../../../fakes/all.dart';
+import '../../../mocks/shared.mocks.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/verify_generic.dart';
 
@@ -44,7 +41,7 @@ void main() {
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-          data: DayCalendarType.timepillar.index,
+          data: DayCalendarType.one_timepillar.index,
           identifier: MemoplannerSettings.viewOptionsTimeViewKey),
     );
 
@@ -120,7 +117,9 @@ void main() {
     await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
-        exact: translate.timePillarView);
+        exact: translate.oneTimePillarView);
+    await tester.verifyTts(find.byIcon(AbiliaIcons.two_timelines),
+        exact: translate.twoTimePillarsView);
 
     // Verify correct TTS zoom. Small and medium has same icon for now
     await tester.verifyTts(find.text(translate.zoom), exact: translate.zoom);

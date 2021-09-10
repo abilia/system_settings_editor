@@ -74,10 +74,10 @@ extension on DayParts {
     var _eveningStart = eveningStart ?? this.eveningStart;
     var _nightStart = nightStart ?? this.nightStart;
 
-    _morningStart = DayParts.limits[DayPart.morning]!.clamp(_morningStart);
-    _dayStart = DayParts.limits[DayPart.day]!.clamp(_dayStart);
-    _eveningStart = DayParts.limits[DayPart.evening]!.clamp(_eveningStart);
-    _nightStart = DayParts.limits[DayPart.night]!.clamp(_nightStart);
+    _morningStart = DayParts.morningLimit.clamp(_morningStart);
+    _dayStart = DayParts.dayLimit.clamp(_dayStart);
+    _eveningStart = DayParts.eveningLimit.clamp(_eveningStart);
+    _nightStart = DayParts.nightLimit.clamp(_nightStart);
 
     if (increased) {
       _dayStart +=
@@ -95,6 +95,11 @@ extension on DayParts {
           _morningStart >= _dayStart ? Duration.millisecondsPerHour : 0;
     }
 
-    return DayParts(_morningStart, _dayStart, _eveningStart, _nightStart);
+    return DayParts(
+      morningStart: _morningStart,
+      dayStart: _dayStart,
+      eveningStart: _eveningStart,
+      nightStart: _nightStart,
+    );
   }
 }

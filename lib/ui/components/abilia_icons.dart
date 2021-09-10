@@ -281,7 +281,7 @@ class AbiliaIcons {
       stop_watch = IconData(0xea11, fontFamily: fontFamily),
       timeline = IconData(0xea12, fontFamily: fontFamily),
       clock = IconData(0xea13, fontFamily: fontFamily),
-      empty19 = IconData(0xea14, fontFamily: fontFamily),
+      two_timelines = IconData(0xea14, fontFamily: fontFamily),
       empty20 = IconData(0xea15, fontFamily: fontFamily),
       move_to_lower_left = IconData(0xea16, fontFamily: fontFamily),
       move_to_upper_left = IconData(0xea17, fontFamily: fontFamily),

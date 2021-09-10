@@ -14,13 +14,10 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../../fakes/all.dart';
+import '../../../../../mocks/shared.mocks.dart';
+import '../../../../../mocks/mock_http_client.dart';
 import '../../../../../test_helpers/app_pumper.dart';
-import '../../../../../mocks_and_fakes/alarm_schedualer.dart';
-import '../../../../../mocks_and_fakes/fake_shared_preferences.dart';
-import '../../../../../mocks_and_fakes/mock_http_client.dart';
-import '../../../../../mocks_and_fakes/permission.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -32,11 +29,16 @@ void main() {
   late MockGenericDb genericDb;
   late MockSortableDb sortableDb;
 
-  final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
-    data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.timepillar.index,
-        identifier: MemoplannerSettings.viewOptionsTimeViewKey),
-  );
+  final oneTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+            data: DayCalendarType.one_timepillar.index,
+            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+      ),
+      twoTimepillarsGeneric = Generic.createNew<MemoplannerSettingData>(
+        data: MemoplannerSettingData.fromData(
+            data: DayCalendarType.two_timepillars.index,
+            identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+      );
   setUp(() async {
     tz.initializeTimeZones();
     setupPermissions();
@@ -342,7 +344,7 @@ void main() {
     testWidgets('show category false', (tester) async {
       // Arrange
       generics = [
-        timepillarGeneric,
+        oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
@@ -357,10 +359,29 @@ void main() {
       expect(find.byType(CategoryLeft), findsNothing);
     });
 
+    testWidgets('show category false - two timepillar', (tester) async {
+      // Arrange
+      generics = [
+        twoTimepillarsGeneric,
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.calendarActivityTypeShowTypesKey,
+          ),
+        ),
+      ];
+      // Act
+      await tester.pumpApp(use24: true);
+      // Assert
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      expect(find.byType(CategoryRight), findsNothing);
+      expect(find.byType(CategoryLeft), findsNothing);
+    });
+
     testWidgets('show category true', (tester) async {
       // Arrange
       generics = [
-        timepillarGeneric,
+        oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
@@ -395,11 +416,11 @@ void main() {
       expect(find.text(translate.left), findsOneWidget);
     });
 
-    testWidgets('category right name, timepillar view', (tester) async {
+    testWidgets('category right name, one timepillar view', (tester) async {
       // Arrange
       final right = 'some right name';
       generics = [
-        timepillarGeneric,
+        oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: right,
@@ -440,7 +461,7 @@ void main() {
       // Arrange
       final left = 'some left name';
       generics = [
-        timepillarGeneric,
+        oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: left,
@@ -461,7 +482,7 @@ void main() {
       // Arrange
       final fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
       generics = [
-        timepillarGeneric,
+        oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: fileIdLeft,
@@ -475,6 +496,7 @@ void main() {
           ),
         ),
       ];
+
       await provideMockedNetworkImages(
         () async {
           // Act
@@ -484,6 +506,55 @@ void main() {
           expect(find.byType(CategoryLeft), findsOneWidget);
           expect(find.text(translate.left), findsOneWidget);
           expect(find.text(translate.right), findsOneWidget);
+          expect(find.byType(CategoryImage), findsNWidgets(2));
+        },
+      );
+    });
+
+    testWidgets('category image and name, two timepillar view', (tester) async {
+      // Arrange
+      final fileIdLeft = 'fileIdLeft',
+          fileIdRight = 'fileIdRight',
+          leftName = 'some left name',
+          rightName = 'some right name';
+      generics = [
+        twoTimepillarsGeneric,
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdLeft,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: fileIdRight,
+            identifier: MemoplannerSettings.calendarActivityTypeRightImageKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: leftName,
+            identifier: MemoplannerSettings.calendarActivityTypeLeftKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: rightName,
+            identifier: MemoplannerSettings.calendarActivityTypeRightKey,
+          ),
+        ),
+      ];
+      await provideMockedNetworkImages(
+        () async {
+          // Act
+          await tester.pumpApp(use24: true);
+          // Assert
+          expect(find.byType(CategoryRight), findsOneWidget);
+          expect(find.byType(CategoryLeft), findsOneWidget);
+          expect(find.text(translate.left), findsNothing);
+          expect(find.text(translate.right), findsNothing);
+          expect(find.text(leftName), findsOneWidget);
+          expect(find.text(rightName), findsOneWidget);
           expect(find.byType(CategoryImage), findsNWidgets(2));
         },
       );

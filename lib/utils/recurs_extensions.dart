@@ -36,39 +36,95 @@ extension RecursExtensions on RecurrentType {
 extension RecurringActivityExtension on Activity {
   List<ActivityDay> dayActivitiesForDay(DateTime day) {
     if (!isRecurring) {
-      if (day.isAtSameDay(startTime) ||
-          (!fullDay &&
-              day.inExclusiveRange(
-                  startDate: startTime, endDate: noneRecurringEnd))) {
-        return [ActivityDay(this, startTime.onlyDays())];
-      }
-      return [];
+      return [
+        if (day.isAtSameDay(startTime) ||
+            (!fullDay &&
+                day.inExclusiveRange(
+                  startDate: startTime,
+                  endDate: noneRecurringEnd,
+                )))
+          ActivityDay(this, startTime.onlyDays())
+      ];
     }
 
     if (!day.inInclusiveRange(
-        startDate: startTime.onlyDays(), endDate: recurs.end.onlyDays())) {
-      return [];
+      startDate: startTime.onlyDays(),
+      endDate: recurs.end.onlyDays(),
+    )) {
+      return const [];
     }
 
     if (fullDay) {
-      if (recursOnDay(day)) {
-        return [ActivityDay(this, day)];
-      }
-      return [];
+      return [
+        if (recursOnDay(day)) ActivityDay(this, day),
+      ];
     }
 
-    final result = <ActivityDay>[];
-    for (var dayIterator = day;
-        endClock(dayIterator).isAfter(day);
-        dayIterator = dayIterator.previousDay()) {
-      if (recursOnDay(dayIterator)) {
-        result.add(ActivityDay(this, dayIterator));
-      }
-    }
-    return result;
+    return [
+      for (var dayIterator = day;
+          endClock(dayIterator).isAfter(day);
+          dayIterator = dayIterator.previousDay())
+        if (recursOnDay(dayIterator)) ActivityDay(this, dayIterator)
+    ];
   }
 
-  bool recursOnDay(DateTime day) {
-    return recurs.recursOnDay(day);
+  List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) {
+    // Don't care about full days on night
+    if (fullDay) {
+      return const [];
+    }
+
+    final nightEnd = day.nextDay().add(dayParts.morning);
+    final nightStart = day.add(dayParts.night);
+
+    if (!isRecurring) {
+      return [
+        if (startTime.inRangeWithInclusiveStart(
+              startDate: nightStart,
+              endDate: nightEnd,
+            ) ||
+            nightStart.inExclusiveRange(
+              startDate: startTime,
+              endDate: endClock(day),
+            ))
+          ActivityDay(this, startTime.onlyDays())
+      ];
+    }
+
+    if (recurs.end.isBefore(nightStart) || startTime.isAfter(nightEnd)) {
+      return const [];
+    }
+
+    return [
+      for (var dayIterator = nightStart.subtract(duration).onlyDays(),
+              start = startClock(dayIterator);
+          start.isBefore(nightEnd);
+          dayIterator = dayIterator.nextDay(), start = startClock(dayIterator))
+        if (recursOnDay(dayIterator) &&
+            recursOnNight(
+              start,
+              endClock(dayIterator),
+              nightStart,
+              nightEnd,
+            ))
+          ActivityDay(this, dayIterator)
+    ];
   }
+
+  bool recursOnDay(DateTime day) => recurs.recursOnDay(day);
+
+  bool recursOnNight(
+    DateTime startClock,
+    DateTime endClock,
+    DateTime nightStart,
+    DateTime nightEnd,
+  ) =>
+      startClock.inRangeWithInclusiveStart(
+        startDate: nightStart,
+        endDate: nightEnd,
+      ) ||
+      nightStart.inExclusiveRange(
+        startDate: startClock,
+        endDate: endClock,
+      );
 }

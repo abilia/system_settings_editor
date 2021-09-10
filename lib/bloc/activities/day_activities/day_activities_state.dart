@@ -11,7 +11,7 @@ abstract class DayActivitiesState extends Equatable {
 class DayActivitiesUninitialized extends DayActivitiesState {}
 
 class DayActivitiesLoaded extends DayActivitiesState {
-  final Iterable<ActivityDay> activities;
+  final List<ActivityDay> activities;
   final DateTime day;
   final Occasion occasion;
 

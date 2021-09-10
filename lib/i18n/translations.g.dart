@@ -389,7 +389,9 @@ abstract class Translated {
 
   final String calendarView = 'Day Calendar';
 
-  final String timePillarView = '1 timepillar';
+  final String oneTimePillarView = '1 timepillar';
+
+  final String twoTimePillarsView = '2 timepillars';
 
   final String listView = 'List';
 
@@ -1236,7 +1238,10 @@ class SV extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String timePillarView = '1 tidpelare';
+  final String oneTimePillarView = '1 tidpelare';
+
+  @override
+  final String twoTimePillarsView = '2 tidspelare';
 
   @override
   final String listView = 'Lista';
@@ -2212,7 +2217,10 @@ class DA extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String timePillarView = '1 tidslinje';
+  final String oneTimePillarView = '1 tidslinje';
+
+  @override
+  final String twoTimePillarsView = '2 tidslinjer';
 
   @override
   final String listView = 'Liste';
@@ -3188,7 +3196,10 @@ class NL extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String timePillarView = '1 tijdlijn';
+  final String oneTimePillarView = '1 tijdlijn';
+
+  @override
+  final String twoTimePillarsView = '2 tijdlijnen';
 
   @override
   final String listView = 'Lijst';
@@ -4165,7 +4176,10 @@ class FI extends Translated {
   final String calendarView = 'Päiväkalenteri';
 
   @override
-  final String timePillarView = '1 aikajana';
+  final String oneTimePillarView = '1 aikajana';
+
+  @override
+  final String twoTimePillarsView = '2 aikajanaa';
 
   @override
   final String listView = 'Luettelo';
@@ -5145,7 +5159,10 @@ class DE extends Translated {
   final String calendarView = 'Tageskalender';
 
   @override
-  final String timePillarView = '1 Zeitstrahl';
+  final String oneTimePillarView = '1 Zeitstrahl';
+
+  @override
+  final String twoTimePillarsView = '2 Zeitstrahlen';
 
   @override
   final String listView = 'Liste';
@@ -6122,7 +6139,10 @@ class NB extends Translated {
   final String calendarView = 'Dagkalender';
 
   @override
-  final String timePillarView = '1 tidslinje';
+  final String oneTimePillarView = '1 tidslinje';
+
+  @override
+  final String twoTimePillarsView = '2 tidslinjer';
 
   @override
   final String listView = 'Liste';

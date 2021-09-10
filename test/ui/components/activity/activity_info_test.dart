@@ -15,11 +15,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../mocks_and_fakes/fakes_blocs.dart';
-import '../../../mocks_and_fakes/alarm_schedualer.dart';
-import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
-import '../../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../../fakes/all.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -569,8 +565,7 @@ void main() {
     await tester.verifyTts(find.byKey(TestKey.endTime));
   });
 
-
-  testWidgets('Play speech button is not shown', (WidgetTester tester) async{
+  testWidgets('Play speech button is not shown', (WidgetTester tester) async {
     final activity = Activity.createNew(
       title: 'a title',
       startTime: startTime,
@@ -589,16 +584,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PlaySoundButton), findsNothing);
-
   });
 
-  testWidgets('Play speech button is shown', (WidgetTester tester) async{
+  testWidgets('Play speech button is shown', (WidgetTester tester) async {
     final activity = Activity.createNew(
       title: 'a title',
       startTime: startTime,
       duration: 1.hours(),
       checkable: true,
-      extras: Extras.createNew(startTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound'), endTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound')),
+      extras: Extras.createNew(
+          startTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound'),
+          endTimeExtraAlarm: AbiliaFile.from(id: 'test sound', path: 'sound')),
     );
 
     await tester.pumpWidget(
@@ -612,7 +608,5 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PlaySoundButton), findsNWidgets(2));
-
   });
-
 }

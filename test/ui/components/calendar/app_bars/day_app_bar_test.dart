@@ -10,8 +10,8 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../../fakes/fake_db_and_repository.dart';
+import '../../../../mocks/shared.mocks.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);

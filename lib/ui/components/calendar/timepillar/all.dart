@@ -1,5 +1,6 @@
 export 'timepillar_calendar.dart';
 export 'timepillar.dart';
+export 'two_timepillar_calendar.dart';
 export 'timeline.dart';
 export 'hour_lines.dart';
 export 'sliver_timepillar.dart';

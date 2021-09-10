@@ -12,10 +12,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../../../mocks_and_fakes/shared.mocks.dart';
-import '../../../../../mocks_and_fakes/fake_shared_preferences.dart';
-import '../../../../../mocks_and_fakes/permission.dart';
+import '../../../../../fakes/all.dart';
+import '../../../../../mocks/shared.mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
@@ -208,7 +206,7 @@ void main() {
   }, skip: !Config.isMP);
 
   group('time interval visisbility settings', () {
-    testWidgets('Change time interval', (tester) async {
+    testWidgets('Change time interval - one timepillar', (tester) async {
       // Arrange
       generics = [
         Generic.createNew<MemoplannerSettingData>(
@@ -231,7 +229,7 @@ void main() {
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.timepillar.index,
+              data: DayCalendarType.one_timepillar.index,
               identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         ),
       ];
@@ -242,6 +240,45 @@ void main() {
       expect(find.text('10'), findsOneWidget);
       expect(find.text('19'), findsOneWidget);
       expect(find.text('20'), findsNothing);
+    });
+
+    testWidgets('Change time interval - two timepillars', (tester) async {
+      // Arrange
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: 10 * Duration.millisecondsPerHour,
+            identifier: MemoplannerSettings.morningIntervalStartKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: 12 * Duration.millisecondsPerHour,
+            identifier: MemoplannerSettings.forenoonIntervalStartKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: 19 * Duration.millisecondsPerHour,
+            identifier: MemoplannerSettings.nightIntervalStartKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+              data: DayCalendarType.two_timepillars.index,
+              identifier: MemoplannerSettings.viewOptionsTimeViewKey),
+        ),
+      ];
+      // Act
+      await tester.pumpApp(use24: true);
+      // Assert
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      expect(find.byType(OneTimepillarCalendar), findsNWidgets(2));
+      expect(find.text('09'), findsOneWidget);
+      expect(find.text('10'), findsNWidgets(2));
+      expect(find.text('14'), findsOneWidget);
+      expect(find.text('19'), findsNWidgets(2));
+      expect(find.text('20'), findsOneWidget);
     });
   });
 }

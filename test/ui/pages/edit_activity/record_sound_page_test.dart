@@ -9,10 +9,10 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/buttons/green_play_button.dart';
 import 'package:seagull/ui/pages/edit_activity/record_sound_page.dart';
 
-import '../../../mocks_and_fakes/fake_authenticated_blocs_provider.dart';
-import '../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../mocks_and_fakes/fakes_blocs.dart';
-import '../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../fakes/fake_authenticated_blocs_provider.dart';
+import '../../../fakes/fake_db_and_repository.dart';
+import '../../../fakes/fakes_blocs.dart';
+import '../../../mocks/shared.mocks.dart';
 
 final _dummyFile = UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 

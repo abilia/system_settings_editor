@@ -60,7 +60,9 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
     final Occasion occasion,
   ) =>
       DayActivitiesLoaded(
-        activities.expand((activity) => activity.dayActivitiesForDay(day)),
+        activities
+            .expand((activity) => activity.dayActivitiesForDay(day))
+            .toList(),
         day,
         occasion,
       );

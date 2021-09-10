@@ -1,7 +1,7 @@
 part of 'activities_bloc.dart';
 
 abstract class ActivitiesState extends Equatable {
-  final Iterable<Activity> activities;
+  final List<Activity> activities;
   const ActivitiesState({this.activities = const []});
 
   @override
@@ -12,8 +12,8 @@ abstract class ActivitiesState extends Equatable {
 }
 
 class ActivitiesLoaded extends ActivitiesState {
-  const ActivitiesLoaded(Iterable<Activity> activities)
-      : super(activities: activities);
+  ActivitiesLoaded(Iterable<Activity> activities)
+      : super(activities: activities.toList());
 
   @override
   List<Object> get props => [activities];

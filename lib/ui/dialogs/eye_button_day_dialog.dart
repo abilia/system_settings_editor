@@ -65,9 +65,14 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                         DayCalendarType.list,
                       ),
                       SelectorItem(
-                        t.timePillarView,
+                        t.oneTimePillarView,
                         AbiliaIcons.timeline,
-                        DayCalendarType.timepillar,
+                        DayCalendarType.one_timepillar,
+                      ),
+                      SelectorItem(
+                        t.twoTimePillarsView,
+                        AbiliaIcons.two_timelines,
+                        DayCalendarType.two_timepillars,
                       ),
                     ],
                     onChanged: (type) => setState(() => calendarType = type),
@@ -76,7 +81,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                 Divider(endIndent: 16.s)
               ],
               CollapsableWidget(
-                collapsed: calendarType == DayCalendarType.list,
+                collapsed: calendarType != DayCalendarType.one_timepillar,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -136,29 +141,34 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                         ),
                         Divider(endIndent: 16.s)
                       ],
-                      if (state.settingViewOptionsDurationDots)
-                        Selector<bool>(
-                          heading: t.activityDuration,
-                          groupValue: dotsInTimePillar,
-                          items: [
-                            SelectorItem(
-                              t.dots,
-                              AbiliaIcons.options,
-                              true,
-                            ),
-                            SelectorItem(
-                              t.edge,
-                              AbiliaIcons.flarp,
-                              false,
-                            ),
-                          ],
-                          onChanged: (dots) =>
-                              setState(() => dotsInTimePillar = dots),
-                        ),
                     ].map(_addPadding),
                   ],
                 ),
               ),
+              if (state.settingViewOptionsDurationDots)
+                _addPadding(
+                  CollapsableWidget(
+                    collapsed: calendarType == DayCalendarType.list,
+                    child: Selector<bool>(
+                      heading: t.activityDuration,
+                      groupValue: dotsInTimePillar,
+                      items: [
+                        SelectorItem(
+                          t.dots,
+                          AbiliaIcons.options,
+                          true,
+                        ),
+                        SelectorItem(
+                          t.edge,
+                          AbiliaIcons.flarp,
+                          false,
+                        ),
+                      ],
+                      onChanged: (dots) =>
+                          setState(() => dotsInTimePillar = dots),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
