@@ -7,24 +7,17 @@ class TwoTimepillarCalendar extends StatelessWidget {
   TwoTimepillarCalendar({
     Key? key,
     required this.activityState,
-    required this.timepillarState,
     required this.showCategories,
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
-    required this.memoplannerSettingsState,
-    bool? showCategoryLabels,
-  })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        super(key: key);
+  }) : super(key: key);
 
   final ActivitiesOccasionLoaded activityState;
-  final TimepillarState timepillarState;
-  final bool showCategories,
-      displayHourLines,
-      displayTimeline,
-      showCategoryLabels;
+
+  final bool showCategories, displayHourLines, displayTimeline;
+
   final DayParts dayParts;
-  final MemoplannerSettingsState memoplannerSettingsState;
 
   final verticalMargin = 24.s;
 
@@ -33,16 +26,16 @@ class TwoTimepillarCalendar extends StatelessWidget {
     final day = activityState.day;
     final dayTimepillarState = TimepillarState(
       TimepillarInterval(
-        start: day.add(memoplannerSettingsState.dayParts.morning),
-        end: day.add(memoplannerSettingsState.dayParts.night),
+        start: day.add(dayParts.morning),
+        end: day.add(dayParts.night),
       ),
       0.5,
     );
     final nightTimepillarState = TimepillarState(
       TimepillarInterval(
-        start: day.add(memoplannerSettingsState.dayParts.night),
+        start: day.add(dayParts.night),
         end: day.nextDay().add(
-              memoplannerSettingsState.dayParts.morningStart.milliseconds(),
+              dayParts.morningStart.milliseconds(),
             ),
         intervalPart: IntervalPart.NIGHT,
       ),
@@ -66,13 +59,12 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     child: OneTimepillarCalendar(
                       activityState: activityState,
                       timepillarState: dayTimepillarState,
-                      dayParts: memoplannerSettingsState.dayParts,
-                      displayTimeline: memoplannerSettingsState.displayTimeline,
-                      showCategories: memoplannerSettingsState.showCategories,
+                      dayParts: dayParts,
+                      displayTimeline: displayTimeline,
+                      showCategories: showCategories,
                       showCategoryLabels: false,
                       scrollToTimeOffset: false,
-                      displayHourLines:
-                          memoplannerSettingsState.displayHourLines,
+                      displayHourLines: displayHourLines,
                       topMargin: verticalMargin,
                       bottomMargin: verticalMargin,
                     ),
@@ -108,15 +100,12 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         builder: (context, nightState) => OneTimepillarCalendar(
                           activityState: nightState,
                           timepillarState: nightTimepillarState,
-                          dayParts: memoplannerSettingsState.dayParts,
-                          displayTimeline:
-                              memoplannerSettingsState.displayTimeline,
-                          showCategories:
-                              memoplannerSettingsState.showCategories,
+                          dayParts: dayParts,
+                          displayTimeline: displayTimeline,
+                          showCategories: showCategories,
                           showCategoryLabels: false,
                           scrollToTimeOffset: false,
-                          displayHourLines:
-                              memoplannerSettingsState.displayHourLines,
+                          displayHourLines: displayHourLines,
                           topMargin: verticalMargin,
                           bottomMargin: verticalMargin,
                         ),
@@ -126,7 +115,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                 ),
               ],
             ),
-            if (memoplannerSettingsState.showCategories) ...[
+            if (showCategories) ...[
               LeftCategory(maxWidth: categoryLabelWidth),
               RightCategory(maxWidth: categoryLabelWidth),
             ],
