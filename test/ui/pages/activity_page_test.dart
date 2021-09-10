@@ -195,6 +195,78 @@ void main() {
       expect(activityPageFinder, findsOneWidget);
       expect(find.text(newTitle), findsOneWidget);
     });
+
+    testWidgets(
+        'Change date in edit activity shows in activity page for non recurring activities',
+        (WidgetTester tester) async {
+      // Arrange
+      final day = 14;
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
+      await navigateToActivityPage(tester);
+
+      expect(find.textContaining('11 November 2111'), findsOneWidget);
+      final appBar = find.byType(CalendarAppBar);
+      final theme = tester.widget<AnimatedTheme>(
+          find.descendant(of: appBar, matching: find.byType(AnimatedTheme)));
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      final newTheme = tester.widget<AnimatedTheme>(
+          find.descendant(of: appBar, matching: find.byType(AnimatedTheme)));
+
+      expect(find.text('$day November 2111'), findsOneWidget);
+      expect(
+          theme.data.scaffoldBackgroundColor ==
+              newTheme.data.scaffoldBackgroundColor,
+          false);
+    });
+
+    testWidgets(
+        'Change date in edit activity does not show in activity page for recurring activities',
+        (WidgetTester tester) async {
+      // Arrange
+      final day = 14;
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+      await navigateToActivityPage(tester);
+
+      expect(find.textContaining('11 November 2111'), findsOneWidget);
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // original text still stands
+      expect(find.textContaining('11 November 2111'), findsOneWidget);
+      expect(find.text('$day November 2111'), findsNothing);
+    });
   });
 
   group('Change alarm', () {
