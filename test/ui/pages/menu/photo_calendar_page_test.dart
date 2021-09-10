@@ -9,12 +9,9 @@ import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../../mocks_and_fakes/shared.mocks.dart';
-import '../../../mocks_and_fakes/alarm_schedualer.dart';
+import '../../../fakes/all.dart';
+import '../../../mocks/shared.mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
-import '../../../mocks_and_fakes/fake_shared_preferences.dart';
-import '../../../mocks_and_fakes/permission.dart';
 
 void main() {
   group('Photo calendar page', () {

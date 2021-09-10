@@ -11,8 +11,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks_and_fakes/shared.mocks.dart';
-import '../../mocks_and_fakes/mock_http_client.mocks.dart';
+import '../../mocks/shared.mocks.dart';
+import '../../mocks/mock_http_client.mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();

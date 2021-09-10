@@ -7,7 +7,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks_and_fakes/shared.mocks.dart';
+import '../../../mocks/shared.mocks.dart';
 
 void main() {
   late ClockBloc clockBloc;
