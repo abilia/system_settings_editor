@@ -5,7 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import 'mock_http_client.mocks.dart';
+import '../mocks/mock_http_client.mocks.dart';
 
 @GenerateMocks([
   MultipartRequest,

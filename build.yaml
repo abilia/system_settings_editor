@@ -4,7 +4,9 @@ targets:
       seagull:translatorBuilder:
         generate_for:
             - lib/i18n/translations.tsv
-        enabled: True
+      mockito|mockBuilder:
+        generate_for:
+            - test/mocks/*
 
 builders:
   translatorBuilder:

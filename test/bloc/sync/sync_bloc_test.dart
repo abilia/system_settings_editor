@@ -5,8 +5,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../mocks_and_fakes/shared.mocks.dart';
+import '../../fakes/fake_db_and_repository.dart';
+import '../../mocks/shared.mocks.dart';
 
 void main() {
   final activityRepository = MockActivityRepository();

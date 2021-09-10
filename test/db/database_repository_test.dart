@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/db/database_repository.dart';
 
-import '../mocks_and_fakes/shared.mocks.dart';
+import '../mocks/shared.mocks.dart';
 
 void main() {
   test('executeInitialization calls all scripts', () {

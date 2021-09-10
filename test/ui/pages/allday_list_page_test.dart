@@ -11,10 +11,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/pages/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../mocks_and_fakes/fake_db_and_repository.dart';
-import '../../mocks_and_fakes/fakes_blocs.dart';
-import '../../mocks_and_fakes/shared.mocks.dart';
-import '../../mocks_and_fakes/fake_shared_preferences.dart';
+import '../../fakes/all.dart';
+import '../../mocks/shared.mocks.dart';
+
 import '../../test_helpers/tts.dart';
 
 void main() {

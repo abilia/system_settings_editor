@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/db/license_db.dart';
 import 'package:seagull/models/all.dart';
 
-import '../mocks_and_fakes/fake_shared_preferences.dart';
+import '../fakes/fake_shared_preferences.dart';
 
 void main() {
   test('Persist and get licenses from store', () async {

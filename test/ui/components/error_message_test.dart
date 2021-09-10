@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../mocks_and_fakes/fake_db_and_repository.dart';
+import '../../fakes/fake_db_and_repository.dart';
 
 void main() {
   testWidgets('Bug SGC-516 No style in error message', (tester) async {
