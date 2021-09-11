@@ -117,9 +117,9 @@ class DatabaseRepository {
     void logTable(List<Map<String, dynamic>> calendar) {
       if (calendar.isEmpty) return;
       _log.info(calendar.first.keys.join('\t\t'));
-      calendar.forEach((element) {
+      for (final element in calendar) {
         _log.info(element.values.join('\t'));
-      });
+      }
     }
 
     final calendar = await db.rawQuery(
@@ -147,8 +147,12 @@ class DatabaseRepository {
 
   @visibleForTesting
   static Future<void> executeInitialization(Database db, int version) async {
-    initialScript.forEach((script) async => await db.execute(script));
-    migrations.forEach((script) async => await db.execute(script));
+    for (final script in initialScript) {
+      await db.execute(script);
+    }
+    for (final script in migrations) {
+      await db.execute(script);
+    }
   }
 
   @visibleForTesting

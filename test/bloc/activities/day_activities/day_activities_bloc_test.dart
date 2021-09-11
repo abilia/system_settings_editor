@@ -367,7 +367,9 @@ void main() {
       activitiesBloc.add(LoadActivities());
       await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: startTime));
-      allOtherDays.forEach((_) => dayPickerBloc.add(NextDay()));
+      for (final _ in allOtherDays) {
+        dayPickerBloc.add(NextDay());
+      }
 
       // Assert
       await expectLater(
