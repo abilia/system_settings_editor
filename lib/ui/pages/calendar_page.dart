@@ -2,6 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarPage extends StatelessWidget {
+  const CalendarPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
