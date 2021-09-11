@@ -11,7 +11,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
       builder: (context, state) {
-        final onWeekColorChanged = (WeekColor? w) => context
+        onWeekColorChanged(WeekColor? w) => context
             .read<MonthCalendarSettingsCubit>()
             .changeMonthCalendarSettings(state.copyWith(color: w));
         return SettingsTab(

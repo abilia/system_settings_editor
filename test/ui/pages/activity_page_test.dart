@@ -55,8 +55,6 @@ void main() {
 
   final activityInfoSideDotsFinder = find.byType(ActivityInfoSideDots);
 
-  ActivityResponse activityResponse = () => [];
-
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -77,7 +75,7 @@ void main() {
           initialTime: startTime, stream: StreamController<DateTime>().stream)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
-        activityResponse: activityResponse,
+        activityResponse: () => [],
         licenseResponse: () =>
             Fakes.licenseResponseExpires(startTime.add(5.days())),
       )

@@ -12,7 +12,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
 
     return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
         builder: (context, state) {
-      final onAlarmTypeChanged = (AlarmType? alarmType) => context
+      onAlarmTypeChanged(AlarmType? alarmType) => context
           .read<AddActivitySettingsCubit>()
           .changeAddActivitySettings(state.copyWith(
               defaultsTabSettingsState: state.defaultsTabSettingsState

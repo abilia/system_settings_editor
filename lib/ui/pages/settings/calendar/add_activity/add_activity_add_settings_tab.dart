@@ -12,20 +12,18 @@ class AddActivityAddSettingsTab extends StatelessWidget {
         builder: (context, state) {
       final addTabState = state.addTabEditViewSettingsState;
       final stepState = state.stepByStepSettingsState;
-      final onModeChanged = (v) =>
+      onModeChanged(v) =>
           context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
                 state.copyWith(
                   addTabEditViewSettingsState:
                       addTabState.copyWith(newActivityMode: v),
                 ),
               );
-      final onTabStateChanged = (AddTabEditViewSettingsState tss) => context
-          .read<AddActivitySettingsCubit>()
-          .changeAddActivitySettings(
+      onTabStateChanged(AddTabEditViewSettingsState tss) =>
+          context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
               state.copyWith(addTabEditViewSettingsState: tss));
-      final onStepChanged = (StepByStepSettingsState sss) => context
-          .read<AddActivitySettingsCubit>()
-          .changeAddActivitySettings(
+      onStepChanged(StepByStepSettingsState sss) =>
+          context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
               state.copyWith(stepByStepSettingsState: sss));
       return SettingsTab(
         children: [
