@@ -56,10 +56,10 @@ abstract class NewAlarm extends NotificationAlarm {
   const NewAlarm(ActivityDay activityDay) : super(activityDay);
 
   @override
-  bool hasSound(_) => activity.alarm.sound;
+  bool hasSound(settings) => activity.alarm.sound;
 
   @override
-  bool vibrate(_) => activity.alarm.vibrate;
+  bool vibrate(settings) => activity.alarm.vibrate;
 
   @override
   Sound sound(AlarmSettings settings) => activity.checkable
