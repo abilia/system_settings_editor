@@ -164,14 +164,12 @@ class Hour extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: Tts(
-                child: Text(
-                  hour,
-                  softWrap: false,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.end,
-                ),
+            Tts(
+              child: Text(
+                hour,
+                softWrap: false,
+                overflow: TextOverflow.visible,
+                textAlign: TextAlign.end,
               ),
             ),
             dots,

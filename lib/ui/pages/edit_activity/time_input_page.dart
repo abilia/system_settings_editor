@@ -559,27 +559,25 @@ class AmPmSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(children: [
-        _AmPmButton(
-          buttonKey: amRadioFieldKey,
-          text: Translator.of(context).translate.am,
-          onPressed: () => onChanged(DayPeriod.am),
-          groupValue: groupValue,
-          value: DayPeriod.am,
-          borderRadius: borderRadiusLeft,
-        ),
-        SizedBox(width: 2.s),
-        _AmPmButton(
-          buttonKey: pmRadioFieldKey,
-          text: Translator.of(context).translate.pm,
-          onPressed: () => onChanged(DayPeriod.pm),
-          groupValue: groupValue,
-          value: DayPeriod.pm,
-          borderRadius: borderRadiusRight,
-        ),
-      ]),
-    );
+    return Row(children: [
+      _AmPmButton(
+        buttonKey: amRadioFieldKey,
+        text: Translator.of(context).translate.am,
+        onPressed: () => onChanged(DayPeriod.am),
+        groupValue: groupValue,
+        value: DayPeriod.am,
+        borderRadius: borderRadiusLeft,
+      ),
+      SizedBox(width: 2.s),
+      _AmPmButton(
+        buttonKey: pmRadioFieldKey,
+        text: Translator.of(context).translate.pm,
+        onPressed: () => onChanged(DayPeriod.pm),
+        groupValue: groupValue,
+        value: DayPeriod.pm,
+        borderRadius: borderRadiusRight,
+      ),
+    ]);
   }
 }
 
