@@ -15,7 +15,7 @@ class HourLines extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: List.generate(
           numberOfLines,
-          (_) => Container(
+          (_) => SizedBox(
             height: hourHeight,
             child: const DottedLine(
               dashColor: AbiliaColors.white135,

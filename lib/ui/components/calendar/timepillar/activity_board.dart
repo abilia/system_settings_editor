@@ -22,7 +22,7 @@ class ActivityBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: max(categoryMinWidth, boardData.columns * timepillarWidth),
       child: Stack(children: boardData.cards),
     );
