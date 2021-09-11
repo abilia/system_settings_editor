@@ -1,4 +1,4 @@
-import 'package:http/src/base_client.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';

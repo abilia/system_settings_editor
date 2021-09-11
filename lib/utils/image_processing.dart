@@ -2,9 +2,8 @@ import 'dart:math';
 
 import 'package:exif/exif.dart' as exif;
 import 'package:image/image.dart' as img;
+// ignore: implementation_imports
 import 'package:image/src/exif_data.dart';
-import 'package:image/src/transform/flip.dart';
-import 'package:image/src/transform/copy_rotate.dart';
 import 'package:seagull/models/all.dart';
 
 const IMAGE_ORIENTATION_FLAG = 'Image Orientation';
@@ -81,19 +80,19 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   bakedImage.exif = ExifData();
   switch (orientation) {
     case 2:
-      return flipHorizontal(bakedImage);
+      return img.flipHorizontal(bakedImage);
     case 3:
-      return flip(bakedImage, Flip.both);
+      return img.flip(bakedImage, img.Flip.both);
     case 4:
-      return flipHorizontal(copyRotate(bakedImage, 180));
+      return img.flipHorizontal(img.copyRotate(bakedImage, 180));
     case 5:
-      return flipHorizontal(copyRotate(bakedImage, 90));
+      return img.flipHorizontal(img.copyRotate(bakedImage, 90));
     case 6:
-      return copyRotate(bakedImage, 90);
+      return img.copyRotate(bakedImage, 90);
     case 7:
-      return flipHorizontal(copyRotate(bakedImage, -90));
+      return img.flipHorizontal(img.copyRotate(bakedImage, -90));
     case 8:
-      return copyRotate(bakedImage, -90);
+      return img.copyRotate(bakedImage, -90);
   }
   return bakedImage;
 }
