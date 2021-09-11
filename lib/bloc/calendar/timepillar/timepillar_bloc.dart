@@ -21,6 +21,7 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
   StreamSubscription? _memoSettingsSubscription;
   StreamSubscription? _dayPickerSubscription;
 
+  // ignore_for_file: prefer_initializing_formals
   TimepillarBloc({
     required ClockBloc clockBloc,
     required MemoplannerSettingBloc memoSettingsBloc,
