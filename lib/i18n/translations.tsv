@@ -6,11 +6,11 @@ loginHintMP	Use your myAbilia account to Login	Använd ditt myAbilia-konto för 
 loginHintMPGO	Login with the same username and password as on your MEMOplanner	Logga in med samma användarnamn och lösenord som på din MEMOplanner	Log ind med samme brugernavn og adgangskode som på din MEMOplanner	Log in met dezelfde gebruikersnaam en hetzelfde wachtwoord als op uw MEMOplanner	Kirjaudu sisään samalla käyttäjänimellä ja salasanalla kuin MEMOplannerilla	Melden Sie sich mit demselben Benutzernamen und Passwort wie auf Ihrem MEMOplanner an	Logg inn med samme brukernavn og passord som på MEMOplanner
 login	Log in	Logga in	Log ind	Inloggen	Kirjaudu sisään	Anmelden	Logg inn
 logout	Log out	Logga ut	Log ud	Uitloggen	Kirjaudu ulos	Abmelden	Logg ut
-wrongCredentials	Username or password doesn\'t match.\nVerify your credentials and try again.	Användarnamn eller lösenord stämmer inte.\nKontrollera att du har skrivit rätt och försök igen.	Brugernavn eller adgangskode er ikke korrekt.\nKontroller at du har skrevet det rigtigt og forsøg igen.	Gebruikersnaam of wachtwoord komt niet overeen.\nControleer uw gegevens en probeer opnieuw.	Käyttäjätunnus tai salasana ei täsmää.\nVahvista tunnistetiedot ja yritä uudelleen.	Benutzername oder Passwort unkorrekt.\nBitte Anmeldedaten prüfen und nochmals versuchen.	Brukernavn eller passord er ikke riktig.\nKontroller at du har skrevet riktig og prøv igjen.
+wrongCredentials	Username or password doesn't match.\nVerify your credentials and try again.	Användarnamn eller lösenord stämmer inte.\nKontrollera att du har skrivit rätt och försök igen.	Brugernavn eller adgangskode er ikke korrekt.\nKontroller at du har skrevet det rigtigt og forsøg igen.	Gebruikersnaam of wachtwoord komt niet overeen.\nControleer uw gegevens en probeer opnieuw.	Käyttäjätunnus tai salasana ei täsmää.\nVahvista tunnistetiedot ja yritä uudelleen.	Benutzername oder Passwort unkorrekt.\nBitte Anmeldedaten prüfen und nochmals versuchen.	Brukernavn eller passord er ikke riktig.\nKontroller at du har skrevet riktig og prøv igjen.
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
-userTypeNotSupported	Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia					
+userTypeNotSupported	Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia					
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -160,7 +160,7 @@ selectPicture	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valits
 removePicture	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
 uploadImage	Upload image	Ladda upp bild	Upload billede	Afbeelding uploaden	Lataa kuva	Bild hochladen	Last opp bilde
-myPhotos	My photos	Mina foton	Mine fotos	Mijn foto\'s	Omat valokuvat	Meine Fotos	Mine foto
+myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
 							
 ### Recurrence							
