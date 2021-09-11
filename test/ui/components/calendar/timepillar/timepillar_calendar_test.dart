@@ -25,7 +25,7 @@ import '../../../../test_helpers/tts.dart';
 void main() {
   late StreamController<DateTime> mockTicker;
   final time = DateTime(2007, 08, 09, 13, 11);
-  final leftTitle = 'LeftCategoryActivity',
+  const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
   ActivityResponse activityResponse = () => [];

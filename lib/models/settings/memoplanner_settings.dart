@@ -199,7 +199,7 @@ class MemoplannerSettings extends Equatable {
       checkableActivityAlarm,
       reminderAlarm;
 
-  MemoplannerSettings({
+  const MemoplannerSettings({
     this.displayAlarmButton = true,
     this.displayDeleteButton = true,
     this.displayEditButton = true,

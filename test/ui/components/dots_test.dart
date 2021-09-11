@@ -100,7 +100,7 @@ void main() {
         startTime: startTime.subtract(7.minutes()),
         duration: 2.hours(),
       );
-      final expectedText = '''1 h
+      const expectedText = '''1 h
 53 min
 ''';
 
@@ -151,7 +151,7 @@ void main() {
         startTime: startTime.add(37.minutes()),
         duration: 2.hours(),
       );
-      final expectedText = '''37 min
+      const expectedText = '''37 min
 ''';
 
       // Act
@@ -264,7 +264,7 @@ void main() {
 
     testWidgets('Correct amount of dots', (WidgetTester tester) async {
       // Arrange
-      final minutes = 90;
+      const minutes = 90;
       final activity = Activity.createNew(
         title: 'null',
         duration: minutes.minutes(),
@@ -427,7 +427,7 @@ void main() {
         startTime: startTime.add(37.minutes()),
         duration: 2.hours(),
       );
-      final expectedText = '''37 min
+      const expectedText = '''37 min
 ''';
 
       // Act

@@ -9,7 +9,7 @@ abstract class MemoplannerSettingsEvent extends Equatable {
 class UpdateMemoplannerSettings extends MemoplannerSettingsEvent {
   final MapView<String, Generic> generics;
 
-  UpdateMemoplannerSettings(this.generics);
+  const UpdateMemoplannerSettings(this.generics);
 
   @override
   List<Object> get props => [generics];
@@ -56,6 +56,6 @@ class DayCalendarTypeUpdatedEvent extends SettingsUpdateEvent {
 class DotsInTimepillarUpdatedEvent extends SettingsUpdateEvent {
   final bool dotsInTimepillar;
 
-  DotsInTimepillarUpdatedEvent(this.dotsInTimepillar)
+  const DotsInTimepillarUpdatedEvent(this.dotsInTimepillar)
       : super(MemoplannerSettings.dotsInTimepillarKey, dotsInTimepillar);
 }

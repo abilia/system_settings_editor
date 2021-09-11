@@ -143,7 +143,7 @@ void main() {
 
   testWidgets('pressing add activity button without time shows error',
       (WidgetTester tester) async {
-    final newActivtyName = 'new activity name';
+    const newActivtyName = 'new activity name';
 
     // Act press submit
     await tester.pumpWidget(createEditActivityPage(newActivity: true));

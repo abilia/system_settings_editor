@@ -80,7 +80,7 @@ void main() {
   tearDown(GetIt.I.reset);
 
   testWidgets('has title ', (WidgetTester tester) async {
-    final title = 'title';
+    const title = 'title';
     await pumpActivityCard(
       tester,
       Activity.createNew(
@@ -112,7 +112,7 @@ void main() {
   });
 
   testWidgets('has title and image ', (WidgetTester tester) async {
-    final title = 'title';
+    const title = 'title';
     await pumpActivityCard(
       tester,
       Activity.createNew(

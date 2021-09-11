@@ -14,8 +14,8 @@ void main() {
   });
 
   test('executeMigration do not call old scripts', () {
-    final migrationScript1 = 'script1';
-    final migrationScript2 = 'script2';
+    const migrationScript1 = 'script1';
+    const migrationScript2 = 'script2';
     final migrations = <String>[migrationScript1, migrationScript2];
     final mockDb = MockDatabase();
     DatabaseRepository.internalMigration(mockDb, 2, 3, migrations);

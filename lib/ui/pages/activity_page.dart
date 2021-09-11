@@ -10,7 +10,7 @@ class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
   final Widget? previewImage;
 
-  ActivityPage({
+  const ActivityPage({
     Key? key,
     required this.occasion,
     this.previewImage,

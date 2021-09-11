@@ -291,7 +291,7 @@ class FadeInCalendarImage extends StatelessWidget {
   final double? width, height;
   final ImageSize imageSize;
   final BoxFit fit;
-  FadeInCalendarImage({
+  const FadeInCalendarImage({
     Key? key,
     required this.imageFileId,
     required this.imageFilePath,
@@ -404,7 +404,7 @@ class FadeInNetworkImage extends StatelessWidget {
   final String imageFileId, imageFilePath;
   final double? width, height;
   final BoxFit fit;
-  FadeInNetworkImage({
+  const FadeInNetworkImage({
     required this.imageFileId,
     required this.imageFilePath,
     this.fit = BoxFit.cover,

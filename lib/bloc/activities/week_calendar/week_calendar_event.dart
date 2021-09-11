@@ -16,7 +16,7 @@ class GoToCurrentWeek extends WeekCalendarEvent {}
 class UpdateWeekActivites extends WeekCalendarEvent {
   final Iterable<Activity> activities;
 
-  UpdateWeekActivites(this.activities);
+  const UpdateWeekActivites(this.activities);
 
   @override
   List<Object> get props => [activities];

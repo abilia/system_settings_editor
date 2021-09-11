@@ -218,7 +218,7 @@ Border getCategoryBorder({
 BoxDecoration selectableBoxDecoration(bool selected) =>
     selected ? selectedBoxDecoration : whiteBoxDecoration;
 
-final rightCategoryActiveColor = AbiliaColors.green,
+const rightCategoryActiveColor = AbiliaColors.green,
     rightCategoryInactiveColor = AbiliaColors.green40,
     leftCategoryActiveColor = AbiliaColors.black60,
     noCategoryColor = AbiliaColors.white140;

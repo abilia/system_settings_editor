@@ -28,9 +28,9 @@ void main() {
     fileLoaded: true,
   );
 
-  final fileId = 'file1';
+  const fileId = 'file1';
   final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
-  final filePath = 'test.dart';
+  const filePath = 'test.dart';
 
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
@@ -194,13 +194,13 @@ void main() {
 
   test('State contains two files when two is added in loaded state', () async {
     // Arrange
-    final filePath1 = 'test';
+    const filePath1 = 'test';
     File file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
-    final fileId2 = 'fileId1';
-    final filePath2 = 'test.dart';
+    const fileId2 = 'fileId1';
+    const filePath2 = 'test.dart';
     File file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 
@@ -253,12 +253,12 @@ void main() {
 
   test('State contains two temp files when not loaded state', () async {
     // Arrange
-    final filePath1 = 'test';
+    const filePath1 = 'test';
     File file = MemoryFileSystem().file(filePath1);
     await file.writeAsBytes(fileContent);
 
-    final fileId2 = 'fileId1';
-    final filePath2 = 'test.dart';
+    const fileId2 = 'fileId1';
+    const filePath2 = 'test.dart';
     File file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 

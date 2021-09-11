@@ -43,7 +43,7 @@ class ActivityInfo extends StatefulWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final NotificationAlarm? alarm;
-  ActivityInfo(
+  const ActivityInfo(
     this.activityDay, {
     Key? key,
     this.previewImage,

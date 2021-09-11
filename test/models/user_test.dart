@@ -5,7 +5,7 @@ import 'package:seagull/models/all.dart';
 
 void main() {
   test('from json', () {
-    final response = '''{
+    const response = '''{
     "id" : -1,
     "type" : "testcase",
     "name" : "Testcase user",
@@ -29,7 +29,7 @@ void main() {
   });
 
   test('from json with null', () {
-    final response = '''{
+    const response = '''{
     "id" : 121,
     "type" : "null",
     "name" : null,
@@ -50,7 +50,7 @@ void main() {
   });
 
   test('from json then to json', () {
-    final response = '''{
+    const response = '''{
     "id" : -1,
     "type" : "testcase",
     "name" : "Testcase user",

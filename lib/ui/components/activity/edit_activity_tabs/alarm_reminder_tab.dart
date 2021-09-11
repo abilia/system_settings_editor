@@ -2,7 +2,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AlarmAndReminderTab extends StatefulWidget {
-  AlarmAndReminderTab({
+  const AlarmAndReminderTab({
     Key? key,
     required this.activity,
   }) : super(key: key);

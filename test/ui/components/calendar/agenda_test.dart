@@ -25,7 +25,7 @@ void main() {
 
   final translate = Locales.language.values.first;
 
-  final firstFullDayTitle = 'first full day',
+  const firstFullDayTitle = 'first full day',
       secondFullDayTitle = 'second full day',
       thirdFullDayTitle = 'third full day',
       forthFullDayTitle = 'forth full day';
@@ -112,7 +112,7 @@ void main() {
   testWidgets(
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {
-    final key = 'KEYKEYKEYKEYKEY';
+    const key = 'KEYKEYKEYKEYKEY';
     activityResponse = () => [
           for (int i = 0; i < 10; i++)
             Activity.createNew(
@@ -158,7 +158,7 @@ void main() {
 
   testWidgets('past activities are hidden by scroll',
       (WidgetTester tester) async {
-    final pastTitle = 'past',
+    const pastTitle = 'past',
         pastTitle2 = 'past2',
         currentTitle = 'current',
         futureTitle = 'future';
@@ -288,7 +288,7 @@ void main() {
 
   testWidgets('past day activities are correctly sorted',
       (WidgetTester tester) async {
-    final yesterdayMorningTitle = 'yeterdayMorningTitle',
+    const yesterdayMorningTitle = 'yeterdayMorningTitle',
         yesterdayEveningTitle = 'yeterdayEveningTitle';
     activityResponse = () => [
           Activity.createNew(
@@ -316,7 +316,7 @@ void main() {
 
   testWidgets('category left is left of category right, and vice versa',
       (WidgetTester tester) async {
-    final leftTitle =
+    const leftTitle =
             'leftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitleleftTitle',
         rightTitle =
             'rightTitlerightTitlerightTitlerightTitlerightTitlerightTitlerightTitle';
@@ -476,7 +476,7 @@ void main() {
 
     testWidgets('memoplanner settings - category name ',
         (WidgetTester tester) async {
-      final leftCategoryName = 'New Left', rightCategoryName = 'New Right';
+      const leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
@@ -522,7 +522,7 @@ void main() {
 
     testWidgets(' memoplanner settings - category name push update ',
         (WidgetTester tester) async {
-      final leftCategoryName = 'Something unique',
+      const leftCategoryName = 'Something unique',
           rightCategoryName = 'Another not seen before string';
       final pushBloc = PushBloc();
 

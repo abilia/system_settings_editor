@@ -7,7 +7,7 @@ class LoginError extends Equatable {
   final String message;
   final int errorId;
   final Iterable<Error> errors;
-  LoginError._({
+  const LoginError._({
     required this.status,
     required this.message,
     required this.errorId,
@@ -38,7 +38,7 @@ class Error extends Equatable {
 
   final String code;
   final String message;
-  Error._({required this.code, required this.message});
+  const Error._({required this.code, required this.message});
 
   factory Error.fromJson(Map<String, dynamic> json) {
     return Error._(

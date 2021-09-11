@@ -7,7 +7,7 @@ class UserFile extends DataModel {
   final int fileSize;
   final bool deleted, fileLoaded;
 
-  UserFile({
+  const UserFile({
     required String id,
     required this.sha1,
     required this.md5,

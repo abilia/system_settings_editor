@@ -164,7 +164,7 @@ void main() {
 
   group('roundToMinute', () {
     test('rounds down on 7', () {
-      final minutesPerDot = 15;
+      const minutesPerDot = 15;
       expect(
         DateTime(2000, 12, 12, 12, 07)
             .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
@@ -172,7 +172,7 @@ void main() {
       );
     });
     test('rounds up on 8', () {
-      final minutesPerDot = 15;
+      const minutesPerDot = 15;
       expect(
         DateTime(2000, 12, 12, 12, 08)
             .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
@@ -180,7 +180,7 @@ void main() {
       );
     });
     test('rounds up on 53', () {
-      final minutesPerDot = 15;
+      const minutesPerDot = 15;
       expect(
         DateTime(2000, 12, 12, 12, 53)
             .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
@@ -188,7 +188,7 @@ void main() {
       );
     });
     test('rounds down on 52', () {
-      final minutesPerDot = 15;
+      const minutesPerDot = 15;
       expect(
         DateTime(2000, 12, 12, 12, 52)
             .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),
@@ -196,7 +196,7 @@ void main() {
       );
     });
     test('rounds to next day', () {
-      final minutesPerDot = 15;
+      const minutesPerDot = 15;
       expect(
         DateTime(2000, 12, 12, 23, 55)
             .roundToMinute(minutesPerDot, minutesPerDot ~/ 2),

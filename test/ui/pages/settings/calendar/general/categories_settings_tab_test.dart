@@ -100,7 +100,7 @@ void main() {
   }, skip: !Config.isMP);
 
   testWidgets('settings shows', (tester) async {
-    final fileIdLeft = 'fileIdLeft',
+    const fileIdLeft = 'fileIdLeft',
         fileIdRight = 'fileIdRight',
         leftName = 'leftName',
         rightName = 'leftName';
@@ -213,7 +213,7 @@ void main() {
     });
 
     testWidgets('edit left category saved', (tester) async {
-      final newLeftName = 'new lft name';
+      const newLeftName = 'new lft name';
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       expect(find.text(translate.left), findsNWidgets(2));
 
@@ -238,7 +238,7 @@ void main() {
     });
 
     testWidgets('edit right category saved', (tester) async {
-      final newRightName = 'new rght name';
+      const newRightName = 'new rght name';
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       expect(find.text(translate.right), findsNWidgets(2));
 
@@ -263,7 +263,7 @@ void main() {
     });
 
     testWidgets('edit image right saved', (tester) async {
-      final fileId = 'imgfileId';
+      const fileId = 'imgfileId';
       sortable = [
         Sortable.createNew<ImageArchiveData>(
           data: ImageArchiveData(name: 'test image', fileId: fileId),
@@ -301,7 +301,7 @@ void main() {
     });
 
     testWidgets('edit image left saved', (tester) async {
-      final fileId = 'imgfileId';
+      const fileId = 'imgfileId';
       sortable = [
         Sortable.createNew<ImageArchiveData>(
           data: ImageArchiveData(name: 'test image', fileId: fileId),
@@ -398,7 +398,7 @@ void main() {
 
     testWidgets('category right name, agenda view', (tester) async {
       // Arrange
-      final right = 'some right name';
+      const right = 'some right name';
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
@@ -418,7 +418,7 @@ void main() {
 
     testWidgets('category right name, one timepillar view', (tester) async {
       // Arrange
-      final right = 'some right name';
+      const right = 'some right name';
       generics = [
         oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
@@ -439,7 +439,7 @@ void main() {
 
     testWidgets('category left name, agenda view', (tester) async {
       // Arrange
-      final left = 'some left name';
+      const left = 'some left name';
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
@@ -459,7 +459,7 @@ void main() {
 
     testWidgets('category left name, timepillar view', (tester) async {
       // Arrange
-      final left = 'some left name';
+      const left = 'some left name';
       generics = [
         oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
@@ -480,7 +480,7 @@ void main() {
 
     testWidgets('category image, timepillar view', (tester) async {
       // Arrange
-      final fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
+      const fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
       generics = [
         oneTimepillarGeneric,
         Generic.createNew<MemoplannerSettingData>(
@@ -513,7 +513,7 @@ void main() {
 
     testWidgets('category image and name, two timepillar view', (tester) async {
       // Arrange
-      final fileIdLeft = 'fileIdLeft',
+      const fileIdLeft = 'fileIdLeft',
           fileIdRight = 'fileIdRight',
           leftName = 'some left name',
           rightName = 'some right name';
@@ -562,7 +562,7 @@ void main() {
 
     testWidgets('category image, agenda view', (tester) async {
       // Arrange
-      final fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
+      const fileIdLeft = 'fileIdLeft', fileIdRight = 'fileIdRight';
       generics = [
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
@@ -594,7 +594,7 @@ void main() {
 
     testWidgets('category image, name, edit activityt view', (tester) async {
       // Arrange
-      final nameLeft = 'nameLeft',
+      const nameLeft = 'nameLeft',
           nameRight = 'nameRight',
           fileIdLeft = 'fileIdLeft',
           fileIdRight = 'fileIdRight';

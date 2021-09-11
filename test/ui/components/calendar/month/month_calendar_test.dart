@@ -153,7 +153,7 @@ void main() {
     });
 
     group('shows activities', () {
-      final fridayTitle = 'en rubrik', nextMonthTitle = 'next month';
+      const fridayTitle = 'en rubrik', nextMonthTitle = 'next month';
       final friday = initialDay.addDays(2);
       final nextMonth = initialDay.nextMonth();
       final recuresOnMonthDaySet = {1, 5, 6, 9, 22, 23};
@@ -211,7 +211,7 @@ void main() {
 
   group('With preview', () {
     final time = initialDay.withTime(TimeOfDay(hour: 16, minute: 16));
-    final title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
+    const title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
     final friday = time.addDays(2);
     setUp(() {
       activityResponse = () => [

@@ -10,7 +10,7 @@ import 'dart:async';
 import '../mocks/shared.mocks.dart';
 
 void main() {
-  final url = 'oneUrl';
+  const url = 'oneUrl';
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
@@ -25,7 +25,7 @@ void main() {
   test('copyWith with new', () {
     // Arrange
     final newClient = Fakes.client();
-    final newUrl = 'newrl';
+    const newUrl = 'newrl';
     // Act
     final newUserRepo = userRepo.copyWith(baseUrl: newUrl, client: newClient);
     // Assert

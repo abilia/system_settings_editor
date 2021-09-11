@@ -12,7 +12,7 @@ class AddActivitySettingsState extends Equatable {
   final StepByStepSettingsState stepByStepSettingsState;
   final DefaultsTabSettingsState defaultsTabSettingsState;
 
-  AddActivitySettingsState._({
+  const AddActivitySettingsState._({
     required this.allowPassedStartTime,
     required this.addRecurringActivity,
     required this.showEndTime,
@@ -116,7 +116,7 @@ class AddTabEditViewSettingsState extends Equatable {
   final NewActivityMode newActivityMode;
   final bool selectDate, selectType, showBasicActivities;
 
-  AddTabEditViewSettingsState._({
+  const AddTabEditViewSettingsState._({
     required this.newActivityMode,
     required this.selectDate,
     required this.selectType,
@@ -188,7 +188,7 @@ class StepByStepSettingsState extends Equatable {
       selectNote,
       selectReminder;
 
-  StepByStepSettingsState._({
+  const StepByStepSettingsState._({
     required this.showBasicActivities,
     required this.selectName,
     required this.selectImage,
@@ -322,7 +322,7 @@ class DefaultsTabSettingsState extends Equatable {
   final AlarmType alarmType;
   final bool alarmOnlyAtStartTime;
 
-  DefaultsTabSettingsState._({
+  const DefaultsTabSettingsState._({
     required this.alarmType,
     required this.alarmOnlyAtStartTime,
   });

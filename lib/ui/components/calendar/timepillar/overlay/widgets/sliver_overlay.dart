@@ -27,7 +27,7 @@ class SliverOverlayState {
 }
 
 class SliverOverlay extends RenderObjectWidget {
-  SliverOverlay({
+  const SliverOverlay({
     Key? key,
     required this.overlay,
     required this.sliver,
@@ -88,8 +88,6 @@ class SliverOverlayRenderObjectElement extends RenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
   SliverOverlayRenderObjectElement(SliverOverlay widget) : super(widget);
 
-  @override
-  RenderObjectWidget get widget => super.widget;
   SliverOverlay get sliverOverlay => widget as SliverOverlay;
 
   Element? _overlay;

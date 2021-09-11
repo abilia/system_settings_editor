@@ -16,11 +16,11 @@ import '../../mocks/mock_http_client.mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
-  final baseUrl = 'http://url.com';
+  const baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
   final mockClient = MockBaseClient();
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
-  final userId = 1;
+  const userId = 1;
   final userFileRepository = UserFileRepository(
     authToken: Fakes.token,
     baseUrl: baseUrl,
@@ -49,12 +49,12 @@ void main() {
     // Arrange
     when(mockUserFileDb.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
-    final revision = 99;
+    const revision = 99;
     when(mockUserFileDb.getLastRevision())
         .thenAnswer((_) => Future.value(revision));
 
-    final fileId = 'id';
-    final userFilesJson = '''
+    const fileId = 'id';
+    const userFilesJson = '''
           [
             {
               "id": "$fileId",
@@ -113,8 +113,8 @@ void main() {
 
   test('Successful sync saves user file with new revision', () async {
     // Arrange
-    final userFileId = 'ididi';
-    final lastRevision = 999;
+    const userFileId = 'ididi';
+    const lastRevision = 999;
     final userFile = FakeUserFile.createNew(id: userFileId);
     final dirtyFiles = [
       userFile.wrapWithDbModel(dirty: 1, revision: 0),
@@ -139,8 +139,8 @@ void main() {
             sha1: anyNamed('sha1')))
         .thenReturn(mockMultipartRequest);
 
-    final newRevision = 10000;
-    final postUserFilesResponse = '''
+    const newRevision = 10000;
+    const postUserFilesResponse = '''
         [
           {
             "id": "$userFileId",
@@ -239,7 +239,7 @@ void main() {
     when(mockUserFileDb.setFileLoadedForId(any))
         .thenAnswer((_) => Future.value());
 
-    final lim = 12;
+    const lim = 12;
     final expectedToSuccessed =
         {for (var i = 0; i < lim; i++) i}.difference(failsOnId);
     final expectedSuccesses = expectedToSuccessed.length;

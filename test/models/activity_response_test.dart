@@ -5,7 +5,7 @@ import 'package:seagull/models/all.dart';
 
 void main() {
   test('parse json', () {
-    final response = '''
+    const response = '''
     {
       "previousRevision" : 100,
       "dataRevisionUpdates" : [ {
@@ -32,7 +32,7 @@ void main() {
     expect(failedUpdate.revision, 100);
   });
   test('parse json with no failedUpdates', () {
-    final response = '''
+    const response = '''
     {
       "previousRevision" : 100,
       "dataRevisionUpdates" : [ {
@@ -53,7 +53,7 @@ void main() {
   });
 
   test('Parse json with no successful', () {
-    final response = '''
+    const response = '''
     {
       "previousRevision" : 100,
       "dataRevisionUpdates" : [],

@@ -3,7 +3,7 @@ part of 'authentication_bloc.dart';
 abstract class AuthenticationState extends Equatable {
   final UserRepository userRepository;
   final bool forcedNewState;
-  AuthenticationState(this.userRepository, this.forcedNewState);
+  const AuthenticationState(this.userRepository, this.forcedNewState);
   @override
   List<Object> get props => [userRepository, forcedNewState];
   @override

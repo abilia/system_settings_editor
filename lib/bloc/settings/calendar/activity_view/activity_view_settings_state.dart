@@ -3,7 +3,7 @@ part of 'activity_view_settings_cubit.dart';
 class ActivityViewSettingsState extends Equatable {
   final bool alarm, delete, edit, quarterHour, timeOnQuarterHour;
 
-  ActivityViewSettingsState._(
+  const ActivityViewSettingsState._(
     this.alarm,
     this.delete,
     this.edit,

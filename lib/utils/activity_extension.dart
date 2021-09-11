@@ -11,7 +11,7 @@ extension ActivityExtensions on Activity {
     if (hasEndTime) {
       return '${timeFormat(startTime)} - ${timeFormat(noneRecurringEnd)}';
     }
-    return '${timeFormat(startTime)}';
+    return timeFormat(startTime);
   }
 
   SemanticsProperties semanticsProperties(BuildContext context) =>

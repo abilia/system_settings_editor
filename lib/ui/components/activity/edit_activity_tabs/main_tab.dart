@@ -2,7 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class MainTab extends StatefulWidget {
-  MainTab({
+  const MainTab({
     Key? key,
     required this.editActivityState,
   }) : super(key: key);

@@ -6,7 +6,7 @@ abstract class ActivitiesOccasionEvent extends Equatable {
 
 class NowChanged extends ActivitiesOccasionEvent {
   final DateTime now;
-  NowChanged(this.now);
+  const NowChanged(this.now);
   @override
   List<Object> get props => [now];
   @override
@@ -15,7 +15,7 @@ class NowChanged extends ActivitiesOccasionEvent {
 
 class ActivitiesChanged extends ActivitiesOccasionEvent {
   final DayActivitiesLoaded dayActivitiesLoadedState;
-  ActivitiesChanged(this.dayActivitiesLoadedState);
+  const ActivitiesChanged(this.dayActivitiesLoadedState);
   @override
   List<Object> get props => [dayActivitiesLoadedState];
   @override
