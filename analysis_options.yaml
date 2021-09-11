@@ -25,7 +25,6 @@ linter:
     prefer_single_quotes: true
 
     avoid_renaming_method_parameters: false
-    camel_case_types: false
     constant_identifier_names: false
     implementation_imports: false
     no_logic_in_create_state: false
