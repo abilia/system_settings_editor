@@ -111,7 +111,7 @@ void main() {
 
   test('logout deletes token', () async {
     // Arrange
-    final token = Fakes.token;
+    const token = Fakes.token;
     when(mockTokenDb.delete()).thenAnswer((_) async {});
     when(mockUserDb.deleteUser()).thenAnswer((_) async {});
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
@@ -130,7 +130,7 @@ void main() {
 
   test('exception when logging out', () async {
     // Arrange
-    final token = Fakes.token;
+    const token = Fakes.token;
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenThrow(Exception());
