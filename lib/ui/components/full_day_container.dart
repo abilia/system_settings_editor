@@ -24,8 +24,9 @@ class FullDayContainer extends StatelessWidget {
             .theme,
         child: Builder(
           builder: (context) => Container(
-            decoration:
-                BoxDecoration(color: Theme.of(context).appBarTheme.color),
+            decoration: BoxDecoration(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+            ),
             child: Padding(
               padding: EdgeInsets.all(12.s),
               child: Row(

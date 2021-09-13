@@ -69,6 +69,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                 NotificationListener<ScrollNotification>(
                   onNotification: state.isToday ? onScrollNotification : null,
                   child: AbiliaScrollBar(
+                    controller: scrollController,
                     child: ActivityList(
                       state: state,
                       scrollController: scrollController,

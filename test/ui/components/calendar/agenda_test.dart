@@ -188,8 +188,9 @@ void main() {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
 
-    expect(find.text(pastTitle2),
-        findsOneWidget); // Default scroll is showingn part of the closest past activity
+    expect(find.text(pastTitle), findsNothing);
+    // Default scroll is showing part of the closest past activity
+    expect(find.text(pastTitle2), findsOneWidget);
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
 

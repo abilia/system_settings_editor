@@ -274,7 +274,7 @@ class MonthDayView extends StatelessWidget {
                         Text('${day.day.day}'),
                         Spacer(),
                         if (day.hasActivities)
-                          ColorDot(color: dayTheme.theme.accentColor),
+                          ColorDot(color: dayTheme.theme.colorScheme.onSurface),
                       ],
                     ),
                   ),

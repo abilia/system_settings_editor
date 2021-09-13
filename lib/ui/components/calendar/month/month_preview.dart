@@ -95,7 +95,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: radius),
-          color: Theme.of(context).appBarTheme.color,
+          color: Theme.of(context).appBarTheme.backgroundColor,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +159,9 @@ class MonthDayViewCompact extends StatelessWidget {
                   if (day.hasActivities)
                     Align(
                       alignment: Alignment.topRight,
-                      child: ColorDot(color: dayTheme.theme.accentColor),
+                      child: ColorDot(
+                        color: dayTheme.theme.colorScheme.onSurface,
+                      ),
                     ),
                 ],
               ),
