@@ -23,13 +23,10 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
         );
 
   Future<void> startRecording() async {
-    var result = await _recorder.hasPermission();
-    if (result) {
-      var tempDir = await getApplicationDocumentsDirectory();
-      var tempPath = '${tempDir.path}';
-      await _recorder.start(path: '$tempPath/' + Uuid().v4());
-      emit(RecordSoundState(RecordState.Recording, AbiliaFile.empty));
-    }
+    var tempDir = await getApplicationDocumentsDirectory();
+    var tempPath = '${tempDir.path}';
+    await _recorder.start(path: '$tempPath/' + Uuid().v4());
+    emit(RecordSoundState(RecordState.Recording, AbiliaFile.empty));
   }
 
   Future<void> stopRecording(double duration) async {

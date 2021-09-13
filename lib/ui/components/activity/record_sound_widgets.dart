@@ -78,56 +78,78 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Expanded(
-          child: PickField(
-            leading: Icon(recordedAudio.isEmpty
-                ? AbiliaIcons.no_record
-                : AbiliaIcons.sms_sound),
-            text: Text(label),
-            onTap: abilityToSelectAlarm
-                ? () async {
-                    final result = await Navigator.of(context).push<AbiliaFile>(
-                      MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
-                          child: RecordSoundPage(
-                            originalSoundFile: recordedAudio,
+    var permission = Permission.microphone;
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, permissionState) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: PickField(
+                leading: Icon(recordedAudio.isEmpty
+                    ? AbiliaIcons.no_record
+                    : AbiliaIcons.sms_sound),
+                text: Text(label),
+                onTap: abilityToSelectAlarm &&
+                        permissionState.microphoneDenied == false
+                    ? () async {
+                        final result =
+                            await Navigator.of(context).push<AbiliaFile>(
+                          MaterialPageRoute(
+                            builder: (_) => CopiedAuthProviders(
+                              blocContext: context,
+                              child: RecordSoundPage(
+                                originalSoundFile: recordedAudio,
+                              ),
+                            ),
+                            settings: RouteSettings(name: 'SelectSpeechPage'),
                           ),
+                        );
+                        if (result is UnstoredAbiliaFile && result.isNotEmpty) {
+                          context.read<UserFileBloc>().add(
+                                RecordingAdded(result),
+                              );
+                        }
+                        if (result != null) {
+                          onAudioRecordedCallback.call(result);
+                        }
+                      }
+                    : null,
+              ),
+            ),
+            if (permissionState.microphoneDenied == true)
+              Padding(
+                padding: EdgeInsets.only(left: 8.0.s),
+                child: InfoButton(
+                  key: Key('microphonepermission'),
+                  onTap: () => showViewDialog(
+                    useSafeArea: false,
+                    context: context,
+                    builder: (context) =>
+                        PermissionInfoDialog(permission: permission),
+                  ),
+                ),
+              ),
+            if (recordedAudio.isNotEmpty)
+              BlocProvider(
+                create: (context) => SoundCubit(),
+                child: BlocBuilder<UserFileBloc, UserFileState>(
+                  builder: (context, state) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 12.s),
+                      child: PlaySoundButton(
+                        sound: state.getFile(
+                          recordedAudio,
+                          GetIt.I<FileStorage>(),
                         ),
-                        settings: RouteSettings(name: 'SelectSpeechPage'),
                       ),
                     );
-                    if (result is UnstoredAbiliaFile && result.isNotEmpty) {
-                      context.read<UserFileBloc>().add(
-                            RecordingAdded(result),
-                          );
-                    }
-                    onAudioRecordedCallback.call(result!);
-                  }
-                : null,
-          ),
-        ),
-        if (recordedAudio.isNotEmpty)
-          BlocProvider(
-            create: (context) => SoundCubit(),
-            child: BlocBuilder<UserFileBloc, UserFileState>(
-              builder: (context, state) {
-                return Padding(
-                  padding: EdgeInsets.only(left: 12.s),
-                  child: PlaySoundButton(
-                    sound: state.getFile(
-                      recordedAudio,
-                      GetIt.I<FileStorage>(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-      ],
+                  },
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
