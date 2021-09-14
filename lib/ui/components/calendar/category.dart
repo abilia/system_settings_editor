@@ -19,7 +19,7 @@ class LeftCategory extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
-        previous.leftCategoryName != current.leftCategoryName ||
+            previous.leftCategoryName != current.leftCategoryName ||
             previous.leftCategoryImage != current.leftCategoryImage ||
             previous.showCategoryColor != current.showCategoryColor,
         builder: (context, memoplannerSettingsState) => CategoryLeft(
@@ -48,7 +48,7 @@ class CategoryLeft extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<CalendarViewCubit, CalendarViewState>(
         buildWhen: (previous, current) =>
-        previous.expandLeftCategory != current.expandLeftCategory,
+            previous.expandLeftCategory != current.expandLeftCategory,
         builder: (context, calendarViewState) => _Category(
           label: categoryName.isEmpty
               ? Translator.of(context).translate.left
@@ -76,7 +76,7 @@ class RightCategory extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
-        previous.rightCategoryName != current.rightCategoryName ||
+            previous.rightCategoryName != current.rightCategoryName ||
             previous.rightCategoryImage != current.rightCategoryImage ||
             previous.showCategoryColor != current.showCategoryColor,
         builder: (context, memoplannerSettingsState) => CategoryRight(
@@ -105,7 +105,7 @@ class CategoryRight extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<CalendarViewCubit, CalendarViewState>(
         buildWhen: (previous, current) =>
-        previous.expandRightCategory != current.expandRightCategory,
+            previous.expandRightCategory != current.expandRightCategory,
         builder: (context, calendarViewState) => _Category(
           label: categoryName.isEmpty
               ? Translator.of(context).translate.right
@@ -248,14 +248,14 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                         animation: controller,
                         builder: (context, _) => intAnimation.value != 0
                             ? Text(
-                          widget.label.substring(0, intAnimation.value),
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              ?.copyWith(color: AbiliaColors.white),
-                          softWrap: false,
-                          overflow: TextOverflow.fade,
-                        )
+                                widget.label.substring(0, intAnimation.value),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(color: AbiliaColors.white),
+                                softWrap: false,
+                                overflow: TextOverflow.fade,
+                              )
                             : SizedBox.shrink(),
                       ),
                     ),
@@ -327,11 +327,11 @@ class CategoryImage extends StatelessWidget {
       padding: EdgeInsets.all(3.s),
       child: fileId.isNotEmpty
           ? FadeInAbiliaImage(
-        imageFileId: fileId,
-        width: noColorsImageSize,
-        height: noColorsImageSize,
-        borderRadius: noColorsImageBorderRadius,
-      )
+              imageFileId: fileId,
+              width: noColorsImageSize,
+              height: noColorsImageSize,
+              borderRadius: noColorsImageBorderRadius,
+            )
           : null,
     );
   }
