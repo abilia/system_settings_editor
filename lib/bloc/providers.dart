@@ -252,52 +252,55 @@ class CopiedAuthProviders extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // DON'T change  to
+    // BlocProvider<Bloc>( create: ...
+    // since create closes the blocs when widget is destroyed
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SyncBloc>(
-          create: (_) => blocContext.read<SyncBloc>(),
+        BlocProvider<SyncBloc>.value(
+          value: blocContext.read<SyncBloc>(),
         ),
-        BlocProvider<ActivitiesBloc>(
-          create: (_) => blocContext.read<ActivitiesBloc>(),
+        BlocProvider<ActivitiesBloc>.value(
+          value: blocContext.read<ActivitiesBloc>(),
         ),
-        BlocProvider<UserFileBloc>(
-          create: (_) => blocContext.read<UserFileBloc>(),
+        BlocProvider<UserFileBloc>.value(
+          value: blocContext.read<UserFileBloc>(),
         ),
-        BlocProvider<SortableBloc>(
-          create: (_) => blocContext.read<SortableBloc>(),
+        BlocProvider<SortableBloc>.value(
+          value: blocContext.read<SortableBloc>(),
         ),
-        BlocProvider<GenericBloc>(
-          create: (_) => blocContext.read<GenericBloc>(),
+        BlocProvider<GenericBloc>.value(
+          value: blocContext.read<GenericBloc>(),
         ),
-        BlocProvider<MemoplannerSettingBloc>(
-          create: (_) => blocContext.read<MemoplannerSettingBloc>(),
+        BlocProvider<MemoplannerSettingBloc>.value(
+          value: blocContext.read<MemoplannerSettingBloc>(),
         ),
-        BlocProvider<DayPickerBloc>(
-          create: (_) => blocContext.read<DayPickerBloc>(),
+        BlocProvider<DayPickerBloc>.value(
+          value: blocContext.read<DayPickerBloc>(),
         ),
-        BlocProvider<DayActivitiesBloc>(
-          create: (_) => blocContext.read<DayActivitiesBloc>(),
+        BlocProvider<DayActivitiesBloc>.value(
+          value: blocContext.read<DayActivitiesBloc>(),
         ),
-        BlocProvider<ActivitiesOccasionBloc>(
-          create: (_) => blocContext.read<ActivitiesOccasionBloc>(),
+        BlocProvider<ActivitiesOccasionBloc>.value(
+          value: blocContext.read<ActivitiesOccasionBloc>(),
         ),
-        BlocProvider<AlarmBloc>(
-          create: (_) => blocContext.read<AlarmBloc>(),
+        BlocProvider<AlarmBloc>.value(
+          value: blocContext.read<AlarmBloc>(),
         ),
-        BlocProvider<NotificationBloc>(
-          create: (_) => blocContext.read<NotificationBloc>(),
+        BlocProvider<NotificationBloc>.value(
+          value: blocContext.read<NotificationBloc>(),
         ),
-        BlocProvider<CalendarViewBloc>(
-          create: (_) => blocContext.read<CalendarViewBloc>(),
+        BlocProvider<CalendarViewBloc>.value(
+          value: blocContext.read<CalendarViewBloc>(),
         ),
-        BlocProvider<LicenseBloc>(
-          create: (_) => blocContext.read<LicenseBloc>(),
+        BlocProvider<LicenseBloc>.value(
+          value: blocContext.read<LicenseBloc>(),
         ),
-        BlocProvider<PermissionBloc>(
-          create: (_) => blocContext.read<PermissionBloc>(),
+        BlocProvider<PermissionBloc>.value(
+          value: blocContext.read<PermissionBloc>(),
         ),
-        BlocProvider<TimepillarBloc>(
-          create: (_) => blocContext.read<TimepillarBloc>(),
+        BlocProvider<TimepillarBloc>.value(
+          value: blocContext.read<TimepillarBloc>(),
         ),
       ],
       child: child,
