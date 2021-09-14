@@ -4,7 +4,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/buttons/green_play_button.dart';
-import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
@@ -26,7 +25,7 @@ class RecordSoundWidget extends StatelessWidget {
             label: translator.speechAtStart,
             abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
             recordedAudio: activity.extras.startTimeExtraAlarm,
-            onAudioRecordedCallback: (AbiliaFile result) {
+            onResult: (AbiliaFile result) {
               BlocProvider.of<EditActivityBloc>(context).add(
                 ReplaceActivity(
                   activity.copyWith(
@@ -44,7 +43,7 @@ class RecordSoundWidget extends StatelessWidget {
             label: translator.speechAtEnd,
             abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
             recordedAudio: activity.extras.endTimeExtraAlarm,
-            onAudioRecordedCallback: (AbiliaFile result) {
+            onResult: (AbiliaFile result) {
               BlocProvider.of<EditActivityBloc>(context).add(
                 ReplaceActivity(
                   activity.copyWith(
@@ -66,14 +65,14 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
   final bool abilityToSelectAlarm;
   final String label;
   final AbiliaFile recordedAudio;
-  final ValueChanged<AbiliaFile> onAudioRecordedCallback;
+  final ValueChanged<AbiliaFile> onResult;
 
   const SelectOrPlaySoundWidget({
     Key? key,
     required this.abilityToSelectAlarm,
     required this.label,
     required this.recordedAudio,
-    required this.onAudioRecordedCallback,
+    required this.onResult,
   }) : super(key: key);
 
   @override
@@ -98,8 +97,13 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
-                              child: RecordSoundPage(
-                                originalSoundFile: recordedAudio,
+                              child: BlocProvider(
+                                create: (context) => RecordSoundCubit(
+                                  originalSoundFile: recordedAudio,
+                                ),
+                                child: RecordSoundPage(
+                                  originalSoundFile: recordedAudio,
+                                ),
                               ),
                             ),
                             settings: RouteSettings(name: 'SelectSpeechPage'),
@@ -111,7 +115,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                               );
                         }
                         if (result != null) {
-                          onAudioRecordedCallback.call(result);
+                          onResult.call(result);
                         }
                       }
                     : null,
@@ -121,7 +125,6 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 8.0.s),
                 child: InfoButton(
-                  key: Key('microphonepermission'),
                   onTap: () => showViewDialog(
                     useSafeArea: false,
                     context: context,
@@ -208,18 +211,16 @@ class _RecordingWidgetState extends State<RecordingWidget> {
   }
 
   Widget _getActionRow(RecordSoundState state) {
-    switch (state.state) {
-      case RecordState.Stopped:
-        return state.recordedFile.isEmpty
-            ? StoppedEmptyState()
-            : StoppedNotEmptyState();
-      case RecordState.Playing:
-        return PlayingState();
-      case RecordState.Recording:
-        return RecordingState();
-      default:
-        return StoppedEmptyState();
+    if (state is StoppedSoundState) {
+      return state.recordedFile.isEmpty
+          ? StoppedEmptyState()
+          : StoppedNotEmptyState(recordedFile: state.recordedFile);
+    } else if (state is PlayingSoundState) {
+      return PlayingState();
+    } else if (state is RecordingSoundState) {
+      return RecordingState();
     }
+    return StoppedEmptyState();
   }
 }
 
@@ -295,54 +296,52 @@ class PlayingState extends StatelessWidget {
 class RecordingState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSoundCubit, RecordSoundState>(
-        builder: (context, state) {
-      return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: StopButton(
-                onPressed: () {
-                  context.read<RecordSoundCubit>().stopRecording(
-                      context.read<TimerBloc>().maxDuration / 1000);
-                  context.read<TimerBloc>().add(
-                        TimerPaused(),
-                      );
-                },
-              ),
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: StopButton(
+              onPressed: () {
+                context.read<RecordSoundCubit>().stopRecording(
+                    context.read<TimerBloc>().maxDuration / 1000);
+                context.read<TimerBloc>().add(
+                      TimerPaused(),
+                    );
+              },
             ),
-          ]);
-    });
+          ),
+        ]);
   }
 }
 
 class StoppedEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordSoundCubit, RecordSoundState>(
-        builder: (context, state) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: RecordAudioButton(
-              onPressed: () {
-                context.read<RecordSoundCubit>().startRecording();
-                context.read<TimerBloc>().add(
-                      TimerStarted(duration: 30000),
-                    );
-              },
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: RecordAudioButton(
+            onPressed: () {
+              context.read<RecordSoundCubit>().startRecording();
+              context.read<TimerBloc>().add(
+                    TimerStarted(duration: 30000),
+                  );
+            },
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }
 
 class StoppedNotEmptyState extends StatelessWidget {
+  final AbiliaFile recordedFile;
+
+  const StoppedNotEmptyState({required this.recordedFile});
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<SoundCubit, SoundState>(
@@ -355,41 +354,37 @@ class StoppedNotEmptyState extends StatelessWidget {
                   TimerReset(),
                 );
       },
-      child: BlocBuilder<RecordSoundCubit, RecordSoundState>(
-        builder: (context, state) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: GreenPlaySoundButton(
-                  sound: state.recordedFile is UnstoredAbiliaFile
-                      ? (state.recordedFile as UnstoredAbiliaFile).file
-                      : context.read<UserFileBloc>().state.getFile(
-                            state.recordedFile,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: GreenPlaySoundButton(
+              sound: recordedFile is UnstoredAbiliaFile
+                  ? (recordedFile as UnstoredAbiliaFile).file
+                  : context.read<UserFileBloc>().state.getFile(
+                        recordedFile,
+                        GetIt.I<FileStorage>(),
+                      ),
+            ),
+          ),
+          ActionButton(
+            onPressed: () {
+              recordedFile is UnstoredAbiliaFile
+                  ? (recordedFile as UnstoredAbiliaFile).file.delete()
+                  : (context.read<UserFileBloc>().state.getFile(
+                            recordedFile,
                             GetIt.I<FileStorage>(),
-                          ),
-                ),
-              ),
-              ActionButton(
-                onPressed: () {
-                  state.recordedFile is UnstoredAbiliaFile
-                      ? (state.recordedFile as UnstoredAbiliaFile).file.delete()
-                      : (context.read<UserFileBloc>().state.getFile(
-                                state.recordedFile,
-                                GetIt.I<FileStorage>(),
-                              ))!
-                          .delete();
-                  context.read<RecordSoundCubit>().deleteRecording();
-                  context.read<TimerBloc>().add(
-                        TimerReset(),
-                      );
-                },
-                child: Icon(AbiliaIcons.delete_all_clear),
-              ),
-            ],
-          );
-        },
+                          ))!
+                      .delete();
+              context.read<RecordSoundCubit>().deleteRecording();
+              context.read<TimerBloc>().add(
+                    TimerReset(),
+                  );
+            },
+            child: Icon(AbiliaIcons.delete_all_clear),
+          ),
+        ],
       ),
     );
   }

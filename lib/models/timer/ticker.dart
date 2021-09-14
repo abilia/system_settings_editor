@@ -1,8 +1,10 @@
 class AudioTicker {
-  const AudioTicker();
+  final int millisTickRate;
+  const AudioTicker(this.millisTickRate);
 
   Stream<int> tick({required int duration}) {
-    return Stream.periodic(Duration(milliseconds: 50), (x) => x * 50)
-        .take(duration ~/ 50);
+    return Stream.periodic(
+            Duration(milliseconds: millisTickRate), (x) => x * millisTickRate)
+        .take(duration ~/ millisTickRate);
   }
 }

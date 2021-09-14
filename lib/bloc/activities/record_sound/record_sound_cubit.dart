@@ -13,42 +13,47 @@ part 'record_sound_state.dart';
 
 class RecordSoundCubit extends Cubit<RecordSoundState> {
   final _recorder = Record();
-  final void Function(AbiliaFile value) onSoundRecorded;
+  final AbiliaFile originalSoundFile;
+  AbiliaFile recordedFile = AbiliaFile.empty;
 
   RecordSoundCubit({
-    required this.onSoundRecorded,
-    required recordedFile,
+    required this.originalSoundFile,
   }) : super(
-          RecordSoundState(RecordState.Stopped, recordedFile),
-        );
+          StoppedSoundState(originalSoundFile),
+        ) {
+    recordedFile = originalSoundFile;
+  }
 
   Future<void> startRecording() async {
     var tempDir = await getApplicationDocumentsDirectory();
     var tempPath = '${tempDir.path}';
     await _recorder.start(path: '$tempPath/' + Uuid().v4());
-    emit(RecordSoundState(RecordState.Recording, AbiliaFile.empty));
+    emit(RecordingSoundState(AbiliaFile.empty));
   }
 
   Future<void> stopRecording(double duration) async {
     final recordedFilePath = await _recorder.stop();
-    var recordedFile;
     if (recordedFilePath != null) {
       final uri = Uri.tryParse(recordedFilePath);
       if (uri != null) {
         final file = File.fromUri(uri);
         recordedFile = UnstoredAbiliaFile.newFile(file);
-        onSoundRecorded(
-          recordedFile,
-        );
       }
-      emit(RecordSoundState(RecordState.Stopped, recordedFile));
+      emit(StoppedSoundState(recordedFile));
     }
   }
 
   Future<void> deleteRecording() async {
-    onSoundRecorded(
-      AbiliaFile.empty,
-    );
-    emit(RecordSoundState(RecordState.Stopped, AbiliaFile.empty));
+    if (recordedFile is UnstoredAbiliaFile) {
+      await (recordedFile as UnstoredAbiliaFile).file.delete();
+    }
+    // TODO: can also do for AbiliaFile?
+    recordedFile = AbiliaFile.empty;
+    emit(StoppedSoundState(AbiliaFile.empty));
+  }
+
+  Future<void> saveRecording() async {
+    emit(SaveRecordingState(
+        recordedFile, recordedFile.id != originalSoundFile.id));
   }
 }

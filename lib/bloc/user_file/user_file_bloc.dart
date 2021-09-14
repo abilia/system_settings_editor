@@ -123,11 +123,12 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     final imageResult = await compute<List<int>, ImageResponse>(
         adjustRotationAndCreateThumbs, originalBytes);
 
+    final userFile = generateUserFile(id, path, imageResult.originalImage);
+    await userFileRepository.save([userFile]);
+
     await fileStorage.storeFile(imageResult.originalImage, id);
     await fileStorage.storeImageThumb(imageResult.thumb, ImageThumb(id: id));
 
-    final userFile = generateUserFile(id, path, imageResult.originalImage);
-    await userFileRepository.save([userFile]);
     return userFile;
   }
 

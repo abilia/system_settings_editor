@@ -1,53 +1,12 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/timer/ticker.dart';
 import 'package:seagull/ui/all.dart';
 
-class RecordSoundPage extends StatefulWidget {
+class RecordSoundPage extends StatelessWidget {
   final AbiliaFile originalSoundFile;
 
-  RecordSoundPage({required this.originalSoundFile});
-
-  @override
-  State<StatefulWidget> createState() {
-    return RecordSoundPageState(recordedSoundFile: originalSoundFile);
-  }
-}
-
-class RecordSoundPageState extends State<RecordSoundPage> {
-  AbiliaFile recordedSoundFile = AbiliaFile.empty;
-
-  RecordSoundPageState({
-    required this.recordedSoundFile,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return _RecordSoundPage(
-      originalSoundFile: widget.originalSoundFile,
-      save: recordedSoundFile != widget.originalSoundFile
-          ? () => Navigator.of(context).maybePop(recordedSoundFile)
-          : null,
-      onSoundRecorded: (s) {
-        setState(
-          () {
-            recordedSoundFile = s;
-          },
-        );
-      },
-    );
-  }
-}
-
-class _RecordSoundPage extends StatelessWidget {
-  final GestureTapCallback? save;
-  final ValueChanged<AbiliaFile> onSoundRecorded;
-  final AbiliaFile originalSoundFile;
-
-  _RecordSoundPage({
+  RecordSoundPage({
     required this.originalSoundFile,
-    this.save,
-    required this.onSoundRecorded,
   });
 
   @override
@@ -67,23 +26,21 @@ class _RecordSoundPage extends StatelessWidget {
               textTheme: theme.textTheme
                   .copyWith(subtitle1: abiliaTextTheme.headline4),
             ),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => TimerBloc(
-                    ticker: AudioTicker(),
-                  ),
+            child: BlocProvider(
+              create: (context) => TimerBloc(),
+              // builder: (context) {
+              //   return
+              child: BlocListener<RecordSoundCubit, RecordSoundState>(
+                listenWhen: (_, current) => current is SaveRecordingState,
+                listener: (context, state) =>
+                    (state as SaveRecordingState).newRecording
+                        ? Navigator.of(context).maybePop(state.recordedFile)
+                        : Navigator.of(context).maybePop(null),
+                child: RecordingWidget(
+                  state: StoppedSoundState(originalSoundFile),
                 ),
-                BlocProvider(
-                  create: (context) => RecordSoundCubit(
-                    onSoundRecorded: onSoundRecorded,
-                    recordedFile: originalSoundFile,
-                  ),
-                ),
-              ],
-              child: RecordingWidget(
-                state: RecordSoundState(RecordState.Stopped, originalSoundFile),
               ),
+              // },
             ),
           ),
         ],
@@ -91,7 +48,7 @@ class _RecordSoundPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: CancelButton(),
         forwardNavigationWidget: OkButton(
-          onPressed: save,
+          onPressed: () => context.read<RecordSoundCubit>().saveRecording(),
         ),
       ),
     );

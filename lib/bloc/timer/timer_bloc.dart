@@ -5,16 +5,15 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/timer/ticker.dart';
 
 part 'timer_event.dart';
+
 part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
-  final AudioTicker _ticker;
+  final AudioTicker _ticker = AudioTicker(50);
   int maxDuration = 1;
   StreamSubscription<int>? _tickerSubscription;
 
-  TimerBloc({required AudioTicker ticker})
-      : _ticker = ticker,
-        super(TimerInitial(0));
+  TimerBloc() : super(TimerInitial(0));
 
   @override
   Stream<TimerState> mapEventToState(
