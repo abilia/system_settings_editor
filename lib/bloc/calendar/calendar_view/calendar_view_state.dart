@@ -1,21 +1,18 @@
-part of 'calendar_view_bloc.dart';
+part of 'calendar_view_cubit.dart';
 
 class CalendarViewState extends Equatable {
   final bool expandRightCategory, expandLeftCategory;
 
   const CalendarViewState({
-    this.expandRightCategory = true,
-    this.expandLeftCategory = true,
+    required this.expandRightCategory,
+    required this.expandLeftCategory,
   });
 
   CalendarViewState.fromSettings(SettingsDb settingsDb)
       : expandLeftCategory = settingsDb.leftCategoryExpanded,
         expandRightCategory = settingsDb.rightCategoryExpanded;
   @override
-  List<Object> get props => [
-        expandLeftCategory,
-        expandRightCategory,
-      ];
+  List<Object> get props => [expandLeftCategory, expandRightCategory];
 
   CalendarViewState copyWith({
     bool? expandLeftCategory,
