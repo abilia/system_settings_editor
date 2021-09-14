@@ -23,7 +23,7 @@ class RecordSoundWidget extends StatelessWidget {
           SubHeading(translator.speech),
           SelectOrPlaySoundWidget(
             key: TestKey.speechAtStart,
-            label: translator.speechAtStart,
+            label: translator.speechOnStart,
             abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
             recordedAudio: activity.extras.startTimeExtraAlarm,
             onAudioRecordedCallback: (AbiliaFile result) {
@@ -41,7 +41,7 @@ class RecordSoundWidget extends StatelessWidget {
           SizedBox(height: 8.0.s),
           SelectOrPlaySoundWidget(
             key: TestKey.speechAtEnd,
-            label: translator.speechAtEnd,
+            label: translator.speechOnEnd,
             abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
             recordedAudio: activity.extras.endTimeExtraAlarm,
             onAudioRecordedCallback: (AbiliaFile result) {
@@ -107,7 +107,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         );
                         if (result is UnstoredAbiliaFile && result.isNotEmpty) {
                           context.read<UserFileBloc>().add(
-                                RecordingAdded(result),
+                                FileAdded(result),
                               );
                         }
                         if (result != null) {

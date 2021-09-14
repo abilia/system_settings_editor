@@ -265,9 +265,9 @@ abstract class Translated {
 
   final String speech = 'Speech';
 
-  final String speechAtStart = 'Speech at Start time';
+  final String speechOnStart = 'Speech at Start time';
 
-  final String speechAtEnd = 'Speech at End time';
+  final String speechOnEnd = 'Speech at End time';
 
   final String duration = 'Duration';
 
@@ -1053,10 +1053,10 @@ class SV extends Translated {
   final String speech = 'Tal';
 
   @override
-  final String speechAtStart = 'Tal vid starttid';
+  final String speechOnStart = 'Tal vid starttid';
 
   @override
-  final String speechAtEnd = 'Tal vid sluttid';
+  final String speechOnEnd = 'Tal vid sluttid';
 
   @override
   final String duration = 'Tidslängd';
@@ -2035,10 +2035,10 @@ class DA extends Translated {
   final String speech = 'Tale';
 
   @override
-  final String speechAtStart = 'Tale ved starttid';
+  final String speechOnStart = 'Tale ved starttid';
 
   @override
-  final String speechAtEnd = 'Tale ved sluttid';
+  final String speechOnEnd = 'Tale ved sluttid';
 
   @override
   final String duration = 'Tidslængde';
@@ -3014,10 +3014,10 @@ class NL extends Translated {
   final String speech = 'Spraak';
 
   @override
-  final String speechAtStart = 'Spraak op starttijd';
+  final String speechOnStart = 'Spraak op starttijd';
 
   @override
-  final String speechAtEnd = 'Spraak op eindtijd';
+  final String speechOnEnd = 'Spraak op eindtijd';
 
   @override
   final String duration = 'Duur';
@@ -3994,10 +3994,10 @@ class FI extends Translated {
   final String speech = 'Puhe';
 
   @override
-  final String speechAtStart = 'Puhe aloitusaikaan';
+  final String speechOnStart = 'Puhe aloitusaikaan';
 
   @override
-  final String speechAtEnd = 'Puhe päättymisaikaan';
+  final String speechOnEnd = 'Puhe päättymisaikaan';
 
   @override
   final String duration = 'Kesto';
@@ -4976,10 +4976,10 @@ class DE extends Translated {
   final String speech = 'Ansagen';
 
   @override
-  final String speechAtStart = 'Ansage zum Startzeitpunkt';
+  final String speechOnStart = 'Ansage zum Startzeitpunkt';
 
   @override
-  final String speechAtEnd = 'Ansage zum Endzeitpunkt';
+  final String speechOnEnd = 'Ansage zum Endzeitpunkt';
 
   @override
   final String duration = 'Dauer';
@@ -5957,10 +5957,10 @@ class NB extends Translated {
   final String speech = 'Tale';
 
   @override
-  final String speechAtStart = 'Tale ved starttid';
+  final String speechOnStart = 'Tale ved starttid';
 
   @override
-  final String speechAtEnd = 'Tale ved sluttid';
+  final String speechOnEnd = 'Tale ved sluttid';
 
   @override
   final String duration = 'Varighet';
