@@ -63,7 +63,7 @@ void main() {
   });
 
   test('Initial state with basic activity starting at 00:00 has no start time',
-      () {
+      () async {
     // Arrange
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
@@ -75,9 +75,13 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
     );
+    editActivityBloc.add(AddBasiActivity(basicActivity));
     // Assert
+    await expectLater(
+      editActivityBloc.stream,
+      emits(isA<UnstoredActivityState>()),
+    );
     expect(
       editActivityBloc.state.activity,
       MatchActivityWithoutId(
@@ -91,7 +95,7 @@ void main() {
   });
 
   test('Initial state with basic activity starting at 00:01 has start time',
-      () {
+      () async {
     // Arrange
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
@@ -104,17 +108,22 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
     );
+    editActivityBloc.add(AddBasiActivity(basicActivity));
     // Assert
+    await expectLater(
+      editActivityBloc.stream,
+      emits(isA<UnstoredActivityState>()),
+    );
     expect(
-        editActivityBloc.state.activity,
-        MatchActivityWithoutId(
-          basicActivity.toActivity(
-            timezone: 'UTC',
-            day: aDay,
-          ),
-        ));
+      editActivityBloc.state.activity,
+      MatchActivityWithoutId(
+        basicActivity.toActivity(
+          timezone: 'UTC',
+          day: aDay,
+        ),
+      ),
+    );
     final expected = TimeInterval(
       startDate: aDay,
       startTime: TimeOfDay(hour: 4, minute: 4),
@@ -126,7 +135,7 @@ void main() {
 
   test(
       'Initial state with basic activity starting at 00:00 but with duration has start time',
-      () {
+      () async {
     // Arrange
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
@@ -139,17 +148,22 @@ void main() {
       memoplannerSettingBloc: mockMemoplannerSettingsBloc,
       clockBloc: clockBloc,
       day: aDay,
-      basicActivityData: basicActivity,
     );
+    editActivityBloc.add(AddBasiActivity(basicActivity));
     // Assert
+    await expectLater(
+      editActivityBloc.stream,
+      emits(isA<UnstoredActivityState>()),
+    );
     expect(
-        editActivityBloc.state.activity,
-        MatchActivityWithoutId(
-          basicActivity.toActivity(
-            timezone: 'UTC',
-            day: aDay,
-          ),
-        ));
+      editActivityBloc.state.activity,
+      MatchActivityWithoutId(
+        basicActivity.toActivity(
+          timezone: 'UTC',
+          day: aDay,
+        ),
+      ),
+    );
     final expected = TimeInterval(
       startDate: aDay,
       startTime: TimeOfDay(hour: 0, minute: 0),

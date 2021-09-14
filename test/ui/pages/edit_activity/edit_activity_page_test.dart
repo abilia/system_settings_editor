@@ -56,8 +56,7 @@ void main() {
 
   tearDown(GetIt.I.reset);
 
-  Widget wrapWithMaterialApp(
-    Widget widget, {
+  Widget createEditActivityPage({
     Activity? givenActivity,
     bool use24H = false,
     bool newActivity = false,
@@ -82,7 +81,10 @@ void main() {
               BlocProvider<MemoplannerSettingBloc>.value(
                 value: mockMemoplannerSettingsBloc,
               ),
-              BlocProvider<ActivitiesBloc>.value(value: FakeActivitiesBloc()),
+              BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
+              BlocProvider<ActivityWizardCubit>(
+                create: (context) => ActivityWizardCubit(),
+              ),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
@@ -128,21 +130,21 @@ void main() {
           ),
         ),
       ),
-      home: widget,
+      home: ErrorPopupListener(
+        child: EditActivityPage(),
+      ),
     );
   }
 
   group('edit activity test', () {
     testWidgets('New activity shows', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
     });
 
     testWidgets('TabBar shows', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(AbiliaTabBar), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.my_photos), findsOneWidget);
@@ -152,8 +154,7 @@ void main() {
     });
 
     testWidgets('Can switch tabs', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(MainTab), findsOneWidget);
       await tester.goToAlarmTab();
@@ -163,8 +164,7 @@ void main() {
     });
 
     testWidgets('Scroll to end of page', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(AvailableForWidget), findsNothing);
       await tester.scrollDown();
@@ -173,8 +173,7 @@ void main() {
 
     testWidgets('Can enter text', (WidgetTester tester) async {
       final newActivtyTitle = 'activity title';
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
       await tester.enterText_(
@@ -187,8 +186,7 @@ void main() {
         setupPermissions();
       });
       testWidgets('Select picture dialog shows', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
@@ -211,8 +209,7 @@ void main() {
           Permission.camera: PermissionStatus.permanentlyDenied,
           Permission.photos: PermissionStatus.permanentlyDenied,
         });
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
@@ -234,8 +231,7 @@ void main() {
         setupPermissions({
           Permission.camera: PermissionStatus.permanentlyDenied,
         });
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
@@ -255,8 +251,7 @@ void main() {
         setupPermissions({
           Permission.photos: PermissionStatus.permanentlyDenied,
         });
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
@@ -273,8 +268,7 @@ void main() {
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -150);
       // Assert -- Fullday switch is off
@@ -315,8 +309,7 @@ void main() {
     });
     group('alarms', () {
       testWidgets('alarm at start switch', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(
@@ -338,8 +331,7 @@ void main() {
       });
 
       testWidgets('Select alarm dialog', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
@@ -357,8 +349,7 @@ void main() {
       testWidgets('SGC-359 Select alarm dialog silent alarms maps to Silent',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: Activity.createNew(
                 title: 'null',
                 startTime: startTime,
@@ -382,8 +373,7 @@ void main() {
           'SGC-359 Select alarm dialog only sound alarms maps to sound and vibration',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: Activity.createNew(
                 title: 'null',
                 startTime: startTime,
@@ -405,8 +395,7 @@ void main() {
     });
 
     testWidgets('checkable switch', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown();
       expect(
@@ -426,8 +415,7 @@ void main() {
     });
 
     testWidgets('delete after switch', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown();
       expect(
@@ -449,8 +437,7 @@ void main() {
     testWidgets('Category picker', (WidgetTester tester) async {
       final rightRadioKey = ObjectKey(TestKey.rightCategoryRadio);
       final leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -150);
       final leftCategoryRadio1 =
@@ -485,8 +472,7 @@ void main() {
     });
 
     testWidgets('Availible for dialog', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown();
       await tester.pumpAndSettle();
@@ -505,8 +491,7 @@ void main() {
 
     testWidgets('Reminder', (WidgetTester tester) async {
       // Arrange
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
       final reminder15MinFinder =
@@ -583,8 +568,7 @@ void main() {
   group('edit info item', () {
     testWidgets('all info item present', (WidgetTester tester) async {
       final activity = Activity.createNew(title: 'null', startTime: startTime);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
 
@@ -608,8 +592,7 @@ void main() {
             Question(id: 2, name: q3),
             Question(id: 3, name: q2)
           ]));
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
 
@@ -679,9 +662,8 @@ that it is visible in the info item tab
             title: 'null',
             startTime: startTime,
             infoItem: NoteInfoItem(aLongNote));
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activity));
+        await tester
+            .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -699,9 +681,8 @@ that it is visible in the info item tab
             title: 'null',
             startTime: startTime,
             infoItem: NoteInfoItem(aLongNote));
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activity));
+        await tester
+            .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -723,8 +704,7 @@ that it is visible in the info item tab
 
       testWidgets('Info item note can be selected',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -747,8 +727,7 @@ that it is visible in the info item tab
 
       testWidgets('Info item note opens EditNoteDialog',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
 
@@ -775,8 +754,7 @@ Rollback the test_api part of the 3.0.1 release. This was breaking tests that us
 3.0.1 
 Replace the dependency on the test package with a dependency on the new test_api package. This dramatically reduces mockito's transitive dependencies.
 Internal improvements to tests and examples.''';
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
 
@@ -791,8 +769,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('note button library shows', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
         expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
@@ -829,8 +806,7 @@ Internal improvements to tests and examples.''';
           ),
         );
 
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
@@ -844,7 +820,8 @@ Internal improvements to tests and examples.''';
       testWidgets('notes from library is selectable',
           (WidgetTester tester) async {
         final content =
-            'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
+            'Etappen har sin början vid Bjursjöns strand, ett mycket populärt'
+            ' friluftsområde med närhet till Uddevalla tätort.';
 
         when(mockSortableBloc.state).thenReturn(
           SortablesLoaded(
@@ -859,8 +836,7 @@ Internal improvements to tests and examples.''';
           ),
         );
 
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
@@ -905,8 +881,7 @@ Internal improvements to tests and examples.''';
       }
 
       testWidgets('Checklist is selectable', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
@@ -914,9 +889,8 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist shows check', (WidgetTester tester) async {
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activityWithChecklist));
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -928,8 +902,7 @@ Internal improvements to tests and examples.''';
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
         when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: Activity.createNew(
               title: 'null',
               startTime: startTime,
@@ -946,8 +919,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can open new question dialog', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
@@ -959,8 +931,7 @@ Internal improvements to tests and examples.''';
 
       testWidgets('Can add new question', (WidgetTester tester) async {
         final questionName = 'one question!';
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
@@ -977,9 +948,8 @@ Internal improvements to tests and examples.''';
 
       testWidgets('Can add question to checklist', (WidgetTester tester) async {
         final questionName = 'last question!';
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activityWithChecklist));
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
         await tester.tap(find.byIcon(AbiliaIcons.new_icon));
@@ -997,8 +967,7 @@ Internal improvements to tests and examples.''';
       testWidgets('Cant add question without image or title',
           (WidgetTester tester) async {
         final questionName = 'question!';
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.new_icon));
@@ -1021,9 +990,8 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can remove questions', (WidgetTester tester) async {
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activityWithChecklist));
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -1044,9 +1012,8 @@ Internal improvements to tests and examples.''';
 
       testWidgets('Can edit question', (WidgetTester tester) async {
         final newQuestionName = 'laditatssss';
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activityWithChecklist));
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -1088,9 +1055,8 @@ lines
 for
 the
 text''';
-        await tester.pumpWidget(wrapWithMaterialApp(
-            EditActivityPage(day: today),
-            givenActivity: activityWithChecklist));
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
@@ -1110,8 +1076,7 @@ text''';
 
       testWidgets('checklist button library shows',
           (WidgetTester tester) async {
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
         expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
@@ -1151,8 +1116,7 @@ text''';
           ),
         );
 
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
@@ -1188,8 +1152,7 @@ text''';
           ),
         );
 
-        await tester
-            .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+        await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.show_text));
@@ -1205,8 +1168,7 @@ text''';
 
   group('Date picker', () {
     testWidgets('changes date', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
 
@@ -1223,8 +1185,7 @@ text''';
     });
 
     testWidgets('can switch months', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
@@ -1261,8 +1222,7 @@ text''';
 
     testWidgets('changes date then add recurring sets end date to start date',
         (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
 
@@ -1289,8 +1249,7 @@ text''';
     testWidgets(
         'changes date after added recurring sets end date to start date',
         (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToRecurrenceTab();
       await tester.tap(find.byKey(TestKey.changeRecurrence));
@@ -1321,8 +1280,7 @@ text''';
     testWidgets('cant pick recurring end date before start date',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1370,8 +1328,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1391,8 +1348,7 @@ text''';
         (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -1414,8 +1370,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1445,8 +1400,7 @@ text''';
           duration: 3.hours());
 
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1475,8 +1429,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1503,8 +1456,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 12, 55));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1531,8 +1483,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1561,8 +1512,7 @@ text''';
         startTime: DateTime(2000, 11, 22, 3, 04),
       );
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1613,8 +1563,7 @@ text''';
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 13, 44));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
           use24H: true,
         ),
@@ -1664,8 +1613,7 @@ text''';
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1684,8 +1632,7 @@ text''';
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity: acivity,
         ),
       );
@@ -1708,12 +1655,7 @@ text''';
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          givenActivity: acivity,
-        ),
-      );
+      await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -1744,12 +1686,7 @@ text''';
           startTime: DateTime(2000, 11, 22, 11, 55),
           duration: 3.hours());
 
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
-          givenActivity: acivity,
-        ),
-      );
+      await tester.pumpWidget(createEditActivityPage(givenActivity: acivity));
       await tester.pumpAndSettle();
 
       // Assert -- that correct start and end time shows
@@ -1779,10 +1716,7 @@ text''';
   group('Recurrence', () {
     testWidgets('Recurrence present', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
-        newActivity: true,
-      ));
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1794,10 +1728,7 @@ text''';
 
     testWidgets('Shows time picker widget ', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
-        newActivity: true,
-      ));
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1811,8 +1742,7 @@ text''';
       // Arrange
       final activity = Activity.createNew(
           title: 'null', startTime: startTime, fullDay: true);
-      await tester.pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today),
-          givenActivity: activity));
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
       await tester.pumpAndSettle();
       // Act
       await tester.goToRecurrenceTab();
@@ -1823,8 +1753,7 @@ text''';
 
     testWidgets('No recurrance selected', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1838,8 +1767,7 @@ text''';
 
     testWidgets('all recurrance present', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1863,8 +1791,7 @@ text''';
 
     testWidgets('can change to yearly', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1893,8 +1820,7 @@ text''';
 
     testWidgets('can change to monthly', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1926,8 +1852,7 @@ text''';
 
     testWidgets('can change to weekly', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1959,8 +1884,7 @@ text''';
 
     testWidgets('end date shows', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         newActivity: true,
       ));
       await tester.pumpAndSettle();
@@ -1997,8 +1921,7 @@ text''';
         ),
       );
       // Arrange
-      await tester.pumpWidget(wrapWithMaterialApp(
-        EditActivityPage(day: today),
+      await tester.pumpWidget(createEditActivityPage(
         givenActivity: activity,
       ));
       await tester.pumpAndSettle();
@@ -2031,10 +1954,7 @@ text''';
         'add activity without recurance data tab scrolls back to recurance tab',
         (WidgetTester tester) async {
       // Arrange
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
 
       await tester.pumpAndSettle();
       // Arrange -- enter title
@@ -2065,7 +1985,7 @@ text''';
       expect(find.byType(MainTab), findsOneWidget);
 
       // Act press submit
-      await tester.tap(submitButtonFinder);
+      await tester.tap(find.byType(SaveActivityButton));
       await tester.pumpAndSettle();
 
       // Assert error message
@@ -2089,8 +2009,7 @@ text''';
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDateEditable: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(DatePicker), findsOneWidget);
       final datePicker =
@@ -2103,8 +2022,7 @@ text''';
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTypeEditable: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
       expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
@@ -2116,8 +2034,7 @@ text''';
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityEndTimeEditable: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
@@ -2129,8 +2046,7 @@ text''';
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityRecurringEditable: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
       expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
@@ -2142,8 +2058,7 @@ text''';
         activityDisplayAlarmOption: false,
         activityDisplaySilentAlarmOption: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
@@ -2162,8 +2077,7 @@ text''';
         activityDisplayAlarmOption: false,
         activityDisplayNoAlarmOption: false,
       )));
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
@@ -2182,7 +2096,6 @@ text''';
       expect(find.text(translate.vibration), findsOneWidget);
     });
 
-    final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
     testWidgets(
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
@@ -2191,8 +2104,7 @@ text''';
         activityTimeBeforeCurrent: false,
       )));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           use24H: true,
           givenActivity:
               Activity.createNew(title: 't i t l e', startTime: startTime),
@@ -2211,7 +2123,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(finishActivityFinder);
+      await tester.tap(find.byType(SaveActivityButton));
       await tester.pumpAndSettle();
 
       expect(find.text('15:29'), findsOneWidget);
@@ -2226,8 +2138,7 @@ text''';
         activityTimeBeforeCurrent: false,
       )));
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           givenActivity:
               Activity.createNew(title: 't i t l e', startTime: startTime),
         ),
@@ -2242,7 +2153,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(finishActivityFinder);
+      await tester.tap(find.byType(SaveActivityButton));
       await tester.pumpAndSettle();
 
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
@@ -2263,8 +2174,7 @@ text''';
       );
 
       await tester.pumpWidget(
-        wrapWithMaterialApp(EditActivityPage(day: today),
-            givenActivity: activity),
+        createEditActivityPage(givenActivity: activity),
       );
 
       await tester.pumpAndSettle();
@@ -2276,7 +2186,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(finishActivityFinder);
+      await tester.tap(find.byType(SaveActivityButton));
       await tester.pumpAndSettle();
 
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
@@ -2297,7 +2207,7 @@ text''';
       );
 
       await tester.pumpWidget(
-        wrapWithMaterialApp(EditActivityPage(day: today)),
+        createEditActivityPage(),
       );
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -200);
@@ -2317,7 +2227,7 @@ text''';
       );
 
       await tester.pumpWidget(
-        wrapWithMaterialApp(EditActivityPage(day: today)),
+        createEditActivityPage(),
       );
       await tester.pumpAndSettle();
       expect(find.byType(CategoryWidget), findsNothing);
@@ -2336,8 +2246,7 @@ text''';
     });
     testWidgets('title', (WidgetTester tester) async {
       final name = 'new name of a activity';
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
@@ -2350,8 +2259,7 @@ text''';
     });
 
     testWidgets('image', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byKey(TestKey.addPicture),
@@ -2359,8 +2267,7 @@ text''';
     });
 
     testWidgets('date', (WidgetTester tester) async {
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byType(DatePicker),
@@ -2370,8 +2277,7 @@ text''';
     testWidgets('time', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2413,8 +2319,7 @@ text''';
             duration: 3.hours());
 
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: acivity,
           ),
         );
@@ -2465,8 +2370,7 @@ text''';
             duration: 3.hours());
 
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: acivity,
             use24H: true,
           ),
@@ -2495,8 +2399,7 @@ text''';
         final acivity = Activity.createNew(
             title: '', startTime: DateTime(2000, 11, 22, 3, 44));
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             givenActivity: acivity,
           ),
         );
@@ -2526,8 +2429,7 @@ text''';
     testWidgets('fullday', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2541,8 +2443,7 @@ text''';
     testWidgets('category', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2558,8 +2459,7 @@ text''';
     testWidgets('checkable', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2573,8 +2473,7 @@ text''';
     testWidgets('delete after', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2588,8 +2487,7 @@ text''';
     testWidgets('availible for', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2609,8 +2507,7 @@ text''';
     testWidgets('reminders', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2640,8 +2537,7 @@ text''';
     testWidgets('alarms', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2663,8 +2559,7 @@ text''';
     testWidgets('recurrance', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(
-        wrapWithMaterialApp(
-          EditActivityPage(day: today),
+        createEditActivityPage(
           newActivity: true,
         ),
       );
@@ -2693,14 +2588,11 @@ text''';
     });
 
     testWidgets('error view', (WidgetTester tester) async {
-      final submitButtonFinder = find.byKey(TestKey.finishEditActivityButton);
-
       // Act press submit
-      await tester.pumpWidget(
-          wrapWithMaterialApp(EditActivityPage(day: today), newActivity: true));
+      await tester.pumpWidget(createEditActivityPage(newActivity: true));
       await tester.pumpAndSettle();
 
-      await tester.tap(submitButtonFinder);
+      await tester.tap(find.byType(SaveActivityButton));
       await tester.pumpAndSettle();
 
       // Assert error message
@@ -2714,8 +2606,7 @@ text''';
       testWidgets('info item', (WidgetTester tester) async {
         // Arrange
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             newActivity: true,
           ),
         );
@@ -2752,8 +2643,7 @@ text''';
           ),
         );
         await tester.pumpWidget(
-          wrapWithMaterialApp(
-            EditActivityPage(day: today),
+          createEditActivityPage(
             newActivity: true,
           ),
         );
@@ -2796,8 +2686,7 @@ text''';
         ),
       );
 
-      await tester
-          .pumpWidget(wrapWithMaterialApp(EditActivityPage(day: today)));
+      await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
       await tester.tap(find.byKey(TestKey.changeInfoItem));

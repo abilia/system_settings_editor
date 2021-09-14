@@ -18,6 +18,14 @@ class ReplaceActivity extends ActivityChangedEvent {
   List<Object> get props => [activity];
 }
 
+class AddBasiActivity extends ActivityChangedEvent {
+  final BasicActivityDataItem basicActivityData;
+
+  AddBasiActivity(this.basicActivityData);
+  @override
+  List<Object> get props => [basicActivityData];
+}
+
 class SaveActivity extends EditActivityEvent with Fine {
   const SaveActivity({this.warningConfirmed = false});
   final bool warningConfirmed;

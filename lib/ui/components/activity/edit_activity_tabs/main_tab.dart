@@ -5,11 +5,9 @@ class MainTab extends StatefulWidget {
   MainTab({
     Key? key,
     required this.editActivityState,
-    required this.day,
   }) : super(key: key);
 
   final EditActivityState editActivityState;
-  final DateTime day;
 
   @override
   _MainTabState createState() => _MainTabState();
