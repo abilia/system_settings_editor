@@ -107,6 +107,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get wizardChecklistStep => settings.wizardChecklistStep;
   bool get wizardNotesStep => settings.wizardNotesStep;
   bool get wizardRemindersStep => settings.wizardRemindersStep;
+  bool get wizardWithOnlyTemplateStep =>
+      wizardTemplateStep && !wizardTitleStep && !wizardImageStep;
 
   int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
 

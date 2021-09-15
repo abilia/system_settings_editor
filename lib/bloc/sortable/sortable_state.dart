@@ -7,6 +7,8 @@ abstract class SortableState extends Equatable {
 
   @override
   bool get stringify => true;
+
+  bool hasSortableOfType<T extends SortableData>() => false;
 }
 
 class SortablesNotLoaded extends SortableState {}
@@ -17,6 +19,10 @@ class SortablesLoaded extends SortableState {
   const SortablesLoaded({
     required this.sortables,
   });
+
+  @override
+  bool hasSortableOfType<T extends SortableData>() =>
+      sortables.whereType<Sortable<T>>().isNotEmpty;
 
   @override
   List<Object> get props => [sortables];
