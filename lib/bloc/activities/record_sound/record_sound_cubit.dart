@@ -27,7 +27,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   Future<void> startRecording() async {
     var tempDir = await getApplicationDocumentsDirectory();
     var tempPath = '${tempDir.path}';
-    await _recorder.start(path: '$tempPath/' + Uuid().v4());
+    await _recorder.start(path: '$tempPath/' + Uuid().v4() + '.mp3');
     emit(RecordingSoundState(AbiliaFile.empty));
   }
 
@@ -38,16 +38,13 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
       if (uri != null) {
         final file = File.fromUri(uri);
         recordedFile = UnstoredAbiliaFile.newFile(file);
+        print(recordedFile);
       }
       emit(StoppedSoundState(recordedFile));
     }
   }
 
   Future<void> deleteRecording() async {
-    if (recordedFile is UnstoredAbiliaFile) {
-      await (recordedFile as UnstoredAbiliaFile).file.delete();
-    }
-    // TODO: can also do for AbiliaFile?
     recordedFile = AbiliaFile.empty;
     emit(StoppedSoundState(AbiliaFile.empty));
   }

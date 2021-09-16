@@ -14,10 +14,6 @@ class RecordingSoundState extends RecordSoundState {
   RecordingSoundState(AbiliaFile recordedFile) : super(recordedFile);
 }
 
-class PlayingSoundState extends RecordSoundState {
-  PlayingSoundState(AbiliaFile recordedFile) : super(recordedFile);
-}
-
 class StoppedSoundState extends RecordSoundState {
   StoppedSoundState(AbiliaFile recordedFile) : super(recordedFile);
 }

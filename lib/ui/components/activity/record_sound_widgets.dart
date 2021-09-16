@@ -16,46 +16,49 @@ class RecordSoundWidget extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.abilityToSelectAlarm != current.abilityToSelectAlarm,
-      builder: (context, memoSettingsState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SubHeading(translator.speech),
-          SelectOrPlaySoundWidget(
-            key: TestKey.speechAtStart,
-            label: translator.speechAtStart,
-            abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-            recordedAudio: activity.extras.startTimeExtraAlarm,
-            onResult: (AbiliaFile result) {
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    extras: activity.extras.copyWith(
-                      startTimeExtraAlarm: result,
+      builder: (context, memoSettingsState) => BlocProvider(
+        create: (context) => SoundCubit(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(translator.speech),
+            SelectOrPlaySoundWidget(
+              key: TestKey.speechAtStart,
+              label: translator.speechAtStart,
+              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
+              recordedAudio: activity.extras.startTimeExtraAlarm,
+              onResult: (AbiliaFile result) {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      extras: activity.extras.copyWith(
+                        startTimeExtraAlarm: result,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-          SizedBox(height: 8.0.s),
-          SelectOrPlaySoundWidget(
-            key: TestKey.speechAtEnd,
-            label: translator.speechAtEnd,
-            abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-            recordedAudio: activity.extras.endTimeExtraAlarm,
-            onResult: (AbiliaFile result) {
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    extras: activity.extras.copyWith(
-                      endTimeExtraAlarm: result,
+                );
+              },
+            ),
+            SizedBox(height: 8.0.s),
+            SelectOrPlaySoundWidget(
+              key: TestKey.speechAtEnd,
+              label: translator.speechAtEnd,
+              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
+              recordedAudio: activity.extras.endTimeExtraAlarm,
+              onResult: (AbiliaFile result) {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ReplaceActivity(
+                    activity.copyWith(
+                      extras: activity.extras.copyWith(
+                        endTimeExtraAlarm: result,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -134,21 +137,18 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                 ),
               ),
             if (recordedAudio.isNotEmpty)
-              BlocProvider(
-                create: (context) => SoundCubit(),
-                child: BlocBuilder<UserFileBloc, UserFileState>(
-                  builder: (context, state) {
-                    return Padding(
-                      padding: EdgeInsets.only(left: 12.s),
-                      child: PlaySoundButton(
-                        sound: state.getFile(
-                          recordedAudio,
-                          GetIt.I<FileStorage>(),
-                        ),
+              BlocBuilder<UserFileBloc, UserFileState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 12.s),
+                    child: PlaySoundButton(
+                      sound: state.getFile(
+                        recordedAudio,
+                        GetIt.I<FileStorage>(),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
           ],
         );
@@ -213,14 +213,12 @@ class _RecordingWidgetState extends State<RecordingWidget> {
   Widget _getActionRow(RecordSoundState state) {
     if (state is StoppedSoundState) {
       return state.recordedFile.isEmpty
-          ? StoppedEmptyState()
-          : StoppedNotEmptyState(recordedFile: state.recordedFile);
-    } else if (state is PlayingSoundState) {
-      return PlayingState();
+          ? StoppedEmptyStateWidget()
+          : StoppedNotEmptyStateWidget(recordedFile: state.recordedFile);
     } else if (state is RecordingSoundState) {
-      return RecordingState();
+      return RecordingStateWidget();
     }
-    return StoppedEmptyState();
+    return StoppedEmptyStateWidget();
   }
 }
 
@@ -276,24 +274,7 @@ class _TimeProgressIndicator extends LinearProgressIndicator {
             minHeight: 6);
 }
 
-class PlayingState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        StopButton(onPressed: () {
-          context.read<TimerBloc>().add(
-                TimerPaused(),
-              );
-        })
-      ],
-    );
-  }
-}
-
-class RecordingState extends StatelessWidget {
+class RecordingStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -315,7 +296,7 @@ class RecordingState extends StatelessWidget {
   }
 }
 
-class StoppedEmptyState extends StatelessWidget {
+class StoppedEmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -337,10 +318,10 @@ class StoppedEmptyState extends StatelessWidget {
   }
 }
 
-class StoppedNotEmptyState extends StatelessWidget {
+class StoppedNotEmptyStateWidget extends StatelessWidget {
   final AbiliaFile recordedFile;
 
-  const StoppedNotEmptyState({required this.recordedFile});
+  const StoppedNotEmptyStateWidget({required this.recordedFile});
 
   @override
   Widget build(BuildContext context) {
