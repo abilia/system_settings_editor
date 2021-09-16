@@ -39,9 +39,16 @@ class SeagullLogger {
   String get logFileName => '${Config.flavor.id}.log';
 
   factory SeagullLogger.test() => SeagullLogger(
-        loggingType: {LoggingType.Print},
+        loggingType: const {LoggingType.Print},
+        documentsDir: '',
+        level: Level.ALL,
+      );
+
+  factory SeagullLogger.nothing() => SeagullLogger(
+        loggingType: const {},
         documentsDir: '',
       );
+
   SeagullLogger({
     required this.documentsDir,
     this.preferences,
@@ -54,18 +61,12 @@ class SeagullLogger {
     },
     Level level = Config.release ? Level.FINE : Level.ALL,
   }) {
-    Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
-    Logger.root.level = level;
-    if (fileLogging) {
-      if (documentsDir.isEmpty) throw 'documents dir empty';
-      if (preferences == null) throw 'preferences is null';
-      _initFileLogging();
-    }
-    if (printLogging) {
-      _initPrintLogging();
-    }
-    if (analyticLogging) {
-      _initAnalyticsLogging();
+    if (loggingType.isNotEmpty) {
+      Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
+      Logger.root.level = level;
+      if (fileLogging) _initFileLogging();
+      if (printLogging) _initPrintLogging();
+      if (analyticLogging) _initAnalyticsLogging();
     }
   }
 
@@ -168,6 +169,8 @@ class SeagullLogger {
   }
 
   void _initFileLogging() {
+    assert(documentsDir.isNotEmpty, 'documents dir empty');
+    assert(preferences != null, 'preferences is null');
     _logFile = File('$documentsDir/$logFileName');
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
