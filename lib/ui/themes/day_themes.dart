@@ -13,7 +13,7 @@ class DayTheme {
     this.color,
     this.secondaryColor,
     bool background, {
-    Color? accentColor,
+    Color? onSurface,
     this.isColor = true,
     required this.isLight,
   })  : borderColor =
@@ -23,13 +23,13 @@ class DayTheme {
           scaffoldBackgroundColor: background
               ? Color.alphaBlend(const Color(0x33000000), color)
               : null,
-          accentColor: accentColor,
+          colorScheme: theme.colorScheme.copyWith(onSurface: onSurface),
         );
 
   DayTheme._light(
     Color color,
     Color secondaryColor, {
-    Color? accentColor,
+    Color? onSurface,
     background = true,
     isColor = true,
   }) : this._(
@@ -37,7 +37,7 @@ class DayTheme {
           color,
           secondaryColor,
           background,
-          accentColor: accentColor,
+          onSurface: onSurface,
           isColor: isColor,
           isLight: true,
         );
@@ -55,7 +55,7 @@ class DayTheme {
 final _noColor = DayTheme._light(
       AbiliaColors.black80,
       AbiliaColors.white110,
-      accentColor: AbiliaColors.white,
+      onSurface: AbiliaColors.white,
       background: false,
       isColor: false,
     ),

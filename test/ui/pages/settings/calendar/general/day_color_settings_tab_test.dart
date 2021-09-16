@@ -137,7 +137,7 @@ void main() {
       final at = find.byKey(TestKey.animatedTheme);
       expect(at, findsOneWidget);
       final theme = tester.firstWidget(at) as AnimatedTheme;
-      expect(theme.data.appBarTheme.color, color);
+      expect(theme.data.appBarTheme.backgroundColor, color);
     }
 
     testWidgets('all colors standard respected ', (tester) async {

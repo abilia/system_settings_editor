@@ -112,7 +112,7 @@ ActivitiesOccasionLoaded createState({
           .where((ad) => !ad.activity.fullDay)
           .map(asActivityOccasion)
           .toList()
-            ..sort(),
+        ..sort(),
       fullDayActivities: asFulldayOccasion != null
           ? activities
               .where((ad) => ad.activity.fullDay)

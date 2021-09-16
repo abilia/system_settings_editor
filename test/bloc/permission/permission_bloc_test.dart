@@ -1,13 +1,11 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/permission/permission_bloc.dart';
 
 import '../../fakes/permission.dart';
 
 void main() {
-  setUp(() {
-    WidgetsFlutterBinding.ensureInitialized();
-  });
+  setUp(TestWidgetsFlutterBinding.ensureInitialized);
+
   tearDown(() {
     checkedPermissions.clear();
     requestedPermissions.clear();

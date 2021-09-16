@@ -79,9 +79,8 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
         .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
         .map((e) => e.toOccasion(now))
         .toList()
-          ..sort((a, b) => a.activity
-              .startClock(a.day)
-              .compareTo(b.activity.startClock(b.day)));
+      ..sort((a, b) =>
+          a.activity.startClock(a.day).compareTo(b.activity.startClock(b.day)));
   }
 
   @override
