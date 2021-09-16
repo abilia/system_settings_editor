@@ -29,23 +29,23 @@ void main() {
 
     tearDown(GetIt.I.reset);
 
-    final fileId = '351d5e7d-0d87-4037-9829-538a14936128',
+    const fileId = '351d5e7d-0d87-4037-9829-538a14936128',
         path = '/images/Basic/Basic/bingo.gif';
 
-    final imageName = 'bingo';
+    const imageName = 'bingo';
     final imageData = ImageArchiveData.fromJson('''
           {"name":"$imageName","fileId":"$fileId","file":"$path"}
           ''');
     final image = Sortable.createNew<ImageArchiveData>(data: imageData);
 
-    final folderName = 'Basic';
+    const folderName = 'Basic';
     final folderData = ImageArchiveData.fromJson('''
           {"name":"$folderName","fileId":"19da3060-be12-42f9-922e-7e1635293126","icon":"/images/Basic/Basic.png"}
           ''');
     final folder =
         Sortable.createNew<ImageArchiveData>(data: folderData, isGroup: true);
 
-    final imageInFolderName = 'Folder image';
+    const imageInFolderName = 'Folder image';
     final imageInFolder =
         Sortable.createNew<ImageArchiveData>(data: ImageArchiveData.fromJson('''
           {"name":"$imageInFolderName","fileId":"351d5e7d-0d87-4037-9829-538a14936129","file":"/images/Basic/Basic/infolder.gif"}

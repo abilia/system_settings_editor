@@ -172,7 +172,7 @@ void main() {
     });
 
     testWidgets('Can enter text', (WidgetTester tester) async {
-      final newActivtyTitle = 'activity title';
+      const newActivtyTitle = 'activity title';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
@@ -583,7 +583,7 @@ void main() {
 
     testWidgets('Change beweeen info items preserves old info item state',
         (WidgetTester tester) async {
-      final q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
+      const q1 = 'q1', q2 = 'q2', q3 = 'q3', noteText = 'noteText';
       final activity = Activity.createNew(
           title: 'null',
           startTime: startTime,
@@ -653,7 +653,7 @@ void main() {
       }
 
       testWidgets('Info item shows', (WidgetTester tester) async {
-        final aLongNote = '''
+        const aLongNote = '''
 This is a note
 I am typing for testing
 that it is visible in the info item tab
@@ -672,7 +672,7 @@ that it is visible in the info item tab
 
       testWidgets('Info item note not deleted when to info item note',
           (WidgetTester tester) async {
-        final aLongNote = '''
+        const aLongNote = '''
 This is a note
 I am typing for testing
 that it is visible in the info item tab
@@ -738,7 +738,7 @@ that it is visible in the info item tab
       });
 
       testWidgets('Info item note can be edited', (WidgetTester tester) async {
-        final noteText = '''4.1.1
+        const noteText = '''4.1.1
 Mark the unexported and accidentally public setDefaultResponse as deprecated.
 Mark the not useful, and not generally used, named function as deprecated.
 Produce a meaningful error message if an argument matcher is used outside of stubbing (when) or verification (verify and untilCalled).
@@ -776,7 +776,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('note library shows', (WidgetTester tester) async {
-        final content =
+        const content =
             'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
 
         when(mockSortableBloc.state).thenReturn(
@@ -819,7 +819,7 @@ Internal improvements to tests and examples.''';
 
       testWidgets('notes from library is selectable',
           (WidgetTester tester) async {
-        final content =
+        const content =
             'Etappen har sin början vid Bjursjöns strand, ett mycket populärt'
             ' friluftsområde med närhet till Uddevalla tätort.';
 
@@ -930,8 +930,9 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can add new question', (WidgetTester tester) async {
-        final questionName = 'one question!';
+        const questionName = 'one question!';
         await tester.pumpWidget(createEditActivityPage());
+
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
@@ -947,7 +948,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can add question to checklist', (WidgetTester tester) async {
-        final questionName = 'last question!';
+        const questionName = 'last question!';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
@@ -966,7 +967,7 @@ Internal improvements to tests and examples.''';
 
       testWidgets('Cant add question without image or title',
           (WidgetTester tester) async {
-        final questionName = 'question!';
+        const questionName = 'question!';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
@@ -1011,7 +1012,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Can edit question', (WidgetTester tester) async {
-        final newQuestionName = 'laditatssss';
+        const newQuestionName = 'laditatssss';
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
@@ -1048,7 +1049,7 @@ question''',
                 name: 'a checklist',
                 questions: questions.keys
                     .map((k) => Question(id: k, name: questions[k]!))));
-        final newQuestionName = '''
+        const newQuestionName = '''
 yet
 more
 lines
@@ -1084,7 +1085,7 @@ text''';
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
         when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
-        final title1 = 'listtitle1';
+        const title1 = 'listtitle1';
         when(mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
@@ -1130,8 +1131,8 @@ text''';
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
         when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
-        final title1 = 'listtitle1';
-        final checklisttitle1 = 'checklisttitle1',
+        const title1 = 'listtitle1';
+        const checklisttitle1 = 'checklisttitle1',
             checklisttitle2 = 'checklisttitle2';
         when(mockSortableBloc.state).thenReturn(
           SortablesLoaded(
@@ -2194,7 +2195,7 @@ text''';
 
     testWidgets('calendarActivityType-Left/Rigth given name',
         (WidgetTester tester) async {
-      final leftCategoryName = 'VÄNSTER',
+      const leftCategoryName = 'VÄNSTER',
           rightCategoryName =
               'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
       when(mockMemoplannerSettingsBloc.state).thenReturn(
@@ -2245,7 +2246,7 @@ text''';
         ..init();
     });
     testWidgets('title', (WidgetTester tester) async {
-      final name = 'new name of a activity';
+      const name = 'new name of a activity';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
@@ -2626,8 +2627,8 @@ text''';
       testWidgets('checklist', (WidgetTester tester) async {
         // Arrange
         when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
-        final title1 = 'listtitle1';
-        final item1Name = 'Item 1 name';
+        const title1 = 'listtitle1';
+        const item1Name = 'Item 1 name';
         when(mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
@@ -2670,8 +2671,8 @@ text''';
     });
 
     testWidgets('note', (WidgetTester tester) async {
-      final name = 'Rigel';
-      final content =
+      const name = 'Rigel';
+      const content =
           'is a blue supergiant star in the constellation of Orion, approximately 860 light-years (260 pc) from Earth. It is the brightest and most massive component of a star system of at least four stars that appear as a single blue-white point of light to the naked eye. A star of spectral type B8Ia, Rigel is calculated to be anywhere from 61,500 to 363,000 times as luminous as the Sun, and 18 to 24 times as massive. ';
       when(mockSortableBloc.state).thenReturn(
         SortablesLoaded(

@@ -7,7 +7,7 @@ class GeneralCalendarSettingsState extends Equatable {
   final DayColor dayColor;
   final CategoriesSettingState categories;
 
-  GeneralCalendarSettingsState._(
+  const GeneralCalendarSettingsState._(
     this.clockType,
     this.timepillar,
     this.dayParts,
@@ -68,7 +68,7 @@ class GeneralCalendarSettingsState extends Equatable {
 class TimepillarSettingState extends Equatable {
   final bool timeline, hourLines, columnOfDots, use12h;
 
-  TimepillarSettingState._(
+  const TimepillarSettingState._(
     this.use12h,
     this.timeline,
     this.hourLines,
@@ -130,7 +130,7 @@ class CategoriesSettingState extends Equatable {
   final bool show, colors;
   final ImageAndName left, right;
 
-  CategoriesSettingState._(
+  const CategoriesSettingState._(
     this.show,
     this.colors,
     this.left,

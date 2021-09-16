@@ -246,7 +246,8 @@ abstract class MemoplannerSettingsState extends Equatable {
 }
 
 class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
-  MemoplannerSettingsLoaded(MemoplannerSettings settings) : super(settings);
+  const MemoplannerSettingsLoaded(MemoplannerSettings settings)
+      : super(settings);
 }
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {

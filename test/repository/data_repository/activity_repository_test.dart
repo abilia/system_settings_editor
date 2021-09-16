@@ -11,12 +11,12 @@ import 'package:seagull/utils/all.dart';
 import '../../mocks/shared.mocks.dart';
 
 void main() {
-  final baseUrl = 'oneUrl';
+  const baseUrl = 'oneUrl';
   final mockClient = MockBaseClient();
   final mockActivityDb = MockActivityDb();
   when(mockActivityDb.insertAndAddDirty(any))
       .thenAnswer((_) => Future.value(true));
-  final userId = 1;
+  const userId = 1;
   final startTime = DateTime(2020, 12, 12, 12, 12);
   final successActivity = Activity.createNew(
     title: 'title',
@@ -105,7 +105,7 @@ void main() {
 
   test('synchronizeLocalWithBackend updates revision from backend', () async {
     // Arrange
-    final newRevision = 110;
+    const newRevision = 110;
     final syncToBackendResponse = '''
           {
             "previousRevision" : 100,
@@ -116,7 +116,7 @@ void main() {
             "failedUpdates" : []
           }
           ''';
-    final firstDirty = 1;
+    const firstDirty = 1;
     final activities = [successActivity.copyWith(dirty: 1)];
     when(mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
@@ -133,7 +133,7 @@ void main() {
     when(mockActivityDb
             .insert([successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List.filled(1, null)));
-    final newDirty = 5;
+    const newDirty = 5;
     when(mockActivityDb.getById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
@@ -155,7 +155,7 @@ void main() {
   test('synchronizeLocalWithBackend - failed sync fetches from backend',
       () async {
     // Arrange
-    final failedRevision = 99;
+    const failedRevision = 99;
     final syncToBackendResponse = '''
           {
             "previousRevision" : 100,

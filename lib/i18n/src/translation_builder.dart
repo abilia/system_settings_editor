@@ -34,6 +34,8 @@ class TranslationBuilder extends Builder {
     buffer.writeln('// instead, modify ${buildStep.inputId.path} and run');
     buffer.writeln('// > flutter packages pub run build_runner build');
     buffer.writeln();
+    buffer.writeln('// ignore_for_file: overridden_fields');
+    buffer.writeln();
     buffer.writeln("import 'dart:ui';");
 
     buffer.writeln(_generateLocalesMap(languages, emitter));
@@ -53,6 +55,8 @@ class TranslationBuilder extends Builder {
     buffer.writeln(Class((b) => b
       ..name = className
       ..abstract = true
+      ..constructors =
+          ListBuilder<Constructor>([Constructor((c) => c.constant = true)])
       ..fields.addAll(fields)).accept(emitter));
 
     // generate translations
@@ -65,13 +69,15 @@ class TranslationBuilder extends Builder {
                 (f) => f.rebuild(
                   (fb) => fb
                     ..annotations = ListBuilder<Expression>(
-                        [CodeExpression(Code('override'))])
+                        [const CodeExpression(Code('override'))])
                     ..assignment = _getTranslation(dictionary[f.name]),
                 ),
               );
 
       buffer.writeln(Class((b) => b
         ..name = lang.toUpperCase()
+        ..constructors =
+            ListBuilder<Constructor>([Constructor((c) => c.constant = true)])
         ..extend = refer(className)
         ..fields.addAll(overrideFields)).accept(emitter));
     }
@@ -91,7 +97,7 @@ class TranslationBuilder extends Builder {
     BuildStep buildStep,
   ) {
     final missing = <String>{};
-    final lines = LineSplitter().convert(content);
+    final lines = const LineSplitter().convert(content);
     final lineSplitted = lines
         .where((line) =>
             line.trim().isNotEmpty) // ignore empty lines ands comments
@@ -136,8 +142,9 @@ class TranslationBuilder extends Builder {
 
   StringSink _generateLocalesMap(
       Iterable<String> languages, DartEmitter emitter) {
-    final translationEntry =
-        languages.map((l) => "Locale('$l'): ${l.toUpperCase()}()").join(',\n');
+    final translationEntry = languages
+        .map((l) => "const Locale('$l'): const ${l.toUpperCase()}()")
+        .join(',\n');
     final locales = Class((b) => b
       ..name = 'Locales'
       ..fields = ListBuilder([
@@ -146,7 +153,7 @@ class TranslationBuilder extends Builder {
             ..static = true
             ..modifier = FieldModifier.final$
             ..name = 'language'
-            ..assignment = Code('<Locale, Translated>{$translationEntry}'),
+            ..assignment = Code('{$translationEntry}'),
         )
       ]));
     return locales.accept(emitter);

@@ -4,7 +4,7 @@ class Alarm extends Equatable {
   final AlarmType type;
   final bool onlyStart;
 
-  Alarm({
+  const Alarm({
     required this.type,
     this.onlyStart = false,
   });

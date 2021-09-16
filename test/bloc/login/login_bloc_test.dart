@@ -15,7 +15,7 @@ void main() {
     late AuthenticationBloc authenticationBloc;
     final mockUserRepository = MockUserRepository();
 
-    final pushToken = 'pushToken';
+    const pushToken = 'pushToken';
 
     setUp(() {
       final mockFirebasePushService = MockFirebasePushService();
@@ -36,9 +36,9 @@ void main() {
 
     test('LoginState and AuthenticationState in correct order', () async {
       // Arrange
-      final loginToken = 'loginToken';
-      final loggedInUserId = 1;
-      final username = 'username', password = 'password';
+      const loginToken = 'loginToken';
+      const loggedInUserId = 1;
+      const username = 'username', password = 'password';
       when(mockUserRepository.authenticate(
         username: anyNamed(username),
         password: anyNamed(password),
@@ -127,7 +127,7 @@ void main() {
 
     test('LoginButtonPressed twice still yeilds LoginFailure twice on password',
         () async {
-      final username = 'username';
+      const username = 'username';
       loginBloc.add(UsernameChanged(username));
       loginBloc.add(LoginButtonPressed());
       loginBloc.add(LoginButtonPressed());
@@ -182,10 +182,10 @@ void main() {
 
     test('LoginButtonPressed event calls logges in and saves token', () async {
       // Arrange
-      final username = 'username',
+      const username = 'username',
           password = 'password',
           fakePushToken = 'pushToken';
-      final loginToken = 'loginToken';
+      const loginToken = 'loginToken';
       when(mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(fakePushToken));
       when(mockedUserRepository.authenticate(

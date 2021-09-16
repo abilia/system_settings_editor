@@ -5,7 +5,7 @@ class MonthCalendarSettingsState extends Equatable {
 
   final WeekColor color;
 
-  MonthCalendarSettingsState._({
+  const MonthCalendarSettingsState._({
     required this.browseButtons,
     required this.year,
     required this.clock,

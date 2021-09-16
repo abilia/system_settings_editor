@@ -55,7 +55,7 @@ class BasicActivityPickerPage extends StatelessWidget {
 class BasicActivityLibraryItem extends StatelessWidget {
   final Sortable<BasicActivityDataItem> sortable;
 
-  BasicActivityLibraryItem({
+  const BasicActivityLibraryItem({
     Key? key,
     required this.sortable,
   }) : super(key: key);

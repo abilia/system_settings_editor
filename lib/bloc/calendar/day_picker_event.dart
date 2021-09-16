@@ -23,14 +23,14 @@ class CurrentDay extends DayPickerEvent {
 
 class GoTo extends DayPickerEvent {
   final DateTime day;
-  GoTo({required this.day});
+  const GoTo({required this.day});
   @override
   String toString() => 'GoTo $day';
 }
 
 class TimeChanged extends DayPickerEvent {
   final DateTime now;
-  TimeChanged(this.now);
+  const TimeChanged(this.now);
   @override
   List<Object> get props => [now];
 }

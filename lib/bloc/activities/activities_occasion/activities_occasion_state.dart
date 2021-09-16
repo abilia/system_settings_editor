@@ -9,7 +9,7 @@ abstract class ActivitiesOccasionState extends Equatable {
 }
 
 class ActivitiesOccasionLoading extends ActivitiesOccasionState {
-  ActivitiesOccasionLoading() : super();
+  const ActivitiesOccasionLoading() : super();
 }
 
 class ActivitiesOccasionLoaded extends ActivitiesOccasionState {

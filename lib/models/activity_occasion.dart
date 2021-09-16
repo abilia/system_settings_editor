@@ -11,7 +11,7 @@ class ActivityOccasion extends ActivityDay {
   bool get isCurrent => occasion == Occasion.current && !activity.fullDay;
 
   final Occasion occasion;
-  ActivityOccasion(
+  const ActivityOccasion(
     Activity activity,
     DateTime day,
     this.occasion,

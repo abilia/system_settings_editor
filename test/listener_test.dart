@@ -349,7 +349,7 @@ void main() {
       // Arrange
       final startTime = DateTime(2021, 02, 16, 12, 00);
       final startDay = startTime.onlyDays();
-      final unchecked = 'unchecked';
+      const unchecked = 'unchecked';
       final checkableActivityWithChecklist = Activity.createNew(
         title: 'checkableActivityWithChecklist',
         startTime: startTime,

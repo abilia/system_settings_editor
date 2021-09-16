@@ -12,7 +12,7 @@ abstract class ActivityChangedEvent extends EditActivityEvent with Finest {
 
 class ReplaceActivity extends ActivityChangedEvent {
   final Activity activity;
-  ReplaceActivity(this.activity);
+  const ReplaceActivity(this.activity);
 
   @override
   List<Object> get props => [activity];
@@ -47,7 +47,7 @@ class SaveRecurringActivity extends SaveActivity with Fine {
 
 class ChangeDate extends ActivityChangedEvent {
   final DateTime date;
-  ChangeDate(this.date);
+  const ChangeDate(this.date);
   @override
   List<Object> get props => [date];
 }
@@ -80,7 +80,7 @@ class ImageSelected extends ActivityChangedEvent {
 
 class ChangeInfoItemType extends ActivityChangedEvent {
   final Type infoItemType;
-  ChangeInfoItemType(this.infoItemType);
+  const ChangeInfoItemType(this.infoItemType);
   @override
   List<Object> get props => [infoItemType];
   @override

@@ -11,7 +11,7 @@ class ChecklistView extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final bool preview;
 
-  ChecklistView(
+  const ChecklistView(
     this.checklist, {
     this.day,
     this.onTap,

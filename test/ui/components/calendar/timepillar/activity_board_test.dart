@@ -19,7 +19,7 @@ import '../../../../test_helpers/tts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  final title = 'title';
+  const title = 'title';
   final startTime = DateTime(1987, 05, 22, 04, 04);
 
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;

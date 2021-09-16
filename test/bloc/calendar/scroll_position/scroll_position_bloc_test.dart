@@ -84,7 +84,7 @@ void main() {
 
   test('Just InView top', () async {
     // Arrange
-    final init = 200.0;
+    const init = 200.0;
     when(mockScrollController.offset)
         .thenReturn(init - scrollPositionBloc.nowMarginBottom);
     when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -101,7 +101,7 @@ void main() {
 
   test('Just InView bottom', () async {
     // Arrange
-    final init = 200.0;
+    const init = 200.0;
     when(mockScrollController.offset)
         .thenReturn(init + scrollPositionBloc.nowMarginTop);
     when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -118,7 +118,7 @@ void main() {
 
   test('Just OutView top', () async {
     // Arrange
-    final init = 200.0;
+    const init = 200.0;
     when(mockScrollController.offset)
         .thenReturn(init - scrollPositionBloc.nowMarginBottom - 1);
     when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -135,7 +135,7 @@ void main() {
 
   test('Just OutOfView bottom', () async {
     // Arrange
-    final init = 200.0;
+    const init = 200.0;
     when(mockScrollController.offset)
         .thenReturn(init + scrollPositionBloc.nowMarginTop + 1);
     when(mockScrollController.initialScrollOffset).thenReturn(init);
@@ -154,7 +154,7 @@ void main() {
     'InView then scroll down and then OutOfView',
     () async {
       // Arrange
-      final activityAt = 200.0, max = 800.0;
+      const activityAt = 200.0, max = 800.0;
       when(mockScrollController.offset).thenReturn(activityAt);
       when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
       when(mockScrollPosition.maxScrollExtent).thenReturn(max);
@@ -183,7 +183,7 @@ void main() {
   );
 
   test('InView then scroll up and then OutOfView', () async {
-    final activityAt = 200.0, max = 800.0;
+    const activityAt = 200.0, max = 800.0;
     // Arrange
     when(mockScrollController.offset).thenReturn(activityAt);
     when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
@@ -213,7 +213,7 @@ void main() {
 
   test('Scrolls back', () async {
     // Arrange
-    final initialOffset = 100.0;
+    const initialOffset = 100.0;
     when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
     when(mockScrollController.offset).thenReturn(200);
     when(mockScrollPosition.maxScrollExtent).thenReturn(400);
@@ -269,7 +269,7 @@ void main() {
 
     test('Scrolls to correct offset', () async {
       // Arrange
-      final initialOffset = 100.0;
+      const initialOffset = 100.0;
       when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
       when(mockScrollController.offset).thenReturn(initialOffset);
       when(mockScrollPosition.maxScrollExtent).thenReturn(400);

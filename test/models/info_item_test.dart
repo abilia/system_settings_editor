@@ -5,20 +5,20 @@ import 'package:seagull/models/info_item.dart';
 
 void main() {
   test('Parse note info item', () {
-    final testString =
+    const testString =
         'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJub3RlIiwiZGF0YSI6eyJ0ZXh0IjoiVGVzdCJ9fV19';
     final infoItem = InfoItem.fromBase64(testString);
     expect((infoItem as NoteInfoItem).text, 'Test');
   });
 
   test('Parse null', () {
-    final testString = null;
+    const testString = null;
     final infoItem = InfoItem.fromBase64(testString);
     expect(infoItem, isInstanceOf<NoInfoItem>());
   });
 
   test('Parse empty', () {
-    final testString = '';
+    const testString = '';
     final infoItem = InfoItem.fromBase64(testString);
     expect(infoItem, isInstanceOf<NoInfoItem>());
   });
@@ -32,7 +32,7 @@ void main() {
   });
 
   test('Parse checklist', () {
-    final testString =
+    const testString =
         'eyJpbmZvLWl0ZW0iOlt7InR5cGUiOiJjaGVja2xpc3QiLCJkYXRhIjp7ImNoZWNrZWQiOnsiMjAyMDA1MDYiOlsxLDRdfSwicXVlc3Rpb25zIjpbeyJpZCI6MCwibmFtZSI6InNob3J0cyIsImltYWdlIjoiL0hhbmRpL1VzZXIvUGljdHVyZS9zaG9ydHMuanBnIiwiZmlsZUlkIjoiOGM1ZDE0YTItYzIzZi00YTI0LTg0ZGItYmE5NjBhMGVjYjM4IiwiY2hlY2tlZCI6ZmFsc2V9LHsiaWQiOjEsIm5hbWUiOiJ0LXRyw7ZqYSIsImltYWdlIjoiL0hhbmRpL1VzZXIvUGljdHVyZS90LXRyw7ZqYS5qcGciLCJmaWxlSWQiOiIxOGNlODhlOS04Zjc4LTRiZjQtYWM0Yy0wY2JhYmZlMmI3NzQiLCJjaGVja2VkIjp0cnVlfSx7ImlkIjoyLCJuYW1lIjoic3RydW1wb3IiLCJpbWFnZSI6Ii9IYW5kaS9Vc2VyL1BpY3R1cmUvc3RydW1wb3IuanBnIiwiZmlsZUlkIjoiYjdmY2YwYWMtNmQwYS00MzVlLWFlNTYtMzNlYzE0NDVmOTc5IiwiY2hlY2tlZCI6ZmFsc2V9LHsiaWQiOjMsIm5hbWUiOiJneW1uYXN0aWtza29yIiwiaW1hZ2UiOiIvSGFuZGkvVXNlci9QaWN0dXJlL2d5bW5hc3Rpa3Nrb3IuanBnIiwiZmlsZUlkIjoiZjIyYWMxZDgtYmNjNi00YTQ2LWE4ZWQtOGQ4OGExNjU1MjlkIiwiY2hlY2tlZCI6ZmFsc2V9LHsiaWQiOjQsIm5hbWUiOiJ2YXR0ZW5mbGFza2EiLCJpbWFnZSI6Ii9IYW5kaS9Vc2VyL1BpY3R1cmUvdmF0dGVuZmxhc2thLmpwZyIsImZpbGVJZCI6IjMzYTBmMmE0LTRlYzktNDFmOC05MGU0LWU2YmU4OTdlNjcxZCIsImNoZWNrZWQiOnRydWV9LHsiaWQiOjUsIm5hbWUiOiJoYW5kZHVrIiwiaW1hZ2UiOiIvSGFuZGkvVXNlci9QaWN0dXJlL2hhbmRkdWsuanBnIiwiZmlsZUlkIjoiNjgwZGQxOTEtMzBiMS00NDU0LTk5Y2YtMzNiN2I5OTVmYTMwIiwiY2hlY2tlZCI6ZmFsc2V9LHsiaWQiOjYsIm5hbWUiOiJ0dsOlbCIsImltYWdlIjoiL0hhbmRpL1VzZXIvUGljdHVyZS9mbHl0YW5kZSB0dsOlbC5qcGciLCJmaWxlSWQiOiJmODI0OTQ3Ny0zYWRmLTRkODgtOWIxZS1lZWY4M2I0NzY0ZTEiLCJjaGVja2VkIjpmYWxzZX0seyJuYW1lIjoia2Fsc29uZ2VyXG5rYWxzb25nZXJcbmthbHNvbmdlclxua2Fsc29uZ2VyIiwiaW1hZ2UiOiIvSGFuZGkvVXNlci9QaWN0dXJlL2thbHNvbmdlci5qcGciLCJmaWxlSWQiOiIwMDA1NmYxNi02OWJmLTRlZjEtOTBjNi1lOTFiNjY5MjliYWYiLCJpZCI6NywiY2hlY2tlZCI6ZmFsc2V9XX19XX0=';
     final infoItem = InfoItem.fromBase64(testString);
     expect(infoItem, isInstanceOf<Checklist>());
@@ -54,7 +54,7 @@ void main() {
   });
 
   test('BUG SGC-439 JSON without checked map checklist test', () {
-    final testJson =
+    const testJson =
         '{"info-item":[{"type":"checklist","data":{"name":"Remember","fileId":"17c463bb-344b-4fef-b84b-afa8809d600b","image":"/Handi/User/Picture/remember.gif","questions":[{"name":"key","fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":"e119ccd3-8949-4d82-8249-f4bdf1423afb","id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":"/Handi/User/Picture/mobile phone.gif"},{"name":"fruit","fileId":"9965aa32-3be0-46b6-bf12-53c7b33842a6","id":3,"image":"/Handi/User/Picture/fruit.gif"}]}}]}';
     final infoItem = InfoItem.fromJsonString(testJson);
     expect(infoItem, isInstanceOf<Checklist>());
@@ -74,7 +74,7 @@ void main() {
   });
 
   test('BUG SGC-439 JSON without checked map checklist test, check test', () {
-    final testJson =
+    const testJson =
         '{"info-item":[{"type":"checklist","data":{"name":"Remember","fileId":"17c463bb-344b-4fef-b84b-afa8809d600b","image":"/Handi/User/Picture/remember.gif","questions":[{"name":"key","fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":"e119ccd3-8949-4d82-8249-f4bdf1423afb","id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":"/Handi/User/Picture/mobile phone.gif"},{"name":"fruit","fileId":"9965aa32-3be0-46b6-bf12-53c7b33842a6","id":3,"image":"/Handi/User/Picture/fruit.gif"}]}}]}';
     final decoded = jsonDecode(testJson)['info-item'][0]['data'];
 
@@ -95,7 +95,7 @@ void main() {
   });
 
   test('json parse checklist no nulls', () {
-    final testJson =
+    const testJson =
         '{"info-item":[{"type":"checklist","data":{"name":null,"fileId":null,"image":null,"questions":[{"name":null,"fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","id":0,"image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":null,"id":1,"image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","id":2,"image":null}]}}]}';
 
     final infoItem = InfoItem.fromJsonString(testJson);

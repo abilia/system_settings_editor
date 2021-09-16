@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 
 void main() {
   test('parse json test', () {
-    final response = '''[ {
+    const response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
           "owner" : 104,
           "revision" : 100,
@@ -74,7 +74,7 @@ void main() {
   });
 
   test('parse json with nulls test', () {
-    final response = '''[ {
+    const response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
           "owner" : 104,
           "revision" : 100,
@@ -122,7 +122,7 @@ void main() {
   });
 
   test('parse json with title null', () {
-    final response = '''{
+    const response = '''{
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
           "owner" : 104,
           "revision" : 100,
@@ -158,7 +158,7 @@ void main() {
   });
 
   test('parse json with empty string test', () {
-    final response = '''[ {
+    const response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
           "owner" : 104,
           "revision" : 100,
@@ -264,7 +264,7 @@ void main() {
       title: 'Title',
       startTime: now,
     );
-    final fileId = 'fileId';
+    const fileId = 'fileId';
     final original = Activity.createNew(
       title: 'Title',
       startTime: now,
@@ -368,7 +368,6 @@ void main() {
         .replaceAll('\n', '')
         .replaceAll(' ', '');
     final decoded = json.decode(response) as Map<String, dynamic>;
-    ;
     final parsed = DbActivity.fromJson(decoded);
     final dbMap = parsed.toMapForDb();
     final fromDBmap = DbActivity.fromDbMap(dbMap);

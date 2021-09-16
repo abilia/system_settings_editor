@@ -46,7 +46,7 @@ void main() {
       });
 
       testWidgets('Created account name in login page', (tester) async {
-        final username = 'this_is_a_user_name',
+        const username = 'this_is_a_user_name',
             password = 't/-/15_15_4_/>455w0|2|)';
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));
@@ -80,7 +80,7 @@ void main() {
           await tester.pumpAndSettle();
         }
 
-        final toShortUsername = 'ab',
+        const toShortUsername = 'ab',
             username = 'abc',
             takenUsername = 'taken',
             toShortPassword = 'abcdefg',

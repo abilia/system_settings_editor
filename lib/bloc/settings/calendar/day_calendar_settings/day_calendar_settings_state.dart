@@ -14,7 +14,7 @@ class DayCalendarSettingsState extends Equatable {
   final TimepillarIntervalType dayInterval;
   final DayCalendarType calendarType;
 
-  DayCalendarSettingsState._({
+  const DayCalendarSettingsState._({
     required this.showBrowseButtons,
     required this.showWeekday,
     required this.showDayPeriod,

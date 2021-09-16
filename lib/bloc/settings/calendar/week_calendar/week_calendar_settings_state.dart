@@ -6,7 +6,7 @@ class WeekCalendarSettingsState extends Equatable {
   final WeekDisplayDays weekDisplayDays;
   final WeekColor weekColor;
 
-  WeekCalendarSettingsState._({
+  const WeekCalendarSettingsState._({
     required this.showBrowseButtons,
     required this.showWeekNumber,
     required this.showYear,

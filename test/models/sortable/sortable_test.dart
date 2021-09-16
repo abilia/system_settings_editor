@@ -5,21 +5,21 @@ import 'package:seagull/models/all.dart';
 
 void main() {
   test('parse json test', () {
-    final id = 'f1069915-ac41-4d74-9449-b8842637b924';
-    final revision = 12345;
-    final type = 'imagearchive';
-    final data =
+    const id = 'f1069915-ac41-4d74-9449-b8842637b924';
+    const revision = 12345;
+    const type = 'imagearchive';
+    const data =
         '{\\\"name\\\":\\\"DVD\\\",\\\"file\\\":\\\"/images/Handi/Handi/DVD_2.gif\\\"}';
-    final expectedRawData =
+    const expectedRawData =
         '{\"name\":\"DVD\",\"file\":\"/images/Handi/Handi/DVD_2.gif\"}';
     final expectedData = ImageArchiveData(
       file: '/images/Handi/Handi/DVD_2.gif',
       name: 'DVD',
     );
 
-    final groupId = 'a82c92c0-bee2-4689-9f5d-954de468d5ed';
-    final sortOrder = '12309{}';
-    final sortableJson = '''
+    const groupId = 'a82c92c0-bee2-4689-9f5d-954de468d5ed';
+    const sortOrder = '12309{}';
+    const sortableJson = '''
     [
       {
         "id": "$id",

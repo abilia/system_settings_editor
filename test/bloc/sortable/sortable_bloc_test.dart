@@ -93,9 +93,9 @@ void main() {
         .thenAnswer((_) => Future.value([uploadFolder]));
     when(mockSortableRepository.save(any))
         .thenAnswer((_) => Future.value(true));
-    final imageId = 'id1';
-    final imageName = 'nameOfImage';
-    final imagePath = 'path/to/image/$imageName.jpg';
+    const imageId = 'id1';
+    const imageName = 'nameOfImage';
+    const imagePath = 'path/to/image/$imageName.jpg';
 
     // Act
     sortableBloc.add(LoadSortables());

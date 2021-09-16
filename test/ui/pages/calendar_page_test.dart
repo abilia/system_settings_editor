@@ -232,7 +232,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle';
+          const title = 'testtitle';
           when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(title: title),
@@ -271,7 +271,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle';
+          const title = 'testtitle';
           when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(
@@ -307,7 +307,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle', folderTitle = 'folderTitle';
+          const title = 'testtitle', folderTitle = 'folderTitle';
 
           final folder = Sortable.createNew<BasicActivityDataFolder>(
             isGroup: true,
@@ -394,7 +394,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle';
+          const title = 'testtitle';
           when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(
@@ -442,7 +442,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle';
+          const title = 'testtitle';
           when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(title: title),
@@ -487,7 +487,7 @@ void main() {
             (WidgetTester tester) async {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
-          final title = 'testtitle';
+          const title = 'testtitle';
           when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(title: title),
@@ -692,7 +692,7 @@ void main() {
     testWidgets(
         'SGC-533 Can save full day on current day when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
-      final testActivityTitle = 'fulldayactivity';
+      const testActivityTitle = 'fulldayactivity';
       when(memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
@@ -733,7 +733,7 @@ void main() {
     testWidgets(
         'SGC-533 Cannot save full day activity on yesterday when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
-      final testActivityTitle = 'fulldayactivity';
+      const testActivityTitle = 'fulldayactivity';
       when(memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
@@ -985,9 +985,9 @@ void main() {
   });
 
   group('edit all day', () {
-    final title1 = 'fulldaytitle1';
-    final title2 = 'fullday title 2';
-    final title3 = 'full day title 3';
+    const title1 = 'fulldaytitle1';
+    const title2 = 'fullday title 2';
+    const title3 = 'full day title 3';
     final date = initialDay.onlyDays();
 
     final day1Finder = find.text(title1);
@@ -1065,7 +1065,7 @@ void main() {
     });
 
     testWidgets('Can edit from full day list', (WidgetTester tester) async {
-      final newTitle = 'A brand new title!';
+      const newTitle = 'A brand new title!';
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
@@ -1083,7 +1083,7 @@ void main() {
 
     testWidgets('Can edit from full day list shows on full day list',
         (WidgetTester tester) async {
-      final newTitle = 'A brand new title!';
+      const newTitle = 'A brand new title!';
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(showAllFullDayButtonFinder);
@@ -1139,7 +1139,7 @@ void main() {
   });
 
   group('Week calendar', () {
-    final fridayTitle = 'f-r-i-d-a-y',
+    const fridayTitle = 'f-r-i-d-a-y',
         nextWeekTitle = 'N-e-x-t week title',
         todaytitle = 't-o-d-a-y';
     final friday = initialDay.addDays(2);

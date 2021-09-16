@@ -5,7 +5,7 @@ class AlarmSettingsState extends Equatable {
   final bool vibrateAtReminder;
   final AlarmDuration alarmDuration;
 
-  AlarmSettingsState._({
+  const AlarmSettingsState._({
     required this.nonCheckableSound,
     required this.checkableSound,
     required this.reminderSound,

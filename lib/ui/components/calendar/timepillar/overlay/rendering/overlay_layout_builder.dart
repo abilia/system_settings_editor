@@ -17,8 +17,6 @@ class RenderOverlayLayoutBuilder extends RenderBox
   }
 
   // layout input
-  @override
-  BoxConstraints get constraints => super.constraints;
 
   bool _debugThrowIfNotCheckingIntrinsics() {
     assert(() {
