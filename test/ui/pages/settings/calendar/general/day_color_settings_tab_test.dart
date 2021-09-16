@@ -129,7 +129,7 @@ void main() {
   }, skip: !Config.isMP);
 
   group('day color visisbility settings', () {
-    final noDayColor = AbiliaColors.black80,
+    const noDayColor = AbiliaColors.black80,
         fridayColor = AbiliaColors.yellow,
         saturdayColor = AbiliaColors.pink;
 
