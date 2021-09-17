@@ -38,7 +38,6 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
       if (uri != null) {
         final file = File.fromUri(uri);
         recordedFile = UnstoredAbiliaFile.newFile(file);
-        print(recordedFile);
       }
       emit(StoppedSoundState(recordedFile));
     }

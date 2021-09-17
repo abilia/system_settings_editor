@@ -1,6 +1,7 @@
 import 'package:seagull/logging.dart';
 
 extension OnError on Logger {
+  // ignore: prefer_void_to_null
   Null logAndReturnNull(
     Object exception,
     StackTrace stacktrace,

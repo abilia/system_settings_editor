@@ -36,7 +36,7 @@ abstract class Translated {
   final String logout = 'Log out';
 
   final String wrongCredentials =
-      "Username or password doesn\'t match.\nVerify your credentials and try again.";
+      "Username or password doesn't match.\nVerify your credentials and try again.";
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
@@ -46,7 +46,7 @@ abstract class Translated {
   final String enterPassword = 'Enter password';
 
   final String userTypeNotSupported =
-      "Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia";
+      "Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia";
 
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
@@ -3112,7 +3112,7 @@ class NL extends Translated {
   final String uploadImage = 'Afbeelding uploaden';
 
   @override
-  final String myPhotos = "Mijn foto\'s";
+  final String myPhotos = "Mijn foto's";
 
   @override
   final String takeNewPhoto = 'Nieuwe foto nemen';
