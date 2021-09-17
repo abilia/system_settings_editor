@@ -70,7 +70,7 @@ void main() {
     const jsonString =
         '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
 
-    final extras = Extras.empty;
+    const extras = Extras.empty;
 
     var extrasChanged = extras.copyWith(
         startTimeExtraAlarm: AbiliaFile.from(
