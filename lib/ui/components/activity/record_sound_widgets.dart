@@ -16,44 +16,78 @@ class RecordSoundWidget extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.abilityToSelectAlarm != current.abilityToSelectAlarm,
-      builder: (context, memoSettingsState) => BlocProvider(
-        create: (context) => SoundCubit(),
+      builder: (context, memoSettingsState) => MultiBlocProvider(
+        providers: [
+          BlocProvider<SoundCubit>(
+            create: (context) => SoundCubit(),
+          ),
+          BlocProvider<PermissionBloc>(
+            create: (context) => PermissionBloc(),
+          ),
+        ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SubHeading(translator.speech),
-            SelectOrPlaySoundWidget(
-              label: translator.speechOnStart,
-              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-              recordedAudio: activity.extras.startTimeExtraAlarm,
-              onResult: (AbiliaFile result) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      extras: activity.extras.copyWith(
-                        startTimeExtraAlarm: result,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SelectOrPlaySoundWidget(
+                      label: translator.speechOnStart,
+                      abilityToSelectAlarm:
+                          memoSettingsState.abilityToSelectAlarm,
+                      recordedAudio: activity.extras.startTimeExtraAlarm,
+                      onResult: (AbiliaFile result) {
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                          ReplaceActivity(
+                            activity.copyWith(
+                              extras: activity.extras.copyWith(
+                                startTimeExtraAlarm: result,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 8.0.s),
+                    SelectOrPlaySoundWidget(
+                      label: translator.speechOnEnd,
+                      abilityToSelectAlarm:
+                          memoSettingsState.abilityToSelectAlarm,
+                      recordedAudio: activity.extras.endTimeExtraAlarm,
+                      onResult: (AbiliaFile result) {
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                          ReplaceActivity(
+                            activity.copyWith(
+                              extras: activity.extras.copyWith(
+                                endTimeExtraAlarm: result,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                if (context.read<PermissionBloc>().state.microphoneDenied ==
+                    true)
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0.s),
+                    child: InfoButton(
+                      onTap: () => showViewDialog(
+                        useSafeArea: false,
+                        context: context,
+                        builder: (context) => PermissionInfoDialog(
+                            permission: Permission.microphone),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-            SizedBox(height: 8.0.s),
-            SelectOrPlaySoundWidget(
-              label: translator.speechOnEnd,
-              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-              recordedAudio: activity.extras.endTimeExtraAlarm,
-              onResult: (AbiliaFile result) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      extras: activity.extras.copyWith(
-                        endTimeExtraAlarm: result,
-                      ),
-                    ),
-                  ),
-                );
-              },
+              ],
             ),
           ],
         ),
@@ -78,13 +112,14 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var permission = Permission.microphone;
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
+            SizedBox(
+              width: 300.s,
               child: PickField(
                 leading: Icon(recordedAudio.isEmpty
                     ? AbiliaIcons.no_record
@@ -122,18 +157,6 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                     : null,
               ),
             ),
-            if (permissionState.microphoneDenied == true)
-              Padding(
-                padding: EdgeInsets.only(left: 8.0.s),
-                child: InfoButton(
-                  onTap: () => showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: permission),
-                  ),
-                ),
-              ),
             if (recordedAudio.isNotEmpty)
               BlocBuilder<UserFileBloc, UserFileState>(
                 builder: (context, state) {
