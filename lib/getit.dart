@@ -74,11 +74,7 @@ class GetItInitializer {
   late Database _database;
   set database(Database database) => _database = database;
 
-  late SeagullLogger _seagullLogger = SeagullLogger(
-    documentsDir: _documentsDirectory?.path ?? '',
-    preferences: _sharedPreferences,
-    loggingType: {},
-  );
+  late SeagullLogger _seagullLogger = SeagullLogger.nothing();
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 
