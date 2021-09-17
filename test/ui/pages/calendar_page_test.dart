@@ -788,7 +788,7 @@ void main() {
         expect(theme.data.appBarTheme.backgroundColor, color);
       }
 
-      final noDayColor = AbiliaColors.black80,
+      const noDayColor = AbiliaColors.black80,
           mondayColor = AbiliaColors.green,
           tuesdayColor = AbiliaColors.blue,
           wednesdayColor = AbiliaColors.white,

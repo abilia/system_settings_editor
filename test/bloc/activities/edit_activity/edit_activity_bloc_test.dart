@@ -564,14 +564,13 @@ void main() {
       startTime: aDate,
       duration: 30.minutes(),
     );
-    final expectedDuration = Duration.zero;
     final expectedTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
       endTime: TimeOfDay.fromDateTime(activity.startTime.add(30.minutes())),
       startDate: aDate,
     );
 
-    final expectedNewActivity = activity.copyWith(duration: expectedDuration);
+    final expectedNewActivity = activity.copyWith(duration: Duration.zero);
     final expectedNewTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
       endTime: TimeOfDay.fromDateTime(activity.startTime),

@@ -3,21 +3,25 @@
 // instead, modify lib/i18n/translations.tsv and run
 // > flutter packages pub run build_runner build
 
+// ignore_for_file: overridden_fields
+
 import 'dart:ui';
 
 class Locales {
-  static final language = <Locale, Translated>{
-    Locale('en'): EN(),
-    Locale('sv'): SV(),
-    Locale('da'): DA(),
-    Locale('nl'): NL(),
-    Locale('fi'): FI(),
-    Locale('de'): DE(),
-    Locale('nb'): NB()
+  static final language = {
+    const Locale('en'): const EN(),
+    const Locale('sv'): const SV(),
+    const Locale('da'): const DA(),
+    const Locale('nl'): const NL(),
+    const Locale('fi'): const FI(),
+    const Locale('de'): const DE(),
+    const Locale('nb'): const NB()
   };
 }
 
 abstract class Translated {
+  const Translated();
+
   final String username = 'Username';
 
   final String password = 'Password';
@@ -32,7 +36,7 @@ abstract class Translated {
   final String logout = 'Log out';
 
   final String wrongCredentials =
-      "Username or password doesn\'t match.\nVerify your credentials and try again.";
+      "Username or password doesn't match.\nVerify your credentials and try again.";
 
   final String noConnection =
       'No contact with myAbilia. Check your Internet connection.';
@@ -42,7 +46,7 @@ abstract class Translated {
   final String enterPassword = 'Enter password';
 
   final String userTypeNotSupported =
-      "Users of type Support person and Admin can\'t log in to MEMOPlanner Go. Please use myAbilia";
+      "Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia";
 
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
@@ -669,9 +673,13 @@ abstract class Translated {
   final String quickSettingsMenu = 'Quick settings';
 }
 
-class EN extends Translated {}
+class EN extends Translated {
+  const EN();
+}
 
 class SV extends Translated {
+  const SV();
+
   @override
   final String username = 'Användarnamn';
 
@@ -1636,6 +1644,8 @@ class SV extends Translated {
 }
 
 class DA extends Translated {
+  const DA();
+
   @override
   final String username = 'Brugernavn';
 
@@ -2595,6 +2605,8 @@ class DA extends Translated {
 }
 
 class NL extends Translated {
+  const NL();
+
   @override
   final String username = 'Gebruikersnaam';
 
@@ -3023,7 +3035,7 @@ class NL extends Translated {
   final String uploadImage = 'Afbeelding uploaden';
 
   @override
-  final String myPhotos = "Mijn foto\'s";
+  final String myPhotos = "Mijn foto's";
 
   @override
   final String takeNewPhoto = 'Nieuwe foto nemen';
@@ -3554,6 +3566,8 @@ class NL extends Translated {
 }
 
 class FI extends Translated {
+  const FI();
+
   @override
   final String username = 'Käyttäjätunnus';
 
@@ -4511,6 +4525,8 @@ class FI extends Translated {
 }
 
 class DE extends Translated {
+  const DE();
+
   @override
   final String username = 'Benutzername';
 
@@ -5476,6 +5492,8 @@ class DE extends Translated {
 }
 
 class NB extends Translated {
+  const NB();
+
   @override
   final String username = 'Brukernavn';
 

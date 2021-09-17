@@ -20,6 +20,8 @@ import 'package:seagull/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
+// ignore_for_file: avoid_print
+
 enum LoggingType { File, Print, Analytic }
 
 class SeagullLogger {

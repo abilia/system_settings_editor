@@ -52,13 +52,6 @@ import 'package:seagull/storage/all.dart';
   // Dart/Flutter
   BaseClient,
   ScrollController,
-  // Bug in mockito
-  // https://github.com/dart-lang/mockito/issues/468
-  // have to change ScrollPosition.ensureVisible
-  // _i13.Curve? curve = _i13.Cubic.ease,
-  // to
-  //_i13.Curve? curve = _i13.Curves.ease,
-  // in the mock
   ScrollPosition,
 ])
 class Notification {
