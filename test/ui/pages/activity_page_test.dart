@@ -36,7 +36,7 @@ void main() {
   final agendaFinder = find.byType(Agenda);
 
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-  final finishActivityFinder = find.byKey(TestKey.finishEditActivityButton);
+  final finishActivityFinder = find.byType(SaveActivityButton);
 
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
   final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
@@ -148,7 +148,7 @@ void main() {
     testWidgets('Correct activity shows in edit activity',
         (WidgetTester tester) async {
       // Arrange
-      final title = 'an interesting title';
+      const title = 'an interesting title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
           <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
       await navigateToActivityPage(tester);
@@ -166,8 +166,8 @@ void main() {
     testWidgets('Changes in edit activity shows in activity page',
         (WidgetTester tester) async {
       // Arrange
-      final title = 'an interesting title';
-      final newTitle = 'an new super interesting title';
+      const title = 'an interesting title';
+      const newTitle = 'an new super interesting title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
           <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
       await navigateToActivityPage(tester);
@@ -198,7 +198,7 @@ void main() {
         'Change date in edit activity shows in activity page for non recurring activities',
         (WidgetTester tester) async {
       // Arrange
-      final day = 14;
+      const day = 14;
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
@@ -235,7 +235,7 @@ void main() {
         'Change date in edit activity does not show in activity page for recurring activities',
         (WidgetTester tester) async {
       // Arrange
-      final day = 14;
+      const day = 14;
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);
@@ -704,7 +704,7 @@ void main() {
           'When delete recurring and confirm Only this day, go to next day and previus day shows activity card',
           (WidgetTester tester) async {
         // Arrange
-        final title = 'Unique title to search for';
+        const title = 'Unique title to search for';
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
@@ -739,7 +739,7 @@ void main() {
           'When delete recurring a confirm all days, go to previus day and next day shows no activity card',
           (WidgetTester tester) async {
         // Arrange
-        final title = 'Unique title to search for';
+        const title = 'Unique title to search for';
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title)
@@ -776,7 +776,7 @@ void main() {
           'When delete recurring and confirming This day and forward, this day and next day does not shows activity card but previus day does',
           (WidgetTester tester) async {
         // Arrange
-        final title = 'Unique title to search for';
+        const title = 'Unique title to search for';
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
@@ -867,7 +867,7 @@ void main() {
         when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
-        final newTitle = 'newTitle';
+        const newTitle = 'newTitle';
 
         // Act
         await tester.tap(editActivityButtonFinder);
@@ -931,7 +931,7 @@ void main() {
       testWidgets('Edit an recurring This day and forward shows changes',
           (WidgetTester tester) async {
         // Arrange
-        final newTitle = 'new Title', oldTitle = 'old title';
+        const newTitle = 'new Title', oldTitle = 'old title';
         when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(
             <Activity>[
@@ -964,7 +964,7 @@ void main() {
 
   testWidgets('Checklist attachment can be signed off',
       (WidgetTester tester) async {
-    final tag = 'tag';
+    const tag = 'tag';
     final activity = Activity.createNew(
         title: 'title',
         startTime: startTime,
@@ -1105,7 +1105,7 @@ void main() {
     });
 
     testWidgets('title', (WidgetTester tester) async {
-      final title = 'generic title';
+      const title = 'generic title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
           <Activity>[Activity.createNew(title: title, startTime: startTime)]));
 
@@ -1114,7 +1114,7 @@ void main() {
     });
 
     testWidgets('start time', (WidgetTester tester) async {
-      final expectedTts = '11:11 AM';
+      const expectedTts = '11:11 AM';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             Activity.createNew(title: 'title', startTime: startTime)
@@ -1125,7 +1125,7 @@ void main() {
     });
 
     testWidgets('end time', (WidgetTester tester) async {
-      final expectedTts = '3:11 PM';
+      const expectedTts = '3:11 PM';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
@@ -1142,7 +1142,7 @@ void main() {
     });
 
     testWidgets('note', (WidgetTester tester) async {
-      final noteText =
+      const noteText =
           '''Ceasarsallad - Kyckling, bacon, sallad, gurka, tomat, rödlök, brödkrutonger, Grana Padano samt ceasardressing ((G), (L))
 Asien sweet and SourBowl – Sesam marinerad kycklingfile, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
 Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
@@ -1163,7 +1163,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     });
 
     testWidgets('checklist', (WidgetTester tester) async {
-      final item1 = 'first thing on the list';
+      const item1 = 'first thing on the list';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
@@ -1181,7 +1181,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     });
 
     testWidgets('timepillar left to start', (WidgetTester tester) async {
-      final expectedTts = '2 h\n2 min';
+      const expectedTts = '2 h\n2 min';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
@@ -1199,7 +1199,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     });
 
     testWidgets('check button', (WidgetTester tester) async {
-      final title = 'just some title';
+      const title = 'just some title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
@@ -1220,7 +1220,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     });
 
     testWidgets('delete activity', (WidgetTester tester) async {
-      final title = 'just some title';
+      const title = 'just some title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
@@ -1240,7 +1240,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
     });
 
     testWidgets('alarms', (WidgetTester tester) async {
-      final title = 'just some title';
+      const title = 'just some title';
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[

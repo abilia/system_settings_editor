@@ -6,7 +6,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   final String currentFolderId;
   final Sortable<T>? selected;
 
-  SortableArchiveState(
+  const SortableArchiveState(
     this.allByFolder,
     this.allById, {
     this.currentFolderId = '',

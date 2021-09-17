@@ -35,13 +35,9 @@ class OverlayLayoutBuilder extends RenderObjectWidget {
 class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
   _OvlerlayLayoutBuilderElement(OverlayLayoutBuilder widget) : super(widget);
 
-  @override
-  RenderObjectWidget get widget => super.widget;
   OverlayLayoutBuilder get overlayLayoutBuilder =>
       widget as OverlayLayoutBuilder;
 
-  @override
-  RenderObject get renderObject => super.renderObject;
   RenderOverlayLayoutBuilder get renderOverlayLayoutBuilder =>
       renderObject as RenderOverlayLayoutBuilder;
 

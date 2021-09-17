@@ -6,9 +6,7 @@ import 'package:seagull/ui/all.dart';
 class BasicActivityPickerPage extends StatelessWidget {
   const BasicActivityPickerPage({
     Key? key,
-    required this.day,
   }) : super(key: key);
-  final DateTime day;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +35,9 @@ class BasicActivityPickerPage extends StatelessWidget {
             backNavigationWidget: PreviousButton(
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
-                  : () =>
-                      BlocProvider.of<SortableArchiveBloc<BasicActivityData>>(
-                              context)
-                          .add(NavigateUp()),
+                  : () => context
+                      .read<SortableArchiveBloc<BasicActivityData>>()
+                      .add(NavigateUp()),
             ),
             forwardNavigationWidget: NextButton(
               onPressed: selected != null
@@ -58,7 +55,7 @@ class BasicActivityPickerPage extends StatelessWidget {
 class BasicActivityLibraryItem extends StatelessWidget {
   final Sortable<BasicActivityDataItem> sortable;
 
-  BasicActivityLibraryItem({
+  const BasicActivityLibraryItem({
     Key? key,
     required this.sortable,
   }) : super(key: key);

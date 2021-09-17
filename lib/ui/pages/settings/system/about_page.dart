@@ -85,7 +85,7 @@ class Version extends StatelessWidget {
       Tts(child: Text(_versionText(GetIt.I<PackageInfo>())));
 
   String _versionText(PackageInfo packageInfo) =>
-      '${packageInfo.version}' +
+      packageInfo.version +
       (VERSION_SUFFIX == 'release' || VERSION_SUFFIX.isEmpty
           ? ''
           : '-$VERSION_SUFFIX') +

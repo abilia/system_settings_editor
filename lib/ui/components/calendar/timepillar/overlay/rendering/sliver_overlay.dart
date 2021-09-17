@@ -250,7 +250,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
         }
       }
 
-      final crossAxisOffset = 0.0;
+      const crossAxisOffset = 0.0;
 
       switch (axisDirection) {
         case AxisDirection.up:

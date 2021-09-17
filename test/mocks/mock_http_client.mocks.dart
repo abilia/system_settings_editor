@@ -118,8 +118,6 @@ class MockMultipartRequest extends _i1.Mock implements _i7.MultipartRequest {
               returnValue:
                   Future<_i3.StreamedResponse>.value(_FakeStreamedResponse_2()))
           as _i6.Future<_i3.StreamedResponse>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [HttpClient].
@@ -284,8 +282,6 @@ class MockHttpClient extends _i1.Mock implements _i4.HttpClient {
   void close({bool? force = false}) =>
       super.noSuchMethod(Invocation.method(#close, [], {#force: force}),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [HttpClientRequest].
@@ -375,8 +371,6 @@ class MockHttpClientRequest extends _i1.Mock implements _i4.HttpClientRequest {
   void abort([Object? exception, StackTrace? stackTrace]) =>
       super.noSuchMethod(Invocation.method(#abort, [exception, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
   @override
   void add(List<int>? data) =>
       super.noSuchMethod(Invocation.method(#add, [data]),
@@ -493,8 +487,6 @@ class MockHttpClientResponse extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#detachSocket, []),
               returnValue: Future<_i4.Socket>.value(_FakeSocket_8()))
           as _i6.Future<_i4.Socket>);
-  @override
-  String toString() => super.toString();
   @override
   _i6.Stream<List<int>> asBroadcastStream(
           {void Function(_i6.StreamSubscription<List<int>>)? onListen,
@@ -744,6 +736,4 @@ class MockHttpHeaders extends _i1.Mock implements _i4.HttpHeaders {
   @override
   void clear() => super.noSuchMethod(Invocation.method(#clear, []),
       returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }

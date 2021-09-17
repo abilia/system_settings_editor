@@ -7,7 +7,7 @@ class License extends Equatable {
   final String product;
   final DateTime endTime;
 
-  License({
+  const License({
     required this.id,
     required this.product,
     required this.endTime,

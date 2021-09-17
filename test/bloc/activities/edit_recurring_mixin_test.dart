@@ -562,7 +562,7 @@ void main() {
           strayWithSameStartAndEndDay
         };
 
-        final newTitle = 'newTitle';
+        const newTitle = 'newTitle';
         final newTime = in5Days.add(2.hours());
         final newDuration = 30.minutes();
 
@@ -658,7 +658,7 @@ void main() {
           recurs: Recurs.not,
         );
 
-        final newTitle = 'updated';
+        const newTitle = 'updated';
         final newTime = DateTime(2020, 04, 08, 13, 00);
         final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
 

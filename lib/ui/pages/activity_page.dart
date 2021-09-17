@@ -10,7 +10,7 @@ class ActivityPage extends StatelessWidget {
   final ActivityOccasion occasion;
   final Widget? previewImage;
 
-  ActivityPage({
+  const ActivityPage({
     Key? key,
     required this.occasion,
     this.previewImage,
@@ -191,22 +191,28 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
-                              child: BlocProvider<EditActivityBloc>(
-                                create: (_) => EditActivityBloc(
-                                  activityOccasion,
-                                  activitiesBloc:
-                                      BlocProvider.of<ActivitiesBloc>(context),
-                                  clockBloc:
-                                      BlocProvider.of<ClockBloc>(context),
-                                  memoplannerSettingBloc:
-                                      BlocProvider.of<MemoplannerSettingBloc>(
-                                          context),
-                                ),
-                                child: EditActivityPage(
-                                  day: activityOccasion.day,
-                                  title: Translator.of(context)
-                                      .translate
-                                      .editActivity,
+                              child: MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (context) => ActivityWizardCubit(),
+                                  ),
+                                  BlocProvider<EditActivityBloc>(
+                                    create: (_) => EditActivityBloc(
+                                      activityOccasion,
+                                      activitiesBloc:
+                                          context.read<ActivitiesBloc>(),
+                                      clockBloc: context.read<ClockBloc>(),
+                                      memoplannerSettingBloc: context
+                                          .read<MemoplannerSettingBloc>(),
+                                    ),
+                                  ),
+                                ],
+                                child: ErrorPopupListener(
+                                  child: EditActivityPage(
+                                    title: Translator.of(context)
+                                        .translate
+                                        .editActivity,
+                                  ),
                                 ),
                               ),
                             ),

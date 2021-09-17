@@ -6,7 +6,7 @@ class Login extends Equatable {
   final String token;
   final int endDate;
   final String renewToken;
-  Login._({
+  const Login._({
     required this.token,
     required this.endDate,
     required this.renewToken,

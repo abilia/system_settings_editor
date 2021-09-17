@@ -60,7 +60,6 @@ void main() {
       final asJson = alarm.encode();
 
       final reminderAgain = NotificationAlarm.decode(asJson);
-      ;
       expect(reminderAgain, alarm);
     });
     test('ReminderUnchecked toPayload and back', () {

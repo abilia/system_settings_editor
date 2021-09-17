@@ -79,7 +79,7 @@ void main() {
           'Activity with endtime before start time does not shows ( bug SGC-148 )',
           () {
         // Arrange
-        final splitStartTime = 1585735200000, splitEndTime = 1585605599999;
+        const splitStartTime = 1585735200000, splitEndTime = 1585605599999;
 
         final day = DateTime(2020, 04, 01);
 

@@ -2,97 +2,44 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class EditActivityListeners extends StatelessWidget {
+class ErrorPopupListener extends StatelessWidget {
   final Widget child;
-  final int nrTabs;
-  final bool scroll;
 
-  const EditActivityListeners({
-    Key? key,
-    required this.child,
-    this.nrTabs = 0,
-    this.scroll = true,
-  }) : super(key: key);
+  const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<EditActivityBloc, EditActivityState>(
-          listenWhen: (_, current) => current.sucessfullSave == true,
-          listener: (context, state) => Navigator.of(context).pop(true),
-        ),
-        BlocListener<EditActivityBloc, EditActivityState>(
-          listenWhen: (_, current) => current.saveErrors.isNotEmpty,
-          listener: (context, state) async {
-            final errors = state.saveErrors;
-            if (errors.any(EditActivityBloc.NO_GO_ERRORS.contains)) {
-              return _noProceed(errors, context);
-            } else {
-              return _inputNeeded(errors, state, context);
-            }
-          },
-        ),
-      ],
+    return BlocListener<EditActivityBloc, EditActivityState>(
+      listenWhen: (_, current) => current.saveErrors.isNotEmpty,
+      listener: (context, state) async {
+        final errors = state.saveErrors;
+        if (errors.noGoErrors) {
+          return _noProceed(errors, context);
+        } else {
+          return _inputNeeded(errors, state, context);
+        }
+      },
       child: child,
     );
   }
 
   Future _noProceed(Set<SaveError> errors, BuildContext context) async {
-    if (errors.any(
-      {
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.NO_START_TIME,
-        SaveError.START_TIME_BEFORE_NOW,
-      }.contains,
-    )) {
-      return await _mainPageError(errors, context);
-    } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
-      if (scroll) await _scrollToTab(context, nrTabs - 2);
-      return await showViewDialog(
-        context: context,
-        builder: (context) => ErrorDialog(
-          text: Translator.of(context).translate.recurringDataEmptyErrorMessage,
-        ),
-      );
-    }
-  }
-
-  Future _mainPageError(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    if (scroll) await _scrollToTab(context, 0);
-    var text = '';
+    final showError = (String msg) => showViewDialog(
+          context: context,
+          builder: (context) => ErrorDialog(text: msg),
+        );
 
-    if (errors.containsAll(
-      {
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.NO_START_TIME,
-      },
-    )) {
-      text = translate.missingTitleOrImageAndStartTime;
+    if (errors
+        .containsAll({SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME})) {
+      return showError(translate.missingTitleOrImageAndStartTime);
     } else if (errors.contains(SaveError.NO_TITLE_OR_IMAGE)) {
-      text = translate.missingTitleOrImage;
+      return showError(translate.missingTitleOrImage);
     } else if (errors.contains(SaveError.NO_START_TIME)) {
-      text = translate.missingStartTime;
+      return showError(translate.missingStartTime);
     } else if (errors.contains(SaveError.START_TIME_BEFORE_NOW)) {
-      text = translate.startTimeBeforeNowError;
-    }
-    assert(text.isNotEmpty);
-    return showViewDialog(
-      context: context,
-      builder: (context) => ErrorDialog(text: text),
-    );
-  }
-
-  Future _scrollToTab(BuildContext context, int tabIndex) async {
-    final tabController = DefaultTabController.of(context);
-    if (tabController != null && tabController.index != tabIndex) {
-      tabController.animateTo(tabIndex);
-    } else {
-      final sc = PrimaryScrollController.of(context);
-      if (sc != null && sc.hasClients) {
-        await sc.animateTo(0.0,
-            duration: kTabScrollDuration, curve: Curves.ease);
-      }
+      return showError(translate.startTimeBeforeNowError);
+    } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
+      return showError(translate.recurringDataEmptyErrorMessage);
     }
   }
 
@@ -142,5 +89,45 @@ class EditActivityListeners extends StatelessWidget {
     BlocProvider.of<EditActivityBloc>(context).add(
       saveEvent ?? SaveActivity(warningConfirmed: true),
     );
+  }
+}
+
+class ScrollToErrorPageListener extends StatelessWidget {
+  final int nrTabs;
+  final Widget child;
+
+  const ScrollToErrorPageListener({
+    Key? key,
+    required this.nrTabs,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<EditActivityBloc, EditActivityState>(
+      listenWhen: (_, current) => current.saveErrors.isNotEmpty,
+      listener: (context, state) async {
+        final errors = state.saveErrors;
+        if (errors.mainPageErrors) {
+          await _scrollToTab(context, 0);
+        } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
+          await _scrollToTab(context, nrTabs - 2);
+        }
+      },
+      child: child,
+    );
+  }
+
+  Future _scrollToTab(BuildContext context, int tabIndex) async {
+    final tabController = DefaultTabController.of(context);
+    if (tabController != null && tabController.index != tabIndex) {
+      tabController.animateTo(tabIndex);
+    } else {
+      final sc = PrimaryScrollController.of(context);
+      if (sc != null && sc.hasClients) {
+        await sc.animateTo(0.0,
+            duration: kTabScrollDuration, curve: Curves.ease);
+      }
+    }
   }
 }

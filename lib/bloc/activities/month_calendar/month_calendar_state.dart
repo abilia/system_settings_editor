@@ -24,7 +24,7 @@ class MonthWeek extends Equatable {
   final int number;
   final List<MonthCalendarDay> days;
   bool get inMonth => days.any((d) => d is MonthDay);
-  MonthWeek(this.number, this.days);
+  const MonthWeek(this.number, this.days);
 
   @override
   List<Object> get props => [number, days];

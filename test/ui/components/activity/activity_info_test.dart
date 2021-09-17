@@ -213,7 +213,7 @@ void main() {
 
   testWidgets('full day', (WidgetTester tester) async {
     // Arrange
-    final title = 'thefirsttitls';
+    const title = 'thefirsttitls';
     final activity = Activity.createNew(
       title: title,
       startTime: startTime,
@@ -234,7 +234,7 @@ void main() {
 
   testWidgets('image and no attatchment', (WidgetTester tester) async {
     // Arrange
-    final title = 'thefirsttitls';
+    const title = 'thefirsttitls';
     final activity = Activity.createNew(
       title: title,
       startTime: startTime,

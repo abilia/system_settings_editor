@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/record_sound_widgets.dart';
 
 class AlarmAndReminderTab extends StatefulWidget {
-  AlarmAndReminderTab({
+  const AlarmAndReminderTab({
     Key? key,
     required this.activity,
   }) : super(key: key);

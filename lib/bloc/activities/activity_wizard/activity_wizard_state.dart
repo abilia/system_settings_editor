@@ -1,46 +1,38 @@
 part of 'activity_wizard_cubit.dart';
 
+enum WizardStep {
+  basic,
+  title,
+  image,
+  date,
+  type,
+  checkable,
+  available_for,
+  delete_after,
+  alarm,
+  time,
+  checklist,
+  note,
+  advance,
+}
+
 class ActivityWizardState {
   final int step;
-  final List<WizardPage> pages;
-  final Set<SaveError> currentErrors;
-  const ActivityWizardState(this.step, this.pages,
-      [this.currentErrors = const <SaveError>{}]);
+  final List<WizardStep> pages;
 
-  bool isFirstStep() {
-    return step == 0;
-  }
+  const ActivityWizardState(
+    this.step,
+    this.pages,
+  );
 
-  bool isLastStep() {
-    return step >= pages.length - 1;
-  }
+  bool get isFirstStep => step == 0;
+
+  bool get isLastStep => step >= pages.length - 1;
 
   ActivityWizardState copyWith({
     required int newStep,
-    Set<SaveError> errors = const <SaveError>{},
-  }) {
-    return ActivityWizardState(newStep, pages, errors);
-  }
+  }) =>
+      ActivityWizardState(newStep.clamp(0, pages.length - 1), pages);
 
-  WizardPage currentPage() {
-    return pages[step];
-  }
-}
-
-extension ErrorTranslation on Set<SaveError> {
-  String toMessage(Translated translate) {
-    if (contains(SaveError.NO_TITLE_OR_IMAGE)) {
-      return translate.missingTitleOrImage;
-    } else if (contains(SaveError.NO_START_TIME)) {
-      return translate.missingStartTime;
-    } else if (contains(SaveError.START_TIME_BEFORE_NOW)) {
-      return translate.startTimeBeforeNowError;
-    } else if (contains(SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW)) {
-      return translate.startTimeBeforeNowWarning;
-    } else if (contains(SaveError.UNCONFIRMED_ACTIVITY_CONFLICT)) {
-      return translate.conflictWarning;
-    } else {
-      throw Exception();
-    }
-  }
+  WizardStep get currentPage => pages[step];
 }

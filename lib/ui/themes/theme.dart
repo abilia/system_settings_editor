@@ -25,8 +25,12 @@ final ordinaryPadding = EdgeInsets.fromLTRB(
 final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
-  primaryColor: AbiliaColors.black,
-  accentColor: AbiliaColors.black,
+  colorScheme: ColorScheme.light(
+    primary: AbiliaColors.black,
+    onSurface: AbiliaColors.black,
+    background: AbiliaColors.white110,
+    error: AbiliaColors.red,
+  ),
   unselectedWidgetColor: AbiliaColors.white140,
   fontFamily: 'Roboto',
   inputDecorationTheme: inputDecorationTheme,
@@ -41,8 +45,7 @@ final abiliaTheme = ThemeData(
     selectionHandleColor: AbiliaColors.black,
     selectionColor: AbiliaColors.white120,
   ),
-  appBarTheme: const AppBarTheme(color: AbiliaColors.black80),
-  errorColor: AbiliaColors.red,
+  appBarTheme: const AppBarTheme(backgroundColor: AbiliaColors.black80),
   bottomAppBarTheme: const BottomAppBarTheme(color: AbiliaColors.black80),
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: AbiliaColors.black,
@@ -215,7 +218,7 @@ Border getCategoryBorder({
 BoxDecoration selectableBoxDecoration(bool selected) =>
     selected ? selectedBoxDecoration : whiteBoxDecoration;
 
-final rightCategoryActiveColor = AbiliaColors.green,
+const rightCategoryActiveColor = AbiliaColors.green,
     rightCategoryInactiveColor = AbiliaColors.green40,
     leftCategoryActiveColor = AbiliaColors.black60,
     noCategoryColor = AbiliaColors.white140;

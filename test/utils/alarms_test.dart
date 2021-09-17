@@ -362,8 +362,8 @@ void main() {
     });
 
     test('reaccurs weekly gives back all week in the given days', () {
-      final lenght = 100;
-      final maxDays = 400;
+      const lenght = 100;
+      const maxDays = 400;
       final activity = FakeActivity.reocurrsFridays(now)
           .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
       final got =
@@ -384,7 +384,7 @@ void main() {
     test(
         'reaccurs daily and one other activity gives back that other one aswell',
         () {
-      final lenght = 100;
+      const lenght = 100;
       final in50Days = now.copyWith(day: now.day + 50);
       final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
           .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);

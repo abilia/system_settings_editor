@@ -7,7 +7,7 @@ class User extends Equatable {
   final String username;
   final String language;
   final String image;
-  User({
+  const User({
     this.username = '',
     this.language = '',
     this.image = '',

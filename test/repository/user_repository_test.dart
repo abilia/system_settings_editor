@@ -10,7 +10,7 @@ import 'dart:async';
 import '../mocks/shared.mocks.dart';
 
 void main() {
-  final url = 'oneUrl';
+  const url = 'oneUrl';
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockTokenDb = MockTokenDb();
@@ -25,7 +25,7 @@ void main() {
   test('copyWith with new', () {
     // Arrange
     final newClient = Fakes.client();
-    final newUrl = 'newrl';
+    const newUrl = 'newrl';
     // Act
     final newUserRepo = userRepo.copyWith(baseUrl: newUrl, client: newClient);
     // Assert
@@ -111,7 +111,7 @@ void main() {
 
   test('logout deletes token', () async {
     // Arrange
-    final token = Fakes.token;
+    const token = Fakes.token;
     when(mockTokenDb.delete()).thenAnswer((_) async {});
     when(mockUserDb.deleteUser()).thenAnswer((_) async {});
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
@@ -130,7 +130,7 @@ void main() {
 
   test('exception when logging out', () async {
     // Arrange
-    final token = Fakes.token;
+    const token = Fakes.token;
     when(mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenThrow(Exception());

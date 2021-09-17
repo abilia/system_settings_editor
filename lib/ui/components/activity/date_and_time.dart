@@ -141,7 +141,7 @@ class DatePicker extends StatelessWidget {
           (time.isAtSameDay(date)
                   ? '(${Translator.of(context).translate.today}) '
                   : '') +
-              '${timeFormat.format(date)}',
+              timeFormat.format(date),
         ),
       ),
     );

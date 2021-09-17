@@ -242,8 +242,6 @@ class MockActivityRepository extends _i2.Mock
       (super.noSuchMethod(
           Invocation.method(#handleSuccessfullSync, [succeeded, dirtyData]),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [UserRepository].
@@ -342,8 +340,6 @@ class MockUserRepository extends _i2.Mock implements _i6.UserRepository {
           }),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [SortableRepository].
@@ -444,8 +440,6 @@ class MockSortableRepository extends _i2.Mock
       (super.noSuchMethod(
           Invocation.method(#handleSuccessfullSync, [succeeded, dirtyData]),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [UserFileRepository].
@@ -565,8 +559,6 @@ class MockUserFileRepository extends _i2.Mock
       (super.noSuchMethod(
           Invocation.method(#handleSuccessfullSync, [succeeded, dirtyData]),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [FileStorage].
@@ -617,8 +609,6 @@ class MockFileStorage extends _i2.Mock implements _i7.FileStorage {
   _i9.Future<_i8.File?> copyImageThumbForNotification(String? id) => (super
       .noSuchMethod(Invocation.method(#copyImageThumbForNotification, [id]),
           returnValue: Future<_i8.File?>.value()) as _i9.Future<_i8.File?>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [ActivitiesBloc].
@@ -739,8 +729,6 @@ class MockActivitiesBloc extends _i2.Mock implements _i10.ActivitiesBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
   @override
   _i11.ActivityMappingResult deleteThisDayAndForwardToState(
           {_i1.Activity? activity,
@@ -916,8 +904,6 @@ class MockActivitiesOccasionBloc extends _i2.Mock
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [SyncBloc].
@@ -1034,8 +1020,6 @@ class MockSyncBloc extends _i2.Mock implements _i10.SyncBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [PushBloc].
@@ -1132,8 +1116,6 @@ class MockPushBloc extends _i2.Mock implements _i10.PushBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [GenericBloc].
@@ -1249,8 +1231,6 @@ class MockGenericBloc extends _i2.Mock implements _i10.GenericBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [SortableBloc].
@@ -1374,8 +1354,6 @@ class MockSortableBloc extends _i2.Mock implements _i10.SortableBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [MemoplannerSettingBloc].
@@ -1482,8 +1460,6 @@ class MockMemoplannerSettingBloc extends _i2.Mock
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [TimepillarBloc].
@@ -1586,8 +1562,6 @@ class MockTimepillarBloc extends _i2.Mock implements _i10.TimepillarBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [UserFileBloc].
@@ -1721,8 +1695,6 @@ class MockUserFileBloc extends _i2.Mock implements _i10.UserFileBloc {
   void onError(Object? error, StackTrace? stackTrace) =>
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [Database].
@@ -1770,8 +1742,6 @@ class MockDatabase extends _i2.Mock implements _i3.Database {
       (super.noSuchMethod(
           Invocation.method(#devInvokeSqlMethod, [method, sql, arguments]),
           returnValue: Future<T>.value(null)) as _i9.Future<T>);
-  @override
-  String toString() => super.toString();
   @override
   _i9.Future<void> execute(String? sql, [List<Object?>? arguments]) =>
       (super.noSuchMethod(Invocation.method(#execute, [sql, arguments]),
@@ -1916,8 +1886,6 @@ class MockSettingsDb extends _i2.Mock implements _i3.SettingsDb {
   _i9.Future<dynamic> setLeftCategoryExpanded(bool? expanded) => (super
       .noSuchMethod(Invocation.method(#setLeftCategoryExpanded, [expanded]),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [ActivityDb].
@@ -1997,8 +1965,6 @@ class MockActivityDb extends _i2.Mock implements _i3.ActivityDb {
   _i9.Future<bool> insertAndAddDirty(Iterable<_i1.Activity>? data) =>
       (super.noSuchMethod(Invocation.method(#insertAndAddDirty, [data]),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [SortableDb].
@@ -2086,8 +2052,6 @@ class MockSortableDb extends _i2.Mock implements _i3.SortableDb {
           Iterable<_i1.Sortable<_i1.SortableData>>? data) =>
       (super.noSuchMethod(Invocation.method(#insertAndAddDirty, [data]),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [UserFileDb].
@@ -2198,8 +2162,6 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
   _i9.Future<bool> insertAndAddDirty(Iterable<_i1.UserFile>? data) =>
       (super.noSuchMethod(Invocation.method(#insertAndAddDirty, [data]),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [GenericDb].
@@ -2293,8 +2255,6 @@ class MockGenericDb extends _i2.Mock implements _i3.GenericDb {
           Iterable<_i1.Generic<_i1.GenericData>>? data) =>
       (super.noSuchMethod(Invocation.method(#insertAndAddDirty, [data]),
           returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [UserDb].
@@ -2317,8 +2277,6 @@ class MockUserDb extends _i2.Mock implements _i3.UserDb {
   _i9.Future<dynamic> deleteUser() =>
       (super.noSuchMethod(Invocation.method(#deleteUser, []),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [TokenDb].
@@ -2341,8 +2299,6 @@ class MockTokenDb extends _i2.Mock implements _i3.TokenDb {
   _i9.Future<dynamic> delete() =>
       (super.noSuchMethod(Invocation.method(#delete, []),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [LicenseDb].
@@ -2369,8 +2325,6 @@ class MockLicenseDb extends _i2.Mock implements _i3.LicenseDb {
   _i9.Future<dynamic> delete() =>
       (super.noSuchMethod(Invocation.method(#delete, []),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [FirebasePushService].
@@ -2386,8 +2340,6 @@ class MockFirebasePushService extends _i2.Mock
   _i9.Future<String?> initPushToken() =>
       (super.noSuchMethod(Invocation.method(#initPushToken, []),
           returnValue: Future<String?>.value()) as _i9.Future<String?>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [MultipartRequestBuilder].
@@ -2406,8 +2358,6 @@ class MockMultipartRequestBuilder extends _i2.Mock
           Invocation.method(#generateFileMultipartRequest, [],
               {#uri: uri, #bytes: bytes, #authToken: authToken, #sha1: sha1}),
           returnValue: _FakeMultipartRequest_37()) as _i5.MultipartRequest);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [Notification].
@@ -2422,8 +2372,6 @@ class MockNotification extends _i2.Mock implements _i17.Notification {
   _i9.Future<dynamic> mockCancelAll() =>
       (super.noSuchMethod(Invocation.method(#mockCancelAll, []),
           returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [FlutterLocalNotificationsPlugin].
@@ -2577,8 +2525,6 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
               returnValue: Future<List<_i18.PendingNotificationRequest>>.value(
                   <_i18.PendingNotificationRequest>[]))
           as _i9.Future<List<_i18.PendingNotificationRequest>>);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [BaseClient].
@@ -2658,8 +2604,6 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
   @override
   void close() => super.noSuchMethod(Invocation.method(#close, []),
       returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
 }
 
 /// A class which mocks [ScrollController].
@@ -2728,8 +2672,6 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
           Invocation.method(
               #createScrollPosition, [physics, context, oldPosition]),
           returnValue: _FakeScrollPosition_40()) as _i13.ScrollPosition);
-  @override
-  String toString() => super.toString();
   @override
   void debugFillDescription(List<String>? description) => super.noSuchMethod(
       Invocation.method(#debugFillDescription, [description]),
@@ -3004,8 +2946,6 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   void debugFillDescription(List<String>? description) => super.noSuchMethod(
       Invocation.method(#debugFillDescription, [description]),
       returnValueForMissingStub: null);
-  @override
-  String toString() => super.toString();
   @override
   void addListener(_i20.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),

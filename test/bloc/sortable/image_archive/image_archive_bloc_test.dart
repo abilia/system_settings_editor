@@ -20,7 +20,7 @@ void main() {
   });
 
   test('FolderChanged will set the folder in the state', () async {
-    final folderId = '123';
+    const folderId = '123';
     imageArchiveBloc.add(FolderChanged(folderId));
     await expectLater(
       imageArchiveBloc.stream,

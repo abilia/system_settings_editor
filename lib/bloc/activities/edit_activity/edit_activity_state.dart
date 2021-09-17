@@ -10,6 +10,21 @@ enum SaveError {
   STORED_RECURRING,
 }
 
+extension SaveErrors on Set<SaveError> {
+  bool get mainPageErrors => any({
+        SaveError.NO_TITLE_OR_IMAGE,
+        SaveError.NO_START_TIME,
+        SaveError.START_TIME_BEFORE_NOW,
+      }.contains);
+
+  bool get noGoErrors => any({
+        SaveError.NO_START_TIME,
+        SaveError.NO_TITLE_OR_IMAGE,
+        SaveError.START_TIME_BEFORE_NOW,
+        SaveError.NO_RECURRING_DAYS,
+      }.contains);
+}
+
 abstract class EditActivityState extends Equatable with Silent {
   const EditActivityState(
     this.activity,

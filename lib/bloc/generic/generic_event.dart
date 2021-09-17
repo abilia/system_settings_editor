@@ -14,7 +14,7 @@ class LoadGenerics extends GenericEvent {
 class GenericUpdated extends GenericEvent {
   final Iterable<GenericData> genericData;
 
-  GenericUpdated(this.genericData);
+  const GenericUpdated(this.genericData);
   @override
   List<Object> get props => [genericData];
   @override

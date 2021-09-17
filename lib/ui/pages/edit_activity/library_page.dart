@@ -146,7 +146,7 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T>? libraryFolderGenerator;
   final String emptyLibraryMessage;
 
-  SortableLibrary(
+  const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.libraryFolderGenerator,

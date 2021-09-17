@@ -11,9 +11,9 @@ import 'package:seagull/utils/all.dart';
 import '../../mocks/shared.mocks.dart';
 
 void main() {
-  final baseUrl = 'url';
+  const baseUrl = 'url';
   final mockClient = MockBaseClient();
-  final userId = 1;
+  const userId = 1;
   late SortableRepository sortableRepository;
   setUp(() async {
     final db = await DatabaseRepository.createInMemoryFfiDb();
@@ -28,8 +28,8 @@ void main() {
 
   test('Corrupt data is ignored (Bug SGC-381)', () async {
     // Arrange
-    final revision = 0;
-    final validSortable = '''{
+    const revision = 0;
+    const validSortable = '''{
         "id": "f2916cc4-7ec8-4332-a186-dee81963a73f",
         "owner": 284,
         "revision": 1,
@@ -43,7 +43,7 @@ void main() {
         "visible": true
     }''';
 
-    final corruptSortable = '''{
+    const corruptSortable = '''{
         "id": "f2916cc4-7ec8-4332-a186-dee81963a73f",
         "owner": 284,
         "revision": 1,
@@ -57,7 +57,7 @@ void main() {
         "visible": true
     }'''; // groupId is 1 and not null or string
 
-    final corruptSortableData = '''{
+    const corruptSortableData = '''{
         "id": "2ad47a70-e4c0-4af2-ac18-8a7c109921f3",
         "owner": 284,
         "revision": 2,
@@ -71,9 +71,9 @@ void main() {
         "visible": true
     }'''; // category is empty string "" and not null or empty or int (as in bug)
 
-    final sortableJson =
+    const sortableJson =
         '[$validSortable, $corruptSortable, $corruptSortableData]';
-    final sortableValidJson = '[$validSortable]';
+    const sortableValidJson = '[$validSortable]';
 
     when(
       mockClient.get(

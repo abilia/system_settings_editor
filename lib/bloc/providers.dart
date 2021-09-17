@@ -252,6 +252,9 @@ class CopiedAuthProviders extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // DON'T change  to
+    // BlocProvider<Bloc>( create: ...
+    // since create closes the blocs when widget is destroyed
     return MultiBlocProvider(
       providers: [
         BlocProvider<SyncBloc>.value(

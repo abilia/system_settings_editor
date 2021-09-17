@@ -954,7 +954,7 @@ void main() {
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value(currentActivities));
 
-        final newTitle = 'newTitle';
+        const newTitle = 'newTitle';
         final newTime = inFiveDays.add(2.hours());
         final newDuration = 30.minutes();
 
@@ -1060,7 +1060,7 @@ void main() {
         when(mockActivityRepository.load())
             .thenAnswer((_) => Future.value([a1, a2, a3]));
 
-        final newTitle = 'updated';
+        const newTitle = 'updated';
         final newTime = DateTime(2020, 04, 08, 13, 00);
         final updatedA2 = a2.copyWith(title: 'updated', startTime: newTime);
 

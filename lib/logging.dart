@@ -84,7 +84,6 @@ class SeagullLogger {
           (loggingSubscription) => loggingSubscription.cancel(),
         ),
       );
-      ;
     }
   }
 
@@ -232,7 +231,7 @@ class SeagullLogger {
 
   Future _writeToLogFile(String log) async {
     return await _logFileLock.synchronized(() async {
-      return _logFile?.writeAsString('$log', mode: FileMode.append);
+      return _logFile?.writeAsString(log, mode: FileMode.append);
     });
   }
 

@@ -49,7 +49,7 @@ void main() {
         ], child: widget),
       );
 
-  final title0 = 'allDay0',
+  const title0 = 'allDay0',
       title1 = 'allDay1',
       title2 = 'allDay2',
       title3 = 'allDay3';

@@ -256,7 +256,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   final vibrate = notificationAlarm.vibrate(settings);
 
   final notificationChannel = _notificationChannel(hasSound, vibrate, sound);
-  final insistentFlag = 4;
+  const insistentFlag = 4;
 
   return AndroidNotificationDetails(
     notificationChannel.id,

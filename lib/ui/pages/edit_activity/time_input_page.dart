@@ -333,7 +333,7 @@ class _TimeInputStack extends StatefulWidget {
   final bool twelveHourClock;
   final Key? inputKey;
 
-  _TimeInputStack({
+  const _TimeInputStack({
     this.inputKey,
     required this.editingController,
     required this.editFocus,
@@ -417,7 +417,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
   }
 }
 
-final emptyPattern = '--:--';
+const emptyPattern = '--:--';
 
 String formatTimeToDisplay(String input) {
   if (input.isEmpty) {

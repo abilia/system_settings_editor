@@ -12,7 +12,7 @@ class SlideShowState extends Equatable {
       ? slideShowFolderContent[currentIndex].data.file
       : null;
 
-  SlideShowState({
+  const SlideShowState({
     required this.slideShowFolderContent,
     required this.currentIndex,
   });

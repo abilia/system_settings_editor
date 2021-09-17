@@ -40,7 +40,9 @@ void main() async {
 
 Future<String> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Config.isMP) await SystemChrome.setEnabledSystemUIOverlays([]);
+  if (Config.isMP) {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  }
   await Firebase.initializeApp();
   FirebaseMessaging.instance
       .isAutoInitEnabled; // Dummy call to make the FirebaseMessaging instance connection initiated. No push will arrive otherwise. Will try to find another way.

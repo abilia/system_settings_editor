@@ -48,12 +48,12 @@ abstract class RecurringActivityEvent extends ManipulateActivitiesEvent {
 }
 
 class UpdateRecurringActivity extends RecurringActivityEvent {
-  UpdateRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
+  const UpdateRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
       : assert(applyTo != ApplyTo.allDays),
         super(activityDay, applyTo);
 }
 
 class DeleteRecurringActivity extends RecurringActivityEvent {
-  DeleteRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
+  const DeleteRecurringActivity(ActivityDay activityDay, ApplyTo applyTo)
       : super(activityDay, applyTo);
 }

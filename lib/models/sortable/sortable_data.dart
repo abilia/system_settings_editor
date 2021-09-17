@@ -11,7 +11,7 @@ abstract class SortableData extends Equatable {
 class RawSortableData extends SortableData {
   final String data;
 
-  RawSortableData(this.data);
+  const RawSortableData(this.data);
 
   @override
   String toRaw() => data;
@@ -82,7 +82,7 @@ class ImageArchiveData extends SortableData {
 class NoteData extends SortableData {
   final String name, text, icon, fileId;
 
-  NoteData({
+  const NoteData({
     this.name = '',
     this.text = '',
     this.icon = '',
@@ -123,7 +123,7 @@ class NoteData extends SortableData {
 class ChecklistData extends SortableData {
   final Checklist checklist;
 
-  ChecklistData(this.checklist);
+  const ChecklistData(this.checklist);
 
   @override
   List<Object> get props => [checklist];

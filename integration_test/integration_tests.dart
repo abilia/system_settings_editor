@@ -43,7 +43,7 @@ void main() {
       await tester.pressCancelButton();
     }
 
-    final note =
+    const note =
         'Lorem Ipsum är en utfyllnadstext från tryck- och förlagsindustrin. Lorem ipsum har varit standard ända sedan 1500-talet, när en okänd boksättare tog att antal bokstäver och blandade dem för att göra ett provexemplar av en bok. Lorem ipsum har inte bara överlevt fem århundraden, utan även övergången till elektronisk typografi utan större förändringar. Det blev allmänt känt på 1960-talet i samband med lanseringen av Letraset-ark med avsnitt av Lorem Ipsum, och senare med mjukvaror som Aldus PageMaker.';
     await tester.createActivityWithNote(note);
 
@@ -56,7 +56,7 @@ void main() {
     await tester.tap(find.byKey(TestKey.activityBackButton));
     await tester.pumpAndSettle();
 
-    final newNote = 'Ny information';
+    const newNote = 'Ny information';
     await tester.editNote(newNote);
 
     await tester.tap(find.byType(ActivityCard));
@@ -91,7 +91,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await tap(find.byType(SaveActivityButton));
     await pumpAndSettle();
     await tap(find.byKey(TestKey.activityBackButton));
     await pumpAndSettle();
@@ -141,7 +141,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(OkButton));
     await pumpAndSettle();
-    await tap(find.byKey(TestKey.finishEditActivityButton));
+    await tap(find.byType(SaveActivityButton));
     await pumpAndSettle();
   }
 

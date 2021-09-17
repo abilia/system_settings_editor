@@ -9,7 +9,7 @@ abstract class SortableEvent extends Equatable {
 class LoadSortables extends SortableEvent {
   final bool initDefaults;
 
-  LoadSortables({this.initDefaults = false});
+  const LoadSortables({this.initDefaults = false});
   @override
   String toString() => 'LoadSortables';
 }
@@ -18,7 +18,7 @@ class ImageArchiveImageAdded extends SortableEvent {
   final String imageId;
   final String imagePath;
 
-  ImageArchiveImageAdded(this.imageId, this.imagePath);
+  const ImageArchiveImageAdded(this.imageId, this.imagePath);
 
   @override
   bool get stringify => true;
@@ -30,7 +30,7 @@ class ImageArchiveImageAdded extends SortableEvent {
 class SortableUpdated extends SortableEvent {
   final Sortable sortable;
 
-  SortableUpdated(this.sortable);
+  const SortableUpdated(this.sortable);
 
   @override
   bool get stringify => true;

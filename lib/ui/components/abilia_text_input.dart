@@ -93,7 +93,7 @@ class AbiliaTextInput extends StatelessWidget {
 }
 
 class DefaultTextInputPage extends StatefulWidget {
-  DefaultTextInputPage({
+  const DefaultTextInputPage({
     Key? key,
     required this.inputHeading,
     required this.icon,

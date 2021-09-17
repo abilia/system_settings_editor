@@ -2,7 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class SliverTimePillar extends SingleChildRenderObjectWidget {
-  SliverTimePillar({
+  const SliverTimePillar({
     Key? key,
     Widget? child,
   }) : super(key: key, child: child);

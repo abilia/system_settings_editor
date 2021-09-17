@@ -94,7 +94,7 @@ class PasswordInput extends StatelessWidget {
 }
 
 class PasswordInputPage extends StatefulWidget {
-  PasswordInputPage({
+  const PasswordInputPage({
     Key? key,
     required this.password,
     this.inputHeading,

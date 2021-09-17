@@ -16,7 +16,7 @@ abstract class GenericData extends Equatable {
 class RawGenericData extends GenericData {
   final String data;
 
-  RawGenericData(this.data, String identifier) : super(identifier);
+  const RawGenericData(this.data, String identifier) : super(identifier);
 
   @override
   String toRaw() => data;

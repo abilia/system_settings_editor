@@ -19,7 +19,7 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
-  final secretPassword = 'pwfafawfa';
+  const secretPassword = 'pwfafawfa';
   final translate = Locales.language.values.first;
 
   final time = DateTime(2020, 11, 11, 11, 11);
@@ -392,7 +392,7 @@ void main() {
 
   testWidgets('username not changed when cancle cancelling username',
       (WidgetTester tester) async {
-    final testUsername = 'testUsername';
+    const testUsername = 'testUsername';
     await tester.pumpApp();
     await tester.pumpAndSettle();
     await tester.enterText_(find.byType(UsernameInput), testUsername);

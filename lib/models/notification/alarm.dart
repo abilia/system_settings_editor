@@ -11,7 +11,7 @@ abstract class NotificationAlarm extends Equatable {
   bool hasSound(MemoplannerSettings settings);
   bool vibrate(MemoplannerSettings settings);
   Sound sound(MemoplannerSettings settings);
-  NotificationAlarm(this.activityDay);
+  const NotificationAlarm(this.activityDay);
   DateTime get notificationTime;
   String get type;
 
