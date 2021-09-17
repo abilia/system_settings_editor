@@ -26,7 +26,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
 
   Future<void> startRecording() async {
     var tempDir = await getApplicationDocumentsDirectory();
-    var tempPath = '${tempDir.path}';
+    var tempPath = tempDir.path;
     await _recorder.start(path: '$tempPath/' + Uuid().v4() + '.mp3');
     emit(RecordingSoundState(AbiliaFile.empty));
   }

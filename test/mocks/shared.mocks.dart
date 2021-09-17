@@ -116,38 +116,36 @@ class _FakeTimepillarState_31 extends _i2.Fake implements _i10.TimepillarState {
 
 class _FakeUserFileState_32 extends _i2.Fake implements _i10.UserFileState {}
 
-class _FakeUserFile_33 extends _i2.Fake implements _i1.UserFile {}
+class _FakeBatch_33 extends _i2.Fake implements _i3.Batch {}
 
-class _FakeBatch_34 extends _i2.Fake implements _i3.Batch {}
-
-class _FakeSharedPreferences_35 extends _i2.Fake
+class _FakeSharedPreferences_34 extends _i2.Fake
     implements _i12.SharedPreferences {}
 
-class _FakeDatabase_36 extends _i2.Fake implements _i3.Database {}
+class _FakeDatabase_35 extends _i2.Fake implements _i3.Database {}
 
-class _FakeMultipartRequest_37 extends _i2.Fake
+class _FakeMultipartRequest_36 extends _i2.Fake
     implements _i5.MultipartRequest {}
 
-class _FakeResponse_38 extends _i2.Fake implements _i5.Response {}
+class _FakeResponse_37 extends _i2.Fake implements _i5.Response {}
 
-class _FakeStreamedResponse_39 extends _i2.Fake
+class _FakeStreamedResponse_38 extends _i2.Fake
     implements _i5.StreamedResponse {}
 
-class _FakeScrollPosition_40 extends _i2.Fake implements _i13.ScrollPosition {}
+class _FakeScrollPosition_39 extends _i2.Fake implements _i13.ScrollPosition {}
 
-class _FakeScrollPhysics_41 extends _i2.Fake implements _i13.ScrollPhysics {}
+class _FakeScrollPhysics_40 extends _i2.Fake implements _i13.ScrollPhysics {}
 
-class _FakeScrollContext_42 extends _i2.Fake implements _i13.ScrollContext {}
+class _FakeScrollContext_41 extends _i2.Fake implements _i13.ScrollContext {}
 
-class _FakeValueNotifier_43<T> extends _i2.Fake
+class _FakeValueNotifier_42<T> extends _i2.Fake
     implements _i13.ValueNotifier<T> {}
 
-class _FakeScrollHoldController_44 extends _i2.Fake
+class _FakeScrollHoldController_43 extends _i2.Fake
     implements _i13.ScrollHoldController {}
 
-class _FakeDrag_45 extends _i2.Fake implements _i14.Drag {}
+class _FakeDrag_44 extends _i2.Fake implements _i14.Drag {}
 
-class _FakeScrollMetrics_46 extends _i2.Fake implements _i13.ScrollMetrics {}
+class _FakeScrollMetrics_45 extends _i2.Fake implements _i13.ScrollMetrics {}
 
 /// A class which mocks [ActivityRepository].
 ///
@@ -1612,19 +1610,6 @@ class MockUserFileBloc extends _i2.Mock implements _i10.UserFileBloc {
               returnValue: Stream<_i10.UserFileState>.empty())
           as _i9.Stream<_i10.UserFileState>);
   @override
-  _i1.UserFile generateUserFile(
-          String? id, String? path, List<int>? fileBytes) =>
-      (super.noSuchMethod(
-          Invocation.method(#generateUserFile, [id, path, fileBytes]),
-          returnValue: _FakeUserFile_33()) as _i1.UserFile);
-  @override
-  _i9.Future<_i1.UserFile> handleImage(
-          List<int>? originalBytes, String? id, String? path) =>
-      (super.noSuchMethod(
-              Invocation.method(#handleImage, [originalBytes, id, path]),
-              returnValue: Future<_i1.UserFile>.value(_FakeUserFile_33()))
-          as _i9.Future<_i1.UserFile>);
-  @override
   void add(_i10.UserFileEvent? event) =>
       super.noSuchMethod(Invocation.method(#add, [event]),
           returnValueForMissingStub: null);
@@ -1830,7 +1815,7 @@ class MockDatabase extends _i2.Mock implements _i3.Database {
           returnValue: Future<int>.value(0)) as _i9.Future<int>);
   @override
   _i3.Batch batch() => (super.noSuchMethod(Invocation.method(#batch, []),
-      returnValue: _FakeBatch_34()) as _i3.Batch);
+      returnValue: _FakeBatch_33()) as _i3.Batch);
 }
 
 /// A class which mocks [SettingsDb].
@@ -1844,7 +1829,7 @@ class MockSettingsDb extends _i2.Mock implements _i3.SettingsDb {
   @override
   _i12.SharedPreferences get preferences =>
       (super.noSuchMethod(Invocation.getter(#preferences),
-          returnValue: _FakeSharedPreferences_35()) as _i12.SharedPreferences);
+          returnValue: _FakeSharedPreferences_34()) as _i12.SharedPreferences);
   @override
   String get language =>
       (super.noSuchMethod(Invocation.getter(#language), returnValue: '')
@@ -1911,7 +1896,7 @@ class MockActivityDb extends _i2.Mock implements _i3.ActivityDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_36()) as _i3.Database);
+      returnValue: _FakeDatabase_35()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -1991,7 +1976,7 @@ class MockSortableDb extends _i2.Mock implements _i3.SortableDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_36()) as _i3.Database);
+      returnValue: _FakeDatabase_35()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -2089,7 +2074,7 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_36()) as _i3.Database);
+      returnValue: _FakeDatabase_35()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -2188,7 +2173,7 @@ class MockGenericDb extends _i2.Mock implements _i3.GenericDb {
           as _i4.Logger);
   @override
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
-      returnValue: _FakeDatabase_36()) as _i3.Database);
+      returnValue: _FakeDatabase_35()) as _i3.Database);
   @override
   String get GET_ALL_DIRTY =>
       (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
@@ -2268,7 +2253,7 @@ class MockUserDb extends _i2.Mock implements _i3.UserDb {
   @override
   _i12.SharedPreferences get prefs =>
       (super.noSuchMethod(Invocation.getter(#prefs),
-          returnValue: _FakeSharedPreferences_35()) as _i12.SharedPreferences);
+          returnValue: _FakeSharedPreferences_34()) as _i12.SharedPreferences);
   @override
   _i9.Future<dynamic> insertUser(_i1.User? user) =>
       (super.noSuchMethod(Invocation.method(#insertUser, [user]),
@@ -2290,7 +2275,7 @@ class MockTokenDb extends _i2.Mock implements _i3.TokenDb {
   @override
   _i12.SharedPreferences get prefs =>
       (super.noSuchMethod(Invocation.getter(#prefs),
-          returnValue: _FakeSharedPreferences_35()) as _i12.SharedPreferences);
+          returnValue: _FakeSharedPreferences_34()) as _i12.SharedPreferences);
   @override
   _i9.Future<dynamic> persistToken(String? token) =>
       (super.noSuchMethod(Invocation.method(#persistToken, [token]),
@@ -2312,7 +2297,7 @@ class MockLicenseDb extends _i2.Mock implements _i3.LicenseDb {
   @override
   _i12.SharedPreferences get prefs =>
       (super.noSuchMethod(Invocation.getter(#prefs),
-          returnValue: _FakeSharedPreferences_35()) as _i12.SharedPreferences);
+          returnValue: _FakeSharedPreferences_34()) as _i12.SharedPreferences);
   @override
   _i9.Future<dynamic> persistLicenses(List<_i1.License>? licenses) =>
       (super.noSuchMethod(Invocation.method(#persistLicenses, [licenses]),
@@ -2357,7 +2342,7 @@ class MockMultipartRequestBuilder extends _i2.Mock
       (super.noSuchMethod(
           Invocation.method(#generateFileMultipartRequest, [],
               {#uri: uri, #bytes: bytes, #authToken: authToken, #sha1: sha1}),
-          returnValue: _FakeMultipartRequest_37()) as _i5.MultipartRequest);
+          returnValue: _FakeMultipartRequest_36()) as _i5.MultipartRequest);
 }
 
 /// A class which mocks [Notification].
@@ -2538,12 +2523,12 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
   @override
   _i9.Future<_i5.Response> head(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> get(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> post(Uri? url,
@@ -2553,7 +2538,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
       (super.noSuchMethod(
               Invocation.method(#post, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> put(Uri? url,
@@ -2563,7 +2548,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
       (super.noSuchMethod(
               Invocation.method(#put, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> patch(Uri? url,
@@ -2573,7 +2558,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
       (super.noSuchMethod(
               Invocation.method(#patch, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> delete(Uri? url,
@@ -2583,7 +2568,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
       (super.noSuchMethod(
               Invocation.method(#delete, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
@@ -2600,7 +2585,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
   _i9.Future<_i5.StreamedResponse> send(_i5.BaseRequest? request) =>
       (super.noSuchMethod(Invocation.method(#send, [request]),
           returnValue: Future<_i5.StreamedResponse>.value(
-              _FakeStreamedResponse_39())) as _i9.Future<_i5.StreamedResponse>);
+              _FakeStreamedResponse_38())) as _i9.Future<_i5.StreamedResponse>);
   @override
   void close() => super.noSuchMethod(Invocation.method(#close, []),
       returnValueForMissingStub: null);
@@ -2633,7 +2618,7 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
   @override
   _i13.ScrollPosition get position =>
       (super.noSuchMethod(Invocation.getter(#position),
-          returnValue: _FakeScrollPosition_40()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
   @override
   double get offset =>
       (super.noSuchMethod(Invocation.getter(#offset), returnValue: 0.0)
@@ -2671,7 +2656,7 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       (super.noSuchMethod(
           Invocation.method(
               #createScrollPosition, [physics, context, oldPosition]),
-          returnValue: _FakeScrollPosition_40()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
   @override
   void debugFillDescription(List<String>? description) => super.noSuchMethod(
       Invocation.method(#debugFillDescription, [description]),
@@ -2701,11 +2686,11 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   _i13.ScrollPhysics get physics =>
       (super.noSuchMethod(Invocation.getter(#physics),
-          returnValue: _FakeScrollPhysics_41()) as _i13.ScrollPhysics);
+          returnValue: _FakeScrollPhysics_40()) as _i13.ScrollPhysics);
   @override
   _i13.ScrollContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
-          returnValue: _FakeScrollContext_42()) as _i13.ScrollContext);
+          returnValue: _FakeScrollContext_41()) as _i13.ScrollContext);
   @override
   bool get keepScrollOffset =>
       (super.noSuchMethod(Invocation.getter(#keepScrollOffset),
@@ -2713,7 +2698,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   _i13.ValueNotifier<bool> get isScrollingNotifier => (super.noSuchMethod(
       Invocation.getter(#isScrollingNotifier),
-      returnValue: _FakeValueNotifier_43<bool>()) as _i13.ValueNotifier<bool>);
+      returnValue: _FakeValueNotifier_42<bool>()) as _i13.ValueNotifier<bool>);
   @override
   double get minScrollExtent =>
       (super.noSuchMethod(Invocation.getter(#minScrollExtent), returnValue: 0.0)
@@ -2899,14 +2884,14 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   _i13.ScrollHoldController hold(_i20.VoidCallback? holdCancelCallback) =>
       (super.noSuchMethod(Invocation.method(#hold, [holdCancelCallback]),
-              returnValue: _FakeScrollHoldController_44())
+              returnValue: _FakeScrollHoldController_43())
           as _i13.ScrollHoldController);
   @override
   _i14.Drag drag(_i13.DragStartDetails? details,
           _i20.VoidCallback? dragCancelCallback) =>
       (super.noSuchMethod(
           Invocation.method(#drag, [details, dragCancelCallback]),
-          returnValue: _FakeDrag_45()) as _i14.Drag);
+          returnValue: _FakeDrag_44()) as _i14.Drag);
   @override
   void beginActivity(_i13.ScrollActivity? newActivity) =>
       super.noSuchMethod(Invocation.method(#beginActivity, [newActivity]),
@@ -2969,5 +2954,5 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
             #viewportDimension: viewportDimension,
             #axisDirection: axisDirection
           }),
-          returnValue: _FakeScrollMetrics_46()) as _i13.ScrollMetrics);
+          returnValue: _FakeScrollMetrics_45()) as _i13.ScrollMetrics);
 }

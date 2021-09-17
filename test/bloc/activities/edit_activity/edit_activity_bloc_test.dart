@@ -564,7 +564,7 @@ void main() {
       startTime: aDate,
       duration: 30.minutes(),
     );
-    final expectedDuration = Duration.zero;
+    const expectedDuration = Duration.zero;
     final expectedTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
       endTime: TimeOfDay.fromDateTime(activity.startTime.add(30.minutes())),

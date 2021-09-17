@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mime/mime.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -18,7 +19,7 @@ import '../../../mocks/shared.mocks.dart';
 
 final _dummyFile = UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
-final recorded_bytes =
+const recorded_bytes =
     'AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQyAAADFW1vb3YAAABsbXZoZAAAAADdaLlC3Wi5QgAAA+gAAAAAAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAADqbWV0YQAAACFoZGxyAAAAAAAAAABtZHRhAAAAAAAAAAAAAAAAAAAAAGRrZXlzAAAAAAAAAAMAAAAbbWR0YWNvbS5hbmRyb2lkLnZlcnNpb24AAAAgbWR0YWNvbS5hbmRyb2lkLm1hbnVmYWN0dXJlcgAAABltZHRhY29tLmFuZHJvaWQubW9kZWwAAABdaWxzdAAAABoAAAABAAAAEmRhdGEAAAABAAAAADEwAAAAHgAAAAIAAAAWZGF0YQAAAAEAAAAAR29vZ2xlAAAAHQAAAAMAAAAVZGF0YQAAAAEAAAAAUGl4ZWwAAAG3dHJhawAAAFx0a2hkAAAAB91ouULdaLlCAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABU21kaWEAAAAgbWRoZAAAAADdaLlC3Wi5QgAArEQAAAAAAAAAAAAAACxoZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGUAAAAA/21pbmYAAAAQc21oZAAAAAAAAAAAAAAAJGRpbmYAAAAcZHJlZgAAAAAAAAABAAAADHVybCAAAAABAAAAw3N0YmwAAABbc3RzZAAAAAAAAAABAAAAS21wNGEAAAAAAAAAAQAAAAAAAAAAAAEAEAAAAACsRAAAAAAAJ2VzZHMAAAAAAxkAAAAEEUAVAAMAAAH0AAAB9AAFAhIIBgECAAAAGHN0dHMAAAAAAAAAAQAAAAEAAAAAAAAAGHN0c3oAAAAAAAAAAAAAAAEAAAFzAAAA';
 
 void main() {
@@ -157,22 +158,24 @@ void main() {
 
   group('sound file tests', () {
     test(
-        'test sound file generation. File from bytes generated in app (not recognized)',
+        'test sound file generation. Check that content type is correct (based on extensions)',
         () async {
       final fileContent = base64.decode(recorded_bytes);
 
       var mpegTest = await File('test.mp3').writeAsBytes(fileContent);
-      var userFileBloc = UserFileBloc(
-        fileStorage: MockFileStorage(),
-        pushBloc: FakePushBloc(),
-        syncBloc: FakeSyncBloc(),
-        userFileRepository: FakeUserFileRepository(),
+
+      var bytes = await mpegTest.readAsBytes();
+      final file = UserFile(
+        id: 'f7bd7434-fae3-4d8e-ae30-b6b606b59f08',
+        sha1: 'sha1',
+        md5: 'md5',
+        path: 'path',
+        contentType: lookupMimeType(mpegTest.path, headerBytes: bytes),
+        fileSize: bytes.length,
+        deleted: false,
+        fileLoaded: true,
       );
-      var abiliaFile = UnstoredAbiliaFile.forTest(
-          'f7bd7434-fae3-4d8e-ae30-b6b606b59f08', mpegTest.path, mpegTest);
-      final userFile = userFileBloc.generateUserFile(
-          abiliaFile.id, abiliaFile.path, await mpegTest.readAsBytes());
-      expect(userFile.contentType, 'audio/mpeg');
+      expect(file.contentType, 'audio/mpeg');
       await mpegTest.delete();
     });
   });

@@ -2719,8 +2719,7 @@ text''';
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
       expect(find.byType(RecordSoundWidget), findsOneWidget);
-      expect(find.byKey(TestKey.speechAtStart), findsOneWidget);
-      expect(find.byKey(TestKey.speechAtEnd), findsOneWidget);
+      expect(find.byType(SelectOrPlaySoundWidget), findsNWidgets(2));
     });
   });
 }

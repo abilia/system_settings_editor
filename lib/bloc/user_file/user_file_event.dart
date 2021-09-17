@@ -10,7 +10,7 @@ class LoadUserFiles extends UserFileEvent {}
 
 class _DownloadUserFiles extends UserFileEvent {}
 
-abstract class FileAdded extends UserFileEvent {
+class FileAdded extends UserFileEvent {
   final UnstoredAbiliaFile unstoredFile;
 
   const FileAdded(this.unstoredFile);
@@ -21,8 +21,4 @@ abstract class FileAdded extends UserFileEvent {
 
 class ImageAdded extends FileAdded {
   const ImageAdded(UnstoredAbiliaFile selectedImage) : super(selectedImage);
-}
-
-class RecordingAdded extends FileAdded {
-  const RecordingAdded(UnstoredAbiliaFile selectedImage) : super(selectedImage);
 }

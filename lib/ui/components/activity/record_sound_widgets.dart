@@ -23,8 +23,7 @@ class RecordSoundWidget extends StatelessWidget {
           children: <Widget>[
             SubHeading(translator.speech),
             SelectOrPlaySoundWidget(
-              key: TestKey.speechAtStart,
-              label: translator.speechAtStart,
+              label: translator.speechOnStart,
               abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
               recordedAudio: activity.extras.startTimeExtraAlarm,
               onResult: (AbiliaFile result) {
@@ -41,8 +40,7 @@ class RecordSoundWidget extends StatelessWidget {
             ),
             SizedBox(height: 8.0.s),
             SelectOrPlaySoundWidget(
-              key: TestKey.speechAtEnd,
-              label: translator.speechAtEnd,
+              label: translator.speechOnEnd,
               abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
               recordedAudio: activity.extras.endTimeExtraAlarm,
               onResult: (AbiliaFile result) {
@@ -114,7 +112,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         );
                         if (result is UnstoredAbiliaFile && result.isNotEmpty) {
                           context.read<UserFileBloc>().add(
-                                RecordingAdded(result),
+                                FileAdded(result),
                               );
                         }
                         if (result != null) {
@@ -173,9 +171,7 @@ class RecordingWidget extends StatefulWidget {
 class _RecordingWidgetState extends State<RecordingWidget> {
   RecordSoundState state;
 
-  _RecordingWidgetState({required this.state}) {
-    ;
-  }
+  _RecordingWidgetState({required this.state});
 
   @override
   Widget build(BuildContext context) {

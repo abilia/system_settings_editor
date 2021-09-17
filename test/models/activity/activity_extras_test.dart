@@ -2,9 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/all.dart';
 
+const jsonTestString1 =
+    '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+
 void main() {
   test('test creating extras object', () {
-    final jsonString =
+    const jsonString =
         '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
 
     final extras = Extras.createNew(
@@ -26,10 +29,7 @@ void main() {
   });
 
   test('test json parsing', () {
-    final jsonString =
-        '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
-
-    final extras = Extras.fromJsonString(jsonString);
+    final extras = Extras.fromJsonString(jsonTestString1);
 
     expect(extras.startTimeExtraAlarm.path,
         '/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav');
@@ -37,16 +37,14 @@ void main() {
         extras.startTimeExtraAlarm.id, '30ee75a1-6c2f-4fcd-9f06-d2365e6012b0');
     expect(extras.endTimeExtraAlarm.path, 'higjhvvh');
     expect(extras.endTimeExtraAlarm.id, '734871297863');
-    expect(extras.toJsonString(), jsonString);
+    expect(extras.toJsonString(), jsonTestString1);
   });
 
   test('test changing value', () {
-    final jsonString =
-        '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
-    final modifiendJsonString =
+    const modifiendJsonString =
         '''{\"startTimeExtraAlarm\":\"new startTimeExtraAlarm\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
 
-    final extras = Extras.fromJsonString(jsonString);
+    final extras = Extras.fromJsonString(jsonTestString1);
 
     var extrasChanged = extras.copyWith(
         startTimeExtraAlarm: AbiliaFile.from(path: 'new startTimeExtraAlarm'));
@@ -56,12 +54,10 @@ void main() {
   });
 
   test('test removing value', () {
-    final jsonString =
-        '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
-    final modifiendJsonString =
+    const modifiendJsonString =
         '''{\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
 
-    final extras = Extras.fromJsonString(jsonString);
+    final extras = Extras.fromJsonString(jsonTestString1);
 
     var extrasChanged = extras.copyWith(startTimeExtraAlarm: AbiliaFile.empty);
     expect(extrasChanged.startTimeExtraAlarm.id, '');
@@ -71,7 +67,7 @@ void main() {
   });
 
   test('test from Extras.empty', () {
-    final jsonString =
+    const jsonString =
         '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
 
     final extras = Extras.empty;

@@ -635,7 +635,7 @@ void main() {
       });
       test('wrong type none return empty list', () {
         // arrange
-        final not = Recurs.not;
+        const not = Recurs.not;
         // assert
         expect(not.monthDays, []);
       });
@@ -695,7 +695,7 @@ void main() {
       });
       test('wrong type none return empty list', () {
         // arrange
-        final not = Recurs.not;
+        const not = Recurs.not;
         // assert
         expect(not.weekDays, []);
       });

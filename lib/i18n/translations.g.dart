@@ -3,21 +3,25 @@
 // instead, modify lib/i18n/translations.tsv and run
 // > flutter packages pub run build_runner build
 
+// ignore_for_file: overridden_fields
+
 import 'dart:ui';
 
 class Locales {
-  static final language = <Locale, Translated>{
-    Locale('en'): EN(),
-    Locale('sv'): SV(),
-    Locale('da'): DA(),
-    Locale('nl'): NL(),
-    Locale('fi'): FI(),
-    Locale('de'): DE(),
-    Locale('nb'): NB()
+  static final language = {
+    const Locale('en'): const EN(),
+    const Locale('sv'): const SV(),
+    const Locale('da'): const DA(),
+    const Locale('nl'): const NL(),
+    const Locale('fi'): const FI(),
+    const Locale('de'): const DE(),
+    const Locale('nb'): const NB()
   };
 }
 
 abstract class Translated {
+  const Translated();
+
   final String username = 'Username';
 
   final String password = 'Password';
@@ -265,9 +269,9 @@ abstract class Translated {
 
   final String speech = 'Speech';
 
-  final String speechAtStart = 'Speech at Start time';
+  final String speechOnStart = 'Speech at Start time';
 
-  final String speechAtEnd = 'Speech at End time';
+  final String speechOnEnd = 'Speech at End time';
 
   final String duration = 'Duration';
 
@@ -683,9 +687,13 @@ abstract class Translated {
   final String quickSettingsMenu = 'Quick settings';
 }
 
-class EN extends Translated {}
+class EN extends Translated {
+  const EN();
+}
 
 class SV extends Translated {
+  const SV();
+
   @override
   final String username = 'Användarnamn';
 
@@ -1053,10 +1061,10 @@ class SV extends Translated {
   final String speech = 'Tal';
 
   @override
-  final String speechAtStart = 'Tal vid starttid';
+  final String speechOnStart = 'Tal vid starttid';
 
   @override
-  final String speechAtEnd = 'Tal vid sluttid';
+  final String speechOnEnd = 'Tal vid sluttid';
 
   @override
   final String duration = 'Tidslängd';
@@ -1671,6 +1679,8 @@ class SV extends Translated {
 }
 
 class DA extends Translated {
+  const DA();
+
   @override
   final String username = 'Brugernavn';
 
@@ -2035,10 +2045,10 @@ class DA extends Translated {
   final String speech = 'Tale';
 
   @override
-  final String speechAtStart = 'Tale ved starttid';
+  final String speechOnStart = 'Tale ved starttid';
 
   @override
-  final String speechAtEnd = 'Tale ved sluttid';
+  final String speechOnEnd = 'Tale ved sluttid';
 
   @override
   final String duration = 'Tidslængde';
@@ -2651,6 +2661,8 @@ class DA extends Translated {
 }
 
 class NL extends Translated {
+  const NL();
+
   @override
   final String username = 'Gebruikersnaam';
 
@@ -3014,10 +3026,10 @@ class NL extends Translated {
   final String speech = 'Spraak';
 
   @override
-  final String speechAtStart = 'Spraak op starttijd';
+  final String speechOnStart = 'Spraak op starttijd';
 
   @override
-  final String speechAtEnd = 'Spraak op eindtijd';
+  final String speechOnEnd = 'Spraak op eindtijd';
 
   @override
   final String duration = 'Duur';
@@ -3631,6 +3643,8 @@ class NL extends Translated {
 }
 
 class FI extends Translated {
+  const FI();
+
   @override
   final String username = 'Käyttäjätunnus';
 
@@ -3994,10 +4008,10 @@ class FI extends Translated {
   final String speech = 'Puhe';
 
   @override
-  final String speechAtStart = 'Puhe aloitusaikaan';
+  final String speechOnStart = 'Puhe aloitusaikaan';
 
   @override
-  final String speechAtEnd = 'Puhe päättymisaikaan';
+  final String speechOnEnd = 'Puhe päättymisaikaan';
 
   @override
   final String duration = 'Kesto';
@@ -4609,6 +4623,8 @@ class FI extends Translated {
 }
 
 class DE extends Translated {
+  const DE();
+
   @override
   final String username = 'Benutzername';
 
@@ -4976,10 +4992,10 @@ class DE extends Translated {
   final String speech = 'Ansagen';
 
   @override
-  final String speechAtStart = 'Ansage zum Startzeitpunkt';
+  final String speechOnStart = 'Ansage zum Startzeitpunkt';
 
   @override
-  final String speechAtEnd = 'Ansage zum Endzeitpunkt';
+  final String speechOnEnd = 'Ansage zum Endzeitpunkt';
 
   @override
   final String duration = 'Dauer';
@@ -5595,6 +5611,8 @@ class DE extends Translated {
 }
 
 class NB extends Translated {
+  const NB();
+
   @override
   final String username = 'Brukernavn';
 
@@ -5957,10 +5975,10 @@ class NB extends Translated {
   final String speech = 'Tale';
 
   @override
-  final String speechAtStart = 'Tale ved starttid';
+  final String speechOnStart = 'Tale ved starttid';
 
   @override
-  final String speechAtEnd = 'Tale ved sluttid';
+  final String speechOnEnd = 'Tale ved sluttid';
 
   @override
   final String duration = 'Varighet';

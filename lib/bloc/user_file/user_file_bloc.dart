@@ -41,15 +41,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     UserFileEvent event,
   ) async* {
     if (event is FileAdded) {
-      yield state.addTempFile(
-        event.unstoredFile.id,
-        event.unstoredFile.file,
-      );
-      if (event is ImageAdded) {
-        yield* _mapImageAddedToState(event);
-      } else if (event is RecordingAdded) {
-        yield* _mapRecordingAddedToState(event);
-      }
+      yield* _mapFileAddedToState(event);
     }
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
@@ -76,67 +68,52 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     }
   }
 
-  Stream<UserFileState> _mapImageAddedToState(
-    ImageAdded event,
-  ) async* {
-    final originalBytes = await event.unstoredFile.file.readAsBytes();
-    final userFile = await handleImage(
-      originalBytes,
+  Stream<UserFileState> _mapFileAddedToState(FileAdded event) async* {
+    yield state.addTempFile(
       event.unstoredFile.id,
-      event.unstoredFile.file.path,
+      event.unstoredFile.file,
     );
+
+    final fileBytes = event is ImageAdded
+        ? await _adjustImageAndStoreThumb(event.unstoredFile)
+        : await event.unstoredFile.file.readAsBytes();
+
+    await fileStorage.storeFile(fileBytes, event.unstoredFile.id);
+    final userFile = _generateUserFile(
+        event.unstoredFile.id, event.unstoredFile.file.path, fileBytes);
+
+    await userFileRepository.save([userFile]);
     syncBloc.add(FileSaved());
     yield state.add(userFile);
   }
 
-  Stream<UserFileState> _mapRecordingAddedToState(RecordingAdded event) async* {
-    final originalBytes = await event.unstoredFile.file.readAsBytes();
-    final userFile = await handleAudio(
+  Future<List<int>> _adjustImageAndStoreThumb(
+      UnstoredAbiliaFile unstoredAbiliaFile) async {
+    final originalBytes = await unstoredAbiliaFile.file.readAsBytes();
+    final imageResult = await compute<List<int>, ImageResponse>(
+      adjustRotationAndCreateThumbs,
       originalBytes,
-      event.unstoredFile.id,
-      event.unstoredFile.file.path,
     );
-    syncBloc.add(FileSaved());
-    yield state.add(userFile);
+    await fileStorage.storeImageThumb(
+      imageResult.thumb,
+      ImageThumb(id: unstoredAbiliaFile.id),
+    );
+    return imageResult.originalImage;
   }
 
-  UserFile generateUserFile(
+  UserFile _generateUserFile(
     String id,
     String path,
     List<int> fileBytes,
-  ) {
-    final userFile = UserFile(
-      id: id,
-      sha1: sha1.convert(fileBytes).toString(),
-      md5: md5.convert(fileBytes).toString(),
-      path: '${FileStorage.folder}/$id',
-      contentType: lookupMimeType(path, headerBytes: fileBytes),
-      fileSize: fileBytes.length,
-      deleted: false,
-      fileLoaded: true,
-    );
-    return userFile;
-  }
-
-  Future<UserFile> handleImage(
-      List<int> originalBytes, String id, String path) async {
-    final imageResult = await compute<List<int>, ImageResponse>(
-        adjustRotationAndCreateThumbs, originalBytes);
-
-    final userFile = generateUserFile(id, path, imageResult.originalImage);
-    await userFileRepository.save([userFile]);
-
-    await fileStorage.storeFile(imageResult.originalImage, id);
-    await fileStorage.storeImageThumb(imageResult.thumb, ImageThumb(id: id));
-
-    return userFile;
-  }
-
-  Future<UserFile> handleAudio(
-      List<int> originalBytes, String id, String path) async {
-    await fileStorage.storeFile(originalBytes, id);
-    final userFile = generateUserFile(id, path, originalBytes);
-    await userFileRepository.save([userFile]);
-    return userFile;
-  }
+  ) =>
+      UserFile(
+        id: id,
+        sha1: sha1.convert(fileBytes).toString(),
+        md5: md5.convert(fileBytes).toString(),
+        path: '${FileStorage.folder}/$id',
+        contentType: lookupMimeType(path, headerBytes: fileBytes),
+        fileSize: fileBytes.length,
+        deleted: false,
+        fileLoaded: true,
+      );
 }
