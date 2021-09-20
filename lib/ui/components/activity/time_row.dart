@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -23,8 +21,6 @@ class TimeRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (activity.extras.startTimeExtraAlarm != AbiliaFile.empty)
-                _playSpeechButton(context, activity.extras.startTimeExtraAlarm),
               if (activity.fullDay)
                 _TimeBox(
                   occasion:
@@ -71,8 +67,6 @@ class TimeRow extends StatelessWidget {
                   ),
                 ),
               ],
-              if (activity.extras.endTimeExtraAlarm != AbiliaFile.empty)
-                _playSpeechButton(context, activity.extras.endTimeExtraAlarm),
             ],
           ),
         );
@@ -91,22 +85,6 @@ class TimeRow extends StatelessWidget {
         text: hourAndMinuteFormat(context)(date),
         occasion: date.occasion(now),
       );
-
-  Widget _playSpeechButton(BuildContext context, AbiliaFile soundToPlay) {
-    return BlocProvider(
-      create: (context) => SoundCubit(),
-      child: BlocBuilder<UserFileBloc, UserFileState>(
-        builder: (context, state) {
-          return PlaySoundButton(
-            sound: context.read<UserFileBloc>().state.getFile(
-                  soundToPlay,
-                  GetIt.I<FileStorage>(),
-                ),
-          );
-        },
-      ),
-    );
-  }
 }
 
 class _TimeBox extends StatelessWidget {

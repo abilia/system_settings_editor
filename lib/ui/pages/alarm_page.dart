@@ -1,12 +1,15 @@
+import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
   final Widget? previewImage;
+
   const AlarmPage({
     Key? key,
     required this.alarm,
@@ -15,24 +18,39 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.alarm,
-        iconData: AbiliaIcons.alarm_bell,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(ActivityInfo.margin),
-        child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-          builder: (context, activitiesState) => ActivityInfo(
-            alarm.activityDay.fromActivitiesState(activitiesState),
-            previewImage: previewImage,
-            alarm: alarm,
-          ),
-        ),
-      ),
-      bottomNavigationBar: AlarmBottomAppBar(
-        activityOccasion: alarm.activityDay.toOccasion(alarm.day),
-        alarm: alarm,
+    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
+      builder: (context, activitiesState) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, now) {
+          return Scaffold(
+            appBar: AbiliaAppBar(
+              title: Translator.of(context).translate.alarm,
+              iconData: AbiliaIcons.alarm_bell,
+              trailing: alarm is StartAlarm &&
+                      alarm.activity.extras.startTimeExtraAlarm !=
+                          AbiliaFile.empty
+                  ? PlaySpeechButton(
+                      soundToPlay: alarm.activity.extras.startTimeExtraAlarm)
+                  : alarm is EndAlarm &&
+                          alarm.activity.extras.endTimeExtraAlarm !=
+                              AbiliaFile.empty
+                      ? PlaySpeechButton(
+                          soundToPlay: alarm.activity.extras.endTimeExtraAlarm)
+                      : null,
+            ),
+            body: Padding(
+              padding: EdgeInsets.all(ActivityInfo.margin),
+              child: ActivityInfo(
+                alarm.activityDay.fromActivitiesState(activitiesState),
+                previewImage: previewImage,
+                alarm: alarm,
+              ),
+            ),
+            bottomNavigationBar: AlarmBottomAppBar(
+              activityOccasion: alarm.activityDay.toOccasion(alarm.day),
+              alarm: alarm,
+            ),
+          );
+        },
       ),
     );
   }
@@ -40,6 +58,7 @@ class AlarmPage extends StatelessWidget {
 
 class ReminderPage extends StatelessWidget {
   final NewReminder reminder;
+
   const ReminderPage({
     Key? key,
     required this.reminder,
@@ -54,6 +73,11 @@ class ReminderPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         title: translate.reminder,
         iconData: AbiliaIcons.handi_reminder,
+        trailing:
+            reminder.activity.extras.startTimeExtraAlarm != AbiliaFile.empty
+                ? PlaySpeechButton(
+                    soundToPlay: reminder.activity.extras.startTimeExtraAlarm)
+                : null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -96,6 +120,7 @@ class PopAwareAlarmPage extends StatelessWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
   final NotificationAlarm alarm;
+
   const PopAwareAlarmPage({
     Key? key,
     required this.alarm,
@@ -165,6 +190,29 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PlaySpeechButton extends StatelessWidget {
+  final AbiliaFile soundToPlay;
+
+  PlaySpeechButton({required this.soundToPlay});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SoundCubit(),
+      child: BlocBuilder<UserFileBloc, UserFileState>(
+        builder: (context, state) {
+          return PlaySoundButton(
+            sound: context.read<UserFileBloc>().state.getFile(
+                  soundToPlay,
+                  GetIt.I<FileStorage>(),
+                ),
+          );
+        },
       ),
     );
   }
