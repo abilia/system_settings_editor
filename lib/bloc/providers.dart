@@ -155,8 +155,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 selectedNotificationSubject: selectNotificationSubject,
               ),
             ),
-            BlocProvider<CalendarViewBloc>(
-              create: (context) => CalendarViewBloc(
+            BlocProvider<CalendarViewCubit>(
+              create: (context) => CalendarViewCubit(
                 GetIt.I<SettingsDb>(),
               ),
             ),
@@ -290,8 +290,8 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<NotificationBloc>.value(
           value: blocContext.read<NotificationBloc>(),
         ),
-        BlocProvider<CalendarViewBloc>.value(
-          value: blocContext.read<CalendarViewBloc>(),
+        BlocProvider<CalendarViewCubit>.value(
+          value: blocContext.read<CalendarViewCubit>(),
         ),
         BlocProvider<LicenseBloc>.value(
           value: blocContext.read<LicenseBloc>(),

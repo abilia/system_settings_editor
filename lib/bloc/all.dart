@@ -13,7 +13,7 @@ export 'clock/clock_bloc.dart';
 export 'alarm/alarm_bloc.dart';
 export 'alarm/notification/notification_bloc.dart';
 export 'push/push_bloc.dart';
-export 'calendar/calendar_view/calendar_view_bloc.dart';
+export 'calendar/calendar_view/calendar_view_cubit.dart';
 export 'sortable/sortable_bloc.dart';
 export 'sortable/sortable_archive/sortable_archive_bloc.dart';
 export 'user_file/user_file_bloc.dart';

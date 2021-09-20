@@ -46,7 +46,7 @@ class CategoryLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<CalendarViewBloc, CalendarViewState>(
+      BlocBuilder<CalendarViewCubit, CalendarViewState>(
         buildWhen: (previous, current) =>
             previous.expandLeftCategory != current.expandLeftCategory,
         builder: (context, calendarViewState) => _Category(
@@ -103,7 +103,7 @@ class CategoryRight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<CalendarViewBloc, CalendarViewState>(
+      BlocBuilder<CalendarViewCubit, CalendarViewState>(
         buildWhen: (previous, current) =>
             previous.expandRightCategory != current.expandRightCategory,
         builder: (context, calendarViewState) => _Category(
@@ -207,8 +207,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
           } else {
             controller.reverse();
           }
-          BlocProvider.of<CalendarViewBloc>(context)
-              .add(ToggleCategory(widget.category));
+          context.read<CalendarViewCubit>().toggle(widget.category);
         },
         child: Align(
           alignment: alignment,
