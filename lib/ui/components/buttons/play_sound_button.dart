@@ -14,7 +14,7 @@ class PlaySoundButton extends StatelessWidget {
     final sound = this.sound;
     return BlocBuilder<SoundCubit, SoundState>(
       builder: (context, state) => ActionButton(
-        style: actionButtonStyleDark,
+        style: actionButtonStyleLight,
         onPressed: sound == Sound.NoSound || sound == null
             ? null
             : state is SoundPlaying && sound == state.currentSound
