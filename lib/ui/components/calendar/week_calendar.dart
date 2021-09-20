@@ -273,7 +273,7 @@ class FullDayStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 36.s,
           child: Padding(
             padding: EdgeInsets.only(top: 2.s, left: 2.s),
@@ -283,7 +283,7 @@ class FullDayStack extends StatelessWidget {
             ),
           ),
         ),
-        Container(
+        SizedBox(
           height: 36.s,
           child: Padding(
             padding: EdgeInsets.only(bottom: 2.s, right: 2.s),

@@ -40,7 +40,6 @@ linter:
     prefer_typing_uninitialized_variables: false
     unnecessary_string_escapes: false
     use_key_in_widget_constructors: false
-    sized_box_for_whitespace: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
