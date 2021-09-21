@@ -35,7 +35,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
 
   Future<void> startRecording() async {
     bool hasPermission = await _recorder.hasPermission();
-    if(hasPermission) {
+    if (hasPermission) {
       await _recorder.start();
       _tickerSubscription = _ticker
           .tick(duration: maxRecordingTime.inMilliseconds)

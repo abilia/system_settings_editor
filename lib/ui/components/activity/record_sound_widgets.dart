@@ -35,8 +35,7 @@ class RecordSoundWidget extends StatelessWidget {
                       children: <Widget>[
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnStart,
-                          permission:
-                          permission,
+                          permission: permission,
                           recordedAudio: activity.extras.startTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
                             BlocProvider.of<EditActivityBloc>(context).add(
@@ -53,8 +52,7 @@ class RecordSoundWidget extends StatelessWidget {
                         SizedBox(height: 8.0.s),
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnEnd,
-                          permission:
-                          permission,
+                          permission: permission,
                           recordedAudio: activity.extras.endTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
                             BlocProvider.of<EditActivityBloc>(context).add(
@@ -71,19 +69,16 @@ class RecordSoundWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (permission ==
-                      PermissionStatus.permanentlyDenied)
+                  if (permission == PermissionStatus.permanentlyDenied)
                     Padding(
                       padding: EdgeInsets.only(left: 8.0.s),
                       child: InfoButton(
-                        onTap: () =>
-                            showViewDialog(
-                              useSafeArea: false,
-                              context: context,
-                              builder: (context) =>
-                                  PermissionInfoDialog(
-                                      permission: Permission.microphone),
-                            ),
+                        onTap: () => showViewDialog(
+                          useSafeArea: false,
+                          context: context,
+                          builder: (context) => PermissionInfoDialog(
+                              permission: Permission.microphone),
+                        ),
                       ),
                     ),
                 ],
@@ -92,7 +87,7 @@ class RecordSoundWidget extends StatelessWidget {
           ),
         );
       },
-      );
+    );
   }
 }
 
@@ -124,10 +119,10 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                     : AbiliaIcons.sms_sound),
                 text: Text(label),
                 onTap: permission == PermissionStatus.permanentlyDenied
-                    ? null:
-                    () async {
-                        final result =
-                            await Navigator.of(context).push<UnstoredAbiliaFile>(
+                    ? null
+                    : () async {
+                        final result = await Navigator.of(context)
+                            .push<UnstoredAbiliaFile>(
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
