@@ -230,7 +230,7 @@ class BackToLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GreyButton(
+    return LightButton(
       icon: AbiliaIcons.navigation_previous,
       text: Translator.of(context).translate.backToLogin,
       onPressed: Navigator.of(context).maybePop,

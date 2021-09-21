@@ -44,7 +44,7 @@ class DbActivity extends DbModel<Activity> {
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
           timezone: json['timezone'] ?? '',
-          extras: Extras.fromBase64(json['extras']),
+          extras: Extras.fromJsonString(json['extras']),
         ),
         revision: json['revision'],
         dirty: 0,
@@ -105,7 +105,7 @@ class DbActivity extends DbModel<Activity> {
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
-        'extras': activity.extras.toBase64(),
+        'extras': activity.extras.toJsonString(),
       };
 
   @override

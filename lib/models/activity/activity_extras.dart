@@ -57,21 +57,14 @@ class Extras extends Equatable {
 
   static Extras fromJsonString(String? jsonString) {
     if (jsonString == null || jsonString.isEmpty) return Extras.empty;
-    return Extras._(jsonDecode(jsonString));
-  }
-
-  static Extras fromBase64(String? base64) {
-    if (base64 == null || base64.isEmpty) return Extras.empty;
     try {
-      return fromJsonString(utf8.decode(base64Decode(base64)));
+      return Extras._(jsonDecode(jsonString));
     } on FormatException catch (_) {
       return Extras.empty;
     }
   }
 
   String toJsonString() => json.encode(_extrasMap);
-
-  String toBase64() => base64Encode(utf8.encode(toJsonString()));
 
   @override
   List<Object?> get props => [_extrasMap];

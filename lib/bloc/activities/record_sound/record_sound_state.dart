@@ -1,26 +1,40 @@
 part of 'record_sound_cubit.dart';
 
-// enum RecordState { Stopped, Recording, Playing }
-
 abstract class RecordSoundState extends Equatable {
-  // final RecordState state;
+  const RecordSoundState();
+}
+
+class EmptyRecordSoundState extends RecordSoundState {
+  const EmptyRecordSoundState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+abstract class RecordedSoundState extends RecordSoundState {
   final AbiliaFile recordedFile;
-  const RecordSoundState(this.recordedFile);
+  const RecordedSoundState(this.recordedFile);
   @override
   List<Object?> get props => [recordedFile];
 }
 
-class RecordingSoundState extends RecordSoundState {
-  RecordingSoundState(AbiliaFile recordedFile) : super(recordedFile);
-}
-
-class StoppedSoundState extends RecordSoundState {
-  StoppedSoundState(AbiliaFile recordedFile) : super(recordedFile);
-}
-
-class SaveRecordingState extends RecordSoundState {
-  final bool newRecording;
-
-  SaveRecordingState(AbiliaFile recordedFile, this.newRecording)
+class UnchangedRecordingSoundState extends RecordedSoundState {
+  const UnchangedRecordingSoundState(AbiliaFile recordedFile)
       : super(recordedFile);
+}
+
+class RecordingSoundState extends EmptyRecordSoundState {
+  final Duration duration;
+  double get progress =>
+      duration.inMilliseconds /
+      RecordSoundCubit.maxRecordingTime.inMilliseconds;
+  const RecordingSoundState(this.duration) : super();
+  @override
+  List<Object?> get props => [progress];
+}
+
+class NewRecordedSoundState extends RecordedSoundState {
+  final UnstoredAbiliaFile unstoredAbiliaFile;
+  const NewRecordedSoundState(this.unstoredAbiliaFile)
+      : super(unstoredAbiliaFile);
 }

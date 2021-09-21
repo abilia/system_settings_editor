@@ -17,7 +17,7 @@ class PlaySoundButton extends StatelessWidget {
         style: actionButtonStyleDark,
         onPressed: sound == Sound.NoSound || sound == null
             ? null
-            : sound == state.currentSound
+            : state is SoundPlaying && sound == state.currentSound
                 ? () async {
                     await context.read<SoundCubit>().stopSound();
                   }
@@ -25,7 +25,7 @@ class PlaySoundButton extends StatelessWidget {
                     await context.read<SoundCubit>().play(sound);
                   },
         child: Icon(
-          sound != null && state.currentSound == sound
+          sound != null && state is SoundPlaying && state.currentSound == sound
               ? AbiliaIcons.stop
               : AbiliaIcons.play_sound,
         ),

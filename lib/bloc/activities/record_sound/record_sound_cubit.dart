@@ -3,53 +3,78 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:seagull/models/abilia_file.dart';
 import 'package:seagull/models/all.dart';
-import 'package:uuid/uuid.dart';
 
 part 'record_sound_state.dart';
 
-class RecordSoundCubit extends Cubit<RecordSoundState> {
-  final _recorder = Record();
-  final AbiliaFile originalSoundFile;
-  AbiliaFile recordedFile = AbiliaFile.empty;
+class AudioTicker {
+  final int millisTickRate;
+  const AudioTicker(this.millisTickRate);
 
-  RecordSoundCubit({
-    required this.originalSoundFile,
-  }) : super(
-          StoppedSoundState(originalSoundFile),
-        ) {
-    recordedFile = originalSoundFile;
+  Stream<int> tick({required int duration}) {
+    return Stream.periodic(
+            Duration(milliseconds: millisTickRate), (x) => x * millisTickRate)
+        .take(duration ~/ millisTickRate);
   }
+}
+
+class RecordSoundCubit extends Cubit<RecordSoundState> {
+  static const maxRecordingTime = Duration(seconds: 30);
+  final Record _recorder;
+  StreamSubscription<Duration>? _tickerSubscription;
+  final AudioTicker _ticker = AudioTicker(50);
+
+  RecordSoundCubit({required AbiliaFile originalSoundFile, Record? record})
+      : _recorder = record ?? Record(),
+        super(
+          originalSoundFile.isEmpty
+              ? EmptyRecordSoundState()
+              : UnchangedRecordingSoundState(originalSoundFile),
+        );
 
   Future<void> startRecording() async {
-    var tempDir = await getApplicationDocumentsDirectory();
-    var tempPath = tempDir.path;
-    await _recorder.start(path: '$tempPath/' + Uuid().v4() + '.mp3');
-    emit(RecordingSoundState(AbiliaFile.empty));
+    await _recorder.start();
+    _tickerSubscription = _ticker
+        .tick(duration: maxRecordingTime.inMilliseconds)
+        .map((event) => Duration(milliseconds: event))
+        .listen((duration) => _ticking(duration));
+    emit(RecordingSoundState(Duration.zero));
   }
 
-  Future<void> stopRecording(double duration) async {
+  void _ticking(Duration duration) async {
+    if (duration >= maxRecordingTime) {
+      await stopRecording();
+    } else {
+      emit(RecordingSoundState(duration));
+    }
+  }
+
+  Future<void> stopRecording() async {
     final recordedFilePath = await _recorder.stop();
     if (recordedFilePath != null) {
       final uri = Uri.tryParse(recordedFilePath);
       if (uri != null) {
         final file = File.fromUri(uri);
-        recordedFile = UnstoredAbiliaFile.newFile(file);
+        final recordedFile = UnstoredAbiliaFile.newFile(file);
+        emit(NewRecordedSoundState(recordedFile));
       }
-      emit(StoppedSoundState(recordedFile));
     }
+    await _tickerSubscription?.cancel();
   }
 
   Future<void> deleteRecording() async {
-    recordedFile = AbiliaFile.empty;
-    emit(StoppedSoundState(AbiliaFile.empty));
+    final s = state;
+    if (s is NewRecordedSoundState &&
+        await s.unstoredAbiliaFile.file.exists()) {
+      await s.unstoredAbiliaFile.file.delete();
+    }
+    emit(EmptyRecordSoundState());
   }
 
-  Future<void> saveRecording() async {
-    emit(SaveRecordingState(
-        recordedFile, recordedFile.id != originalSoundFile.id));
+  @override
+  Future<void> close() async {
+    await super.close();
+    await _tickerSubscription?.cancel();
   }
 }

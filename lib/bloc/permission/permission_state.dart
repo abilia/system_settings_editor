@@ -28,8 +28,6 @@ class PermissionState extends Equatable {
   bool get importantPermissionMissing =>
       notificationDenied || fullscreenNotGranted;
 
-  bool get microphoneDenied =>
-      status[Permission.microphone]?.isDeniedOrPermenantlyDenied ?? false;
   @override
   List<Object> get props => [status];
 
