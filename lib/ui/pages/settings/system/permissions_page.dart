@@ -45,9 +45,7 @@ class PermissionSetting extends StatelessWidget {
       ? NotificationPermissionSwitch(status: status)
       : permission == Permission.systemAlertWindow
           ? FullscreenPermissionSwitch(status: status)
-          : permission == Permission.microphone
-              ? MicrophonePermissionSwitch(status: status)
-              : PermissionSwitch(permission: permission, status: status);
+          : PermissionSwitch(permission: permission, status: status);
 }
 
 class PermissionSwitch extends StatelessWidget {
@@ -231,88 +229,6 @@ class FullscreenPermissionSwitch extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 4.0.s),
             child: ErrorMessage(
               text: Text(translate.fullScreenAlarmInfo),
-            ),
-          ),
-          Tts(
-            child: Text(
-              translate.redirectToAndroidSettings,
-              style: Theme.of(context).textTheme.caption?.copyWith(
-                    color: AbiliaColors.black75,
-                  ),
-            ),
-          )
-        ]
-      ],
-    );
-  }
-}
-
-class MicrophonePermissionSwitch extends StatelessWidget {
-  final permission = Permission.microphone;
-  final PermissionStatus status;
-
-  const MicrophonePermissionSwitch({
-    Key? key,
-    required this.status,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final denied = status.isDeniedOrPermenantlyDenied;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  SwitchField(
-                    key: ObjectKey(permission),
-                    leading: permission.icon,
-                    value: status.isGranted,
-                    decoration:
-                        denied ? warningBoxDecoration : whiteBoxDecoration,
-                    onChanged: (v) async {
-                      if (status.isGranted) {
-                        openAppSettings();
-                      } else {
-                        context
-                            .read<PermissionBloc>()
-                            .add(RequestPermissions([Permission.microphone]));
-                      }
-                    },
-                    child: Text(permission.translate(translate)),
-                  ),
-                  if (denied)
-                    Positioned(
-                      right: -10.s,
-                      top: -10.s,
-                      child: Container(
-                        width: 32.s,
-                        height: 32.s,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(16.s)),
-                          color: AbiliaColors.orange40,
-                        ),
-                        child: Icon(
-                          AbiliaIcons.ir_error,
-                          size: 20.0.s,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        if (denied) ...[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0.s),
-            child: ErrorMessage(
-              text: Text(translate.allowAccessMicrophoneBody),
             ),
           ),
           Tts(
