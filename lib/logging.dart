@@ -49,6 +49,7 @@ class SeagullLogger {
   factory SeagullLogger.nothing() => SeagullLogger(
         loggingType: const {},
         documentsDir: '',
+        level: Level.OFF,
       );
 
   SeagullLogger({
