@@ -2064,7 +2064,7 @@ text''';
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
 
-      expect(find.byType(PickField), findsOneWidget);
+      expect(find.byType(PickField), findsNWidgets(3));
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 
@@ -2083,7 +2083,7 @@ text''';
       await tester.goToAlarmTab();
       await tester.pumpAndSettle();
 
-      expect(find.byType(PickField), findsOneWidget);
+      expect(find.byType(PickField), findsNWidgets(3));
       final alarmPicker =
           tester.widgetList(find.byType(PickField)).first as PickField;
 
@@ -2705,6 +2705,21 @@ text''';
       await tester.verifyTts(find.text(content), exact: content);
       await tester.tap(find.text(content));
       await tester.pumpAndSettle();
+    });
+  });
+
+  group('Sound on alarm', () {
+    testWidgets('Sound selectors show up', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        createEditActivityPage(
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.goToAlarmTab();
+      await tester.pumpAndSettle();
+      expect(find.byType(RecordSoundWidget), findsOneWidget);
+      expect(find.byType(SelectOrPlaySoundWidget), findsNWidgets(2));
     });
   });
 }

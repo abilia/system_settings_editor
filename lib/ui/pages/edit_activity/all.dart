@@ -14,3 +14,4 @@ export 'available_for_page.dart';
 export 'date_picker_page.dart';
 export 'activity_wizard_page.dart';
 export 'wizard_buttons.dart';
+export 'record_sound_page.dart';

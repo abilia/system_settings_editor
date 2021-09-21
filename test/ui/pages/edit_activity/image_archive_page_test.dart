@@ -132,7 +132,7 @@ void main() {
       final poped = navObserver.routesPoped;
       expect(poped, hasLength(1));
       final res = await poped.first.popped;
-      expect(res, SelectedImage.from(id: fileId, path: path));
+      expect(res, AbiliaFile.from(id: fileId, path: path));
     });
 
     testWidgets('tts', (WidgetTester tester) async {

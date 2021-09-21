@@ -64,7 +64,7 @@ abstract class EditActivityState extends Equatable with Silent {
       ? timeInterval.startDate.onlyDays().isBefore(now.onlyDays())
       : hasStartTime && timeInterval.starts.isBefore(now);
 
-  SelectedImage get selectedImage => SelectedImage.from(
+  AbiliaFile get selectedImage => AbiliaFile.from(
         id: activity.fileId,
         path: activity.icon,
       );

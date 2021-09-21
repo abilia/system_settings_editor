@@ -36,6 +36,8 @@
 	<string>Camera needed to add pictures to calendar activity</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library needed to add pictures to calendar activity</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone needed to record alarms</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

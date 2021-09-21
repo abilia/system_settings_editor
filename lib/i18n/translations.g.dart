@@ -225,6 +225,8 @@ abstract class Translated {
 
   final String ok = 'OK';
 
+  final String record = 'Record';
+
   final String newActivityChoice = 'New';
 
   final String newActivity = 'New activity';
@@ -264,6 +266,18 @@ abstract class Translated {
   final String save = 'Save';
 
   final String endBeforeStartError = "End date can't be before start date";
+
+  final String speech = 'Speech';
+
+  final String speechOnStart = 'Speech at Start time';
+
+  final String speechOnEnd = 'Speech at End time';
+
+  final String duration = 'Duration';
+
+  final String stop = 'Stop';
+
+  final String play = 'Play';
 
   final String enterTitleAndImage = 'Enter title and image';
 
@@ -987,6 +1001,9 @@ class SV extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Spela in';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -1047,7 +1064,25 @@ class SV extends Translated {
   final String endBeforeStartError = 'Slutdatum kan inte vara före startdatum';
 
   @override
-  final String enterTitleAndImage = 'Välj title och bild ';
+  final String speech = 'Tal';
+
+  @override
+  final String speechOnStart = 'Tal vid starttid';
+
+  @override
+  final String speechOnEnd = 'Tal vid sluttid';
+
+  @override
+  final String duration = 'Tidslängd';
+
+  @override
+  final String stop = 'Stopp';
+
+  @override
+  final String play = 'Lyssna';
+
+  @override
+  final String enterTitleAndImage = 'Välj titel och bild';
 
   @override
   final String error = 'Fel';
@@ -1958,6 +1993,9 @@ class DA extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Indspil';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -2016,6 +2054,24 @@ class DA extends Translated {
 
   @override
   final String endBeforeStartError = 'Slutdato kan ikke være før startdato';
+
+  @override
+  final String speech = 'Tale';
+
+  @override
+  final String speechOnStart = 'Tale ved starttid';
+
+  @override
+  final String speechOnEnd = 'Tale ved sluttid';
+
+  @override
+  final String duration = 'Tidslængde';
+
+  @override
+  final String stop = 'Stop';
+
+  @override
+  final String play = 'Afspel';
 
   @override
   final String error = 'Fejl';
@@ -2925,6 +2981,9 @@ class NL extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Opnemen';
+
+  @override
   final String newActivityChoice = 'Nieuw';
 
   @override
@@ -2984,6 +3043,24 @@ class NL extends Translated {
   @override
   final String endBeforeStartError =
       'Einddatum mag niet voor startdatum liggen';
+
+  @override
+  final String speech = 'Spraak';
+
+  @override
+  final String speechOnStart = 'Spraak op starttijd';
+
+  @override
+  final String speechOnEnd = 'Spraak op eindtijd';
+
+  @override
+  final String duration = 'Duur';
+
+  @override
+  final String stop = 'Stoppen';
+
+  @override
+  final String play = 'Afspelen';
 
   @override
   final String error = 'Fout';
@@ -3894,6 +3971,9 @@ class FI extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Nauhoita';
+
+  @override
   final String newActivityChoice = 'Uusi';
 
   @override
@@ -3953,6 +4033,24 @@ class FI extends Translated {
   @override
   final String endBeforeStartError =
       'Päättymispäivä ei voi olla ennen alkamispäivää';
+
+  @override
+  final String speech = 'Puhe';
+
+  @override
+  final String speechOnStart = 'Puhe aloitusaikaan';
+
+  @override
+  final String speechOnEnd = 'Puhe päättymisaikaan';
+
+  @override
+  final String duration = 'Kesto';
+
+  @override
+  final String stop = 'Pysäytä';
+
+  @override
+  final String play = 'Toista';
 
   @override
   final String error = 'Virhe';
@@ -4865,6 +4963,9 @@ class DE extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Aufnahme';
+
+  @override
   final String newActivityChoice = 'Neu';
 
   @override
@@ -4924,6 +5025,24 @@ class DE extends Translated {
   @override
   final String endBeforeStartError =
       'Das Enddatum kann nicht vor dem Startdatum liegen';
+
+  @override
+  final String speech = 'Ansagen';
+
+  @override
+  final String speechOnStart = 'Ansage zum Startzeitpunkt';
+
+  @override
+  final String speechOnEnd = 'Ansage zum Endzeitpunkt';
+
+  @override
+  final String duration = 'Dauer';
+
+  @override
+  final String stop = 'Stopp';
+
+  @override
+  final String play = 'Wiedergabe';
 
   @override
   final String error = 'Error';
@@ -5836,6 +5955,9 @@ class NB extends Translated {
   final String ok = 'OK';
 
   @override
+  final String record = 'Spill inn';
+
+  @override
   final String newActivityChoice = 'Helt ny';
 
   @override
@@ -5894,6 +6016,24 @@ class NB extends Translated {
 
   @override
   final String endBeforeStartError = 'Sluttdato kan ikke være før startdato';
+
+  @override
+  final String speech = 'Tale';
+
+  @override
+  final String speechOnStart = 'Tale ved starttid';
+
+  @override
+  final String speechOnEnd = 'Tale ved sluttid';
+
+  @override
+  final String duration = 'Varighet';
+
+  @override
+  final String stop = 'Stopp';
+
+  @override
+  final String play = 'Spill av';
 
   @override
   final String error = 'Feil';

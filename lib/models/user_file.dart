@@ -18,6 +18,16 @@ class UserFile extends DataModel {
     required this.fileLoaded,
   }) : super(id);
 
+  UserFile setLoaded() => UserFile(
+        id: id,
+        sha1: sha1,
+        md5: md5,
+        path: path,
+        fileSize: fileSize,
+        deleted: deleted,
+        fileLoaded: true,
+      );
+
   @override
   List<Object?> get props =>
       [id, sha1, md5, path, contentType, fileSize, deleted, fileLoaded];

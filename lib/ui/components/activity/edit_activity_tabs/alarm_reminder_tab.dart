@@ -1,5 +1,6 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/activity/record_sound_widgets.dart';
 
 class AlarmAndReminderTab extends StatefulWidget {
   const AlarmAndReminderTab({
@@ -34,7 +35,7 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
           separatedAndPadded(
             AlarmWidget(widget.activity),
           ),
-          padded(
+          separatedAndPadded(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -48,6 +49,9 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
                 ),
               ],
             ),
+          ),
+          padded(
+            RecordSoundWidget(widget.activity),
           ),
         ],
       ),

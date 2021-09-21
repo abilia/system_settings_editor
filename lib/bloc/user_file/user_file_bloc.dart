@@ -40,12 +40,8 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
   Stream<UserFileState> mapEventToState(
     UserFileEvent event,
   ) async* {
-    if (event is ImageAdded) {
-      yield state.addTempFile(
-        event.selectedImage.id,
-        event.selectedImage.file,
-      );
-      yield* _mapImageAddedToState(event);
+    if (event is FileAdded) {
+      yield* _mapFileAddedToState(event);
     }
     if (event is LoadUserFiles) {
       yield* _mapLoadUserFilesToState();
@@ -72,47 +68,52 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     }
   }
 
-  Stream<UserFileState> _mapImageAddedToState(
-    ImageAdded event,
-  ) async* {
-    final originalBytes = await event.selectedImage.file.readAsBytes();
-    final userFile = await handleImage(
-      originalBytes,
-      event.selectedImage.id,
-      event.selectedImage.file.path,
+  Stream<UserFileState> _mapFileAddedToState(FileAdded event) async* {
+    yield state.addTempFile(
+      event.unstoredFile.id,
+      event.unstoredFile.file,
     );
+
+    final fileBytes = event is ImageAdded
+        ? await _adjustImageAndStoreThumb(event.unstoredFile)
+        : await event.unstoredFile.file.readAsBytes();
+
+    await fileStorage.storeFile(fileBytes, event.unstoredFile.id);
+    final userFile = _generateUserFile(
+        event.unstoredFile.id, event.unstoredFile.file.path, fileBytes);
+
+    await userFileRepository.save([userFile]);
     syncBloc.add(FileSaved());
     yield state.add(userFile);
   }
 
-  UserFile generateUserFile(
+  Future<List<int>> _adjustImageAndStoreThumb(
+      UnstoredAbiliaFile unstoredAbiliaFile) async {
+    final originalBytes = await unstoredAbiliaFile.file.readAsBytes();
+    final imageResult = await compute<List<int>, ImageResponse>(
+      adjustRotationAndCreateThumbs,
+      originalBytes,
+    );
+    await fileStorage.storeImageThumb(
+      imageResult.thumb,
+      ImageThumb(id: unstoredAbiliaFile.id),
+    );
+    return imageResult.originalImage;
+  }
+
+  UserFile _generateUserFile(
     String id,
     String path,
     List<int> fileBytes,
-  ) {
-    final userFile = UserFile(
-      id: id,
-      sha1: sha1.convert(fileBytes).toString(),
-      md5: md5.convert(fileBytes).toString(),
-      path: '${FileStorage.folder}/$id',
-      contentType: lookupMimeType(path, headerBytes: fileBytes),
-      fileSize: fileBytes.length,
-      deleted: false,
-      fileLoaded: true,
-    );
-    return userFile;
-  }
-
-  Future<UserFile> handleImage(
-      List<int> originalBytes, String id, String path) async {
-    final imageResult = await compute<List<int>, ImageResponse>(
-        adjustRotationAndCreateThumbs, originalBytes);
-
-    await fileStorage.storeFile(imageResult.originalImage, id);
-    await fileStorage.storeImageThumb(imageResult.thumb, ImageThumb(id: id));
-
-    final userFile = generateUserFile(id, path, imageResult.originalImage);
-    await userFileRepository.save([userFile]);
-    return userFile;
-  }
+  ) =>
+      UserFile(
+        id: id,
+        sha1: sha1.convert(fileBytes).toString(),
+        md5: md5.convert(fileBytes).toString(),
+        path: '${FileStorage.folder}/$id',
+        contentType: lookupMimeType(path, headerBytes: fileBytes),
+        fileSize: fileBytes.length,
+        deleted: false,
+        fileLoaded: true,
+      );
 }

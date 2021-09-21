@@ -13,7 +13,7 @@ import 'package:seagull/ui/all.dart';
 final _log = Logger((SelectPicturePage).toString());
 
 class SelectPicturePage extends StatelessWidget {
-  final SelectedImage selectedImage;
+  final AbiliaFile selectedImage;
 
   const SelectPicturePage({
     Key? key,
@@ -45,7 +45,7 @@ class SelectPicturePage extends StatelessWidget {
                       RemoveButton(
                         key: TestKey.removePicture,
                         onTap: () {
-                          Navigator.of(context).maybePop(SelectedImage.empty);
+                          Navigator.of(context).maybePop(AbiliaFile.empty);
                         },
                         icon: Icon(
                           AbiliaIcons.delete_all_clear,
@@ -72,7 +72,7 @@ class SelectPicturePage extends StatelessWidget {
                       text: Text(translate.imageArchive),
                       onTap: () async {
                         final selectedImage =
-                            await Navigator.of(context).push<SelectedImage>(
+                            await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
@@ -169,7 +169,7 @@ class ImageSourceWidget extends StatelessWidget {
       final image = await _picker.pickImage(source: imageSource);
       if (image != null) {
         await Navigator.of(context).maybePop(
-          SelectedImageFile.newFile(File(image.path)),
+          UnstoredAbiliaFile.newFile(File(image.path)),
         );
       }
     } on PlatformException catch (e) {

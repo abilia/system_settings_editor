@@ -3,7 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/bloc/all.dart';
 
 class PlaySoundButton extends StatelessWidget {
-  final Sound sound;
+  final Object? sound;
   const PlaySoundButton({
     Key? key,
     required this.sound,
@@ -11,20 +11,21 @@ class PlaySoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sound = this.sound;
     return BlocBuilder<SoundCubit, SoundState>(
       builder: (context, state) => ActionButton(
         style: actionButtonStyleDark,
-        onPressed: sound == Sound.NoSound
+        onPressed: sound == Sound.NoSound || sound == null
             ? null
-            : sound == state.currentSound
+            : state is SoundPlaying && sound == state.currentSound
                 ? () async {
                     await context.read<SoundCubit>().stopSound();
                   }
                 : () async {
-                    await context.read<SoundCubit>().playSound(sound);
+                    await context.read<SoundCubit>().play(sound);
                   },
         child: Icon(
-          state.currentSound == sound
+          sound != null && state is SoundPlaying && state.currentSound == sound
               ? AbiliaIcons.stop
               : AbiliaIcons.play_sound,
         ),

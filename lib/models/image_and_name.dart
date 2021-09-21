@@ -3,14 +3,14 @@ import 'package:seagull/models/all.dart';
 
 class ImageAndName extends Equatable {
   final String name;
-  final SelectedImage image;
+  final AbiliaFile image;
   const ImageAndName(this.name, this.image);
 
-  static ImageAndName get empty => const ImageAndName('', SelectedImage.empty);
+  static ImageAndName get empty => const ImageAndName('', AbiliaFile.empty);
 
   ImageAndName copyWith({
     String? name,
-    SelectedImage? image,
+    AbiliaFile? image,
   }) =>
       ImageAndName(
         name ?? this.name,

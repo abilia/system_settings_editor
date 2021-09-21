@@ -38,13 +38,14 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
   static final allPermissions = UnmodifiableSetView(
     {
       Permission.notification,
-      if (!Platform.isIOS) ...[
+      Permission.microphone,
+      if (!Platform.isIOS) ...{
         Permission.systemAlertWindow,
-      ],
-      if (!Platform.isAndroid) ...[
+      },
+      if (!Platform.isAndroid) ...{
         Permission.photos,
         Permission.camera,
-      ]
+      }
     },
   );
 

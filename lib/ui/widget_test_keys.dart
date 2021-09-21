@@ -74,5 +74,7 @@ class TestKey {
       createAccountPassword = Key('createAccountPassword'),
       createAccountPasswordConfirm = Key('createAccountPasswordConfirm'),
       acceptTermsOfUse = Key('acceptTermsOfUse'),
-      acceptPrivacyPolicy = Key('acceptPrivacyPolicy');
+      acceptPrivacyPolicy = Key('acceptPrivacyPolicy'),
+      speechAtStart = Key('speechAtStart'),
+      speechAtEnd = Key('speechAtEnd');
 }

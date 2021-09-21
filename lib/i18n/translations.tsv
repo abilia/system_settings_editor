@@ -107,6 +107,7 @@ close	Close	Stäng	Tæt	Dichtbij	Kiinni	Schließen	Lukk
 back	Previous	Tillbaka	Tilbage	Terug	Takaisin	Zurück	Tilbake
 next	Next	Nästa	Næste	Volgende	Seuraava	Nächster	Neste
 ok	OK	OK	OK	OK	OK	OK	OK
+record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 							
 ### Edit activity							
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
@@ -129,7 +130,13 @@ setTime	Set time	Välj tid	Vælg tid	Tijd instellen	Aseta aika	Zeit einstellen	V
 time	Time	Tid	Tid	Tijd	Aika	Zeit	Tid
 save	Save	Spara	Spare	Sparen	Tallentaa	Sparen	Spare
 endBeforeStartError	End date can't be before start date	Slutdatum kan inte vara före startdatum	Slutdato kan ikke være før startdato	Einddatum mag niet voor startdatum liggen	Päättymispäivä ei voi olla ennen alkamispäivää	Das Enddatum kann nicht vor dem Startdatum liegen	Sluttdato kan ikke være før startdato
-enterTitleAndImage	Enter title and image	Välj title och bild 					
+speech	Speech	Tal	Tale	Spraak	Puhe	Ansagen	Tale
+speechOnStart	Speech at Start time	Tal vid starttid	Tale ved starttid	Spraak op starttijd	Puhe aloitusaikaan	Ansage zum Startzeitpunkt	Tale ved starttid
+speechOnEnd	Speech at End time	Tal vid sluttid	Tale ved sluttid	Spraak op eindtijd	Puhe päättymisaikaan	Ansage zum Endzeitpunkt	Tale ved sluttid
+duration	Duration	Tidslängd	Tidslængde	Duur	Kesto	Dauer	Varighet
+stop	Stop	Stopp	Stop	Stoppen	Pysäytä	Stopp	Stopp
+play	Play	Lyssna	Afspel	Afspelen	Toista	Wiedergabe	Spill av
+enterTitleAndImage	Enter title and image	Välj titel och bild					
 							
 ### Errors & warnings							
 error	Error	Fel	Fejl	Fout	Virhe	Error	Feil

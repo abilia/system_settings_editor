@@ -121,7 +121,7 @@ void main() {
     await untilCalled(
         mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId, filePath, file)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
     );
 
     // Assert --that added file is prioritized
@@ -149,7 +149,7 @@ void main() {
     // Act
     userFileBloc.add(LoadUserFiles());
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId, filePath, file)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
     );
 
     final expectedFile = UserFile(
@@ -182,7 +182,7 @@ void main() {
 
     // Act
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId, filePath, file)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
     );
 
     // Assert
@@ -210,10 +210,10 @@ void main() {
     // Act
     userFileBloc.add(LoadUserFiles());
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId, filePath1, file)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath1, file)),
     );
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId2, filePath2, file2)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId2, filePath2, file2)),
     );
 
     // Assert
@@ -264,10 +264,10 @@ void main() {
 
     // Act
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId, filePath1, file)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath1, file)),
     );
     userFileBloc.add(
-      ImageAdded(SelectedImageFile.forTest(fileId2, filePath2, file2)),
+      ImageAdded(UnstoredAbiliaFile.forTest(fileId2, filePath2, file2)),
     );
 
     // Assert

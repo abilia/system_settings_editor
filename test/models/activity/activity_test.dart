@@ -70,7 +70,7 @@ void main() {
     expect(result.secret, false);
     expect(result.fileId, '1a1b1678-781e-4b6f-9518-b6858560433f');
     expect(result.timezone, 'Europe/Stockholm');
-    expect(result.extras, 'extra extra');
+    expect(result.extras, Extras.empty);
   });
 
   test('parse json with nulls test', () {
@@ -115,7 +115,7 @@ void main() {
     expect(result.reminders, []);
     expect(result.fileId, '');
     expect(result.timezone, '');
-    expect(result.extras, '');
+    expect(result.extras, Extras.empty);
     for (var p in result.props) {
       expect(p, isNotNull);
     }
@@ -200,7 +200,7 @@ void main() {
     expect(result.reminders, []);
     // expect(result.extras, null);
     expect(result.fileId, '');
-    expect(result.extras, '');
+    expect(result.extras, Extras.empty);
   });
 
   test('create, serialize and deserialize test', () {
@@ -227,7 +227,9 @@ void main() {
       checkable: true,
       signedOffDates: [DateTime(2000, 02, 20)],
       infoItem: infoItem,
-      extras: 'extra',
+      extras: Extras.createNew(
+        startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
+      ),
     );
     final dbActivity = activity.wrapWithDbModel();
     final asJson = dbActivity.toJson();
@@ -280,7 +282,8 @@ void main() {
       title: 'Title',
       startTime: now,
       fileId: '',
-      extras: 'åäö',
+      extras: Extras.createNew(
+          startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm')),
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
@@ -289,10 +292,7 @@ void main() {
         .map((value) => value is bool ? (value ? 1 : 0) : value)
         .toList();
 
-    expect(
-      jsonWithoutBool,
-      containsAll(db.values),
-    );
+    expect(jsonWithoutBool, containsAll(db.values));
   });
 
   test('infoItem is null or empty (Bug SGC-328)', () {
@@ -333,7 +333,7 @@ void main() {
   });
 
   test('Bug SGC-867 extras not saved on change', () {
-    final response = '''{
+    const response = '''{
       "id": "13e4085c-dfbc-4d8c-8c81-7bad32a0a8b4",
       "owner": 356,
       "revision": 1,
@@ -364,9 +364,7 @@ void main() {
       "showInDayplan": true,
       "calendarId": "36a50dae-bede-4bdb-89ec-10229777c889",
       "fileId": ""
-}'''
-        .replaceAll('\n', '')
-        .replaceAll(' ', '');
+}''';
     final decoded = json.decode(response) as Map<String, dynamic>;
     final parsed = DbActivity.fromJson(decoded);
     final dbMap = parsed.toMapForDb();

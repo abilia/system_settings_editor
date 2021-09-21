@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart';
 
 import 'package:mockito/annotations.dart';
+import 'package:record/record.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -45,6 +46,7 @@ import 'package:seagull/storage/all.dart';
   FirebasePushService,
   MultipartRequestBuilder,
   Notification,
+  Record,
 
   // Plugin
   FlutterLocalNotificationsPlugin,

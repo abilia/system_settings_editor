@@ -7,6 +7,7 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
   final EditActivityState state;
+
   const ActivityNameAndPictureWidget(this.state, {Key? key}) : super(key: key);
 
   @override
@@ -32,8 +33,8 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 }
 
 class NameAndPictureWidget extends StatelessWidget {
-  final SelectedImage selectedImage;
-  final void Function(SelectedImage)? onImageSelected;
+  final AbiliaFile selectedImage;
+  final void Function(AbiliaFile)? onImageSelected;
   final void Function(String)? onTextEdit;
   final bool errorState;
   final String text;
@@ -50,6 +51,7 @@ class NameAndPictureWidget extends StatelessWidget {
     this.inputFormatters = const <TextInputFormatter>[],
     required this.text,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -80,9 +82,9 @@ class NameAndPictureWidget extends StatelessWidget {
 
 class SelectPictureWidget extends StatelessWidget {
   static final imageSize = 84.0.s, padding = 4.0.s;
-  final SelectedImage selectedImage;
+  final AbiliaFile selectedImage;
 
-  final void Function(SelectedImage)? onImageSelected;
+  final void Function(AbiliaFile)? onImageSelected;
   final bool errorState;
 
   const SelectPictureWidget({
@@ -112,7 +114,7 @@ class SelectPictureWidget extends StatelessWidget {
   }
 
   void imageClick(BuildContext context) async {
-    final newSelectedImage = await Navigator.of(context).push<SelectedImage>(
+    final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
@@ -122,7 +124,7 @@ class SelectPictureWidget extends StatelessWidget {
     );
 
     if (newSelectedImage != null) {
-      if (newSelectedImage is SelectedImageFile) {
+      if (newSelectedImage is UnstoredAbiliaFile) {
         BlocProvider.of<UserFileBloc>(context).add(
           ImageAdded(newSelectedImage),
         );
@@ -140,7 +142,7 @@ class SelectPictureWidget extends StatelessWidget {
 
 class SelectedImageWidget extends StatelessWidget {
   final GestureTapCallback? onTap;
-  final SelectedImage selectedImage;
+  final AbiliaFile selectedImage;
 
   final bool errorState;
 
@@ -223,6 +225,7 @@ class CategoryWidget extends StatelessWidget {
   final Activity activity;
 
   const CategoryWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -321,6 +324,7 @@ class AlarmWidget extends StatelessWidget {
   final Activity activity;
 
   const AlarmWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -436,6 +440,7 @@ class AvailableForWidget extends StatelessWidget {
   final Activity activity;
 
   const AvailableForWidget(this.activity, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final secret = activity.secret;
@@ -472,6 +477,7 @@ class RecurrenceWidget extends StatelessWidget {
   final EditActivityState state;
 
   const RecurrenceWidget(this.state, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -539,6 +545,7 @@ class RecurrenceWidget extends StatelessWidget {
 
 class EndDateWidget extends StatelessWidget {
   const EndDateWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -604,10 +611,12 @@ class EndDateWidget extends StatelessWidget {
 
 class WeekDays extends StatelessWidget {
   final Set<int> selectedWeekDays;
+
   const WeekDays(
     this.selectedWeekDays, {
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -637,6 +646,7 @@ class MonthDays extends StatelessWidget {
     this.activity, {
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final selectedMonthDays = activity.recurs.monthDays;

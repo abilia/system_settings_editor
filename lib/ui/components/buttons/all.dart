@@ -7,3 +7,4 @@ export 'icon_text_button.dart';
 export 'eye_button.dart';
 export 'menu_button.dart';
 export 'hidden_settings.dart';
+export 'play_sound_button.dart';

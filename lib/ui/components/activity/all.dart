@@ -8,3 +8,4 @@ export 'check_mark.dart';
 export 'note_block.dart';
 export 'checklist.dart';
 export 'edit_activity_tabs/all.dart';
+export 'record_sound_widgets.dart';

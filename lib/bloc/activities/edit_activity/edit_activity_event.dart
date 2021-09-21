@@ -69,7 +69,7 @@ class AddOrRemoveReminder extends ActivityChangedEvent {
 }
 
 class ImageSelected extends ActivityChangedEvent {
-  final SelectedImage selected;
+  final AbiliaFile selected;
   String get imageId => selected.id;
   String get path => selected.path;
   const ImageSelected(this.selected);
