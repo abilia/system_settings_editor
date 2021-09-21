@@ -31,12 +31,12 @@ class IconAndTextButton extends StatelessWidget {
   }
 }
 
-class GreyButton extends StatelessWidget {
+class LightButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
   final IconData icon;
 
-  const GreyButton({
+  const LightButton({
     Key? key,
     required this.text,
     required this.icon,
@@ -48,7 +48,28 @@ class GreyButton extends StatelessWidget {
         text: text,
         icon: icon,
         onPressed: onPressed,
-        style: iconTextButtonStyleDarkGrey,
+        style: iconTextButtonStyleLight,
+      );
+}
+
+class DarkGreyButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String text;
+  final IconData icon;
+
+  const DarkGreyButton({
+    required this.text,
+    required this.icon,
+    this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => IconAndTextButton(
+        text: text,
+        icon: icon,
+        onPressed: onPressed,
+        style: textButtonStyleDarkGrey,
       );
 }
 
@@ -122,7 +143,7 @@ class PreviousButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GreyButton(
+    return LightButton(
       text: Translator.of(context).translate.back,
       icon: AbiliaIcons.navigation_previous,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
@@ -136,7 +157,7 @@ class CancelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GreyButton(
+    return LightButton(
       text: Translator.of(context).translate.cancel,
       icon: AbiliaIcons.close_program,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
@@ -150,7 +171,7 @@ class CloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GreyButton(
+    return LightButton(
       icon: AbiliaIcons.close_program,
       text: Translator.of(context).translate.close,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
@@ -172,61 +193,10 @@ class YesButton extends StatelessWidget {
 class NoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GreyButton(
+    return LightButton(
       text: Translator.of(context).translate.no,
       icon: AbiliaIcons.close_program,
       onPressed: () => Navigator.of(context).maybePop(false),
-    );
-  }
-}
-
-class RecordAudioButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  const RecordAudioButton({
-    Key? key,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => IconAndTextButton(
-        text: Translator.of(context).translate.record,
-        icon: AbiliaIcons.dictaphone,
-        onPressed: onPressed,
-        style: iconTextButtonStyleRed,
-      );
-}
-
-class DeleteButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  const DeleteButton({
-    Key? key,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => IconAndTextButton(
-        icon: AbiliaIcons.remove,
-        text: '',
-        onPressed: onPressed,
-        style: actionButtonStyleBlack,
-      );
-}
-
-class StopButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  const StopButton({
-    Key? key,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GreyButton(
-      text: Translator.of(context).translate.stop,
-      icon: AbiliaIcons.stop,
-      onPressed: onPressed,
     );
   }
 }

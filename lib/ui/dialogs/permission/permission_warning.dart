@@ -15,7 +15,7 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
       expanded: true,
       bodyPadding:
           EdgeInsets.symmetric(horizontal: ViewDialog.horizontalPadding),
-      backNavigationWidget: GreyButton(
+      backNavigationWidget: LightButton(
         icon: AbiliaIcons.close_program,
         text: translate.no,
         onPressed: Navigator.of(context).maybePop,

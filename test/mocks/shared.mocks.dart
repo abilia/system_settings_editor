@@ -3,20 +3,21 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i9;
-import 'dart:convert' as _i19;
+import 'dart:convert' as _i20;
 import 'dart:io' as _i8;
-import 'dart:typed_data' as _i16;
-import 'dart:ui' as _i20;
+import 'dart:typed_data' as _i17;
+import 'dart:ui' as _i21;
 
-import 'package:bloc/bloc.dart' as _i15;
-import 'package:flutter/gestures.dart' as _i14;
-import 'package:flutter/material.dart' as _i13;
-import 'package:flutter/rendering.dart' as _i21;
+import 'package:bloc/bloc.dart' as _i16;
+import 'package:flutter/gestures.dart' as _i15;
+import 'package:flutter/material.dart' as _i14;
+import 'package:flutter/rendering.dart' as _i22;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as _i18;
+    as _i19;
 import 'package:http/http.dart' as _i5;
 import 'package:logging/logging.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i2;
+import 'package:record/record.dart' as _i13;
 import 'package:seagull/bloc/activities/edit_recurring_mixin.dart' as _i11;
 import 'package:seagull/bloc/all.dart' as _i10;
 import 'package:seagull/db/all.dart' as _i3;
@@ -25,7 +26,7 @@ import 'package:seagull/repository/all.dart' as _i6;
 import 'package:seagull/storage/all.dart' as _i7;
 import 'package:shared_preferences/shared_preferences.dart' as _i12;
 
-import 'shared.dart' as _i17;
+import 'shared.dart' as _i18;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -127,26 +128,28 @@ class _FakeDatabase_35 extends _i2.Fake implements _i3.Database {}
 class _FakeMultipartRequest_36 extends _i2.Fake
     implements _i5.MultipartRequest {}
 
-class _FakeResponse_37 extends _i2.Fake implements _i5.Response {}
+class _FakeAmplitude_37 extends _i2.Fake implements _i13.Amplitude {}
 
-class _FakeStreamedResponse_38 extends _i2.Fake
+class _FakeResponse_38 extends _i2.Fake implements _i5.Response {}
+
+class _FakeStreamedResponse_39 extends _i2.Fake
     implements _i5.StreamedResponse {}
 
-class _FakeScrollPosition_39 extends _i2.Fake implements _i13.ScrollPosition {}
+class _FakeScrollPosition_40 extends _i2.Fake implements _i14.ScrollPosition {}
 
-class _FakeScrollPhysics_40 extends _i2.Fake implements _i13.ScrollPhysics {}
+class _FakeScrollPhysics_41 extends _i2.Fake implements _i14.ScrollPhysics {}
 
-class _FakeScrollContext_41 extends _i2.Fake implements _i13.ScrollContext {}
+class _FakeScrollContext_42 extends _i2.Fake implements _i14.ScrollContext {}
 
-class _FakeValueNotifier_42<T> extends _i2.Fake
-    implements _i13.ValueNotifier<T> {}
+class _FakeValueNotifier_43<T> extends _i2.Fake
+    implements _i14.ValueNotifier<T> {}
 
-class _FakeScrollHoldController_43 extends _i2.Fake
-    implements _i13.ScrollHoldController {}
+class _FakeScrollHoldController_44 extends _i2.Fake
+    implements _i14.ScrollHoldController {}
 
-class _FakeDrag_44 extends _i2.Fake implements _i14.Drag {}
+class _FakeDrag_45 extends _i2.Fake implements _i15.Drag {}
 
-class _FakeScrollMetrics_45 extends _i2.Fake implements _i13.ScrollMetrics {}
+class _FakeScrollMetrics_46 extends _i2.Fake implements _i14.ScrollMetrics {}
 
 /// A class which mocks [ActivityRepository].
 ///
@@ -679,37 +682,37 @@ class MockActivitiesBloc extends _i2.Mock implements _i10.ActivitiesBloc {
           returnValueForMissingStub: null);
   @override
   _i9.Stream<
-      _i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>> transformEvents(
+      _i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>> transformEvents(
           _i9.Stream<_i10.ActivitiesEvent>? events,
-          _i15.TransitionFunction<_i10.ActivitiesEvent, _i10.ActivitiesState>?
+          _i16.TransitionFunction<_i10.ActivitiesEvent, _i10.ActivitiesState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue:
-                  Stream<_i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>.empty())
+                  Stream<_i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>.empty())
           as _i9.Stream<
-              _i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>);
+              _i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>);
   @override
   void emit(_i10.ActivitiesState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>?
+          _i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>
+  _i9.Stream<_i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>?
+              _i9.Stream<_i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>.empty())
+                      Stream<_i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>.empty())
               as _i9.Stream<
-                  _i15.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>);
+                  _i16.Transition<_i10.ActivitiesEvent, _i10.ActivitiesState>>);
   @override
   _i9.StreamSubscription<_i10.ActivitiesState> listen(
           void Function(_i10.ActivitiesState)? onData,
@@ -727,7 +730,7 @@ class MockActivitiesBloc extends _i2.Mock implements _i10.ActivitiesBloc {
               returnValue: _FakeStreamSubscription_15<_i10.ActivitiesState>())
           as _i9.StreamSubscription<_i10.ActivitiesState>);
   @override
-  void onChange(_i15.Change<_i10.ActivitiesState>? change) =>
+  void onChange(_i16.Change<_i10.ActivitiesState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -853,39 +856,39 @@ class MockActivitiesOccasionBloc extends _i2.Mock
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>
+  _i9.Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>
       transformEvents(
               _i9.Stream<_i10.ActivitiesOccasionEvent>? events,
-              _i15.TransitionFunction<_i10.ActivitiesOccasionEvent,
+              _i16.TransitionFunction<_i10.ActivitiesOccasionEvent,
                       _i10.ActivitiesOccasionState>?
                   transitionFn) =>
           (super.noSuchMethod(
                   Invocation.method(#transformEvents, [events, transitionFn]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>.empty())
-              as _i9.Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>);
+                      Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>.empty())
+              as _i9.Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>);
   @override
   void emit(_i10.ActivitiesOccasionState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.ActivitiesOccasionEvent,
+          _i16.Transition<_i10.ActivitiesOccasionEvent,
                   _i10.ActivitiesOccasionState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>
+  _i9.Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>?
+              _i9.Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>.empty())
+                      Stream<_i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>.empty())
               as _i9.Stream<
-                  _i15.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>);
+                  _i16.Transition<_i10.ActivitiesOccasionEvent, _i10.ActivitiesOccasionState>>);
   @override
   _i9.StreamSubscription<_i10.ActivitiesOccasionState> listen(
           void Function(_i10.ActivitiesOccasionState)? onData,
@@ -904,7 +907,7 @@ class MockActivitiesOccasionBloc extends _i2.Mock
                   _FakeStreamSubscription_15<_i10.ActivitiesOccasionState>())
           as _i9.StreamSubscription<_i10.ActivitiesOccasionState>);
   @override
-  void onChange(_i15.Change<_i10.ActivitiesOccasionState>? change) =>
+  void onChange(_i16.Change<_i10.ActivitiesOccasionState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -973,34 +976,34 @@ class MockSyncBloc extends _i2.Mock implements _i10.SyncBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.SyncEvent, _i10.SyncState>> transformEvents(
+  _i9.Stream<_i16.Transition<_i10.SyncEvent, _i10.SyncState>> transformEvents(
           _i9.Stream<_i10.SyncEvent>? events,
-          _i15.TransitionFunction<_i10.SyncEvent, _i10.SyncState>?
+          _i16.TransitionFunction<_i10.SyncEvent, _i10.SyncState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i15.Transition<_i10.SyncEvent, _i10.SyncState>>.empty())
-          as _i9.Stream<_i15.Transition<_i10.SyncEvent, _i10.SyncState>>);
+                  _i16.Transition<_i10.SyncEvent, _i10.SyncState>>.empty())
+          as _i9.Stream<_i16.Transition<_i10.SyncEvent, _i10.SyncState>>);
   @override
   void emit(_i10.SyncState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.SyncEvent, _i10.SyncState>? transition) =>
+          _i16.Transition<_i10.SyncEvent, _i10.SyncState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.SyncEvent, _i10.SyncState>>
+  _i9.Stream<_i16.Transition<_i10.SyncEvent, _i10.SyncState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.SyncEvent, _i10.SyncState>>?
+              _i9.Stream<_i16.Transition<_i10.SyncEvent, _i10.SyncState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue: Stream<
-                      _i15.Transition<_i10.SyncEvent, _i10.SyncState>>.empty())
-              as _i9.Stream<_i15.Transition<_i10.SyncEvent, _i10.SyncState>>);
+                      _i16.Transition<_i10.SyncEvent, _i10.SyncState>>.empty())
+              as _i9.Stream<_i16.Transition<_i10.SyncEvent, _i10.SyncState>>);
   @override
   _i9.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(),
@@ -1022,7 +1025,7 @@ class MockSyncBloc extends _i2.Mock implements _i10.SyncBloc {
               returnValue: _FakeStreamSubscription_15<_i10.SyncState>())
           as _i9.StreamSubscription<_i10.SyncState>);
   @override
-  void onChange(_i15.Change<_i10.SyncState>? change) =>
+  void onChange(_i16.Change<_i10.SyncState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1071,34 +1074,34 @@ class MockPushBloc extends _i2.Mock implements _i10.PushBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.PushEvent, _i10.PushState>> transformEvents(
+  _i9.Stream<_i16.Transition<_i10.PushEvent, _i10.PushState>> transformEvents(
           _i9.Stream<_i10.PushEvent>? events,
-          _i15.TransitionFunction<_i10.PushEvent, _i10.PushState>?
+          _i16.TransitionFunction<_i10.PushEvent, _i10.PushState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i15.Transition<_i10.PushEvent, _i10.PushState>>.empty())
-          as _i9.Stream<_i15.Transition<_i10.PushEvent, _i10.PushState>>);
+                  _i16.Transition<_i10.PushEvent, _i10.PushState>>.empty())
+          as _i9.Stream<_i16.Transition<_i10.PushEvent, _i10.PushState>>);
   @override
   void emit(_i10.PushState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.PushEvent, _i10.PushState>? transition) =>
+          _i16.Transition<_i10.PushEvent, _i10.PushState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.PushEvent, _i10.PushState>>
+  _i9.Stream<_i16.Transition<_i10.PushEvent, _i10.PushState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.PushEvent, _i10.PushState>>?
+              _i9.Stream<_i16.Transition<_i10.PushEvent, _i10.PushState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue: Stream<
-                      _i15.Transition<_i10.PushEvent, _i10.PushState>>.empty())
-              as _i9.Stream<_i15.Transition<_i10.PushEvent, _i10.PushState>>);
+                      _i16.Transition<_i10.PushEvent, _i10.PushState>>.empty())
+              as _i9.Stream<_i16.Transition<_i10.PushEvent, _i10.PushState>>);
   @override
   _i9.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(),
@@ -1120,7 +1123,7 @@ class MockPushBloc extends _i2.Mock implements _i10.PushBloc {
               returnValue: _FakeStreamSubscription_15<_i10.PushState>())
           as _i9.StreamSubscription<_i10.PushState>);
   @override
-  void onChange(_i15.Change<_i10.PushState>? change) =>
+  void onChange(_i16.Change<_i10.PushState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1191,35 +1194,35 @@ class MockGenericBloc extends _i2.Mock implements _i10.GenericBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.GenericEvent, _i10.GenericState>> transformEvents(
+  _i9.Stream<_i16.Transition<_i10.GenericEvent, _i10.GenericState>> transformEvents(
           _i9.Stream<_i10.GenericEvent>? events,
-          _i15.TransitionFunction<_i10.GenericEvent, _i10.GenericState>?
+          _i16.TransitionFunction<_i10.GenericEvent, _i10.GenericState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i15.Transition<_i10.GenericEvent, _i10.GenericState>>.empty())
-          as _i9.Stream<_i15.Transition<_i10.GenericEvent, _i10.GenericState>>);
+                  _i16.Transition<_i10.GenericEvent, _i10.GenericState>>.empty())
+          as _i9.Stream<_i16.Transition<_i10.GenericEvent, _i10.GenericState>>);
   @override
   void emit(_i10.GenericState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.GenericEvent, _i10.GenericState>? transition) =>
+          _i16.Transition<_i10.GenericEvent, _i10.GenericState>? transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.GenericEvent, _i10.GenericState>>
+  _i9.Stream<_i16.Transition<_i10.GenericEvent, _i10.GenericState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.GenericEvent, _i10.GenericState>>?
+              _i9.Stream<_i16.Transition<_i10.GenericEvent, _i10.GenericState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue: Stream<
-                      _i15.Transition<_i10.GenericEvent, _i10.GenericState>>.empty())
+                      _i16.Transition<_i10.GenericEvent, _i10.GenericState>>.empty())
               as _i9
-                  .Stream<_i15.Transition<_i10.GenericEvent, _i10.GenericState>>);
+                  .Stream<_i16.Transition<_i10.GenericEvent, _i10.GenericState>>);
   @override
   _i9.StreamSubscription<_i10.GenericState> listen(
           void Function(_i10.GenericState)? onData,
@@ -1237,7 +1240,7 @@ class MockGenericBloc extends _i2.Mock implements _i10.GenericBloc {
               returnValue: _FakeStreamSubscription_15<_i10.GenericState>())
           as _i9.StreamSubscription<_i10.GenericState>);
   @override
-  void onChange(_i15.Change<_i10.GenericState>? change) =>
+  void onChange(_i16.Change<_i10.GenericState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1315,36 +1318,36 @@ class MockSortableBloc extends _i2.Mock implements _i10.SortableBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.SortableEvent, _i10.SortableState>> transformEvents(
+  _i9.Stream<_i16.Transition<_i10.SortableEvent, _i10.SortableState>> transformEvents(
           _i9.Stream<_i10.SortableEvent>? events,
-          _i15.TransitionFunction<_i10.SortableEvent, _i10.SortableState>?
+          _i16.TransitionFunction<_i10.SortableEvent, _i10.SortableState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i15.Transition<_i10.SortableEvent, _i10.SortableState>>.empty())
+                  _i16.Transition<_i10.SortableEvent, _i10.SortableState>>.empty())
           as _i9
-              .Stream<_i15.Transition<_i10.SortableEvent, _i10.SortableState>>);
+              .Stream<_i16.Transition<_i10.SortableEvent, _i10.SortableState>>);
   @override
   void emit(_i10.SortableState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.SortableEvent, _i10.SortableState>?
+          _i16.Transition<_i10.SortableEvent, _i10.SortableState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.SortableEvent, _i10.SortableState>>
+  _i9.Stream<_i16.Transition<_i10.SortableEvent, _i10.SortableState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.SortableEvent, _i10.SortableState>>?
+              _i9.Stream<_i16.Transition<_i10.SortableEvent, _i10.SortableState>>?
                   transitions) =>
           (super.noSuchMethod(
               Invocation.method(#transformTransitions, [transitions]),
               returnValue: Stream<
-                  _i15.Transition<_i10.SortableEvent, _i10.SortableState>>.empty()) as _i9
-              .Stream<_i15.Transition<_i10.SortableEvent, _i10.SortableState>>);
+                  _i16.Transition<_i10.SortableEvent, _i10.SortableState>>.empty()) as _i9
+              .Stream<_i16.Transition<_i10.SortableEvent, _i10.SortableState>>);
   @override
   _i9.StreamSubscription<_i10.SortableState> listen(
           void Function(_i10.SortableState)? onData,
@@ -1362,7 +1365,7 @@ class MockSortableBloc extends _i2.Mock implements _i10.SortableBloc {
               returnValue: _FakeStreamSubscription_15<_i10.SortableState>())
           as _i9.StreamSubscription<_i10.SortableState>);
   @override
-  void onChange(_i15.Change<_i10.SortableState>? change) =>
+  void onChange(_i16.Change<_i10.SortableState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1419,39 +1422,39 @@ class MockMemoplannerSettingBloc extends _i2.Mock
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>
+  _i9.Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>
       transformEvents(
               _i9.Stream<_i10.MemoplannerSettingsEvent>? events,
-              _i15.TransitionFunction<_i10.MemoplannerSettingsEvent,
+              _i16.TransitionFunction<_i10.MemoplannerSettingsEvent,
                       _i10.MemoplannerSettingsState>?
                   transitionFn) =>
           (super.noSuchMethod(
                   Invocation.method(#transformEvents, [events, transitionFn]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>.empty())
-              as _i9.Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>);
+                      Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>.empty())
+              as _i9.Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>);
   @override
   void emit(_i10.MemoplannerSettingsState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.MemoplannerSettingsEvent,
+          _i16.Transition<_i10.MemoplannerSettingsEvent,
                   _i10.MemoplannerSettingsState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>
+  _i9.Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>?
+              _i9.Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>.empty())
+                      Stream<_i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>.empty())
               as _i9.Stream<
-                  _i15.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>);
+                  _i16.Transition<_i10.MemoplannerSettingsEvent, _i10.MemoplannerSettingsState>>);
   @override
   _i9.StreamSubscription<_i10.MemoplannerSettingsState> listen(
           void Function(_i10.MemoplannerSettingsState)? onData,
@@ -1470,7 +1473,7 @@ class MockMemoplannerSettingBloc extends _i2.Mock
                   _FakeStreamSubscription_15<_i10.MemoplannerSettingsState>())
           as _i9.StreamSubscription<_i10.MemoplannerSettingsState>);
   @override
-  void onChange(_i15.Change<_i10.MemoplannerSettingsState>? change) =>
+  void onChange(_i16.Change<_i10.MemoplannerSettingsState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1526,37 +1529,37 @@ class MockTimepillarBloc extends _i2.Mock implements _i10.TimepillarBloc {
           returnValueForMissingStub: null);
   @override
   _i9.Stream<
-      _i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>> transformEvents(
+      _i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>> transformEvents(
           _i9.Stream<_i10.TimepillarEvent>? events,
-          _i15.TransitionFunction<_i10.TimepillarEvent, _i10.TimepillarState>?
+          _i16.TransitionFunction<_i10.TimepillarEvent, _i10.TimepillarState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue:
-                  Stream<_i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>.empty())
+                  Stream<_i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>.empty())
           as _i9.Stream<
-              _i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>);
+              _i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>);
   @override
   void emit(_i10.TimepillarState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>?
+          _i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>
+  _i9.Stream<_i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>?
+              _i9.Stream<_i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>?
                   transitions) =>
           (super.noSuchMethod(
                   Invocation.method(#transformTransitions, [transitions]),
                   returnValue:
-                      Stream<_i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>.empty())
+                      Stream<_i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>.empty())
               as _i9.Stream<
-                  _i15.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>);
+                  _i16.Transition<_i10.TimepillarEvent, _i10.TimepillarState>>);
   @override
   _i9.StreamSubscription<_i10.TimepillarState> listen(
           void Function(_i10.TimepillarState)? onData,
@@ -1574,7 +1577,7 @@ class MockTimepillarBloc extends _i2.Mock implements _i10.TimepillarBloc {
               returnValue: _FakeStreamSubscription_15<_i10.TimepillarState>())
           as _i9.StreamSubscription<_i10.TimepillarState>);
   @override
-  void onChange(_i15.Change<_i10.TimepillarState>? change) =>
+  void onChange(_i16.Change<_i10.TimepillarState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -1645,36 +1648,36 @@ class MockUserFileBloc extends _i2.Mock implements _i10.UserFileBloc {
       super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.UserFileEvent, _i10.UserFileState>> transformEvents(
+  _i9.Stream<_i16.Transition<_i10.UserFileEvent, _i10.UserFileState>> transformEvents(
           _i9.Stream<_i10.UserFileEvent>? events,
-          _i15.TransitionFunction<_i10.UserFileEvent, _i10.UserFileState>?
+          _i16.TransitionFunction<_i10.UserFileEvent, _i10.UserFileState>?
               transitionFn) =>
       (super.noSuchMethod(
               Invocation.method(#transformEvents, [events, transitionFn]),
               returnValue: Stream<
-                  _i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>.empty())
+                  _i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>.empty())
           as _i9
-              .Stream<_i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>);
+              .Stream<_i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>);
   @override
   void emit(_i10.UserFileState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
   void onTransition(
-          _i15.Transition<_i10.UserFileEvent, _i10.UserFileState>?
+          _i16.Transition<_i10.UserFileEvent, _i10.UserFileState>?
               transition) =>
       super.noSuchMethod(Invocation.method(#onTransition, [transition]),
           returnValueForMissingStub: null);
   @override
-  _i9.Stream<_i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>
+  _i9.Stream<_i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>
       transformTransitions(
-              _i9.Stream<_i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>?
+              _i9.Stream<_i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>?
                   transitions) =>
           (super.noSuchMethod(
               Invocation.method(#transformTransitions, [transitions]),
               returnValue: Stream<
-                  _i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>.empty()) as _i9
-              .Stream<_i15.Transition<_i10.UserFileEvent, _i10.UserFileState>>);
+                  _i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>.empty()) as _i9
+              .Stream<_i16.Transition<_i10.UserFileEvent, _i10.UserFileState>>);
   @override
   _i9.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(),
@@ -1696,7 +1699,7 @@ class MockUserFileBloc extends _i2.Mock implements _i10.UserFileBloc {
               returnValue: _FakeStreamSubscription_15<_i10.UserFileState>())
           as _i9.StreamSubscription<_i10.UserFileState>);
   @override
-  void onChange(_i15.Change<_i10.UserFileState>? change) =>
+  void onChange(_i16.Change<_i10.UserFileState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -2387,7 +2390,7 @@ class MockMultipartRequestBuilder extends _i2.Mock
 
   @override
   _i5.MultipartRequest generateFileMultipartRequest(
-          {Uri? uri, _i16.Uint8List? bytes, String? authToken, String? sha1}) =>
+          {Uri? uri, _i17.Uint8List? bytes, String? authToken, String? sha1}) =>
       (super.noSuchMethod(
           Invocation.method(#generateFileMultipartRequest, [],
               {#uri: uri, #bytes: bytes, #authToken: authToken, #sha1: sha1}),
@@ -2399,7 +2402,7 @@ class MockMultipartRequestBuilder extends _i2.Mock
 /// A class which mocks [Notification].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNotification extends _i2.Mock implements _i17.Notification {
+class MockNotification extends _i2.Mock implements _i18.Notification {
   MockNotification() {
     _i2.throwOnMissingStub(this);
   }
@@ -2412,32 +2415,94 @@ class MockNotification extends _i2.Mock implements _i17.Notification {
   String toString() => super.toString();
 }
 
+/// A class which mocks [Record].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRecord extends _i2.Mock implements _i13.Record {
+  MockRecord() {
+    _i2.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.Future<void> start(
+          {String? path,
+          _i13.AudioEncoder? encoder = _i13.AudioEncoder.AAC,
+          int? bitRate = 128000,
+          double? samplingRate = 44100.0}) =>
+      (super.noSuchMethod(
+          Invocation.method(#start, [], {
+            #path: path,
+            #encoder: encoder,
+            #bitRate: bitRate,
+            #samplingRate: samplingRate
+          }),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<String?> stop() =>
+      (super.noSuchMethod(Invocation.method(#stop, []),
+          returnValue: Future<String?>.value()) as _i9.Future<String?>);
+  @override
+  _i9.Future<void> pause() => (super.noSuchMethod(Invocation.method(#pause, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<void> resume() =>
+      (super.noSuchMethod(Invocation.method(#resume, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<bool> isRecording() =>
+      (super.noSuchMethod(Invocation.method(#isRecording, []),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  _i9.Future<bool> isPaused() =>
+      (super.noSuchMethod(Invocation.method(#isPaused, []),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  _i9.Future<bool> hasPermission() =>
+      (super.noSuchMethod(Invocation.method(#hasPermission, []),
+          returnValue: Future<bool>.value(false)) as _i9.Future<bool>);
+  @override
+  _i9.Future<void> dispose() =>
+      (super.noSuchMethod(Invocation.method(#dispose, []),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
+  @override
+  _i9.Future<_i13.Amplitude> getAmplitude() =>
+      (super.noSuchMethod(Invocation.method(#getAmplitude, []),
+              returnValue: Future<_i13.Amplitude>.value(_FakeAmplitude_37()))
+          as _i9.Future<_i13.Amplitude>);
+  @override
+  String toString() => super.toString();
+}
+
 /// A class which mocks [FlutterLocalNotificationsPlugin].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockFlutterLocalNotificationsPlugin extends _i2.Mock
-    implements _i18.FlutterLocalNotificationsPlugin {
+    implements _i19.FlutterLocalNotificationsPlugin {
   MockFlutterLocalNotificationsPlugin() {
     _i2.throwOnMissingStub(this);
   }
 
   @override
   _i9.Future<bool?> initialize(
-          _i18.InitializationSettings? initializationSettings,
-          {_i18.SelectNotificationCallback? onSelectNotification}) =>
+          _i19.InitializationSettings? initializationSettings,
+          {_i19.SelectNotificationCallback? onSelectNotification}) =>
       (super.noSuchMethod(
           Invocation.method(#initialize, [initializationSettings],
               {#onSelectNotification: onSelectNotification}),
           returnValue: Future<bool?>.value()) as _i9.Future<bool?>);
   @override
-  _i9.Future<_i18.NotificationAppLaunchDetails?>
+  _i9.Future<_i19.NotificationAppLaunchDetails?>
       getNotificationAppLaunchDetails() => (super.noSuchMethod(
               Invocation.method(#getNotificationAppLaunchDetails, []),
-              returnValue: Future<_i18.NotificationAppLaunchDetails?>.value())
-          as _i9.Future<_i18.NotificationAppLaunchDetails?>);
+              returnValue: Future<_i19.NotificationAppLaunchDetails?>.value())
+          as _i9.Future<_i19.NotificationAppLaunchDetails?>);
   @override
   _i9.Future<void> show(int? id, String? title, String? body,
-          _i18.NotificationDetails? notificationDetails, {String? payload}) =>
+          _i19.NotificationDetails? notificationDetails, {String? payload}) =>
       (super.noSuchMethod(
           Invocation.method(#show, [id, title, body, notificationDetails],
               {#payload: payload}),
@@ -2459,7 +2524,7 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           String? title,
           String? body,
           DateTime? scheduledDate,
-          _i18.NotificationDetails? notificationDetails,
+          _i19.NotificationDetails? notificationDetails,
           {String? payload,
           bool? androidAllowWhileIdle = false}) =>
       (super.noSuchMethod(
@@ -2481,12 +2546,12 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           String? title,
           String? body,
           _i6.TZDateTime? scheduledDate,
-          _i18.NotificationDetails? notificationDetails,
-          {_i18.UILocalNotificationDateInterpretation?
+          _i19.NotificationDetails? notificationDetails,
+          {_i19.UILocalNotificationDateInterpretation?
               uiLocalNotificationDateInterpretation,
           bool? androidAllowWhileIdle,
           String? payload,
-          _i18.DateTimeComponents? matchDateTimeComponents}) =>
+          _i19.DateTimeComponents? matchDateTimeComponents}) =>
       (super.noSuchMethod(
           Invocation.method(#zonedSchedule, [
             id,
@@ -2508,8 +2573,8 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           int? id,
           String? title,
           String? body,
-          _i18.RepeatInterval? repeatInterval,
-          _i18.NotificationDetails? notificationDetails,
+          _i19.RepeatInterval? repeatInterval,
+          _i19.NotificationDetails? notificationDetails,
           {String? payload,
           bool? androidAllowWhileIdle = false}) =>
       (super.noSuchMethod(
@@ -2530,8 +2595,8 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           int? id,
           String? title,
           String? body,
-          _i18.Time? notificationTime,
-          _i18.NotificationDetails? notificationDetails,
+          _i19.Time? notificationTime,
+          _i19.NotificationDetails? notificationDetails,
           {String? payload}) =>
       (super.noSuchMethod(
           Invocation.method(
@@ -2545,9 +2610,9 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           int? id,
           String? title,
           String? body,
-          _i18.Day? day,
-          _i18.Time? notificationTime,
-          _i18.NotificationDetails? notificationDetails,
+          _i19.Day? day,
+          _i19.Time? notificationTime,
+          _i19.NotificationDetails? notificationDetails,
           {String? payload}) =>
       (super.noSuchMethod(
           Invocation.method(
@@ -2557,12 +2622,12 @@ class MockFlutterLocalNotificationsPlugin extends _i2.Mock
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
-  _i9.Future<List<_i18.PendingNotificationRequest>>
+  _i9.Future<List<_i19.PendingNotificationRequest>>
       pendingNotificationRequests() => (super.noSuchMethod(
               Invocation.method(#pendingNotificationRequests, []),
-              returnValue: Future<List<_i18.PendingNotificationRequest>>.value(
-                  <_i18.PendingNotificationRequest>[]))
-          as _i9.Future<List<_i18.PendingNotificationRequest>>);
+              returnValue: Future<List<_i19.PendingNotificationRequest>>.value(
+                  <_i19.PendingNotificationRequest>[]))
+          as _i9.Future<List<_i19.PendingNotificationRequest>>);
   @override
   String toString() => super.toString();
 }
@@ -2578,69 +2643,69 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
   @override
   _i9.Future<_i5.Response> head(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> get(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> post(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i19.Encoding? encoding}) =>
+          _i20.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#post, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> put(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i19.Encoding? encoding}) =>
+          _i20.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#put, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> patch(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i19.Encoding? encoding}) =>
+          _i20.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#patch, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<_i5.Response> delete(Uri? url,
           {Map<String, String>? headers,
           Object? body,
-          _i19.Encoding? encoding}) =>
+          _i20.Encoding? encoding}) =>
       (super.noSuchMethod(
               Invocation.method(#delete, [url],
                   {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i5.Response>.value(_FakeResponse_37()))
+              returnValue: Future<_i5.Response>.value(_FakeResponse_38()))
           as _i9.Future<_i5.Response>);
   @override
   _i9.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
           returnValue: Future<String>.value('')) as _i9.Future<String>);
   @override
-  _i9.Future<_i16.Uint8List> readBytes(Uri? url,
+  _i9.Future<_i17.Uint8List> readBytes(Uri? url,
           {Map<String, String>? headers}) =>
       (super.noSuchMethod(
               Invocation.method(#readBytes, [url], {#headers: headers}),
-              returnValue: Future<_i16.Uint8List>.value(_i16.Uint8List(0)))
-          as _i9.Future<_i16.Uint8List>);
+              returnValue: Future<_i17.Uint8List>.value(_i17.Uint8List(0)))
+          as _i9.Future<_i17.Uint8List>);
   @override
   _i9.Future<_i5.StreamedResponse> send(_i5.BaseRequest? request) =>
       (super.noSuchMethod(Invocation.method(#send, [request]),
           returnValue: Future<_i5.StreamedResponse>.value(
-              _FakeStreamedResponse_38())) as _i9.Future<_i5.StreamedResponse>);
+              _FakeStreamedResponse_39())) as _i9.Future<_i5.StreamedResponse>);
   @override
   void close() => super.noSuchMethod(Invocation.method(#close, []),
       returnValueForMissingStub: null);
@@ -2651,7 +2716,7 @@ class MockBaseClient extends _i2.Mock implements _i5.BaseClient {
 /// A class which mocks [ScrollController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockScrollController extends _i2.Mock implements _i13.ScrollController {
+class MockScrollController extends _i2.Mock implements _i14.ScrollController {
   MockScrollController() {
     _i2.throwOnMissingStub(this);
   }
@@ -2665,17 +2730,17 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       (super.noSuchMethod(Invocation.getter(#initialScrollOffset),
           returnValue: 0.0) as double);
   @override
-  Iterable<_i13.ScrollPosition> get positions => (super.noSuchMethod(
+  Iterable<_i14.ScrollPosition> get positions => (super.noSuchMethod(
       Invocation.getter(#positions),
-      returnValue: <_i13.ScrollPosition>[]) as Iterable<_i13.ScrollPosition>);
+      returnValue: <_i14.ScrollPosition>[]) as Iterable<_i14.ScrollPosition>);
   @override
   bool get hasClients =>
       (super.noSuchMethod(Invocation.getter(#hasClients), returnValue: false)
           as bool);
   @override
-  _i13.ScrollPosition get position =>
+  _i14.ScrollPosition get position =>
       (super.noSuchMethod(Invocation.getter(#position),
-          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_40()) as _i14.ScrollPosition);
   @override
   double get offset =>
       (super.noSuchMethod(Invocation.getter(#offset), returnValue: 0.0)
@@ -2686,7 +2751,7 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
           as bool);
   @override
   _i9.Future<void> animateTo(double? offset,
-          {Duration? duration, _i13.Curve? curve}) =>
+          {Duration? duration, _i14.Curve? curve}) =>
       (super.noSuchMethod(
           Invocation.method(
               #animateTo, [offset], {#duration: duration, #curve: curve}),
@@ -2697,23 +2762,23 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       super.noSuchMethod(Invocation.method(#jumpTo, [value]),
           returnValueForMissingStub: null);
   @override
-  void attach(_i13.ScrollPosition? position) =>
+  void attach(_i14.ScrollPosition? position) =>
       super.noSuchMethod(Invocation.method(#attach, [position]),
           returnValueForMissingStub: null);
   @override
-  void detach(_i13.ScrollPosition? position) =>
+  void detach(_i14.ScrollPosition? position) =>
       super.noSuchMethod(Invocation.method(#detach, [position]),
           returnValueForMissingStub: null);
   @override
   void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
       returnValueForMissingStub: null);
   @override
-  _i13.ScrollPosition createScrollPosition(_i13.ScrollPhysics? physics,
-          _i13.ScrollContext? context, _i13.ScrollPosition? oldPosition) =>
+  _i14.ScrollPosition createScrollPosition(_i14.ScrollPhysics? physics,
+          _i14.ScrollContext? context, _i14.ScrollPosition? oldPosition) =>
       (super.noSuchMethod(
           Invocation.method(
               #createScrollPosition, [physics, context, oldPosition]),
-          returnValue: _FakeScrollPosition_39()) as _i13.ScrollPosition);
+          returnValue: _FakeScrollPosition_40()) as _i14.ScrollPosition);
   @override
   String toString() => super.toString();
   @override
@@ -2721,11 +2786,11 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
       Invocation.method(#debugFillDescription, [description]),
       returnValueForMissingStub: null);
   @override
-  void addListener(_i20.VoidCallback? listener) =>
+  void addListener(_i21.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i20.VoidCallback? listener) =>
+  void removeListener(_i21.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
@@ -2737,27 +2802,27 @@ class MockScrollController extends _i2.Mock implements _i13.ScrollController {
 /// A class which mocks [ScrollPosition].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
+class MockScrollPosition extends _i2.Mock implements _i14.ScrollPosition {
   MockScrollPosition() {
     _i2.throwOnMissingStub(this);
   }
 
   @override
-  _i13.ScrollPhysics get physics =>
+  _i14.ScrollPhysics get physics =>
       (super.noSuchMethod(Invocation.getter(#physics),
-          returnValue: _FakeScrollPhysics_40()) as _i13.ScrollPhysics);
+          returnValue: _FakeScrollPhysics_41()) as _i14.ScrollPhysics);
   @override
-  _i13.ScrollContext get context =>
+  _i14.ScrollContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
-          returnValue: _FakeScrollContext_41()) as _i13.ScrollContext);
+          returnValue: _FakeScrollContext_42()) as _i14.ScrollContext);
   @override
   bool get keepScrollOffset =>
       (super.noSuchMethod(Invocation.getter(#keepScrollOffset),
           returnValue: false) as bool);
   @override
-  _i13.ValueNotifier<bool> get isScrollingNotifier => (super.noSuchMethod(
+  _i14.ValueNotifier<bool> get isScrollingNotifier => (super.noSuchMethod(
       Invocation.getter(#isScrollingNotifier),
-      returnValue: _FakeValueNotifier_42<bool>()) as _i13.ValueNotifier<bool>);
+      returnValue: _FakeValueNotifier_43<bool>()) as _i14.ValueNotifier<bool>);
   @override
   double get minScrollExtent =>
       (super.noSuchMethod(Invocation.getter(#minScrollExtent), returnValue: 0.0)
@@ -2795,20 +2860,20 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       (super.noSuchMethod(Invocation.getter(#allowImplicitScrolling),
           returnValue: false) as bool);
   @override
-  _i21.ScrollDirection get userScrollDirection =>
+  _i22.ScrollDirection get userScrollDirection =>
       (super.noSuchMethod(Invocation.getter(#userScrollDirection),
-          returnValue: _i21.ScrollDirection.idle) as _i21.ScrollDirection);
+          returnValue: _i22.ScrollDirection.idle) as _i22.ScrollDirection);
   @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
   @override
-  _i13.AxisDirection get axisDirection =>
+  _i14.AxisDirection get axisDirection =>
       (super.noSuchMethod(Invocation.getter(#axisDirection),
-          returnValue: _i13.AxisDirection.up) as _i13.AxisDirection);
+          returnValue: _i14.AxisDirection.up) as _i14.AxisDirection);
   @override
-  _i13.Axis get axis => (super.noSuchMethod(Invocation.getter(#axis),
-      returnValue: _i13.Axis.horizontal) as _i13.Axis);
+  _i14.Axis get axis => (super.noSuchMethod(Invocation.getter(#axis),
+      returnValue: _i14.Axis.horizontal) as _i14.Axis);
   @override
   bool get outOfRange =>
       (super.noSuchMethod(Invocation.getter(#outOfRange), returnValue: false)
@@ -2830,7 +2895,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       (super.noSuchMethod(Invocation.getter(#extentAfter), returnValue: 0.0)
           as double);
   @override
-  void absorb(_i13.ScrollPosition? other) =>
+  void absorb(_i14.ScrollPosition? other) =>
       super.noSuchMethod(Invocation.method(#absorb, [other]),
           returnValueForMissingStub: null);
   @override
@@ -2883,7 +2948,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
           returnValue: false) as bool);
   @override
   bool correctForNewDimensions(
-          _i13.ScrollMetrics? oldPosition, _i13.ScrollMetrics? newPosition) =>
+          _i14.ScrollMetrics? oldPosition, _i14.ScrollMetrics? newPosition) =>
       (super.noSuchMethod(
           Invocation.method(
               #correctForNewDimensions, [oldPosition, newPosition]),
@@ -2893,13 +2958,13 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#applyNewDimensions, []),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<void> ensureVisible(_i13.RenderObject? object,
+  _i9.Future<void> ensureVisible(_i14.RenderObject? object,
           {double? alignment = 0.0,
           Duration? duration = const Duration(seconds: 0),
-          _i13.Curve? curve = _i13.Curves.ease,
-          _i13.ScrollPositionAlignmentPolicy? alignmentPolicy =
-              _i13.ScrollPositionAlignmentPolicy.explicit,
-          _i13.RenderObject? targetRenderObject}) =>
+          _i14.Curve? curve = _i14.Curves.ease,
+          _i14.ScrollPositionAlignmentPolicy? alignmentPolicy =
+              _i14.ScrollPositionAlignmentPolicy.explicit,
+          _i14.RenderObject? targetRenderObject}) =>
       (super.noSuchMethod(
           Invocation.method(#ensureVisible, [
             object
@@ -2914,7 +2979,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
           returnValueForMissingStub: Future<void>.value()) as _i9.Future<void>);
   @override
   _i9.Future<void> animateTo(double? to,
-          {Duration? duration, _i13.Curve? curve}) =>
+          {Duration? duration, _i14.Curve? curve}) =>
       (super.noSuchMethod(
           Invocation.method(
               #animateTo, [to], {#duration: duration, #curve: curve}),
@@ -2930,7 +2995,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
           returnValueForMissingStub: null);
   @override
   _i9.Future<void> moveTo(double? to,
-          {Duration? duration, _i13.Curve? curve, bool? clamp = true}) =>
+          {Duration? duration, _i14.Curve? curve, bool? clamp = true}) =>
       (super.noSuchMethod(
           Invocation.method(#moveTo, [to],
               {#duration: duration, #curve: curve, #clamp: clamp}),
@@ -2941,18 +3006,18 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#jumpToWithoutSettling, [value]),
           returnValueForMissingStub: null);
   @override
-  _i13.ScrollHoldController hold(_i20.VoidCallback? holdCancelCallback) =>
+  _i14.ScrollHoldController hold(_i21.VoidCallback? holdCancelCallback) =>
       (super.noSuchMethod(Invocation.method(#hold, [holdCancelCallback]),
-              returnValue: _FakeScrollHoldController_43())
-          as _i13.ScrollHoldController);
+              returnValue: _FakeScrollHoldController_44())
+          as _i14.ScrollHoldController);
   @override
-  _i14.Drag drag(_i13.DragStartDetails? details,
-          _i20.VoidCallback? dragCancelCallback) =>
+  _i15.Drag drag(_i14.DragStartDetails? details,
+          _i21.VoidCallback? dragCancelCallback) =>
       (super.noSuchMethod(
           Invocation.method(#drag, [details, dragCancelCallback]),
-          returnValue: _FakeDrag_44()) as _i14.Drag);
+          returnValue: _FakeDrag_45()) as _i15.Drag);
   @override
-  void beginActivity(_i13.ScrollActivity? newActivity) =>
+  void beginActivity(_i14.ScrollActivity? newActivity) =>
       super.noSuchMethod(Invocation.method(#beginActivity, [newActivity]),
           returnValueForMissingStub: null);
   @override
@@ -2972,7 +3037,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#didOverscrollBy, [value]),
           returnValueForMissingStub: null);
   @override
-  void didUpdateScrollDirection(_i21.ScrollDirection? direction) => super
+  void didUpdateScrollDirection(_i22.ScrollDirection? direction) => super
       .noSuchMethod(Invocation.method(#didUpdateScrollDirection, [direction]),
           returnValueForMissingStub: null);
   @override
@@ -2980,7 +3045,7 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
       super.noSuchMethod(Invocation.method(#didUpdateScrollMetrics, []),
           returnValueForMissingStub: null);
   @override
-  bool recommendDeferredLoading(_i13.BuildContext? context) => (super
+  bool recommendDeferredLoading(_i14.BuildContext? context) => (super
       .noSuchMethod(Invocation.method(#recommendDeferredLoading, [context]),
           returnValue: false) as bool);
   @override
@@ -2997,20 +3062,20 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
   @override
   String toString() => super.toString();
   @override
-  void addListener(_i20.VoidCallback? listener) =>
+  void addListener(_i21.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#addListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i20.VoidCallback? listener) =>
+  void removeListener(_i21.VoidCallback? listener) =>
       super.noSuchMethod(Invocation.method(#removeListener, [listener]),
           returnValueForMissingStub: null);
   @override
-  _i13.ScrollMetrics copyWith(
+  _i14.ScrollMetrics copyWith(
           {double? minScrollExtent,
           double? maxScrollExtent,
           double? pixels,
           double? viewportDimension,
-          _i13.AxisDirection? axisDirection}) =>
+          _i14.AxisDirection? axisDirection}) =>
       (super.noSuchMethod(
           Invocation.method(#copyWith, [], {
             #minScrollExtent: minScrollExtent,
@@ -3019,5 +3084,5 @@ class MockScrollPosition extends _i2.Mock implements _i13.ScrollPosition {
             #viewportDimension: viewportDimension,
             #axisDirection: axisDirection
           }),
-          returnValue: _FakeScrollMetrics_45()) as _i13.ScrollMetrics);
+          returnValue: _FakeScrollMetrics_46()) as _i14.ScrollMetrics);
 }

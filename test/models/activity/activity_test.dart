@@ -276,9 +276,7 @@ void main() {
     expect(copy.fileId, '');
   });
 
-  test(
-      'same values in db and json, except extras which is base64 encoded as json',
-      () {
+  test('same values in db and json', () {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
     final a = Activity.createNew(
       title: 'Title',
@@ -289,15 +287,12 @@ void main() {
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
-    final jsonExtras = json.remove('extras');
     final db = dbModel.toMapForDb()..remove('dirty');
-    final dbExtras = base64Encode(utf8.encode(db.remove('extras')));
     final jsonWithoutBool = json.values
         .map((value) => value is bool ? (value ? 1 : 0) : value)
         .toList();
 
     expect(jsonWithoutBool, containsAll(db.values));
-    expect(jsonExtras, dbExtras);
   });
 
   test('infoItem is null or empty (Bug SGC-328)', () {
@@ -338,12 +333,7 @@ void main() {
   });
 
   test('Bug SGC-867 extras not saved on change', () {
-    final extras = base64Encode(
-      utf8.encode(
-        '{"startTimeExtraAlarm":"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav","startTimeExtraAlarmFileId":"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0"}',
-      ),
-    );
-    final response = '''{
+    const response = '''{
       "id": "13e4085c-dfbc-4d8c-8c81-7bad32a0a8b4",
       "owner": 356,
       "revision": 1,
@@ -357,7 +347,7 @@ void main() {
       "signedOffDates": null,
       "infoItem": "",
       "reminderBefore": "",
-      "extras": "$extras",
+      "extras": "{\\"startTimeExtraAlarm\\":\\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\\",\\"startTimeExtraAlarmFileId\\":\\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\\"}",
       "recurrentType": 0,
       "recurrentData": 0,
       "alarmType": 100,
@@ -374,9 +364,7 @@ void main() {
       "showInDayplan": true,
       "calendarId": "36a50dae-bede-4bdb-89ec-10229777c889",
       "fileId": ""
-}'''
-        .replaceAll('\n', '')
-        .replaceAll(' ', '');
+}''';
     final decoded = json.decode(response) as Map<String, dynamic>;
     final parsed = DbActivity.fromJson(decoded);
     final dbMap = parsed.toMapForDb();

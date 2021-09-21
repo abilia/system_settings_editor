@@ -157,7 +157,7 @@ class UserFileRepository extends DataRepository<UserFile> {
             } else {
               await _handleNonImage(userFile);
             }
-            return userFile;
+            return userFile.setLoaded();
           } catch (e) {
             log.severe('Exception when getting and storing user file', e);
             return null;

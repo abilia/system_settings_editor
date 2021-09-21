@@ -89,7 +89,7 @@ final iconTextButtonStyle = baseButtonStyle.copyWith(
   minimumSize: MaterialStateProperty.all(Size(172.0.s, 64.0.s)),
 );
 
-final iconTextButtonStyleDarkGrey = iconTextButtonStyle.copyWith(
+final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundLight,
   shape: MaterialStateProperty.all(ligthShapeBorder),
 );

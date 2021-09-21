@@ -36,7 +36,6 @@ class UnstoredAbiliaFile extends AbiliaFile {
   ) : super._(id, path);
 
   factory UnstoredAbiliaFile.newFile(File file) {
-    assert(file.existsSync());
     final id = Uuid().v4();
     return UnstoredAbiliaFile._(
       id,

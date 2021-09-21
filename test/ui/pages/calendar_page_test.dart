@@ -360,7 +360,7 @@ void main() {
           );
 
           // Act - Go back
-          await tester.tap(find.byType(GreyButton));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
 
           // Assert - Next button disabled, no folder
@@ -371,7 +371,7 @@ void main() {
           expect(find.byType(LibraryFolder), findsOneWidget);
 
           // Act - Go back
-          await tester.tap(find.byType(GreyButton));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
 
           // Assert back at create acitivy page
@@ -382,7 +382,7 @@ void main() {
           );
 
           // Act - Go back
-          await tester.tap(find.byType(GreyButton));
+          await tester.tap(find.byType(CancelButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at calendar page
@@ -474,7 +474,7 @@ void main() {
           expect(find.byType(EditActivityPage), findsOneWidget);
 
           // Act - Go back
-          await tester.tap(find.byType(GreyButton));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page
@@ -515,7 +515,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Act - Go back
-          await tester.tap(find.byType(GreyButton));
+          await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page

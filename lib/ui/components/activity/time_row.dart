@@ -16,15 +16,16 @@ class TimeRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
     final day = activityDay.day;
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) {
-        return Padding(
+    return BlocProvider(
+      create: (context) => SoundCubit(),
+      child: BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, now) => Padding(
           padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (activity.extras.startTimeExtraAlarm != AbiliaFile.empty)
-                _playSpeechButton(context, activity.extras.startTimeExtraAlarm),
+              if (activity.extras.startTimeExtraAlarm.isNotEmpty)
+                _PlaySpeechButton(activity.extras.startTimeExtraAlarm),
               if (activity.fullDay)
                 _TimeBox(
                   occasion:
@@ -32,22 +33,20 @@ class TimeRow extends StatelessWidget {
                   text: Translator.of(context).translate.fullDay,
                 )
               else if (!activity.hasEndTime)
-                _timeText(
-                  context,
-                  date: activityDay.start,
-                  now: now,
+                _TimeBox(
                   key: TestKey.startTime,
+                  text: hourAndMinuteFormat(context)(activityDay.start),
+                  occasion: activityDay.start.occasion(now),
                 )
               else ...[
                 Expanded(
                   child: Row(
                     children: [
                       Spacer(),
-                      _timeText(
-                        context,
-                        date: activityDay.start,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.startTime,
+                        text: hourAndMinuteFormat(context)(activityDay.start),
+                        occasion: activityDay.start.occasion(now),
                       ),
                     ],
                   ),
@@ -60,53 +59,43 @@ class TimeRow extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      _timeText(
-                        context,
-                        date: activityDay.end,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.endTime,
+                        text: hourAndMinuteFormat(context)(activityDay.end),
+                        occasion: activityDay.end.occasion(now),
                       ),
                       Spacer(),
                     ],
                   ),
                 ),
               ],
-              if (activity.extras.endTimeExtraAlarm != AbiliaFile.empty)
-                _playSpeechButton(context, activity.extras.endTimeExtraAlarm),
+              if (activity.extras.endTimeExtraAlarm.isNotEmpty)
+                _PlaySpeechButton(activity.extras.endTimeExtraAlarm)
             ],
           ),
-        );
-      },
-    );
-  }
-
-  Widget _timeText(
-    BuildContext context, {
-    required DateTime date,
-    required DateTime now,
-    required Key key,
-  }) =>
-      _TimeBox(
-        key: key,
-        text: hourAndMinuteFormat(context)(date),
-        occasion: date.occasion(now),
-      );
-
-  Widget _playSpeechButton(BuildContext context, AbiliaFile soundToPlay) {
-    return BlocProvider(
-      create: (context) => SoundCubit(),
-      child: BlocBuilder<UserFileBloc, UserFileState>(
-        builder: (context, state) {
-          return PlaySoundButton(
-            sound: context.read<UserFileBloc>().state.getFile(
-                  soundToPlay,
-                  GetIt.I<FileStorage>(),
-                ),
-          );
-        },
+        ),
       ),
     );
   }
+}
+
+class _PlaySpeechButton extends StatelessWidget {
+  final AbiliaFile speech;
+  const _PlaySpeechButton(
+    this.speech, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<UserFileBloc, UserFileState>(
+        builder: (context, state) => PlaySoundButton(
+          sound: context.read<UserFileBloc>().state.getFile(
+                speech,
+                GetIt.I<FileStorage>(),
+              ),
+        ),
+      );
 }
 
 class _TimeBox extends StatelessWidget {
