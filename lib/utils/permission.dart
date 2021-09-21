@@ -10,6 +10,7 @@ extension PermissionExtension on Permission {
     if (this == Permission.notification) return translate.notifications;
     if (this == Permission.systemAlertWindow) return translate.fullScreenAlarm;
     if (this == Permission.photos) return translate.accessToPhotos;
+    if (this == Permission.microphone) return translate.accessToMicrophone;
     return toString();
   }
 
@@ -23,6 +24,7 @@ extension PermissionExtension on Permission {
     if (this == Permission.systemAlertWindow) return AbiliaIcons.resize_higher;
     if (this == Permission.notification) return AbiliaIcons.notification;
     if (this == Permission.photos) return AbiliaIcons.upload;
+    if (this == Permission.microphone) return AbiliaIcons.dictaphone;
     return AbiliaIcons.empty1;
   }
 }

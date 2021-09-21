@@ -27,52 +27,64 @@ class RecordSoundWidget extends StatelessWidget {
         ],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             SubHeading(translator.speech),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SelectOrPlaySoundWidget(
-                      label: translator.speechOnStart,
-                      abilityToSelectAlarm:
-                          memoSettingsState.abilityToSelectAlarm,
-                      recordedAudio: activity.extras.startTimeExtraAlarm,
-                      onResult: (AbiliaFile result) {
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(
-                            activity.copyWith(
-                              extras: activity.extras.copyWith(
-                                startTimeExtraAlarm: result,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SelectOrPlaySoundWidget(
+                        label: translator.speechOnStart,
+                        abilityToSelectAlarm:
+                            memoSettingsState.abilityToSelectAlarm &&
+                                context
+                                        .read<PermissionBloc>()
+                                        .state
+                                        .microphoneDenied ==
+                                    false,
+                        recordedAudio: activity.extras.startTimeExtraAlarm,
+                        onResult: (AbiliaFile result) {
+                          BlocProvider.of<EditActivityBloc>(context).add(
+                            ReplaceActivity(
+                              activity.copyWith(
+                                extras: activity.extras.copyWith(
+                                  startTimeExtraAlarm: result,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 8.0.s),
-                    SelectOrPlaySoundWidget(
-                      label: translator.speechOnEnd,
-                      abilityToSelectAlarm:
-                          memoSettingsState.abilityToSelectAlarm,
-                      recordedAudio: activity.extras.endTimeExtraAlarm,
-                      onResult: (AbiliaFile result) {
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(
-                            activity.copyWith(
-                              extras: activity.extras.copyWith(
-                                endTimeExtraAlarm: result,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 8.0.s),
+                      SelectOrPlaySoundWidget(
+                        label: translator.speechOnEnd,
+                        abilityToSelectAlarm:
+                            memoSettingsState.abilityToSelectAlarm &&
+                                context
+                                        .read<PermissionBloc>()
+                                        .state
+                                        .microphoneDenied ==
+                                    false,
+                        recordedAudio: activity.extras.endTimeExtraAlarm,
+                        onResult: (AbiliaFile result) {
+                          BlocProvider.of<EditActivityBloc>(context).add(
+                            ReplaceActivity(
+                              activity.copyWith(
+                                extras: activity.extras.copyWith(
+                                  endTimeExtraAlarm: result,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 if (context.read<PermissionBloc>().state.microphoneDenied ==
                     true)
@@ -115,18 +127,16 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(
-              width: 300.s,
+            Flexible(
               child: PickField(
                 leading: Icon(recordedAudio.isEmpty
                     ? AbiliaIcons.no_record
                     : AbiliaIcons.sms_sound),
                 text: Text(label),
-                onTap: abilityToSelectAlarm &&
-                        permissionState.microphoneDenied == false
+                onTap: abilityToSelectAlarm
                     ? () async {
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
