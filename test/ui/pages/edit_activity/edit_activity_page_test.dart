@@ -49,8 +49,9 @@ void main() {
     mockUserFileBloc = MockUserFileBloc();
     when(mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+    when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+            MemoplannerSettings(advancedActivityTemplate: false)));
     when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
   });
 
@@ -82,25 +83,32 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<ActivityWizardCubit>(
-                create: (context) => ActivityWizardCubit(),
-              ),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        clockBloc: BlocProvider.of<ClockBloc>(context),
-                        memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(context),
-                        day: today)
-                    : EditActivityBloc(
+                        day: today,
+                        defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
+                            .state.defaultAlarmTypeSetting,
+                      )
+                    : EditActivityBloc.edit(
                         ActivityDay(activity, today),
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        clockBloc: BlocProvider.of<ClockBloc>(context),
-                        memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(context),
+                      ),
+              ),
+              BlocProvider<ActivityWizardCubit>(
+                create: (context) => newActivity
+                    ? ActivityWizardCubit.newActivity(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        editActivityBloc: context.read<EditActivityBloc>(),
+                        settings: context.read<MemoplannerSettingBloc>().state,
+                      )
+                    : ActivityWizardCubit.edit(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        editActivityBloc: context.read<EditActivityBloc>(),
+                        allowActivityTimeBeforeCurrent:
+                            mockMemoplannerSettingsBloc
+                                .state.activityTimeBeforeCurrent,
                       ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
@@ -130,9 +138,7 @@ void main() {
           ),
         ),
       ),
-      home: ErrorPopupListener(
-        child: EditActivityPage(),
-      ),
+      home: ActivityWizardPage(),
     );
   }
 
@@ -1986,7 +1992,7 @@ text''';
       expect(find.byType(MainTab), findsOneWidget);
 
       // Act press submit
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       // Assert error message
@@ -2124,7 +2130,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       expect(find.text('15:29'), findsOneWidget);
@@ -2154,7 +2160,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
@@ -2187,7 +2193,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
@@ -2593,7 +2599,7 @@ text''';
       await tester.pumpWidget(createEditActivityPage(newActivity: true));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       // Assert error message

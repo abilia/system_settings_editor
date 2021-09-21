@@ -4,63 +4,62 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
-  InfoItemTab({
-    Key? key,
-    required this.state,
-  }) : super(key: key);
-
-  final EditActivityState state;
+  const InfoItemTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final activity = state.activity;
-    final infoItem = activity.infoItem;
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final translate = Translator.of(context).translate;
+        final activity = state.activity;
+        final infoItem = activity.infoItem;
 
-    Future onTap() async {
-      final result = await Navigator.of(context).push<Type>(
-        MaterialPageRoute(
-          builder: (context) => SelectInfoTypePage(
-            infoItemType: activity.infoItem.runtimeType,
-          ),
-        ),
-      );
-      if (result != null) {
-        BlocProvider.of<EditActivityBloc>(context)
-            .add(ChangeInfoItemType(result));
-      }
-    }
-
-    return padded(
-      Padding(
-        padding: EdgeInsets.only(right: 12.0.s),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SubHeading(translate.infoType),
-            if (infoItem is Checklist)
-              EditChecklistWidget(
-                activity: activity,
-                checklist: infoItem,
-                onTap: onTap,
-              )
-            else if (infoItem is NoteInfoItem)
-              EditNoteWidget(
-                activity: activity,
-                infoItem: infoItem,
-                onTap: onTap,
-              )
-            else
-              PickField(
-                key: TestKey.changeInfoItem,
-                leading: const Icon(AbiliaIcons.information),
-                text: Text(translate.infoTypeNone),
-                onTap: onTap,
+        Future onTap() async {
+          final result = await Navigator.of(context).push<Type>(
+            MaterialPageRoute(
+              builder: (context) => SelectInfoTypePage(
+                infoItemType: activity.infoItem.runtimeType,
               ),
-          ],
-        ),
-      ),
+            ),
+          );
+          if (result != null) {
+            BlocProvider.of<EditActivityBloc>(context)
+                .add(ChangeInfoItemType(result));
+          }
+        }
+
+        return padded(
+          Padding(
+            padding: EdgeInsets.only(right: 12.0.s),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SubHeading(translate.infoType),
+                if (infoItem is Checklist)
+                  EditChecklistWidget(
+                    activity: activity,
+                    checklist: infoItem,
+                    onTap: onTap,
+                  )
+                else if (infoItem is NoteInfoItem)
+                  EditNoteWidget(
+                    activity: activity,
+                    infoItem: infoItem,
+                    onTap: onTap,
+                  )
+                else
+                  PickField(
+                    key: TestKey.changeInfoItem,
+                    leading: const Icon(AbiliaIcons.information),
+                    text: Text(translate.infoTypeNone),
+                    onTap: onTap,
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

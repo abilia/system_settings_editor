@@ -146,3 +146,10 @@ class FakeLicenseBloc extends Fake implements LicenseBloc {
   @override
   Future<void> close() async {}
 }
+
+class FakeEditActivityBloc extends Fake implements EditActivityBloc {
+  @override
+  Stream<EditActivityState> get stream => Stream.empty();
+  @override
+  Future<void> close() async {}
+}

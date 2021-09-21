@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,8 +7,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../fakes/fakes_blocs.dart';
-
 void main() {
   final day = DateTime(2020, 10, 06);
 
@@ -18,7 +14,7 @@ void main() {
 
   test('Initial state', () {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'title',
@@ -26,9 +22,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -52,7 +45,7 @@ void main() {
 
   test('Adding and removing days', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -60,9 +53,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -111,7 +101,7 @@ void main() {
 
   test('Adding and removing days on EditActivityBloc', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -119,9 +109,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -172,7 +159,7 @@ void main() {
 
   test('Changing to every other week ', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -180,9 +167,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -220,7 +204,7 @@ void main() {
 
   test('Changing to every other week on EditActivityBloc', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -228,9 +212,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialS = editActivityBloc.state;
 
@@ -269,7 +250,7 @@ void main() {
 
   test('Changing to every other week on even weeks', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -277,9 +258,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
@@ -330,7 +308,7 @@ void main() {
   test('Changing to every other week on even week on EditActivityBloc',
       () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc(
+    final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -338,9 +316,6 @@ void main() {
             recurs: Recurs.weeklyOnDay(day.weekday)),
         day,
       ),
-      activitiesBloc: FakeActivitiesBloc(),
-      memoplannerSettingBloc: FakeMemoplannerSettingsBloc(),
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
     );
     final initialState = editActivityBloc.state;
 

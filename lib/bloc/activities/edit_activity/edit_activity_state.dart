@@ -1,46 +1,17 @@
 part of 'edit_activity_bloc.dart';
 
-enum SaveError {
-  NO_START_TIME,
-  NO_TITLE_OR_IMAGE,
-  START_TIME_BEFORE_NOW,
-  UNCONFIRMED_START_TIME_BEFORE_NOW,
-  UNCONFIRMED_ACTIVITY_CONFLICT,
-  NO_RECURRING_DAYS,
-  STORED_RECURRING,
-}
-
-extension SaveErrors on Set<SaveError> {
-  bool get mainPageErrors => any({
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.NO_START_TIME,
-        SaveError.START_TIME_BEFORE_NOW,
-      }.contains);
-
-  bool get noGoErrors => any({
-        SaveError.NO_START_TIME,
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.START_TIME_BEFORE_NOW,
-        SaveError.NO_RECURRING_DAYS,
-      }.contains);
-}
-
-abstract class EditActivityState extends Equatable with Silent {
+abstract class EditActivityState extends Equatable with Finest {
   const EditActivityState(
     this.activity,
     this.timeInterval,
     this.infoItems, {
     required this.originalActivity,
     required this.originalTimeInterval,
-    this.sucessfullSave,
-    this.saveErrors = const UnmodifiableSetView.empty(),
   });
 
   final Activity activity, originalActivity;
   final TimeInterval timeInterval, originalTimeInterval;
   final MapView<Type, InfoItem> infoItems;
-  final bool? sucessfullSave;
-  final UnmodifiableSetView<SaveError> saveErrors;
 
   bool get hasTitleOrImage => activity.hasTitle || activity.hasImage;
 
@@ -69,7 +40,7 @@ abstract class EditActivityState extends Equatable with Silent {
         path: activity.icon,
       );
 
-  Activity _activityToStore() {
+  Activity activityToStore() {
     var storeActivity = (activity.hasAttachment && activity.infoItem.isEmpty)
         ? activity.copyWith(infoItem: InfoItem.none)
         : activity;
@@ -113,8 +84,6 @@ abstract class EditActivityState extends Equatable with Silent {
         activity,
         timeInterval,
         infoItems,
-        sucessfullSave,
-        saveErrors,
       ];
 
   @override
@@ -125,8 +94,6 @@ abstract class EditActivityState extends Equatable with Silent {
     TimeInterval timeInterval,
     Map<Type, InfoItem> infoItems,
   });
-
-  EditActivityState failSave(Set<SaveError> saveErrors);
 }
 
 class UnstoredActivityState extends EditActivityState {
@@ -146,18 +113,13 @@ class UnstoredActivityState extends EditActivityState {
     TimeInterval timeInterval,
     MapView<Type, InfoItem> infoItems,
     Activity originalActivity,
-    TimeInterval originalTimeInterval, {
-    UnmodifiableSetView<SaveError> saveErrors =
-        const UnmodifiableSetView.empty(),
-    bool? sucessfullSave,
-  }) : super(
+    TimeInterval originalTimeInterval,
+  ) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
-          sucessfullSave: sucessfullSave,
-          saveErrors: saveErrors,
         );
 
   @override
@@ -172,20 +134,6 @@ class UnstoredActivityState extends EditActivityState {
         MapView(infoItems ?? this.infoItems),
         originalActivity,
         originalTimeInterval,
-      );
-
-  @override
-  EditActivityState failSave(Set<SaveError> saveErrors) =>
-      UnstoredActivityState._(
-        activity,
-        timeInterval,
-        infoItems,
-        originalActivity,
-        originalTimeInterval,
-        saveErrors: UnmodifiableSetView(saveErrors),
-        sucessfullSave: sucessfullSave == null
-            ? false
-            : null, // this ugly trick to force state change each failSave
       );
 }
 
@@ -210,18 +158,13 @@ class StoredActivityState extends EditActivityState {
     Activity originalgActivity,
     TimeInterval originalTimeInterval,
     MapView<Type, InfoItem> infoItems,
-    this.day, {
-    bool? sucessfullSave,
-    UnmodifiableSetView<SaveError> saveErrors =
-        const UnmodifiableSetView.empty(),
-  }) : super(
+    this.day,
+  ) : super(
           activity,
           timeInterval,
           infoItems,
           originalActivity: originalgActivity,
           originalTimeInterval: originalTimeInterval,
-          sucessfullSave: sucessfullSave,
-          saveErrors: saveErrors,
         );
 
   @override
@@ -240,30 +183,5 @@ class StoredActivityState extends EditActivityState {
         originalTimeInterval,
         MapView(infoItems ?? this.infoItems),
         day,
-      );
-
-  @override
-  EditActivityState failSave(Set<SaveError> saveErrors) =>
-      StoredActivityState._(
-        activity,
-        timeInterval,
-        originalActivity,
-        originalTimeInterval,
-        infoItems,
-        day,
-        saveErrors: UnmodifiableSetView(saveErrors),
-        sucessfullSave: sucessfullSave == null
-            ? false
-            : null, // this ugly trick to force state change each failSave
-      );
-
-  StoredActivityState saveSucess() => StoredActivityState._(
-        activity,
-        timeInterval,
-        activity,
-        timeInterval,
-        infoItems,
-        day,
-        sucessfullSave: true,
       );
 }

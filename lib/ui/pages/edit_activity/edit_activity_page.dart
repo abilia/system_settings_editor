@@ -2,11 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EditActivityPage extends StatelessWidget {
-  final String? title;
-  const EditActivityPage({
-    this.title,
-    Key? key,
-  }) : super(key: key);
+  const EditActivityPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -16,52 +12,51 @@ class EditActivityPage extends StatelessWidget {
           current.activityRecurringEditable,
       builder: (context, memoSettingsState) =>
           BlocBuilder<EditActivityBloc, EditActivityState>(
+        buildWhen: (previous, current) =>
+            previous.activity.fullDay != current.activity.fullDay,
         builder: (context, state) {
-          final activity = state.activity;
-          final fullDay = activity.fullDay;
+          final fullDay = state.activity.fullDay;
           final displayRecurrence = memoSettingsState.activityRecurringEditable;
           final tabs = [
-            MainTab(editActivityState: state),
-            if (!fullDay) AlarmAndReminderTab(activity: activity),
+            const MainTab(),
+            if (!fullDay) const AlarmAndReminderTab(),
             if (displayRecurrence) const RecurrenceTab(),
-            InfoItemTab(state: state),
+            const InfoItemTab(),
           ];
-          return BlocListener<EditActivityBloc, EditActivityState>(
-            listenWhen: (_, current) => current.sucessfullSave == true,
-            listener: (context, state) => Navigator.of(context).pop(true),
-            child: DefaultTabController(
-              initialIndex: 0,
-              length: tabs.length,
-              child: ScrollToErrorPageListener(
-                nrTabs: tabs.length,
-                child: Scaffold(
-                  appBar: AbiliaAppBar(
-                    iconData: AbiliaIcons.plus,
-                    title: title ?? translate.newActivity,
-                    bottom: AbiliaTabBar(
-                      collapsedCondition: (i) {
-                        switch (i) {
-                          case 1:
-                            return fullDay;
-                          case 2:
-                            return !displayRecurrence;
-                          default:
-                            return false;
-                        }
-                      },
-                      tabs: <Widget>[
-                        Icon(AbiliaIcons.my_photos),
-                        Icon(AbiliaIcons.attention),
-                        Icon(AbiliaIcons.repeat),
-                        Icon(AbiliaIcons.attachment),
-                      ],
-                    ),
+          return DefaultTabController(
+            initialIndex: 0,
+            length: tabs.length,
+            child: ScrollToErrorPageListener(
+              nrTabs: tabs.length,
+              child: Scaffold(
+                appBar: AbiliaAppBar(
+                  iconData: AbiliaIcons.plus,
+                  title: state is StoredActivityState
+                      ? translate.editActivity
+                      : translate.newActivity,
+                  bottom: AbiliaTabBar(
+                    collapsedCondition: (i) {
+                      switch (i) {
+                        case 1:
+                          return fullDay;
+                        case 2:
+                          return !displayRecurrence;
+                        default:
+                          return false;
+                      }
+                    },
+                    tabs: <Widget>[
+                      Icon(AbiliaIcons.my_photos),
+                      Icon(AbiliaIcons.attention),
+                      Icon(AbiliaIcons.repeat),
+                      Icon(AbiliaIcons.attachment),
+                    ],
                   ),
-                  body: TabBarView(
-                    children: tabs,
-                  ),
-                  bottomNavigationBar: WizardBottomNavigation(),
                 ),
+                body: TabBarView(
+                  children: tabs,
+                ),
+                bottomNavigationBar: WizardBottomNavigation(),
               ),
             ),
           );

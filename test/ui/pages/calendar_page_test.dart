@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:seagull/logging.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
@@ -19,7 +18,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
-import '../../fakes/fakes_blocs.dart';
 import '../../mocks/shared.mocks.dart';
 
 import '../../test_helpers/tts.dart';
@@ -44,12 +42,11 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  final licenseDb = MockLicenseDb();
   final userRepository = UserRepository(
     client: Fakes.client(),
     tokenDb: FakeTokenDb(),
     userDb: FakeUserDb(),
-    licenseDb: licenseDb,
+    licenseDb: FakeLicenseDb(),
     baseUrl: 'fake',
   );
 
@@ -130,15 +127,6 @@ void main() {
     when(mockSortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(mockSortableDb.getLastRevision()).thenAnswer((_) => Future.value(100));
 
-    when(licenseDb.getLicenses()).thenReturn([
-      License(
-          id: 1,
-          product: MEMOPLANNER_LICENSE_NAME,
-          endTime: initialDay.add(100.days()))
-    ]);
-
-    final db = MockDatabase();
-    when(db.rawQuery(any)).thenAnswer((realInvocation) => Future.value([]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -150,13 +138,13 @@ void main() {
         sortableResponse: sortableResponse,
       )
       ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..settingsDb = FakeSettingsDb()
       ..genericDb = mockGenericDb
       ..sortableDb = mockSortableDb
       ..syncDelay = SyncDelays.zero
-      ..seagullLogger = SeagullLogger.test()
-      ..database = db
+      ..database = FakeDatabase()
       ..init();
   });
 
@@ -177,7 +165,8 @@ void main() {
         expect(find.byType(EditActivityPage), findsOneWidget);
       });
 
-      testWidgets('New activity with wizard', (WidgetTester tester) async {
+      testWidgets('New activity with wizard, default steps',
+          (WidgetTester tester) async {
         final wizardSetting = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
@@ -191,24 +180,41 @@ void main() {
         await tester.tap(find.byType(AddActivityButton));
         await tester.pumpAndSettle();
         expect(find.byType(ActivityWizardPage), findsOneWidget);
+
         expect(find.byType(BasicActivityStepPage), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
+
         expect(find.byType(DatePickerWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
+
         expect(find.byType(NameAndImageWiz), findsOneWidget);
-        // TODO fix error message
-        // await tester.tap(find.byType(NextButton));
-        // await tester.pumpAndSettle();
-        // expect(find.text(translate.missingTitleOrImage), findsOneWidget);
-        // await tester.tapAt(Offset.zero);
-        // await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(NameAndImageWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.text(translate.missingTitleOrImage), findsOneWidget);
+        await tester.tapAt(Offset.zero);
+        await tester.pumpAndSettle();
 
         await tester.enterText_(
             find.byKey(TestKey.editTitleTextFormField), 'title');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
+
+        await tester.pumpAndSettle();
+        expect(find.byType(PlaceholderWiz), findsOneWidget); // Availible for
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PlaceholderWiz), findsOneWidget); // Checkable
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(TimeWiz), findsOneWidget);
       });
 
@@ -402,9 +408,9 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
-          final dateAndTime =
-              tester.widget<DateAndTimeWidget>(find.byType(DateAndTimeWidget));
-          final timeInterval = dateAndTime.editActivityState.timeInterval;
+          final dateAndTime = tester
+              .widget<TimeIntervallPicker>(find.byType(TimeIntervallPicker));
+          final timeInterval = dateAndTime.timeInterval;
           expect(timeInterval, TimeInterval(startDate: initialDay));
           expect(find.text('00:00'), findsNothing);
         });
@@ -488,7 +494,7 @@ void main() {
           );
 
           // Act - Go back
-          await tester.tap(find.byType(CancelButton));
+          await tester.tap(find.byType(PreviousWizardStepButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at calendar page
@@ -535,7 +541,7 @@ void main() {
           expect(find.byType(EditActivityPage), findsOneWidget);
 
           // Act - save
-          await tester.tap(find.byType(GreenButton));
+          await tester.tap(find.byType(NextWizardStepButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page
@@ -805,7 +811,6 @@ void main() {
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
         CalendarPage(),
-        memoplannerSettingBloc: memoplannerSettingBlocMock,
       ));
 
       // Navigate to EditActivityPage
@@ -828,7 +833,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
       expect(find.text(translate.startTimeBeforeNowError), findsNothing);
       expect(find.byType(EditActivityPage), findsNothing);
@@ -877,7 +882,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveActivityButton));
+      await tester.tap(find.byType(NextWizardStepButton));
       await tester.pumpAndSettle();
 
       // Assert
@@ -1104,7 +1109,7 @@ void main() {
         find.byType(ShowAllFullDayActivitiesButton);
     final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
     final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
-    final saveEditActivityButtonFinder = find.byType(SaveActivityButton);
+    final saveEditActivityButtonFinder = find.byType(NextWizardStepButton);
     final editPictureFinder = find.byKey(TestKey.addPicture);
 
     setUp(() {

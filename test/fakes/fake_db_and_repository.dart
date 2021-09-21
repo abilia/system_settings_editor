@@ -1,5 +1,6 @@
 import 'package:mockito/mockito.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -7,6 +8,8 @@ import 'package:seagull/storage/all.dart';
 class FakeUserRepository extends Fake implements UserRepository {
   @override
   String get baseUrl => 'fake.url';
+  @override
+  Future<void> persistToken(String token) => Future.value();
 }
 
 class FakeSettingsDb extends Fake implements SettingsDb {
@@ -24,9 +27,25 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
 }
 
-class FakeTokenDb extends Fake implements TokenDb {}
+class FakeTokenDb extends Fake implements TokenDb {
+  @override
+  String? getToken() => Fakes.token;
+}
 
 class FakeUserDb extends Fake implements UserDb {}
+
+class FakeLicenseDb extends Fake implements LicenseDb {
+  @override
+  Future persistLicenses(List<License> licenses) => Future.value();
+  @override
+  List<License> getLicenses() => [
+        License(
+          id: 123,
+          product: MEMOPLANNER_LICENSE_NAME,
+          endTime: DateTime(3333),
+        ),
+      ];
+}
 
 class FakeUserFileDb extends Fake implements UserFileDb {
   @override

@@ -6,27 +6,34 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
-  final EditActivityState state;
-
-  const ActivityNameAndPictureWidget(this.state, {Key? key}) : super(key: key);
+  const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return NameAndPictureWidget(
-      selectedImage: state.selectedImage,
-      errorState: state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
-      text: state.activity.title,
-      inputFormatters: [LengthLimitingTextInputFormatter(50)],
-      onImageSelected: (selectedImage) {
-        BlocProvider.of<EditActivityBloc>(context).add(
-          ImageSelected(selectedImage),
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+          builder: (context, wizState) {
+            return NameAndPictureWidget(
+              selectedImage: state.selectedImage,
+              errorState:
+                  wizState.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
+              text: state.activity.title,
+              inputFormatters: [LengthLimitingTextInputFormatter(50)],
+              onImageSelected: (selectedImage) {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                  ImageSelected(selectedImage),
+                );
+              },
+              onTextEdit: (text) {
+                if (state.activity.title != text) {
+                  BlocProvider.of<EditActivityBloc>(context).add(
+                      ReplaceActivity(state.activity.copyWith(title: text)));
+                }
+              },
+            );
+          },
         );
-      },
-      onTextEdit: (text) {
-        if (state.activity.title != text) {
-          BlocProvider.of<EditActivityBloc>(context)
-              .add(ReplaceActivity(state.activity.copyWith(title: text)));
-        }
       },
     );
   }

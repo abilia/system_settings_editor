@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
@@ -16,17 +15,10 @@ part 'edit_activity_event.dart';
 part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
-  final ActivitiesBloc activitiesBloc;
-  final ClockBloc clockBloc;
-  final MemoplannerSettingBloc memoplannerSettingBloc;
   final DateTime day;
 
-  EditActivityBloc(
-    ActivityDay activityDay, {
-    required this.activitiesBloc,
-    required this.clockBloc,
-    required this.memoplannerSettingBloc,
-  })  : day = activityDay.day,
+  EditActivityBloc.edit(ActivityDay activityDay)
+      : day = activityDay.day,
         super(
           StoredActivityState(
               activityDay.activity,
@@ -41,40 +33,19 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
         );
 
   EditActivityBloc.newActivity({
-    required this.activitiesBloc,
-    required this.clockBloc,
-    required this.memoplannerSettingBloc,
-    required DateTime day,
-  })  : day = day,
-        super(
+    required this.day,
+    required int defaultAlarmTypeSetting,
+  }) : super(
           UnstoredActivityState(
             Activity.createNew(
               title: '',
               startTime: day,
               timezone: tz.local.name,
-              alarmType: memoplannerSettingBloc.state.defaultAlarmTypeSetting,
+              alarmType: defaultAlarmTypeSetting,
             ),
             TimeInterval(startDate: day),
           ),
         );
-
-  Set<SaveError> saveErrors(SaveActivity event) => {
-        if (!state.hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
-        if (!state.hasStartTime) SaveError.NO_START_TIME,
-        if (state.startTimeBeforeNow(clockBloc.state))
-          if (!memoplannerSettingBloc.state.activityTimeBeforeCurrent)
-            SaveError.START_TIME_BEFORE_NOW
-          else if (!event.warningConfirmed)
-            SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
-        if (state.emptyRecurringData) SaveError.NO_RECURRING_DAYS,
-        if (state.storedRecurring && event is! SaveRecurringActivity)
-          SaveError.STORED_RECURRING,
-        if (state.hasStartTime &&
-            !event.warningConfirmed &&
-            !state.unchangedTime &&
-            activitiesBloc.state.anyConflictWith(state._activityToStore()))
-          SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
-      };
 
   @override
   Stream<EditActivityState> mapEventToState(
@@ -89,8 +60,15 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is AddOrRemoveReminder) {
       yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
     }
-    if (event is SaveActivity) {
-      yield* _mapSaveActivityToState(state, event);
+    if (event is ActivitySavedSuccessfully) {
+      final state = this.state;
+      yield StoredActivityState(
+        event.activitySaved,
+        state.timeInterval,
+        state is StoredActivityState
+            ? state.day
+            : event.activitySaved.startTime.onlyDays(),
+      );
     }
     if (event is ChangeTimeInterval) {
       yield state.copyWith(
@@ -125,43 +103,6 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       reminders.remove(reminder);
     }
     yield state.copyWith(state.activity.copyWith(reminderBefore: reminders));
-  }
-
-  Stream<EditActivityState> _mapSaveActivityToState(
-    EditActivityState state,
-    SaveActivity event,
-  ) async* {
-    if (state is StoredActivityState && state.unchanged) {
-      yield state.saveSucess();
-      return;
-    }
-
-    final errors = saveErrors(event);
-    if (errors.isNotEmpty) {
-      yield state.failSave(errors);
-      return;
-    }
-
-    final activity = state._activityToStore();
-
-    if (state is UnstoredActivityState) {
-      activitiesBloc.add(AddActivity(activity));
-    } else if (event is SaveRecurringActivity) {
-      activitiesBloc.add(
-        UpdateRecurringActivity(
-          ActivityDay(activity, event.day),
-          event.applyTo,
-        ),
-      );
-    } else {
-      activitiesBloc.add(UpdateActivity(activity));
-    }
-
-    yield StoredActivityState(
-      activity,
-      state.timeInterval,
-      state is StoredActivityState ? state.day : activity.startTime.onlyDays(),
-    ).saveSucess();
   }
 
   Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
