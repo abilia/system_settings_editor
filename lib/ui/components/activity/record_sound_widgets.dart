@@ -17,7 +17,6 @@ class RecordSoundWidget extends StatelessWidget {
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
         final permission = permissionState.status[Permission.microphone];
-
         return BlocProvider<SoundCubit>(
           create: (context) => SoundCubit(),
           child: Column(
@@ -107,72 +106,68 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, permissionState) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
-              child: PickField(
-                leading: Icon(recordedAudio.isEmpty
-                    ? AbiliaIcons.no_record
-                    : AbiliaIcons.sms_sound),
-                text: Text(label),
-                onTap: permissionStatus == PermissionStatus.permanentlyDenied
-                    ? null
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(
+          child: PickField(
+            leading: Icon(recordedAudio.isEmpty
+                ? AbiliaIcons.no_record
+                : AbiliaIcons.sms_sound),
+            text: Text(label),
+            onTap: permissionStatus == PermissionStatus.permanentlyDenied
+                ? null
+                : permissionStatus == PermissionStatus.denied
+                    ? () async {
+                        context
+                            .read<PermissionBloc>()
+                            .add(RequestPermissions([Permission.microphone]));
+                      }
                     : () async {
-                        if (permissionStatus == PermissionStatus.denied) {
-                          context
-                              .read<PermissionBloc>()
-                              .add(RequestPermissions([Permission.microphone]));
-                        } else {
-                          final result = await Navigator.of(context)
-                              .push<UnstoredAbiliaFile>(
-                            MaterialPageRoute(
-                              builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
-                                child: MultiBlocProvider(
-                                  providers: [
-                                    BlocProvider(create: (_) => SoundCubit()),
-                                    BlocProvider(
-                                      create: (_) => RecordSoundCubit(
-                                        originalSoundFile: recordedAudio,
-                                      ),
+                        final result = await Navigator.of(context)
+                            .push<UnstoredAbiliaFile>(
+                          MaterialPageRoute(
+                            builder: (_) => CopiedAuthProviders(
+                              blocContext: context,
+                              child: MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(create: (_) => SoundCubit()),
+                                  BlocProvider(
+                                    create: (_) => RecordSoundCubit(
+                                      originalSoundFile: recordedAudio,
                                     ),
-                                  ],
-                                  child: const RecordSoundPage(),
-                                ),
+                                  ),
+                                ],
+                                child: const RecordSoundPage(),
                               ),
-                              settings: RouteSettings(name: 'SelectSpeechPage'),
                             ),
-                          );
-                          if (result != null) {
-                            context.read<UserFileBloc>().add(FileAdded(result));
-                          }
-                          if (result != null) {
-                            onResult.call(result);
-                          }
+                            settings: RouteSettings(name: 'SelectSpeechPage'),
+                          ),
+                        );
+                        if (result != null) {
+                          context.read<UserFileBloc>().add(FileAdded(result));
+                        }
+                        if (result != null) {
+                          onResult.call(result);
                         }
                       },
-              ),
-            ),
-            if (recordedAudio.isNotEmpty)
-              BlocBuilder<UserFileBloc, UserFileState>(
-                builder: (context, state) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 12.s),
-                    child: PlaySoundButton(
-                      sound: state.getFile(
-                        recordedAudio,
-                        GetIt.I<FileStorage>(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        );
-      },
+          ),
+        ),
+        if (recordedAudio.isNotEmpty)
+          BlocBuilder<UserFileBloc, UserFileState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.only(left: 12.s),
+                child: PlaySoundButton(
+                  sound: state.getFile(
+                    recordedAudio,
+                    GetIt.I<FileStorage>(),
+                  ),
+                ),
+              );
+            },
+          ),
+      ],
     );
   }
 }
@@ -228,6 +223,7 @@ class RecordingWidget extends StatelessWidget {
 
 class _RecordActionRow extends StatelessWidget {
   const _RecordActionRow();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SoundCubit, SoundState>(
@@ -341,6 +337,7 @@ class StopButton extends StatelessWidget {
 
 class PlayRecordingButton extends StatelessWidget {
   final AbiliaFile sound;
+
   const PlayRecordingButton(
     this.sound, {
     Key? key,
