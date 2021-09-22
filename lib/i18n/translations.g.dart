@@ -279,7 +279,7 @@ abstract class Translated {
 
   final String play = 'Play';
 
-  final String enterTitleAndImage = 'Enter title and image';
+  final String enterNameForActivity = 'Enter name for activity';
 
   final String error = 'Error';
 
@@ -1082,7 +1082,7 @@ class SV extends Translated {
   final String play = 'Lyssna';
 
   @override
-  final String enterTitleAndImage = 'Välj titel och bild';
+  final String enterNameForActivity = 'Välj titel och bild';
 
   @override
   final String error = 'Fel';
@@ -2074,6 +2074,9 @@ class DA extends Translated {
   final String play = 'Afspel';
 
   @override
+  final String enterNameForActivity = 'Skriv in namn för aktivitet';
+
+  @override
   final String error = 'Fejl';
 
   @override
@@ -3061,6 +3064,9 @@ class NL extends Translated {
 
   @override
   final String play = 'Afspelen';
+
+  @override
+  final String enterNameForActivity = 'Indtast navn på aktiviteten';
 
   @override
   final String error = 'Fout';
@@ -4051,6 +4057,9 @@ class FI extends Translated {
 
   @override
   final String play = 'Toista';
+
+  @override
+  final String enterNameForActivity = 'Voer naam voor activiteit in';
 
   @override
   final String error = 'Virhe';
@@ -5045,6 +5054,9 @@ class DE extends Translated {
   final String play = 'Wiedergabe';
 
   @override
+  final String enterNameForActivity = 'Anna aktiviteetille nimi';
+
+  @override
   final String error = 'Error';
 
   @override
@@ -6034,6 +6046,9 @@ class NB extends Translated {
 
   @override
   final String play = 'Spill av';
+
+  @override
+  final String enterNameForActivity = 'Name für Aktivität eingeben';
 
   @override
   final String error = 'Feil';

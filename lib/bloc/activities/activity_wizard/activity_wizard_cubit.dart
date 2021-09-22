@@ -33,8 +33,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
                     [
                       if (settings.wizardTemplateStep) WizardStep.basic,
                       if (settings.wizardDatePickerStep) WizardStep.date,
-                      if (settings.wizardImageStep) WizardStep.image,
                       if (settings.wizardTitleStep) WizardStep.title,
+                      if (settings.wizardImageStep) WizardStep.image,
                       if (settings.wizardTypeStep) WizardStep.type,
                       if (settings.wizardAvailabilityType)
                         WizardStep.available_for,
@@ -79,7 +79,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     }
 
     final error = editActivityBloc.state.stepErrors(
-      step: state.currentStep,
+      wizState: state,
       now: clockBloc.state,
       allowActivityTimeBeforeCurrent: allowActivityTimeBeforeCurrent,
       warningConfirmed: warningConfirmed,
@@ -170,13 +170,18 @@ extension SaveErrorExtension on EditActivityState {
       };
 
   SaveError? stepErrors({
-    required WizardStep step,
+    required ActivityWizardState wizState,
     required DateTime now,
     required bool allowActivityTimeBeforeCurrent,
     required bool warningConfirmed,
   }) {
-    switch (step) {
+    switch (wizState.currentStep) {
       case WizardStep.title:
+        if (!hasTitleOrImage && !wizState.steps.contains(WizardStep.image)) {
+          return SaveError.NO_TITLE_OR_IMAGE;
+        }
+        break;
+      case WizardStep.image:
         if (!hasTitleOrImage) return SaveError.NO_TITLE_OR_IMAGE;
         break;
       case WizardStep.time:
