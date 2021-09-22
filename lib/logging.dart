@@ -77,10 +77,6 @@ class SeagullLogger {
   static const UPLOAD_INTERVAL = Duration(hours: 24);
   static const LOG_ARCHIVE_PATH = 'logarchive';
 
-  Future<void> initAnalytics() async {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  }
-
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
       await Future.wait(
@@ -151,6 +147,7 @@ class SeagullLogger {
   }
 
   void _initAnalyticsLogging() {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) {
