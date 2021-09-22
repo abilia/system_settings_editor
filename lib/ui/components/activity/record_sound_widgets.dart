@@ -35,7 +35,7 @@ class RecordSoundWidget extends StatelessWidget {
                       children: <Widget>[
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnStart,
-                          permission: permission,
+                          permissionStatus: permission,
                           recordedAudio: activity.extras.startTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
                             BlocProvider.of<EditActivityBloc>(context).add(
@@ -52,7 +52,7 @@ class RecordSoundWidget extends StatelessWidget {
                         SizedBox(height: 8.0.s),
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnEnd,
-                          permission: permission,
+                          permissionStatus: permission,
                           recordedAudio: activity.extras.endTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
                             BlocProvider.of<EditActivityBloc>(context).add(
@@ -92,14 +92,14 @@ class RecordSoundWidget extends StatelessWidget {
 }
 
 class SelectOrPlaySoundWidget extends StatelessWidget {
-  final PermissionStatus? permission;
+  final PermissionStatus? permissionStatus;
   final String label;
   final AbiliaFile recordedAudio;
   final ValueChanged<UnstoredAbiliaFile> onResult;
 
   const SelectOrPlaySoundWidget({
     Key? key,
-    required this.permission,
+    required this.permissionStatus,
     required this.label,
     required this.recordedAudio,
     required this.onResult,
@@ -118,34 +118,40 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                     ? AbiliaIcons.no_record
                     : AbiliaIcons.sms_sound),
                 text: Text(label),
-                onTap: permission == PermissionStatus.permanentlyDenied
+                onTap: permissionStatus == PermissionStatus.permanentlyDenied
                     ? null
                     : () async {
-                        final result = await Navigator.of(context)
-                            .push<UnstoredAbiliaFile>(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(create: (_) => SoundCubit()),
-                                  BlocProvider(
-                                    create: (_) => RecordSoundCubit(
-                                      originalSoundFile: recordedAudio,
+                        if (permissionStatus == PermissionStatus.denied) {
+                          context
+                              .read<PermissionBloc>()
+                              .add(RequestPermissions([Permission.microphone]));
+                        } else {
+                          final result = await Navigator.of(context)
+                              .push<UnstoredAbiliaFile>(
+                            MaterialPageRoute(
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider(create: (_) => SoundCubit()),
+                                    BlocProvider(
+                                      create: (_) => RecordSoundCubit(
+                                        originalSoundFile: recordedAudio,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                                child: const RecordSoundPage(),
+                                  ],
+                                  child: const RecordSoundPage(),
+                                ),
                               ),
+                              settings: RouteSettings(name: 'SelectSpeechPage'),
                             ),
-                            settings: RouteSettings(name: 'SelectSpeechPage'),
-                          ),
-                        );
-                        if (result != null) {
-                          context.read<UserFileBloc>().add(FileAdded(result));
-                        }
-                        if (result != null) {
-                          onResult.call(result);
+                          );
+                          if (result != null) {
+                            context.read<UserFileBloc>().add(FileAdded(result));
+                          }
+                          if (result != null) {
+                            onResult.call(result);
+                          }
                         }
                       },
               ),
