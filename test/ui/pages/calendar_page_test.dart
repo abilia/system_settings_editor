@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:seagull/logging.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
@@ -83,8 +84,10 @@ void main() {
 
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
+  late MockSortableDb mockSortableDb;
 
   ActivityResponse activityResponse = () => [];
+  SortableResponse sortableResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
   setUp(() async {
@@ -104,6 +107,8 @@ void main() {
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(mockActivityDb.insertAndAddDirty(any))
         .thenAnswer((_) => Future.value(true));
+    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(100));
+    when(mockActivityDb.insert(any)).thenAnswer((_) => Future.value(100));
 
     mockGenericDb = MockGenericDb();
     when(mockGenericDb.getAllNonDeletedMaxRevision())
@@ -113,6 +118,17 @@ void main() {
     when(mockGenericDb.insertAndAddDirty(any))
         .thenAnswer((_) => Future.value(true));
     when(mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(mockGenericDb.getLastRevision()).thenAnswer((_) => Future.value(100));
+
+    mockSortableDb = MockSortableDb();
+    when(mockSortableDb.getAllNonDeleted())
+        .thenAnswer((_) => Future.value(sortableResponse()));
+    when(mockSortableDb.getById(any)).thenAnswer((_) => Future.value(null));
+    when(mockSortableDb.insert(any)).thenAnswer((_) async {});
+    when(mockSortableDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
+    when(mockSortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(mockSortableDb.getLastRevision()).thenAnswer((_) => Future.value(100));
 
     when(licenseDb.getLicenses()).thenReturn([
       License(
@@ -129,12 +145,17 @@ void main() {
       ..ticker = Ticker(
           stream: StreamController<DateTime>().stream, initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
-      ..client = Fakes.client(activityResponse: activityResponse)
+      ..client = Fakes.client(
+        activityResponse: activityResponse,
+        sortableResponse: sortableResponse,
+      )
       ..fileStorage = MockFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..settingsDb = FakeSettingsDb()
       ..genericDb = mockGenericDb
+      ..sortableDb = mockSortableDb
       ..syncDelay = SyncDelays.zero
+      ..seagullLogger = SeagullLogger.test()
       ..database = db
       ..init();
   });
@@ -226,6 +247,91 @@ void main() {
           await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
           expect(find.text(translate.noBasicActivities), findsOneWidget);
+        });
+
+        testWidgets(
+            'if wizard enabled, title and image disabled and '
+            'no basic activites: Can not add activity and warning shows',
+            (WidgetTester tester) async {
+          when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+            (_) => Future.value(
+              [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.wizardTitleStepKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.wizardImageStepKey,
+                  ),
+                ),
+              ],
+            ),
+          );
+
+          final folder = Sortable.createNew(
+            data: BasicActivityDataFolder.createNew(name: 'name'),
+          );
+          sortableResponse = () => [folder];
+
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(AddActivityButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+          expect(find.byType(BasicActivityStepPage), findsNothing);
+        });
+
+        testWidgets(
+            'if wizard enabled, title and image disabled and '
+            'one basic activites: Can add activity and no warning shows',
+            (WidgetTester tester) async {
+          when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+            (_) => Future.value(
+              [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.wizardTitleStepKey,
+                  ),
+                ),
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: MemoplannerSettings.wizardImageStepKey,
+                  ),
+                ),
+              ],
+            ),
+          );
+
+          final basicActivity = Sortable.createNew(
+            data: BasicActivityDataItem.createNew(title: 'title'),
+          );
+
+          sortableResponse = () => [basicActivity];
+
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(AddActivityButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsNothing);
+          expect(find.byType(BasicActivityStepPage), findsOneWidget);
         });
 
         testWidgets('New activity from basic activity gets correct title',

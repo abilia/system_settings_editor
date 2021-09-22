@@ -133,7 +133,7 @@ class FakeNotificationBloc extends Fake implements NotificationBloc {
   Future<void> close() async {}
 }
 
-class FakeCalendarViewBloc extends Fake implements CalendarViewBloc {
+class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
   @override
   Stream<CalendarViewState> get stream => Stream.empty();
   @override

@@ -60,7 +60,7 @@ class WeekAppBarPreview extends StatelessWidget {
           BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) =>
             BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, currentTime) => Container(
+          builder: (context, currentTime) => SizedBox(
             height: CalendarAppBar.size.height,
             child: CalendarAppBar(
               leftAction: state.showBrowseButtons

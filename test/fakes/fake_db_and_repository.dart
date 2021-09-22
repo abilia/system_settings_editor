@@ -33,6 +33,10 @@ class FakeUserFileDb extends Fake implements UserFileDb {
   Future<Iterable<UserFile>> getMissingFiles({int? limit}) => Future.value([]);
   @override
   Future<Iterable<UserFile>> getAllLoadedFiles() => Future.value([]);
+  @override
+  Future<int> getLastRevision() => Future.value(0);
+  @override
+  Future insert(Iterable<DbModel<UserFile>> dataModels) => Future.value();
 }
 
 class FakeSortableDb extends Fake implements SortableDb {

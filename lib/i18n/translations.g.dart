@@ -301,6 +301,12 @@ abstract class Translated {
   final String conflictWarning =
       'There are activities conflicting with this activity. Press OK to continue.';
 
+  final String noBasicActivityError1 =
+      'There are no basic activities and you have not selected name or image in adding an activity step-by-step.';
+
+  final String noBasicActivityError2 =
+      'To fix this, either create basic activities or select either name or image for step-by-step.';
+
   final String availableFor = 'Available for';
 
   final String activityAvailableFor = 'Available for';
@@ -1111,6 +1117,14 @@ class SV extends Translated {
   @override
   final String conflictWarning =
       'Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.';
+
+  @override
+  final String noBasicActivityError1 =
+      'Det finns inga basaktiviteter och du har inte valt namn och bild i lägga in stegvis.';
+
+  @override
+  final String noBasicActivityError2 =
+      'För att åtgärda, skapa några basaktiviteter eller aktivera antingen namn eller bild i lägga in stegvis.';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -2097,6 +2111,14 @@ class DA extends Translated {
       'Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.';
 
   @override
+  final String noBasicActivityError1 =
+      'Det er ingen standardaktivitet, og du har ikke valgt navn og billede i sekvensmodus.';
+
+  @override
+  final String noBasicActivityError2 =
+      'For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.';
+
+  @override
   final String availableFor = 'Fås til';
 
   @override
@@ -3076,6 +3098,14 @@ class NL extends Translated {
   @override
   final String conflictWarning =
       'Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.';
+
+  @override
+  final String noBasicActivityError1 =
+      'Er zijn geen standaardactiviteiten en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.';
+
+  @override
+  final String noBasicActivityError2 =
+      'Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.';
 
   @override
   final String availableFor = 'Beschikbaar voor';
@@ -4058,6 +4088,14 @@ class FI extends Translated {
   @override
   final String conflictWarning =
       'On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.';
+
+  @override
+  final String noBasicActivityError1 =
+      'Perusaktiviteetteja ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.';
+
+  @override
+  final String noBasicActivityError2 =
+      'Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.';
 
   @override
   final String availableFor = 'Käytettävissä';
@@ -5044,6 +5082,14 @@ class DE extends Translated {
       'Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.';
 
   @override
+  final String noBasicActivityError1 =
+      'Es gibt keine Standardaktivitäten und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.';
+
+  @override
+  final String noBasicActivityError2 =
+      'Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.';
+
+  @override
   final String availableFor = 'Verfügbar für';
 
   @override
@@ -6025,6 +6071,14 @@ class NB extends Translated {
   @override
   final String conflictWarning =
       'Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.';
+
+  @override
+  final String noBasicActivityError1 =
+      'Det er ingen standardaktivitet, og du har ikke valgt navn og bilde i sekvensmodus.';
+
+  @override
+  final String noBasicActivityError2 =
+      'For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.';
 
   @override
   final String availableFor = 'Tilgjengelig for';
