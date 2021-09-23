@@ -9,8 +9,10 @@ import 'package:seagull/storage/file_storage.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
+  final ValueChanged<Activity>? soundChanged;
 
-  const RecordSoundWidget(this.activity, {Key? key}) : super(key: key);
+  const RecordSoundWidget(this.activity, this.soundChanged, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,15 @@ class RecordSoundWidget extends StatelessWidget {
                                 ),
                               ),
                             );
+                            if (soundChanged != null) {
+                              soundChanged!.call(
+                                activity.copyWith(
+                                  extras: activity.extras.copyWith(
+                                    startTimeExtraAlarm: result,
+                                  ),
+                                ),
+                              );
+                            }
                           },
                         ),
                         SizedBox(height: 8.0.s),
@@ -55,15 +66,17 @@ class RecordSoundWidget extends StatelessWidget {
                           permissionStatus: permission,
                           recordedAudio: activity.extras.endTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
-                            BlocProvider.of<EditActivityBloc>(context).add(
-                              ReplaceActivity(
-                                activity.copyWith(
-                                  extras: activity.extras.copyWith(
-                                    endTimeExtraAlarm: result,
-                                  ),
-                                ),
+                            Activity newActivity = activity.copyWith(
+                              extras: activity.extras.copyWith(
+                                endTimeExtraAlarm: result,
                               ),
                             );
+                            BlocProvider.of<EditActivityBloc>(context).add(
+                              ReplaceActivity(newActivity),
+                            );
+                            if (soundChanged != null) {
+                              soundChanged!.call(newActivity);
+                            }
                           },
                         ),
                       ],
@@ -95,7 +108,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
   final PermissionStatus? permissionStatus;
   final String label;
   final AbiliaFile recordedAudio;
-  final ValueChanged<UnstoredAbiliaFile> onResult;
+  final ValueChanged<AbiliaFile> onResult;
 
   const SelectOrPlaySoundWidget({
     Key? key,
@@ -125,8 +138,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             .add(RequestPermissions([Permission.microphone]));
                       }
                     : () async {
-                        final result = await Navigator.of(context)
-                            .push<UnstoredAbiliaFile>(
+                        final result =
+                            await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
@@ -145,7 +158,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             settings: RouteSettings(name: 'SelectSpeechPage'),
                           ),
                         );
-                        if (result != null) {
+                        if (result is UnstoredAbiliaFile) {
                           context.read<UserFileBloc>().add(FileAdded(result));
                         }
                         if (result != null) {
@@ -409,8 +422,20 @@ class PlayRecordingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DarkGreyButton(
-        text: Translator.of(context).translate.play,
-        icon: AbiliaIcons.play_sound,
-        onPressed: () => context.read<SoundCubit>().play(sound));
+      text: Translator.of(context).translate.play,
+      icon: AbiliaIcons.play_sound,
+      onPressed: () {
+        if (sound is UnstoredAbiliaFile) {
+          context.read<SoundCubit>().play(sound);
+        } else {
+          context.read<SoundCubit>().play(
+                context
+                    .read<UserFileBloc>()
+                    .state
+                    .getFile(sound, GetIt.I<FileStorage>())!,
+              );
+        }
+      },
+    );
   }
 }

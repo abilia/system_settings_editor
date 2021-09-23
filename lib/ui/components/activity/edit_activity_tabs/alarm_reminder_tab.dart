@@ -51,7 +51,7 @@ class _AlarmAndReminderTabState extends State<AlarmAndReminderTab>
             ),
           ),
           padded(
-            RecordSoundWidget(widget.activity),
+            RecordSoundWidget(widget.activity, null),
           ),
         ],
       ),

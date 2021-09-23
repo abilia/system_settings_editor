@@ -99,14 +99,28 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     ActionButtonLight(
                       key: TestKey.editAlarm,
                       onPressed: () async {
-                        final alarm = activity.alarm;
-
-                        final result = await Navigator.of(context).push<Alarm>(
+                        final result =
+                            await Navigator.of(context).push<Activity>(
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
-                              child: SelectAlarmPage(
-                                alarm: alarm,
+                              child: MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (context) => ActivityWizardCubit(),
+                                  ),
+                                  BlocProvider<EditActivityBloc>(
+                                    create: (_) => EditActivityBloc(
+                                      activityOccasion,
+                                      activitiesBloc:
+                                          context.read<ActivitiesBloc>(),
+                                      clockBloc: context.read<ClockBloc>(),
+                                      memoplannerSettingBloc: context
+                                          .read<MemoplannerSettingBloc>(),
+                                    ),
+                                  ),
+                                ],
+                                child: SelectAlarmPage(activity: activity),
                               ),
                             ),
                             settings: RouteSettings(name: 'SelectAlarmPage'),
@@ -114,8 +128,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                         );
 
                         if (result != null) {
-                          final changedActivity =
-                              activity.copyWith(alarm: result);
                           if (activity.isRecurring) {
                             final applyTo = await Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -130,7 +142,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             BlocProvider.of<ActivitiesBloc>(context).add(
                               UpdateRecurringActivity(
                                 ActivityDay(
-                                  changedActivity,
+                                  result,
                                   activityOccasion.day,
                                 ),
                                 applyTo,
@@ -138,7 +150,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             );
                           } else {
                             BlocProvider.of<ActivitiesBloc>(context)
-                                .add(UpdateActivity(changedActivity));
+                                .add(UpdateActivity(result));
                           }
                         }
                       },
