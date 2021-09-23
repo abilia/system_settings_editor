@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -179,45 +180,94 @@ class RecordingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.s),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SubHeading(Translator.of(context).translate.duration),
+              _TimeDisplay(),
+            ],
+          ),
+          SizedBox(height: 8.0.s),
+          _Progress(),
+          SizedBox(height: 24.0.s),
+          const _RecordActionRow(),
+        ],
+      ),
+    );
+  }
+}
+
+class _Progress extends StatelessWidget {
+  const _Progress({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.s),
       child: BlocBuilder<SoundCubit, SoundState>(
+        buildWhen: (prev, curr) =>
+            curr is SoundPlaying || prev.runtimeType != curr.runtimeType,
         builder: (context, soundState) =>
             BlocBuilder<RecordSoundCubit, RecordSoundState>(
+          buildWhen: (prev, curr) =>
+              curr is RecordingSoundState ||
+              prev.runtimeType != curr.runtimeType,
           builder: (context, recordState) {
             final progress = recordState is RecordingSoundState
                 ? recordState.progress
                 : soundState is SoundPlaying
                     ? soundState.progress
                     : 0.0;
-            final duration = recordState is RecordingSoundState
-                ? recordState.duration
-                : soundState is SoundPlaying
-                    ? soundState.position
-                    : Duration.zero;
-
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _TimeDisplay(timeElapsed: duration),
-                SizedBox(height: 8.0.s),
-                LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: AbiliaColors.white120,
-                  valueColor: AlwaysStoppedAnimation(
-                    recordState is RecordingSoundState
-                        ? AbiliaColors.red
-                        : AbiliaColors.black,
-                  ),
-                  minHeight: 6.s,
+            final color = recordState is RecordingSoundState ||
+                    recordState is EmptyRecordSoundState
+                ? AbiliaColors.red
+                : AbiliaColors.black;
+            return SliderTheme(
+              data: SliderThemeData(
+                disabledActiveTickMarkColor: color,
+                disabledActiveTrackColor: color,
+                disabledThumbColor: color,
+                disabledInactiveTrackColor: AbiliaColors.white120,
+                trackHeight: 4.s,
+                thumbShape: RoundSliderThumbShape(
+                  disabledThumbRadius: 12.s,
+                  elevation: 0,
                 ),
-                SizedBox(height: 24.0.s),
-                const _RecordActionRow(),
-              ],
+                trackShape: _NotPaddedRoundedRectSliderTrackShape(),
+              ),
+              child: Slider(
+                value: progress,
+                onChanged: null,
+              ),
             );
           },
         ),
       ),
     );
+  }
+}
+
+class _NotPaddedRoundedRectSliderTrackShape
+    extends RoundedRectSliderTrackShape {
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight!;
+    final double trackLeft = offset.dx;
+    final double trackTop =
+        offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }
 
@@ -264,34 +314,47 @@ class _RecordActionRow extends StatelessWidget {
 }
 
 class _TimeDisplay extends StatelessWidget {
-  final Duration timeElapsed;
-
-  _TimeDisplay({this.timeElapsed = Duration.zero});
+  const _TimeDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var timeText = _formatTime(timeElapsed);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SubHeading(Translator.of(context).translate.duration),
-        Container(
-          width: 120.s,
-          height: 64.s,
-          decoration: disabledBoxDecoration,
-          child: Center(
-            child: Text(
-              timeText,
-              style: Theme.of(context).textTheme.headline4,
+    return Container(
+      width: 120.s,
+      height: 64.s,
+      alignment: Alignment.center,
+      decoration: disabledBoxDecoration,
+      child: BlocBuilder<SoundCubit, SoundState>(
+        buildWhen: (prev, curr) =>
+            prev.runtimeType != curr.runtimeType ||
+            prev is SoundPlaying &&
+                curr is SoundPlaying &&
+                curr.position.inSeconds != prev.position.inSeconds,
+        builder: (context, soundState) =>
+            BlocBuilder<RecordSoundCubit, RecordSoundState>(
+          buildWhen: (prev, curr) =>
+              prev.runtimeType != curr.runtimeType ||
+              prev is RecordingSoundState &&
+                  curr is RecordingSoundState &&
+                  prev.duration.inSeconds != curr.duration.inSeconds,
+          builder: (context, recordState) => Text(
+            _formatTime(
+              recordState is RecordingSoundState
+                  ? recordState.duration
+                  : soundState is SoundPlaying
+                      ? soundState.position
+                      : Duration.zero,
             ),
+            style: Theme.of(context).textTheme.headline4,
           ),
         ),
-      ],
+      ),
     );
   }
 
   String _formatTime(Duration d) {
-    return d.toString().substring(5, 10).replaceAll('.', ':');
+    final min = '${d.inMinutes}'.padLeft(2, '0');
+    final s = '${d.inSeconds}'.padLeft(2, '0');
+    return '$min:$s';
   }
 }
 
