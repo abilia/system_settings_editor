@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:seagull/logging.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
@@ -155,7 +154,6 @@ void main() {
       ..genericDb = mockGenericDb
       ..sortableDb = mockSortableDb
       ..syncDelay = SyncDelays.zero
-      ..seagullLogger = SeagullLogger.test()
       ..database = db
       ..init();
   });
