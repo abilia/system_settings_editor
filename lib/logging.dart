@@ -43,7 +43,7 @@ class SeagullLogger {
   factory SeagullLogger.test() => SeagullLogger(
         loggingType: const {LoggingType.Print},
         documentsDir: '',
-        level: Level.ALL,
+        level: Level.OFF,
       );
 
   factory SeagullLogger.nothing() => SeagullLogger(

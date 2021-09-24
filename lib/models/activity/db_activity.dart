@@ -43,7 +43,9 @@ class DbActivity extends DbModel<Activity> {
           reminderBefore: parseReminders(json['reminderBefore']),
           alarmType: json['alarmType'],
           signedOffDates: _parseSignedOffDates(json['signedOffDates']),
-          timezone: json['timezone'] ?? '',
+          timezone: (json['timezone']?.isEmpty ?? true)
+              ? tz.local.name
+              : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
         ),
         revision: json['revision'],
@@ -74,7 +76,9 @@ class DbActivity extends DbModel<Activity> {
           reminderBefore: parseReminders(dbRow['reminder_before']),
           alarmType: dbRow['alarm_type'] ?? AlarmType.NoAlarm,
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
-          timezone: dbRow['timezone'] ?? '',
+          timezone: (dbRow['timezone']?.isEmpty ?? true)
+              ? tz.local.name
+              : dbRow['timezone'],
           extras: Extras.fromJsonString(dbRow['extras']),
         ),
         revision: dbRow['revision'],

@@ -1,37 +1,20 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/bloc/all.dart';
 
-enum CreateAccountFailure {
-  NoUsername,
-  UsernameToShort,
-  UsernameInvalid,
-  UsernameTaken,
-  NoPassword,
-  PasswordToShort,
-  NoConfirmPassword,
-  PasswordMismatch,
-  TermsOfUse,
-  PrivacyPolicy,
-  ClientNotAllowed,
-  InvalidLanguage,
-  NoConnection,
-  Unknown,
-}
-
-class CreateAccountException extends Equatable {
+class BadRequest extends Equatable {
   final int status;
   final String message;
   final int errorId;
   final List<_Errors> errors;
 
-  const CreateAccountException({
+  const BadRequest({
     required this.status,
     required this.message,
     required this.errorId,
     required this.errors,
   });
 
-  static CreateAccountException fromJson(Map<String, dynamic> json) =>
-      CreateAccountException(
+  static BadRequest fromJson(Map<String, dynamic> json) => BadRequest(
         status: json['status'] ?? -1,
         message: json['message'] ?? '',
         errorId: json['errorId'] ?? -1,
