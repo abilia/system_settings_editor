@@ -10,13 +10,11 @@ class DigitalClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, time) => Container(
-        child: Tts(
-          child: Text(
-            hourAndMinuteFormat(context)(time),
-            textAlign: TextAlign.center,
-            style: style ?? Theme.of(context).textTheme.caption,
-          ),
+      builder: (context, time) => Tts(
+        child: Text(
+          hourAndMinuteFormat(context)(time),
+          textAlign: TextAlign.center,
+          style: style ?? Theme.of(context).textTheme.caption,
         ),
       ),
     );
