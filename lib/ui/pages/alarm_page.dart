@@ -26,13 +26,11 @@ class AlarmPage extends StatelessWidget {
               title: Translator.of(context).translate.alarm,
               iconData: AbiliaIcons.alarm_bell,
               trailing: alarm is StartAlarm &&
-                      alarm.activity.extras.startTimeExtraAlarm !=
-                          AbiliaFile.empty
+                      alarm.activity.extras.startTimeExtraAlarm.isNotEmpty
                   ? PlaySpeechButton(
                       soundToPlay: alarm.activity.extras.startTimeExtraAlarm)
                   : alarm is EndAlarm &&
-                          alarm.activity.extras.endTimeExtraAlarm !=
-                              AbiliaFile.empty
+                          alarm.activity.extras.endTimeExtraAlarm.isNotEmpty
                       ? PlaySpeechButton(
                           soundToPlay: alarm.activity.extras.endTimeExtraAlarm)
                       : null,
@@ -73,11 +71,10 @@ class ReminderPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         title: translate.reminder,
         iconData: AbiliaIcons.handi_reminder,
-        trailing:
-            reminder.activity.extras.startTimeExtraAlarm != AbiliaFile.empty
-                ? PlaySpeechButton(
-                    soundToPlay: reminder.activity.extras.startTimeExtraAlarm)
-                : null,
+        trailing: reminder.activity.extras.startTimeExtraAlarm.isNotEmpty
+            ? PlaySpeechButton(
+                soundToPlay: reminder.activity.extras.startTimeExtraAlarm)
+            : null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
