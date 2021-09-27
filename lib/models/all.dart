@@ -23,4 +23,4 @@ export 'day_parts.dart';
 export 'sound.dart';
 export 'alarm_duration.dart';
 export 'image_and_name.dart';
-export 'create_account_exception.dart';
+export 'bad_request.dart';

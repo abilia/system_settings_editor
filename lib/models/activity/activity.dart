@@ -8,6 +8,8 @@ import 'package:uuid/uuid.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import 'package:seagull/repository/timezone.dart' as tz;
+
 part 'recurs.dart';
 part 'db_activity.dart';
 part 'activity_extras.dart';
