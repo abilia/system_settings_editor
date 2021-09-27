@@ -26,9 +26,14 @@ void setupPermissions(
         case 'checkPermissionStatus':
           final askedPermission =
               Permission.values[methodCall.arguments as int];
-          checkedPermissions.add(askedPermission);
-          return (permissions[askedPermission])?.value ??
+          var value = (permissions[askedPermission])?.value ??
               PermissionStatus.granted.index;
+          // if(value == 4){
+          //   value = 0;
+          // }
+          askedPermission.status;
+          checkedPermissions.add(askedPermission);
+          return value;
         case 'openAppSettings':
           openAppSettingsCalls++;
           break;

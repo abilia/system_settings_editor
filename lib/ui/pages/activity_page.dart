@@ -104,12 +104,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
-                              child: MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                    create: (context) => ActivityWizardCubit(),
-                                  ),
-                                  BlocProvider<EditActivityBloc>(
+                              child: BlocProvider<EditActivityBloc>(
                                     create: (_) => EditActivityBloc(
                                       activityOccasion,
                                       activitiesBloc:
@@ -118,8 +113,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                                       memoplannerSettingBloc: context
                                           .read<MemoplannerSettingBloc>(),
                                     ),
-                                  ),
-                                ],
                                 child: SelectAlarmPage(activity: activity),
                               ),
                             ),

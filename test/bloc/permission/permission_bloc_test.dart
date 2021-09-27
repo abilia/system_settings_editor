@@ -82,4 +82,18 @@ void main() {
     expect(checkedPermissions, containsAll(permissonSet.keys));
     expect(checkedPermissions, hasLength(permissonSet.length));
   });
+
+  test('a permanently denied permission will not change to denied', () async {
+    setupPermissions({Permission.camera: PermissionStatus.permanentlyDenied});
+    final permissionBloc = PermissionBloc();
+    permissionBloc.add(CheckStatusForPermissions([Permission.camera]));
+    await expectLater(
+      permissionBloc.stream,
+      emits(PermissionState.empty()
+          .update({Permission.camera: PermissionStatus.permanentlyDenied})),
+    );
+    expect(checkedPermissions, contains(Permission.camera));
+    expect(await Set.of(checkedPermissions).first.status,
+        PermissionStatus.permanentlyDenied);
+  });
 }
