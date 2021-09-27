@@ -52,9 +52,6 @@ Future<String> initServices() async {
     documentsDir: documentDirectory.path,
     preferences: preferences,
   );
-  if (Config.release) {
-    await seagullLogger.initAnalytics();
-  }
   _log.fine('Initializing services');
   await configureLocalTimeZone(log: _log);
   final currentLocale = await Devicelocale.currentLocale;

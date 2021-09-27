@@ -42,28 +42,26 @@ class Selector<T> extends StatelessWidget {
           ),
           SizedBox(height: 8.s)
         ],
-        Container(
-          child: Row(
-            children: [
-              for (int i = 0; i < items.length; i++)
-                Padding(
-                  padding:
-                      EdgeInsets.only(right: i == items.length - 1 ? 0 : 2.s),
-                  child: _SelectButton<T>(
-                    text: items[i].title,
-                    onPressed: () => onChanged?.call(items[i].value),
-                    groupValue: groupValue,
-                    value: items[i].value,
-                    borderRadius: i == 0
-                        ? borderRadiusLeft
-                        : i == items.length - 1
-                            ? borderRadiusRight
-                            : BorderRadius.zero,
-                    icon: items[i].icon,
-                  ),
-                )
-            ].map((e) => Expanded(child: e)).toList(),
-          ),
+        Row(
+          children: [
+            for (int i = 0; i < items.length; i++)
+              Padding(
+                padding:
+                    EdgeInsets.only(right: i == items.length - 1 ? 0 : 2.s),
+                child: _SelectButton<T>(
+                  text: items[i].title,
+                  onPressed: () => onChanged?.call(items[i].value),
+                  groupValue: groupValue,
+                  value: items[i].value,
+                  borderRadius: i == 0
+                      ? borderRadiusLeft
+                      : i == items.length - 1
+                          ? borderRadiusRight
+                          : BorderRadius.zero,
+                  icon: items[i].icon,
+                ),
+              )
+          ].map((e) => Expanded(child: e)).toList(),
         ),
       ],
     );
