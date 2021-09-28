@@ -8,7 +8,6 @@ class PermissionState extends Equatable {
   final UnmodifiableMapView<Permission, PermissionStatus> status;
 
   @visibleForTesting
-  @visibleForTesting
   PermissionState update(Map<Permission, PermissionStatus> newStates) {
     return PermissionState(
       UnmodifiableMapView(
