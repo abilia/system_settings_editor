@@ -202,6 +202,7 @@ class PlaySpeechButton extends StatelessWidget {
                   soundToPlay,
                   GetIt.I<FileStorage>(),
                 ),
+            buttonStyle: actionButtonStyleLight,
           );
         },
       ),

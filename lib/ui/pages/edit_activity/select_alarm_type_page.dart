@@ -28,14 +28,11 @@ class _SelectAlarmTypePage extends StatelessWidget {
         iconData: AbiliaIcons.handi_alarm_vibration,
       ),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) => Padding(
-          padding: EdgeInsets.only(top: 24.0.s),
-          child: VerticalScrollArrows(
+        builder: (context, memoSettingsState) => VerticalScrollArrows(
             controller: scrollController,
             child: ListView(
               controller: scrollController,
-              padding: EditActivityTab.rightPadding
-                  .add(EditActivityTab.bottomPadding),
+              padding: EdgeInsets.only(top: 24.0.s).add(EditActivityTab.bottomPadding),
               children: <Widget>[
                 ...[
                   if (memoSettingsState.activityDisplayAlarmOption)
@@ -57,9 +54,18 @@ class _SelectAlarmTypePage extends StatelessWidget {
                       ),
                     ),
                 ...trailing
-              ],
+              ].map((widget) => widget is Divider
+                  ? widget
+                  : Padding(
+                padding: EdgeInsets.only(
+                  left: leftPadding,
+                  right: rightPadding,
+                  bottom: 8.0.s,
+                ),
+                child: widget,
+              ))
+                  .toList(),
             ),
-          ),
         ),
       ),
       bottomNavigationBar: BottomNavigation(
@@ -113,9 +119,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 24.0.s),
-      child: _SelectAlarmTypePage(
+    return _SelectAlarmTypePage(
         alarm: activity.alarm.typeSeagull,
         onOk: activity != widget.activity
             ? () => Navigator.of(context).maybePop(activity)
@@ -134,8 +138,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
           SizedBox(height: 24.s),
           RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
         ],
-      ),
-    );
+      );
   }
 
   void _changeType(AlarmType? type) => setState(() {
