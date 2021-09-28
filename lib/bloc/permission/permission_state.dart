@@ -8,19 +8,18 @@ class PermissionState extends Equatable {
   final UnmodifiableMapView<Permission, PermissionStatus> status;
 
   @visibleForTesting
+  @visibleForTesting
   PermissionState update(Map<Permission, PermissionStatus> newStates) {
-    var map = <Permission, PermissionStatus>{};
-    for (final newState in newStates.entries) {
-      if (newState.value != PermissionStatus.denied ||
-          Map.of(status)[newState.key] != PermissionStatus.permanentlyDenied) {
-        map.putIfAbsent(newState.key, () => newState.value);
-      }
-    }
     return PermissionState(
       UnmodifiableMapView(
         Map.of(status)
           ..addAll(
-            map,
+            {
+              for (final newState in newStates.entries)
+                if (!newState.value.isDenied ||
+                    status[newState.key] != PermissionStatus.permanentlyDenied)
+                  newState.key: newState.value,
+            },
           ),
       ),
     );
