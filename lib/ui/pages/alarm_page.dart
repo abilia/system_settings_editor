@@ -69,13 +69,7 @@ class ReminderPage extends StatelessWidget {
         .toReminderHeading(translate, reminder is ReminderBefore);
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: translate.reminder,
-        iconData: AbiliaIcons.handi_reminder,
-        trailing: reminder.activity.extras.startTimeExtraAlarm.isNotEmpty
-            ? PlaySpeechButton(
-                soundToPlay: reminder.activity.extras.startTimeExtraAlarm)
-            : null,
-      ),
+          title: translate.reminder, iconData: AbiliaIcons.handi_reminder),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

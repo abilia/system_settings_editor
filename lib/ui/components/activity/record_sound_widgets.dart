@@ -5,13 +5,12 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/storage/file_storage.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
   final ValueChanged<Activity>? soundChanged;
 
-  const RecordSoundWidget(this.activity, this.soundChanged, {Key? key})
+  const RecordSoundWidget({Key? key, required this.activity, this.soundChanged})
       : super(key: key);
 
   @override

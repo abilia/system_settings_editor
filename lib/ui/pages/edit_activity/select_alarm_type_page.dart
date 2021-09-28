@@ -37,43 +37,26 @@ class _SelectAlarmTypePage extends StatelessWidget {
               padding: EditActivityTab.rightPadding
                   .add(EditActivityTab.bottomPadding),
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    ...[
-                      if (memoSettingsState.activityDisplayAlarmOption)
-                        AlarmType.SoundAndVibration,
-                      if (memoSettingsState
-                          .activityDisplaySilentAlarmOption) ...[
-                        AlarmType.Vibration,
-                        AlarmType.Silent,
-                      ],
-                      if (memoSettingsState.activityDisplayNoAlarmOption)
-                        AlarmType.NoAlarm,
-                    ].map((type) => Alarm(type: type)).map(
-                          (alarmType) => RadioField(
-                            key: ObjectKey(alarmType.typeSeagull),
-                            groupValue: alarm,
-                            onChanged: onChanged,
-                            value: alarmType.typeSeagull,
-                            leading: Icon(alarmType.iconData()),
-                            text: Text(alarmType.text(translate)),
-                          ),
-                        ),
-                    ...trailing
-                  ]
-                      .map((widget) => widget is Divider
-                          ? widget
-                          : Padding(
-                              padding: EdgeInsets.only(
-                                left: leftPadding,
-                                right: rightPadding,
-                                bottom: 8.0.s,
-                              ),
-                              child: widget,
-                            ))
-                      .toList(),
-                ),
+                ...[
+                  if (memoSettingsState.activityDisplayAlarmOption)
+                    AlarmType.SoundAndVibration,
+                  if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
+                    AlarmType.Vibration,
+                    AlarmType.Silent,
+                  ],
+                  if (memoSettingsState.activityDisplayNoAlarmOption)
+                    AlarmType.NoAlarm,
+                ].map((type) => Alarm(type: type)).map(
+                      (alarmType) => RadioField(
+                        key: ObjectKey(alarmType.typeSeagull),
+                        groupValue: alarm,
+                        onChanged: onChanged,
+                        value: alarmType.typeSeagull,
+                        leading: Icon(alarmType.iconData()),
+                        text: Text(alarmType.text(translate)),
+                      ),
+                    ),
+                ...trailing
               ],
             ),
           ),
@@ -120,22 +103,20 @@ class SelectAlarmPage extends StatefulWidget {
   SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
 
   @override
-  _SelectAlarmPageState createState() =>
-      _SelectAlarmPageState(activity, activity.alarm);
+  _SelectAlarmPageState createState() => _SelectAlarmPageState(activity);
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {
-  Alarm alarm;
   Activity activity;
 
-  _SelectAlarmPageState(this.activity, this.alarm);
+  _SelectAlarmPageState(this.activity);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 24.0.s),
       child: _SelectAlarmTypePage(
-        alarm: alarm.typeSeagull,
+        alarm: activity.alarm.typeSeagull,
         onOk: activity != widget.activity
             ? () => Navigator.of(context).maybePop(activity)
             : null,
@@ -145,25 +126,26 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
           const Divider(),
           SizedBox(height: 8.s),
           AlarmOnlyAtStartSwitch(
-            alarm: alarm,
+            alarm: activity.alarm,
             onChanged: _changeStartTime,
           ),
           SizedBox(height: 8.s),
           const Divider(),
           SizedBox(height: 24.s),
-          RecordSoundWidget(activity, _changeRecording),
+          RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
         ],
       ),
     );
   }
 
   void _changeType(AlarmType? type) => setState(() {
-        alarm = alarm.copyWith(type: type);
-        activity = activity.copyWith(alarm: alarm);
+        activity =
+            activity.copyWith(alarm: activity.alarm.copyWith(type: type));
       });
+
   void _changeStartTime(bool onStart) => setState(() {
-        alarm = alarm.copyWith(onlyStart: onStart);
-        activity = activity.copyWith(alarm: alarm);
+        activity = activity.copyWith(
+            alarm: activity.alarm.copyWith(onlyStart: onStart));
       });
 
   void _changeRecording(Activity newActivity) =>
