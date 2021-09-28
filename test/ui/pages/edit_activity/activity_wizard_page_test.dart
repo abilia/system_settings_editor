@@ -239,93 +239,93 @@ void main() {
 
       expect(find.byType(TimeWiz), findsOneWidget);
     });
-  });
 
-  testWidgets('title shows when going back', (WidgetTester tester) async {
-    when(mockMemoplannerSettingsBloc.state).thenReturn(
-      MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivityTypeAdvanced: false,
-          wizardTemplateStep: false,
-          wizardDatePickerStep: false,
-          wizardImageStep: false,
-          wizardTitleStep: true,
-          wizardTypeStep: false,
-          wizardAvailabilityType: false,
-          wizardCheckableStep: false,
-          wizardRemoveAfterStep: false,
-          wizardAlarmStep: false,
-          wizardNotesStep: false,
-          wizardRemindersStep: false,
-          activityRecurringEditable: false,
+    testWidgets('title shows when going back', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
         ),
-      ),
-    );
-    const title = 'title';
-    await tester.pumpWidget(wizardPage());
-    await tester.pumpAndSettle();
+      );
+      const title = 'title';
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
 
-    expect(find.byType(TitleWiz), findsOneWidget);
-    expect(find.text(title), findsNothing);
+      expect(find.byType(TitleWiz), findsOneWidget);
+      expect(find.text(title), findsNothing);
 
-    await tester.enterText(find.byType(TextField), title);
-    await tester.pumpAndSettle();
-    expect(find.text(title), findsOneWidget);
+      await tester.enterText(find.byType(TextField), title);
+      await tester.pumpAndSettle();
+      expect(find.text(title), findsOneWidget);
 
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(TimeWiz), findsOneWidget);
-    expect(find.text(title), findsNothing);
+      expect(find.byType(TimeWiz), findsOneWidget);
+      expect(find.text(title), findsNothing);
 
-    await tester.tap(find.byType(PreviousButton));
-    await tester.pumpAndSettle();
-    expect(find.text(title), findsOneWidget);
-  });
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+      expect(find.text(title), findsOneWidget);
+    });
 
-  testWidgets('title from basic activity', (WidgetTester tester) async {
-    when(mockMemoplannerSettingsBloc.state).thenReturn(
-      MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivityTypeAdvanced: false,
-          wizardTemplateStep: true,
-          wizardDatePickerStep: false,
-          wizardImageStep: false,
-          wizardTitleStep: true,
-          wizardTypeStep: false,
-          wizardAvailabilityType: false,
-          wizardCheckableStep: false,
-          wizardRemoveAfterStep: false,
-          wizardAlarmStep: false,
-          wizardNotesStep: false,
-          wizardRemindersStep: false,
-          activityRecurringEditable: false,
+    testWidgets('title from basic activity', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: true,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
         ),
-      ),
-    );
-    const title = 'testtitle';
+      );
+      const title = 'testtitle';
 
-    when(mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
-      Sortable.createNew<BasicActivityDataItem>(
-        data: BasicActivityDataItem.createNew(title: title),
-      ),
-    ]));
-    await tester.pumpWidget(wizardPage());
-    await tester.pumpAndSettle();
+      when(mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
+        Sortable.createNew<BasicActivityDataItem>(
+          data: BasicActivityDataItem.createNew(title: title),
+        ),
+      ]));
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
 
-    expect(find.byType(BasicActivityStepPage), findsOneWidget);
-    await tester.tap(find.byKey(TestKey.basicActivityChoice));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
+      expect(find.byType(BasicActivityStepPage), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.basicActivityChoice));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-    await tester.tap(find.text(title));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
+      expect(find.byType(BasicActivityPickerPage), findsOneWidget);
+      await tester.tap(find.text(title));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(TitleWiz), findsOneWidget);
-    expect(find.text(title), findsOneWidget);
+      expect(find.byType(TitleWiz), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+    });
   });
 }
