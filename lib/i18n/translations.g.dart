@@ -678,6 +678,11 @@ abstract class Translated {
 
   final String allowAccessBody2 = 'You can always do that later from the';
 
+  final String accessToMicrophone = 'Access to Microphone';
+
+  final String allowAccessMicrophoneBody =
+      'Allow access to microphone to be able to record speech from the device.';
+
   final String about = 'About';
 
   final String version = 'Version';
@@ -1669,6 +1674,9 @@ class SV extends Translated {
 
   @override
   final String allowAccessBody2 = 'Du kan alltid göra det senare från';
+
+  @override
+  final String accessToMicrophone = 'Tillgång till mikrofon';
 
   @override
   final String about = 'Information';
