@@ -105,13 +105,8 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
                               child: BlocProvider<EditActivityBloc>(
-                                create: (_) => EditActivityBloc(
+                                create: (_) => EditActivityBloc.edit(
                                   activityOccasion,
-                                  activitiesBloc:
-                                      context.read<ActivitiesBloc>(),
-                                  clockBloc: context.read<ClockBloc>(),
-                                  memoplannerSettingBloc:
-                                      context.read<MemoplannerSettingBloc>(),
                                 ),
                                 child: SelectAlarmPage(activity: activity),
                               ),
