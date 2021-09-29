@@ -189,8 +189,6 @@ class TimeIntervallPicker extends StatelessWidget {
                                     !memoSettingsState.activityEndTimeEditable
                                 ? null
                                 : timeInterval.endTime),
-                        is24HoursFormat:
-                            MediaQuery.of(context).alwaysUse24HourFormat,
                       ),
                     ),
                     settings: RouteSettings(name: 'TimeInputPage'),

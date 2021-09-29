@@ -1542,6 +1542,7 @@ text''';
 
       await tester.enterText(startTimeInputFinder, '1111');
       await tester.pumpAndSettle();
+      expect(find.text('11:11'), findsOneWidget);
 
       expect(
         tester.widget<TextField>(endTimeInputFinder).focusNode?.hasFocus,
@@ -1554,6 +1555,7 @@ text''';
 
       await tester.enterText(endTimeInputFinder, '1112');
       await tester.pumpAndSettle();
+      expect(find.text('11:12'), findsOneWidget);
 
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
