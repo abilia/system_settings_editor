@@ -49,7 +49,10 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           content,
           Align(
             alignment: Alignment.centerRight,
-            child: trailing,
+            child: Padding(
+              padding: EdgeInsets.only(right: 16.s),
+              child: trailing,
+            ),
           )
         ],
       );
