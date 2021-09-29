@@ -1,5 +1,4 @@
 _id_	en	sv	da	nl	fi	de	nb
-userTypeNotSupported	Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia
-enterTitleAndImage	Enter title and image	Välj titel och bild
-accessToMicrophone	Access to Microphone	Tillgång till mikrofon
-allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device.
+userTypeNotSupported	Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia					
+accessToMicrophone	Access to Microphone	Tillgång till mikrofon					
+allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device.						

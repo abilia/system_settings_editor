@@ -189,20 +189,12 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(NameAndImageWiz), findsOneWidget);
+        expect(find.byType(TitleWiz), findsOneWidget);
+        await tester.enterText(find.byType(TextField), 'title');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(NameAndImageWiz), findsOneWidget);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.text(translate.missingTitleOrImage), findsOneWidget);
-        await tester.tapAt(Offset.zero);
-        await tester.pumpAndSettle();
-
-        await tester.enterText_(
-            find.byKey(TestKey.editTitleTextFormField), 'title');
+        expect(find.byType(ImageWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
