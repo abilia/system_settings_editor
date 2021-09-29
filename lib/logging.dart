@@ -49,6 +49,7 @@ class SeagullLogger {
   factory SeagullLogger.nothing() => SeagullLogger(
         loggingType: const {},
         documentsDir: '',
+        level: Level.OFF,
       );
 
   SeagullLogger({
@@ -75,10 +76,6 @@ class SeagullLogger {
   static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
   static const UPLOAD_INTERVAL = Duration(hours: 24);
   static const LOG_ARCHIVE_PATH = 'logarchive';
-
-  Future<void> initAnalytics() async {
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  }
 
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
@@ -150,6 +147,7 @@ class SeagullLogger {
   }
 
   void _initAnalyticsLogging() {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) {
