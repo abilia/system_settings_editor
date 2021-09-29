@@ -8,11 +8,13 @@ import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
-  final ValueChanged<Activity> soundChanged;
+  final ValueChanged<Activity>? soundChanged;
 
-  const RecordSoundWidget(
-      {Key? key, required this.activity, required this.soundChanged})
-      : super(key: key);
+  const RecordSoundWidget({
+    Key? key,
+    required this.activity,
+    this.soundChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class RecordSoundWidget extends StatelessWidget {
                                 ),
                               ),
                             );
-                            soundChanged.call(
+                            soundChanged?.call(
                               activity.copyWith(
                                 extras: activity.extras.copyWith(
                                   startTimeExtraAlarm: result,
@@ -72,7 +74,7 @@ class RecordSoundWidget extends StatelessWidget {
                             BlocProvider.of<EditActivityBloc>(context).add(
                               ReplaceActivity(newActivity),
                             );
-                            soundChanged.call(newActivity);
+                            soundChanged?.call(newActivity);
                           },
                         ),
                       ],
