@@ -2,10 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
+import 'package:timezone/timezone.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
+  const localTimezoneName = 'Local/Timezone';
+
+  setUp(() async {
+    setLocalLocation(Location(localTimezoneName, [], [], []));
+  });
   test('parse json test', () {
     const response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
@@ -114,7 +120,7 @@ void main() {
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
     expect(result.fileId, '');
-    expect(result.timezone, '');
+    expect(result.timezone, localTimezoneName);
     expect(result.extras, Extras.empty);
     for (var p in result.props) {
       expect(p, isNotNull);
@@ -155,6 +161,39 @@ void main() {
     for (var p in result.props) {
       expect(p, isNotNull);
     }
+  });
+
+  test('empty timezone gets local timezone', () {
+    const response = '''{
+          "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
+          "owner" : 104,
+          "revision" : 100,
+          "revisionTime" : 0,
+          "deleted" : false,
+          "seriesId" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
+          "groupActivityId" : null,
+          "title" : null,
+          "timezone": "",
+          "icon" : null,
+          "signedOffDates" : null,
+          "infoItem" : null,
+          "reminderBefore" : null,
+          "extras" : null,
+          "recurrentType" : 0,
+          "recurrentData" : 0,
+          "alarmType" : 0,
+          "duration" : 3600000,
+          "category" : 0,
+          "startTime" : 1570105439424,
+          "endTime" : 1570109039424,
+          "fullDay" : false,
+          "checkable" : true,
+          "removeAfter" : false,
+          "secret" : false,
+          "fileId" : "33451ee6-cec6-4ce0-b515-f58767b13c8f"
+        }''';
+    final result = DbActivity.fromJson(json.decode(response)).activity;
+    expect(result.timezone, localTimezoneName);
   });
 
   test('parse json with empty string test', () {
@@ -219,6 +258,7 @@ void main() {
       duration: duration,
       reminderBefore: reminders,
       startTime: now,
+      timezone: 'aTimeZone',
       recurs: Recurs.biWeeklyOnDays(evens: [
         DateTime.monday,
         DateTime.saturday,

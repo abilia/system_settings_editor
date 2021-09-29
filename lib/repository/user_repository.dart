@@ -199,7 +199,8 @@ class UserRepository extends Repository {
         _log.fine('account $usernameOrEmail created');
         break;
       default:
-        throw CreateAccountException.fromJson(json.decode(response.body));
+        throw CreateAccountException(
+            badRequest: BadRequest.fromJson(json.decode(response.body)));
     }
   }
 

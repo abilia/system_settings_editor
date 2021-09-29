@@ -17,19 +17,23 @@ class _SelectAlarmTypePage extends StatelessWidget {
     this.trailing = const <Widget>[],
     this.onOk,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final scrollController = ScrollController();
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.selectAlarmType,
         iconData: AbiliaIcons.handi_alarm_vibration,
       ),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) => Padding(
-          padding: EdgeInsets.only(top: 24.0.s),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        builder: (context, memoSettingsState) => VerticalScrollArrows(
+          controller: scrollController,
+          child: ListView(
+            controller: scrollController,
+            padding:
+                EdgeInsets.only(top: 24.0.s).add(EditActivityTab.bottomPadding),
             children: <Widget>[
               ...[
                 if (memoSettingsState.activityDisplayAlarmOption)
@@ -89,6 +93,7 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
   AlarmType newAlarm;
 
   _SelectAlarmTypePageState(this.newAlarm);
+
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
       alarm: newAlarm,
@@ -101,24 +106,25 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
 }
 
 class SelectAlarmPage extends StatefulWidget {
-  final Alarm alarm;
+  final Activity activity;
 
-  const SelectAlarmPage({Key? key, required this.alarm}) : super(key: key);
+  SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
 
   @override
-  _SelectAlarmPageState createState() => _SelectAlarmPageState(alarm);
+  _SelectAlarmPageState createState() => _SelectAlarmPageState(activity);
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {
-  Alarm alarm;
+  Activity activity;
 
-  _SelectAlarmPageState(this.alarm);
+  _SelectAlarmPageState(this.activity);
+
   @override
   Widget build(BuildContext context) {
     return _SelectAlarmTypePage(
-      alarm: alarm.typeSeagull,
-      onOk: alarm != widget.alarm
-          ? () => Navigator.of(context).maybePop(alarm)
+      alarm: activity.alarm.typeSeagull,
+      onOk: activity != widget.activity
+          ? () => Navigator.of(context).maybePop(activity)
           : null,
       onChanged: _changeType,
       trailing: [
@@ -126,15 +132,27 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
         const Divider(),
         SizedBox(height: 8.s),
         AlarmOnlyAtStartSwitch(
-          alarm: alarm,
+          alarm: activity.alarm,
           onChanged: _changeStartTime,
-        )
+        ),
+        SizedBox(height: 8.s),
+        const Divider(),
+        SizedBox(height: 24.s),
+        RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
       ],
     );
   }
 
-  void _changeType(AlarmType? type) =>
-      setState(() => alarm = alarm.copyWith(type: type));
-  void _changeStartTime(bool onStart) =>
-      setState(() => alarm = alarm.copyWith(onlyStart: onStart));
+  void _changeType(AlarmType? type) => setState(() {
+        activity =
+            activity.copyWith(alarm: activity.alarm.copyWith(type: type));
+      });
+
+  void _changeStartTime(bool onStart) => setState(() {
+        activity = activity.copyWith(
+            alarm: activity.alarm.copyWith(onlyStart: onStart));
+      });
+
+  void _changeRecording(Activity newActivity) =>
+      setState(() => activity = activity.copyActivity(newActivity));
 }

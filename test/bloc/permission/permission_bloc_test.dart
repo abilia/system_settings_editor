@@ -82,4 +82,32 @@ void main() {
     expect(checkedPermissions, containsAll(permissonSet.keys));
     expect(checkedPermissions, hasLength(permissonSet.length));
   });
+
+  group('PermissionState conditional updates', () {
+    test('a permanentlyDenied permission will not change to denied', () async {
+      final permissionState = PermissionState.empty()
+          .update({Permission.camera: PermissionStatus.permanentlyDenied});
+
+      final result =
+          permissionState.update({Permission.camera: PermissionStatus.denied});
+      expect(result.status,
+          {Permission.camera: PermissionStatus.permanentlyDenied});
+    });
+
+    test('a granted permission will change to denied', () async {
+      final permissionState = PermissionState.empty()
+          .update({Permission.camera: PermissionStatus.granted});
+      final result =
+          permissionState.update({Permission.camera: PermissionStatus.denied});
+      expect(result.status, {Permission.camera: PermissionStatus.denied});
+    });
+
+    test('a denied permission will return denied', () async {
+      final permissionState = PermissionState.empty()
+          .update({Permission.camera: PermissionStatus.denied});
+      final result =
+          permissionState.update({Permission.camera: PermissionStatus.denied});
+      expect(result.status, {Permission.camera: PermissionStatus.denied});
+    });
+  });
 }

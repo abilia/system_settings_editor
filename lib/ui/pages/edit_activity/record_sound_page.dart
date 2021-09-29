@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/abilia_file.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -20,6 +21,8 @@ class RecordSoundPage extends StatelessWidget {
             final recordState = context.read<RecordSoundCubit>().state;
             if (recordState is NewRecordedSoundState) {
               return Navigator.of(context).pop(recordState.unstoredAbiliaFile);
+            } else if (recordState is EmptyRecordSoundState) {
+              return Navigator.of(context).pop(AbiliaFile.empty);
             }
             return Navigator.of(context).pop();
           },

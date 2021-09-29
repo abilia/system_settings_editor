@@ -19,12 +19,17 @@ void main() {
   late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
   final fileId = Uuid().v4();
   final allActivities = [
-    Activity.createNew(title: 'passed', startTime: now.subtract(1.minutes())),
+    Activity.createNew(
+      title: 'passed',
+      startTime: now.subtract(1.minutes()),
+      timezone: 'aTimeZone',
+    ),
     // 1 alarm
     Activity.createNew(
       title: 'start',
       startTime: now.add(5.minutes()),
       fileId: fileId,
+      timezone: 'aTimeZone',
     ),
     // 2 alarms
     Activity.createNew(
@@ -32,6 +37,7 @@ void main() {
       startTime: now.add(3.hours()),
       duration: 1.hours(),
       alarmType: ALARM_SOUND,
+      timezone: 'aTimeZone',
     ),
     // 2 reminerds
     Activity.createNew(
@@ -39,12 +45,14 @@ void main() {
       startTime: now.add(1.hours()),
       reminderBefore: [5.minutes().inMilliseconds, 30.minutes().inMilliseconds],
       alarmType: NO_ALARM,
+      timezone: 'aTimeZone',
     ),
     // 6 recurring
     Activity.createNew(
       title: 'recurring',
       startTime: now.add(2.hours()),
       alarmType: ALARM_SOUND_ONLY_ON_START,
+      timezone: 'aTimeZone',
       recurs: Recurs.weeklyOnDays(List.generate(7, (d) => d + 1),
           ends: now.add(5.days())),
     ),
@@ -53,7 +61,6 @@ void main() {
   setUp(() {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
-
     notificationsPluginInstance =
         mockedNotificationsPlugin = MockFlutterLocalNotificationsPlugin();
     when(mockedFileStorage.copyImageThumbForNotification(fileId))

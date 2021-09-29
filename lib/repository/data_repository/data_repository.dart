@@ -92,6 +92,12 @@ abstract class DataRepository<M extends DataModel> extends Repository {
           // If we have failed a fetch from backend needs to be performed
           await handleFailedSync(res.failed);
         }
+      } on BadRequestException catch (e, stacktrace) {
+        log.severe(
+          'Failed to synchronize with a BadRequestException',
+          e.badRequest,
+          stacktrace,
+        );
       } catch (e) {
         log.warning('Failed to synchronize $path with backend', e);
         return false;
@@ -114,6 +120,9 @@ abstract class DataRepository<M extends DataModel> extends Repository {
       final dataUpdateResponse =
           DataUpdateResponse.fromJson(json.decode(response.body));
       return dataUpdateResponse;
+    } else if (response.statusCode == 400) {
+      throw BadRequestException(
+          badRequest: BadRequest.fromJson(json.decode(response.body)));
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
