@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -7,70 +8,109 @@ import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
+  final ValueChanged<Activity>? soundChanged;
 
-  const RecordSoundWidget(this.activity, {Key? key}) : super(key: key);
+  const RecordSoundWidget({
+    Key? key,
+    required this.activity,
+    this.soundChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.abilityToSelectAlarm != current.abilityToSelectAlarm,
-      builder: (context, memoSettingsState) => BlocProvider(
-        create: (context) => SoundCubit(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(translator.speech),
-            SelectOrPlaySoundWidget(
-              label: translator.speechOnStart,
-              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-              recordedAudio: activity.extras.startTimeExtraAlarm,
-              onResult: (AbiliaFile result) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      extras: activity.extras.copyWith(
-                        startTimeExtraAlarm: result,
-                      ),
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, permissionState) {
+        final permission = permissionState.status[Permission.microphone];
+        return BlocProvider<SoundCubit>(
+          create: (context) => SoundCubit(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              SubHeading(translator.speech),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SelectOrPlaySoundWidget(
+                          label: translator.speechOnStart,
+                          permissionStatus: permission,
+                          recordedAudio: activity.extras.startTimeExtraAlarm,
+                          onResult: (AbiliaFile result) {
+                            BlocProvider.of<EditActivityBloc>(context).add(
+                              ReplaceActivity(
+                                activity.copyWith(
+                                  extras: activity.extras.copyWith(
+                                    startTimeExtraAlarm: result,
+                                  ),
+                                ),
+                              ),
+                            );
+                            soundChanged?.call(
+                              activity.copyWith(
+                                extras: activity.extras.copyWith(
+                                  startTimeExtraAlarm: result,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 8.0.s),
+                        SelectOrPlaySoundWidget(
+                          label: translator.speechOnEnd,
+                          permissionStatus: permission,
+                          recordedAudio: activity.extras.endTimeExtraAlarm,
+                          onResult: (AbiliaFile result) {
+                            Activity newActivity = activity.copyWith(
+                              extras: activity.extras.copyWith(
+                                endTimeExtraAlarm: result,
+                              ),
+                            );
+                            BlocProvider.of<EditActivityBloc>(context).add(
+                              ReplaceActivity(newActivity),
+                            );
+                            soundChanged?.call(newActivity);
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-            SizedBox(height: 8.0.s),
-            SelectOrPlaySoundWidget(
-              label: translator.speechOnEnd,
-              abilityToSelectAlarm: memoSettingsState.abilityToSelectAlarm,
-              recordedAudio: activity.extras.endTimeExtraAlarm,
-              onResult: (AbiliaFile result) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      extras: activity.extras.copyWith(
-                        endTimeExtraAlarm: result,
+                  if (permission == PermissionStatus.permanentlyDenied)
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0.s),
+                      child: InfoButton(
+                        onTap: () => showViewDialog(
+                          useSafeArea: false,
+                          context: context,
+                          builder: (context) => PermissionInfoDialog(
+                              permission: Permission.microphone),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
 
 class SelectOrPlaySoundWidget extends StatelessWidget {
-  final bool abilityToSelectAlarm;
+  final PermissionStatus? permissionStatus;
   final String label;
   final AbiliaFile recordedAudio;
-  final ValueChanged<UnstoredAbiliaFile> onResult;
+  final ValueChanged<AbiliaFile> onResult;
 
   const SelectOrPlaySoundWidget({
     Key? key,
-    required this.abilityToSelectAlarm,
+    required this.permissionStatus,
     required this.label,
     required this.recordedAudio,
     required this.onResult,
@@ -78,29 +118,26 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, permissionState) {
-        final permission = permissionState.status[Permission.microphone];
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
-              child: PickField(
-                leading: Icon(recordedAudio.isEmpty
-                    ? AbiliaIcons.no_record
-                    : AbiliaIcons.sms_sound),
-                text: Text(label),
-                onTap: abilityToSelectAlarm &&
-                        permission?.isPermanentlyDenied == false
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(
+          child: PickField(
+            leading: Icon(recordedAudio.isEmpty
+                ? AbiliaIcons.no_record
+                : AbiliaIcons.sms_sound),
+            text: Text(label),
+            onTap: permissionStatus == PermissionStatus.permanentlyDenied
+                ? null
+                : permissionStatus == PermissionStatus.denied
                     ? () async {
-                        if (permission?.isGranted != true) {
-                          context
-                              .read<PermissionBloc>()
-                              .add(RequestPermissions([Permission.microphone]));
-                          return;
-                        }
-                        final result = await Navigator.of(context)
-                            .push<UnstoredAbiliaFile>(
+                        context
+                            .read<PermissionBloc>()
+                            .add(RequestPermissions([Permission.microphone]));
+                      }
+                    : () async {
+                        final result =
+                            await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
@@ -119,45 +156,30 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             settings: RouteSettings(name: 'SelectSpeechPage'),
                           ),
                         );
-                        if (result != null) {
+                        if (result is UnstoredAbiliaFile) {
                           context.read<UserFileBloc>().add(FileAdded(result));
                         }
                         if (result != null) {
                           onResult.call(result);
                         }
-                      }
-                    : null,
-              ),
-            ),
-            if (permission?.isPermanentlyDenied == true)
-              Padding(
-                padding: EdgeInsets.only(left: 8.0.s),
-                child: InfoButton(
-                  onTap: () => showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: Permission.microphone),
+                      },
+          ),
+        ),
+        if (recordedAudio.isNotEmpty)
+          BlocBuilder<UserFileBloc, UserFileState>(
+            builder: (context, state) {
+              return Padding(
+                padding: EdgeInsets.only(left: 12.s),
+                child: PlaySoundButton(
+                  sound: state.getFile(
+                    recordedAudio,
+                    GetIt.I<FileStorage>(),
                   ),
                 ),
-              ),
-            if (recordedAudio.isNotEmpty)
-              BlocBuilder<UserFileBloc, UserFileState>(
-                builder: (context, state) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 12.s),
-                    child: PlaySoundButton(
-                      sound: state.getFile(
-                        recordedAudio,
-                        GetIt.I<FileStorage>(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        );
-      },
+              );
+            },
+          ),
+      ],
     );
   }
 }
@@ -169,40 +191,70 @@ class RecordingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.s),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SubHeading(Translator.of(context).translate.duration),
+              _TimeDisplay(),
+            ],
+          ),
+          SizedBox(height: 8.0.s),
+          _Progress(),
+          SizedBox(height: 24.0.s),
+          const _RecordActionRow(),
+        ],
+      ),
+    );
+  }
+}
+
+class _Progress extends StatelessWidget {
+  const _Progress({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.s),
       child: BlocBuilder<SoundCubit, SoundState>(
+        buildWhen: (prev, curr) =>
+            curr is SoundPlaying || prev.runtimeType != curr.runtimeType,
         builder: (context, soundState) =>
             BlocBuilder<RecordSoundCubit, RecordSoundState>(
+          buildWhen: (prev, curr) =>
+              curr is RecordingSoundState ||
+              prev.runtimeType != curr.runtimeType,
           builder: (context, recordState) {
             final progress = recordState is RecordingSoundState
                 ? recordState.progress
                 : soundState is SoundPlaying
                     ? soundState.progress
                     : 0.0;
-            final duration = recordState is RecordingSoundState
-                ? recordState.duration
-                : soundState is SoundPlaying
-                    ? soundState.position
-                    : Duration.zero;
-
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _TimeDisplay(timeElapsed: duration),
-                SizedBox(height: 8.0.s),
-                LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: AbiliaColors.white120,
-                  valueColor: AlwaysStoppedAnimation(
-                    recordState is RecordingSoundState
-                        ? AbiliaColors.red
-                        : AbiliaColors.black,
-                  ),
-                  minHeight: 6.s,
+            final color = recordState is RecordingSoundState ||
+                    recordState is EmptyRecordSoundState
+                ? AbiliaColors.red
+                : AbiliaColors.black;
+            return SliderTheme(
+              data: SliderThemeData(
+                disabledActiveTickMarkColor: color,
+                disabledActiveTrackColor: color,
+                disabledThumbColor: color,
+                disabledInactiveTrackColor: AbiliaColors.white120,
+                trackHeight: 4.s,
+                thumbShape: RoundSliderThumbShape(
+                  disabledThumbRadius: 12.s,
+                  elevation: 0,
                 ),
-                SizedBox(height: 24.0.s),
-                const _RecordActionRow(),
-              ],
+                trackShape: _NotPaddedRoundedRectSliderTrackShape(),
+              ),
+              child: Slider(
+                value: progress,
+                onChanged: null,
+              ),
             );
           },
         ),
@@ -211,8 +263,28 @@ class RecordingWidget extends StatelessWidget {
   }
 }
 
+class _NotPaddedRoundedRectSliderTrackShape
+    extends RoundedRectSliderTrackShape {
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight!;
+    final double trackLeft = offset.dx;
+    final double trackTop =
+        offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
+  }
+}
+
 class _RecordActionRow extends StatelessWidget {
   const _RecordActionRow();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SoundCubit, SoundState>(
@@ -253,34 +325,47 @@ class _RecordActionRow extends StatelessWidget {
 }
 
 class _TimeDisplay extends StatelessWidget {
-  final Duration timeElapsed;
-
-  _TimeDisplay({this.timeElapsed = Duration.zero});
+  const _TimeDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var timeText = _formatTime(timeElapsed);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SubHeading(Translator.of(context).translate.duration),
-        Container(
-          width: 120.s,
-          height: 64.s,
-          decoration: disabledBoxDecoration,
-          child: Center(
-            child: Text(
-              timeText,
-              style: Theme.of(context).textTheme.headline4,
+    return Container(
+      width: 120.s,
+      height: 64.s,
+      alignment: Alignment.center,
+      decoration: disabledBoxDecoration,
+      child: BlocBuilder<SoundCubit, SoundState>(
+        buildWhen: (prev, curr) =>
+            prev.runtimeType != curr.runtimeType ||
+            prev is SoundPlaying &&
+                curr is SoundPlaying &&
+                curr.position.inSeconds != prev.position.inSeconds,
+        builder: (context, soundState) =>
+            BlocBuilder<RecordSoundCubit, RecordSoundState>(
+          buildWhen: (prev, curr) =>
+              prev.runtimeType != curr.runtimeType ||
+              prev is RecordingSoundState &&
+                  curr is RecordingSoundState &&
+                  prev.duration.inSeconds != curr.duration.inSeconds,
+          builder: (context, recordState) => Text(
+            _formatTime(
+              recordState is RecordingSoundState
+                  ? recordState.duration
+                  : soundState is SoundPlaying
+                      ? soundState.position
+                      : Duration.zero,
             ),
+            style: Theme.of(context).textTheme.headline4,
           ),
         ),
-      ],
+      ),
     );
   }
 
   String _formatTime(Duration d) {
-    return d.toString().substring(5, 10).replaceAll('.', ':');
+    final min = '${d.inMinutes}'.padLeft(2, '0');
+    final s = '${d.inSeconds}'.padLeft(2, '0');
+    return '$min:$s';
   }
 }
 
@@ -326,6 +411,7 @@ class StopButton extends StatelessWidget {
 
 class PlayRecordingButton extends StatelessWidget {
   final AbiliaFile sound;
+
   const PlayRecordingButton(
     this.sound, {
     Key? key,
@@ -334,8 +420,20 @@ class PlayRecordingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DarkGreyButton(
-        text: Translator.of(context).translate.play,
-        icon: AbiliaIcons.play_sound,
-        onPressed: () => context.read<SoundCubit>().play(sound));
+      text: Translator.of(context).translate.play,
+      icon: AbiliaIcons.play_sound,
+      onPressed: () {
+        if (sound is UnstoredAbiliaFile) {
+          context.read<SoundCubit>().play(sound);
+        } else {
+          context.read<SoundCubit>().play(
+                context
+                    .read<UserFileBloc>()
+                    .state
+                    .getFile(sound, GetIt.I<FileStorage>())!,
+              );
+        }
+      },
+    );
   }
 }

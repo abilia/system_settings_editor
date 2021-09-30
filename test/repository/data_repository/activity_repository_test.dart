@@ -25,6 +25,7 @@ void main() {
   final failedActivity = Activity.createNew(
     title: 'title2',
     startTime: startTime,
+    timezone: 'aTimeZone',
   ).wrapWithDbModel();
   final dbActivities = [successActivity, failedActivity];
   final activities = dbActivities.map((a) => a.activity);

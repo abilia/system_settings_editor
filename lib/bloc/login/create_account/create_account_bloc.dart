@@ -75,7 +75,8 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
         );
         yield state.success();
       } on CreateAccountException catch (exception) {
-        final firstError = exception.errors.firstWhereOrNull((_) => true);
+        final firstError =
+            exception.badRequest.errors.firstWhereOrNull((_) => true);
         _log.warning('creating account failed: $exception');
         yield state.failed(
           firstError?.failure ?? CreateAccountFailure.Unknown,

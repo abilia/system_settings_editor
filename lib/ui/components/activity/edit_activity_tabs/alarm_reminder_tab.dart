@@ -34,7 +34,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                   ],
                 ),
               ),
-              padded(RecordSoundWidget(activity)),
+              padded(RecordSoundWidget(activity: activity)),
             ],
           ),
         );

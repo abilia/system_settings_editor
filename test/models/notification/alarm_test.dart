@@ -5,23 +5,32 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final time = DateTime(2020, 05, 14, 18, 39, 30);
   final day = DateTime(2020, 05, 14);
+  const timeZone = 'aTimeZone';
+
   test('StartAlarm toJson and back', () {
-    final original =
-        StartAlarm(Activity.createNew(title: 'null', startTime: time), day);
+    final original = StartAlarm(
+        Activity.createNew(
+          title: 'null',
+          startTime: time,
+          timezone: timeZone,
+        ),
+        day);
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('EndAlarm toJson and back', () {
-    final original =
-        EndAlarm(Activity.createNew(title: 'null', startTime: time), day);
+    final original = EndAlarm(
+        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
+        day);
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('ReminderBefore toJson and back', () {
     final original = ReminderBefore(
-        Activity.createNew(title: 'null', startTime: time), day,
+        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
+        day,
         reminder: Duration(minutes: 5));
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
@@ -29,7 +38,8 @@ void main() {
   });
   test('ReminderUnchecked toJson and back', () {
     final original = ReminderUnchecked(
-        Activity.createNew(title: 'null', startTime: time), day,
+        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
+        day,
         reminder: Duration(minutes: 5));
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
@@ -39,7 +49,9 @@ void main() {
   group('payload', () {
     final day = DateTime(2020, 05, 14);
     final activity = Activity.createNew(
-        title: 'null', startTime: DateTime(2020, 06, 01, 17, 57));
+        title: 'null',
+        startTime: DateTime(2020, 06, 01, 17, 57),
+        timezone: timeZone);
 
     test('StartAlarm toPayload and back', () {
       final alarm = StartAlarm(activity, day);
