@@ -236,6 +236,9 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
+    _onChange(v) => context
+        .read<EditActivityBloc>()
+        .add(ReplaceActivity(activity.copyWith(category: v)));
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
         return Column(
@@ -245,24 +248,20 @@ class CategoryWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _CategoryRadioField(
-                  category: Category.left,
-                  radioKey: TestKey.leftCategoryRadio,
-                  activity: activity,
-                  label: state.leftCategoryName.isEmpty
-                      ? Translator.of(context).translate.left
-                      : state.leftCategoryName,
-                  fileId: state.leftCategoryImage,
+                Expanded(
+                  child: CategoryRadioField(
+                    category: Category.left,
+                    groupValue: activity.category,
+                    onChanged: _onChange,
+                  ),
                 ),
                 SizedBox(width: 8.s),
-                _CategoryRadioField(
-                  category: Category.right,
-                  radioKey: TestKey.rightCategoryRadio,
-                  activity: activity,
-                  label: state.rightCategoryName.isEmpty
-                      ? Translator.of(context).translate.right
-                      : state.rightCategoryName,
-                  fileId: state.rightCategoryImage,
+                Expanded(
+                  child: CategoryRadioField(
+                    category: Category.right,
+                    groupValue: activity.category,
+                    onChanged: _onChange,
+                  ),
                 ),
               ],
             )
@@ -273,54 +272,61 @@ class CategoryWidget extends StatelessWidget {
   }
 }
 
-class _CategoryRadioField extends StatelessWidget {
-  final String label, fileId;
-  final Activity activity;
+class CategoryRadioField extends StatelessWidget {
   final int category;
-  final Key radioKey;
 
-  const _CategoryRadioField({
+  final int groupValue;
+  final ValueChanged<int?>? onChanged;
+
+  final bool isRight;
+
+  const CategoryRadioField({
     Key? key,
-    required this.label,
-    required this.activity,
     required this.category,
-    required this.radioKey,
-    required this.fileId,
-  }) : super(key: key);
+    required this.groupValue,
+    this.onChanged,
+  })  : isRight = category == Category.right,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.showCategoryColor != current.showCategoryColor,
-      builder: (context, settingState) {
-        final nothing = fileId.isEmpty && !settingState.showCategoryColor;
-        return Expanded(
-          child: RadioField<int>(
-            key: radioKey,
-            padding: nothing ? null : EdgeInsets.all(8.s),
-            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                .add(ReplaceActivity(activity.copyWith(category: v))),
-            leading: nothing
-                ? null
-                : Container(
-                    foregroundDecoration: BoxDecoration(
-                      borderRadius: CategoryImage.borderRadius,
-                      border: border,
-                    ),
-                    child: CategoryImage(
-                      fileId: fileId,
-                      category: category,
-                      showColors: settingState.showCategoryColor,
-                    ),
+      builder: (context, state) {
+        final fileId =
+            isRight ? state.rightCategoryImage : state.leftCategoryImage;
+
+        final label = isRight
+            ? (state.rightCategoryName.isEmpty
+                ? Translator.of(context).translate.right
+                : state.rightCategoryName)
+            : state.leftCategoryName.isEmpty
+                ? Translator.of(context).translate.left
+                : state.leftCategoryName;
+
+        final nothing = fileId.isEmpty && !state.showCategoryColor;
+        return RadioField<int>(
+          key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
+          padding: nothing ? null : EdgeInsets.all(8.s),
+          onChanged: onChanged,
+          leading: nothing
+              ? null
+              : Container(
+                  foregroundDecoration: BoxDecoration(
+                    borderRadius: CategoryImage.borderRadius,
+                    border: border,
                   ),
-            text: Text(
-              label,
-              overflow: TextOverflow.ellipsis,
-            ),
-            groupValue: activity.category,
-            value: category,
+                  child: CategoryImage(
+                    fileId: fileId,
+                    category: category,
+                    showColors: state.showCategoryColor,
+                  ),
+                ),
+          text: Text(
+            label,
+            overflow: TextOverflow.ellipsis,
           ),
+          groupValue: groupValue,
+          value: category,
         );
       },
     );
