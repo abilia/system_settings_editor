@@ -15,7 +15,7 @@ class AudioTicker {
   Stream<int> tick({required int duration}) {
     return Stream.periodic(
             Duration(milliseconds: millisTickRate), (x) => x * millisTickRate)
-        .take(duration ~/ millisTickRate);
+        .take((duration ~/ millisTickRate) + 1);
   }
 }
 
@@ -44,6 +44,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
 
   void _ticking(Duration duration) async {
     if (duration >= maxRecordingTime) {
+      emit(RecordingSoundState(maxRecordingTime));
       await stopRecording();
     } else {
       emit(RecordingSoundState(duration));

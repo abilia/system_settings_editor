@@ -1,3 +1,5 @@
+import 'package:seagull/models/all.dart';
+
 class UnauthorizedException implements Exception {
   String errMsg() => 'Not authorized';
 }
@@ -21,4 +23,16 @@ class NoLicenseException implements Exception {
 
 class WrongUserTypeException implements Exception {
   String errMsg() => 'Only type User is supported';
+}
+
+class BadRequestException implements Exception {
+  final BadRequest badRequest;
+
+  BadRequestException({required this.badRequest});
+}
+
+class CreateAccountException implements Exception {
+  final BadRequest badRequest;
+
+  CreateAccountException({required this.badRequest});
 }

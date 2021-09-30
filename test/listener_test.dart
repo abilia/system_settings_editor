@@ -14,6 +14,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import 'fakes/all.dart';
 import 'mocks/shared.mocks.dart';
@@ -43,6 +44,7 @@ void main() {
   final payloadSerial = json.encode(payload.toJson());
 
   setUp(() async {
+    tz.setLocalLocation(tz.UTC);
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
