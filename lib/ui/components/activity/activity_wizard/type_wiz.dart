@@ -1,22 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/activity_wizard/activity_wizard_cubit.dart';
+import 'package:seagull/bloc/activities/activity_wizard/type_wiz_cubit.dart';
+import 'package:seagull/bloc/activities/activity_wizard/type_wiz_state.dart';
 import 'package:seagull/bloc/activities/edit_activity/edit_activity_bloc.dart';
 import 'package:seagull/bloc/generic/memoplannersetting/memoplanner_setting_bloc.dart';
-import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/category.dart';
 import 'package:seagull/ui/all.dart';
-
-enum _Type {
-  right,
-  left,
-  fullDay,
-}
 
 class TypeWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) => Scaffold(
+    var activity = context.read<EditActivityBloc>().state.activity;
+    return BlocProvider(
+      create: (_) => TypeWizCubit(
+          initialType: activity.fullDay
+              ? CategoryType.fullDay
+              : activity.category == Category.left
+                  ? CategoryType.left
+                  : CategoryType.right),
+      child: Scaffold(
         appBar: AbiliaAppBar(
           iconData: AbiliaIcons.plus,
           title: Translator.of(context).translate.selectType,
@@ -24,118 +26,101 @@ class TypeWiz extends StatelessWidget {
         body: Padding(
           padding: ordinaryPadding,
           child: BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-            builder: (context, wizState) => _TypeWidget(
-              state.activity,
-            ),
+            builder: (context, wizState) => _TypeWidget(),
           ),
         ),
-        bottomNavigationBar: WizardBottomNavigation(),
+        bottomNavigationBar: BlocBuilder<TypeWizCubit, TypeWizState>(
+          builder: (context, typeState) {
+            return WizardBottomNavigation(
+              beforeOnNext: () {
+                context.read<EditActivityBloc>().add(ChangeCategory(
+                    fullDay: typeState.type == CategoryType.fullDay,
+                    category: typeState.type == CategoryType.left
+                        ? Category.left
+                        : Category.right));
+              },
+            );
+          },
+        ),
       ),
     );
   }
 }
 
-class _TypeWidget extends StatefulWidget {
-  final Activity _activity;
-
-  const _TypeWidget(this._activity, {Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _TypeState(_activity);
-  }
-}
-
-class _TypeState extends State<_TypeWidget> {
-  final Activity activity;
-  late _Type groupType;
-
-  _TypeState(this.activity) {
-    groupType = activity.fullDay
-        ? _Type.fullDay
-        : activity.category == Category.left
-            ? _Type.left
-            : _Type.right;
-  }
-
+class _TypeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var onChanged = (v) {
-      BlocProvider.of<EditActivityBloc>(context).add(ReplaceActivity(
-          activity.copyWith(
-              category: v == _Type.left ? Category.left : Category.right,
-              fullDay: v == _Type.fullDay)));
-      groupType = v;
+      context.read<TypeWizCubit>().updateType(v);
     };
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TypeRadioField(
-              category: _Type.fullDay,
-              radioKey: TestKey.fullDayCategoryRadio,
-              activity: activity,
-              label: Translator.of(context).translate.fullDay,
-              image: Icon(
-                AbiliaIcons.restore,
-                size: smallIconSize,
-              ),
-              groupValue: groupType,
-              onChanged: onChanged,
-            ),
-            SizedBox(height: 8.s),
-            TypeRadioField(
-              category: _Type.left,
-              radioKey: TestKey.leftCategoryRadio,
-              activity: activity,
-              label: state.leftCategoryName.isEmpty
-                  ? Translator.of(context).translate.left
-                  : state.leftCategoryName,
-              image: CategoryImage(
-                fileId: state.leftCategoryImage,
-                category: _Type.left.index,
-                showColors: state.showCategoryColor,
-              ),
-              groupValue: groupType,
-              onChanged: onChanged,
-            ),
-            SizedBox(height: 8.s),
-            TypeRadioField(
-              category: _Type.right,
-              radioKey: TestKey.rightCategoryRadio,
-              activity: activity,
-              label: state.rightCategoryName.isEmpty
-                  ? Translator.of(context).translate.right
-                  : state.rightCategoryName,
-              image: CategoryImage(
-                fileId: state.rightCategoryImage,
-                category: _Type.right.index,
-                showColors: state.showCategoryColor,
-              ),
-              groupValue: groupType,
-              onChanged: onChanged,
-            ),
-          ],
-        );
-      },
-    );
+    return BlocBuilder<TypeWizCubit, TypeWizState>(
+        buildWhen: (previous, current) => previous.type != current.type,
+        builder: (typeContext, typeState) {
+          return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TypeRadioField(
+                    category: CategoryType.fullDay,
+                    radioKey: TestKey.fullDayCategoryRadio,
+                    label: Translator.of(context).translate.fullDay,
+                    image: Icon(
+                      AbiliaIcons.restore,
+                      size: smallIconSize,
+                    ),
+                    groupValue: typeState.type,
+                    onChanged: onChanged,
+                  ),
+                  SizedBox(height: 8.s),
+                  TypeRadioField(
+                    category: CategoryType.left,
+                    radioKey: TestKey.leftCategoryRadio,
+                    label: state.leftCategoryName.isEmpty
+                        ? Translator.of(context).translate.left
+                        : state.leftCategoryName,
+                    image: CategoryImage(
+                      fileId: state.leftCategoryImage,
+                      category: CategoryType.left.index,
+                      showColors: state.showCategoryColor,
+                    ),
+                    groupValue: typeState.type,
+                    onChanged: onChanged,
+                  ),
+                  SizedBox(height: 8.s),
+                  TypeRadioField(
+                    category: CategoryType.right,
+                    radioKey: TestKey.rightCategoryRadio,
+                    label: state.rightCategoryName.isEmpty
+                        ? Translator.of(context).translate.right
+                        : state.rightCategoryName,
+                    image: CategoryImage(
+                      fileId: state.rightCategoryImage,
+                      category: CategoryType.right.index,
+                      showColors: state.showCategoryColor,
+                    ),
+                    groupValue: typeState.type,
+                    onChanged: onChanged,
+                  ),
+                ],
+              );
+            },
+          );
+        });
   }
 }
 
 class TypeRadioField extends StatelessWidget {
   final String label;
-  final Activity activity;
-  final _Type category;
+  final CategoryType category;
   final Key radioKey;
   final Widget? image;
-  final _Type groupValue;
-  final ValueChanged<_Type?>? onChanged;
+  final CategoryType groupValue;
+  final ValueChanged<CategoryType?>? onChanged;
 
   const TypeRadioField({
     Key? key,
     required this.label,
-    required this.activity,
     required this.category,
     required this.radioKey,
     required this.image,
@@ -150,7 +135,7 @@ class TypeRadioField extends StatelessWidget {
           previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settingState) {
         final nothing = image == null && !settingState.showCategoryColor;
-        return RadioField<_Type>(
+        return RadioField<CategoryType>(
           key: radioKey,
           padding: nothing ? null : EdgeInsets.all(8.s),
           onChanged: onChanged,

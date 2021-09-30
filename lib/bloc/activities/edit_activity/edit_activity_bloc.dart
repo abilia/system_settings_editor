@@ -93,6 +93,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is AddBasiActivity) {
       yield* _mapAddBasicActivityToState(event);
     }
+    if (event is ChangeCategory) {
+      yield* _mapChangeCategoryToState(event);
+    }
   }
 
   Stream<EditActivityState> _mapAddOrRemoveReminderToState(
@@ -151,6 +154,12 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
       event.basicActivityData.toActivity(timezone: tz.local.name, day: day),
       event.basicActivityData.toTimeInterval(startDate: day),
     );
+  }
+
+  Stream<EditActivityState> _mapChangeCategoryToState(
+      ChangeCategory event) async* {
+    yield state.copyWith(state.activity
+        .copyWith(category: event.category, fullDay: event.fullDay));
   }
 
   InfoItem _newInfoItem(Type infoItemType) {
