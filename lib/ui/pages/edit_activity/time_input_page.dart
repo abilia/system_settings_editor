@@ -54,8 +54,6 @@ class TimeInputPage extends StatelessWidget {
 class TimeInputContent extends StatefulWidget {
   final TimeInput timeInput;
 
-  final FocusNode? startTimeFocusNode, endTimeFocusNode;
-
   final BottomNavigationBuilder bottomNavigationBuilder;
   final SaveTimeInput onSave;
   final OnValidTimeInput? onValidTimeInput;
@@ -69,8 +67,6 @@ class TimeInputContent extends StatefulWidget {
     required this.bottomNavigationBuilder,
     required this.onSave,
     this.onValidTimeInput,
-    this.startTimeFocusNode,
-    this.endTimeFocusNode,
   }) : super(key: key);
 
   @override
@@ -124,7 +120,7 @@ class _TimeInputContentState extends State<TimeInputContent>
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
 
-    startTimeFocus = (widget.startTimeFocusNode ?? FocusNode())
+    startTimeFocus = FocusNode()
       ..requestFocus()
       ..addListener(() {
         if (startTimeFocus.hasFocus) {
@@ -143,7 +139,7 @@ class _TimeInputContentState extends State<TimeInputContent>
           }
         }
       });
-    endTimeFocus = (widget.endTimeFocusNode ?? FocusNode())
+    endTimeFocus = FocusNode()
       ..addListener(() {
         if (endTimeFocus.hasFocus) {
           if (_paused) {
