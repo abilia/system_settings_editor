@@ -5,12 +5,16 @@ import 'package:seagull/db/database_repository.dart';
 import '../mocks/shared.mocks.dart';
 
 void main() {
-  test('executeInitialization calls all scripts', () {
+  test('executeInitialization calls all scripts', () async {
     final mockDb = MockDatabase();
 
-    DatabaseRepository.executeInitialization(mockDb, 1);
-    DatabaseRepository.initialScript.forEach((s) => verify(mockDb.execute(s)));
-    DatabaseRepository.migrations.forEach((m) => verify(mockDb.execute(m)));
+    await DatabaseRepository.executeInitialization(mockDb, 1);
+    for (final s in DatabaseRepository.initialScript) {
+      verify(mockDb.execute(s));
+    }
+    for (final m in DatabaseRepository.migrations) {
+      verify(mockDb.execute(m));
+    }
   });
 
   test('executeMigration do not call old scripts', () {
