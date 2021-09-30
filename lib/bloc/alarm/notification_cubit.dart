@@ -6,13 +6,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-class NotificationBloc extends Bloc<NotificationAlarm, AlarmStateBase> {
-  static final _log = Logger((NotificationBloc).toString());
+class NotificationCubit extends Cubit<NotificationAlarm?> {
+  static final _log = Logger((NotificationCubit).toString());
   late final StreamSubscription _selectedNotificationSubscription;
 
-  NotificationBloc({
+  NotificationCubit({
     required ReplaySubject<String> selectedNotificationSubject,
-  }) : super(UnInitializedAlarmState()) {
+  }) : super(null) {
     _selectedNotificationSubscription = selectedNotificationSubject.transform(
       StreamTransformer.fromHandlers(
         handleData: (String data, EventSink<NotificationAlarm> sink) {
@@ -24,14 +24,7 @@ class NotificationBloc extends Bloc<NotificationAlarm, AlarmStateBase> {
           }
         },
       ),
-    ).listen((payload) => add(payload));
-  }
-
-  @override
-  Stream<AlarmStateBase> mapEventToState(
-    NotificationAlarm payload,
-  ) async* {
-    yield AlarmState(payload);
+    ).listen((payload) => emit(payload));
   }
 
   @override

@@ -13,20 +13,20 @@ void main() {
   final aTime = DateTime(1999, 12, 20, 20, 12);
   final aDay = aTime.onlyDays();
   late ReplaySubject<String> notificationSelected;
-  late NotificationBloc notificationBloc;
+  late NotificationCubit notificationBloc;
   const localTimezoneName = 'aTimeZone';
 
   setUp(() {
     setLocalLocation(Location(localTimezoneName, [], [], []));
     notificationSelected = ReplaySubject<String>();
 
-    notificationBloc = NotificationBloc(
+    notificationBloc = NotificationCubit(
       selectedNotificationSubject: notificationSelected,
     );
   });
 
   test('initial state', () {
-    expect(notificationBloc.state, UnInitializedAlarmState());
+    expect(notificationBloc.state, null);
   });
 
   test('Notification selected emits new alarm state', () async {
@@ -39,8 +39,8 @@ void main() {
     notificationSelected.add(payload);
 
     // Assert
-    await expectLater(notificationBloc.stream,
-        emits(AlarmState(StartAlarm(nowActivity, aDay))));
+    await expectLater(
+        notificationBloc.stream, emits(StartAlarm(nowActivity, aDay)));
   });
 
   test('Notification selected emits new reminder state', () async {
@@ -59,13 +59,12 @@ void main() {
 
     // Assert
     await expectLater(
-        notificationBloc.stream,
-        emits(
-          AlarmState(ReminderBefore(
-            nowActivity,
-            aDay,
-            reminder: reminderTime,
-          )),
-        ));
+      notificationBloc.stream,
+      emits(ReminderBefore(
+        nowActivity,
+        aDay,
+        reminder: reminderTime,
+      )),
+    );
   });
 }

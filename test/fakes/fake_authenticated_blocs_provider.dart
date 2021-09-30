@@ -28,8 +28,8 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
           create: (context) => FakeDayActivitiesBloc()),
       BlocProvider<ActivitiesOccasionBloc>(
           create: (context) => FakeActivitiesOccasionBloc()),
-      BlocProvider<AlarmBloc>(create: (context) => FakeAlarmBloc()),
-      BlocProvider<NotificationBloc>(
+      BlocProvider<AlarmCubit>(create: (context) => FakeAlarmCubit()),
+      BlocProvider<NotificationCubit>(
           create: (context) => FakeNotificationBloc()),
       BlocProvider<CalendarViewCubit>(
           create: (context) => FakeCalendarViewBloc()),

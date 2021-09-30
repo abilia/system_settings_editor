@@ -4,7 +4,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class ClockBloc extends Bloc<DateTime, DateTime> with Silent {
+class ClockBloc extends Bloc<DateTime, DateTime> with Finest {
   StreamSubscription<DateTime>? _tickerSubscription;
 
   ClockBloc(Stream<DateTime> ticker, {DateTime? initialTime})
