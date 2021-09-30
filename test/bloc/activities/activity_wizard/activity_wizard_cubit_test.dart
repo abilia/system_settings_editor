@@ -85,8 +85,8 @@ void main() {
           [
             WizardStep.basic,
             WizardStep.date,
-            WizardStep.image,
             WizardStep.title,
+            WizardStep.image,
             WizardStep.available_for,
             WizardStep.checkable,
             WizardStep.time,
@@ -1665,16 +1665,11 @@ void main() {
           [
             WizardStep.basic,
             WizardStep.date,
-            WizardStep.image,
             WizardStep.title,
-            // WizardStep.type,
+            WizardStep.image,
             WizardStep.available_for,
             WizardStep.checkable,
-            // WizardStep.delete_after,
             WizardStep.time,
-            // WizardStep.alarm,
-            // WizardStep.note,
-            // WizardStep.reminder,
             WizardStep.recurring,
           ],
         ),
@@ -1716,18 +1711,12 @@ void main() {
           0,
           [
             WizardStep.basic,
-            // WizardStep.date,
-            // WizardStep.image,
-            // WizardStep.title,
             WizardStep.type,
-            // WizardStep.available_for,
-            // WizardStep.checkable,
             WizardStep.delete_after,
             WizardStep.time,
             WizardStep.alarm,
             WizardStep.note,
             WizardStep.reminder,
-            // WizardStep.recurring,
           ],
         ),
       );
@@ -1769,19 +1758,8 @@ void main() {
         ActivityWizardState(
           0,
           [
-            // WizardStep.basic,
-            // WizardStep.date,
-            // WizardStep.image,
             WizardStep.title,
-            // WizardStep.type,
-            // WizardStep.available_for,
-            // WizardStep.checkable,
-            // WizardStep.delete_after,
             WizardStep.time,
-            // WizardStep.alarm,
-            // WizardStep.note,
-            // WizardStep.reminder,
-            // WizardStep.recurring,
           ],
         ),
       );
@@ -1825,8 +1803,8 @@ void main() {
           [
             WizardStep.basic,
             WizardStep.date,
-            WizardStep.image,
             WizardStep.title,
+            WizardStep.image,
             WizardStep.type,
             WizardStep.available_for,
             WizardStep.checkable,
@@ -1876,8 +1854,8 @@ void main() {
       final allSteps = [
         WizardStep.basic,
         WizardStep.date,
-        WizardStep.image,
         WizardStep.title,
+        WizardStep.image,
         WizardStep.type,
         WizardStep.available_for,
         WizardStep.checkable,
@@ -1898,8 +1876,8 @@ void main() {
       );
       wizCubit.next(); // basic
       wizCubit.next(); // date
-      wizCubit.next(); // image
-      wizCubit.next(); // title ---> error
+      wizCubit.next(); // title
+      wizCubit.next(); // image ---> error
 
       expect(
         wizCubit.state,
