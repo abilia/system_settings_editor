@@ -20,7 +20,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
     required this.child,
     this.memoplannerSettingBloc,
     this.sortableBloc,
-  }) {
+    Key? key,
+  }) : super(key: key) {
     ensureNotificationPluginInitialized();
   }
   @override

@@ -5,6 +5,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class PermissionsPage extends StatelessWidget {
+  const PermissionsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;

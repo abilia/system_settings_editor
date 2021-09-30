@@ -3,6 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class MEMOplannerLoginFooter extends StatelessWidget {
+  const MEMOplannerLoginFooter({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(

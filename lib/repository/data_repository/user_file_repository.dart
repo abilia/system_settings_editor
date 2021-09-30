@@ -103,13 +103,13 @@ class UserFileRepository extends DataRepository<UserFile> {
       final errorResponse = json.decode(response.body);
       final errors = (errorResponse['errors'] as List)
           .map((r) => ResponseError.fromJson(r));
-      errors.forEach((error) {
+      for (final error in errors) {
         if (error.code == ErrorCodes.WRONG_REVISION) {
           throw WrongRevisionException();
         } else {
           log.warning('Unhandled error code: $error');
         }
-      });
+      }
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }

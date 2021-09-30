@@ -28,7 +28,9 @@ void main() {
 
   test('ticks returns ticks', () {
     final ticks = List.generate(100, (m) => DateTime(2000).add(m.minutes()));
-    ticks.forEach((tick) => mockedTicker.add(tick));
+    for (final tick in ticks) {
+      mockedTicker.add(tick);
+    }
     expectLater(clockBloc.stream, emitsInOrder(ticks));
   });
 

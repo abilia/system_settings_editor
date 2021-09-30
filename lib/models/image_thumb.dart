@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class ImageThumb extends Equatable {
   static const THUMB_SIZE = 350;
-  final id;
+  final String id;
   const ImageThumb({required this.id});
 
   String get thumbId => '${id}_$THUMB_SIZE';
