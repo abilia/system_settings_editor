@@ -81,7 +81,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.nonCheckableActivityAlarmKey,
+        key: AlarmSettings.nonCheckableActivityAlarmKey,
         matcher: Sound.AfloatSynth.name(),
       );
     });
@@ -99,7 +99,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.checkableActivityAlarmKey,
+        key: AlarmSettings.checkableActivityAlarmKey,
         matcher: Sound.BreathlessPiano.name(),
       );
     });
@@ -117,7 +117,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.reminderAlarmKey,
+        key: AlarmSettings.reminderAlarmKey,
         matcher: Sound.GibsonGuitar.name(),
       );
     });
@@ -140,7 +140,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.alarmDurationKey,
+        key: AlarmSettings.alarmDurationKey,
         matcher: 5.minutes().inMilliseconds,
       );
     });
@@ -154,7 +154,7 @@ void main() {
       verifyUnsyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.vibrateAtReminderKey,
+        key: AlarmSettings.vibrateAtReminderKey,
         matcher: false,
       );
     });

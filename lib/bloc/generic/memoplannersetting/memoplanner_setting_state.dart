@@ -36,7 +36,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get timepillar12HourFormat => settings.setting12hTimeFormatTimeline;
   bool get displayHourLines => settings.settingDisplayHourLines;
   bool get displayTimeline => settings.settingDisplayTimeline;
-  bool get vibrateAtReminder => settings.vibrateAtReminder;
   bool get columnOfDots => settings.settingTimePillarTimeline;
   bool get displayWeekCalendar => settings.functionMenuDisplayWeek;
   bool get displayMonthCalendar => settings.functionMenuDisplayMonth;
@@ -116,7 +115,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get alarmDuration => settings.alarmDuration;
+  int get alarmDuration => settings.alarm.duration;
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>
@@ -133,9 +132,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   ClockType get clockType => ClockType.values[settings.settingClockType];
   MonthCalendarType get monthCalendarType =>
       MonthCalendarType.values[settings.viewOptionsMonthCalendar];
-  Sound get nonCheckableAlarm => settings.nonCheckableActivityAlarm.toSound();
-  Sound get checkableAlarm => settings.checkableActivityAlarm.toSound();
-  Sound get reminderAlarm => settings.reminderAlarm.toSound();
+
+  AlarmSettings get alarm => settings.alarm;
 
   NewActivityMode get addActivityType => settings.addActivityTypeAdvanced
       ? NewActivityMode.editView

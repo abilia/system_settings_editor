@@ -96,9 +96,9 @@ void main() {
           checkable: true,
         ),
         day);
-    final settings = MemoplannerSettings(
-      checkableActivityAlarm: '',
-      nonCheckableActivityAlarm: '',
+    final settings = AlarmSettings(
+      checkableActivity: '',
+      nonCheckableActivity: '',
     );
     expect(nonCheckableAlarm.sound(settings), Sound.Default);
     expect(checkableActivityAlarm.sound(settings), Sound.Default);

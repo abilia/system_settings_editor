@@ -4,11 +4,11 @@ import 'package:seagull/models/all.dart';
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
     // alarm settings
-    nonCheckableActivityAlarmKey,
-    checkableActivityAlarmKey,
-    reminderAlarmKey,
-    vibrateAtReminderKey,
-    alarmDurationKey,
+    AlarmSettings.nonCheckableActivityAlarmKey,
+    AlarmSettings.checkableActivityAlarmKey,
+    AlarmSettings.reminderAlarmKey,
+    AlarmSettings.vibrateAtReminderKey,
+    AlarmSettings.alarmDurationKey,
     // eye button settings
     viewOptionsZoomKey,
     viewOptionsTimeIntervalKey,
@@ -81,11 +81,6 @@ class MemoplannerSettings extends Equatable {
       viewOptionsTimeViewKey = 'view_options_time_view',
       viewOptionsMonthCalendarKey = 'view_options_month_calendar',
       dotsInTimepillarKey = 'dots_in_timepillar',
-      nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
-      checkableActivityAlarmKey = 'activity_alarm_with_confirm',
-      reminderAlarmKey = 'activity_reminder_alarm',
-      vibrateAtReminderKey = 'setting_vibrate_at_reminder',
-      alarmDurationKey = 'alarm_duration',
       functionMenuDisplayWeekKey = 'function_menu_display_week',
       functionMenuDisplayMonthKey = 'function_menu_display_month',
       functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
@@ -140,7 +135,6 @@ class MemoplannerSettings extends Equatable {
       setting12hTimeFormatTimeline,
       settingDisplayHourLines,
       settingDisplayTimeline,
-      vibrateAtReminder,
       dotsInTimepillar,
       functionMenuDisplayWeek,
       functionMenuDisplayMonth,
@@ -185,7 +179,6 @@ class MemoplannerSettings extends Equatable {
       weekDisplayShowFullWeek,
       weekDisplayShowColorMode,
       calendarMonthViewShowColors,
-      alarmDuration,
       activityTimeout,
       functionMenuStartView,
       settingClockType,
@@ -194,10 +187,9 @@ class MemoplannerSettings extends Equatable {
   final String calendarActivityTypeLeft,
       calendarActivityTypeRight,
       calendarActivityTypeLeftImage,
-      calendarActivityTypeRightImage,
-      nonCheckableActivityAlarm,
-      checkableActivityAlarm,
-      reminderAlarm;
+      calendarActivityTypeRightImage;
+
+  final AlarmSettings alarm;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -252,11 +244,7 @@ class MemoplannerSettings extends Equatable {
     this.viewOptionsTimeView = 0,
     this.viewOptionsZoom = 1,
     this.viewOptionsMonthCalendar = 0,
-    this.alarmDuration = 30000,
-    this.checkableActivityAlarm = SoundExtension.defaultName,
-    this.nonCheckableActivityAlarm = SoundExtension.defaultName,
-    this.reminderAlarm = SoundExtension.defaultName,
-    this.vibrateAtReminder = true,
+    this.alarm = const AlarmSettings(),
     this.functionMenuDisplayWeek = true,
     this.functionMenuDisplayMonth = true,
     this.functionMenuDisplayNewActivity = true,
@@ -519,26 +507,7 @@ class MemoplannerSettings extends Equatable {
         viewOptionsZoomKey,
         1,
       ),
-      alarmDuration: settings.parse(
-        alarmDurationKey,
-        30000,
-      ),
-      checkableActivityAlarm: settings.parse(
-        checkableActivityAlarmKey,
-        Sound.Default.name(),
-      ),
-      nonCheckableActivityAlarm: settings.parse(
-        nonCheckableActivityAlarmKey,
-        Sound.Default.name(),
-      ),
-      reminderAlarm: settings.parse(
-        reminderAlarmKey,
-        Sound.Default.name(),
-      ),
-      vibrateAtReminder: settings.getBool(
-        vibrateAtReminderKey,
-        defaultValue: true,
-      ),
+      alarm: AlarmSettings.fromSettingsMap(settings),
       settingViewOptionsTimeView: settings.getBool(
         settingViewOptionsTimeViewKey,
       ),
@@ -648,11 +617,7 @@ class MemoplannerSettings extends Equatable {
         dotsInTimepillar,
         viewOptionsZoom,
         viewOptionsMonthCalendar,
-        alarmDuration,
-        checkableActivityAlarm,
-        nonCheckableActivityAlarm,
-        reminderAlarm,
-        vibrateAtReminder,
+        alarm,
         functionMenuDisplayWeek,
         functionMenuDisplayMonth,
         functionMenuDisplayNewActivity,
@@ -689,7 +654,7 @@ class MemoplannerSettings extends Equatable {
       ];
 }
 
-extension _Parsing on Map<String, MemoplannerSettingData> {
+extension Parsing on Map<String, MemoplannerSettingData> {
   T parse<T>(String settingName, T defaultValue) {
     try {
       return this[GenericData.uniqueId(

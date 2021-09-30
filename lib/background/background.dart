@@ -78,7 +78,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       activities,
       settingsDb.language,
       settingsDb.alwaysUse24HourFormat,
-      settings,
+      settings.alarm,
       fileStorage,
     );
 

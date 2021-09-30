@@ -212,7 +212,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
-                settingsState.settings,
+                settingsState.alarm,
                 GetIt.I<FileStorage>(),
               );
             }
@@ -222,8 +222,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           listenWhen: (previous, current) =>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
-              AlarmSettingsState.fromMemoplannerSettings(previous) !=
-                  AlarmSettingsState.fromMemoplannerSettings(current),
+              previous.alarm != current.alarm,
           listener: (context, state) async {
             final activitiesState = context.read<ActivitiesBloc>().state;
             if (activitiesState is ActivitiesLoaded) {
@@ -231,7 +230,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
-                state.settings,
+                state.alarm,
                 GetIt.I<FileStorage>(),
               );
             }
