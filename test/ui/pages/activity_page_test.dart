@@ -992,7 +992,7 @@ void main() {
     // Assert "tag" is checked
     final allQuestionViews = tester.widgetList(find.byType(QuestionView));
     expect(allQuestionViews, hasLength(2));
-    allQuestionViews.forEach((element) {
+    for (final element in allQuestionViews) {
       if (element is QuestionView) {
         if (element.question.name == tag) {
           expect(element.signedOff, isTrue);
@@ -1000,7 +1000,7 @@ void main() {
           expect(element.signedOff, isFalse);
         }
       }
-    });
+    }
   });
 
   testWidgets('Check and uncheck activity with confirmation',
