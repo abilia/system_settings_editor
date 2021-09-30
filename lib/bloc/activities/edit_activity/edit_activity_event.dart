@@ -74,12 +74,3 @@ class ChangeInfoItemType extends ActivityChangedEvent {
   @override
   String toString() => 'InfoItemChanged { $infoItemType }';
 }
-
-class ChangeCategory extends ActivityChangedEvent {
-  final bool fullDay;
-  final int category;
-
-  const ChangeCategory({required this.fullDay, required this.category});
-  @override
-  List<Object?> get props => [fullDay, category];
-}
