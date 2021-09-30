@@ -105,13 +105,8 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                             builder: (_) => CopiedAuthProviders(
                               blocContext: context,
                               child: BlocProvider<EditActivityBloc>(
-                                create: (_) => EditActivityBloc(
+                                create: (_) => EditActivityBloc.edit(
                                   activityOccasion,
-                                  activitiesBloc:
-                                      context.read<ActivitiesBloc>(),
-                                  clockBloc: context.read<ClockBloc>(),
-                                  memoplannerSettingBloc:
-                                      context.read<MemoplannerSettingBloc>(),
                                 ),
                                 child: SelectAlarmPage(activity: activity),
                               ),
@@ -190,43 +185,10 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                       child: Icon(AbiliaIcons.delete_all_clear),
                     ),
                   if (displayEditButton)
-                    ActionButtonLight(
-                      onPressed: () async {
-                        await Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                    create: (context) => ActivityWizardCubit(),
-                                  ),
-                                  BlocProvider<EditActivityBloc>(
-                                    create: (_) => EditActivityBloc(
-                                      activityOccasion,
-                                      activitiesBloc:
-                                          context.read<ActivitiesBloc>(),
-                                      clockBloc: context.read<ClockBloc>(),
-                                      memoplannerSettingBloc: context
-                                          .read<MemoplannerSettingBloc>(),
-                                    ),
-                                  ),
-                                ],
-                                child: ErrorPopupListener(
-                                  child: EditActivityPage(
-                                    title: Translator.of(context)
-                                        .translate
-                                        .editActivity,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            settings: RouteSettings(
-                                name: '$EditActivityPage $activityOccasion'),
-                          ),
-                        );
-                      },
-                      child: Icon(AbiliaIcons.edit),
+                    EditActivityButton(
+                      activityOccasion: activityOccasion,
+                      allowActivityTimeBeforeCurrent:
+                          memoSettingsState.activityTimeBeforeCurrent,
                     ),
                 ],
               ),
@@ -234,6 +196,52 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           ),
         );
       },
+    );
+  }
+}
+
+class EditActivityButton extends StatelessWidget {
+  const EditActivityButton({
+    Key? key,
+    required this.activityOccasion,
+    required this.allowActivityTimeBeforeCurrent,
+  }) : super(key: key);
+
+  final ActivityOccasion activityOccasion;
+  final bool allowActivityTimeBeforeCurrent;
+
+  @override
+  Widget build(BuildContext context) {
+    return ActionButtonLight(
+      onPressed: () async {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => CopiedAuthProviders(
+              blocContext: context,
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<EditActivityBloc>(
+                    create: (_) => EditActivityBloc.edit(activityOccasion),
+                  ),
+                  BlocProvider(
+                    create: (context) => ActivityWizardCubit.edit(
+                      activitiesBloc: context.read<ActivitiesBloc>(),
+                      editActivityBloc: context.read<EditActivityBloc>(),
+                      clockBloc: context.read<ClockBloc>(),
+                      allowActivityTimeBeforeCurrent:
+                          allowActivityTimeBeforeCurrent,
+                    ),
+                  ),
+                ],
+                child: const ActivityWizardPage(),
+              ),
+            ),
+            settings:
+                RouteSettings(name: '$ActivityWizardPage $activityOccasion'),
+          ),
+        );
+      },
+      child: Icon(AbiliaIcons.edit),
     );
   }
 }

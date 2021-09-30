@@ -8,23 +8,27 @@ class ActivityWizardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
-    return ErrorPopupListener(
-      child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
-        listenWhen: (previous, current) =>
-            current.currentPage != previous.currentPage,
-        listener: (context, state) => pageController.animateToPage(state.step,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOutQuad),
-        child: PageView.builder(
-          controller: pageController,
-          itemBuilder: (context, _) => getPage(context),
+    return PopOnSaveListener(
+      child: ErrorPopupListener(
+        child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
+          listenWhen: (previous, current) =>
+              current.currentStep != previous.currentStep,
+          listener: (context, state) => pageController.animateToPage(state.step,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeOutQuad),
+          child: PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: pageController,
+            itemBuilder: (context, _) => getPage(context),
+          ),
         ),
       ),
     );
   }
 
   Widget getPage(BuildContext context) {
-    switch (context.read<ActivityWizardCubit>().state.currentPage) {
+    final step = context.read<ActivityWizardCubit>().state.currentStep;
+    switch (step) {
       case WizardStep.basic:
         return BasicActivityStepPage();
       case WizardStep.date:
@@ -35,11 +39,9 @@ class ActivityWizardPage extends StatelessWidget {
       case WizardStep.time:
         return TimeWiz();
       case WizardStep.advance:
-        return EditActivityPage(
-          title: Translator.of(context).translate.newActivity,
-        );
+        return EditActivityPage();
       default:
-        throw 'not implemented yet';
+        return PlaceholderWiz(title: step.toString());
     }
   }
 }
@@ -81,16 +83,11 @@ class DatePickerWiz extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Builder(
-          builder: (context) => WizardBottomNavigation(
-            nextButton: NextButton(
-              onPressed: () {
-                context
-                    .read<EditActivityBloc>()
-                    .add(ChangeDate(context.read<DayPickerBloc>().state.day));
-                context.read<ActivityWizardCubit>().next();
-              },
-            ),
-          ),
+          builder: (context) => WizardBottomNavigation(beforeOnNext: () {
+            context.read<EditActivityBloc>().add(
+                  ChangeDate(context.read<DayPickerBloc>().state.day),
+                );
+          }),
         ),
       ),
     );
@@ -110,7 +107,15 @@ class TimeWiz extends StatelessWidget {
         ),
         body: Padding(
           padding: ordinaryPadding,
-          child: TimeIntervallPicker(state.timeInterval),
+          child: BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+            builder: (context, wizState) {
+              return TimeIntervallPicker(
+                state.timeInterval,
+                startTimeError:
+                    wizState.saveErrors.contains(SaveError.NO_START_TIME),
+              );
+            },
+          ),
         ),
         bottomNavigationBar: WizardBottomNavigation(),
       ),
@@ -132,7 +137,27 @@ class NameAndImageWiz extends StatelessWidget {
         ),
         body: Padding(
           padding: ordinaryPadding,
-          child: ActivityNameAndPictureWidget(state),
+          child: ActivityNameAndPictureWidget(),
+        ),
+        bottomNavigationBar: WizardBottomNavigation(),
+      ),
+    );
+  }
+}
+
+class PlaceholderWiz extends StatelessWidget {
+  final String title;
+  const PlaceholderWiz({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) => Scaffold(
+        appBar: AbiliaAppBar(
+          title: title,
+          iconData: AbiliaIcons.edit,
         ),
         bottomNavigationBar: WizardBottomNavigation(),
       ),

@@ -7,54 +7,60 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
-  final EditActivityState editActivityState;
-
-  const DateAndTimeWidget(this.editActivityState, {Key? key}) : super(key: key);
+  const DateAndTimeWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final translator = Translator.of(context).translate;
-    final activity = editActivityState.activity;
-
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) {
-      return SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SubHeading(translator.date),
-            DatePicker(
-              editActivityState.timeInterval.startDate,
-              onChange: memoSettingsState.activityDateEditable
-                  ? (newDate) => BlocProvider.of<EditActivityBloc>(context).add(
-                        ChangeDate(newDate),
-                      )
-                  : null,
-            ),
-            SizedBox(height: 24.0.s),
-            CollapsableWidget(
-              collapsed: activity.fullDay,
-              padding: EdgeInsets.only(bottom: 12.0.s),
-              child: TimeIntervallPicker(editActivityState.timeInterval,
-                  startTimeError: editActivityState.saveErrors.any({
-                    SaveError.NO_START_TIME,
-                    SaveError.START_TIME_BEFORE_NOW
-                  }.contains)),
-            ),
-            SwitchField(
-              key: TestKey.fullDaySwitch,
-              leading: Icon(
-                AbiliaIcons.restore,
-                size: smallIconSize,
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+        builder: (context, editActivityState) {
+      final fullDay = editActivityState.activity.fullDay;
+      return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          builder: (context, memoSettingsState) {
+        return SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubHeading(Translator.of(context).translate.date),
+              DatePicker(
+                editActivityState.timeInterval.startDate,
+                onChange: memoSettingsState.activityDateEditable
+                    ? (newDate) =>
+                        BlocProvider.of<EditActivityBloc>(context).add(
+                          ChangeDate(newDate),
+                        )
+                    : null,
               ),
-              value: activity.fullDay,
-              onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-                  .add(ReplaceActivity(activity.copyWith(fullDay: v))),
-              child: Text(translator.fullDay),
-            ),
-          ],
-        ),
-      );
+              SizedBox(height: 24.0.s),
+              CollapsableWidget(
+                collapsed: fullDay,
+                padding: EdgeInsets.only(bottom: 12.0.s),
+                child: BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                  builder: (context, wizState) => TimeIntervallPicker(
+                      editActivityState.timeInterval,
+                      startTimeError: wizState.saveErrors.any({
+                        SaveError.NO_START_TIME,
+                        SaveError.START_TIME_BEFORE_NOW
+                      }.contains)),
+                ),
+              ),
+              SwitchField(
+                key: TestKey.fullDaySwitch,
+                leading: Icon(
+                  AbiliaIcons.restore,
+                  size: smallIconSize,
+                ),
+                value: fullDay,
+                onChanged: (v) => context.read<EditActivityBloc>().add(
+                      ReplaceActivity(
+                        editActivityState.activity.copyWith(fullDay: v),
+                      ),
+                    ),
+                child: Text(Translator.of(context).translate.fullDay),
+              ),
+            ],
+          ),
+        );
+      });
     });
   }
 }

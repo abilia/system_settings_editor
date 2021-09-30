@@ -11,8 +11,6 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
     final _scrollController = ScrollController();
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
-        final recurringDataError =
-            state.saveErrors.contains(SaveError.NO_RECURRING_DAYS);
         final activity = state.activity;
         final recurs = activity.recurs;
         return VerticalScrollArrows(
@@ -30,10 +28,14 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                     CollapsableWidget(
                       collapsed: activity.fullDay,
                       child: separatedAndPadded(
-                        TimeIntervallPicker(
-                          state.timeInterval,
-                          startTimeError: state.saveErrors
-                              .contains(SaveError.NO_START_TIME),
+                        BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                          buildWhen: (prev, current) =>
+                              current.saveErrors.isNotEmpty,
+                          builder: (context, wizState) => TimeIntervallPicker(
+                            state.timeInterval,
+                            startTimeError: wizState.saveErrors
+                                .contains(SaveError.NO_START_TIME),
+                          ),
                         ),
                       ),
                     ),
@@ -50,34 +52,41 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 ),
               ),
               if (recurs.weekly || recurs.monthly)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (recurs.weekly)
-                      Weekly(errorState: recurringDataError)
-                    else if (recurs.monthly)
-                      Separated(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: EditActivityTab.ordinaryPadding.left -
-                                EditActivityTab.errorBorderPadding.left,
-                            bottom: EditActivityTab.ordinaryPadding.bottom -
-                                EditActivityTab.errorBorderPadding.bottom,
+                BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                    buildWhen: (prev, current) => current.saveErrors.isNotEmpty,
+                    builder: (context, wizState) {
+                      final recurringDataError = wizState.saveErrors
+                          .contains(SaveError.NO_RECURRING_DAYS);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (recurs.weekly)
+                            Weekly(errorState: recurringDataError)
+                          else if (recurs.monthly)
+                            Separated(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: EditActivityTab.ordinaryPadding.left -
+                                      EditActivityTab.errorBorderPadding.left,
+                                  bottom: EditActivityTab
+                                          .ordinaryPadding.bottom -
+                                      EditActivityTab.errorBorderPadding.bottom,
+                                ),
+                                child: errorBordered(
+                                  MonthDays(activity),
+                                  errorState: recurringDataError,
+                                ),
+                              ),
+                            ),
+                          Padding(
+                            padding: EditActivityTab.errorBorderPaddingRight,
+                            child: padded(
+                              const EndDateWidget(),
+                            ),
                           ),
-                          child: errorBordered(
-                            MonthDays(activity),
-                            errorState: recurringDataError,
-                          ),
-                        ),
-                      ),
-                    Padding(
-                      padding: EditActivityTab.errorBorderPaddingRight,
-                      child: padded(
-                        const EndDateWidget(),
-                      ),
-                    ),
-                  ],
-                ),
+                        ],
+                      );
+                    }),
             ],
           ),
         );

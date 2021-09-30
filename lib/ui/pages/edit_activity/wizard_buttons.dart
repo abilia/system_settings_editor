@@ -1,37 +1,20 @@
+import 'dart:async';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class WizardBottomNavigation extends StatelessWidget {
-  final Widget? nextButton;
+  final FutureOr<bool?> Function()? beforeOnNext;
   const WizardBottomNavigation({
     Key? key,
-    this.nextButton,
+    this.beforeOnNext,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigation(
-      backNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isFirstStep
-              ? CancelButton()
-              : PreviousWizardStepButton(),
-      forwardNavigationWidget:
-          context.read<ActivityWizardCubit>().state.isLastStep
-              ? SaveActivityButton()
-              : nextButton ?? NextWizardStepButton(),
-    );
-  }
-}
-
-class SaveActivityButton extends StatelessWidget {
-  const SaveActivityButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SaveButton(
-      onPressed: () {
-        context.read<EditActivityBloc>().add(SaveActivity());
-      },
+      backNavigationWidget: PreviousWizardStepButton(),
+      forwardNavigationWidget: NextWizardStepButton(beforeOnNext: beforeOnNext),
     );
   }
 }
@@ -41,21 +24,33 @@ class PreviousWizardStepButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PreviousButton(
-      onPressed: () => context.read<ActivityWizardCubit>().previous(),
-    );
+    return context.read<ActivityWizardCubit>().state.isFirstStep
+        ? CancelButton()
+        : PreviousButton(
+            onPressed: () => context.read<ActivityWizardCubit>().previous(),
+          );
   }
 }
 
 class NextWizardStepButton extends StatelessWidget {
-  const NextWizardStepButton({Key? key}) : super(key: key);
+  final FutureOr<bool?> Function()? beforeOnNext;
+  const NextWizardStepButton({
+    Key? key,
+    this.beforeOnNext,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return NextButton(
-      onPressed: () {
-        context.read<ActivityWizardCubit>().next();
-      },
-    );
+    final wizardCubit = context.read<ActivityWizardCubit>();
+    void onNext() async {
+      if (await beforeOnNext?.call() != false) {
+        wizardCubit.next();
+      }
+    }
+
+    if (wizardCubit.state.isLastStep) {
+      return SaveButton(onPressed: onNext);
+    }
+    return NextButton(onPressed: onNext);
   }
 }

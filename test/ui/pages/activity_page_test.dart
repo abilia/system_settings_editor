@@ -36,7 +36,7 @@ void main() {
   final agendaFinder = find.byType(Agenda);
 
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-  final finishActivityFinder = find.byType(SaveActivityButton);
+  final finishActivityFinder = find.byType(NextWizardStepButton);
 
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
   final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);

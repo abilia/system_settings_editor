@@ -26,23 +26,11 @@ class AddBasiActivity extends ActivityChangedEvent {
   List<Object> get props => [basicActivityData];
 }
 
-class SaveActivity extends EditActivityEvent with Fine {
-  const SaveActivity({this.warningConfirmed = false});
-  final bool warningConfirmed;
-
+class ActivitySavedSuccessfully extends EditActivityEvent with Fine {
+  final Activity activitySaved;
+  const ActivitySavedSuccessfully(this.activitySaved);
   @override
-  List<Object> get props => [];
-}
-
-class SaveRecurringActivity extends SaveActivity with Fine {
-  final ApplyTo applyTo;
-  final DateTime day;
-  const SaveRecurringActivity(
-    this.applyTo,
-    this.day,
-  ) : super(warningConfirmed: true);
-  @override
-  List<Object> get props => [applyTo];
+  List<Object> get props => [activitySaved];
 }
 
 class ChangeDate extends ActivityChangedEvent {

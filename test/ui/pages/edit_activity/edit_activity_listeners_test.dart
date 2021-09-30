@@ -30,6 +30,7 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
 
   late MockActivitiesBloc mockActivitiesBloc;
+  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUp(() async {
     tz.initializeTimeZones();
@@ -37,6 +38,11 @@ void main() {
     mockActivitiesBloc = MockActivitiesBloc();
     when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
     when(mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
+    when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+            MemoplannerSettings(advancedActivityTemplate: false)));
+    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
@@ -64,28 +70,38 @@ void main() {
                     initialTime: startTime),
               ),
               BlocProvider<MemoplannerSettingBloc>(
-                create: (_) => FakeMemoplannerSettingsBloc(),
+                create: (_) => mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>.value(value: mockActivitiesBloc),
-              BlocProvider<ActivityWizardCubit>(
-                create: (context) => ActivityWizardCubit(),
-              ),
               BlocProvider<EditActivityBloc>(
                 create: (context) => newActivity
                     ? EditActivityBloc.newActivity(
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        clockBloc: BlocProvider.of<ClockBloc>(context),
-                        memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(context),
-                        day: today)
-                    : EditActivityBloc(
+                        day: today,
+                        defaultAlarmTypeSetting: context
+                            .read<MemoplannerSettingBloc>()
+                            .state
+                            .defaultAlarmTypeSetting,
+                      )
+                    : EditActivityBloc.edit(
                         ActivityDay(activity, today),
-                        activitiesBloc:
-                            BlocProvider.of<ActivitiesBloc>(context),
-                        clockBloc: BlocProvider.of<ClockBloc>(context),
-                        memoplannerSettingBloc:
-                            BlocProvider.of<MemoplannerSettingBloc>(context),
+                      ),
+              ),
+              BlocProvider<ActivityWizardCubit>(
+                create: (context) => newActivity
+                    ? ActivityWizardCubit.newActivity(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        editActivityBloc: context.read<EditActivityBloc>(),
+                        settings: context.read<MemoplannerSettingBloc>().state,
+                      )
+                    : ActivityWizardCubit.edit(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        editActivityBloc: context.read<EditActivityBloc>(),
+                        allowActivityTimeBeforeCurrent: context
+                            .read<MemoplannerSettingBloc>()
+                            .state
+                            .activityTimeBeforeCurrent,
                       ),
               ),
               BlocProvider<SortableBloc>(create: (_) => FakeSortableBloc()),
@@ -115,13 +131,12 @@ void main() {
           ),
         ),
       ),
-      home: ErrorPopupListener(
-        child: EditActivityPage(),
-      ),
+      home: ActivityWizardPage(),
     );
   }
 
-  final submitButtonFinder = find.byType(SaveActivityButton);
+  final submitButtonFinder = find.byType(NextWizardStepButton);
+
   testWidgets('pressing add activity button with no title nor time shows error',
       (WidgetTester tester) async {
     // Act press submit

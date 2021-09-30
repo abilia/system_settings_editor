@@ -50,31 +50,29 @@ class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
         ),
       ),
       bottomNavigationBar: WizardBottomNavigation(
-        nextButton: NextButton(
-          onPressed: pickBasicActivityView
-              ? () async {
-                  final b = await Navigator.of(context).push<BasicActivityData>(
-                    MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
-                        child: BlocProvider<
-                            SortableArchiveBloc<BasicActivityData>>(
-                          create: (_) => SortableArchiveBloc<BasicActivityData>(
-                            sortableBloc:
-                                BlocProvider.of<SortableBloc>(context),
-                          ),
-                          child: BasicActivityPickerPage(),
+        beforeOnNext: pickBasicActivityView
+            ? () async {
+                final b = await Navigator.of(context).push<BasicActivityData>(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child:
+                          BlocProvider<SortableArchiveBloc<BasicActivityData>>(
+                        create: (_) => SortableArchiveBloc<BasicActivityData>(
+                          sortableBloc: BlocProvider.of<SortableBloc>(context),
                         ),
+                        child: BasicActivityPickerPage(),
                       ),
                     ),
-                  );
-                  if (b is BasicActivityDataItem) {
-                    context.read<EditActivityBloc>().add(AddBasiActivity(b));
-                    context.read<ActivityWizardCubit>().next();
-                  }
+                  ),
+                );
+                if (b is BasicActivityDataItem) {
+                  context.read<EditActivityBloc>().add(AddBasiActivity(b));
+                  return true;
                 }
-              : context.read<ActivityWizardCubit>().next,
-        ),
+                return false;
+              }
+            : null,
       ),
     );
   }

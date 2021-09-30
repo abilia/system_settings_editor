@@ -8,14 +8,14 @@ class ErrorPopupListener extends StatelessWidget {
   const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EditActivityBloc, EditActivityState>(
+    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
       listenWhen: (_, current) => current.saveErrors.isNotEmpty,
       listener: (context, state) async {
         final errors = state.saveErrors;
         if (errors.noGoErrors) {
           return _noProceed(errors, context);
         } else {
-          return _inputNeeded(errors, state, context);
+          return _inputNeeded(errors, context);
         }
       },
       child: child,
@@ -43,10 +43,10 @@ class ErrorPopupListener extends StatelessWidget {
     }
   }
 
-  Future _inputNeeded(Set<SaveError> errors, EditActivityState state,
-      BuildContext context) async {
+  Future _inputNeeded(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    SaveActivity? saveEvent;
+    SaveRecurring? saveEvent;
+    final state = context.read<EditActivityBloc>().state;
 
     if (errors.contains(SaveError.STORED_RECURRING)) {
       if (state is StoredActivityState) {
@@ -59,7 +59,7 @@ class ErrorPopupListener extends StatelessWidget {
           ),
         );
         if (applyTo == null) return;
-        saveEvent = SaveRecurringActivity(applyTo, state.day);
+        saveEvent = SaveRecurring(applyTo, state.day);
       }
     }
     if (errors.any({
@@ -86,10 +86,25 @@ class ErrorPopupListener extends StatelessWidget {
         if (confirmConflict != true) return;
       }
     }
-    BlocProvider.of<EditActivityBloc>(context).add(
-      saveEvent ?? SaveActivity(warningConfirmed: true),
-    );
+    context.read<ActivityWizardCubit>().next(
+          warningConfirmed: true,
+          saveRecurring: saveEvent,
+        );
   }
+}
+
+class PopOnSaveListener extends StatelessWidget {
+  final Widget child;
+
+  const PopOnSaveListener({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocListener<ActivityWizardCubit, ActivityWizardState>(
+        listenWhen: (_, current) => current.sucessfullSave == true,
+        listener: (context, state) => Navigator.of(context).pop(true),
+        child: child,
+      );
 }
 
 class ScrollToErrorPageListener extends StatelessWidget {
@@ -104,7 +119,7 @@ class ScrollToErrorPageListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EditActivityBloc, EditActivityState>(
+    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
       listenWhen: (_, current) => current.saveErrors.isNotEmpty,
       listener: (context, state) async {
         final errors = state.saveErrors;

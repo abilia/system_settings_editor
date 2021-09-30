@@ -27,18 +27,19 @@ class AddActivityButton extends StatelessWidget {
                   blocContext: context,
                   child: MultiBlocProvider(
                     providers: [
-                      BlocProvider(
-                        create: (context) =>
-                            ActivityWizardCubit(settings: state),
-                      ),
                       BlocProvider<EditActivityBloc>(
                         create: (_) => EditActivityBloc.newActivity(
-                          activitiesBloc: context.read<ActivitiesBloc>(),
-                          clockBloc: context.read<ClockBloc>(),
-                          memoplannerSettingBloc:
-                              context.read<MemoplannerSettingBloc>(),
                           day: day,
+                          defaultAlarmTypeSetting:
+                              state.defaultAlarmTypeSetting,
                         ),
+                      ),
+                      BlocProvider(
+                        create: (context) => ActivityWizardCubit.newActivity(
+                            activitiesBloc: context.read<ActivitiesBloc>(),
+                            editActivityBloc: context.read<EditActivityBloc>(),
+                            clockBloc: context.read<ClockBloc>(),
+                            settings: state),
                       ),
                     ],
                     child: const ActivityWizardPage(),
