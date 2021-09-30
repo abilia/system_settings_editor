@@ -35,7 +35,6 @@ linter:
     prefer_const_literals_to_create_immutables: false
     prefer_function_declarations_over_variables: false
     prefer_initializing_formals: false
-    prefer_typing_uninitialized_variables: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
