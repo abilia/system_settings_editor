@@ -180,6 +180,7 @@ class CloseButton extends StatelessWidget {
 }
 
 class YesButton extends StatelessWidget {
+  const YesButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GreenButton(
@@ -191,6 +192,7 @@ class YesButton extends StatelessWidget {
 }
 
 class NoButton extends StatelessWidget {
+  const NoButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return LightButton(
@@ -203,7 +205,7 @@ class NoButton extends StatelessWidget {
 
 class SaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  const SaveButton({this.onPressed});
+  const SaveButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

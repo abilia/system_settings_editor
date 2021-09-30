@@ -18,13 +18,13 @@ class ActivityImage extends StatelessWidget {
   static const crossPadding = 8.0;
 
   const ActivityImage({
-    Key? key,
     required this.activityDay,
     this.size,
     this.past = false,
     this.imageSize = ImageSize.THUMB,
     this.fit = BoxFit.cover,
-  });
+    Key? key,
+  }) : super(key: key);
 
   static Widget fromActivityOccasion({
     Key? key,
@@ -410,7 +410,8 @@ class FadeInNetworkImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.width,
     this.height,
-  });
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final emptyImage = SizedBox(

@@ -31,6 +31,7 @@ class LogoutPage extends StatelessWidget {
 }
 
 class ProfilePictureNameAndEmail extends StatefulWidget {
+  const ProfilePictureNameAndEmail({Key? key}) : super(key: key);
   @override
   _ProfilePictureNameAndEmailState createState() =>
       _ProfilePictureNameAndEmailState(
@@ -92,6 +93,7 @@ class _ProfilePictureNameAndEmailState
 }
 
 class LogoutButton extends StatelessWidget {
+  const LogoutButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => IconAndTextButton(
         text: Translator.of(context).translate.logout,

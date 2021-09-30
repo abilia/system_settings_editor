@@ -150,7 +150,8 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.libraryFolderGenerator,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SortableLibraryState<T> createState() => _SortableLibraryState<T>();

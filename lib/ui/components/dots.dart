@@ -371,7 +371,7 @@ class SubQuarerDot extends StatelessWidget {
 
 class MiniDot extends StatelessWidget {
   final bool visible;
-  const MiniDot(this.visible);
+  const MiniDot(this.visible, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => AnimatedContainer(
       duration: transitionDuration,

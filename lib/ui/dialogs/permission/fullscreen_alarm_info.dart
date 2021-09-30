@@ -115,7 +115,7 @@ class ActivityAlarmPreview extends StatelessWidget {
 }
 
 class RequestFullscreenNotificationButton extends StatelessWidget {
-  const RequestFullscreenNotificationButton();
+  const RequestFullscreenNotificationButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => GreenButton(
         icon: AbiliaIcons.ok,

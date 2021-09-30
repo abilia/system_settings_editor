@@ -3,6 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class LongPressInfoDialog extends StatelessWidget {
+  const LongPressInfoDialog({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;

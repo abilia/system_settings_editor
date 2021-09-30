@@ -99,7 +99,8 @@ class DatePicker extends StatelessWidget {
     this.date, {
     required this.onChange,
     this.notBefore,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
