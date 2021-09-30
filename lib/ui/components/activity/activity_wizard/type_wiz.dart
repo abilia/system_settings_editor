@@ -3,6 +3,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TypeWiz extends StatelessWidget {
+  const TypeWiz({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
