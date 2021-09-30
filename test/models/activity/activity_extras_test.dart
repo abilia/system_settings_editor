@@ -3,12 +3,12 @@ import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/all.dart';
 
 const jsonTestString1 =
-    '''{\"startTimeExtraAlarm\":\"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav\",\"startTimeExtraAlarmFileId\":\"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+    '''{"startTimeExtraAlarm":"/handi/user/voicenotes/voice_recording_30ee75a1-6c2f-4fcd-9f06-d2365e6012b0.wav","startTimeExtraAlarmFileId":"30ee75a1-6c2f-4fcd-9f06-d2365e6012b0","endTimeExtraAlarm":"higjhvvh","endTimeExtraAlarmFileId":"734871297863"}''';
 
 void main() {
   test('test creating extras object', () {
     const jsonString =
-        '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
+        '''{"startTimeExtraAlarm":"abcdef","startTimeExtraAlarmFileId":"ghijkl","endTimeExtraAlarm":"mnopqrs","endTimeExtraAlarmFileId":"tuvwxyz"}''';
 
     final extras = Extras.createNew(
       startTimeExtraAlarm: AbiliaFile.from(
@@ -42,7 +42,7 @@ void main() {
 
   test('test changing value', () {
     const modifiendJsonString =
-        '''{\"startTimeExtraAlarm\":\"new startTimeExtraAlarm\",\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+        '''{"startTimeExtraAlarm":"new startTimeExtraAlarm","endTimeExtraAlarm":"higjhvvh","endTimeExtraAlarmFileId":"734871297863"}''';
 
     final extras = Extras.fromJsonString(jsonTestString1);
 
@@ -55,7 +55,7 @@ void main() {
 
   test('test removing value', () {
     const modifiendJsonString =
-        '''{\"endTimeExtraAlarm\":\"higjhvvh\",\"endTimeExtraAlarmFileId\":\"734871297863\"}''';
+        '''{"endTimeExtraAlarm":"higjhvvh","endTimeExtraAlarmFileId":"734871297863"}''';
 
     final extras = Extras.fromJsonString(jsonTestString1);
 
@@ -68,7 +68,7 @@ void main() {
 
   test('test from Extras.empty', () {
     const jsonString =
-        '''{\"startTimeExtraAlarm\":\"abcdef\",\"startTimeExtraAlarmFileId\":\"ghijkl\",\"endTimeExtraAlarm\":\"mnopqrs\",\"endTimeExtraAlarmFileId\":\"tuvwxyz\"}''';
+        '''{"startTimeExtraAlarm":"abcdef","startTimeExtraAlarmFileId":"ghijkl","endTimeExtraAlarm":"mnopqrs","endTimeExtraAlarmFileId":"tuvwxyz"}''';
 
     const extras = Extras.empty;
 
