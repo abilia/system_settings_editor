@@ -96,7 +96,7 @@ class _TimeInputContentState extends State<TimeInputContent>
   late FocusNode startTimeFocus;
   late FocusNode endTimeFocus;
   late String validatedNewStartTime;
-  late String valiedatedNewEndTime;
+  late String validatedNewEndTime;
 
   bool _startTimeFocus = true, _paused = false;
   bool get twelveHourClock => !widget.is24HoursFormat;
@@ -137,9 +137,9 @@ class _TimeInputContentState extends State<TimeInputContent>
             final validEndTime =
                 valid(endTimeController) || endTimeController.text.isEmpty;
             final validatedEndTime =
-                validEndTime ? endTimeController.text : valiedatedNewEndTime;
+                validEndTime ? endTimeController.text : validatedNewEndTime;
             endTimeController.text = validatedEndTime;
-            setState(() => valiedatedNewEndTime = validatedEndTime);
+            setState(() => validatedNewEndTime = validatedEndTime);
           }
         }
       });
@@ -164,10 +164,10 @@ class _TimeInputContentState extends State<TimeInputContent>
       });
 
     validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
-    valiedatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
+    validatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
 
     startTimeController = TextEditingController(text: validatedNewStartTime);
-    endTimeController = TextEditingController(text: valiedatedNewEndTime);
+    endTimeController = TextEditingController(text: validatedNewEndTime);
   }
 
   @override
