@@ -175,6 +175,8 @@ void main() {
         );
         when(mockGenericDb.getAllNonDeletedMaxRevision())
             .thenAnswer((_) => Future.value([wizardSetting]));
+
+        const title = 'title';
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddActivityButton));
@@ -190,7 +192,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(TitleWiz), findsOneWidget);
-        await tester.enterText(find.byType(TextField), 'title');
+        await tester.enterText(find.byType(TextField), title);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -208,6 +210,22 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(TimeWiz), findsOneWidget);
+        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PlaceholderWiz), findsOneWidget); // Recurrance
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ActivityWizardPage), findsNothing);
+        expect(find.byType(Agenda), findsOneWidget);
+
+        final captured =
+            verify(mockActivityDb.insertAndAddDirty(captureAny)).captured;
+        final first = captured.single.single as Activity;
+        expect(first.title, title);
       });
 
       group('basic activity', () {
