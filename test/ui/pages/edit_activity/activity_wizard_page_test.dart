@@ -134,7 +134,7 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PlaceholderWiz), findsOneWidget); // Availible for
+    expect(find.byType(AvailableForWiz), findsOneWidget); // Available for
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -502,6 +502,37 @@ void main() {
       expect(find.byKey(TestKey.fullDayCategoryRadio), findsOneWidget);
       expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
       expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
+    });
+  });
+
+  group('available for step', () {
+    final typeOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: false,
+      wizardAvailabilityType: true,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('only available for step', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          typeOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(AvailableForWiz), findsOneWidget);
     });
   });
 }

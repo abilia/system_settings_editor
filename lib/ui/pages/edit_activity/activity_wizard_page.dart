@@ -40,6 +40,8 @@ class ActivityWizardPage extends StatelessWidget {
         return TimeWiz();
       case WizardStep.advance:
         return EditActivityPage();
+      case WizardStep.available_for:
+        return AvailableForWiz();
       case WizardStep.type:
         return TypeWiz();
       default:

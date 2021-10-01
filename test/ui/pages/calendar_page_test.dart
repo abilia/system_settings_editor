@@ -201,7 +201,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.pumpAndSettle();
-        expect(find.byType(PlaceholderWiz), findsOneWidget); // Availible for
+        expect(find.byType(AvailableForWiz), findsOneWidget); // Availible for
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
