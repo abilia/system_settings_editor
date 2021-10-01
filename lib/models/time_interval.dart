@@ -18,10 +18,9 @@ class TimeInterval extends Equatable {
 
   const TimeInterval({this.startTime, this.endTime, required this.startDate});
 
-  TimeInterval.fromDateTime(DateTime startDate, DateTime? endDate)
+  TimeInterval.fromDateTime(this.startDate, DateTime? endDate)
       : startTime = TimeOfDay.fromDateTime(startDate),
-        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null,
-        startDate = startDate;
+        endTime = endDate != null ? TimeOfDay.fromDateTime(endDate) : null;
 
   TimeInterval copyWith({
     TimeOfDay? startTime,
