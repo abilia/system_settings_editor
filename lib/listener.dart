@@ -95,63 +95,32 @@ class TopLevelListeners extends StatelessWidget {
       );
 }
 
-class AlarmListeners extends StatefulWidget {
-  static final _log = Logger((AlarmListeners).toString());
+class AlarmListeners extends StatelessWidget {
   final Widget child;
   const AlarmListeners({Key? key, required this.child}) : super(key: key);
-
-  @override
-  _AlarmListenersState createState() => _AlarmListenersState();
-}
-
-class _AlarmListenersState extends State<AlarmListeners>
-    with WidgetsBindingObserver {
-  AppLifecycleState? appLifecycleState;
-
-  bool listenWhen(_, __) =>
-      appLifecycleState == null ||
-      appLifecycleState == AppLifecycleState.resumed;
-
-  @override
-  void initState() {
-    super.initState();
-    appLifecycleState = WidgetsBinding.instance?.lifecycleState;
-    WidgetsBinding.instance?.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    AlarmListeners._log.info('$state');
-    appLifecycleState = state;
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<NotificationBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: listenWhen,
+        BlocListener<NotificationCubit, NotificationAlarm?>(
+          listener: (context, state) async {
+            if (state != null) {
+              await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
+            }
+          },
         ),
-        BlocListener<AlarmBloc, AlarmStateBase>(
-          listener: _alarmListener,
-          listenWhen: listenWhen,
-        ),
+        if (!Platform.isAndroid)
+          BlocListener<AlarmCubit, NotificationAlarm?>(
+            listener: (context, state) async {
+              if (state != null) {
+                await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
+              }
+            },
+          ),
       ],
-      child: widget.child,
+      child: child,
     );
-  }
-
-  void _alarmListener(BuildContext context, AlarmStateBase state) async {
-    if (state is AlarmState) {
-      await GetIt.I<AlarmNavigator>().pushAlarm(context, state.alarm);
-    }
   }
 }
 

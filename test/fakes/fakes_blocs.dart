@@ -119,16 +119,16 @@ class FakeActivitiesOccasionBloc extends Fake
   Future<void> close() async {}
 }
 
-class FakeAlarmBloc extends Fake implements AlarmBloc {
+class FakeAlarmCubit extends Fake implements AlarmCubit {
   @override
-  Stream<AlarmStateBase> get stream => Stream.empty();
+  Stream<NotificationAlarm?> get stream => Stream.empty();
   @override
   Future<void> close() async {}
 }
 
-class FakeNotificationBloc extends Fake implements NotificationBloc {
+class FakeNotificationBloc extends Fake implements NotificationCubit {
   @override
-  Stream<AlarmStateBase> get stream => Stream.empty();
+  Stream<NotificationAlarm?> get stream => Stream.empty();
   @override
   Future<void> close() async {}
 }
