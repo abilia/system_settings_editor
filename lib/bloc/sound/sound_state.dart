@@ -11,7 +11,7 @@ class NoSoundPlaying extends SoundState {
 }
 
 class SoundPlaying extends SoundState {
-  final Object currentSound;
+  final AbiliaFile currentSound;
   final int duration;
   final Duration position;
   double get progress => duration <= 0 ? 0 : position.inMilliseconds / duration;

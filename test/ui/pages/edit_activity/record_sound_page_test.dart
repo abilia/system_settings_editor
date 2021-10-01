@@ -52,7 +52,7 @@ void main() {
               ),
               BlocProvider<UserFileBloc>(
                 create: (context) => UserFileBloc(
-                  fileStorage: MockFileStorage(),
+                  fileStorage: FakeFileStorage(),
                   pushBloc: FakePushBloc(),
                   syncBloc: FakeSyncBloc(),
                   userFileRepository: FakeUserFileRepository(),
@@ -72,8 +72,11 @@ void main() {
                   originalSoundFile: originalSoundFile,
                 ),
               ),
-              BlocProvider(
-                create: (context) => SoundCubit(),
+              BlocProvider<SoundCubit>(
+                create: (context) => SoundCubit(
+                  storage: FakeFileStorage(),
+                  userFileBloc: context.read<UserFileBloc>(),
+                ),
               ),
             ], child: child!),
           ),
