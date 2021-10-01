@@ -15,7 +15,7 @@ class ClockSettingsTab extends StatelessWidget {
         GeneralCalendarSettingsState>(
       builder: (context, state) {
         final tpState = state.timepillar;
-        final onClockChanged = (v) => context
+        onClockChanged(v) => context
             .read<GeneralCalendarSettingsCubit>()
             .changeSettings(state.copyWith(clockType: v));
         return SettingsTab(

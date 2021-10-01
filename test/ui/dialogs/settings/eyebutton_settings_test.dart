@@ -27,7 +27,6 @@ void main() {
     setupPermissions();
     setupFakeTts();
     final initTime = DateTime(2020, 07, 23, 11, 29);
-    ActivityResponse activityResponse = () => [];
 
     notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
@@ -60,7 +59,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker(stream: mockTicker.stream, initialTime: initTime)
       ..fireBasePushService = FakeFirebasePushService()
-      ..client = Fakes.client(activityResponse: activityResponse)
+      ..client = Fakes.client(activityResponse: () => [])
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..genericDb = mockGenericDb

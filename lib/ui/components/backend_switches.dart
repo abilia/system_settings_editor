@@ -52,7 +52,7 @@ class BackEndButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final onTap = () => context.read<AuthenticationBloc>().add(
+    onTap() => context.read<AuthenticationBloc>().add(
           ChangeRepository(
             userRepository.copyWith(
               client: client,
