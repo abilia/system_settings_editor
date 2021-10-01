@@ -63,7 +63,7 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
@@ -84,7 +84,7 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
@@ -123,7 +123,7 @@ Future _scheduleAllAlarmNotifications(
   Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
   FileStorage fileStorage,
   DateTime Function() now,
 ) =>
@@ -157,7 +157,7 @@ Future<bool> _scheduleNotification(
   NotificationAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
   FileStorage fileStorage,
   DateTime Function() now, [
   int secondsOffset = 0,
@@ -189,7 +189,7 @@ Future<bool> _scheduleNotification(
       : await _iosNotificationDetails(
           notificationAlarm,
           fileStorage,
-          Duration(milliseconds: settings.alarmDuration),
+          Duration(milliseconds: settings.duration),
           settings,
         );
 
@@ -221,7 +221,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
   NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
   Duration alarmDuration,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
 ) async {
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
@@ -248,7 +248,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   FileStorage fileStorage,
   String title,
   String subtitle,
-  MemoplannerSettings settings,
+  AlarmSettings settings,
 ) async {
   final activity = notificationAlarm.activity;
   final sound = notificationAlarm.sound(settings);
@@ -271,10 +271,9 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
-    additionalFlags: settings.alarmDuration > 0
-        ? Int32List.fromList(<int>[insistentFlag])
-        : null,
-    timeoutAfter: settings.alarmDuration,
+    additionalFlags:
+        settings.duration > 0 ? Int32List.fromList(<int>[insistentFlag]) : null,
+    timeoutAfter: settings.duration,
     startActivityClassName:
         'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
     largeIcon: await _androidLargeIcon(activity, fileStorage),

@@ -8,9 +8,9 @@ abstract class NotificationAlarm extends Equatable {
   final ActivityDay activityDay;
   DateTime get day => activityDay.day;
   Activity get activity => activityDay.activity;
-  bool hasSound(MemoplannerSettings settings);
-  bool vibrate(MemoplannerSettings settings);
-  Sound sound(MemoplannerSettings settings);
+  bool hasSound(AlarmSettings settings);
+  bool vibrate(AlarmSettings settings);
+  Sound sound(AlarmSettings settings);
   const NotificationAlarm(this.activityDay);
   DateTime get notificationTime;
   String get type;
@@ -62,9 +62,9 @@ abstract class NewAlarm extends NotificationAlarm {
   bool vibrate(_) => activity.alarm.vibrate;
 
   @override
-  Sound sound(MemoplannerSettings settings) => activity.checkable
-      ? settings.checkableActivityAlarm.toSound()
-      : settings.nonCheckableActivityAlarm.toSound();
+  Sound sound(AlarmSettings settings) => activity.checkable
+      ? settings.checkableActivity.toSound()
+      : settings.nonCheckableActivity.toSound();
 }
 
 class StartAlarm extends NewAlarm {
@@ -95,14 +95,14 @@ abstract class NewReminder extends NotificationAlarm {
   NewReminder(ActivityDay activityDay, this.reminder) : super(activityDay);
 
   @override
-  bool hasSound(MemoplannerSettings settings) =>
-      settings.reminderAlarm.toSound() != Sound.NoSound;
+  bool hasSound(AlarmSettings settings) =>
+      settings.reminder.toSound() != Sound.NoSound;
 
   @override
-  bool vibrate(MemoplannerSettings settings) => settings.vibrateAtReminder;
+  bool vibrate(AlarmSettings settings) => settings.vibrateAtReminder;
 
   @override
-  Sound sound(MemoplannerSettings settings) => settings.reminderAlarm.toSound();
+  Sound sound(AlarmSettings settings) => settings.reminder.toSound();
 
   @override
   List<Object> get props => [reminder, ...super.props];

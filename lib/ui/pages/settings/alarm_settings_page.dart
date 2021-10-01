@@ -9,12 +9,12 @@ class AlarmSettingsPage extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
-        settingsState: context.read<MemoplannerSettingBloc>().state,
+        alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
         genericBloc: context.read<GenericBloc>(),
       ),
       child: BlocProvider<SoundCubit>(
         create: (_) => SoundCubit(),
-        child: BlocBuilder<AlarmSettingsCubit, AlarmSettingsState>(
+        child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(
           builder: (context, state) {
             final widgets = [
               AlarmSelector(
