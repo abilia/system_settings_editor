@@ -41,7 +41,13 @@ class ScrollPositionBloc
     ScrollPositionEvent event,
   ) async* {
     final s = state;
-    if (event is GoToNow) {
+    if (event is GoToNow && s is OutOfView) {
+      await _jumpToActivity(s);
+      yield* _isActivityInView(
+        s.scrollController,
+        s.scrollControllerCreatedTime,
+      );
+    } else if (event is GoToNow) {
       await _jumpToActivity(s);
       yield Unready();
     } else if (!dayPickerBloc.state.isToday) {
