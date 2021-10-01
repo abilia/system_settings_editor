@@ -8,11 +8,11 @@ class AvailableForWiz extends StatefulWidget {
   const AvailableForWiz({Key? key}) : super(key: key);
 
   @override
-  _AvailableForPageState createState() => _AvailableForPageState();
+  _AvailableForWizState createState() => _AvailableForWizState();
 }
 
-class _AvailableForPageState extends State<AvailableForWiz> {
-  _AvailableForPageState();
+class _AvailableForWizState extends State<AvailableForWiz> {
+  _AvailableForWizState();
   late final Activity activity;
   bool? secret;
   void _onSelected(bool? value) => setState(() => secret = value);

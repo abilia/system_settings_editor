@@ -11,10 +11,10 @@ class AlarmPage extends StatelessWidget {
   final Widget? previewImage;
 
   const AlarmPage({
-    Key? key,
     required this.alarm,
     this.previewImage,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +113,11 @@ class PopAwareAlarmPage extends StatelessWidget {
   final NotificationAlarm alarm;
 
   const PopAwareAlarmPage({
-    Key? key,
     required this.alarm,
     required this.alarmNavigator,
     required this.child,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -189,7 +189,10 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
 class PlaySpeechButton extends StatelessWidget {
   final AbiliaFile soundToPlay;
 
-  PlaySpeechButton({required this.soundToPlay});
+  PlaySpeechButton({
+    required this.soundToPlay,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

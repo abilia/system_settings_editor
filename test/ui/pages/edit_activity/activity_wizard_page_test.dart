@@ -134,8 +134,7 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    await tester.pumpAndSettle();
-    expect(find.byType(PlaceholderWiz), findsOneWidget); // Availible for
+    expect(find.byType(AvailableForWiz), findsOneWidget); // Available for
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -147,24 +146,26 @@ void main() {
   });
 
   group('title step', () {
+    final titleOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: true,
+      wizardTypeStep: false,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
     testWidgets('only title step', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            wizardTemplateStep: false,
-            wizardDatePickerStep: false,
-            wizardImageStep: false,
-            wizardTitleStep: true,
-            wizardTypeStep: false,
-            wizardAvailabilityType: false,
-            wizardCheckableStep: false,
-            wizardRemoveAfterStep: false,
-            wizardAlarmStep: false,
-            wizardNotesStep: false,
-            wizardRemindersStep: false,
-            activityRecurringEditable: false,
-          ),
+          titleOnlyMemoSettings,
         ),
       );
       await tester.pumpWidget(wizardPage());
@@ -243,21 +244,7 @@ void main() {
     testWidgets('title shows when going back', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivityTypeAdvanced: false,
-            wizardTemplateStep: false,
-            wizardDatePickerStep: false,
-            wizardImageStep: false,
-            wizardTitleStep: true,
-            wizardTypeStep: false,
-            wizardAvailabilityType: false,
-            wizardCheckableStep: false,
-            wizardRemoveAfterStep: false,
-            wizardAlarmStep: false,
-            wizardNotesStep: false,
-            wizardRemindersStep: false,
-            activityRecurringEditable: false,
-          ),
+          titleOnlyMemoSettings,
         ),
       );
       const title = 'title';
@@ -326,6 +313,40 @@ void main() {
 
       expect(find.byType(TitleWiz), findsOneWidget);
       expect(find.text(title), findsOneWidget);
+    });
+  });
+
+  group('type step', () {
+    final typeOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: true,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('only type step', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          typeOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(TypeWiz), findsOneWidget);
+      expect(find.byKey(TestKey.fullDayCategoryRadio), findsOneWidget);
+      expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
     });
   });
 

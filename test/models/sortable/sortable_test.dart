@@ -9,9 +9,9 @@ void main() {
     const revision = 12345;
     const type = 'imagearchive';
     const data =
-        '{\\\"name\\\":\\\"DVD\\\",\\\"file\\\":\\\"/images/Handi/Handi/DVD_2.gif\\\"}';
+        '{\\"name\\":\\"DVD\\",\\"file\\":\\"/images/Handi/Handi/DVD_2.gif\\"}';
     const expectedRawData =
-        '{\"name\":\"DVD\",\"file\":\"/images/Handi/Handi/DVD_2.gif\"}';
+        '{"name":"DVD","file":"/images/Handi/Handi/DVD_2.gif"}';
     final expectedData = ImageArchiveData(
       file: '/images/Handi/Handi/DVD_2.gif',
       name: 'DVD',

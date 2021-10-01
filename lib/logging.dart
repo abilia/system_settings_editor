@@ -319,8 +319,7 @@ class BlocLoggingObserver extends BlocObserver {
   void onTransition(Bloc bloc, Transition transition) async {
     super.onTransition(bloc, transition);
     if (analyticsLogging) logEventToAnalytics(transition);
-    final event = transition.event;
-    if (event is Silent || bloc is Silent) return;
+    if (bloc is Silent) return;
     final log = _log(bloc);
     if (bloc is Shout) {
       log.shout(transition);

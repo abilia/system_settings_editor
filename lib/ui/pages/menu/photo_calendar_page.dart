@@ -85,6 +85,7 @@ class PhotoCalendarPage extends StatelessWidget {
 }
 
 class SlideShow extends StatelessWidget {
+  const SlideShow({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final poppyImage = Image.asset(

@@ -7,6 +7,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class BackendSwitchesDialog extends StatelessWidget {
+  const BackendSwitchesDialog({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ViewDialog(

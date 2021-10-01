@@ -42,6 +42,8 @@ class ActivityWizardPage extends StatelessWidget {
         return EditActivityPage();
       case WizardStep.available_for:
         return AvailableForWiz();
+      case WizardStep.type:
+        return TypeWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }

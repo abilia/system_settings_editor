@@ -98,10 +98,11 @@ class AddPhotoButton extends StatelessWidget {
 
 class Photo extends StatelessWidget {
   final Sortable<ImageArchiveData> sortable;
-  final imageHeight, imageWidth;
-  const Photo(
-      {Key? key, required this.sortable, this.imageHeight, this.imageWidth})
-      : super(key: key);
+
+  const Photo({
+    required this.sortable,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

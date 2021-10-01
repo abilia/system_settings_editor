@@ -64,7 +64,7 @@ class AlarmNavigator {
       );
 
   MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
-    log.shout('removedFromRoutes: $alarm');
+    log.info('removedFromRoutes: $alarm');
     return _alarmRoutesOnStack.remove(alarm.activity.id);
   }
 }
