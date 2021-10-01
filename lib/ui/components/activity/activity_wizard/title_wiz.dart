@@ -23,9 +23,13 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocListener<ActivityWizardCubit, ActivityWizardState>(
-      listenWhen: (context, state) =>
-          state.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
-      listener: (context, state) => focusNode.requestFocus(),
+      listener: (context, state) {
+        if (state.currentStep == WizardStep.title) {
+          focusNode.requestFocus();
+        } else {
+          focusNode.unfocus();
+        }
+      },
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: t.enterNameForActivity,
@@ -57,14 +61,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                 ),
               ),
               const Spacer(),
-              WizardBottomNavigation(
-                beforeOnNext: () {
-                  focusNode.unfocus();
-                },
-                beforeOnPrevious: () {
-                  focusNode.unfocus();
-                },
-              ),
+              const WizardBottomNavigation(),
             ],
           ),
         ),

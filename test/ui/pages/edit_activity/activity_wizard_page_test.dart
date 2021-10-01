@@ -143,6 +143,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TimeWiz), findsOneWidget);
+    await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(NextButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PlaceholderWiz), findsOneWidget); // Checkable
+    await tester.tap(find.byType(SaveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ActivityWizardPage), findsNothing);
   });
 
   group('title step', () {
@@ -313,6 +323,151 @@ void main() {
 
       expect(find.byType(TitleWiz), findsOneWidget);
       expect(find.text(title), findsOneWidget);
+    });
+  });
+
+  group('time step', () {
+    testWidgets('time from basic activity', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: true,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      const title = 'testtitle';
+
+      when(mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
+        Sortable.createNew<BasicActivityDataItem>(
+          data: BasicActivityDataItem.createNew(
+            title: title,
+            startTime: Duration(hours: 5, minutes: 55),
+            duration: Duration(hours: 2, minutes: 5),
+          ),
+        ),
+      ]));
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BasicActivityStepPage), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.basicActivityChoice));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BasicActivityPickerPage), findsOneWidget);
+      await tester.tap(find.text(title));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TitleWiz), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimeWiz), findsOneWidget);
+      expect(find.text('05:55'), findsOneWidget);
+      expect(find.text('08:00'), findsOneWidget);
+    });
+
+    testWidgets('can enter start and end time', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      const title = 'testtitle';
+
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), title);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TimeWiz), findsOneWidget);
+      expect(find.text('--:--'), findsNWidgets(2));
+      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+      expect(find.text('13:37'), findsOneWidget);
+      expect(find.text('--:--'), findsOneWidget);
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
+      await tester.pumpAndSettle();
+      expect(find.text('--:--'), findsNothing);
+      expect(find.text('13:37'), findsOneWidget);
+      expect(find.text('14:48'), findsOneWidget);
+    });
+
+    testWidgets('time is saved', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: true,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      const title = 'testtitle';
+
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), title);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('--:--'), findsNothing);
+      expect(find.text('13:37'), findsOneWidget);
+      expect(find.text('14:48'), findsOneWidget);
     });
   });
 
