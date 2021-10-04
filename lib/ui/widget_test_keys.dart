@@ -77,5 +77,6 @@ class TestKey {
       acceptPrivacyPolicy = Key('acceptPrivacyPolicy'),
       speechAtStart = Key('speechAtStart'),
       speechAtEnd = Key('speechAtEnd'),
-      fullDayCategoryRadio = Key('allDayCategoryRadio');
+      fullDayCategoryRadio = Key('allDayCategoryRadio'),
+      checkableRadio = Key('checkableRadio');
 }

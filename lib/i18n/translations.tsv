@@ -115,6 +115,7 @@ newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktivit
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
 category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
+notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
 deleteAfter	Remove at the end of the day	Ta bort vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
 name	Name	Namn	Navn	Naam	Nimi	Name	Navn
 picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde

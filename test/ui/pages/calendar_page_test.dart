@@ -201,11 +201,13 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.pumpAndSettle();
-        expect(find.byType(AvailableForWiz), findsOneWidget); // Availible for
+        expect(find.byType(AvailableForWiz), findsOneWidget);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(PlaceholderWiz), findsOneWidget); // Checkable
+        expect(find.byType(CheckableWiz), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.checkableRadio));
+        await tester.pumpAndSettle();
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -224,8 +226,9 @@ void main() {
 
         final captured =
             verify(mockActivityDb.insertAndAddDirty(captureAny)).captured;
-        final first = captured.single.single as Activity;
-        expect(first.title, title);
+        final savedActivity = captured.single.single as Activity;
+        expect(savedActivity.title, title);
+        expect(savedActivity.checkable, true);
       });
 
       group('basic activity', () {

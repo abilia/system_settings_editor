@@ -134,11 +134,11 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(AvailableForWiz), findsOneWidget); // Available for
+    expect(find.byType(AvailableForWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PlaceholderWiz), findsOneWidget); // Checkable
+    expect(find.byType(CheckableWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -506,7 +506,7 @@ void main() {
   });
 
   group('available for step', () {
-    final typeOnlyMemoSettings = MemoplannerSettings(
+    final availableForOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       wizardTemplateStep: false,
       wizardDatePickerStep: false,
@@ -525,7 +525,7 @@ void main() {
     testWidgets('only available for step', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          typeOnlyMemoSettings,
+          availableForOnlyMemoSettings,
         ),
       );
       await tester.pumpWidget(wizardPage());
@@ -533,6 +533,37 @@ void main() {
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
       expect(find.byType(AvailableForWiz), findsOneWidget);
+    });
+  });
+
+  group('checkable step', () {
+    final checkableOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: false,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: true,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('only checkable step', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          checkableOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(CheckableWiz), findsOneWidget);
     });
   });
 }
