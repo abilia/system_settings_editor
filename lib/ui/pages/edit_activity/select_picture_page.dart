@@ -15,10 +15,7 @@ final _log = Logger((SelectPicturePage).toString());
 class SelectPicturePage extends StatelessWidget {
   final AbiliaFile selectedImage;
 
-  const SelectPicturePage({
-    Key? key,
-    required this.selectedImage,
-  }) : super(key: key);
+  SelectPicturePage({Key? key, required this.selectedImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,48 +59,9 @@ class SelectPicturePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
             child:
-                BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    PickField(
-                      key: TestKey.imageArchiveButton,
-                      leading: const Icon(AbiliaIcons.folder),
-                      text: Text(translate.imageArchive),
-                      onTap: () async {
-                        final selectedImage =
-                            await Navigator.of(context).push<AbiliaFile>(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: const ImageArchivePage(),
-                            ),
-                          ),
-                        );
-                        if (selectedImage != null) {
-                          await Navigator.of(context).maybePop(selectedImage);
-                        }
-                      },
-                    ),
-                    SizedBox(height: 8.0.s),
-                    if (state.displayPhotos) ...[
-                      ImageSourceWidget(
-                        text: translate.uploadImage,
-                        imageSource: ImageSource.gallery,
-                        permission: Permission.photos,
-                      ),
-                      SizedBox(height: 8.0.s),
-                    ],
-                    if (state.displayCamera)
-                      ImageSourceWidget(
-                        text: translate.takeNewPhoto,
-                        imageSource: ImageSource.camera,
-                        permission: Permission.camera,
-                      ),
-                  ],
-                );
-              },
-            ),
+                SelectPictureMainContent(imageCallback: (selectedImage) async {
+              await Navigator.of(context).maybePop(selectedImage);
+            }),
           ),
         ],
       ),
@@ -114,18 +72,76 @@ class SelectPicturePage extends StatelessWidget {
   }
 }
 
+class SelectPictureMainContent extends StatelessWidget {
+  final ValueChanged<AbiliaFile> imageCallback;
+
+  const SelectPictureMainContent({Key? key, required this.imageCallback})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            PickField(
+              key: TestKey.imageArchiveButton,
+              leading: const Icon(AbiliaIcons.folder),
+              text: Text(translate.imageArchive),
+              onTap: () async {
+                final selectedImage =
+                    await Navigator.of(context).push<AbiliaFile>(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const ImageArchivePage(),
+                    ),
+                  ),
+                );
+                if (selectedImage != null) {
+                  imageCallback.call(selectedImage);
+                }
+              },
+            ),
+            SizedBox(height: 8.0.s),
+            if (state.displayPhotos) ...[
+              ImageSourceWidget(
+                text: translate.uploadImage,
+                imageSource: ImageSource.gallery,
+                permission: Permission.photos,
+                imageCallback: imageCallback,
+              ),
+              SizedBox(height: 8.0.s),
+            ],
+            if (state.displayCamera)
+              ImageSourceWidget(
+                text: translate.takeNewPhoto,
+                imageSource: ImageSource.camera,
+                permission: Permission.camera,
+                imageCallback: imageCallback,
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class ImageSourceWidget extends StatelessWidget {
   ImageSourceWidget({
     Key? key,
     required this.imageSource,
     required this.permission,
     required this.text,
+    required this.imageCallback,
   }) : super(key: key);
 
   final ImageSource imageSource;
   final Permission permission;
   final String text;
   final _picker = ImagePicker();
+  final ValueChanged<AbiliaFile> imageCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +184,7 @@ class ImageSourceWidget extends StatelessWidget {
     try {
       final image = await _picker.pickImage(source: imageSource);
       if (image != null) {
-        await Navigator.of(context).maybePop(
-          UnstoredAbiliaFile.newFile(File(image.path)),
-        );
+        imageCallback.call(UnstoredAbiliaFile.newFile(File(image.path)));
       }
     } on PlatformException catch (e) {
       _log.warning(e);

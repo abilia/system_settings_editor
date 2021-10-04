@@ -114,6 +114,8 @@ class SelectPictureWidget extends StatelessWidget {
             errorState: errorState,
             onTap: () => imageClick(context),
             selectedImage: selectedImage,
+            innerSize:
+                SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2,
           ),
         ],
       ),
@@ -125,7 +127,9 @@ class SelectPictureWidget extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: SelectPicturePage(selectedImage: selectedImage),
+          child: SelectPicturePage(
+            selectedImage: selectedImage,
+          ),
         ),
       ),
     );
@@ -153,12 +157,12 @@ class SelectedImageWidget extends StatelessWidget {
 
   final bool errorState;
 
-  static final innerSize =
-      SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
+  final double? innerSize;
 
   const SelectedImageWidget({
     Key? key,
     required this.selectedImage,
+    this.innerSize,
     this.errorState = false,
     this.onTap,
   }) : super(key: key);
