@@ -106,47 +106,56 @@ class Weekly extends StatelessWidget with EditActivityTab {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RecurringWeekBloc(context.read<EditActivityBloc>()),
-      child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
-        builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: EditActivityTab.ordinaryPadding.left -
-                        EditActivityTab.errorBorderPadding.left),
-                child: errorBordered(
-                  WeekDays(state.weekdays),
-                  errorState: errorState,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+                left: EditActivityTab.ordinaryPadding.left -
+                    EditActivityTab.errorBorderPadding.left),
+            child: errorBordered(
+              WeekDays(),
+              errorState: errorState,
+            ),
+          ),
+          Padding(
+            padding: EditActivityTab.errorBorderPaddingRight,
+            child: Separated(
+              child: Padding(
+                padding: EditActivityTab.ordinaryPadding.subtract(
+                  EdgeInsets.only(top: EditActivityTab.errorBorderPadding.top),
                 ),
+                child: EveryOtherWeekSwitch(),
               ),
-              Padding(
-                padding: EditActivityTab.errorBorderPaddingRight,
-                child: Separated(
-                  child: Padding(
-                    padding: EditActivityTab.ordinaryPadding.subtract(
-                      EdgeInsets.only(
-                          top: EditActivityTab.errorBorderPadding.top),
-                    ),
-                    child: SwitchField(
-                      leading: Icon(
-                        AbiliaIcons.this_week,
-                        size: smallIconSize,
-                      ),
-                      value: state.everyOtherWeek,
-                      onChanged: (v) => context
-                          .read<RecurringWeekBloc>()
-                          .add(ChangeEveryOtherWeek(v)),
-                      child: Text(
-                        Translator.of(context).translate.everyOtherWeek,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EveryOtherWeekSwitch extends StatelessWidget {
+  const EveryOtherWeekSwitch({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+      buildWhen: (previous, current) =>
+          previous.everyOtherWeek != current.everyOtherWeek,
+      builder: (context, state) => SwitchField(
+        leading: Icon(
+          AbiliaIcons.this_week,
+          size: smallIconSize,
+        ),
+        value: state.everyOtherWeek,
+        onChanged: (v) =>
+            context.read<RecurringWeekBloc>().add(ChangeEveryOtherWeek(v)),
+        child: Text(
+          Translator.of(context).translate.everyOtherWeek,
+        ),
       ),
     );
   }

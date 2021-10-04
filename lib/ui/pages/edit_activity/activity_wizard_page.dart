@@ -49,6 +49,8 @@ class ActivityWizardPage extends StatelessWidget {
         return TypeWiz();
       case WizardStep.recurring:
         return RecurringWiz();
+      case WizardStep.recursWeekly:
+        return RecurringWeeklyWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }

@@ -62,6 +62,9 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       }
       yield state.copyWith(weekdays: weekdays);
     }
+    if (event is SelectWeekdays) {
+      yield state.copyWith(weekdays: event.days);
+    }
   }
 
   @override

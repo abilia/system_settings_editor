@@ -183,6 +183,8 @@ noEndDate	No end date	Inget slutdatum	Ingen slutdato	Geen einddatum	Ei päättym
 endDate	End date	Slutdatum	Slutdato	Einddatum	Päättymispäivä	Enddatum	Sluttdato
 everyOtherWeek	Every other week	Varannan vecka	Hver anden uge	Om de week	Kahden viikon välein	Vierzehntägig	Annenhver uke
 recurringDataEmptyErrorMessage	Select at least one day.	Välj minst en dag.	Vælg mindst en dag	Selecteer ten minste één dag.	Valitse vähintään yksi päivä.	Mindestens einen Tag auswählen.	Velg minst en dag.
+selectAll	Select all	Markera alla	Markere alle	Alles selecteren	Valitse kaikki	Alles auswählen	Markere alle
+deselectAll	Deselect all	Avmarkera alla	Fravælg alle	Alles deselecteren	Poista kaikki valinnat	Auswahl aufheben	Avmarkere alle
 mo	Mon	mån	man	Ma	Ma	Mo	man
 tu	Tue	tis	tir	Di	Ti	Di	tir
 we	Wed	ons	ons	Wo	Ke	Mi	ons

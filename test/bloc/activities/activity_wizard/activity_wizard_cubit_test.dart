@@ -1795,6 +1795,7 @@ void main() {
         ),
       );
     });
+
     final allWizStepsSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       wizardTemplateStep: true,
@@ -1812,7 +1813,7 @@ void main() {
       activityRecurringEditable: true,
     );
 
-    final allWizStep = [
+    const allWizStep = [
       WizardStep.basic,
       WizardStep.date,
       WizardStep.title,
@@ -1954,13 +1955,26 @@ void main() {
       expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(0, [...allWizStep]..remove(WizardStep.time)),
+          ActivityWizardState(0, [
+            WizardStep.basic,
+            WizardStep.date,
+            WizardStep.title,
+            WizardStep.image,
+            WizardStep.type,
+            WizardStep.available_for,
+            WizardStep.checkable,
+            WizardStep.delete_after,
+            WizardStep.alarm,
+            WizardStep.note,
+            WizardStep.reminder,
+            WizardStep.recurring,
+          ]),
           ActivityWizardState(0, allWizStep),
         ]),
       );
     });
 
-    test('Chaning recurring changes wizard steps', () async {
+    test('Changing recurring changes wizard steps', () async {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
@@ -1988,6 +2002,73 @@ void main() {
           ActivityWizardState(0, [...allWizStep, WizardStep.recursWeekly]),
           ActivityWizardState(0, allWizStep),
         ]),
+      );
+    });
+
+    test('Saving recuring weekly without any days yeilds warning', () async {
+      // Arrange
+      final editActivityBloc = EditActivityBloc.newActivity(
+        day: aDay,
+        defaultAlarmTypeSetting: NO_ALARM,
+      );
+      final activity = editActivityBloc.state.activity;
+
+      final wizCubit = ActivityWizardCubit.newActivity(
+        activitiesBloc: FakeActivitiesBloc(),
+        editActivityBloc: editActivityBloc,
+        clockBloc: clockBloc,
+        settings: MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: false,
+            wizardTypeStep: false,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardChecklistStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: true,
+          ),
+        ),
+      );
+
+      editActivityBloc
+          .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 22, minute: 22)));
+
+      editActivityBloc.add(ReplaceActivity(
+          activity.copyWith(title: 'titlte', recurs: Recurs.weeklyOnDays([]))));
+
+      await expectLater(
+        wizCubit.stream,
+        emitsInOrder([
+          ActivityWizardState(
+            0,
+            [WizardStep.time, WizardStep.recurring],
+          ),
+          ActivityWizardState(
+            0,
+            [WizardStep.time, WizardStep.recurring, WizardStep.recursWeekly],
+          ),
+        ]),
+      );
+
+      wizCubit.next();
+      wizCubit.next();
+      wizCubit.next();
+
+      expect(
+        wizCubit.state,
+        ActivityWizardState(
+          2,
+          [WizardStep.time, WizardStep.recurring, WizardStep.recursWeekly],
+          saveErrors: {SaveError.NO_RECURRING_DAYS},
+          sucessfullSave: false,
+        ),
       );
     });
   });
