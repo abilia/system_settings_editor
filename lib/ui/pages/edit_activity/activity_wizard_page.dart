@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/activity/activity_wizard/checkable_wiz.dart';
 
 class ActivityWizardPage extends StatelessWidget {
   const ActivityWizardPage({Key? key}) : super(key: key);
@@ -42,6 +43,8 @@ class ActivityWizardPage extends StatelessWidget {
         return EditActivityPage();
       case WizardStep.available_for:
         return AvailableForWiz();
+      case WizardStep.checkable:
+        return CheckableWiz();
       case WizardStep.type:
         return TypeWiz();
       default:
