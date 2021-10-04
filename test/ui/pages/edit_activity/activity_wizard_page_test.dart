@@ -148,7 +148,7 @@ void main() {
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PlaceholderWiz), findsOneWidget); // Checkable
+    expect(find.byType(RecurringWiz), findsOneWidget);
     await tester.tap(find.byType(SaveButton));
     await tester.pumpAndSettle();
 
@@ -577,6 +577,60 @@ void main() {
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
       expect(find.byType(AvailableForWiz), findsOneWidget);
+    });
+  });
+
+  group('recurring step', () {
+    final _recurringOnly = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: true,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: true,
+    );
+
+    testWidgets('changing recurring changes save button',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(_recurringOnly),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(TypeWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecurringWiz), findsOneWidget);
+      expect(find.byType(SaveButton), findsOneWidget);
+      expect(find.byType(NextButton), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(SaveButton), findsNothing);
+      expect(find.byType(NextButton), findsOneWidget);
+
+      await tester.tap(find.byIcon(AbiliaIcons.basic_activity));
+      await tester.pumpAndSettle();
+      expect(find.byType(SaveButton), findsOneWidget);
+      expect(find.byType(NextButton), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(SaveButton), findsNothing);
+      expect(find.byType(NextButton), findsOneWidget);
     });
   });
 }

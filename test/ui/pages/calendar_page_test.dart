@@ -215,7 +215,7 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(PlaceholderWiz), findsOneWidget); // Recurrance
+        expect(find.byType(RecurringWiz), findsOneWidget); // Recurrance
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 

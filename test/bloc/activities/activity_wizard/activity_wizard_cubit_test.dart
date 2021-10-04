@@ -1949,15 +1949,45 @@ void main() {
       );
 
       editActivityBloc.add(ReplaceActivity(activity.copyWith(fullDay: true)));
-      expectLater(
-        wizCubit.stream,
-        emits(ActivityWizardState(0, allWizStep..remove(WizardStep.time))),
-      );
 
       editActivityBloc.add(ReplaceActivity(activity.copyWith(fullDay: false)));
       expectLater(
         wizCubit.stream,
-        emits(ActivityWizardState(0, allWizStep)),
+        emitsInOrder([
+          ActivityWizardState(0, [...allWizStep]..remove(WizardStep.time)),
+          ActivityWizardState(0, allWizStep),
+        ]),
+      );
+    });
+
+    test('Chaning recurring changes wizard steps', () async {
+      // Arrange
+      final editActivityBloc = EditActivityBloc.newActivity(
+        day: aDay,
+        defaultAlarmTypeSetting: NO_ALARM,
+      );
+      final activity = editActivityBloc.state.activity;
+
+      final wizCubit = ActivityWizardCubit.newActivity(
+        activitiesBloc: FakeActivitiesBloc(),
+        editActivityBloc: editActivityBloc,
+        clockBloc: clockBloc,
+        settings: MemoplannerSettingsLoaded(allWizStepsSettings),
+      );
+
+      editActivityBloc.add(
+          ReplaceActivity(activity.copyWith(recurs: Recurs.monthly(aDay.day))));
+      editActivityBloc.add(ReplaceActivity(
+          activity.copyWith(recurs: Recurs.weeklyOnDay(aDay.weekday))));
+      editActivityBloc
+          .add(ReplaceActivity(activity.copyWith(recurs: Recurs.not)));
+      await expectLater(
+        wizCubit.stream,
+        emitsInOrder([
+          ActivityWizardState(0, [...allWizStep, WizardStep.recursMonthly]),
+          ActivityWizardState(0, [...allWizStep, WizardStep.recursWeekly]),
+          ActivityWizardState(0, allWizStep),
+        ]),
       );
     });
   });
