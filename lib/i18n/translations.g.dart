@@ -237,6 +237,8 @@ abstract class Translated {
 
   final String checkable = 'Checkable';
 
+  final String notCheckable = 'Not checkable';
+
   final String deleteAfter = 'Remove at the end of the day';
 
   final String name = 'Name';
@@ -1022,6 +1024,9 @@ class SV extends Translated {
 
   @override
   final String checkable = 'Kvitterbar';
+
+  @override
+  final String notCheckable = 'Inte kvitterbar';
 
   @override
   final String deleteAfter = 'Ta bort vid slutet av dagen';
@@ -2019,6 +2024,9 @@ class DA extends Translated {
   final String checkable = 'Kvitterbar';
 
   @override
+  final String notCheckable = 'Ikke kvitterbar';
+
+  @override
   final String deleteAfter = 'Fjern i slutningen af dagen';
 
   @override
@@ -3008,6 +3016,9 @@ class NL extends Translated {
 
   @override
   final String checkable = 'Afvinkbaar';
+
+  @override
+  final String notCheckable = 'Niet afvinkbaar';
 
   @override
   final String deleteAfter = 'Aan het einde van de dag verwijderen';
@@ -4001,6 +4012,9 @@ class FI extends Translated {
 
   @override
   final String checkable = 'Tarkistettava';
+
+  @override
+  final String notCheckable = 'Ei-tarkistettava';
 
   @override
   final String deleteAfter = 'Poista päivän päätteeksi';
@@ -4998,6 +5012,9 @@ class DE extends Translated {
   final String checkable = 'Kontrollabfrage';
 
   @override
+  final String notCheckable = 'Nicht kontrollabfrage';
+
+  @override
   final String deleteAfter = 'am Endes des Tages löschen';
 
   @override
@@ -5991,6 +6008,9 @@ class NB extends Translated {
 
   @override
   final String checkable = 'Kvitterbar';
+
+  @override
+  final String notCheckable = 'Ikke kvitterbar';
 
   @override
   final String deleteAfter = 'Fjern på slutten av dagen';

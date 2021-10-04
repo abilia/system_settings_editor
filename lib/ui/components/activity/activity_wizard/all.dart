@@ -6,3 +6,4 @@ export 'title_wiz.dart';
 export 'type_wiz.dart';
 export 'recurring_wiz.dart';
 export 'wizard_buttons.dart';
+export 'checkable_wiz.dart';
