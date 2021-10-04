@@ -145,14 +145,18 @@ class MonthDayViewCompact extends StatelessWidget {
                         border: selectedActivityBorder,
                         borderRadius: MonthDayView.monthDayborderRadius,
                       )
-                    : null,
+                    : BoxDecoration(
+                        border: transparentBlackBorder,
+                        borderRadius: MonthDayView.monthDayborderRadius,
+                      ),
             decoration: BoxDecoration(
-              color: dayTheme.color,
+              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
               borderRadius: MonthDayView.monthDayborderRadius,
             ),
             padding: EdgeInsets.all(4.s),
             child: DefaultTextStyle(
-              style: dayTheme.theme.textTheme.subtitle2!,
+              style: dayTheme.theme.textTheme.subtitle2!
+                  .copyWith(color: dayTheme.monthSurfaceColor),
               child: Stack(
                 children: [
                   Center(child: Text('${day.day.day}')),
@@ -160,8 +164,13 @@ class MonthDayViewCompact extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: ColorDot(
-                        color: dayTheme.theme.colorScheme.onSurface,
+                        color: dayTheme.monthSurfaceColor,
                       ),
+                    ),
+                  if (day.isPast)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CrossOver(),
                     ),
                 ],
               ),
