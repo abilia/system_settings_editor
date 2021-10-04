@@ -499,9 +499,53 @@ void main() {
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
       expect(find.byType(TypeWiz), findsOneWidget);
-      expect(find.byKey(TestKey.fullDayCategoryRadio), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.restore), findsOneWidget);
       expect(find.byKey(TestKey.leftCategoryRadio), findsOneWidget);
       expect(find.byKey(TestKey.rightCategoryRadio), findsOneWidget);
+    });
+
+    testWidgets('Select full day removes time step',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: true,
+            wizardTypeStep: true,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      expect(find.byType(TitleWiz), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TypeWiz), findsOneWidget);
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimeWiz), findsOneWidget);
+
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TypeWiz), findsOneWidget);
+
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // all day radio
+      await tester.pumpAndSettle();
+      expect(find.byType(NextButton), findsNothing);
+      expect(find.byType(SaveButton), findsOneWidget);
     });
   });
 
