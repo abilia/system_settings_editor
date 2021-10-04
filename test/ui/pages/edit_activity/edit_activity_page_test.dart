@@ -106,9 +106,7 @@ void main() {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
                         editActivityBloc: context.read<EditActivityBloc>(),
-                        allowActivityTimeBeforeCurrent:
-                            mockMemoplannerSettingsBloc
-                                .state.activityTimeBeforeCurrent,
+                        settings: mockMemoplannerSettingsBloc.state,
                       ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),

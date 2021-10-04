@@ -98,10 +98,7 @@ void main() {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
                         editActivityBloc: context.read<EditActivityBloc>(),
-                        allowActivityTimeBeforeCurrent: context
-                            .read<MemoplannerSettingBloc>()
-                            .state
-                            .activityTimeBeforeCurrent,
+                        settings: context.read<MemoplannerSettingBloc>().state,
                       ),
               ),
               BlocProvider<SortableBloc>(create: (_) => FakeSortableBloc()),

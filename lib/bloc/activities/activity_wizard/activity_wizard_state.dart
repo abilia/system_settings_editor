@@ -45,31 +45,35 @@ extension SaveErrors on Set<SaveError> {
 
 class ActivityWizardState extends Equatable {
   final int step;
-  final List<WizardStep> steps;
+  final UnmodifiableListView<WizardStep> steps;
   final Set<SaveError> saveErrors;
   final bool? sucessfullSave;
 
-  const ActivityWizardState(
+  ActivityWizardState(
     this.step,
-    this.steps, {
+    Iterable<WizardStep> steps, {
     this.saveErrors = const UnmodifiableSetView.empty(),
     this.sucessfullSave,
-  });
+  }) : steps = UnmodifiableListView(steps);
 
   bool get isFirstStep => step == 0;
   bool get isLastStep => step >= steps.length - 1;
   WizardStep get currentStep => steps[step];
 
   ActivityWizardState copyWith({
-    required int newStep,
-  }) =>
-      ActivityWizardState(newStep.clamp(0, steps.length - 1), steps);
+    int? newStep,
+    List<WizardStep>? newSteps,
+  }) {
+    newStep ??= step;
+    newSteps ??= steps;
+    return ActivityWizardState(newStep.clamp(0, newSteps.length - 1), newSteps);
+  }
 
   ActivityWizardState failSave(Set<SaveError> saveErrors) =>
       ActivityWizardState(
         step,
         steps,
-        saveErrors: UnmodifiableSetView(saveErrors),
+        saveErrors: saveErrors,
         sucessfullSave: sucessfullSave == null
             ? false
             : null, // this ugly trick to force state change each failSave
