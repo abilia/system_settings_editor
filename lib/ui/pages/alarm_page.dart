@@ -189,7 +189,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
 class PlaySpeechButton extends StatelessWidget {
   final AbiliaFile soundToPlay;
 
-  PlaySpeechButton({
+  const PlaySpeechButton({
     required this.soundToPlay,
     Key? key,
   }) : super(key: key);

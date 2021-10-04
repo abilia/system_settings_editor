@@ -12,7 +12,7 @@ abstract class AuthenticationState extends Equatable {
 }
 
 class AuthenticationLoading extends AuthenticationState {
-  AuthenticationLoading(UserRepository userRepository,
+  const AuthenticationLoading(UserRepository userRepository,
       [bool forcedNewState = false])
       : super(userRepository, forcedNewState);
 
@@ -25,7 +25,7 @@ class Authenticated extends AuthenticationState {
   final String token;
   final int userId;
   final bool newlyLoggedIn;
-  Authenticated({
+  const Authenticated({
     required this.token,
     required this.userId,
     this.newlyLoggedIn = false,
@@ -47,7 +47,7 @@ class Authenticated extends AuthenticationState {
 
 class Unauthenticated extends AuthenticationState {
   final LoggedOutReason loggedOutReason;
-  Unauthenticated(
+  const Unauthenticated(
     UserRepository userRepository, {
     this.loggedOutReason = LoggedOutReason.LOG_OUT,
     bool forcedNewState = false,

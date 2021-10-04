@@ -108,7 +108,7 @@ class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
 class SelectAlarmPage extends StatefulWidget {
   final Activity activity;
 
-  SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
+  const SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
 
   @override
   _SelectAlarmPageState createState() => _SelectAlarmPageState(activity);
