@@ -155,6 +155,22 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
+
+    testWidgets('SGC-967 go to now button works more than once',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.goToNowButton));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    });
   });
 
   group('timepillar dots', () {
