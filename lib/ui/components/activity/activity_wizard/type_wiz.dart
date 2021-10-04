@@ -56,7 +56,6 @@ class _TypeWidget extends StatelessWidget {
                       AbiliaIcons.restore,
                       size: smallIconSize,
                     ),
-                    key: TestKey.fullDayCategoryRadio,
                     value: _fullDayValue,
                     groupValue: groupValue,
                     onChanged: _onChange),

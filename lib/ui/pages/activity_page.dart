@@ -187,8 +187,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                   if (displayEditButton)
                     EditActivityButton(
                       activityOccasion: activityOccasion,
-                      allowActivityTimeBeforeCurrent:
-                          memoSettingsState.activityTimeBeforeCurrent,
+                      settings: memoSettingsState,
                     ),
                 ],
               ),
@@ -204,11 +203,11 @@ class EditActivityButton extends StatelessWidget {
   const EditActivityButton({
     Key? key,
     required this.activityOccasion,
-    required this.allowActivityTimeBeforeCurrent,
+    required this.settings,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
-  final bool allowActivityTimeBeforeCurrent;
+  final MemoplannerSettingsState settings;
 
   @override
   Widget build(BuildContext context) {
@@ -228,8 +227,7 @@ class EditActivityButton extends StatelessWidget {
                       activitiesBloc: context.read<ActivitiesBloc>(),
                       editActivityBloc: context.read<EditActivityBloc>(),
                       clockBloc: context.read<ClockBloc>(),
-                      allowActivityTimeBeforeCurrent:
-                          allowActivityTimeBeforeCurrent,
+                      settings: settings,
                     ),
                   ),
                 ],

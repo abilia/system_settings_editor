@@ -52,16 +52,18 @@ class NextWizardStepButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wizardCubit = context.read<ActivityWizardCubit>();
     void onNext() async {
       if (await beforeOnNext?.call() != false) {
-        wizardCubit.next();
+        context.read<ActivityWizardCubit>().next();
       }
     }
 
-    if (wizardCubit.state.isLastStep) {
-      return SaveButton(onPressed: onNext);
-    }
-    return NextButton(onPressed: onNext);
+    return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+      buildWhen: (previous, current) =>
+          previous.isLastStep != current.isLastStep,
+      builder: (context, state) => state.isLastStep
+          ? SaveButton(onPressed: onNext)
+          : NextButton(onPressed: onNext),
+    );
   }
 }

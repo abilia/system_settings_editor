@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
@@ -10,16 +13,18 @@ part 'activity_wizard_state.dart';
 class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final ActivitiesBloc activitiesBloc;
   final EditActivityBloc editActivityBloc;
+  final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
-  final bool allowActivityTimeBeforeCurrent;
+  bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
+
+  StreamSubscription<EditActivityState>? _activityBlocSubscription;
 
   ActivityWizardCubit.newActivity({
     required this.activitiesBloc,
     required this.editActivityBloc,
     required this.clockBloc,
-    required MemoplannerSettingsState settings,
-  })  : allowActivityTimeBeforeCurrent = settings.activityTimeBeforeCurrent,
-        super(
+    required this.settings,
+  }) : super(
           ActivityWizardState(
             0,
             settings.addActivityType == NewActivityMode.editView
@@ -29,38 +34,49 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
                       WizardStep.advance,
                     ],
                   )
-                : UnmodifiableListView(
-                    [
-                      if (settings.wizardTemplateStep) WizardStep.basic,
-                      if (settings.wizardDatePickerStep) WizardStep.date,
-                      if (settings.wizardTitleStep) WizardStep.title,
-                      if (settings.wizardImageStep) WizardStep.image,
-                      if (settings.wizardTypeStep) WizardStep.type,
-                      if (settings.wizardAvailabilityType)
-                        WizardStep.available_for,
-                      if (settings.wizardCheckableStep) WizardStep.checkable,
-                      if (settings.wizardRemoveAfterStep)
-                        WizardStep.delete_after,
-                      WizardStep.time,
-                      if (settings.wizardAlarmStep) WizardStep.alarm,
-                      if (settings.wizardChecklistStep ||
-                          settings.wizardNotesStep)
-                        WizardStep.note,
-                      if (settings.wizardRemindersStep) WizardStep.reminder,
-                      if (settings.activityRecurringEditable)
-                        WizardStep.recurring,
-                    ],
-                  ),
+                : _generateWizardSteps(
+                    settings, editActivityBloc.state.activity),
           ),
-        );
+        ) {
+    if (settings.addActivityType == NewActivityMode.stepByStep) {
+      _activityBlocSubscription = editActivityBloc.stream.listen(
+        (event) {
+          final newSteps = _generateWizardSteps(settings, event.activity);
+          if (newSteps != state.steps) {
+            emit(state.copyWith(newSteps: newSteps));
+          }
+        },
+      );
+    }
+  }
+
+  static List<WizardStep> _generateWizardSteps(
+    MemoplannerSettingsState settings,
+    Activity activity,
+  ) =>
+      [
+        if (settings.wizardTemplateStep) WizardStep.basic,
+        if (settings.wizardDatePickerStep) WizardStep.date,
+        if (settings.wizardTitleStep) WizardStep.title,
+        if (settings.wizardImageStep) WizardStep.image,
+        if (settings.wizardTypeStep) WizardStep.type,
+        if (settings.wizardAvailabilityType) WizardStep.available_for,
+        if (settings.wizardCheckableStep) WizardStep.checkable,
+        if (settings.wizardRemoveAfterStep) WizardStep.delete_after,
+        if (!activity.fullDay) WizardStep.time,
+        if (settings.wizardAlarmStep) WizardStep.alarm,
+        if (settings.wizardChecklistStep || settings.wizardNotesStep)
+          WizardStep.note,
+        if (settings.wizardRemindersStep) WizardStep.reminder,
+        if (settings.activityRecurringEditable) WizardStep.recurring,
+      ];
 
   ActivityWizardCubit.edit({
     required this.activitiesBloc,
     required this.editActivityBloc,
     required this.clockBloc,
-    required this.allowActivityTimeBeforeCurrent,
-  }) : super(
-            ActivityWizardState(0, UnmodifiableListView([WizardStep.advance])));
+    required this.settings,
+  }) : super(ActivityWizardState(0, [WizardStep.advance]));
 
   void next({
     bool warningConfirmed = false,
@@ -133,6 +149,12 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
 
     editActivityBloc.add(ActivitySavedSuccessfully(activity));
     return state.saveSucess();
+  }
+
+  @override
+  Future<void> close() async {
+    await _activityBlocSubscription?.cancel();
+    return super.close();
   }
 }
 
