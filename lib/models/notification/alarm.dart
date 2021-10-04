@@ -53,7 +53,7 @@ abstract class NotificationAlarm extends Equatable {
 }
 
 abstract class NewAlarm extends NotificationAlarm {
-  NewAlarm(ActivityDay activityDay) : super(activityDay);
+  const NewAlarm(ActivityDay activityDay) : super(activityDay);
 
   @override
   bool hasSound(_) => activity.alarm.sound;
@@ -70,7 +70,7 @@ abstract class NewAlarm extends NotificationAlarm {
 class StartAlarm extends NewAlarm {
   StartAlarm(Activity activity, DateTime day)
       : super(ActivityDay(activity, day));
-  StartAlarm.from(ActivityDay activityDay) : super(activityDay);
+  const StartAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.start;
 
@@ -81,7 +81,7 @@ class StartAlarm extends NewAlarm {
 
 class EndAlarm extends NewAlarm {
   EndAlarm(Activity activity, DateTime day) : super(ActivityDay(activity, day));
-  EndAlarm.from(ActivityDay activityDay) : super(activityDay);
+  const EndAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.end;
 
@@ -92,7 +92,8 @@ class EndAlarm extends NewAlarm {
 
 abstract class NewReminder extends NotificationAlarm {
   final Duration reminder;
-  NewReminder(ActivityDay activityDay, this.reminder) : super(activityDay);
+  const NewReminder(ActivityDay activityDay, this.reminder)
+      : super(activityDay);
 
   @override
   bool hasSound(AlarmSettings settings) =>
@@ -111,7 +112,8 @@ abstract class NewReminder extends NotificationAlarm {
 class ReminderBefore extends NewReminder {
   ReminderBefore(Activity activity, DateTime day, {required Duration reminder})
       : super(ActivityDay(activity, day), reminder);
-  ReminderBefore.from(ActivityDay activityDay, {required Duration reminder})
+  const ReminderBefore.from(ActivityDay activityDay,
+      {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
@@ -125,7 +127,8 @@ class ReminderUnchecked extends NewReminder {
   ReminderUnchecked(Activity activity, DateTime day,
       {required Duration reminder})
       : super(ActivityDay(activity, day), reminder);
-  ReminderUnchecked.from(ActivityDay activityDay, {required Duration reminder})
+  const ReminderUnchecked.from(ActivityDay activityDay,
+      {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);
