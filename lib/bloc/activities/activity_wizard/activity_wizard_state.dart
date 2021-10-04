@@ -16,6 +16,8 @@ enum WizardStep {
   note,
   reminder,
   recurring,
+  recursWeekly,
+  recursMonthly,
 }
 
 enum SaveError {

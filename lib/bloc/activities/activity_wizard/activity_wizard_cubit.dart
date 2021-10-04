@@ -69,6 +69,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
           WizardStep.note,
         if (settings.wizardRemindersStep) WizardStep.reminder,
         if (settings.activityRecurringEditable) WizardStep.recurring,
+        if (activity.recurs.weekly) WizardStep.recursWeekly,
+        if (activity.recurs.monthly) WizardStep.recursMonthly,
       ];
 
   ActivityWizardCubit.edit({
