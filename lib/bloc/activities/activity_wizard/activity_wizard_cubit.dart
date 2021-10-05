@@ -66,7 +66,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
         if (!activity.fullDay) WizardStep.time,
         if (settings.wizardAlarmStep) WizardStep.alarm,
         if (settings.wizardChecklistStep || settings.wizardNotesStep)
-          WizardStep.note,
+          WizardStep.connectedFunction,
         if (settings.wizardRemindersStep) WizardStep.reminder,
         if (settings.activityRecurringEditable) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
