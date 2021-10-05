@@ -695,4 +695,35 @@ void main() {
       expect(find.byType(NextButton), findsOneWidget);
     });
   });
+
+  group('image step', () {
+    final typeOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: true,
+      wizardTitleStep: false,
+      wizardTypeStep: false,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('only image step', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          typeOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(ImageWiz), findsOneWidget);
+    });
+  });
 }

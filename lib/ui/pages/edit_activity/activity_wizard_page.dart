@@ -32,6 +32,8 @@ class ActivityWizardPage extends StatelessWidget {
     switch (step) {
       case WizardStep.basic:
         return BasicActivityStepPage();
+      case WizardStep.advance:
+        return EditActivityPage();
       case WizardStep.date:
         return DatePickerWiz();
       case WizardStep.title:
@@ -40,8 +42,8 @@ class ActivityWizardPage extends StatelessWidget {
         return ImageWiz();
       case WizardStep.time:
         return TimeWiz();
-      case WizardStep.advance:
-        return EditActivityPage();
+      case WizardStep.connectedFunction:
+        return ExtraFunctionWiz();
       case WizardStep.available_for:
         return AvailableForWiz();
       case WizardStep.checkable:
