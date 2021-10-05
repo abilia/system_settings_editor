@@ -21,6 +21,7 @@ class RemoveAfterWiz extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               RadioField<bool?>(
+                key: TestKey.removeAfterRadio,
                 groupValue: state.activity.removeAfter,
                 onChanged: (value) => context.read<EditActivityBloc>().add(
                     ReplaceActivity(
