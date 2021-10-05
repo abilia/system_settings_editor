@@ -695,4 +695,126 @@ void main() {
       expect(find.byType(ImageWiz), findsOneWidget);
     });
   });
+
+  group('extra function step', () {
+    testWidgets('Both show', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: false,
+            wizardTypeStep: true,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: true,
+            wizardChecklistStep: true,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ExtraFunctionWiz), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+    });
+
+    testWidgets('only note show', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: false,
+            wizardTypeStep: true,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: true,
+            wizardChecklistStep: false,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ExtraFunctionWiz), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.infoItemChecklistRadio), findsNothing);
+      expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditNoteWidget), findsOneWidget);
+    });
+
+    testWidgets('only checklist show', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            wizardTemplateStep: false,
+            wizardDatePickerStep: false,
+            wizardImageStep: false,
+            wizardTitleStep: false,
+            wizardTypeStep: true,
+            wizardAvailabilityType: false,
+            wizardCheckableStep: false,
+            wizardRemoveAfterStep: false,
+            wizardAlarmStep: false,
+            wizardNotesStep: false,
+            wizardChecklistStep: true,
+            wizardRemindersStep: false,
+            activityRecurringEditable: false,
+          ),
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ExtraFunctionWiz), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
+      expect(find.byKey(TestKey.infoItemNoteRadio), findsNothing);
+
+      await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditChecklistWidget), findsOneWidget);
+    });
+  });
 }

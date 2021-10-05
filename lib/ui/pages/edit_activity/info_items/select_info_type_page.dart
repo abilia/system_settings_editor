@@ -4,9 +4,14 @@ import 'package:seagull/ui/all.dart';
 
 class SelectInfoTypePage extends StatefulWidget {
   final Type infoItemType;
+  final bool showNote, showChecklist;
 
-  const SelectInfoTypePage({Key? key, required this.infoItemType})
-      : super(key: key);
+  const SelectInfoTypePage({
+    Key? key,
+    required this.infoItemType,
+    required this.showNote,
+    required this.showChecklist,
+  }) : super(key: key);
 
   @override
   _SelectInfoTypePageState createState() => _SelectInfoTypePageState();
@@ -46,23 +51,26 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               text: Text(translate.infoTypeNone),
             ),
             SizedBox(height: 8.0.s),
-            RadioField(
-              key: TestKey.infoItemChecklistRadio,
-              groupValue: infoItemType,
-              onChanged: setSelectedType,
-              value: Checklist,
-              leading: const Icon(AbiliaIcons.ok),
-              text: Text(translate.infoTypeChecklist),
-            ),
-            SizedBox(height: 8.0.s),
-            RadioField(
-              key: TestKey.infoItemNoteRadio,
-              groupValue: infoItemType,
-              onChanged: setSelectedType,
-              value: NoteInfoItem,
-              leading: const Icon(AbiliaIcons.edit),
-              text: Text(translate.infoTypeNote),
-            ),
+            if (widget.showChecklist) ...[
+              RadioField(
+                key: TestKey.infoItemChecklistRadio,
+                groupValue: infoItemType,
+                onChanged: setSelectedType,
+                value: Checklist,
+                leading: const Icon(AbiliaIcons.ok),
+                text: Text(translate.infoTypeChecklist),
+              ),
+              SizedBox(height: 8.0.s),
+            ],
+            if (widget.showNote)
+              RadioField(
+                key: TestKey.infoItemNoteRadio,
+                groupValue: infoItemType,
+                onChanged: setSelectedType,
+                value: NoteInfoItem,
+                leading: const Icon(AbiliaIcons.edit),
+                text: Text(translate.infoTypeNote),
+              ),
           ],
         ),
       ),
