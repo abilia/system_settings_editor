@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/abilia_file.dart';
 import 'package:seagull/ui/all.dart';
 
 class ImageWiz extends StatelessWidget {
@@ -6,29 +7,42 @@ class ImageWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-      builder: (context, wizState) =>
-          BlocBuilder<EditActivityBloc, EditActivityState>(
-        builder: (context, state) => Scaffold(
-          appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.selectImage,
-            iconData: AbiliaIcons.edit,
-          ),
-          body: Padding(
-            padding: ordinaryPadding,
-            child: SelectPictureWidget(
-              selectedImage: state.selectedImage,
-              onImageSelected: (selectedImage) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ImageSelected(selectedImage),
-                );
-              },
-              errorState:
-                  wizState.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
-            ),
-          ),
-          bottomNavigationBar: WizardBottomNavigation(),
-        ),
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        title: Translator.of(context).translate.selectImage,
+        iconData: AbiliaIcons.edit,
+      ),
+      body: ImageWizSelectPictureWidget(),
+      bottomNavigationBar: WizardBottomNavigation(),
+    );
+  }
+}
+
+class ImageWizSelectPictureWidget extends StatelessWidget {
+  const ImageWizSelectPictureWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      buildWhen: (previous, current) =>
+          previous.selectedImage != current.selectedImage,
+      builder: (context, state) => SelectPictureBody(
+        imageCallback: (newImage) {
+          if (newImage is UnstoredAbiliaFile) {
+            BlocProvider.of<UserFileBloc>(context).add(
+              ImageAdded(newImage),
+            );
+            BlocProvider.of<SortableBloc>(context).add(
+              ImageArchiveImageAdded(
+                newImage.id,
+                newImage.file.path,
+              ),
+            );
+          }
+          context.read<EditActivityBloc>().add(ImageSelected(newImage));
+        },
+        selectedImage: state.selectedImage,
+        onCancel: Navigator.of(context).pop,
       ),
     );
   }
