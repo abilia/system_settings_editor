@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/buttons/play_sound_button.dart';
 
 class SelectSoundPage extends StatefulWidget {
   final Sound sound;
@@ -51,7 +50,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
                 collapsed: !(selectedSound == s && s != Sound.NoSound),
                 child: Padding(
                   padding: EdgeInsets.only(left: 12.0.s),
-                  child: PlaySoundButton(sound: s),
+                  child: PlayAlarmSoundButton(sound: s),
                 ),
               ),
             ],

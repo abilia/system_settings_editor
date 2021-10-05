@@ -23,7 +23,10 @@ class RecordSoundWidget extends StatelessWidget {
       builder: (context, permissionState) {
         final permission = permissionState.status[Permission.microphone];
         return BlocProvider<SoundCubit>(
-          create: (context) => SoundCubit(),
+          create: (context) => SoundCubit(
+            storage: GetIt.I<FileStorage>(),
+            userFileBloc: context.read<UserFileBloc>(),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -143,7 +146,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                               blocContext: context,
                               child: MultiBlocProvider(
                                 providers: [
-                                  BlocProvider(create: (_) => SoundCubit()),
+                                  BlocProvider.value(
+                                    value: context.read<SoundCubit>(),
+                                  ),
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
                                       originalSoundFile: recordedAudio,
@@ -170,12 +175,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.only(left: 12.s),
-                child: PlaySoundButton(
-                  sound: state.getFile(
-                    recordedAudio,
-                    GetIt.I<FileStorage>(),
-                  ),
-                ),
+                child: PlaySoundButton(sound: recordedAudio),
               );
             },
           ),
@@ -422,18 +422,7 @@ class PlayRecordingButton extends StatelessWidget {
     return DarkGreyButton(
       text: Translator.of(context).translate.play,
       icon: AbiliaIcons.play_sound,
-      onPressed: () {
-        if (sound is UnstoredAbiliaFile) {
-          context.read<SoundCubit>().play(sound);
-        } else {
-          context.read<SoundCubit>().play(
-                context
-                    .read<UserFileBloc>()
-                    .state
-                    .getFile(sound, GetIt.I<FileStorage>())!,
-              );
-        }
-      },
+      onPressed: () => context.read<SoundCubit>().play(sound),
     );
   }
 }

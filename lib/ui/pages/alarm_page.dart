@@ -197,14 +197,14 @@ class PlaySpeechButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SoundCubit(),
+      create: (context) => SoundCubit(
+        storage: GetIt.I<FileStorage>(),
+        userFileBloc: context.read<UserFileBloc>(),
+      ),
       child: BlocBuilder<UserFileBloc, UserFileState>(
         builder: (context, state) {
           return PlaySoundButton(
-            sound: context.read<UserFileBloc>().state.getFile(
-                  soundToPlay,
-                  GetIt.I<FileStorage>(),
-                ),
+            sound: soundToPlay,
             buttonStyle: actionButtonStyleLight,
           );
         },

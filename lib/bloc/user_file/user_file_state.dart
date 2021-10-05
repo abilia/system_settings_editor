@@ -9,8 +9,20 @@ abstract class UserFileState extends Equatable {
 
   final Map<String, File> _tempFiles;
 
-  File? getFile(AbiliaFile abiliaFile, FileStorage fileStorage) =>
-      getLoadedByIdOrPath(abiliaFile.id, abiliaFile.path, fileStorage);
+  UserFile? getUserFileOrNull(AbiliaFile abiliaFile) =>
+      userFiles.firstWhereOrNull(
+          (f) => (f.id == abiliaFile.id || f.path == abiliaFile.path));
+
+  File? getFileOrTempFile(
+    UserFile userFile,
+    FileStorage fileStorage, {
+    ImageSize imageSize = ImageSize.ORIGINAL,
+  }) =>
+      userFile.fileLoaded
+          ? imageSize == ImageSize.THUMB
+              ? fileStorage.getImageThumb(ImageThumb(id: userFile.id))
+              : fileStorage.getFile(userFile.id)
+          : _tempFiles[userFile.id];
 
   File? getLoadedByIdOrPath(
     String fileId,
@@ -18,13 +30,10 @@ abstract class UserFileState extends Equatable {
     FileStorage fileStorage, {
     ImageSize imageSize = ImageSize.ORIGINAL,
   }) {
-    final userFile = userFiles.firstWhereOrNull(
-      (f) => (f.id == fileId || f.path == filePath) && f.fileLoaded,
-    );
+    final userFile =
+        getUserFileOrNull(AbiliaFile.from(id: fileId, path: filePath));
     return userFile != null
-        ? imageSize == ImageSize.THUMB
-            ? fileStorage.getImageThumb(ImageThumb(id: userFile.id))
-            : fileStorage.getFile(userFile.id)
+        ? getFileOrTempFile(userFile, fileStorage, imageSize: imageSize)
         : _tempFiles[fileId];
   }
 
