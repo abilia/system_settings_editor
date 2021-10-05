@@ -234,7 +234,7 @@ class Question extends Equatable {
       );
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        id: json['id'],
+        id: json['id'] ?? 0,
         name: json['name'] ?? '',
         image: json['image'] ?? json['imageName'] ?? '',
         fileId: json['fileId'] ?? '',
