@@ -211,6 +211,12 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
+        expect(find.byType(RemoveAfterWiz), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.removeAfterRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
         expect(find.byType(TimeWiz), findsOneWidget);
         await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
         await tester.pumpAndSettle();
@@ -229,6 +235,7 @@ void main() {
         final savedActivity = captured.single.single as Activity;
         expect(savedActivity.title, title);
         expect(savedActivity.checkable, true);
+        expect(savedActivity.removeAfter, true);
       });
 
       group('basic activity', () {

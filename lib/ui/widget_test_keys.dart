@@ -78,5 +78,6 @@ class TestKey {
       speechAtStart = Key('speechAtStart'),
       speechAtEnd = Key('speechAtEnd'),
       fullDayCategoryRadio = Key('allDayCategoryRadio'),
-      checkableRadio = Key('checkableRadio');
+      checkableRadio = Key('checkableRadio'),
+      removeAfterRadio = Key('removeAfterRadio');
 }
