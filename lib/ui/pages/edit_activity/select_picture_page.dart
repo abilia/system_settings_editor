@@ -15,7 +15,8 @@ final _log = Logger((SelectPicturePage).toString());
 class SelectPicturePage extends StatelessWidget {
   final AbiliaFile selectedImage;
 
-  SelectPicturePage({Key? key, required this.selectedImage}) : super(key: key);
+  const SelectPicturePage({Key? key, required this.selectedImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
