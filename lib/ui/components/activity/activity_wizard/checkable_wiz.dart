@@ -32,7 +32,7 @@ class CheckableWiz extends StatelessWidget {
               RadioField<bool?>(
                 groupValue: state.activity.checkable,
                 onChanged: (value) => context.read<EditActivityBloc>().add(
-                    ReplaceActivity(state.activity.copyWith(secret: value))),
+                    ReplaceActivity(state.activity.copyWith(checkable: value))),
                 value: false,
                 text: Text(translate.notCheckable),
               ),

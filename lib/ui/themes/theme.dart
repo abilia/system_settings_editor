@@ -100,6 +100,9 @@ final Border currentBorder =
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.s),
 );
+final Border transparentBlackBorder = Border.fromBorderSide(
+  BorderSide(color: AbiliaColors.transparentBlack30, width: 1.s),
+);
 
 final borderOrange = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.orange40, width: 2.s),
