@@ -241,6 +241,8 @@ abstract class Translated {
 
   final String deleteAfter = 'Remove at the end of the day';
 
+  final String dontDeleteAfter = "Don't remove at the end of the day";
+
   final String name = 'Name';
 
   final String picture = 'Image';
@@ -1030,6 +1032,9 @@ class SV extends Translated {
 
   @override
   final String deleteAfter = 'Ta bort vid slutet av dagen';
+
+  @override
+  final String dontDeleteAfter = 'Ta inte bort vid slutet av dagen';
 
   @override
   final String name = 'Namn';
@@ -2030,6 +2035,9 @@ class DA extends Translated {
   final String deleteAfter = 'Fjern i slutningen af dagen';
 
   @override
+  final String dontDeleteAfter = 'Fjern ikke ved slutningen af ​​dagen';
+
+  @override
   final String name = 'Navn';
 
   @override
@@ -3022,6 +3030,9 @@ class NL extends Translated {
 
   @override
   final String deleteAfter = 'Aan het einde van de dag verwijderen';
+
+  @override
+  final String dontDeleteAfter = 'Niet verwijderen aan het einde van de dag';
 
   @override
   final String name = 'Naam';
@@ -4018,6 +4029,9 @@ class FI extends Translated {
 
   @override
   final String deleteAfter = 'Poista päivän päätteeksi';
+
+  @override
+  final String dontDeleteAfter = 'Älä poista päivän päätteeksi';
 
   @override
   final String name = 'Nimi';
@@ -5018,6 +5032,9 @@ class DE extends Translated {
   final String deleteAfter = 'am Endes des Tages löschen';
 
   @override
+  final String dontDeleteAfter = 'Nicht am Ende des Tages entfernen';
+
+  @override
   final String name = 'Name';
 
   @override
@@ -6014,6 +6031,9 @@ class NB extends Translated {
 
   @override
   final String deleteAfter = 'Fjern på slutten av dagen';
+
+  @override
+  final String dontDeleteAfter = 'Ikke fjern på slutten av dagen';
 
   @override
   final String name = 'Navn';
