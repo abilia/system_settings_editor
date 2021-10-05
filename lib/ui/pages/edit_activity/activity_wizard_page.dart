@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/activity_wizard/checkable_wiz.dart';
+import 'package:seagull/ui/components/activity/activity_wizard/remove_after_wiz.dart';
 
 class ActivityWizardPage extends StatelessWidget {
   const ActivityWizardPage({Key? key}) : super(key: key);
@@ -49,6 +50,8 @@ class ActivityWizardPage extends StatelessWidget {
         return TypeWiz();
       case WizardStep.recurring:
         return RecurringWiz();
+      case WizardStep.delete_after:
+        return RemoveAfterWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }
