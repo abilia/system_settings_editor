@@ -1746,7 +1746,7 @@ void main() {
             WizardStep.delete_after,
             WizardStep.time,
             WizardStep.alarm,
-            WizardStep.note,
+            WizardStep.connectedFunction,
             WizardStep.reminder,
           ],
         ),
@@ -1823,7 +1823,7 @@ void main() {
       WizardStep.delete_after,
       WizardStep.time,
       WizardStep.alarm,
-      WizardStep.note,
+      WizardStep.connectedFunction,
       WizardStep.reminder,
       WizardStep.recurring,
     ];

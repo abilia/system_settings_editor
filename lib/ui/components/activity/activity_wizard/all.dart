@@ -7,3 +7,4 @@ export 'type_wiz.dart';
 export 'recurring_wiz.dart';
 export 'wizard_buttons.dart';
 export 'checkable_wiz.dart';
+export 'extra_function_wiz.dart';
