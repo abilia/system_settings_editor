@@ -73,7 +73,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                                       EditActivityTab.errorBorderPadding.bottom,
                                 ),
                                 child: errorBordered(
-                                  MonthDays(activity),
+                                  MonthDays(),
                                   errorState: recurringDataError,
                                 ),
                               ),

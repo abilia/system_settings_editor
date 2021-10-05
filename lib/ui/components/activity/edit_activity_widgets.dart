@@ -654,41 +654,49 @@ class WeekDays extends StatelessWidget {
 }
 
 class MonthDays extends StatelessWidget {
-  final Activity activity;
-
-  const MonthDays(
-    this.activity, {
-    Key? key,
-  }) : super(key: key);
+  const MonthDays({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final selectedMonthDays = activity.recurs.monthDays;
-    return Wrap(
-      spacing: 14.0.s,
-      runSpacing: 8.0.s,
-      children: List.generate(31, (i) {
-        final d = i + 1;
-        return SelectableField(
-            text: Text(
-              '$d',
-              style:
-                  Theme.of(context).textTheme.bodyText1?.copyWith(height: 1.5),
-            ),
-            selected: selectedMonthDays.contains(d),
-            onTap: () {
-              if (!selectedMonthDays.add(d)) {
-                selectedMonthDays.remove(d);
-              }
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                      recurs: Recurs.monthlyOnDays(selectedMonthDays,
-                          ends: activity.recurs.end)),
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final selectedMonthDays = state.activity.recurs.monthDays;
+        return Wrap(
+          spacing: 14.0.s,
+          runSpacing: 8.0.s,
+          children: List.generate(
+            31,
+            (i) {
+              final d = i + 1;
+              return SelectableField(
+                text: Text(
+                  '$d',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(height: 1.5),
                 ),
+                selected: selectedMonthDays.contains(d),
+                onTap: () {
+                  if (!selectedMonthDays.add(d)) {
+                    selectedMonthDays.remove(d);
+                  }
+                  context.read<EditActivityBloc>().add(
+                        ReplaceActivity(
+                          state.activity.copyWith(
+                            recurs: Recurs.monthlyOnDays(
+                              selectedMonthDays,
+                              ends: state.activity.recurs.end,
+                            ),
+                          ),
+                        ),
+                      );
+                },
               );
-            });
-      }),
+            },
+          ),
+        );
+      },
     );
   }
 }
