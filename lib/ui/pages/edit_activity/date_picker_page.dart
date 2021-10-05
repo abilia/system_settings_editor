@@ -36,7 +36,7 @@ class DatePickerPage extends StatelessWidget {
             onPressed: () async {
               final notBefore = this.notBefore;
               if (notBefore != null && state.day.isDayBefore(notBefore)) {
-                return showViewDialog(
+                return showDialog(
                   context: context,
                   builder: (context) => ErrorDialog(
                     text: Translator.of(context).translate.endBeforeStartError,
