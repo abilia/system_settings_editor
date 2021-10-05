@@ -4,7 +4,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
-  const ImageArchivePage({Key? key}) : super(key: key);
+  final VoidCallback? onCancel;
+
+  const ImageArchivePage({Key? key, this.onCancel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -29,9 +31,7 @@ class ImageArchivePage extends StatelessWidget {
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
       emptyLibraryMessage: translate.noImages,
-      onCancel: () => Navigator.of(context)
-        ..pop()
-        ..maybePop(),
+      onCancel: () => onCancel?.call(),
       onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
         AbiliaFile.from(
           id: selected.data.fileId,

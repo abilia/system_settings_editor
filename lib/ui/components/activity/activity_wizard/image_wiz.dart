@@ -56,30 +56,6 @@ class ImageWizSelectPictureWidget extends StatefulWidget {
   }
 }
 
-class ShowPictureState extends State<ImageWizSelectPictureWidget> {
-  AbiliaFile selectedImage;
-  final bool errorState;
-
-  ShowPictureState({required this.selectedImage, required this.errorState});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
-        child: ClipRRect(
-          borderRadius: borderRadius,
-          child: FullScreenImage(
-            backgroundDecoration: whiteNoBorderBoxDecoration,
-            fileId: selectedImage.id,
-            filePath: selectedImage.path,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class SelectPictureState extends State<ImageWizSelectPictureWidget> {
   AbiliaFile selectedImage;
   final bool errorState;
@@ -88,61 +64,23 @@ class SelectPictureState extends State<ImageWizSelectPictureWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    if (selectedImage.isNotEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
-              child: ClipRRect(
-                borderRadius: borderRadius,
-                child: FullScreenImage(
-                  backgroundDecoration: whiteNoBorderBoxDecoration,
-                  fileId: selectedImage.id,
-                  filePath: selectedImage.path,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10.0.s),
-          RemoveButton(
-            key: TestKey.removePicture,
-            onTap: () => setState(() {
-              imageSelected(AbiliaFile.empty);
-            }),
-            icon: Icon(
-              AbiliaIcons.delete_all_clear,
-              color: AbiliaColors.white,
-              size: smallIconSize,
-            ),
-            text: translate.removePicture,
-          ),
-        ],
-      );
-    } else {
-      return SelectPictureMainContent(
+    return SelectPictureBody(
         imageCallback: (newImage) => setState(() {
-          imageSelected(newImage);
-        }),
-      );
-    }
-  }
-
-  void imageSelected(AbiliaFile newSelectedImage) {
-    if (newSelectedImage is UnstoredAbiliaFile) {
-      BlocProvider.of<UserFileBloc>(context).add(
-        ImageAdded(newSelectedImage),
-      );
-      BlocProvider.of<SortableBloc>(context).add(
-        ImageArchiveImageAdded(
-          newSelectedImage.id,
-          newSelectedImage.file.path,
-        ),
-      );
-    }
-    selectedImage = newSelectedImage;
-    context.read<EditActivityBloc>().add(ImageSelected(newSelectedImage));
+              if (newImage is UnstoredAbiliaFile) {
+                BlocProvider.of<UserFileBloc>(context).add(
+                  ImageAdded(newImage),
+                );
+                BlocProvider.of<SortableBloc>(context).add(
+                  ImageArchiveImageAdded(
+                    newImage.id,
+                    newImage.file.path,
+                  ),
+                );
+              }
+              selectedImage = newImage;
+              context.read<EditActivityBloc>().add(ImageSelected(newImage));
+            }),
+        selectedImage: selectedImage,
+        onCancel: () => {Navigator.of(context).pop()});
   }
 }
