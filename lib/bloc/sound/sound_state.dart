@@ -14,7 +14,8 @@ class SoundPlaying extends SoundState {
   final AbiliaFile currentSound;
   final int duration;
   final Duration position;
-  double get progress => duration <= 0 ? 0 : position.inMilliseconds / duration;
+  double get progress =>
+      duration <= 0 ? 0 : min((position.inMilliseconds / duration), 1.0);
 
   const SoundPlaying(
     this.currentSound, {

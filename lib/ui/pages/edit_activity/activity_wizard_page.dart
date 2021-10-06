@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/activity_wizard/checkable_wiz.dart';
+import 'package:seagull/ui/components/activity/activity_wizard/remove_after_wiz.dart';
 
 class ActivityWizardPage extends StatelessWidget {
   const ActivityWizardPage({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class ActivityWizardPage extends StatelessWidget {
     switch (step) {
       case WizardStep.basic:
         return BasicActivityStepPage();
+      case WizardStep.advance:
+        return EditActivityPage();
       case WizardStep.date:
         return DatePickerWiz();
       case WizardStep.title:
@@ -39,8 +42,8 @@ class ActivityWizardPage extends StatelessWidget {
         return ImageWiz();
       case WizardStep.time:
         return TimeWiz();
-      case WizardStep.advance:
-        return EditActivityPage();
+      case WizardStep.connectedFunction:
+        return ExtraFunctionWiz();
       case WizardStep.available_for:
         return AvailableForWiz();
       case WizardStep.checkable:
@@ -49,6 +52,8 @@ class ActivityWizardPage extends StatelessWidget {
         return TypeWiz();
       case WizardStep.recurring:
         return RecurringWiz();
+      case WizardStep.delete_after:
+        return RemoveAfterWiz();
       case WizardStep.recursWeekly:
         return RecurringWeeklyWiz();
       case WizardStep.recursMonthly:

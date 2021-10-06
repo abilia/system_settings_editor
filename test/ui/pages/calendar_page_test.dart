@@ -231,6 +231,100 @@ void main() {
         expect(savedActivity.checkable, true);
       });
 
+      testWidgets('New activity with wizard, custom steps',
+          (WidgetTester tester) async {
+        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
+          ),
+        );
+        final removeAfter = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.wizardRemoveAfterStepKey,
+          ),
+        );
+        final noBasic = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.wizardTemplateStepKey,
+          ),
+        );
+        final noImage = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.wizardImageStepKey,
+          ),
+        );
+        final noDate = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.wizardDatePickerStepKey,
+          ),
+        );
+        when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+          (_) => Future.value(
+            [
+              wizardSetting,
+              removeAfter,
+              noBasic,
+              noImage,
+              noDate,
+            ],
+          ),
+        );
+
+        const title = 'title';
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddActivityButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityWizardPage), findsOneWidget);
+
+        expect(find.byType(TitleWiz), findsOneWidget);
+        await tester.enterText(find.byType(TextField), title);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        await tester.pumpAndSettle();
+        expect(find.byType(AvailableForWiz), findsOneWidget);
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(CheckableWiz), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.checkableRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(RemoveAfterWiz), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.removeAfterRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(TimeWiz), findsOneWidget);
+        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(RecurringWiz), findsOneWidget); // Recurrance
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ActivityWizardPage), findsNothing);
+        expect(find.byType(Agenda), findsOneWidget);
+
+        final captured =
+            verify(mockActivityDb.insertAndAddDirty(captureAny)).captured;
+        final savedActivity = captured.single.single as Activity;
+        expect(savedActivity.title, title);
+        expect(savedActivity.checkable, true);
+        expect(savedActivity.removeAfter, true);
+      });
+
       group('basic activity', () {
         testWidgets('No option for basic activity when option set',
             (WidgetTester tester) async {

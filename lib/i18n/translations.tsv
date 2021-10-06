@@ -117,6 +117,7 @@ category	Category	Kategori	Kategori	Categorie	Kategoria	Kategorie	Kategori
 checkable	Checkable	Kvitterbar	Kvitterbar	Afvinkbaar	Tarkistettava	Kontrollabfrage	Kvitterbar
 notCheckable	Not checkable	Inte kvitterbar	Ikke kvitterbar	Niet afvinkbaar	Ei-tarkistettava	Nicht kontrollabfrage	Ikke kvitterbar
 deleteAfter	Remove at the end of the day	Ta bort vid slutet av dagen	Fjern i slutningen af dagen	Aan het einde van de dag verwijderen	Poista päivän päätteeksi	am Endes des Tages löschen	Fjern på slutten av dagen
+dontDeleteAfter	Don't remove at the end of the day	Ta inte bort vid slutet av dagen	Fjern ikke ved slutningen af ​​dagen	Niet verwijderen aan het einde van de dag	Älä poista päivän päätteeksi	Nicht am Ende des Tages entfernen	Ikke fjern på slutten av dagen
 name	Name	Namn	Navn	Naam	Nimi	Name	Navn
 picture	Image	Bild	Billede	Afbeelding	Kuva	Bild	Bilde
 date	Date	Datum	Dato	Datum	Päivämäärä	Datum	Dato

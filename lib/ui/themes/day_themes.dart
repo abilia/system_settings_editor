@@ -4,7 +4,12 @@ import 'package:seagull/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;
-  final Color color, secondaryColor, borderColor;
+  final Color color,
+      secondaryColor,
+      borderColor,
+      monthColor,
+      monthSurfaceColor,
+      monthPastColor;
   final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
@@ -16,6 +21,9 @@ class DayTheme {
     Color? onSurface,
     this.isColor = true,
     required this.isLight,
+    Color? monthColor,
+    Color? monthSurfaceColor,
+    Color? monthPastColor,
   })  : borderColor =
             color == AbiliaColors.white ? AbiliaColors.white110 : color,
         theme = theme.copyWith(
@@ -24,7 +32,12 @@ class DayTheme {
               ? Color.alphaBlend(const Color(0x33000000), color)
               : null,
           colorScheme: theme.colorScheme.copyWith(onSurface: onSurface),
-        );
+        ),
+        monthColor = monthColor ?? color,
+        monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface,
+        monthPastColor = monthPastColor ??
+            monthColor?.withOpacity(0.4) ??
+            color.withOpacity(0.4);
 
   DayTheme._light(
     Color color,
@@ -32,6 +45,9 @@ class DayTheme {
     Color? onSurface,
     background = true,
     isColor = true,
+    Color? monthColor,
+    Color? monthSurfaceColor,
+    Color? monthPastColor,
   }) : this._(
           _lightAppBarTheme,
           color,
@@ -40,6 +56,9 @@ class DayTheme {
           onSurface: onSurface,
           isColor: isColor,
           isLight: true,
+          monthColor: monthColor,
+          monthSurfaceColor: monthSurfaceColor,
+          monthPastColor: monthPastColor,
         );
 
   DayTheme._dark(Color color, Color secondaryColor, {bool background = true})
@@ -58,6 +77,9 @@ final _noColor = DayTheme._light(
       onSurface: AbiliaColors.white,
       background: false,
       isColor: false,
+      monthColor: AbiliaColors.white,
+      monthSurfaceColor: AbiliaColors.black,
+      monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white, AbiliaColors.white110,
         background: false),

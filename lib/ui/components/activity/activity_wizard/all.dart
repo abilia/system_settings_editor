@@ -9,3 +9,5 @@ export 'recurring_weekly_wiz.dart';
 export 'recurring_monthly_wiz.dart';
 export 'wizard_buttons.dart';
 export 'checkable_wiz.dart';
+export 'remove_after_wiz.dart';
+export 'extra_function_wiz.dart';

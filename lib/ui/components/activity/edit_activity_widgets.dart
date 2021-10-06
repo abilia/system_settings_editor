@@ -125,7 +125,9 @@ class SelectPictureWidget extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: SelectPicturePage(selectedImage: selectedImage),
+          child: SelectPicturePage(
+            selectedImage: selectedImage,
+          ),
         ),
       ),
     );
