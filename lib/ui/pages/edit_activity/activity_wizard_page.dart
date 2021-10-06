@@ -54,6 +54,8 @@ class ActivityWizardPage extends StatelessWidget {
         return RecurringWiz();
       case WizardStep.delete_after:
         return RemoveAfterWiz();
+      case WizardStep.alarm:
+        return AlarmWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }

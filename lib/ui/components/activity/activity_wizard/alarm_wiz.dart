@@ -1,0 +1,66 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/activities/edit_activity/edit_activity_bloc.dart';
+import 'package:seagull/models/activity/activity.dart';
+import 'package:seagull/models/alarm.dart';
+import 'package:seagull/ui/all.dart';
+
+class AlarmWiz extends StatelessWidget {
+  const AlarmWiz({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        iconData: AbiliaIcons.attention,
+        title: Translator.of(context).translate.alarm,
+      ),
+      body: SelectAlarmWizPage(),
+      bottomNavigationBar: WizardBottomNavigation(),
+    );
+  }
+}
+
+class SelectAlarmWizPage extends StatelessWidget {
+  const SelectAlarmWizPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      buildWhen: (previous, current) => previous.activity != current.activity,
+      builder: (context, state) => SelectAlarmTypeBody(
+        alarm: state.activity.alarm.typeSeagull,
+        onChanged: (AlarmType? type) => context.read<EditActivityBloc>().add(
+              ReplaceActivity(
+                state.activity.copyWith(
+                  alarm: state.activity.alarm.copyWith(type: type),
+                ),
+              ),
+            ),
+        trailing: [
+          const SizedBox(),
+          const Divider(),
+          SizedBox(height: 8.s),
+          AlarmOnlyAtStartSwitch(
+            alarm: state.activity.alarm,
+            onChanged: (bool onStart) => context.read<EditActivityBloc>().add(
+                  ReplaceActivity(
+                    state.activity.copyWith(
+                      alarm: state.activity.alarm.copyWith(onlyStart: onStart),
+                    ),
+                  ),
+                ),
+          ),
+          SizedBox(height: 8.s),
+          const Divider(),
+          SizedBox(height: 24.s),
+          RecordSoundWidget(
+            activity: state.activity,
+            soundChanged: (Activity newActivity) => context
+                .read<EditActivityBloc>()
+                .add(ReplaceActivity(newActivity)),
+          ),
+        ],
+      ),
+    );
+  }
+}

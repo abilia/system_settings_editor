@@ -697,7 +697,7 @@ void main() {
   });
 
   group('image step', () {
-    final typeOnlyMemoSettings = MemoplannerSettings(
+    final imageOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       wizardTemplateStep: false,
       wizardDatePickerStep: false,
@@ -716,7 +716,7 @@ void main() {
     testWidgets('only image step', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          typeOnlyMemoSettings,
+          imageOnlyMemoSettings,
         ),
       );
       await tester.pumpWidget(wizardPage());
@@ -847,5 +847,37 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(EditChecklistWidget), findsOneWidget);
     });
+  });
+
+  group('alarm step', () {
+    final memoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: false,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: true,
+      wizardNotesStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('only alarm step', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          memoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(AlarmWiz), findsOneWidget);
+    });
+
   });
 }
