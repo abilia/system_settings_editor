@@ -1015,6 +1015,5 @@ void main() {
       expect(find.byType(ActivityWizardPage), findsOneWidget);
       expect(find.byType(AlarmWiz), findsOneWidget);
     });
-
   });
 }
