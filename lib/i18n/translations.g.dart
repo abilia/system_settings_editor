@@ -361,6 +361,10 @@ abstract class Translated {
 
   final String recurringDataEmptyErrorMessage = 'Select at least one day.';
 
+  final String selectAll = 'Select all';
+
+  final String deselectAll = 'Deselect all';
+
   final String mo = 'Mon';
 
   final String tu = 'Tue';
@@ -1210,6 +1214,12 @@ class SV extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Välj minst en dag.';
+
+  @override
+  final String selectAll = 'Markera alla';
+
+  @override
+  final String deselectAll = 'Avmarkera alla';
 
   @override
   final String mo = 'mån';
@@ -2213,6 +2223,12 @@ class DA extends Translated {
   final String recurringDataEmptyErrorMessage = 'Vælg mindst en dag';
 
   @override
+  final String selectAll = 'Markere alle';
+
+  @override
+  final String deselectAll = 'Fravælg alle';
+
+  @override
   final String mo = 'man';
 
   @override
@@ -3209,6 +3225,12 @@ class NL extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Selecteer ten minste één dag.';
+
+  @override
+  final String selectAll = 'Alles selecteren';
+
+  @override
+  final String deselectAll = 'Alles deselecteren';
 
   @override
   final String mo = 'Ma';
@@ -4208,6 +4230,12 @@ class FI extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Valitse vähintään yksi päivä.';
+
+  @override
+  final String selectAll = 'Valitse kaikki';
+
+  @override
+  final String deselectAll = 'Poista kaikki valinnat';
 
   @override
   final String mo = 'Ma';
@@ -5212,6 +5240,12 @@ class DE extends Translated {
       'Mindestens einen Tag auswählen.';
 
   @override
+  final String selectAll = 'Alles auswählen';
+
+  @override
+  final String deselectAll = 'Auswahl aufheben';
+
+  @override
   final String mo = 'Mo';
 
   @override
@@ -6209,6 +6243,12 @@ class NB extends Translated {
 
   @override
   final String recurringDataEmptyErrorMessage = 'Velg minst en dag.';
+
+  @override
+  final String selectAll = 'Markere alle';
+
+  @override
+  final String deselectAll = 'Avmarkere alle';
 
   @override
   final String mo = 'man';

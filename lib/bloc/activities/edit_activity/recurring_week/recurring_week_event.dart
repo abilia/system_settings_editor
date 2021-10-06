@@ -15,6 +15,13 @@ class AddOrRemoveWeekday extends RecurringWeekEvent {
   List<Object> get props => [day];
 }
 
+class SelectWeekdays extends RecurringWeekEvent {
+  final Set<int> days;
+  const SelectWeekdays([this.days = const {}]);
+  @override
+  List<Object> get props => [days];
+}
+
 class ChangeEveryOtherWeek extends RecurringWeekEvent {
   final bool everyOtherWeek;
 

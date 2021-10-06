@@ -6,6 +6,8 @@ export 'time_wiz.dart';
 export 'title_wiz.dart';
 export 'type_wiz.dart';
 export 'recurring_wiz.dart';
+export 'recurring_weekly_wiz.dart';
+export 'recurring_monthly_wiz.dart';
 export 'wizard_buttons.dart';
 export 'checkable_wiz.dart';
 export 'remove_after_wiz.dart';
