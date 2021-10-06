@@ -1965,7 +1965,7 @@ void main() {
             WizardStep.checkable,
             WizardStep.delete_after,
             WizardStep.alarm,
-            WizardStep.note,
+            WizardStep.connectedFunction,
             WizardStep.reminder,
             WizardStep.recurring,
           ]),
