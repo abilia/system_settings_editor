@@ -856,12 +856,13 @@ void main() {
       wizardDatePickerStep: false,
       wizardImageStep: false,
       wizardTitleStep: false,
-      wizardTypeStep: false,
+      wizardTypeStep: true,
       wizardAvailabilityType: false,
       wizardCheckableStep: false,
       wizardRemoveAfterStep: false,
       wizardAlarmStep: true,
       wizardNotesStep: false,
+      wizardChecklistStep: false,
       wizardRemindersStep: false,
       activityRecurringEditable: false,
     );
@@ -873,6 +874,10 @@ void main() {
         ),
       );
       await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
       expect(find.byType(ActivityWizardPage), findsOneWidget);
