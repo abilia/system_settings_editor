@@ -25,6 +25,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
       onStepChanged(StepByStepSettingsState sss) =>
           context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
               state.copyWith(stepByStepSettingsState: sss));
+
       return SettingsTab(
         children: [
           Tts(child: Text(t.add)),
@@ -69,22 +70,37 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             SwitchField(
               leading: Icon(AbiliaIcons.basic_activity),
               value: stepState.showBasicActivities,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(showBasicActivities: v)),
+              onChanged: (v) {
+                if (_checkRequiredStates(stepState, v)) {
+                  onStepChanged(stepState.copyWith(showBasicActivities: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.showBasicActivities),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.select_text_size),
               value: stepState.selectName,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectName: v)),
+              onChanged: (v) {
+                if (_checkRequiredStates(stepState, v)) {
+                  onStepChanged(stepState.copyWith(selectName: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.selectName),
             ),
             SwitchField(
               leading: Icon(AbiliaIcons.my_photos),
               value: stepState.selectImage,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectImage: v)),
+              onChanged: (v) {
+                if (_checkRequiredStates(stepState, v)) {
+                  onStepChanged(stepState.copyWith(selectImage: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.selectImage),
             ),
             SwitchField(
@@ -153,5 +169,34 @@ class AddActivityAddSettingsTab extends StatelessWidget {
         ],
       );
     });
+  }
+
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ErrorDialog(
+        text: Translator.of(context).translate.missingRequiredActivitySetting,
+      ),
+    );
+  }
+
+  bool _checkRequiredStates(StepByStepSettingsState stepState, bool value) {
+    if (value) {
+      return true;
+    } else {
+      var requiredStates = [
+        stepState.selectName,
+        stepState.selectImage,
+        stepState.showBasicActivities
+      ];
+      int unchecked = 0;
+      for (var v in requiredStates) {
+        unchecked += v ? 0 : 1;
+        if (unchecked > 1) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

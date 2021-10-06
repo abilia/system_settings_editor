@@ -311,6 +311,9 @@ abstract class Translated {
   final String noBasicActivityError2 =
       'To fix this, either create basic activities or select either name or image for step-by-step.';
 
+  final String missingRequiredActivitySetting =
+      'You need either “Show basic activities”, “Select name” or “Select image” selected.';
+
   final String availableFor = 'Available for';
 
   final String activityAvailableFor = 'Available for';
@@ -1139,6 +1142,10 @@ class SV extends Translated {
   @override
   final String noBasicActivityError2 =
       'För att åtgärda, skapa några basaktiviteter eller aktivera antingen namn eller bild i lägga in stegvis.';
+
+  @override
+  final String missingRequiredActivitySetting =
+      'Du behöver ha antingen “Visa basaktiviteter”, “Välj titel”, eller “Välj bild” vald.';
 
   @override
   final String availableFor = 'Tillgänglig för';
