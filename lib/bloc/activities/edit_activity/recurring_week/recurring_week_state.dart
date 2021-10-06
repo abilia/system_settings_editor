@@ -1,6 +1,7 @@
 part of 'recurring_week_bloc.dart';
 
 class RecurringWeekState extends Equatable {
+  static const allWeekdays = {1, 2, 3, 4, 5, 6, 7};
   final UnmodifiableSetView<int> weekdays;
   final bool everyOtherWeek;
   final DateTime startDate, endDate;
@@ -10,6 +11,8 @@ class RecurringWeekState extends Equatable {
     this.startDate,
     this.endDate,
   );
+
+  bool get containsAllWeekdays => weekdays.containsAll(allWeekdays);
 
   RecurringWeekState.initial(
     EditActivityState editActivityState,

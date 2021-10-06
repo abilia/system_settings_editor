@@ -218,7 +218,8 @@ extension SaveErrorExtension on EditActivityState {
           }
         }
         break;
-      case WizardStep.recurring:
+      case WizardStep.recursWeekly:
+      case WizardStep.recursMonthly:
         if (emptyRecurringData) return SaveError.NO_RECURRING_DAYS;
         break;
       default:

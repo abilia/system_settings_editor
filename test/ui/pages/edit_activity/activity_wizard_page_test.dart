@@ -694,6 +694,138 @@ void main() {
       expect(find.byType(SaveButton), findsNothing);
       expect(find.byType(NextButton), findsOneWidget);
     });
+
+    testWidgets('weekly recurring shows weekly recurring',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(MemoplannerSettings(
+          addActivityTypeAdvanced: false,
+          wizardTemplateStep: false,
+          wizardDatePickerStep: false,
+          wizardImageStep: false,
+          wizardTitleStep: true,
+          wizardTypeStep: true,
+          wizardAvailabilityType: false,
+          wizardCheckableStep: false,
+          wizardRemoveAfterStep: false,
+          wizardAlarmStep: false,
+          wizardNotesStep: false,
+          wizardRemindersStep: false,
+          activityRecurringEditable: true,
+        )),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TitleWiz), findsOneWidget);
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TypeWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecurringWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(RecurringWeeklyWiz), findsOneWidget);
+      expect(find.byType(WeekDays), findsOneWidget);
+      expect(find.byType(SelectAllWeekdaysButton), findsOneWidget);
+      expect(find.byType(EveryOtherWeekSwitch), findsOneWidget);
+      expect(find.byType(EndDateWidget), findsOneWidget);
+
+      await tester.tap(find.text(translate.shortWeekday(today.weekday)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(
+        find.text(translate.recurringDataEmptyErrorMessage),
+        findsOneWidget,
+      );
+
+      // Dismiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SelectAllWeekdaysButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsNothing);
+    });
+
+    testWidgets('monthly recurring shows monthy recurring',
+        (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(MemoplannerSettings(
+          addActivityTypeAdvanced: false,
+          wizardTemplateStep: false,
+          wizardDatePickerStep: false,
+          wizardImageStep: false,
+          wizardTitleStep: true,
+          wizardTypeStep: true,
+          wizardAvailabilityType: false,
+          wizardCheckableStep: false,
+          wizardRemoveAfterStep: false,
+          wizardAlarmStep: false,
+          wizardNotesStep: false,
+          wizardRemindersStep: false,
+          activityRecurringEditable: true,
+        )),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TitleWiz), findsOneWidget);
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TypeWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecurringWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(RecurringMonthlyWiz), findsOneWidget);
+      expect(find.byType(MonthDays), findsOneWidget);
+      expect(find.byType(EndDateWidget), findsOneWidget);
+
+      await tester.tap(find.text('${today.day}'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      expect(
+        find.text(translate.recurringDataEmptyErrorMessage),
+        findsOneWidget,
+      );
+
+      // Dismiss
+      await tester.tapAt(Offset.zero);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('31'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ErrorDialog), findsNothing);
+    });
   });
 
   group('image step', () {

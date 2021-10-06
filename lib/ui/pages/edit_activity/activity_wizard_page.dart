@@ -54,6 +54,10 @@ class ActivityWizardPage extends StatelessWidget {
         return RecurringWiz();
       case WizardStep.delete_after:
         return RemoveAfterWiz();
+      case WizardStep.recursWeekly:
+        return RecurringWeeklyWiz();
+      case WizardStep.recursMonthly:
+        return RecurringMonthlyWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }
