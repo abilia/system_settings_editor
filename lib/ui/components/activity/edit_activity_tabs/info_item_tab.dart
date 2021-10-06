@@ -4,7 +4,13 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
-  const InfoItemTab({Key? key}) : super(key: key);
+  final bool showNote, showChecklist;
+
+  const InfoItemTab({
+    Key? key,
+    this.showNote = true,
+    this.showChecklist = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +25,8 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
             MaterialPageRoute(
               builder: (context) => SelectInfoTypePage(
                 infoItemType: activity.infoItem.runtimeType,
+                showChecklist: showChecklist,
+                showNote: showNote,
               ),
             ),
           );
