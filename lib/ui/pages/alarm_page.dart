@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/storage/file_storage.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -25,15 +25,9 @@ class AlarmPage extends StatelessWidget {
             appBar: AbiliaAppBar(
               title: Translator.of(context).translate.alarm,
               iconData: AbiliaIcons.alarm_bell,
-              trailing: alarm is StartAlarm &&
-                      alarm.activity.extras.startTimeExtraAlarm.isNotEmpty
-                  ? PlaySpeechButton(
-                      soundToPlay: alarm.activity.extras.startTimeExtraAlarm)
-                  : alarm is EndAlarm &&
-                          alarm.activity.extras.endTimeExtraAlarm.isNotEmpty
-                      ? PlaySpeechButton(
-                          soundToPlay: alarm.activity.extras.endTimeExtraAlarm)
-                      : null,
+              trailing: alarm.speech.isNotEmpty
+                  ? PlaySpeechButton(speech: alarm.speech)
+                  : null,
             ),
             body: Padding(
               padding: EdgeInsets.all(ActivityInfo.margin),
@@ -187,28 +181,17 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
 }
 
 class PlaySpeechButton extends StatelessWidget {
-  final AbiliaFile soundToPlay;
-
-  const PlaySpeechButton({
-    required this.soundToPlay,
-    Key? key,
-  }) : super(key: key);
-
+  final AbiliaFile speech;
+  const PlaySpeechButton({Key? key, required this.speech}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SoundCubit(
-        storage: GetIt.I<FileStorage>(),
-        userFileBloc: context.read<UserFileBloc>(),
-      ),
-      child: BlocBuilder<UserFileBloc, UserFileState>(
-        builder: (context, state) {
-          return PlaySoundButton(
-            sound: soundToPlay,
-            buttonStyle: actionButtonStyleLight,
-          );
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => SoundCubit(
+          storage: GetIt.I<FileStorage>(),
+          userFileBloc: context.read<UserFileBloc>(),
+        ),
+        child: PlaySoundButton(
+          sound: speech,
+          buttonStyle: actionButtonStyleLight,
+        ),
+      );
 }

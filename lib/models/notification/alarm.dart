@@ -65,6 +65,8 @@ abstract class NewAlarm extends NotificationAlarm {
   Sound sound(AlarmSettings settings) => activity.checkable
       ? settings.checkableActivity.toSound()
       : settings.nonCheckableActivity.toSound();
+
+  AbiliaFile get speech;
 }
 
 class StartAlarm extends NewAlarm {
@@ -73,6 +75,9 @@ class StartAlarm extends NewAlarm {
   const StartAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.start;
+
+  @override
+  AbiliaFile get speech => activity.extras.startTimeExtraAlarm;
 
   @override
   String get type => typeName;
@@ -84,6 +89,9 @@ class EndAlarm extends NewAlarm {
   const EndAlarm.from(ActivityDay activityDay) : super(activityDay);
   @override
   DateTime get notificationTime => activityDay.end;
+
+  @override
+  AbiliaFile get speech => activity.extras.endTimeExtraAlarm;
 
   @override
   String get type => typeName;
