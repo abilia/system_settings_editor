@@ -829,7 +829,7 @@ void main() {
   });
 
   group('image step', () {
-    final typeOnlyMemoSettings = MemoplannerSettings(
+    final imageOnlyMemoSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       wizardTemplateStep: false,
       wizardDatePickerStep: false,
@@ -848,7 +848,7 @@ void main() {
     testWidgets('only image step', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
-          typeOnlyMemoSettings,
+          imageOnlyMemoSettings,
         ),
       );
       await tester.pumpWidget(wizardPage());
@@ -1035,6 +1035,62 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditChecklistWidget), findsOneWidget);
+    });
+  });
+
+  group('alarm step', () {
+    final memoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: true,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: true,
+      wizardNotesStep: false,
+      wizardChecklistStep: false,
+      wizardRemindersStep: false,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('alarm step shown', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          memoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.leftCategoryRadio)); // type wiz
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+          find.byKey(TestKey.startTimeInput), '1111'); // time wiz
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(AlarmWiz), findsOneWidget);
+    });
+
+    testWidgets('no alarm step when fullDay', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          memoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SaveButton), findsOneWidget);
+      expect(find.byType(AlarmWiz), findsNothing);
     });
   });
 }

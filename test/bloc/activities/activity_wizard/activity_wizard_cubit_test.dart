@@ -1964,7 +1964,6 @@ void main() {
             WizardStep.available_for,
             WizardStep.checkable,
             WizardStep.delete_after,
-            WizardStep.alarm,
             WizardStep.connectedFunction,
             WizardStep.recurring,
           ]),
