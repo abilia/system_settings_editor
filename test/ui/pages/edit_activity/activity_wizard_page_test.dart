@@ -1068,7 +1068,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1111'); // time wiz
+      await tester.enterText(
+          find.byKey(TestKey.startTimeInput), '1111'); // time wiz
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
