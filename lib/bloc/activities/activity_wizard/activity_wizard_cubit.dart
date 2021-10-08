@@ -64,7 +64,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
         if (settings.wizardCheckableStep) WizardStep.checkable,
         if (settings.wizardRemoveAfterStep) WizardStep.delete_after,
         if (!activity.fullDay) WizardStep.time,
-        if (settings.wizardAlarmStep) WizardStep.alarm,
+        if (!activity.fullDay && settings.wizardAlarmStep) WizardStep.alarm,
         if (settings.wizardChecklistStep || settings.wizardNotesStep)
           WizardStep.connectedFunction,
         if (settings.wizardRemindersStep) WizardStep.reminder,
