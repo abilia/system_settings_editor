@@ -183,20 +183,12 @@ class AddActivityAddSettingsTab extends StatelessWidget {
   bool _checkRequiredStates(StepByStepSettingsState stepState, bool value) {
     if (value) {
       return true;
-    } else {
-      var requiredStates = [
-        stepState.selectName,
-        stepState.selectImage,
-        stepState.showBasicActivities
-      ];
-      int unchecked = 0;
-      for (var v in requiredStates) {
-        unchecked += v ? 0 : 1;
-        if (unchecked > 1) {
-          return false;
-        }
-      }
     }
-    return true;
+    var numberOfChecked = [
+      stepState.selectName,
+      stepState.selectImage,
+      stepState.showBasicActivities
+    ].where((checked) => checked).length;
+    return numberOfChecked > 1;
   }
 }
