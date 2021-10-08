@@ -16,8 +16,8 @@ class ClockBloc extends Bloc<DateTime, DateTime> with Finest {
       : this(ticker.stream, initialTime: ticker.initialTime);
 
   @override
-  Stream<DateTime> mapEventToState(DateTime tick) async* {
-    yield tick;
+  Stream<DateTime> mapEventToState(DateTime event) async* {
+    yield event;
   }
 
   @override

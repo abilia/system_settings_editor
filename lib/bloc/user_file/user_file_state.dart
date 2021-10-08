@@ -72,5 +72,5 @@ class UserFilesNotLoaded extends UserFileState {
       UserFilesNotLoaded(Map.from(_tempFiles)..[id] = file);
 
   @override
-  UserFileState add(_) => this;
+  UserFileState add(userFile) => this;
 }
