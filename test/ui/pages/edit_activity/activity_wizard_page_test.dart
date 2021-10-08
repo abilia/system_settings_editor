@@ -859,6 +859,63 @@ void main() {
     });
   });
 
+  group('reminders step', () {
+    final remindersOnlyMemoSettings = MemoplannerSettings(
+      addActivityTypeAdvanced: false,
+      wizardTemplateStep: false,
+      wizardDatePickerStep: false,
+      wizardImageStep: false,
+      wizardTitleStep: false,
+      wizardTypeStep: true,
+      wizardAvailabilityType: false,
+      wizardCheckableStep: false,
+      wizardRemoveAfterStep: false,
+      wizardAlarmStep: false,
+      wizardChecklistStep: false,
+      wizardNotesStep: false,
+      wizardRemindersStep: true,
+      activityRecurringEditable: false,
+    );
+
+    testWidgets('reminders step present', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          remindersOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(TypeWiz), findsOneWidget);
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimeWiz), findsOneWidget);
+      await tester.enterText(find.byKey(TestKey.startTimeInput), '1111');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(RemindersWiz), findsOneWidget);
+    });
+
+    testWidgets('no reminders when full day', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          remindersOnlyMemoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(TypeWiz), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+      expect(find.byType(NextButton), findsNothing);
+      expect(find.byType(SaveButton), findsOneWidget);
+    });
+  });
+
   group('extra function step', () {
     testWidgets('Both show', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(

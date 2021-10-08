@@ -1,5 +1,4 @@
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/all.dart';
 
 const PROD = 'https://myabilia.com',
     WHALE = 'https://whale.abilia-gbg.se',
@@ -9,7 +8,7 @@ const Map<String, String> backEndEnvironments = {
   'Prod': PROD,
   'Whale': WHALE,
   'T1': T1,
-  if (Config.release) 'Debug': DEBUG else 'Local': 'http://192.168.1.28:9103',
+  'Debug': DEBUG,
 };
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>

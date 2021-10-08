@@ -1965,7 +1965,6 @@ void main() {
             WizardStep.checkable,
             WizardStep.delete_after,
             WizardStep.connectedFunction,
-            WizardStep.reminder,
             WizardStep.recurring,
           ]),
           ActivityWizardState(0, allWizStep),

@@ -263,8 +263,13 @@ class TimePicker extends StatelessWidget {
 
 class Reminders extends StatelessWidget {
   final Activity activity;
+  final bool expanded;
 
-  const Reminders({Key? key, required this.activity}) : super(key: key);
+  const Reminders({
+    Key? key,
+    required this.activity,
+    this.expanded = false,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
@@ -281,6 +286,7 @@ class Reminders extends StatelessWidget {
       ]
           .map(
             (r) => SelectableField(
+              width: expanded ? double.infinity : null,
               text: Text(
                 r.toDurationString(translator),
                 style: Theme.of(context)

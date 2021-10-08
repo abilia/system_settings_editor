@@ -12,3 +12,4 @@ export 'wizard_buttons.dart';
 export 'checkable_wiz.dart';
 export 'remove_after_wiz.dart';
 export 'extra_function_wiz.dart';
+export 'reminder_wiz.dart';

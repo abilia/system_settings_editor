@@ -245,6 +245,12 @@ void main() {
             identifier: MemoplannerSettings.wizardRemoveAfterStepKey,
           ),
         );
+        final reminderStep = Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.wizardRemindersStepKey,
+          ),
+        );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
@@ -268,6 +274,7 @@ void main() {
             [
               wizardSetting,
               removeAfter,
+              reminderStep,
               noBasic,
               noImage,
               noDate,
@@ -310,7 +317,14 @@ void main() {
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
-        expect(find.byType(RecurringWiz), findsOneWidget); // Recurrance
+        expect(find.byType(RemindersWiz), findsOneWidget);
+        final fiveMinutesText = 5.minutes().toDurationString(translate);
+        await tester.tap(find.text(fiveMinutesText));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(RecurringWiz), findsOneWidget);
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 
@@ -323,6 +337,8 @@ void main() {
         expect(savedActivity.title, title);
         expect(savedActivity.checkable, true);
         expect(savedActivity.removeAfter, true);
+        expect(savedActivity.reminders.length, 1);
+        expect(savedActivity.reminders.first, 5.minutes());
       });
 
       group('basic activity', () {
