@@ -1056,7 +1056,28 @@ void main() {
       activityRecurringEditable: false,
     );
 
-    testWidgets('only alarm step', (WidgetTester tester) async {
+    testWidgets('alarm step shown', (WidgetTester tester) async {
+      when(mockMemoplannerSettingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          memoSettings,
+        ),
+      );
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.leftCategoryRadio)); // type wiz
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(TestKey.startTimeInput), '1111'); // time wiz
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityWizardPage), findsOneWidget);
+      expect(find.byType(AlarmWiz), findsOneWidget);
+    });
+
+    testWidgets('no alarm step when fullDay', (WidgetTester tester) async {
       when(mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           memoSettings,
@@ -1066,11 +1087,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.restore)); // fullday
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
 
-      expect(find.byType(ActivityWizardPage), findsOneWidget);
-      expect(find.byType(AlarmWiz), findsOneWidget);
+      expect(find.byType(SaveButton), findsOneWidget);
+      expect(find.byType(AlarmWiz), findsNothing);
     });
   });
 }
