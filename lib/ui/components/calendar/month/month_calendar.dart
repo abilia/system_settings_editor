@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -396,12 +397,16 @@ class MonthFullDayStack extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 3.s, left: 2.s),
+          margin: EdgeInsets.only(top: 4.s, left: 4.s),
+          width: 34.s,
+          height: 32.s,
           decoration: decoration,
         ),
         Container(
-          margin: EdgeInsets.only(bottom: 3.s, right: 2.s),
+          margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
           decoration: decoration,
+          width: 34.s,
+          height:32.s,
           child: Center(
             child: Text('+$numberOfActivities'),
           ),
@@ -422,6 +427,8 @@ class MonthActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 35.s,
+      height: 33.s,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
         borderRadius: MonthDayView.monthDayborderRadius,

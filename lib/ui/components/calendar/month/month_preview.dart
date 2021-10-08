@@ -87,37 +87,67 @@ class MonthDayPreviewHeading extends StatelessWidget {
     final text =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
-    return Tts.data(
-      data: text,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.s),
-        height: 48.s,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: radius),
-          color: Theme.of(context).appBarTheme.backgroundColor,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(text, style: Theme.of(context).textTheme.subtitle1),
-            SecondaryActionButton(
-              onPressed: () => DefaultTabController.of(context)?.animateTo(0),
-              style: isLight
-                  ? secondaryActionButtonStyleLight
-                  : secondaryActionButtonStyleDark,
-              child: Icon(AbiliaIcons.navigation_next),
-            ),
-          ],
+    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+      buildWhen: (oldState, newState) =>
+          (oldState is ActivitiesOccasionLoaded &&
+              newState is ActivitiesOccasionLoaded &&
+              oldState.day != newState.day) ||
+          oldState.runtimeType != newState.runtimeType,
+      builder: (context, activityState) => Tts.data(
+        data: text,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.s),
+          height: 48.s,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: radius),
+            color: Theme.of(context).appBarTheme.backgroundColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _fullDayActivities(activityState) > 1
+                  ? MonthFullDayStack(
+                      numberOfActivities:
+                          (activityState as ActivitiesOccasionLoaded)
+                              .fullDayActivities
+                              .length,
+                    )
+                  : _fullDayActivities(activityState) > 0
+                      ? MonthActivityContent(
+                          activityDay:
+                              (activityState as ActivitiesOccasionLoaded)
+                                  .fullDayActivities
+                                  .first,
+                        )
+                      : SizedBox(width: 0),
+              Text(text, style: Theme.of(context).textTheme.subtitle1),
+              SecondaryActionButton(
+                onPressed: () => DefaultTabController.of(context)?.animateTo(0),
+                style: isLight
+                    ? secondaryActionButtonStyleLight
+                    : secondaryActionButtonStyleDark,
+                child: Icon(AbiliaIcons.navigation_next),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  int _fullDayActivities(ActivitiesOccasionState activityState) {
+    if (activityState is ActivitiesOccasionLoaded) {
+      return activityState.fullDayActivities.length;
+    }
+    return 0;
   }
 }
 
 class MonthDayViewCompact extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+
   const MonthDayViewCompact(
     this.day, {
     Key? key,
