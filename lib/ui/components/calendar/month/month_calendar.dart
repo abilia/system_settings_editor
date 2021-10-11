@@ -427,8 +427,8 @@ class MonthActivityContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 35.s,
-      height: 33.s,
+      width: 38.s,
+      height: 36.s,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
         borderRadius: MonthDayView.monthDayborderRadius,
