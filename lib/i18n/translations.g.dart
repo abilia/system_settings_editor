@@ -692,7 +692,7 @@ abstract class Translated {
   final String accessToMicrophone = 'Access to Microphone';
 
   final String allowAccessMicrophoneBody =
-      'Allow access to microphone to be able to record speech from the device.';
+      'Allow access to microphone to be able to record speech from the device';
 
   final String about = 'About';
 
@@ -1706,6 +1706,10 @@ class SV extends Translated {
   final String accessToMicrophone = 'Tillgång till mikrofon';
 
   @override
+  final String allowAccessMicrophoneBody =
+      'Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten';
+
+  @override
   final String about = 'Information';
 
   @override
@@ -2709,6 +2713,13 @@ class DA extends Translated {
 
   @override
   final String allowAccessBody2 = 'Du kan altid gøre det senere fra';
+
+  @override
+  final String accessToMicrophone = 'Adgang til mikrofon';
+
+  @override
+  final String allowAccessMicrophoneBody =
+      'Tillad adgang til mikrofon for at kunne optage tale fra enheden';
 
   @override
   final String about = 'Information';
@@ -3716,6 +3727,13 @@ class NL extends Translated {
   final String allowAccessBody2 = 'U kunt dat later altijd doen vanuit het';
 
   @override
+  final String accessToMicrophone = 'Toegang tot microfoon';
+
+  @override
+  final String allowAccessMicrophoneBody =
+      'Toegang tot microfoon toestaan om spraak van het apparaat op te nemen';
+
+  @override
   final String about = 'Informatie';
 
   @override
@@ -4717,6 +4735,13 @@ class FI extends Translated {
 
   @override
   final String allowAccessBody2 = 'Voit aina tehdä sen myöhemmin';
+
+  @override
+  final String accessToMicrophone = 'Pääsy mikrofoniin';
+
+  @override
+  final String allowAccessMicrophoneBody =
+      'Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta';
 
   @override
   final String about = 'Tiedot';
@@ -5730,6 +5755,13 @@ class DE extends Translated {
   final String allowAccessBody2 = 'Das können Sie später immer noch von der';
 
   @override
+  final String accessToMicrophone = 'Zugang zum Mikrofon';
+
+  @override
+  final String allowAccessMicrophoneBody =
+      'Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können';
+
+  @override
   final String about = 'Information';
 
   @override
@@ -6731,6 +6763,13 @@ class NB extends Translated {
 
   @override
   final String allowAccessBody2 = 'Du kan alltids gjøre det senere fra';
+
+  @override
+  final String accessToMicrophone = 'Tilgang til mikrofon';
+
+  @override
+  final String allowAccessMicrophoneBody =
+      'Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten';
 
   @override
   final String about = 'Informasjon';
