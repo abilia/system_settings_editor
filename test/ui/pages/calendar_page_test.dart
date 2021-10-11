@@ -1519,4 +1519,63 @@ void main() {
       expect(goToCurrentSelect, hasLength(1));
     });
   });
+
+  group('Month calendar', () {
+    final monthPreviewSetting = Generic.createNew<MemoplannerSettingData>(
+      data: MemoplannerSettingData.fromData(
+        data: MonthCalendarType.preview.index,
+        identifier: MemoplannerSettings.viewOptionsMonthCalendarKey,
+      ),
+    );
+
+    testWidgets('Can navigate to month calendar', (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendar), findsOneWidget);
+      expect(find.byType(MonthPreview), findsNothing);
+    });
+
+    testWidgets('Preview header shows one activity',
+        (WidgetTester tester) async {
+      final activities = [
+        FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
+      ];
+      activityResponse = () => activities;
+      when(mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([monthPreviewSetting]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MonthPreview), findsOneWidget);
+      expect(find.byType(MonthFullDayStack), findsNothing);
+      expect(find.byType(MonthActivityContent), findsOneWidget);
+      expect(find.text('one'), findsOneWidget);
+    });
+
+    testWidgets('Preview header shows many activities',
+        (WidgetTester tester) async {
+      final activities = [
+        FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
+        FakeActivity.starts(initialDay, title: 'two').copyWith(fullDay: true),
+      ];
+      activityResponse = () => activities;
+      when(mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([monthPreviewSetting]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MonthPreview), findsOneWidget);
+      expect(find.byType(MonthFullDayStack), findsOneWidget);
+      expect(find.byType(MonthActivityContent), findsNothing);
+      expect(find.text('+2'), findsOneWidget);
+    });
+  });
 }

@@ -406,7 +406,7 @@ class MonthFullDayStack extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
           decoration: decoration,
           width: 34.s,
-          height:32.s,
+          height: 32.s,
           child: Center(
             child: Text('+$numberOfActivities'),
           ),
