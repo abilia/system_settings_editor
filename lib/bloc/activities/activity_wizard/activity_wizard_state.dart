@@ -17,6 +17,7 @@ enum WizardStep {
   recurring,
   recursWeekly,
   recursMonthly,
+  endDate,
 }
 
 enum SaveError {

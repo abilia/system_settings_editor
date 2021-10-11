@@ -72,6 +72,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
         if (settings.activityRecurringEditable) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
         if (activity.recurs.monthly) WizardStep.recursMonthly,
+        if (!activity.recurs.hasNoEnd) WizardStep.endDate,
       ];
 
   ActivityWizardCubit.edit({

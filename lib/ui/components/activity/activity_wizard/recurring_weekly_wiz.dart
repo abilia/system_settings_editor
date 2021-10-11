@@ -41,7 +41,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
                 left: 12.s,
                 right: 16.s,
               ),
-              child: const EndDateWidget(),
+              child: const EndDateWizWidget(),
             ),
           ],
         ),
