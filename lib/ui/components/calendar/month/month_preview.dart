@@ -103,24 +103,31 @@ class MonthDayPreviewHeading extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: radius),
             color: Theme.of(context).appBarTheme.backgroundColor,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _fullDayActivities(activityState) > 1
-                  ? MonthFullDayStack(
-                      numberOfActivities:
-                          (activityState as ActivitiesOccasionLoaded)
-                              .fullDayActivities
-                              .length,
-                    )
-                  : _fullDayActivities(activityState) > 0
-                      ? MonthActivityContent(
-                          activityDay:
-                              (activityState as ActivitiesOccasionLoaded)
-                                  .fullDayActivities
-                                  .first,
-                        )
-                      : SizedBox(width: 0),
+        child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+          buildWhen: (oldState, newState) =>
+              (oldState is ActivitiesOccasionLoaded &&
+                  newState is ActivitiesOccasionLoaded &&
+                  oldState.day != newState.day) ||
+              oldState.runtimeType != newState.runtimeType,
+          builder: (context, activityState) {
+            final fullDayActivies = (activityState as ActivitiesOccasionLoaded)
+                .fullDayActivities
+                .length;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (fullDayActivies > 1)
+                  MonthFullDayStack(
+                    numberOfActivities: fullDayActivies,
+                    width: 34.s,
+                    height: 32.s,
+                  )
+                else if (fullDayActivies > 0)
+                  MonthActivityContent(
+                    activityDay: activityState.fullDayActivities.first,
+                    width: 38.s,
+                    height: 36.s,
+                  ),
               Text(text, style: Theme.of(context).textTheme.subtitle1),
               SecondaryActionButton(
                 onPressed: () => DefaultTabController.of(context)?.animateTo(0),
