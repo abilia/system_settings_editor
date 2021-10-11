@@ -26,15 +26,15 @@ class FullDayStack extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(top: 4.s, left: 4.s),
-          width: width ?? 2.s,
-          height: height ?? 2.s,
+          width: width,
+          height: height,
           decoration: decoration,
         ),
         Container(
           margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
           decoration: decoration,
-          width: width ?? 2.s,
-          height: height ?? 2.s,
+          width: width,
+          height: height,
           child: Center(
             child: Text('+$numberOfActivities'),
           ),
