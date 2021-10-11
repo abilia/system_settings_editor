@@ -97,18 +97,43 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(text, style: Theme.of(context).textTheme.subtitle1),
-            SecondaryActionButton(
-              onPressed: () => DefaultTabController.of(context)?.animateTo(0),
-              style: isLight
-                  ? secondaryActionButtonStyleLight
-                  : secondaryActionButtonStyleDark,
-              child: Icon(AbiliaIcons.navigation_next),
-            ),
-          ],
+        child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+          buildWhen: (oldState, newState) =>
+              (oldState is ActivitiesOccasionLoaded &&
+                  newState is ActivitiesOccasionLoaded &&
+                  oldState.day != newState.day) ||
+              oldState.runtimeType != newState.runtimeType,
+          builder: (context, activityState) {
+            final fullDayActivies = (activityState as ActivitiesOccasionLoaded)
+                .fullDayActivities
+                .length;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (fullDayActivies > 1)
+                  FullDayStack(
+                    numberOfActivities: fullDayActivies,
+                    width: 34.s,
+                    height: 32.s,
+                  )
+                else if (fullDayActivies > 0)
+                  MonthActivityContent(
+                    activityDay: activityState.fullDayActivities.first,
+                    width: 38.s,
+                    height: 36.s,
+                  ),
+                Text(text, style: Theme.of(context).textTheme.subtitle1),
+                SecondaryActionButton(
+                  onPressed: () =>
+                      DefaultTabController.of(context)?.animateTo(0),
+                  style: isLight
+                      ? secondaryActionButtonStyleLight
+                      : secondaryActionButtonStyleDark,
+                  child: Icon(AbiliaIcons.navigation_next),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -118,6 +143,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
 class MonthDayViewCompact extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+
   const MonthDayViewCompact(
     this.day, {
     Key? key,
