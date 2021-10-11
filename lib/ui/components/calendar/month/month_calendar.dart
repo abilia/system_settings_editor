@@ -384,19 +384,19 @@ class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
-    this.width = 38,
-    this.height = 36,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   final ActivityDay activityDay;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 38.s,
-      height: 36.s,
+      width: width,
+      height: height,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
         borderRadius: MonthDayView.monthDayborderRadius,
