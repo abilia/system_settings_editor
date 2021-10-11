@@ -381,11 +381,16 @@ class WeekNumber extends StatelessWidget {
 }
 
 class MonthFullDayStack extends StatelessWidget {
-  final int numberOfActivities;
   const MonthFullDayStack({
     Key? key,
     required this.numberOfActivities,
+    this.width,
+    this.height,
   }) : super(key: key);
+
+  final int numberOfActivities;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -398,15 +403,15 @@ class MonthFullDayStack extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(top: 4.s, left: 4.s),
-          width: 34.s,
-          height: 32.s,
+          width: width ?? 2.s,
+          height: height ?? 2.s,
           decoration: decoration,
         ),
         Container(
           margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
           decoration: decoration,
-          width: 34.s,
-          height: 32.s,
+          width: width ?? 2.s,
+          height: height ?? 2.s,
           child: Center(
             child: Text('+$numberOfActivities'),
           ),
@@ -420,9 +425,13 @@ class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
+    this.width = 38,
+    this.height = 36,
   }) : super(key: key);
 
   final ActivityDay activityDay;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {

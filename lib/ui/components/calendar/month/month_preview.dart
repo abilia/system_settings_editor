@@ -87,22 +87,16 @@ class MonthDayPreviewHeading extends StatelessWidget {
     final text =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
-    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
-      buildWhen: (oldState, newState) =>
-          (oldState is ActivitiesOccasionLoaded &&
-              newState is ActivitiesOccasionLoaded &&
-              oldState.day != newState.day) ||
-          oldState.runtimeType != newState.runtimeType,
-      builder: (context, activityState) => Tts.data(
-        data: text,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.s),
-          height: 48.s,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: radius),
-            color: Theme.of(context).appBarTheme.backgroundColor,
-          ),
+    return Tts.data(
+      data: text,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.s),
+        height: 48.s,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: radius),
+          color: Theme.of(context).appBarTheme.backgroundColor,
+        ),
         child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
           buildWhen: (oldState, newState) =>
               (oldState is ActivitiesOccasionLoaded &&
@@ -128,26 +122,21 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     width: 38.s,
                     height: 36.s,
                   ),
-              Text(text, style: Theme.of(context).textTheme.subtitle1),
-              SecondaryActionButton(
-                onPressed: () => DefaultTabController.of(context)?.animateTo(0),
-                style: isLight
-                    ? secondaryActionButtonStyleLight
-                    : secondaryActionButtonStyleDark,
-                child: Icon(AbiliaIcons.navigation_next),
-              ),
-            ],
-          ),
+                Text(text, style: Theme.of(context).textTheme.subtitle1),
+                SecondaryActionButton(
+                  onPressed: () =>
+                      DefaultTabController.of(context)?.animateTo(0),
+                  style: isLight
+                      ? secondaryActionButtonStyleLight
+                      : secondaryActionButtonStyleDark,
+                  child: Icon(AbiliaIcons.navigation_next),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
-  }
-
-  int _fullDayActivities(ActivitiesOccasionState activityState) {
-    if (activityState is ActivitiesOccasionLoaded) {
-      return activityState.fullDayActivities.length;
-    }
-    return 0;
   }
 }
 
