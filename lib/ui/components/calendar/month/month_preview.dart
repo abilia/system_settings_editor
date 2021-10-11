@@ -111,7 +111,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (fullDayActivies > 1)
-                  MonthFullDayStack(
+                  FullDayStack(
                     numberOfActivities: fullDayActivies,
                     width: 34.s,
                     height: 32.s,

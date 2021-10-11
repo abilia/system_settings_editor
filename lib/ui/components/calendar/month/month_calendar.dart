@@ -344,7 +344,7 @@ class MonthDayContainer extends StatelessWidget {
               ? Stack(
                   children: [
                     if (d.fullDayActivityCount > 1)
-                      MonthFullDayStack(
+                      FullDayStack(
                         numberOfActivities: d.fullDayActivityCount,
                       )
                     else if (d.fullDayActivity != null)
@@ -376,47 +376,6 @@ class WeekNumber extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-    );
-  }
-}
-
-class MonthFullDayStack extends StatelessWidget {
-  const MonthFullDayStack({
-    Key? key,
-    required this.numberOfActivities,
-    this.width,
-    this.height,
-  }) : super(key: key);
-
-  final int numberOfActivities;
-  final double? width;
-  final double? height;
-
-  @override
-  Widget build(BuildContext context) {
-    final decoration = BoxDecoration(
-      color: AbiliaColors.white,
-      borderRadius: MonthDayView.monthDayborderRadius,
-      border: border,
-    );
-    return Stack(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 4.s, left: 4.s),
-          width: width ?? 2.s,
-          height: height ?? 2.s,
-          decoration: decoration,
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
-          decoration: decoration,
-          width: width ?? 2.s,
-          height: height ?? 2.s,
-          child: Center(
-            child: Text('+$numberOfActivities'),
-          ),
-        ),
-      ],
     );
   }
 }
