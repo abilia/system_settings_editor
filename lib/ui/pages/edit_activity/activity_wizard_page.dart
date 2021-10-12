@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/activity/activity_wizard/all.dart';
+import 'package:seagull/ui/components/activity/activity_wizard/end_date_picker_wiz.dart';
 
 class ActivityWizardPage extends StatelessWidget {
   const ActivityWizardPage({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class ActivityWizardPage extends StatelessWidget {
       case WizardStep.recursMonthly:
         return RecurringMonthlyWiz();
       case WizardStep.endDate:
-        return DatePickerWiz();
+        return EndDatePickerWiz();
       default:
         return PlaceholderWiz(title: step.toString());
     }
