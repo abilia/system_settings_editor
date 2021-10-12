@@ -40,6 +40,8 @@ class ErrorPopupListener extends StatelessWidget {
       return showError(translate.startTimeBeforeNowError);
     } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
       return showError(translate.recurringDataEmptyErrorMessage);
+    } else if (errors.contains(SaveError.END_DATE_BEFORE_START)) {
+      return showError(translate.endBeforeStartError);
     }
   }
 

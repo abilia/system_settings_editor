@@ -34,16 +34,14 @@ class EndDatePickerWiz extends StatelessWidget {
         ),
         body: BlocListener<DayPickerBloc, DayPickerState>(
           listener: (context, state) {
-            if (state is DayPickerState) {
-              BlocProvider.of<EditActivityBloc>(context).add(
-                ReplaceActivity(
-                  activity.copyWith(
-                    recurs: recurs
-                        .changeEnd(context.read<DayPickerBloc>().state.day),
-                  ),
+            BlocProvider.of<EditActivityBloc>(context).add(
+              ReplaceActivity(
+                activity.copyWith(
+                  recurs:
+                      recurs.changeEnd(context.read<DayPickerBloc>().state.day),
                 ),
-              );
-            }
+              ),
+            );
           },
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             buildWhen: (previous, current) =>

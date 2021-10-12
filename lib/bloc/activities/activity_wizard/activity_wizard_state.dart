@@ -28,6 +28,7 @@ enum SaveError {
   UNCONFIRMED_ACTIVITY_CONFLICT,
   NO_RECURRING_DAYS,
   STORED_RECURRING,
+  END_DATE_BEFORE_START,
 }
 
 extension SaveErrors on Set<SaveError> {
@@ -42,6 +43,7 @@ extension SaveErrors on Set<SaveError> {
         SaveError.NO_TITLE_OR_IMAGE,
         SaveError.START_TIME_BEFORE_NOW,
         SaveError.NO_RECURRING_DAYS,
+        SaveError.END_DATE_BEFORE_START,
       }.contains);
 }
 
