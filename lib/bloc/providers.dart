@@ -236,6 +236,11 @@ class TopLevelBlocsProvider extends StatelessWidget {
               settingsDb: GetIt.I<SettingsDb>(),
             ),
           ),
+          BlocProvider<InactivityCubit>(
+            create: (context) => InactivityCubit(
+              Duration(seconds: 300),
+            ),
+          ),
         ],
         child: child,
       ),

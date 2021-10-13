@@ -10,21 +10,26 @@ class CalendarPage extends StatelessWidget {
           old.runtimeType != fresh.runtimeType ||
           old.calendarCount != fresh.calendarCount ||
           old.displayBottomBar != fresh.displayBottomBar,
-      builder: (context, settingsState) => DefaultTabController(
-        initialIndex: 0,
-        length: settingsState.calendarCount,
-        child: Scaffold(
-          bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
-                  settingsState.displayBottomBar
-              ? const CalendarBottomBar()
-              : null,
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              const DayCalendar(),
-              if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
-              if (settingsState.displayMonthCalendar) const MonthCalendarTab()
-            ],
+      builder: (context, settingsState) => Listener(
+        onPointerDown: (_) {
+          BlocProvider.of<InactivityCubit>(context).activityDetected();
+        }, // best place to reset timer imo
+        child: DefaultTabController(
+          initialIndex: 0,
+          length: settingsState.calendarCount,
+          child: Scaffold(
+            bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
+                    settingsState.displayBottomBar
+                ? const CalendarBottomBar()
+                : null,
+            body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                const DayCalendar(),
+                if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
+                if (settingsState.displayMonthCalendar) const MonthCalendarTab()
+              ],
+            ),
           ),
         ),
       ),

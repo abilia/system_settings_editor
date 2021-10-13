@@ -36,23 +36,32 @@ class WeekCalendar extends StatelessWidget {
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutQuad);
       },
-      child: PageView.builder(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, item) =>
-            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-          buildWhen: (oldState, newState) => newState.index == item,
-          builder: (context, state) {
-            if (state.index != item) return Container();
-            return Column(
-              children: const [
-                WeekCalendarTop(),
-                Expanded(
-                  child: WeekCalendarBody(),
-                ),
-              ],
-            );
-          },
+      child: BlocListener<InactivityCubit, InactivityState>(
+        listenWhen: (previous, current) =>
+            current is InactivityThresholdReachedState &&
+            previous is ActivityDetectedState,
+        listener: (context, state) {
+          context.read<DayPickerBloc>().add(CurrentDay());
+          context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+        },
+        child: PageView.builder(
+          controller: pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, item) =>
+              BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+            buildWhen: (oldState, newState) => newState.index == item,
+            builder: (context, state) {
+              if (state.index != item) return Container();
+              return Column(
+                children: const [
+                  WeekCalendarTop(),
+                  Expanded(
+                    child: WeekCalendarBody(),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

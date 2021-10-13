@@ -20,42 +20,50 @@ class DayCalendar extends StatelessWidget {
             old.showCategories != fresh.showCategories ||
             old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
             old.displayEyeButton != fresh.displayEyeButton,
-        builder: (context, settingState) => Scaffold(
-          appBar: settingState.displayDayCalendarAppBar
-              ? DayCalendarAppBar()
-              : null,
-          body: BlocBuilder<PermissionBloc, PermissionState>(
-            buildWhen: (old, fresh) =>
-                old.notificationDenied != fresh.notificationDenied,
-            builder: (context, state) => Stack(
-              children: [
-                const Calendars(),
-                if (settingState.displayEyeButton)
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: const EyeButtonDay(),
-                  ),
-                if (state.notificationDenied)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 76.0.s,
-                        right: 16.0.s,
-                        bottom: 28.0.s,
-                      ),
-                      child: ErrorMessage(
-                        text: Text(
-                          Translator.of(context)
-                              .translate
-                              .notificationsWarningText,
+        builder: (context, settingState) =>
+            BlocListener<InactivityCubit, InactivityState>(
+          listenWhen: (previous, current) =>
+              current is InactivityThresholdReachedState &&
+              previous is ActivityDetectedState,
+          listener: (context, state) =>
+              BlocProvider.of<ScrollPositionBloc>(context).add(GoToNow()),
+          child: Scaffold(
+            appBar: settingState.displayDayCalendarAppBar
+                ? DayCalendarAppBar()
+                : null,
+            body: BlocBuilder<PermissionBloc, PermissionState>(
+              buildWhen: (old, fresh) =>
+                  old.notificationDenied != fresh.notificationDenied,
+              builder: (context, state) => Stack(
+                children: [
+                  const Calendars(),
+                  if (settingState.displayEyeButton)
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: const EyeButtonDay(),
+                    ),
+                  if (state.notificationDenied)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 76.0.s,
+                          right: 16.0.s,
+                          bottom: 28.0.s,
+                        ),
+                        child: ErrorMessage(
+                          text: Text(
+                            Translator.of(context)
+                                .translate
+                                .notificationsWarningText,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                if (settingState.settingsInaccessible)
-                  HiddenSetting(settingState.showCategories),
-              ],
+                  if (settingState.settingsInaccessible)
+                    HiddenSetting(settingState.showCategories),
+                ],
+              ),
             ),
           ),
         ),
@@ -73,6 +81,7 @@ class Calendars extends StatefulWidget {
 
 class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   late PageController pageController;
+
   @override
   void initState() {
     super.initState();
