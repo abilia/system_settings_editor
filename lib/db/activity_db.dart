@@ -1,4 +1,4 @@
-import 'package:logging/src/logger.dart';
+import 'package:logging/logging.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 
