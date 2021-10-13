@@ -1145,7 +1145,7 @@ class SV extends Translated {
 
   @override
   final String missingRequiredActivitySetting =
-      'Du behöver ha antingen “Visa basaktiviteter”, “Välj titel”, eller “Välj bild” vald.';
+      'Du behöver ha antingen “Visa basaktiviteter”, “Välj namn, eller “Välj bild” vald.';
 
   @override
   final String availableFor = 'Tillgänglig för';
