@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -18,6 +20,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
+import '../../mocks/mock_bloc.dart';
 import '../../mocks/shared.mocks.dart';
 
 import '../../test_helpers/tts.dart';
@@ -87,6 +90,13 @@ void main() {
   SortableResponse sortableResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
+  setUpAll(() {
+    mocktail.registerFallbackValue(SortablesNotLoaded());
+    mocktail.registerFallbackValue(LoadSortables());
+    mocktail.registerFallbackValue(MemoplannerSettingsNotLoaded());
+    mocktail.registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -137,7 +147,6 @@ void main() {
         activityResponse: activityResponse,
         sortableResponse: sortableResponse,
       )
-      ..fileStorage = MockFileStorage()
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..settingsDb = FakeSettingsDb()
@@ -468,12 +477,15 @@ void main() {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                  data: BasicActivityDataItem.createNew(title: title),
+                ),
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
               sortableBloc: sortableBlocMock));
@@ -507,15 +519,18 @@ void main() {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(
-                title: title,
-                startTime: Duration.zero,
-              ),
-            ),
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                  data: BasicActivityDataItem.createNew(
+                    title: title,
+                    startTime: Duration.zero,
+                  ),
+                ),
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
 
           await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
@@ -548,13 +563,16 @@ void main() {
             isGroup: true,
             data: BasicActivityDataFolder.createNew(name: folderTitle),
           );
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-                data: BasicActivityDataItem.createNew(title: title),
-                groupId: folder.id),
-            folder,
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                    data: BasicActivityDataItem.createNew(title: title),
+                    groupId: folder.id),
+                folder,
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
@@ -630,15 +648,18 @@ void main() {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(
-                title: title,
-                startTime: Duration(hours: 11),
-              ),
-            ),
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                  data: BasicActivityDataItem.createNew(
+                    title: title,
+                    startTime: Duration(hours: 11),
+                  ),
+                ),
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
@@ -678,12 +699,15 @@ void main() {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                  data: BasicActivityDataItem.createNew(title: title),
+                ),
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
@@ -723,12 +747,15 @@ void main() {
           await initializeDateFormatting();
           final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
-          when(sortableBlocMock.state).thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(sortableBlocMock.stream)
+          mocktail
+              .when(() => sortableBlocMock.state)
+              .thenReturn(SortablesLoaded(sortables: [
+                Sortable.createNew<BasicActivityDataItem>(
+                  data: BasicActivityDataItem.createNew(title: title),
+                ),
+              ]));
+          mocktail
+              .when(() => sortableBlocMock.stream)
               .thenAnswer((realInvocation) => Stream.empty());
 
           //Act
@@ -921,17 +948,20 @@ void main() {
     setUp(() {
       initializeDateFormatting();
       memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
-      when(memoplannerSettingBlocMock.stream).thenAnswer((_) => Stream.empty());
+      mocktail
+          .when(() => memoplannerSettingBlocMock.stream)
+          .thenAnswer((_) => Stream.empty());
     });
 
     testWidgets(
         'SGC-533 Can save full day on current day when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
-      when(memoplannerSettingBlocMock.state)
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
-      ));
+            MemoplannerSettings(activityTimeBeforeCurrent: false),
+          ));
       await tester.pumpWidget(wrapWithMaterialApp(
         CalendarPage(),
       ));
@@ -968,10 +998,11 @@ void main() {
         'SGC-533 Cannot save full day activity on yesterday when activityTimeBeforeCurrent is false',
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
-      when(memoplannerSettingBlocMock.state)
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
-      ));
+            MemoplannerSettings(activityTimeBeforeCurrent: false),
+          ));
       await tester.pumpWidget(wrapWithMaterialApp(
         CalendarPage(),
         memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1033,10 +1064,11 @@ void main() {
 
       testWidgets('Color settings with colors on all days',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
-        ));
+              MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1065,11 +1097,12 @@ void main() {
 
       testWidgets('Color settings with colors only on weekends',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-              calendarDayColor: DayColor.saturdayAndSunday.index),
-        ));
+              MemoplannerSettings(
+                  calendarDayColor: DayColor.saturdayAndSunday.index),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1098,10 +1131,11 @@ void main() {
       });
 
       testWidgets('Color settings with no colors', (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
-        ));
+              MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1133,10 +1167,11 @@ void main() {
     group('dayCaptionShowDayButtons settings', () {
       testWidgets('show next/previous day buttons',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: true),
-        ));
+              MemoplannerSettings(dayCaptionShowDayButtons: true),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1154,10 +1189,11 @@ void main() {
 
       testWidgets('do not show next/previous day buttons',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(dayCaptionShowDayButtons: false),
-        ));
+              MemoplannerSettings(dayCaptionShowDayButtons: false),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1177,13 +1213,14 @@ void main() {
     group('calendarActivityTypeShowTypes setting', () {
       testWidgets('Timepillar is left when no categories',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            calendarActivityTypeShowTypes: false,
-            viewOptionsTimeView: DayCalendarType.one_timepillar.index,
-          ),
-        ));
+              MemoplannerSettings(
+                calendarActivityTypeShowTypes: false,
+                viewOptionsTimeView: DayCalendarType.one_timepillar.index,
+              ),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
@@ -1198,13 +1235,14 @@ void main() {
       testWidgets(
           'Center of timepillar is center of page when categories are on',
           (WidgetTester tester) async {
-        when(memoplannerSettingBlocMock.state)
+        mocktail
+            .when(() => memoplannerSettingBlocMock.state)
             .thenReturn(MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            calendarActivityTypeShowTypes: true,
-            viewOptionsTimeView: DayCalendarType.one_timepillar.index,
-          ),
-        ));
+              MemoplannerSettings(
+                calendarActivityTypeShowTypes: true,
+                viewOptionsTimeView: DayCalendarType.one_timepillar.index,
+              ),
+            ));
         await tester.pumpWidget(wrapWithMaterialApp(
           CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,

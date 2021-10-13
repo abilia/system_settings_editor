@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 
@@ -13,13 +14,13 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mock_bloc.dart';
 import '../../test_helpers/tts.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
+  late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -51,17 +52,24 @@ void main() {
         ),
       );
 
+  setUpAll(() {
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() async {
     setupFakeTts();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     // When settings are not loaded the default value will be used
-    when(mockMemoplannerSettingsBloc.state)
+    when(() => mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
-    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockMemoplannerSettingsBloc.stream)
+        .thenAnswer((_) => Stream.empty());
     await initializeDateFormatting();
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 

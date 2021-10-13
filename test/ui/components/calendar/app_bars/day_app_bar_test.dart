@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
@@ -11,14 +12,14 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/fake_db_and_repository.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mock_bloc.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
   final defaultClockBloc =
       ClockBloc(StreamController<DateTime>().stream, initialTime: day);
-  final memoplannerSettingsBlocMock = MockMemoplannerSettingBloc();
-  when(memoplannerSettingsBlocMock.stream).thenAnswer((_) => Stream.empty());
+  late MockMemoplannerSettingBloc memoplannerSettingsBlocMock;
+
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -40,17 +41,25 @@ void main() {
         ], child: widget),
       );
 
+  setUpAll(() {
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() {
     initializeDateFormatting();
+    memoplannerSettingsBlocMock = MockMemoplannerSettingBloc();
+    when(() => memoplannerSettingsBlocMock.stream)
+        .thenAnswer((_) => Stream.empty());
   });
 
   void _expectSettings(MemoplannerSettings settings) {
-    when(memoplannerSettingsBlocMock.state)
+    when(() => memoplannerSettingsBlocMock.state)
         .thenReturn(MemoplannerSettingsLoaded(settings));
   }
 
   testWidgets('Standard heading today', (WidgetTester tester) async {
-    when(memoplannerSettingsBlocMock.state)
+    when(() => memoplannerSettingsBlocMock.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), defaultClockBloc));

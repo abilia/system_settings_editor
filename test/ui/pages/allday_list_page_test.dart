@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/app_localizations.dart';
@@ -12,13 +12,13 @@ import 'package:seagull/ui/pages/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../fakes/all.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mock_bloc.dart';
 
 import '../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2111, 11, 11);
-  final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
+  late MockActivitiesOccasionBloc activitiesOccasionBlocMock;
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: [Translator.delegate],
@@ -53,9 +53,17 @@ void main() {
       title1 = 'allDay1',
       title2 = 'allDay2',
       title3 = 'allDay3';
+
+  setUpAll(() {
+    registerFallbackValue(ActivitiesOccasionLoading());
+    registerFallbackValue(NowChanged(day));
+  });
+
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
+    activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
+
     final allDayActivities = [
       Activity.createNew(
         title: title0,
@@ -82,8 +90,8 @@ void main() {
       occasion: Occasion.current,
     );
 
-    when(activitiesOccasionBlocMock.state).thenReturn(expected);
-    when(activitiesOccasionBlocMock.stream)
+    when(() => activitiesOccasionBlocMock.state).thenReturn(expected);
+    when(() => activitiesOccasionBlocMock.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 
@@ -9,7 +9,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/navigation_observer.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/types.dart';
@@ -17,7 +17,16 @@ import '../../../test_helpers/types.dart';
 void main() {
   group('Image archive test', () {
     final translate = Locales.language.values.first;
+    late MockSortableBloc mockSortableBloc;
+
+    setUpAll(() {
+      registerFallbackValue(SortablesNotLoaded());
+      registerFallbackValue(LoadSortables());
+    });
+
     setUp(() async {
+      mockSortableBloc = MockSortableBloc();
+      when(() => mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
       setupFakeTts();
       GetItInitializer()
         ..fileStorage = FakeFileStorage()
@@ -50,9 +59,6 @@ void main() {
         Sortable.createNew<ImageArchiveData>(data: ImageArchiveData.fromJson('''
           {"name":"$imageInFolderName","fileId":"351d5e7d-0d87-4037-9829-538a14936129","file":"/images/Basic/Basic/infolder.gif"}
           '''), groupId: folder.id);
-
-    final mockSortableBloc = MockSortableBloc();
-    when(mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
 
     final navObserver = NavObserver();
 
@@ -88,7 +94,7 @@ void main() {
         );
 
     testWidgets('Image archive smoke test', (WidgetTester tester) async {
-      when(mockSortableBloc.state)
+      when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: []));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
@@ -98,7 +104,7 @@ void main() {
 
     testWidgets('Image archive with one image and no folder',
         (WidgetTester tester) async {
-      when(mockSortableBloc.state)
+      when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
@@ -108,7 +114,7 @@ void main() {
 
     testWidgets('Image archive with one image and one folder',
         (WidgetTester tester) async {
-      when(mockSortableBloc.state)
+      when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image, folder]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
@@ -118,7 +124,7 @@ void main() {
     });
 
     testWidgets('Selected Image is poped', (WidgetTester tester) async {
-      when(mockSortableBloc.state)
+      when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
@@ -136,7 +142,7 @@ void main() {
     });
 
     testWidgets('tts', (WidgetTester tester) async {
-      when(mockSortableBloc.state)
+      when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image, folder]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
@@ -149,7 +155,7 @@ void main() {
     });
 
     testWidgets('library heading tts', (WidgetTester tester) async {
-      when(mockSortableBloc.state).thenAnswer(
+      when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();

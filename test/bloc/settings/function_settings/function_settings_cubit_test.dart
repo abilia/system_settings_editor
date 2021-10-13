@@ -1,13 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/types.dart';
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(GenericsNotLoaded());
+    registerFallbackValue(LoadGenerics());
+  });
+
   test('initial state', () {
     final settingsState = MemoplannerSettingsNotLoaded();
     final functionSettingsCubit = FunctionSettingsCubit(
@@ -256,7 +261,7 @@ void main() {
     functionSettingsCubit.save();
 
     // Assert -- calls genericBloc
-    final captured = verify(genericBloc.add(captureAny)).captured;
+    final captured = verify(() => genericBloc.add(captureAny())).captured;
     expect(captured, hasLength(1));
     expect(captured.single.runtimeType, typeOf<GenericUpdated>());
     expect(
