@@ -134,7 +134,8 @@ class TranslationBuilder extends Builder {
 
     if (missing.isNotEmpty) {
       final missingId = buildStep.inputId.changeExtension(missingExtension);
-      buildStep.writeAsString(missingId, [lines.first, ...missing].join('\n'));
+      buildStep.writeAsString(
+          missingId, [lines.first, ...missing, ''].join('\n'));
     }
 
     return Map.fromEntries(dictionaries);
