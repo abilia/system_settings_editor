@@ -199,8 +199,8 @@ void main() {
       activityWizardCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
-        saveErrors: {
+        const [WizardStep.advance],
+        saveErrors: const {
           SaveError.NO_TITLE_OR_IMAGE,
           SaveError.NO_START_TIME,
         },
@@ -223,8 +223,8 @@ void main() {
       activityWizardCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
-        saveErrors: {
+        const [WizardStep.advance],
+        saveErrors: const {
           SaveError.NO_START_TIME,
         },
       ),
@@ -243,7 +243,7 @@ void main() {
       activityWizardCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
+        const [WizardStep.advance],
         sucessfullSave: true,
       ),
     );
@@ -288,7 +288,7 @@ void main() {
       startDate: aTime,
     );
 
-    final wizState = ActivityWizardState(0, [WizardStep.advance]);
+    final wizState = ActivityWizardState(0, const [WizardStep.advance]);
 
     // Act
     editActivityBloc.add(ReplaceActivity(activityAsFullDay));
@@ -372,7 +372,7 @@ void main() {
       wizCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
+        const [WizardStep.advance],
         sucessfullSave: true,
       ),
     );
@@ -453,7 +453,7 @@ void main() {
         wizCubit.state,
         ActivityWizardState(
           0,
-          [WizardStep.advance],
+          const [WizardStep.advance],
           sucessfullSave: true,
         ),
       );
@@ -526,7 +526,7 @@ void main() {
     wizCubit.next();
     expect(
       wizCubit.state,
-      ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
 
     // Assert
@@ -599,7 +599,7 @@ void main() {
       wizCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
+        const [WizardStep.advance],
         sucessfullSave: true,
       ),
     );
@@ -665,7 +665,7 @@ void main() {
     final activity = Activity.createNew(
         title: 'null',
         startTime: aTime,
-        infoItem: Checklist(questions: [Question(id: 0, name: 'name')]));
+        infoItem: Checklist(questions: const [Question(id: 0, name: 'name')]));
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityWithEmptyNote = activity.copyWith(infoItem: NoteInfoItem());
     final activityDay = ActivityDay(activity, aDay);
@@ -729,7 +729,7 @@ void main() {
     final originalActivity = editActivityBloc.state.activity;
     final activity = originalActivity.copyWith(
       title: 'null',
-      recurs: Recurs.monthlyOnDays([]),
+      recurs: Recurs.monthlyOnDays(const []),
     );
     final time = TimeOfDay.fromDateTime(aTime);
     final expectedTimeIntervall = TimeInterval(
@@ -760,8 +760,8 @@ void main() {
       wizCubit.state,
       ActivityWizardState(
         0,
-        [WizardStep.advance],
-        saveErrors: {SaveError.NO_RECURRING_DAYS},
+        const [WizardStep.advance],
+        saveErrors: const {SaveError.NO_RECURRING_DAYS},
         sucessfullSave: false,
       ),
     );
@@ -819,8 +819,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            const [WizardStep.advance],
+            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
             sucessfullSave: false,
           ),
         );
@@ -830,7 +830,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -907,8 +907,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            const [WizardStep.advance],
+            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
             sucessfullSave: false,
           ),
         );
@@ -917,7 +917,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -993,8 +993,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            const [WizardStep.advance],
+            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
             sucessfullSave: null,
           ),
         );
@@ -1003,7 +1003,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -1028,7 +1028,7 @@ void main() {
           startTime: aTime.subtract(
             100.days(),
           ),
-          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
 
         final editActivityBloc = EditActivityBloc.edit(
@@ -1077,8 +1077,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {
+            const [WizardStep.advance],
+            saveErrors: const {
               SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
               SaveError.STORED_RECURRING,
             },
@@ -1095,7 +1095,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -1163,8 +1163,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {SaveError.UNCONFIRMED_ACTIVITY_CONFLICT},
+            const [WizardStep.advance],
+            saveErrors: const {SaveError.UNCONFIRMED_ACTIVITY_CONFLICT},
             sucessfullSave: false,
           ),
         );
@@ -1174,7 +1174,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -1241,8 +1241,8 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
-            saveErrors: {
+            const [WizardStep.advance],
+            saveErrors: const {
               SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
               SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
             },
@@ -1254,7 +1254,7 @@ void main() {
           wizCubit.state,
           ActivityWizardState(
             0,
-            [WizardStep.advance],
+            const [WizardStep.advance],
             sucessfullSave: true,
           ),
         );
@@ -1316,7 +1316,8 @@ void main() {
 
         expect(
           wizCubit.state,
-          ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+          ActivityWizardState(0, const [WizardStep.advance],
+              sucessfullSave: true),
         );
 
         expect(
@@ -1375,7 +1376,8 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+          ActivityWizardState(0, const [WizardStep.advance],
+              sucessfullSave: true),
         );
         await expectLater(
             editActivityBloc.stream,
@@ -1440,7 +1442,8 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+          ActivityWizardState(0, const [WizardStep.advance],
+              sucessfullSave: true),
         );
 
         await expectLater(
@@ -1502,7 +1505,8 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+          ActivityWizardState(0, const [WizardStep.advance],
+              sucessfullSave: true),
         );
 
         expect(
@@ -1558,7 +1562,7 @@ void main() {
     wizCubit.next();
     expect(
       wizCubit.state,
-      ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
   });
 
@@ -1570,7 +1574,7 @@ void main() {
       startTime: aTime.subtract(
         100.days(),
       ),
-      recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+      recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
     );
     final mockActivitiesBloc = MockActivitiesBloc();
     when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([activity]));
@@ -1693,7 +1697,7 @@ void main() {
         wizCubit.state,
         ActivityWizardState(
           0,
-          [
+          const [
             WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
@@ -1740,7 +1744,7 @@ void main() {
         wizCubit.state,
         ActivityWizardState(
           0,
-          [
+          const [
             WizardStep.basic,
             WizardStep.type,
             WizardStep.delete_after,
@@ -1788,7 +1792,7 @@ void main() {
         wizCubit.state,
         ActivityWizardState(
           0,
-          [
+          const [
             WizardStep.title,
             WizardStep.time,
           ],
@@ -1884,7 +1888,7 @@ void main() {
         ActivityWizardState(
           3,
           allWizStep,
-          saveErrors: {SaveError.NO_TITLE_OR_IMAGE},
+          saveErrors: const {SaveError.NO_TITLE_OR_IMAGE},
           sucessfullSave: false,
         ),
       );
@@ -1905,7 +1909,7 @@ void main() {
         ActivityWizardState(
           8,
           allWizStep,
-          saveErrors: {SaveError.NO_START_TIME},
+          saveErrors: const {SaveError.NO_START_TIME},
           sucessfullSave: false,
         ),
       );
@@ -1955,7 +1959,7 @@ void main() {
       expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(0, [
+          ActivityWizardState(0, const [
             WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
@@ -1996,8 +2000,10 @@ void main() {
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(0, [...allWizStep, WizardStep.recursMonthly]),
-          ActivityWizardState(0, [...allWizStep, WizardStep.recursWeekly]),
+          ActivityWizardState(
+              0, const [...allWizStep, WizardStep.recursMonthly]),
+          ActivityWizardState(
+              0, const [...allWizStep, WizardStep.recursWeekly]),
           ActivityWizardState(0, allWizStep),
         ]),
       );
@@ -2038,19 +2044,23 @@ void main() {
       editActivityBloc
           .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 22, minute: 22)));
 
-      editActivityBloc.add(ReplaceActivity(
-          activity.copyWith(title: 'titlte', recurs: Recurs.weeklyOnDays([]))));
+      editActivityBloc.add(ReplaceActivity(activity.copyWith(
+          title: 'titlte', recurs: Recurs.weeklyOnDays(const []))));
 
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
           ActivityWizardState(
             0,
-            [WizardStep.time, WizardStep.recurring],
+            const [WizardStep.time, WizardStep.recurring],
           ),
           ActivityWizardState(
             0,
-            [WizardStep.time, WizardStep.recurring, WizardStep.recursWeekly],
+            const [
+              WizardStep.time,
+              WizardStep.recurring,
+              WizardStep.recursWeekly
+            ],
           ),
         ]),
       );
@@ -2063,8 +2073,12 @@ void main() {
         wizCubit.state,
         ActivityWizardState(
           2,
-          [WizardStep.time, WizardStep.recurring, WizardStep.recursWeekly],
-          saveErrors: {SaveError.NO_RECURRING_DAYS},
+          const [
+            WizardStep.time,
+            WizardStep.recurring,
+            WizardStep.recursWeekly
+          ],
+          saveErrors: const {SaveError.NO_RECURRING_DAYS},
           sucessfullSave: false,
         ),
       );

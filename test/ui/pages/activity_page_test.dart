@@ -887,7 +887,7 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
         when(mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -910,7 +910,7 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
         when(mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -936,7 +936,7 @@ void main() {
               Activity.createNew(
                 title: oldTitle,
                 startTime: startTime.subtract(100.days()),
-                recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+                recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
               )
             ],
           ),
@@ -966,7 +966,7 @@ void main() {
     final activity = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        infoItem: Checklist(questions: [
+        infoItem: Checklist(questions: const [
           Question(id: 0, name: tag),
           Question(id: 1, name: 'another'),
         ]));
@@ -1168,7 +1168,8 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
               title: 'title',
               startTime: startTime,
-              infoItem: Checklist(questions: [Question(id: 1, name: item1)]),
+              infoItem:
+                  Checklist(questions: const [Question(id: 1, name: item1)]),
             )
           ],
         ),

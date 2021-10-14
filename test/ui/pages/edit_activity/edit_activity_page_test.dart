@@ -65,7 +65,7 @@ void main() {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
+      localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -591,7 +591,7 @@ void main() {
       final activity = Activity.createNew(
           title: 'null',
           startTime: startTime,
-          infoItem: Checklist(questions: [
+          infoItem: Checklist(questions: const [
             Question(id: 1, name: q1),
             Question(id: 2, name: q3),
             Question(id: 3, name: q2)
@@ -911,7 +911,7 @@ Internal improvements to tests and examples.''';
               title: 'null',
               startTime: startTime,
               infoItem: Checklist(
-                questions: [Question(id: 0, fileId: 'fileid')],
+                questions: const [Question(id: 0, fileId: 'fileid')],
               ),
             ),
           ),
@@ -1098,7 +1098,7 @@ text''';
                   data: ChecklistData(Checklist(
                       name: title1,
                       fileId: 'fileid1',
-                      questions: [
+                      questions: const [
                         Question(id: 0, name: '1'),
                         Question(id: 1, name: '2', fileId: '2222')
                       ]))),
@@ -1146,7 +1146,7 @@ text''';
                   Checklist(
                     name: title1,
                     fileId: 'fileid1',
-                    questions: [
+                    questions: const [
                       Question(id: 0, name: checklisttitle1),
                       Question(id: 1, name: checklisttitle2, fileId: '2222')
                     ],
@@ -2643,7 +2643,7 @@ text''';
                   data: ChecklistData(Checklist(
                       name: title1,
                       fileId: 'fileid1',
-                      questions: [
+                      questions: const [
                     Question(id: 0, name: item1Name),
                     Question(id: 1, name: '2', fileId: '2222')
                   ]))),

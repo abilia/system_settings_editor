@@ -81,6 +81,7 @@ Future scheduleAlarmNotifications(
   );
 }
 
+// ignore: prefer_function_declarations_over_variables
 late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,

@@ -36,7 +36,7 @@ void main() {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
     when(mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(mockMemoplannerSettingsBloc.state).thenReturn(
@@ -55,7 +55,7 @@ void main() {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
+      localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),

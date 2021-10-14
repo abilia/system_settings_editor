@@ -53,7 +53,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       await expectLater(
         activitiesBloc.stream,
-        emits(ActivitiesLoaded([])),
+        emits(ActivitiesLoaded(const [])),
       );
     });
 
@@ -594,7 +594,7 @@ void main() {
           title: 'null',
           startTime: startTime,
           recurs: Recurs.weeklyOnDays(
-            [
+            const [
               DateTime.monday,
               DateTime.tuesday,
               DateTime.wednesday,

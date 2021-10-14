@@ -18,9 +18,9 @@ class MonthCalendarTab extends StatelessWidget {
     return Scaffold(
       appBar: const MonthAppBar(),
       body: Stack(
-        children: [
-          const MonthCalendar(),
-          const Align(
+        children: const [
+          MonthCalendar(),
+          Align(
             alignment: Alignment.bottomLeft,
             child: EyeButtonMonth(),
           ),

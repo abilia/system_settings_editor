@@ -58,8 +58,8 @@ void main() {
         activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
-            fullDayActivities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
+            fullDayActivities: const <ActivityOccasion>[],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -95,7 +95,7 @@ void main() {
               ActivityOccasion.forTest(futureActivity,
                   occasion: Occasion.future, day: initialDay),
             ],
-            fullDayActivities: <ActivityOccasion>[],
+            fullDayActivities: const <ActivityOccasion>[],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -124,7 +124,7 @@ void main() {
         activitiesOccasionBloc.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(fullDayActivity,
                   occasion: Occasion.future, day: initialDay)
@@ -208,7 +208,7 @@ void main() {
         activitiesOccasionBloc.stream,
         emitsInOrder([
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(fullDayActivity,
                   occasion: Occasion.future, day: initialDay)
@@ -217,7 +217,7 @@ void main() {
             occasion: Occasion.current,
           ),
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(tomorrowFullday,
                   occasion: Occasion.future, day: nextDay)
@@ -226,7 +226,7 @@ void main() {
             occasion: Occasion.future,
           ),
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(fullDayActivity,
                   occasion: Occasion.future, day: initialDay)
@@ -235,7 +235,7 @@ void main() {
             occasion: Occasion.current,
           ),
           ActivitiesOccasionLoaded(
-            activities: <ActivityOccasion>[],
+            activities: const <ActivityOccasion>[],
             fullDayActivities: [
               ActivityOccasion.forTest(yesterdayFullday,
                   occasion: Occasion.past, day: previusDay)
@@ -340,7 +340,7 @@ void main() {
               ActivityOccasion.forTest(endsSoon,
                   occasion: Occasion.current, day: initialDay),
             ],
-            fullDayActivities: [],
+            fullDayActivities: const [],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -366,7 +366,7 @@ void main() {
               ActivityOccasion.forTest(startsNow,
                   occasion: Occasion.current, day: initialDay),
             ],
-            fullDayActivities: [],
+            fullDayActivities: const [],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -401,7 +401,7 @@ void main() {
               ActivityOccasion.forTest(startSoonActivity,
                   occasion: Occasion.future, day: initialDay),
             ],
-            fullDayActivities: <ActivityOccasion>[],
+            fullDayActivities: const <ActivityOccasion>[],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -424,7 +424,7 @@ void main() {
               ActivityOccasion.forTest(startSoonActivity,
                   occasion: Occasion.current, day: initialDay),
             ],
-            fullDayActivities: <ActivityOccasion>[],
+            fullDayActivities: const <ActivityOccasion>[],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -469,7 +469,7 @@ void main() {
                 ActivityOccasion.forTest(tuesdayRecurring,
                     occasion: Occasion.current, day: initialDay),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: initialDay,
               occasion: Occasion.current,
             ),
@@ -480,14 +480,14 @@ void main() {
                     occasion: Occasion.past,
                     day: initialDay.subtract(Duration(days: 1))),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: previusDay,
               occasion: Occasion.past,
             ),
             // Friday
             ActivitiesOccasionLoaded(
-              activities: <ActivityOccasion>[],
-              fullDayActivities: [],
+              activities: const <ActivityOccasion>[],
+              fullDayActivities: const [],
               day: friday,
               occasion: Occasion.future,
             ),
@@ -497,7 +497,7 @@ void main() {
                 ActivityOccasion.forTest(weekendActivity,
                     occasion: Occasion.future, day: saturday),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: saturday,
               occasion: Occasion.future,
             ),
@@ -507,7 +507,7 @@ void main() {
                 ActivityOccasion.forTest(weekendActivity,
                     occasion: Occasion.future, day: sunday),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: sunday,
               occasion: Occasion.future,
             ),
@@ -517,7 +517,7 @@ void main() {
                 ActivityOccasion.forTest(mondayRecurring,
                     occasion: Occasion.future, day: monday),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: monday,
               occasion: Occasion.future,
             ),
@@ -588,8 +588,8 @@ void main() {
             ),
             // Monday
             ActivitiesOccasionLoaded(
-              activities: <ActivityOccasion>[],
-              fullDayActivities: [],
+              activities: const <ActivityOccasion>[],
+              fullDayActivities: const [],
               day: yesterday,
               occasion: Occasion.past,
             ),
@@ -666,7 +666,7 @@ void main() {
                 ActivityOccasion.forTest(everyDayRecurring,
                     occasion: Occasion.current, day: initialDay),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: initialDay,
               occasion: Occasion.current,
             ),
@@ -680,7 +680,7 @@ void main() {
                 ActivityOccasion.forTest(everyDayRecurring,
                     occasion: Occasion.future, day: tomorrow),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: tomorrow,
               occasion: Occasion.future,
             ),
@@ -735,7 +735,7 @@ void main() {
                 ActivityOccasion.forTest(earlyCurrent,
                     occasion: Occasion.current, day: initialDay),
               ],
-              fullDayActivities: [],
+              fullDayActivities: const [],
               day: initialDay,
               occasion: Occasion.current,
             ),

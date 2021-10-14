@@ -146,7 +146,7 @@ void main() {
         initialS.copyWith(
           initialS.activity.copyWith(
             recurs: Recurs.weeklyOnDays(
-              {
+              const {
                 DateTime.monday,
                 DateTime.wednesday,
               },

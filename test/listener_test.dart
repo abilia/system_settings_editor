@@ -357,12 +357,12 @@ void main() {
         startTime: startTime,
         checkable: true,
         infoItem: Checklist(
-          questions: [
+          questions: const [
             Question(id: 0, name: 'checked'),
             Question(id: 1, name: unchecked),
           ],
           checked: {
-            Checklist.dayKey(startDay): {0}
+            Checklist.dayKey(startDay): const {0}
           },
         ),
       );

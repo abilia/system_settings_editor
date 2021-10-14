@@ -54,7 +54,7 @@ void main() {
       expect(
         nightActivitiesCubit.state,
         ActivitiesOccasionLoaded(
-          activities: [],
+          activities: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),
@@ -67,7 +67,7 @@ void main() {
         nightActivitiesCubit.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: [],
+            activities: const [],
             day: previusDay,
             occasion: Occasion.past,
           ),
@@ -81,7 +81,7 @@ void main() {
         nightActivitiesCubit.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: [],
+            activities: const [],
             day: nextDay,
             occasion: Occasion.future,
           ),
@@ -96,7 +96,7 @@ void main() {
         nightActivitiesCubit.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: [],
+            activities: const [],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -111,7 +111,7 @@ void main() {
         nightActivitiesCubit.stream,
         emits(
           ActivitiesOccasionLoaded(
-            activities: [],
+            activities: const [],
             day: previusDay,
             occasion: Occasion.current,
           ),
@@ -131,7 +131,7 @@ void main() {
           nightActivitiesCubit.stream,
           emits(
             ActivitiesOccasionLoaded(
-              activities: [],
+              activities: const [],
               day: initialDay,
               occasion: Occasion.future,
             ),
@@ -146,7 +146,7 @@ void main() {
       expect(
         nightActivitiesCubit.state,
         ActivitiesOccasionLoaded(
-          activities: [],
+          activities: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),

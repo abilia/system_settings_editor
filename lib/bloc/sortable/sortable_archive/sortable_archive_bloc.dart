@@ -15,7 +15,7 @@ class SortableArchiveBloc<T extends SortableData>
   late final StreamSubscription sortableSubscription;
 
   SortableArchiveBloc({required SortableBloc sortableBloc})
-      : super(SortableArchiveState({}, {})) {
+      : super(SortableArchiveState(const {}, const {})) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
