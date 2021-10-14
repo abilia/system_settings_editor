@@ -303,7 +303,7 @@ void main() {
     await tester.pumpAndSettle();
     tester.takeException();
 
-    expect(find.byType(Hero), findsOneWidget);
+    expect(find.byType(FadeInImage), findsOneWidget);
   });
 
   testWidgets('Note attachment is present', (WidgetTester tester) async {

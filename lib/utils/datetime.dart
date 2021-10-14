@@ -57,15 +57,25 @@ extension DateTimeExtensions on DateTime {
           microsecond ?? this.microsecond);
 
   bool isAtSameDay(DateTime otherDate) =>
-      onlyDays().isAtSameMomentAs(otherDate.onlyDays());
+      year == otherDate.year &&
+      month == otherDate.month &&
+      day == otherDate.day;
 
   bool isSameWeek(DateTime otherDate) =>
       getWeekNumber() == otherDate.getWeekNumber();
 
   bool isDayBefore(DateTime otherDate) =>
-      onlyDays().isBefore(otherDate.onlyDays());
+      year < otherDate.year ||
+      (year <= otherDate.year && month < otherDate.month) ||
+      (year <= otherDate.year &&
+          month <= otherDate.month &&
+          day < otherDate.day);
   bool isDayAfter(DateTime otherDate) =>
-      onlyDays().isAfter(otherDate.onlyDays());
+      year > otherDate.year ||
+      (year >= otherDate.year && month > otherDate.month) ||
+      (year >= otherDate.year &&
+          month >= otherDate.month &&
+          day > otherDate.day);
 
   bool inInclusiveRange(
       {required DateTime startDate, required DateTime endDate}) {
@@ -76,11 +86,28 @@ extension DateTimeExtensions on DateTime {
     return false;
   }
 
+  bool inInclusiveRangeDay(
+      {required DateTime startDate, required DateTime endDate}) {
+    if (endDate.isDayBefore(startDate)) return false;
+    if (isDayBefore(endDate) && isDayAfter(startDate)) return true;
+    if (isAtSameDay(startDate)) return true;
+    if (isAtSameDay(endDate)) return true;
+    return false;
+  }
+
   bool inRangeWithInclusiveStart(
       {required DateTime startDate, required DateTime endDate}) {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
+    return false;
+  }
+
+  bool inRangeWithInclusiveStartDay(
+      {required DateTime startDate, required DateTime endDate}) {
+    if (endDate.isDayBefore(startDate)) return false;
+    if (isDayBefore(endDate) && isDayAfter(startDate)) return true;
+    if (isAtSameDay(startDate)) return true;
     return false;
   }
 

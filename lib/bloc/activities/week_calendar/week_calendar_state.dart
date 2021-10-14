@@ -1,6 +1,6 @@
 part of 'week_calendar_bloc.dart';
 
-abstract class WeekCalendarState extends Equatable {
+abstract class WeekCalendarState {
   final DateTime ZERO = DateTime.fromMillisecondsSinceEpoch(0);
   final DateTime currentWeekStart;
   final Map<int, List<ActivityOccasion>> currentWeekActivities;
@@ -11,9 +11,6 @@ abstract class WeekCalendarState extends Equatable {
     this.currentWeekStart,
     this.currentWeekActivities,
   );
-
-  @override
-  List<Object> get props => [currentWeekStart, currentWeekActivities];
 }
 
 class WeekCalendarInitial extends WeekCalendarState {

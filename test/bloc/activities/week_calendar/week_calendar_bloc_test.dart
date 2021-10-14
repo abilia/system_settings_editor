@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -37,9 +38,10 @@ void main() {
       );
     });
 
-    test('initial state is DayActivitiesUninitialized', () {
-      expect(weekCalendarBloc.state,
-          WeekCalendarInitial(initialMinutes.firstInWeek()));
+    test('initial state is WeekCalendarInitial', () {
+      expect(weekCalendarBloc.state, isA<WeekCalendarInitial>());
+      expect(weekCalendarBloc.state.currentWeekStart,
+          initialMinutes.firstInWeek());
     });
 
     test(
@@ -54,9 +56,11 @@ void main() {
       expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
-            initialMinutes.firstInWeek(),
-            {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+          _WeekCalendarLoadedMatcher(
+            WeekCalendarLoaded(
+              initialMinutes.firstInWeek(),
+              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            ),
           ),
         ),
       );
@@ -76,18 +80,18 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
               {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
               {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
+            )),
           ],
         ),
       );
@@ -108,11 +112,11 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
               {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
                 0: [],
@@ -127,11 +131,11 @@ void main() {
                 5: [],
                 6: []
               },
-            ),
-            WeekCalendarLoaded(
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
               {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
+            )),
           ],
         ),
       );
@@ -154,7 +158,7 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
                 0: [],
@@ -173,7 +177,7 @@ void main() {
                 ],
                 6: []
               },
-            ),
+            )),
           ],
         ),
       );
@@ -197,7 +201,7 @@ void main() {
       await expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
+          _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
               0: [],
@@ -214,7 +218,7 @@ void main() {
               5: [],
               6: []
             },
-          ),
+          )),
         ),
       );
 
@@ -224,7 +228,7 @@ void main() {
       await expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
+          _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
               0: [],
@@ -241,9 +245,26 @@ void main() {
               5: [],
               6: []
             },
-          ),
+          )),
         ),
       );
     });
   });
+}
+
+class _WeekCalendarLoadedMatcher extends Matcher {
+  const _WeekCalendarLoadedMatcher(this.value);
+
+  final WeekCalendarLoaded value;
+
+  @override
+  Description describe(Description description) => description.add(
+      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, activities: ${value.currentWeekActivities}}');
+
+  @override
+  bool matches(dynamic object, Map matchState) {
+    return value.currentWeekStart == object.currentWeekStart &&
+        DeepCollectionEquality()
+            .equals(value.currentWeekActivities, object.currentWeekActivities);
+  }
 }
