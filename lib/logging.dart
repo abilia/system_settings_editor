@@ -56,13 +56,14 @@ class SeagullLogger {
     required this.documentsDir,
     this.preferences,
     this.loggingType = const {
-      if (Config.release) ...{
+      if (kDebugMode)
+        LoggingType.Print
+      else ...{
         LoggingType.File,
         LoggingType.Analytic,
-      } else
-        LoggingType.Print,
+      }
     },
-    Level level = Config.release ? Level.FINE : Level.ALL,
+    Level level = kDebugMode ? Level.ALL : Level.FINE,
   }) {
     if (loggingType.isNotEmpty) {
       Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
