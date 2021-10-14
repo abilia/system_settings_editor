@@ -5,6 +5,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/bloc/user_file/user_file_bloc.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
@@ -236,11 +237,12 @@ class TopLevelBlocsProvider extends StatelessWidget {
               settingsDb: GetIt.I<SettingsDb>(),
             ),
           ),
-          BlocProvider<InactivityCubit>(
-            create: (context) => InactivityCubit(
-              Duration(seconds: 300),
+          if (Config.isMP)
+            BlocProvider<InactivityCubit>(
+              create: (context) => InactivityCubit(
+                Duration(seconds: 300),
+              ),
             ),
-          ),
         ],
         child: child,
       ),

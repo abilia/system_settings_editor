@@ -30,40 +30,43 @@ class WeekCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageController = PageController(
         initialPage: context.read<WeekCalendarBloc>().state.index);
+    var pageView = PageView.builder(
+      controller: pageController,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, item) =>
+          BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+        buildWhen: (oldState, newState) => newState.index == item,
+        builder: (context, state) {
+          if (state.index != item) return Container();
+          return Column(
+            children: const [
+              WeekCalendarTop(),
+              Expanded(
+                child: WeekCalendarBody(),
+              ),
+            ],
+          );
+        },
+      ),
+    );
     return BlocListener<WeekCalendarBloc, WeekCalendarState>(
       listener: (context, state) {
         pageController.animateToPage(state.index,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutQuad);
       },
-      child: BlocListener<InactivityCubit, InactivityState>(
-        listenWhen: (previous, current) =>
-            current is InactivityThresholdReachedState &&
-            previous is ActivityDetectedState,
-        listener: (context, state) {
-          context.read<DayPickerBloc>().add(CurrentDay());
-          context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
-        },
-        child: PageView.builder(
-          controller: pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, item) =>
-              BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-            buildWhen: (oldState, newState) => newState.index == item,
-            builder: (context, state) {
-              if (state.index != item) return Container();
-              return Column(
-                children: const [
-                  WeekCalendarTop(),
-                  Expanded(
-                    child: WeekCalendarBody(),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
+      child: Config.isMP
+          ? BlocListener<InactivityCubit, InactivityState>(
+              listenWhen: (previous, current) =>
+                  current is InactivityThresholdReachedState &&
+                  previous is ActivityDetectedState,
+              listener: (context, state) {
+                context.read<DayPickerBloc>().add(CurrentDay());
+                context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+              },
+              child: pageView,
+            )
+          : pageView,
     );
   }
 }
@@ -273,6 +276,7 @@ class FullDayActivies extends StatelessWidget {
 
 class FullDayStack extends StatelessWidget {
   final int numberOfActivities;
+
   const FullDayStack({
     Key? key,
     required this.numberOfActivities,
@@ -352,6 +356,7 @@ class WeekCalendarBody extends StatelessWidget {
 
 class WeekDayColumn extends StatelessWidget {
   final DateTime day;
+
   const WeekDayColumn({Key? key, required this.day}) : super(key: key);
 
   @override

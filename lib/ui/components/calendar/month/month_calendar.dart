@@ -38,20 +38,24 @@ class MonthCalendar extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.calendarDayColor != current.calendarDayColor ||
           previous.monthCalendarType != current.monthCalendarType,
-      builder: (context, memoSettingsState) =>
-          BlocListener<InactivityCubit, InactivityState>(
-        listenWhen: (previous, current) =>
-            current is InactivityThresholdReachedState &&
-            previous is ActivityDetectedState,
-        listener: (context, state) {
-          context.read<DayPickerBloc>().add(CurrentDay());
-          context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
-        },
-        child: MonthBody(
-          calendarDayColor: memoSettingsState.calendarDayColor,
-          monthCalendarType: memoSettingsState.monthCalendarType,
-        ),
-      ),
+      builder: (context, memoSettingsState) => Config.isMP
+          ? BlocListener<InactivityCubit, InactivityState>(
+              listenWhen: (previous, current) =>
+                  current is InactivityThresholdReachedState &&
+                  previous is ActivityDetectedState,
+              listener: (context, state) {
+                context.read<DayPickerBloc>().add(CurrentDay());
+                context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
+              },
+              child: MonthBody(
+                calendarDayColor: memoSettingsState.calendarDayColor,
+                monthCalendarType: memoSettingsState.monthCalendarType,
+              ),
+            )
+          : MonthBody(
+              calendarDayColor: memoSettingsState.calendarDayColor,
+              monthCalendarType: memoSettingsState.monthCalendarType,
+            ),
     );
   }
 }
@@ -151,6 +155,7 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final MonthDayWidgetBuilder builder;
+
   const WeekRow(
     this.week, {
     Key? key,
@@ -235,6 +240,7 @@ class MonthHeading extends StatelessWidget {
 class MonthDayView extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+
   const MonthDayView(
     this.day, {
     Key? key,
@@ -372,7 +378,9 @@ class MonthDayContainer extends StatelessWidget {
 
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
+
   const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;
@@ -391,6 +399,7 @@ class WeekNumber extends StatelessWidget {
 
 class MonthFullDayStack extends StatelessWidget {
   final int numberOfActivities;
+
   const MonthFullDayStack({
     Key? key,
     required this.numberOfActivities,
