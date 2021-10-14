@@ -5,15 +5,14 @@ class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (old, fresh) =>
           old.runtimeType != fresh.runtimeType ||
           old.calendarCount != fresh.calendarCount ||
           old.displayBottomBar != fresh.displayBottomBar,
       builder: (context, settingsState) => Listener(
         onPointerDown: (_) {
-          if(Config.isMP) {
+          if (Config.isMP) {
             BlocProvider.of<InactivityCubit>(context).activityDetected();
           }
         }, // best place to reset timer imo
