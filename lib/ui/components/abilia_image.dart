@@ -65,7 +65,7 @@ class ActivityImage extends StatelessWidget {
             activity.icon,
           ) // all calls to blocs needs to be outside of Hero
         : null;
-    final activityImage = Stack(
+    return Stack(
       alignment: Alignment.center,
       children: [
         if (image != null)
@@ -104,14 +104,6 @@ class ActivityImage extends StatelessWidget {
           ),
       ],
     );
-    if (image != null) {
-      return Hero(
-        tag: activityDay,
-        child: activityImage,
-      );
-    } else {
-      return activityImage;
-    }
   }
 
   Image getImage(BuildContext context, String fileId, String filePath) {

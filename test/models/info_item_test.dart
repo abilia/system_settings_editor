@@ -121,15 +121,15 @@ void main() {
   });
 
   test('serialize and deserialize minimal checklist', () {
-    final checkList =
-        Checklist(questions: [Question(id: 0, name: 'b')], checked: {});
+    final checkList = Checklist(
+        questions: const [Question(id: 0, name: 'b')], checked: const {});
     final base64 = checkList.toBase64();
     final infoItem = InfoItem.fromBase64(base64);
     expect(checkList, infoItem);
   });
 
   test('serialize and deserialize checklist', () {
-    final checkList = Checklist(questions: [
+    final checkList = Checklist(questions: const [
       Question(
         id: 0,
         fileId: '8c5d14a2-c23f-4a24-84db-ba960a0ecb38',
@@ -178,7 +178,7 @@ void main() {
         fileId: '00056f16-69bf-4ef1-90c6-e91b66929baf',
         id: 7,
       )
-    ], checked: {
+    ], checked: const {
       '20200506': {1, 4},
       '20200507': {0, 1, 2, 3, 4, 5, 6, 7},
       '20200508': {7},
@@ -191,7 +191,7 @@ void main() {
   test('Check item from checkist checklist', () {
     final question = Question(id: 0, name: 'b');
     final day = DateTime(2002, 02, 02);
-    final checkList = Checklist(questions: [question], checked: {});
+    final checkList = Checklist(questions: [question], checked: const {});
     final checkedList = checkList.signOff(question, day);
     expect(checkList == checkedList, isFalse);
     expect(checkList.isSignedOff(question, day), isFalse);
@@ -203,7 +203,7 @@ void main() {
     final day = DateTime(2002, 02, 02);
     final checkedList = Checklist(questions: [
       question
-    ], checked: {
+    ], checked: const {
       '20020202': {0}
     });
     final uncheckedList = checkedList.signOff(question, day);
@@ -217,7 +217,7 @@ void main() {
     final day = DateTime(2002, 02, 02);
     final checkedList = Checklist(questions: [
       question
-    ], checked: {
+    ], checked: const {
       '20040202': {0},
       '20020202': {1}
     });

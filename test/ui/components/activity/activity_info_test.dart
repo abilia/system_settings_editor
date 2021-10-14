@@ -52,7 +52,7 @@ void main() {
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: [Translator.delegate],
+            localizationsDelegates: const [Translator.delegate],
             localeResolutionCallback: (locale, supportedLocales) =>
                 supportedLocales.firstWhere(
                     (l) => l.languageCode == locale?.languageCode,
@@ -303,7 +303,7 @@ void main() {
     await tester.pumpAndSettle();
     tester.takeException();
 
-    expect(find.byType(Hero), findsOneWidget);
+    expect(find.byType(FadeInImage), findsOneWidget);
   });
 
   testWidgets('Note attachment is present', (WidgetTester tester) async {
@@ -360,7 +360,7 @@ void main() {
         activity: Activity.createNew(
             title: 'title',
             startTime: startTime,
-            infoItem: Checklist(questions: [
+            infoItem: Checklist(questions: const [
               Question(
                 id: 1,
                 name:
@@ -410,7 +410,7 @@ void main() {
 
   testWidgets('Checklist attachment is present and not signed off',
       (WidgetTester tester) async {
-    final checklist = Checklist(questions: [
+    final checklist = Checklist(questions: const [
       Question(id: 0, name: 'tag'),
       Question(id: 1, fileId: 'fileid'),
     ]);
@@ -450,11 +450,11 @@ void main() {
         startTime: startTime,
         checkable: true,
         fileId: Uuid().v4(),
-        infoItem: Checklist(questions: [
+        infoItem: Checklist(questions: const [
           Question(id: 0, name: 'tag'),
           Question(id: 1, fileId: 'fileid'),
         ], checked: {
-          Checklist.dayKey(day): {0, 1}
+          Checklist.dayKey(day): const {0, 1}
         }));
 
     await tester.pumpWidget(
@@ -509,11 +509,11 @@ void main() {
     final activity = Activity.createNew(
         startTime: startTime,
         checkable: true,
-        infoItem: Checklist(questions: [
+        infoItem: Checklist(questions: const [
           Question(id: 0, name: 'checked'),
           Question(id: 1, name: 'unchecked'),
         ], checked: {
-          Checklist.dayKey(day): {0}
+          Checklist.dayKey(day): const {0}
         }));
 
     await tester.pumpWidget(

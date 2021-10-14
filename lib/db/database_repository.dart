@@ -9,14 +9,14 @@ final _log = Logger((DatabaseRepository).toString());
 
 class DatabaseRepository {
   DatabaseRepository._();
-  static const CALENDAR_TABLE_NAME = 'calendar_activity';
-  static const SORTABLE_TABLE_NAME = 'sortable';
-  static const USER_FILE_TABLE_NAME = 'user_file';
-  static const GENERIC_TABLE_NAME = 'generic';
+  static const calendarTableName = 'calendar_activity';
+  static const sortableTableName = 'sortable';
+  static const userFileTableName = 'user_file';
+  static const genericTableName = 'generic';
   @visibleForTesting
   static final initialScript = [
     '''
-      create table $CALENDAR_TABLE_NAME (
+      create table $calendarTableName (
         id text primary key not null,
         series_id text not null,
         title text,
@@ -43,7 +43,7 @@ class DatabaseRepository {
       )
     ''',
     '''
-      create table $SORTABLE_TABLE_NAME (
+      create table $sortableTableName (
         id text primary key not null,
         revision int,
         deleted int,
@@ -57,7 +57,7 @@ class DatabaseRepository {
       )
 ''',
     '''
-      create table $USER_FILE_TABLE_NAME (
+      create table $userFileTableName (
         id text primary key not null,
         revision int,
         deleted int,
@@ -71,7 +71,7 @@ class DatabaseRepository {
       )
 ''',
     '''
-      create table $GENERIC_TABLE_NAME (
+      create table $genericTableName (
         id text primary key not null,
         revision int,
         deleted int,
@@ -86,7 +86,7 @@ class DatabaseRepository {
   @visibleForTesting
   static final migrations = <String>[
     '''
-      alter table $CALENDAR_TABLE_NAME add column extras text
+      alter table $calendarTableName add column extras text
     ''',
   ];
 
@@ -123,25 +123,25 @@ class DatabaseRepository {
     }
 
     final calendar = await db.rawQuery(
-        'select id, title, file_id, revision, dirty, deleted from $CALENDAR_TABLE_NAME order by revision desc');
+        'select id, title, file_id, revision, dirty, deleted from $calendarTableName order by revision desc');
     _log.info('------------------- CALENDAR ---------------------');
     logTable(calendar);
     final userFile = await db.rawQuery(
-        'select id, revision, deleted, path, content_type, file_loaded from $USER_FILE_TABLE_NAME order by revision desc');
+        'select id, revision, deleted, path, content_type, file_loaded from $userFileTableName order by revision desc');
     _log.info('------------------- USER FILES ---------------------');
     logTable(userFile);
     final sortables = await db.rawQuery(
-        'select id, data, revision, dirty, deleted, is_group, type, group_id from $SORTABLE_TABLE_NAME order by revision desc');
+        'select id, data, revision, dirty, deleted, is_group, type, group_id from $sortableTableName order by revision desc');
     _log.info('------------------- SORTABLES ---------------------');
     logTable(sortables);
   }
 
   static Future clearAll(Database db) {
     final batch = db.batch()
-      ..delete(CALENDAR_TABLE_NAME)
-      ..delete(SORTABLE_TABLE_NAME)
-      ..delete(USER_FILE_TABLE_NAME)
-      ..delete(GENERIC_TABLE_NAME);
+      ..delete(calendarTableName)
+      ..delete(sortableTableName)
+      ..delete(userFileTableName)
+      ..delete(genericTableName);
     return batch.commit();
   }
 

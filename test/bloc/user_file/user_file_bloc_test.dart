@@ -167,8 +167,8 @@ void main() {
     await expectLater(
       userFileBloc.stream,
       emitsInOrder([
-        UserFilesLoaded([], {}),
-        UserFilesLoaded([], {fileId: file}),
+        UserFilesLoaded(const [], const {}),
+        UserFilesLoaded(const [], {fileId: file}),
         UserFilesLoaded([expectedFile]),
       ]),
     );
@@ -242,8 +242,8 @@ void main() {
     await expectLater(
       userFileBloc.stream,
       emitsInOrder([
-        UserFilesLoaded([], {}),
-        UserFilesLoaded([], {fileId: file}),
+        UserFilesLoaded(const [], const {}),
+        UserFilesLoaded(const [], {fileId: file}),
         UserFilesLoaded([expectedFile1]),
         UserFilesLoaded([expectedFile1], {fileId2: file2}),
         UserFilesLoaded([expectedFile1, expectedFile2]),

@@ -24,7 +24,7 @@ class ErrorPopupListener extends StatelessWidget {
 
   Future _noProceed(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    final showError = (String msg) => showViewDialog(
+    showError(String msg) => showViewDialog(
           context: context,
           builder: (context) => ErrorDialog(text: msg),
         );
@@ -40,6 +40,8 @@ class ErrorPopupListener extends StatelessWidget {
       return showError(translate.startTimeBeforeNowError);
     } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
       return showError(translate.recurringDataEmptyErrorMessage);
+    } else if (errors.contains(SaveError.END_DATE_BEFORE_START)) {
+      return showError(translate.endBeforeStartError);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -57,7 +58,7 @@ void main() {
       // Asserts
       expect(
         monthCalendarBloc.state,
-        MonthCalendarState(
+        _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 03, 01),
           occasion: Occasion.current,
           weeks: [
@@ -147,7 +148,7 @@ void main() {
               ],
             ),
           ],
-        ),
+        )),
       );
     });
 
@@ -181,7 +182,7 @@ void main() {
       expectLater(
         monthCalendarBloc.stream,
         emits(
-          MonthCalendarState(
+          _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: DateTime(2021, 04, 01),
             occasion: Occasion.future,
             weeks: [
@@ -288,7 +289,7 @@ void main() {
                 ],
               ),
             ],
-          ),
+          )),
         ),
       );
     });
@@ -323,7 +324,7 @@ void main() {
       expectLater(
         monthCalendarBloc.stream,
         emits(
-          MonthCalendarState(
+          _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: DateTime(2021, 02, 01),
             occasion: Occasion.past,
             weeks: [
@@ -428,7 +429,7 @@ void main() {
                 ],
               ),
             ],
-          ),
+          )),
         ),
       );
     });
@@ -476,7 +477,7 @@ void main() {
       // Asserts
       expect(
         monthCalendarBloc.state,
-        MonthCalendarState(
+        _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 01, 01),
           occasion: Occasion.current,
           weeks: [
@@ -570,7 +571,7 @@ void main() {
               ],
             ),
           ],
-        ),
+        )),
       );
     });
 
@@ -661,11 +662,11 @@ void main() {
       // Asserts
       expect(
         monthCalendarBloc.state,
-        MonthCalendarState(
+        _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 05, 01),
           occasion: Occasion.current,
           weeks: weeks,
-        ),
+        )),
       );
     });
   });
@@ -679,7 +680,7 @@ void main() {
             Activity.createNew(
               title: 'end and start of month',
               startTime: DateTime(2020, 01, 01, 22, 30),
-              recurs: Recurs.monthlyOnDays([1, 2, 3, 30, 31]),
+              recurs: Recurs.monthlyOnDays(const [1, 2, 3, 30, 31]),
             ),
           ],
         ),
@@ -695,7 +696,7 @@ void main() {
       await expectLater(
         monthCalendarBloc.stream,
         emits(
-          MonthCalendarState(
+          _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: DateTime(2021, 03, 01),
             occasion: Occasion.current,
             weeks: [
@@ -800,7 +801,7 @@ void main() {
                 ],
               ),
             ],
-          ),
+          )),
         ),
       );
     });
@@ -811,7 +812,7 @@ void main() {
       final weekendFullDay = Activity.createNew(
         title: 'full day on weekends',
         startTime: DateTime(2010, 01, 01),
-        recurs: Recurs.weeklyOnDays([6, 7]),
+        recurs: Recurs.weeklyOnDays(const [6, 7]),
         fullDay: true,
       );
       when(mockActivityRepository.load()).thenAnswer(
@@ -832,7 +833,7 @@ void main() {
       await expectLater(
         monthCalendarBloc.stream,
         emits(
-          MonthCalendarState(
+          _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: firstDay,
             occasion: Occasion.current,
             weeks: [
@@ -959,7 +960,7 @@ void main() {
                 ],
               ),
             ],
-          ),
+          )),
         ),
       );
     });
@@ -970,7 +971,7 @@ void main() {
       final removeAfter = Activity.createNew(
         title: 'Remove after',
         startTime: DateTime(2010, 01, 01, 15, 00),
-        recurs: Recurs.weeklyOnDays([4, 5, 6]),
+        recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
       when(mockActivityRepository.load()).thenAnswer(
@@ -991,7 +992,7 @@ void main() {
       await expectLater(
         monthCalendarBloc.stream,
         emits(
-          MonthCalendarState(
+          _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: firstDay,
             occasion: Occasion.current,
             weeks: [
@@ -1099,9 +1100,26 @@ void main() {
                 ],
               ),
             ],
-          ),
+          )),
         ),
       );
     });
   });
+}
+
+class _MonthCalendarStateMatcher extends Matcher {
+  const _MonthCalendarStateMatcher(this.value);
+
+  final MonthCalendarState value;
+
+  @override
+  Description describe(Description description) => description.add('');
+
+  @override
+  bool matches(dynamic object, Map matchState) {
+    return object is MonthCalendarState &&
+        value.firstDay == object.firstDay &&
+        value.occasion == object.occasion &&
+        ListEquality().equals(value.weeks, object.weeks);
+  }
 }

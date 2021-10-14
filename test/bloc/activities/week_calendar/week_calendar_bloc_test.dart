@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
@@ -37,9 +38,10 @@ void main() {
       );
     });
 
-    test('initial state is DayActivitiesUninitialized', () {
-      expect(weekCalendarBloc.state,
-          WeekCalendarInitial(initialMinutes.firstInWeek()));
+    test('initial state is WeekCalendarInitial', () {
+      expect(weekCalendarBloc.state, isA<WeekCalendarInitial>());
+      expect(weekCalendarBloc.state.currentWeekStart,
+          initialMinutes.firstInWeek());
     });
 
     test(
@@ -54,9 +56,11 @@ void main() {
       expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
-            initialMinutes.firstInWeek(),
-            {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+          _WeekCalendarLoadedMatcher(
+            WeekCalendarLoaded(
+              initialMinutes.firstInWeek(),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            ),
           ),
         ),
       );
@@ -76,18 +80,18 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
           ],
         ),
       );
@@ -108,30 +112,30 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
-            WeekCalendarLoaded(
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
-                0: [],
-                1: [],
-                2: [],
-                3: [],
+                0: const [],
+                1: const [],
+                2: const [],
+                3: const [],
                 4: [
                   ActivityDay(
                           fridayActivity, fridayActivity.startTime.onlyDays())
                       .toOccasion(initialMinutes)
                 ],
-                5: [],
-                6: []
+                5: const [],
+                6: const []
               },
-            ),
-            WeekCalendarLoaded(
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            ),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
           ],
         ),
       );
@@ -141,7 +145,7 @@ void main() {
       final removeAfter = Activity.createNew(
         title: 'Remove after',
         startTime: DateTime(2010, 01, 01, 15, 00),
-        recurs: Recurs.weeklyOnDays([4, 5, 6]),
+        recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
       // Arrange
@@ -154,13 +158,13 @@ void main() {
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            WeekCalendarLoaded(
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
-                0: [],
-                1: [],
-                2: [],
-                3: [], // No activity this day since remove after is true
+                0: const [],
+                1: const [],
+                2: const [],
+                3: const [], // No activity this day since remove after is true
                 4: [
                   ActivityDay(
                           removeAfter, initialMinutes.firstInWeek().addDays(4))
@@ -171,9 +175,9 @@ void main() {
                           removeAfter, initialMinutes.firstInWeek().addDays(5))
                       .toOccasion(initialMinutes)
                 ],
-                6: []
+                6: const []
               },
-            ),
+            )),
           ],
         ),
       );
@@ -197,13 +201,13 @@ void main() {
       await expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
+          _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
-              0: [],
-              1: [],
-              2: [],
-              3: [], // No activity this day since remove after is true
+              0: const [],
+              1: const [],
+              2: const [],
+              3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion.forTest(initalMinActivity),
                 ActivityOccasion.forTest(
@@ -211,10 +215,10 @@ void main() {
                   occasion: Occasion.future,
                 ),
               ],
-              5: [],
-              6: []
+              5: const [],
+              6: const []
             },
-          ),
+          )),
         ),
       );
 
@@ -224,13 +228,13 @@ void main() {
       await expectLater(
         weekCalendarBloc.stream,
         emits(
-          WeekCalendarLoaded(
+          _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
-              0: [],
-              1: [],
-              2: [],
-              3: [], // No activity this day since remove after is true
+              0: const [],
+              1: const [],
+              2: const [],
+              3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion.forTest(
                   initalMinActivity,
@@ -238,12 +242,29 @@ void main() {
                 ),
                 ActivityOccasion.forTest(nextMinActivity),
               ],
-              5: [],
-              6: []
+              5: const [],
+              6: const []
             },
-          ),
+          )),
         ),
       );
     });
   });
+}
+
+class _WeekCalendarLoadedMatcher extends Matcher {
+  const _WeekCalendarLoadedMatcher(this.value);
+
+  final WeekCalendarLoaded value;
+
+  @override
+  Description describe(Description description) => description.add(
+      'WeekCalendarLoaded { currentWeekStart: ${value.currentWeekStart}, activities: ${value.currentWeekActivities}}');
+
+  @override
+  bool matches(dynamic object, Map matchState) {
+    return value.currentWeekStart == object.currentWeekStart &&
+        DeepCollectionEquality()
+            .equals(value.currentWeekActivities, object.currentWeekActivities);
+  }
 }

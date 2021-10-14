@@ -28,7 +28,8 @@ class FakeActivity {
       _reoccurs(startDate, Recurs.weeklyOnDays(List.generate(7, (d) => d + 1)),
           title: 'recurs everyday');
   static Activity reocurrsWeekends([DateTime? startDate]) => _reoccurs(
-      startDate, Recurs.weeklyOnDays([DateTime.saturday, DateTime.sunday]),
+      startDate,
+      Recurs.weeklyOnDays(const [DateTime.saturday, DateTime.sunday]),
       title: 'recurs weekend');
   static Activity reocurrsMondays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.monday),

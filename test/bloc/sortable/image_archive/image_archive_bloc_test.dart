@@ -15,8 +15,8 @@ void main() {
   });
 
   test('Initial state is an empty ImageArchiveState', () {
-    expect(
-        imageArchiveBloc.state, SortableArchiveState<ImageArchiveData>({}, {}));
+    expect(imageArchiveBloc.state,
+        SortableArchiveState<ImageArchiveData>(const {}, const {}));
   });
 
   test('FolderChanged will set the folder in the state', () async {
@@ -24,7 +24,7 @@ void main() {
     imageArchiveBloc.add(FolderChanged(folderId));
     await expectLater(
       imageArchiveBloc.stream,
-      emits(SortableArchiveState<ImageArchiveData>({}, {},
+      emits(SortableArchiveState<ImageArchiveData>(const {}, const {},
           currentFolderId: folderId)),
     );
   });

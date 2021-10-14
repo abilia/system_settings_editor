@@ -22,7 +22,7 @@ void main() {
 
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [Translator.delegate],
+        localizationsDelegates: const [Translator.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),

@@ -152,7 +152,7 @@ class _CategoriesPreview extends StatelessWidget {
                         dayOccasion: Occasion.current,
                         dayParts: DayParts.standard(),
                         use12h: state.timepillar.use12h,
-                        nightParts: [],
+                        nightParts: const [],
                         interval: TimepillarInterval(
                           start: DateTime(2021, 1, 1, 7),
                           end: DateTime(2021, 1, 1, 10),

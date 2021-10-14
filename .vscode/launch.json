@@ -31,6 +31,16 @@
       ],
     },
     {
+      "name": "Profile MPGo",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [
+        "--flavor",
+        "mpgo"
+      ],
+    },
+    {
       "name": "Test as MEMOplanner Go",
       "type": "dart",
       "request": "launch",

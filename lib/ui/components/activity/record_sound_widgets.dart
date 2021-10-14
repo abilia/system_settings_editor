@@ -134,9 +134,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                 ? null
                 : permissionStatus == PermissionStatus.denied
                     ? () async {
-                        context
-                            .read<PermissionBloc>()
-                            .add(RequestPermissions([Permission.microphone]));
+                        context.read<PermissionBloc>().add(
+                              RequestPermissions(const [Permission.microphone]),
+                            );
                       }
                     : () async {
                         final result =

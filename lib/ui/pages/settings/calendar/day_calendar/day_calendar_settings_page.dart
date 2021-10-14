@@ -17,14 +17,14 @@ class DayCalendarSettingsPage extends StatelessWidget {
             title: Translator.of(context).translate.dayCalendar,
             iconData: AbiliaIcons.day,
             bottom: AbiliaTabBar(
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(AbiliaIcons.menu_setup),
                 Icon(AbiliaIcons.show),
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: TabBarView(children: const [
             DayAppBarSettingsTab(),
             DayViewSettingsTab(),
             EyeButtonSettingsTab(),

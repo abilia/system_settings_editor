@@ -72,7 +72,7 @@ void main() {
           child: MaterialApp(
             theme: abiliaTheme,
             supportedLocales: Translator.supportedLocals,
-            localizationsDelegates: [Translator.delegate],
+            localizationsDelegates: const [Translator.delegate],
             localeResolutionCallback: (locale, supportedLocales) =>
                 supportedLocales.firstWhere(
                     (l) => l.languageCode == locale?.languageCode,
@@ -978,7 +978,7 @@ void main() {
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
 
-      await tester.enterText_(
+      await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
       await tester.dragFrom(
@@ -1020,7 +1020,7 @@ void main() {
       expect(find.byType(CalendarPage), findsNothing);
 
       // Enter activity information
-      await tester.enterText_(
+      await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
@@ -1346,7 +1346,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
-      await tester.enterText_(editTitleFieldFinder, newTitle);
+      await tester.ourEnterText(editTitleFieldFinder, newTitle);
       await tester.tap(saveEditActivityButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1364,7 +1364,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
-      await tester.enterText_(editTitleFieldFinder, newTitle);
+      await tester.ourEnterText(editTitleFieldFinder, newTitle);
       await tester.tap(saveEditActivityButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.activityBackButton));
