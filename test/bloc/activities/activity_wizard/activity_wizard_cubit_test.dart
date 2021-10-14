@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/activities/activities_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 
 void main() {
   late MockActivitiesBloc mockActivitiesBloc;
@@ -21,10 +21,16 @@ void main() {
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
 
-  setUp(() {
+  setUpAll(() {
+    registerFallbackValue(ActivitiesNotLoaded());
+    registerFallbackValue(LoadActivities());
     tz.initializeTimeZones();
+  });
+
+  setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenAnswer((_) => ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state)
+        .thenAnswer((_) => ActivitiesNotLoaded());
 
     clockBloc =
         ClockBloc(StreamController<DateTime>().stream, initialTime: nowTime);
@@ -162,7 +168,7 @@ void main() {
       () async {
     // Arrange
     final mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aTime,
@@ -247,7 +253,7 @@ void main() {
         sucessfullSave: true,
       ),
     );
-    verify(mockActivitiesBloc.add(AddActivity(expectedSaved)));
+    verify(() => mockActivitiesBloc.add(AddActivity(expectedSaved)));
   });
 
   test('Saving full day activity sets correct time and alarms', () async {
@@ -302,7 +308,8 @@ void main() {
 
     // Assert
     expect(activityWizardCubit.state, wizState.saveSucess());
-    verify(mockActivitiesBloc.add(UpdateActivity(activityExpectedToBeSaved)));
+    verify(() =>
+        mockActivitiesBloc.add(UpdateActivity(activityExpectedToBeSaved)));
   });
 
   test('activity.startTime set correctly', () async {
@@ -654,8 +661,8 @@ void main() {
     wizCubit.next();
 
     // Assert
-    await untilCalled(mockActivitiesBloc.add(any));
-    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+    await untilCalled(() => mockActivitiesBloc.add(any()));
+    expect(verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
         UpdateActivity(expectedActivity));
   });
 
@@ -705,8 +712,8 @@ void main() {
     wizCubit.next();
 
     // Assert
-    await untilCalled(mockActivitiesBloc.add(any));
-    expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+    await untilCalled(() => mockActivitiesBloc.add(any()));
+    expect(verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
         UpdateActivity(expectedActivity));
   });
 
@@ -847,7 +854,8 @@ void main() {
           ),
         );
 
-        expect(verify(mockActivitiesBloc.add(captureAny)).captured.single,
+        expect(
+            verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
             AddActivity(expectedActivity));
       });
 
@@ -1116,7 +1124,8 @@ void main() {
 
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: NO_ALARM,
@@ -1197,7 +1206,8 @@ void main() {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: NO_ALARM,
@@ -1275,7 +1285,8 @@ void main() {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.edit(
           ActivityDay(stored, aDay),
         );
@@ -1334,7 +1345,8 @@ void main() {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored]));
 
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
@@ -1392,7 +1404,8 @@ void main() {
         // Arrange
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([stored]));
+        when(() => mockActivitiesBloc.state)
+            .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: NO_ALARM,
@@ -1463,7 +1476,7 @@ void main() {
         final stored = Activity.createNew(title: 'stored', startTime: aTime);
         final stored2 = Activity.createNew(title: 'stored2', startTime: aTime);
         final mockActivitiesBloc = MockActivitiesBloc();
-        when(mockActivitiesBloc.state)
+        when(() => mockActivitiesBloc.state)
             .thenReturn(ActivitiesLoaded([stored, stored2]));
 
         final editActivityBloc = EditActivityBloc.edit(
@@ -1577,7 +1590,8 @@ void main() {
       recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
     );
     final mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([activity]));
+    when(() => mockActivitiesBloc.state)
+        .thenReturn(ActivitiesLoaded([activity]));
 
     final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(activity, aDay),
@@ -1617,9 +1631,9 @@ void main() {
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
     // Assert - correct day is saved
-    await untilCalled(mockActivitiesBloc.add(any));
+    await untilCalled(() => mockActivitiesBloc.add(any()));
     expect(
-      verify(mockActivitiesBloc.add(captureAny)).captured.single,
+      verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
       UpdateRecurringActivity(
         ActivityDay(expetedActivityToSave, aDay),
         ApplyTo.onlyThisDay,
@@ -1635,7 +1649,8 @@ void main() {
       startTime: aTime,
     );
     final mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([activity]));
+    when(() => mockActivitiesBloc.state)
+        .thenReturn(ActivitiesLoaded([activity]));
 
     final editActivityBloc = EditActivityBloc.edit(
       ActivityDay(activity, aDay),
@@ -1666,9 +1681,9 @@ void main() {
 
     wizCubit.next(saveRecurring: SaveRecurring(ApplyTo.onlyThisDay, aDay));
 
-    await untilCalled(mockActivitiesBloc.add(any));
+    await untilCalled(() => mockActivitiesBloc.add(any()));
     expect(
-      verify(mockActivitiesBloc.add(captureAny)).captured.single,
+      verify(() => mockActivitiesBloc.add(captureAny())).captured.single,
       UpdateRecurringActivity(
         ActivityDay(expectedActivity, aDay),
         ApplyTo.onlyThisDay,

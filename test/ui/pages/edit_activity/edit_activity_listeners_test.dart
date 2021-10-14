@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -14,7 +15,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/enter_text.dart';
 
 void main() {
@@ -32,17 +33,25 @@ void main() {
   late MockActivitiesBloc mockActivitiesBloc;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
-  setUp(() async {
+  setUpAll(() {
+    registerFallbackValue(ActivitiesNotLoaded());
+    registerFallbackValue(LoadActivities());
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
     tz.initializeTimeZones();
+  });
+
+  setUp(() async {
     await initializeDateFormatting();
     mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
-    when(mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
+    when(() => mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingsBloc.state).thenReturn(
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
             MemoplannerSettings(advancedActivityTemplate: false)));
-    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockMemoplannerSettingsBloc.stream)
+        .thenAnswer((_) => Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
@@ -390,7 +399,8 @@ void main() {
       startTime: startTime,
       duration: 30.minutes(),
     );
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([conflicting]));
+    when(() => mockActivitiesBloc.state)
+        .thenReturn(ActivitiesLoaded([conflicting]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();
 
@@ -455,7 +465,7 @@ void main() {
       startTime: startTime.subtract(10.minutes()),
       duration: 30.minutes(),
     );
-    when(mockActivitiesBloc.state)
+    when(() => mockActivitiesBloc.state)
         .thenReturn(ActivitiesLoaded([conflictingActivity]));
     await tester.pumpWidget(createEditActivityPage(newActivity: true));
     await tester.pumpAndSettle();

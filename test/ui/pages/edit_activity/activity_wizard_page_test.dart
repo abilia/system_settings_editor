@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -14,7 +15,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -25,22 +26,32 @@ void main() {
   late MockUserFileBloc mockUserFileBloc;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
+  setUpAll(() {
+    registerFallbackValue(SortablesNotLoaded());
+    registerFallbackValue(LoadSortables());
+    registerFallbackValue(UserFilesNotLoaded());
+    registerFallbackValue(LoadUserFiles());
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
-    when(mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
-    when(mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingsBloc.state).thenReturn(
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       MemoplannerSettingsLoaded(
         MemoplannerSettings(
           addActivityTypeAdvanced: false,
         ),
       ),
     );
-    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockMemoplannerSettingsBloc.stream)
+        .thenAnswer((_) => Stream.empty());
   });
 
   Widget wizardPage({
@@ -173,7 +184,7 @@ void main() {
     );
 
     testWidgets('only title step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           titleOnlyMemoSettings,
         ),
@@ -200,7 +211,7 @@ void main() {
 
     testWidgets('title and image shows no warning step',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -252,7 +263,7 @@ void main() {
     });
 
     testWidgets('title shows when going back', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           titleOnlyMemoSettings,
         ),
@@ -280,7 +291,7 @@ void main() {
     });
 
     testWidgets('title from basic activity', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -301,7 +312,7 @@ void main() {
       );
       const title = 'testtitle';
 
-      when(mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
+      when(() => mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
         Sortable.createNew<BasicActivityDataItem>(
           data: BasicActivityDataItem.createNew(title: title),
         ),
@@ -328,7 +339,7 @@ void main() {
 
   group('time step', () {
     testWidgets('time from basic activity', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -349,7 +360,7 @@ void main() {
       );
       const title = 'testtitle';
 
-      when(mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
+      when(() => mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
         Sortable.createNew<BasicActivityDataItem>(
           data: BasicActivityDataItem.createNew(
             title: title,
@@ -384,7 +395,7 @@ void main() {
     });
 
     testWidgets('can enter start and end time', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -426,7 +437,7 @@ void main() {
     });
 
     testWidgets('time is saved', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -489,7 +500,7 @@ void main() {
     );
 
     testWidgets('only type step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           typeOnlyMemoSettings,
         ),
@@ -506,7 +517,7 @@ void main() {
 
     testWidgets('Select full day removes time step',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -567,7 +578,7 @@ void main() {
     );
 
     testWidgets('only available for step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           availableForOnlyMemoSettings,
         ),
@@ -598,7 +609,7 @@ void main() {
     );
 
     testWidgets('only checkable step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           checkableOnlyMemoSettings,
         ),
@@ -629,7 +640,7 @@ void main() {
     );
 
     testWidgets('only remove after step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           removeAfterOnlyMemoSettings,
         ),
@@ -661,7 +672,7 @@ void main() {
 
     testWidgets('changing recurring changes save button',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(_recurringOnly),
       );
       await tester.pumpWidget(wizardPage());
@@ -697,7 +708,7 @@ void main() {
 
     testWidgets('weekly recurring shows weekly recurring',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(MemoplannerSettings(
           addActivityTypeAdvanced: false,
           wizardTemplateStep: false,
@@ -775,7 +786,7 @@ void main() {
 
     testWidgets('monthly recurring shows monthy recurring',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(MemoplannerSettings(
           addActivityTypeAdvanced: false,
           wizardTemplateStep: false,
@@ -868,7 +879,7 @@ void main() {
     );
 
     testWidgets('only image step', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           imageOnlyMemoSettings,
         ),
@@ -900,7 +911,7 @@ void main() {
     );
 
     testWidgets('reminders step present', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           remindersOnlyMemoSettings,
         ),
@@ -921,7 +932,7 @@ void main() {
     });
 
     testWidgets('no reminders when full day', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           remindersOnlyMemoSettings,
         ),
@@ -940,7 +951,7 @@ void main() {
 
   group('extra function step', () {
     testWidgets('Both show', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -976,7 +987,7 @@ void main() {
     });
 
     testWidgets('only note show', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -1018,7 +1029,7 @@ void main() {
     });
 
     testWidgets('only checklist show', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
@@ -1079,7 +1090,7 @@ void main() {
     );
 
     testWidgets('alarm step shown', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           memoSettings,
         ),
@@ -1101,7 +1112,7 @@ void main() {
     });
 
     testWidgets('no alarm step when fullDay', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           memoSettings,
         ),

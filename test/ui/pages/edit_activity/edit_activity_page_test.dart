@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -18,7 +19,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
@@ -41,18 +42,28 @@ void main() {
   late MockUserFileBloc mockUserFileBloc;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
+  setUpAll(() {
+    registerFallbackValue(SortablesNotLoaded());
+    registerFallbackValue(LoadSortables());
+    registerFallbackValue(UserFilesNotLoaded());
+    registerFallbackValue(LoadUserFiles());
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
-    when(mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
-    when(mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingsBloc.state).thenReturn(
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
             MemoplannerSettings(advancedActivityTemplate: false)));
-    when(mockMemoplannerSettingsBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockMemoplannerSettingsBloc.stream)
+        .thenAnswer((_) => Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
@@ -783,7 +794,7 @@ Internal improvements to tests and examples.''';
         const content =
             'Etappen har sin början vid Bjursjöns strand, ett mycket populärt friluftsområde med närhet till Uddevalla tätort.';
 
-        when(mockSortableBloc.state).thenReturn(
+        when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
@@ -827,7 +838,7 @@ Internal improvements to tests and examples.''';
             'Etappen har sin början vid Bjursjöns strand, ett mycket populärt'
             ' friluftsområde med närhet till Uddevalla tätort.';
 
-        when(mockSortableBloc.state).thenReturn(
+        when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
@@ -855,9 +866,9 @@ Internal improvements to tests and examples.''';
     group('checklist', () {
       setUp(() async {
         GetItInitializer()
-          ..fileStorage = MockFileStorage()
+          ..fileStorage = FakeFileStorage()
           ..sharedPreferences = await FakeSharedPreferences.getInstance()
-          ..database = MockDatabase()
+          ..database = FakeDatabase()
           ..init();
       });
       final questions = {
@@ -904,7 +915,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
-        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         await tester.pumpWidget(
           createEditActivityPage(
             givenActivity: Activity.createNew(
@@ -1088,9 +1099,9 @@ text''';
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
-        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         const title1 = 'listtitle1';
-        when(mockSortableBloc.state).thenReturn(
+        when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
@@ -1134,11 +1145,11 @@ text''';
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
-        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const checklisttitle1 = 'checklisttitle1',
             checklisttitle2 = 'checklisttitle2';
-        when(mockSortableBloc.state).thenReturn(
+        when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
@@ -1683,7 +1694,7 @@ text''';
         'edit activity time with both times and setting removes end time',
         (WidgetTester tester) async {
       // Arrange
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityEndTimeEditable: false,
       )));
@@ -2012,7 +2023,7 @@ text''';
   group('Memoplanner settings', () {
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDateEditable: false,
       )));
@@ -2025,7 +2036,7 @@ text''';
     });
 
     testWidgets('Right/left not visible', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTypeEditable: false,
       )));
@@ -2037,7 +2048,7 @@ text''';
     });
 
     testWidgets('No end time', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityEndTimeEditable: false,
       )));
@@ -2049,7 +2060,7 @@ text''';
     });
 
     testWidgets('No recurring option', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityRecurringEditable: false,
       )));
@@ -2060,7 +2071,7 @@ text''';
     });
 
     testWidgets('Alarm options', (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDisplayAlarmOption: false,
         activityDisplaySilentAlarmOption: false,
@@ -2079,7 +2090,7 @@ text''';
 
     testWidgets('Alarm options - silent option alarm and vibration',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDisplayAlarmOption: false,
         activityDisplayNoAlarmOption: false,
@@ -2106,7 +2117,7 @@ text''';
     testWidgets(
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
@@ -2140,7 +2151,7 @@ text''';
     testWidgets(
         'activityTimeBeforeCurrent true - CAN save when start time is future',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
@@ -2169,7 +2180,7 @@ text''';
     testWidgets(
         'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
@@ -2204,7 +2215,7 @@ text''';
       const leftCategoryName = 'VÄNSTER',
           rightCategoryName =
               'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeLeft: leftCategoryName,
@@ -2225,7 +2236,7 @@ text''';
 
     testWidgets('calendarActivityTypeShowTypes false does not show categories',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state).thenReturn(
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: false,
@@ -2633,10 +2644,10 @@ text''';
 
       testWidgets('checklist', (WidgetTester tester) async {
         // Arrange
-        when(mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const item1Name = 'Item 1 name';
-        when(mockSortableBloc.state).thenReturn(
+        when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
@@ -2681,7 +2692,7 @@ text''';
       const name = 'Rigel';
       const content =
           'is a blue supergiant star in the constellation of Orion, approximately 860 light-years (260 pc) from Earth. It is the brightest and most massive component of a star system of at least four stars that appear as a single blue-white point of light to the naked eye. A star of spectral type B8Ia, Rigel is calculated to be anywhere from 61,500 to 363,000 times as luminous as the Sun, and 18 to 24 times as massive. ';
-      when(mockSortableBloc.state).thenReturn(
+      when(() => mockSortableBloc.state).thenReturn(
         SortablesLoaded(
           sortables: [
             Sortable.createNew<NoteData>(
