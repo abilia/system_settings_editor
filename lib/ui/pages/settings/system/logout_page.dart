@@ -34,23 +34,25 @@ class ProfilePictureNameAndEmail extends StatefulWidget {
   const ProfilePictureNameAndEmail({Key? key}) : super(key: key);
   @override
   _ProfilePictureNameAndEmailState createState() =>
-      _ProfilePictureNameAndEmailState(
-        user: GetIt.I<UserDb>().getUser(),
-        baseUrl: GetIt.I<BaseUrlDb>().getBaseUrl(),
-      );
+      _ProfilePictureNameAndEmailState();
 }
 
 class _ProfilePictureNameAndEmailState
     extends State<ProfilePictureNameAndEmail> {
   bool showVersion = false;
-  final User? user;
-  final String baseUrl;
-  final String environment;
-  _ProfilePictureNameAndEmailState({
-    required this.user,
-    required this.baseUrl,
-  }) : environment =
-            backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
+  late final User? user;
+  late final String baseUrl;
+  late final String environment;
+
+  @override
+  void initState() {
+    super.initState();
+    user = GetIt.I<UserDb>().getUser();
+    baseUrl = GetIt.I<BaseUrlDb>().getBaseUrl();
+    environment =
+        backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = this.user;

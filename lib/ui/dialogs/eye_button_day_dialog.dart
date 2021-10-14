@@ -20,26 +20,23 @@ class EyeButtonDayDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EyeButtonDayDialogState createState() => _EyeButtonDayDialogState(
-        calendarType: currentCalendarType,
-        dotsInTimePillar: currentDotsInTimepillar,
-        timepillarZoom: currentZoom,
-        dayInterval: currentDayInterval,
-      );
+  _EyeButtonDayDialogState createState() => _EyeButtonDayDialogState();
 }
 
 class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
-  bool dotsInTimePillar;
-  TimepillarZoom timepillarZoom;
-  TimepillarIntervalType dayInterval;
-  DayCalendarType calendarType;
+  late bool dotsInTimePillar;
+  late TimepillarZoom timepillarZoom;
+  late TimepillarIntervalType dayInterval;
+  late DayCalendarType calendarType;
 
-  _EyeButtonDayDialogState({
-    required this.calendarType,
-    required this.dotsInTimePillar,
-    required this.timepillarZoom,
-    required this.dayInterval,
-  });
+  @override
+  void initState() {
+    super.initState();
+    dotsInTimePillar = widget.currentDotsInTimepillar;
+    timepillarZoom = widget.currentZoom;
+    dayInterval = widget.currentDayInterval;
+    calendarType = widget.currentCalendarType;
+  }
 
   @override
   Widget build(BuildContext context) {

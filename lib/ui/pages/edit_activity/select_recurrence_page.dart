@@ -11,14 +11,17 @@ class SelectRecurrencePage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SelectRecurrencePageState createState() =>
-      _SelectRecurrencePageState(recurrentType);
+  _SelectRecurrencePageState createState() => _SelectRecurrencePageState();
 }
 
 class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
-  RecurrentType newType;
+  late RecurrentType newType;
 
-  _SelectRecurrencePageState(this.newType);
+  @override
+  void initState() {
+    super.initState();
+    newType = widget.recurrentType;
+  }
 
   @override
   Widget build(BuildContext context) {
