@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.6"
   devicelocale:
     dependency: "direct main"
     description:
@@ -400,18 +407,25 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_local_notifications
-      ref: "flutter_local_notifications-v8.0.0-fork-1.11"
-      resolved-ref: "292c596c8c1f611c9f8b6a405b0fd2b99c7f1204"
+      ref: "flutter_local_notifications-v9.0.0-fork-1.12"
+      resolved-ref: "58e8f4614653638fc4f14568921f0a92d38b0775"
       url: "git://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "8.0.0"
+    version: "9.0.0"
+  flutter_local_notifications_linux:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.0"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -1029,7 +1043,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.8.0"
   timing:
     dependency: transitive
     description:

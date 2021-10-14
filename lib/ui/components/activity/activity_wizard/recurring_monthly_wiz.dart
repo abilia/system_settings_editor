@@ -22,7 +22,7 @@ class RecurringMonthlyWiz extends StatelessWidget {
               SizedBox(height: 16.s),
               Divider(),
               SizedBox(height: 24.s),
-              EndDateWidget(),
+              EndDateWizWidget(),
             ].map(
               (w) => w is Divider
                   ? w

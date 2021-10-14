@@ -680,7 +680,7 @@ void main() {
             Activity.createNew(
               title: 'end and start of month',
               startTime: DateTime(2020, 01, 01, 22, 30),
-              recurs: Recurs.monthlyOnDays([1, 2, 3, 30, 31]),
+              recurs: Recurs.monthlyOnDays(const [1, 2, 3, 30, 31]),
             ),
           ],
         ),
@@ -812,7 +812,7 @@ void main() {
       final weekendFullDay = Activity.createNew(
         title: 'full day on weekends',
         startTime: DateTime(2010, 01, 01),
-        recurs: Recurs.weeklyOnDays([6, 7]),
+        recurs: Recurs.weeklyOnDays(const [6, 7]),
         fullDay: true,
       );
       when(mockActivityRepository.load()).thenAnswer(
@@ -971,7 +971,7 @@ void main() {
       final removeAfter = Activity.createNew(
         title: 'Remove after',
         startTime: DateTime(2010, 01, 01, 15, 00),
-        recurs: Recurs.weeklyOnDays([4, 5, 6]),
+        recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
       when(mockActivityRepository.load()).thenAnswer(

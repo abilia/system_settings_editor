@@ -20,7 +20,7 @@ class FunctionSettingsPage extends StatelessWidget {
             title: t.functions,
             iconData: AbiliaIcons.menu_setup,
             bottom: AbiliaTabBar(
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Icon(AbiliaIcons.shortcut_menu),
                 Icon(AbiliaIcons.browser_home),
                 Icon(AbiliaIcons.restore),

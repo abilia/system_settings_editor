@@ -40,7 +40,7 @@ void main() {
     }) =>
         MaterialApp(
           supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: [Translator.delegate],
+          localizationsDelegates: const [Translator.delegate],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(
                   (l) => l.languageCode == locale?.languageCode,

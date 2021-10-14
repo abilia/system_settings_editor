@@ -17,13 +17,13 @@ class WeekCalendarSettingsPage extends StatelessWidget {
             title: Translator.of(context).translate.weekCalendar,
             iconData: AbiliaIcons.week,
             bottom: AbiliaTabBar(
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(AbiliaIcons.menu_setup),
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: TabBarView(children: const [
             WeekAppBarSettingsTab(),
             WeekSettingsTab(),
           ]),

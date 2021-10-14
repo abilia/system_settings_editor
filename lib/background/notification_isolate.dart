@@ -17,7 +17,8 @@ import 'package:seagull/storage/all.dart';
 
 import 'package:seagull/utils/all.dart';
 
-// Stream is created so that app can respond to notification-selected events since the plugin is initialised in the main function
+// Stream is created so that app can respond to notification-selected events
+// since the plugin is initialised in the main function
 ReplaySubject<String> get selectNotificationSubject =>
     _selectNotificationSubject;
 ReplaySubject<String> _selectNotificationSubject = ReplaySubject<String>();
@@ -48,9 +49,9 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
         requestAlertPermission: false,
       ),
     ),
-    onSelectNotification: (String? payload) async {
+    onSelectNotification: (String? payload) {
       if (payload != null) {
-        _log.fine('notification payload: ' + payload);
+        _log.fine('onSelectNotification: $payload');
         selectNotificationSubject.add(payload);
       }
     },
@@ -80,6 +81,7 @@ Future scheduleAlarmNotifications(
   );
 }
 
+// ignore: prefer_function_declarations_over_variables
 late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,
@@ -261,7 +263,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
   return AndroidNotificationDetails(
     notificationChannel.id,
     notificationChannel.name,
-    notificationChannel.description,
+    channelDescription: notificationChannel.description,
     groupKey: activity.seriesId,
     playSound: hasSound,
     sound: sound == Sound.NoSound || !hasSound

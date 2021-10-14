@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -17,9 +18,9 @@ class MonthCalendarTab extends StatelessWidget {
     return Scaffold(
       appBar: const MonthAppBar(),
       body: Stack(
-        children: [
-          const MonthCalendar(),
-          const Align(
+        children: const [
+          MonthCalendar(),
+          Align(
             alignment: Alignment.bottomLeft,
             child: EyeButtonMonth(),
           ),
@@ -343,7 +344,7 @@ class MonthDayContainer extends StatelessWidget {
               ? Stack(
                   children: [
                     if (d.fullDayActivityCount > 1)
-                      MonthFullDayStack(
+                      FullDayStack(
                         numberOfActivities: d.fullDayActivityCount,
                       )
                     else if (d.fullDayActivity != null)
@@ -379,49 +380,23 @@ class WeekNumber extends StatelessWidget {
   }
 }
 
-class MonthFullDayStack extends StatelessWidget {
-  final int numberOfActivities;
-  const MonthFullDayStack({
-    Key? key,
-    required this.numberOfActivities,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final decoration = BoxDecoration(
-      color: AbiliaColors.white,
-      borderRadius: MonthDayView.monthDayborderRadius,
-      border: border,
-    );
-    return Stack(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 3.s, left: 2.s),
-          decoration: decoration,
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: 3.s, right: 2.s),
-          decoration: decoration,
-          child: Center(
-            child: Text('+$numberOfActivities'),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   final ActivityDay activityDay;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
         borderRadius: MonthDayView.monthDayborderRadius,

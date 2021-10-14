@@ -36,7 +36,7 @@ void main() {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded([]));
+    when(mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
     when(mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(mockMemoplannerSettingsBloc.state).thenReturn(
@@ -55,7 +55,7 @@ void main() {
     final activity = givenActivity ?? startActivity;
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
+      localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -162,7 +162,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), newActivtyName);
     await tester.pumpAndSettle();
 
@@ -235,7 +235,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 
@@ -318,7 +318,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
     await tester.tap(submitButtonFinder);
@@ -395,7 +395,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 
@@ -461,7 +461,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 

@@ -17,13 +17,13 @@ class MonthCalendarSettingsPage extends StatelessWidget {
             title: Translator.of(context).translate.monthCalendar,
             iconData: AbiliaIcons.month,
             bottom: AbiliaTabBar(
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(AbiliaIcons.menu_setup),
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: TabBarView(children: const [
             MonthAppBarSettingsTab(),
             MonthDisplaySettingsTab(),
           ]),

@@ -285,8 +285,8 @@ void main() {
       expect(selectNotificationSubject.values, isEmpty);
 
       // Act Login
-      await tester.enterText_(find.byType(PasswordInput), 'secretPassword');
-      await tester.enterText_(find.byType(UsernameInput), Fakes.username);
+      await tester.ourEnterText(find.byType(PasswordInput), 'secretPassword');
+      await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
       await tester.pump();
       await tester.tap(find.byType(LoginButton));
       await tester.pumpAndSettle();
@@ -357,12 +357,12 @@ void main() {
         startTime: startTime,
         checkable: true,
         infoItem: Checklist(
-          questions: [
+          questions: const [
             Question(id: 0, name: 'checked'),
             Question(id: 1, name: unchecked),
           ],
           checked: {
-            Checklist.dayKey(startDay): {0}
+            Checklist.dayKey(startDay): const {0}
           },
         ),
       );

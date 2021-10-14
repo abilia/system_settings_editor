@@ -182,7 +182,7 @@ void main() {
       expect(find.text(title), findsOneWidget);
 
       // Act -- Enter new title and save
-      await tester.enterText_(titleTextFormFieldFinder, newTitle);
+      await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
@@ -849,7 +849,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.editTitleTextFormField), 'new title');
         await tester.pumpAndSettle();
         await tester.tap(finishActivityFinder);
@@ -870,7 +870,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(titleTextFormFieldFinder, newTitle);
+        await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(okButtonFinder);
@@ -887,7 +887,7 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
         when(mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -910,7 +910,7 @@ void main() {
         final activity = Activity.createNew(
           title: 'title',
           startTime: startTime.subtract(100.days()),
-          recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+          recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
         when(mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
@@ -936,7 +936,7 @@ void main() {
               Activity.createNew(
                 title: oldTitle,
                 startTime: startTime.subtract(100.days()),
-                recurs: Recurs.weeklyOnDays([1, 2, 3, 4, 5, 6, 7]),
+                recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
               )
             ],
           ),
@@ -946,7 +946,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(titleTextFormFieldFinder, newTitle);
+        await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(thisDayAndForwardRadioFinder);
@@ -966,7 +966,7 @@ void main() {
     final activity = Activity.createNew(
         title: 'title',
         startTime: startTime,
-        infoItem: Checklist(questions: [
+        infoItem: Checklist(questions: const [
           Question(id: 0, name: tag),
           Question(id: 1, name: 'another'),
         ]));
@@ -1168,7 +1168,8 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
               title: 'title',
               startTime: startTime,
-              infoItem: Checklist(questions: [Question(id: 1, name: item1)]),
+              infoItem:
+                  Checklist(questions: const [Question(id: 1, name: item1)]),
             )
           ],
         ),

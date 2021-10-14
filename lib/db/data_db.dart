@@ -16,12 +16,12 @@ abstract class DataDb<M extends DataModel> {
 
   DataDb(this.db);
 
-  String get GET_ALL_DIRTY => 'SELECT * FROM $tableName WHERE dirty > 0';
-  String get GET_BY_ID_SQL => 'SELECT * FROM $tableName WHERE id == ?';
-  String get GET_ALL_SQL_NON_DELETED =>
+  String get getAllDirtySql => 'SELECT * FROM $tableName WHERE dirty > 0';
+  String get getByIdSql => 'SELECT * FROM $tableName WHERE id == ?';
+  String get getAllNonDeletedSql =>
       'SELECT * FROM $tableName WHERE deleted == 0';
-  String get GET_ALL_SQL => 'SELECT * FROM $tableName';
-  String get MAX_REVISION_SQL =>
+  String get getAllSql => 'SELECT * FROM $tableName';
+  String get maxRevisionSql =>
       'SELECT max(revision) as max_revision FROM $tableName';
 
   Future insert(Iterable<DbModel<M>> dataModels) async {
@@ -45,7 +45,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<Iterable<DbModel<M>>> getAllDirty() async {
-    final result = await db.rawQuery(GET_ALL_DIRTY);
+    final result = await db.rawQuery(getAllDirtySql);
     return result
         .exceptionSafeMap(
           convertToDataModel,
@@ -55,7 +55,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<DbModel<M>?> getById(String id) async {
-    final result = await db.rawQuery(GET_BY_ID_SQL, [id]);
+    final result = await db.rawQuery(getByIdSql, [id]);
     final userFiles = result
         .exceptionSafeMap(
           convertToDataModel,
@@ -70,7 +70,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<Iterable<M>> getAll() async {
-    final result = await db.rawQuery(GET_ALL_SQL);
+    final result = await db.rawQuery(getAllSql);
     return result
         .exceptionSafeMap(
           convertToDataModel,
@@ -81,7 +81,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<Iterable<M>> getAllNonDeleted() async {
-    final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
+    final result = await db.rawQuery(getAllNonDeletedSql);
     return result
         .exceptionSafeMap(
           convertToDataModel,
@@ -92,7 +92,7 @@ abstract class DataDb<M extends DataModel> {
   }
 
   Future<int> getLastRevision() async {
-    final result = await db.rawQuery(MAX_REVISION_SQL);
+    final result = await db.rawQuery(maxRevisionSql);
     return (result.firstOrNull?['max_revision'] ?? 0) as int;
   }
 

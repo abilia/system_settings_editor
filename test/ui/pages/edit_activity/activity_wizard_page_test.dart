@@ -48,7 +48,7 @@ void main() {
   }) {
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
-      localizationsDelegates: [Translator.delegate],
+      localizationsDelegates: const [Translator.delegate],
       localeResolutionCallback: (locale, supportedLocales) => supportedLocales
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
@@ -739,7 +739,7 @@ void main() {
       expect(find.byType(WeekDays), findsOneWidget);
       expect(find.byType(SelectAllWeekdaysButton), findsOneWidget);
       expect(find.byType(EveryOtherWeekSwitch), findsOneWidget);
-      expect(find.byType(EndDateWidget), findsOneWidget);
+      expect(find.byType(EndDateWizWidget), findsOneWidget);
 
       await tester.tap(find.text(translate.shortWeekday(today.weekday)));
       await tester.pumpAndSettle();
@@ -757,8 +757,19 @@ void main() {
 
       await tester.tap(find.byType(SelectAllWeekdaysButton));
       await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(EndDateWizWidget));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EndDatePickerWiz), findsOneWidget);
+      expect(find.byType(SaveButton), findsOneWidget);
+
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
+
       expect(find.byType(ErrorDialog), findsNothing);
     });
 
@@ -804,7 +815,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(RecurringMonthlyWiz), findsOneWidget);
       expect(find.byType(MonthDays), findsOneWidget);
-      expect(find.byType(EndDateWidget), findsOneWidget);
+      expect(find.byType(EndDateWizWidget), findsOneWidget);
 
       await tester.tap(find.text('${today.day}'));
       await tester.pumpAndSettle();
@@ -822,8 +833,19 @@ void main() {
 
       await tester.tap(find.text('31'));
       await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(EndDateWizWidget));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EndDatePickerWiz), findsOneWidget);
+      expect(find.byType(SaveButton), findsOneWidget);
+
       await tester.tap(find.byType(SaveButton));
       await tester.pumpAndSettle();
+
       expect(find.byType(ErrorDialog), findsNothing);
     });
   });

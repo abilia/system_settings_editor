@@ -21,7 +21,7 @@ void main() {
   final activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [Translator.delegate],
+        localizationsDelegates: const [Translator.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
@@ -76,7 +76,7 @@ void main() {
     ].map((a) => ActivityDay(a, day).toOccasion(day)).toList();
 
     final expected = ActivitiesOccasionLoaded(
-      activities: [],
+      activities: const [],
       fullDayActivities: allDayActivities,
       day: day,
       occasion: Occasion.current,

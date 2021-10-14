@@ -58,7 +58,7 @@ void main() {
 
     Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
-          localizationsDelegates: [Translator.delegate],
+          localizationsDelegates: const [Translator.delegate],
           navigatorObservers: [navObserver],
           localeResolutionCallback: (locale, supportedLocales) =>
               supportedLocales.firstWhere(
@@ -89,7 +89,7 @@ void main() {
 
     testWidgets('Image archive smoke test', (WidgetTester tester) async {
       when(mockSortableBloc.state)
-          .thenAnswer((_) => SortablesLoaded(sortables: []));
+          .thenAnswer((_) => SortablesLoaded(sortables: const []));
       await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);

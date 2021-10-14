@@ -30,7 +30,7 @@ void main() {
   });
 
   tearDown(() {
-    genericDb.db.delete(DatabaseRepository.GENERIC_TABLE_NAME);
+    genericDb.db.delete(DatabaseRepository.genericTableName);
   });
 
   final synced = Generic.createNew<MemoplannerSettingData>(
