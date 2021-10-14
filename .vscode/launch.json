@@ -31,7 +31,7 @@
       ],
     },
     {
-      "name": "Profile MP",
+      "name": "Profile MPGo",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",

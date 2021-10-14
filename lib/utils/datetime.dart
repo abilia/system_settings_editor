@@ -70,12 +70,7 @@ extension DateTimeExtensions on DateTime {
       (year <= otherDate.year &&
           month <= otherDate.month &&
           day < otherDate.day);
-  bool isDayAfter(DateTime otherDate) =>
-      year > otherDate.year ||
-      (year >= otherDate.year && month > otherDate.month) ||
-      (year >= otherDate.year &&
-          month >= otherDate.month &&
-          day > otherDate.day);
+  bool isDayAfter(DateTime otherDate) => otherDate.isDayBefore(this);
 
   bool inInclusiveRange(
       {required DateTime startDate, required DateTime endDate}) {
@@ -100,14 +95,6 @@ extension DateTimeExtensions on DateTime {
     if (endDate.isBefore(startDate)) return false;
     if (isBefore(endDate) && isAfter(startDate)) return true;
     if (isAtSameMomentAs(startDate)) return true;
-    return false;
-  }
-
-  bool inRangeWithInclusiveStartDay(
-      {required DateTime startDate, required DateTime endDate}) {
-    if (endDate.isDayBefore(startDate)) return false;
-    if (isDayBefore(endDate) && isDayAfter(startDate)) return true;
-    if (isAtSameDay(startDate)) return true;
     return false;
   }
 
