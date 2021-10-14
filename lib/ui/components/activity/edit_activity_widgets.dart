@@ -634,24 +634,21 @@ class EndDateWizWidget extends StatelessWidget {
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
-        final disabled = state.storedRecurring;
         return SwitchField(
           leading: Icon(
             AbiliaIcons.basic_activity,
             size: smallIconSize,
           ),
           value: recurs.hasNoEnd,
-          onChanged: disabled
-              ? null
-              : (v) => BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(
-                      activity.copyWith(
-                        recurs: recurs.changeEnd(
-                          v ? Recurs.noEndDate : state.timeInterval.startDate,
-                        ),
-                      ),
-                    ),
-                  ),
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
+            ReplaceActivity(
+              activity.copyWith(
+                recurs: recurs.changeEnd(
+                  v ? Recurs.noEndDate : state.timeInterval.startDate,
+                ),
+              ),
+            ),
+          ),
           child: Text(translate.noEndDate),
         );
       },
