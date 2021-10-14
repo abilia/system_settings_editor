@@ -7,7 +7,7 @@ class GenericDb extends DataDb<Generic> {
   GenericDb(Database database) : super(database);
 
   Future<Iterable<Generic>> getAllNonDeletedMaxRevision() async {
-    final result = await db.rawQuery(GET_ALL_SQL_NON_DELETED);
+    final result = await db.rawQuery(getAllNonDeletedSql);
     final genericDataModels = result.map(convertToDataModel);
     final groupByIdentifier = groupBy<DbModel<Generic>, String>(
         genericDataModels, (m) => m.model.data.identifier);
@@ -17,7 +17,7 @@ class GenericDb extends DataDb<Generic> {
   }
 
   @override
-  String get tableName => DatabaseRepository.GENERIC_TABLE_NAME;
+  String get tableName => DatabaseRepository.genericTableName;
   @override
   DbMapTo<Generic> get convertToDataModel => DbGeneric.fromDbMap;
 

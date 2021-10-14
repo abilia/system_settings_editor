@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:http/src/base_client.dart';
 import 'package:logging/logging.dart';
 import 'package:synchronized/extension.dart';
 import 'package:collection/collection.dart';

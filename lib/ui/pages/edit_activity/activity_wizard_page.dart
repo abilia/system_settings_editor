@@ -1,7 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/activity/activity_wizard/checkable_wiz.dart';
-import 'package:seagull/ui/components/activity/activity_wizard/remove_after_wiz.dart';
 
 class ActivityWizardPage extends StatelessWidget {
   const ActivityWizardPage({Key? key}) : super(key: key);
@@ -62,28 +60,6 @@ class ActivityWizardPage extends StatelessWidget {
         return RecurringWeeklyWiz();
       case WizardStep.recursMonthly:
         return RecurringMonthlyWiz();
-      default:
-        return PlaceholderWiz(title: step.toString());
     }
-  }
-}
-
-class PlaceholderWiz extends StatelessWidget {
-  final String title;
-  const PlaceholderWiz({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          title: title,
-          iconData: AbiliaIcons.edit,
-        ),
-        bottomNavigationBar: WizardBottomNavigation(),
-      ),
-    );
   }
 }

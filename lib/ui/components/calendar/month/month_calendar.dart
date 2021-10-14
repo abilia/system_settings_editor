@@ -155,7 +155,6 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final MonthDayWidgetBuilder builder;
-
   const WeekRow(
     this.week, {
     Key? key,
@@ -359,7 +358,7 @@ class MonthDayContainer extends StatelessWidget {
               ? Stack(
                   children: [
                     if (d.fullDayActivityCount > 1)
-                      MonthFullDayStack(
+                      FullDayStack(
                         numberOfActivities: d.fullDayActivityCount,
                       )
                     else if (d.fullDayActivity != null)
@@ -378,7 +377,6 @@ class MonthDayContainer extends StatelessWidget {
 
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
-
   const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
 
   @override
@@ -397,50 +395,23 @@ class WeekNumber extends StatelessWidget {
   }
 }
 
-class MonthFullDayStack extends StatelessWidget {
-  final int numberOfActivities;
-
-  const MonthFullDayStack({
-    Key? key,
-    required this.numberOfActivities,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final decoration = BoxDecoration(
-      color: AbiliaColors.white,
-      borderRadius: MonthDayView.monthDayborderRadius,
-      border: border,
-    );
-    return Stack(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 3.s, left: 2.s),
-          decoration: decoration,
-        ),
-        Container(
-          margin: EdgeInsets.only(bottom: 3.s, right: 2.s),
-          decoration: decoration,
-          child: Center(
-            child: Text('+$numberOfActivities'),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   final ActivityDay activityDay;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
         borderRadius: MonthDayView.monthDayborderRadius,

@@ -162,7 +162,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), newActivtyName);
     await tester.pumpAndSettle();
 
@@ -235,7 +235,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 
@@ -318,7 +318,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
     await tester.tap(submitButtonFinder);
@@ -395,7 +395,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 
@@ -461,7 +461,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Act enter title
-    await tester.enterText_(
+    await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField), 'newActivtyName');
     await tester.pumpAndSettle();
 

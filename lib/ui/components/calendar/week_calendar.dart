@@ -264,52 +264,15 @@ class FullDayActivies extends StatelessWidget {
                 .toList() ??
             [];
         if (fullDayActivities.length > 1) {
-          return FullDayStack(numberOfActivities: fullDayActivities.length);
+          return FullDayStack(
+              numberOfActivities: fullDayActivities.length,
+              height: 36.s,
+              width: double.infinity);
         } else if (fullDayActivities.length == 1) {
           return WeekActivityContent(activityOccasion: fullDayActivities.first);
         }
         return const SizedBox.shrink();
       },
-    );
-  }
-}
-
-class FullDayStack extends StatelessWidget {
-  final int numberOfActivities;
-
-  const FullDayStack({
-    Key? key,
-    required this.numberOfActivities,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: 36.s,
-          child: Padding(
-            padding: EdgeInsets.only(top: 2.s, left: 2.s),
-            child: Container(
-              decoration: whiteBoxDecoration,
-              width: double.infinity,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 36.s,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 2.s, right: 2.s),
-            child: Container(
-              decoration: whiteBoxDecoration,
-              width: double.infinity,
-              child: Center(
-                child: Text('+$numberOfActivities'),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

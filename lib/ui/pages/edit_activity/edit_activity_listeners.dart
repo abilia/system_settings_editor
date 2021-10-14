@@ -24,7 +24,7 @@ class ErrorPopupListener extends StatelessWidget {
 
   Future _noProceed(Set<SaveError> errors, BuildContext context) async {
     final translate = Translator.of(context).translate;
-    final showError = (String msg) => showViewDialog(
+    showError(String msg) => showViewDialog(
           context: context,
           builder: (context) => ErrorDialog(text: msg),
         );
