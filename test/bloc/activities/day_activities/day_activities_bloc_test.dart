@@ -48,7 +48,7 @@ void main() {
 
       // Assert
       expect(dayActivitiesBloc.state,
-          DayActivitiesLoaded(<ActivityDay>[], today, Occasion.current));
+          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current));
     });
 
     test('state is DayActivitiesLoaded when ActivitiesBloc loadeds activities',
@@ -62,7 +62,8 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(<ActivityDay>[], today, Occasion.current)),
+        emits(DayActivitiesLoaded(
+            const <ActivityDay>[], today, Occasion.current)),
       );
     });
 
@@ -163,10 +164,10 @@ void main() {
       await expectLater(
         dayActivitiesBloc.stream,
         emitsInOrder([
-          DayActivitiesLoaded(<ActivityDay>[], today, Occasion.current),
-          DayActivitiesLoaded(<ActivityDay>[], tomorrow, Occasion.future),
-          DayActivitiesLoaded(<ActivityDay>[], today, Occasion.current),
-          DayActivitiesLoaded(<ActivityDay>[], yesterday, Occasion.past),
+          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          DayActivitiesLoaded(const <ActivityDay>[], tomorrow, Occasion.future),
+          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          DayActivitiesLoaded(const <ActivityDay>[], yesterday, Occasion.past),
         ]),
       );
     });
@@ -190,7 +191,8 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(<ActivityDay>[], today, Occasion.current)),
+        emits(DayActivitiesLoaded(
+            const <ActivityDay>[], today, Occasion.current)),
       );
 
       // Arrange
@@ -248,7 +250,7 @@ void main() {
           dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               firstDay.add(Duration(days: 1)),
               Occasion.future,
             ), // friday
@@ -267,7 +269,7 @@ void main() {
               Occasion.future,
             ), // sunday
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               firstDay.add(Duration(days: 4)),
               Occasion.future,
             ), // monday
@@ -295,7 +297,7 @@ void main() {
           dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               boxingDay,
               Occasion.past,
             ),
@@ -305,7 +307,7 @@ void main() {
               Occasion.past,
             ),
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               chrismasDay,
               Occasion.past,
             ),
@@ -334,17 +336,17 @@ void main() {
           dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               boxingDay,
               Occasion.future,
             ),
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               chrismasEve,
               Occasion.future,
             ),
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               chrismasDay,
               Occasion.future,
             ),
@@ -440,7 +442,7 @@ void main() {
           dayActivitiesBloc.stream,
           emitsInOrder([
             DayActivitiesLoaded(
-              <ActivityDay>[],
+              const <ActivityDay>[],
               firstDay,
               Occasion.current,
             ),

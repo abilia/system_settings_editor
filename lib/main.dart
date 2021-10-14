@@ -152,7 +152,7 @@ class SeagullApp extends StatelessWidget {
           RouteLoggingObserver(),
         ],
         supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           Translator.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

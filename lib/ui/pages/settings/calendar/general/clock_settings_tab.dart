@@ -147,7 +147,7 @@ class PreviewTimePillar extends StatelessWidget {
                         dayOccasion: Occasion.current,
                         dayParts: DayParts.standard(),
                         use12h: tpState.use12h,
-                        nightParts: [],
+                        nightParts: const [],
                         interval: interval,
                         columnOfDots: tpState.columnOfDots,
                         topMargin: 0.0,

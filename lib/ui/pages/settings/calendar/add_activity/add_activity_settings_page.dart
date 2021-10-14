@@ -21,7 +21,7 @@ class AddActivitySettingsPage extends StatelessWidget {
             title: Translator.of(context).translate.addActivity,
             iconData: AbiliaIcons.new_icon,
             bottom: AbiliaTabBar(
-              tabs: <Widget>[
+              tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(
                   AbiliaIcons.new_icon,
@@ -31,7 +31,7 @@ class AddActivitySettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: TabBarView(children: const [
             AddActivityGeneralSettingsTab(),
             AddActivityAddSettingsTab(),
             AddActivityDefaultSettingsTab(),

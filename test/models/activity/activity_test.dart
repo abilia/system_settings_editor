@@ -259,7 +259,7 @@ void main() {
       reminderBefore: reminders,
       startTime: now,
       timezone: 'aTimeZone',
-      recurs: Recurs.biWeeklyOnDays(evens: [
+      recurs: Recurs.biWeeklyOnDays(evens: const [
         DateTime.monday,
         DateTime.saturday,
       ]),

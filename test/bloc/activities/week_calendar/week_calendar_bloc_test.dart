@@ -56,7 +56,7 @@ void main() {
         emits(
           WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
-            {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
           ),
         ),
       );
@@ -78,15 +78,15 @@ void main() {
           [
             WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
             WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
             WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
           ],
         ),
@@ -110,27 +110,27 @@ void main() {
           [
             WeekCalendarLoaded(
               initialMinutes.firstInWeek().nextWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
             WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
-                0: [],
-                1: [],
-                2: [],
-                3: [],
+                0: const [],
+                1: const [],
+                2: const [],
+                3: const [],
                 4: [
                   ActivityDay(
                           fridayActivity, fridayActivity.startTime.onlyDays())
                       .toOccasion(initialMinutes)
                 ],
-                5: [],
-                6: []
+                5: const [],
+                6: const []
               },
             ),
             WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
-              {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
             ),
           ],
         ),
@@ -141,7 +141,7 @@ void main() {
       final removeAfter = Activity.createNew(
         title: 'Remove after',
         startTime: DateTime(2010, 01, 01, 15, 00),
-        recurs: Recurs.weeklyOnDays([4, 5, 6]),
+        recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
       // Arrange
@@ -157,10 +157,10 @@ void main() {
             WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
-                0: [],
-                1: [],
-                2: [],
-                3: [], // No activity this day since remove after is true
+                0: const [],
+                1: const [],
+                2: const [],
+                3: const [], // No activity this day since remove after is true
                 4: [
                   ActivityDay(
                           removeAfter, initialMinutes.firstInWeek().addDays(4))
@@ -171,7 +171,7 @@ void main() {
                           removeAfter, initialMinutes.firstInWeek().addDays(5))
                       .toOccasion(initialMinutes)
                 ],
-                6: []
+                6: const []
               },
             ),
           ],
@@ -200,10 +200,10 @@ void main() {
           WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
-              0: [],
-              1: [],
-              2: [],
-              3: [], // No activity this day since remove after is true
+              0: const [],
+              1: const [],
+              2: const [],
+              3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion.forTest(initalMinActivity),
                 ActivityOccasion.forTest(
@@ -211,8 +211,8 @@ void main() {
                   occasion: Occasion.future,
                 ),
               ],
-              5: [],
-              6: []
+              5: const [],
+              6: const []
             },
           ),
         ),
@@ -227,10 +227,10 @@ void main() {
           WeekCalendarLoaded(
             initialMinutes.firstInWeek(),
             {
-              0: [],
-              1: [],
-              2: [],
-              3: [], // No activity this day since remove after is true
+              0: const [],
+              1: const [],
+              2: const [],
+              3: const [], // No activity this day since remove after is true
               4: [
                 ActivityOccasion.forTest(
                   initalMinActivity,
@@ -238,8 +238,8 @@ void main() {
                 ),
                 ActivityOccasion.forTest(nextMinActivity),
               ],
-              5: [],
-              6: []
+              5: const [],
+              6: const []
             },
           ),
         ),

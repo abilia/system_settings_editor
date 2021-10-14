@@ -18,11 +18,11 @@ void main() {
 
       test('Monthly on days', () {
         final expected = Recurs.raw(Recurs.TYPE_MONTHLY, 523, Recurs.NO_END);
-        final monthly = Recurs.monthlyOnDays([1, 2, 4, 10]);
+        final monthly = Recurs.monthlyOnDays(const [1, 2, 4, 10]);
         expect(monthly, expected);
 
         final expected2 = Recurs.raw(Recurs.TYPE_MONTHLY, 3, Recurs.NO_END);
-        final monthly2 = Recurs.monthlyOnDays([1, 2]);
+        final monthly2 = Recurs.monthlyOnDays(const [1, 2]);
         expect(monthly2, expected2);
       });
 
@@ -34,21 +34,22 @@ void main() {
 
       test('Weekly on days 1,2,3', () {
         final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 903, Recurs.NO_END);
-        final weekly = Recurs.weeklyOnDays([1, 2, 3]);
+        final weekly = Recurs.weeklyOnDays(const [1, 2, 3]);
         expect(weekly, expected);
       });
 
       test('Biweekly on days', () {
         final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 1, Recurs.NO_END);
-        final weekly = Recurs.biWeeklyOnDays(evens: [1]);
+        final weekly = Recurs.biWeeklyOnDays(evens: const [1]);
         expect(weekly, expected);
 
         final expected2 = Recurs.raw(Recurs.TYPE_WEEKLY, 32, Recurs.NO_END);
-        final weekly2 = Recurs.biWeeklyOnDays(evens: [6]);
+        final weekly2 = Recurs.biWeeklyOnDays(evens: const [6]);
         expect(weekly2, expected2);
 
         final expected3 = Recurs.raw(Recurs.TYPE_WEEKLY, 129, Recurs.NO_END);
-        final weekly3 = Recurs.biWeeklyOnDays(evens: [1], odds: [1]);
+        final weekly3 =
+            Recurs.biWeeklyOnDays(evens: const [1], odds: const [1]);
         expect(weekly3, expected3);
       });
 

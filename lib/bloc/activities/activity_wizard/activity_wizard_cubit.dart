@@ -82,7 +82,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-  }) : super(ActivityWizardState(0, [WizardStep.advance]));
+  }) : super(ActivityWizardState(0, const [WizardStep.advance]));
 
   void next({
     bool warningConfirmed = false,

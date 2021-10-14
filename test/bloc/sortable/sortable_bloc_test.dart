@@ -29,7 +29,7 @@ void main() {
     sortableBloc.add(LoadSortables());
     await expectLater(
       sortableBloc.stream,
-      emits(SortablesLoaded(sortables: [])),
+      emits(SortablesLoaded(sortables: const [])),
     );
   });
 

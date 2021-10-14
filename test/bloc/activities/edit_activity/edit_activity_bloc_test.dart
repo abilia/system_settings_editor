@@ -386,7 +386,7 @@ void main() {
     wizCubit.next();
     expect(
       wizCubit.state,
-      ActivityWizardState(0, [WizardStep.advance], sucessfullSave: true),
+      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
     // Assert
     await expectLater(

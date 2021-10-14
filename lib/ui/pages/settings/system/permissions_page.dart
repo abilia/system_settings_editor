@@ -189,7 +189,10 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                         );
                       } else {
                         context.read<PermissionBloc>().add(
-                            RequestPermissions([Permission.systemAlertWindow]));
+                              RequestPermissions(
+                                const [Permission.systemAlertWindow],
+                              ),
+                            );
                       }
                     },
                     child: Text(permission.translate(translate)),
