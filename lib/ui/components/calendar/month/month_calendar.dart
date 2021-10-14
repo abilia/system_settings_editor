@@ -38,24 +38,10 @@ class MonthCalendar extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.calendarDayColor != current.calendarDayColor ||
           previous.monthCalendarType != current.monthCalendarType,
-      builder: (context, memoSettingsState) => Config.isMP
-          ? BlocListener<InactivityCubit, InactivityState>(
-              listenWhen: (previous, current) =>
-                  current is InactivityThresholdReachedState &&
-                  previous is ActivityDetectedState,
-              listener: (context, state) {
-                context.read<DayPickerBloc>().add(CurrentDay());
-                context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
-              },
-              child: MonthBody(
-                calendarDayColor: memoSettingsState.calendarDayColor,
-                monthCalendarType: memoSettingsState.monthCalendarType,
-              ),
-            )
-          : MonthBody(
-              calendarDayColor: memoSettingsState.calendarDayColor,
-              monthCalendarType: memoSettingsState.monthCalendarType,
-            ),
+      builder: (context, memoSettingsState) => MonthBody(
+        calendarDayColor: memoSettingsState.calendarDayColor,
+        monthCalendarType: memoSettingsState.monthCalendarType,
+      ),
     );
   }
 }
