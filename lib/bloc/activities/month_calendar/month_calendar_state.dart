@@ -1,6 +1,6 @@
 part of 'month_calendar_bloc.dart';
 
-class MonthCalendarState extends Equatable {
+class MonthCalendarState {
   final DateTime firstDay;
   final List<MonthWeek> weeks;
   final Occasion occasion;
@@ -12,12 +12,6 @@ class MonthCalendarState extends Equatable {
     required this.occasion,
     required this.weeks,
   });
-
-  @override
-  List<Object> get props => [firstDay, occasion, weeks];
-
-  @override
-  bool get stringify => true;
 }
 
 class MonthWeek extends Equatable {
