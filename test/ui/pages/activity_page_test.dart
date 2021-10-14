@@ -182,7 +182,7 @@ void main() {
       expect(find.text(title), findsOneWidget);
 
       // Act -- Enter new title and save
-      await tester.enterText_(titleTextFormFieldFinder, newTitle);
+      await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
@@ -849,7 +849,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.editTitleTextFormField), 'new title');
         await tester.pumpAndSettle();
         await tester.tap(finishActivityFinder);
@@ -870,7 +870,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(titleTextFormFieldFinder, newTitle);
+        await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(okButtonFinder);
@@ -946,7 +946,7 @@ void main() {
         // Act
         await tester.tap(editActivityButtonFinder);
         await tester.pumpAndSettle();
-        await tester.enterText_(titleTextFormFieldFinder, newTitle);
+        await tester.ourEnterText(titleTextFormFieldFinder, newTitle);
         await tester.tap(finishActivityFinder);
         await tester.pumpAndSettle();
         await tester.tap(thisDayAndForwardRadioFinder);

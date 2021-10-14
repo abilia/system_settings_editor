@@ -180,7 +180,7 @@ void main() {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.text(newActivtyTitle), findsNothing);
-      await tester.enterText_(
+      await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), newActivtyTitle);
       expect(find.text(newActivtyTitle), findsOneWidget);
     });
@@ -1965,7 +1965,7 @@ text''';
 
       await tester.pumpAndSettle();
       // Arrange -- enter title
-      await tester.enterText_(
+      await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), 'newActivtyTitle');
 
       // Arrange -- enter start time
@@ -2259,7 +2259,8 @@ text''';
       await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
           exact: translate.name, warnIfMissed: false);
 
-      await tester.enterText_(find.byKey(TestKey.editTitleTextFormField), name);
+      await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField), name);
 
       await tester.verifyTts(find.byKey(TestKey.editTitleTextFormField),
           exact: name, warnIfMissed: false);

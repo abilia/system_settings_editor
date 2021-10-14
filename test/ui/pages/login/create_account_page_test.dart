@@ -51,10 +51,10 @@ void main() {
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));
         await tester.pumpAndSettle();
-        await tester.enterText_(find.byType(UsernameInput), username);
-        await tester.enterText_(
+        await tester.ourEnterText(find.byType(UsernameInput), username);
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPassword), password);
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPasswordConfirm), password);
         await tester.tap(find.byKey(TestKey.acceptPrivacyPolicy));
         await tester.tap(find.byKey(TestKey.acceptTermsOfUse));
@@ -92,31 +92,31 @@ void main() {
 
         await _expectErrorDialog(tester, translate.enterUsername);
 
-        await tester.enterText_(find.byType(UsernameInput), toShortUsername);
+        await tester.ourEnterText(find.byType(UsernameInput), toShortUsername);
 
         await _expectErrorDialog(tester, translate.usernameToShort);
 
-        await tester.enterText_(find.byType(UsernameInput), takenUsername);
+        await tester.ourEnterText(find.byType(UsernameInput), takenUsername);
 
         await _expectErrorDialog(tester, translate.enterPassword);
 
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPassword), toShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordToShort);
 
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPassword), password);
 
         await _expectErrorDialog(tester, translate.confirmPassword,
             matcher: findsNWidgets(2));
 
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPasswordConfirm), toShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordMismatch);
 
-        await tester.enterText_(
+        await tester.ourEnterText(
             find.byKey(TestKey.createAccountPasswordConfirm), password);
 
         await _expectErrorDialog(tester, translate.confirmTermsOfUse);
@@ -131,7 +131,7 @@ void main() {
 
         await _expectErrorDialog(tester, translate.usernameTaken);
 
-        await tester.enterText_(find.byType(UsernameInput), username);
+        await tester.ourEnterText(find.byType(UsernameInput), username);
 
         await tester.tap(find.byType(CreateAccountButton));
         await tester.pumpAndSettle();
