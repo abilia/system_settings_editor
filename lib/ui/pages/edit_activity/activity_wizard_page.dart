@@ -60,6 +60,8 @@ class ActivityWizardPage extends StatelessWidget {
         return RecurringWeeklyWiz();
       case WizardStep.recursMonthly:
         return RecurringMonthlyWiz();
+      case WizardStep.endDate:
+        return EndDatePickerWiz();
     }
   }
 }

@@ -624,6 +624,38 @@ class EndDateWidget extends StatelessWidget {
   }
 }
 
+class EndDateWizWidget extends StatelessWidget {
+  const EndDateWizWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return BlocBuilder<EditActivityBloc, EditActivityState>(
+      builder: (context, state) {
+        final activity = state.activity;
+        final recurs = activity.recurs;
+        return SwitchField(
+          leading: Icon(
+            AbiliaIcons.basic_activity,
+            size: smallIconSize,
+          ),
+          value: recurs.hasNoEnd,
+          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
+            ReplaceActivity(
+              activity.copyWith(
+                recurs: recurs.changeEnd(
+                  v ? Recurs.noEndDate : state.timeInterval.startDate,
+                ),
+              ),
+            ),
+          ),
+          child: Text(translate.noEndDate),
+        );
+      },
+    );
+  }
+}
+
 class WeekDays extends StatelessWidget {
   const WeekDays({Key? key}) : super(key: key);
 

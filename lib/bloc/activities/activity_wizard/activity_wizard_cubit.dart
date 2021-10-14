@@ -15,6 +15,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final EditActivityBloc editActivityBloc;
   final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
+
   bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
 
   StreamSubscription<EditActivityState>? _activityBlocSubscription;
@@ -72,6 +73,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
         if (settings.activityRecurringEditable) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
         if (activity.recurs.monthly) WizardStep.recursMonthly,
+        if (activity.isRecurring && !activity.recurs.hasNoEnd)
+          WizardStep.endDate,
       ];
 
   ActivityWizardCubit.edit({
@@ -164,6 +167,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
 class SaveRecurring {
   final ApplyTo applyTo;
   final DateTime day;
+
   const SaveRecurring(this.applyTo, this.day);
 }
 
@@ -192,6 +196,9 @@ extension SaveErrorExtension on EditActivityState {
             !unchangedTime &&
             activitiesState.anyConflictWith(activityToStore()))
           SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
+        if (activity.isRecurring &&
+            activity.recurs.end.isBefore(activity.startTime))
+          SaveError.END_DATE_BEFORE_START
       };
 
   SaveError? stepErrors({
@@ -222,6 +229,12 @@ extension SaveErrorExtension on EditActivityState {
       case WizardStep.recursWeekly:
       case WizardStep.recursMonthly:
         if (emptyRecurringData) return SaveError.NO_RECURRING_DAYS;
+
+        break;
+      case WizardStep.endDate:
+        if (activity.recurs.end.isBefore(activity.startTime)) {
+          return SaveError.END_DATE_BEFORE_START;
+        }
         break;
       default:
     }
