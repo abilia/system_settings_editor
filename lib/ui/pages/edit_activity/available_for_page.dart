@@ -7,12 +7,18 @@ class AvailableForPage extends StatefulWidget {
   const AvailableForPage({Key? key, required this.secret}) : super(key: key);
 
   @override
-  _AvailableForPageState createState() => _AvailableForPageState(secret);
+  _AvailableForPageState createState() => _AvailableForPageState();
 }
 
 class _AvailableForPageState extends State<AvailableForPage> {
-  _AvailableForPageState(this.secret);
   bool? secret;
+
+  @override
+  void initState() {
+    super.initState();
+    secret = widget.secret;
+  }
+
   void _onSelected(bool? value) => setState(() => secret = value);
 
   @override

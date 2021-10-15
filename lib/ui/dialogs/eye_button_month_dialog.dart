@@ -13,15 +13,17 @@ class EyeButtonMonthDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EyeButtonMonthDialogState createState() => _EyeButtonMonthDialogState(
-        calendarType: currentCalendarType,
-      );
+  _EyeButtonMonthDialogState createState() => _EyeButtonMonthDialogState();
 }
 
 class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
-  MonthCalendarType calendarType;
+  late MonthCalendarType calendarType;
 
-  _EyeButtonMonthDialogState({required this.calendarType});
+  @override
+  void initState() {
+    super.initState();
+    calendarType = widget.currentCalendarType;
+  }
 
   @override
   Widget build(BuildContext context) {

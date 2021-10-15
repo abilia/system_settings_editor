@@ -20,22 +20,17 @@ class EditImageAndName extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _EditImageAndNameState createState() {
-    final imageAndName = this.imageAndName;
-    return imageAndName == null
-        ? _EditImageAndNameState(ImageAndName.empty)
-        : _EditImageAndNameState(imageAndName);
-  }
+  _EditImageAndNameState createState() => _EditImageAndNameState();
 }
 
 class _EditImageAndNameState extends State<EditImageAndName> {
-  _EditImageAndNameState(this.imageAndName);
-  ImageAndName imageAndName;
+  late ImageAndName imageAndName;
   late TextEditingController txtEditController;
 
   @override
   void initState() {
     super.initState();
+    imageAndName = widget.imageAndName ?? ImageAndName.empty;
     txtEditController = TextEditingController(text: imageAndName.name);
   }
 

@@ -108,13 +108,17 @@ class SelectAlarmTypePage extends StatefulWidget {
   const SelectAlarmTypePage({Key? key, required this.alarm}) : super(key: key);
 
   @override
-  _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState(alarm);
+  _SelectAlarmTypePageState createState() => _SelectAlarmTypePageState();
 }
 
 class _SelectAlarmTypePageState extends State<SelectAlarmTypePage> {
-  AlarmType newAlarm;
+  late AlarmType newAlarm;
 
-  _SelectAlarmTypePageState(this.newAlarm);
+  @override
+  void initState() {
+    super.initState();
+    newAlarm = widget.alarm;
+  }
 
   @override
   Widget build(BuildContext context) => _SelectAlarmTypePage(
@@ -133,13 +137,17 @@ class SelectAlarmPage extends StatefulWidget {
   const SelectAlarmPage({Key? key, required this.activity}) : super(key: key);
 
   @override
-  _SelectAlarmPageState createState() => _SelectAlarmPageState(activity);
+  _SelectAlarmPageState createState() => _SelectAlarmPageState();
 }
 
 class _SelectAlarmPageState extends State<SelectAlarmPage> {
-  Activity activity;
+  late Activity activity;
 
-  _SelectAlarmPageState(this.activity);
+  @override
+  void initState() {
+    super.initState();
+    activity = widget.activity;
+  }
 
   @override
   Widget build(BuildContext context) {

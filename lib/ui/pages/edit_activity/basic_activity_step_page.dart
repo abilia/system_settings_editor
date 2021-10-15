@@ -8,14 +8,12 @@ class BasicActivityStepPage extends StatefulWidget {
   const BasicActivityStepPage({Key? key}) : super(key: key);
 
   @override
-  _BasicActivityStepPageState createState() =>
-      _BasicActivityStepPageState(false);
+  _BasicActivityStepPageState createState() => _BasicActivityStepPageState();
 }
 
 class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
   bool pickBasicActivityView = false;
 
-  _BasicActivityStepPageState(this.pickBasicActivityView);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
