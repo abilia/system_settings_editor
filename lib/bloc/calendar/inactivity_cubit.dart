@@ -1,66 +1,53 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-
-import '../all.dart';
-
-class _InactivityTicker {
-  final int _tickRate;
-
-  const _InactivityTicker(this._tickRate);
-
-  Stream<int> tick({required int duration}) {
-    return Stream.periodic(Duration(seconds: _tickRate), (x) => x * _tickRate)
-        .take((duration ~/ _tickRate) + 1);
-  }
-}
+import 'package:seagull/bloc/all.dart';
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _inactivityTime;
+  final ClockBloc clockBloc;
 
-  final _InactivityTicker _ticker = _InactivityTicker(1);
-  StreamSubscription<Duration>? _tickerSubscription;
+  late StreamSubscription<DateTime> _clockSubscription;
 
-  InactivityCubit(this._inactivityTime) : super(ActivityDetectedState()) {
-    _startTimer();
+  InactivityCubit(
+    this._inactivityTime,
+    this.clockBloc,
+  ) : super(ActivityDetectedState(clockBloc.state)) {
+    _clockSubscription = clockBloc.stream.listen(_ticking);
   }
 
-  void _ticking(Duration duration) async {
-    if (duration >= _inactivityTime) {
+  void _ticking(DateTime time) async {
+    final state = this.state;
+    if (state is ActivityDetectedState &&
+        time.isAfter(state.timeStamp.add(_inactivityTime))) {
       emit(InactivityThresholdReachedState());
-      _startTimer();
     }
   }
 
-  void _startTimer() async {
-    await _tickerSubscription?.cancel();
-    _tickerSubscription = _ticker
-        .tick(duration: _inactivityTime.inSeconds)
-        .map((event) => Duration(seconds: event))
-        .listen((duration) => _ticking(duration));
-  }
-
-  void activityDetected() {
-    emit(ActivityDetectedState());
-    _startTimer();
-  }
-
-  void stopTimer() async {
-    await _tickerSubscription?.cancel();
+  void activityDetected(_) async {
+    emit(ActivityDetectedState(clockBloc.state));
   }
 
   @override
   Future<void> close() async {
     await super.close();
-    await _tickerSubscription?.cancel();
+    await _clockSubscription.cancel();
   }
 }
 
-class InactivityState extends Equatable {
+abstract class InactivityState extends Equatable {
+  const InactivityState();
+}
+
+class InactivityThresholdReachedState extends InactivityState {
+  const InactivityThresholdReachedState();
   @override
   List<Object> get props => [];
 }
 
-class InactivityThresholdReachedState extends InactivityState {}
-
-class ActivityDetectedState extends InactivityState {}
+class ActivityDetectedState extends InactivityState {
+  final DateTime timeStamp;
+  const ActivityDetectedState(this.timeStamp);
+  @override
+  List<Object> get props => [timeStamp];
+}

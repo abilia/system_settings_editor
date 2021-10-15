@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -223,6 +224,17 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
             builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
+        if (Config.isMP)
+          BlocListener<InactivityCubit, InactivityState>(
+            listenWhen: (previous, current) =>
+                current is InactivityThresholdReachedState &&
+                previous is ActivityDetectedState,
+            listener: (context, state) {
+              context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
+              context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+              context.read<DayPickerBloc>().add(CurrentDay());
+            },
+          ),
         if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,

@@ -240,7 +240,8 @@ class TopLevelBlocsProvider extends StatelessWidget {
           if (Config.isMP)
             BlocProvider<InactivityCubit>(
               create: (context) => InactivityCubit(
-                Duration(seconds: 300),
+                const Duration(minutes: 6),
+                context.read<ClockBloc>(),
               ),
             ),
         ],

@@ -11,11 +11,9 @@ class CalendarPage extends StatelessWidget {
           old.calendarCount != fresh.calendarCount ||
           old.displayBottomBar != fresh.displayBottomBar,
       builder: (context, settingsState) => Listener(
-        onPointerDown: (_) {
-          if (Config.isMP) {
-            BlocProvider.of<InactivityCubit>(context).activityDetected();
-          }
-        }, // best place to reset timer imo
+        onPointerDown: Config.isMP
+            ? context.read<InactivityCubit>().activityDetected
+            : null,
         child: DefaultTabController(
           initialIndex: 0,
           length: settingsState.calendarCount,
