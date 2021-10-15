@@ -9,3 +9,4 @@ export 'menu_button.dart';
 export 'hidden_settings.dart';
 export 'play_sound_button.dart';
 export 'play_alarm_sound_button.dart';
+export 'toggle_alarm_button.dart';

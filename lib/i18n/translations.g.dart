@@ -334,6 +334,9 @@ abstract class Translated {
 
   final String alarmOnlyAtStartTime = 'Alarm only at Start time';
 
+  final String alertAlarmsDisabled =
+      'All alarms will be disabled until midnight on this device';
+
   final String selectPicture = 'Select image';
 
   final String removePicture = 'Remove image';
@@ -1176,6 +1179,10 @@ class SV extends Translated {
 
   @override
   final String alarmOnlyAtStartTime = 'Larm endast vid starttid';
+
+  @override
+  final String alertAlarmsDisabled =
+      'Alla larm kommer att inaktiveras fram till midnatt på den här enheten';
 
   @override
   final String selectPicture = 'Välj bild';
@@ -2189,6 +2196,10 @@ class DA extends Translated {
   final String alarmOnlyAtStartTime = 'Kun alarm ved starttidspunkt';
 
   @override
+  final String alertAlarmsDisabled =
+      'Alle alarmer vill være deaktivert til midnatt på denne enheten';
+
+  @override
   final String selectPicture = 'Vælg billede';
 
   @override
@@ -3198,6 +3209,10 @@ class NL extends Translated {
 
   @override
   final String alarmOnlyAtStartTime = 'Alarm alleen op begintijd';
+
+  @override
+  final String alertAlarmsDisabled =
+      'Alle alarmen worden tot middernacht uitgeschakeld op dit toestel';
 
   @override
   final String selectPicture = 'Afbeelding selecteren';
@@ -4210,6 +4225,10 @@ class FI extends Translated {
 
   @override
   final String alarmOnlyAtStartTime = 'Vain hälytys alkamisaikaan';
+
+  @override
+  final String alertAlarmsDisabled =
+      'Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti';
 
   @override
   final String selectPicture = 'Valitse kuva';
@@ -5226,6 +5245,10 @@ class DE extends Translated {
   final String alarmOnlyAtStartTime = 'Alarm nur zur Startzeit';
 
   @override
+  final String alertAlarmsDisabled =
+      'Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert';
+
+  @override
   final String selectPicture = 'Bild auswählen';
 
   @override
@@ -6237,6 +6260,10 @@ class NB extends Translated {
 
   @override
   final String alarmOnlyAtStartTime = 'Alarm kun på starttid';
+
+  @override
+  final String alertAlarmsDisabled =
+      'Alle alarmer deaktiveres indtil midat på denne enhed';
 
   @override
   final String selectPicture = 'Velg bilde';

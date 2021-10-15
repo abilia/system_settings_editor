@@ -181,6 +181,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
+                false,
                 settingsState.alarm,
                 GetIt.I<FileStorage>(),
               );
@@ -199,6 +200,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 activitiesState.activities,
                 Localizations.localeOf(context).toLanguageTag(),
                 MediaQuery.of(context).alwaysUse24HourFormat,
+                false,
                 state.alarm,
                 GetIt.I<FileStorage>(),
               );

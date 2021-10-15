@@ -30,11 +30,14 @@ class DayCalendar extends StatelessWidget {
             builder: (context, state) => Stack(
               children: [
                 const Calendars(),
-                if (settingState.displayEyeButton)
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: const EyeButtonDay(),
-                  ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    //if (settingState.displayAlarmButton)
+                    const ToggleAlarmButton(),
+                    if (settingState.displayEyeButton) const EyeButtonDay(),
+                  ]),
+                ),
                 if (state.notificationDenied)
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -73,6 +76,7 @@ class Calendars extends StatefulWidget {
 
 class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   late PageController pageController;
+
   @override
   void initState() {
     super.initState();

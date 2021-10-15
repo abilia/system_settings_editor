@@ -87,6 +87,7 @@ void main() {
       allActivities,
       'en',
       true,
+      false,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,
@@ -105,6 +106,7 @@ void main() {
       allActivities,
       'en',
       true,
+      false,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,
@@ -118,11 +120,31 @@ void main() {
         .called(11);
   });
 
+  test('scheduleAlarmNotifications disabled until tomorrow', () async {
+    await scheduleAlarmNotifications(
+      allActivities,
+      'en',
+      true,
+      true,
+      AlarmSettings(),
+      mockedFileStorage,
+      now: () => now,
+    );
+    verify(mockedNotificationsPlugin.cancelAll());
+    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
+            payload: anyNamed('payload'),
+            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime))
+        .called(5);
+  });
+
   test('scheduleAlarmNotifications with image', () async {
     await scheduleAlarmNotifications(
       allActivities.take(2),
       'en',
       true,
+      false,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,

@@ -9,7 +9,7 @@ class _EyeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.0.s),
+      padding: EdgeInsets.fromLTRB(16.s, 0.s, 16.s, 16.s),
       child: Material(
         color: Colors.transparent,
         elevation: 3,
