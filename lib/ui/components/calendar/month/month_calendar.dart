@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -226,6 +225,7 @@ class MonthHeading extends StatelessWidget {
 class MonthDayView extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+
   const MonthDayView(
     this.day, {
     Key? key,
@@ -364,6 +364,7 @@ class MonthDayContainer extends StatelessWidget {
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
   const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;

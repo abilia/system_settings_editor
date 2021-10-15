@@ -307,6 +307,7 @@ class WeekCalendarBody extends StatelessWidget {
 
 class WeekDayColumn extends StatelessWidget {
   final DateTime day;
+
   const WeekDayColumn({Key? key, required this.day}) : super(key: key);
 
   @override
