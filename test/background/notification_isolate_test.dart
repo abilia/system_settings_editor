@@ -15,6 +15,7 @@ import '../mocks/shared.mocks.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
+  final past = DateTime.fromMillisecondsSinceEpoch(0);
   final mockedFileStorage = MockFileStorage();
   late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
   final fileId = Uuid().v4();
@@ -87,7 +88,7 @@ void main() {
       allActivities,
       'en',
       true,
-      false,
+      past,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,
@@ -106,7 +107,7 @@ void main() {
       allActivities,
       'en',
       true,
-      false,
+      past,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,
@@ -125,12 +126,13 @@ void main() {
       allActivities,
       'en',
       true,
-      true,
+      now.onlyDays().nextDay(),
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
     verify(mockedNotificationsPlugin.cancelAll());
+
     verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
             payload: anyNamed('payload'),
             androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
@@ -144,7 +146,7 @@ void main() {
       allActivities.take(2),
       'en',
       true,
-      false,
+      past,
       AlarmSettings(),
       mockedFileStorage,
       now: () => now,

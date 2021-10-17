@@ -17,32 +17,52 @@ class MonthCalendarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MonthAppBar(),
-      body: Stack(
-        children: const [
-          MonthCalendar(),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: EyeButtonMonth(),
-          ),
-        ],
+      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        buildWhen: (previous, current) =>
+            previous.calendarDayColor != current.calendarDayColor ||
+            previous.monthCalendarType != current.monthCalendarType ||
+            previous.alarmsDisabledUntil
+                    .compareTo(current.alarmsDisabledUntil) !=
+                0,
+        builder: (context, memoSettingsState) => Stack(
+          children: [
+            MonthCalendar(
+                calendarDayColor: memoSettingsState.calendarDayColor,
+                monthCalendarType: memoSettingsState.monthCalendarType),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (memoSettingsState.displayAlarmButton)
+                    const ToggleAlarmButton(),
+                  if (memoSettingsState.displayEyeButton)
+                    const EyeButtonMonth(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class MonthCalendar extends StatelessWidget {
-  const MonthCalendar({Key? key}) : super(key: key);
+  final DayColor calendarDayColor;
+  final MonthCalendarType monthCalendarType;
+
+  const MonthCalendar(
+      {Key? key,
+      required this.calendarDayColor,
+      required this.monthCalendarType})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.calendarDayColor != current.calendarDayColor ||
-          previous.monthCalendarType != current.monthCalendarType,
-      builder: (context, memoSettingsState) => MonthBody(
-        calendarDayColor: memoSettingsState.calendarDayColor,
-        monthCalendarType: memoSettingsState.monthCalendarType,
-      ),
+    return MonthBody(
+      calendarDayColor: calendarDayColor,
+      monthCalendarType: monthCalendarType,
     );
   }
 }
@@ -142,6 +162,7 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final MonthDayWidgetBuilder builder;
+
   const WeekRow(
     this.week, {
     Key? key,
@@ -226,6 +247,7 @@ class MonthHeading extends StatelessWidget {
 class MonthDayView extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+
   const MonthDayView(
     this.day, {
     Key? key,
@@ -363,7 +385,9 @@ class MonthDayContainer extends StatelessWidget {
 
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
+
   const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final weekTranslation = Translator.of(context).translate.week;

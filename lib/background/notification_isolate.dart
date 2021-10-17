@@ -64,14 +64,15 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  bool disabledUntilTomorrow,
+  DateTime alarmsDisabledUntil,
   AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
-  final _now =
-      disabledUntilTomorrow ? now().onlyDays().nextDay() : now().nextMinute();
+  final _now = alarmsDisabledUntil.isAfter(now())
+      ? alarmsDisabledUntil
+      : now().nextMinute();
   final shouldBeScheduledNotifications = allActivities.alarmsFrom(_now);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
@@ -88,14 +89,15 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  bool disabledUntilTomorrow,
+  DateTime alarmsDisabledUntil,
   AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
-  final _now =
-      disabledUntilTomorrow ? now().onlyDays().nextDay() : now().nextMinute();
+  final _now = alarmsDisabledUntil.isAfter(now())
+      ? alarmsDisabledUntil
+      : now().nextMinute();
   final serialized =
       allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
   final shouldBeScheduledNotificationsSerialized =

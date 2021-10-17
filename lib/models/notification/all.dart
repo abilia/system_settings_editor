@@ -7,7 +7,7 @@ typedef AlarmScheduler = Future Function(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  bool disabledUntilTomorrow,
+  DateTime alarmsDisabledUntil,
   AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,

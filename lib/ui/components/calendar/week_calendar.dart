@@ -44,13 +44,28 @@ class WeekCalendar extends StatelessWidget {
           buildWhen: (oldState, newState) => newState.index == item,
           builder: (context, state) {
             if (state.index != item) return Container();
-            return Column(
-              children: const [
-                WeekCalendarTop(),
-                Expanded(
-                  child: WeekCalendarBody(),
-                ),
-              ],
+            return BlocBuilder<MemoplannerSettingBloc,
+                MemoplannerSettingsState>(
+              buildWhen: (previous, current) =>
+                  previous.weekDisplayDays != current.weekDisplayDays ||
+                  previous.alarmsDisabledUntil
+                          .compareTo(current.alarmsDisabledUntil) !=
+                      0,
+              builder: (context, memosettings) => Column(
+                children: [
+                  WeekCalendarTop(),
+                  Expanded(
+                    child: WeekCalendarBody(
+                        numberofDays:
+                            memosettings.weekDisplayDays.numberOfDays()),
+                  ),
+                  if (memosettings.displayAlarmButton)
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: const ToggleAlarmButton(),
+                    ),
+                ],
+              ),
             );
           },
         ),
@@ -266,7 +281,9 @@ class FullDayActivies extends StatelessWidget {
 }
 
 class WeekCalendarBody extends StatelessWidget {
-  const WeekCalendarBody({Key? key}) : super(key: key);
+  final int numberofDays;
+  const WeekCalendarBody({Key? key, required this.numberofDays})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -278,21 +295,16 @@ class WeekCalendarBody extends StatelessWidget {
               minHeight: constraints.maxHeight,
             ),
             child: IntrinsicHeight(
-              child:
-                  BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+              child: BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
                 buildWhen: (previous, current) =>
-                    previous.weekDisplayDays != current.weekDisplayDays,
-                builder: (context, memosettings) =>
-                    BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-                  buildWhen: (previous, current) =>
-                      previous.currentWeekStart != current.currentWeekStart,
-                  builder: (context, weekState) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List<WeekDayColumn>.generate(
-                      memosettings.weekDisplayDays.numberOfDays(),
-                      (i) => WeekDayColumn(
-                        day: weekState.currentWeekStart.addDays(i),
-                      ),
+                    previous.currentWeekStart != current.currentWeekStart,
+                builder: (context, weekState) => Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List<WeekDayColumn>.generate(
+                    numberofDays,
+                    (i) => WeekDayColumn(
+                      day: weekState.currentWeekStart.addDays(i),
                     ),
                   ),
                 ),
@@ -307,6 +319,7 @@ class WeekCalendarBody extends StatelessWidget {
 
 class WeekDayColumn extends StatelessWidget {
   final DateTime day;
+
   const WeekDayColumn({Key? key, required this.day}) : super(key: key);
 
   @override

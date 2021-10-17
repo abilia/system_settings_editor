@@ -13,9 +13,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   SettingsBloc({
     required this.settingsDb,
-  }) : super(SettingsState(
-            textToSpeech: settingsDb.textToSpeech,
-            alarmsDisabled: settingsDb.alarmsDisabled));
+  }) : super(SettingsState(textToSpeech: settingsDb.textToSpeech));
 
   @override
   Stream<SettingsState> mapEventToState(
@@ -24,10 +22,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (event is TextToSpeechUpdated) {
       await settingsDb.setTextToSpeech(event.textToSpeech);
       yield state.copyWith(textToSpeech: event.textToSpeech);
-    }
-    if (event is AlarmsDisabledUpdated) {
-      await settingsDb.setAlarmsDisabled(event.alarmsDisabled);
-      yield state.copyWith(alarmsDisabled: event.alarmsDisabled);
     }
   }
 }

@@ -15,6 +15,7 @@ class MemoplannerSettings extends Equatable {
     viewOptionsTimeViewKey,
     dotsInTimepillarKey,
     viewOptionsMonthCalendarKey,
+    alarmsDisabledUntilKey,
   };
 
   static const String displayAlarmButtonKey =
@@ -101,7 +102,8 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
       settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
       settingViewOptionsZoomKey = 'setting_view_options_zoom',
-      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
+      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots',
+      alarmsDisabledUntilKey = 'alarms_disabled_until';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -182,7 +184,8 @@ class MemoplannerSettings extends Equatable {
       activityTimeout,
       functionMenuStartView,
       settingClockType,
-      activityDefaultAlarmType;
+      activityDefaultAlarmType,
+      alarmsDisabledUntil;
 
   final String calendarActivityTypeLeft,
       calendarActivityTypeRight,
@@ -276,6 +279,7 @@ class MemoplannerSettings extends Equatable {
     this.wizardChecklistStep = false,
     this.wizardNotesStep = false,
     this.wizardRemindersStep = false,
+    this.alarmsDisabledUntil = 0,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -562,6 +566,7 @@ class MemoplannerSettings extends Equatable {
         wizardRemindersStepKey,
         defaultValue: false,
       ),
+      alarmsDisabledUntil: settings.parse(alarmsDisabledUntilKey, 0),
     );
   }
 
@@ -650,7 +655,8 @@ class MemoplannerSettings extends Equatable {
         wizardAlarmStep,
         wizardChecklistStep,
         wizardNotesStep,
-        wizardRemindersStep
+        wizardRemindersStep,
+        alarmsDisabledUntil,
       ];
 }
 

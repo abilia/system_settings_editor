@@ -19,7 +19,8 @@ class DayCalendar extends StatelessWidget {
             old.settingsInaccessible != fresh.settingsInaccessible ||
             old.showCategories != fresh.showCategories ||
             old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
-            old.displayEyeButton != fresh.displayEyeButton,
+            old.displayEyeButton != fresh.displayEyeButton ||
+            old.alarmsDisabledUntil.compareTo(fresh.alarmsDisabledUntil) != 0,
         builder: (context, settingState) => Scaffold(
           appBar: settingState.displayDayCalendarAppBar
               ? DayCalendarAppBar()
@@ -32,11 +33,14 @@ class DayCalendar extends StatelessWidget {
                 const Calendars(),
                 Align(
                   alignment: Alignment.bottomLeft,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    //if (settingState.displayAlarmButton)
-                    const ToggleAlarmButton(),
-                    if (settingState.displayEyeButton) const EyeButtonDay(),
-                  ]),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (settingState.displayAlarmButton)
+                        const ToggleAlarmButton(),
+                      if (settingState.displayEyeButton) const EyeButtonDay(),
+                    ],
+                  ),
                 ),
                 if (state.notificationDenied)
                   Align(

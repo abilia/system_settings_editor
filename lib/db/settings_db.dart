@@ -8,8 +8,7 @@ class SettingsDb {
       _ALWAYS_USE_24_RECORD = 'ALWAYS_USE_24',
       _TEXT_TO_SPEECH_RECORD = 'TEXT_TO_SPEECH',
       _CATEGORY_LEFT_EXPANDED = 'CATEGORY_LEFT_EXPANDED',
-      _CATEGORY_RIGHT_EXPANDED = 'CATEGORY_RIGHT_EXPANDED',
-      _ALARMS_DISABLED = 'ALARMS_DISABLED';
+      _CATEGORY_RIGHT_EXPANDED = 'CATEGORY_RIGHT_EXPANDED';
 
   final SharedPreferences preferences;
 
@@ -46,11 +45,6 @@ class SettingsDb {
       preferences.setBool(_CATEGORY_LEFT_EXPANDED, expanded);
 
   bool get leftCategoryExpanded => _tryGetBool(_CATEGORY_LEFT_EXPANDED, true);
-
-  Future setAlarmsDisabled(bool alarmsDisabled) =>
-      preferences.setBool(_ALARMS_DISABLED, alarmsDisabled);
-
-  bool get alarmsDisabled => _tryGetBool(_ALARMS_DISABLED, true);
 
   bool _tryGetBool(String key, bool fallback) {
     try {
