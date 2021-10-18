@@ -1564,14 +1564,17 @@ void main() {
     setUp(() {
       initializeDateFormatting();
       memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
-      when(memoplannerSettingBlocMock.stream).thenAnswer((_) => Stream.empty());
+      mocktail
+          .when(() => memoplannerSettingBlocMock.stream)
+          .thenAnswer((_) => Stream.empty());
     });
 
     testWidgets('displays alarm button', (WidgetTester tester) async {
-      when(memoplannerSettingBlocMock.state)
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
           .thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
-      ));
+            MemoplannerSettings(displayAlarmButton: true),
+          ));
 
       await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock));
@@ -1584,11 +1587,11 @@ void main() {
     });
 
     testWidgets('don\'t display alarm button', (WidgetTester tester) async {
-      when(memoplannerSettingBlocMock.state).thenReturn(
-        MemoplannerSettingsLoaded(MemoplannerSettings(
-          displayAlarmButton: false,
-        )),
-      );
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+            MemoplannerSettings(displayAlarmButton: false),
+          ));
 
       await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock));
