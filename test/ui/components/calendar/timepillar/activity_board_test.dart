@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -14,7 +15,7 @@ import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mock_bloc.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -24,16 +25,25 @@ void main() {
 
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
+  setUpAll(() {
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValue(TimepillarState(
+        TimepillarInterval(start: startTime, end: DateTime(1987, 05, 23)),
+        1.0));
+    registerFallbackValue(TimepillarConditionsChangedEvent());
+  });
+
   setUp(() async {
     setupFakeTts();
 
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingsBloc.state)
+    when(() => mockMemoplannerSettingsBloc.state)
         .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
       dotsInTimepillar: true,
     )));
 
-    when(mockMemoplannerSettingsBloc.stream).thenAnswer(
+    when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => Stream.fromIterable(
         [
           MemoplannerSettingsLoaded(
@@ -62,9 +72,10 @@ void main() {
     );
     final mockTimepillarBloc = MockTimepillarBloc();
     final ts = TimepillarState(interval, 1);
-    when(mockTimepillarBloc.state).thenReturn(TimepillarState(
+    when(() => mockTimepillarBloc.state).thenReturn(TimepillarState(
         TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
-    when(mockTimepillarBloc.stream).thenAnswer((_) => Stream.fromIterable([
+    when(() => mockTimepillarBloc.stream).thenAnswer((_) =>
+        Stream.fromIterable([
           TimepillarState(
               TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
         ]));
@@ -499,7 +510,7 @@ void main() {
 
     testWidgets('No side dots when setting is flarp',
         (WidgetTester tester) async {
-      when(mockMemoplannerSettingsBloc.state)
+      when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
         dotsInTimepillar: false,
       )));

@@ -69,17 +69,19 @@ class _Tab extends StatefulWidget {
   final void Function(int index)? onTabTap;
 
   @override
-  _TabState createState() => _TabState(collapsed());
+  _TabState createState() => _TabState();
 }
 
 class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
-  _TabState(this.collapsed);
+  _TabState();
   late AnimationController _collapsedController;
   late Animation<double> _scaleAnimation;
-  bool collapsed;
+  late bool collapsed;
 
   @override
   void initState() {
+    super.initState();
+    collapsed = widget.collapsed();
     _collapsedController =
         AnimationController(vsync: this, duration: kTabScrollDuration);
     _scaleAnimation = _collapsedController
@@ -87,7 +89,6 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
     if (collapsed) {
       _collapsedController.forward(from: 1.0);
     }
-    super.initState();
   }
 
   @override

@@ -21,50 +21,67 @@ class DayCalendar extends StatelessWidget {
             old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar ||
             old.displayEyeButton != fresh.displayEyeButton ||
             old.alarmsDisabledUntil.compareTo(fresh.alarmsDisabledUntil) != 0,
-        builder: (context, settingState) => Scaffold(
-          appBar: settingState.displayDayCalendarAppBar
-              ? DayCalendarAppBar()
-              : null,
-          body: BlocBuilder<PermissionBloc, PermissionState>(
-            buildWhen: (old, fresh) =>
-                old.notificationDenied != fresh.notificationDenied,
-            builder: (context, state) => Stack(
-              children: [
-                const Calendars(),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (settingState.displayAlarmButton)
-                        const ToggleAlarmButton(),
-                      if (settingState.displayEyeButton) const EyeButtonDay(),
-                    ],
+        builder: (context, settingState) => Config.isMP
+            ? BlocListener<InactivityCubit, InactivityState>(
+                listenWhen: (previous, current) =>
+                    current is InactivityThresholdReachedState &&
+                    previous is ActivityDetectedState,
+                listener: (context, state) =>
+                    BlocProvider.of<ScrollPositionBloc>(context).add(GoToNow()),
+                child: CalendarScaffold(settingState: settingState))
+            : CalendarScaffold(settingState: settingState),
+      ),
+    );
+  }
+}
+
+class CalendarScaffold extends StatelessWidget {
+  final MemoplannerSettingsState settingState;
+
+  const CalendarScaffold({Key? key, required this.settingState})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar:
+          settingState.displayDayCalendarAppBar ? DayCalendarAppBar() : null,
+      body: BlocBuilder<PermissionBloc, PermissionState>(
+        buildWhen: (old, fresh) =>
+            old.notificationDenied != fresh.notificationDenied,
+        builder: (context, state) => Stack(
+          children: [
+            const Calendars(),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (settingState.displayAlarmButton)
+                    const ToggleAlarmButton(),
+                  if (settingState.displayEyeButton) const EyeButtonDay(),
+                ],
+              ),
+            ),
+            if (state.notificationDenied)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 76.0.s,
+                    right: 16.0.s,
+                    bottom: 28.0.s,
                   ),
-                ),
-                if (state.notificationDenied)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 76.0.s,
-                        right: 16.0.s,
-                        bottom: 28.0.s,
-                      ),
-                      child: ErrorMessage(
-                        text: Text(
-                          Translator.of(context)
-                              .translate
-                              .notificationsWarningText,
-                        ),
-                      ),
+                  child: ErrorMessage(
+                    text: Text(
+                      Translator.of(context).translate.notificationsWarningText,
                     ),
                   ),
-                if (settingState.settingsInaccessible)
-                  HiddenSetting(settingState.showCategories),
-              ],
-            ),
-          ),
+                ),
+              ),
+            if (settingState.settingsInaccessible)
+              HiddenSetting(settingState.showCategories),
+          ],
         ),
       ),
     );

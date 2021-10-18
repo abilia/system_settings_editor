@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mock_bloc.dart';
 
 void main() {
   late ClockBloc clockBloc;
@@ -25,18 +26,25 @@ void main() {
   final nextDay = initialDay.nextDay();
   final previusDay = initialDay.previousDay();
 
+  setUpAll(() {
+    registerFallbackValue(ActivitiesNotLoaded());
+    registerFallbackValue(LoadActivities());
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+  });
+
   setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
-    when(mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
+    when(() => mockActivitiesBloc.state).thenReturn(ActivitiesNotLoaded());
     activityBlocStreamController = StreamController<ActivitiesState>();
-    when(mockActivitiesBloc.stream)
+    when(() => mockActivitiesBloc.stream)
         .thenAnswer((realInvocation) => activityBlocStreamController.stream);
 
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
-    when(mockMemoplannerSettingBloc.state)
+    when(() => mockMemoplannerSettingBloc.state)
         .thenReturn(MemoplannerSettingsNotLoaded());
     mockSettingStream = StreamController<MemoplannerSettingsState>();
-    when(mockMemoplannerSettingBloc.stream)
+    when(() => mockMemoplannerSettingBloc.stream)
         .thenAnswer((realInvocation) => mockSettingStream.stream);
     clockBloc = ClockBloc(Stream.empty(), initialTime: initialMinutes);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);

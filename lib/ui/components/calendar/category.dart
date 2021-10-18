@@ -145,20 +145,21 @@ class _Category extends StatefulWidget {
         super(key: key);
 
   @override
-  __CategoryState createState() => __CategoryState(expanded);
+  __CategoryState createState() => __CategoryState();
 }
 
 class __CategoryState extends State<_Category> with TickerProviderStateMixin {
-  final bool value;
+  late final bool value;
   late final AlignmentGeometry alignment;
   late final BorderRadius borderRadius;
   late final AnimationController controller;
   late final Animation<Matrix4> matrixAnimation;
   late final Animation<EdgeInsetsGeometry> paddingAnimation;
 
-  __CategoryState(this.value);
   @override
   void initState() {
+    super.initState();
+    value = widget.expanded;
     alignment = AlignmentDirectional.topStart.resolve(widget.direction);
     borderRadius =
         BorderRadiusDirectional.horizontal(end: Radius.circular(100.s))
@@ -184,8 +185,6 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
       begin: value ? p1 : p2,
       end: value ? p2 : p1,
     ).animate(controller);
-
-    super.initState();
   }
 
   @override

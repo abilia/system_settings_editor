@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart' as mocktail;
 import 'package:mockito/mockito.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../mocks/mock_bloc.dart';
 import '../../mocks/shared.mocks.dart';
 import '../../test_helpers/matchers.dart';
 
@@ -17,11 +19,19 @@ void main() {
   late MockActivityRepository mockActivityRepository;
   late PushBloc mockPushBloc;
   late SyncBloc mockSyncBloc;
+
+  setUpAll(() {
+    mocktail.registerFallbackValue(PushEvent(''));
+    mocktail.registerFallbackValue(PushReady());
+    mocktail.registerFallbackValue(ActivitySaved());
+    mocktail.registerFallbackValue(SyncInitial());
+  });
+
   setUp(() {
     mockActivityRepository = MockActivityRepository();
     mockPushBloc = MockPushBloc();
     mockSyncBloc = MockSyncBloc();
-    when(mockPushBloc.stream).thenAnswer((_) => Stream.empty());
+    mocktail.when(() => mockPushBloc.stream).thenAnswer((_) => Stream.empty());
     when(mockActivityRepository.load())
         .thenAnswer((_) => Future.value(<Activity>[]));
     when(mockActivityRepository.save(any))
@@ -82,10 +92,10 @@ void main() {
       await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));
       await untilCalled(mockActivityRepository.save(any));
-      await untilCalled(mockSyncBloc.add(ActivitySaved()));
+      await mocktail.untilCalled(() => mockSyncBloc.add(ActivitySaved()));
 
       verify(mockActivityRepository.save([anActivity]));
-      verify(mockSyncBloc.add(ActivitySaved()));
+      mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     test('AddActivity calls add activities on mockActivityRepostitory',
@@ -96,7 +106,7 @@ void main() {
       activitiesBloc.add(AddActivity(anActivity));
 
       await untilCalled(mockActivityRepository.save(any));
-      await untilCalled(mockSyncBloc.add(ActivitySaved()));
+      await mocktail.untilCalled(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     test('UpdateActivities calls save activities on mockActivityRepostitory',
@@ -111,7 +121,7 @@ void main() {
       activitiesBloc.add(UpdateActivity(updatedActivity));
 
       await untilCalled(mockActivityRepository.save([updatedActivity]));
-      await untilCalled(mockSyncBloc.add(ActivitySaved()));
+      await mocktail.untilCalled(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     test('DeleteActivities calls save activities on mockActivityRepostitory',
@@ -128,7 +138,7 @@ void main() {
 
       // Assert
       await untilCalled(mockActivityRepository.save([deletedActivity]));
-      await untilCalled(mockSyncBloc.add(ActivitySaved()));
+      await mocktail.untilCalled(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     test('DeleteActivities does not yeild the deleted activity', () async {
@@ -164,7 +174,7 @@ void main() {
           ActivitiesLoaded(activityListDeleted),
         ]),
       );
-      verify(mockSyncBloc.add(ActivitySaved()));
+      mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     test('UpdateActivities state order', () async {
@@ -191,7 +201,7 @@ void main() {
           ActivitiesLoaded(updatedActivityList.followedBy([])),
         ]),
       );
-      verify(mockSyncBloc.add(ActivitySaved()));
+      mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
     });
   });
 
@@ -229,7 +239,7 @@ void main() {
         recurrringActivity,
         recurrringActivity2
       ].map((a) => a.copyWith(deleted: true))));
-      verify(mockSyncBloc.add(ActivitySaved()));
+      mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
     });
 
     group('Only this day', () {
@@ -279,7 +289,7 @@ void main() {
         verify(mockActivityRepository.save([
           expextedRecurring,
         ]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for last day edits end time', () async {
@@ -332,7 +342,7 @@ void main() {
         verify(mockActivityRepository.save([
           expextedRecurring,
         ]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a mid day splits the activity up', () async {
@@ -376,7 +386,7 @@ void main() {
         // Assert calls save with deleted recurring
         verify(mockActivityRepository
             .save(argThat(MatchActivitiesWithoutId(expectedActivityList))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
     });
 
@@ -422,7 +432,7 @@ void main() {
           recurrringActivity,
           recurrringActivity2
         ].map((a) => a.copyWith(deleted: true))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a day modifies end time on activity', () async {
@@ -453,7 +463,7 @@ void main() {
         );
         // Assert calls save with deleted recurring
         verify(mockActivityRepository.save([recurrringActivityWithEndTime]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('for a day modifies end time on activity and deletes future series',
@@ -500,7 +510,7 @@ void main() {
           recurrringActivity2.copyWith(deleted: true),
           recurrringActivity1AfterDelete,
         ]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
     });
   });
@@ -539,7 +549,7 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save([expected]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('on first day split activity in two and updates the activty ',
@@ -581,7 +591,7 @@ void main() {
         // Assert calls save
         verify(mockActivityRepository.save(argThat(MatchActivitiesWithoutId(
             [expcetedUpdatedActivity, updatedOldActivity]))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('on last day split activity in two and updates the activty ',
@@ -642,7 +652,7 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(exptected)));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test(
@@ -701,7 +711,7 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(expected)));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('fullday split', () async {
@@ -753,7 +763,7 @@ void main() {
 
         // Assert calls save
         verify(mockActivityRepository.save(argThat(expected)));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
     });
 
@@ -785,7 +795,7 @@ void main() {
 
         // Assert calls save with deleted recurring
         verify(mockActivityRepository.save([updatedRecurrringActivity]));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('on second day splits the activity ', () async {
@@ -826,7 +836,7 @@ void main() {
         );
         verify(mockActivityRepository
             .save(argThat(MatchActivitiesWithoutId(exptected))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('change on occourance backwards ', () async {
@@ -868,7 +878,7 @@ void main() {
 
         verify(mockActivityRepository
             .save(argThat(MatchActivitiesWithoutId(exptectedList))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('change on occourance forward ', () async {
@@ -913,7 +923,7 @@ void main() {
 
         verify(mockActivityRepository
             .save(argThat(MatchActivitiesWithoutId(exptectedList))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('changes all future activities in series ', () async {
@@ -1021,7 +1031,7 @@ void main() {
 
         verify(mockActivityRepository
             .save(argThat(MatchActivitiesWithoutId(exptectedList))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
 
       test('dont edited activity before ', () async {
@@ -1089,7 +1099,7 @@ void main() {
         );
         verify(mockActivityRepository.save(argThat(
             MatchActivitiesWithoutId([a2Part1, updatedA2, expectedA3]))));
-        verify(mockSyncBloc.add(ActivitySaved()));
+        mocktail.verify(() => mockSyncBloc.add(ActivitySaved()));
       });
     });
   });

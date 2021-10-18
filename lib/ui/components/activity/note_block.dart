@@ -18,14 +18,19 @@ class NoteBlock extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _NoteBlockState createState() => _NoteBlockState(
-      scrollController ?? ScrollController(), textStyle ?? bodyText1);
+  _NoteBlockState createState() => _NoteBlockState();
 }
 
 class _NoteBlockState extends State<NoteBlock> {
-  _NoteBlockState(this.controller, this.textStyle);
-  final ScrollController controller;
-  final TextStyle textStyle;
+  late final ScrollController controller;
+  late final TextStyle textStyle;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.scrollController ?? ScrollController();
+    textStyle = widget.textStyle ?? bodyText1;
+  }
 
   @override
   Widget build(BuildContext context) {

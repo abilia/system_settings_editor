@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:record/record.dart';
 
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -19,17 +18,6 @@ import 'package:seagull/storage/all.dart';
 
   // Storage
   FileStorage,
-
-  // Bloc
-  ActivitiesBloc,
-  ActivitiesOccasionBloc,
-  SyncBloc,
-  PushBloc,
-  GenericBloc,
-  SortableBloc,
-  MemoplannerSettingBloc,
-  TimepillarBloc,
-  UserFileBloc,
 
   // Database
   Database,
