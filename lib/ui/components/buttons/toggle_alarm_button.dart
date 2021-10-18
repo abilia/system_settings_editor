@@ -7,7 +7,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
 class ToggleAlarmButton extends StatelessWidget {
-  const ToggleAlarmButton({Key? key}) : super(key: key);
+  final EdgeInsets? insets;
+  const ToggleAlarmButton({Key? key, this.insets}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ToggleAlarmButton extends StatelessWidget {
             0;
       },
       builder: (context, settingsState) => Padding(
-        padding: EdgeInsets.fromLTRB(16.s, 0.s, 16.s, 16.s),
+        padding: insets ?? EdgeInsets.fromLTRB(16.s, 0.s, 16.s, 16.s),
         child: Material(
           elevation: 3,
           shadowColor: AbiliaColors.black,

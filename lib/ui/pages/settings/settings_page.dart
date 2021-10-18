@@ -63,23 +63,8 @@ class SettingsPage extends StatelessWidget {
             text: t.logout,
             navigateTo: const LogoutPage(),
           ),
-          Expanded(child:
-            BlocBuilder<MemoplannerSettingBloc,
-                MemoplannerSettingsState>(
-              buildWhen: (previous, current) =>
-              previous.alarmsDisabledUntil
-                  .compareTo(current.alarmsDisabledUntil) !=
-                  0,
-              builder: (context, memosettings) =>
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: const ToggleAlarmButton(),
-                  ),),
-          ),
-
         ],
         if (Config.alpha) const FakeTicker(),
-
       ],
       icon: AbiliaIcons.settings,
       title: t.settings,

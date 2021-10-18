@@ -1519,4 +1519,47 @@ void main() {
       expect(goToCurrentSelect, hasLength(1));
     });
   });
+
+  group('disable alarm button', () {
+    late MemoplannerSettingBloc memoplannerSettingBlocMock;
+
+    setUp(() {
+      initializeDateFormatting();
+      memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
+      when(memoplannerSettingBlocMock.stream).thenAnswer((_) => Stream.empty());
+    });
+
+    testWidgets('displays alarm button', (WidgetTester tester) async {
+      when(memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(activityTimeBeforeCurrent: false),
+      ));
+
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendarTab), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+      expect(find.byType(ToggleAlarmButton), findsOneWidget);
+    });
+
+    testWidgets('don\'t display alarm button', (WidgetTester tester) async {
+      when(memoplannerSettingBlocMock.state).thenReturn(
+        MemoplannerSettingsLoaded(MemoplannerSettings(
+          displayAlarmButton: false,
+        )),
+      );
+
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendarTab), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+      expect(find.byType(ToggleAlarmButton), findsNothing);
+    });
+  });
 }

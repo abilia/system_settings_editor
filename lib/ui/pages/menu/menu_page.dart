@@ -9,6 +9,7 @@ import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +21,29 @@ class MenuPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, state) {
-            return GridView.count(
-              crossAxisSpacing: 7.5.s,
-              mainAxisSpacing: 7.s,
-              crossAxisCount: 3,
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                if (state.displayMenuCamera) CameraButton(),
-                if (state.displayMenuMyPhotos) MyPhotosButton(),
-                if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
-                if (state.displayMenuCountdown) CountdownButton(),
-                if (state.displayMenuQuickSettings) QuickSettingsButton(),
-                if (state.displayMenuSettings) SettingsButton(),
+                Expanded(
+                  child: GridView.count(
+                    crossAxisSpacing: 7.5.s,
+                    mainAxisSpacing: 7.s,
+                    crossAxisCount: 3,
+                    children: [
+                      if (state.displayMenuCamera) CameraButton(),
+                      if (state.displayMenuMyPhotos) MyPhotosButton(),
+                      if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
+                      if (state.displayMenuCountdown) CountdownButton(),
+                      if (state.displayMenuQuickSettings) QuickSettingsButton(),
+                      if (state.displayMenuSettings) SettingsButton(),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: const ToggleAlarmButton(insets: EdgeInsets.all(0)),
+                ),
               ],
             );
           },
@@ -192,6 +205,7 @@ class MenuItemButton extends StatelessWidget {
   final String text;
   final ButtonStyle style;
   final IconData icon;
+
   const MenuItemButton({
     Key? key,
     required this.onPressed,

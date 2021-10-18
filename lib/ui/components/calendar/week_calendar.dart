@@ -51,13 +51,18 @@ class WeekCalendar extends StatelessWidget {
                   previous.alarmsDisabledUntil
                           .compareTo(current.alarmsDisabledUntil) !=
                       0,
-              builder: (context, memosettings) => Column(
+              builder: (context, memosettings) => Stack(
                 children: [
-                  WeekCalendarTop(),
-                  Expanded(
-                    child: WeekCalendarBody(
-                        numberofDays:
-                            memosettings.weekDisplayDays.numberOfDays()),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      WeekCalendarTop(),
+                      Expanded(
+                        child: WeekCalendarBody(
+                            numberofDays:
+                                memosettings.weekDisplayDays.numberOfDays()),
+                      ),
+                    ],
                   ),
                   if (memosettings.displayAlarmButton)
                     Align(
@@ -79,20 +84,18 @@ class WeekCalendarTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.weekDisplayDays != current.weekDisplayDays,
+      builder: (context, memosettings) =>
+          BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
         buildWhen: (previous, current) =>
-            previous.weekDisplayDays != current.weekDisplayDays,
-        builder: (context, memosettings) =>
-            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-          buildWhen: (previous, current) =>
-              previous.currentWeekStart != current.currentWeekStart,
-          builder: (context, weekState) => Row(
-            children: List<WeekCalendarDayHeading>.generate(
-              memosettings.weekDisplayDays.numberOfDays(),
-              (i) => WeekCalendarDayHeading(
-                day: weekState.currentWeekStart.addDays(i),
-              ),
+            previous.currentWeekStart != current.currentWeekStart,
+        builder: (context, weekState) => Row(
+          children: List<WeekCalendarDayHeading>.generate(
+            memosettings.weekDisplayDays.numberOfDays(),
+            (i) => WeekCalendarDayHeading(
+              day: weekState.currentWeekStart.addDays(i),
             ),
           ),
         ),
@@ -282,36 +285,26 @@ class FullDayActivies extends StatelessWidget {
 
 class WeekCalendarBody extends StatelessWidget {
   final int numberofDays;
+
   const WeekCalendarBody({Key? key, required this.numberofDays})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) => ListView(
-        children: [
-          Container(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
-            child: IntrinsicHeight(
-              child: BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-                buildWhen: (previous, current) =>
-                    previous.currentWeekStart != current.currentWeekStart,
-                builder: (context, weekState) => Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List<WeekDayColumn>.generate(
-                    numberofDays,
-                    (i) => WeekDayColumn(
-                      day: weekState.currentWeekStart.addDays(i),
-                    ),
-                  ),
-                ),
-              ),
+      builder: (BuildContext context, BoxConstraints constraints) =>
+          BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+        buildWhen: (previous, current) =>
+            previous.currentWeekStart != current.currentWeekStart,
+        builder: (context, weekState) => Row(
+          mainAxisSize: MainAxisSize.max,
+          children: List<WeekDayColumn>.generate(
+            numberofDays,
+            (i) => WeekDayColumn(
+              day: weekState.currentWeekStart.addDays(i),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
