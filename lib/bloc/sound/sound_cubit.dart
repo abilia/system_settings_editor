@@ -17,13 +17,12 @@ import 'package:seagull/storage/all.dart';
 part 'sound_state.dart';
 
 class SoundCubit extends Cubit<SoundState> {
-  final log = Logger('AudioPlayer');
+  final log = Logger((SoundCubit).toString());
   static const tmpFileEnding = 'mp3';
 
   final FileStorage storage;
   final UserFileBloc userFileBloc;
-  final AudioPlayer audioPlayer;
-  final AudioCache audioCache;
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   final Map<AbiliaFile, File> _fileMap = {};
 
@@ -34,10 +33,7 @@ class SoundCubit extends Cubit<SoundState> {
   SoundCubit({
     required this.storage,
     required this.userFileBloc,
-  })  : audioPlayer = AudioPlayer(),
-        audioCache = AudioCache(),
-        super(NoSoundPlaying()) {
-    audioCache.fixedPlayer = audioPlayer;
+  }) : super(NoSoundPlaying()) {
     onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
       emit(const NoSoundPlaying());
     });
@@ -64,16 +60,24 @@ class SoundCubit extends Cubit<SoundState> {
   }
 
   Future<void> play(AbiliaFile abiliaFile) async {
+    log.fine('trying to play: $abiliaFile');
     final file = _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
     if (file != null) {
+      log.fine('playing: $file');
       await audioPlayer.play(file.path, isLocal: true);
       emit(SoundPlaying(abiliaFile));
+    } else {
+      log.warning('could not resolve $abiliaFile from user files');
     }
   }
 
   Future<File?> _resolveFile(AbiliaFile abiliaFile) async {
     if (abiliaFile is UnstoredAbiliaFile) {
       return _fileMap[abiliaFile] = abiliaFile.file;
+    }
+    if (userFileBloc.state is! UserFilesLoaded) {
+      log.fine('waiting for userFileBloc loaded');
+      await userFileBloc.stream.firstWhere((state) => state is UserFilesLoaded);
     }
     final userFile = userFileBloc.state.getUserFileOrNull(abiliaFile);
     if (userFile != null) {

@@ -4,7 +4,7 @@ extension AlarmSettingsState on AlarmSettings {
   Sound get nonCheckableSound => nonCheckableActivity.toSound();
   Sound get checkableSound => checkableActivity.toSound();
   Sound get reminderSound => reminder.toSound();
-  AlarmDuration get alarmDuration => duration.toAlarmDuration();
+  AlarmDuration get alarmDuration => durationMs.toAlarmDuration();
 
   AlarmSettings copyWith({
     Sound? nonCheckableSound,
@@ -14,7 +14,7 @@ extension AlarmSettingsState on AlarmSettings {
     AlarmDuration? alarmDuration,
   }) =>
       AlarmSettings(
-        duration: alarmDuration?.milliseconds() ?? duration,
+        durationMs: alarmDuration?.milliseconds() ?? durationMs,
         nonCheckableActivity: nonCheckableSound?.name() ?? nonCheckableActivity,
         checkableActivity: checkableSound?.name() ?? checkableActivity,
         reminder: reminderSound?.name() ?? reminder,

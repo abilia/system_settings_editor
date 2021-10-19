@@ -6,27 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:synchronized/synchronized.dart';
 
-import 'package:seagull/repository/timezone.dart';
+import 'package:seagull/background/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
-
 import 'package:seagull/utils/all.dart';
-
-// Stream is created so that app can respond to notification-selected events
-// since the plugin is initialised in the main function
-ReplaySubject<String> get selectNotificationSubject =>
-    _selectNotificationSubject;
-ReplaySubject<String> _selectNotificationSubject = ReplaySubject<String>();
-
-Future<void> clearNotificationSubject() async {
-  await _selectNotificationSubject.close();
-  _selectNotificationSubject = ReplaySubject<String>();
-}
 
 final _log = Logger('NotificationIsolate');
 
@@ -49,12 +36,7 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
         requestAlertPermission: false,
       ),
     ),
-    onSelectNotification: (String? payload) {
-      if (payload != null) {
-        _log.fine('onSelectNotification: $payload');
-        selectNotificationSubject.add(payload);
-      }
-    },
+    onSelectNotification: onNotification,
   );
   _log.finer('notification plugin initialize');
   return notificationsPluginInstance = pluginInstance;
@@ -191,7 +173,7 @@ Future<bool> _scheduleNotification(
       : await _iosNotificationDetails(
           notificationAlarm,
           fileStorage,
-          Duration(milliseconds: settings.duration),
+          settings.duration,
           settings,
         );
 
@@ -273,9 +255,10 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     importance: Importance.max,
     priority: Priority.high,
     fullScreenIntent: true,
-    additionalFlags:
-        settings.duration > 0 ? Int32List.fromList(<int>[insistentFlag]) : null,
-    timeoutAfter: settings.duration,
+    additionalFlags: settings.durationMs > 0
+        ? Int32List.fromList(<int>[insistentFlag])
+        : null,
+    timeoutAfter: settings.durationMs,
     startActivityClassName:
         'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
     largeIcon: await _androidLargeIcon(activity, fileStorage),

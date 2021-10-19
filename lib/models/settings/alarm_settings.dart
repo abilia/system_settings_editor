@@ -7,15 +7,16 @@ class AlarmSettings extends Equatable {
       reminderAlarmKey = 'activity_reminder_alarm',
       vibrateAtReminderKey = 'setting_vibrate_at_reminder',
       alarmDurationKey = 'alarm_duration';
-  final int duration;
+  final int durationMs;
   final bool vibrateAtReminder;
 
   final String checkableActivity, nonCheckableActivity, reminder;
   Sound get nonCheckableAlarm => nonCheckableActivity.toSound();
   Sound get checkableAlarm => checkableActivity.toSound();
   Sound get reminderAlarm => reminder.toSound();
+  Duration get duration => Duration(milliseconds: durationMs);
   const AlarmSettings({
-    this.duration = 30000,
+    this.durationMs = 30000,
     this.vibrateAtReminder = true,
     this.checkableActivity = SoundExtension.defaultName,
     this.nonCheckableActivity = SoundExtension.defaultName,
@@ -25,7 +26,7 @@ class AlarmSettings extends Equatable {
   factory AlarmSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
       AlarmSettings(
-        duration: settings.parse(
+        durationMs: settings.parse(
           alarmDurationKey,
           30000,
         ),
