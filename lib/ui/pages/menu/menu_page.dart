@@ -21,24 +21,20 @@ class MenuPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, state) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
+            return Stack(
               children: [
-                Expanded(
-                  child: GridView.count(
-                    crossAxisSpacing: 7.5.s,
-                    mainAxisSpacing: 7.s,
-                    crossAxisCount: 3,
-                    children: [
-                      if (state.displayMenuCamera) CameraButton(),
-                      if (state.displayMenuMyPhotos) MyPhotosButton(),
-                      if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
-                      if (state.displayMenuCountdown) CountdownButton(),
-                      if (state.displayMenuQuickSettings) QuickSettingsButton(),
-                      if (state.displayMenuSettings) SettingsButton(),
-                    ],
-                  ),
+                GridView.count(
+                  crossAxisSpacing: 7.5.s,
+                  mainAxisSpacing: 7.s,
+                  crossAxisCount: 3,
+                  children: [
+                    if (state.displayMenuCamera) CameraButton(),
+                    if (state.displayMenuMyPhotos) MyPhotosButton(),
+                    if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
+                    if (state.displayMenuCountdown) CountdownButton(),
+                    if (state.displayMenuQuickSettings) QuickSettingsButton(),
+                    if (state.displayMenuSettings) SettingsButton(),
+                  ],
                 ),
                 Align(
                   alignment: Alignment.bottomLeft,
