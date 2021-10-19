@@ -6,10 +6,9 @@ import 'dart:async' as _i6;
 import 'dart:convert' as _i5;
 import 'dart:io' as _i4;
 
-import 'package:http/http.dart' as _i7;
+import 'package:http/http.dart' as _i3;
 import 'package:http/src/byte_stream.dart' as _i2;
-import 'package:http/src/multipart_file.dart' as _i8;
-import 'package:http/src/streamed_response.dart' as _i3;
+import 'package:http/src/multipart_file.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -48,7 +47,7 @@ class _FakeStreamSubscription_9<T> extends _i1.Fake
 /// A class which mocks [MultipartRequest].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMultipartRequest extends _i1.Mock implements _i7.MultipartRequest {
+class MockMultipartRequest extends _i1.Mock implements _i3.MultipartRequest {
   MockMultipartRequest() {
     _i1.throwOnMissingStub(this);
   }
@@ -58,9 +57,9 @@ class MockMultipartRequest extends _i1.Mock implements _i7.MultipartRequest {
       (super.noSuchMethod(Invocation.getter(#fields),
           returnValue: <String, String>{}) as Map<String, String>);
   @override
-  List<_i8.MultipartFile> get files =>
+  List<_i7.MultipartFile> get files =>
       (super.noSuchMethod(Invocation.getter(#files),
-          returnValue: <_i8.MultipartFile>[]) as List<_i8.MultipartFile>);
+          returnValue: <_i7.MultipartFile>[]) as List<_i7.MultipartFile>);
   @override
   int get contentLength =>
       (super.noSuchMethod(Invocation.getter(#contentLength), returnValue: 0)
