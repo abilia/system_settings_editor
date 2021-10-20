@@ -7,17 +7,13 @@ class TypeWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.plus,
-        title: Translator.of(context).translate.selectType,
-        label: Translator.of(context).translate.newActivity,
-      ),
+    return WizardScaffold(
+      iconData: AbiliaIcons.plus,
+      title: Translator.of(context).translate.selectType,
       body: Padding(
         padding: ordinaryPadding,
         child: const _TypeWidget(),
       ),
-      bottomNavigationBar: const WizardBottomNavigation(),
     );
   }
 }

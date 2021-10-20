@@ -7,14 +7,10 @@ class ImageWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.selectImage,
-        label: Translator.of(context).translate.newActivity,
-        iconData: AbiliaIcons.edit,
-      ),
+    return WizardScaffold(
+      title: Translator.of(context).translate.selectImage,
+      iconData: AbiliaIcons.edit,
       body: ImageWizSelectPictureWidget(),
-      bottomNavigationBar: WizardBottomNavigation(),
     );
   }
 }
