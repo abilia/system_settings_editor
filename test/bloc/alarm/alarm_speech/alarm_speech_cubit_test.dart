@@ -43,8 +43,17 @@ void main() {
         startTimeExtraAlarm: speechFile,
       ),
     );
+    final activityNoSound = Activity.createNew(
+      title: 'title',
+      startTime: startTime,
+      extras: Extras.createNew(
+        startTimeExtraAlarm: speechFile,
+      ),
+      alarmType: NO_ALARM,
+    );
 
     final startAlarm = StartAlarm(activity, day);
+    final startAlarmNoSound = StartAlarm(activityNoSound, day);
     const MethodChannel localNotificationChannel =
         MethodChannel('dexterous.com/flutter/local_notifications');
     const MethodChannel audioPlayerChannel =
@@ -113,6 +122,25 @@ void main() {
         alarm: startAlarm,
         alarmSettings: AlarmSettings(),
         fullScreenAlarm: true,
+        selectedNotificationStream: selectNotificationSubject,
+        soundCubit: SoundCubit(
+          storage: FakeFileStorage(),
+          userFileBloc: mockUserFileBloc,
+        ),
+      ),
+      expect: () => [AlarmSpeechPlayed()],
+      verify: (_) => () {
+        expect(audioLog, hasLength(1));
+        expect(audioLog.single.method, 'play');
+      },
+    );
+
+    blocTest(
+      'emits AlarmPlayed when Alarm is No Alarm',
+      build: () => AlarmSpeechCubit(
+        alarm: startAlarmNoSound,
+        alarmSettings: AlarmSettings(),
+        fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
