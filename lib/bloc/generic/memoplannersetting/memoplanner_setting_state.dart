@@ -147,9 +147,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 
-  DateTime get alarmsDisabledUntil =>
-      DateTime.fromMillisecondsSinceEpoch(settings.alarmsDisabledUntil);
-
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
     switch (timepillarIntervalType) {

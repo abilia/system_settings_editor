@@ -64,16 +64,15 @@ Future scheduleAlarmNotifications(
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  DateTime alarmsDisabledUntil,
   AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
-  final _now = alarmsDisabledUntil.isAfter(now())
-      ? alarmsDisabledUntil
+  final from = settings.disabledUntilDate.isAfter(now())
+      ? settings.disabledUntilDate
       : now().nextMinute();
-  final shouldBeScheduledNotifications = allActivities.alarmsFrom(_now);
+  final shouldBeScheduledNotifications = allActivities.alarmsFrom(from);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
@@ -89,19 +88,18 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,
   String language,
   bool alwaysUse24HourFormat,
-  DateTime alarmsDisabledUntil,
   AlarmSettings settings,
   FileStorage fileStorage, {
   DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
-  final _now = alarmsDisabledUntil.isAfter(now())
-      ? alarmsDisabledUntil
+  final from = settings.disabledUntilDate.isAfter(now())
+      ? settings.disabledUntilDate
       : now().nextMinute();
   final serialized =
       allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
   final shouldBeScheduledNotificationsSerialized =
-      await compute(alarmsFromIsolate, [serialized, _now]);
+      await compute(alarmsFromIsolate, [serialized, from]);
   final shouldBeScheduledNotifications =
       shouldBeScheduledNotificationsSerialized
           .map((e) => NotificationAlarm.fromJson(e));

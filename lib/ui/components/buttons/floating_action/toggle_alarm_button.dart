@@ -11,14 +11,14 @@ class ToggleAlarmButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          current.alarmsDisabledUntil != previous.alarmsDisabledUntil,
+          current.alarm.disabledUntilEpoch != current.alarm.disabledUntilEpoch,
       builder: (context, settingsState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => Material(
           color: Colors.transparent,
           elevation: 3,
           shadowColor: AbiliaColors.black,
           borderRadius: borderRadius,
-          child: now.isBefore(settingsState.alarmsDisabledUntil)
+          child: now.isBefore(settingsState.alarm.disabledUntilDate)
               ? const _ToggleAlarmButtonActive()
               : _ToggleAlarmButtonInactive(now: now),
         ),
@@ -39,7 +39,7 @@ class _ToggleAlarmButtonActive extends StatelessWidget {
               [
                 MemoplannerSettingData.fromData(
                   data: 0,
-                  identifier: MemoplannerSettings.alarmsDisabledUntilKey,
+                  identifier: AlarmSettings.alarmsDisabledUntilKey,
                 ),
               ],
             ),
@@ -69,7 +69,7 @@ class _ToggleAlarmButtonInactive extends StatelessWidget {
                 [
                   MemoplannerSettingData.fromData(
                     data: now.onlyDays().nextDay().millisecondsSinceEpoch,
-                    identifier: MemoplannerSettings.alarmsDisabledUntilKey,
+                    identifier: AlarmSettings.alarmsDisabledUntilKey,
                   ),
                 ],
               ),

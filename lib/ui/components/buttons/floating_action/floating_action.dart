@@ -20,7 +20,7 @@ class FloatingActions extends StatelessWidget {
                 .read<MemoplannerSettingBloc>()
                 .state
                 .displayAlarmButton)
-              ToggleAlarmButton(),
+              const ToggleAlarmButton(),
             if (state.notificationDenied)
               Expanded(
                 child: Padding(
@@ -56,8 +56,8 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.displayEyeButton != current.displayEyeButton ||
-          previous.displayMonthCalendar != current.displayMonthCalendar ||
-          previous.displayAlarmButton != current.displayAlarmButton,
+          previous.displayAlarmButton != current.displayAlarmButton ||
+          previous.calendarCount != current.calendarCount,
       builder: (context, state) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
