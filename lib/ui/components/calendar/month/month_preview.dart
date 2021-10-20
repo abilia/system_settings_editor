@@ -56,7 +56,8 @@ class MonthPreview extends StatelessWidget {
           buildWhen: (oldState, newState) =>
               (oldState is ActivitiesOccasionLoaded &&
                   newState is ActivitiesOccasionLoaded &&
-                  oldState.day != newState.day) ||
+                  (oldState.day != newState.day ||
+                      oldState.activities != newState.activities)) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) =>
               activityState is ActivitiesOccasionLoaded
