@@ -17,6 +17,7 @@ class RecurringWiz extends StatelessWidget {
         return Scaffold(
           appBar: AbiliaAppBar(
             title: translate.recurrence,
+            label: translate.newActivity,
             iconData: AbiliaIcons.repeat,
           ),
           body: Padding(

@@ -14,6 +14,7 @@ class RemindersWiz extends StatelessWidget {
         appBar: AbiliaAppBar(
           iconData: AbiliaIcons.handi_reminder,
           title: translate.reminders,
+          label: translate.newActivity,
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),

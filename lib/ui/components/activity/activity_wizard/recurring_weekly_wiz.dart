@@ -11,6 +11,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.weekly,
+        label: translate.newActivity,
         iconData: AbiliaIcons.week,
       ),
       body: BlocProvider(

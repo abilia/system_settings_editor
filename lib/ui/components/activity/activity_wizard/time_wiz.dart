@@ -14,6 +14,7 @@ class TimeWiz extends StatelessWidget {
         appBar: AbiliaAppBar(
           iconData: AbiliaIcons.clock,
           title: Translator.of(context).translate.setTime,
+          label: Translator.of(context).translate.newActivity,
         ),
         body: const _TimeWizContent(),
       ),

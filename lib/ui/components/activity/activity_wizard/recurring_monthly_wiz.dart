@@ -9,6 +9,7 @@ class RecurringMonthlyWiz extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.monthly,
+        label: Translator.of(context).translate.newActivity,
         iconData: AbiliaIcons.month,
       ),
       body: VerticalScrollArrows(

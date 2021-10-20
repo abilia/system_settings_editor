@@ -11,6 +11,7 @@ class TypeWiz extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.plus,
         title: Translator.of(context).translate.selectType,
+        label: Translator.of(context).translate.newActivity,
       ),
       body: Padding(
         padding: ordinaryPadding,

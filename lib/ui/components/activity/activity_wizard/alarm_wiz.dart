@@ -13,6 +13,7 @@ class AlarmWiz extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.attention,
         title: Translator.of(context).translate.alarm,
+        label: Translator.of(context).translate.newActivity,
       ),
       body: SelectAlarmWizPage(),
       bottomNavigationBar: WizardBottomNavigation(),

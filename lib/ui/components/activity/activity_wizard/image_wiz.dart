@@ -10,6 +10,7 @@ class ImageWiz extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.selectImage,
+        label: Translator.of(context).translate.newActivity,
         iconData: AbiliaIcons.edit,
       ),
       body: ImageWizSelectPictureWidget(),

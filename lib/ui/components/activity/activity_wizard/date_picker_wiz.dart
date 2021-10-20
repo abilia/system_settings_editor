@@ -27,6 +27,7 @@ class DatePickerWiz extends StatelessWidget {
           child: Scaffold(
             appBar: AbiliaAppBar(
               title: Translator.of(context).translate.selectDate,
+              label: Translator.of(context).translate.newActivity,
               iconData: AbiliaIcons.day,
               bottom: const MonthAppBarStepper(),
             ),

@@ -33,6 +33,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: t.enterNameForActivity,
+          label: t.newActivity,
           iconData: AbiliaIcons.edit,
         ),
         body: Tts.fromSemantics(

@@ -11,6 +11,7 @@ class ExtraFunctionWiz extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.add_attachment,
         title: Translator.of(context).translate.selectInfoType,
+        label: Translator.of(context).translate.newActivity,
       ),
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>

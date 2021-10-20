@@ -14,6 +14,7 @@ class CheckableWiz extends StatelessWidget {
         appBar: AbiliaAppBar(
           iconData: AbiliaIcons.handi_check,
           title: translate.checkable,
+          label: translate.newActivity,
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
