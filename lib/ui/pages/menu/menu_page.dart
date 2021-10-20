@@ -17,29 +17,23 @@ class MenuPage extends StatelessWidget {
         title: Translator.of(context).translate.menu,
         iconData: AbiliaIcons.app_menu,
       ),
+      floatingActionButton: const FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, state) {
-            return Stack(
+            return GridView.count(
+              crossAxisSpacing: 7.5.s,
+              mainAxisSpacing: 7.s,
+              crossAxisCount: 3,
               children: [
-                GridView.count(
-                  crossAxisSpacing: 7.5.s,
-                  mainAxisSpacing: 7.s,
-                  crossAxisCount: 3,
-                  children: [
-                    if (state.displayMenuCamera) CameraButton(),
-                    if (state.displayMenuMyPhotos) MyPhotosButton(),
-                    if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
-                    if (state.displayMenuCountdown) CountdownButton(),
-                    if (state.displayMenuQuickSettings) QuickSettingsButton(),
-                    if (state.displayMenuSettings) SettingsButton(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: const ToggleAlarmButton(insets: EdgeInsets.all(0)),
-                ),
+                if (state.displayMenuCamera) CameraButton(),
+                if (state.displayMenuMyPhotos) MyPhotosButton(),
+                if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
+                if (state.displayMenuCountdown) CountdownButton(),
+                if (state.displayMenuQuickSettings) QuickSettingsButton(),
+                if (state.displayMenuSettings) SettingsButton(),
               ],
             );
           },

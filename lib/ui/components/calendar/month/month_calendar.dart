@@ -16,52 +16,26 @@ class MonthCalendarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MonthAppBar(),
-      body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.calendarDayColor != current.calendarDayColor ||
-            previous.monthCalendarType != current.monthCalendarType ||
-            previous.alarmsDisabledUntil
-                    .compareTo(current.alarmsDisabledUntil) !=
-                0,
-        builder: (context, memoSettingsState) => Stack(
-          children: [
-            MonthCalendar(
-                calendarDayColor: memoSettingsState.calendarDayColor,
-                monthCalendarType: memoSettingsState.monthCalendarType),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (memoSettingsState.displayAlarmButton)
-                    const ToggleAlarmButton(),
-                  if (memoSettingsState.displayEyeButton)
-                    const EyeButtonMonth(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      body: const MonthCalendar(),
     );
   }
 }
 
 class MonthCalendar extends StatelessWidget {
-  final DayColor calendarDayColor;
-  final MonthCalendarType monthCalendarType;
-
-  const MonthCalendar(
-      {Key? key,
-      required this.calendarDayColor,
-      required this.monthCalendarType})
-      : super(key: key);
+  const MonthCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MonthBody(
-      calendarDayColor: calendarDayColor,
-      monthCalendarType: monthCalendarType,
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.calendarDayColor != current.calendarDayColor ||
+          previous.monthCalendarType != current.monthCalendarType,
+      builder: (context, memoSettingsState) => MonthBody(
+        calendarDayColor: memoSettingsState.calendarDayColor,
+        monthCalendarType: memoSettingsState.monthCalendarType,
+      ),
     );
   }
 }

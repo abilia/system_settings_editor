@@ -261,13 +261,13 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act dissmiss
     await tester.tap(
       find.descendant(
-        of: find.byType(WarningDialog),
+        of: find.byType(ConfirmWarningDialog),
         matching: find.byType(PreviousButton),
       ),
     );
@@ -275,7 +275,7 @@ void main() {
 
     // Assert - back ad edit activity
     expect(find.byType(EditActivityPage), findsOneWidget);
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.text(translate.startTimeBeforeNowWarning), findsNothing);
 
     // Act press submit
@@ -283,7 +283,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act press ok
@@ -291,7 +291,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // // Assert - finds nothing
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.text(translate.startTimeBeforeNowWarning), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });
@@ -317,7 +317,7 @@ void main() {
     // Assert -- no title error message, no warning
     expect(find.byType(ErrorDialog), findsOneWidget);
     expect(find.text(translate.missingTitleOrImage), findsOneWidget);
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
 
     // Act -- dissmiss, enter title, press submit
     await tester.tap(
@@ -334,7 +334,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert now show warning
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
     expect(find.byType(ErrorDialog), findsNothing);
 
@@ -343,7 +343,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert -- leaves editactivitypage
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });
 
@@ -378,7 +378,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert -- before now warning
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act -- Ok the warning
@@ -387,7 +387,7 @@ void main() {
 
     // Assert -- leaves editactivitypage
     expect(find.byType(SelectRecurrentTypePage), findsNothing);
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });
 
@@ -422,13 +422,13 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.conflictWarning), findsOneWidget);
 
     // Act dissmiss
     await tester.tap(
       find.descendant(
-        of: find.byType(WarningDialog),
+        of: find.byType(ConfirmWarningDialog),
         matching: find.byType(PreviousButton),
       ),
     );
@@ -436,7 +436,7 @@ void main() {
 
     // Assert - back ad edit activity
     expect(find.byType(EditActivityPage), findsOneWidget);
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.text(translate.conflictWarning), findsNothing);
 
     // Act press submit
@@ -444,7 +444,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.conflictWarning), findsOneWidget);
 
     // Act press ok
@@ -452,7 +452,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // // Assert - finds nothing
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.text(translate.conflictWarning), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });
@@ -488,13 +488,13 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message before now
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act dissmiss
     await tester.tap(
       find.descendant(
-        of: find.byType(WarningDialog),
+        of: find.byType(ConfirmWarningDialog),
         matching: find.byType(PreviousButton),
       ),
     );
@@ -502,14 +502,14 @@ void main() {
 
     // Assert - back ad edit activity
     expect(find.byType(EditActivityPage), findsOneWidget);
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
 
     // Act press submit
     await tester.tap(submitButtonFinder);
     await tester.pumpAndSettle();
 
     // Assert warning message before now
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.startTimeBeforeNowWarning), findsOneWidget);
 
     // Act press ok
@@ -517,7 +517,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert warning message conflict
-    expect(find.byType(WarningDialog), findsOneWidget);
+    expect(find.byType(ConfirmWarningDialog), findsOneWidget);
     expect(find.text(translate.conflictWarning), findsOneWidget);
 
     // Act press ok
@@ -525,7 +525,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert - finds nothing
-    expect(find.byType(WarningDialog), findsNothing);
+    expect(find.byType(ConfirmWarningDialog), findsNothing);
     expect(find.byType(EditActivityPage), findsNothing);
   });
 }
