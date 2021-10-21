@@ -10,11 +10,9 @@ class AvailableForWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.unlock,
-          title: translate.availableFor,
-        ),
+      builder: (context, state) => WizardScaffold(
+        iconData: AbiliaIcons.unlock,
+        title: translate.availableFor,
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
           child: Column(
@@ -40,7 +38,6 @@ class AvailableForWiz extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: WizardBottomNavigation(),
       ),
     );
   }

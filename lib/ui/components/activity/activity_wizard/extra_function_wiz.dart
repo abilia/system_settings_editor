@@ -7,11 +7,9 @@ class ExtraFunctionWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.add_attachment,
-        title: Translator.of(context).translate.selectInfoType,
-      ),
+    return WizardScaffold(
+      iconData: AbiliaIcons.add_attachment,
+      title: Translator.of(context).translate.selectInfoType,
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.wizardChecklistStep != current.wizardChecklistStep ||
@@ -21,7 +19,6 @@ class ExtraFunctionWiz extends StatelessWidget {
           showNote: state.wizardNotesStep,
         ),
       ),
-      bottomNavigationBar: const WizardBottomNavigation(),
     );
   }
 }

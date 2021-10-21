@@ -5,17 +5,19 @@ class AppBarHeading extends StatelessWidget {
   const AppBarHeading({
     Key? key,
     required this.text,
+    this.label = '',
     this.iconData,
   }) : super(key: key);
 
   final String text;
+  final String label;
   final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Tts.data(
-      data: text,
+      data: label.isEmpty ? text : '$label $text',
       child: IconTheme(
         data: theme.iconTheme.copyWith(
           color: AbiliaColors.white,
@@ -32,7 +34,17 @@ class AppBarHeading extends StatelessWidget {
                 Icon(iconData),
                 SizedBox(width: 8.s),
               ],
-              Text(text),
+              if (label.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(label, style: theme.textTheme.button),
+                    Text(text),
+                  ],
+                )
+              else
+                Text(text),
               const Spacer(flex: 114),
             ],
           ),

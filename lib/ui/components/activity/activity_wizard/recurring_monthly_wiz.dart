@@ -6,11 +6,9 @@ class RecurringMonthlyWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.monthly,
-        iconData: AbiliaIcons.month,
-      ),
+    return WizardScaffold(
+      title: Translator.of(context).translate.monthly,
+      iconData: AbiliaIcons.month,
       body: VerticalScrollArrows(
         controller: scrollController,
         child: ListView(
@@ -34,7 +32,6 @@ class RecurringMonthlyWiz extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const WizardBottomNavigation(),
     );
   }
 }

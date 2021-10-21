@@ -10,12 +10,11 @@ class TimeWiz extends StatelessWidget {
       listenWhen: (_, current) => current.currentStep != WizardStep.time,
       listener: (context, state) =>
           FocusScope.of(context).requestFocus(FocusNode()),
-      child: Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.clock,
-          title: Translator.of(context).translate.setTime,
-        ),
+      child: WizardScaffold(
+        iconData: AbiliaIcons.clock,
+        title: Translator.of(context).translate.setTime,
         body: const _TimeWizContent(),
+        bottomNavigationBar: null,
       ),
     );
   }
