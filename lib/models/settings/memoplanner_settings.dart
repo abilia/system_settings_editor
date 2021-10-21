@@ -3,12 +3,7 @@ import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
-    // alarm settings
-    AlarmSettings.nonCheckableActivityAlarmKey,
-    AlarmSettings.checkableActivityAlarmKey,
-    AlarmSettings.reminderAlarmKey,
-    AlarmSettings.vibrateAtReminderKey,
-    AlarmSettings.alarmDurationKey,
+    ...AlarmSettings.keys,
     // eye button settings
     viewOptionsZoomKey,
     viewOptionsTimeIntervalKey,
@@ -650,7 +645,7 @@ class MemoplannerSettings extends Equatable {
         wizardAlarmStep,
         wizardChecklistStep,
         wizardNotesStep,
-        wizardRemindersStep
+        wizardRemindersStep,
       ];
 }
 

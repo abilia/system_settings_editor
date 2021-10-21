@@ -9,6 +9,7 @@ import 'package:seagull/utils/all.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +17,8 @@ class MenuPage extends StatelessWidget {
         title: Translator.of(context).translate.menu,
         iconData: AbiliaIcons.app_menu,
       ),
+      floatingActionButton: const FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -192,6 +195,7 @@ class MenuItemButton extends StatelessWidget {
   final String text;
   final ButtonStyle style;
   final IconData icon;
+
   const MenuItemButton({
     Key? key,
     required this.onPressed,

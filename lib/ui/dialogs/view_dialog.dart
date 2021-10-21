@@ -119,9 +119,9 @@ class YesNoDialog extends StatelessWidget {
   }
 }
 
-class WarningDialog extends StatelessWidget {
+class ConfirmWarningDialog extends StatelessWidget {
   final String text;
-  const WarningDialog({
+  const ConfirmWarningDialog({
     Key? key,
     required this.text,
   }) : super(key: key);
@@ -138,6 +138,27 @@ class WarningDialog extends StatelessWidget {
         onPressed: () => Navigator.of(context).maybePop(true),
       ),
       backNavigationWidget: PreviousButton(),
+    );
+  }
+}
+
+class WarningDialog extends StatelessWidget {
+  final String text;
+
+  const WarningDialog({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: Translator.of(context).translate.warning,
+        iconData: AbiliaIcons.ir_error,
+      ),
+      body: Tts(child: Text(text)),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }
 }

@@ -71,7 +71,7 @@ class ErrorPopupListener extends StatelessWidget {
       if (errors.contains(SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW)) {
         final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
-          builder: (context) => WarningDialog(
+          builder: (context) => ConfirmWarningDialog(
             text: translate.startTimeBeforeNowWarning,
           ),
         );
@@ -81,7 +81,7 @@ class ErrorPopupListener extends StatelessWidget {
       if (errors.contains(SaveError.UNCONFIRMED_ACTIVITY_CONFLICT)) {
         final confirmConflict = await showViewDialog(
           context: context,
-          builder: (context) => WarningDialog(
+          builder: (context) => ConfirmWarningDialog(
             text: translate.conflictWarning,
           ),
         );
