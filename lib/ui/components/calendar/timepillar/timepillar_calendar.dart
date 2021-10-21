@@ -291,6 +291,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       dayParts: widget.dayParts,
                                       columnOfDots: memoSettings.columnOfDots,
                                       topMargin: topMargin,
+                                      timePillarState: ts,
                                     ),
                                   ),
                                 ),
