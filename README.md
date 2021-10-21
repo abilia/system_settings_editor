@@ -1,4 +1,4 @@
-# MEMOPlanner gen 4
+# MEMOPlanner generation 4
 
 ## Building for android
 
@@ -44,6 +44,7 @@ To add a new language:
 
 Missing translations will fallback to the english translation
 All missing translations will be written to the file [lib/i18n/translation.missing.tsv](https://github.com/abilia/seagull/blob/master/lib/i18n/translations.missing.tsv)
+
 ### Special cases
 
 - If you want an empty string, put **&empty&** as placeholder
