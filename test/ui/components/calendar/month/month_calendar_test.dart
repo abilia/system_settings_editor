@@ -16,6 +16,7 @@ import 'package:seagull/utils/all.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/shared.mocks.dart';
 import '../../../../test_helpers/tts.dart';
+import '../../../../test_helpers/enter_text.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
@@ -33,6 +34,8 @@ void main() {
     when(mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
     when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(mockActivityDb.insertAndAddDirty(any))
+        .thenAnswer((_) => Future.value(true));
 
     mockGenericDb = MockGenericDb();
     when(mockGenericDb.insertAndAddDirty(any))
@@ -349,6 +352,35 @@ void main() {
       expect(find.byType(FullDayStack), findsOneWidget);
       expect(find.byType(MonthActivityContent), findsNothing);
       expect(find.text('+2'), findsOneWidget);
+    });
+
+    testWidgets(
+        'SGC-1062 Split month view: List not updated when editing activity',
+        (WidgetTester tester) async {
+      when(mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([monthPreviewSetting]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MonthPreview), findsOneWidget);
+
+      await tester.tap(find.text(title1));
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.edit));
+      await tester.pumpAndSettle();
+      await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField), 'new title');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextWizardStepButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.activityBackButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthPreview), findsOneWidget);
+      expect(find.text('new title'), findsOneWidget);
     });
   });
 }
