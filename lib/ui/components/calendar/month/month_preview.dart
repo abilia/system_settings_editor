@@ -53,12 +53,6 @@ class MonthPreview extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(color: AbiliaColors.white110),
         child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
-          buildWhen: (oldState, newState) =>
-              (oldState is ActivitiesOccasionLoaded &&
-                  newState is ActivitiesOccasionLoaded &&
-                  (oldState.day != newState.day ||
-                      oldState.activities != newState.activities)) ||
-              oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) =>
               activityState is ActivitiesOccasionLoaded
                   ? ActivityList(
