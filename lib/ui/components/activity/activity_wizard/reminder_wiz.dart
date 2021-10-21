@@ -10,12 +10,9 @@ class RemindersWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.handi_reminder,
-          title: translate.reminders,
-          label: translate.newActivity,
-        ),
+      builder: (context, state) => WizardScaffold(
+        iconData: AbiliaIcons.handi_reminder,
+        title: translate.reminders,
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
           child: Reminders(
@@ -23,7 +20,6 @@ class RemindersWiz extends StatelessWidget {
             expanded: true,
           ),
         ),
-        bottomNavigationBar: WizardBottomNavigation(),
       ),
     );
   }

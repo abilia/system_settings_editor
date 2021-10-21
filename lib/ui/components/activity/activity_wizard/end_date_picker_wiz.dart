@@ -24,13 +24,10 @@ class EndDatePickerWiz extends StatelessWidget {
               ),
             ),
           ],
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              title: Translator.of(context).translate.endDate,
-              label: Translator.of(context).translate.newActivity,
-              iconData: AbiliaIcons.day,
-              bottom: const MonthAppBarStepper(),
-            ),
+          child: WizardScaffold(
+            title: Translator.of(context).translate.endDate,
+            iconData: AbiliaIcons.day,
+            bottom: const MonthAppBarStepper(),
             body: BlocListener<DayPickerBloc, DayPickerState>(
               listener: (context, state) {
                 BlocProvider.of<EditActivityBloc>(context).add(

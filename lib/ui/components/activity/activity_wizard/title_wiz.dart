@@ -30,12 +30,9 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
           focusNode.unfocus();
         }
       },
-      child: Scaffold(
-        appBar: AbiliaAppBar(
-          title: t.enterNameForActivity,
-          label: t.newActivity,
-          iconData: AbiliaIcons.edit,
-        ),
+      child: WizardScaffold(
+        title: t.enterNameForActivity,
+        iconData: AbiliaIcons.edit,
         body: Tts.fromSemantics(
           SemanticsProperties(label: t.name),
           child: Column(
@@ -66,6 +63,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
             ],
           ),
         ),
+        bottomNavigationBar: null,
       ),
     );
   }

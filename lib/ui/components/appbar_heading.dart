@@ -17,7 +17,7 @@ class AppBarHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Tts.data(
-      data: text,
+      data: label.isEmpty ? text : '$label $text',
       child: IconTheme(
         data: theme.iconTheme.copyWith(
           color: AbiliaColors.white,
@@ -35,7 +35,14 @@ class AppBarHeading extends StatelessWidget {
                 SizedBox(width: 8.s),
               ],
               if (label.isNotEmpty)
-                HeaderWithLabel(text: text, label: label)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(label, style: theme.textTheme.button),
+                    Text(text),
+                  ],
+                )
               else
                 Text(text),
               const Spacer(flex: 114),
@@ -43,29 +50,6 @@ class AppBarHeading extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class HeaderWithLabel extends StatelessWidget {
-  final String text;
-  final String label;
-
-  const HeaderWithLabel({
-    Key? key,
-    required this.text,
-    required this.label,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 8.s),
-        Text(label, textScaleFactor: 0.7),
-        Text(text),
-      ],
     );
   }
 }
