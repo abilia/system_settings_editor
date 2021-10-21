@@ -55,9 +55,6 @@ class MemoplannerSettingData<T> extends GenericData {
       case String:
         type = 'String';
         break;
-      case DateTime:
-        type = 'DateTime';
-        break;
       default:
         throw UnimplementedError();
     }
