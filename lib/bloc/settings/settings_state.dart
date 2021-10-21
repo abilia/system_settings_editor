@@ -5,8 +5,7 @@ class SettingsState extends Equatable {
 
   const SettingsState({required this.textToSpeech});
 
-  SettingsState copyWith({bool? textToSpeech, bool? alarmsDisabled}) =>
-      SettingsState(
+  SettingsState copyWith({bool? textToSpeech}) => SettingsState(
         textToSpeech: textToSpeech ?? this.textToSpeech,
       );
 

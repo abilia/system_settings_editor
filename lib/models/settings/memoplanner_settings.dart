@@ -3,19 +3,13 @@ import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
-    // alarm settings
-    AlarmSettings.nonCheckableActivityAlarmKey,
-    AlarmSettings.checkableActivityAlarmKey,
-    AlarmSettings.reminderAlarmKey,
-    AlarmSettings.vibrateAtReminderKey,
-    AlarmSettings.alarmDurationKey,
+    ...AlarmSettings.keys,
     // eye button settings
     viewOptionsZoomKey,
     viewOptionsTimeIntervalKey,
     viewOptionsTimeViewKey,
     dotsInTimepillarKey,
     viewOptionsMonthCalendarKey,
-    alarmsDisabledUntilKey,
   };
 
   static const String displayAlarmButtonKey =
@@ -102,8 +96,7 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
       settingViewOptionsTimeIntervalKey = 'setting_view_options_time_interval',
       settingViewOptionsZoomKey = 'setting_view_options_zoom',
-      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots',
-      alarmsDisabledUntilKey = 'alarms_disabled_until';
+      settingViewOptionsDurationDotsKey = 'setting_view_options_duration_dots';
 
   final bool displayAlarmButton,
       displayDeleteButton,
@@ -184,8 +177,7 @@ class MemoplannerSettings extends Equatable {
       activityTimeout,
       functionMenuStartView,
       settingClockType,
-      activityDefaultAlarmType,
-      alarmsDisabledUntil;
+      activityDefaultAlarmType;
 
   final String calendarActivityTypeLeft,
       calendarActivityTypeRight,
@@ -279,7 +271,6 @@ class MemoplannerSettings extends Equatable {
     this.wizardChecklistStep = false,
     this.wizardNotesStep = false,
     this.wizardRemindersStep = false,
-    this.alarmsDisabledUntil = 0,
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -566,7 +557,6 @@ class MemoplannerSettings extends Equatable {
         wizardRemindersStepKey,
         defaultValue: false,
       ),
-      alarmsDisabledUntil: settings.parse(alarmsDisabledUntilKey, 0),
     );
   }
 
@@ -656,7 +646,6 @@ class MemoplannerSettings extends Equatable {
         wizardChecklistStep,
         wizardNotesStep,
         wizardRemindersStep,
-        alarmsDisabledUntil,
       ];
 }
 

@@ -19,13 +19,3 @@ class TextToSpeechUpdated extends SettingsEvent {
   @override
   String toString() => 'TextToSpeechUpdated {textToSpeech: $textToSpeech}';
 }
-
-class AlarmsDisabledUpdated extends SettingsEvent {
-  final bool alarmsDisabled;
-
-  AlarmsDisabledUpdated(this.alarmsDisabled);
-
-  @override
-  String toString() =>
-      'AlarmsDisabledUpdated {alarmsDisabled: $alarmsDisabled}';
-}

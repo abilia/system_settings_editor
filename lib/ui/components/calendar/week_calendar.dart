@@ -15,6 +15,8 @@ class WeekCalendarTab extends StatelessWidget {
     return Scaffold(
       backgroundColor: AbiliaColors.white,
       appBar: const WeekAppBar(),
+      floatingActionButton: FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Padding(
         padding: EdgeInsets.fromLTRB(2.s, 4.s, 2.s, 0),
         child: const WeekCalendar(),
@@ -47,28 +49,16 @@ class WeekCalendar extends StatelessWidget {
             return BlocBuilder<MemoplannerSettingBloc,
                 MemoplannerSettingsState>(
               buildWhen: (previous, current) =>
-                  previous.weekDisplayDays != current.weekDisplayDays ||
-                  previous.alarmsDisabledUntil
-                          .compareTo(current.alarmsDisabledUntil) !=
-                      0,
-              builder: (context, memosettings) => Stack(
+                  previous.weekDisplayDays != current.weekDisplayDays,
+              builder: (context, memosettings) => Column(
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      WeekCalendarTop(),
-                      Expanded(
-                        child: WeekCalendarBody(
-                            numberofDays:
-                                memosettings.weekDisplayDays.numberOfDays()),
-                      ),
-                    ],
+                  WeekCalendarTop(),
+                  Expanded(
+                    child: WeekCalendarBody(
+                        numberofDays:
+                            memosettings.weekDisplayDays.numberOfDays()),
                   ),
-                  if (memosettings.displayAlarmButton)
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: const ToggleAlarmButton(),
-                    ),
                 ],
               ),
             );
