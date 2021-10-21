@@ -10,6 +10,7 @@ import 'package:seagull/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   static const minSpeechDelay = Duration(milliseconds: 4500);
@@ -28,17 +29,8 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required AlarmSettings alarmSettings,
     required Stream<NotificationAlarm> selectedNotificationStream,
   }) : super(AlarmSpeechUnplayed()) {
-    shortAlarm() =>
-        Platform.isIOS && alarm.sound(alarmSettings) == Sound.Default ||
-        alarmSettings.alarmDuration == AlarmDuration.alert;
-    final speechDelay = fullScreenAlarm || !alarm.activity.alarm.sound
-        ? Duration.zero
-        : shortAlarm()
-            ? minSpeechDelay
-            : alarmSettings.duration;
+    final speechDelay = _alarmDuration(alarmSettings, fullScreenAlarm);
 
-    _log.fine('alarmDuration: $speechDelay');
-    _log.fine('fullScreenAlarm: $fullScreenAlarm');
     _log.fine('alarm length: $speechDelay');
 
     _delayedSubscription =
@@ -74,6 +66,27 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
               ?.getActiveNotifications() ??
           [])
       .any((n) => n.id == alarm.hashCode);
+
+  Duration _alarmDuration(AlarmSettings alarmSettings, bool fullScreenAlarm) {
+    final noAlarm = fullScreenAlarm || !alarm.activity.alarm.sound;
+    if (noAlarm) {
+      return Duration.zero;
+    }
+
+    final shortAlarm =
+        Platform.isIOS && alarm.sound(alarmSettings) == Sound.Default ||
+            alarmSettings.alarmDuration == AlarmDuration.alert;
+
+    if (shortAlarm) {
+      return minSpeechDelay;
+    }
+
+    if (Platform.isIOS) {
+      return maxDuration(alarmSettings.duration, iOSMaxAlarmDuration);
+    }
+
+    return alarmSettings.duration;
+  }
 
   @override
   Future<void> close() async {
