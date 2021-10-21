@@ -155,7 +155,7 @@ class WarningDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: Translator.of(context).translate.warning,
-        iconData: AbiliaIcons.ir_error,
+        iconData: AbiliaIcons.irError,
       ),
       body: Tts(child: Text(text)),
       backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),

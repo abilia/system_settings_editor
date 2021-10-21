@@ -44,7 +44,7 @@ class _ToggleAlarmButtonActive extends StatelessWidget {
               ],
             ),
           ),
-      child: Icon(AbiliaIcons.handi_no_alarm_vibration),
+      child: Icon(AbiliaIcons.handiNoAlarmVibration),
     );
   }
 }
@@ -75,7 +75,7 @@ class _ToggleAlarmButtonInactive extends StatelessWidget {
               ),
             );
       },
-      child: Icon(AbiliaIcons.handi_alarm_vibration),
+      child: Icon(AbiliaIcons.handiAlarmVibration),
     );
   }
 }
