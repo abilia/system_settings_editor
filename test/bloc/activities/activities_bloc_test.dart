@@ -73,7 +73,7 @@ void main() {
         title: 'title',
         startTime: DateTime(1900),
         duration: 2.milliseconds(),
-        alarmType: ALARM_SILENT_ONLY_ON_START,
+        alarmType: alarmSilentOnlyOnStart,
       );
 
       when(mockActivityRepository.load())
@@ -664,9 +664,9 @@ void main() {
           title: 'title',
           startTime: anyTime,
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             Recurs.allDaysOfWeek,
-            Recurs.NO_END,
+            Recurs.noEnd,
           ),
         );
 
@@ -723,7 +723,7 @@ void main() {
 
         final fullday = recurring.copyWith(
             title: 'new title',
-            alarmType: NO_ALARM,
+            alarmType: noAlarm,
             reminderBefore: [],
             fullDay: true,
             duration: 1.days() - 1.milliseconds(),
@@ -1046,7 +1046,7 @@ void main() {
           title: 'asdf',
           startTime: a1Start,
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             a1End.millisecondsSinceEpoch,
           ),
@@ -1056,7 +1056,7 @@ void main() {
           title: 'asdf',
           startTime: a2Start,
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             a2End.millisecondsSinceEpoch,
           ),

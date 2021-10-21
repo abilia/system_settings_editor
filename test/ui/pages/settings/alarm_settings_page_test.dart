@@ -129,7 +129,7 @@ void main() {
       expect(find.byType(SelectAlarmDurationPage), findsOneWidget);
       expect(find.byType(ErrorMessage), findsNothing);
       await tester
-          .tap(find.text(AlarmDuration.FiveMinutes.displayText(translate)));
+          .tap(find.text(AlarmDuration.fiveMinutes.displayText(translate)));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorMessage), findsOneWidget);
       expect(find.text(translate.iOSAlarmTimeWarning), findsOneWidget);
@@ -195,7 +195,7 @@ extension on WidgetTester {
       await pumpAndSettle();
     }
 
-    await tap(find.byIcon(AbiliaIcons.handi_alarm_vibration));
+    await tap(find.byIcon(AbiliaIcons.handiAlarmVibration));
     await pumpAndSettle();
   }
 }

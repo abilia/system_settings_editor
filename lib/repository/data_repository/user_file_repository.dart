@@ -103,7 +103,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       final errors = (errorResponse['errors'] as List)
           .map((r) => ResponseError.fromJson(r));
       for (final error in errors) {
-        if (error.code == ErrorCodes.WRONG_REVISION) {
+        if (error.code == ErrorCodes.wrongRevision) {
           throw WrongRevisionException();
         } else {
           log.warning('Unhandled error code: $error');
@@ -197,7 +197,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       fileIdUrl(baseUrl, userId, userFile.id).toUri(),
       headers: authHeader(authToken),
     );
-    final thumbResponse = _getImageThumb(userFile.id, ImageThumb.THUMB_SIZE);
+    final thumbResponse = _getImageThumb(userFile.id, ImageThumb.thumbSize);
     final responses = await Future.wait([
       originalFileResponse,
       thumbResponse,

@@ -21,7 +21,7 @@ class ActivityImage extends StatelessWidget {
     required this.activityDay,
     this.size,
     this.past = false,
-    this.imageSize = ImageSize.THUMB,
+    this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     Key? key,
   }) : super(key: key);
@@ -30,7 +30,7 @@ class ActivityImage extends StatelessWidget {
     Key? key,
     required ActivityOccasion activityOccasion,
     double? size,
-    ImageSize imageSize = ImageSize.THUMB,
+    ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
   }) =>
@@ -125,7 +125,7 @@ class ActivityImage extends StatelessWidget {
           userId: authenicatedState.userId,
           imageFileId: fileId,
           imagePath: filePath,
-          size: ImageThumb.THUMB_SIZE,
+          size: ImageThumb.thumbSize,
         ),
         headers: authHeader(authenicatedState.token),
       );
@@ -154,7 +154,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
           : null,
       child: ActivityImage(
         activityDay: activityDay,
-        imageSize: ImageSize.ORIGINAL,
+        imageSize: ImageSize.original,
         size: size,
         fit: BoxFit.contain,
       ),
@@ -198,7 +198,7 @@ class PhotoCalendarImage extends StatelessWidget {
           fileId,
           filePath,
           GetIt.I<FileStorage>(),
-          imageSize: ImageSize.ORIGINAL,
+          imageSize: ImageSize.original,
         );
         return file != null
             ? Image.file(
@@ -250,7 +250,7 @@ class FullScreenImage extends StatelessWidget {
             fileId,
             filePath,
             GetIt.I<FileStorage>(),
-            imageSize: ImageSize.ORIGINAL,
+            imageSize: ImageSize.original,
           );
           ImageProvider getProvider() {
             if (file != null) return FileImage(file);
@@ -289,7 +289,7 @@ class FadeInCalendarImage extends StatelessWidget {
     required this.imageFilePath,
     this.width,
     this.height,
-    this.imageSize = ImageSize.THUMB,
+    this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
   }) : super(key: key);
   @override
@@ -367,7 +367,7 @@ class FadeInAbiliaImage extends StatelessWidget {
         imageFileId,
         imageFilePath,
         GetIt.I<FileStorage>(),
-        imageSize: ImageSize.THUMB,
+        imageSize: ImageSize.thumb,
       );
 
       return ClipRRect(
@@ -426,7 +426,7 @@ class FadeInNetworkImage extends StatelessWidget {
                   userId: state.userId,
                   imagePath: imageFilePath,
                   imageFileId: imageFileId,
-                  size: ImageThumb.THUMB_SIZE,
+                  size: ImageThumb.thumbSize,
                 ),
                 headers: authHeader(state.token),
               ),

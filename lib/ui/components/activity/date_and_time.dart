@@ -38,8 +38,8 @@ class DateAndTimeWidget extends StatelessWidget {
                   builder: (context, wizState) => TimeIntervallPicker(
                       editActivityState.timeInterval,
                       startTimeError: wizState.saveErrors.any({
-                        SaveError.NO_START_TIME,
-                        SaveError.START_TIME_BEFORE_NOW
+                        SaveError.noStartTime,
+                        SaveError.startTimeBeforeNow
                       }.contains)),
                 ),
               ),
@@ -77,7 +77,7 @@ class ReminderSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return SwitchField(
       leading: Icon(
-        AbiliaIcons.handi_reminder,
+        AbiliaIcons.handiReminder,
         size: smallIconSize,
       ),
       value: activity.reminders.isNotEmpty,
@@ -251,7 +251,7 @@ class TimePicker extends StatelessWidget {
           text: Text(time),
           trailing: errorState
               ? const Icon(
-                  AbiliaIcons.ir_error,
+                  AbiliaIcons.irError,
                   color: AbiliaColors.red,
                 )
               : PickField.trailingArrow,

@@ -137,6 +137,6 @@ class ActivityBoardData {
 }
 
 enum TimepillarSide {
-  RIGHT,
-  LEFT,
+  right,
+  left,
 }

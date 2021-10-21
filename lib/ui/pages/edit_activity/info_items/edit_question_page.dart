@@ -28,7 +28,7 @@ class EditQuestionPage extends StatelessWidget {
             )
           : null,
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.phone_log,
+        iconData: AbiliaIcons.phoneLog,
         title: t.task,
         trailing: question != null
             ? Padding(
@@ -37,7 +37,7 @@ class EditQuestionPage extends StatelessWidget {
                   onTap: () =>
                       Navigator.of(context).maybePop(ImageAndName.empty),
                   icon: Icon(
-                    AbiliaIcons.delete_all_clear,
+                    AbiliaIcons.deleteAllClear,
                     color: AbiliaColors.white,
                     size: 24.s,
                   ),

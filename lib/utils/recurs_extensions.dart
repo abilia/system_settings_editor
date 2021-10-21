@@ -13,7 +13,7 @@ extension RecursExtensions on RecurrentType {
       case RecurrentType.monthly:
         return AbiliaIcons.month;
       case RecurrentType.yearly:
-        return AbiliaIcons.basic_activity;
+        return AbiliaIcons.basicActivity;
       default:
         return AbiliaIcons.day;
     }

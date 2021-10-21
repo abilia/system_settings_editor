@@ -8,42 +8,42 @@ enum ApplyTo { onlyThisDay, allDays, thisDayAndForward }
 class Recurs extends Equatable {
   final int type, data, endTime;
   DateTime get end => DateTime.fromMillisecondsSinceEpoch(endTime);
-  bool get hasNoEnd => endTime >= NO_END;
-  bool get isRecurring => type != TYPE_NONE;
-  bool get weekly => type == TYPE_WEEKLY;
-  bool get monthly => type == TYPE_MONTHLY;
-  bool get yearly => type == TYPE_YEARLY;
-  bool get once => type == TYPE_NONE;
+  bool get hasNoEnd => endTime >= noEnd;
+  bool get isRecurring => type != typeNone;
+  bool get weekly => type == typeWeekly;
+  bool get monthly => type == typeMonthly;
+  bool get yearly => type == typeYearly;
+  bool get once => type == typeNone;
 
   @visibleForTesting
   const Recurs.raw(this.type, this.data, int? endTime)
-      : assert(type >= TYPE_NONE && type <= TYPE_YEARLY),
-        assert(type != TYPE_WEEKLY || data < 0x4000),
-        assert(type != TYPE_MONTHLY || data < 0x80000000),
-        endTime = endTime == null || endTime > NO_END ? NO_END : endTime;
+      : assert(type >= typeNone && type <= typeYearly),
+        assert(type != typeWeekly || data < 0x4000),
+        assert(type != typeMonthly || data < 0x80000000),
+        endTime = endTime == null || endTime > noEnd ? noEnd : endTime;
 
-  static const not = Recurs.raw(TYPE_NONE, 0, NO_END),
+  static const not = Recurs.raw(typeNone, 0, noEnd),
       everyDay = Recurs.raw(
-        TYPE_WEEKLY,
+        typeWeekly,
         allDaysOfWeek,
-        NO_END,
+        noEnd,
       );
 
   factory Recurs.yearly(DateTime dayOfYear, {DateTime? ends}) => Recurs.raw(
-        TYPE_YEARLY,
+        typeYearly,
         dayOfYearData(dayOfYear),
         ends?.millisecondsSinceEpoch,
       );
 
   factory Recurs.monthly(int dayOfMonth, {DateTime? ends}) => Recurs.raw(
-        TYPE_MONTHLY,
+        typeMonthly,
         onDayOfMonth(dayOfMonth),
         ends?.millisecondsSinceEpoch,
       );
 
   factory Recurs.monthlyOnDays(Iterable<int> daysOfMonth, {DateTime? ends}) =>
       Recurs.raw(
-        TYPE_MONTHLY,
+        typeMonthly,
         onDaysOfMonth(daysOfMonth),
         ends?.millisecondsSinceEpoch,
       );
@@ -56,7 +56,7 @@ class Recurs extends Equatable {
 
   factory Recurs.weeklyOnDays(Iterable<int> weekdays, {DateTime? ends}) =>
       Recurs.raw(
-        TYPE_WEEKLY,
+        typeWeekly,
         onDaysOfWeek(weekdays),
         ends?.millisecondsSinceEpoch,
       );
@@ -67,7 +67,7 @@ class Recurs extends Equatable {
     DateTime? ends,
   }) =>
       Recurs.raw(
-        TYPE_WEEKLY,
+        typeWeekly,
         biWeekly(evens: evens, odds: odds),
         ends?.millisecondsSinceEpoch,
       );
@@ -110,49 +110,49 @@ class Recurs extends Equatable {
   @override
   bool get stringify => true;
 
-  static const int TYPE_NONE = 0,
-      TYPE_WEEKLY = 1,
-      TYPE_MONTHLY = 2,
-      TYPE_YEARLY = 3,
-      EVEN_MONDAY = 0x1,
-      EVEN_TUESDAY = 0x2,
-      EVEN_WEDNESDAY = 0x4,
-      EVEN_THURSDAY = 0x8,
-      EVEN_FRIDAY = 0x10,
-      EVEN_SATURDAY = 0x20,
-      EVEN_SUNDAY = 0x40,
-      ODD_MONDAY = 0x80,
-      ODD_TUESDAY = 0x100,
-      ODD_WEDNESDAY = 0x200,
-      ODD_THURSDAY = 0x400,
-      ODD_FRIDAY = 0x800,
-      ODD_SATURDAY = 0x1000,
-      ODD_SUNDAY = 0x2000,
-      MONDAY = EVEN_MONDAY | ODD_MONDAY,
-      TUESDAY = EVEN_TUESDAY | ODD_TUESDAY,
-      WEDNESDAY = EVEN_WEDNESDAY | ODD_WEDNESDAY,
-      THURSDAY = EVEN_THURSDAY | ODD_THURSDAY,
-      FRIDAY = EVEN_FRIDAY | ODD_FRIDAY,
-      SATURDAY = EVEN_SATURDAY | ODD_SATURDAY,
-      SUNDAY = EVEN_SUNDAY | ODD_SUNDAY,
-      oddWeekdays = Recurs.ODD_MONDAY |
-          Recurs.ODD_TUESDAY |
-          Recurs.ODD_WEDNESDAY |
-          Recurs.ODD_THURSDAY |
-          Recurs.ODD_FRIDAY,
-      evenWeekdays = Recurs.EVEN_MONDAY |
-          Recurs.EVEN_TUESDAY |
-          Recurs.EVEN_WEDNESDAY |
-          Recurs.EVEN_THURSDAY |
-          Recurs.EVEN_FRIDAY,
+  static const int typeNone = 0,
+      typeWeekly = 1,
+      typeMonthly = 2,
+      typeYearly = 3,
+      evenMonday = 0x1,
+      evenTuesday = 0x2,
+      evenWednesday = 0x4,
+      evenThursday = 0x8,
+      evenFriday = 0x10,
+      evenSaturday = 0x20,
+      evenSunday = 0x40,
+      oddMonday = 0x80,
+      oddTuesday = 0x100,
+      oddWednesday = 0x200,
+      oddThursday = 0x400,
+      oddFriday = 0x800,
+      oddSaturday = 0x1000,
+      oddSunday = 0x2000,
+      monday = evenMonday | oddMonday,
+      tuesday = evenTuesday | oddTuesday,
+      wednesday = evenWednesday | oddWednesday,
+      thursday = evenThursday | oddThursday,
+      friday = evenFriday | oddFriday,
+      saturday = evenSaturday | oddSaturday,
+      sunday = evenSunday | oddSunday,
+      oddWeekdays = Recurs.oddMonday |
+          Recurs.oddTuesday |
+          Recurs.oddWednesday |
+          Recurs.oddThursday |
+          Recurs.oddFriday,
+      evenWeekdays = Recurs.evenMonday |
+          Recurs.evenTuesday |
+          Recurs.evenWednesday |
+          Recurs.evenThursday |
+          Recurs.evenFriday,
       allWeekdays = oddWeekdays | evenWeekdays,
-      oddWeekends = Recurs.ODD_SATURDAY | Recurs.ODD_SUNDAY,
-      evenWeekends = Recurs.EVEN_SATURDAY | Recurs.EVEN_SUNDAY,
+      oddWeekends = Recurs.oddSaturday | Recurs.oddSunday,
+      evenWeekends = Recurs.evenSaturday | Recurs.evenSunday,
       allWeekends = evenWeekends | oddWeekends,
       allDaysOfWeek = allWeekdays | allWeekends;
 
-  static const NO_END = 253402297199000;
-  static final noEndDate = DateTime.fromMillisecondsSinceEpoch(NO_END);
+  static const noEnd = 253402297199000;
+  static final noEndDate = DateTime.fromMillisecondsSinceEpoch(noEnd);
 
   @visibleForTesting
   static int onDayOfMonth(int dayOfMonth) => _toBitMask(dayOfMonth);
@@ -207,5 +207,5 @@ class Recurs extends Equatable {
 
   @override
   String toString() =>
-      '$recurrance; ends -> ${endTime == NO_END ? 'no end' : end}; ${_generateBitsSet(31, data)}';
+      '$recurrance; ends -> ${endTime == noEnd ? 'no end' : end}; ${_generateBitsSet(31, data)}';
 }

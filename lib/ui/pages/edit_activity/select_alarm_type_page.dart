@@ -24,7 +24,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.selectAlarmType,
-        iconData: AbiliaIcons.handi_alarm_vibration,
+        iconData: AbiliaIcons.handiAlarmVibration,
       ),
       body: SelectAlarmTypeBody(
           alarm: alarm, trailing: trailing, onChanged: onChanged),
@@ -64,13 +64,13 @@ class SelectAlarmTypeBody extends StatelessWidget {
           children: <Widget>[
             ...[
               if (memoSettingsState.activityDisplayAlarmOption)
-                AlarmType.SoundAndVibration,
+                AlarmType.soundAndVibration,
               if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
-                AlarmType.Vibration,
-                AlarmType.Silent,
+                AlarmType.vibration,
+                AlarmType.silent,
               ],
               if (memoSettingsState.activityDisplayNoAlarmOption)
-                AlarmType.NoAlarm,
+                AlarmType.noAlarm,
             ].map((type) => Alarm(type: type)).map(
                   (alarmType) => RadioField(
                     key: ObjectKey(alarmType.typeSeagull),

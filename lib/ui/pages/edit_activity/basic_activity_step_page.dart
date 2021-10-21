@@ -29,7 +29,7 @@ class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
           children: <Widget>[
             RadioField<bool>(
               key: TestKey.newActivityChoice,
-              leading: Icon(AbiliaIcons.new_icon),
+              leading: Icon(AbiliaIcons.newIcon),
               text: Text(translate.newActivityChoice),
               value: false,
               groupValue: pickBasicActivityView,

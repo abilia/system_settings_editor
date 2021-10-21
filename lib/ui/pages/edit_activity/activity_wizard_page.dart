@@ -42,7 +42,7 @@ class ActivityWizardPage extends StatelessWidget {
         return TimeWiz();
       case WizardStep.connectedFunction:
         return ExtraFunctionWiz();
-      case WizardStep.available_for:
+      case WizardStep.availableFor:
         return AvailableForWiz();
       case WizardStep.checkable:
         return CheckableWiz();
@@ -50,7 +50,7 @@ class ActivityWizardPage extends StatelessWidget {
         return TypeWiz();
       case WizardStep.recurring:
         return RecurringWiz();
-      case WizardStep.delete_after:
+      case WizardStep.deleteAfter:
         return RemoveAfterWiz();
       case WizardStep.alarm:
         return AlarmWiz();

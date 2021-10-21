@@ -144,11 +144,11 @@ class ActivityCard extends StatelessWidget {
   Widget buildInfoIcons(Activity activity, bool inactive) => Row(
         children: [
           ...[
-            if (activity.checkable) AbiliaIcons.handi_check,
+            if (activity.checkable) AbiliaIcons.handiCheck,
             if (!activity.fullDay) activity.alarm.iconData(),
             if (!activity.fullDay && activity.reminderBefore.isNotEmpty)
-              AbiliaIcons.handi_reminder,
-            if (activity.hasAttachment) AbiliaIcons.handi_info,
+              AbiliaIcons.handiReminder,
+            if (activity.hasAttachment) AbiliaIcons.handiInfo,
           ].map((icon) => CardIcon(icon)),
           if (activity.secret) PrivateIcon(inactive),
         ],
@@ -192,7 +192,7 @@ class PrivateIcon extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: Icon(
-        AbiliaIcons.password_protection,
+        AbiliaIcons.passwordProtection,
         size: CardIcon.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),

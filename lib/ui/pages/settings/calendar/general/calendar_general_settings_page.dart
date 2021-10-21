@@ -20,9 +20,9 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
             bottom: AbiliaTabBar(
               tabs: const <Widget>[
                 Icon(AbiliaIcons.clock),
-                Icon(AbiliaIcons.day_interval),
-                Icon(AbiliaIcons.change_page_color),
-                Icon(AbiliaIcons.calendar_list),
+                Icon(AbiliaIcons.dayInterval),
+                Icon(AbiliaIcons.changePageColor),
+                Icon(AbiliaIcons.calendarList),
               ],
             ),
           ),

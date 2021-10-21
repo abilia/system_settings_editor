@@ -25,7 +25,7 @@ void main() {
   late MockGenericDb genericDb;
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.one_timepillar.index,
+        data: DayCalendarType.oneTimepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 
@@ -61,9 +61,9 @@ void main() {
     await tester.goToGeneralCalendarSettingsPage();
     expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.clock), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.day_interval), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.change_page_color), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.calendar_list), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.dayInterval), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.changePageColor), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.calendarList), findsOneWidget);
     expect(find.byType(ClockSettingsTab), findsOneWidget);
     expect(find.byType(IntervalsSettingsTab), findsNothing);
     expect(find.byType(DayColorsSettingsTab), findsNothing);

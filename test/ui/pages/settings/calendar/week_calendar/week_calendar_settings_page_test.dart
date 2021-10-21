@@ -120,7 +120,7 @@ void main() {
 
     testWidgets('Select number of days', (tester) async {
       await tester.goToWeekCalendarSettingsPage(pump: true);
-      await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+      await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.weekdays));
       await tester.pumpAndSettle();
@@ -137,7 +137,7 @@ void main() {
 
     testWidgets('Select caption', (tester) async {
       await tester.goToWeekCalendarSettingsPage(pump: true);
-      await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+      await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.pumpAndSettle();
       await tester.dragUntilVisible(find.text(translate.captions),
           find.byType(WeekSettingsTab), Offset(0, 100));

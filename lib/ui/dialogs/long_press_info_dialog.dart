@@ -19,7 +19,7 @@ class LongPressInfoDialog extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Icon(
-                AbiliaIcons.speak_on_entry,
+                AbiliaIcons.speakOnEntry,
                 size: hugeIconSize,
               ),
             ),

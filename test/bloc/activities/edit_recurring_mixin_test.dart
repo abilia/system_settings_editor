@@ -355,7 +355,7 @@ void main() {
 
         final fullday = recurring.copyWith(
             title: 'new title',
-            alarmType: NO_ALARM,
+            alarmType: noAlarm,
             reminderBefore: [],
             fullDay: true,
             duration: 1.days() - 1.milliseconds(),
@@ -639,14 +639,14 @@ void main() {
           title: 'asdf',
           startTime: a1Start,
           recurs: Recurs.raw(
-              Recurs.TYPE_WEEKLY, 16383, a1End.millisecondsSinceEpoch),
+              Recurs.typeWeekly, 16383, a1End.millisecondsSinceEpoch),
         );
         final a2 = a1.copyWith(
           newId: true,
           title: 'asdf',
           startTime: a2Start,
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             a2End.millisecondsSinceEpoch,
           ),
@@ -700,9 +700,9 @@ void main() {
           title: 'asdf',
           startTime: start,
           recurs: Recurs.raw(
-            Recurs.TYPE_YEARLY,
+            Recurs.typeYearly,
             1006,
-            Recurs.NO_END,
+            Recurs.noEnd,
           ),
         );
         final updated = original.copyWith(
@@ -736,9 +736,9 @@ void main() {
           title: 'asdf',
           startTime: start,
           recurs: Recurs.raw(
-            Recurs.TYPE_YEARLY,
+            Recurs.typeYearly,
             1006,
-            Recurs.NO_END,
+            Recurs.noEnd,
           ),
         );
         final updated = original.copyWith(
@@ -851,7 +851,7 @@ void main() {
 
       final onlyThis = activity.copyWith(
         title: 'new title',
-        recurs: Recurs.raw(0, 0, Recurs.NO_END),
+        recurs: Recurs.raw(0, 0, Recurs.noEnd),
       );
       final recurring = activity.copyWith(
         startTime: activity.startTime.nextDay(),

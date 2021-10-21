@@ -86,8 +86,8 @@ class Version extends StatelessWidget {
 
   String _versionText(PackageInfo packageInfo) =>
       packageInfo.version +
-      (VERSION_SUFFIX == 'release' || VERSION_SUFFIX.isEmpty
+      (versionSuffix == 'release' || versionSuffix.isEmpty
           ? ''
-          : '-$VERSION_SUFFIX') +
+          : '-$versionSuffix') +
       (Config.beta ? ' (${packageInfo.buildNumber})' : '');
 }

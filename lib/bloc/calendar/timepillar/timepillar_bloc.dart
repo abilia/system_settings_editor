@@ -77,7 +77,7 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
         : TimepillarInterval(
             start: day.onlyDays(),
             end: day.onlyDays().add(1.days()),
-            intervalPart: IntervalPart.DAY_AND_NIGHT,
+            intervalPart: IntervalPart.dayAndNight,
           );
   }
 

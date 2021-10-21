@@ -31,13 +31,12 @@ void main() {
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
 
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
-  final previusDayButtonFinder =
-      find.byIcon(AbiliaIcons.return_to_previous_page);
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
+  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.two_timepillars.index,
+        data: DayCalendarType.twoTimepillars.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 
@@ -476,14 +475,14 @@ void main() {
             Activity.createNew(
               startTime: atNightTime,
               duration: 1.hours(),
-              alarmType: ALARM_SILENT,
+              alarmType: alarmSilent,
               title: rightTitle,
               checkable: true,
             ),
             Activity.createNew(
               startTime: atNightTime,
               duration: 1.hours(),
-              alarmType: ALARM_SILENT,
+              alarmType: alarmSilent,
               title: leftTitle,
               category: Category.left,
             ),

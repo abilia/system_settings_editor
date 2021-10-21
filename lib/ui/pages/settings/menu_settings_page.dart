@@ -35,7 +35,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return SettingsBasePage(
-      icon: AbiliaIcons.app_menu,
+      icon: AbiliaIcons.appMenu,
       title: Translator.of(context).translate.menu,
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: CancelButton(),
@@ -96,13 +96,13 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
       ),
       widgets: [
         SwitchField(
-          leading: Icon(AbiliaIcons.camera_photo),
+          leading: Icon(AbiliaIcons.cameraPhoto),
           value: camera,
           onChanged: (v) => setState(() => camera = v),
           child: Text(t.camera),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.my_photos),
+          leading: Icon(AbiliaIcons.myPhotos),
           value: myPhotos,
           onChanged: (v) => setState(() => myPhotos = v),
           child: Text(t.myPhotos),
@@ -114,13 +114,13 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
           child: Text(t.photoCalendar.singleLine),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.stop_watch),
+          leading: Icon(AbiliaIcons.stopWatch),
           value: countdown,
           onChanged: (v) => setState(() => countdown = v),
           child: Text(t.countdown),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.menu_setup),
+          leading: Icon(AbiliaIcons.menuSetup),
           value: quickSettings,
           onChanged: (v) => setState(() => quickSettings = v),
           child: Text(t.quickSettingsMenu.singleLine),

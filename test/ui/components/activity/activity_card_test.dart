@@ -136,7 +136,7 @@ void main() {
             title: 'title', startTime: startTime, checkable: true));
 
     // Assert title no image
-    expect(find.byIcon(AbiliaIcons.handi_check), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiCheck), findsOneWidget);
   });
   testWidgets('icon for alarm and vibration ', (WidgetTester tester) async {
     await pumpActivityCard(
@@ -144,10 +144,10 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        alarmType: ALARM_SOUND_AND_VIBRATION,
+        alarmType: alarmSoundAndVibration,
       ),
     );
-    expect(find.byIcon(AbiliaIcons.handi_alarm_vibration), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiAlarmVibration), findsOneWidget);
   });
 
   testWidgets('icon for vibration ', (WidgetTester tester) async {
@@ -156,10 +156,10 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        alarmType: ALARM_VIBRATION,
+        alarmType: alarmVibration,
       ),
     );
-    expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
   });
 
   testWidgets('icon for no alarm nor vibration ', (WidgetTester tester) async {
@@ -168,9 +168,9 @@ void main() {
         Activity.createNew(
           title: 'title',
           startTime: startTime,
-          alarmType: NO_ALARM,
+          alarmType: noAlarm,
         ));
-    expect(find.byIcon(AbiliaIcons.handi_no_alarm_vibration), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiNoAlarmVibration), findsOneWidget);
   });
 
   testWidgets('icon for reminder ', (WidgetTester tester) async {
@@ -182,7 +182,7 @@ void main() {
         reminderBefore: [124],
       ),
     );
-    expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
   });
 
   testWidgets('icon for info item ', (WidgetTester tester) async {
@@ -194,7 +194,7 @@ void main() {
         infoItem: NoteInfoItem('text'),
       ),
     );
-    expect(find.byIcon(AbiliaIcons.handi_info), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
   });
 
   testWidgets('icon for private activity ', (WidgetTester tester) async {
@@ -207,7 +207,7 @@ void main() {
       ),
     );
     expect(find.byType(PrivateIcon), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
   });
 
   testWidgets('full day that ha category has no category offset',

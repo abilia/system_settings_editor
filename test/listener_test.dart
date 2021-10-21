@@ -266,17 +266,17 @@ void main() {
       expect(selectNotificationSubject, emits(payloadSerial));
 
       // Act logout
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
       if (Config.isMP) {
         await tester.tap(find.byIcon(AbiliaIcons.settings));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+        await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
         await tester.pumpAndSettle();
       }
-      await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+      await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));
       await tester.pumpAndSettle();
@@ -438,7 +438,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       expect(alarmScreenFinder, findsNothing);
@@ -465,7 +465,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown since the start time alarm should have been moved to top
@@ -503,7 +503,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm for activity 2
@@ -519,7 +519,7 @@ void main() {
           equals(activity2.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
@@ -552,7 +552,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm, no more alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
       expect(alarmScreenFinder, findsNothing);
 
@@ -579,7 +579,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
@@ -593,7 +593,7 @@ void main() {
       final activities = [
         Activity.createNew(
             startTime: start.add(2.minutes()),
-            alarmType: ALARM_SILENT,
+            alarmType: alarmSilent,
             checkable: true,
             duration: 1.minutes(),
             title: 'ALARM_SILENT'),
@@ -601,32 +601,32 @@ void main() {
             startTime: start.add(4.minutes()),
             duration: 1.minutes(),
             checkable: true,
-            alarmType: ALARM_VIBRATION,
+            alarmType: alarmVibration,
             title: 'ALARM_VIBRATION'),
         Activity.createNew(
             startTime: start.add(6.minutes()),
             checkable: true,
             duration: 1.minutes(),
-            alarmType: ALARM_SOUND_ONLY_ON_START,
+            alarmType: alarmSoundOnlyOnStart,
             title: 'ALARM_SOUND_ONLY_ON_START'),
         Activity.createNew(
             startTime: start.add(8.minutes()),
             duration: 1.minutes(),
             checkable: true,
-            alarmType: ALARM_SOUND_AND_VIBRATION,
+            alarmType: alarmSoundAndVibration,
             title: 'ALARM_SOUND_AND_VIBRATION'),
         Activity.createNew(
             startTime: start.add(10.minutes()),
             duration: 1.minutes(),
             reminderBefore: [1.minutes().inMilliseconds],
-            alarmType: NO_ALARM,
+            alarmType: noAlarm,
             checkable: true,
             title: 'NO_ALARM'),
         Activity.createNew(
             startTime: start.add(11.minutes()),
             reminderBefore: [10.minutes().inMilliseconds],
             checkable: true,
-            alarmType: ALARM_SILENT,
+            alarmType: alarmSilent,
             title: 'ALARM_SILENT reminder 10 min before'),
       ];
 
@@ -750,7 +750,7 @@ void main() {
         expect(find.text(alarm.activity.title), findsOneWidget);
 
         // Act -- Close alarm page
-        await tester.tap(find.byIcon(AbiliaIcons.close_program));
+        await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
         await tester.pumpAndSettle();
 
         // Assert -- first alarm page

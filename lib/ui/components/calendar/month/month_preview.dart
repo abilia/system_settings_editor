@@ -124,7 +124,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   style: isLight
                       ? secondaryActionButtonStyleLight
                       : secondaryActionButtonStyleDark,
-                  child: Icon(AbiliaIcons.navigation_next),
+                  child: Icon(AbiliaIcons.navigationNext),
                 ),
               ],
             );

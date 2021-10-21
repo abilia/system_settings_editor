@@ -29,18 +29,17 @@ class ErrorPopupListener extends StatelessWidget {
           builder: (context) => ErrorDialog(text: msg),
         );
 
-    if (errors
-        .containsAll({SaveError.NO_TITLE_OR_IMAGE, SaveError.NO_START_TIME})) {
+    if (errors.containsAll({SaveError.noTitleOrImage, SaveError.noStartTime})) {
       return showError(translate.missingTitleOrImageAndStartTime);
-    } else if (errors.contains(SaveError.NO_TITLE_OR_IMAGE)) {
+    } else if (errors.contains(SaveError.noTitleOrImage)) {
       return showError(translate.missingTitleOrImage);
-    } else if (errors.contains(SaveError.NO_START_TIME)) {
+    } else if (errors.contains(SaveError.noStartTime)) {
       return showError(translate.missingStartTime);
-    } else if (errors.contains(SaveError.START_TIME_BEFORE_NOW)) {
+    } else if (errors.contains(SaveError.startTimeBeforeNow)) {
       return showError(translate.startTimeBeforeNowError);
-    } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
+    } else if (errors.contains(SaveError.noRecurringDays)) {
       return showError(translate.recurringDataEmptyErrorMessage);
-    } else if (errors.contains(SaveError.END_DATE_BEFORE_START)) {
+    } else if (errors.contains(SaveError.endDateBeforeStart)) {
       return showError(translate.endBeforeStartError);
     }
   }
@@ -50,7 +49,7 @@ class ErrorPopupListener extends StatelessWidget {
     SaveRecurring? saveEvent;
     final state = context.read<EditActivityBloc>().state;
 
-    if (errors.contains(SaveError.STORED_RECURRING)) {
+    if (errors.contains(SaveError.storedRecurring)) {
       if (state is StoredActivityState) {
         final applyTo = await Navigator.of(context).push<ApplyTo>(
           MaterialPageRoute(
@@ -65,10 +64,10 @@ class ErrorPopupListener extends StatelessWidget {
       }
     }
     if (errors.any({
-      SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
-      SaveError.UNCONFIRMED_ACTIVITY_CONFLICT
+      SaveError.unconfirmedStartTimeBeforeNow,
+      SaveError.unconfirmedActivityConflict
     }.contains)) {
-      if (errors.contains(SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW)) {
+      if (errors.contains(SaveError.unconfirmedStartTimeBeforeNow)) {
         final confirmStartTimeBeforeNow = await showViewDialog(
           context: context,
           builder: (context) => WarningDialog(
@@ -78,7 +77,7 @@ class ErrorPopupListener extends StatelessWidget {
         if (confirmStartTimeBeforeNow != true) return;
       }
 
-      if (errors.contains(SaveError.UNCONFIRMED_ACTIVITY_CONFLICT)) {
+      if (errors.contains(SaveError.unconfirmedActivityConflict)) {
         final confirmConflict = await showViewDialog(
           context: context,
           builder: (context) => WarningDialog(
@@ -127,7 +126,7 @@ class ScrollToErrorPageListener extends StatelessWidget {
         final errors = state.saveErrors;
         if (errors.mainPageErrors) {
           await _scrollToTab(context, 0);
-        } else if (errors.contains(SaveError.NO_RECURRING_DAYS)) {
+        } else if (errors.contains(SaveError.noRecurringDays)) {
           await _scrollToTab(context, nrTabs - 2);
         }
       },

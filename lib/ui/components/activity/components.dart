@@ -70,7 +70,7 @@ class LinedBorder extends StatelessWidget {
 
 class PickField extends StatelessWidget {
   static final trailingArrow = Icon(
-    AbiliaIcons.navigation_next,
+    AbiliaIcons.navigationNext,
     size: defaultIconSize,
     color: AbiliaColors.black60,
   );
@@ -383,7 +383,7 @@ class SelectableField extends StatelessWidget {
                                 ),
                       child: selected
                           ? Icon(
-                              AbiliaIcons.radiocheckbox_selected,
+                              AbiliaIcons.radiocheckboxSelected,
                               color: AbiliaColors.green,
                               size: smallIconSize,
                             )

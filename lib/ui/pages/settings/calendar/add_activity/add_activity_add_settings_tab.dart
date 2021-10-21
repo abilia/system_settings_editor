@@ -34,14 +34,14 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             groupValue: addTabState.newActivityMode,
             onChanged: onModeChanged,
             text: Text(t.throughEditView),
-            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           RadioField(
             value: NewActivityMode.stepByStep,
             groupValue: addTabState.newActivityMode,
             onChanged: onModeChanged,
             text: Text(t.stepByStep),
-            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           Divider(),
           if (addTabState.newActivityMode == NewActivityMode.editView) ...[
@@ -53,14 +53,14 @@ class AddActivityAddSettingsTab extends StatelessWidget {
               child: Text(t.selectDate),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.send_and_receive),
+              leading: Icon(AbiliaIcons.sendAndReceive),
               value: addTabState.selectType,
               onChanged: (v) =>
                   onTabStateChanged(addTabState.copyWith(selectType: v)),
               child: Text(t.selectType),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.basic_activity),
+              leading: Icon(AbiliaIcons.basicActivity),
               value: addTabState.showBasicActivities,
               onChanged: (v) => onTabStateChanged(
                   addTabState.copyWith(showBasicActivities: v)),
@@ -68,7 +68,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             ),
           ] else ...[
             SwitchField(
-              leading: Icon(AbiliaIcons.basic_activity),
+              leading: Icon(AbiliaIcons.basicActivity),
               value: stepState.showBasicActivities,
               onChanged: (v) {
                 if (_checkRequiredStates(stepState, v)) {
@@ -80,7 +80,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
               child: Text(t.showBasicActivities),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.select_text_size),
+              leading: Icon(AbiliaIcons.selectTextSize),
               value: stepState.selectName,
               onChanged: (v) {
                 if (_checkRequiredStates(stepState, v)) {
@@ -92,7 +92,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
               child: Text(t.selectName),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.my_photos),
+              leading: Icon(AbiliaIcons.myPhotos),
               value: stepState.selectImage,
               onChanged: (v) {
                 if (_checkRequiredStates(stepState, v)) {
@@ -110,42 +110,42 @@ class AddActivityAddSettingsTab extends StatelessWidget {
               child: Text(t.selectDate),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.send_and_receive),
+              leading: Icon(AbiliaIcons.sendAndReceive),
               value: stepState.selectType,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectType: v)),
               child: Text(t.selectType),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.handi_check),
+              leading: Icon(AbiliaIcons.handiCheck),
               value: stepState.selectCheckable,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectCheckable: v)),
               child: Text(t.selectCheckable),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.password_protection),
+              leading: Icon(AbiliaIcons.passwordProtection),
               value: stepState.selectAvailableFor,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectAvailableFor: v)),
               child: Text(t.selectAvailableFor),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.delete_all_clear),
+              leading: Icon(AbiliaIcons.deleteAllClear),
               value: stepState.selectDeleteAfter,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectDeleteAfter: v)),
               child: Text(t.selectDeleteAfter),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.handi_alarm),
+              leading: Icon(AbiliaIcons.handiAlarm),
               value: stepState.selectAlarm,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectAlarm: v)),
               child: Text(t.selectAlarm),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.radiocheckbox_unselected),
+              leading: Icon(AbiliaIcons.radiocheckboxUnselected),
               value: stepState.selectChecklist,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectChecklist: v)),
@@ -159,7 +159,7 @@ class AddActivityAddSettingsTab extends StatelessWidget {
               child: Text(t.selectNote),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.handi_reminder),
+              leading: Icon(AbiliaIcons.handiReminder),
               value: stepState.selectReminder,
               onChanged: (v) =>
                   onStepChanged(stepState.copyWith(selectReminder: v)),

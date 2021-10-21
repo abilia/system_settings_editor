@@ -19,7 +19,7 @@ class MyPhotosPage extends StatelessWidget {
         builder: (context, state) => Scaffold(
           appBar: AbiliaAppBar(
             title: Translator.of(context).translate.myPhotos,
-            iconData: AbiliaIcons.my_photos,
+            iconData: AbiliaIcons.myPhotos,
             trailing: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.s),
               child: AddPhotoButton(),

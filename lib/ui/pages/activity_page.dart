@@ -29,7 +29,7 @@ class ActivityPage extends StatelessWidget {
             leftAction: ActionButton(
               key: TestKey.activityBackButton,
               onPressed: () => Navigator.of(context).maybePop(),
-              child: Icon(AbiliaIcons.navigation_previous),
+              child: Icon(AbiliaIcons.navigationPrevious),
             ),
           ),
           body: Padding(
@@ -93,7 +93,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           activityOccasion,
                         );
                       },
-                      child: Icon(AbiliaIcons.handi_uncheck),
+                      child: Icon(AbiliaIcons.handiUncheck),
                     ),
                   if (displayAlarmButton)
                     ActionButtonLight(
@@ -151,7 +151,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           context: context,
                           builder: (_) => YesNoDialog(
                             heading: Translator.of(context).translate.remove,
-                            headingIcon: AbiliaIcons.delete_all_clear,
+                            headingIcon: AbiliaIcons.deleteAllClear,
                             text:
                                 Translator.of(context).translate.deleteActivity,
                           ),
@@ -165,7 +165,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                                     .translate
                                     .deleteRecurringActivity,
                                 allDaysVisible: true,
-                                headingIcon: AbiliaIcons.delete_all_clear,
+                                headingIcon: AbiliaIcons.deleteAllClear,
                               ),
                             ));
                             if (applyTo == null) return;
@@ -182,7 +182,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           await Navigator.of(context).maybePop();
                         }
                       },
-                      child: Icon(AbiliaIcons.delete_all_clear),
+                      child: Icon(AbiliaIcons.deleteAllClear),
                     ),
                   if (displayEditButton)
                     EditActivityButton(

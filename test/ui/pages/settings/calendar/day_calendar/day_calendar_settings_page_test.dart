@@ -139,9 +139,9 @@ void main() {
 
       testWidgets('Select list', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+        await tester.tap(find.byIcon(AbiliaIcons.calendarList));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -156,9 +156,9 @@ void main() {
 
       testWidgets('Select two timepillars', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.two_timelines));
+        await tester.tap(find.byIcon(AbiliaIcons.twoTimelines));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -167,15 +167,15 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeViewKey,
-          matcher: DayCalendarType.two_timepillars.index,
+          matcher: DayCalendarType.twoTimepillars.index,
         );
       });
 
       testWidgets('Set timepillar interval', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.day_night));
+        await tester.tap(find.byIcon(AbiliaIcons.dayNight));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -184,13 +184,13 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsTimeIntervalKey,
-          matcher: TimepillarIntervalType.DAY_AND_NIGHT.index,
+          matcher: TimepillarIntervalType.dayAndNight.index,
         );
       });
 
       testWidgets('Set timepillar zoom', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.large));
         await tester.pumpAndSettle();
@@ -201,13 +201,13 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.viewOptionsZoomKey,
-          matcher: TimepillarZoom.LARGE.index,
+          matcher: TimepillarZoom.large.index,
         );
       });
 
       testWidgets('Set timepillar dots', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+        await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
         await tester.dragUntilVisible(find.byIcon(AbiliaIcons.flarp),
             find.byType(DayAppBarSettingsTab), Offset(0, 100));

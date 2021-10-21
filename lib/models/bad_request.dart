@@ -40,32 +40,32 @@ class _Errors extends Equatable {
       );
 
   CreateAccountFailure get failure {
-    if (code == _WHALE_0137) {
+    if (code == _whale0137) {
       return message.toLowerCase().contains('terms')
-          ? CreateAccountFailure.TermsOfUse
-          : CreateAccountFailure.PrivacyPolicy;
+          ? CreateAccountFailure.termsOfUse
+          : CreateAccountFailure.privacyPolicy;
     }
-    return _failureMaping[code] ?? CreateAccountFailure.Unknown;
+    return _failureMaping[code] ?? CreateAccountFailure.unknown;
   }
 
-  static const _WHALE_0137 = 'WHALE-0137';
+  static const _whale0137 = 'WHALE-0137';
   static const _failureMaping = {
     // Client not allowed to create users
-    'WHALE-0120': CreateAccountFailure.ClientNotAllowed,
+    'WHALE-0120': CreateAccountFailure.clientNotAllowed,
     // Username/email address already in use
-    'WHALE-0130': CreateAccountFailure.UsernameTaken,
+    'WHALE-0130': CreateAccountFailure.usernameTaken,
     // Password can't be null or empty
-    'WHALE-0131': CreateAccountFailure.NoPassword,
+    'WHALE-0131': CreateAccountFailure.noPassword,
     // The password must consist of at least 8 characters
-    'WHALE-0133': CreateAccountFailure.PasswordToShort,
+    'WHALE-0133': CreateAccountFailure.passwordToShort,
     // Username must only contain letters, numbers, dash or underscore and be between 3 and 15 characters long
-    'WHALE-0134': CreateAccountFailure.UsernameToShort,
+    'WHALE-0134': CreateAccountFailure.usernameToShort,
     // Username/email address is invalid
-    'WHALE-0135': CreateAccountFailure.UsernameInvalid,
+    'WHALE-0135': CreateAccountFailure.usernameInvalid,
     // Language must be valid
-    'WHALE-0136': CreateAccountFailure.InvalidLanguage,
+    'WHALE-0136': CreateAccountFailure.invalidLanguage,
     // Input field must be true
-    _WHALE_0137: CreateAccountFailure.TermsOfUse,
+    _whale0137: CreateAccountFailure.termsOfUse,
   };
 
   @override

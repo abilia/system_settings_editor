@@ -20,7 +20,7 @@ class AlarmSettingsPage extends StatelessWidget {
               AlarmSelector(
                 key: TestKey.nonCheckableAlarmSelector,
                 heading: t.nonCheckableActivities,
-                icon: AbiliaIcons.handi_uncheck,
+                icon: AbiliaIcons.handiUncheck,
                 sound: state.nonCheckableSound,
                 onChanged: (sound) => context
                     .read<AlarmSettingsCubit>()
@@ -30,7 +30,7 @@ class AlarmSettingsPage extends StatelessWidget {
               AlarmSelector(
                 key: TestKey.checkableAlarmSelector,
                 heading: t.checkableActivities,
-                icon: AbiliaIcons.handi_check,
+                icon: AbiliaIcons.handiCheck,
                 sound: state.checkableSound,
                 onChanged: (sound) => context
                     .read<AlarmSettingsCubit>()
@@ -39,7 +39,7 @@ class AlarmSettingsPage extends StatelessWidget {
               AlarmSelector(
                 key: TestKey.reminderAlarmSelector,
                 heading: t.reminders,
-                icon: AbiliaIcons.handi_reminder,
+                icon: AbiliaIcons.handiReminder,
                 sound: state.reminderSound,
                 noSoundOption: true,
                 onChanged: (sound) => context
@@ -62,7 +62,7 @@ class AlarmSettingsPage extends StatelessWidget {
             return Scaffold(
               appBar: AbiliaAppBar(
                 title: Translator.of(context).translate.alarmSettings,
-                iconData: AbiliaIcons.handi_alarm_vibration,
+                iconData: AbiliaIcons.handiAlarmVibration,
               ),
               body: ListView.separated(
                 padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
@@ -168,7 +168,7 @@ class AlarmDurationSelector extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => SelectAlarmDurationPage(
                     duration: duration,
-                    appBarIcon: AbiliaIcons.stop_watch,
+                    appBarIcon: AbiliaIcons.stopWatch,
                     appBarTitle: t.alarmTime,
                   ),
                 ),

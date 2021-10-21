@@ -1,6 +1,6 @@
-enum TimepillarIntervalType { INTERVAL, DAY, DAY_AND_NIGHT }
+enum TimepillarIntervalType { interval, day, dayAndNight }
 
-enum IntervalPart { DAY, NIGHT, DAY_AND_NIGHT }
+enum IntervalPart { day, night, dayAndNight }
 
 enum DayColor { allDays, saturdayAndSunday, noColors }
 
@@ -27,16 +27,16 @@ extension WeekDisplayDaysExtension on WeekDisplayDays {
 
 enum WeekColor { captions, columns }
 
-enum TimepillarZoom { SMALL, NORMAL, LARGE }
+enum TimepillarZoom { small, normal, large }
 
 extension ZoomExtension on TimepillarZoom {
   double get zoomValue {
     switch (this) {
-      case TimepillarZoom.SMALL:
+      case TimepillarZoom.small:
         return 0.75;
-      case TimepillarZoom.NORMAL:
+      case TimepillarZoom.normal:
         return 1;
-      case TimepillarZoom.LARGE:
+      case TimepillarZoom.large:
         return 1.3;
       default:
         return 1;

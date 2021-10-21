@@ -207,17 +207,17 @@ void main() {
 
     // Logout
     if (Config.isMP) {
-      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.settings));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
     } else if (Config.isMPGO) {
       await tester.tap(find.byIcon(AbiliaIcons.settings));
     }
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LogoutButton));
     await tester.pumpAndSettle();

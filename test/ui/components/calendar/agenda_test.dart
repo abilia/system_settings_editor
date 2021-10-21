@@ -118,7 +118,7 @@ void main() {
             Activity.createNew(
                 title: 'past $i',
                 startTime: now.subtract(Duration(minutes: i * 2)),
-                alarmType: ALARM_SILENT),
+                alarmType: alarmSilent),
           Activity.createNew(title: key, startTime: now),
         ];
 
@@ -132,8 +132,8 @@ void main() {
       (WidgetTester tester) async {
     final crossOverFinder = find.byType(CrossOver);
     final previousDayButtonFinder =
-        find.byIcon(AbiliaIcons.return_to_previous_page);
-    final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+        find.byIcon(AbiliaIcons.returnToPreviousPage);
+    final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
     activityResponse = () => [];
 
     await tester.pumpWidget(App());
@@ -305,7 +305,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(ActivityCard), findsNothing);
 
-    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityCard), findsNWidgets(2));
@@ -397,9 +397,9 @@ void main() {
     final left = translated.left;
     final leftFinder = find.text(left);
     final rightFinder = find.text(right);
-    final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+    final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
     final previusDayButtonFinder =
-        find.byIcon(AbiliaIcons.return_to_previous_page);
+        find.byIcon(AbiliaIcons.returnToPreviousPage);
 
     testWidgets('Exists', (WidgetTester tester) async {
       await tester.pumpWidget(App());

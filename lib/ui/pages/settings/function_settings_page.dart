@@ -18,11 +18,11 @@ class FunctionSettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: t.functions,
-            iconData: AbiliaIcons.menu_setup,
+            iconData: AbiliaIcons.menuSetup,
             bottom: AbiliaTabBar(
               tabs: const <Widget>[
-                Icon(AbiliaIcons.shortcut_menu),
-                Icon(AbiliaIcons.browser_home),
+                Icon(AbiliaIcons.shortcutMenu),
+                Icon(AbiliaIcons.browserHome),
                 Icon(AbiliaIcons.restore),
               ],
             ),
@@ -121,7 +121,7 @@ class ToolbarSettingsTab extends StatelessWidget {
               child: Text(t.monthCalendar),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.app_menu),
+              leading: Icon(AbiliaIcons.appMenu),
               value: state.displayMenu,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
@@ -174,14 +174,14 @@ class HomeScreenSettingsTab extends StatelessWidget {
               ),
             if (state.displayMenu)
               RadioField(
-                leading: Icon(AbiliaIcons.app_menu),
+                leading: Icon(AbiliaIcons.appMenu),
                 text: Text(t.menu),
                 value: StartView.menu,
                 groupValue: state.startView,
                 onChanged: onChange,
               ),
             RadioField(
-              leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+              leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
               text: Text(t.photoCalendar.singleLine),
               value: StartView.photoAlbum,
               groupValue: state.startView,
@@ -221,7 +221,7 @@ class TimeoutSettingsTab extends StatelessWidget {
                 ),
             const Divider(),
             SwitchField(
-              leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+              leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
               value: state.shouldUseScreenSaver,
               onChanged: state.hasTimeOut
                   ? (v) => context

@@ -34,7 +34,7 @@ class LoginError extends Equatable {
 }
 
 class Error extends Equatable {
-  static const String UNSUPPORTED_USER_TYPE = 'WHALE-0156';
+  static const String unsupportedUserType = 'WHALE-0156';
 
   final String code;
   final String message;

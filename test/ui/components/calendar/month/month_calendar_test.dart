@@ -75,9 +75,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     expect(find.byType(GoToCurrentActionButton), findsOneWidget);
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -100,7 +100,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar),
@@ -112,7 +112,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
@@ -123,7 +123,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
@@ -190,7 +190,7 @@ void main() {
         expect(find.text(nextMonthTitle), findsNothing);
         expect(find.byType(FullDayStack), findsOneWidget);
 
-        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();
 
         expect(find.text(fridayTitle), findsNothing);
@@ -233,7 +233,7 @@ void main() {
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
       expect(find.byType(EyeButtonMonthDialog), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -247,7 +247,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -286,7 +286,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();

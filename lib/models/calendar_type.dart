@@ -1,2 +1,2 @@
-enum DayCalendarType { list, one_timepillar, two_timepillars }
+enum DayCalendarType { list, oneTimepillar, twoTimepillars }
 enum MonthCalendarType { grid, preview }

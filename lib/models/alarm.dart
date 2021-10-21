@@ -14,68 +14,68 @@ class Alarm extends Equatable {
 
   factory Alarm.fromInt(int value) {
     switch (value) {
-      case ALARM_SOUND_AND_VIBRATION:
-        return Alarm(type: AlarmType.SoundAndVibration);
-      case ALARM_SOUND:
-        return Alarm(type: AlarmType.Sound);
-      case ALARM_VIBRATION:
-        return Alarm(type: AlarmType.Vibration);
-      case ALARM_SILENT:
-        return Alarm(type: AlarmType.Silent);
-      case ALARM_SOUND_AND_VIBRATION_ONLY_ON_START:
-        return Alarm(type: AlarmType.SoundAndVibration, onlyStart: true);
-      case ALARM_SOUND_ONLY_ON_START:
-        return Alarm(type: AlarmType.Sound, onlyStart: true);
-      case ALARM_VIBRATION_ONLY_ON_START:
-        return Alarm(type: AlarmType.Vibration, onlyStart: true);
-      case ALARM_SILENT_ONLY_ON_START:
-        return Alarm(type: AlarmType.Silent, onlyStart: true);
-      case NO_ALARM:
+      case alarmSoundAndVibration:
+        return Alarm(type: AlarmType.soundAndVibration);
+      case alarmSound:
+        return Alarm(type: AlarmType.sound);
+      case alarmVibration:
+        return Alarm(type: AlarmType.vibration);
+      case alarmSilent:
+        return Alarm(type: AlarmType.silent);
+      case alarmSoundAndVibrationOnlyOnStart:
+        return Alarm(type: AlarmType.soundAndVibration, onlyStart: true);
+      case alarmSoundOnlyOnStart:
+        return Alarm(type: AlarmType.sound, onlyStart: true);
+      case alarmVibrationOnlyOnStart:
+        return Alarm(type: AlarmType.vibration, onlyStart: true);
+      case alarmSilentOnlyOnStart:
+        return Alarm(type: AlarmType.silent, onlyStart: true);
+      case noAlarm:
       default:
-        return Alarm(type: AlarmType.NoAlarm, onlyStart: true);
+        return Alarm(type: AlarmType.noAlarm, onlyStart: true);
     }
   }
 
   bool get vibrate =>
-      type == AlarmType.SoundAndVibration || type == AlarmType.Vibration;
+      type == AlarmType.soundAndVibration || type == AlarmType.vibration;
   bool get sound =>
-      type == AlarmType.SoundAndVibration || type == AlarmType.Sound;
-  bool get silent => type == AlarmType.Silent;
-  bool get shouldAlarm => type != AlarmType.NoAlarm;
+      type == AlarmType.soundAndVibration || type == AlarmType.sound;
+  bool get silent => type == AlarmType.silent;
+  bool get shouldAlarm => type != AlarmType.noAlarm;
   bool get atEnd => !onlyStart;
   int get toInt {
     if (onlyStart) {
       switch (type) {
-        case AlarmType.SoundAndVibration:
-          return ALARM_SOUND_AND_VIBRATION_ONLY_ON_START;
-        case AlarmType.Sound:
-          return ALARM_SOUND_ONLY_ON_START;
-        case AlarmType.Vibration:
-          return ALARM_VIBRATION_ONLY_ON_START;
-        case AlarmType.Silent:
-          return ALARM_SILENT_ONLY_ON_START;
-        case AlarmType.NoAlarm:
-          return NO_ALARM;
+        case AlarmType.soundAndVibration:
+          return alarmSoundAndVibrationOnlyOnStart;
+        case AlarmType.sound:
+          return alarmSoundOnlyOnStart;
+        case AlarmType.vibration:
+          return alarmVibrationOnlyOnStart;
+        case AlarmType.silent:
+          return alarmSilentOnlyOnStart;
+        case AlarmType.noAlarm:
+          return noAlarm;
       }
     }
     switch (type) {
-      case AlarmType.SoundAndVibration:
-        return ALARM_SOUND_AND_VIBRATION;
-      case AlarmType.Sound:
-        return ALARM_SOUND;
-      case AlarmType.Vibration:
-        return ALARM_VIBRATION;
-      case AlarmType.Silent:
-        return ALARM_SILENT;
-      case AlarmType.NoAlarm:
-        return NO_ALARM;
+      case AlarmType.soundAndVibration:
+        return alarmSoundAndVibration;
+      case AlarmType.sound:
+        return alarmSound;
+      case AlarmType.vibration:
+        return alarmVibration;
+      case AlarmType.silent:
+        return alarmSilent;
+      case AlarmType.noAlarm:
+        return noAlarm;
     }
   }
 
   AlarmType get typeSeagull {
     switch (type) {
-      case AlarmType.Sound:
-        return AlarmType.SoundAndVibration;
+      case AlarmType.sound:
+        return AlarmType.soundAndVibration;
       default:
         return type;
     }
@@ -88,21 +88,21 @@ class Alarm extends Equatable {
   List<Object> get props => [onlyStart, type];
 }
 
-const int ALARM_SOUND_AND_VIBRATION = 100,
-    ALARM_SOUND = 101,
-    ALARM_VIBRATION = 102,
-    ALARM_SILENT = 103,
-    NO_ALARM = 104,
-    ALARM_SOUND_AND_VIBRATION_ONLY_ON_START = 95,
-    ALARM_SOUND_ONLY_ON_START = 99,
-    ALARM_VIBRATION_ONLY_ON_START = 96,
-    ALARM_SILENT_ONLY_ON_START = 98,
-    NO_ALARM_ONLY_ON_START = 97;
+const int alarmSoundAndVibration = 100,
+    alarmSound = 101,
+    alarmVibration = 102,
+    alarmSilent = 103,
+    noAlarm = 104,
+    alarmSoundAndVibrationOnlyOnStart = 95,
+    alarmSoundOnlyOnStart = 99,
+    alarmVibrationOnlyOnStart = 96,
+    alarmSilentOnlyOnStart = 98,
+    noAlarmOnlyOnStart = 97;
 
 enum AlarmType {
-  SoundAndVibration,
-  Sound,
-  Vibration,
-  Silent,
-  NoAlarm,
+  soundAndVibration,
+  sound,
+  vibration,
+  silent,
+  noAlarm,
 }

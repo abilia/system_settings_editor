@@ -110,7 +110,7 @@ class NextButton extends StatelessWidget {
               const Spacer(flex: 63),
               Text(Translator.of(context).translate.next),
               Icon(
-                AbiliaIcons.navigation_next,
+                AbiliaIcons.navigationNext,
                 size: buttonIconSize,
               ),
               const Spacer(flex: 47),
@@ -145,7 +145,7 @@ class PreviousButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LightButton(
       text: Translator.of(context).translate.back,
-      icon: AbiliaIcons.navigation_previous,
+      icon: AbiliaIcons.navigationPrevious,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
   }
@@ -159,7 +159,7 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LightButton(
       text: Translator.of(context).translate.cancel,
-      icon: AbiliaIcons.close_program,
+      icon: AbiliaIcons.closeProgram,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
   }
@@ -172,7 +172,7 @@ class CloseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      icon: AbiliaIcons.close_program,
+      icon: AbiliaIcons.closeProgram,
       text: Translator.of(context).translate.close,
       onPressed: onPressed ?? Navigator.of(context).maybePop,
     );
@@ -197,7 +197,7 @@ class NoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LightButton(
       text: Translator.of(context).translate.no,
-      icon: AbiliaIcons.close_program,
+      icon: AbiliaIcons.closeProgram,
       onPressed: () => Navigator.of(context).maybePop(false),
     );
   }

@@ -5,10 +5,10 @@ import 'package:seagull/ui/components/all.dart';
 
 extension AlarmTypeExtensions on Alarm {
   IconData iconData() {
-    if (sound) return AbiliaIcons.handi_alarm_vibration;
-    if (vibrate) return AbiliaIcons.handi_vibration;
-    if (silent) return AbiliaIcons.handi_alarm;
-    return AbiliaIcons.handi_no_alarm_vibration;
+    if (sound) return AbiliaIcons.handiAlarmVibration;
+    if (vibrate) return AbiliaIcons.handiVibration;
+    if (silent) return AbiliaIcons.handiAlarm;
+    return AbiliaIcons.handiNoAlarmVibration;
   }
 
   String text(Translated translator) {
