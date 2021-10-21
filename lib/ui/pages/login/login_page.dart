@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    if (authState.loggedOutReason == LoggedOutReason.LICENSE_EXPIRED) {
+    if (authState.loggedOutReason == LoggedOutReason.licenseExpired) {
       Future.delayed(
         Duration.zero,
         () => showViewDialog(

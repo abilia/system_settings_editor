@@ -78,7 +78,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.one_timepillar &&
+      (dayCalendarType == DayCalendarType.oneTimepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
@@ -149,21 +149,21 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
     switch (timepillarIntervalType) {
-      case TimepillarIntervalType.INTERVAL:
+      case TimepillarIntervalType.interval:
         return dayPartInterval(now);
-      case TimepillarIntervalType.DAY:
+      case TimepillarIntervalType.day:
         if (now.isBefore(day.add(morningStart.milliseconds()))) {
           return TimepillarInterval(
             start: day,
             end: day.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         } else if (now
             .isAtSameMomentOrAfter(day.add(nightStart.milliseconds()))) {
           return TimepillarInterval(
             start: day.add(nightStart.milliseconds()),
             end: day.nextDay(),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         }
         return TimepillarInterval(
@@ -174,7 +174,7 @@ abstract class MemoplannerSettingsState extends Equatable {
         return TimepillarInterval(
           start: day,
           end: day.nextDay(),
-          intervalPart: IntervalPart.DAY_AND_NIGHT,
+          intervalPart: IntervalPart.dayAndNight,
         );
     }
   }
@@ -203,13 +203,13 @@ abstract class MemoplannerSettingsState extends Equatable {
           return TimepillarInterval(
             start: base,
             end: base.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         } else {
           return TimepillarInterval(
             start: base.add(nightStart.milliseconds()),
             end: base.nextDay(),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         }
     }

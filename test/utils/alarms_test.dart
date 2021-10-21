@@ -87,10 +87,9 @@ void main() {
       final reminder = 5.minutes();
       final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
           .copyWith(
-              reminderBefore: [5.minutes().inMilliseconds],
-              alarmType: NO_ALARM);
+              reminderBefore: [5.minutes().inMilliseconds], alarmType: noAlarm);
       final onTime =
-          FakeActivity.starts(startDate).copyWith(alarmType: NO_ALARM);
+          FakeActivity.starts(startDate).copyWith(alarmType: noAlarm);
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -304,10 +303,9 @@ void main() {
       final reminder = 5.minutes();
       final afterWithReminder = FakeActivity.starts(startDate.add(reminder))
           .copyWith(
-              reminderBefore: [5.minutes().inMilliseconds],
-              alarmType: NO_ALARM);
+              reminderBefore: [5.minutes().inMilliseconds], alarmType: noAlarm);
       final onTime =
-          FakeActivity.starts(startDate).copyWith(alarmType: NO_ALARM);
+          FakeActivity.starts(startDate).copyWith(alarmType: noAlarm);
       final activities = [afterWithReminder, onTime];
 
       // Act
@@ -325,11 +323,11 @@ void main() {
 
       final overlapping = FakeActivity.starts(fiveMinBefore).copyWith(
           title: 'Well hello there',
-          alarmType: ALARM_SOUND_AND_VIBRATION,
+          alarmType: alarmSoundAndVibration,
           duration: 1.hours());
       final later = FakeActivity.starts(in30).copyWith(
           title: 'Another one bites the dust',
-          alarmType: ALARM_SOUND_AND_VIBRATION,
+          alarmType: alarmSoundAndVibration,
           duration: 0.minutes());
       final activities = [overlapping, later];
 
@@ -356,7 +354,7 @@ void main() {
 
     test('reaccurs daily gives back all daily', () {
       final activity = FakeActivity.reocurrsEveryDay(now)
-          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+          .copyWith(alarmType: alarmSoundOnlyOnStart);
       final got = <Activity>[activity].alarmsFrom(now, take: 100, maxDays: 500);
       expect(got, hasLength(100));
     });
@@ -365,7 +363,7 @@ void main() {
       const lenght = 100;
       const maxDays = 400;
       final activity = FakeActivity.reocurrsFridays(now)
-          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+          .copyWith(alarmType: alarmSoundOnlyOnStart);
       final got =
           <Activity>[activity].alarmsFrom(now, take: lenght, maxDays: maxDays);
       expect(got, hasLength(maxDays ~/ 7));
@@ -374,7 +372,7 @@ void main() {
     test('reminder right on time', () {
       final activity = Activity.createNew(
           title: 'null',
-          alarmType: NO_ALARM,
+          alarmType: noAlarm,
           startTime: now.add(5.minutes()),
           reminderBefore: [5.minutes().inMilliseconds]);
       final got = <Activity>[activity].alarmsFrom(now);
@@ -387,11 +385,11 @@ void main() {
       const lenght = 100;
       final in50Days = now.copyWith(day: now.day + 50);
       final reoccuringActivity = FakeActivity.reocurrsEveryDay(now)
-          .copyWith(alarmType: ALARM_SOUND_ONLY_ON_START);
+          .copyWith(alarmType: alarmSoundOnlyOnStart);
       final normalActivity = Activity.createNew(
           title: 'THIS HAPPENS IN 20 days',
           startTime: in50Days,
-          alarmType: ALARM_SOUND_AND_VIBRATION);
+          alarmType: alarmSoundAndVibration);
       final got = <Activity>[reoccuringActivity, normalActivity]
           .alarmsFrom(now, take: lenght, maxDays: 1000);
 
@@ -404,7 +402,7 @@ void main() {
 
       final reminderActivity = Activity.createNew(
           title: 'has a reminder',
-          alarmType: NO_ALARM,
+          alarmType: noAlarm,
           startTime: tomorrow,
           reminderBefore: [reminder.inMilliseconds]);
 
@@ -508,7 +506,7 @@ void main() {
       final checkable = Activity.createNew(
         title: 'null',
         startTime: startDate,
-        alarmType: NO_ALARM,
+        alarmType: noAlarm,
         duration: 1.hours(),
         checkable: true,
       );
@@ -529,7 +527,7 @@ void main() {
       final checkable = Activity.createNew(
         title: 'null',
         startTime: startDate,
-        alarmType: NO_ALARM,
+        alarmType: noAlarm,
         duration: 1.hours(),
         checkable: true,
       );
@@ -550,7 +548,7 @@ void main() {
       final checkable = Activity.createNew(
         title: 'null',
         startTime: startDate,
-        alarmType: NO_ALARM,
+        alarmType: noAlarm,
         duration: 1.hours(),
         checkable: true,
         signedOffDates: [day],

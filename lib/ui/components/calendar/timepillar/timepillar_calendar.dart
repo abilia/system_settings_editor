@@ -31,7 +31,7 @@ class TimepillarCalendar extends StatelessWidget {
           previous.showCategories != current.showCategories ||
           previous.displayHourLines != current.displayHourLines,
       builder: (context, memoplannerSettingsState) {
-        if (type == DayCalendarType.one_timepillar) {
+        if (type == DayCalendarType.oneTimepillar) {
           return BlocBuilder<TimepillarBloc, TimepillarState>(
             builder: (context, timepillarState) => OneTimepillarCalendar(
               key: ValueKey(timepillarState.timepillarInterval),
@@ -150,7 +150,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
       textStyle,
       textScaleFactor,
       widget.dayParts,
-      TimepillarSide.LEFT,
+      TimepillarSide.left,
       ts,
       topMargin,
       bottomMargin,
@@ -164,13 +164,13 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
       textStyle,
       textScaleFactor,
       widget.dayParts,
-      TimepillarSide.RIGHT,
+      TimepillarSide.right,
       ts,
       topMargin,
       bottomMargin,
     );
 
-    final np = interval.intervalPart == IntervalPart.DAY_AND_NIGHT
+    final np = interval.intervalPart == IntervalPart.dayAndNight
         ? nightParts(widget.dayParts, ts, topMargin)
         : <NightPart>[];
 
@@ -194,7 +194,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
               widget.scrollToTimeOffset &&
               defaultScrollNotificationPredicate(scrollNotification),
           child: Container(
-            color: interval.intervalPart == IntervalPart.NIGHT
+            color: interval.intervalPart == IntervalPart.night
                 ? TimepillarCalendar.nightBackgroundColor
                 : Theme.of(context).scaffoldBackgroundColor,
             child: Stack(

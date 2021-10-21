@@ -54,7 +54,7 @@ class LibraryChecklist extends StatelessWidget {
               SizedBox(
                 height: imageHeight,
                 child: Icon(
-                  AbiliaIcons.check_button,
+                  AbiliaIcons.checkButton,
                   size: 48.0.s,
                   color: AbiliaColors.white140,
                 ),

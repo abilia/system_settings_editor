@@ -56,9 +56,9 @@ void main() {
     await tester.goToGeneralCalendarSettingsPageDayColorsTab();
     expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.clock), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.day_interval), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.change_page_color), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.calendar_list), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.dayInterval), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.changePageColor), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.calendarList), findsOneWidget);
     expect(find.byType(ClockSettingsTab), findsNothing);
     expect(find.byType(IntervalsSettingsTab), findsNothing);
     expect(find.byType(DayColorsSettingsTab), findsOneWidget);
@@ -143,7 +143,7 @@ void main() {
     testWidgets('all colors standard respected ', (tester) async {
       await tester.pumpApp();
       _expectCorrectColor(tester, fridayColor);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       _expectCorrectColor(tester, saturdayColor);
     });
@@ -161,7 +161,7 @@ void main() {
       await tester.pumpApp();
 
       _expectCorrectColor(tester, noDayColor);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       _expectCorrectColor(tester, noDayColor);
     });
@@ -179,7 +179,7 @@ void main() {
       await tester.pumpApp();
 
       _expectCorrectColor(tester, noDayColor);
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       _expectCorrectColor(tester, saturdayColor);
     });
@@ -197,7 +197,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.settings));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.change_page_color));
+    await tap(find.byIcon(AbiliaIcons.changePageColor));
     await pumpAndSettle();
   }
 }

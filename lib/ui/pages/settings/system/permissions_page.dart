@@ -12,7 +12,7 @@ class PermissionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.permissions,
-        iconData: AbiliaIcons.menu_setup,
+        iconData: AbiliaIcons.menuSetup,
       ),
       body: BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, state) => ListView(
@@ -131,7 +131,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                     color: AbiliaColors.orange40,
                   ),
                   child: Icon(
-                    AbiliaIcons.ir_error,
+                    AbiliaIcons.irError,
                     size: 20.0.s,
                   ),
                 ),
@@ -209,7 +209,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                           color: AbiliaColors.orange40,
                         ),
                         child: Icon(
-                          AbiliaIcons.ir_error,
+                          AbiliaIcons.irError,
                           size: 20.0.s,
                         ),
                       ),

@@ -19,7 +19,7 @@ class MonthCalendarSettingsPage extends StatelessWidget {
             bottom: AbiliaTabBar(
               tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
-                Icon(AbiliaIcons.menu_setup),
+                Icon(AbiliaIcons.menuSetup),
               ],
             ),
           ),

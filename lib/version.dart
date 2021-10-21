@@ -1,1 +1,1 @@
-const VERSION_SUFFIX = 'alpha';
+const versionSuffix = 'alpha';

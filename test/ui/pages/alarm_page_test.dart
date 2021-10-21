@@ -196,11 +196,11 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(PlaySpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.play_sound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.stop), findsNothing);
       selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
-      expect(find.byIcon(AbiliaIcons.play_sound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
       expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
       await tester.pump(AlarmSpeechCubit.minSpeechDelay);
     });
@@ -218,12 +218,12 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(PlaySpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.play_sound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.stop), findsNothing);
       // wait untill alarm is over
       await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
       // should play alarm
-      expect(find.byIcon(AbiliaIcons.play_sound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
       expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
     });
 
@@ -244,17 +244,17 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(PlaySpeechButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.play_sound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.stop), findsNothing);
       // Wait min speech
       await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
       // not playing
-      expect(find.byIcon(AbiliaIcons.play_sound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.stop), findsNothing);
       // wait alarm time
       await tester.pumpAndSettle(fiveMin - AlarmSpeechCubit.minSpeechDelay);
       // Should play
-      expect(find.byIcon(AbiliaIcons.play_sound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
       expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
     });
   });

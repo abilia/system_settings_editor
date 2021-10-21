@@ -54,9 +54,9 @@ void main() {
     await tester.goToGeneralCalendarSettingsPageIntervalTab();
     expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.clock), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.day_interval), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.change_page_color), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.calendar_list), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.dayInterval), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.changePageColor), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.calendarList), findsOneWidget);
     expect(find.byType(ClockSettingsTab), findsNothing);
     expect(find.byType(IntervalsSettingsTab), findsOneWidget);
     expect(find.byType(DayColorsSettingsTab), findsNothing);
@@ -229,7 +229,7 @@ void main() {
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.one_timepillar.index,
+              data: DayCalendarType.oneTimepillar.index,
               identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         ),
       ];
@@ -265,7 +265,7 @@ void main() {
         ),
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
-              data: DayCalendarType.two_timepillars.index,
+              data: DayCalendarType.twoTimepillars.index,
               identifier: MemoplannerSettings.viewOptionsTimeViewKey),
         ),
       ];
@@ -295,7 +295,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.settings));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.day_interval));
+    await tap(find.byIcon(AbiliaIcons.dayInterval));
     await pumpAndSettle();
   }
 

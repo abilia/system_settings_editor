@@ -10,11 +10,9 @@ class AvailableForWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.unlock,
-          title: translate.availableFor,
-        ),
+      builder: (context, state) => WizardScaffold(
+        iconData: AbiliaIcons.unlock,
+        title: translate.availableFor,
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
           child: Column(
@@ -25,7 +23,7 @@ class AvailableForWiz extends StatelessWidget {
                 onChanged: (value) => context.read<EditActivityBloc>().add(
                     ReplaceActivity(state.activity.copyWith(secret: value))),
                 value: true,
-                leading: const Icon(AbiliaIcons.password_protection),
+                leading: const Icon(AbiliaIcons.passwordProtection),
                 text: Text(translate.onlyMe),
               ),
               SizedBox(height: 8.0.s),
@@ -34,13 +32,12 @@ class AvailableForWiz extends StatelessWidget {
                 onChanged: (value) => context.read<EditActivityBloc>().add(
                     ReplaceActivity(state.activity.copyWith(secret: value))),
                 value: false,
-                leading: const Icon(AbiliaIcons.user_group),
+                leading: const Icon(AbiliaIcons.userGroup),
                 text: Text(translate.meAndSupportPersons),
               ),
             ],
           ),
         ),
-        bottomNavigationBar: WizardBottomNavigation(),
       ),
     );
   }

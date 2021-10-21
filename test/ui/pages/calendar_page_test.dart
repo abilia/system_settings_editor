@@ -30,9 +30,8 @@ import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/verify_generic.dart';
 
 void main() {
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page),
-      previousDayButtonFinder =
-          find.byIcon(AbiliaIcons.return_to_previous_page);
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage),
+      previousDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   final translate = Locales.language.values.first;
 
@@ -903,7 +902,7 @@ void main() {
   group('Choosen calendar setting', () {
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.one_timepillar.index,
+        data: DayCalendarType.oneTimepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey,
       ),
     );
@@ -937,7 +936,7 @@ void main() {
         tester,
         mockGenericDb,
         key: MemoplannerSettings.viewOptionsTimeViewKey,
-        matcher: DayCalendarType.one_timepillar.index,
+        matcher: DayCalendarType.oneTimepillar.index,
       );
     });
   });
@@ -1218,7 +1217,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
               MemoplannerSettings(
                 calendarActivityTypeShowTypes: false,
-                viewOptionsTimeView: DayCalendarType.one_timepillar.index,
+                viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
               ),
             ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -1240,7 +1239,7 @@ void main() {
             .thenReturn(MemoplannerSettingsLoaded(
               MemoplannerSettings(
                 calendarActivityTypeShowTypes: true,
-                viewOptionsTimeView: DayCalendarType.one_timepillar.index,
+                viewOptionsTimeView: DayCalendarType.oneTimepillar.index,
               ),
             ));
         await tester.pumpWidget(wrapWithMaterialApp(
@@ -1444,7 +1443,7 @@ void main() {
       expect(find.text(fridayTitle), findsOneWidget);
       expect(find.text(nextWeekTitle), findsNothing);
 
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(nextWeekTitle), findsOneWidget);
@@ -1456,9 +1455,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsOneWidget);
       await tester.verifyTts(find.byType(WeekAppBar), contains: 'week 30');
@@ -1522,7 +1521,7 @@ void main() {
           (widget) => widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsInitial, hasLength(1));
 
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
 
       final selectedHeadingsnextWeekPreSelect = tester.widgetList(
@@ -1538,7 +1537,7 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPostSelect, hasLength(1));
 
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
 
       final selectedHeadingsInitialPostSelect = tester.widgetList(
@@ -1546,7 +1545,7 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsInitialPostSelect, isEmpty);
 
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(GoToCurrentActionButton));
@@ -1555,6 +1554,91 @@ void main() {
       final goToCurrentSelect = tester.widgetList(find.byWidgetPredicate(
           (widget) => widget is WeekCalenderHeadingContent && widget.selected));
       expect(goToCurrentSelect, hasLength(1));
+    });
+
+    testWidgets('Overflow issue during development of SGC-754',
+        (WidgetTester tester) async {
+      final activities = [
+        FakeActivity.starts(initialDay, title: 'one')
+            .copyWith(startTime: initialDay.add(Duration(hours: 1))),
+        FakeActivity.starts(initialDay, title: 'two')
+            .copyWith(startTime: initialDay.add(Duration(hours: 2))),
+        FakeActivity.starts(initialDay, title: 'three')
+            .copyWith(startTime: initialDay.add(Duration(hours: 3))),
+        FakeActivity.starts(initialDay, title: 'four')
+            .copyWith(startTime: initialDay.add(Duration(hours: 4))),
+        FakeActivity.starts(initialDay, title: 'five')
+            .copyWith(startTime: initialDay.add(Duration(hours: 5))),
+        FakeActivity.starts(initialDay, title: 'six')
+            .copyWith(startTime: initialDay.add(Duration(hours: 6))),
+        FakeActivity.starts(initialDay, title: 'seven')
+            .copyWith(startTime: initialDay.add(Duration(hours: 7))),
+        FakeActivity.starts(initialDay, title: 'eight')
+            .copyWith(startTime: initialDay.add(Duration(hours: 8))),
+        FakeActivity.starts(initialDay, title: 'nine')
+            .copyWith(startTime: initialDay.add(Duration(hours: 9))),
+        FakeActivity.starts(initialDay, title: 'ten')
+            .copyWith(startTime: initialDay.add(Duration(hours: 10))),
+        FakeActivity.starts(initialDay, title: 'eleven')
+            .copyWith(startTime: initialDay.add(Duration(hours: 11))),
+        FakeActivity.starts(initialDay, title: 'twelve')
+            .copyWith(startTime: initialDay.add(Duration(hours: 12))),
+      ];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.text('one'), findsOneWidget);
+      expect(find.text('twelve'), findsOneWidget);
+    });
+  });
+
+  group('disable alarm button', () {
+    late MemoplannerSettingBloc memoplannerSettingBlocMock;
+
+    setUp(() {
+      initializeDateFormatting();
+      memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
+      mocktail
+          .when(() => memoplannerSettingBlocMock.stream)
+          .thenAnswer((_) => Stream.empty());
+    });
+
+    testWidgets('displays alarm button', (WidgetTester tester) async {
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+            MemoplannerSettings(displayAlarmButton: true),
+          ));
+
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendarTab), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+      expect(find.byType(ToggleAlarmButton), findsOneWidget);
+    });
+
+    testWidgets('don\'t display alarm button', (WidgetTester tester) async {
+      mocktail
+          .when(() => memoplannerSettingBlocMock.state)
+          .thenReturn(MemoplannerSettingsLoaded(
+            MemoplannerSettings(displayAlarmButton: false),
+          ));
+
+      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          memoplannerSettingBloc: memoplannerSettingBlocMock));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthCalendarTab), findsOneWidget);
+      expect(find.byType(MonthAppBar), findsOneWidget);
+      expect(find.byType(ToggleAlarmButton), findsNothing);
     });
   });
 }

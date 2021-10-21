@@ -8,17 +8,17 @@ class SystemSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return SettingsBasePage(
-      icon: AbiliaIcons.technical_settings,
+      icon: AbiliaIcons.technicalSettings,
       title: t.system,
       widgets: [
         MenuItemPickField(
-          icon: AbiliaIcons.numeric_keyboard,
+          icon: AbiliaIcons.numericKeyboard,
           text: t.codeProtect,
           navigateTo: const CodeProtectPage(),
         ),
         const TextToSpeechSwitch(),
         PickField(
-          leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+          leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           text: Text(t.androidSettings),
           onTap: AndroidIntents.openSettings,
         ),
@@ -29,7 +29,7 @@ class SystemSettingsPage extends StatelessWidget {
           navigateTo: const AboutPage(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.power_off_on,
+          icon: AbiliaIcons.powerOffOn,
           text: t.logout,
           navigateTo: const LogoutPage(),
         ),

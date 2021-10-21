@@ -74,8 +74,8 @@ void main() {
   testWidgets('Settings page shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byIcon(AbiliaIcons.power_off_on), findsOneWidget);
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    expect(find.byIcon(AbiliaIcons.powerOffOn), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutButton), findsOneWidget);
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
@@ -84,9 +84,9 @@ void main() {
   testWidgets('tts', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.verifyTts(find.byIcon(AbiliaIcons.power_off_on),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
         exact: translate.logout);
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
     await tester.verifyTts(find.text(user.name), exact: user.name);
@@ -137,7 +137,7 @@ void main() {
     setupPermissions();
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
+    await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
     await tester.pumpAndSettle();
     expect(find.byType(CodeProtectPage), findsOneWidget);
   });
@@ -145,8 +145,7 @@ void main() {
   testWidgets('android settings availible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester
-        .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
+    await tester.tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
     await tester.pumpAndSettle();
   });
 }

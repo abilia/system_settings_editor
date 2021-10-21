@@ -60,7 +60,7 @@ void main() {
           License(
             endTime: DateTime.now().add(Duration(hours: 24)),
             id: 1,
-            product: MEMOPLANNER_LICENSE_NAME,
+            product: memoplannerLicenseName,
           ),
         ]),
       );
@@ -112,7 +112,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
 
       final l1 = LoginState.initial().loading();
-      final e1 = l1.failure(cause: LoginFailureCause.NoUsername);
+      final e1 = l1.failure(cause: LoginFailureCause.noUsername);
 
       await expectLater(
         loginBloc.stream,
@@ -133,7 +133,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
       final s1 = LoginState(username: username, password: '');
       final l1 = s1.loading();
-      final e1 = s1.failure(cause: LoginFailureCause.NoPassword);
+      final e1 = s1.failure(cause: LoginFailureCause.noPassword);
 
       await expectLater(
         loginBloc.stream,
@@ -176,7 +176,7 @@ void main() {
                 License(
                     endTime: DateTime.now().add(Duration(hours: 24)),
                     id: 1,
-                    product: MEMOPLANNER_LICENSE_NAME)
+                    product: memoplannerLicenseName)
               ]));
     });
 

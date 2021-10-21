@@ -23,7 +23,7 @@ class SelectPicturePage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectPicture,
       ),
       body: SelectPictureBody(
@@ -81,7 +81,7 @@ class SelectPictureBody extends StatelessWidget {
                             imageCallback.call(AbiliaFile.empty);
                           },
                           icon: Icon(
-                            AbiliaIcons.delete_all_clear,
+                            AbiliaIcons.deleteAllClear,
                             color: AbiliaColors.white,
                             size: smallIconSize,
                           ),

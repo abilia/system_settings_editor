@@ -36,7 +36,7 @@ void main() {
       title: 'start and end',
       startTime: now.add(3.hours()),
       duration: 1.hours(),
-      alarmType: ALARM_SOUND,
+      alarmType: alarmSound,
       timezone: 'aTimeZone',
     ),
     // 2 reminerds
@@ -44,14 +44,14 @@ void main() {
       title: 'reminders',
       startTime: now.add(1.hours()),
       reminderBefore: [5.minutes().inMilliseconds, 30.minutes().inMilliseconds],
-      alarmType: NO_ALARM,
+      alarmType: noAlarm,
       timezone: 'aTimeZone',
     ),
     // 6 recurring
     Activity.createNew(
       title: 'recurring',
       startTime: now.add(2.hours()),
-      alarmType: ALARM_SOUND_ONLY_ON_START,
+      alarmType: alarmSoundOnlyOnStart,
       timezone: 'aTimeZone',
       recurs: Recurs.weeklyOnDays(List.generate(7, (d) => d + 1),
           ends: now.add(5.days())),
@@ -116,6 +116,27 @@ void main() {
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime))
         .called(11);
+  });
+
+  test('scheduleAlarmNotifications disabled until tomorrow', () async {
+    await scheduleAlarmNotifications(
+      allActivities,
+      'en',
+      true,
+      AlarmSettings(
+        disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+      ),
+      mockedFileStorage,
+      now: () => now,
+    );
+    verify(mockedNotificationsPlugin.cancelAll());
+
+    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
+            payload: anyNamed('payload'),
+            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime))
+        .called(5);
   });
 
   test('scheduleAlarmNotifications with image', () async {

@@ -262,7 +262,7 @@ void main() {
 
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
     final newStartDate = day.add(7.days());
-    final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.NO_END);
+    final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
 
     // Act
     recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));

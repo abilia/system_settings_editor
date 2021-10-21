@@ -64,5 +64,5 @@ class ResponseError {
 }
 
 class ErrorCodes {
-  static const String WRONG_REVISION = 'WHALE-0900';
+  static const String wrongRevision = 'WHALE-0900';
 }

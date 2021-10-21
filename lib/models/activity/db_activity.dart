@@ -36,7 +36,7 @@ class DbActivity extends DbModel<Activity> {
           secret: json['secret'] ?? false,
           fullDay: json['fullDay'] ?? false,
           recurs: Recurs.raw(
-            json['recurrentType'] ?? Recurs.TYPE_NONE,
+            json['recurrentType'] ?? Recurs.typeNone,
             json['recurrentData'] ?? 0,
             json['endTime'],
           ),
@@ -74,7 +74,7 @@ class DbActivity extends DbModel<Activity> {
             dbRow['end_time'],
           ),
           reminderBefore: parseReminders(dbRow['reminder_before']),
-          alarmType: dbRow['alarm_type'] ?? AlarmType.NoAlarm,
+          alarmType: dbRow['alarm_type'] ?? AlarmType.noAlarm,
           signedOffDates: _parseSignedOffDates(dbRow['signed_off_dates']),
           timezone: (dbRow['timezone']?.isEmpty ?? true)
               ? tz.local.name

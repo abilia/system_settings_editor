@@ -19,15 +19,15 @@ class AddActivitySettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: Translator.of(context).translate.addActivity,
-            iconData: AbiliaIcons.new_icon,
+            iconData: AbiliaIcons.newIcon,
             bottom: AbiliaTabBar(
               tabs: const <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(
-                  AbiliaIcons.new_icon,
+                  AbiliaIcons.newIcon,
                   key: TestKey.addSettingsTab,
                 ),
-                Icon(AbiliaIcons.technical_settings),
+                Icon(AbiliaIcons.technicalSettings),
               ],
             ),
           ),

@@ -3,12 +3,7 @@ import 'package:seagull/models/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
-    // alarm settings
-    AlarmSettings.nonCheckableActivityAlarmKey,
-    AlarmSettings.checkableActivityAlarmKey,
-    AlarmSettings.reminderAlarmKey,
-    AlarmSettings.vibrateAtReminderKey,
-    AlarmSettings.alarmDurationKey,
+    ...AlarmSettings.keys,
     // eye button settings
     viewOptionsZoomKey,
     viewOptionsTimeIntervalKey,
@@ -201,7 +196,7 @@ class MemoplannerSettings extends Equatable {
     this.activityDateEditable = true,
     this.activityTypeEditable = true,
     this.advancedActivityTemplate = true,
-    this.activityDefaultAlarmType = ALARM_SOUND_AND_VIBRATION,
+    this.activityDefaultAlarmType = alarmSoundAndVibration,
     this.activityEndTimeEditable = true,
     this.activityTimeBeforeCurrent = true,
     this.activityRecurringEditable = true,
@@ -310,7 +305,7 @@ class MemoplannerSettings extends Equatable {
       ),
       activityDefaultAlarmType: settings.parse(
         activityDefaultAlarmTypeKey,
-        ALARM_SOUND_AND_VIBRATION,
+        alarmSoundAndVibration,
       ),
       activityEndTimeEditable: settings.getBool(
         activityEndTimeEditableKey,
@@ -650,7 +645,7 @@ class MemoplannerSettings extends Equatable {
         wizardAlarmStep,
         wizardChecklistStep,
         wizardNotesStep,
-        wizardRemindersStep
+        wizardRemindersStep,
       ];
 }
 

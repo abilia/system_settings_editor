@@ -242,7 +242,7 @@ final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
     padding: EdgeInsetsDirectional.only(end: 16.s),
     child: Icon(
-      AbiliaIcons.ir_error,
+      AbiliaIcons.irError,
       color: AbiliaColors.red,
       size: smallIconSize,
     ),

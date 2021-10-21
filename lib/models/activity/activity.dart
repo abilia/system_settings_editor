@@ -80,7 +80,7 @@ class Activity extends DataModel {
     bool checkable = false,
     bool removeAfter = false,
     bool secret = false,
-    int alarmType = ALARM_SOUND_AND_VIBRATION,
+    int alarmType = alarmSoundAndVibration,
     InfoItem infoItem = const NoInfoItem(),
     String fileId = '',
     String icon = '',

@@ -28,7 +28,7 @@ class PlaySoundButton extends StatelessWidget {
               ? context.read<SoundCubit>().stopSound
               : () => context.read<SoundCubit>().play(sound),
           child: Icon(
-            isPlaying ? AbiliaIcons.stop : AbiliaIcons.play_sound,
+            isPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
           ),
         );
       },

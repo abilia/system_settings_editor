@@ -30,7 +30,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   }) : super(AlarmSpeechUnplayed()) {
     shortAlarm() =>
         Platform.isIOS && alarm.sound(alarmSettings) == Sound.Default ||
-        alarmSettings.alarmDuration == AlarmDuration.Alert;
+        alarmSettings.alarmDuration == AlarmDuration.alert;
     final speechDelay = fullScreenAlarm || !alarm.activity.alarm.sound
         ? Duration.zero
         : shortAlarm()

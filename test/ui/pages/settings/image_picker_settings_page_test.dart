@@ -59,8 +59,8 @@ void main() {
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.my_photos), findsWidgets);
-      expect(find.byIcon(AbiliaIcons.camera_photo), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.myPhotos), findsWidgets);
+      expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
       expect(find.text(translate.imagePicker), findsOneWidget);
       expect(find.text(translate.imageArchive), findsOneWidget);
       expect(find.text(translate.myPhotos), findsOneWidget);
@@ -69,7 +69,7 @@ void main() {
 
     testWidgets('change display camera is stored', (tester) async {
       await tester.goToFunctionImagePickerSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
+      await tester.tap(find.byIcon(AbiliaIcons.cameraPhoto));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -99,7 +99,7 @@ void main() {
       await tester.goToAddActivityImagePicker();
       expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.upload), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.camera_photo), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
     });
 
     testWidgets('hides camera image option', (tester) async {
@@ -113,7 +113,7 @@ void main() {
         ),
       ];
       await tester.goToAddActivityImagePicker();
-      expect(find.byIcon(AbiliaIcons.camera_photo), findsNothing);
+      expect(find.byIcon(AbiliaIcons.cameraPhoto), findsNothing);
     });
 
     testWidgets('hides my photo image option', (tester) async {
@@ -127,7 +127,7 @@ void main() {
         ),
       ];
       await tester.goToAddActivityImagePicker();
-      expect(find.byIcon(AbiliaIcons.my_photos), findsNothing);
+      expect(find.byIcon(AbiliaIcons.myPhotos), findsNothing);
     });
   });
 }
@@ -139,7 +139,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.my_photos));
+    await tap(find.byIcon(AbiliaIcons.myPhotos));
     await pumpAndSettle();
   }
 

@@ -230,7 +230,7 @@ class BackToLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LightButton(
-      icon: AbiliaIcons.navigation_previous,
+      icon: AbiliaIcons.navigationPrevious,
       text: Translator.of(context).translate.backToLogin,
       onPressed: Navigator.of(context).maybePop,
     );
@@ -261,25 +261,25 @@ class CreateAccountButton extends StatelessWidget {
 extension CreateAccountErrorMessage on CreateAccountFailed {
   String errorMessage(Translated translate) {
     switch (failure) {
-      case CreateAccountFailure.NoUsername:
+      case CreateAccountFailure.noUsername:
         return translate.enterUsername;
-      case CreateAccountFailure.UsernameToShort:
+      case CreateAccountFailure.usernameToShort:
         return translate.usernameToShort;
-      case CreateAccountFailure.NoPassword:
+      case CreateAccountFailure.noPassword:
         return translate.enterPassword;
-      case CreateAccountFailure.PasswordToShort:
+      case CreateAccountFailure.passwordToShort:
         return translate.passwordToShort;
-      case CreateAccountFailure.NoConfirmPassword:
+      case CreateAccountFailure.noConfirmPassword:
         return translate.confirmPassword;
-      case CreateAccountFailure.PasswordMismatch:
+      case CreateAccountFailure.passwordMismatch:
         return translate.passwordMismatch;
-      case CreateAccountFailure.TermsOfUse:
+      case CreateAccountFailure.termsOfUse:
         return translate.confirmTermsOfUse;
-      case CreateAccountFailure.PrivacyPolicy:
+      case CreateAccountFailure.privacyPolicy:
         return translate.confirmPrivacyPolicy;
-      case CreateAccountFailure.UsernameTaken:
+      case CreateAccountFailure.usernameTaken:
         return translate.usernameTaken;
-      case CreateAccountFailure.NoConnection:
+      case CreateAccountFailure.noConnection:
         return translate.noConnection;
       default:
         return translate.unknownError;

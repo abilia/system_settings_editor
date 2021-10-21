@@ -4,7 +4,7 @@ import 'package:seagull/i18n/all.dart';
 extension LoginFailureErrorMessage on LoginFailureCause {
   String heading(Translated translate) {
     switch (this) {
-      case LoginFailureCause.LicenseExpired:
+      case LoginFailureCause.licenseExpired:
         return translate.licenseExpired;
       default:
         return translate.error;
@@ -13,19 +13,19 @@ extension LoginFailureErrorMessage on LoginFailureCause {
 
   String message(Translated translate) {
     switch (this) {
-      case LoginFailureCause.Credentials:
+      case LoginFailureCause.credentials:
         return translate.wrongCredentials;
-      case LoginFailureCause.NoConnection:
+      case LoginFailureCause.noConnection:
         return translate.noConnection;
-      case LoginFailureCause.LicenseExpired:
+      case LoginFailureCause.licenseExpired:
         return translate.licenseExpiredMessage;
-      case LoginFailureCause.NoLicense:
+      case LoginFailureCause.noLicense:
         return translate.noLicense;
-      case LoginFailureCause.NoUsername:
+      case LoginFailureCause.noUsername:
         return translate.enterUsername;
-      case LoginFailureCause.NoPassword:
+      case LoginFailureCause.noPassword:
         return translate.enterPassword;
-      case LoginFailureCause.UnsupportedUserType:
+      case LoginFailureCause.unsupportedUserType:
         return translate.userTypeNotSupported;
       default:
         return '';

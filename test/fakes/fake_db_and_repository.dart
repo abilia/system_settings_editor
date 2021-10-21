@@ -43,7 +43,7 @@ class FakeLicenseDb extends Fake implements LicenseDb {
   List<License> getLicenses() => [
         License(
           id: 123,
-          product: MEMOPLANNER_LICENSE_NAME,
+          product: memoplannerLicenseName,
           endTime: DateTime(3333),
         ),
       ];

@@ -22,7 +22,7 @@ export 'package:logging/logging.dart';
 
 // ignore_for_file: avoid_print
 
-enum LoggingType { File, Print, Analytic }
+enum LoggingType { file, print, analytic }
 
 class SeagullLogger {
   File? _logFile;
@@ -34,14 +34,14 @@ class SeagullLogger {
   final String documentsDir;
   final SharedPreferences? preferences;
 
-  bool get fileLogging => loggingType.contains(LoggingType.File);
-  bool get printLogging => loggingType.contains(LoggingType.Print);
-  bool get analyticLogging => loggingType.contains(LoggingType.Analytic);
+  bool get fileLogging => loggingType.contains(LoggingType.file);
+  bool get printLogging => loggingType.contains(LoggingType.print);
+  bool get analyticLogging => loggingType.contains(LoggingType.analytic);
 
   String get logFileName => '${Config.flavor.id}.log';
 
   factory SeagullLogger.test() => SeagullLogger(
-        loggingType: const {LoggingType.Print},
+        loggingType: const {LoggingType.print},
         documentsDir: '',
         level: Level.ALL,
       );
@@ -57,10 +57,10 @@ class SeagullLogger {
     this.preferences,
     this.loggingType = const {
       if (kDebugMode)
-        LoggingType.Print
+        LoggingType.print
       else ...{
-        LoggingType.File,
-        LoggingType.Analytic,
+        LoggingType.file,
+        LoggingType.analytic,
       }
     },
     Level level = kDebugMode ? Level.ALL : Level.FINE,
@@ -74,9 +74,9 @@ class SeagullLogger {
     }
   }
 
-  static const LATEST_UPLOAD_KEY = 'LATEST-LOG-UPLOAD-MILLIS';
-  static const UPLOAD_INTERVAL = Duration(hours: 24);
-  static const LOG_ARCHIVE_PATH = 'logarchive';
+  static const latestUploadKey = 'LATEST-LOG-UPLOAD-MILLIS';
+  static const uploadInterval = Duration(hours: 24);
+  static const logArchivePath = 'logarchive';
 
   Future<void> cancelLogging() async {
     if (loggingSubscriptions.isNotEmpty) {
@@ -93,7 +93,7 @@ class SeagullLogger {
       await _uploadLock.synchronized(
         () async {
           if (DateTime.now()
-              .subtract(UPLOAD_INTERVAL)
+              .subtract(uploadInterval)
               .isAfter(await _getLastUploadDate())) {
             _log.info('Time to upload logs to backend');
             await sendLogsToBackend();
@@ -106,7 +106,7 @@ class SeagullLogger {
   Future<void> sendLogsToBackend() async {
     if (fileLogging) {
       final time = DateFormat('yyyyMMddHHmm').format(DateTime.now());
-      final _logArchivePath = '$documentsDir/$LOG_ARCHIVE_PATH';
+      final _logArchivePath = '$documentsDir/$logArchivePath';
       final logArchiveDir = Directory(_logArchivePath);
       await logArchiveDir.create(recursive: true);
       final archiveFilePath =
@@ -216,10 +216,10 @@ class SeagullLogger {
   Future<DateTime> _getLastUploadDate() async {
     final prefs = preferences;
     if (prefs != null) {
-      final lastUploadMillis = prefs.getInt(LATEST_UPLOAD_KEY);
+      final lastUploadMillis = prefs.getInt(latestUploadKey);
       if (lastUploadMillis == null) {
         final now = DateTime.now();
-        await prefs.setInt(LATEST_UPLOAD_KEY, now.millisecondsSinceEpoch);
+        await prefs.setInt(latestUploadKey, now.millisecondsSinceEpoch);
         return now;
       }
       return DateTime.fromMillisecondsSinceEpoch(lastUploadMillis);
@@ -229,7 +229,7 @@ class SeagullLogger {
 
   Future<bool> _setLastUploadDateToNow() async {
     return await preferences?.setInt(
-            LATEST_UPLOAD_KEY, DateTime.now().millisecondsSinceEpoch) ??
+            latestUploadKey, DateTime.now().millisecondsSinceEpoch) ??
         false;
   }
 

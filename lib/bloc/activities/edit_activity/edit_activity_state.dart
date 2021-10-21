@@ -48,7 +48,7 @@ abstract class EditActivityState extends Equatable with Finest {
     if (activity.fullDay) {
       return storeActivity.copyWith(
         startTime: timeInterval.startDate.onlyDays(),
-        alarmType: NO_ALARM,
+        alarmType: noAlarm,
         reminderBefore: const [],
       );
     }

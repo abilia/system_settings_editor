@@ -20,7 +20,7 @@ class EditCategoryPage extends StatelessWidget {
       hintText: hintText,
       imageAndName: imageAndName,
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.phone_log,
+        iconData: AbiliaIcons.phoneLog,
         title: Translator.of(context).translate.editCategory,
       ),
     );

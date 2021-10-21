@@ -49,7 +49,7 @@ void main() {
       extras: Extras.createNew(
         startTimeExtraAlarm: speechFile,
       ),
-      alarmType: NO_ALARM,
+      alarmType: noAlarm,
     );
 
     final startAlarm = StartAlarm(activity, day);

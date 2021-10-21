@@ -370,7 +370,7 @@ void main() {
         day: day)));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(AbiliaIcons.checkbox_unselected), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsOneWidget);
   });
 
   testWidgets('Test open checklist image in fullscreen',

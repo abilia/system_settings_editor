@@ -15,6 +15,8 @@ class WeekCalendarTab extends StatelessWidget {
     return Scaffold(
       backgroundColor: AbiliaColors.white,
       appBar: const WeekAppBar(),
+      floatingActionButton: FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Padding(
         padding: EdgeInsets.fromLTRB(2.s, 4.s, 2.s, 0),
         child: const WeekCalendar(),
@@ -45,6 +47,7 @@ class WeekCalendar extends StatelessWidget {
           builder: (context, state) {
             if (state.index != item) return Container();
             return Column(
+              mainAxisSize: MainAxisSize.max,
               children: const [
                 WeekCalendarTop(),
                 Expanded(
@@ -64,20 +67,18 @@ class WeekCalendarTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+      buildWhen: (previous, current) =>
+          previous.weekDisplayDays != current.weekDisplayDays,
+      builder: (context, memosettings) =>
+          BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
         buildWhen: (previous, current) =>
-            previous.weekDisplayDays != current.weekDisplayDays,
-        builder: (context, memosettings) =>
-            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
-          buildWhen: (previous, current) =>
-              previous.currentWeekStart != current.currentWeekStart,
-          builder: (context, weekState) => Row(
-            children: List<WeekCalendarDayHeading>.generate(
-              memosettings.weekDisplayDays.numberOfDays(),
-              (i) => WeekCalendarDayHeading(
-                day: weekState.currentWeekStart.addDays(i),
-              ),
+            previous.currentWeekStart != current.currentWeekStart,
+        builder: (context, weekState) => Row(
+          children: List<WeekCalendarDayHeading>.generate(
+            memosettings.weekDisplayDays.numberOfDays(),
+            (i) => WeekCalendarDayHeading(
+              day: weekState.currentWeekStart.addDays(i),
             ),
           ),
         ),

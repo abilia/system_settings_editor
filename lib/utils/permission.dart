@@ -20,8 +20,8 @@ extension PermissionExtension on Permission {
       );
 
   IconData get iconData {
-    if (this == Permission.camera) return AbiliaIcons.camera_photo;
-    if (this == Permission.systemAlertWindow) return AbiliaIcons.resize_higher;
+    if (this == Permission.camera) return AbiliaIcons.cameraPhoto;
+    if (this == Permission.systemAlertWindow) return AbiliaIcons.resizeHigher;
     if (this == Permission.notification) return AbiliaIcons.notification;
     if (this == Permission.photos) return AbiliaIcons.upload;
     if (this == Permission.microphone) return AbiliaIcons.dictaphone;

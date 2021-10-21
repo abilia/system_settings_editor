@@ -21,44 +21,44 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
         children: [
           Tts(child: Text(t.defaults)),
           RadioField(
-            value: AlarmType.SoundAndVibration,
+            value: AlarmType.soundAndVibration,
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.alarmAndVibration),
             leading: Icon(
-              AbiliaIcons.handi_alarm_vibration,
+              AbiliaIcons.handiAlarmVibration,
             ),
           ),
           RadioField(
-            value: AlarmType.Vibration,
+            value: AlarmType.vibration,
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.vibration),
             leading: Icon(
-              AbiliaIcons.handi_vibration,
+              AbiliaIcons.handiVibration,
             ),
           ),
           RadioField(
-            value: AlarmType.Silent,
+            value: AlarmType.silent,
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.silentAlarm),
             leading: Icon(
-              AbiliaIcons.handi_alarm,
+              AbiliaIcons.handiAlarm,
             ),
           ),
           RadioField(
-            value: AlarmType.NoAlarm,
+            value: AlarmType.noAlarm,
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.noAlarm),
             leading: Icon(
-              AbiliaIcons.handi_no_alarm_vibration,
+              AbiliaIcons.handiNoAlarmVibration,
             ),
           ),
           Divider(),
           SwitchField(
-            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.defaultsTabSettingsState.alarmOnlyAtStartTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()

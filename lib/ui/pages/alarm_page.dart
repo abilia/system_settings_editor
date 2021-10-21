@@ -26,7 +26,7 @@ class AlarmPage extends StatelessWidget {
           return Scaffold(
             appBar: AbiliaAppBar(
               title: Translator.of(context).translate.alarm,
-              iconData: AbiliaIcons.alarm_bell,
+              iconData: AbiliaIcons.alarmBell,
               trailing: alarm.speech.isNotEmpty
                   ? PlaySpeechButton(
                       alarm: alarm,
@@ -69,7 +69,7 @@ class ReminderPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.reminder,
-        iconData: AbiliaIcons.handi_reminder,
+        iconData: AbiliaIcons.handiReminder,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -168,7 +168,7 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                   child: GreenButton(
                     key: TestKey.activityCheckButton,
                     text: translate.check,
-                    icon: AbiliaIcons.handi_check,
+                    icon: AbiliaIcons.handiCheck,
                     onPressed: () async {
                       final checked =
                           await checkConfirmation(context, activityOccasion);

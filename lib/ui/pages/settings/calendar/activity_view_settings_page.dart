@@ -18,7 +18,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
       ),
       child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettingsState>(
         builder: (context, state) => SettingsBasePage(
-          icon: AbiliaIcons.full_screen,
+          icon: AbiliaIcons.fullScreen,
           title: Translator.of(context).translate.activityView,
           widgets: [
             const _FakeMemoplannerSetting(
@@ -26,7 +26,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
             ),
             SizedBox(height: 16.s),
             SwitchField(
-              leading: Icon(AbiliaIcons.handi_alarm_vibration),
+              leading: Icon(AbiliaIcons.handiAlarmVibration),
               value: state.alarm,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
@@ -34,7 +34,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.alarm),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.delete_all_clear),
+              leading: Icon(AbiliaIcons.deleteAllClear),
               value: state.delete,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()

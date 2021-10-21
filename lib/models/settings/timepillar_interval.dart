@@ -9,7 +9,7 @@ class TimepillarInterval extends Equatable {
   TimepillarInterval({
     required DateTime start,
     required DateTime end,
-    this.intervalPart = IntervalPart.DAY,
+    this.intervalPart = IntervalPart.day,
   })  : startTime = start.copyWith(minute: 0),
         endTime = end.copyWith(minute: 0);
 

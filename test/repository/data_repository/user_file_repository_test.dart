@@ -96,7 +96,7 @@ void main() {
     ).thenAnswer(
       (_) => Future.value(
         Response(
-          FakeUserFile.ONE_PIXEL_PNG,
+          FakeUserFile.onePixelPng,
           200,
         ),
       ),
@@ -108,7 +108,7 @@ void main() {
     // Verify
     verify(mockUserFileDb.insert(expectedFiles));
     verify(mockFileStorage.storeFile(
-        utf8.encode(FakeUserFile.ONE_PIXEL_PNG), fileId));
+        utf8.encode(FakeUserFile.onePixelPng), fileId));
   });
 
   test('Successful sync saves user file with new revision', () async {
@@ -231,7 +231,7 @@ void main() {
       if (failsOnId.contains(p)) {
         return Future.value(Response('not found', 400));
       }
-      return Future.value(Response(FakeUserFile.ONE_PIXEL_PNG, 200));
+      return Future.value(Response(FakeUserFile.onePixelPng, 200));
     });
     when(mockFileStorage.storeFile(any, any)).thenAnswer((_) => Future.value());
     when(mockFileStorage.storeImageThumb(any, any))

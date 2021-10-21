@@ -6,8 +6,19 @@ class AlarmSettings extends Equatable {
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
       reminderAlarmKey = 'activity_reminder_alarm',
       vibrateAtReminderKey = 'setting_vibrate_at_reminder',
-      alarmDurationKey = 'alarm_duration';
-  final int durationMs;
+      alarmDurationKey = 'alarm_duration',
+      alarmsDisabledUntilKey = 'alarms_disabled_until';
+
+  static const keys = [
+    nonCheckableActivityAlarmKey,
+    checkableActivityAlarmKey,
+    reminderAlarmKey,
+    vibrateAtReminderKey,
+    alarmDurationKey,
+    alarmsDisabledUntilKey,
+  ];
+
+  final int durationMs, disabledUntilEpoch;
   final bool vibrateAtReminder;
 
   final String checkableActivity, nonCheckableActivity, reminder;
@@ -15,12 +26,15 @@ class AlarmSettings extends Equatable {
   Sound get checkableAlarm => checkableActivity.toSound();
   Sound get reminderAlarm => reminder.toSound();
   Duration get duration => Duration(milliseconds: durationMs);
+  DateTime get disabledUntilDate =>
+      DateTime.fromMillisecondsSinceEpoch(disabledUntilEpoch);
   const AlarmSettings({
     this.durationMs = 30000,
     this.vibrateAtReminder = true,
     this.checkableActivity = SoundExtension.defaultName,
     this.nonCheckableActivity = SoundExtension.defaultName,
     this.reminder = SoundExtension.defaultName,
+    this.disabledUntilEpoch = 0,
   });
 
   factory AlarmSettings.fromSettingsMap(
@@ -46,6 +60,10 @@ class AlarmSettings extends Equatable {
           vibrateAtReminderKey,
           defaultValue: true,
         ),
+        disabledUntilEpoch: settings.parse(
+          alarmsDisabledUntilKey,
+          0,
+        ),
       );
 
   @override
@@ -55,5 +73,6 @@ class AlarmSettings extends Equatable {
         checkableActivity,
         nonCheckableActivity,
         reminder,
+        disabledUntilEpoch,
       ];
 }

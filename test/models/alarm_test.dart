@@ -6,26 +6,26 @@ void main() {
       expect(Alarm.fromInt(value).toInt, value);
 
   test('alarmType fromInt same as toInt', () {
-    fromIntSameAsToInt(ALARM_SOUND_AND_VIBRATION);
-    fromIntSameAsToInt(ALARM_SOUND_AND_VIBRATION_ONLY_ON_START);
-    fromIntSameAsToInt(ALARM_SOUND_ONLY_ON_START);
-    fromIntSameAsToInt(ALARM_SOUND);
-    fromIntSameAsToInt(ALARM_VIBRATION_ONLY_ON_START);
-    fromIntSameAsToInt(ALARM_VIBRATION);
-    fromIntSameAsToInt(ALARM_SILENT_ONLY_ON_START);
-    fromIntSameAsToInt(ALARM_SILENT);
-    fromIntSameAsToInt(NO_ALARM);
+    fromIntSameAsToInt(alarmSoundAndVibration);
+    fromIntSameAsToInt(alarmSoundAndVibrationOnlyOnStart);
+    fromIntSameAsToInt(alarmSoundOnlyOnStart);
+    fromIntSameAsToInt(alarmSound);
+    fromIntSameAsToInt(alarmVibrationOnlyOnStart);
+    fromIntSameAsToInt(alarmVibration);
+    fromIntSameAsToInt(alarmSilentOnlyOnStart);
+    fromIntSameAsToInt(alarmSilent);
+    fromIntSameAsToInt(noAlarm);
   });
 
   test('Changing on end time', () {
-    var at = Alarm.fromInt(ALARM_SOUND_AND_VIBRATION);
+    var at = Alarm.fromInt(alarmSoundAndVibration);
     at = at.copyWith(onlyStart: true);
-    expect(at.toInt, ALARM_SOUND_AND_VIBRATION_ONLY_ON_START);
+    expect(at.toInt, alarmSoundAndVibrationOnlyOnStart);
   });
 
   test('Changing alarm type', () {
-    var at = Alarm.fromInt(ALARM_SOUND_AND_VIBRATION);
-    at = at.copyWith(type: AlarmType.Silent);
-    expect(at.toInt, ALARM_SILENT);
+    var at = Alarm.fromInt(alarmSoundAndVibration);
+    at = at.copyWith(type: AlarmType.silent);
+    expect(at.toInt, alarmSilent);
   });
 }

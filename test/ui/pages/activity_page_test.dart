@@ -45,7 +45,7 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
-  final deleteButtonFinder = find.byIcon(AbiliaIcons.delete_all_clear);
+  final deleteButtonFinder = find.byIcon(AbiliaIcons.deleteAllClear);
   final yesNoDialogFinder = find.byType(YesNoDialog);
 
   final checkButtonFinder = find.byKey(TestKey.activityCheckButton);
@@ -268,11 +268,11 @@ void main() {
   group('Change alarm', () {
     final alarmDialogFinder = find.byType(SelectAlarmPage);
     final vibrationRadioButtonFinder =
-        find.byKey(ObjectKey(AlarmType.Vibration));
-    final noAlarmIconFinder = find.byIcon(AbiliaIcons.handi_no_alarm_vibration);
-    final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handi_vibration);
+        find.byKey(ObjectKey(AlarmType.vibration));
+    final noAlarmIconFinder = find.byIcon(AbiliaIcons.handiNoAlarmVibration);
+    final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handiVibration);
     final soundVibrateAlarmIconFinder =
-        find.byIcon(AbiliaIcons.handi_alarm_vibration);
+        find.byIcon(AbiliaIcons.handiAlarmVibration);
 
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
@@ -291,7 +291,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: ALARM_VIBRATION)
+            FakeActivity.starts(startTime).copyWith(alarmType: alarmVibration)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -304,8 +304,8 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime).copyWith(
-                    alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
+                FakeActivity.starts(startTime)
+                    .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
               ]));
       // Act
       await navigateToActivityPage(tester);
@@ -318,7 +318,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -331,7 +331,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
       // Act
       await navigateToActivityPage(tester);
@@ -356,7 +356,7 @@ void main() {
             Activity.createNew(
               title: 'null',
               startTime: startTime,
-              alarmType: ALARM_SOUND,
+              alarmType: alarmSound,
             )
           ],
         ),
@@ -370,11 +370,11 @@ void main() {
 
       final alarm = tester.widget<RadioField>(
         find.byKey(
-          ObjectKey(AlarmType.SoundAndVibration),
+          ObjectKey(AlarmType.soundAndVibration),
         ),
       );
 
-      expect(alarm.groupValue, AlarmType.SoundAndVibration);
+      expect(alarm.groupValue, AlarmType.soundAndVibration);
     });
 
     testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Silent',
@@ -386,7 +386,7 @@ void main() {
             Activity.createNew(
               title: 'null',
               startTime: startTime,
-              alarmType: ALARM_SILENT,
+              alarmType: alarmSilent,
             )
           ],
         ),
@@ -400,11 +400,11 @@ void main() {
 
       final alarm = tester.widget<RadioField>(
         find.byKey(
-          ObjectKey(AlarmType.Silent),
+          ObjectKey(AlarmType.silent),
         ),
       );
 
-      expect(alarm.groupValue, AlarmType.Silent);
+      expect(alarm.groupValue, AlarmType.silent);
     });
 
     testWidgets('Alarm on start time is disabled when no alarm',
@@ -412,7 +412,7 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
-            FakeActivity.starts(startTime).copyWith(alarmType: NO_ALARM)
+            FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
 
       // Act
@@ -433,8 +433,8 @@ void main() {
       // Arrange
       when(mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
-                FakeActivity.starts(startTime).copyWith(
-                    alarmType: ALARM_SOUND_AND_VIBRATION_ONLY_ON_START)
+                FakeActivity.starts(startTime)
+                    .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
               ]));
 
       // Act
@@ -695,9 +695,9 @@ void main() {
         expect(agendaFinder, findsOneWidget);
       });
 
-      final goToNextPageFinder = find.byIcon(AbiliaIcons.go_to_next_page);
+      final goToNextPageFinder = find.byIcon(AbiliaIcons.goToNextPage);
       final goToPreviusPageFinder =
-          find.byIcon(AbiliaIcons.return_to_previous_page);
+          find.byIcon(AbiliaIcons.returnToPreviousPage);
       testWidgets(
           'When delete recurring and confirm Only this day, go to next day and previus day shows activity card',
           (WidgetTester tester) async {
@@ -1247,7 +1247,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
               title: title,
               startTime: startTime,
               checkable: true,
-              alarmType: ALARM_VIBRATION,
+              alarmType: alarmVibration,
             ),
           ],
         ),
@@ -1260,15 +1260,15 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
       // Assert -- tts
       await tester.verifyTts(
-        find.byKey(ObjectKey(AlarmType.SoundAndVibration)),
+        find.byKey(ObjectKey(AlarmType.soundAndVibration)),
         exact: translate.alarmAndVibration,
       );
       await tester.verifyTts(
-        find.byKey(ObjectKey(AlarmType.Vibration)),
+        find.byKey(ObjectKey(AlarmType.vibration)),
         exact: translate.vibration,
       );
       await tester.verifyTts(
-        find.byIcon(AbiliaIcons.handi_no_alarm_vibration),
+        find.byIcon(AbiliaIcons.handiNoAlarmVibration),
         exact: translate.noAlarm,
       );
 

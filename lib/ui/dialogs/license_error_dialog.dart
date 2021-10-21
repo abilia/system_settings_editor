@@ -17,14 +17,14 @@ class LicenseErrorDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: heading ?? translator.error,
-        iconData: AbiliaIcons.password_protection,
+        iconData: AbiliaIcons.passwordProtection,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            AbiliaIcons.gewa_radio_error,
+            AbiliaIcons.gewaRadioError,
             size: hugeIconSize,
             color: AbiliaColors.red,
           ),
@@ -39,7 +39,7 @@ class LicenseErrorDialog extends StatelessWidget {
       ),
       backNavigationWidget: LightButton(
         text: Translator.of(context).translate.toLogin,
-        icon: AbiliaIcons.open_door,
+        icon: AbiliaIcons.openDoor,
         onPressed: () => Navigator.of(context).maybePop(false),
       ),
     );
