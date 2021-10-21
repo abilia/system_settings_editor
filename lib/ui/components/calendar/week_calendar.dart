@@ -46,14 +46,14 @@ class WeekCalendar extends StatelessWidget {
           buildWhen: (oldState, newState) => newState.index == item,
           builder: (context, state) {
             if (state.index != item) return Container();
-            return  Column(
-                mainAxisSize: MainAxisSize.max,
-                children: const [
-                  WeekCalendarTop(),
-                  Expanded(
-                    child: WeekCalendarBody(),
-                  ),
-                ],
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: const [
+                WeekCalendarTop(),
+                Expanded(
+                  child: WeekCalendarBody(),
+                ),
+              ],
             );
           },
         ),

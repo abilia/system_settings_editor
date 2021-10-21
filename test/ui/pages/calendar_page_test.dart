@@ -1558,31 +1558,43 @@ void main() {
     });
 
     testWidgets('Overflow issue during development of SGC-754',
-            (WidgetTester tester) async {
-              final activities = [
-                FakeActivity.starts(initialDay, title: 'one').copyWith(startTime: initialDay.add(Duration(hours: 1))),
-                FakeActivity.starts(initialDay, title: 'two').copyWith(startTime: initialDay.add(Duration(hours: 2))),
-                FakeActivity.starts(initialDay, title: 'three').copyWith(startTime: initialDay.add(Duration(hours: 3))),
-                FakeActivity.starts(initialDay, title: 'four').copyWith(startTime: initialDay.add(Duration(hours: 4))),
-                FakeActivity.starts(initialDay, title: 'five').copyWith(startTime: initialDay.add(Duration(hours: 5))),
-                FakeActivity.starts(initialDay, title: 'six').copyWith(startTime: initialDay.add(Duration(hours: 6))),
-                FakeActivity.starts(initialDay, title: 'seven').copyWith(startTime: initialDay.add(Duration(hours: 7))),
-                FakeActivity.starts(initialDay, title: 'eight').copyWith(startTime: initialDay.add(Duration(hours: 8))),
-                FakeActivity.starts(initialDay, title: 'nine').copyWith(startTime: initialDay.add(Duration(hours: 9))),
-                FakeActivity.starts(initialDay, title: 'ten').copyWith(startTime: initialDay.add(Duration(hours: 10))),
-                FakeActivity.starts(initialDay, title: 'eleven').copyWith(startTime: initialDay.add(Duration(hours: 11))),
-                FakeActivity.starts(initialDay, title: 'twelve').copyWith(startTime: initialDay.add(Duration(hours: 12))),
-              ];
-              activityResponse = () => activities;
-              when(mockActivityDb.getAllNonDeleted())
-                  .thenAnswer((_) => Future.value(activities));
-              await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byIcon(AbiliaIcons.week));
-          await tester.pumpAndSettle();
-            expect(find.text('one'), findsOneWidget);
-            expect(find.text('twelve'), findsOneWidget);
-        });
+        (WidgetTester tester) async {
+      final activities = [
+        FakeActivity.starts(initialDay, title: 'one')
+            .copyWith(startTime: initialDay.add(Duration(hours: 1))),
+        FakeActivity.starts(initialDay, title: 'two')
+            .copyWith(startTime: initialDay.add(Duration(hours: 2))),
+        FakeActivity.starts(initialDay, title: 'three')
+            .copyWith(startTime: initialDay.add(Duration(hours: 3))),
+        FakeActivity.starts(initialDay, title: 'four')
+            .copyWith(startTime: initialDay.add(Duration(hours: 4))),
+        FakeActivity.starts(initialDay, title: 'five')
+            .copyWith(startTime: initialDay.add(Duration(hours: 5))),
+        FakeActivity.starts(initialDay, title: 'six')
+            .copyWith(startTime: initialDay.add(Duration(hours: 6))),
+        FakeActivity.starts(initialDay, title: 'seven')
+            .copyWith(startTime: initialDay.add(Duration(hours: 7))),
+        FakeActivity.starts(initialDay, title: 'eight')
+            .copyWith(startTime: initialDay.add(Duration(hours: 8))),
+        FakeActivity.starts(initialDay, title: 'nine')
+            .copyWith(startTime: initialDay.add(Duration(hours: 9))),
+        FakeActivity.starts(initialDay, title: 'ten')
+            .copyWith(startTime: initialDay.add(Duration(hours: 10))),
+        FakeActivity.starts(initialDay, title: 'eleven')
+            .copyWith(startTime: initialDay.add(Duration(hours: 11))),
+        FakeActivity.starts(initialDay, title: 'twelve')
+            .copyWith(startTime: initialDay.add(Duration(hours: 12))),
+      ];
+      activityResponse = () => activities;
+      when(mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.text('one'), findsOneWidget);
+      expect(find.text('twelve'), findsOneWidget);
+    });
   });
 
   group('disable alarm button', () {
