@@ -12,7 +12,7 @@ class ImageArchivePage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return LibraryPage<ImageArchiveData>(
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.past_picture_from_windows_clipboard,
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectPicture,
       ),
       rootHeading: translate.imageArchive,

@@ -243,7 +243,7 @@ void main() {
 
       testWidgets('StepByStep - Select checkable', (tester) async {
         await tester.verifyStepByStep(
-          find.byIcon(AbiliaIcons.handi_check, skipOffstage: false),
+          find.byIcon(AbiliaIcons.handiCheck, skipOffstage: false),
           genericDb,
           key: MemoplannerSettings.wizardCheckableStepKey,
           matcher: isFalse,
@@ -317,7 +317,7 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.activityDefaultAlarmTypeKey,
-          matcher: ALARM_VIBRATION,
+          matcher: alarmVibration,
         );
       });
 
@@ -335,7 +335,7 @@ void main() {
           tester,
           genericDb,
           key: MemoplannerSettings.activityDefaultAlarmTypeKey,
-          matcher: ALARM_SILENT_ONLY_ON_START,
+          matcher: alarmSilentOnlyOnStart,
         );
       });
     });
@@ -397,7 +397,7 @@ extension on WidgetTester {
 
   Future<void> goToDefaultsTab() async {
     await goToNewActivitySettingsPage();
-    await tap(find.byIcon(AbiliaIcons.technical_settings));
+    await tap(find.byIcon(AbiliaIcons.technicalSettings));
     await pumpAndSettle();
   }
 
@@ -409,7 +409,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.new_icon));
+    await tap(find.byIcon(AbiliaIcons.newIcon));
     await pumpAndSettle();
   }
 }

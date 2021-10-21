@@ -55,7 +55,7 @@ class MonthAppBarStepper extends StatelessWidget
             ? ActionButton(
                 onPressed: () =>
                     context.read<MonthCalendarBloc>().add(GoToPreviousMonth()),
-                child: const Icon(AbiliaIcons.return_to_previous_page),
+                child: const Icon(AbiliaIcons.returnToPreviousPage),
               )
             : null,
         showClock: showClock,
@@ -69,7 +69,7 @@ class MonthAppBarStepper extends StatelessWidget
             ? ActionButton(
                 onPressed: () =>
                     context.read<MonthCalendarBloc>().add(GoToNextMonth()),
-                child: const Icon(AbiliaIcons.go_to_next_page),
+                child: const Icon(AbiliaIcons.goToNextPage),
               )
             : null,
       ),

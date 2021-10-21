@@ -25,7 +25,7 @@ class MenuButton extends StatelessWidget {
                     settings: RouteSettings(name: 'MenuPage'),
                   ),
                 ),
-                child: const Icon(AbiliaIcons.app_menu),
+                child: const Icon(AbiliaIcons.appMenu),
               )
             else if (Config.isMPGO)
               ActionButtonLight(

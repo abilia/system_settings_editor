@@ -55,13 +55,13 @@ class _MonthAppBarPreview extends StatelessWidget {
               leftAction: state.browseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.return_to_previous_page),
+                      child: Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
               rightAction: state.browseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.go_to_next_page),
+                      child: Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,
               day: currentTime,

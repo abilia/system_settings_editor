@@ -56,7 +56,7 @@ extension on WidgetTester {
     await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.my_photos));
+    await tap(find.byIcon(AbiliaIcons.myPhotos));
     await pumpAndSettle();
   }
 }

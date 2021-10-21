@@ -87,7 +87,7 @@ class ErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) => ViewDialog(
         heading: AppBarHeading(
           text: Translator.of(context).translate.error,
-          iconData: AbiliaIcons.ir_error,
+          iconData: AbiliaIcons.irError,
         ),
         body: Tts(child: Text(text)),
         backNavigationWidget: backNavigationWidget ?? PreviousButton(),
@@ -131,7 +131,7 @@ class ConfirmWarningDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: Translator.of(context).translate.warning,
-        iconData: AbiliaIcons.gewa_radio_error,
+        iconData: AbiliaIcons.gewaRadioError,
       ),
       body: Tts(child: Text(text)),
       forwardNavigationWidget: OkButton(

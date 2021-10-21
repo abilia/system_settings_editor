@@ -31,7 +31,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
     final translate = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.add_attachment,
+        iconData: AbiliaIcons.addAttachment,
         title: translate.selectInfoType,
       ),
       body: Padding(

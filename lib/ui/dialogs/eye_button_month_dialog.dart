@@ -43,12 +43,12 @@ class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
               items: [
                 SelectorItem(
                   t.monthCalendarGrid,
-                  AbiliaIcons.scanning_field_by_field,
+                  AbiliaIcons.scanningFieldByField,
                   MonthCalendarType.grid,
                 ),
                 SelectorItem(
                   t.monthCalendarPreview,
-                  AbiliaIcons.calendar_list,
+                  AbiliaIcons.calendarList,
                   MonthCalendarType.preview,
                 ),
               ],

@@ -18,7 +18,7 @@ void main() {
         final splitRecurring = Activity.createNew(
           title: 'Split recurring ',
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             splitEndTime.millisecondsSinceEpoch,
           ), // Weekly every day odd and even week
@@ -86,7 +86,7 @@ void main() {
         final splitRecurring = Activity.createNew(
           title: 'test',
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             splitEndTime,
           ),
@@ -705,7 +705,7 @@ void main() {
         final splitRecurring = Activity.createNew(
           title: 'test',
           recurs: Recurs.raw(
-            Recurs.TYPE_WEEKLY,
+            Recurs.typeWeekly,
             16383,
             splitEndTime.millisecondsSinceEpoch,
           ),

@@ -6,7 +6,7 @@ class CodeProtectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SettingsBasePage(
       widgets: const [],
-      icon: AbiliaIcons.numeric_keyboard,
+      icon: AbiliaIcons.numericKeyboard,
       title: Translator.of(context).translate.codeProtect,
     );
   }

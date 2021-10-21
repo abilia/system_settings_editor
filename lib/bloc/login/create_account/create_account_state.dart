@@ -99,28 +99,28 @@ class CreateAccountFailed extends CreateAccountState {
 
   @override
   bool get usernameFailure =>
-      failure == CreateAccountFailure.UsernameToShort ||
-      failure == CreateAccountFailure.NoUsername ||
-      failure == CreateAccountFailure.UsernameTaken;
+      failure == CreateAccountFailure.usernameToShort ||
+      failure == CreateAccountFailure.noUsername ||
+      failure == CreateAccountFailure.usernameTaken;
 
-  bool get passwordMismatch => failure == CreateAccountFailure.PasswordMismatch;
+  bool get passwordMismatch => failure == CreateAccountFailure.passwordMismatch;
 
   @override
   bool get passwordFailure =>
       passwordMismatch ||
-      failure == CreateAccountFailure.NoPassword ||
-      failure == CreateAccountFailure.PasswordToShort;
+      failure == CreateAccountFailure.noPassword ||
+      failure == CreateAccountFailure.passwordToShort;
 
   @override
   bool get conformPasswordFailure =>
-      passwordMismatch || failure == CreateAccountFailure.NoConfirmPassword;
+      passwordMismatch || failure == CreateAccountFailure.noConfirmPassword;
 
   @override
-  bool get termsOfUseFailure => failure == CreateAccountFailure.TermsOfUse;
+  bool get termsOfUseFailure => failure == CreateAccountFailure.termsOfUse;
 
   @override
   bool get privacyPolicyFailure =>
-      failure == CreateAccountFailure.PrivacyPolicy;
+      failure == CreateAccountFailure.privacyPolicy;
 
   @override
   List<Object> get props => [failure, super.props];
@@ -131,18 +131,18 @@ class AccountCreated extends CreateAccountState {
 }
 
 enum CreateAccountFailure {
-  NoUsername,
-  UsernameToShort,
-  UsernameInvalid,
-  UsernameTaken,
-  NoPassword,
-  PasswordToShort,
-  NoConfirmPassword,
-  PasswordMismatch,
-  TermsOfUse,
-  PrivacyPolicy,
-  ClientNotAllowed,
-  InvalidLanguage,
-  NoConnection,
-  Unknown,
+  noUsername,
+  usernameToShort,
+  usernameInvalid,
+  usernameTaken,
+  noPassword,
+  passwordToShort,
+  noConfirmPassword,
+  passwordMismatch,
+  termsOfUse,
+  privacyPolicy,
+  clientNotAllowed,
+  invalidLanguage,
+  noConnection,
+  unknown,
 }

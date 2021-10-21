@@ -22,6 +22,6 @@ class FakeUserFile {
     );
   }
 
-  static const ONE_PIXEL_PNG =
+  static const onePixelPng =
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
 }

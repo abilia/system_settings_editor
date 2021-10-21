@@ -58,17 +58,17 @@ void main() {
       expect(find.byType(MenuSettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.camera_photo), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.my_photos), findsWidgets);
+      expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.myPhotos), findsWidgets);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stop_watch), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.menu_setup), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stopWatch), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.menuSetup), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
     });
 
     testWidgets('change display camera is stored', (tester) async {
       await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.camera_photo));
+      await tester.tap(find.byIcon(AbiliaIcons.cameraPhoto));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -81,7 +81,7 @@ void main() {
 
     testWidgets('change display my photos is stored', (tester) async {
       await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.my_photos));
+      await tester.tap(find.byIcon(AbiliaIcons.myPhotos));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -107,7 +107,7 @@ void main() {
 
     testWidgets('change display countdown is stored', (tester) async {
       await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.stop_watch));
+      await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -120,7 +120,7 @@ void main() {
 
     testWidgets('change display quick settings is stored', (tester) async {
       await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.menu_setup));
+      await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -165,7 +165,7 @@ void main() {
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonRight));
       await tester.tap(find.byKey(TestKey.hiddenSettingsButtonLeft));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.settings));
       await tester.pumpAndSettle();
@@ -349,7 +349,7 @@ extension on WidgetTester {
     await goToMenuPage();
     await tap(find.byType(SettingsButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.app_menu));
+    await tap(find.byIcon(AbiliaIcons.appMenu));
     await pumpAndSettle();
   }
 }

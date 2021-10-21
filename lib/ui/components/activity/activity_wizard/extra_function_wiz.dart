@@ -8,7 +8,7 @@ class ExtraFunctionWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WizardScaffold(
-      iconData: AbiliaIcons.add_attachment,
+      iconData: AbiliaIcons.addAttachment,
       title: Translator.of(context).translate.selectInfoType,
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>

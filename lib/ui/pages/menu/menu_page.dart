@@ -15,7 +15,7 @@ class MenuPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.menu,
-        iconData: AbiliaIcons.app_menu,
+        iconData: AbiliaIcons.appMenu,
       ),
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
@@ -58,7 +58,7 @@ class CameraButton extends StatelessWidget {
         ),
         child: BlocBuilder<ClockBloc, DateTime>(
           builder: (context, time) => MenuItemButton(
-            icon: AbiliaIcons.camera_photo,
+            icon: AbiliaIcons.cameraPhoto,
             onPressed: () async {
               if (permissionState
                       .status[Permission.camera]?.isPermanentlyDenied ==
@@ -104,7 +104,7 @@ class MyPhotosButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuItemButton(
-      icon: AbiliaIcons.my_photos,
+      icon: AbiliaIcons.myPhotos,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
@@ -146,7 +146,7 @@ class CountdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuItemButton(
-      icon: AbiliaIcons.stop_watch,
+      icon: AbiliaIcons.stopWatch,
       onPressed: () {},
       style: pinkButtonStyle,
       text: Translator.of(context).translate.countdown,
@@ -160,7 +160,7 @@ class QuickSettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuItemButton(
-      icon: AbiliaIcons.menu_setup,
+      icon: AbiliaIcons.menuSetup,
       onPressed: () {},
       style: yellowButtonStyle,
       text: Translator.of(context).translate.quickSettingsMenu,

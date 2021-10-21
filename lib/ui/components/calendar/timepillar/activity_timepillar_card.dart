@@ -46,7 +46,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final startTime = activityOccasion.start;
     final dotHeight = dots * ts.dotDistance;
 
-    final right = TimepillarSide.RIGHT == timepillarSide;
+    final right = TimepillarSide.right == timepillarSide;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.dotsInTimepillar != current.dotsInTimepillar ||

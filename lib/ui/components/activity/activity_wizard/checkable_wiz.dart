@@ -11,7 +11,7 @@ class CheckableWiz extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) => WizardScaffold(
-        iconData: AbiliaIcons.handi_check,
+        iconData: AbiliaIcons.handiCheck,
         title: translate.checkable,
         body: Padding(
           padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),

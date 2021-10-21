@@ -39,7 +39,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onPressed: () =>
                           BlocProvider.of<WeekCalendarBloc>(context)
                               .add(PreviousWeek()),
-                      child: const Icon(AbiliaIcons.return_to_previous_page),
+                      child: const Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
               clockReplacement: !state.currentWeekStart.isSameWeek(time)
@@ -55,7 +55,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onPressed: () =>
                           BlocProvider.of<WeekCalendarBloc>(context)
                               .add(NextWeek()),
-                      child: const Icon(AbiliaIcons.go_to_next_page),
+                      child: const Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,
               crossedOver: state.currentWeekStart.nextWeek().isBefore(time),

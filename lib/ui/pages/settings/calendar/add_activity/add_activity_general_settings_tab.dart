@@ -12,7 +12,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
         children: [
           Tts(child: Text(t.general)),
           SwitchField(
-            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.allowPassedStartTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -30,7 +30,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.addRecurringActivity),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.past_picture_from_windows_clipboard),
+            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.showEndTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -39,7 +39,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
           ),
           SizedBox(),
           SwitchField(
-            leading: Icon(AbiliaIcons.handi_alarm_vibration),
+            leading: Icon(AbiliaIcons.handiAlarmVibration),
             value: state.showAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -47,7 +47,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.showAlarm),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.handi_alarm),
+            leading: Icon(AbiliaIcons.handiAlarm),
             value: state.showSilentAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -55,7 +55,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.showSilentAlarm),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.handi_no_alarm),
+            leading: Icon(AbiliaIcons.handiNoAlarm),
             value: state.showNoAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()

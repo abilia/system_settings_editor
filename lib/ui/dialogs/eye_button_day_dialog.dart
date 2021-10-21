@@ -58,18 +58,18 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                     items: [
                       SelectorItem(
                         t.listView,
-                        AbiliaIcons.calendar_list,
+                        AbiliaIcons.calendarList,
                         DayCalendarType.list,
                       ),
                       SelectorItem(
                         t.oneTimePillarView,
                         AbiliaIcons.timeline,
-                        DayCalendarType.one_timepillar,
+                        DayCalendarType.oneTimepillar,
                       ),
                       SelectorItem(
                         t.twoTimePillarsView,
-                        AbiliaIcons.two_timelines,
-                        DayCalendarType.two_timepillars,
+                        AbiliaIcons.twoTimelines,
+                        DayCalendarType.twoTimepillars,
                       ),
                     ],
                     onChanged: (type) => setState(() => calendarType = type),
@@ -78,7 +78,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                 Divider(endIndent: 16.s)
               ],
               CollapsableWidget(
-                collapsed: calendarType != DayCalendarType.one_timepillar,
+                collapsed: calendarType != DayCalendarType.oneTimepillar,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -90,18 +90,18 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                           items: [
                             SelectorItem(
                               t.interval,
-                              AbiliaIcons.day_interval,
-                              TimepillarIntervalType.INTERVAL,
+                              AbiliaIcons.dayInterval,
+                              TimepillarIntervalType.interval,
                             ),
                             SelectorItem(
                               t.viewDay,
                               AbiliaIcons.sun,
-                              TimepillarIntervalType.DAY,
+                              TimepillarIntervalType.day,
                             ),
                             SelectorItem(
                               t.dayAndNight,
-                              AbiliaIcons.day_night,
-                              TimepillarIntervalType.DAY_AND_NIGHT,
+                              AbiliaIcons.dayNight,
+                              TimepillarIntervalType.dayAndNight,
                             ),
                           ],
                           onChanged: (newDayInterval) =>
@@ -116,18 +116,18 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                           items: [
                             SelectorItem(
                               t.small,
-                              AbiliaIcons.decrease_text,
-                              TimepillarZoom.SMALL,
+                              AbiliaIcons.decreaseText,
+                              TimepillarZoom.small,
                             ),
                             SelectorItem(
                               t.medium,
-                              AbiliaIcons.medium_text,
-                              TimepillarZoom.NORMAL,
+                              AbiliaIcons.mediumText,
+                              TimepillarZoom.normal,
                             ),
                             SelectorItem(
                               t.large,
-                              AbiliaIcons.enlarge_text,
-                              TimepillarZoom.LARGE,
+                              AbiliaIcons.enlargeText,
+                              TimepillarZoom.large,
                             ),
                           ],
                           onChanged: (newZoom) {

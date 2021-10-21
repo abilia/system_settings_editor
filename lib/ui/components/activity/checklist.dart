@@ -164,13 +164,13 @@ class QuestionView extends StatelessWidget {
                               EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),
                           child: AnimatedCrossFade(
                             firstChild: Icon(
-                              AbiliaIcons.checkbox_selected,
+                              AbiliaIcons.checkboxSelected,
                               color: inactive
                                   ? AbiliaColors.green40
                                   : AbiliaColors.green,
                             ),
                             secondChild: Icon(
-                              AbiliaIcons.checkbox_unselected,
+                              AbiliaIcons.checkboxUnselected,
                               color: inactive
                                   ? AbiliaColors.white140
                                   : AbiliaColors.black,

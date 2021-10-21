@@ -38,7 +38,7 @@ class Sortable<T extends SortableData> extends DataModel {
   static Sortable<T> createNew<T extends SortableData>({
     required T data,
     String groupId = '',
-    String sortOrder = START_SORT_ORDER,
+    String sortOrder = startSordOrder,
     bool deleted = false,
     bool isGroup = false,
     bool visible = true,

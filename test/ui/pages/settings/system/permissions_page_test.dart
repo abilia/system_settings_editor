@@ -268,7 +268,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(AbiliaIcons.ir_error), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.irError), findsOneWidget);
       expect(find.byType(ErrorMessage), findsOneWidget);
       expect(find.text(translate.notificationsWarningHintText), findsOneWidget);
     });
@@ -299,7 +299,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(AbiliaIcons.ir_error), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.irError), findsOneWidget);
       expect(find.byType(ErrorMessage), findsOneWidget);
       expect(find.text(translate.notificationsWarningHintText), findsOneWidget);
     });

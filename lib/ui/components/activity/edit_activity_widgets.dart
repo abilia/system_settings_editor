@@ -17,7 +17,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
             return NameAndPictureWidget(
               selectedImage: state.selectedImage,
               errorState:
-                  wizState.saveErrors.contains(SaveError.NO_TITLE_OR_IMAGE),
+                  wizState.saveErrors.contains(SaveError.noTitleOrImage),
               text: state.activity.title,
               inputFormatters: [LengthLimitingTextInputFormatter(50)],
               onImageSelected: (selectedImage) {
@@ -187,7 +187,7 @@ class SelectedImageWidget extends StatelessWidget {
                 width: innerSize,
                 height: innerSize,
                 child: Icon(
-                  AbiliaIcons.add_photo,
+                  AbiliaIcons.addPhoto,
                   size: defaultIconSize,
                   color: AbiliaColors.black75,
                 ),
@@ -402,7 +402,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
   Widget build(BuildContext context) => SwitchField(
         key: TestKey.alarmAtStartSwitch,
         leading: Icon(
-          AbiliaIcons.handi_alarm,
+          AbiliaIcons.handiAlarm,
           size: smallIconSize,
         ),
         value: alarm.onlyStart,
@@ -426,7 +426,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
         SwitchField(
           key: TestKey.checkableSwitch,
           leading: Icon(
-            AbiliaIcons.handi_check,
+            AbiliaIcons.handiCheck,
             size: smallIconSize,
           ),
           value: activity.checkable,
@@ -438,7 +438,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
-            AbiliaIcons.delete_all_clear,
+            AbiliaIcons.deleteAllClear,
             size: smallIconSize,
           ),
           value: activity.removeAfter,
@@ -467,7 +467,7 @@ class AvailableForWidget extends StatelessWidget {
         PickField(
           key: TestKey.availibleFor,
           leading: Icon(
-            secret ? AbiliaIcons.password_protection : AbiliaIcons.user_group,
+            secret ? AbiliaIcons.passwordProtection : AbiliaIcons.userGroup,
           ),
           text:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
@@ -598,7 +598,7 @@ class EndDateWidget extends StatelessWidget {
             ),
             SwitchField(
               leading: Icon(
-                AbiliaIcons.basic_activity,
+                AbiliaIcons.basicActivity,
                 size: smallIconSize,
               ),
               value: recurs.hasNoEnd,
@@ -636,7 +636,7 @@ class EndDateWizWidget extends StatelessWidget {
         final recurs = activity.recurs;
         return SwitchField(
           leading: Icon(
-            AbiliaIcons.basic_activity,
+            AbiliaIcons.basicActivity,
             size: smallIconSize,
           ),
           value: recurs.hasNoEnd,

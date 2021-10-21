@@ -16,10 +16,10 @@ abstract class UserFileState extends Equatable {
   File? getFileOrTempFile(
     UserFile userFile,
     FileStorage fileStorage, {
-    ImageSize imageSize = ImageSize.ORIGINAL,
+    ImageSize imageSize = ImageSize.original,
   }) =>
       userFile.fileLoaded
-          ? imageSize == ImageSize.THUMB
+          ? imageSize == ImageSize.thumb
               ? fileStorage.getImageThumb(ImageThumb(id: userFile.id))
               : fileStorage.getFile(userFile.id)
           : _tempFiles[userFile.id];
@@ -28,7 +28,7 @@ abstract class UserFileState extends Equatable {
     String fileId,
     String filePath,
     FileStorage fileStorage, {
-    ImageSize imageSize = ImageSize.ORIGINAL,
+    ImageSize imageSize = ImageSize.original,
   }) {
     final userFile =
         getUserFileOrNull(AbiliaFile.from(id: fileId, path: filePath));

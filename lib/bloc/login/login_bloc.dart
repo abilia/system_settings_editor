@@ -51,11 +51,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginButtonPressed event) async* {
     yield state.loading();
     if (!state.isUsernameValid) {
-      yield state.failure(cause: LoginFailureCause.NoUsername);
+      yield state.failure(cause: LoginFailureCause.noUsername);
       return;
     }
     if (!state.isPasswordValid) {
-      yield state.failure(cause: LoginFailureCause.NoPassword);
+      yield state.failure(cause: LoginFailureCause.noPassword);
       return;
     }
     final authState = authenticationBloc.state;
@@ -75,17 +75,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         yield state.failure(
           cause: licenses.anyMemoplannerLicense()
-              ? LoginFailureCause.LicenseExpired
-              : LoginFailureCause.NoLicense,
+              ? LoginFailureCause.licenseExpired
+              : LoginFailureCause.noLicense,
         );
       }
     } on UnauthorizedException {
-      yield state.failure(cause: LoginFailureCause.Credentials);
+      yield state.failure(cause: LoginFailureCause.credentials);
     } on WrongUserTypeException {
-      yield state.failure(cause: LoginFailureCause.UnsupportedUserType);
+      yield state.failure(cause: LoginFailureCause.unsupportedUserType);
     } catch (error) {
       _log.severe('could not login: $error');
-      yield state.failure(cause: LoginFailureCause.NoConnection);
+      yield state.failure(cause: LoginFailureCause.noConnection);
     }
   }
 }

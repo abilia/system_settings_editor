@@ -11,7 +11,7 @@ class WebViewDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: Translator.of(context).translate.browser,
-        iconData: AbiliaIcons.select_language,
+        iconData: AbiliaIcons.selectLanguage,
       ),
       body: WebView(initialUrl: url),
       expanded: true,

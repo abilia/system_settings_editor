@@ -23,7 +23,7 @@ class AvailableForWiz extends StatelessWidget {
                 onChanged: (value) => context.read<EditActivityBloc>().add(
                     ReplaceActivity(state.activity.copyWith(secret: value))),
                 value: true,
-                leading: const Icon(AbiliaIcons.password_protection),
+                leading: const Icon(AbiliaIcons.passwordProtection),
                 text: Text(translate.onlyMe),
               ),
               SizedBox(height: 8.0.s),
@@ -32,7 +32,7 @@ class AvailableForWiz extends StatelessWidget {
                 onChanged: (value) => context.read<EditActivityBloc>().add(
                     ReplaceActivity(state.activity.copyWith(secret: value))),
                 value: false,
-                leading: const Icon(AbiliaIcons.user_group),
+                leading: const Icon(AbiliaIcons.userGroup),
                 text: Text(translate.meAndSupportPersons),
               ),
             ],

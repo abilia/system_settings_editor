@@ -37,7 +37,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
         end: day.nextDay().add(
               dayParts.morningStart.milliseconds(),
             ),
-        intervalPart: IntervalPart.NIGHT,
+        intervalPart: IntervalPart.night,
       ),
       0.5,
     );

@@ -40,7 +40,7 @@ void main() {
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-          data: DayCalendarType.one_timepillar.index,
+          data: DayCalendarType.oneTimepillar.index,
           identifier: MemoplannerSettings.viewOptionsTimeViewKey),
     );
 
@@ -113,11 +113,11 @@ void main() {
     // Verify correct TTS timeline
     await tester.verifyTts(find.text(translate.viewMode),
         exact: translate.viewMode);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.calendarList),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
         exact: translate.oneTimePillarView);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.two_timelines),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.twoTimelines),
         exact: translate.twoTimePillarsView);
 
     // Verify correct TTS zoom. Small and medium has same icon for now
@@ -125,17 +125,17 @@ void main() {
     await tester.verifyTts(find.text(translate.small), exact: translate.small);
     await tester.verifyTts(find.text(translate.medium),
         exact: translate.medium);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.enlarge_text),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.enlargeText),
         exact: translate.large);
 
     // Verify correct TTS intervals
     await tester.verifyTts(find.text(translate.dayInterval),
         exact: translate.dayInterval);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.day_interval),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.dayInterval),
         exact: translate.interval);
     await tester.verifyTts(find.byIcon(AbiliaIcons.sun),
         exact: translate.viewDay);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.day_night),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.dayNight),
         exact: translate.dayAndNight);
 
     // Scroll down

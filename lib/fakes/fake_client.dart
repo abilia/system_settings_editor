@@ -141,7 +141,7 @@ class Fakes {
       {
         "id":125,
         "endTime":${expires.millisecondsSinceEpoch},
-        "product":"$MEMOPLANNER_LICENSE_NAME"
+        "product":"$memoplannerLicenseName"
       }
     ]
   ''', 200);

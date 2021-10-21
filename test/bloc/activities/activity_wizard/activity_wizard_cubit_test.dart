@@ -79,7 +79,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: EditActivityBloc.newActivity(
-          day: aDay, defaultAlarmTypeSetting: NO_ALARM),
+          day: aDay, defaultAlarmTypeSetting: noAlarm),
       clockBloc: clockBloc,
       settings: MemoplannerSettingsLoaded(
         MemoplannerSettings(addActivityTypeAdvanced: false),
@@ -96,7 +96,7 @@ void main() {
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
-            WizardStep.available_for,
+            WizardStep.availableFor,
             WizardStep.checkable,
             WizardStep.time,
             WizardStep.recurring,
@@ -134,7 +134,7 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final activityWizardCubit = ActivityWizardCubit.edit(
@@ -157,8 +157,8 @@ void main() {
           UnmodifiableListView([
             WizardStep.advance,
           ])).failSave({
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.NO_START_TIME,
+        SaveError.noTitleOrImage,
+        SaveError.noStartTime,
       }),
     );
   });
@@ -172,7 +172,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: mockActivitiesBloc,
@@ -207,8 +207,8 @@ void main() {
         0,
         const [WizardStep.advance],
         saveErrors: const {
-          SaveError.NO_TITLE_OR_IMAGE,
-          SaveError.NO_START_TIME,
+          SaveError.noTitleOrImage,
+          SaveError.noStartTime,
         },
         sucessfullSave: false,
       ),
@@ -231,7 +231,7 @@ void main() {
         0,
         const [WizardStep.advance],
         saveErrors: const {
-          SaveError.NO_START_TIME,
+          SaveError.noStartTime,
         },
       ),
     );
@@ -263,7 +263,7 @@ void main() {
       startTime: aTime,
       duration: 5.hours(),
       reminderBefore: [10.minutes().inMilliseconds, 1.hours().inMilliseconds],
-      alarmType: ALARM_SOUND_AND_VIBRATION,
+      alarmType: alarmSoundAndVibration,
     );
 
     final activityAsFullDay = activity.copyWith(
@@ -271,7 +271,7 @@ void main() {
     );
 
     final activityExpectedToBeSaved = activityAsFullDay.copyWith(
-      alarmType: NO_ALARM,
+      alarmType: noAlarm,
       startTime: activity.startTime.onlyDays(),
       reminderBefore: [],
     );
@@ -318,7 +318,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -721,7 +721,7 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -768,7 +768,7 @@ void main() {
       ActivityWizardState(
         0,
         const [WizardStep.advance],
-        saveErrors: const {SaveError.NO_RECURRING_DAYS},
+        saveErrors: const {SaveError.noRecurringDays},
         sucessfullSave: false,
       ),
     );
@@ -781,7 +781,7 @@ void main() {
 
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -827,7 +827,7 @@ void main() {
           ActivityWizardState(
             0,
             const [WizardStep.advance],
-            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
             sucessfullSave: false,
           ),
         );
@@ -865,7 +865,7 @@ void main() {
 
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -889,7 +889,7 @@ void main() {
         );
 
         final expectedActivity =
-            activity.copyWith(startTime: saveTime, alarmType: NO_ALARM);
+            activity.copyWith(startTime: saveTime, alarmType: noAlarm);
         editActivityBloc.add(ChangeDate(saveTime));
         editActivityBloc.add(ReplaceActivity(activity));
 
@@ -916,7 +916,7 @@ void main() {
           ActivityWizardState(
             0,
             const [WizardStep.advance],
-            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
             sucessfullSave: false,
           ),
         );
@@ -947,7 +947,7 @@ void main() {
         // Arrange
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
@@ -1002,7 +1002,7 @@ void main() {
           ActivityWizardState(
             0,
             const [WizardStep.advance],
-            saveErrors: const {SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW},
+            saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
             sucessfullSave: null,
           ),
         );
@@ -1087,8 +1087,8 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {
-              SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
-              SaveError.STORED_RECURRING,
+              SaveError.unconfirmedStartTimeBeforeNow,
+              SaveError.storedRecurring,
             },
             sucessfullSave: false,
           ),
@@ -1128,7 +1128,7 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1173,7 +1173,7 @@ void main() {
           ActivityWizardState(
             0,
             const [WizardStep.advance],
-            saveErrors: const {SaveError.UNCONFIRMED_ACTIVITY_CONFLICT},
+            saveErrors: const {SaveError.unconfirmedActivityConflict},
             sucessfullSave: false,
           ),
         );
@@ -1210,7 +1210,7 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1253,8 +1253,8 @@ void main() {
             0,
             const [WizardStep.advance],
             saveErrors: const {
-              SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
-              SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
+              SaveError.unconfirmedActivityConflict,
+              SaveError.unconfirmedStartTimeBeforeNow,
             },
             sucessfullSave: false,
           ),
@@ -1350,7 +1350,7 @@ void main() {
 
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1367,7 +1367,7 @@ void main() {
         final activity = originalActivity.copyWith(
           title: 'null',
           fullDay: true,
-          alarmType: NO_ALARM,
+          alarmType: noAlarm,
         );
         final timeIntervall = TimeInterval(
           startDate: aDay,
@@ -1408,7 +1408,7 @@ void main() {
             .thenReturn(ActivitiesLoaded([stored]));
         final editActivityBloc = EditActivityBloc.newActivity(
           day: aDay,
-          defaultAlarmTypeSetting: NO_ALARM,
+          defaultAlarmTypeSetting: noAlarm,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1696,7 +1696,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1717,7 +1717,7 @@ void main() {
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
-            WizardStep.available_for,
+            WizardStep.availableFor,
             WizardStep.checkable,
             WizardStep.time,
             WizardStep.recurring,
@@ -1730,7 +1730,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1762,7 +1762,7 @@ void main() {
           const [
             WizardStep.basic,
             WizardStep.type,
-            WizardStep.delete_after,
+            WizardStep.deleteAfter,
             WizardStep.time,
             WizardStep.alarm,
             WizardStep.connectedFunction,
@@ -1776,7 +1776,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1838,9 +1838,9 @@ void main() {
       WizardStep.title,
       WizardStep.image,
       WizardStep.type,
-      WizardStep.available_for,
+      WizardStep.availableFor,
       WizardStep.checkable,
-      WizardStep.delete_after,
+      WizardStep.deleteAfter,
       WizardStep.time,
       WizardStep.alarm,
       WizardStep.connectedFunction,
@@ -1852,7 +1852,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1875,7 +1875,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
       final activity = editActivityBloc.state.activity;
 
@@ -1903,7 +1903,7 @@ void main() {
         ActivityWizardState(
           3,
           allWizStep,
-          saveErrors: const {SaveError.NO_TITLE_OR_IMAGE},
+          saveErrors: const {SaveError.noTitleOrImage},
           sucessfullSave: false,
         ),
       );
@@ -1924,7 +1924,7 @@ void main() {
         ActivityWizardState(
           8,
           allWizStep,
-          saveErrors: const {SaveError.NO_START_TIME},
+          saveErrors: const {SaveError.noStartTime},
           sucessfullSave: false,
         ),
       );
@@ -1952,7 +1952,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
       final activity = editActivityBloc.state.activity;
 
@@ -1980,9 +1980,9 @@ void main() {
             WizardStep.title,
             WizardStep.image,
             WizardStep.type,
-            WizardStep.available_for,
+            WizardStep.availableFor,
             WizardStep.checkable,
-            WizardStep.delete_after,
+            WizardStep.deleteAfter,
             WizardStep.connectedFunction,
             WizardStep.recurring,
           ]),
@@ -1995,7 +1995,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
       final activity = editActivityBloc.state.activity;
 
@@ -2028,7 +2028,7 @@ void main() {
       // Arrange
       final editActivityBloc = EditActivityBloc.newActivity(
         day: aDay,
-        defaultAlarmTypeSetting: NO_ALARM,
+        defaultAlarmTypeSetting: noAlarm,
       );
       final activity = editActivityBloc.state.activity;
 
@@ -2093,7 +2093,7 @@ void main() {
             WizardStep.recurring,
             WizardStep.recursWeekly
           ],
-          saveErrors: const {SaveError.NO_RECURRING_DAYS},
+          saveErrors: const {SaveError.noRecurringDays},
           sucessfullSave: false,
         ),
       );

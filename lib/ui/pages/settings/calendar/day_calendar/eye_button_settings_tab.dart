@@ -15,7 +15,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
             collapsed: !state.showTypeOfDisplay,
             child: _buildSelector(
               [
-                SelectorItem(t.listView, AbiliaIcons.calendar_list),
+                SelectorItem(t.listView, AbiliaIcons.calendarList),
                 SelectorItem(t.oneTimePillarView, AbiliaIcons.timeline),
                 SelectorItem(t.twoTimePillarsView, AbiliaIcons.timeline),
               ],
@@ -25,9 +25,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
             collapsed: !state.showTimepillarLength,
             child: _buildSelector(
               [
-                SelectorItem(t.interval, AbiliaIcons.day_interval),
+                SelectorItem(t.interval, AbiliaIcons.dayInterval),
                 SelectorItem(t.viewDay, AbiliaIcons.sun),
-                SelectorItem(t.dayAndNight, AbiliaIcons.day_night),
+                SelectorItem(t.dayAndNight, AbiliaIcons.dayNight),
               ],
             ),
           ),
@@ -35,9 +35,9 @@ class EyeButtonSettingsTab extends StatelessWidget {
             collapsed: !state.showTimelineZoom,
             child: _buildSelector(
               [
-                SelectorItem(t.small, AbiliaIcons.decrease_text),
-                SelectorItem(t.medium, AbiliaIcons.decrease_text),
-                SelectorItem(t.large, AbiliaIcons.enlarge_text),
+                SelectorItem(t.small, AbiliaIcons.decreaseText),
+                SelectorItem(t.medium, AbiliaIcons.decreaseText),
+                SelectorItem(t.large, AbiliaIcons.enlargeText),
               ],
             ),
           ),

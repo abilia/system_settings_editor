@@ -182,7 +182,7 @@ void main() {
     // Arrange
     final inOneMinuteWithoutAlarmActivity =
         FakeActivity.starts(thisMinute.add(1.minutes()))
-            .copyWith(alarmType: NO_ALARM);
+            .copyWith(alarmType: noAlarm);
     final inTwoMinutesActivity =
         FakeActivity.starts(nextMinute.add(1.minutes()));
     when(mockActivityRepository.load()).thenAnswer((_) =>

@@ -127,8 +127,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
         Expanded(
           child: PickField(
             leading: Icon(recordedAudio.isEmpty
-                ? AbiliaIcons.no_record
-                : AbiliaIcons.sms_sound),
+                ? AbiliaIcons.noRecord
+                : AbiliaIcons.smsSound),
             text: Text(label),
             onTap: permissionStatus == PermissionStatus.permanentlyDenied
                 ? null
@@ -387,7 +387,7 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ActionButtonDark(
         onPressed: () => context.read<RecordSoundCubit>().deleteRecording(),
-        child: Icon(AbiliaIcons.delete_all_clear),
+        child: Icon(AbiliaIcons.deleteAllClear),
       );
 }
 
@@ -421,7 +421,7 @@ class PlayRecordingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return DarkGreyButton(
       text: Translator.of(context).translate.play,
-      icon: AbiliaIcons.play_sound,
+      icon: AbiliaIcons.playSound,
       onPressed: () => context.read<SoundCubit>().play(sound),
     );
   }

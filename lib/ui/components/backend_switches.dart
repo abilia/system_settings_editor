@@ -13,7 +13,7 @@ class BackendSwitchesDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: 'Switch backend',
-        iconData: AbiliaIcons.one_drive,
+        iconData: AbiliaIcons.oneDrive,
       ),
       body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) => Wrap(

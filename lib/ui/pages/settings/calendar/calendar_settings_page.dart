@@ -28,17 +28,17 @@ class CalendarSettingsPage extends StatelessWidget {
           navigateTo: MonthCalendarSettingsPage(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.full_screen,
+          icon: AbiliaIcons.fullScreen,
           text: Translator.of(context).translate.activityView,
           navigateTo: ActivityViewSettingsPage(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.new_icon,
+          icon: AbiliaIcons.newIcon,
           text: Translator.of(context).translate.addActivity,
           navigateTo: AddActivitySettingsPage(),
         ),
         MenuItemPickField(
-          icon: AbiliaIcons.handi_alarm_vibration,
+          icon: AbiliaIcons.handiAlarmVibration,
           text: Translator.of(context).translate.alarmSettings,
           navigateTo: AlarmSettingsPage(),
         ),

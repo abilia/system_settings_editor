@@ -77,7 +77,7 @@ void main() {
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
       expect(find.byKey(TestKey.editAlarm), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsNWidgets(2));
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNWidgets(2));
       expect(find.byIcon(AbiliaIcons.edit), findsNWidgets(2));
       expect(find.byType(ActivityInfoSideDots), findsOneWidget);
       expect(find.byKey(TestKey.sideDotsTimeText), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
         expect(s.value, isFalse);
       }
       expect(find.byKey(TestKey.editAlarm), findsNothing);
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       expect(find.byType(ActivityInfoSideDots), findsNothing);
       expect(find.byKey(TestKey.sideDotsTimeText), findsNothing);
@@ -149,10 +149,10 @@ void main() {
 
     testWidgets('hide delete button saved', (tester) async {
       await tester.goToActivityViewSettingsPage();
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsNWidgets(2));
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNWidgets(2));
       await tester.tap(find.text(translate.delete));
       await tester.pumpAndSettle();
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsOneWidget);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifySyncGeneric(
@@ -242,7 +242,7 @@ void main() {
       await tester.goToActivityPage();
 
       expect(find.byKey(TestKey.editAlarm), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       expect(find.byType(ActivityInfoSideDots), findsOneWidget);
       expect(find.byKey(TestKey.sideDotsTimeText), findsOneWidget);
@@ -285,7 +285,7 @@ void main() {
       await tester.goToActivityPage();
 
       expect(find.byKey(TestKey.editAlarm), findsNothing);
-      expect(find.byIcon(AbiliaIcons.delete_all_clear), findsNothing);
+      expect(find.byIcon(AbiliaIcons.deleteAllClear), findsNothing);
       expect(find.byIcon(AbiliaIcons.edit), findsNothing);
       expect(find.byType(ActivityInfoSideDots), findsNothing);
       expect(find.byKey(TestKey.sideDotsTimeText), findsNothing);
@@ -308,7 +308,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.month));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.full_screen));
+    await tap(find.byIcon(AbiliaIcons.fullScreen));
     await pumpAndSettle();
   }
 }

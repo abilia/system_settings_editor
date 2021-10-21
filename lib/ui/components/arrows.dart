@@ -47,7 +47,7 @@ class ArrowLeft extends _ArrowBase {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerLeft,
         child: _Arrow(
-          icon: AbiliaIcons.navigation_previous,
+          icon: AbiliaIcons.navigationPrevious,
           borderRadius: BorderRadius.only(
               topRight: _Arrow.radius, bottomRight: _Arrow.radius),
           vectorTranslation: Vector3(-_Arrow.translationPixels, 0, 0),
@@ -70,7 +70,7 @@ class ArrowUp extends _ArrowBase {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: _Arrow(
-          icon: AbiliaIcons.navigation_up,
+          icon: AbiliaIcons.navigationUp,
           borderRadius: BorderRadius.only(
               bottomLeft: _Arrow.radius, bottomRight: _Arrow.radius),
           vectorTranslation: Vector3(0, -_Arrow.translationPixels, 0),
@@ -93,7 +93,7 @@ class ArrowRight extends _ArrowBase {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.centerRight,
         child: _Arrow(
-          icon: AbiliaIcons.navigation_next,
+          icon: AbiliaIcons.navigationNext,
           borderRadius: BorderRadius.only(
               topLeft: _Arrow.radius, bottomLeft: _Arrow.radius),
           vectorTranslation: Vector3(_Arrow.translationPixels, 0, 0),
@@ -116,7 +116,7 @@ class ArrowDown extends _ArrowBase {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.bottomCenter,
         child: _Arrow(
-          icon: AbiliaIcons.navigation_down,
+          icon: AbiliaIcons.navigationDown,
           borderRadius: BorderRadius.only(
               topLeft: _Arrow.radius, topRight: _Arrow.radius),
           vectorTranslation: Vector3(0, _Arrow.translationPixels, 0),

@@ -67,7 +67,7 @@ class SelectAllWeekdaysButton extends StatelessWidget {
             )
           : IconAndTextButton(
               text: Translator.of(context).translate.selectAll,
-              icon: AbiliaIcons.radiocheckbox_selected,
+              icon: AbiliaIcons.radiocheckboxSelected,
               style: actionButtonStyleDark,
               onPressed: () => context
                   .read<RecurringWeekBloc>()

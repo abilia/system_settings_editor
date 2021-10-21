@@ -12,7 +12,7 @@ class InfoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SecondaryActionButtonDark(
       onPressed: onTap,
-      child: Icon(AbiliaIcons.handi_info),
+      child: Icon(AbiliaIcons.handiInfo),
     );
   }
 }

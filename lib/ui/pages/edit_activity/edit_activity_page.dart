@@ -46,7 +46,7 @@ class EditActivityPage extends StatelessWidget {
                       }
                     },
                     tabs: const <Widget>[
-                      Icon(AbiliaIcons.my_photos),
+                      Icon(AbiliaIcons.myPhotos),
                       Icon(AbiliaIcons.attention),
                       Icon(AbiliaIcons.repeat),
                       Icon(AbiliaIcons.attachment),

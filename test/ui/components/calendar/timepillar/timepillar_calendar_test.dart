@@ -31,13 +31,12 @@ void main() {
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
 
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
-  final previusDayButtonFinder =
-      find.byIcon(AbiliaIcons.return_to_previous_page);
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
+  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.one_timepillar.index,
+        data: DayCalendarType.oneTimepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 
@@ -96,7 +95,7 @@ void main() {
         duration: 1.days() - 1.milliseconds(),
         fullDay: true,
         reminderBefore: [60 * 60 * 1000],
-        alarmType: NO_ALARM);
+        alarmType: noAlarm);
     activityResponse = () => [activity];
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
@@ -709,7 +708,7 @@ void main() {
             timepillarGeneric,
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
-                data: TimepillarIntervalType.INTERVAL.index,
+                data: TimepillarIntervalType.interval.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
             ),
@@ -806,7 +805,7 @@ void main() {
             timepillarGeneric,
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
-                data: TimepillarIntervalType.DAY_AND_NIGHT.index,
+                data: TimepillarIntervalType.dayAndNight.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
             ),
@@ -833,7 +832,7 @@ void main() {
             timepillarGeneric,
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
-                data: TimepillarIntervalType.DAY.index,
+                data: TimepillarIntervalType.day.index,
                 identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
               ),
             ),

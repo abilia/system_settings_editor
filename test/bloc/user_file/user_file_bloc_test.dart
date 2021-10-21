@@ -29,7 +29,7 @@ void main() {
   );
 
   const fileId = 'file1';
-  final fileContent = base64.decode(FakeUserFile.ONE_PIXEL_PNG);
+  final fileContent = base64.decode(FakeUserFile.onePixelPng);
   const filePath = 'test.dart';
 
   setUp(() {

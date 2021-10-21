@@ -294,7 +294,7 @@ class CheckButton extends StatelessWidget {
             backgroundColor: buttonBackgroundGreen,
             foregroundColor: foregroundLight,
           ),
-          icon: Icon(AbiliaIcons.handi_check),
+          icon: Icon(AbiliaIcons.handiCheck),
           label: Text(text),
         ),
       ),
