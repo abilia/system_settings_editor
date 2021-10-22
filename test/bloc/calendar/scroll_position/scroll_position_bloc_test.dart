@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late ScrollPositionBloc scrollPositionBloc;
@@ -16,6 +17,11 @@ void main() {
   late MockScrollPosition mockScrollPosition;
   late StreamController<DateTime> ticker;
   final initialTime = DateTime(2020, 12, 24, 15, 00);
+
+  setUpAll(() {
+    registerFallbackValue(Duration.zero);
+    registerFallbackValue(Curves.ease);
+  });
 
   setUp(() {
     ticker = StreamController<DateTime>();
@@ -29,8 +35,11 @@ void main() {
       clockBloc: clockBloc,
       timepillarBloc: FakeTimepillarBloc(),
     );
-    when(mockScrollController.position).thenReturn(mockScrollPosition);
-    when(mockScrollController.hasClients).thenReturn(true);
+    when(() => mockScrollController.position).thenReturn(mockScrollPosition);
+    when(() => mockScrollController.hasClients).thenReturn(true);
+    when(() => mockScrollController.animateTo(any(),
+        duration: any(named: 'duration'),
+        curve: any(named: 'curve'))).thenAnswer((_) => Future.value());
   });
 
   test('initial state is Unready', () {
@@ -42,7 +51,7 @@ void main() {
       'after event ListViewRenderComplete still Unready if ScrollController has no Clients',
       () async {
     // Arrange
-    when(mockScrollController.hasClients).thenReturn(false);
+    when(() => mockScrollController.hasClients).thenReturn(false);
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
@@ -52,9 +61,9 @@ void main() {
 
   test('InView', () async {
     // Arrange
-    when(mockScrollController.offset).thenReturn(0);
-    when(mockScrollController.initialScrollOffset).thenReturn(0);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(800);
+    when(() => mockScrollController.offset).thenReturn(0);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(0);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
 
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
@@ -68,9 +77,9 @@ void main() {
 
   test('OutOfView', () async {
     // Arrange
-    when(mockScrollController.offset).thenReturn(600);
-    when(mockScrollController.initialScrollOffset).thenReturn(200);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(800);
+    when(() => mockScrollController.offset).thenReturn(600);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(200);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
 
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
@@ -85,10 +94,10 @@ void main() {
   test('Just InView top', () async {
     // Arrange
     const init = 200.0;
-    when(mockScrollController.offset)
+    when(() => mockScrollController.offset)
         .thenReturn(init - scrollPositionBloc.nowMarginBottom);
-    when(mockScrollController.initialScrollOffset).thenReturn(init);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(init);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
@@ -102,10 +111,10 @@ void main() {
   test('Just InView bottom', () async {
     // Arrange
     const init = 200.0;
-    when(mockScrollController.offset)
+    when(() => mockScrollController.offset)
         .thenReturn(init + scrollPositionBloc.nowMarginTop);
-    when(mockScrollController.initialScrollOffset).thenReturn(init);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(init);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
@@ -119,10 +128,10 @@ void main() {
   test('Just OutView top', () async {
     // Arrange
     const init = 200.0;
-    when(mockScrollController.offset)
+    when(() => mockScrollController.offset)
         .thenReturn(init - scrollPositionBloc.nowMarginBottom - 1);
-    when(mockScrollController.initialScrollOffset).thenReturn(init);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(init);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
@@ -136,10 +145,10 @@ void main() {
   test('Just OutOfView bottom', () async {
     // Arrange
     const init = 200.0;
-    when(mockScrollController.offset)
+    when(() => mockScrollController.offset)
         .thenReturn(init + scrollPositionBloc.nowMarginTop + 1);
-    when(mockScrollController.initialScrollOffset).thenReturn(init);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(init);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
 
@@ -155,9 +164,10 @@ void main() {
     () async {
       // Arrange
       const activityAt = 200.0, max = 800.0;
-      when(mockScrollController.offset).thenReturn(activityAt);
-      when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
-      when(mockScrollPosition.maxScrollExtent).thenReturn(max);
+      when(() => mockScrollController.offset).thenReturn(activityAt);
+      when(() => mockScrollController.initialScrollOffset)
+          .thenReturn(activityAt);
+      when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
       // Act
       scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
@@ -170,7 +180,7 @@ void main() {
 
       // Act
       for (var i = activityAt; i < max; i++) {
-        when(mockScrollController.offset).thenReturn(i);
+        when(() => mockScrollController.offset).thenReturn(i);
         scrollPositionBloc.add(ScrollPositionUpdated());
       }
 
@@ -185,9 +195,9 @@ void main() {
   test('InView then scroll up and then OutOfView', () async {
     const activityAt = 200.0, max = 800.0;
     // Arrange
-    when(mockScrollController.offset).thenReturn(activityAt);
-    when(mockScrollController.initialScrollOffset).thenReturn(activityAt);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(max);
+    when(() => mockScrollController.offset).thenReturn(activityAt);
+    when(() => mockScrollController.initialScrollOffset).thenReturn(activityAt);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
@@ -200,7 +210,7 @@ void main() {
 
     // Act
     for (var i = activityAt; i > 0; i--) {
-      when(mockScrollController.offset).thenReturn(i);
+      when(() => mockScrollController.offset).thenReturn(i);
       scrollPositionBloc.add(ScrollPositionUpdated());
     }
 
@@ -214,25 +224,26 @@ void main() {
   test('Scrolls back', () async {
     // Arrange
     const initialOffset = 100.0;
-    when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
-    when(mockScrollController.offset).thenReturn(200);
-    when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+    when(() => mockScrollController.initialScrollOffset)
+        .thenReturn(initialOffset);
+    when(() => mockScrollController.offset).thenReturn(200);
+    when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
 
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
     scrollPositionBloc.add(GoToNow());
 
     // Assert
-    await untilCalled(mockScrollController.animateTo(initialOffset,
-        duration: anyNamed('duration'), curve: anyNamed('curve')));
+    await untilCalled(() => mockScrollController.animateTo(initialOffset,
+        duration: any(named: 'duration'), curve: any(named: 'curve')));
   });
 
   group('go to now follows now', () {
     test('createdTime', () async {
       // Arrange
-      when(mockScrollController.offset).thenReturn(0);
-      when(mockScrollController.initialScrollOffset).thenReturn(0);
-      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+      when(() => mockScrollController.offset).thenReturn(0);
+      when(() => mockScrollController.initialScrollOffset).thenReturn(0);
+      when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
 
       // Act
       scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
@@ -248,9 +259,9 @@ void main() {
 
     test('after one hour', () async {
       // Arrange
-      when(mockScrollController.offset).thenReturn(0);
-      when(mockScrollController.initialScrollOffset).thenReturn(0);
-      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+      when(() => mockScrollController.offset).thenReturn(0);
+      when(() => mockScrollController.initialScrollOffset).thenReturn(0);
+      when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
 
       // Act
       scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
@@ -270,9 +281,10 @@ void main() {
     test('Scrolls to correct offset', () async {
       // Arrange
       const initialOffset = 100.0;
-      when(mockScrollController.initialScrollOffset).thenReturn(initialOffset);
-      when(mockScrollController.offset).thenReturn(initialOffset);
-      when(mockScrollPosition.maxScrollExtent).thenReturn(400);
+      when(() => mockScrollController.initialScrollOffset)
+          .thenReturn(initialOffset);
+      when(() => mockScrollController.offset).thenReturn(initialOffset);
+      when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
       final ts = TimepillarState(
           TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1);
       final timePixelOffset = timeToPixels(
@@ -302,8 +314,8 @@ void main() {
       // Act
       scrollPositionBloc.add(GoToNow());
       // Assert
-      await untilCalled(mockScrollController.animateTo(nowPos,
-          duration: anyNamed('duration'), curve: anyNamed('curve')));
+      await untilCalled(() => mockScrollController.animateTo(nowPos,
+          duration: any(named: 'duration'), curve: any(named: 'curve')));
     });
   });
 }

@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,7 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../fakes/all.dart';
-import '../../../../../mocks/shared.mocks.dart';
+import '../../../../../mocks/mocks.dart';
 import '../../../../../mocks/mock_http_client.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
@@ -42,23 +42,23 @@ void main() {
   setUp(() async {
     tz.initializeTimeZones();
     setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [];
     sortable = [];
 
     genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
+    when(() => genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     sortableDb = MockSortableDb();
-    when(sortableDb.getAllNonDeleted())
+    when(() => sortableDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(sortable));
-    when(sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(sortableDb.insertAndAddDirty(any))
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => sortableDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
@@ -341,6 +341,10 @@ void main() {
   }, skip: !Config.isMP);
 
   group('category visisbility settings', () {
+    setUpAll(() {
+      registerFallbackValue(Uri());
+    });
+
     testWidgets('show category false', (tester) async {
       // Arrange
       generics = [

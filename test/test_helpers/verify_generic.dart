@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
-import '../mocks/shared.mocks.dart';
+import '../mocks/mocks.dart';
 
 void verifySyncGeneric(
   WidgetTester tester,
@@ -11,7 +11,7 @@ void verifySyncGeneric(
   required String key,
   dynamic matcher,
 }) {
-  final v = verify(genericDb.insertAndAddDirty(captureAny));
+  final v = verify(() => genericDb.insertAndAddDirty(captureAny()));
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<Generic<GenericData>>;
   final d = l.map((e) => e.data).firstWhere((data) => data.identifier == key)
@@ -28,8 +28,8 @@ void verifyUnsyncGeneric(
   if (Config.isMP) {
     return verifySyncGeneric(tester, genericDb, key: key, matcher: matcher);
   }
-  verifyNever(genericDb.insertAndAddDirty(captureAny));
-  final v = verify(genericDb.insert(captureAny));
+  verifyNever(() => genericDb.insertAndAddDirty(captureAny()));
+  final v = verify(() => genericDb.insert(captureAny()));
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<DbModel<Generic<GenericData>>>;
   final d = l
@@ -43,7 +43,7 @@ void verifyGenerics(
   MockGenericDb genericDb, {
   required Map<String, dynamic> keyMatch,
 }) {
-  final v = verify(genericDb.insertAndAddDirty(captureAny));
+  final v = verify(() => genericDb.insertAndAddDirty(captureAny()));
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<Generic<GenericData>>;
   for (var kvp in keyMatch.entries) {

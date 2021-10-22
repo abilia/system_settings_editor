@@ -1,4 +1,4 @@
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';

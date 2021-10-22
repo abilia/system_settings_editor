@@ -1,18 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/shared.mocks.dart';
-import '../../mocks/mock_http_client.mocks.dart';
+import '../../mocks/mock_http_client.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
@@ -31,6 +32,12 @@ void main() {
     multipartRequestBuilder: mockMultiRequestBuilder,
   );
 
+  setUpAll(() {
+    registerFallbackValue(Uri());
+    registerFallbackValue(ImageThumb(id: ''));
+    registerFallbackValue(Uint8List(1));
+  });
+
   tearDown(() {
     reset(mockUserFileDb);
     reset(mockClient);
@@ -38,19 +45,19 @@ void main() {
   });
 
   test('Save saves to db', () async {
-    when(mockUserFileDb.insertAndAddDirty(any))
+    when(() => mockUserFileDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     final userFile1 = FakeUserFile.createNew(id: 'fakeId1');
     await userFileRepository.save([userFile1]);
-    verify(mockUserFileDb.insertAndAddDirty([userFile1]));
+    verify(() => mockUserFileDb.insertAndAddDirty([userFile1]));
   });
 
   test('Load saves to db and stores to file storage', () async {
     // Arrange
-    when(mockUserFileDb.getAllLoadedFiles())
+    when(() => mockUserFileDb.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
     const revision = 99;
-    when(mockUserFileDb.getLastRevision())
+    when(() => mockUserFileDb.getLastRevision())
         .thenAnswer((_) => Future.value(revision));
 
     const fileId = 'id';
@@ -69,7 +76,7 @@ void main() {
           ''';
 
     when(
-      mockClient.get(
+      () => mockClient.get(
         '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
@@ -85,11 +92,11 @@ void main() {
         .map((l) => DbUserFile.fromJson(l))
         .toList();
 
-    when(mockUserFileDb.getMissingFiles(limit: anyNamed('limit')))
+    when(() => mockUserFileDb.getMissingFiles(limit: any(named: 'limit')))
         .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
     when(
-      mockClient.get(
+      () => mockClient.get(
         fileIdUrl(baseUrl, userId, fileId).toUri(),
         headers: authHeader(Fakes.token),
       ),
@@ -106,8 +113,8 @@ void main() {
     await userFileRepository.load();
 
     // Verify
-    verify(mockUserFileDb.insert(expectedFiles));
-    verify(mockFileStorage.storeFile(
+    verify(() => mockUserFileDb.insert(expectedFiles));
+    verify(() => mockFileStorage.storeFile(
         utf8.encode(FakeUserFile.onePixelPng), fileId));
   });
 
@@ -119,25 +126,24 @@ void main() {
     final dirtyFiles = [
       userFile.wrapWithDbModel(dirty: 1, revision: 0),
     ];
-    when(mockUserFileDb.getAllDirty())
+    when(() => mockUserFileDb.getAllDirty())
         .thenAnswer((_) => Future.value(dirtyFiles));
-    when(mockUserFileDb.getLastRevision())
+    when(() => mockUserFileDb.getLastRevision())
         .thenAnswer((_) => Future.value(lastRevision));
 
     File file = MemoryFileSystem().file('hej.txt');
     await file.writeAsString('hej');
-    when(mockFileStorage.getFile(userFileId)).thenAnswer((_) => file);
+    when(() => mockFileStorage.getFile(userFileId)).thenAnswer((_) => file);
     final MultipartRequest mockMultipartRequest = MockMultipartRequest();
     final streamedResponse =
         StreamedResponse(ByteStream.fromBytes(await file.readAsBytes()), 200);
-    when(mockMultipartRequest.send())
+    when(() => mockMultipartRequest.send())
         .thenAnswer((_) => Future.value(streamedResponse));
-    when(mockMultiRequestBuilder.generateFileMultipartRequest(
-            uri: anyNamed('uri'),
-            bytes: anyNamed('bytes'),
-            authToken: anyNamed('authToken'),
-            sha1: anyNamed('sha1')))
-        .thenReturn(mockMultipartRequest);
+    when(() => mockMultiRequestBuilder.generateFileMultipartRequest(
+        uri: any(named: 'uri'),
+        bytes: any(named: 'bytes'),
+        authToken: any(named: 'authToken'),
+        sha1: any(named: 'sha1'))).thenReturn(mockMultipartRequest);
 
     const newRevision = 10000;
     const postUserFilesResponse = '''
@@ -150,7 +156,7 @@ void main() {
         ]
       ''';
     when(
-      mockClient.post(
+      () => mockClient.post(
         '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dirtyFiles.toList()),
@@ -164,7 +170,7 @@ void main() {
       ),
     );
 
-    when(mockUserFileDb.getById(userFileId)).thenAnswer(
+    when(() => mockUserFileDb.getById(userFileId)).thenAnswer(
       (_) => Future.value(
         userFile.wrapWithDbModel(dirty: 1, revision: 0),
       ),
@@ -174,27 +180,29 @@ void main() {
     await userFileRepository.synchronize();
 
     // Verify
-    verify(mockUserFileDb.insert([
-      userFile.wrapWithDbModel(dirty: 0, revision: newRevision),
-    ]));
+    verify(() => mockUserFileDb.insert([
+          userFile.wrapWithDbModel(dirty: 0, revision: newRevision),
+        ]));
   });
 
   test('synchronize - calls fetch before posting', () async {
     // Arrange
-    when(mockUserFileDb.getLastRevision()).thenAnswer((_) => Future.value(1));
-    when(mockClient.get(any, headers: anyNamed('headers')))
+    when(() => mockUserFileDb.getLastRevision())
+        .thenAnswer((_) => Future.value(1));
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer((_) => Future.value(Response('[]', 200)));
-    when(mockUserFileDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockUserFileDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
 
     // Act
     await userFileRepository.synchronize();
 
     // Verify
     verifyInOrder([
-      mockUserFileDb.getLastRevision(),
-      mockClient.get(any, headers: anyNamed('headers')),
-      mockUserFileDb.insert([]),
-      mockUserFileDb.getAllDirty(),
+      () => mockUserFileDb.getLastRevision(),
+      () => mockClient.get(any(), headers: any(named: 'headers')),
+      () => mockUserFileDb.insert([]),
+      () => mockUserFileDb.getAllDirty(),
     ]);
   });
 
@@ -216,14 +224,14 @@ void main() {
 
     // Arrange
     when(
-      mockUserFileDb.getMissingFiles(limit: anyNamed('limit')),
+      () => mockUserFileDb.getMissingFiles(limit: any(named: 'limit')),
     ).thenAnswer(
       (invocation) =>
           Future.value(userFiles(invocation.namedArguments.values.first)),
     );
 
     when(
-      mockClient.get(any, headers: anyNamed('headers')),
+      () => mockClient.get(any(), headers: any(named: 'headers')),
     ).thenAnswer((r) {
       final Uri uri = r.positionalArguments[0];
       final url = uri.path;
@@ -233,10 +241,11 @@ void main() {
       }
       return Future.value(Response(FakeUserFile.onePixelPng, 200));
     });
-    when(mockFileStorage.storeFile(any, any)).thenAnswer((_) => Future.value());
-    when(mockFileStorage.storeImageThumb(any, any))
+    when(() => mockFileStorage.storeFile(any(), any()))
         .thenAnswer((_) => Future.value());
-    when(mockUserFileDb.setFileLoadedForId(any))
+    when(() => mockFileStorage.storeImageThumb(any(), any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockUserFileDb.setFileLoadedForId(any()))
         .thenAnswer((_) => Future.value());
 
     const lim = 12;
@@ -249,8 +258,10 @@ void main() {
 
     // Assert -- Set loaded, stores and returns all succeded
 
-    verify(mockUserFileDb.setFileLoadedForId(any)).called(expectedSuccesses);
-    verify(mockFileStorage.storeFile(any, any)).called(expectedSuccesses);
+    verify(() => mockUserFileDb.setFileLoadedForId(any()))
+        .called(expectedSuccesses);
+    verify(() => mockFileStorage.storeFile(any(), any()))
+        .called(expectedSuccesses);
     expect(res.length, expectedSuccesses);
   });
 }

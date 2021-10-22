@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late DayActivitiesBloc dayActivitiesBloc;
@@ -40,7 +40,8 @@ void main() {
     test('initial state is DayActivitiesLoaded if started with loaded activity',
         () async {
       // Arrange
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([]));
+      when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value([]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -55,7 +56,7 @@ void main() {
         () {
       // Arrange
       final activities = Iterable<Activity>.empty();
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -73,7 +74,7 @@ void main() {
       final expected = activitiesNow.map((a) => ActivityDay(a, today)).toList();
       final activitiesTomorrow = [FakeActivity.starts(today.add(1.days()))];
 
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
@@ -95,7 +96,7 @@ void main() {
       final expextedTomorrow = activitiesTomorrow
           .map((a) => ActivityDay(a, today.nextDay()))
           .toList();
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
@@ -124,7 +125,7 @@ void main() {
       final expectedYesterday = activitiesYesterDay
           .map((e) => ActivityDay(e, today.previousDay()))
           .toList();
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
       // Act
@@ -146,7 +147,7 @@ void main() {
       // Arrange
       final nextYear = today.add(Duration(days: 365));
 
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value(Iterable<Activity>.empty().followedBy([
                 FakeActivity.starts(nextYear),
                 FakeActivity.starts(nextYear.add(1.days())),
@@ -183,7 +184,8 @@ void main() {
         FakeActivity.starts(today.add(1.days())),
         FakeActivity.starts(today.subtract(1.days())),
       ]).followedBy({});
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([]));
+      when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value([]));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -196,7 +198,7 @@ void main() {
       );
 
       // Arrange
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activitiesAdded));
 
       // Act
@@ -236,7 +238,7 @@ void main() {
       final weekendActivity = [
         FakeActivity.reocurrsWeekends(DateTime(2000, 01, 01))
       ];
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(weekendActivity));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -284,7 +286,7 @@ void main() {
       final christmas = [
         FakeActivity.reocurrsOnDate(chrismasEve, DateTime(2000, 01, 01))
       ];
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -323,7 +325,7 @@ void main() {
         FakeActivity.reocurrsOnDate(
             chrismasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
       ]);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -362,7 +364,7 @@ void main() {
       ];
       final allOtherDays = List.generate(
           300, (i) => startTime.add(Duration(days: i)).onlyDays());
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(monthStartActivity));
 
       // Act
@@ -427,7 +429,7 @@ void main() {
         fullDay: true,
       );
 
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([preSplitRecurring, splitRecurring]));
 
       // Act

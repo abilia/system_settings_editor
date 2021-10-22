@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,7 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/verify_generic.dart';
 
@@ -28,15 +28,16 @@ void main() {
     setupFakeTts();
     final initTime = DateTime(2020, 07, 23, 11, 29);
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockTicker = StreamController<DateTime>();
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+    when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
@@ -45,13 +46,15 @@ void main() {
     );
 
     mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([timepillarGeneric]));
-    when(mockGenericDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
-    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
-    when(mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockGenericDb.insertAndAddDirty(any))
+    when(() => mockGenericDb.getLastRevision())
+        .thenAnswer((_) => Future.value(0));
+    when(() => mockGenericDb.getById(any()))
+        .thenAnswer((_) => Future.value(null));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()

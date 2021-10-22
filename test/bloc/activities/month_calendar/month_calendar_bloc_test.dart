@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late MonthCalendarBloc monthCalendarBloc;
@@ -34,7 +34,7 @@ void main() {
 
   group('Calendar days are correct', () {
     setUp(() {
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(Iterable.empty()));
     });
     test('initial state basics', () {
@@ -674,7 +674,7 @@ void main() {
   group('month activities', () {
     test('monthly recurrent activity', () async {
       // Arrange
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
         (_) => Future.value(
           [
             Activity.createNew(
@@ -815,7 +815,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [6, 7]),
         fullDay: true,
       );
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
         (_) => Future.value(
           [
             weekendFullDay,
@@ -974,7 +974,7 @@ void main() {
         recurs: Recurs.weeklyOnDays(const [4, 5, 6]),
         removeAfter: true,
       );
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
         (_) => Future.value(
           [
             removeAfter,

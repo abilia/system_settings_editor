@@ -1,20 +1,25 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   const baseUrl = 'url';
   final mockClient = MockBaseClient();
   const userId = 1;
   late SortableRepository sortableRepository;
+
+  setUpAll(() {
+    registerFallbackValue(Uri());
+  });
+
   setUp(() async {
     final db = await DatabaseRepository.createInMemoryFfiDb();
     sortableRepository = SortableRepository(
@@ -76,7 +81,7 @@ void main() {
     const sortableValidJson = '[$validSortable]';
 
     when(
-      mockClient.get(
+      () => mockClient.get(
         '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision'.toUri(),
         headers: authHeader(Fakes.token),
       ),
@@ -103,13 +108,13 @@ void main() {
 
   test('synchronize - calls get before posting', () async {
     // Arrange
-    when(mockClient.get(any, headers: anyNamed('headers')))
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer((_) => Future.value(Response('[]', 200)));
 
     // Act
     await sortableRepository.synchronize();
 
     // Verify
-    verify(mockClient.get(any, headers: anyNamed('headers')));
+    verify(() => mockClient.get(any(), headers: any(named: 'headers')));
   });
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -16,7 +16,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tts.dart';
@@ -58,13 +58,13 @@ void main() {
   setUp(() async {
     setupPermissions();
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllDirty())
+    when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(<DbActivity>[]));
-    when(mockActivityDb.insertAndAddDirty(any))
+    when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     mockGenericDb = MockGenericDb();
 
@@ -100,7 +100,7 @@ void main() {
   group('Activity page', () {
     testWidgets('Navigate to activity page and back',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       expect(activityBackButtonFinder, findsOneWidget);
@@ -111,7 +111,7 @@ void main() {
 
     testWidgets('Full day activity page does not show edit alarm',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
       await navigateToActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
@@ -123,7 +123,7 @@ void main() {
     final titleTextFormFieldFinder = find.byKey(TestKey.editTitleTextFormField);
     testWidgets('Edit activity button shows', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       // Act
       await navigateToActivityPage(tester);
@@ -133,7 +133,7 @@ void main() {
 
     testWidgets('Can open edit activity page', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       // Act -- tap the edit activity button
@@ -147,8 +147,10 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const title = 'an interesting title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-          <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            FakeActivity.starts(startTime).copyWith(title: title)
+          ]));
       await navigateToActivityPage(tester);
 
       // Act -- tap the edit activity button
@@ -166,8 +168,10 @@ void main() {
       // Arrange
       const title = 'an interesting title';
       const newTitle = 'an new super interesting title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-          <Activity>[FakeActivity.starts(startTime).copyWith(title: title)]));
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            FakeActivity.starts(startTime).copyWith(title: title)
+          ]));
       await navigateToActivityPage(tester);
 
       // Assert -- original title
@@ -197,7 +201,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
@@ -234,7 +238,7 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);
 
@@ -276,7 +280,7 @@ void main() {
 
     testWidgets('Alarm view dialog shows', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
       // Act
@@ -289,7 +293,7 @@ void main() {
     testWidgets('Alarm button shows correct icon vibration',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             FakeActivity.starts(startTime).copyWith(alarmType: alarmVibration)
           ]));
@@ -302,7 +306,7 @@ void main() {
     testWidgets('Alarm button shows correct icon sound and vibration',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
                 FakeActivity.starts(startTime)
                     .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
@@ -316,7 +320,7 @@ void main() {
     testWidgets('Alarm button shows correct icon no alarm',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
@@ -329,7 +333,7 @@ void main() {
     testWidgets('Alarm button changes alarm correct icon',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
@@ -350,7 +354,7 @@ void main() {
     testWidgets('SGC-359 Alarm type maps Only alarm to SoundAndVibration',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -380,7 +384,7 @@ void main() {
     testWidgets('SGC-359 Alarm type maps ALARM_SILENT to Silent',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -410,7 +414,7 @@ void main() {
     testWidgets('Alarm on start time is disabled when no alarm',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             FakeActivity.starts(startTime).copyWith(alarmType: noAlarm)
           ]));
@@ -431,7 +435,7 @@ void main() {
 
     testWidgets('Alarm on start time changes', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(<Activity>[
                 FakeActivity.starts(startTime)
                     .copyWith(alarmType: alarmSoundAndVibrationOnlyOnStart)
@@ -453,7 +457,7 @@ void main() {
     testWidgets('Finds delete button and no delete app bar',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       // Act
       await navigateToActivityPage(tester);
@@ -467,7 +471,7 @@ void main() {
     testWidgets('When delete button pressed Delete Activity Dialog is showing',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
@@ -483,7 +487,7 @@ void main() {
     testWidgets('When cancel pressed, nothing happens',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
@@ -503,7 +507,7 @@ void main() {
         'When delete then confirm delete pressed, navigate back and do not show origial widget',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
       await navigateToActivityPage(tester);
 
@@ -533,7 +537,7 @@ void main() {
       testWidgets('Deleting recurring should show apply to dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -551,7 +555,7 @@ void main() {
           'Does not delete activity when not pressing confirm on recurring delete dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -571,7 +575,7 @@ void main() {
           'When delete recurring activity then show three alternativs for deletion',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -590,7 +594,7 @@ void main() {
       testWidgets('When delete recurring the choosen alternativ is onlyThisDay',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -619,7 +623,7 @@ void main() {
       testWidgets('When delete recurring tapping All days',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -646,7 +650,7 @@ void main() {
       testWidgets('When delete recurring tapping This day and forward',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -674,7 +678,7 @@ void main() {
           'When delete recurring and confirm Only this day, navigate back and do not show origial widget',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -703,7 +707,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
             ]));
@@ -738,7 +742,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(startTime).copyWith(title: title)
             ]));
@@ -775,7 +779,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const title = 'Unique title to search for';
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[
               FakeActivity.reocurrsEveryDay(tenDaysAgo).copyWith(title: title)
             ]));
@@ -819,7 +823,7 @@ void main() {
       testWidgets('Changing alarm on recurring should show apply to dialog',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -842,7 +846,7 @@ void main() {
       testWidgets('Edit an recurring should show Apply to dialog when edited',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
 
@@ -862,7 +866,7 @@ void main() {
       testWidgets('Edit an recurring Only this days shows changes',
           (WidgetTester tester) async {
         // Arrange
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
             Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
         await navigateToActivityPage(tester);
         const newTitle = 'newTitle';
@@ -889,7 +893,7 @@ void main() {
           startTime: startTime.subtract(100.days()),
           recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
-        when(mockActivityDb.getAllNonDeleted())
+        when(() => mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
         await navigateToActivityPage(tester);
 
@@ -912,7 +916,7 @@ void main() {
           startTime: startTime.subtract(100.days()),
           recurs: Recurs.weeklyOnDays(const [1, 2, 3, 4, 5, 6, 7]),
         );
-        when(mockActivityDb.getAllNonDeleted())
+        when(() => mockActivityDb.getAllNonDeleted())
             .thenAnswer((_) => Future.value(<Activity>[activity]));
         await navigateToActivityPage(tester);
 
@@ -930,7 +934,7 @@ void main() {
           (WidgetTester tester) async {
         // Arrange
         const newTitle = 'new Title', oldTitle = 'old title';
-        when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+        when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(
             <Activity>[
               Activity.createNew(
@@ -972,7 +976,7 @@ void main() {
         ]));
 
     // Arrange
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(<Activity>[activity]));
     await navigateToActivityPage(tester);
 
@@ -1003,8 +1007,10 @@ void main() {
 
   testWidgets('Check and uncheck activity with confirmation',
       (WidgetTester tester) async {
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-        <Activity>[FakeActivity.starts(startTime).copyWith(checkable: true)]));
+    when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+        Future.value(<Activity>[
+          FakeActivity.starts(startTime).copyWith(checkable: true)
+        ]));
     await navigateToActivityPage(tester);
     expect(checkButtonFinder, findsOneWidget);
     expect(uncheckButtonFinder, findsNothing);
@@ -1038,9 +1044,9 @@ void main() {
   group('Memoplanner settings', () {
     testWidgets('Do not display delete button when setting is false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
@@ -1056,9 +1062,9 @@ void main() {
 
     testWidgets('Do not display any button when all settings are false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
@@ -1077,9 +1083,9 @@ void main() {
 
     testWidgets('Do not display side dots when setting is false',
         (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[FakeActivity.starts(startTime)]));
-      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
             memoplannerSetting(
@@ -1093,7 +1099,7 @@ void main() {
   });
   group('tts', () {
     testWidgets('heading', (WidgetTester tester) async {
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             Activity.createNew(title: 'title', startTime: startTime)
           ]));
@@ -1104,8 +1110,10 @@ void main() {
 
     testWidgets('title', (WidgetTester tester) async {
       const title = 'generic title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value(
-          <Activity>[Activity.createNew(title: title, startTime: startTime)]));
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[
+            Activity.createNew(title: title, startTime: startTime)
+          ]));
 
       await navigateToActivityPage(tester);
       await tester.verifyTts(find.text(title), exact: title);
@@ -1113,7 +1121,7 @@ void main() {
 
     testWidgets('start time', (WidgetTester tester) async {
       const expectedTts = '11:11 AM';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[
             Activity.createNew(title: 'title', startTime: startTime)
           ]));
@@ -1124,7 +1132,7 @@ void main() {
 
     testWidgets('end time', (WidgetTester tester) async {
       const expectedTts = '3:11 PM';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1145,7 +1153,7 @@ void main() {
 Asien sweet and SourBowl – Sesam marinerad kycklingfile, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
 Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade morötter, risnudlar, sojabönor toppas med rostade sesamfrön och koriander, chili och apelsindressing
 ''';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1162,7 +1170,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('checklist', (WidgetTester tester) async {
       const item1 = 'first thing on the list';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1181,7 +1189,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('timepillar left to start', (WidgetTester tester) async {
       const expectedTts = '2 h\n2 min';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1199,7 +1207,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('check button', (WidgetTester tester) async {
       const title = 'just some title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1220,7 +1228,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('delete activity', (WidgetTester tester) async {
       const title = 'just some title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
@@ -1240,7 +1248,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
     testWidgets('alarms', (WidgetTester tester) async {
       const title = 'just some title';
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
         (_) => Future.value(
           <Activity>[
             Activity.createNew(
