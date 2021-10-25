@@ -25,9 +25,11 @@ class AlarmPage extends StatelessWidget {
             appBar: AbiliaAppBar(
               title: Translator.of(context).translate.alarm,
               iconData: AbiliaIcons.alarmBell,
-              trailing: alarm.speech.isNotEmpty
-                  ? PlaySpeechButton(speech: alarm.speech)
-                  : null,
+              trailing: AbiliaClock(
+                style: Theme.of(context).textTheme.caption?.copyWith(
+                      color: AbiliaColors.white,
+                    ),
+              ),
             ),
             body: Padding(
               padding: EdgeInsets.all(ActivityInfo.margin),
@@ -191,7 +193,6 @@ class PlaySpeechButton extends StatelessWidget {
         ),
         child: PlaySoundButton(
           sound: speech,
-          buttonStyle: actionButtonStyleLight,
         ),
       );
 }

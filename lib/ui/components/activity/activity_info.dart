@@ -73,7 +73,10 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
       final occasion = widget.activityDay.toOccasion(now);
       return Column(
         children: <Widget>[
-          TimeRow(widget.activityDay),
+          ActivityTopInfo(
+            widget.activityDay,
+            alarm: widget.alarm,
+          ),
           Expanded(
             child: Container(
               decoration: boxDecoration,

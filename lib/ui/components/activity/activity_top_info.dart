@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -5,8 +6,13 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class TimeRow extends StatelessWidget {
-  const TimeRow(this.activityDay, {Key? key}) : super(key: key);
+class ActivityTopInfo extends StatelessWidget {
+  final NotificationAlarm? alarm;
+  const ActivityTopInfo(
+    this.activityDay, {
+    Key? key,
+    this.alarm,
+  }) : super(key: key);
 
   final ActivityDay activityDay;
 
@@ -14,6 +20,17 @@ class TimeRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
     final day = activityDay.day;
+    final a = alarm;
+    final startSpeech = a == null
+        ? StartAlarm.from(activityDay).speech
+        : a is StartAlarm
+            ? a.speech
+            : null;
+    final endSpeech = a == null
+        ? EndAlarm.from(activityDay).speech
+        : a is EndAlarm
+            ? a.speech
+            : null;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) {
         return Padding(
@@ -21,6 +38,12 @@ class TimeRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (startSpeech != null && startSpeech.isNotEmpty)
+                PlaySpeechButton(speech: startSpeech)
+              else
+                SizedBox(
+                  width: 48.s,
+                ),
               if (activity.fullDay)
                 _TimeBox(
                   occasion:
@@ -67,6 +90,12 @@ class TimeRow extends StatelessWidget {
                   ),
                 ),
               ],
+              if (endSpeech != null && endSpeech.isNotEmpty)
+                PlaySpeechButton(speech: endSpeech)
+              else
+                SizedBox(
+                  width: 48.s,
+                ),
             ],
           ),
         );
@@ -114,14 +143,20 @@ class _TimeBox extends StatelessWidget {
         children: <Widget>[
           AnimatedContainer(
             duration: ActivityInfo.animationDuration,
-            padding: _padding,
-            constraints: BoxConstraints(minWidth: 92.0.s, minHeight: 52.0.s),
+            padding: EdgeInsets.all(8.s),
+            constraints: BoxConstraints(
+              minWidth: 92.0.s,
+              minHeight: 52.0.s,
+              maxWidth: 102.s,
+              maxHeight: 52.0.s,
+            ),
             decoration: boxDecoration,
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 text,
                 style: textStyle,
                 textAlign: TextAlign.center,
+                maxLines: 1,
               ),
             ),
           ),
@@ -139,10 +174,6 @@ class _TimeBox extends StatelessWidget {
       : past
           ? pastDecration
           : boxDecoration;
-
-  EdgeInsets get _padding =>
-      EdgeInsets.fromLTRB(21.0.s, 14.0.s, 20.0.s, 14.0.s) +
-      (future ? EdgeInsets.all(1.0.s) : EdgeInsets.zero);
 }
 
 final pastDecration = BoxDecoration(

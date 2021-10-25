@@ -48,6 +48,9 @@ void main() {
               userFileRepository: FakeUserFileRepository(),
             ),
           ),
+          BlocProvider<MemoplannerSettingBloc>(
+            create: (context) => FakeMemoplannerSettingsBloc(),
+          ),
         ], child: widget),
       );
 
@@ -63,19 +66,46 @@ void main() {
   tearDown(GetIt.I.reset);
 
   group('alarm speech tests', () {
-    final activity = Activity.createNew(
+    final activityWithOnlyStartSpeech = Activity.createNew(
       title: 'title',
       startTime: startTime,
       checkable: true,
       reminderBefore: [],
       signedOffDates: [day],
       extras: Extras.createNew(
-          startTimeExtraAlarm:
-              UnstoredAbiliaFile.forTest('id', 'path', File('test.mp3'))),
+        startTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+          'id',
+          'path',
+          File('test.mp3'),
+        ),
+      ),
     );
 
-    final StartAlarm startAlarm = StartAlarm(activity, day);
-    final EndAlarm endAlarm = EndAlarm(activity, day);
+    final activityWithStartAndEndSpeech = Activity.createNew(
+      title: 'title',
+      startTime: startTime,
+      checkable: true,
+      reminderBefore: [],
+      signedOffDates: [day],
+      extras: Extras.createNew(
+        startTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+          'id',
+          'path',
+          File('test.mp3'),
+        ),
+        endTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+          'id',
+          'path',
+          File('test.mp3'),
+        ),
+      ),
+    );
+
+    final StartAlarm startAlarm = StartAlarm(activityWithOnlyStartSpeech, day);
+    final EndAlarm endAlarmNoSpeech =
+        EndAlarm(activityWithOnlyStartSpeech, day);
+    final EndAlarm endAlarmWithSpeech =
+        EndAlarm(activityWithStartAndEndSpeech, day);
     AlarmNavigator _alarmNavigator = AlarmNavigator();
 
     testWidgets('Alarm page visible', (WidgetTester tester) async {
@@ -109,11 +139,36 @@ void main() {
         wrapWithMaterialApp(PopAwareAlarmPage(
           alarm: startAlarm,
           alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: endAlarm),
+          child: AlarmPage(alarm: endAlarmNoSpeech),
         )),
       );
       await tester.pumpAndSettle();
       expect(find.byType(PlaySpeechButton), findsNothing);
+    });
+
+    testWidgets('Clock is visible', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(PopAwareAlarmPage(
+          alarm: startAlarm,
+          alarmNavigator: _alarmNavigator,
+          child: AlarmPage(alarm: endAlarmNoSpeech),
+        )),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(AbiliaClock), findsOneWidget);
+    });
+
+    testWidgets('End alarm shows play button when speech is present',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(PopAwareAlarmPage(
+          alarm: startAlarm,
+          alarmNavigator: _alarmNavigator,
+          child: AlarmPage(alarm: endAlarmWithSpeech),
+        )),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PlaySpeechButton), findsOneWidget);
     });
   });
 }

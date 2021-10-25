@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -115,6 +116,49 @@ void main() {
           (_) => Future.value(<Activity>[FakeActivity.fullday(startTime)]));
       await navigateToActivityPage(tester);
       expect(alarmButtonFinder, findsNothing);
+    });
+
+    testWidgets('Speech buttons are visible when available',
+        (WidgetTester tester) async {
+      final activityWithStartAndEndSpeech = Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        extras: Extras.createNew(
+          startTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+            'id',
+            'path',
+            File('test.mp3'),
+          ),
+          endTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+            'id',
+            'path',
+            File('test.mp3'),
+          ),
+        ),
+      );
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
+      await navigateToActivityPage(tester);
+      expect(find.byType(PlaySpeechButton), findsNWidgets(2));
+    });
+
+    testWidgets('Only one speech button visible when only one speech enabled',
+        (WidgetTester tester) async {
+      final activityWithStartAndEndSpeech = Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        extras: Extras.createNew(
+          endTimeExtraAlarm: UnstoredAbiliaFile.forTest(
+            'id',
+            'path',
+            File('test.mp3'),
+          ),
+        ),
+      );
+      when(mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
+      await navigateToActivityPage(tester);
+      expect(find.byType(PlaySpeechButton), findsOneWidget);
     });
   });
 
