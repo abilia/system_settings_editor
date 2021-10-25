@@ -12,7 +12,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/mock_http_client.dart';
 import '../../mocks/mocks.dart';
 
 void main() {

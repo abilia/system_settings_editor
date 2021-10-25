@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'dart:async';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -16,7 +16,6 @@ import 'package:seagull/ui/all.dart';
 
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
-import '../../../../../mocks/mock_http_client.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
@@ -137,7 +136,7 @@ void main() {
       ),
     ];
 
-    await provideMockedNetworkImages(() async {
+    await mockNetworkImages(() async {
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
 
@@ -501,7 +500,7 @@ void main() {
         ),
       ];
 
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -548,7 +547,7 @@ void main() {
           ),
         ),
       ];
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -582,7 +581,7 @@ void main() {
         ),
       ];
 
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -629,7 +628,7 @@ void main() {
           ),
         ),
       ];
-      await HttpOverrides.runZoned(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp();
@@ -647,9 +646,8 @@ void main() {
           // Assert
           expect(find.text(nameLeft), findsOneWidget);
           expect(find.text(nameRight), findsOneWidget);
-          // expect(find.byType(CategoryImage), findsNWidgets(2));
+          expect(find.byType(CategoryImage), findsNWidgets(2));
         },
-        createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
       );
     });
   });
