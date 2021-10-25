@@ -16,7 +16,7 @@ class AlarmNavigator {
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListeners(child: _alarmPage(alarm)),
+        child: AlarmListeners(child: _alarmPage(alarm, fullScreenAlarm: true)),
       ),
     );
     _alarmRoutesOnStack[alarm.activity.id] = route;
@@ -53,11 +53,18 @@ class AlarmNavigator {
     return navigator.push(route);
   }
 
-  Widget _alarmPage(NotificationAlarm alarm) => PopAwareAlarmPage(
+  Widget _alarmPage(
+    NotificationAlarm alarm, {
+    bool fullScreenAlarm = false,
+  }) =>
+      PopAwareAlarmPage(
         alarm: alarm,
         alarmNavigator: this,
         child: (alarm is NewAlarm)
-            ? AlarmPage(alarm: alarm)
+            ? AlarmPage(
+                alarm: alarm,
+                fullScreenAlarm: fullScreenAlarm,
+              )
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)
                 : throw UnsupportedError('$alarm not supported'),

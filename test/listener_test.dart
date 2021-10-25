@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -41,7 +40,6 @@ void main() {
     activity,
     activityWithAlarmday,
   );
-  final payloadSerial = json.encode(payload.toJson());
 
   setUp(() async {
     tz.setLocalLocation(tz.UTC);
@@ -205,7 +203,7 @@ void main() {
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsNothing);
       // Act
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
 
       // Assert
@@ -217,7 +215,7 @@ void main() {
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -254,7 +252,7 @@ void main() {
       addTearDown(() => tester.binding
           .handleAppLifecycleStateChanged(AppLifecycleState.resumed));
 
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpApp();
       await tester.pumpAndSettle();
 
@@ -266,13 +264,13 @@ void main() {
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpApp();
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
-      expect(selectNotificationSubject, emits(payloadSerial));
+      expect(selectNotificationSubject, emits(payload));
 
       // Act logout
       await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
@@ -310,7 +308,7 @@ void main() {
       // Arrange
       mockTicker.add(twoHoursAfter);
       await tester.pumpWidget(App());
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
@@ -375,12 +373,12 @@ void main() {
           },
         ),
       );
-      final checkableActivityPayloadSerial = json.encode(StartAlarm(
+      final checkableActivityPayload = StartAlarm(
         checkableActivityWithChecklist,
         startDay,
-      ).toJson());
+      );
 
-      selectNotificationSubject.add(checkableActivityPayloadSerial);
+      selectNotificationSubject.add(checkableActivityPayload);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -416,10 +414,10 @@ void main() {
     final day = activity1StartTime.onlyDays();
     final activity1 = Activity.createNew(
         title: '111111', startTime: activity1StartTime, duration: 2.minutes());
-    final startTimeActivity1NotificationPayload = json.encode(StartAlarm(
+    final startTimeActivity1NotificationPayload = StartAlarm(
       activity1,
       day,
-    ).toJson());
+    );
 
     final activity2StartTime = activity1StartTime.add(1.minutes());
     final activity2 = Activity.createNew(
@@ -683,7 +681,7 @@ void main() {
 
       testWidgets('Fullscreen alarms ignores same alarm ',
           (WidgetTester tester) async {
-        final reminder = ReminderBefore(
+        final payload = ReminderBefore(
             Activity.createNew(
               title: 'one reminder title',
               startTime: activity1StartTime,
@@ -691,12 +689,9 @@ void main() {
             activity1StartTime.onlyDays(),
             reminder: 15.minutes());
 
-        final reminderJson = reminder.toJson();
-        final payload = json.encode(reminderJson);
-
         await tester.pumpWidget(
           App(
-            payload: reminder,
+            payload: payload,
           ),
         );
         await tester.pumpAndSettle();
@@ -715,7 +710,7 @@ void main() {
           findsOneWidget,
         );
         expect(
-          find.text(reminder.activity.title, skipOffstage: false),
+          find.text(payload.activity.title, skipOffstage: false),
           findsOneWidget,
         );
       });
@@ -736,7 +731,6 @@ void main() {
           ),
           activity1StartTime.onlyDays(),
         );
-        final alarmPayload = json.encode(alarm.toJson());
 
         // Act
         await tester.pumpWidget(
@@ -751,7 +745,7 @@ void main() {
         expect(find.text(reminder.activity.title), findsOneWidget);
 
         // Act -- notification tapped
-        selectNotificationSubject.add(alarmPayload);
+        selectNotificationSubject.add(alarm);
         await tester.pumpAndSettle();
 
         // Assert -- new alarm page
@@ -798,17 +792,11 @@ void main() {
           ),
           activity1StartTime.onlyDays(),
         );
-        final alarm2Json = alarm2.toJson();
-        final alarm3Json = alarm3.toJson();
-        final alarm4Json = alarm4.toJson();
-        final payload2 = json.encode(alarm2Json);
-        final payload3 = json.encode(alarm3Json);
-        final payload4 = json.encode(alarm4Json);
 
         // Arrange
-        selectNotificationSubject.add(payload2);
-        selectNotificationSubject.add(payload3);
-        selectNotificationSubject.add(payload4);
+        selectNotificationSubject.add(alarm2);
+        selectNotificationSubject.add(alarm3);
+        selectNotificationSubject.add(alarm4);
 
         await tester.pumpWidget(
           App(
