@@ -41,18 +41,6 @@ class MemoplannerSettings extends Equatable {
       weekCaptionShowClockKey = 'week_caption_show_clock',
       weekDisplayShowFullWeekKey = 'week_display_show_full_week',
       weekDisplayShowColorModeKey = 'week_display_show_color_mode',
-      wizardTemplateStepKey = 'wizard_template_step',
-      wizardTitleStepKey = 'wizard_title_step',
-      wizardImageStepKey = 'wizard_image_step',
-      wizardDatePickerStepKey = 'wizard_date_picker_step',
-      wizardTypeStepKey = 'wizard_type_step',
-      wizardCheckableStepKey = 'wizard_checkable_step',
-      wizardAvailabilityTypeKey = 'wizard_availability_type',
-      wizardRemoveAfterStepKey = 'wizard_remove_after_step',
-      wizardAlarmStepKey = 'wizard_alarm_step',
-      wizardChecklistStepKey = 'wizard_checklist_step',
-      wizardNotesStepKey = 'wizard_notes_step',
-      wizardRemindersStepKey = 'wizard_reminders_step',
       monthCaptionShowMonthButtonsKey = 'month_caption_show_month_buttons',
       monthCaptionShowYearKey = 'month_caption_show_year',
       monthCaptionShowClockKey = 'month_caption_show_clock',
@@ -148,19 +136,7 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
       settingViewOptionsZoom,
-      settingViewOptionsDurationDots,
-      wizardTemplateStep,
-      wizardTitleStep,
-      wizardImageStep,
-      wizardDatePickerStep,
-      wizardTypeStep,
-      wizardCheckableStep,
-      wizardAvailabilityType,
-      wizardRemoveAfterStep,
-      wizardAlarmStep,
-      wizardChecklistStep,
-      wizardNotesStep,
-      wizardRemindersStep;
+      settingViewOptionsDurationDots;
 
   final int morningIntervalStart,
       dayIntervalStart,
@@ -185,6 +161,7 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeRightImage;
 
   final AlarmSettings alarm;
+  final WizardStepsSettings wizard;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -259,18 +236,7 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsTimeInterval = true,
     this.settingViewOptionsZoom = true,
     this.settingViewOptionsDurationDots = true,
-    this.wizardTemplateStep = true,
-    this.wizardTitleStep = true,
-    this.wizardImageStep = true,
-    this.wizardDatePickerStep = true,
-    this.wizardTypeStep = false,
-    this.wizardCheckableStep = true,
-    this.wizardAvailabilityType = true,
-    this.wizardRemoveAfterStep = false,
-    this.wizardAlarmStep = false,
-    this.wizardChecklistStep = false,
-    this.wizardNotesStep = false,
-    this.wizardRemindersStep = false,
+    this.wizard = const WizardStepsSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -515,48 +481,7 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsDurationDots: settings.getBool(
         settingViewOptionsDurationDotsKey,
       ),
-      wizardTemplateStep: settings.getBool(
-        wizardTemplateStepKey,
-      ),
-      wizardTitleStep: settings.getBool(
-        wizardTitleStepKey,
-      ),
-      wizardImageStep: settings.getBool(
-        wizardImageStepKey,
-      ),
-      wizardDatePickerStep: settings.getBool(
-        wizardDatePickerStepKey,
-      ),
-      wizardTypeStep: settings.getBool(
-        wizardTypeStepKey,
-        defaultValue: false,
-      ),
-      wizardCheckableStep: settings.getBool(
-        wizardCheckableStepKey,
-      ),
-      wizardAvailabilityType: settings.getBool(
-        wizardAvailabilityTypeKey,
-      ),
-      wizardRemoveAfterStep: settings.getBool(
-        wizardRemoveAfterStepKey,
-        defaultValue: false,
-      ),
-      wizardAlarmStep: settings.getBool(
-        wizardAlarmStepKey,
-        defaultValue: false,
-      ),
-      wizardChecklistStep: settings.getBool(
-        wizardChecklistStepKey,
-        defaultValue: false,
-      ),
-      wizardNotesStep: settings.getBool(
-        wizardNotesStepKey,
-        defaultValue: false,
-      ),
-      wizardRemindersStep: settings.getBool(
-        wizardRemindersStepKey,
-        defaultValue: false,
-      ),
+      wizard: WizardStepsSettings.fromSettingsMap(settings),
     );
   }
 
@@ -634,18 +559,7 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
         settingViewOptionsDurationDots,
-        wizardTemplateStep,
-        wizardTitleStep,
-        wizardImageStep,
-        wizardDatePickerStep,
-        wizardTypeStep,
-        wizardCheckableStep,
-        wizardAvailabilityType,
-        wizardRemoveAfterStep,
-        wizardAlarmStep,
-        wizardChecklistStep,
-        wizardNotesStep,
-        wizardRemindersStep,
+        wizard,
       ];
 }
 
