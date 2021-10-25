@@ -11,12 +11,9 @@ class ExtraFunctionWiz extends StatelessWidget {
       iconData: AbiliaIcons.addAttachment,
       title: Translator.of(context).translate.selectInfoType,
       body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        buildWhen: (previous, current) =>
-            previous.wizardChecklistStep != current.wizardChecklistStep ||
-            previous.wizardNotesStep != current.wizardNotesStep,
         builder: (context, state) => InfoItemTab(
-          showChecklist: state.wizardChecklistStep,
-          showNote: state.wizardNotesStep,
+          showChecklist: state.settings.wizard.checklist,
+          showNote: state.settings.wizard.notes,
         ),
       ),
     );

@@ -250,31 +250,31 @@ void main() {
         final removeAfter = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.wizardRemoveAfterStepKey,
+            identifier: WizardStepsSettings.wizardRemoveAfterStepKey,
           ),
         );
         final reminderStep = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: MemoplannerSettings.wizardRemindersStepKey,
+            identifier: WizardStepsSettings.wizardRemindersStepKey,
           ),
         );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.wizardTemplateStepKey,
+            identifier: WizardStepsSettings.wizardTemplateStepKey,
           ),
         );
         final noImage = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.wizardImageStepKey,
+            identifier: WizardStepsSettings.wizardImageStepKey,
           ),
         );
         final noDate = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.wizardDatePickerStepKey,
+            identifier: WizardStepsSettings.wizardDatePickerStepKey,
           ),
         );
         when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
@@ -402,13 +402,13 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.wizardTitleStepKey,
+                    identifier: WizardStepsSettings.wizardTitleStepKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.wizardImageStepKey,
+                    identifier: WizardStepsSettings.wizardImageStepKey,
                   ),
                 ),
               ],
@@ -444,13 +444,13 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.wizardTitleStepKey,
+                    identifier: WizardStepsSettings.wizardTitleStepKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.wizardImageStepKey,
+                    identifier: WizardStepsSettings.wizardImageStepKey,
                   ),
                 ),
               ],
