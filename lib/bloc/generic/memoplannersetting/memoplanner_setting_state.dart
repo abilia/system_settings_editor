@@ -115,7 +115,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get alarmDuration => settings.alarm.duration;
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>

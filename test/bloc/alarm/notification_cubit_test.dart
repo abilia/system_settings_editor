@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:timezone/timezone.dart';
@@ -12,13 +10,13 @@ import 'package:seagull/utils/all.dart';
 void main() {
   final aTime = DateTime(1999, 12, 20, 20, 12);
   final aDay = aTime.onlyDays();
-  late ReplaySubject<String> notificationSelected;
+  late ReplaySubject<NotificationAlarm> notificationSelected;
   late NotificationCubit notificationBloc;
   const localTimezoneName = 'aTimeZone';
 
   setUp(() {
     setLocalLocation(Location(localTimezoneName, [], [], []));
-    notificationSelected = ReplaySubject<String>();
+    notificationSelected = ReplaySubject<NotificationAlarm>();
 
     notificationBloc = NotificationCubit(
       selectedNotificationSubject: notificationSelected,
@@ -33,7 +31,7 @@ void main() {
     // Arrange
     final nowActivity =
         FakeActivity.starts(aTime).copyWith(timezone: localTimezoneName);
-    final payload = json.encode(StartAlarm(nowActivity, aDay).toJson());
+    final payload = StartAlarm(nowActivity, aDay);
 
     // Act
     notificationSelected.add(payload);
@@ -50,11 +48,11 @@ void main() {
         timezone: localTimezoneName,
         reminderBefore: [reminderTime.inMilliseconds]);
 
-    final payload = json.encode(ReminderBefore(
+    final payload = ReminderBefore(
       nowActivity,
       aDay,
       reminder: reminderTime,
-    ).toJson());
+    );
     notificationSelected.add(payload);
 
     // Assert
