@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
