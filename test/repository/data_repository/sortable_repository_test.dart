@@ -9,6 +9,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   const baseUrl = 'url';
@@ -17,7 +18,7 @@ void main() {
   late SortableRepository sortableRepository;
 
   setUpAll(() {
-    registerFallbackValue(Uri());
+    registerFallbackValues();
   });
 
   setUp(() async {

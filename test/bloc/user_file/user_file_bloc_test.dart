@@ -12,6 +12,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/fakes_blocs.dart';
 import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late UserFileBloc userFileBloc;
@@ -33,7 +34,7 @@ void main() {
   const filePath = 'test.dart';
 
   setUpAll(() {
-    registerFallbackValue(ImageThumb(id: ''));
+    registerFallbackValues();
   });
 
   setUp(() {

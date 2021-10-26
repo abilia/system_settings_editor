@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,6 +9,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ScrollPositionBloc scrollPositionBloc;
@@ -19,8 +19,7 @@ void main() {
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
   setUpAll(() {
-    registerFallbackValue(Duration.zero);
-    registerFallbackValue(Curves.ease);
+    registerFallbackValues();
   });
 
   setUp(() {

@@ -11,13 +11,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
 import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final mockClient = MockBaseClient();
   late GenericRepository genericRepository;
   late GenericDb genericDb;
   setUpAll(() {
-    registerFallbackValue(Uri());
+    registerFallbackValues();
   });
 
   setUp(() async {

@@ -13,6 +13,7 @@ import 'package:seagull/models/settings/alarm_settings.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -64,8 +65,7 @@ void main() {
     List<ActiveNotification> activeNotifications = [];
 
     setUpAll(() {
-      registerFallbackValue(UserFilesNotLoaded());
-      registerFallbackValue(LoadUserFiles());
+      registerFallbackValues();
     });
 
     setUp(() async {

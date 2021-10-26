@@ -5,12 +5,12 @@ import 'package:seagull/models/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/types.dart';
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(GenericsNotLoaded());
-    registerFallbackValue(LoadGenerics());
+    registerFallbackValues();
   });
 
   test('initial state', () {

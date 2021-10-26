@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file/memory.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +12,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
@@ -32,9 +32,7 @@ void main() {
   );
 
   setUpAll(() {
-    registerFallbackValue(Uri());
-    registerFallbackValue(ImageThumb(id: ''));
-    registerFallbackValue(Uint8List(1));
+    registerFallbackValues();
   });
 
   tearDown(() {

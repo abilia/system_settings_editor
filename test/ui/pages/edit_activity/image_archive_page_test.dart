@@ -11,6 +11,7 @@ import 'package:seagull/ui/all.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/navigation_observer.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/types.dart';
 
@@ -20,8 +21,7 @@ void main() {
     late MockSortableBloc mockSortableBloc;
 
     setUpAll(() {
-      registerFallbackValue(SortablesNotLoaded());
-      registerFallbackValue(LoadSortables());
+      registerFallbackValues();
     });
 
     setUp(() async {

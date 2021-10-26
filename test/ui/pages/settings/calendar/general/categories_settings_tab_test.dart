@@ -17,6 +17,7 @@ import 'package:seagull/ui/all.dart';
 import '../../../../../fakes/all.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
+import '../../../../../test_helpers/register_fallback_values.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -341,7 +342,7 @@ void main() {
 
   group('category visisbility settings', () {
     setUpAll(() {
-      registerFallbackValue(Uri());
+      registerFallbackValues();
     });
 
     testWidgets('show category false', (tester) async {

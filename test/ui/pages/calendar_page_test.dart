@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +22,7 @@ import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 
+import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/types.dart';
 import '../../test_helpers/enter_text.dart';
@@ -90,10 +90,7 @@ void main() {
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
-    registerFallbackValue(SortablesNotLoaded());
-    registerFallbackValue(LoadSortables());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() async {
