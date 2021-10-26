@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -15,7 +15,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -41,15 +41,15 @@ void main() {
   setUp(() async {
     setupPermissions();
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
 
     final mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
     GetItInitializer()
@@ -60,9 +60,9 @@ void main() {
           Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client()
-      ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..init();
   });

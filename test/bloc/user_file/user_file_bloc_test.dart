@@ -4,14 +4,15 @@ import 'dart:io';
 import 'package:file/memory.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/fake_user_files.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/fakes_blocs.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late UserFileBloc userFileBloc;
@@ -32,16 +33,22 @@ void main() {
   final fileContent = base64.decode(FakeUserFile.onePixelPng);
   const filePath = 'test.dart';
 
+  setUpAll(() {
+    registerFallbackValues();
+  });
+
   setUp(() {
     mockUserFileRepository = MockUserFileRepository();
-    when(mockUserFileRepository.save(any))
+    when(() => mockUserFileRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
-        .thenAnswer((_) => Future.value([]));
-    when(mockUserFileRepository.fetchIntoDatabaseSynchronized())
+    when(() => mockUserFileRepository.downloadUserFiles(
+        limit: any(named: 'limit'))).thenAnswer((_) => Future.value([]));
+    when(() => mockUserFileRepository.fetchIntoDatabaseSynchronized())
         .thenAnswer((_) async {});
     final mockedFileStorage = MockFileStorage();
-    when(mockedFileStorage.storeFile(any, any))
+    when(() => mockedFileStorage.storeFile(any(), any()))
+        .thenAnswer((_) => Future.value());
+    when(() => mockedFileStorage.storeImageThumb(any(), any()))
         .thenAnswer((_) => Future.value());
     userFileBloc = UserFileBloc(
       userFileRepository: mockUserFileRepository,
@@ -57,7 +64,7 @@ void main() {
 
   test('User files loaded after successful loading of user files', () async {
     // Arrange
-    when(mockUserFileRepository.getAllLoadedFiles())
+    when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([userFile]));
 
     // Act
@@ -101,10 +108,10 @@ void main() {
     );
 
     var dlCall = 0;
-    when(mockUserFileRepository.getAllLoadedFiles())
+    when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
-    when(mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')))
-        .thenAnswer((_) {
+    when(() => mockUserFileRepository.downloadUserFiles(
+        limit: any(named: 'limit'))).thenAnswer((_) {
       switch (dlCall++) {
         case 0:
           return Future.value([userFile]);
@@ -118,8 +125,8 @@ void main() {
     // Act -- Loadfiles
     userFileBloc.add(LoadUserFiles());
     // Act -- while downloading files, user adds file
-    await untilCalled(
-        mockUserFileRepository.downloadUserFiles(limit: anyNamed('limit')));
+    await untilCalled(() =>
+        mockUserFileRepository.downloadUserFiles(limit: any(named: 'limit')));
     userFileBloc.add(
       ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
     );
@@ -143,7 +150,7 @@ void main() {
     await file.writeAsBytes(fileContent);
     final processedFile1 = await adjustImageSizeAndRotation(fileContent);
 
-    when(mockUserFileRepository.getAllLoadedFiles())
+    when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
 
     // Act
@@ -204,7 +211,7 @@ void main() {
     File file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 
-    when(mockUserFileRepository.getAllLoadedFiles())
+    when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
 
     // Act

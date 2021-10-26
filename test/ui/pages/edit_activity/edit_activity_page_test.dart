@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +21,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
 import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/types.dart';
 
@@ -43,12 +43,7 @@ void main() {
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
-    registerFallbackValue(SortablesNotLoaded());
-    registerFallbackValue(LoadSortables());
-    registerFallbackValue(UserFilesNotLoaded());
-    registerFallbackValue(LoadUserFiles());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() async {

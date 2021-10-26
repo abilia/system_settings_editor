@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late DayActivitiesBloc dayActivitiesBloc;
@@ -49,7 +49,7 @@ void main() {
         'state is ActivitiesOccasionLoaded when ActivitiesBloc loadeds activities',
         () {
       // Arrange
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -75,7 +75,7 @@ void main() {
           FakeActivity.ends(initialMinutes.subtract(1.minutes()));
       final futureActivity =
           FakeActivity.starts(initialMinutes.add(1.minutes()));
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value([nowActivity, pastActivity, futureActivity]));
 
       // Act
@@ -110,7 +110,7 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
+      when(() => mockActivityRepository.load()).thenAnswer((_) => Future.value([
             yesterdayFullday,
             tomorrowFullday,
             fullDayActivity,
@@ -148,7 +148,7 @@ void main() {
       final fullDayActivity = FakeActivity.fullday(initialMinutes);
       final tomorrowActivity =
           FakeActivity.starts(initialMinutes.add(1.days()));
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
+      when(() => mockActivityRepository.load()).thenAnswer((_) => Future.value([
             nowActivity,
             pastActivity,
             futureActivity,
@@ -190,7 +190,7 @@ void main() {
           FakeActivity.fullday(initialMinutes.add(1.days()));
       final yesterdayFullday =
           FakeActivity.fullday(initialMinutes.subtract(1.days()));
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value([
+      when(() => mockActivityRepository.load()).thenAnswer((_) => Future.value([
             yesterdayFullday,
             tomorrowFullday,
             fullDayActivity,
@@ -256,7 +256,7 @@ void main() {
       final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
       final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(tomorrow);
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value(
+      when(() => mockActivityRepository.load()).thenAnswer((_) => Future.value(
           [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
@@ -294,7 +294,7 @@ void main() {
       final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
       final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
       final fulldayActivity = FakeActivity.fullday(yesterday);
-      when(mockActivityRepository.load()).thenAnswer((_) => Future.value(
+      when(() => mockActivityRepository.load()).thenAnswer((_) => Future.value(
           [nowActivity, pastActivity, futureActivity, fulldayActivity]));
       //Act
       activitiesBloc.add(LoadActivities());
@@ -326,7 +326,7 @@ void main() {
     test('Activity ends this minute is current', () {
       // Arrange
       final endsSoon = FakeActivity.ends(initialMinutes);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([endsSoon]));
 
       // Act
@@ -351,7 +351,7 @@ void main() {
     test('Activity start this minute is current', () {
       // Arrange
       final startsNow = FakeActivity.starts(initialMinutes);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([startsNow]));
 
       // Act
@@ -382,7 +382,7 @@ void main() {
       final endsSoonActivity = FakeActivity.ends(initialMinutes);
       final startSoonActivity =
           FakeActivity.starts(initialMinutes.add(1.minutes()));
-      when(mockActivityRepository.load()).thenAnswer((_) =>
+      when(() => mockActivityRepository.load()).thenAnswer((_) =>
           Future.value([nowActivity, startSoonActivity, endsSoonActivity]));
 
       // Act
@@ -442,7 +442,7 @@ void main() {
       final mondayRecurring = FakeActivity.reocurrsMondays(longAgo);
       final activities = Iterable<Activity>.empty()
           .followedBy([weekendActivity, tuesdayRecurring, mondayRecurring]);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
 
       final friday = initialDay.add(Duration(days: 3));
@@ -557,7 +557,7 @@ void main() {
         tomorrowActivity,
         everyDayFullDayRecurring
       ]);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
 
       // Act
@@ -644,7 +644,7 @@ void main() {
       final activities = Iterable<Activity>.empty().followedBy([
         everyDayRecurring,
       ]);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
 
       // Act
@@ -714,7 +714,7 @@ void main() {
         earlyActivity,
         earlyCurrent,
       ]);
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
 
       // Act

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,6 +15,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final startTime = DateTime(2021, 09, 22, 12, 46);
@@ -27,12 +27,7 @@ void main() {
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
-    registerFallbackValue(SortablesNotLoaded());
-    registerFallbackValue(LoadSortables());
-    registerFallbackValue(UserFilesNotLoaded());
-    registerFallbackValue(LoadUserFiles());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() async {

@@ -350,8 +350,6 @@ void main() {
         // Arrange
         final aDay = DateTime(2020, 04, 01);
         final recurring = FakeActivity.reocurrsEveryDay(anyTime);
-        // when(mockActivityRepository.load())
-        //     .thenAnswer((_) => Future.value([recurring]));
 
         final fullday = recurring.copyWith(
             title: 'new title',

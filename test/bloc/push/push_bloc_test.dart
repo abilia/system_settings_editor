@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -13,13 +13,13 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/components/all.dart';
 
 import '../../fakes/all.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   group('Push integration test', () {
     setUp(() async {
       setupPermissions();
-      notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+      notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
       scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
       final time = DateTime(2020, 06, 05, 13, 23);
@@ -34,8 +34,9 @@ void main() {
       ];
 
       final mockActivityDb = MockActivityDb();
-      when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getLastRevision())
+          .thenAnswer((_) => Future.value(0));
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(dbActivityAnswers.removeAt(0)));
 
       GetItInitializer()

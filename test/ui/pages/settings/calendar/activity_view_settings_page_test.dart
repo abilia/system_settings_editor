@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -13,7 +13,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/verify_generic.dart';
 
@@ -29,21 +29,21 @@ void main() {
     setupPermissions();
     generics = [];
     activities = [];
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
+    when(() => genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     activityDb = MockActivityDb();
-    when(activityDb.getAllNonDeleted())
+    when(() => activityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activities));
-    when(activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(activityDb.insertAndAddDirty(any))
+    when(() => activityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => activityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()

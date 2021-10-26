@@ -1,19 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/database_repository.dart';
 
-import '../mocks/shared.mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   test('executeInitialization calls all scripts', () async {
     final mockDb = MockDatabase();
+    when(() => mockDb.execute(any(), any())).thenAnswer((_) => Future.value());
 
     await DatabaseRepository.executeInitialization(mockDb, 1);
     for (final s in DatabaseRepository.initialScript) {
-      verify(mockDb.execute(s));
+      verify(() => mockDb.execute(s));
     }
     for (final m in DatabaseRepository.migrations) {
-      verify(mockDb.execute(m));
+      verify(() => mockDb.execute(m));
     }
   });
 
@@ -22,8 +23,9 @@ void main() {
     const migrationScript2 = 'script2';
     final migrations = <String>[migrationScript1, migrationScript2];
     final mockDb = MockDatabase();
+    when(() => mockDb.execute(any(), any())).thenAnswer((_) => Future.value());
     DatabaseRepository.internalMigration(mockDb, 2, 3, migrations);
-    verifyNever(mockDb.execute(migrationScript1));
-    verify(mockDb.execute(migrationScript2));
+    verifyNever(() => mockDb.execute(migrationScript1));
+    verify(() => mockDb.execute(migrationScript2));
   });
 }
