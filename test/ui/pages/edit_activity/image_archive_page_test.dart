@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -126,19 +127,21 @@ void main() {
     testWidgets('Selected Image is poped', (WidgetTester tester) async {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
-      await tester.pumpAndSettle();
-      expect(find.byType(ArchiveImage), findsOneWidget);
-      await tester.tap(find.byType(ArchiveImage));
-      await tester.pumpAndSettle();
-      expect(find.byType(FullScreenImage), findsOneWidget);
-      expect(find.byType(GreenButton), findsOneWidget);
-      await tester.tap(find.byType(GreenButton));
-      await tester.pumpAndSettle();
-      final poped = navObserver.routesPoped;
-      expect(poped, hasLength(1));
-      final res = await poped.first.popped;
-      expect(res, AbiliaFile.from(id: fileId, path: path));
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+        await tester.pumpAndSettle();
+        expect(find.byType(ArchiveImage), findsOneWidget);
+        await tester.tap(find.byType(ArchiveImage));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullScreenImage), findsOneWidget);
+        expect(find.byType(GreenButton), findsOneWidget);
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+        final poped = navObserver.routesPoped;
+        expect(poped, hasLength(1));
+        final res = await poped.first.popped;
+        expect(res, AbiliaFile.from(id: fileId, path: path));
+      });
     });
 
     testWidgets('tts', (WidgetTester tester) async {
@@ -157,34 +160,36 @@ void main() {
     testWidgets('library heading tts', (WidgetTester tester) async {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
-      await tester.pumpAndSettle();
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+        await tester.pumpAndSettle();
 
-      // Assert - root heading
-      await tester.verifyTts(
-        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
-        exact: translate.imageArchive,
-      );
+        // Assert - root heading
+        await tester.verifyTts(
+          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          exact: translate.imageArchive,
+        );
 
-      expect(find.byType(LibraryFolder), findsOneWidget);
-      // Act - go into folder
-      await tester.tap(find.byType(LibraryFolder));
-      await tester.pumpAndSettle();
+        expect(find.byType(LibraryFolder), findsOneWidget);
+        // Act - go into folder
+        await tester.tap(find.byType(LibraryFolder));
+        await tester.pumpAndSettle();
 
-      // Assert heading is folder tts
-      await tester.verifyTts(
-        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
-        exact: folderName,
-      );
-      // Act -- go into image
-      await tester.tap(find.byType(ArchiveImage));
-      await tester.pumpAndSettle();
+        // Assert heading is folder tts
+        await tester.verifyTts(
+          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          exact: folderName,
+        );
+        // Act -- go into image
+        await tester.tap(find.byType(ArchiveImage));
+        await tester.pumpAndSettle();
 
-      // Assert - image name tts
-      await tester.verifyTts(
-        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
-        exact: imageInFolderName,
-      );
+        // Assert - image name tts
+        await tester.verifyTts(
+          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          exact: imageInFolderName,
+        );
+      });
     });
   });
 }
