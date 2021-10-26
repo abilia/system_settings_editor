@@ -15,6 +15,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 
 void main() {
@@ -53,8 +54,7 @@ void main() {
       );
 
   setUpAll(() {
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() async {

@@ -19,6 +19,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
@@ -86,10 +87,7 @@ void main() {
       );
 
   setUpAll(() {
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
-    registerFallbackValue(UserFilesNotLoaded());
-    registerFallbackValue(LoadUserFiles());
+    registerFallbackValues();
   });
 
   const MethodChannel localNotificationChannel =

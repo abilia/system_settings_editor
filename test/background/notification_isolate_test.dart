@@ -13,6 +13,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 import '../mocks/mocks.dart';
+import '../test_helpers/register_fallback_values.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
@@ -60,9 +61,7 @@ void main() {
   ];
 
   setUpAll(() {
-    registerFallbackValue(File(''));
-    registerFallbackValue(TZDateTime.utc(2021));
-    registerFallbackValue(NotificationDetails());
+    registerFallbackValues();
   });
 
   setUp(() {

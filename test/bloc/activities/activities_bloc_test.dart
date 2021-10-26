@@ -10,6 +10,7 @@ import 'package:seagull/utils/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/matchers.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final anyTime = DateTime(2020, 03, 28, 15, 20);
@@ -21,10 +22,7 @@ void main() {
   late SyncBloc mockSyncBloc;
 
   setUpAll(() {
-    registerFallbackValue(PushEvent(''));
-    registerFallbackValue(PushReady());
-    registerFallbackValue(ActivitySaved());
-    registerFallbackValue(SyncInitial());
+    registerFallbackValues();
   });
 
   setUp(() {

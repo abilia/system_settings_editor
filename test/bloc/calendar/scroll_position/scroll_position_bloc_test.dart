@@ -10,6 +10,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ScrollPositionBloc scrollPositionBloc;
@@ -19,8 +20,7 @@ void main() {
   final initialTime = DateTime(2020, 12, 24, 15, 00);
 
   setUpAll(() {
-    registerFallbackValue(Duration.zero);
-    registerFallbackValue(Curves.ease);
+    registerFallbackValues();
   });
 
   setUp(() {

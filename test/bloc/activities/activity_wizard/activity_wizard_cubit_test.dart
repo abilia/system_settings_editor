@@ -13,6 +13,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late MockActivitiesBloc mockActivitiesBloc;
@@ -22,8 +23,7 @@ void main() {
   final aDay = DateTime(2022, 02, 22);
 
   setUpAll(() {
-    registerFallbackValue(ActivitiesNotLoaded());
-    registerFallbackValue(LoadActivities());
+    registerFallbackValues();
     tz.initializeTimeZones();
   });
 

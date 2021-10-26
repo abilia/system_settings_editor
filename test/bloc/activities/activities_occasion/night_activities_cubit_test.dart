@@ -9,6 +9,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ClockBloc clockBloc;
@@ -27,10 +28,7 @@ void main() {
   final previusDay = initialDay.previousDay();
 
   setUpAll(() {
-    registerFallbackValue(ActivitiesNotLoaded());
-    registerFallbackValue(LoadActivities());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() {
