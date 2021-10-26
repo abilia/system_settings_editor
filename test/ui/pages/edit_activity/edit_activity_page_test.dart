@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +21,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
 import '../../../test_helpers/enter_text.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/types.dart';
 
@@ -43,12 +43,7 @@ void main() {
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
-    registerFallbackValue(SortablesNotLoaded());
-    registerFallbackValue(LoadSortables());
-    registerFallbackValue(UserFilesNotLoaded());
-    registerFallbackValue(LoadUserFiles());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() async {
@@ -162,7 +157,7 @@ void main() {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(AbiliaTabBar), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.my_photos), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.myPhotos), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.repeat), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.attachment), findsOneWidget);
@@ -206,7 +201,7 @@ void main() {
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
         expect(find.byType(SelectPicturePage), findsOneWidget);
-        await tester.tap(find.byIcon(AbiliaIcons.close_program));
+        await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
         await tester.pumpAndSettle();
         expect(find.byType(SelectPicturePage), findsNothing);
       });
@@ -301,7 +296,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.attention), findsOneWidget);
       await tester.goToAlarmTab();
       // Assert -- alarm tab contains reminders
-      expect(find.byIcon(AbiliaIcons.handi_reminder), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);
       await tester.goToMainTab();
       await tester.scrollDown(dy: -150);
 
@@ -351,14 +346,14 @@ void main() {
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
         expect(find.text(translate.vibration), findsNothing);
-        expect(find.byIcon(AbiliaIcons.handi_vibration), findsNothing);
+        expect(find.byIcon(AbiliaIcons.handiVibration), findsNothing);
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
-        await tester.tap(find.byKey(ObjectKey(AlarmType.Vibration)));
+        await tester.tap(find.byKey(ObjectKey(AlarmType.vibration)));
         await tester.pumpAndSettle();
         expect(find.text(translate.vibration), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.handi_vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
       });
 
       testWidgets('SGC-359 Select alarm dialog silent alarms maps to Silent',
@@ -368,20 +363,20 @@ void main() {
             givenActivity: Activity.createNew(
                 title: 'null',
                 startTime: startTime,
-                alarmType: ALARM_SILENT_ONLY_ON_START),
+                alarmType: alarmSilentOnlyOnStart),
           ),
         );
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
         expect(find.text(translate.silentAlarm), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.handi_alarm), findsNWidgets(2));
+        expect(find.byIcon(AbiliaIcons.handiAlarm), findsNWidgets(2));
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         final radio =
-            tester.widget<RadioField>(find.byKey(ObjectKey(AlarmType.Silent)));
-        expect(radio.groupValue, AlarmType.Silent);
+            tester.widget<RadioField>(find.byKey(ObjectKey(AlarmType.silent)));
+        expect(radio.groupValue, AlarmType.silent);
       });
 
       testWidgets(
@@ -392,20 +387,20 @@ void main() {
             givenActivity: Activity.createNew(
                 title: 'null',
                 startTime: startTime,
-                alarmType: ALARM_SOUND_ONLY_ON_START),
+                alarmType: alarmSoundOnlyOnStart),
           ),
         );
         await tester.pumpAndSettle();
         await tester.goToAlarmTab();
         expect(find.byKey(TestKey.selectAlarm), findsOneWidget);
         expect(find.text(translate.alarmAndVibration), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.handi_alarm_vibration), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.handiAlarmVibration), findsOneWidget);
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
         final radio = tester
-            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.Vibration)));
-        expect(radio.groupValue, AlarmType.SoundAndVibration);
+            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.vibration)));
+        expect(radio.groupValue, AlarmType.soundAndVibration);
       });
     });
 
@@ -494,26 +489,26 @@ void main() {
 
       expect(find.byKey(TestKey.availibleFor), findsOneWidget);
       expect(find.text(translate.onlyMe), findsNothing);
-      expect(find.byIcon(AbiliaIcons.password_protection), findsNothing);
+      expect(find.byIcon(AbiliaIcons.passwordProtection), findsNothing);
       await tester.tap(find.byKey(TestKey.availibleFor));
       await tester.pumpAndSettle();
       expect(find.byType(AvailableForPage), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.password_protection));
+      await tester.tap(find.byIcon(AbiliaIcons.passwordProtection));
       await tester.pumpAndSettle();
       expect(find.text(translate.onlyMe), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.password_protection), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
     });
 
     testWidgets('Reminder', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
-      final reminderSwitchFinder = find.byIcon(AbiliaIcons.handi_reminder);
+      final reminderSwitchFinder = find.byIcon(AbiliaIcons.handiReminder);
       final reminder15MinFinder =
           find.text(15.minutes().toDurationString(translate));
       final reminderDayFinder = find.text(1.days().toDurationString(translate));
       final remindersAllSelected =
-          find.byIcon(AbiliaIcons.radiocheckbox_selected);
+          find.byIcon(AbiliaIcons.radiocheckboxSelected);
       final remindersAll = find.byType(SelectableField);
       final reminderField = find.byType(Reminders);
 
@@ -787,7 +782,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
-        expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.showText), findsOneWidget);
       });
 
       testWidgets('note library shows', (WidgetTester tester) async {
@@ -802,7 +797,7 @@ Internal improvements to tests and examples.''';
                   name: 'NAAAMAE',
                   text: content,
                 ),
-                sortOrder: START_CHAR,
+                sortOrder: startChar,
               ),
               ...List.generate(
                 30,
@@ -824,7 +819,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
         expect(
             find.byType(typeOf<SortableLibrary<NoteData>>()), findsOneWidget);
@@ -854,7 +849,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToNote(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
         await tester.tap(find.text(content));
         await tester.pumpAndSettle();
@@ -938,7 +933,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
-        await tester.tap(find.byIcon(AbiliaIcons.new_icon));
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
         expect(find.byType(EditQuestionPage), findsOneWidget);
@@ -951,7 +946,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await goToChecklist(tester);
 
-        await tester.tap(find.byIcon(AbiliaIcons.new_icon));
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), questionName);
@@ -968,7 +963,7 @@ Internal improvements to tests and examples.''';
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byIcon(AbiliaIcons.new_icon));
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), questionName);
@@ -986,7 +981,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.new_icon));
+        await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
         final editViewDialogBefore =
@@ -1095,7 +1090,7 @@ text''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        expect(find.byIcon(AbiliaIcons.show_text), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.showText), findsOneWidget);
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
@@ -1105,7 +1100,7 @@ text''';
           SortablesLoaded(
             sortables: [
               Sortable.createNew<ChecklistData>(
-                  sortOrder: START_CHAR,
+                  sortOrder: startChar,
                   data: ChecklistData(Checklist(
                       name: title1,
                       fileId: 'fileid1',
@@ -1135,7 +1130,7 @@ text''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
         expect(find.byType(typeOf<SortableLibrary<ChecklistData>>()),
             findsOneWidget);
@@ -1171,7 +1166,7 @@ text''';
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
         await goToChecklist(tester);
-        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
         await tester.tap(find.text(title1));
         await tester.pumpAndSettle();
@@ -1212,18 +1207,18 @@ text''';
       expect(find.text('2020'), findsOneWidget);
       expect(find.byType(MonthDayView), findsNWidgets(29));
 
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
 
       expect(find.text('January'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
       expect(find.byType(MonthDayView), findsNWidgets(31));
 
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
 
       expect(find.text('April'), findsOneWidget);
@@ -1803,7 +1798,7 @@ text''';
       expect(find.text(translate.weekly), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
       expect(find.text(translate.monthly), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.basic_activity), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.basicActivity), findsOneWidget);
       expect(find.text(translate.yearly), findsOneWidget);
     });
 
@@ -1824,7 +1819,7 @@ text''';
       // Act -- Change to Yearly
       await tester.tap(find.byKey(TestKey.changeRecurrence));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.basic_activity));
+      await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1832,7 +1827,7 @@ text''';
       // Assert -- Yearly selected, not Once
       expect(find.byIcon(AbiliaIcons.day), findsNothing);
       expect(find.text(translate.once), findsNothing);
-      expect(find.byIcon(AbiliaIcons.basic_activity), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.basicActivity), findsOneWidget);
       expect(find.text(translate.yearly), findsOneWidget);
     });
 
@@ -1933,7 +1928,7 @@ text''';
         title: 'recurring',
         startTime: startTime,
         recurs: Recurs.raw(
-          Recurs.TYPE_WEEKLY,
+          Recurs.typeWeekly,
           Recurs.allDaysOfWeek,
           startTime.add(30.days()).millisecondsSinceEpoch,
         ),
@@ -2519,7 +2514,7 @@ text''';
       await tester.tap(find.byKey(TestKey.availibleFor));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byIcon(AbiliaIcons.password_protection),
+      await tester.verifyTts(find.byIcon(AbiliaIcons.passwordProtection),
           exact: translate.onlyMe);
     });
 
@@ -2533,10 +2528,10 @@ text''';
       await tester.pumpAndSettle();
       await tester.goToAlarmTab();
 
-      await tester.verifyTts(find.byIcon(AbiliaIcons.handi_reminder),
+      await tester.verifyTts(find.byIcon(AbiliaIcons.handiReminder),
           exact: translate.reminders);
 
-      await tester.tap(find.byIcon(AbiliaIcons.handi_reminder));
+      await tester.tap(find.byIcon(AbiliaIcons.handiReminder));
       await tester.pumpAndSettle();
 
       final reminders = [
@@ -2571,7 +2566,7 @@ text''';
       await tester.tap(find.byKey(TestKey.selectAlarm));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(ObjectKey(AlarmType.Vibration)),
+      await tester.verifyTts(find.byKey(ObjectKey(AlarmType.vibration)),
           exact: translate.vibration);
     });
 
@@ -2593,7 +2588,7 @@ text''';
           exact: translate.weekly);
       await tester.verifyTts(find.byIcon(AbiliaIcons.month),
           exact: translate.monthly);
-      await tester.verifyTts(find.byIcon(AbiliaIcons.basic_activity),
+      await tester.verifyTts(find.byIcon(AbiliaIcons.basicActivity),
           exact: translate.yearly);
 
       await tester.tap(find.byIcon(AbiliaIcons.week));
@@ -2675,7 +2670,7 @@ text''';
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byIcon(AbiliaIcons.show_text));
+        await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
         await tester.verifyTts(find.byType(LibraryChecklist), exact: title1);
         await tester.tap(find.byType(LibraryChecklist));
@@ -2683,7 +2678,7 @@ text''';
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
         await tester.verifyTts(find.text(item1Name), exact: item1Name);
-        await tester.verifyTts(find.byIcon(AbiliaIcons.new_icon),
+        await tester.verifyTts(find.byIcon(AbiliaIcons.newIcon),
             exact: translate.addNew);
       });
     });
@@ -2714,7 +2709,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.show_text));
+      await tester.tap(find.byIcon(AbiliaIcons.showText));
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.text(content), exact: content);
@@ -2749,7 +2744,7 @@ extension on WidgetTester {
     await pump();
   }
 
-  Future goToMainTab() async => goToTab(AbiliaIcons.my_photos);
+  Future goToMainTab() async => goToTab(AbiliaIcons.myPhotos);
   Future goToAlarmTab() async => goToTab(AbiliaIcons.attention);
   Future goToRecurrenceTab() async => goToTab(AbiliaIcons.repeat);
   Future goToInfoItemTab() async => goToTab(AbiliaIcons.attachment);

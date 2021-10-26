@@ -4,32 +4,29 @@ import 'dart:io';
 import 'package:file/memory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../fakes/fake_authenticated_blocs_provider.dart';
-import '../../../fakes/fake_db_and_repository.dart';
-import '../../../fakes/fakes_blocs.dart';
-import '../../../fakes/permission.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../fakes/all.dart';
+import '../../../mocks/mocks.dart';
 
 final _dummyFile = UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
 void main() {
   late MockRecord mockRecorder;
-  const recorded_bytes =
+  const recordedBytes =
       'AAAAGGZ0eXBtcDQyAAAAAGlzb21tcDQyAAADFW1vb3YAAABsbXZoZAAAAADdaLlC3Wi5QgAAA+gAAAAAAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAADqbWV0YQAAACFoZGxyAAAAAAAAAABtZHRhAAAAAAAAAAAAAAAAAAAAAGRrZXlzAAAAAAAAAAMAAAAbbWR0YWNvbS5hbmRyb2lkLnZlcnNpb24AAAAgbWR0YWNvbS5hbmRyb2lkLm1hbnVmYWN0dXJlcgAAABltZHRhY29tLmFuZHJvaWQubW9kZWwAAABdaWxzdAAAABoAAAABAAAAEmRhdGEAAAABAAAAADEwAAAAHgAAAAIAAAAWZGF0YQAAAAEAAAAAR29vZ2xlAAAAHQAAAAMAAAAVZGF0YQAAAAEAAAAAUGl4ZWwAAAG3dHJhawAAAFx0a2hkAAAAB91ouULdaLlCAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABU21kaWEAAAAgbWRoZAAAAADdaLlC3Wi5QgAArEQAAAAAAAAAAAAAACxoZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGUAAAAA/21pbmYAAAAQc21oZAAAAAAAAAAAAAAAJGRpbmYAAAAcZHJlZgAAAAAAAAABAAAADHVybCAAAAABAAAAw3N0YmwAAABbc3RzZAAAAAAAAAABAAAAS21wNGEAAAAAAAAAAQAAAAAAAAAAAAEAEAAAAACsRAAAAAAAJ2VzZHMAAAAAAxkAAAAEEUAVAAMAAAH0AAAB9AAFAhIIBgECAAAAGHN0dHMAAAAAAAAAAQAAAAEAAAAAAAAAGHN0c3oAAAAAAAAAAAAAAAEAAAFzAAAA';
   const filePath = 'hmm.m4a';
   setUp(() async {
-    final fileContent = base64.decode(recorded_bytes);
+    final fileContent = base64.decode(recordedBytes);
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     mockRecorder = MockRecord();
-    when(mockRecorder.start()).thenAnswer((_) => Future.value());
-    when(mockRecorder.stop()).thenAnswer((_) => Future.value(filePath));
+    when(() => mockRecorder.start()).thenAnswer((_) => Future.value());
+    when(() => mockRecorder.stop()).thenAnswer((_) => Future.value(filePath));
     setupPermissions();
   });
 
@@ -130,7 +127,7 @@ void main() {
       expect(find.byType(RecordAudioButton), findsNothing);
       expect(find.byType(StopButton), findsNothing);
 
-      await tester.tap(find.byIcon(AbiliaIcons.delete_all_clear));
+      await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
       await tester.pumpAndSettle();
 
       expect(find.byType(RecordAudioButton), findsOneWidget);
@@ -152,13 +149,13 @@ void main() {
 
       await tester.tap(find.byType(RecordAudioButton));
       await tester.pumpAndSettle();
-      verify(mockRecorder.start());
+      verify(() => mockRecorder.start());
 
       expect(find.byType(StopButton), findsOneWidget);
       await tester.tap(find.byType(StopButton));
       await tester.pumpAndSettle();
 
-      verify(mockRecorder.stop());
+      verify(() => mockRecorder.stop());
       expect(find.byType(PlayRecordingButton), findsOneWidget);
     });
   });

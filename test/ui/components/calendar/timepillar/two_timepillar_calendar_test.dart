@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:intl/intl.dart';
 
 import 'package:seagull/background/all.dart';
@@ -19,7 +19,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -31,13 +31,12 @@ void main() {
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
 
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.go_to_next_page);
-  final previusDayButtonFinder =
-      find.byIcon(AbiliaIcons.return_to_previous_page);
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
+  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
-        data: DayCalendarType.two_timepillars.index,
+        data: DayCalendarType.twoTimepillars.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
 
@@ -45,19 +44,20 @@ void main() {
     setupPermissions();
     setupFakeTts();
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockActivityDb.insertAndAddDirty(any))
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     final mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
     genericResponse = () => [twoTimepillarGeneric];
@@ -74,10 +74,10 @@ void main() {
         activityResponse: activityResponse,
         genericResponse: genericResponse,
       )
-      ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..syncDelay = SyncDelays.zero
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 
@@ -476,14 +476,14 @@ void main() {
             Activity.createNew(
               startTime: atNightTime,
               duration: 1.hours(),
-              alarmType: ALARM_SILENT,
+              alarmType: alarmSilent,
               title: rightTitle,
               checkable: true,
             ),
             Activity.createNew(
               startTime: atNightTime,
               duration: 1.hours(),
-              alarmType: ALARM_SILENT,
+              alarmType: alarmSilent,
               title: leftTitle,
               category: Category.left,
             ),

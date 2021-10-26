@@ -1,26 +1,30 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/models/user.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   group('LoginBloc event order', () {
     late LoginBloc loginBloc;
     late AuthenticationBloc authenticationBloc;
-    final mockUserRepository = MockUserRepository();
+    late MockUserRepository mockUserRepository;
 
     const pushToken = 'pushToken';
 
     setUp(() {
       final mockFirebasePushService = MockFirebasePushService();
-      when(mockFirebasePushService.initPushToken())
+      mockUserRepository = MockUserRepository();
+      when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
+
+      when(() => mockUserRepository.persistToken(any()))
+          .thenAnswer((_) => Future.value());
 
       authenticationBloc = AuthenticationBloc(mockUserRepository);
       loginBloc = LoginBloc(
@@ -39,28 +43,29 @@ void main() {
       const loginToken = 'loginToken';
       const loggedInUserId = 1;
       const username = 'username', password = 'password';
-      when(mockUserRepository.authenticate(
-        username: anyNamed(username),
-        password: anyNamed(password),
-        pushToken: anyNamed('pushToken'),
-        time: anyNamed('time'),
-      )).thenAnswer((_) => Future.value(loginToken));
-      when(mockUserRepository.getToken()).thenReturn('token');
+      when(() => mockUserRepository.authenticate(
+            username: any(named: username),
+            password: any(named: password),
+            pushToken: any(named: 'pushToken'),
+            time: any(named: 'time'),
+          )).thenAnswer((_) => Future.value(loginToken));
+      when(() => mockUserRepository.getToken()).thenReturn('token');
 
-      when(mockUserRepository.me(loginToken)).thenAnswer((_) => Future.value(
-            User(
-              id: loggedInUserId,
-              name: 'Test',
-              type: '',
-            ),
-          ));
+      when(() => mockUserRepository.me(loginToken))
+          .thenAnswer((_) => Future.value(
+                User(
+                  id: loggedInUserId,
+                  name: 'Test',
+                  type: '',
+                ),
+              ));
 
-      when(mockUserRepository.getLicensesFromApi(any)).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           License(
             endTime: DateTime.now().add(Duration(hours: 24)),
             id: 1,
-            product: MEMOPLANNER_LICENSE_NAME,
+            product: memoplannerLicenseName,
           ),
         ]),
       );
@@ -112,7 +117,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
 
       final l1 = LoginState.initial().loading();
-      final e1 = l1.failure(cause: LoginFailureCause.NoUsername);
+      final e1 = l1.failure(cause: LoginFailureCause.noUsername);
 
       await expectLater(
         loginBloc.stream,
@@ -133,7 +138,7 @@ void main() {
       loginBloc.add(LoginButtonPressed());
       final s1 = LoginState(username: username, password: '');
       final l1 = s1.loading();
-      final e1 = s1.failure(cause: LoginFailureCause.NoPassword);
+      final e1 = s1.failure(cause: LoginFailureCause.noPassword);
 
       await expectLater(
         loginBloc.stream,
@@ -160,6 +165,8 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
+      when(() => mockedUserRepository.persistToken(any()))
+          .thenAnswer((_) => Future.value());
       final authenticationBloc = AuthenticationBloc(mockedUserRepository)
         ..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
@@ -168,15 +175,15 @@ void main() {
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc(StreamController<DateTime>().stream),
       );
-      when(mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(mockedUserRepository.me(any))
+      when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
+      when(() => mockedUserRepository.me(any()))
           .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
-      when(mockedUserRepository.getLicensesFromApi(any))
+      when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
                     endTime: DateTime.now().add(Duration(hours: 24)),
                     id: 1,
-                    product: MEMOPLANNER_LICENSE_NAME)
+                    product: memoplannerLicenseName)
               ]));
     });
 
@@ -186,28 +193,28 @@ void main() {
           password = 'password',
           fakePushToken = 'pushToken';
       const loginToken = 'loginToken';
-      when(mockFirebasePushService.initPushToken())
+      when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(fakePushToken));
-      when(mockedUserRepository.authenticate(
-        username: anyNamed('username'),
-        password: anyNamed('password'),
-        pushToken: anyNamed('pushToken'),
-        time: anyNamed('time'),
-      )).thenAnswer((_) => Future.value(loginToken));
+      when(() => mockedUserRepository.authenticate(
+            username: any(named: 'username'),
+            password: any(named: 'password'),
+            pushToken: any(named: 'pushToken'),
+            time: any(named: 'time'),
+          )).thenAnswer((_) => Future.value(loginToken));
 
       // Act
       loginBloc.add(UsernameChanged(username));
       loginBloc.add(PasswordChanged(password));
       loginBloc.add(LoginButtonPressed());
       // Assert
-      await untilCalled(mockedUserRepository.authenticate(
-        username: anyNamed('username'),
-        password: anyNamed('password'),
-        pushToken: anyNamed('pushToken'),
-        time: anyNamed('time'),
-      ));
-      await untilCalled(mockedUserRepository.me(any));
-      await untilCalled(mockedUserRepository.persistToken(any));
+      await untilCalled(() => mockedUserRepository.authenticate(
+            username: any(named: 'username'),
+            password: any(named: 'password'),
+            pushToken: any(named: 'pushToken'),
+            time: any(named: 'time'),
+          ));
+      await untilCalled(() => mockedUserRepository.me(any()));
+      await untilCalled(() => mockedUserRepository.persistToken(any()));
     });
   });
 }

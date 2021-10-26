@@ -9,7 +9,7 @@ class AddActivitySettingsState extends Equatable {
       showNoAlarm;
 
   final AddTabEditViewSettingsState addTabEditViewSettingsState;
-  final StepByStepSettingsState stepByStepSettingsState;
+  final WizardStepsSettings stepByStepSettingsState;
   final DefaultsTabSettingsState defaultsTabSettingsState;
 
   const AddActivitySettingsState._({
@@ -36,8 +36,7 @@ class AddActivitySettingsState extends Equatable {
         showNoAlarm: state.activityDisplayNoAlarmOption,
         addTabEditViewSettingsState:
             AddTabEditViewSettingsState.fromMemoplannerSettings(state),
-        stepByStepSettingsState:
-            StepByStepSettingsState.fromMemoplannerSettings(state),
+        stepByStepSettingsState: state.settings.wizard,
         defaultsTabSettingsState:
             DefaultsTabSettingsState.fromMemoplannerSettings(state),
       );
@@ -50,7 +49,7 @@ class AddActivitySettingsState extends Equatable {
     bool? showSilentAlarm,
     bool? showNoAlarm,
     AddTabEditViewSettingsState? addTabEditViewSettingsState,
-    StepByStepSettingsState? stepByStepSettingsState,
+    WizardStepsSettings? stepByStepSettingsState,
     DefaultsTabSettingsState? defaultsTabSettingsState,
   }) =>
       AddActivitySettingsState._(
@@ -174,54 +173,8 @@ class AddTabEditViewSettingsState extends Equatable {
       ];
 }
 
-class StepByStepSettingsState extends Equatable {
-  final bool showBasicActivities,
-      selectName,
-      selectImage,
-      setDate,
-      selectType,
-      selectCheckable,
-      selectAvailableFor,
-      selectDeleteAfter,
-      selectAlarm,
-      selectChecklist,
-      selectNote,
-      selectReminder;
-
-  const StepByStepSettingsState._({
-    required this.showBasicActivities,
-    required this.selectName,
-    required this.selectImage,
-    required this.setDate,
-    required this.selectType,
-    required this.selectCheckable,
-    required this.selectAvailableFor,
-    required this.selectDeleteAfter,
-    required this.selectAlarm,
-    required this.selectChecklist,
-    required this.selectNote,
-    required this.selectReminder,
-  });
-
-  factory StepByStepSettingsState.fromMemoplannerSettings(
-    MemoplannerSettingsState state,
-  ) =>
-      StepByStepSettingsState._(
-        showBasicActivities: state.wizardTemplateStep,
-        selectAlarm: state.wizardAlarmStep,
-        selectAvailableFor: state.wizardAvailabilityType,
-        selectChecklist: state.wizardChecklistStep,
-        selectDeleteAfter: state.wizardRemoveAfterStep,
-        selectImage: state.wizardImageStep,
-        selectName: state.wizardTitleStep,
-        selectNote: state.wizardNotesStep,
-        selectReminder: state.wizardRemindersStep,
-        selectType: state.wizardTypeStep,
-        selectCheckable: state.wizardCheckableStep,
-        setDate: state.wizardDatePickerStep,
-      );
-
-  StepByStepSettingsState copyWith({
+extension StepByStepSettingsState on WizardStepsSettings {
+  WizardStepsSettings copyWith({
     bool? showBasicActivities,
     bool? selectName,
     bool? selectImage,
@@ -235,86 +188,70 @@ class StepByStepSettingsState extends Equatable {
     bool? selectNote,
     bool? selectReminder,
   }) =>
-      StepByStepSettingsState._(
-        showBasicActivities: showBasicActivities ?? this.showBasicActivities,
-        selectName: selectName ?? this.selectName,
-        selectImage: selectImage ?? this.selectImage,
-        setDate: setDate ?? this.setDate,
-        selectType: selectType ?? this.selectType,
-        selectCheckable: selectCheckable ?? this.selectCheckable,
-        selectAvailableFor: selectAvailableFor ?? this.selectAvailableFor,
-        selectDeleteAfter: selectDeleteAfter ?? this.selectDeleteAfter,
-        selectAlarm: selectAlarm ?? this.selectAlarm,
-        selectChecklist: selectChecklist ?? this.selectChecklist,
-        selectNote: selectNote ?? this.selectNote,
-        selectReminder: selectReminder ?? this.selectReminder,
+      WizardStepsSettings(
+        template: showBasicActivities ?? template,
+        title: selectName ?? title,
+        image: selectImage ?? image,
+        datePicker: setDate ?? datePicker,
+        type: selectType ?? type,
+        checkable: selectCheckable ?? checkable,
+        availability: selectAvailableFor ?? availability,
+        removeAfter: selectDeleteAfter ?? removeAfter,
+        alarm: selectAlarm ?? alarm,
+        checklist: selectChecklist ?? checklist,
+        notes: selectNote ?? notes,
+        reminders: selectReminder ?? reminders,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: showBasicActivities,
-          identifier: MemoplannerSettings.wizardTemplateStepKey,
+          data: template,
+          identifier: WizardStepsSettings.wizardTemplateStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectName,
-          identifier: MemoplannerSettings.wizardTitleStepKey,
+          data: title,
+          identifier: WizardStepsSettings.wizardTitleStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectImage,
-          identifier: MemoplannerSettings.wizardImageStepKey,
+          data: image,
+          identifier: WizardStepsSettings.wizardImageStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: setDate,
-          identifier: MemoplannerSettings.wizardDatePickerStepKey,
+          data: datePicker,
+          identifier: WizardStepsSettings.wizardDatePickerStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectType,
-          identifier: MemoplannerSettings.wizardTypeStepKey,
+          data: type,
+          identifier: WizardStepsSettings.wizardTypeStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectCheckable,
-          identifier: MemoplannerSettings.wizardCheckableStepKey,
+          data: checkable,
+          identifier: WizardStepsSettings.wizardCheckableStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectAvailableFor,
-          identifier: MemoplannerSettings.wizardAvailabilityTypeKey,
+          data: availability,
+          identifier: WizardStepsSettings.wizardAvailabilityTypeKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectDeleteAfter,
-          identifier: MemoplannerSettings.wizardRemoveAfterStepKey,
+          data: removeAfter,
+          identifier: WizardStepsSettings.wizardRemoveAfterStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectAlarm,
-          identifier: MemoplannerSettings.wizardAlarmStepKey,
+          data: alarm,
+          identifier: WizardStepsSettings.wizardAlarmStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectChecklist,
-          identifier: MemoplannerSettings.wizardChecklistStepKey,
+          data: checklist,
+          identifier: WizardStepsSettings.wizardChecklistStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectNote,
-          identifier: MemoplannerSettings.wizardNotesStepKey,
+          data: notes,
+          identifier: WizardStepsSettings.wizardNotesStepKey,
         ),
         MemoplannerSettingData.fromData(
-          data: selectReminder,
-          identifier: MemoplannerSettings.wizardRemindersStepKey,
+          data: reminders,
+          identifier: WizardStepsSettings.wizardRemindersStepKey,
         ),
-      ];
-
-  @override
-  List<Object> get props => [
-        showBasicActivities,
-        selectName,
-        selectImage,
-        setDate,
-        selectType,
-        selectCheckable,
-        selectAvailableFor,
-        selectDeleteAfter,
-        selectAlarm,
-        selectChecklist,
-        selectNote,
-        selectReminder,
       ];
 }
 

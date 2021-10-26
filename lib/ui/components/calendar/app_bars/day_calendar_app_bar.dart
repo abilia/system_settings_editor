@@ -17,14 +17,14 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? ActionButton(
                   onPressed: () => BlocProvider.of<DayPickerBloc>(context)
                       .add(PreviousDay()),
-                  child: Icon(AbiliaIcons.return_to_previous_page),
+                  child: Icon(AbiliaIcons.returnToPreviousPage),
                 )
               : null,
           rightAction: memoSettingsState.dayCaptionShowDayButtons
               ? ActionButton(
                   onPressed: () =>
                       BlocProvider.of<DayPickerBloc>(context).add(NextDay()),
-                  child: Icon(AbiliaIcons.go_to_next_page),
+                  child: Icon(AbiliaIcons.goToNextPage),
                 )
               : null,
         ),

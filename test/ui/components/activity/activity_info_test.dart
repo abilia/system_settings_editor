@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:seagull/background/all.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -370,7 +370,7 @@ void main() {
         day: day)));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(AbiliaIcons.checkbox_unselected), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsOneWidget);
   });
 
   testWidgets('Test open checklist image in fullscreen',
@@ -388,24 +388,25 @@ void main() {
       fileId: Uuid().v4(),
       infoItem: infoItem,
     );
-
-    await tester.pumpWidget(
-      wrapWithMaterialApp(
-        ActivityInfo.from(
-          activity: activity,
-          day: day,
+    await mockNetworkImages(() async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfo.from(
+            activity: activity,
+            day: day,
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    tester.takeException();
-    expect(find.byType(ChecklistView), findsOneWidget);
-    expect(find.byType(QuestionView), findsOneWidget);
-    expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
-    await tester.tap(find.byKey(TestKey.checklistQuestionImageKey),
-        warnIfMissed: false);
-    await tester.pumpAndSettle();
-    expect(find.byType(FullScreenImage), findsOneWidget);
+      );
+      await tester.pumpAndSettle();
+      tester.takeException();
+      expect(find.byType(ChecklistView), findsOneWidget);
+      expect(find.byType(QuestionView), findsOneWidget);
+      expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.checklistQuestionImageKey),
+          warnIfMissed: false);
+      await tester.pumpAndSettle();
+      expect(find.byType(FullScreenImage), findsOneWidget);
+    });
   });
 
   testWidgets('Checklist attachment is present and not signed off',
@@ -479,28 +480,30 @@ void main() {
   });
 
   testWidgets('Show image in fullscreen', (WidgetTester tester) async {
-    // Arrange
-    final activity = Activity.createNew(
-      title: 'title',
-      startTime: startTime,
-      infoItem: infoItemWithTestNote,
-      fileId: Uuid().v4(),
-    );
-    await tester.pumpWidget(
-      wrapWithMaterialApp(
-        ActivityInfo.from(
-          activity: activity,
-          day: day,
+    await mockNetworkImages(() async {
+      // Arrange
+      final activity = Activity.createNew(
+        title: 'title',
+        startTime: startTime,
+        infoItem: infoItemWithTestNote,
+        fileId: Uuid().v4(),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfo.from(
+            activity: activity,
+            day: day,
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    tester.takeException();
+      );
+      await tester.pumpAndSettle();
+      tester.takeException();
 
-    expect(find.byKey(TestKey.viewImage), findsOneWidget);
-    await tester.tap(find.byKey(TestKey.viewImage));
-    await tester.pumpAndSettle();
-    expect(find.byType(PhotoView), findsOneWidget);
+      expect(find.byKey(TestKey.viewImage), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.viewImage));
+      await tester.pumpAndSettle();
+      expect(find.byType(PhotoView), findsOneWidget);
+    });
   });
 
   testWidgets(

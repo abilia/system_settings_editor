@@ -6,9 +6,9 @@ import 'package:image/image.dart' as img;
 import 'package:image/src/exif_data.dart';
 import 'package:seagull/models/all.dart';
 
-const IMAGE_ORIENTATION_FLAG = 'Image Orientation';
-const IMAGE_QUALITY = 80;
-const IMAGE_MAX_SIZE = 1500;
+const imageOrientationFlag = 'Image Orientation';
+const imageQuality = 80;
+const imageMaxSize = 1500;
 
 class ImageResponse {
   final List<int> originalImage;
@@ -37,9 +37,9 @@ Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
 
   int? width, height;
   if (adjustedOrientation.height > adjustedOrientation.width) {
-    height = min(IMAGE_MAX_SIZE, adjustedOrientation.height);
+    height = min(imageMaxSize, adjustedOrientation.height);
   } else {
-    width = min(IMAGE_MAX_SIZE, adjustedOrientation.width);
+    width = min(imageMaxSize, adjustedOrientation.width);
   }
 
   final resizedOriginal = img.copyResize(
@@ -48,7 +48,7 @@ Future<List<int>> adjustImageSizeAndRotation(List<int> originalData) async {
     width: width,
   );
 
-  return img.encodeJpg(resizedOriginal, quality: IMAGE_QUALITY);
+  return img.encodeJpg(resizedOriginal, quality: imageQuality);
 }
 
 Future<img.Image> resizeImg(img.Image image, int size) async {
@@ -71,7 +71,7 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   if (image == null) throw 'could not decode image bytes $imageBytes';
   final bakedImage = img.Image.from(image);
   final data = await exif.readExifFromBytes(imageBytes);
-  final orientationData = data[IMAGE_ORIENTATION_FLAG];
+  final orientationData = data[imageOrientationFlag];
   final orientation = orientationData?.values.firstAsInt() ?? 1;
   if (orientation == 1) {
     return bakedImage;
@@ -100,12 +100,12 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
 Future<ImageResponse> adjustRotationAndCreateThumbs(
     List<int> originalBytes) async {
   final adjustedImage = await adjustRotationToExif(originalBytes);
-  final original = img.encodeJpg(adjustedImage, quality: IMAGE_QUALITY);
+  final original = img.encodeJpg(adjustedImage, quality: imageQuality);
 
   final thumb =
-      (max(adjustedImage.height, adjustedImage.width) > ImageThumb.THUMB_SIZE)
-          ? img.encodeJpg(await resizeImg(adjustedImage, ImageThumb.THUMB_SIZE),
-              quality: IMAGE_QUALITY)
+      (max(adjustedImage.height, adjustedImage.width) > ImageThumb.thumbSize)
+          ? img.encodeJpg(await resizeImg(adjustedImage, ImageThumb.thumbSize),
+              quality: imageQuality)
           : original;
 
   return ImageResponse(

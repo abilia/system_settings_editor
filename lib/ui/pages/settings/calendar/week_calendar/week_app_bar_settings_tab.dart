@@ -66,13 +66,13 @@ class WeekAppBarPreview extends StatelessWidget {
               leftAction: state.showBrowseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.return_to_previous_page),
+                      child: Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
               rightAction: state.showBrowseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.go_to_next_page),
+                      child: Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,
               day: DateTime.now(),

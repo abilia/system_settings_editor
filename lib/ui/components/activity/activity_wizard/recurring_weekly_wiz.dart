@@ -8,11 +8,9 @@ class RecurringWeeklyWiz extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
 
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: translate.weekly,
-        iconData: AbiliaIcons.week,
-      ),
+    return WizardScaffold(
+      title: translate.weekly,
+      iconData: AbiliaIcons.week,
       body: BlocProvider(
         create: (context) =>
             RecurringWeekBloc(context.read<EditActivityBloc>()),
@@ -46,7 +44,6 @@ class RecurringWeeklyWiz extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const WizardBottomNavigation(),
     );
   }
 }
@@ -70,7 +67,7 @@ class SelectAllWeekdaysButton extends StatelessWidget {
             )
           : IconAndTextButton(
               text: Translator.of(context).translate.selectAll,
-              icon: AbiliaIcons.radiocheckbox_selected,
+              icon: AbiliaIcons.radiocheckboxSelected,
               style: actionButtonStyleDark,
               onPressed: () => context
                   .read<RecurringWeekBloc>()

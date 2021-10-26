@@ -39,7 +39,7 @@ void main() {
     );
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: ALARM_SOUND_AND_VIBRATION,
+      defaultAlarmTypeSetting: alarmSoundAndVibration,
     );
     // Act // Assert
     expect(editActivityBloc.state.activity, MatchActivityWithoutId(activity));
@@ -55,7 +55,7 @@ void main() {
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: ALARM_SILENT,
+      defaultAlarmTypeSetting: alarmSilent,
     );
 
     editActivityBloc.add(AddBasiActivity(basicActivity));
@@ -88,7 +88,7 @@ void main() {
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     editActivityBloc.add(AddBasiActivity(basicActivity));
@@ -126,7 +126,7 @@ void main() {
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     editActivityBloc.add(AddBasiActivity(basicActivity));
@@ -164,7 +164,7 @@ void main() {
     );
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
       day: aDay,
     );
     editActivityBloc.add(AddBasiActivity(basicActivity));
@@ -195,7 +195,7 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aTime,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
@@ -217,7 +217,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
     final activity = editActivityBloc.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
@@ -240,7 +240,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDate,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final activity = editActivityBloc.state.activity;
@@ -330,7 +330,7 @@ void main() {
 
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -464,7 +464,7 @@ void main() {
     // Arrange
     final editActivityBloc = EditActivityBloc.newActivity(
       day: aDay,
-      defaultAlarmTypeSetting: NO_ALARM,
+      defaultAlarmTypeSetting: noAlarm,
     );
 
     final in30Days = aTime.add(30.days());

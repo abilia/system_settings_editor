@@ -71,7 +71,7 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
           .toList();
       myPhotosFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
       final sortOrder = myPhotosFolderContent.isEmpty
-          ? START_SORT_ORDER
+          ? startSordOrder
           : calculateNextSortOrder(myPhotosFolderContent.last.sortOrder, 1);
       final newSortable = Sortable.createNew<ImageArchiveData>(
         data: sortableData,

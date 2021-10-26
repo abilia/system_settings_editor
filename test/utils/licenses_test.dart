@@ -11,7 +11,7 @@ void main() {
           License(
               id: 1,
               endTime: now.add(24.hours()),
-              product: MEMOPLANNER_LICENSE_NAME)
+              product: memoplannerLicenseName)
         ].anyValidLicense(now),
         true);
   });
@@ -22,7 +22,7 @@ void main() {
           License(
               id: 1,
               endTime: now.subtract(24.hours()),
-              product: MEMOPLANNER_LICENSE_NAME)
+              product: memoplannerLicenseName)
         ].anyValidLicense(now),
         false);
   });
@@ -33,7 +33,7 @@ void main() {
           License(
             id: 1,
             endTime: now.subtract(24.hours()),
-            product: MEMOPLANNER_LICENSE_NAME,
+            product: memoplannerLicenseName,
           ),
           License(
             id: 4,
@@ -50,7 +50,7 @@ void main() {
           License(
             id: 1,
             endTime: now.add(24.hours()),
-            product: MEMOPLANNER_LICENSE_NAME,
+            product: memoplannerLicenseName,
           ),
           License(
             id: 4,

@@ -53,7 +53,7 @@ class IntervalStepper extends StatelessWidget {
                         : () => context
                             .read<GeneralCalendarSettingsCubit>()
                             .decrement(part),
-                    child: Icon(AbiliaIcons.cursor_left),
+                    child: Icon(AbiliaIcons.cursorLeft),
                   ),
                   Tts(
                     child: Text(
@@ -72,7 +72,7 @@ class IntervalStepper extends StatelessWidget {
                         : () => context
                             .read<GeneralCalendarSettingsCubit>()
                             .increment(part),
-                    child: Icon(AbiliaIcons.cursor_right),
+                    child: Icon(AbiliaIcons.cursorRight),
                   ),
                 ],
               ),

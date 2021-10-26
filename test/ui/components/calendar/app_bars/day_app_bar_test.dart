@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +12,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/fake_db_and_repository.dart';
 import '../../../../mocks/mock_bloc.dart';
+import '../../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
@@ -42,8 +42,7 @@ void main() {
       );
 
   setUpAll(() {
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() {

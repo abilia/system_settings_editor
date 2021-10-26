@@ -49,7 +49,7 @@ class Unauthenticated extends AuthenticationState {
   final LoggedOutReason loggedOutReason;
   const Unauthenticated(
     UserRepository userRepository, {
-    this.loggedOutReason = LoggedOutReason.LOG_OUT,
+    this.loggedOutReason = LoggedOutReason.logOut,
     bool forcedNewState = false,
   }) : super(userRepository, forcedNewState);
 

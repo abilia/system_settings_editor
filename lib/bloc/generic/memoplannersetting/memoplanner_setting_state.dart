@@ -78,7 +78,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get displayEyeButton =>
       settingViewOptionsTimeView ||
-      (dayCalendarType == DayCalendarType.one_timepillar &&
+      (dayCalendarType == DayCalendarType.oneTimepillar &&
           (settingViewOptionsTimeInterval ||
               settingViewOptionsZoom ||
               settingViewOptionsDurationDots));
@@ -94,28 +94,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
 
-  bool get wizardTemplateStep => settings.wizardTemplateStep;
-  bool get wizardTitleStep => settings.wizardTitleStep;
-  bool get wizardImageStep => settings.wizardImageStep;
-  bool get wizardDatePickerStep => settings.wizardDatePickerStep;
-  bool get wizardTypeStep => settings.wizardTypeStep;
-  bool get wizardCheckableStep => settings.wizardCheckableStep;
-  bool get wizardAvailabilityType => settings.wizardAvailabilityType;
-  bool get wizardRemoveAfterStep => settings.wizardRemoveAfterStep;
-  bool get wizardAlarmStep => settings.wizardAlarmStep;
-  bool get wizardChecklistStep => settings.wizardChecklistStep;
-  bool get wizardNotesStep => settings.wizardNotesStep;
-  bool get wizardRemindersStep => settings.wizardRemindersStep;
-  bool get wizardWithOnlyTemplateStep =>
-      wizardTemplateStep && !wizardTitleStep && !wizardImageStep;
-
   int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
 
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get alarmDuration => settings.alarm.duration;
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>
@@ -150,21 +134,21 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarInterval todayTimepillarInterval(DateTime now) {
     final day = now.onlyDays();
     switch (timepillarIntervalType) {
-      case TimepillarIntervalType.INTERVAL:
+      case TimepillarIntervalType.interval:
         return dayPartInterval(now);
-      case TimepillarIntervalType.DAY:
+      case TimepillarIntervalType.day:
         if (now.isBefore(day.add(morningStart.milliseconds()))) {
           return TimepillarInterval(
             start: day,
             end: day.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         } else if (now
             .isAtSameMomentOrAfter(day.add(nightStart.milliseconds()))) {
           return TimepillarInterval(
             start: day.add(nightStart.milliseconds()),
             end: day.nextDay(),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         }
         return TimepillarInterval(
@@ -175,7 +159,7 @@ abstract class MemoplannerSettingsState extends Equatable {
         return TimepillarInterval(
           start: day,
           end: day.nextDay(),
-          intervalPart: IntervalPart.DAY_AND_NIGHT,
+          intervalPart: IntervalPart.dayAndNight,
         );
     }
   }
@@ -204,13 +188,13 @@ abstract class MemoplannerSettingsState extends Equatable {
           return TimepillarInterval(
             start: base,
             end: base.add(morningStart.milliseconds()),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         } else {
           return TimepillarInterval(
             start: base.add(nightStart.milliseconds()),
             end: base.nextDay(),
-            intervalPart: IntervalPart.NIGHT,
+            intervalPart: IntervalPart.night,
           );
         }
     }

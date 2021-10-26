@@ -8,8 +8,8 @@ enum WizardStep {
   image,
   type,
   checkable,
-  available_for,
-  delete_after,
+  availableFor,
+  deleteAfter,
   time,
   alarm,
   connectedFunction,
@@ -21,29 +21,29 @@ enum WizardStep {
 }
 
 enum SaveError {
-  NO_START_TIME,
-  NO_TITLE_OR_IMAGE,
-  START_TIME_BEFORE_NOW,
-  UNCONFIRMED_START_TIME_BEFORE_NOW,
-  UNCONFIRMED_ACTIVITY_CONFLICT,
-  NO_RECURRING_DAYS,
-  STORED_RECURRING,
-  END_DATE_BEFORE_START,
+  noStartTime,
+  noTitleOrImage,
+  startTimeBeforeNow,
+  unconfirmedStartTimeBeforeNow,
+  unconfirmedActivityConflict,
+  noRecurringDays,
+  storedRecurring,
+  endDateBeforeStart,
 }
 
 extension SaveErrors on Set<SaveError> {
   bool get mainPageErrors => any({
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.NO_START_TIME,
-        SaveError.START_TIME_BEFORE_NOW,
+        SaveError.noTitleOrImage,
+        SaveError.noStartTime,
+        SaveError.startTimeBeforeNow,
       }.contains);
 
   bool get noGoErrors => any({
-        SaveError.NO_START_TIME,
-        SaveError.NO_TITLE_OR_IMAGE,
-        SaveError.START_TIME_BEFORE_NOW,
-        SaveError.NO_RECURRING_DAYS,
-        SaveError.END_DATE_BEFORE_START,
+        SaveError.noStartTime,
+        SaveError.noTitleOrImage,
+        SaveError.startTimeBeforeNow,
+        SaveError.noRecurringDays,
+        SaveError.endDateBeforeStart,
       }.contains);
 }
 

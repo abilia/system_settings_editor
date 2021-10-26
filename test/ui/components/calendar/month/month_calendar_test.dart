@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -14,8 +14,9 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
+import '../../../../test_helpers/enter_text.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
@@ -27,20 +28,24 @@ void main() {
     setupPermissions();
     setupFakeTts();
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
 
     mockGenericDb = MockGenericDb();
-    when(mockGenericDb.insertAndAddDirty(any))
+    when(() => mockGenericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(false));
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
-    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
-    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
+    when(() => mockGenericDb.getById(any()))
+        .thenAnswer((_) => Future.value(null));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -72,9 +77,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+    await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
     expect(find.byType(GoToCurrentActionButton), findsOneWidget);
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -97,7 +102,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar),
@@ -109,7 +114,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
       expect(find.byType(GoToCurrentActionButton), findsOneWidget);
       await tester.verifyTts(find.byType(MonthAppBar), contains: 'July 2020');
@@ -120,7 +125,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.return_to_previous_page));
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
@@ -187,7 +192,7 @@ void main() {
         expect(find.text(nextMonthTitle), findsNothing);
         expect(find.byType(FullDayStack), findsOneWidget);
 
-        await tester.tap(find.byIcon(AbiliaIcons.go_to_next_page));
+        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();
 
         expect(find.text(fridayTitle), findsNothing);
@@ -230,7 +235,7 @@ void main() {
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
       expect(find.byType(EyeButtonMonthDialog), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -244,7 +249,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -264,7 +269,7 @@ void main() {
 
     testWidgets('Activities in the preview repspects show categories setting',
         (WidgetTester tester) async {
-      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (realInvocation) => Future.value(
           [
             Generic.createNew<MemoplannerSettingData>(
@@ -283,7 +288,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(EyeButtonMonth));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendar_list));
+      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -316,7 +321,7 @@ void main() {
         FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(mockGenericDb.getAllNonDeletedMaxRevision())
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
@@ -337,7 +342,7 @@ void main() {
         FakeActivity.starts(initialDay, title: 'two').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(mockGenericDb.getAllNonDeletedMaxRevision())
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
@@ -349,6 +354,35 @@ void main() {
       expect(find.byType(FullDayStack), findsOneWidget);
       expect(find.byType(MonthActivityContent), findsNothing);
       expect(find.text('+2'), findsOneWidget);
+    });
+
+    testWidgets(
+        'SGC-1062 Split month view: List not updated when editing activity',
+        (WidgetTester tester) async {
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+          .thenAnswer((_) => Future.value([monthPreviewSetting]));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MonthPreview), findsOneWidget);
+
+      await tester.tap(find.text(title1));
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.edit));
+      await tester.pumpAndSettle();
+      await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField), 'new title');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextWizardStepButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.activityBackButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthPreview), findsOneWidget);
+      expect(find.text('new title'), findsOneWidget);
     });
   });
 }

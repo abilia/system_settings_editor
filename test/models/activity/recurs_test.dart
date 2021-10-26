@@ -5,49 +5,49 @@ void main() {
   group('Recurring tests', () {
     group('Recurring factories', () {
       test('Yearly', () {
-        final expected = Recurs.raw(Recurs.TYPE_YEARLY, 1124, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeYearly, 1124, Recurs.noEnd);
         final yearly = Recurs.yearly(DateTime(2000, 12, 24));
         expect(yearly, expected);
       });
 
       test('Monthly', () {
-        final expected = Recurs.raw(Recurs.TYPE_MONTHLY, 8, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeMonthly, 8, Recurs.noEnd);
         final monthly = Recurs.monthly(4);
         expect(monthly, expected);
       });
 
       test('Monthly on days', () {
-        final expected = Recurs.raw(Recurs.TYPE_MONTHLY, 523, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeMonthly, 523, Recurs.noEnd);
         final monthly = Recurs.monthlyOnDays(const [1, 2, 4, 10]);
         expect(monthly, expected);
 
-        final expected2 = Recurs.raw(Recurs.TYPE_MONTHLY, 3, Recurs.NO_END);
+        final expected2 = Recurs.raw(Recurs.typeMonthly, 3, Recurs.noEnd);
         final monthly2 = Recurs.monthlyOnDays(const [1, 2]);
         expect(monthly2, expected2);
       });
 
       test('Weekly', () {
-        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 129, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeWeekly, 129, Recurs.noEnd);
         final weekly = Recurs.weeklyOnDay(1);
         expect(weekly, expected);
       });
 
       test('Weekly on days 1,2,3', () {
-        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 903, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeWeekly, 903, Recurs.noEnd);
         final weekly = Recurs.weeklyOnDays(const [1, 2, 3]);
         expect(weekly, expected);
       });
 
       test('Biweekly on days', () {
-        final expected = Recurs.raw(Recurs.TYPE_WEEKLY, 1, Recurs.NO_END);
+        final expected = Recurs.raw(Recurs.typeWeekly, 1, Recurs.noEnd);
         final weekly = Recurs.biWeeklyOnDays(evens: const [1]);
         expect(weekly, expected);
 
-        final expected2 = Recurs.raw(Recurs.TYPE_WEEKLY, 32, Recurs.NO_END);
+        final expected2 = Recurs.raw(Recurs.typeWeekly, 32, Recurs.noEnd);
         final weekly2 = Recurs.biWeeklyOnDays(evens: const [6]);
         expect(weekly2, expected2);
 
-        final expected3 = Recurs.raw(Recurs.TYPE_WEEKLY, 129, Recurs.NO_END);
+        final expected3 = Recurs.raw(Recurs.typeWeekly, 129, Recurs.noEnd);
         final weekly3 =
             Recurs.biWeeklyOnDays(evens: const [1], odds: const [1]);
         expect(weekly3, expected3);
@@ -56,14 +56,14 @@ void main() {
       test('Recurring end from Handi 9223372036854775807 is limited to NO_END',
           () {
         const handiEnd = 9223372036854775807;
-        final handiRecur = Recurs.raw(Recurs.TYPE_WEEKLY, 129, handiEnd);
-        expect(handiRecur.endTime, Recurs.NO_END);
+        final handiRecur = Recurs.raw(Recurs.typeWeekly, 129, handiEnd);
+        expect(handiRecur.endTime, Recurs.noEnd);
       });
     });
     group('onCorrectYearsDay', () {
       test('-1 is not a correct day of the year', () {
         // arrange
-        final rec = Recurs.raw(Recurs.TYPE_YEARLY, -1, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, -1, Recurs.noEnd);
         final start = DateTime(1999, 12, 12);
         // act
         final result = rec.recursOnDay(start);
@@ -73,7 +73,7 @@ void main() {
 
       test('onCorrectYearsDay christmas day', () {
         // arrange
-        final rec = Recurs.raw(Recurs.TYPE_YEARLY, 1124, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, 1124, Recurs.noEnd);
         final start = DateTime(1999, 12, 24);
         // act
         final result = rec.recursOnDay(start);
@@ -84,8 +84,7 @@ void main() {
       test('onCorrectYearsDay new years day', () {
         // arrange
         const recurrentData = 1;
-        final rec =
-            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, recurrentData, Recurs.noEnd);
         final start = DateTime(2000, 01, 01);
         // act
         final result = rec.recursOnDay(start);
@@ -96,8 +95,7 @@ void main() {
       test('onCorrectYearsDay midsummer day', () {
         // arrange
         const recurrentData = 0521;
-        final rec =
-            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, recurrentData, Recurs.noEnd);
         final start = DateTime(2000, 06, 21);
         // act
         final result = rec.recursOnDay(start);
@@ -109,8 +107,7 @@ void main() {
           () {
         // arrange
         const recurrentData = 0521;
-        final rec =
-            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, recurrentData, Recurs.noEnd);
         final start = DateTime(2000, 06, 22);
         // act
         final result = rec.recursOnDay(start);
@@ -121,8 +118,7 @@ void main() {
       test('onCorrectYearsDay midsummer 2500', () {
         // arrange
         const recurrentData = 0521;
-        final rec =
-            Recurs.raw(Recurs.TYPE_YEARLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeYearly, recurrentData, Recurs.noEnd);
         final start = DateTime(2500, 06, 21);
         // act
         final result = rec.recursOnDay(start);
@@ -135,8 +131,7 @@ void main() {
       test('onCorrectMonthDay first day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(1);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2020, 06, 01);
         // act
         final result = rec.recursOnDay(start);
@@ -147,8 +142,7 @@ void main() {
       test('onCorrectMonthDay not first day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(1);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2020, 06, 02);
         // act
         final result = rec.recursOnDay(start);
@@ -159,8 +153,7 @@ void main() {
       test('onCorrectMonthDay second day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(2);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2020, 06, 02);
         // act
         final result = rec.recursOnDay(start);
@@ -171,8 +164,7 @@ void main() {
       test('onCorrectMonthDay second day of month ignores other', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(2);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2020, 01, 02, 20, 20, 20, 20);
         // act
         final result = rec.recursOnDay(start);
@@ -183,8 +175,7 @@ void main() {
       test('onCorrectMonthDay third day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(3);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2020, 01, 03);
         // act
         final result = rec.recursOnDay(start);
@@ -195,8 +186,7 @@ void main() {
       test('onCorrectMonthDay 10th day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(10);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final start = DateTime(2011, 11, 10);
         // act
         final result = rec.recursOnDay(start);
@@ -207,8 +197,7 @@ void main() {
       test('onCorrectMonthDay 1st, 2nd, 3rd and 10th day of month', () {
         // arrange
         final recurrentData = Recurs.onDaysOfMonth([1, 2, 3, 10]);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final first = DateTime(2011, 11, 1);
         final second = DateTime(2011, 11, 2);
         final third = DateTime(2011, 11, 3);
@@ -231,8 +220,7 @@ void main() {
       test('onCorrectMonthDay all day of month', () {
         // arrange
         const recurrentData = 0x7FFFFFFF;
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
         final result = dates.every((d) => rec.recursOnDay(d));
@@ -243,8 +231,7 @@ void main() {
       test('onCorrectMonthDay no day of month', () {
         // arrange
         const recurrentData = 0x0;
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
         final result = dates.any((d) => rec.recursOnDay(d));
@@ -255,8 +242,7 @@ void main() {
       test('onCorrectMonthDay one day of month', () {
         // arrange
         final recurrentData = Recurs.onDayOfMonth(5);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
         final results = dates.map((d) => rec.recursOnDay(d));
@@ -273,8 +259,7 @@ void main() {
         final day4 = DateTime(2004, 04, 04, 04, 04);
         final days = [day1.day, day2.day];
         final recurrentData = Recurs.onDaysOfMonth(days);
-        final rec =
-            Recurs.raw(Recurs.TYPE_MONTHLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeMonthly, recurrentData, Recurs.noEnd);
         // act
         final results1 = rec.recursOnDay(day1);
         final results2 = rec.recursOnDay(day2);
@@ -292,8 +277,7 @@ void main() {
       test('All weekdays, monday is true', () {
         // arrange
         const recurrentData = Recurs.allWeekdays;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final evenWeekMonday = DateTime(2019, 11, 25);
 
         // act
@@ -306,8 +290,7 @@ void main() {
         // arrange
         const recurrentData = Recurs.allWeekdays;
         final evenWeekMonday = DateTime(2019, 11, 24);
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         // act
         final correctDays = rec.recursOnDay(evenWeekMonday);
         // assert
@@ -317,8 +300,7 @@ void main() {
       test('All weekdays, correct for whole month', () {
         // arrange
         const recurrentData = Recurs.allWeekdays;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final dates = List.generate(31, (i) => DateTime(2020, 10, i + 1));
         // act
         final correctDays =
@@ -329,9 +311,8 @@ void main() {
 
       test('Even monday is true', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final evenWeekMonday = DateTime(2019, 11, 25);
 
         // act
@@ -342,9 +323,8 @@ void main() {
 
       test('Odd monday is false', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final evenWeekMonday = DateTime(2019, 11, 18);
 
         // act
@@ -355,9 +335,8 @@ void main() {
 
       test('Odd and even Monday is true', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday | Recurs.oddMonday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final evenWeekMonday = DateTime(2019, 11, 18);
 
         // act
@@ -368,9 +347,8 @@ void main() {
 
       test('Monday is true all year', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday | Recurs.oddMonday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final dates = List.generate(2000, (i) => DateTime(2020, 01, i + 1));
         // act
         final correctDays =
@@ -381,9 +359,8 @@ void main() {
 
       test('Not sunday is true all year', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY | Recurs.ODD_MONDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday | Recurs.oddMonday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final dates = List.generate(2000, (i) => DateTime(2020, 01, i + 1));
         // act
         final correctDays =
@@ -394,9 +371,8 @@ void main() {
 
       test('Odd fridays', () {
         // arrange
-        const recurrentData = Recurs.ODD_FRIDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.oddFriday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final anOddFriday = DateTime(2019, 11, 22);
         // act
         final result = rec.recursOnDay(anOddFriday);
@@ -406,9 +382,8 @@ void main() {
 
       test('Odd fridays 2', () {
         // arrange
-        const recurrentData = Recurs.ODD_FRIDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.oddFriday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final anOddFriday = DateTime(2019, 11, 29);
         // act
         final result = rec.recursOnDay(anOddFriday);
@@ -418,13 +393,12 @@ void main() {
 
       test('Even weekdays', () {
         // arrange
-        const recurrentData = Recurs.EVEN_MONDAY |
-            Recurs.EVEN_TUESDAY |
-            Recurs.EVEN_WEDNESDAY |
-            Recurs.EVEN_THURSDAY |
-            Recurs.EVEN_FRIDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenMonday |
+            Recurs.evenTuesday |
+            Recurs.evenWednesday |
+            Recurs.evenThursday |
+            Recurs.evenFriday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final twoWeeks = List.generate(14, (i) => DateTime(2019, 11, 25 + i));
         // act
         final correctDays = twoWeeks.takeWhile((d) => rec.recursOnDay(d));
@@ -437,9 +411,8 @@ void main() {
 
       test('saturdays week 53 time is odd', () {
         // arrange
-        const recurrentData = Recurs.ODD_SATURDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.oddSaturday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final saturDayWeek53 = DateTime(2021, 01, 02);
         // act
         final correctDays = rec.recursOnDay(saturDayWeek53);
@@ -449,9 +422,8 @@ void main() {
 
       test('saturdays 11th april is odd', () {
         // arrange
-        const recurrentData = Recurs.ODD_SATURDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.oddSaturday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final april11th = DateTime(2020, 04, 11);
         // act
         final result = rec.recursOnDay(april11th);
@@ -463,9 +435,8 @@ void main() {
           'every other saturdays for until there is a week 53 then two in a row then every other again',
           () {
         // arrange
-        const recurrentData = Recurs.ODD_SATURDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.oddSaturday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final twoWeeks =
             List.generate(29, (i) => DateTime(2019, 11, 23 + (i * 14)))
               ..add(DateTime(2021, 01, 02))
@@ -481,9 +452,8 @@ void main() {
           'every other saturdays for until there is a week 53 then nothing for two weeks then every other again',
           () {
         // arrange
-        const recurrentData = Recurs.EVEN_SATURDAY;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        const recurrentData = Recurs.evenSaturday;
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final twoWeeks =
             List.generate(29, (i) => DateTime(2019, 11, 30 + (i * 14)))
               ..addAll(
@@ -497,8 +467,7 @@ void main() {
       test('everyDay is always true', () {
         // arrange
         const recurrentData = Recurs.allDaysOfWeek;
-        final rec =
-            Recurs.raw(Recurs.TYPE_WEEKLY, recurrentData, Recurs.NO_END);
+        final rec = Recurs.raw(Recurs.typeWeekly, recurrentData, Recurs.noEnd);
         final loadsOfDays =
             List.generate(3333, (i) => DateTime(2019, 01, 01 + i));
         // act
@@ -563,7 +532,7 @@ void main() {
 
         // assert
         expect(monthDays.data, recurrentData);
-        expect(recurrentData, Recurs.MONDAY);
+        expect(recurrentData, Recurs.monday);
       });
 
       test('on tuesday', () {
@@ -630,7 +599,7 @@ void main() {
       test('wrong type week return empty list', () {
         // arrange
         final weekly =
-            Recurs.raw(Recurs.TYPE_WEEKLY, Recurs.allDaysOfWeek, null);
+            Recurs.raw(Recurs.typeWeekly, Recurs.allDaysOfWeek, null);
         // assert
         expect(weekly.monthDays, []);
       });

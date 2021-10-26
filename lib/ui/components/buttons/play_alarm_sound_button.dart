@@ -24,7 +24,7 @@ class PlayAlarmSoundButton extends StatelessWidget {
                     await context.read<AlarmSoundCubit>().playSound(sound);
                   },
         child: Icon(
-          state == sound ? AbiliaIcons.stop : AbiliaIcons.play_sound,
+          state == sound ? AbiliaIcons.stop : AbiliaIcons.playSound,
         ),
       ),
     );

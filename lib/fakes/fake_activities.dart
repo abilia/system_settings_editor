@@ -11,7 +11,7 @@ class FakeActivity {
           title: title,
           startTime: when,
           duration: duration,
-          alarmType: ALARM_SILENT);
+          alarmType: alarmSilent);
 
   static Activity ends(
     DateTime when, {
@@ -22,7 +22,7 @@ class FakeActivity {
           title: title,
           startTime: when.subtract(duration),
           duration: duration,
-          alarmType: ALARM_SILENT);
+          alarmType: alarmSilent);
 
   static Activity reocurrsEveryDay([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDays(List.generate(7, (d) => d + 1)),
@@ -65,7 +65,7 @@ class FakeActivity {
           startTime: (startTime ?? DateTime(1970, 01, 01)),
           duration: Duration(hours: 1),
           recurs: recurs,
-          alarmType: ALARM_SILENT);
+          alarmType: alarmSilent);
 
   static Activity fullday(DateTime when, [String title = 'fullday']) =>
       Activity.createNew(
@@ -74,5 +74,5 @@ class FakeActivity {
           duration: 1.days() - 1.milliseconds(),
           fullDay: true,
           reminderBefore: [60 * 60 * 1000],
-          alarmType: NO_ALARM);
+          alarmType: noAlarm);
 }

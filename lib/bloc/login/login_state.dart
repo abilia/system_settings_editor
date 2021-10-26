@@ -55,13 +55,13 @@ class LoginState extends Equatable {
 }
 
 enum LoginFailureCause {
-  NoUsername,
-  NoPassword,
-  Credentials,
-  NoConnection,
-  LicenseExpired,
-  NoLicense,
-  UnsupportedUserType,
+  noUsername,
+  noPassword,
+  credentials,
+  noConnection,
+  licenseExpired,
+  noLicense,
+  unsupportedUserType,
 }
 
 class LoginSucceeded extends LoginState {
@@ -101,17 +101,17 @@ class LoginFailure extends LoginState {
       );
 
   bool get licenseError =>
-      cause == LoginFailureCause.LicenseExpired ||
-      cause == LoginFailureCause.NoLicense;
+      cause == LoginFailureCause.licenseExpired ||
+      cause == LoginFailureCause.noLicense;
 
   @override
-  bool get credentialError => cause == LoginFailureCause.Credentials;
+  bool get credentialError => cause == LoginFailureCause.credentials;
   @override
   bool get usernameError =>
-      cause == LoginFailureCause.NoUsername || credentialError;
+      cause == LoginFailureCause.noUsername || credentialError;
   @override
   bool get passwordError =>
-      cause == LoginFailureCause.NoPassword || credentialError;
+      cause == LoginFailureCause.noPassword || credentialError;
 
   @override
   List<Object> get props => [

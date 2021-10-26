@@ -4,6 +4,7 @@ import 'package:seagull/ui/all.dart';
 
 class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final String? label;
   final IconData iconData;
   final Widget? trailing;
   final PreferredSizeWidget? bottom;
@@ -14,6 +15,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   AbiliaAppBar({
     Key? key,
     required this.title,
+    this.label,
     required this.iconData,
     this.bottom,
     this.trailing,
@@ -28,6 +30,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     Widget content = AppBarHeading(
       text: title,
+      label: label ?? '',
       iconData: iconData,
     );
     if (bottom != null) {

@@ -211,7 +211,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
             if (state is NoValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
                 LoggedOut(
-                  loggedOutReason: LoggedOutReason.LICENSE_EXPIRED,
+                  loggedOutReason: LoggedOutReason.licenseExpired,
                 ),
               );
             }

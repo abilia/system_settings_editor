@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -13,7 +13,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/verify_generic.dart';
 
@@ -25,14 +25,14 @@ void main() {
 
   setUp(() async {
     setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
+    when(() => genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
@@ -106,7 +106,7 @@ void main() {
 
       testWidgets('hide menu calendar shows popup and saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+        await tester.tap(find.byIcon(AbiliaIcons.appMenu));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -126,47 +126,47 @@ void main() {
           (tester) async {
         // Act - got to home button settings
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.browser_home));
+        await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
         // Assert -- all radio buttons there
         expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
-        expect(find.byIcon(AbiliaIcons.app_menu), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.appMenu), findsOneWidget);
         expect(
-          find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard),
+          find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
           findsOneWidget,
         );
 
         // Act -- deselect calendars and meny at too bar tag
 
         await tester
-            .tap(find.byIcon(AbiliaIcons.shortcut_menu)); // home setting tab
+            .tap(find.byIcon(AbiliaIcons.shortcutMenu)); // home setting tab
 
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.week));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+        await tester.tap(find.byIcon(AbiliaIcons.appMenu));
         await tester.pumpAndSettle();
         await tester
-            .tap(find.byIcon(AbiliaIcons.browser_home)); // toolbar setting tab
+            .tap(find.byIcon(AbiliaIcons.browserHome)); // toolbar setting tab
         await tester.pumpAndSettle();
         // Assert -- finds only two radion buttons
         expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.week), findsNothing);
         expect(find.byIcon(AbiliaIcons.month), findsNothing);
-        expect(find.byIcon(AbiliaIcons.app_menu), findsNothing);
+        expect(find.byIcon(AbiliaIcons.appMenu), findsNothing);
         expect(
-          find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard),
+          find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
           findsOneWidget,
         );
       });
 
       testWidgets('week view choice saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.browser_home));
+        await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.week));
         await tester.pumpAndSettle();
@@ -183,7 +183,7 @@ void main() {
 
       testWidgets('month view choice saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.browser_home));
+        await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.month));
         await tester.pumpAndSettle();
@@ -200,9 +200,9 @@ void main() {
 
       testWidgets('menu view choice saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.browser_home));
+        await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+        await tester.tap(find.byIcon(AbiliaIcons.appMenu));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -217,10 +217,10 @@ void main() {
 
       testWidgets('photo view choice saved', (tester) async {
         await tester.goToFunctionSettingsPage(pump: true);
-        await tester.tap(find.byIcon(AbiliaIcons.browser_home));
+        await tester.tap(find.byIcon(AbiliaIcons.browserHome));
         await tester.pumpAndSettle();
         await tester
-            .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
+            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -265,7 +265,7 @@ void main() {
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
         await tester
-            .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
+            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(OkButton));
@@ -287,7 +287,7 @@ void main() {
         await tester.tap(find.text('5 ${translate.minutes}'));
         await tester.pumpAndSettle();
         await tester
-            .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
+            .tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.noTimeout));
         await tester.pumpAndSettle();
@@ -465,7 +465,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.menu_setup));
+    await tap(find.byIcon(AbiliaIcons.menuSetup));
     await pumpAndSettle();
   }
 }

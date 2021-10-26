@@ -49,21 +49,21 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
 
   Stream<CreateAccountState> _mapCreateAccountEventToState() async* {
     if (state.username.isEmpty) {
-      yield state.failed(CreateAccountFailure.NoUsername);
+      yield state.failed(CreateAccountFailure.noUsername);
     } else if (!LoginBloc.usernameValid(state.username)) {
-      yield state.failed(CreateAccountFailure.UsernameToShort);
+      yield state.failed(CreateAccountFailure.usernameToShort);
     } else if (state.firstPassword.isEmpty) {
-      yield state.failed(CreateAccountFailure.NoPassword);
+      yield state.failed(CreateAccountFailure.noPassword);
     } else if (!LoginBloc.passwordValid(state.firstPassword)) {
-      yield state.failed(CreateAccountFailure.PasswordToShort);
+      yield state.failed(CreateAccountFailure.passwordToShort);
     } else if (state.secondPassword.isEmpty) {
-      yield state.failed(CreateAccountFailure.NoConfirmPassword);
+      yield state.failed(CreateAccountFailure.noConfirmPassword);
     } else if (state.firstPassword != state.secondPassword) {
-      yield state.failed(CreateAccountFailure.PasswordMismatch);
+      yield state.failed(CreateAccountFailure.passwordMismatch);
     } else if (!state.termsOfUse) {
-      yield state.failed(CreateAccountFailure.TermsOfUse);
+      yield state.failed(CreateAccountFailure.termsOfUse);
     } else if (!state.privacyPolicy) {
-      yield state.failed(CreateAccountFailure.PrivacyPolicy);
+      yield state.failed(CreateAccountFailure.privacyPolicy);
     } else {
       try {
         await repository.createAccount(
@@ -79,11 +79,11 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
             exception.badRequest.errors.firstWhereOrNull((_) => true);
         _log.warning('creating account failed: $exception');
         yield state.failed(
-          firstError?.failure ?? CreateAccountFailure.Unknown,
+          firstError?.failure ?? CreateAccountFailure.unknown,
         );
       } catch (exception) {
         _log.warning('unknown exception when creating account: $exception');
-        yield state.failed(CreateAccountFailure.NoConnection);
+        yield state.failed(CreateAccountFailure.noConnection);
       }
     }
   }

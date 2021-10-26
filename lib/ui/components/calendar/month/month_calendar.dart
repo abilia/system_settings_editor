@@ -16,15 +16,9 @@ class MonthCalendarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MonthAppBar(),
-      body: Stack(
-        children: const [
-          MonthCalendar(),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: EyeButtonMonth(),
-          ),
-        ],
-      ),
+      floatingActionButton: FloatingActions(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      body: const MonthCalendar(),
     );
   }
 }
@@ -141,6 +135,7 @@ class MonthContent extends StatelessWidget {
 class WeekRow extends StatelessWidget {
   final MonthWeek week;
   final MonthDayWidgetBuilder builder;
+
   const WeekRow(
     this.week, {
     Key? key,
@@ -363,6 +358,7 @@ class MonthDayContainer extends StatelessWidget {
 
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
+
   const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
 
   @override

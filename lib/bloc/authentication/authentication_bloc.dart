@@ -76,7 +76,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> _logout(
     UserRepository repo, {
     String? token,
-    LoggedOutReason loggedOutReason = LoggedOutReason.LOG_OUT,
+    LoggedOutReason loggedOutReason = LoggedOutReason.logOut,
   }) async* {
     try {
       await onLogout?.call();

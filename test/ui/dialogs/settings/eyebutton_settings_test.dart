@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,7 +15,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 import '../../../test_helpers/verify_generic.dart';
 
@@ -28,30 +28,33 @@ void main() {
     setupFakeTts();
     final initTime = DateTime(2020, 07, 23, 11, 29);
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockTicker = StreamController<DateTime>();
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+    when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
 
     final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
       data: MemoplannerSettingData.fromData(
-          data: DayCalendarType.one_timepillar.index,
+          data: DayCalendarType.oneTimepillar.index,
           identifier: MemoplannerSettings.viewOptionsTimeViewKey),
     );
 
     mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([timepillarGeneric]));
-    when(mockGenericDb.getLastRevision()).thenAnswer((_) => Future.value(0));
-    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
-    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
-    when(mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockGenericDb.insertAndAddDirty(any))
+    when(() => mockGenericDb.getLastRevision())
+        .thenAnswer((_) => Future.value(0));
+    when(() => mockGenericDb.getById(any()))
+        .thenAnswer((_) => Future.value(null));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
+    when(() => mockGenericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
@@ -113,11 +116,11 @@ void main() {
     // Verify correct TTS timeline
     await tester.verifyTts(find.text(translate.viewMode),
         exact: translate.viewMode);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.calendar_list),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.calendarList),
         exact: translate.listView);
     await tester.verifyTts(find.byIcon(AbiliaIcons.timeline),
         exact: translate.oneTimePillarView);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.two_timelines),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.twoTimelines),
         exact: translate.twoTimePillarsView);
 
     // Verify correct TTS zoom. Small and medium has same icon for now
@@ -125,17 +128,17 @@ void main() {
     await tester.verifyTts(find.text(translate.small), exact: translate.small);
     await tester.verifyTts(find.text(translate.medium),
         exact: translate.medium);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.enlarge_text),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.enlargeText),
         exact: translate.large);
 
     // Verify correct TTS intervals
     await tester.verifyTts(find.text(translate.dayInterval),
         exact: translate.dayInterval);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.day_interval),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.dayInterval),
         exact: translate.interval);
     await tester.verifyTts(find.byIcon(AbiliaIcons.sun),
         exact: translate.viewDay);
-    await tester.verifyTts(find.byIcon(AbiliaIcons.day_night),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.dayNight),
         exact: translate.dayAndNight);
 
     // Scroll down

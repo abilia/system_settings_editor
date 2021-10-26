@@ -16,7 +16,7 @@ class LogoutPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.logout,
-        iconData: AbiliaIcons.power_off_on,
+        iconData: AbiliaIcons.powerOffOn,
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 64.0.s),
@@ -50,7 +50,7 @@ class _ProfilePictureNameAndEmailState
     user = GetIt.I<UserDb>().getUser();
     baseUrl = GetIt.I<BaseUrlDb>().getBaseUrl();
     environment =
-        backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? PROD;
+        backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? prod;
   }
 
   @override
@@ -99,7 +99,7 @@ class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconAndTextButton(
         text: Translator.of(context).translate.logout,
-        icon: AbiliaIcons.power_off_on,
+        icon: AbiliaIcons.powerOffOn,
         onPressed: () =>
             BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
         style: iconTextButtonStyleRed,

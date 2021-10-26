@@ -13,7 +13,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
@@ -28,7 +28,7 @@ void main() {
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
 
     GetItInitializer()
@@ -207,17 +207,17 @@ void main() {
 
     // Logout
     if (Config.isMP) {
-      await tester.tap(find.byIcon(AbiliaIcons.app_menu));
+      await tester.tap(find.byIcon(AbiliaIcons.appMenu));
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.settings));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
     } else if (Config.isMPGO) {
       await tester.tap(find.byIcon(AbiliaIcons.settings));
     }
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(LogoutButton));
     await tester.pumpAndSettle();

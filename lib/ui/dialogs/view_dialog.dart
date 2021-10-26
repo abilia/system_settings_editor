@@ -87,7 +87,7 @@ class ErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) => ViewDialog(
         heading: AppBarHeading(
           text: Translator.of(context).translate.error,
-          iconData: AbiliaIcons.ir_error,
+          iconData: AbiliaIcons.irError,
         ),
         body: Tts(child: Text(text)),
         backNavigationWidget: backNavigationWidget ?? PreviousButton(),
@@ -119,8 +119,32 @@ class YesNoDialog extends StatelessWidget {
   }
 }
 
+class ConfirmWarningDialog extends StatelessWidget {
+  final String text;
+  const ConfirmWarningDialog({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewDialog(
+      heading: AppBarHeading(
+        text: Translator.of(context).translate.warning,
+        iconData: AbiliaIcons.gewaRadioError,
+      ),
+      body: Tts(child: Text(text)),
+      forwardNavigationWidget: OkButton(
+        onPressed: () => Navigator.of(context).maybePop(true),
+      ),
+      backNavigationWidget: PreviousButton(),
+    );
+  }
+}
+
 class WarningDialog extends StatelessWidget {
   final String text;
+
   const WarningDialog({
     Key? key,
     required this.text,
@@ -131,13 +155,10 @@ class WarningDialog extends StatelessWidget {
     return ViewDialog(
       heading: AppBarHeading(
         text: Translator.of(context).translate.warning,
-        iconData: AbiliaIcons.gewa_radio_error,
+        iconData: AbiliaIcons.irError,
       ),
       body: Tts(child: Text(text)),
-      forwardNavigationWidget: OkButton(
-        onPressed: () => Navigator.of(context).maybePop(true),
-      ),
-      backNavigationWidget: PreviousButton(),
+      backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
   }
 }

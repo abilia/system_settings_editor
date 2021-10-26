@@ -9,13 +9,10 @@ class AlarmWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.attention,
-        title: Translator.of(context).translate.alarm,
-      ),
+    return WizardScaffold(
+      iconData: AbiliaIcons.attention,
+      title: Translator.of(context).translate.alarm,
       body: SelectAlarmWizPage(),
-      bottomNavigationBar: WizardBottomNavigation(),
     );
   }
 }

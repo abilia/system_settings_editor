@@ -10,13 +10,12 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
   setUp(() async {
     setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     GetItInitializer()
@@ -56,7 +55,7 @@ extension on WidgetTester {
     await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.my_photos));
+    await tap(find.byIcon(AbiliaIcons.myPhotos));
     await pumpAndSettle();
   }
 }

@@ -56,19 +56,21 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     Activity activity,
   ) =>
       [
-        if (settings.wizardTemplateStep) WizardStep.basic,
-        if (settings.wizardDatePickerStep) WizardStep.date,
-        if (settings.wizardTitleStep) WizardStep.title,
-        if (settings.wizardImageStep) WizardStep.image,
-        if (settings.wizardTypeStep) WizardStep.type,
-        if (settings.wizardAvailabilityType) WizardStep.available_for,
-        if (settings.wizardCheckableStep) WizardStep.checkable,
-        if (settings.wizardRemoveAfterStep) WizardStep.delete_after,
+        if (settings.settings.wizard.template) WizardStep.basic,
+        if (settings.settings.wizard.datePicker) WizardStep.date,
+        if (settings.settings.wizard.title) WizardStep.title,
+        if (settings.settings.wizard.image) WizardStep.image,
+        if (settings.settings.wizard.type) WizardStep.type,
+        if (settings.settings.wizard.availability) WizardStep.availableFor,
+        if (settings.settings.wizard.checkable) WizardStep.checkable,
+        if (settings.settings.wizard.removeAfter) WizardStep.deleteAfter,
         if (!activity.fullDay) WizardStep.time,
-        if (!activity.fullDay && settings.wizardAlarmStep) WizardStep.alarm,
-        if (settings.wizardChecklistStep || settings.wizardNotesStep)
+        if (!activity.fullDay && settings.settings.wizard.alarm)
+          WizardStep.alarm,
+        if (settings.settings.wizard.checklist ||
+            settings.settings.wizard.notes)
           WizardStep.connectedFunction,
-        if (settings.wizardRemindersStep && !activity.fullDay)
+        if (settings.settings.wizard.reminders && !activity.fullDay)
           WizardStep.reminder,
         if (settings.activityRecurringEditable) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
@@ -181,24 +183,23 @@ extension SaveErrorExtension on EditActivityState {
     required ActivitiesState activitiesState,
   }) =>
       {
-        if (!hasTitleOrImage) SaveError.NO_TITLE_OR_IMAGE,
-        if (!hasStartTime) SaveError.NO_START_TIME,
+        if (!hasTitleOrImage) SaveError.noTitleOrImage,
+        if (!hasStartTime) SaveError.noStartTime,
         if (startTimeBeforeNow(now))
           if (!allowActivityTimeBeforeCurrent)
-            SaveError.START_TIME_BEFORE_NOW
+            SaveError.startTimeBeforeNow
           else if (!beforeNowWarningConfirmed)
-            SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW,
-        if (emptyRecurringData) SaveError.NO_RECURRING_DAYS,
-        if (storedRecurring && !saveReccuringDefined)
-          SaveError.STORED_RECURRING,
+            SaveError.unconfirmedStartTimeBeforeNow,
+        if (emptyRecurringData) SaveError.noRecurringDays,
+        if (storedRecurring && !saveReccuringDefined) SaveError.storedRecurring,
         if (hasStartTime &&
             !conflictWarningConfirmed &&
             !unchangedTime &&
             activitiesState.anyConflictWith(activityToStore()))
-          SaveError.UNCONFIRMED_ACTIVITY_CONFLICT,
+          SaveError.unconfirmedActivityConflict,
         if (activity.isRecurring &&
             activity.recurs.end.isBefore(activity.startTime))
-          SaveError.END_DATE_BEFORE_START
+          SaveError.endDateBeforeStart
       };
 
   SaveError? stepErrors({
@@ -210,30 +211,30 @@ extension SaveErrorExtension on EditActivityState {
     switch (wizState.currentStep) {
       case WizardStep.title:
         if (!hasTitleOrImage && !wizState.steps.contains(WizardStep.image)) {
-          return SaveError.NO_TITLE_OR_IMAGE;
+          return SaveError.noTitleOrImage;
         }
         break;
       case WizardStep.image:
-        if (!hasTitleOrImage) return SaveError.NO_TITLE_OR_IMAGE;
+        if (!hasTitleOrImage) return SaveError.noTitleOrImage;
         break;
       case WizardStep.time:
-        if (!hasStartTime) return SaveError.NO_START_TIME;
+        if (!hasStartTime) return SaveError.noStartTime;
         if (startTimeBeforeNow(now)) {
           if (!allowActivityTimeBeforeCurrent) {
-            return SaveError.START_TIME_BEFORE_NOW;
+            return SaveError.startTimeBeforeNow;
           } else if (!warningConfirmed) {
-            return SaveError.UNCONFIRMED_START_TIME_BEFORE_NOW;
+            return SaveError.unconfirmedStartTimeBeforeNow;
           }
         }
         break;
       case WizardStep.recursWeekly:
       case WizardStep.recursMonthly:
-        if (emptyRecurringData) return SaveError.NO_RECURRING_DAYS;
+        if (emptyRecurringData) return SaveError.noRecurringDays;
 
         break;
       case WizardStep.endDate:
         if (activity.recurs.end.isBefore(activity.startTime)) {
-          return SaveError.END_DATE_BEFORE_START;
+          return SaveError.endDateBeforeStart;
         }
         break;
       default:

@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -17,7 +16,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'fakes/all.dart';
-import 'mocks/shared.mocks.dart';
+import 'mocks/mocks.dart';
 import 'test_helpers/enter_text.dart';
 import 'test_helpers/app_pumper.dart';
 
@@ -41,7 +40,6 @@ void main() {
     activity,
     activityWithAlarmday,
   );
-  final payloadSerial = json.encode(payload.toJson());
 
   setUp(() async {
     tz.setLocalLocation(tz.UTC);
@@ -54,10 +52,14 @@ void main() {
 
     final response = [activity];
 
-    when(mockActivityDb.getAllNonDeleted())
+    when(() =>
+            notificationsPluginInstance!.cancel(any(), tag: any(named: 'tag')))
+        .thenAnswer((_) => Future.value());
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(response));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockActivityDb.insertAndAddDirty(any))
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     getItInitializer
@@ -98,13 +100,14 @@ void main() {
     testWidgets('Reminder shows', (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
-            Activity.createNew(
-              title: 'Reminder',
-              startTime: activityWithAlarmTime.add(reminder),
-              reminderBefore: [reminder.inMilliseconds],
-            )
-          ]));
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([
+                Activity.createNew(
+                  title: 'Reminder',
+                  startTime: activityWithAlarmTime.add(reminder),
+                  reminderBefore: [reminder.inMilliseconds],
+                )
+              ]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -121,13 +124,14 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
-            Activity.createNew(
-              title: 'unchecked reminder',
-              startTime: activityWithAlarmTime.subtract(reminder),
-              checkable: true,
-            )
-          ]));
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([
+                Activity.createNew(
+                  title: 'unchecked reminder',
+                  startTime: activityWithAlarmTime.subtract(reminder),
+                  checkable: true,
+                )
+              ]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -144,14 +148,15 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
-            Activity.createNew(
-              title: 'Reminder',
-              startTime: activityWithAlarmTime.subtract(reminder),
-              checkable: true,
-              signedOffDates: [activityWithAlarmTime.onlyDays()],
-            )
-          ]));
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([
+                Activity.createNew(
+                  title: 'Reminder',
+                  startTime: activityWithAlarmTime.subtract(reminder),
+                  checkable: true,
+                  signedOffDates: [activityWithAlarmTime.onlyDays()],
+                )
+              ]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -167,14 +172,16 @@ void main() {
       // Arrange
       final reminder = 15.minutes();
       final duration = 1.hours();
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
-            Activity.createNew(
-              title: 'Reminder',
-              startTime: activityWithAlarmTime.subtract(reminder + duration),
-              duration: duration,
-              checkable: true,
-            )
-          ]));
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([
+                Activity.createNew(
+                  title: 'Reminder',
+                  startTime:
+                      activityWithAlarmTime.subtract(reminder + duration),
+                  duration: duration,
+                  checkable: true,
+                )
+              ]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act
@@ -196,7 +203,7 @@ void main() {
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsNothing);
       // Act
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
 
       // Assert
@@ -208,7 +215,7 @@ void main() {
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -235,7 +242,7 @@ void main() {
       expect(find.byType(AlarmPage), findsOneWidget);
       await tester.tap(find.byType(CloseButton));
       await tester.pumpAndSettle();
-      verify(notificationPlugin.cancel(payload.hashCode));
+      verify(() => notificationPlugin.cancel(payload.hashCode));
     });
 
     testWidgets('SGC-844 alarm does not open when app is paused',
@@ -245,7 +252,7 @@ void main() {
       addTearDown(() => tester.binding
           .handleAppLifecycleStateChanged(AppLifecycleState.resumed));
 
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpApp();
       await tester.pumpAndSettle();
 
@@ -257,26 +264,26 @@ void main() {
         (WidgetTester tester) async {
       // Act
       mockTicker.add(twoHoursAfter);
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpApp();
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
-      expect(selectNotificationSubject, emits(payloadSerial));
+      expect(selectNotificationSubject, emits(payload));
 
       // Act logout
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
       if (Config.isMP) {
         await tester.tap(find.byIcon(AbiliaIcons.settings));
         await tester.pumpAndSettle();
-        await tester.tap(find.byIcon(AbiliaIcons.technical_settings));
+        await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
         await tester.pumpAndSettle();
       }
-      await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+      await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(LogoutButton));
       await tester.pumpAndSettle();
@@ -301,7 +308,7 @@ void main() {
       // Arrange
       mockTicker.add(twoHoursAfter);
       await tester.pumpWidget(App());
-      selectNotificationSubject.add(payloadSerial);
+      selectNotificationSubject.add(payload);
       await tester.pumpAndSettle();
 
       // Assert -- Alarm is on screen and alarm is checkable
@@ -366,12 +373,12 @@ void main() {
           },
         ),
       );
-      final checkableActivityPayloadSerial = json.encode(StartAlarm(
+      final checkableActivityPayload = StartAlarm(
         checkableActivityWithChecklist,
         startDay,
-      ).toJson());
+      );
 
-      selectNotificationSubject.add(checkableActivityPayloadSerial);
+      selectNotificationSubject.add(checkableActivityPayload);
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -407,10 +414,10 @@ void main() {
     final day = activity1StartTime.onlyDays();
     final activity1 = Activity.createNew(
         title: '111111', startTime: activity1StartTime, duration: 2.minutes());
-    final startTimeActivity1NotificationPayload = json.encode(StartAlarm(
+    final startTimeActivity1NotificationPayload = StartAlarm(
       activity1,
       day,
-    ).toJson());
+    );
 
     final activity2StartTime = activity1StartTime.add(1.minutes());
     final activity2 = Activity.createNew(
@@ -419,7 +426,7 @@ void main() {
     testWidgets('Start and end time alarm for same activity',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -438,7 +445,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       expect(alarmScreenFinder, findsNothing);
@@ -447,7 +454,7 @@ void main() {
     testWidgets('Start alarm is displayed on top if tapped on notification',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -465,7 +472,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown since the start time alarm should have been moved to top
@@ -474,7 +481,7 @@ void main() {
 
     testWidgets('Overlapping activities', (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1, activity2]));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -503,7 +510,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - the top/latest alarm should be the end time alarm for activity 2
@@ -519,7 +526,7 @@ void main() {
           equals(activity2.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
@@ -529,7 +536,7 @@ void main() {
     testWidgets('Start alarm can show twice after close (BUG SGC-244)',
         (WidgetTester tester) async {
       // Arrange
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
       final pushBloc = PushBloc();
       await tester.pumpWidget(App(pushBloc: pushBloc));
@@ -552,12 +559,13 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm, no more alarm
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
       expect(alarmScreenFinder, findsNothing);
 
       // Activity change forward one minute from backend and is pushed
-      when(mockActivityDb.getAllNonDeleted()).thenAnswer((_) => Future.value([
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value([
             activity1.copyWith(startTime: activity1StartTime.add(1.minutes()))
           ]));
       pushBloc.add(PushEvent('calendar'));
@@ -579,7 +587,7 @@ void main() {
           equals(activity1.id));
 
       // Act - tap the alarm ok button
-      await tester.tap(find.byIcon(AbiliaIcons.close_program));
+      await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
       await tester.pumpAndSettle();
 
       // Expect - no more alarms should be shown
@@ -593,7 +601,7 @@ void main() {
       final activities = [
         Activity.createNew(
             startTime: start.add(2.minutes()),
-            alarmType: ALARM_SILENT,
+            alarmType: alarmSilent,
             checkable: true,
             duration: 1.minutes(),
             title: 'ALARM_SILENT'),
@@ -601,36 +609,36 @@ void main() {
             startTime: start.add(4.minutes()),
             duration: 1.minutes(),
             checkable: true,
-            alarmType: ALARM_VIBRATION,
+            alarmType: alarmVibration,
             title: 'ALARM_VIBRATION'),
         Activity.createNew(
             startTime: start.add(6.minutes()),
             checkable: true,
             duration: 1.minutes(),
-            alarmType: ALARM_SOUND_ONLY_ON_START,
+            alarmType: alarmSoundOnlyOnStart,
             title: 'ALARM_SOUND_ONLY_ON_START'),
         Activity.createNew(
             startTime: start.add(8.minutes()),
             duration: 1.minutes(),
             checkable: true,
-            alarmType: ALARM_SOUND_AND_VIBRATION,
+            alarmType: alarmSoundAndVibration,
             title: 'ALARM_SOUND_AND_VIBRATION'),
         Activity.createNew(
             startTime: start.add(10.minutes()),
             duration: 1.minutes(),
             reminderBefore: [1.minutes().inMilliseconds],
-            alarmType: NO_ALARM,
+            alarmType: noAlarm,
             checkable: true,
             title: 'NO_ALARM'),
         Activity.createNew(
             startTime: start.add(11.minutes()),
             reminderBefore: [10.minutes().inMilliseconds],
             checkable: true,
-            alarmType: ALARM_SILENT,
+            alarmType: alarmSilent,
             title: 'ALARM_SILENT reminder 10 min before'),
       ];
 
-      when(mockActivityDb.getAllNonDeleted())
+      when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value(activities));
 
       await tester.pumpWidget(App());
@@ -673,7 +681,7 @@ void main() {
 
       testWidgets('Fullscreen alarms ignores same alarm ',
           (WidgetTester tester) async {
-        final reminder = ReminderBefore(
+        final payload = ReminderBefore(
             Activity.createNew(
               title: 'one reminder title',
               startTime: activity1StartTime,
@@ -681,12 +689,9 @@ void main() {
             activity1StartTime.onlyDays(),
             reminder: 15.minutes());
 
-        final reminderJson = reminder.toJson();
-        final payload = json.encode(reminderJson);
-
         await tester.pumpWidget(
           App(
-            payload: reminder,
+            payload: payload,
           ),
         );
         await tester.pumpAndSettle();
@@ -705,7 +710,7 @@ void main() {
           findsOneWidget,
         );
         expect(
-          find.text(reminder.activity.title, skipOffstage: false),
+          find.text(payload.activity.title, skipOffstage: false),
           findsOneWidget,
         );
       });
@@ -726,7 +731,6 @@ void main() {
           ),
           activity1StartTime.onlyDays(),
         );
-        final alarmPayload = json.encode(alarm.toJson());
 
         // Act
         await tester.pumpWidget(
@@ -741,7 +745,7 @@ void main() {
         expect(find.text(reminder.activity.title), findsOneWidget);
 
         // Act -- notification tapped
-        selectNotificationSubject.add(alarmPayload);
+        selectNotificationSubject.add(alarm);
         await tester.pumpAndSettle();
 
         // Assert -- new alarm page
@@ -750,7 +754,7 @@ void main() {
         expect(find.text(alarm.activity.title), findsOneWidget);
 
         // Act -- Close alarm page
-        await tester.tap(find.byIcon(AbiliaIcons.close_program));
+        await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
         await tester.pumpAndSettle();
 
         // Assert -- first alarm page
@@ -788,17 +792,11 @@ void main() {
           ),
           activity1StartTime.onlyDays(),
         );
-        final alarm2Json = alarm2.toJson();
-        final alarm3Json = alarm3.toJson();
-        final alarm4Json = alarm4.toJson();
-        final payload2 = json.encode(alarm2Json);
-        final payload3 = json.encode(alarm3Json);
-        final payload4 = json.encode(alarm4Json);
 
         // Arrange
-        selectNotificationSubject.add(payload2);
-        selectNotificationSubject.add(payload3);
-        selectNotificationSubject.add(payload4);
+        selectNotificationSubject.add(alarm2);
+        selectNotificationSubject.add(alarm3);
+        selectNotificationSubject.add(alarm4);
 
         await tester.pumpWidget(
           App(

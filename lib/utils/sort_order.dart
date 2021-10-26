@@ -4,32 +4,32 @@ import 'package:seagull/models/all.dart';
 /// Sort order algorithm copied from myAbilia frontend code with adjustments to dart.
 ///
 
-const String SORT_ORDER_CHARACTERS =
+const String sordOrderCharacters =
     '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}';
-const START_CHAR = '!', END_CHAR = '}', START_SORT_ORDER = 'O';
+const startChar = '!', endChar = '}', startSordOrder = 'O';
 
 String calculateNextSortOrder(String sortOrder, int step) {
-  if (sortOrder.isEmpty) return START_SORT_ORDER;
+  if (sortOrder.isEmpty) return startSordOrder;
   final i = sortOrder.length - 1;
   var arr = sortOrder.split('').toList();
   final next = sortOrder.codeUnitAt(i) + step;
   final nextSort = String.fromCharCode(next);
 
-  if (nextSort.compareTo(START_CHAR) <= 0) {
-    if (i == 0 || sortOrder[i - 1] == START_CHAR) {
-      arr[i] = START_CHAR;
-      arr.add(END_CHAR);
+  if (nextSort.compareTo(startChar) <= 0) {
+    if (i == 0 || sortOrder[i - 1] == startChar) {
+      arr[i] = startChar;
+      arr.add(endChar);
     } else {
       arr[i] = '';
       arr = calculateNextSortOrder(arr.join(''), 0).split('');
     }
-  } else if (nextSort.compareTo(END_CHAR) > 0) {
-    if (i > 0 && arr.join('')[i - 1] == START_CHAR) {
-      arr[i - 1] = SORT_ORDER_CHARACTERS[
-          (SORT_ORDER_CHARACTERS.indexOf(START_CHAR) + 1)];
+  } else if (nextSort.compareTo(endChar) > 0) {
+    if (i > 0 && arr.join('')[i - 1] == startChar) {
+      arr[i - 1] =
+          sordOrderCharacters[(sordOrderCharacters.indexOf(startChar) + 1)];
       arr[i] = '';
     } else {
-      arr.add(String.fromCharCode(START_CHAR.codeUnitAt(0) + 1));
+      arr.add(String.fromCharCode(startChar.codeUnitAt(0) + 1));
     }
   } else {
     arr[i] = nextSort;
@@ -43,7 +43,7 @@ extension SortExtension on Iterable<Sortable> {
     final root = where((s) => s.groupId == folderId).toList();
     root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
     return root.isEmpty
-        ? START_SORT_ORDER
+        ? startSordOrder
         : calculateNextSortOrder(root.first.sortOrder, -1);
   }
 }

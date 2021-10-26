@@ -87,7 +87,7 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
           return NotificationAlarm.decode(payload);
         } else {
           _log.info('on ios, adding payload to selectNotificationSubject');
-          selectNotificationSubject.add(payload);
+          onNotification(payload);
         }
       }
     }

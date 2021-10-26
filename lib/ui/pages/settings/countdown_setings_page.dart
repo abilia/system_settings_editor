@@ -8,7 +8,7 @@ class CountdownSettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
           title: Translator.of(context).translate.countdown,
-          iconData: AbiliaIcons.stop_watch),
+          iconData: AbiliaIcons.stopWatch),
       body: ListView.separated(
         padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
         itemBuilder: (context, i) => widgets[i],

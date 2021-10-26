@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:collection/collection.dart';
@@ -11,7 +11,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -27,9 +27,9 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.textToSpeech).thenReturn(true);
+    when(() => mockSettingsDb.textToSpeech).thenReturn(true);
     final userDb = MockUserDb();
-    when(userDb.getUser()).thenReturn(user);
+    when(() => userDb.getUser()).thenReturn(user);
     GetItInitializer()
       ..userDb = userDb
       ..packageInfo = PackageInfo(
@@ -38,7 +38,7 @@ void main() {
           version: 'version',
           buildNumber: 'buildNumber')
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 
@@ -74,8 +74,8 @@ void main() {
   testWidgets('Settings page shows', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    expect(find.byIcon(AbiliaIcons.power_off_on), findsOneWidget);
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    expect(find.byIcon(AbiliaIcons.powerOffOn), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     expect(find.byType(LogoutButton), findsOneWidget);
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
@@ -84,9 +84,9 @@ void main() {
   testWidgets('tts', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.verifyTts(find.byIcon(AbiliaIcons.power_off_on),
+    await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
         exact: translate.logout);
-    await tester.tap(find.byIcon(AbiliaIcons.power_off_on));
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
     await tester.verifyTts(find.text(user.name), exact: user.name);
@@ -104,7 +104,7 @@ void main() {
   });
 
   testWidgets('Tts switched off', (WidgetTester tester) async {
-    when(mockSettingsDb.textToSpeech).thenReturn(false);
+    when(() => mockSettingsDb.textToSpeech).thenReturn(false);
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
@@ -137,7 +137,7 @@ void main() {
     setupPermissions();
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(AbiliaIcons.numeric_keyboard));
+    await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
     await tester.pumpAndSettle();
     expect(find.byType(CodeProtectPage), findsOneWidget);
   });
@@ -145,8 +145,7 @@ void main() {
   testWidgets('android settings availible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
     await tester.pumpAndSettle();
-    await tester
-        .tap(find.byIcon(AbiliaIcons.past_picture_from_windows_clipboard));
+    await tester.tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
     await tester.pumpAndSettle();
   });
 }

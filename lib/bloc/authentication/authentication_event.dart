@@ -30,14 +30,14 @@ class LoggedIn extends AuthenticationEvent {
 }
 
 enum LoggedOutReason {
-  LICENSE_EXPIRED,
-  LOG_OUT,
+  licenseExpired,
+  logOut,
 }
 
 class LoggedOut extends AuthenticationEvent {
   final LoggedOutReason loggedOutReason;
 
-  const LoggedOut({this.loggedOutReason = LoggedOutReason.LOG_OUT});
+  const LoggedOut({this.loggedOutReason = LoggedOutReason.logOut});
 }
 
 class NotReady extends AuthenticationEvent {}

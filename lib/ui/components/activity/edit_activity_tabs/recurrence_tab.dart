@@ -34,7 +34,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                           builder: (context, wizState) => TimeIntervallPicker(
                             state.timeInterval,
                             startTimeError: wizState.saveErrors
-                                .contains(SaveError.NO_START_TIME),
+                                .contains(SaveError.noStartTime),
                           ),
                         ),
                       ),
@@ -56,7 +56,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                     buildWhen: (prev, current) => current.saveErrors.isNotEmpty,
                     builder: (context, wizState) {
                       final recurringDataError = wizState.saveErrors
-                          .contains(SaveError.NO_RECURRING_DAYS);
+                          .contains(SaveError.noRecurringDays);
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -147,7 +147,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
           previous.everyOtherWeek != current.everyOtherWeek,
       builder: (context, state) => SwitchField(
         leading: Icon(
-          AbiliaIcons.this_week,
+          AbiliaIcons.thisWeek,
           size: smallIconSize,
         ),
         value: state.everyOtherWeek,

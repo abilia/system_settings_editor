@@ -1,14 +1,14 @@
 import 'package:seagull/models/all.dart';
 
-const PROD = 'https://myabilia.com',
-    WHALE = 'https://whale.abilia-gbg.se',
-    T1 = 'https://t1.abilia-gbg.se',
-    DEBUG = 'https://debug.abilia-gbg.se';
+const prod = 'https://myabilia.com',
+    whale = 'https://whale.abilia-gbg.se',
+    t1 = 'https://t1.abilia-gbg.se',
+    debug = 'https://debug.abilia-gbg.se';
 const Map<String, String> backEndEnvironments = {
-  'Prod': PROD,
-  'Whale': WHALE,
-  'T1': T1,
-  'Debug': DEBUG,
+  'Prod': prod,
+  'Whale': whale,
+  'T1': t1,
+  'Debug': debug,
 };
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>
@@ -19,7 +19,7 @@ String imageThumbUrl({
   required int userId,
   required String imageFileId,
   required String imagePath,
-  int size = ImageThumb.THUMB_SIZE,
+  int size = ImageThumb.thumbSize,
 }) =>
     imageFileId.isNotEmpty
         ? imageThumbIdUrl(
@@ -39,7 +39,7 @@ String imageThumbIdUrl({
   required String baseUrl,
   required int userId,
   required String imageFileId,
-  int size = ImageThumb.THUMB_SIZE,
+  int size = ImageThumb.thumbSize,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/image/thumb/$imageFileId?height=$size&width=$size';
 
@@ -50,7 +50,7 @@ String imageThumbPathUrl({
   required String baseUrl,
   required int userId,
   required String imagePath,
-  int size = ImageThumb.THUMB_SIZE,
+  int size = ImageThumb.thumbSize,
 }) =>
     '$baseUrl/api/v1/data/$userId/storage/thumb/$imagePath?height=$size&width=$size';
 

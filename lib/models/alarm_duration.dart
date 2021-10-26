@@ -2,28 +2,28 @@ import 'package:seagull/i18n/all.dart';
 import 'package:seagull/utils/all.dart';
 
 enum AlarmDuration {
-  Alert,
-  FifteenSeconds,
-  ThirtySeconds,
-  OneMinute,
-  TwoMinutes,
-  FiveMinutes,
+  alert,
+  fifteenSeconds,
+  thirtySeconds,
+  oneMinute,
+  twoMinutes,
+  fiveMinutes,
 }
 
 extension AlarmDurationExtension on AlarmDuration {
   String displayText(Translated t) {
     switch (this) {
-      case AlarmDuration.Alert:
+      case AlarmDuration.alert:
         return t.alert;
-      case AlarmDuration.FifteenSeconds:
+      case AlarmDuration.fifteenSeconds:
         return '15 ${t.seconds}';
-      case AlarmDuration.ThirtySeconds:
+      case AlarmDuration.thirtySeconds:
         return '30 ${t.seconds}';
-      case AlarmDuration.OneMinute:
+      case AlarmDuration.oneMinute:
         return '1 ${t.minute}';
-      case AlarmDuration.TwoMinutes:
+      case AlarmDuration.twoMinutes:
         return '2 ${t.minutes}';
-      case AlarmDuration.FiveMinutes:
+      case AlarmDuration.fiveMinutes:
         return '5 ${t.minutes}';
       default:
         throw Exception();
@@ -34,17 +34,17 @@ extension AlarmDurationExtension on AlarmDuration {
 
   Duration duration() {
     switch (this) {
-      case AlarmDuration.Alert:
+      case AlarmDuration.alert:
         return Duration.zero;
-      case AlarmDuration.FifteenSeconds:
+      case AlarmDuration.fifteenSeconds:
         return 15.seconds();
-      case AlarmDuration.ThirtySeconds:
+      case AlarmDuration.thirtySeconds:
         return 30.seconds();
-      case AlarmDuration.OneMinute:
+      case AlarmDuration.oneMinute:
         return 1.minutes();
-      case AlarmDuration.TwoMinutes:
+      case AlarmDuration.twoMinutes:
         return 2.minutes();
-      case AlarmDuration.FiveMinutes:
+      case AlarmDuration.fiveMinutes:
         return 5.minutes();
       default:
         throw Exception();
@@ -55,20 +55,20 @@ extension AlarmDurationExtension on AlarmDuration {
 extension ToAlarmDurationExtension on int {
   AlarmDuration toAlarmDuration() {
     if (this <= 0) {
-      return AlarmDuration.Alert;
+      return AlarmDuration.alert;
     }
     if (this <= 15000) {
-      return AlarmDuration.FifteenSeconds;
+      return AlarmDuration.fifteenSeconds;
     }
     if (this <= 30000) {
-      return AlarmDuration.ThirtySeconds;
+      return AlarmDuration.thirtySeconds;
     }
     if (this <= 60000) {
-      return AlarmDuration.OneMinute;
+      return AlarmDuration.oneMinute;
     }
     if (this <= 120000) {
-      return AlarmDuration.TwoMinutes;
+      return AlarmDuration.twoMinutes;
     }
-    return AlarmDuration.FiveMinutes;
+    return AlarmDuration.fiveMinutes;
   }
 }

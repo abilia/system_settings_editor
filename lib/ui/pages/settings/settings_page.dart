@@ -18,34 +18,34 @@ class SettingsPage extends StatelessWidget {
             navigateTo: CalendarSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.menu_setup,
+            icon: AbiliaIcons.menuSetup,
             text: t.functions,
             navigateTo: FunctionSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.my_photos,
+            icon: AbiliaIcons.myPhotos,
             text: t.imagePicker,
             navigateTo: ImagePickerSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.app_menu,
+            icon: AbiliaIcons.appMenu,
             text: t.menu,
             navigateTo: MenuSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.stop_watch,
+            icon: AbiliaIcons.stopWatch,
             text: t.countdown,
             navigateTo: CountdownSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.technical_settings,
+            icon: AbiliaIcons.technicalSettings,
             text: t.system,
             navigateTo: SystemSettingsPage(),
           ),
         ] else if (Config.isMPGO) ...[
           Tts(child: Text(t.calendar)),
           MenuItemPickField(
-            icon: AbiliaIcons.handi_alarm_vibration,
+            icon: AbiliaIcons.handiAlarmVibration,
             text: t.alarmSettings,
             navigateTo: AlarmSettingsPage(),
           ),
@@ -59,7 +59,7 @@ class SettingsPage extends StatelessWidget {
             navigateTo: const AboutPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.power_off_on,
+            icon: AbiliaIcons.powerOffOn,
             text: t.logout,
             navigateTo: const LogoutPage(),
           ),
@@ -85,7 +85,7 @@ class TextToSpeechSwitch extends StatelessWidget {
         Expanded(
           child: SwitchField(
             value: settingsState.textToSpeech,
-            leading: Icon(AbiliaIcons.speak_text),
+            leading: Icon(AbiliaIcons.speakText),
             onChanged: (v) =>
                 context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
             child: Text(Translator.of(context).translate.textToSpeech),
@@ -115,7 +115,7 @@ class PermissionPickField extends StatelessWidget {
         builder: (context, state) => Stack(
           children: [
             PickField(
-              leading: Icon(AbiliaIcons.menu_setup),
+              leading: Icon(AbiliaIcons.menuSetup),
               text: Text(Translator.of(context).translate.permissions),
               onTap: () async {
                 context.read<PermissionBloc>().checkAll();

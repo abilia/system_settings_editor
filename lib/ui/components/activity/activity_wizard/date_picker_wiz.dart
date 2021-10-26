@@ -24,12 +24,10 @@ class DatePickerWiz extends StatelessWidget {
               ),
             ),
           ],
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              title: Translator.of(context).translate.selectDate,
-              iconData: AbiliaIcons.day,
-              bottom: const MonthAppBarStepper(),
-            ),
+          child: WizardScaffold(
+            title: Translator.of(context).translate.selectDate,
+            iconData: AbiliaIcons.day,
+            bottom: const MonthAppBarStepper(),
             body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
               buildWhen: (previous, current) =>
                   previous.calendarDayColor != current.calendarDayColor,

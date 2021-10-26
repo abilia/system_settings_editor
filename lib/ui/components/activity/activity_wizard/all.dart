@@ -14,3 +14,4 @@ export 'remove_after_wiz.dart';
 export 'extra_function_wiz.dart';
 export 'reminder_wiz.dart';
 export 'end_date_picker_wiz.dart';
+export 'wizard_scaffold.dart';

@@ -12,6 +12,7 @@ export 'calendar/scroll_position/scroll_position_bloc.dart';
 export 'clock/clock_bloc.dart';
 export 'alarm/alarm_cubit.dart';
 export 'alarm/notification_cubit.dart';
+export 'alarm/alarm_speech/alarm_speech_cubit.dart';
 export 'push/push_bloc.dart';
 export 'calendar/calendar_view/calendar_view_cubit.dart';
 export 'sortable/sortable_bloc.dart';

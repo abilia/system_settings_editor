@@ -8,17 +8,14 @@ class _EyeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0.s),
-      child: Material(
-        color: Colors.transparent,
-        elevation: 3,
-        shadowColor: AbiliaColors.black,
-        borderRadius: borderRadius,
-        child: ActionButtonBlack(
-          onPressed: onPressed,
-          child: Icon(AbiliaIcons.show),
-        ),
+    return Material(
+      color: Colors.transparent,
+      elevation: 3,
+      shadowColor: AbiliaColors.black,
+      borderRadius: borderRadius,
+      child: ActionButtonBlack(
+        onPressed: onPressed,
+        child: Icon(AbiliaIcons.show),
       ),
     );
   }

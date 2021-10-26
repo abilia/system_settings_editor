@@ -14,11 +14,9 @@ class RecurringWiz extends StatelessWidget {
           previous.activity.recurs.recurrance !=
           current.activity.recurs.recurrance,
       builder: (context, state) {
-        return Scaffold(
-          appBar: AbiliaAppBar(
-            title: translate.recurrence,
-            iconData: AbiliaIcons.repeat,
-          ),
+        return WizardScaffold(
+          title: translate.recurrence,
+          iconData: AbiliaIcons.repeat,
           body: Padding(
             padding: ordinaryPadding,
             child: Column(
@@ -53,7 +51,6 @@ class RecurringWiz extends StatelessWidget {
               ],
             ),
           ),
-          bottomNavigationBar: const WizardBottomNavigation(),
         );
       },
     );

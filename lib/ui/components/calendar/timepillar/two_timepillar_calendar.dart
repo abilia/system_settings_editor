@@ -24,25 +24,25 @@ class TwoTimepillarCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final day = activityState.day;
-    final dayTimepillarState = TimepillarState(
-      TimepillarInterval(
-        start: day.add(dayParts.morning),
-        end: day.add(dayParts.night),
-      ),
-      0.5,
+    final nightInterval = TimepillarInterval(
+      start: day.add(dayParts.night),
+      end: day.nextDay().add(dayParts.morningStart.milliseconds()),
+      intervalPart: IntervalPart.night,
     );
-    final nightTimepillarState = TimepillarState(
-      TimepillarInterval(
-        start: day.add(dayParts.night),
-        end: day.nextDay().add(
-              dayParts.morningStart.milliseconds(),
-            ),
-        intervalPart: IntervalPart.NIGHT,
-      ),
-      0.5,
+    final dayInterval = TimepillarInterval(
+      start: day.add(dayParts.morning),
+      end: day.add(dayParts.night),
     );
+    final maxInterval = dayInterval.lengthInHours > nightInterval.lengthInHours
+        ? dayInterval
+        : nightInterval;
+    final tpHeight = timePillarHeight(TimepillarState(maxInterval, 1.0)) +
+        verticalMargin * 2;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
+        final zoom = boxConstraints.maxHeight / tpHeight;
+        final nightTimepillarState = TimepillarState(nightInterval, zoom);
+        final dayTimepillarState = TimepillarState(dayInterval, zoom);
         final categoryLabelWidth =
             (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
         final nightTimepillarHeight =

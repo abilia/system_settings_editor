@@ -11,7 +11,7 @@ class RecordSoundPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.speech,
-        iconData: AbiliaIcons.speak_text,
+        iconData: AbiliaIcons.speakText,
       ),
       body: RecordingWidget(),
       bottomNavigationBar: BottomNavigation(
