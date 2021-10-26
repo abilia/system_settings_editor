@@ -56,19 +56,21 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     Activity activity,
   ) =>
       [
-        if (settings.wizardTemplateStep) WizardStep.basic,
-        if (settings.wizardDatePickerStep) WizardStep.date,
-        if (settings.wizardTitleStep) WizardStep.title,
-        if (settings.wizardImageStep) WizardStep.image,
-        if (settings.wizardTypeStep) WizardStep.type,
-        if (settings.wizardAvailabilityType) WizardStep.availableFor,
-        if (settings.wizardCheckableStep) WizardStep.checkable,
-        if (settings.wizardRemoveAfterStep) WizardStep.deleteAfter,
+        if (settings.settings.wizard.template) WizardStep.basic,
+        if (settings.settings.wizard.datePicker) WizardStep.date,
+        if (settings.settings.wizard.title) WizardStep.title,
+        if (settings.settings.wizard.image) WizardStep.image,
+        if (settings.settings.wizard.type) WizardStep.type,
+        if (settings.settings.wizard.availability) WizardStep.availableFor,
+        if (settings.settings.wizard.checkable) WizardStep.checkable,
+        if (settings.settings.wizard.removeAfter) WizardStep.deleteAfter,
         if (!activity.fullDay) WizardStep.time,
-        if (!activity.fullDay && settings.wizardAlarmStep) WizardStep.alarm,
-        if (settings.wizardChecklistStep || settings.wizardNotesStep)
+        if (!activity.fullDay && settings.settings.wizard.alarm)
+          WizardStep.alarm,
+        if (settings.settings.wizard.checklist ||
+            settings.settings.wizard.notes)
           WizardStep.connectedFunction,
-        if (settings.wizardRemindersStep && !activity.fullDay)
+        if (settings.settings.wizard.reminders && !activity.fullDay)
           WizardStep.reminder,
         if (settings.activityRecurringEditable) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,

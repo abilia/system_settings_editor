@@ -8,10 +8,12 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityTopInfo extends StatelessWidget {
   final NotificationAlarm? alarm;
+  final bool fullScreenAlarm;
   const ActivityTopInfo(
     this.activityDay, {
     Key? key,
     this.alarm,
+    this.fullScreenAlarm = false,
   }) : super(key: key);
 
   final ActivityDay activityDay;
@@ -38,8 +40,18 @@ class ActivityTopInfo extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (startSpeech != null && startSpeech.isNotEmpty)
-                PlaySpeechButton(speech: startSpeech)
+              if (a != null &&
+                  a is StartAlarm &&
+                  startSpeech != null &&
+                  startSpeech.isNotEmpty)
+                PlayAlarmSpeechButton(
+                  alarm: a,
+                  fullScreenAlarm: fullScreenAlarm,
+                )
+              else if (startSpeech != null && startSpeech.isNotEmpty)
+                PlaySpeechButton(
+                  speech: startSpeech,
+                )
               else
                 SizedBox(
                   width: 48.s,
@@ -90,8 +102,18 @@ class ActivityTopInfo extends StatelessWidget {
                   ),
                 ),
               ],
-              if (endSpeech != null && endSpeech.isNotEmpty)
-                PlaySpeechButton(speech: endSpeech)
+              if (a != null &&
+                  a is EndAlarm &&
+                  endSpeech != null &&
+                  endSpeech.isNotEmpty)
+                PlayAlarmSpeechButton(
+                  alarm: a,
+                  fullScreenAlarm: fullScreenAlarm,
+                )
+              else if (endSpeech != null && endSpeech.isNotEmpty)
+                PlaySpeechButton(
+                  speech: endSpeech,
+                )
               else
                 SizedBox(
                   width: 48.s,

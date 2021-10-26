@@ -1,60 +1,138 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/activities/activities_bloc.dart';
+import 'package:seagull/background/all.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/clock/clock_bloc.dart';
-import 'package:seagull/bloc/settings/settings_bloc.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/alarm_navigator.dart';
-import 'package:seagull/utils/datetime.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
+import '../../mocks/mock_bloc.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
+  final userFile = UserFile(
+    id: 'id',
+    sha1: 'sha1',
+    md5: 'md5',
+    path: 'test.mp3',
+    fileSize: 1234,
+    deleted: false,
+    fileLoaded: true,
+  );
+
+  final speechFile = UnstoredAbiliaFile.forTest(
+    userFile.id,
+    userFile.path,
+    File(userFile.path),
+  );
+
+  final activityWithStartSpeech = Activity.createNew(
+    title: 'title',
+    startTime: startTime,
+    extras: Extras.createNew(
+      startTimeExtraAlarm: speechFile,
+    ),
+  );
+
+  final activityWithStartAndEndSpeech = Activity.createNew(
+    title: 'title',
+    startTime: startTime,
+    extras: Extras.createNew(
+      startTimeExtraAlarm: speechFile,
+      endTimeExtraAlarm: speechFile,
+    ),
+  );
+
+  final StartAlarm startAlarm = StartAlarm(activityWithStartSpeech, day);
+  final EndAlarm endAlarmWithNoSpeech = EndAlarm(activityWithStartSpeech, day);
+  final EndAlarm endAlarmWithSpeech =
+      EndAlarm(activityWithStartAndEndSpeech, day);
+  AlarmNavigator _alarmNavigator = AlarmNavigator();
+  late MockMemoplannerSettingBloc mockMPSettingsBloc;
+  late MockUserFileBloc mockUserFileBloc;
+
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(providers: [
-          BlocProvider<ActivitiesBloc>(
-            create: (context) => FakeActivitiesBloc(),
-          ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: day),
-          ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
-              settingsDb: FakeSettingsDb(),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ActivitiesBloc>(
+              create: (context) => FakeActivitiesBloc(),
             ),
-          ),
-          BlocProvider<UserFileBloc>(
-            create: (context) => UserFileBloc(
-              fileStorage: FakeFileStorage(),
-              pushBloc: FakePushBloc(),
-              syncBloc: FakeSyncBloc(),
-              userFileRepository: FakeUserFileRepository(),
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc(
+                  StreamController<DateTime>().stream,
+                  initialTime: day),
             ),
-          ),
-          BlocProvider<MemoplannerSettingBloc>(
-            create: (context) => FakeMemoplannerSettingsBloc(),
-          ),
-        ], child: widget),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(
+                settingsDb: FakeSettingsDb(),
+              ),
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) => mockMPSettingsBloc,
+            ),
+            BlocProvider<UserFileBloc>(
+              create: (context) => mockUserFileBloc,
+            ),
+          ],
+          child: widget,
+        ),
       );
 
+  setUpAll(() {
+    registerFallbackValue(MemoplannerSettingsNotLoaded());
+    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValue(UserFilesNotLoaded());
+    registerFallbackValue(LoadUserFiles());
+  });
+
+  const MethodChannel localNotificationChannel =
+      MethodChannel('dexterous.com/flutter/local_notifications');
+  const MethodChannel audioPlayerChannel =
+      MethodChannel('xyz.luan/audioplayers');
+  final List<MethodCall> localNotificationLog = <MethodCall>[];
+  final List<MethodCall> audioLog = <MethodCall>[];
+
   setUp(() async {
+    localNotificationLog.clear();
+    localNotificationChannel.setMockMethodCallHandler((methodCall) async {
+      localNotificationLog.add(methodCall);
+      if (methodCall.method == 'getActiveNotifications') {
+        return null;
+      }
+    });
+    audioLog.clear();
+    audioPlayerChannel.setMockMethodCallHandler((methodCall) async {
+      audioLog.add(methodCall);
+      if (methodCall.method == 'play') {
+        return Future.value(1);
+      }
+    });
+
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.state).thenReturn(UserFilesLoaded([userFile]));
+    mockMPSettingsBloc = MockMemoplannerSettingBloc();
+    when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
+        MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
     await initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
@@ -63,87 +141,56 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    GetIt.I.reset();
+    clearNotificationSubject();
+  });
 
-  group('alarm speech tests', () {
-    final activityWithOnlyStartSpeech = Activity.createNew(
-      title: 'title',
-      startTime: startTime,
-      checkable: true,
-      reminderBefore: [],
-      signedOffDates: [day],
-      extras: Extras.createNew(
-        startTimeExtraAlarm: UnstoredAbiliaFile.forTest(
-          'id',
-          'path',
-          File('test.mp3'),
-        ),
-      ),
-    );
-
-    final activityWithStartAndEndSpeech = Activity.createNew(
-      title: 'title',
-      startTime: startTime,
-      checkable: true,
-      reminderBefore: [],
-      signedOffDates: [day],
-      extras: Extras.createNew(
-        startTimeExtraAlarm: UnstoredAbiliaFile.forTest(
-          'id',
-          'path',
-          File('test.mp3'),
-        ),
-        endTimeExtraAlarm: UnstoredAbiliaFile.forTest(
-          'id',
-          'path',
-          File('test.mp3'),
-        ),
-      ),
-    );
-
-    final StartAlarm startAlarm = StartAlarm(activityWithOnlyStartSpeech, day);
-    final EndAlarm endAlarmNoSpeech =
-        EndAlarm(activityWithOnlyStartSpeech, day);
-    final EndAlarm endAlarmWithSpeech =
-        EndAlarm(activityWithStartAndEndSpeech, day);
-    AlarmNavigator _alarmNavigator = AlarmNavigator();
-
+  group('alarm speech button tests', () {
     testWidgets('Alarm page visible', (WidgetTester tester) async {
       await tester.pumpWidget(
-        wrapWithMaterialApp(PopAwareAlarmPage(
-          alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: startAlarm),
-        )),
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(
+              alarm: startAlarm,
+            ),
+          ),
+        ),
       );
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
       expect(find.byType(AlarmPage), findsOneWidget);
     });
 
     testWidgets('Start alarm shows play speech button',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        wrapWithMaterialApp(PopAwareAlarmPage(
-          alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: startAlarm),
-        )),
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
       );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlaySpeechButton), findsOneWidget);
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
     });
 
     testWidgets('End alarm does not show play speech button',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        wrapWithMaterialApp(PopAwareAlarmPage(
-          alarm: startAlarm,
-          alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: endAlarmNoSpeech),
-        )),
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: endAlarmWithNoSpeech),
+          ),
+        ),
       );
-      await tester.pumpAndSettle();
-      expect(find.byType(PlaySpeechButton), findsNothing);
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+      expect(find.byType(PlayAlarmSpeechButton), findsNothing);
     });
 
     testWidgets('Clock is visible', (WidgetTester tester) async {
@@ -151,7 +198,7 @@ void main() {
         wrapWithMaterialApp(PopAwareAlarmPage(
           alarm: startAlarm,
           alarmNavigator: _alarmNavigator,
-          child: AlarmPage(alarm: endAlarmNoSpeech),
+          child: AlarmPage(alarm: endAlarmWithNoSpeech),
         )),
       );
       await tester.pumpAndSettle();
@@ -167,8 +214,88 @@ void main() {
           child: AlarmPage(alarm: endAlarmWithSpeech),
         )),
       );
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+    });
+  });
+  group('alarm speech automatic playes', () {
+    final payload = StartAlarm(activityWithStartSpeech, day);
+
+    testWidgets('speech plays when notification is tapped',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
-      expect(find.byType(PlaySpeechButton), findsOneWidget);
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+      selectNotificationSubject.add(payload);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      await tester.pump(AlarmSpeechCubit.minSpeechDelay);
+    });
+
+    testWidgets('speech plays after time delay is up',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(
+              alarm: startAlarm,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+      // wait untill alarm is over
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+      // should play alarm
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+    });
+
+    testWidgets('speech plays after time delay is up 5 min alarm',
+        (WidgetTester tester) async {
+      final fiveMin = Duration(minutes: 5);
+      when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+              alarm: AlarmSettings(durationMs: fiveMin.inMilliseconds))));
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+      // Wait min speech
+      await tester.pumpAndSettle(AlarmSpeechCubit.minSpeechDelay);
+      // not playing
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+      // wait alarm time
+      await tester.pumpAndSettle(fiveMin - AlarmSpeechCubit.minSpeechDelay);
+      // Should play
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
     });
   });
 }

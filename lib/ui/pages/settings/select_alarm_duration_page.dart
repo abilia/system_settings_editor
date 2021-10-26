@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class SelectAlarmDurationPage extends StatefulWidget {
   final AlarmDuration duration;
@@ -35,7 +36,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
     final widgets = [
       CollapsableWidget(
         collapsed: Platform.isAndroid ||
-            selectedAlarmDuration.duration() <= const Duration(seconds: 30),
+            selectedAlarmDuration.duration() <= iOSMaxAlarmDuration,
         padding: EdgeInsets.only(bottom: 8.s),
         child: ErrorMessage(text: Text(t.iOSAlarmTimeWarning)),
       ),

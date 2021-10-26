@@ -54,7 +54,7 @@ class AddActivityButton extends StatelessWidget {
 
   bool _canAddActivity(
           BuildContext context, MemoplannerSettingsState settingState) =>
-      !settingState.wizardWithOnlyTemplateStep ||
+      !settingState.settings.wizard.onlyTemplateStep ||
       context
           .read<SortableBloc>()
           .state
