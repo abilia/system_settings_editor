@@ -2,10 +2,15 @@ import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
+const _wildcard = '%s';
+
 String analogTimeStringWithInterval(
     Translator translator, DateTime time, DayParts dayParts) {
-  return intervalString(translator, time.dayPart(dayParts), time.hour)
-      .replaceAll('%s', analogTimeString(translator, time));
+  String timeWithInterval =
+      intervalString(translator, time.dayPart(dayParts), time.hour)
+          .replaceFirst(_wildcard, analogTimeString(translator, time));
+  return translator.translate.clockTheTimeIsTts
+      .replaceFirst(_wildcard, timeWithInterval);
 }
 
 String intervalString(Translator translator, DayPart dayPart, int hour) {
@@ -27,7 +32,7 @@ String intervalString(Translator translator, DayPart dayPart, int hour) {
 String analogTimeString(Translator translator, DateTime time) {
   int hour = hourForTime(translator.locale.languageCode, time);
   return analogMinuteString(translator, time)
-      .replaceAll('%s', analogHourString(translator, hour));
+      .replaceFirst(_wildcard, analogHourString(translator, hour));
 }
 
 String analogHourString(Translator translator, int hour) {
@@ -71,8 +76,6 @@ int fiveMinInterval(DateTime time) {
 String _stringForInterval(Translator translator, int interval) {
   var translate = translator.translate;
   switch (interval) {
-    case 0:
-      return translate.clockTheTimeIsTts;
     case 1:
       return translate.clockFiveMinutesPastTts;
     case 2:
@@ -95,6 +98,7 @@ String _stringForInterval(Translator translator, int interval) {
       return translate.clockTenMinutesToTts;
     case 11:
       return translate.clockFiveMinutesToTts;
+    default:
+      return translate.clockTheTimeIsTts;
   }
-  return '';
 }
