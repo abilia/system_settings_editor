@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -19,11 +18,13 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   final SortableRepository sortableRepository;
   late final StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
+  final bool initMyPhotos;
 
   SortableBloc({
     required this.sortableRepository,
     required PushBloc pushBloc,
     required this.syncBloc,
+    required this.initMyPhotos,
   }) : super(SortablesNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
@@ -50,40 +51,26 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   Stream<SortableState> _mapLoadSortablesToState(bool initDefaults) async* {
     try {
       final sortables = await sortableRepository.load();
-      yield SortablesLoaded(
-        sortables: [
-          ...sortables,
-          if (initDefaults) ...await getMissingDefaults(sortables),
-        ],
-      );
+      yield SortablesLoaded(sortables: sortables);
+      if (initDefaults) {
+        await _addMissingDefaults(sortables);
+      }
     } catch (e) {
       _log.warning('exception when loadning sortable $e');
       yield SortablesLoadedFailed();
     }
   }
 
-  Future<List<Sortable>> getMissingDefaults(
-      Iterable<Sortable> sortables) async {
-    final sortOrder = sortables.firstSortOrderInFolder();
-    final defaults = [
-      if (sortables.getMyPhotosFolder() == null && Config.isMP)
-        Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(myPhotos: true),
-          isGroup: true,
-          sortOrder: sortOrder,
-        ),
-      if (sortables.getUploadFolder() == null)
-        Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(name: 'myAbilia', upload: true),
-          isGroup: true,
-          sortOrder: sortOrder,
-        )
-    ];
-    if (defaults.isNotEmpty) {
-      await sortableRepository.save(defaults);
-      syncBloc.add(SortableSaved());
-    }
-    return defaults;
+  Future<void> _addMissingDefaults(Iterable<Sortable> sortables) async {
+    final created = await Future.wait(
+      [
+        if (initMyPhotos && sortables.getMyPhotosFolder() == null)
+          sortableRepository.createMyPhotosFolder(),
+        if (sortables.getUploadFolder() == null)
+          sortableRepository.createUploadsFolder()
+      ],
+    );
+    if (created.isNotEmpty) add(const LoadSortables());
   }
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(

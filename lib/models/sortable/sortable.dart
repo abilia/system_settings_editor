@@ -20,7 +20,7 @@ class SortableType {
 
 class Sortable<T extends SortableData> extends DataModel {
   final String type, groupId, sortOrder;
-  final bool deleted, isGroup, visible;
+  final bool deleted, isGroup, visible, fixed;
 
   final T data;
 
@@ -33,6 +33,7 @@ class Sortable<T extends SortableData> extends DataModel {
     required this.deleted,
     required this.isGroup,
     required this.visible,
+    required this.fixed,
   }) : super(id);
 
   static Sortable<T> createNew<T extends SortableData>({
@@ -42,17 +43,20 @@ class Sortable<T extends SortableData> extends DataModel {
     bool deleted = false,
     bool isGroup = false,
     bool visible = true,
+    bool fixed = false,
   }) {
     assert(sortOrder.isNotEmpty);
     return Sortable<T>._(
-        id: Uuid().v4(),
-        type: _getTypeString<T>(),
-        data: data,
-        groupId: groupId,
-        sortOrder: sortOrder,
-        deleted: deleted,
-        isGroup: isGroup,
-        visible: visible);
+      id: Uuid().v4(),
+      type: _getTypeString<T>(),
+      data: data,
+      groupId: groupId,
+      sortOrder: sortOrder,
+      deleted: deleted,
+      isGroup: isGroup,
+      visible: visible,
+      fixed: fixed,
+    );
   }
 
   static String _getTypeString<T extends SortableData>() {
@@ -62,8 +66,17 @@ class Sortable<T extends SortableData> extends DataModel {
   }
 
   @override
-  List<Object> get props =>
-      [id, type, data, groupId, sortOrder, deleted, isGroup, visible];
+  List<Object> get props => [
+        id,
+        type,
+        data,
+        groupId,
+        sortOrder,
+        deleted,
+        isGroup,
+        visible,
+        fixed,
+      ];
 
   @override
   bool get stringify => true;
