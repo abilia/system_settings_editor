@@ -427,9 +427,9 @@ abstract class Translated {
 
   final String edge = 'Edge';
 
-  final String monthCalendarGrid = 'Grid';
+  final String monthCalendarGrid = 'Simple';
 
-  final String monthCalendarPreview = 'Preview';
+  final String monthCalendarPreview = 'Detailed';
 
   final String textToSpeech = 'Speech support';
 
@@ -1320,10 +1320,10 @@ class SV extends Translated {
   final String edge = 'Flärp';
 
   @override
-  final String monthCalendarGrid = 'Rutnät';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Förhandsgranskning';
+  final String monthCalendarPreview = 'Detaljerad';
 
   @override
   final String textToSpeech = 'Talstöd';
@@ -2335,10 +2335,10 @@ class DA extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljeret';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -3350,10 +3350,10 @@ class NL extends Translated {
   final String edge = 'Rand';
 
   @override
-  final String monthCalendarGrid = 'Raster';
+  final String monthCalendarGrid = 'Eenvoudig';
 
   @override
-  final String monthCalendarPreview = 'Voorbeeld';
+  final String monthCalendarPreview = 'Gedetailleerd';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -4366,10 +4366,10 @@ class FI extends Translated {
   final String edge = 'Reuna';
 
   @override
-  final String monthCalendarGrid = 'Ruudukko';
+  final String monthCalendarGrid = 'Helppo';
 
   @override
-  final String monthCalendarPreview = 'Esikatselu';
+  final String monthCalendarPreview = 'Yksityiskohtainen';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -5385,10 +5385,10 @@ class DE extends Translated {
   final String edge = 'Kante';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Einfach';
 
   @override
-  final String monthCalendarPreview = 'Vorschau';
+  final String monthCalendarPreview = 'Ausführlich';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -6401,10 +6401,10 @@ class NB extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Nett';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljert';
 
   @override
   final String textToSpeech = 'Talesyntese';
