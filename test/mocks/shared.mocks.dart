@@ -798,24 +798,24 @@ class MockActivityDb extends _i2.Mock implements _i3.ActivityDb {
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
       returnValue: _FakeDatabase_16()) as _i3.Database);
   @override
-  String get GET_ALL_DIRTY =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
+  String get getAllDirtySql =>
+      (super.noSuchMethod(Invocation.getter(#getAllDirtySql), returnValue: '')
           as String);
   @override
-  String get GET_BY_ID_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_BY_ID_SQL), returnValue: '')
+  String get getByIdSql =>
+      (super.noSuchMethod(Invocation.getter(#getByIdSql), returnValue: '')
           as String);
   @override
-  String get GET_ALL_SQL_NON_DELETED =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL_NON_DELETED),
+  String get getAllNonDeletedSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllNonDeletedSql),
           returnValue: '') as String);
   @override
-  String get GET_ALL_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL), returnValue: '')
+  String get getAllSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllSql), returnValue: '')
           as String);
   @override
-  String get MAX_REVISION_SQL =>
-      (super.noSuchMethod(Invocation.getter(#MAX_REVISION_SQL), returnValue: '')
+  String get maxRevisionSql =>
+      (super.noSuchMethod(Invocation.getter(#maxRevisionSql), returnValue: '')
           as String);
   @override
   _i13.Future<dynamic> insert(
@@ -881,24 +881,24 @@ class MockSortableDb extends _i2.Mock implements _i3.SortableDb {
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
       returnValue: _FakeDatabase_16()) as _i3.Database);
   @override
-  String get GET_ALL_DIRTY =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
+  String get getAllDirtySql =>
+      (super.noSuchMethod(Invocation.getter(#getAllDirtySql), returnValue: '')
           as String);
   @override
-  String get GET_BY_ID_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_BY_ID_SQL), returnValue: '')
+  String get getByIdSql =>
+      (super.noSuchMethod(Invocation.getter(#getByIdSql), returnValue: '')
           as String);
   @override
-  String get GET_ALL_SQL_NON_DELETED =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL_NON_DELETED),
+  String get getAllNonDeletedSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllNonDeletedSql),
           returnValue: '') as String);
   @override
-  String get GET_ALL_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL), returnValue: '')
+  String get getAllSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllSql), returnValue: '')
           as String);
   @override
-  String get MAX_REVISION_SQL =>
-      (super.noSuchMethod(Invocation.getter(#MAX_REVISION_SQL), returnValue: '')
+  String get maxRevisionSql =>
+      (super.noSuchMethod(Invocation.getter(#maxRevisionSql), returnValue: '')
           as String);
   @override
   _i13.Future<dynamic> insert(
@@ -957,16 +957,16 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
       (super.noSuchMethod(Invocation.getter(#tableName), returnValue: '')
           as String);
   @override
-  String get GET_ALL_WITH_MISSING_FILES =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_WITH_MISSING_FILES),
+  String get getAllWithMissingFiles =>
+      (super.noSuchMethod(Invocation.getter(#getAllWithMissingFiles),
           returnValue: '') as String);
   @override
-  String get GET_ALL_WITH_LOADED_FILES =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_WITH_LOADED_FILES),
+  String get getAllWithLoadedFiles =>
+      (super.noSuchMethod(Invocation.getter(#getAllWithLoadedFiles),
           returnValue: '') as String);
   @override
-  String get SET_FILE_LOADED =>
-      (super.noSuchMethod(Invocation.getter(#SET_FILE_LOADED), returnValue: '')
+  String get setFileLoaded =>
+      (super.noSuchMethod(Invocation.getter(#setFileLoaded), returnValue: '')
           as String);
   @override
   _i3.DbMapTo<_i1.UserFile> get convertToDataModel =>
@@ -981,24 +981,24 @@ class MockUserFileDb extends _i2.Mock implements _i3.UserFileDb {
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
       returnValue: _FakeDatabase_16()) as _i3.Database);
   @override
-  String get GET_ALL_DIRTY =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
+  String get getAllDirtySql =>
+      (super.noSuchMethod(Invocation.getter(#getAllDirtySql), returnValue: '')
           as String);
   @override
-  String get GET_BY_ID_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_BY_ID_SQL), returnValue: '')
+  String get getByIdSql =>
+      (super.noSuchMethod(Invocation.getter(#getByIdSql), returnValue: '')
           as String);
   @override
-  String get GET_ALL_SQL_NON_DELETED =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL_NON_DELETED),
+  String get getAllNonDeletedSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllNonDeletedSql),
           returnValue: '') as String);
   @override
-  String get GET_ALL_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL), returnValue: '')
+  String get getAllSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllSql), returnValue: '')
           as String);
   @override
-  String get MAX_REVISION_SQL =>
-      (super.noSuchMethod(Invocation.getter(#MAX_REVISION_SQL), returnValue: '')
+  String get maxRevisionSql =>
+      (super.noSuchMethod(Invocation.getter(#maxRevisionSql), returnValue: '')
           as String);
   @override
   String missingFilesWithLimit(int? limit) =>
@@ -1084,24 +1084,24 @@ class MockGenericDb extends _i2.Mock implements _i3.GenericDb {
   _i3.Database get db => (super.noSuchMethod(Invocation.getter(#db),
       returnValue: _FakeDatabase_16()) as _i3.Database);
   @override
-  String get GET_ALL_DIRTY =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_DIRTY), returnValue: '')
+  String get getAllDirtySql =>
+      (super.noSuchMethod(Invocation.getter(#getAllDirtySql), returnValue: '')
           as String);
   @override
-  String get GET_BY_ID_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_BY_ID_SQL), returnValue: '')
+  String get getByIdSql =>
+      (super.noSuchMethod(Invocation.getter(#getByIdSql), returnValue: '')
           as String);
   @override
-  String get GET_ALL_SQL_NON_DELETED =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL_NON_DELETED),
+  String get getAllNonDeletedSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllNonDeletedSql),
           returnValue: '') as String);
   @override
-  String get GET_ALL_SQL =>
-      (super.noSuchMethod(Invocation.getter(#GET_ALL_SQL), returnValue: '')
+  String get getAllSql =>
+      (super.noSuchMethod(Invocation.getter(#getAllSql), returnValue: '')
           as String);
   @override
-  String get MAX_REVISION_SQL =>
-      (super.noSuchMethod(Invocation.getter(#MAX_REVISION_SQL), returnValue: '')
+  String get maxRevisionSql =>
+      (super.noSuchMethod(Invocation.getter(#maxRevisionSql), returnValue: '')
           as String);
   @override
   _i13.Future<Iterable<_i1.Generic<_i1.GenericData>>>
