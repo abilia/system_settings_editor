@@ -61,9 +61,9 @@ void main() {
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     // When settings are not loaded the default value will be used
     when(() => mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings()));
+        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings()));
     when(() => mockMemoplannerSettingsBloc.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
     await initializeDateFormatting();
 
     GetItInitializer()

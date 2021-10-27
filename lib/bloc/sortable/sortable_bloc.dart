@@ -27,7 +27,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   }) : super(SortablesNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
-        add(LoadSortables());
+        add(const LoadSortables());
       }
     });
   }
@@ -68,13 +68,13 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     final defaults = [
       if (sortables.getMyPhotosFolder() == null && Config.isMP)
         Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(myPhotos: true),
+          data: const ImageArchiveData(myPhotos: true),
           isGroup: true,
           sortOrder: sortOrder,
         ),
       if (sortables.getUploadFolder() == null)
         Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(name: 'myAbilia', upload: true),
+          data: const ImageArchiveData(name: 'myAbilia', upload: true),
           isGroup: true,
           sortOrder: sortOrder,
         )

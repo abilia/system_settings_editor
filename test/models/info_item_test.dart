@@ -24,7 +24,7 @@ void main() {
   });
 
   test('Deserialize NoInfoItem', () {
-    final infoItem = NoInfoItem();
+    const infoItem = NoInfoItem();
     final json = infoItem.toJson();
     final base64 = infoItem.toBase64();
     expect(json, anyOf(isNull, isEmpty));
@@ -43,7 +43,7 @@ void main() {
     expect(checklist.questions, hasLength(8));
     expect(
       checklist.questions.first,
-      Question(
+      const Question(
         id: 0,
         fileId: '8c5d14a2-c23f-4a24-84db-ba960a0ecb38',
         image: '/Handi/User/Picture/shorts.jpg',
@@ -63,7 +63,7 @@ void main() {
     expect(checklist.questions, hasLength(4));
     expect(
       checklist.questions.first,
-      Question(
+      const Question(
         id: 0,
         fileId: 'aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e',
         image: '/Handi/User/Picture/key.gif',
@@ -189,9 +189,9 @@ void main() {
   });
 
   test('Check item from checkist checklist', () {
-    final question = Question(id: 0, name: 'b');
+    const question = Question(id: 0, name: 'b');
     final day = DateTime(2002, 02, 02);
-    final checkList = Checklist(questions: [question], checked: const {});
+    final checkList = Checklist(questions: const [question], checked: const {});
     final checkedList = checkList.signOff(question, day);
     expect(checkList == checkedList, isFalse);
     expect(checkList.isSignedOff(question, day), isFalse);
@@ -199,9 +199,9 @@ void main() {
   });
 
   test('Uncheck item from checklist', () {
-    final question = Question(id: 0, name: 'b');
+    const question = Question(id: 0, name: 'b');
     final day = DateTime(2002, 02, 02);
-    final checkedList = Checklist(questions: [
+    final checkedList = Checklist(questions: const [
       question
     ], checked: const {
       '20020202': {0}
@@ -213,9 +213,9 @@ void main() {
   });
 
   test('Not correct item from checklist checked', () {
-    final question = Question(id: 0, name: 'b');
+    const question = Question(id: 0, name: 'b');
     final day = DateTime(2002, 02, 02);
-    final checkedList = Checklist(questions: [
+    final checkedList = Checklist(questions: const [
       question
     ], checked: const {
       '20040202': {0},

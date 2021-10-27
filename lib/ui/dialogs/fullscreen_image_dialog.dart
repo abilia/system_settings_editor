@@ -24,7 +24,7 @@ class FullscreenImageDialog extends StatelessWidget {
         fileId: fileId,
         filePath: filePath,
       ),
-      backNavigationWidget: CloseButton(),
+      backNavigationWidget: const CloseButton(),
     );
   }
 }

@@ -32,8 +32,8 @@ class CheckActivityConfirmDialog extends StatelessWidget {
           style: abiliaTextTheme.bodyText1,
         ),
       ),
-      backNavigationWidget: NoButton(),
-      forwardNavigationWidget: YesButton(),
+      backNavigationWidget: const NoButton(),
+      forwardNavigationWidget: const YesButton(),
     );
   }
 }

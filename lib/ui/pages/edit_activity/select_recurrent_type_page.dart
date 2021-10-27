@@ -39,7 +39,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
           children: <Widget>[
             RadioField(
               key: TestKey.onlyThisDay,
-              leading: Icon(AbiliaIcons.day),
+              leading: const Icon(AbiliaIcons.day),
               text: Text(translate.onlyThisDay),
               value: ApplyTo.onlyThisDay,
               groupValue: applyTo,
@@ -49,7 +49,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
             if (widget.allDaysVisible)
               RadioField(
                 key: TestKey.allDays,
-                leading: Icon(AbiliaIcons.month),
+                leading: const Icon(AbiliaIcons.month),
                 text: Text(translate.allDays),
                 value: ApplyTo.allDays,
                 groupValue: applyTo,
@@ -58,7 +58,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
             SizedBox(height: 8.0.s),
             RadioField(
               key: TestKey.thisDayAndForward,
-              leading: Icon(AbiliaIcons.week),
+              leading: const Icon(AbiliaIcons.week),
               text: Text(translate.thisDayAndForward),
               value: ApplyTo.thisDayAndForward,
               groupValue: applyTo,
@@ -68,7 +68,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: CancelButton(),
+          backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             onPressed: () => Navigator.of(context).pop(applyTo),
           )),

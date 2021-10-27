@@ -81,7 +81,7 @@ void main() {
 
   test('if response not 401, get user from database (offline case)', () async {
     // Arrange
-    final userInDb = User(name: 'name', type: 'type', id: 123);
+    const userInDb = User(name: 'name', type: 'type', id: 123);
     when(() => mockClient.get('$url/api/v1/entity/me'.toUri(),
             headers: authHeader(Fakes.token)))
         .thenAnswer((_) => Future.value(Response('body', 400)));

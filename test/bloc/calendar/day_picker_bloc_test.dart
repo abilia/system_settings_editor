@@ -214,7 +214,7 @@ void main() {
     for (var i = 0; i < Duration.minutesPerDay; i++) {
       streamController.add(theDay.add(Duration(minutes: i)));
     }
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
     dayPickerBloc.add(NextDay());
     dayPickerBloc.add(CurrentDay());
     expect(
@@ -235,7 +235,7 @@ void main() {
   test('currentDay should change with clock passing next day', () async {
     streamController.add(theDayAfter);
     await Future.doWhile(() => Future.delayed(
-        Duration(milliseconds: 10), () => clockBloc.state == theDay));
+        const Duration(milliseconds: 10), () => clockBloc.state == theDay));
     dayPickerBloc.add(CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
@@ -253,7 +253,7 @@ void main() {
   test('currentDay should change with clocks passing day after next', () async {
     streamController.add(theDayAfterTomorrow);
     await Future.doWhile(() => Future.delayed(
-        Duration(milliseconds: 10), () => clockBloc.state == theDay));
+        const Duration(milliseconds: 10), () => clockBloc.state == theDay));
     dayPickerBloc.add(CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
@@ -271,7 +271,7 @@ void main() {
       streamController
           .add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
     }
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
     dayPickerBloc.add(CurrentDay());
     await expectLater(
       dayPickerBloc.stream,

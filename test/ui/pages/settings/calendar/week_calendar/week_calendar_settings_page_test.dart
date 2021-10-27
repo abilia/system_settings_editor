@@ -140,7 +140,7 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
       await tester.pumpAndSettle();
       await tester.dragUntilVisible(find.text(translate.captions),
-          find.byType(WeekSettingsTab), Offset(0, 100));
+          find.byType(WeekSettingsTab), const Offset(0, 100));
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.captions));
       await tester.pumpAndSettle();

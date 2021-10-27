@@ -74,7 +74,7 @@ class ClockPainter extends CustomPainter {
     canvas.translate(size.width / 2, size.height / 2);
 
     canvas.drawCircle(
-        Offset(0, 0),
+        const Offset(0, 0),
         radius,
         Paint()
           ..style = PaintingStyle.fill
@@ -86,7 +86,7 @@ class ClockPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = borderWidth
         ..isAntiAlias = true;
-      canvas.drawCircle(Offset(0, 0), radius, borderPaint);
+      canvas.drawCircle(const Offset(0, 0), radius, borderPaint);
     }
 
     final bigTickWidth = circumference / 120;
@@ -113,7 +113,7 @@ class ClockPainter extends CustomPainter {
       ..strokeWidth = centerPointRadius ?? ((radius - borderWidth) / 10)
       ..strokeCap = StrokeCap.round
       ..color = centerPointColor;
-    canvas.drawPoints(PointMode.points, [Offset(0, 0)], centerPointPaint);
+    canvas.drawPoints(PointMode.points, [const Offset(0, 0)], centerPointPaint);
   }
 
   double _paintHourText(Canvas canvas, double radius) {
@@ -155,7 +155,7 @@ class ClockPainter extends CustomPainter {
     final hourHandPaint = Paint()
       ..color = hourHandColor
       ..strokeWidth = strokeWidth;
-    canvas.drawLine(Offset(0, 0), handOffset, hourHandPaint);
+    canvas.drawLine(const Offset(0, 0), handOffset, hourHandPaint);
   }
 
   void _paintMinuteHand(Canvas canvas, double radius, double strokeWidth) {
@@ -165,7 +165,7 @@ class ClockPainter extends CustomPainter {
     final hourHandPaint = Paint()
       ..color = minuteHandColor
       ..strokeWidth = strokeWidth;
-    canvas.drawLine(Offset(0, 0), handOffset, hourHandPaint);
+    canvas.drawLine(const Offset(0, 0), handOffset, hourHandPaint);
   }
 
   @override

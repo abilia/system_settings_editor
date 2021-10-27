@@ -45,7 +45,7 @@ class Sortable<T extends SortableData> extends DataModel {
   }) {
     assert(sortOrder.isNotEmpty);
     return Sortable<T>._(
-        id: Uuid().v4(),
+        id: const Uuid().v4(),
         type: _getTypeString<T>(),
         data: data,
         groupId: groupId,

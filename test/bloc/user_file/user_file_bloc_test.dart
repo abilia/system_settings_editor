@@ -18,7 +18,7 @@ void main() {
   late UserFileBloc userFileBloc;
   late MockUserFileRepository mockUserFileRepository;
 
-  final userFile = UserFile(
+  const userFile = UserFile(
     id: '',
     sha1: '',
     md5: '',
@@ -59,7 +59,7 @@ void main() {
   });
 
   test('Initial state is UserFilesNotLoaded', () {
-    expect(userFileBloc.state, UserFilesNotLoaded());
+    expect(userFileBloc.state, const UserFilesNotLoaded());
   });
 
   test('User files loaded after successful loading of user files', () async {
@@ -73,7 +73,7 @@ void main() {
     // Assert
     await expectLater(
       userFileBloc.stream,
-      emits(UserFilesLoaded([userFile])),
+      emits(const UserFilesLoaded([userFile])),
     );
   });
 
@@ -96,7 +96,7 @@ void main() {
       fileLoaded: true,
     );
 
-    final userFile2 = UserFile(
+    const userFile2 = UserFile(
       id: '1',
       sha1: '2',
       md5: '3',
@@ -135,8 +135,8 @@ void main() {
     await expectLater(
         userFileBloc.stream,
         emitsInOrder([
-          UserFilesLoaded([userFile]),
-          UserFilesLoaded([userFile], {fileId: file}),
+          const UserFilesLoaded([userFile]),
+          UserFilesLoaded(const [userFile], {fileId: file}),
           UserFilesLoaded([userFile, addedFile]),
           UserFilesLoaded([userFile, addedFile, userFile2]),
         ]));
@@ -174,7 +174,7 @@ void main() {
     await expectLater(
       userFileBloc.stream,
       emitsInOrder([
-        UserFilesLoaded(const [], const {}),
+        const UserFilesLoaded([], {}),
         UserFilesLoaded(const [], {fileId: file}),
         UserFilesLoaded([expectedFile]),
       ]),
@@ -249,7 +249,7 @@ void main() {
     await expectLater(
       userFileBloc.stream,
       emitsInOrder([
-        UserFilesLoaded(const [], const {}),
+        const UserFilesLoaded([], {}),
         UserFilesLoaded(const [], {fileId: file}),
         UserFilesLoaded([expectedFile1]),
         UserFilesLoaded([expectedFile1], {fileId2: file2}),

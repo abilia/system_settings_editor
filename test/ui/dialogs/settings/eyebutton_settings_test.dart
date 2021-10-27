@@ -88,7 +88,7 @@ void main() {
     await tester.tap(find.byType(EyeButtonDay));
     await tester.pumpAndSettle();
     final center = tester.getCenter(find.byType(EyeButtonDayDialog));
-    await tester.dragFrom(center, Offset(0.0, -400));
+    await tester.dragFrom(center, const Offset(0.0, -400));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(AbiliaIcons.flarp));
@@ -143,7 +143,7 @@ void main() {
 
     // Scroll down
     final center = tester.getCenter(find.byType(EyeButtonDayDialog));
-    await tester.dragFrom(center, Offset(0.0, -400));
+    await tester.dragFrom(center, const Offset(0.0, -400));
     await tester.pumpAndSettle();
 
     // Verify correct TTS for duration setting

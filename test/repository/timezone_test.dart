@@ -5,7 +5,7 @@ import 'package:seagull/repository/timezone.dart';
 void main() {
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    MethodChannel('flutter_native_timezone')
+    const MethodChannel('flutter_native_timezone')
         .setMockMethodCallHandler((MethodCall methodCall) async {
       switch (methodCall.method) {
         case 'getLocalTimezone':

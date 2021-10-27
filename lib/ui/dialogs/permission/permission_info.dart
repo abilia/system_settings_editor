@@ -117,13 +117,13 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
                     blocContext: context,
-                    child: PermissionsPage(),
+                    child: const PermissionsPage(),
                   ),
-                  settings: RouteSettings(name: 'PermissionPage'),
+                  settings: const RouteSettings(name: 'PermissionPage'),
                 ),
               );
             },
         ),
-        TextSpan(text: '.'),
+        const TextSpan(text: '.'),
       ],
     );

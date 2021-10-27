@@ -29,7 +29,7 @@ class Generic<T extends GenericData> extends DataModel {
     bool deleted = false,
   }) {
     return Generic<T>._(
-      id: Uuid().v4(),
+      id: const Uuid().v4(),
       type: _getTypeString<T>(),
       data: data,
       deleted: deleted,

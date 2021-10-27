@@ -31,7 +31,7 @@ void main() {
     final original = ReminderBefore(
         Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
         day,
-        reminder: Duration(minutes: 5));
+        reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
@@ -40,7 +40,7 @@ void main() {
     final original = ReminderUnchecked(
         Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
         day,
-        reminder: Duration(minutes: 5));
+        reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
     final back = NotificationAlarm.fromJson(asJson);
     expect(back, original);
@@ -96,7 +96,7 @@ void main() {
           checkable: true,
         ),
         day);
-    final settings = AlarmSettings(
+    const settings = AlarmSettings(
       checkableActivity: '',
       nonCheckableActivity: '',
     );

@@ -169,7 +169,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.showColours),
         find.byType(CategoriesSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
 
@@ -266,15 +266,15 @@ void main() {
       const fileId = 'imgfileId';
       sortable = [
         Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(name: 'test image', fileId: fileId),
+          data: const ImageArchiveData(name: 'test image', fileId: fileId),
         ),
         Sortable.createNew<ImageArchiveData>(
           isGroup: true,
-          data: ImageArchiveData(upload: true),
+          data: const ImageArchiveData(upload: true),
         ),
         Sortable.createNew<ImageArchiveData>(
           isGroup: true,
-          data: ImageArchiveData(myPhotos: true),
+          data: const ImageArchiveData(myPhotos: true),
         ),
       ];
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
@@ -304,15 +304,15 @@ void main() {
       const fileId = 'imgfileId';
       sortable = [
         Sortable.createNew<ImageArchiveData>(
-          data: ImageArchiveData(name: 'test image', fileId: fileId),
+          data: const ImageArchiveData(name: 'test image', fileId: fileId),
         ),
         Sortable.createNew<ImageArchiveData>(
           isGroup: true,
-          data: ImageArchiveData(upload: true),
+          data: const ImageArchiveData(upload: true),
         ),
         Sortable.createNew<ImageArchiveData>(
           isGroup: true,
-          data: ImageArchiveData(myPhotos: true),
+          data: const ImageArchiveData(myPhotos: true),
         ),
       ];
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
@@ -640,7 +640,7 @@ void main() {
           await tester.dragUntilVisible(
             find.byType(CategoryWidget),
             find.byType(EditActivityPage),
-            Offset(0, -100),
+            const Offset(0, -100),
           );
           await tester.pumpAndSettle();
 

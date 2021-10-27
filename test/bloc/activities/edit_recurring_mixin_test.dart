@@ -697,7 +697,7 @@ void main() {
         final original = Activity.createNew(
           title: 'asdf',
           startTime: start,
-          recurs: Recurs.raw(
+          recurs: const Recurs.raw(
             Recurs.typeYearly,
             1006,
             Recurs.noEnd,
@@ -733,7 +733,7 @@ void main() {
         final original = Activity.createNew(
           title: 'asdf',
           startTime: start,
-          recurs: Recurs.raw(
+          recurs: const Recurs.raw(
             Recurs.typeYearly,
             1006,
             Recurs.noEnd,
@@ -849,7 +849,7 @@ void main() {
 
       final onlyThis = activity.copyWith(
         title: 'new title',
-        recurs: Recurs.raw(0, 0, Recurs.noEnd),
+        recurs: const Recurs.raw(0, 0, Recurs.noEnd),
       );
       final recurring = activity.copyWith(
         startTime: activity.startTime.nextDay(),

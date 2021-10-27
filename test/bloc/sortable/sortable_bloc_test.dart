@@ -27,16 +27,16 @@ void main() {
   test('Sortables loaded after successful loading of sortables', () async {
     when(() => mockSortableRepository.load())
         .thenAnswer((_) => Future.value([]));
-    sortableBloc.add(LoadSortables());
+    sortableBloc.add(const LoadSortables());
     await expectLater(
       sortableBloc.stream,
-      emits(SortablesLoaded(sortables: const [])),
+      emits(const SortablesLoaded(sortables: [])),
     );
   });
 
   test('State is SortablesLoadedFailed if repository fails to load', () async {
     when(() => mockSortableRepository.load()).thenThrow(Exception());
-    sortableBloc.add(LoadSortables());
+    sortableBloc.add(const LoadSortables());
     await expectLater(
       sortableBloc.stream,
       emits(SortablesLoadedFailed()),
@@ -48,7 +48,7 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    sortableBloc.add(LoadSortables(initDefaults: true));
+    sortableBloc.add(const LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
@@ -69,7 +69,7 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    sortableBloc.add(LoadSortables(initDefaults: true));
+    sortableBloc.add(const LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
@@ -101,8 +101,8 @@ void main() {
     const imagePath = 'path/to/image/$imageName.jpg';
 
     // Act
-    sortableBloc.add(LoadSortables());
-    sortableBloc.add(ImageArchiveImageAdded('id1', imagePath));
+    sortableBloc.add(const LoadSortables());
+    sortableBloc.add(const ImageArchiveImageAdded('id1', imagePath));
 
     // Assert
     await expectLater(

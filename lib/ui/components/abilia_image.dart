@@ -94,11 +94,11 @@ class ActivityImage extends StatelessWidget {
               height: size != null ? size - crossPadding : null,
               width: size != null ? size - crossPadding : null,
               child: past && !signedOff
-                  ? CrossOver()
+                  ? const CrossOver()
                   : AnimatedOpacity(
                       opacity: signedOff ? 1.0 : 0.0,
                       duration: duration,
-                      child: CheckMark(),
+                      child: const CheckMark(),
                     ),
             ),
           ),

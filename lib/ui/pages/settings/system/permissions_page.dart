@@ -23,7 +23,7 @@ class PermissionsPage extends StatelessWidget {
               .toList(),
         ),
       ),
-      bottomNavigationBar: BottomNavigation(
+      bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: PreviousButton(),
       ),
     );
@@ -107,7 +107,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                   await showViewDialog(
                     context: context,
                     builder: (context) =>
-                        NotificationPermissionOffWarningDialog(
+                        const NotificationPermissionOffWarningDialog(
                       onOk: openAppSettings,
                     ),
                   );
@@ -183,14 +183,14 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                         await showViewDialog(
                           context: context,
                           builder: (context) =>
-                              NotificationPermissionOffWarningDialog(
+                              const NotificationPermissionOffWarningDialog(
                             onOk: AndroidIntents.openSystemAlertSetting,
                           ),
                         );
                       } else {
                         context.read<PermissionBloc>().add(
-                              RequestPermissions(
-                                const [Permission.systemAlertWindow],
+                              const RequestPermissions(
+                                [Permission.systemAlertWindow],
                               ),
                             );
                       }

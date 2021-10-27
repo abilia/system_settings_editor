@@ -13,7 +13,7 @@ class GoToNowButton extends StatelessWidget {
         builder: (context, scrollState) => AnimatedSwitcher(
           switchInCurve: Curves.easeOut,
           switchOutCurve: Curves.easeOut,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: scrollState is WrongDay || scrollState is OutOfView
               ? Material(
                   color: Colors.transparent,
@@ -25,7 +25,7 @@ class GoToNowButton extends StatelessWidget {
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
                     onPressed: () =>
-                        context.read<ScrollPositionBloc>().add(GoToNow()),
+                        context.read<ScrollPositionBloc>().add(const GoToNow()),
                     style: actionIconTextButtonStyleRed,
                   ),
                 )
@@ -46,9 +46,7 @@ class GoToCurrentActionButton extends StatelessWidget {
     return ActionButton(
       style: actionButtonStyleRed,
       onPressed: onPressed,
-      child: Icon(
-        AbiliaIcons.reset,
-      ),
+      child: const Icon(AbiliaIcons.reset),
     );
   }
 }

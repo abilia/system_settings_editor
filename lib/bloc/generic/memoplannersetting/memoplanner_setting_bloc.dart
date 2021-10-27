@@ -26,7 +26,7 @@ class MemoplannerSettingBloc
                       .filterMemoplannerSettingsData(),
                 ),
               )
-            : MemoplannerSettingsNotLoaded()) {
+            : const MemoplannerSettingsNotLoaded()) {
     _genericSubscription = genericBloc?.stream.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
@@ -47,7 +47,7 @@ class MemoplannerSettingBloc
       );
     }
     if (event is GenericsLoadedFailed) {
-      yield MemoplannerSettingsFailed();
+      yield const MemoplannerSettingsFailed();
     }
     if (event is SettingsUpdateEvent) {
       genericBloc?.add(GenericUpdated([event.settingData]));

@@ -19,7 +19,7 @@ class ActivitiesOccasionBloc
   ActivitiesOccasionBloc({
     required this.clockBloc,
     required this.dayActivitiesBloc,
-  }) : super(ActivitiesOccasionLoading()) {
+  }) : super(const ActivitiesOccasionLoading()) {
     activitiesSubscription = dayActivitiesBloc.stream.listen((activitiesState) {
       if (activitiesState is DayActivitiesLoaded) {
         add(ActivitiesChanged(activitiesState));
@@ -49,7 +49,7 @@ class ActivitiesOccasionBloc
           now: clockBloc.state,
         );
       } else {
-        yield ActivitiesOccasionLoading();
+        yield const ActivitiesOccasionLoading();
       }
     }
   }

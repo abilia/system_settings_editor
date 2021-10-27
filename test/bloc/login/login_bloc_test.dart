@@ -53,7 +53,7 @@ void main() {
 
       when(() => mockUserRepository.me(loginToken))
           .thenAnswer((_) => Future.value(
-                User(
+                const User(
                   id: loggedInUserId,
                   name: 'Test',
                   type: '',
@@ -63,7 +63,7 @@ void main() {
       when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           License(
-            endTime: DateTime.now().add(Duration(hours: 24)),
+            endTime: DateTime.now().add(const Duration(hours: 24)),
             id: 1,
             product: memoplannerLicenseName,
           ),
@@ -82,8 +82,8 @@ void main() {
       );
 
       // Act
-      loginBloc.add(UsernameChanged(username));
-      loginBloc.add(PasswordChanged(password));
+      loginBloc.add(const UsernameChanged(username));
+      loginBloc.add(const PasswordChanged(password));
 
       loginBloc.add(LoginButtonPressed());
 
@@ -97,7 +97,7 @@ void main() {
           s1,
           s2,
           s2.loading(),
-          LoginSucceeded(),
+          const LoginSucceeded(),
         ]),
       );
       expect(
@@ -133,10 +133,10 @@ void main() {
     test('LoginButtonPressed twice still yeilds LoginFailure twice on password',
         () async {
       const username = 'username';
-      loginBloc.add(UsernameChanged(username));
+      loginBloc.add(const UsernameChanged(username));
       loginBloc.add(LoginButtonPressed());
       loginBloc.add(LoginButtonPressed());
-      final s1 = LoginState(username: username, password: '');
+      const s1 = LoginState(username: username, password: '');
       final l1 = s1.loading();
       final e1 = s1.failure(cause: LoginFailureCause.noPassword);
 
@@ -176,12 +176,12 @@ void main() {
         clockBloc: ClockBloc(StreamController<DateTime>().stream),
       );
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(() => mockedUserRepository.me(any()))
-          .thenAnswer((_) => Future.value(User(id: 0, name: '', type: '')));
+      when(() => mockedUserRepository.me(any())).thenAnswer(
+          (_) => Future.value(const User(id: 0, name: '', type: '')));
       when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
-                    endTime: DateTime.now().add(Duration(hours: 24)),
+                    endTime: DateTime.now().add(const Duration(hours: 24)),
                     id: 1,
                     product: memoplannerLicenseName)
               ]));
@@ -203,8 +203,8 @@ void main() {
           )).thenAnswer((_) => Future.value(loginToken));
 
       // Act
-      loginBloc.add(UsernameChanged(username));
-      loginBloc.add(PasswordChanged(password));
+      loginBloc.add(const UsernameChanged(username));
+      loginBloc.add(const PasswordChanged(password));
       loginBloc.add(LoginButtonPressed());
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(

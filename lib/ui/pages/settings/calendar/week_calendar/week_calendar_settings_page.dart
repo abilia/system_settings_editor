@@ -16,19 +16,19 @@ class WeekCalendarSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: Translator.of(context).translate.weekCalendar,
             iconData: AbiliaIcons.week,
-            bottom: AbiliaTabBar(
-              tabs: const <Widget>[
+            bottom: const AbiliaTabBar(
+              tabs: <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(AbiliaIcons.menuSetup),
               ],
             ),
           ),
-          body: TabBarView(children: const [
+          body: const TabBarView(children: [
             WeekAppBarSettingsTab(),
             WeekSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () {

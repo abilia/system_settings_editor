@@ -15,7 +15,7 @@ class WeekCalendarTab extends StatelessWidget {
     return Scaffold(
       backgroundColor: AbiliaColors.white,
       appBar: const WeekAppBar(),
-      floatingActionButton: FloatingActions(),
+      floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Padding(
         padding: EdgeInsets.fromLTRB(2.s, 4.s, 2.s, 0),
@@ -450,7 +450,7 @@ class WeekActivityContent extends StatelessWidget {
             children: [
               if (activityOccasion.activity.hasImage)
                 AnimatedOpacity(
-                  duration: Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 400),
                   opacity: inactive ? 0.5 : 1.0,
                   child: FadeInAbiliaImage(
                     imageFileId: activityOccasion.activity.fileId,
@@ -478,13 +478,13 @@ class WeekActivityContent extends StatelessWidget {
                 FractionallySizedBox(
                   widthFactor: scaleFactor,
                   heightFactor: scaleFactor,
-                  child: CheckMark(),
+                  child: const CheckMark(),
                 )
               else if (activityOccasion.isPast)
                 FractionallySizedBox(
                   widthFactor: scaleFactor,
                   heightFactor: scaleFactor,
-                  child: CrossOver(),
+                  child: const CrossOver(),
                 ),
             ],
           ),

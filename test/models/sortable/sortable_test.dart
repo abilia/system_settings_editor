@@ -12,7 +12,7 @@ void main() {
         '{\\"name\\":\\"DVD\\",\\"file\\":\\"/images/Handi/Handi/DVD_2.gif\\"}';
     const expectedRawData =
         '{"name":"DVD","file":"/images/Handi/Handi/DVD_2.gif"}';
-    final expectedData = ImageArchiveData(
+    const expectedData = ImageArchiveData(
       file: '/images/Handi/Handi/DVD_2.gif',
       name: 'DVD',
     );
@@ -77,7 +77,7 @@ void main() {
     expect(dbSortable.revision, 999);
     final s = dbSortable.sortable;
     expect(s.id, 'id-111');
-    expect(s.data, RawSortableData('dbdata'));
+    expect(s.data, const RawSortableData('dbdata'));
     expect(s.type, 'type');
     expect(s.groupId, 'group_id');
     expect(s.sortOrder, 'sort_order');
@@ -104,19 +104,19 @@ void main() {
     };
     final s = DbSortable.fromDbMap(dbMap).sortable;
     expect(s.groupId, '');
-    expect(s.data, ImageArchiveData());
+    expect(s.data, const ImageArchiveData());
   });
 
   test('Get correct type when ImageArchiveData', () {
     final s = Sortable.createNew<ImageArchiveData>(
-      data: ImageArchiveData(),
+      data: const ImageArchiveData(),
     );
     expect(s.type, SortableType.imageArchive);
   });
 
   test('Get correct type when NoteData', () {
     final s = Sortable.createNew<NoteData>(
-      data: NoteData(),
+      data: const NoteData(),
     );
     expect(s.type, SortableType.note);
   });

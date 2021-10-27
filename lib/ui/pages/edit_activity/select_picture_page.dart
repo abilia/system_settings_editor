@@ -37,7 +37,7 @@ class SelectPicturePage extends StatelessWidget {
             ..maybePop()
         },
       ),
-      bottomNavigationBar: BottomNavigation(
+      bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: CancelButton(),
       ),
     );

@@ -60,7 +60,7 @@ class _EyeButtonMonthDialogState extends State<EyeButtonMonthDialog> {
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
-      backNavigationWidget: CancelButton(),
+      backNavigationWidget: const CancelButton(),
       forwardNavigationWidget: OkButton(
         onPressed: () => Navigator.of(context).maybePop(calendarType),
       ),

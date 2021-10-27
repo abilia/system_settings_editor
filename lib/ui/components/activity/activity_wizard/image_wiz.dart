@@ -10,7 +10,7 @@ class ImageWiz extends StatelessWidget {
     return WizardScaffold(
       title: Translator.of(context).translate.selectImage,
       iconData: AbiliaIcons.edit,
-      body: ImageWizSelectPictureWidget(),
+      body: const ImageWizSelectPictureWidget(),
     );
   }
 }

@@ -19,7 +19,7 @@ abstract class InfoItem extends Equatable {
   Map<String, dynamic> toJson();
   static InfoItem fromBase64(String? base64) {
     try {
-      if (base64 == null || base64.isEmpty) return NoInfoItem();
+      if (base64 == null || base64.isEmpty) return const NoInfoItem();
       final jsonString = utf8.decode(base64Decode(base64));
       return fromJsonString(jsonString);
     } catch (e, stacktrace) {
@@ -29,11 +29,11 @@ abstract class InfoItem extends Equatable {
         stacktrace,
       );
     }
-    return NoInfoItem();
+    return const NoInfoItem();
   }
 
   static InfoItem fromJsonString(String jsonString) {
-    if (jsonString.isEmpty) return NoInfoItem();
+    if (jsonString.isEmpty) return const NoInfoItem();
     try {
       final json = jsonDecode(jsonString);
       final infoItem = json['info-item'][0];
@@ -54,7 +54,7 @@ abstract class InfoItem extends Equatable {
         stacktrace,
       );
     }
-    return NoInfoItem();
+    return const NoInfoItem();
   }
 
   String? toBase64() => base64Encode(

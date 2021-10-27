@@ -53,7 +53,7 @@ class UserRepository extends Repository {
       },
       body: json.encode(
         {
-          'clientId': Uuid().v4(),
+          'clientId': const Uuid().v4(),
           'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,

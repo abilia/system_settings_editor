@@ -73,7 +73,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                                       EditActivityTab.errorBorderPadding.bottom,
                                 ),
                                 child: errorBordered(
-                                  MonthDays(),
+                                  const MonthDays(),
                                   errorState: recurringDataError,
                                 ),
                               ),
@@ -114,7 +114,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
                 left: EditActivityTab.ordinaryPadding.left -
                     EditActivityTab.errorBorderPadding.left),
             child: errorBordered(
-              WeekDays(),
+              const WeekDays(),
               errorState: errorState,
             ),
           ),
@@ -125,7 +125,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
                 padding: EditActivityTab.ordinaryPadding.subtract(
                   EdgeInsets.only(top: EditActivityTab.errorBorderPadding.top),
                 ),
-                child: EveryOtherWeekSwitch(),
+                child: const EveryOtherWeekSwitch(),
               ),
             ),
           ),

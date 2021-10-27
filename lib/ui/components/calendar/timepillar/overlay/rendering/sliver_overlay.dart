@@ -130,7 +130,7 @@ class RenderSliverOverlay extends RenderSliver with RenderSliverHelpers {
     if (overlay != null) {
       overlay.layout(
         OverlayConstraints(
-          state: _oldState ?? SliverOverlayState(0.0),
+          state: _oldState ?? const SliverOverlayState(0.0),
           boxConstraints: boxConstraints,
         ),
         parentUsesSize: true,

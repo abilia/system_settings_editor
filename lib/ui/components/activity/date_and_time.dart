@@ -143,7 +143,7 @@ class DatePicker extends StatelessWidget {
                   onChange?.call(newDate);
                 }
               },
-        leading: Icon(AbiliaIcons.calendar),
+        leading: const Icon(AbiliaIcons.calendar),
         text: Text(
           (time.isAtSameDay(date)
                   ? '(${Translator.of(context).translate.today}) '
@@ -192,7 +192,7 @@ class TimeIntervallPicker extends StatelessWidget {
                                 : timeInterval.endTime),
                       ),
                     ),
-                    settings: RouteSettings(name: 'TimeInputPage'),
+                    settings: const RouteSettings(name: 'TimeInputPage'),
                   ),
                 );
 
@@ -247,7 +247,7 @@ class TimePicker extends StatelessWidget {
           onTap: onTap,
           heigth: 56.s,
           errorState: errorState,
-          leading: Icon(AbiliaIcons.clock),
+          leading: const Icon(AbiliaIcons.clock),
           text: Text(time),
           trailing: errorState
               ? const Icon(

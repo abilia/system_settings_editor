@@ -122,7 +122,7 @@ void main() {
       testWidgets('Hide clock', (tester) async {
         await tester.goToDayCalendarSettingsPage(pump: true);
         await tester.dragUntilVisible(find.text(translate.showClock),
-            find.byType(DayAppBarSettingsTab), Offset(0, 100));
+            find.byType(DayAppBarSettingsTab), const Offset(0, 100));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.showClock));
         await tester.pumpAndSettle();
@@ -210,7 +210,7 @@ void main() {
         await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
         await tester.pumpAndSettle();
         await tester.dragUntilVisible(find.byIcon(AbiliaIcons.flarp),
-            find.byType(DayAppBarSettingsTab), Offset(0, 100));
+            find.byType(DayAppBarSettingsTab), const Offset(0, 100));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.flarp));
         await tester.pumpAndSettle();
@@ -308,7 +308,7 @@ extension on WidgetTester {
     await tap(find.byIcon(AbiliaIcons.show));
     await pumpAndSettle();
     final center = getCenter(find.byType(EyeButtonSettingsTab));
-    await dragFrom(center, Offset(0.0, -800));
+    await dragFrom(center, const Offset(0.0, -800));
     await pumpAndSettle();
   }
 }

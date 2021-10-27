@@ -33,7 +33,7 @@ class SoundCubit extends Cubit<SoundState> {
   SoundCubit({
     required this.storage,
     required this.userFileBloc,
-  }) : super(NoSoundPlaying()) {
+  }) : super(const NoSoundPlaying()) {
     onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
       emit(const NoSoundPlaying());
     });
@@ -112,7 +112,7 @@ class SoundCubit extends Cubit<SoundState> {
 
   Future<void> stopSound() async {
     await audioPlayer.stop();
-    emit(NoSoundPlaying());
+    emit(const NoSoundPlaying());
   }
 
   @override

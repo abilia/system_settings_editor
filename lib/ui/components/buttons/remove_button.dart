@@ -34,9 +34,7 @@ class RemoveButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (i != null) i,
-              SizedBox(
-                width: 4,
-              ),
+              SizedBox(width: 4.s),
               if (t != null)
                 Text(t,
                     style: abiliaTextTheme.bodyText1

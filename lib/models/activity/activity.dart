@@ -89,7 +89,7 @@ class Activity extends DataModel {
     String timezone = '',
     Extras extras = Extras.empty,
   }) {
-    final id = Uuid().v4();
+    final id = const Uuid().v4();
     return Activity._(
       id: id,
       seriesId: id,
@@ -150,7 +150,7 @@ class Activity extends DataModel {
     Extras? extras,
   }) =>
       Activity._(
-        id: newId ? Uuid().v4() : id,
+        id: newId ? const Uuid().v4() : id,
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,

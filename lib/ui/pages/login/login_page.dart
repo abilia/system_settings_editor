@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
             }
           }
         },
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
+        child: const AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: Scaffold(
             body: SafeArea(
