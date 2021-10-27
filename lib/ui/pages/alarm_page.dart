@@ -9,9 +9,11 @@ import 'package:seagull/ui/all.dart';
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
   final Widget? previewImage;
+  final bool fullScreenAlarm;
 
   const AlarmPage({
     required this.alarm,
+    this.fullScreenAlarm = false,
     this.previewImage,
     Key? key,
   }) : super(key: key);
@@ -26,7 +28,10 @@ class AlarmPage extends StatelessWidget {
               title: Translator.of(context).translate.alarm,
               iconData: AbiliaIcons.alarmBell,
               trailing: alarm.speech.isNotEmpty
-                  ? PlaySpeechButton(speech: alarm.speech)
+                  ? PlaySpeechButton(
+                      alarm: alarm,
+                      fullScreenAlarm: fullScreenAlarm,
+                    )
                   : null,
             ),
             body: Padding(
@@ -63,7 +68,9 @@ class ReminderPage extends StatelessWidget {
         .toReminderHeading(translate, reminder is ReminderBefore);
     return Scaffold(
       appBar: AbiliaAppBar(
-          title: translate.reminder, iconData: AbiliaIcons.handiReminder),
+        title: translate.reminder,
+        iconData: AbiliaIcons.handiReminder,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -181,16 +188,35 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
 }
 
 class PlaySpeechButton extends StatelessWidget {
-  final AbiliaFile speech;
-  const PlaySpeechButton({Key? key, required this.speech}) : super(key: key);
+  final NewAlarm alarm;
+  final bool fullScreenAlarm;
+  const PlaySpeechButton({
+    Key? key,
+    required this.alarm,
+    required this.fullScreenAlarm,
+  }) : super(key: key);
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        create: (context) => SoundCubit(
-          storage: GetIt.I<FileStorage>(),
-          userFileBloc: context.read<UserFileBloc>(),
-        ),
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => SoundCubit(
+              storage: GetIt.I<FileStorage>(),
+              userFileBloc: context.read<UserFileBloc>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => AlarmSpeechCubit(
+              alarm: alarm,
+              alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
+              soundCubit: context.read<SoundCubit>(),
+              selectedNotificationStream: selectNotificationSubject,
+              fullScreenAlarm: fullScreenAlarm,
+            ),
+            lazy: false,
+          ),
+        ],
         child: PlaySoundButton(
-          sound: speech,
+          sound: alarm.speech,
           buttonStyle: actionButtonStyleLight,
         ),
       );

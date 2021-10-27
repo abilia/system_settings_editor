@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -11,8 +11,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../fakes/fakes_blocs.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -28,7 +27,7 @@ void main() {
     await initializeDateFormatting();
 
     final userDb = MockUserDb();
-    when(userDb.getUser()).thenReturn(user);
+    when(() => userDb.getUser()).thenReturn(user);
     GetItInitializer()
       ..userDb = userDb
       ..packageInfo = PackageInfo(
@@ -37,7 +36,7 @@ void main() {
           version: 'version',
           buildNumber: 'buildNumber')
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 

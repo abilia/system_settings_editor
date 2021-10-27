@@ -4,17 +4,14 @@ import 'dart:io';
 import 'package:file/memory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import '../../../fakes/fake_authenticated_blocs_provider.dart';
-import '../../../fakes/fake_db_and_repository.dart';
-import '../../../fakes/fakes_blocs.dart';
-import '../../../fakes/permission.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../fakes/all.dart';
+import '../../../mocks/mocks.dart';
 
 final _dummyFile = UnstoredAbiliaFile.forTest('testfile', 'jksd', File('nbnb'));
 
@@ -28,8 +25,8 @@ void main() {
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
     mockRecorder = MockRecord();
-    when(mockRecorder.start()).thenAnswer((_) => Future.value());
-    when(mockRecorder.stop()).thenAnswer((_) => Future.value(filePath));
+    when(() => mockRecorder.start()).thenAnswer((_) => Future.value());
+    when(() => mockRecorder.stop()).thenAnswer((_) => Future.value(filePath));
     setupPermissions();
   });
 
@@ -152,13 +149,13 @@ void main() {
 
       await tester.tap(find.byType(RecordAudioButton));
       await tester.pumpAndSettle();
-      verify(mockRecorder.start());
+      verify(() => mockRecorder.start());
 
       expect(find.byType(StopButton), findsOneWidget);
       await tester.tap(find.byType(StopButton));
       await tester.pumpAndSettle();
 
-      verify(mockRecorder.stop());
+      verify(() => mockRecorder.stop());
       expect(find.byType(PlayRecordingButton), findsOneWidget);
     });
   });

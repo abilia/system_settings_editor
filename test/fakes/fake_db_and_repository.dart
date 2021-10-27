@@ -1,4 +1,6 @@
-import 'package:mockito/mockito.dart';
+import 'dart:io';
+
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
@@ -97,7 +99,18 @@ class FakeBatch extends Fake implements Batch {
 
 class FakeGenericRepository extends Fake implements GenericRepository {}
 
-class FakeFileStorage extends Fake implements FileStorage {}
+class FakeFileStorage extends Fake implements FileStorage {
+  @override
+  File getFile(String id) => FakeFile('$id.mp3');
+}
+
+class FakeFile extends Fake implements File {
+  FakeFile(this.path);
+  @override
+  final String path;
+  @override
+  Future<bool> exists() => Future.value(true);
+}
 
 class FakeUserFileRepository extends Fake implements UserFileRepository {}
 

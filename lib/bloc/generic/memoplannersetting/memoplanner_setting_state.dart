@@ -94,28 +94,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get monthCaptionShowYear => settings.monthCaptionShowYear;
   bool get monthCaptionShowClock => settings.monthCaptionShowClock;
 
-  bool get wizardTemplateStep => settings.wizardTemplateStep;
-  bool get wizardTitleStep => settings.wizardTitleStep;
-  bool get wizardImageStep => settings.wizardImageStep;
-  bool get wizardDatePickerStep => settings.wizardDatePickerStep;
-  bool get wizardTypeStep => settings.wizardTypeStep;
-  bool get wizardCheckableStep => settings.wizardCheckableStep;
-  bool get wizardAvailabilityType => settings.wizardAvailabilityType;
-  bool get wizardRemoveAfterStep => settings.wizardRemoveAfterStep;
-  bool get wizardAlarmStep => settings.wizardAlarmStep;
-  bool get wizardChecklistStep => settings.wizardChecklistStep;
-  bool get wizardNotesStep => settings.wizardNotesStep;
-  bool get wizardRemindersStep => settings.wizardRemindersStep;
-  bool get wizardWithOnlyTemplateStep =>
-      wizardTemplateStep && !wizardTitleStep && !wizardImageStep;
-
   int get defaultAlarmTypeSetting => settings.activityDefaultAlarmType;
 
   int get morningStart => settings.morningIntervalStart;
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get alarmDuration => settings.alarm.duration;
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>

@@ -151,6 +151,7 @@ class PreviewTimePillar extends StatelessWidget {
                         interval: interval,
                         columnOfDots: tpState.columnOfDots,
                         topMargin: 0.0,
+                        timePillarState: ts,
                       ),
                     ),
                     if (tpState.timeline)

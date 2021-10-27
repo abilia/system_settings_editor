@@ -13,7 +13,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
@@ -28,7 +28,7 @@ void main() {
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
 
     GetItInitializer()

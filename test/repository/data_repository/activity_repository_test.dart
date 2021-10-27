@@ -2,20 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   const baseUrl = 'oneUrl';
-  final mockClient = MockBaseClient();
-  final mockActivityDb = MockActivityDb();
-  when(mockActivityDb.insertAndAddDirty(any))
-      .thenAnswer((_) => Future.value(true));
+
   const userId = 1;
   final startTime = DateTime(2020, 12, 12, 12, 12);
   final successActivity = Activity.createNew(
@@ -28,21 +26,37 @@ void main() {
     timezone: 'aTimeZone',
   ).wrapWithDbModel();
   final dbActivities = [successActivity, failedActivity];
-  final activities = dbActivities.map((a) => a.activity);
 
-  final activityRepo = ActivityRepository(
-    baseUrl: baseUrl,
-    client: mockClient,
-    activityDb: mockActivityDb,
-    userId: userId,
-    authToken: Fakes.token,
-  );
+  late ActivityRepository activityRepo;
+  late Iterable<Activity> activities;
+  late MockActivityDb mockActivityDb;
+  late MockBaseClient mockClient;
+
+  setUpAll(() {
+    registerFallbackValues();
+  });
+
+  setUp(() {
+    mockClient = MockBaseClient();
+    mockActivityDb = MockActivityDb();
+    when(() => mockActivityDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+    activities = dbActivities.map((a) => a.activity);
+
+    activityRepo = ActivityRepository(
+      baseUrl: baseUrl,
+      client: mockClient,
+      activityDb: mockActivityDb,
+      userId: userId,
+      authToken: Fakes.token,
+    );
+  });
 
   test('Save activities saves to db', () async {
     // Act
     await activityRepo.save(activities);
     // Assert
-    verify(mockActivityDb.insertAndAddDirty(activities));
+    verify(() => mockActivityDb.insertAndAddDirty(activities));
   });
 
   test('Post activities gets correct answer', () async {
@@ -61,7 +75,7 @@ void main() {
           }
           ''';
     when(
-      mockClient.post(
+      () => mockClient.post(
         '$baseUrl/api/v2/data/$userId/activities'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
@@ -86,7 +100,7 @@ void main() {
   test('postActivities throws exception when status not 200', () async {
     // Arrange
     when(
-      mockClient.post(
+      () => mockClient.post(
         '$baseUrl/api/v2/data/$userId/activities'.toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
@@ -119,38 +133,38 @@ void main() {
           ''';
     const firstDirty = 1;
     final activities = [successActivity.copyWith(dirty: 1)];
-    when(mockActivityDb.getAllDirty())
+    when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
-    when(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
-      headers: jsonAuthHeader(Fakes.token),
-      body: jsonEncode(activities),
-    )).thenAnswer((_) => Future.value(
+    when(() => mockClient.post(
+          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          headers: jsonAuthHeader(Fakes.token),
+          body: jsonEncode(activities),
+        )).thenAnswer((_) => Future.value(
           Response(
             syncToBackendResponse,
             200,
           ),
         ));
-    when(mockActivityDb
+    when(() => mockActivityDb
             .insert([successActivity.copyWith(revision: newRevision)]))
         .thenAnswer((_) => Future.value(List.filled(1, null)));
     const newDirty = 5;
-    when(mockActivityDb.getById(successActivity.activity.id))
+    when(() => mockActivityDb.getById(successActivity.activity.id))
         .thenAnswer((_) => Future.value(successActivity.copyWith(dirty: 5)));
 
     // Act
     await activityRepo.synchronize();
 
     // Expect
-    verify(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
-      headers: jsonAuthHeader(Fakes.token),
-      body: jsonEncode(activities),
-    ));
-    verify(mockActivityDb.insert([
-      successActivity.copyWith(
-          revision: newRevision, dirty: newDirty - firstDirty)
-    ]));
+    verify(() => mockClient.post(
+          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          headers: jsonAuthHeader(Fakes.token),
+          body: jsonEncode(activities),
+        ));
+    verify(() => mockActivityDb.insert([
+          successActivity.copyWith(
+              revision: newRevision, dirty: newDirty - firstDirty)
+        ]));
   });
 
   test('synchronizeLocalWithBackend - failed sync fetches from backend',
@@ -170,57 +184,59 @@ void main() {
           }
           ''';
     final activities = [failedActivity.copyWith(dirty: 1)];
-    when(mockActivityDb.getAllDirty())
+    when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
-    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(100));
-    when(mockClient.post(
-      '$baseUrl/api/v2/data/$userId/activities'.toUri(),
-      headers: jsonAuthHeader(Fakes.token),
-      body: jsonEncode(activities),
-    )).thenAnswer((_) => Future.value(
+    when(() => mockActivityDb.getLastRevision())
+        .thenAnswer((_) => Future.value(100));
+    when(() => mockClient.post(
+          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          headers: jsonAuthHeader(Fakes.token),
+          body: jsonEncode(activities),
+        )).thenAnswer((_) => Future.value(
           Response(
             syncToBackendResponse,
             200,
           ),
         ));
 
-    when(mockClient.get(
+    when(() =>
+        mockClient.get(
             '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision'
                 .toUri(),
-            headers: authHeader(Fakes.token)))
-        .thenAnswer((_) => (Future.value(
-              Response(
-                json.encode([
-                  failedActivity.copyWith(revision: failedRevision).toJson()
-                ]),
-                200,
-              ),
-            )));
+            headers: authHeader(Fakes.token))).thenAnswer((_) => (Future.value(
+          Response(
+            json.encode(
+                [failedActivity.copyWith(revision: failedRevision).toJson()]),
+            200,
+          ),
+        )));
 
     // Act
     await activityRepo.synchronize();
 
     // Expect/Verify
-    verify(mockActivityDb
+    verify(() => mockActivityDb
         .insert([failedActivity.copyWith(revision: failedRevision)]));
   });
 
   test('synchronize - calls fetch before posting', () async {
     // Arrange
-    when(mockActivityDb.getLastRevision()).thenAnswer((_) => Future.value(1));
-    when(mockClient.get(any, headers: anyNamed('headers')))
+    when(() => mockActivityDb.getLastRevision())
+        .thenAnswer((_) => Future.value(1));
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer((_) => Future.value(Response('[]', 200)));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
 
     // Act
     await activityRepo.synchronize();
 
     // Verify
     verifyInOrder([
-      mockActivityDb.getLastRevision(),
-      mockClient.get(any, headers: anyNamed('headers')),
-      mockActivityDb.insert([]),
-      mockActivityDb.getAllDirty(),
+      () => mockActivityDb.getLastRevision(),
+      () => mockClient.get(any(), headers: any(named: 'headers')),
+      () => mockActivityDb.insert([]),
+      () => mockActivityDb.getAllDirty(),
     ]);
   });
 }

@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'dart:async';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,9 +15,9 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../fakes/all.dart';
-import '../../../../../mocks/shared.mocks.dart';
-import '../../../../../mocks/mock_http_client.dart';
+import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
+import '../../../../../test_helpers/register_fallback_values.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -42,23 +42,23 @@ void main() {
   setUp(() async {
     tz.initializeTimeZones();
     setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [];
     sortable = [];
 
     genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
+    when(() => genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     sortableDb = MockSortableDb();
-    when(sortableDb.getAllNonDeleted())
+    when(() => sortableDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(sortable));
-    when(sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(sortableDb.insertAndAddDirty(any))
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => sortableDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
@@ -137,7 +137,7 @@ void main() {
       ),
     ];
 
-    await provideMockedNetworkImages(() async {
+    await mockNetworkImages(() async {
       await tester.goToGeneralCalendarSettingsPageCategoriesTab();
       expect(find.byType(CalendarGeneralSettingsPage), findsOneWidget);
 
@@ -341,6 +341,10 @@ void main() {
   }, skip: !Config.isMP);
 
   group('category visisbility settings', () {
+    setUpAll(() {
+      registerFallbackValues();
+    });
+
     testWidgets('show category false', (tester) async {
       // Arrange
       generics = [
@@ -497,7 +501,7 @@ void main() {
         ),
       ];
 
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -544,7 +548,7 @@ void main() {
           ),
         ),
       ];
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -578,7 +582,7 @@ void main() {
         ),
       ];
 
-      await provideMockedNetworkImages(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp(use24: true);
@@ -625,7 +629,7 @@ void main() {
           ),
         ),
       ];
-      await HttpOverrides.runZoned(
+      await mockNetworkImages(
         () async {
           // Act
           await tester.pumpApp();
@@ -643,9 +647,8 @@ void main() {
           // Assert
           expect(find.text(nameLeft), findsOneWidget);
           expect(find.text(nameRight), findsOneWidget);
-          // expect(find.byType(CategoryImage), findsNWidgets(2));
+          expect(find.byType(CategoryImage), findsNWidgets(2));
         },
-        createHttpClient: (_) => createMockImageHttpClient(kTransparentImage),
       );
     });
   });

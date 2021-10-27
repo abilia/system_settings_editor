@@ -19,6 +19,7 @@ class TimePillar extends StatelessWidget {
   final bool columnOfDots;
   final bool preview;
   final double topMargin;
+  final TimepillarState timePillarState;
 
   const TimePillar({
     Key? key,
@@ -29,6 +30,7 @@ class TimePillar extends StatelessWidget {
     required this.dayParts,
     required this.columnOfDots,
     required this.topMargin,
+    required this.timePillarState,
     this.preview = false,
   }) : super(key: key);
 
@@ -41,74 +43,70 @@ class TimePillar extends StatelessWidget {
             : _futureDots;
 
     final formatHour = onlyHourFormat(context, use12h: use12h);
-    return BlocBuilder<TimepillarBloc, TimepillarState>(
-      builder: (context, ts) => Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          ...nightParts.map(
-            (p) {
-              return Positioned(
-                top: p.start,
-                child: SizedBox(
-                  width: ts.timePillarTotalWidth,
-                  height: p.length,
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                        color: TimepillarCalendar.nightBackgroundColor),
-                  ),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        ...nightParts.map(
+          (p) {
+            return Positioned(
+              top: p.start,
+              child: SizedBox(
+                width: timePillarState.timePillarTotalWidth,
+                height: p.length,
+                child: const DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: TimepillarCalendar.nightBackgroundColor),
                 ),
-              );
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              ts.timePillarPadding,
-              topMargin,
-              ts.timePillarPadding,
-              0,
-            ),
-            child: SizedBox(
-              width: ts.timePillarWidth,
-              child: Column(
-                children: [
-                  ...List.generate(
-                    interval.lengthInHours,
-                    (index) {
-                      final hourIndex = index + interval.startTime.hour;
-                      final hour = interval.startTime
-                          .onlyDays()
-                          .copyWith(hour: hourIndex);
-                      final isNight = hour.isNight(dayParts);
-                      return Hour(
-                        hour: formatHour(hour),
-                        dots: dots(
-                          hour,
-                          isNight,
-                          columnOfDots,
-                        ),
-                        isNight: isNight,
-                        timepillarState: ts,
-                      );
-                    },
-                  ),
-                  if (!preview)
-                    Hour(
-                      hour: formatHour(interval.endTime),
-                      dots: SizedBox(
-                        width: ts.dotSize,
-                        height: ts.dotSize,
-                      ),
-                      isNight: interval.endTime
-                          .subtract(1.hours())
-                          .isNight(dayParts),
-                      timepillarState: ts,
-                    ),
-                ],
               ),
+            );
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            timePillarState.timePillarPadding,
+            topMargin,
+            timePillarState.timePillarPadding,
+            0,
+          ),
+          child: SizedBox(
+            width: timePillarState.timePillarWidth,
+            child: Column(
+              children: [
+                ...List.generate(
+                  interval.lengthInHours,
+                  (index) {
+                    final hourIndex = index + interval.startTime.hour;
+                    final hour =
+                        interval.startTime.onlyDays().copyWith(hour: hourIndex);
+                    final isNight = hour.isNight(dayParts);
+                    return Hour(
+                      hour: formatHour(hour),
+                      dots: dots(
+                        hour,
+                        isNight,
+                        columnOfDots,
+                      ),
+                      isNight: isNight,
+                      timepillarState: timePillarState,
+                    );
+                  },
+                ),
+                if (!preview)
+                  Hour(
+                    hour: formatHour(interval.endTime),
+                    dots: SizedBox(
+                      width: timePillarState.dotSize,
+                      height: timePillarState.dotSize,
+                    ),
+                    isNight:
+                        interval.endTime.subtract(1.hours()).isNight(dayParts),
+                    timepillarState: timePillarState,
+                  ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

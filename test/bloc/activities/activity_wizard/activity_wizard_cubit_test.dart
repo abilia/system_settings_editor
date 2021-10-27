@@ -13,6 +13,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late MockActivitiesBloc mockActivitiesBloc;
@@ -22,8 +23,7 @@ void main() {
   final aDay = DateTime(2022, 02, 22);
 
   setUpAll(() {
-    registerFallbackValue(ActivitiesNotLoaded());
-    registerFallbackValue(LoadActivities());
+    registerFallbackValues();
     tz.initializeTimeZones();
   });
 
@@ -1740,16 +1740,18 @@ void main() {
         settings: MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizardDatePickerStep: false,
-            wizardImageStep: false,
-            wizardTitleStep: false,
-            wizardTypeStep: true,
-            wizardAvailabilityType: false,
-            wizardCheckableStep: false,
-            wizardRemoveAfterStep: true,
-            wizardAlarmStep: true,
-            wizardNotesStep: true,
-            wizardRemindersStep: true,
+            wizard: WizardStepsSettings(
+              datePicker: false,
+              image: false,
+              title: false,
+              type: true,
+              availability: false,
+              checkable: false,
+              removeAfter: true,
+              alarm: true,
+              notes: true,
+              reminders: true,
+            ),
             activityRecurringEditable: false,
           ),
         ),
@@ -1786,18 +1788,20 @@ void main() {
         settings: MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizardTemplateStep: false,
-            wizardDatePickerStep: false,
-            wizardImageStep: false,
-            wizardTitleStep: true,
-            wizardTypeStep: false,
-            wizardAvailabilityType: false,
-            wizardCheckableStep: false,
-            wizardRemoveAfterStep: false,
-            wizardAlarmStep: false,
-            wizardChecklistStep: false,
-            wizardNotesStep: false,
-            wizardRemindersStep: false,
+            wizard: WizardStepsSettings(
+              template: false,
+              datePicker: false,
+              image: false,
+              title: true,
+              type: false,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              checklist: false,
+              notes: false,
+              reminders: false,
+            ),
             activityRecurringEditable: false,
           ),
         ),
@@ -1817,18 +1821,20 @@ void main() {
 
     final allWizStepsSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      wizardTemplateStep: true,
-      wizardDatePickerStep: true,
-      wizardImageStep: true,
-      wizardTitleStep: true,
-      wizardTypeStep: true,
-      wizardAvailabilityType: true,
-      wizardCheckableStep: true,
-      wizardRemoveAfterStep: true,
-      wizardAlarmStep: true,
-      wizardChecklistStep: true,
-      wizardNotesStep: true,
-      wizardRemindersStep: true,
+      wizard: WizardStepsSettings(
+        template: true,
+        datePicker: true,
+        image: true,
+        title: true,
+        type: true,
+        availability: true,
+        checkable: true,
+        removeAfter: true,
+        alarm: true,
+        checklist: true,
+        notes: true,
+        reminders: true,
+      ),
       activityRecurringEditable: true,
     );
 
@@ -2039,18 +2045,20 @@ void main() {
         settings: MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizardTemplateStep: false,
-            wizardDatePickerStep: false,
-            wizardImageStep: false,
-            wizardTitleStep: false,
-            wizardTypeStep: false,
-            wizardAvailabilityType: false,
-            wizardCheckableStep: false,
-            wizardRemoveAfterStep: false,
-            wizardAlarmStep: false,
-            wizardChecklistStep: false,
-            wizardNotesStep: false,
-            wizardRemindersStep: false,
+            wizard: WizardStepsSettings(
+              template: false,
+              datePicker: false,
+              image: false,
+              title: false,
+              type: false,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              checklist: false,
+              notes: false,
+              reminders: false,
+            ),
             activityRecurringEditable: true,
           ),
         ),
