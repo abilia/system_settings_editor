@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_screen/flutter_screen.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
@@ -15,7 +16,6 @@ class QuickSettingsPage extends StatelessWidget {
       ),
       body: Column(
         children: const [
-          Text('Hahj'),
           BrightnessSlider(),
         ],
       ),
@@ -36,11 +36,24 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
   final _log = Logger((_BrightnessSliderState).toString());
   static const screenChannel = MethodChannel('abilia.com/screen');
   double _brightness = 1.0;
+  String? version = '';
 
   @override
   void initState() {
     super.initState();
     initBrightness();
+    initPlatform();
+  }
+
+  void initPlatform() async {
+    final v = await FlutterScreen.platformVersion;
+    try {
+      setState(() {
+        version = v;
+      });
+    } on PlatformException catch (e) {
+      _log.warning('message', e);
+    }
   }
 
   void initBrightness() async {
@@ -56,13 +69,18 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Slider(
-        value: _brightness,
-        onChanged: (double b) {
-          setState(() {
-            _brightness = b;
-            screenChannel.invokeMethod('setBrightness', {'brightness': b});
-          });
-        });
+    return Column(
+      children: [
+        Text(version ?? ''),
+        Slider(
+            value: _brightness,
+            onChanged: (double b) {
+              setState(() {
+                _brightness = b;
+                screenChannel.invokeMethod('setBrightness', {'brightness': b});
+              });
+            }),
+      ],
+    );
   }
 }
