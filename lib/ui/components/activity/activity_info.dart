@@ -43,11 +43,13 @@ class ActivityInfo extends StatefulWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final NotificationAlarm? alarm;
+  final bool fullScreenAlarm;
   const ActivityInfo(
     this.activityDay, {
     Key? key,
     this.previewImage,
     this.alarm,
+    this.fullScreenAlarm = false,
   }) : super(key: key);
   factory ActivityInfo.from({
     required Activity activity,
@@ -73,7 +75,11 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
       final occasion = widget.activityDay.toOccasion(now);
       return Column(
         children: <Widget>[
-          TimeRow(widget.activityDay),
+          ActivityTopInfo(
+            widget.activityDay,
+            alarm: widget.alarm,
+            fullScreenAlarm: widget.fullScreenAlarm,
+          ),
           Expanded(
             child: Container(
               decoration: boxDecoration,

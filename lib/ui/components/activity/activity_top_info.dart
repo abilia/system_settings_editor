@@ -1,14 +1,77 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class TimeRow extends StatelessWidget {
-  const TimeRow(this.activityDay, {Key? key}) : super(key: key);
-
+class ActivityTopInfo extends StatelessWidget {
   final ActivityDay activityDay;
+  final NotificationAlarm? alarm;
+  final bool fullScreenAlarm;
+  const ActivityTopInfo(
+    this.activityDay, {
+    Key? key,
+    this.alarm,
+    this.fullScreenAlarm = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final alarm = this.alarm;
+    if (alarm is NewAlarm && alarm.speech.isNotEmpty) {
+      if (alarm is StartAlarm) {
+        return _ActivityTopInfo(
+          activityDay,
+          leading: PlayAlarmSpeechButton(
+            alarm: alarm,
+            fullScreenAlarm: fullScreenAlarm,
+          ),
+        );
+      } else if (alarm is EndAlarm) {
+        return _ActivityTopInfo(
+          activityDay,
+          trailing: PlayAlarmSpeechButton(
+            alarm: alarm,
+            fullScreenAlarm: fullScreenAlarm,
+          ),
+        );
+      }
+    }
+
+    final startSpeech = activityDay.activity.extras.startTimeExtraAlarm;
+    final endSpeech = activityDay.activity.extras.endTimeExtraAlarm;
+    final showStart = startSpeech.isNotEmpty && alarm is! ReminderUnchecked;
+    if (showStart || endSpeech.isNotEmpty) {
+      return BlocProvider(
+        create: (context) => SoundCubit(
+          storage: GetIt.I<FileStorage>(),
+          userFileBloc: context.read<UserFileBloc>(),
+        ),
+        child: _ActivityTopInfo(
+          activityDay,
+          leading: showStart ? PlaySoundButton(sound: startSpeech) : null,
+          trailing:
+              endSpeech.isNotEmpty ? PlaySoundButton(sound: endSpeech) : null,
+        ),
+      );
+    }
+    return _ActivityTopInfo(activityDay);
+  }
+}
+
+class _ActivityTopInfo extends StatelessWidget {
+  const _ActivityTopInfo(
+    this.activityDay, {
+    Key? key,
+    this.leading,
+    this.trailing,
+  }) : super(key: key);
+  final ActivityDay activityDay;
+  final Widget? leading, trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +84,7 @@ class TimeRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              leading ?? SizedBox(width: 48.s),
               if (activity.fullDay)
                 _TimeBox(
                   occasion:
@@ -28,10 +92,9 @@ class TimeRow extends StatelessWidget {
                   text: Translator.of(context).translate.fullDay,
                 )
               else if (!activity.hasEndTime)
-                _timeText(
-                  context,
-                  date: activityDay.start,
-                  now: now,
+                _TimeBox(
+                  text: hourAndMinuteFormat(context)(activityDay.start),
+                  occasion: activityDay.start.occasion(now),
                   key: TestKey.startTime,
                 )
               else ...[
@@ -39,12 +102,11 @@ class TimeRow extends StatelessWidget {
                   child: Row(
                     children: [
                       const Spacer(),
-                      _timeText(
-                        context,
-                        date: activityDay.start,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.startTime,
-                      ),
+                        text: hourAndMinuteFormat(context)(activityDay.start),
+                        occasion: activityDay.start.occasion(now),
+                      )
                     ],
                   ),
                 ),
@@ -56,35 +118,23 @@ class TimeRow extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      _timeText(
-                        context,
-                        date: activityDay.end,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.endTime,
+                        text: hourAndMinuteFormat(context)(activityDay.end),
+                        occasion: activityDay.end.occasion(now),
                       ),
                       const Spacer(),
                     ],
                   ),
                 ),
               ],
+              trailing ?? SizedBox(width: 48.s),
             ],
           ),
         );
       },
     );
   }
-
-  Widget _timeText(
-    BuildContext context, {
-    required DateTime date,
-    required DateTime now,
-    required Key key,
-  }) =>
-      _TimeBox(
-        key: key,
-        text: hourAndMinuteFormat(context)(date),
-        occasion: date.occasion(now),
-      );
 }
 
 class _TimeBox extends StatelessWidget {
@@ -114,14 +164,20 @@ class _TimeBox extends StatelessWidget {
         children: <Widget>[
           AnimatedContainer(
             duration: ActivityInfo.animationDuration,
-            padding: _padding,
-            constraints: BoxConstraints(minWidth: 92.0.s, minHeight: 52.0.s),
+            padding: EdgeInsets.all(8.s),
+            constraints: BoxConstraints(
+              minWidth: 92.0.s,
+              minHeight: 52.0.s,
+              maxWidth: 102.s,
+              maxHeight: 52.0.s,
+            ),
             decoration: boxDecoration,
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 text,
                 style: textStyle,
                 textAlign: TextAlign.center,
+                maxLines: 1,
               ),
             ),
           ),
@@ -139,10 +195,6 @@ class _TimeBox extends StatelessWidget {
       : past
           ? pastDecration
           : boxDecoration;
-
-  EdgeInsets get _padding =>
-      EdgeInsets.fromLTRB(21.0.s, 14.0.s, 20.0.s, 14.0.s) +
-      (future ? EdgeInsets.all(1.0.s) : EdgeInsets.zero);
 }
 
 final pastDecration = BoxDecoration(
