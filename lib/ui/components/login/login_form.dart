@@ -60,7 +60,10 @@ class LoginForm extends StatelessWidget {
                   child: const LoginButton(),
                 ),
                 const Spacer(),
-                if (Config.isMP) MEMOplannerLoginFooter() else AbiliaLogo(),
+                if (Config.isMP)
+                  const MEMOplannerLoginFooter()
+                else
+                  const AbiliaLogo(),
               ],
             ),
           ),
@@ -113,7 +116,7 @@ class MEMOplannerLogo extends StatelessWidget {
         height: 64.s,
         child: state is LoginLoading
             ? CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(AbiliaColors.red),
+                valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
                 strokeWidth: 6.s,
               )
             : GestureDetector(
@@ -121,7 +124,7 @@ class MEMOplannerLogo extends StatelessWidget {
                   context.read<LoginBloc>().add(ClearFailure());
                   showDialog(
                     context: context,
-                    builder: (context) => BackendSwitchesDialog(),
+                    builder: (context) => const BackendSwitchesDialog(),
                   );
                 },
                 child: FadeInImage(

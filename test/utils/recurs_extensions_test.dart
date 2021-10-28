@@ -85,7 +85,7 @@ void main() {
 
         final splitRecurring = Activity.createNew(
           title: 'test',
-          recurs: Recurs.raw(
+          recurs: const Recurs.raw(
             Recurs.typeWeekly,
             16383,
             splitEndTime,
@@ -241,7 +241,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
             title: 'title',
             startTime: startTime,
-            duration: Duration(hours: 4),
+            duration: const Duration(hours: 4),
             recurs: Recurs.weeklyOnDay(DateTime.friday),
           );
 
@@ -265,7 +265,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
               title: 'title',
               startTime: startTime,
-              duration: Duration(hours: 36),
+              duration: const Duration(hours: 36),
               recurs: Recurs.weeklyOnDay(DateTime.friday));
 
           // act
@@ -303,7 +303,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
             title: 'title',
             startTime: startTime,
-            duration: Duration(hours: 36),
+            duration: const Duration(hours: 36),
             recurs: Recurs.monthly(29),
           );
 
@@ -342,7 +342,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
             title: 'title',
             startTime: startTime,
-            duration: Duration(hours: 36),
+            duration: const Duration(hours: 36),
             recurs: Recurs.yearly(friday),
           );
 
@@ -380,7 +380,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
             title: 'title',
             startTime: startTime,
-            duration: Duration(hours: 12),
+            duration: const Duration(hours: 12),
             recurs: Recurs.everyDay,
           );
 
@@ -412,7 +412,7 @@ void main() {
           final overlappingFridayRecurring = Activity.createNew(
             title: 'title',
             startTime: startTime,
-            duration: Duration(hours: 36),
+            duration: const Duration(hours: 36),
             recurs: Recurs.everyDay,
           );
 

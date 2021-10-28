@@ -29,7 +29,7 @@ class _SelectAlarmTypePage extends StatelessWidget {
       body: SelectAlarmTypeBody(
           alarm: alarm, trailing: trailing, onChanged: onChanged),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: onOk,
         ),

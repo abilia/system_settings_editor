@@ -20,7 +20,8 @@ class DayCalendar extends StatelessWidget {
                   current is InactivityThresholdReachedState &&
                   previous is ActivityDetectedState,
               listener: (context, state) =>
-                  BlocProvider.of<ScrollPositionBloc>(context).add(GoToNow()),
+                  BlocProvider.of<ScrollPositionBloc>(context)
+                      .add(const GoToNow()),
               child: const CalendarScaffold())
           : const CalendarScaffold(),
     );
@@ -38,9 +39,10 @@ class CalendarScaffold extends StatelessWidget {
           old.showCategories != fresh.showCategories ||
           old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar,
       builder: (context, settingState) => Scaffold(
-        appBar:
-            settingState.displayDayCalendarAppBar ? DayCalendarAppBar() : null,
-        floatingActionButton: FloatingActions(),
+        appBar: settingState.displayDayCalendarAppBar
+            ? const DayCalendarAppBar()
+            : null,
+        floatingActionButton: const FloatingActions(),
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         body: Stack(
           children: [
@@ -84,7 +86,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      context.read<ScrollPositionBloc>().add(GoToNow());
+      context.read<ScrollPositionBloc>().add(const GoToNow());
     }
   }
 
@@ -139,7 +141,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                               alignment: Alignment.topCenter,
                               child: Padding(
                                 padding: EdgeInsets.only(top: 32.0.s),
-                                child: GoToNowButton(),
+                                child: const GoToNowButton(),
                               ),
                             ),
                           ],
@@ -149,7 +151,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   ],
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           );
         },

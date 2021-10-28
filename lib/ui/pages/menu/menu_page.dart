@@ -28,12 +28,12 @@ class MenuPage extends StatelessWidget {
               mainAxisSpacing: 7.s,
               crossAxisCount: 3,
               children: [
-                if (state.displayMenuCamera) CameraButton(),
-                if (state.displayMenuMyPhotos) MyPhotosButton(),
-                if (state.displayMenuPhotoCalendar) PhotoCalendarButton(),
-                if (state.displayMenuCountdown) CountdownButton(),
-                if (state.displayMenuQuickSettings) QuickSettingsButton(),
-                if (state.displayMenuSettings) SettingsButton(),
+                if (state.displayMenuCamera) const CameraButton(),
+                if (state.displayMenuMyPhotos) const MyPhotosButton(),
+                if (state.displayMenuPhotoCalendar) const PhotoCalendarButton(),
+                if (state.displayMenuCountdown) const CountdownButton(),
+                if (state.displayMenuQuickSettings) const QuickSettingsButton(),
+                if (state.displayMenuSettings) const SettingsButton(),
               ],
             );
           },
@@ -66,8 +66,8 @@ class CameraButton extends StatelessWidget {
                 await showViewDialog(
                     useSafeArea: false,
                     context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: Permission.camera));
+                    builder: (context) => const PermissionInfoDialog(
+                        permission: Permission.camera));
               } else {
                 final image =
                     await ImagePicker().pickImage(source: ImageSource.camera);
@@ -109,7 +109,7 @@ class MyPhotosButton extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
             blocContext: context,
-            child: MyPhotosPage(),
+            child: const MyPhotosPage(),
           ),
         ),
       ),
@@ -130,7 +130,7 @@ class PhotoCalendarButton extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
             blocContext: context,
-            child: PhotoCalendarPage(),
+            child: const PhotoCalendarPage(),
           ),
         ),
       ),
@@ -188,9 +188,9 @@ class SettingsButton extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
             blocContext: context,
-            child: SettingsPage(),
+            child: const SettingsPage(),
           ),
-          settings: RouteSettings(name: 'SettingsPage'),
+          settings: const RouteSettings(name: 'SettingsPage'),
         ),
       ),
     );
@@ -234,12 +234,12 @@ class MenuItemButton extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Icon(
                 icon,
                 size: 48.s,
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),

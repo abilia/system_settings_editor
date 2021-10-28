@@ -20,8 +20,10 @@ void main() {
   });
 
   test('initial state', () {
-    expect(calendarViewBloc.state,
-        CalendarViewState(expandLeftCategory: true, expandRightCategory: true));
+    expect(
+        calendarViewBloc.state,
+        const CalendarViewState(
+            expandLeftCategory: true, expandRightCategory: true));
   });
 
   test('initial state other', () {
@@ -30,7 +32,8 @@ void main() {
     calendarViewBloc = CalendarViewCubit(mockSettingsDb);
     expect(
       calendarViewBloc.state,
-      CalendarViewState(expandLeftCategory: false, expandRightCategory: false),
+      const CalendarViewState(
+          expandLeftCategory: false, expandRightCategory: false),
     );
   });
 
@@ -39,7 +42,7 @@ void main() {
     verify(() => mockSettingsDb.setLeftCategoryExpanded(false));
     expect(
       calendarViewBloc.state,
-      CalendarViewState(
+      const CalendarViewState(
         expandLeftCategory: false,
         expandRightCategory: true,
       ),
@@ -51,7 +54,7 @@ void main() {
     verify(() => mockSettingsDb.setRightCategoryExpanded(false));
     expect(
       calendarViewBloc.state,
-      CalendarViewState(
+      const CalendarViewState(
         expandRightCategory: false,
         expandLeftCategory: true,
       ),

@@ -20,7 +20,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     final state = this.state;
     if (state is ActivityDetectedState &&
         time.isAfter(state.timeStamp.add(_inactivityTime))) {
-      emit(InactivityThresholdReachedState());
+      emit(const InactivityThresholdReachedState());
     }
   }
 

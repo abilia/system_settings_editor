@@ -13,7 +13,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   tearDown(() async {
-    sleep(Duration(seconds: 2));
+    sleep(const Duration(seconds: 2));
     await GetIt.I.reset();
   });
 

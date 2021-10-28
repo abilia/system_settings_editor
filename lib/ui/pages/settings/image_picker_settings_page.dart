@@ -28,7 +28,7 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
       icon: AbiliaIcons.myPhotos,
       title: Translator.of(context).translate.imagePicker,
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: Builder(
           builder: (context) => OkButton(
             onPressed: () {
@@ -56,18 +56,18 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
       ),
       widgets: [
         SwitchField(
-          leading: Icon(AbiliaIcons.folder),
+          leading: const Icon(AbiliaIcons.folder),
           value: true,
           child: Text(t.imageArchive),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.myPhotos),
+          leading: const Icon(AbiliaIcons.myPhotos),
           value: displayPhotos,
           onChanged: (v) => setState(() => displayPhotos = v),
           child: Text(t.myPhotos),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.cameraPhoto),
+          leading: const Icon(AbiliaIcons.cameraPhoto),
           value: displayCamera,
           onChanged: (v) => setState(() => displayCamera = v),
           child: Text(t.takeNewPhoto),

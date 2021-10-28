@@ -20,7 +20,7 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
   CreateAccountBloc({
     required this.repository,
     required this.languageTag,
-  }) : super(CreateAccountState());
+  }) : super(const CreateAccountState());
 
   @override
   Stream<CreateAccountState> mapEventToState(

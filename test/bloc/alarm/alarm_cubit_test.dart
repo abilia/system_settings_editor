@@ -18,12 +18,12 @@ void main() {
   late StreamController<DateTime> mockedTicker;
 
   final thisMinute = DateTime(2006, 06, 06, 06, 06).onlyMinutes();
-  final nextMinute = thisMinute.add(Duration(minutes: 1));
-  final inTwoMin = thisMinute.add(Duration(minutes: 2));
+  final nextMinute = thisMinute.add(const Duration(minutes: 1));
+  final inTwoMin = thisMinute.add(const Duration(minutes: 2));
   final day = thisMinute.onlyDays();
 
   Future _tick() {
-    final nextMin = clockBloc.state.add(Duration(minutes: 1));
+    final nextMin = clockBloc.state.add(const Duration(minutes: 1));
     mockedTicker.add(nextMin);
     return clockBloc.stream.firstWhere((d) => d == nextMin);
   }
@@ -215,8 +215,8 @@ void main() {
     // Arrange
     final recursTheThisDayOfMonth = FakeActivity.reocurrsOnDay(
         nextMinute.day,
-        nextMinute.subtract(Duration(days: 60)),
-        nextMinute.add(Duration(days: 60)));
+        nextMinute.subtract(const Duration(days: 60)),
+        nextMinute.add(const Duration(days: 60)));
     when(() => mockActivityRepository.load())
         .thenAnswer((_) => Future.value([recursTheThisDayOfMonth]));
     // Act
@@ -283,7 +283,7 @@ void main() {
 
   test('Reminders shows', () async {
     // Arrange
-    final reminderTime = Duration(hours: 1);
+    const reminderTime = Duration(hours: 1);
     final remind1HourBefore = FakeActivity.starts(nextMinute.add(reminderTime))
         .copyWith(reminderBefore: [reminderTime.inMilliseconds]);
     when(() => mockActivityRepository.load())

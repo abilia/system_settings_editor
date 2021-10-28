@@ -24,11 +24,11 @@ class CalendarBottomBar extends StatelessWidget {
                 if (!settingsState.displayOnlyDayCalendar)
                   AbiliaTabBar(
                     tabs: <Widget>[
-                      Icon(AbiliaIcons.day),
+                      const Icon(AbiliaIcons.day),
                       if (settingsState.displayWeekCalendar)
-                        Icon(AbiliaIcons.week),
+                        const Icon(AbiliaIcons.week),
                       if (settingsState.displayMonthCalendar)
-                        Icon(AbiliaIcons.month),
+                        const Icon(AbiliaIcons.month),
                     ],
                     onTabTap: (index) {
                       context.read<DayPickerBloc>().add(CurrentDay());
@@ -51,7 +51,7 @@ class CalendarBottomBar extends StatelessWidget {
                 else
                   const Spacer(),
                 if (settingsState.displayMenu)
-                  MenuButton()
+                  const MenuButton()
                 else
                   SizedBox(width: actionButtonMinSize),
               ],

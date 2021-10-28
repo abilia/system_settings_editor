@@ -31,9 +31,7 @@ class MonthListPreview extends StatelessWidget {
               );
             },
           ),
-          Expanded(
-            child: MonthPreview(),
-          ),
+          const Expanded(child: MonthPreview()),
         ],
       ),
     );
@@ -49,9 +47,9 @@ class MonthPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 1.s, right: 1.s),
-      decoration: BoxDecoration(color: AbiliaColors.transparentBlack30),
+      decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
-        decoration: BoxDecoration(color: AbiliaColors.white110),
+        decoration: const BoxDecoration(color: AbiliaColors.white110),
         child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
           builder: (context, activityState) =>
               activityState is ActivitiesOccasionLoaded
@@ -60,7 +58,7 @@ class MonthPreview extends StatelessWidget {
                       topPadding: 12.s,
                       bottomPadding: 64.s,
                     )
-                  : Center(child: CircularProgressIndicator()),
+                  : const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -124,7 +122,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   style: isLight
                       ? secondaryActionButtonStyleLight
                       : secondaryActionButtonStyleDark,
-                  child: Icon(AbiliaIcons.navigationNext),
+                  child: const Icon(AbiliaIcons.navigationNext),
                 ),
               ],
             );
@@ -190,8 +188,8 @@ class MonthDayViewCompact extends StatelessWidget {
                     ),
                   if (day.isPast)
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CrossOver(),
+                      padding: EdgeInsets.all(8.s),
+                      child: const CrossOver(),
                     ),
                 ],
               ),

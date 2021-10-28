@@ -9,7 +9,7 @@ class AndroidIntentAction {
 }
 
 class AndroidIntents {
-  static Future<void> openSettings() => AndroidIntent(
+  static Future<void> openSettings() => const AndroidIntent(
         action: AndroidIntentAction.settings,
         flags: [
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,

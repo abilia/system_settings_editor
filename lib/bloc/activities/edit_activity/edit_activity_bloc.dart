@@ -156,7 +156,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   InfoItem _newInfoItem(Type infoItemType) {
     switch (infoItemType) {
       case NoteInfoItem:
-        return NoteInfoItem();
+        return const NoteInfoItem();
       case Checklist:
         return Checklist();
       default:

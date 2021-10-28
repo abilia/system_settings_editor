@@ -260,7 +260,7 @@ void main() {
   }, skip: !Config.isMPGO);
 
   testWidgets('tts mp hint text', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = Size(800, 1280);
+    tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
     tester.binding.window.devicePixelRatioTestValue = 1;
 
     // resets the screen to its orinal size after the test end
@@ -302,7 +302,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushBloc.add(PushEvent('license'));
+    pushBloc.add(const PushEvent('license'));
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);

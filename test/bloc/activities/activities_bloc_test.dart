@@ -29,7 +29,7 @@ void main() {
     mockActivityRepository = MockActivityRepository();
     mockPushBloc = MockPushBloc();
     mockSyncBloc = MockSyncBloc();
-    when(() => mockPushBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockPushBloc.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockActivityRepository.load())
         .thenAnswer((_) => Future.value(<Activity>[]));
     when(() => mockActivityRepository.save(any()))
@@ -663,7 +663,7 @@ void main() {
         final recurring = Activity.createNew(
           title: 'title',
           startTime: anyTime,
-          recurs: Recurs.raw(
+          recurs: const Recurs.raw(
             Recurs.typeWeekly,
             Recurs.allDaysOfWeek,
             Recurs.noEnd,

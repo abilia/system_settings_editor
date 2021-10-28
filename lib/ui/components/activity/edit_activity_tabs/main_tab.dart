@@ -21,8 +21,8 @@ class MainTab extends StatelessWidget with EditActivityTab {
               padding: EditActivityTab.rightPadding
                   .add(EditActivityTab.bottomPadding),
               children: <Widget>[
-                separatedAndPadded(ActivityNameAndPictureWidget()),
-                separatedAndPadded(DateAndTimeWidget()),
+                separatedAndPadded(const ActivityNameAndPictureWidget()),
+                separatedAndPadded(const DateAndTimeWidget()),
                 if (memoSettingsState.showCategories)
                   CollapsableWidget(
                     collapsed: activity.fullDay ||

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -96,37 +97,39 @@ void main() {
   });
 
   testWidgets('has image ', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: '',
-        fileId: 'fileid',
-        startTime: startTime,
-      ),
-    );
-    tester.takeException();
+    await mockNetworkImages(() async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: '',
+          fileId: 'fileid',
+          startTime: startTime,
+        ),
+      );
 
-    // Assert image
-    expect(find.byType(ActivityCard), findsOneWidget);
-    expect(find.byType(ActivityImage), findsOneWidget);
+      // Assert image
+      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(find.byType(ActivityImage), findsOneWidget);
+    });
   });
 
   testWidgets('has title and image ', (WidgetTester tester) async {
     const title = 'title';
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: title,
-        fileId: 'fileid',
-        startTime: startTime,
-      ),
-    );
-    tester.takeException();
+    await mockNetworkImages(() async {
+      await pumpActivityCard(
+        tester,
+        Activity.createNew(
+          title: title,
+          fileId: 'fileid',
+          startTime: startTime,
+        ),
+      );
 
-    // Assert title and image
-    expect(find.byType(ActivityCard), findsOneWidget);
-    expect(find.text(title), findsOneWidget);
-    expect(find.byType(ActivityImage), findsOneWidget);
+      // Assert title and image
+      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(find.text(title), findsOneWidget);
+      expect(find.byType(ActivityImage), findsOneWidget);
+    });
   });
 
   testWidgets('icon for checkable activity', (WidgetTester tester) async {
@@ -191,7 +194,7 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        infoItem: NoteInfoItem('text'),
+        infoItem: const NoteInfoItem('text'),
       ),
     );
     expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
@@ -280,44 +283,50 @@ void main() {
 
   testWidgets('past activity with image is crossed over',
       (WidgetTester tester) async {
-    await pumpActivityCard(
-        tester,
-        Activity.createNew(
-          title: 'title',
-          startTime: startTime,
-          fileId: Uuid().v4(),
-        ),
-        Occasion.past);
-    tester.takeException();
-    expect(find.byType(CrossOver), findsOneWidget);
+    await mockNetworkImages(() async {
+      await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            fileId: const Uuid().v4(),
+          ),
+          Occasion.past);
+
+      expect(find.byType(CrossOver), findsOneWidget);
+    });
   });
 
   testWidgets('past activity with image and is signed off is not crossed over',
       (WidgetTester tester) async {
-    await pumpActivityCard(
-        tester,
-        Activity.createNew(
-          title: 'title',
-          startTime: startTime,
-          fileId: Uuid().v4(),
-          checkable: true,
-          signedOffDates: [startTime.onlyDays()],
-        ),
-        Occasion.past);
-    tester.takeException();
-    expect(find.byType(CrossOver), findsNothing);
+    await mockNetworkImages(() async {
+      await pumpActivityCard(
+          tester,
+          Activity.createNew(
+            title: 'title',
+            startTime: startTime,
+            fileId: const Uuid().v4(),
+            checkable: true,
+            signedOffDates: [startTime.onlyDays()],
+          ),
+          Occasion.past);
+
+      expect(find.byType(CrossOver), findsNothing);
+    });
   });
 
   testWidgets('tts', (WidgetTester tester) async {
     final activity = Activity.createNew(
       title: 'title',
       startTime: startTime,
-      fileId: Uuid().v4(),
+      fileId: const Uuid().v4(),
       checkable: true,
       signedOffDates: [startTime.onlyDays()],
     );
-    await pumpActivityCard(tester, activity, Occasion.past);
-    tester.takeException();
-    await tester.verifyTts(find.byType(ActivityCard), contains: activity.title);
+    await mockNetworkImages(() async {
+      await pumpActivityCard(tester, activity, Occasion.past);
+      await tester.verifyTts(find.byType(ActivityCard),
+          contains: activity.title);
+    });
   });
 }

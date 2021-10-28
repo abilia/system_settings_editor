@@ -7,7 +7,7 @@ class Translator {
   static List<Locale> get supportedLocals => Locales.language.keys.toList();
   final Locale locale;
 
-  Translator(this.locale);
+  const Translator(this.locale);
 
   static Translator of(BuildContext context) =>
       Localizations.of<Translator>(context, Translator) ??

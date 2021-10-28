@@ -255,7 +255,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                                 softWrap: false,
                                 overflow: TextOverflow.fade,
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                       ),
                     ),
                     if (widget.fileId.isNotEmpty || widget.showColors)
