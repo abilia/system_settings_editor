@@ -70,6 +70,24 @@ hourInessive	&empty&	&empty&	&empty&	&empty&	tunnissa	&empty&	&empty&
 minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
 now	Now	Nu	Nu	Nu	Nyt	Jetzt	Nå
 week	week	vecka	uge	week	viikko	Woche	uke
+clockTheTimeIsTts	the time is %s	Klockan är %s	Klokken er %s	De tijd is %s	Kello on %s	Die Uhrzeit ist %s	Klokken er %s
+clockFiveMinutesPastTts	five past %s	Fem minuter över %s	Fem minutter over %s	vijf over %s	viisi yli %s	5 Minuten nach %s	Fem minutter over %s
+clockFiveMinutesHalfPastTts	twenty five to %s	Fem över halv %s	Fem over halv %s	vijfentwintig voor %s	kaksikymmentäviisi vaille %s	25 Minuten vor %s	Fem over halv %s
+clockFiveMinutesToTts	five to %s	Fem minuter i %s	Fem minutter i %s	vijf voor %s	viisi vaille %s	5 Minuten vor %s	Fem på %s
+clockFiveMinutesToHalfPastTts	twenty five past %s	Fem i halv %s	Fem i halv %s	vijfentwintig over %s	kaksikymmentäviisi yli %s	25 Minuten nach %s	Fem på halv %s
+clockHalfPastTts	Half past %s	Halv %s	Halv %s	Dertig over %s	%s kolmekymmentä	30 Minuten nach %s	Halv %s
+clockQuarterPastTts	quarter past %s	Kvart över %s	Kvart over %s	kwart over %s	viisitoista yli %s	15 Minuten nach %s	Kvart over %s
+clockQuarterToTts	Quarter to %s	Kvart i %s	Kvart i %s	Kwart voor %s	Viisitoista vaille %s	15 Minuten vor %s	Kvart på %s
+clockTenMinutesPastTts	ten past %s	Tio minuter över %s	Ti minutter over %s	tien over %s	kymmenen yli %s	10 Minuten nach %s	Ti over %s
+clockTenMinutesToTts	ten to %s	Tio minuter i %s	Ti minutter i %s	tien voor %s	kymmentä vaille %s	10 Minuten vor %s	Ti på %s
+clockTwentyMinutesPastTts	twenty past %s	Tjugo minuter över %s	Tyve minutter over %s	twintig over %s	kaksikymmentä yli %s	20 Minuten nach %s	Ti på halv %s
+clockTwentyMinutesToTts	twenty to %s	Tjugo minuter i %s	Tyve minutter i %s	tien over half %s	kaksikymmentä vaille %s	20 Minuten vor %s	Ti over halv %s
+nbOneAClock	one o clock	&empty&	&empty&	&empty&	&empty&	&empty&	: ett
+timeMorningTts	%s in the early morning	%s på morgonen	%s om morgenen	%s in de ochtend	%s varhain aamulla	%s frühmorgens	%s på morgen
+timeForeNoonTts	%s in the mid-morning	%s på förmiddagen	%s om formiddagen	%s halverwege de ochtend	%s aamupäivän puolivälissä	%s vormittags	%s på formiddagen
+timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s 's middags	%s iltapäivällä	%s nachmittags	%s på ettermiddagen
+timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s illalla	%s nachmittags	%s på kvelden
+timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
 							
 ### Activity related							
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
