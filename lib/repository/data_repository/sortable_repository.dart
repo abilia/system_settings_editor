@@ -28,52 +28,31 @@ class SortableRepository extends DataRepository<Sortable> {
           log: Logger((SortableRepository).toString()),
         );
 
-  Future<void> createMyPhotosFolder() => _createFixedFolder(
+  Future<DbModel<Sortable<SortableData>>?> createMyPhotosFolder() =>
+      _fetchFixedFolder(
         myPhotosPath,
-        fallback: Sortable.createNew<ImageArchiveData>(
-          data: const ImageArchiveData(myPhotos: true),
-          sortOrder: startSordOrder,
-          isGroup: true,
-          fixed: true,
-        ),
       );
 
-  Future<void> createUploadsFolder() => _createFixedFolder(
+  Future<DbModel<Sortable<SortableData>>?> createUploadsFolder() =>
+      _fetchFixedFolder(
         mobileUploadPath,
-        fallback: Sortable.createNew<ImageArchiveData>(
-          data: const ImageArchiveData(upload: true),
-          sortOrder: startSordOrder,
-          isGroup: true,
-          fixed: true,
-        ),
       );
 
-  Future<void> _createFixedFolder(
-    String folder, {
-    required Sortable<SortableData> fallback,
-  }) async {
-    if (!await _fetchFixedFolder(folder)) {
-      if (await save([fallback])) {
-        await synchronize();
-      }
-    }
-  }
-
-  Future<bool> _fetchFixedFolder(String folder) async {
+  Future<DbModel<Sortable<SortableData>>?> _fetchFixedFolder(
+      String folder) async {
     try {
       final response = await client.get(
         '$baseUrl/api/v1/data/$userId/$postPath/$folder'.toUri(),
         headers: jsonAuthHeader(authToken),
       );
       if (response.statusCode == 200) {
-        db.insert([fromJsonToDataModel(json.decode(response.body))]);
-        return true;
+        return fromJsonToDataModel(json.decode(response.body));
       }
       log.warning('Could not fetch $folder ${response.statusCode}');
       log.warning(response.body);
     } catch (e) {
       log.warning('Could not parse fixed folder $folder', e);
     }
-    return false;
+    return null;
   }
 }

@@ -49,6 +49,7 @@ void main() {
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
         ..database = FakeDatabase()
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
 

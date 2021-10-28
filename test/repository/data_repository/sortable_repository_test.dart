@@ -136,12 +136,13 @@ void main() {
 
   test('createMyPhotosFolder calls backend', () async {
     // Arrange
+    const id = '98bfb4d8-d1f6-4a83-a29f-a5e8b2fec9d6';
     when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer(
       (_) => Future.value(
         Response(
           '{'
-          '"id":"98bfb4d8-d1f6-4a83-a29f-a5e8b2fec9d6",'
+          '"id":"$id",'
           '"owner":330,'
           '"revision":2,'
           '"revisionTime":0,'
@@ -166,13 +167,13 @@ void main() {
     );
 
     // Act
-    await sortableRepository.createMyPhotosFolder();
+    final folder = await sortableRepository.createMyPhotosFolder();
+    expect(folder?.model.id, id);
 
     // Verify
     final captured = verify(
             () => mockClient.get(captureAny(), headers: any(named: 'headers')))
         .captured;
-    final inDb = await sortableRepository.db.getAll();
 
     expect(captured, hasLength(1));
     final firstcall = captured.first;
@@ -181,22 +182,17 @@ void main() {
       (firstcall as Uri).pathSegments.last,
       SortableRepository.myPhotosPath,
     );
-
-    expect(inDb, hasLength(1));
-    final stored = inDb.first;
-    expect(stored, isA<Sortable<ImageArchiveData>>());
-    final data = stored.data as ImageArchiveData;
-    expect(data.myPhotos, isTrue);
   });
 
   test('createUploadsFolder calls backend', () async {
+    const id = 'da5003df-cad9-475b-9695-d46618871188';
     // Arrange
     when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer(
       (_) => Future.value(
         Response(
           '{'
-          '"id":"da5003df-cad9-475b-9695-d46618871188",'
+          '"id":"$id",'
           '"owner":330,'
           '"revision":1,"revisionTime":0,"deleted":false,"type":"imagearchive",'
           '"data":'
@@ -218,13 +214,13 @@ void main() {
     );
 
     // Act
-    await sortableRepository.createUploadsFolder();
+    final folder = await sortableRepository.createUploadsFolder();
 
     // Verify
+    expect(folder?.model.id, id);
     final captured = verify(
       () => mockClient.get(captureAny(), headers: any(named: 'headers')),
     ).captured;
-    final inDb = await sortableRepository.db.getAll();
 
     expect(captured, hasLength(1));
     final firstcall = captured.first;
@@ -233,15 +229,9 @@ void main() {
       (firstcall as Uri).pathSegments.last,
       SortableRepository.mobileUploadPath,
     );
-
-    expect(inDb, hasLength(1));
-    final stored = inDb.first;
-    expect(stored, isA<Sortable<ImageArchiveData>>());
-    final data = stored.data as ImageArchiveData;
-    expect(data.upload, isTrue);
   });
 
-  test('createMyPhotosFolder fails fallsback to creating own', () async {
+  test('createMyPhotosFolder fails returns null', () async {
     // Arrange
     when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer(
@@ -251,22 +241,11 @@ void main() {
     );
 
     // Act
-    await sortableRepository.createMyPhotosFolder();
-    // Verify
-    final captured = verify(
-      () => mockClient.get(captureAny(), headers: any(named: 'headers')),
-    ).captured;
-    expect(captured, hasLength(2));
-
-    final inDb = await sortableRepository.db.getAll();
-    expect(inDb, hasLength(1));
-    final stored = inDb.first;
-    expect(stored, isA<Sortable<ImageArchiveData>>());
-    final data = stored.data as ImageArchiveData;
-    expect(data.myPhotos, isTrue);
+    final folder = await sortableRepository.createMyPhotosFolder();
+    expect(folder, null);
   });
 
-  test('createUploadsFolder fails fallsback to creating own', () async {
+  test('createUploadsFolder fails returns null', () async {
     // Arrange
     when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer(
@@ -275,18 +254,7 @@ void main() {
       ),
     );
     // Act
-    await sortableRepository.createUploadsFolder();
-    // Verify
-    final captured = verify(
-      () => mockClient.get(captureAny(), headers: any(named: 'headers')),
-    ).captured;
-    expect(captured, hasLength(2));
-
-    final inDb = await sortableRepository.db.getAll();
-    expect(inDb, hasLength(1));
-    final stored = inDb.first;
-    expect(stored, isA<Sortable<ImageArchiveData>>());
-    final data = stored.data as ImageArchiveData;
-    expect(data.upload, isTrue);
+    final folder = await sortableRepository.createUploadsFolder();
+    expect(folder, null);
   });
 }

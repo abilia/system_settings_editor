@@ -62,15 +62,44 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   }
 
   Future<void> _addMissingDefaults(Iterable<Sortable> sortables) async {
-    final created = await Future.wait(
-      [
-        if (initMyPhotos && sortables.getMyPhotosFolder() == null)
-          sortableRepository.createMyPhotosFolder(),
-        if (sortables.getUploadFolder() == null)
-          sortableRepository.createUploadsFolder()
-      ],
-    );
-    if (created.isNotEmpty) add(const LoadSortables());
+    _addMissingMyPhotos(sortables);
+    _addMissingUploadFolder(sortables);
+  }
+
+  Future<void> _addMissingMyPhotos(Iterable<Sortable> sortables) async {
+    if (initMyPhotos && sortables.getMyPhotosFolder() == null) {
+      final myPhotosFolder = await sortableRepository.createMyPhotosFolder();
+      if (myPhotosFolder == null) {
+        final myPhotos = Sortable.createNew<ImageArchiveData>(
+          data: const ImageArchiveData(myPhotos: true),
+          sortOrder: startSordOrder,
+          isGroup: true,
+          fixed: true,
+        );
+        await sortableRepository.save([myPhotos]);
+        syncBloc.add(SortableSaved());
+      } else {
+        add(const LoadSortables());
+      }
+    }
+  }
+
+  Future<void> _addMissingUploadFolder(Iterable<Sortable> sortables) async {
+    if (sortables.getUploadFolder() == null) {
+      final uploadsFolder = await sortableRepository.createUploadsFolder();
+      if (uploadsFolder == null) {
+        final upload = Sortable.createNew<ImageArchiveData>(
+          data: const ImageArchiveData(upload: true),
+          sortOrder: startSordOrder,
+          isGroup: true,
+          fixed: true,
+        );
+        await sortableRepository.save([upload]);
+        syncBloc.add(SortableSaved());
+      } else {
+        add(const LoadSortables());
+      }
+    }
   }
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(

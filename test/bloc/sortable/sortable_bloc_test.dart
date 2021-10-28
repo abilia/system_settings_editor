@@ -56,6 +56,8 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(() => mockSortableRepository.createMyPhotosFolder())
         .thenAnswer((_) => Future.value());
+    when(() => mockSortableRepository.save(any()))
+        .thenAnswer((_) => Future.value(true));
     sortableBloc.add(LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
@@ -71,6 +73,9 @@ void main() {
 
     when(() => mockSortableRepository.createUploadsFolder())
         .thenAnswer((_) => Future.value());
+
+    when(() => mockSortableRepository.save(any()))
+        .thenAnswer((_) => Future.value(true));
 
     sortableBloc.add(LoadSortables(initDefaults: true));
     await expectLater(
