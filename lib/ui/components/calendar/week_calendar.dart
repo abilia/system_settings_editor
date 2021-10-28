@@ -67,18 +67,20 @@ class WeekCalendarTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.weekDisplayDays != current.weekDisplayDays,
-      builder: (context, memosettings) =>
-          BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+    return IntrinsicHeight(
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
-            previous.currentWeekStart != current.currentWeekStart,
-        builder: (context, weekState) => Row(
-          children: List<WeekCalendarDayHeading>.generate(
-            memosettings.weekDisplayDays.numberOfDays(),
-            (i) => WeekCalendarDayHeading(
-              day: weekState.currentWeekStart.addDays(i),
+            previous.weekDisplayDays != current.weekDisplayDays,
+        builder: (context, memosettings) =>
+            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+          buildWhen: (previous, current) =>
+              previous.currentWeekStart != current.currentWeekStart,
+          builder: (context, weekState) => Row(
+            children: List<WeekCalendarDayHeading>.generate(
+              memosettings.weekDisplayDays.numberOfDays(),
+              (i) => WeekCalendarDayHeading(
+                day: weekState.currentWeekStart.addDays(i),
+              ),
             ),
           ),
         ),
