@@ -28,6 +28,7 @@ class DbSortable extends DbModel<Sortable> {
     bool deleted,
     bool isGroup,
     bool visible,
+    bool fixed,
   ) {
     switch (type) {
       case SortableType.imageArchive:
@@ -40,6 +41,7 @@ class DbSortable extends DbModel<Sortable> {
           deleted: deleted,
           isGroup: isGroup,
           visible: visible,
+          fixed: fixed,
         );
       case SortableType.note:
         return Sortable<NoteData>._(
@@ -51,6 +53,7 @@ class DbSortable extends DbModel<Sortable> {
           deleted: deleted,
           isGroup: isGroup,
           visible: visible,
+          fixed: fixed,
         );
       case SortableType.checklist:
         return Sortable<ChecklistData>._(
@@ -62,6 +65,7 @@ class DbSortable extends DbModel<Sortable> {
           deleted: deleted,
           isGroup: isGroup,
           visible: visible,
+          fixed: fixed,
         );
       case SortableType.basicactivity:
         return isGroup
@@ -74,6 +78,7 @@ class DbSortable extends DbModel<Sortable> {
                 deleted: deleted,
                 isGroup: isGroup,
                 visible: visible,
+                fixed: fixed,
               )
             : Sortable<BasicActivityDataItem>._(
                 id: id,
@@ -84,6 +89,7 @@ class DbSortable extends DbModel<Sortable> {
                 deleted: deleted,
                 isGroup: isGroup,
                 visible: visible,
+                fixed: fixed,
               );
       default:
         return Sortable<RawSortableData>._(
@@ -95,6 +101,7 @@ class DbSortable extends DbModel<Sortable> {
           deleted: deleted,
           isGroup: isGroup,
           visible: visible,
+          fixed: fixed,
         );
     }
   }
@@ -109,6 +116,7 @@ class DbSortable extends DbModel<Sortable> {
           deleted: json['deleted'] ?? false,
           isGroup: json['group'] ?? false,
           visible: json['visible'] ?? true,
+          fixed: json['fixed'] ?? false,
         ),
         revision: json['revision'],
         dirty: 0,
@@ -125,6 +133,7 @@ class DbSortable extends DbModel<Sortable> {
         'group': sortable.isGroup,
         'visible': sortable.visible,
         'revision': revision,
+        'fixed': sortable.fixed,
       };
 
   static DbSortable fromDbMap(Map<String, dynamic> dbRow) => DbSortable._(
@@ -137,6 +146,7 @@ class DbSortable extends DbModel<Sortable> {
           dbRow['deleted'] == 1,
           dbRow['is_group'] == 1,
           dbRow['visible'] == 1,
+          dbRow['fixed'] == 1,
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -152,6 +162,7 @@ class DbSortable extends DbModel<Sortable> {
         'deleted': sortable.deleted ? 1 : 0,
         'is_group': sortable.isGroup ? 1 : 0,
         'visible': sortable.visible ? 1 : 0,
+        'fixed': sortable.fixed ? 1 : 0,
         'revision': revision,
         'dirty': dirty,
       };
