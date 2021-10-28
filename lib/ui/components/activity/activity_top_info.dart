@@ -1,12 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityTopInfo extends StatelessWidget {
+  final ActivityDay activityDay;
   final NotificationAlarm? alarm;
   final bool fullScreenAlarm;
   const ActivityTopInfo(
@@ -16,23 +19,64 @@ class ActivityTopInfo extends StatelessWidget {
     this.fullScreenAlarm = false,
   }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    final alarm = this.alarm;
+    if (alarm is NewAlarm && alarm.speech.isNotEmpty) {
+      if (alarm is StartAlarm) {
+        return _ActivityTopInfo(
+          activityDay,
+          leading: PlayAlarmSpeechButton(
+            alarm: alarm,
+            fullScreenAlarm: fullScreenAlarm,
+          ),
+        );
+      } else if (alarm is EndAlarm) {
+        return _ActivityTopInfo(
+          activityDay,
+          trailing: PlayAlarmSpeechButton(
+            alarm: alarm,
+            fullScreenAlarm: fullScreenAlarm,
+          ),
+        );
+      }
+    }
+
+    final startSpeech = activityDay.activity.extras.startTimeExtraAlarm;
+    final endSpeech = activityDay.activity.extras.endTimeExtraAlarm;
+    final showStart = startSpeech.isNotEmpty && alarm is! ReminderUnchecked;
+    if (showStart || endSpeech.isNotEmpty) {
+      return BlocProvider(
+        create: (context) => SoundCubit(
+          storage: GetIt.I<FileStorage>(),
+          userFileBloc: context.read<UserFileBloc>(),
+        ),
+        child: _ActivityTopInfo(
+          activityDay,
+          leading: showStart ? PlaySoundButton(sound: startSpeech) : null,
+          trailing:
+              endSpeech.isNotEmpty ? PlaySoundButton(sound: endSpeech) : null,
+        ),
+      );
+    }
+    return _ActivityTopInfo(activityDay);
+  }
+}
+
+class _ActivityTopInfo extends StatelessWidget {
+  const _ActivityTopInfo(
+    this.activityDay, {
+    Key? key,
+    this.leading,
+    this.trailing,
+  }) : super(key: key);
   final ActivityDay activityDay;
+  final Widget? leading, trailing;
 
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
     final day = activityDay.day;
-    final a = alarm;
-    final startSpeech = a == null
-        ? StartAlarm.from(activityDay).speech
-        : a is StartAlarm
-            ? a.speech
-            : null;
-    final endSpeech = a == null
-        ? EndAlarm.from(activityDay).speech
-        : a is EndAlarm
-            ? a.speech
-            : null;
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) {
         return Padding(
@@ -40,22 +84,7 @@ class ActivityTopInfo extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (a != null &&
-                  a is StartAlarm &&
-                  startSpeech != null &&
-                  startSpeech.isNotEmpty)
-                PlayAlarmSpeechButton(
-                  alarm: a,
-                  fullScreenAlarm: fullScreenAlarm,
-                )
-              else if (startSpeech != null && startSpeech.isNotEmpty)
-                PlaySpeechButton(
-                  speech: startSpeech,
-                )
-              else
-                SizedBox(
-                  width: 48.s,
-                ),
+              leading ?? SizedBox(width: 48.s),
               if (activity.fullDay)
                 _TimeBox(
                   occasion:
@@ -63,10 +92,9 @@ class ActivityTopInfo extends StatelessWidget {
                   text: Translator.of(context).translate.fullDay,
                 )
               else if (!activity.hasEndTime)
-                _timeText(
-                  context,
-                  date: activityDay.start,
-                  now: now,
+                _TimeBox(
+                  text: hourAndMinuteFormat(context)(activityDay.start),
+                  occasion: activityDay.start.occasion(now),
                   key: TestKey.startTime,
                 )
               else ...[
@@ -74,12 +102,11 @@ class ActivityTopInfo extends StatelessWidget {
                   child: Row(
                     children: [
                       Spacer(),
-                      _timeText(
-                        context,
-                        date: activityDay.start,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.startTime,
-                      ),
+                        text: hourAndMinuteFormat(context)(activityDay.start),
+                        occasion: activityDay.start.occasion(now),
+                      )
                     ],
                   ),
                 ),
@@ -91,51 +118,23 @@ class ActivityTopInfo extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      _timeText(
-                        context,
-                        date: activityDay.end,
-                        now: now,
+                      _TimeBox(
                         key: TestKey.endTime,
+                        text: hourAndMinuteFormat(context)(activityDay.end),
+                        occasion: activityDay.end.occasion(now),
                       ),
                       Spacer(),
                     ],
                   ),
                 ),
               ],
-              if (a != null &&
-                  a is EndAlarm &&
-                  endSpeech != null &&
-                  endSpeech.isNotEmpty)
-                PlayAlarmSpeechButton(
-                  alarm: a,
-                  fullScreenAlarm: fullScreenAlarm,
-                )
-              else if (endSpeech != null && endSpeech.isNotEmpty)
-                PlaySpeechButton(
-                  speech: endSpeech,
-                )
-              else
-                SizedBox(
-                  width: 48.s,
-                ),
+              trailing ?? SizedBox(width: 48.s),
             ],
           ),
         );
       },
     );
   }
-
-  Widget _timeText(
-    BuildContext context, {
-    required DateTime date,
-    required DateTime now,
-    required Key key,
-  }) =>
-      _TimeBox(
-        key: key,
-        text: hourAndMinuteFormat(context)(date),
-        occasion: date.occasion(now),
-      );
 }
 
 class _TimeBox extends StatelessWidget {

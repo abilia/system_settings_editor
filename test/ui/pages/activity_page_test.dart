@@ -139,7 +139,7 @@ void main() {
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
       await navigateToActivityPage(tester);
-      expect(find.byType(PlaySpeechButton), findsNWidgets(2));
+      expect(find.byType(PlaySoundButton), findsNWidgets(2));
     });
 
     testWidgets('Only one speech button visible when only one speech enabled',
@@ -158,7 +158,7 @@ void main() {
       when(mockActivityDb.getAllNonDeleted()).thenAnswer(
           (_) => Future.value(<Activity>[activityWithStartAndEndSpeech]));
       await navigateToActivityPage(tester);
-      expect(find.byType(PlaySpeechButton), findsOneWidget);
+      expect(find.byType(PlaySoundButton), findsOneWidget);
     });
   });
 
