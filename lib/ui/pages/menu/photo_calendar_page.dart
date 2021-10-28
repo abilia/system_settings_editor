@@ -20,7 +20,7 @@ class PhotoCalendarPage extends StatelessWidget {
           return Theme(
             data: theme.theme,
             child: Scaffold(
-              appBar: PhotoCalendarAppBar(),
+              appBar: const PhotoCalendarAppBar(),
               body: SafeArea(
                 child: Column(
                   children: [
@@ -38,8 +38,8 @@ class PhotoCalendarPage extends StatelessWidget {
                                   child: SizedBox(
                                     height: 92.s,
                                     width: 92.s,
-                                    child: FittedBox(
-                                      child: const AnalogClock(),
+                                    child: const FittedBox(
+                                      child: AnalogClock(),
                                     ),
                                   ),
                                 ),
@@ -65,12 +65,12 @@ class PhotoCalendarPage extends StatelessWidget {
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
                             },
-                            child: Icon(AbiliaIcons.month),
+                            child: const Icon(AbiliaIcons.month),
                           ),
                         ),
                       ],
                     ),
-                    Expanded(
+                    const Expanded(
                       child: SlideShow(),
                     )
                   ],
@@ -101,7 +101,7 @@ class SlideShow extends StatelessWidget {
           final currentFileId = state.currentFileId;
           final currentPath = state.currentPath;
           return AnimatedSwitcher(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             child: GestureDetector(
               key: currentFileId != null ? Key(currentFileId) : null,
               onDoubleTap: () => context.read<SlideShowCubit>().next(),

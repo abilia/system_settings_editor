@@ -97,7 +97,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
               children: [
                 ActionButtonDark(
                   onPressed: () => back(context, sortableArchiveState),
-                  child: Icon(AbiliaIcons.navigationPrevious),
+                  child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
                 SizedBox(width: 12.0.s),
                 Expanded(

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -15,7 +15,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -41,15 +41,15 @@ void main() {
   setUp(() async {
     setupPermissions();
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
 
     final mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
     GetItInitializer()
@@ -60,9 +60,9 @@ void main() {
           Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client()
-      ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..init();
   });
@@ -194,7 +194,7 @@ void main() {
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
 
-    await tester.drag(find.byType(Agenda), Offset(0.0, 300));
+    await tester.drag(find.byType(Agenda), const Offset(0.0, 300));
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsOneWidget);
@@ -548,7 +548,7 @@ void main() {
               ),
             )
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 
@@ -578,7 +578,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 

@@ -363,7 +363,8 @@ class AlarmWidget extends StatelessWidget {
                           alarm: alarm.typeSeagull,
                         ),
                       ),
-                      settings: RouteSettings(name: 'SelectAlarmTypePage'),
+                      settings:
+                          const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
                     if (result != null) {
                       BlocProvider.of<EditActivityBloc>(context).add(
@@ -512,7 +513,7 @@ class RecurrenceWidget extends StatelessWidget {
               builder: (_) => SelectRecurrencePage(
                 recurrentType: recurrentType,
               ),
-              settings: RouteSettings(name: 'SelectRecurrencePage'),
+              settings: const RouteSettings(name: 'SelectRecurrencePage'),
             ));
             if (result != null) {
               if (state.storedRecurring &&

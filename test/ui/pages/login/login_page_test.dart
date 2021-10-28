@@ -13,7 +13,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/shared.mocks.dart';
+
 import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
@@ -28,7 +28,7 @@ void main() {
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     licensExpireTime = time.add(10.days());
 
     GetItInitializer()
@@ -260,7 +260,7 @@ void main() {
   }, skip: !Config.isMPGO);
 
   testWidgets('tts mp hint text', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = Size(800, 1280);
+    tester.binding.window.physicalSizeTestValue = const Size(800, 1280);
     tester.binding.window.devicePixelRatioTestValue = 1;
 
     // resets the screen to its orinal size after the test end
@@ -302,7 +302,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushBloc.add(PushEvent('license'));
+    pushBloc.add(const PushEvent('license'));
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);

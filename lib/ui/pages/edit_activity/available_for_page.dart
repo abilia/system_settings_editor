@@ -53,7 +53,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(secret),
         ),

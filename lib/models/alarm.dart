@@ -15,24 +15,24 @@ class Alarm extends Equatable {
   factory Alarm.fromInt(int value) {
     switch (value) {
       case alarmSoundAndVibration:
-        return Alarm(type: AlarmType.soundAndVibration);
+        return const Alarm(type: AlarmType.soundAndVibration);
       case alarmSound:
-        return Alarm(type: AlarmType.sound);
+        return const Alarm(type: AlarmType.sound);
       case alarmVibration:
-        return Alarm(type: AlarmType.vibration);
+        return const Alarm(type: AlarmType.vibration);
       case alarmSilent:
-        return Alarm(type: AlarmType.silent);
+        return const Alarm(type: AlarmType.silent);
       case alarmSoundAndVibrationOnlyOnStart:
-        return Alarm(type: AlarmType.soundAndVibration, onlyStart: true);
+        return const Alarm(type: AlarmType.soundAndVibration, onlyStart: true);
       case alarmSoundOnlyOnStart:
-        return Alarm(type: AlarmType.sound, onlyStart: true);
+        return const Alarm(type: AlarmType.sound, onlyStart: true);
       case alarmVibrationOnlyOnStart:
-        return Alarm(type: AlarmType.vibration, onlyStart: true);
+        return const Alarm(type: AlarmType.vibration, onlyStart: true);
       case alarmSilentOnlyOnStart:
-        return Alarm(type: AlarmType.silent, onlyStart: true);
+        return const Alarm(type: AlarmType.silent, onlyStart: true);
       case noAlarm:
       default:
-        return Alarm(type: AlarmType.noAlarm, onlyStart: true);
+        return const Alarm(type: AlarmType.noAlarm, onlyStart: true);
     }
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:intl/intl.dart';
 
 import 'package:seagull/background/all.dart';
@@ -19,7 +19,7 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -44,19 +44,20 @@ void main() {
     setupPermissions();
     setupFakeTts();
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
     mockTicker = StreamController<DateTime>();
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockActivityDb.insertAndAddDirty(any))
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     final mockGenericDb = MockGenericDb();
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
     genericResponse = () => [timepillarGeneric];
@@ -73,10 +74,10 @@ void main() {
         activityResponse: activityResponse,
         genericResponse: genericResponse,
       )
-      ..fileStorage = MockFileStorage()
+      ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
       ..syncDelay = SyncDelays.zero
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 
@@ -131,7 +132,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.flingFrom(Offset(200, 200), Offset(200, 0), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(200, 0), 200);
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
@@ -140,7 +141,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
@@ -150,7 +151,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
@@ -160,13 +161,13 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
       await tester.tap(find.byKey(TestKey.goToNowButton));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
@@ -267,7 +268,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -342,7 +343,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -399,7 +400,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 

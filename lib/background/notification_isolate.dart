@@ -28,7 +28,7 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
   _log.finer('initialize notification plugin... ');
   pluginInstance = FlutterLocalNotificationsPlugin();
   pluginInstance.initialize(
-    InitializationSettings(
+    const InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       iOS: IOSInitializationSettings(
         requestSoundPermission: false,

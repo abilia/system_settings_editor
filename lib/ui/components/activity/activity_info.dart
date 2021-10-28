@@ -165,7 +165,7 @@ class ActivityContainer extends StatelessWidget {
             : Theme.of(context).cardColor,
         borderRadius: borderRadius,
       ),
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       child: Column(
         children: <Widget>[
           if (hasTopInfo)
@@ -300,7 +300,7 @@ class CheckButton extends StatelessWidget {
             backgroundColor: buttonBackgroundGreen,
             foregroundColor: foregroundLight,
           ),
-          icon: Icon(AbiliaIcons.handiCheck),
+          icon: const Icon(AbiliaIcons.handiCheck),
           label: Text(text),
         ),
       ),

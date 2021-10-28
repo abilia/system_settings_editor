@@ -152,7 +152,7 @@ class EditChecklistWidget extends StatelessWidget {
                       child: RawMaterialButton(
                         constraints: BoxConstraints(minHeight: 48.0.s),
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(color: AbiliaColors.green140),
+                          side: const BorderSide(color: AbiliaColors.green140),
                           borderRadius: borderRadius,
                         ),
                         fillColor: AbiliaColors.green,
@@ -232,7 +232,7 @@ class EditChecklistWidget extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
-          child: EditQuestionPage(),
+          child: const EditQuestionPage(),
         ),
       ),
     );
@@ -343,7 +343,7 @@ class EditNoteWidget extends StatelessWidget {
           blocContext: context,
           child: EditNotePage(text: infoItem.text),
         ),
-        settings: RouteSettings(name: 'EditNotePage'),
+        settings: const RouteSettings(name: 'EditNotePage'),
         transitionsBuilder: (_, animation, __, child) => FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,

@@ -92,7 +92,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     with CalendarStateMixin {
   late final ScrollController verticalScrollController;
   late final ScrollController horizontalScrollController;
-  final Key center = Key('center');
+  final Key center = const Key('center');
 
   bool get enableScrollNotification =>
       widget.activityState.isToday && widget.scrollToTimeOffset;
@@ -248,7 +248,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       timepillarState: ts,
                                     );
                                   }
-                                  return SizedBox.shrink();
+                                  return const SizedBox.shrink();
                                 },
                               ),
                             CustomScrollView(
@@ -260,7 +260,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 if (widget.showCategories)
                                   category(
                                     widget.showCategoryLabels
-                                        ? LeftCategory()
+                                        ? const LeftCategory()
                                         : null,
                                     height: boxConstraints.maxHeight,
                                     sliver: SliverToBoxAdapter(
@@ -291,12 +291,13 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       dayParts: widget.dayParts,
                                       columnOfDots: memoSettings.columnOfDots,
                                       topMargin: topMargin,
+                                      timePillarState: ts,
                                     ),
                                   ),
                                 ),
                                 category(
                                   widget.showCategoryLabels
-                                      ? RightCategory()
+                                      ? const RightCategory()
                                       : null,
                                   height: boxConstraints.maxHeight,
                                   sliver: SliverToBoxAdapter(
@@ -393,7 +394,7 @@ class SnapToCenterScrollController extends ScrollController {
       }
       if (currentScroll.isNegative != prevScroll.isNegative) {
         animateTo(0,
-            duration: Duration(milliseconds: 200), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
       }
       prevScroll = currentScroll;
     });

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:collection/collection.dart';
@@ -11,12 +11,12 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
   late MockSettingsDb mockSettingsDb;
-  final user = User(
+  const user = User(
       id: 1,
       name: 'Slartibartfast',
       username: 'Zaphod Beeblebrox',
@@ -27,9 +27,9 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.textToSpeech).thenReturn(true);
+    when(() => mockSettingsDb.textToSpeech).thenReturn(true);
     final userDb = MockUserDb();
-    when(userDb.getUser()).thenReturn(user);
+    when(() => userDb.getUser()).thenReturn(user);
     GetItInitializer()
       ..userDb = userDb
       ..packageInfo = PackageInfo(
@@ -38,7 +38,7 @@ void main() {
           version: 'version',
           buildNumber: 'buildNumber')
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..database = MockDatabase()
+      ..database = FakeDatabase()
       ..init();
   });
 
@@ -72,7 +72,7 @@ void main() {
       );
 
   testWidgets('Settings page shows', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.powerOffOn), findsOneWidget);
     await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
@@ -82,7 +82,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
         exact: translate.logout);
@@ -94,7 +94,7 @@ void main() {
   });
 
   testWidgets('Tts info page', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
@@ -104,8 +104,8 @@ void main() {
   });
 
   testWidgets('Tts switched off', (WidgetTester tester) async {
-    when(mockSettingsDb.textToSpeech).thenReturn(false);
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    when(() => mockSettingsDb.textToSpeech).thenReturn(false);
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
@@ -114,7 +114,7 @@ void main() {
   });
 
   testWidgets('About page', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
@@ -135,7 +135,7 @@ void main() {
 
   testWidgets('code protect visible', (WidgetTester tester) async {
     setupPermissions();
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
     await tester.pumpAndSettle();
@@ -143,7 +143,7 @@ void main() {
   });
 
   testWidgets('android settings availible', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
     await tester.pumpAndSettle();

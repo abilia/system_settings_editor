@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -9,6 +8,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ClockBloc clockBloc;
@@ -27,10 +27,7 @@ void main() {
   final previusDay = initialDay.previousDay();
 
   setUpAll(() {
-    registerFallbackValue(ActivitiesNotLoaded());
-    registerFallbackValue(LoadActivities());
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
+    registerFallbackValues();
   });
 
   setUp(() {
@@ -42,11 +39,11 @@ void main() {
 
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
-        .thenReturn(MemoplannerSettingsNotLoaded());
+        .thenReturn(const MemoplannerSettingsNotLoaded());
     mockSettingStream = StreamController<MemoplannerSettingsState>();
     when(() => mockMemoplannerSettingBloc.stream)
         .thenAnswer((realInvocation) => mockSettingStream.stream);
-    clockBloc = ClockBloc(Stream.empty(), initialTime: initialMinutes);
+    clockBloc = ClockBloc(const Stream.empty(), initialTime: initialMinutes);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     nightActivitiesCubit = NightActivitiesCubit(

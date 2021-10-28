@@ -63,7 +63,7 @@ class FakeActivity {
       Activity.createNew(
           title: title,
           startTime: (startTime ?? DateTime(1970, 01, 01)),
-          duration: Duration(hours: 1),
+          duration: const Duration(hours: 1),
           recurs: recurs,
           alarmType: alarmSilent);
 

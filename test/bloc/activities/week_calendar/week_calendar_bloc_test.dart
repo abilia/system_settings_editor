@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
-import '../../../mocks/shared.mocks.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
   late WeekCalendarBloc weekCalendarBloc;
@@ -48,8 +48,8 @@ void main() {
         'state is WeekCalendarLoaded when ActivitiesBloc activities are loaded',
         () {
       // Arrange
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+      when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -68,8 +68,8 @@ void main() {
 
     test('week changes with NextWeek and PreviousWeek events', () {
       // Arrange
-      when(mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+      when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       weekCalendarBloc.add(NextWeek());
@@ -100,7 +100,7 @@ void main() {
     test('Activities updates when changing week', () {
       final fridayActivity = FakeActivity.starts(initialMinutes);
       // Arrange
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([fridayActivity]));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -149,7 +149,7 @@ void main() {
         removeAfter: true,
       );
       // Arrange
-      when(mockActivityRepository.load())
+      when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([removeAfter]));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -193,7 +193,7 @@ void main() {
             startTime: initialMinutes.add(1.minutes()),
           );
       // Arrange
-      when(mockActivityRepository.load()).thenAnswer(
+      when(() => mockActivityRepository.load()).thenAnswer(
           (_) => Future.value([initalMinActivity, nextMinActivity]));
       // Act
       activitiesBloc.add(LoadActivities());
@@ -264,7 +264,7 @@ class _WeekCalendarLoadedMatcher extends Matcher {
   @override
   bool matches(dynamic object, Map matchState) {
     return value.currentWeekStart == object.currentWeekStart &&
-        DeepCollectionEquality()
+        const DeepCollectionEquality()
             .equals(value.currentWeekActivities, object.currentWeekActivities);
   }
 }

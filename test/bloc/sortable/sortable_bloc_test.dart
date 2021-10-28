@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 
 import '../../fakes/fakes_blocs.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   late SortableBloc sortableBloc;
@@ -25,17 +25,18 @@ void main() {
   });
 
   test('Sortables loaded after successful loading of sortables', () async {
-    when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
-    sortableBloc.add(LoadSortables());
+    when(() => mockSortableRepository.load())
+        .thenAnswer((_) => Future.value([]));
+    sortableBloc.add(const LoadSortables());
     await expectLater(
       sortableBloc.stream,
-      emits(SortablesLoaded(sortables: const [])),
+      emits(const SortablesLoaded(sortables: [])),
     );
   });
 
   test('State is SortablesLoadedFailed if repository fails to load', () async {
-    when(mockSortableRepository.load()).thenThrow(Exception());
-    sortableBloc.add(LoadSortables());
+    when(() => mockSortableRepository.load()).thenThrow(Exception());
+    sortableBloc.add(const LoadSortables());
     await expectLater(
       sortableBloc.stream,
       emits(SortablesLoadedFailed()),
@@ -43,15 +44,16 @@ void main() {
   });
 
   test('Defaults are created for MP', () async {
-    when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
-    when(mockSortableRepository.save(any))
+    when(() => mockSortableRepository.load())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    sortableBloc.add(LoadSortables(initDefaults: true));
+    sortableBloc.add(const LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
     );
-    final capture = verify(mockSortableRepository.save(captureAny))
+    final capture = verify(() => mockSortableRepository.save(captureAny()))
         .captured
         .expand((l) => l)
         .whereType<Sortable<ImageArchiveData>>()
@@ -63,15 +65,16 @@ void main() {
   }, skip: !Config.isMP);
 
   test('Defaults are created for MPGO', () async {
-    when(mockSortableRepository.load()).thenAnswer((_) => Future.value([]));
-    when(mockSortableRepository.save(any))
+    when(() => mockSortableRepository.load())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
-    sortableBloc.add(LoadSortables(initDefaults: true));
+    sortableBloc.add(const LoadSortables(initDefaults: true));
     await expectLater(
       sortableBloc.stream,
       emits(isA<SortablesLoaded>()),
     );
-    final capture = verify(mockSortableRepository.save(captureAny))
+    final capture = verify(() => mockSortableRepository.save(captureAny()))
         .captured
         .expand((l) => l)
         .whereType<Sortable<ImageArchiveData>>()
@@ -89,17 +92,17 @@ void main() {
       sortOrder: 'A',
       data: ImageArchiveData.fromJson('{"upload": true}'),
     );
-    when(mockSortableRepository.load())
+    when(() => mockSortableRepository.load())
         .thenAnswer((_) => Future.value([uploadFolder]));
-    when(mockSortableRepository.save(any))
+    when(() => mockSortableRepository.save(any()))
         .thenAnswer((_) => Future.value(true));
     const imageId = 'id1';
     const imageName = 'nameOfImage';
     const imagePath = 'path/to/image/$imageName.jpg';
 
     // Act
-    sortableBloc.add(LoadSortables());
-    sortableBloc.add(ImageArchiveImageAdded('id1', imagePath));
+    sortableBloc.add(const LoadSortables());
+    sortableBloc.add(const ImageArchiveImageAdded('id1', imagePath));
 
     // Assert
     await expectLater(
@@ -110,7 +113,7 @@ void main() {
       ]),
     );
     final capture =
-        verify(mockSortableRepository.save(captureAny)).captured.single;
+        verify(() => mockSortableRepository.save(captureAny())).captured.single;
     final savedSortable = (capture as List<Sortable>).first;
     expect(savedSortable.groupId, uploadFolder.id);
     expect(savedSortable, isA<Sortable<ImageArchiveData>>());

@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/fakes_blocs.dart';
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ void main() {
   });
 
   test('License is valid', () async {
-    when(userRepository.getLicenses()).thenAnswer(
+    when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
             id: 1,
@@ -46,7 +46,7 @@ void main() {
   });
 
   test('License has expired', () async {
-    when(userRepository.getLicenses()).thenAnswer(
+    when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
             id: 1,

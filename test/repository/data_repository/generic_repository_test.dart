@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/db/generic_db.dart';
@@ -10,12 +10,16 @@ import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final mockClient = MockBaseClient();
   late GenericRepository genericRepository;
   late GenericDb genericDb;
+  setUpAll(() {
+    registerFallbackValues();
+  });
 
   setUp(() async {
     final db = await DatabaseRepository.createInMemoryFfiDb();
@@ -70,13 +74,13 @@ void main() {
       'failedUpdates': [],
       'dataRevisionUpdates': [],
     });
-    when(mockClient.get(any, headers: anyNamed('headers')))
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
         .thenAnswer((_) => Future.value(Response(getResponse, 200)));
-    when(mockClient.post(
-      any,
-      headers: anyNamed('headers'),
-      body: anyNamed('body'),
-    )).thenAnswer((_) => Future.value(Response(postResponse, 200)));
+    when(() => mockClient.post(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        )).thenAnswer((_) => Future.value(Response(postResponse, 200)));
     await genericRepository.save([synced]);
 
     // Act
@@ -84,12 +88,12 @@ void main() {
 
     // Verify
     verifyInOrder([
-      mockClient.get(any, headers: anyNamed('headers')),
-      mockClient.post(
-        any,
-        headers: anyNamed('headers'),
-        body: anyNamed('body'),
-      ),
+      () => mockClient.get(any(), headers: any(named: 'headers')),
+      () => mockClient.post(
+            any(),
+            headers: any(named: 'headers'),
+            body: any(named: 'body'),
+          ),
     ]);
   });
 

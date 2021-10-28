@@ -13,6 +13,7 @@ import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late MockActivitiesBloc mockActivitiesBloc;
@@ -22,8 +23,7 @@ void main() {
   final aDay = DateTime(2022, 02, 22);
 
   setUpAll(() {
-    registerFallbackValue(ActivitiesNotLoaded());
-    registerFallbackValue(LoadActivities());
+    registerFallbackValues();
     tz.initializeTimeZones();
   });
 
@@ -42,7 +42,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: FakeEditActivityBloc(),
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -57,7 +57,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: FakeEditActivityBloc(),
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsNotLoaded(),
+      settings: const MemoplannerSettingsNotLoaded(),
     );
 
     expect(
@@ -81,7 +81,7 @@ void main() {
       editActivityBloc: EditActivityBloc.newActivity(
           day: aDay, defaultAlarmTypeSetting: noAlarm),
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(addActivityTypeAdvanced: false),
       ),
     );
@@ -112,7 +112,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: FakeEditActivityBloc(),
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -141,7 +141,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -178,7 +178,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(advancedActivityTemplate: false),
       ),
     );
@@ -186,7 +186,7 @@ void main() {
     final activity = editActivityBloc.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
     final timeInterval = TimeInterval(startDate: aTime);
-    final newStartTime = TimeOfDay(hour: 10, minute: 0);
+    const newStartTime = TimeOfDay(hour: 10, minute: 0);
     final newTime = aTime.copyWith(
       hour: newStartTime.hour,
       minute: newStartTime.minute,
@@ -236,7 +236,7 @@ void main() {
       ),
     );
 
-    editActivityBloc.add(ChangeTimeInterval(startTime: newStartTime));
+    editActivityBloc.add(const ChangeTimeInterval(startTime: newStartTime));
     await expectLater(
       editActivityBloc.stream,
       emits(
@@ -283,7 +283,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -325,14 +325,14 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(advancedActivityTemplate: false)),
     );
 
     final activity = editActivityBloc.state.activity;
 
     final newDate = DateTime(2011, 11, 11, 11, 11);
-    final newTime = TimeOfDay(hour: 1, minute: 1);
+    const newTime = TimeOfDay(hour: 1, minute: 1);
     final newActivity = activity.copyWith(title: 'newTile');
     final expectedTimeInterval1 = TimeInterval(
       startTime: newTime,
@@ -356,8 +356,8 @@ void main() {
     );
 
     // Act
-    editActivityBloc
-        .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 1, minute: 1)));
+    editActivityBloc.add(
+        const ChangeTimeInterval(startTime: TimeOfDay(hour: 1, minute: 1)));
     editActivityBloc.add(ChangeDate(newDate));
     editActivityBloc.add(ReplaceActivity(newActivity));
 
@@ -408,8 +408,8 @@ void main() {
         startTime: aDate,
         duration: 30.minutes(),
       );
-      final newEndTime = TimeOfDay(hour: 11, minute: 11);
-      final expectedDuration = Duration(hours: 10, minutes: 10);
+      const newEndTime = TimeOfDay(hour: 11, minute: 11);
+      const expectedDuration = Duration(hours: 10, minutes: 10);
       final expectedTimeInterval = TimeInterval(
         startTime: TimeOfDay.fromDateTime(activity.startTime),
         endTime: TimeOfDay.fromDateTime(activity.noneRecurringEnd),
@@ -432,7 +432,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(
+        settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(activityTimeBeforeCurrent: true),
         ),
       );
@@ -444,7 +444,7 @@ void main() {
       );
 
       // Act
-      editActivityBloc.add(ChangeTimeInterval(endTime: newEndTime));
+      editActivityBloc.add(const ChangeTimeInterval(endTime: newEndTime));
 
       // Assert
       await expectLater(
@@ -486,9 +486,9 @@ void main() {
       startTime: aDate,
       duration: 30.minutes(),
     );
-    final newEndTime = TimeOfDay(hour: 20, minute: 00);
+    const newEndTime = TimeOfDay(hour: 20, minute: 00);
 
-    final expectedDuration = Duration(hours: 23, minutes: 30);
+    const expectedDuration = Duration(hours: 23, minutes: 30);
     final expectedTimeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(activity.startTime),
       endTime: TimeOfDay.fromDateTime(activity.noneRecurringEnd),
@@ -510,7 +510,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       clockBloc: clockBloc,
       editActivityBloc: editActivityBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: true),
       ),
     );
@@ -520,7 +520,7 @@ void main() {
         StoredActivityState(activity, expectedTimeInterval, aDay));
 
     // Act
-    editActivityBloc.add(ChangeTimeInterval(endTime: newEndTime));
+    editActivityBloc.add(const ChangeTimeInterval(endTime: newEndTime));
 
     // Assert
     await expectLater(
@@ -579,7 +579,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: true),
       ),
     );
@@ -621,7 +621,7 @@ void main() {
   test('Trying to save an empty checklist saves noInfoItem', () async {
     // Arrange
     final activity = Activity.createNew(
-        title: 'null', startTime: aTime, infoItem: NoteInfoItem('anote'));
+        title: 'null', startTime: aTime, infoItem: const NoteInfoItem('anote'));
     final activityWithEmptyChecklist = activity.copyWith(infoItem: Checklist());
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
     final activityDay = ActivityDay(activity, aDay);
@@ -637,13 +637,13 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: true),
       ),
     );
 
     // Act
-    editActivityBloc.add(ChangeInfoItemType(Checklist));
+    editActivityBloc.add(const ChangeInfoItemType(Checklist));
 
     // Assert
     await expectLater(
@@ -674,7 +674,8 @@ void main() {
         startTime: aTime,
         infoItem: Checklist(questions: const [Question(id: 0, name: 'name')]));
     final expectedActivity = activity.copyWith(infoItem: InfoItem.none);
-    final activityWithEmptyNote = activity.copyWith(infoItem: NoteInfoItem());
+    final activityWithEmptyNote =
+        activity.copyWith(infoItem: const NoteInfoItem());
     final activityDay = ActivityDay(activity, aDay);
     final timeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(aTime),
@@ -688,13 +689,13 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: true),
       ),
     );
 
     // Act
-    editActivityBloc.add(ChangeInfoItemType(NoteInfoItem));
+    editActivityBloc.add(const ChangeInfoItemType(NoteInfoItem));
 
     // Assert
     await expectLater(
@@ -728,7 +729,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(advancedActivityTemplate: false)),
     );
 
@@ -789,7 +790,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.add(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -873,7 +874,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc:
               ClockBloc(StreamController<DateTime>().stream, initialTime: time),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -954,7 +955,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.add(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -1046,9 +1047,9 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesBloc: FakeActivitiesBloc(),
           editActivityBloc: editActivityBloc,
-          clockBloc:
-              ClockBloc(Stream.empty(), initialTime: aTime.add(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          clockBloc: ClockBloc(const Stream.empty(),
+              initialTime: aTime.add(1.hours())),
+          settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: true),
           ),
         );
@@ -1136,7 +1137,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.subtract(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -1218,7 +1219,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.add(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -1296,7 +1297,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.subtract(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: false),
           ),
         );
@@ -1358,7 +1359,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -1416,7 +1417,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.subtract(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
 
@@ -1488,7 +1489,7 @@ void main() {
           editActivityBloc: editActivityBloc,
           clockBloc: ClockBloc(StreamController<DateTime>().stream,
               initialTime: aTime.subtract(1.hours())),
-          settings: MemoplannerSettingsLoaded(
+          settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: false),
           ),
         );
@@ -1545,7 +1546,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -1601,7 +1602,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -1660,7 +1661,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityBloc: editActivityBloc,
       clockBloc: clockBloc,
-      settings: MemoplannerSettingsLoaded(
+      settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ),
     );
@@ -1703,7 +1704,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(
+        settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(addActivityTypeAdvanced: false),
         ),
       );
@@ -1737,7 +1738,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(
+        settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
             wizard: WizardStepsSettings(
@@ -1785,7 +1786,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(
+        settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
             wizard: WizardStepsSettings(
@@ -1819,7 +1820,7 @@ void main() {
       );
     });
 
-    final allWizStepsSettings = MemoplannerSettings(
+    const allWizStepsSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
       wizard: WizardStepsSettings(
         template: true,
@@ -1865,7 +1866,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
       );
 
       expect(
@@ -1889,7 +1890,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
       );
 
       expect(
@@ -1935,8 +1936,8 @@ void main() {
         ),
       );
 
-      editActivityBloc
-          .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 4, minute: 4)));
+      editActivityBloc.add(
+          const ChangeTimeInterval(startTime: TimeOfDay(hour: 4, minute: 4)));
       await expectLater(editActivityBloc.stream, emits(anything));
       wizCubit.next(); // time
       wizCubit.next(); // alarm,
@@ -1966,7 +1967,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
       );
 
       expect(
@@ -2009,7 +2010,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(allWizStepsSettings),
+        settings: const MemoplannerSettingsLoaded(allWizStepsSettings),
       );
 
       editActivityBloc.add(
@@ -2042,7 +2043,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityBloc: editActivityBloc,
         clockBloc: clockBloc,
-        settings: MemoplannerSettingsLoaded(
+        settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
             wizard: WizardStepsSettings(
@@ -2064,8 +2065,8 @@ void main() {
         ),
       );
 
-      editActivityBloc
-          .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 22, minute: 22)));
+      editActivityBloc.add(
+          const ChangeTimeInterval(startTime: TimeOfDay(hour: 22, minute: 22)));
 
       editActivityBloc.add(ReplaceActivity(activity.copyWith(
           title: 'titlte', recurs: Recurs.weeklyOnDays(const []))));

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -7,7 +7,7 @@ import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/user.dart';
 import 'package:seagull/repository/user_repository.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 import '../../fakes/all.dart';
 
 void main() {
@@ -49,7 +49,7 @@ void main() {
         () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
 
       // Assert
       await expectLater(
@@ -69,8 +69,8 @@ void main() {
     test('state change back to Unauthenticated when loggin out', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedOut());
 
       // Assert
       await expectLater(
@@ -99,12 +99,16 @@ void main() {
 
     setUp(() async {
       mockedUserRepository = MockUserRepository();
-      when(mockedUserRepository.logout(any))
-          .thenAnswer((realInvocation) => Future.value());
+
+      when(() => mockedUserRepository.logout(any()))
+          .thenAnswer((_) => Future.value());
+      when(() => mockedUserRepository.persistToken(any()))
+          .thenAnswer((_) => Future.value());
       notificationMock = MockNotification();
-      when(mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(mockedUserRepository.me(any))
-          .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
+
+      when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
+      when(() => mockedUserRepository.me(any())).thenAnswer(
+          (_) => Future.value(const User(id: 0, type: '', name: '')));
       authenticationBloc = AuthenticationBloc(
         mockedUserRepository,
         onLogout: () {
@@ -116,42 +120,42 @@ void main() {
     test('loggedIn event saves token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
       // Assert
-      await untilCalled(mockedUserRepository.persistToken(Fakes.token));
+      await untilCalled(() => mockedUserRepository.persistToken(Fakes.token));
     });
 
     test('loggedOut calls deletes token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
-      await untilCalled(mockedUserRepository.logout());
+      await untilCalled(() => mockedUserRepository.logout());
     });
 
     test('logged out cancel all Notification Function is called', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
-      await untilCalled(notificationMock.mockCancelAll());
+      await untilCalled(() => notificationMock.mockCancelAll());
     });
 
     test('unauthed token gets deleted', () async {
       // Arrange
-      when(mockedUserRepository.me(any))
+      when(() => mockedUserRepository.me(any()))
           .thenAnswer((_) => Future.error(UnauthorizedException()));
 
       // Act
       authenticationBloc.add(CheckAuthentication());
 
       // Assert
-      await untilCalled(mockedUserRepository.logout(any));
+      await untilCalled(() => mockedUserRepository.logout(any()));
     });
 
     test('unauthed token returns state Unauthenticated', () async {
       // Arrange
-      when(mockedUserRepository.me(any))
+      when(() => mockedUserRepository.me(any()))
           .thenAnswer((_) => Future.error(UnauthorizedException()));
 
       // Act
@@ -169,13 +173,13 @@ void main() {
     test('logged out cancel all on logout and repo in order', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
-      await untilCalled(mockedUserRepository.logout());
-      await untilCalled(notificationMock.mockCancelAll());
+      await untilCalled(() => mockedUserRepository.logout());
+      await untilCalled(() => notificationMock.mockCancelAll());
       verifyInOrder([
-        notificationMock.mockCancelAll(),
-        mockedUserRepository.logout(),
+        () => notificationMock.mockCancelAll(),
+        () => mockedUserRepository.logout(),
       ]);
     });
 

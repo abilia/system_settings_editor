@@ -172,7 +172,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
       ),
       bodyPadding: EdgeInsets.zero,
       expanded: true,
-      backNavigationWidget: CancelButton(),
+      backNavigationWidget: const CancelButton(),
       forwardNavigationWidget: OkButton(
         onPressed: () async {
           await Navigator.of(context).maybePop(EyeButtonSettings(

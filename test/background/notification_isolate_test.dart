@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:uuid/uuid.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -11,13 +11,14 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:seagull/background/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
-import '../mocks/shared.mocks.dart';
+import '../mocks/mocks.dart';
+import '../test_helpers/register_fallback_values.dart';
 
 void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
   final mockedFileStorage = MockFileStorage();
   late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
-  final fileId = Uuid().v4();
+  final fileId = const Uuid().v4();
   final allActivities = [
     Activity.createNew(
       title: 'passed',
@@ -58,17 +59,25 @@ void main() {
     ),
   ];
 
+  setUpAll(() {
+    registerFallbackValues();
+  });
+
   setUp(() {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.UTC);
     notificationsPluginInstance =
         mockedNotificationsPlugin = MockFlutterLocalNotificationsPlugin();
-    when(mockedFileStorage.copyImageThumbForNotification(fileId))
+
+    when(() => mockedNotificationsPlugin.cancelAll())
+        .thenAnswer((_) => Future.value());
+    when(() => mockedFileStorage.copyImageThumbForNotification(fileId))
         .thenAnswer((_) => Future.value(File(fileId)));
-    when(mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
-    when(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
+    when(() => mockedFileStorage.getFile(fileId)).thenReturn(File(fileId));
+    when(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)))
         .thenReturn(File(fileId));
-    when(mockedFileStorage.exists(any)).thenAnswer((_) => Future.value(true));
+    when(() => mockedFileStorage.exists(any()))
+        .thenAnswer((_) => Future.value(true));
   });
 
   test('isolate', () async {
@@ -87,17 +96,17 @@ void main() {
       allActivities,
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
-    verify(mockedNotificationsPlugin.cancelAll());
-    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
-            payload: anyNamed('payload'),
-            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime))
-        .called(11);
+    verify(() => mockedNotificationsPlugin.cancelAll());
+    verify(() => mockedNotificationsPlugin.zonedSchedule(
+        any(), any(), any(), any(), any(),
+        payload: any(named: 'payload'),
+        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime)).called(11);
   });
 
   test('scheduleAlarmNotifications', () async {
@@ -105,17 +114,17 @@ void main() {
       allActivities,
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
-    verify(mockedNotificationsPlugin.cancelAll());
-    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
-            payload: anyNamed('payload'),
-            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime))
-        .called(11);
+    verify(() => mockedNotificationsPlugin.cancelAll());
+    verify(() => mockedNotificationsPlugin.zonedSchedule(
+        any(), any(), any(), any(), any(),
+        payload: any(named: 'payload'),
+        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime)).called(11);
   });
 
   test('scheduleAlarmNotifications disabled until tomorrow', () async {
@@ -129,14 +138,14 @@ void main() {
       mockedFileStorage,
       now: () => now,
     );
-    verify(mockedNotificationsPlugin.cancelAll());
+    verify(() => mockedNotificationsPlugin.cancelAll());
 
-    verify(mockedNotificationsPlugin.zonedSchedule(any, any, any, any, any,
-            payload: anyNamed('payload'),
-            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime))
-        .called(5);
+    verify(() => mockedNotificationsPlugin.zonedSchedule(
+        any(), any(), any(), any(), any(),
+        payload: any(named: 'payload'),
+        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime)).called(5);
   });
 
   test('scheduleAlarmNotifications with image', () async {
@@ -144,19 +153,19 @@ void main() {
       allActivities.take(2),
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
-    verify(mockedNotificationsPlugin.cancelAll());
-    verify(mockedFileStorage.copyImageThumbForNotification(fileId));
-    verify(mockedFileStorage.getFile(fileId));
-    verify(mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
+    verify(() => mockedNotificationsPlugin.cancelAll());
+    verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
+    verify(() => mockedFileStorage.getFile(fileId));
+    verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
 
-    final details = verify(mockedNotificationsPlugin.zonedSchedule(
-            any, any, any, any, captureAny,
-            payload: anyNamed('payload'),
-            androidAllowWhileIdle: anyNamed('androidAllowWhileIdle'),
+    final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), captureAny(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime))
         .captured

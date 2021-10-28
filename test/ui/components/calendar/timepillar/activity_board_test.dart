@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,6 +16,7 @@ import 'package:seagull/utils/all.dart';
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mock_bloc.dart';
 import '../../../../test_helpers/tts.dart';
+import '../../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -26,12 +26,7 @@ void main() {
   late MockMemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
-    registerFallbackValue(TimepillarState(
-        TimepillarInterval(start: startTime, end: DateTime(1987, 05, 23)),
-        1.0));
-    registerFallbackValue(TimepillarConditionsChangedEvent());
+    registerFallbackValues();
   });
 
   setUp(() async {
@@ -39,14 +34,14 @@ void main() {
 
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state)
-        .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+        .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
       dotsInTimepillar: true,
     )));
 
     when(() => mockMemoplannerSettingsBloc.stream).thenAnswer(
       (_) => Stream.fromIterable(
         [
-          MemoplannerSettingsLoaded(
+          const MemoplannerSettingsLoaded(
             MemoplannerSettings(
               dotsInTimepillar: true,
             ),
@@ -112,7 +107,8 @@ void main() {
                   activityOccasions,
                   caption,
                   1.0,
-                  MemoplannerSettingsLoaded(MemoplannerSettings()).dayParts,
+                  const MemoplannerSettingsLoaded(MemoplannerSettings())
+                      .dayParts,
                   TimepillarSide.right,
                   ts,
                   TimepillarCalendar.topMargin,
@@ -511,7 +507,7 @@ void main() {
     testWidgets('No side dots when setting is flarp',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         dotsInTimepillar: false,
       )));
 

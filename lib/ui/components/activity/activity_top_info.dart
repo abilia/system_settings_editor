@@ -101,7 +101,7 @@ class _ActivityTopInfo extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       _TimeBox(
                         key: TestKey.startTime,
                         text: hourAndMinuteFormat(context)(activityDay.start),
@@ -123,7 +123,7 @@ class _ActivityTopInfo extends StatelessWidget {
                         text: hourAndMinuteFormat(context)(activityDay.end),
                         occasion: activityDay.end.occasion(now),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ),

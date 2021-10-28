@@ -69,7 +69,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
         separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(selectedSound),
         ),

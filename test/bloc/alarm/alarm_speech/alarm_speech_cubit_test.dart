@@ -13,6 +13,7 @@ import 'package:seagull/models/settings/alarm_settings.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ void main() {
   group('CounterBloc', () {
     final startTime = DateTime(2021, 10, 15, 09, 29);
     final day = DateTime(2021, 10, 15);
-    final userFile = UserFile(
+    const userFile = UserFile(
       id: 'id',
       sha1: 'sha1',
       md5: 'md5',
@@ -64,8 +65,7 @@ void main() {
     List<ActiveNotification> activeNotifications = [];
 
     setUpAll(() {
-      registerFallbackValue(UserFilesNotLoaded());
-      registerFallbackValue(LoadUserFiles());
+      registerFallbackValues();
     });
 
     setUp(() async {
@@ -92,7 +92,7 @@ void main() {
       });
       mockUserFileBloc = MockUserFileBloc();
       when(() => mockUserFileBloc.state)
-          .thenReturn(UserFilesLoaded([userFile]));
+          .thenReturn(const UserFilesLoaded([userFile]));
     });
 
     tearDown(() {
@@ -104,7 +104,7 @@ void main() {
       'emits nothing [] when nothing is added',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
@@ -120,7 +120,7 @@ void main() {
       'emits AlarmPlayed when fullscreen alarm',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: true,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
@@ -128,7 +128,7 @@ void main() {
           userFileBloc: mockUserFileBloc,
         ),
       ),
-      expect: () => [AlarmSpeechPlayed()],
+      expect: () => [const AlarmSpeechPlayed()],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -139,7 +139,7 @@ void main() {
       'emits AlarmPlayed when Alarm is No Alarm',
       build: () => AlarmSpeechCubit(
         alarm: startAlarmNoSound,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
@@ -147,7 +147,7 @@ void main() {
           userFileBloc: mockUserFileBloc,
         ),
       ),
-      expect: () => [AlarmSpeechPlayed()],
+      expect: () => [const AlarmSpeechPlayed()],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -161,7 +161,7 @@ void main() {
       ],
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: true,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
@@ -177,7 +177,7 @@ void main() {
       'emits AlarmPlayed after time is up',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(durationMs: 0),
+        alarmSettings: const AlarmSettings(durationMs: 0),
         fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
@@ -186,7 +186,7 @@ void main() {
         ),
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
-      expect: () => [AlarmSpeechPlayed()],
+      expect: () => [const AlarmSpeechPlayed()],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -197,7 +197,7 @@ void main() {
       'emits AlarmPlayed when notification tapped',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
@@ -205,7 +205,7 @@ void main() {
           userFileBloc: mockUserFileBloc,
         ),
       ),
-      expect: () => [AlarmSpeechPlayed()],
+      expect: () => [const AlarmSpeechPlayed()],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -215,7 +215,7 @@ void main() {
       'emits AlarmPlayed bloc played',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
-        alarmSettings: AlarmSettings(),
+        alarmSettings: const AlarmSettings(),
         fullScreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
@@ -223,7 +223,7 @@ void main() {
           userFileBloc: mockUserFileBloc,
         )..play(speechFile),
       ),
-      expect: () => [AlarmSpeechPlayed()],
+      expect: () => [const AlarmSpeechPlayed()],
     );
   });
 }

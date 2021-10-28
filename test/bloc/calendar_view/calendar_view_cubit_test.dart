@@ -1,45 +1,48 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../mocks/shared.mocks.dart';
+import '../../mocks/mocks.dart';
 
 void main() {
   late CalendarViewCubit calendarViewBloc;
   late MockSettingsDb mockSettingsDb;
   setUp(() {
     mockSettingsDb = MockSettingsDb();
-    when(mockSettingsDb.leftCategoryExpanded).thenReturn(true);
-    when(mockSettingsDb.setLeftCategoryExpanded(any))
+    when(() => mockSettingsDb.leftCategoryExpanded).thenReturn(true);
+    when(() => mockSettingsDb.setLeftCategoryExpanded(any()))
         .thenAnswer((_) => Future.value());
-    when(mockSettingsDb.rightCategoryExpanded).thenReturn(true);
-    when(mockSettingsDb.setRightCategoryExpanded(any))
+    when(() => mockSettingsDb.rightCategoryExpanded).thenReturn(true);
+    when(() => mockSettingsDb.setRightCategoryExpanded(any()))
         .thenAnswer((_) => Future.value());
     calendarViewBloc = CalendarViewCubit(mockSettingsDb);
   });
 
   test('initial state', () {
-    expect(calendarViewBloc.state,
-        CalendarViewState(expandLeftCategory: true, expandRightCategory: true));
+    expect(
+        calendarViewBloc.state,
+        const CalendarViewState(
+            expandLeftCategory: true, expandRightCategory: true));
   });
 
   test('initial state other', () {
-    when(mockSettingsDb.leftCategoryExpanded).thenReturn(false);
-    when(mockSettingsDb.rightCategoryExpanded).thenReturn(false);
+    when(() => mockSettingsDb.leftCategoryExpanded).thenReturn(false);
+    when(() => mockSettingsDb.rightCategoryExpanded).thenReturn(false);
     calendarViewBloc = CalendarViewCubit(mockSettingsDb);
     expect(
       calendarViewBloc.state,
-      CalendarViewState(expandLeftCategory: false, expandRightCategory: false),
+      const CalendarViewState(
+          expandLeftCategory: false, expandRightCategory: false),
     );
   });
 
   test('Toggle left category', () async {
     await calendarViewBloc.toggle(Category.left);
-    verify(mockSettingsDb.setLeftCategoryExpanded(false));
+    verify(() => mockSettingsDb.setLeftCategoryExpanded(false));
     expect(
       calendarViewBloc.state,
-      CalendarViewState(
+      const CalendarViewState(
         expandLeftCategory: false,
         expandRightCategory: true,
       ),
@@ -48,10 +51,10 @@ void main() {
 
   test('Toggle right category', () async {
     await calendarViewBloc.toggle(Category.right);
-    verify(mockSettingsDb.setRightCategoryExpanded(false));
+    verify(() => mockSettingsDb.setRightCategoryExpanded(false));
     expect(
       calendarViewBloc.state,
-      CalendarViewState(
+      const CalendarViewState(
         expandRightCategory: false,
         expandLeftCategory: true,
       ),

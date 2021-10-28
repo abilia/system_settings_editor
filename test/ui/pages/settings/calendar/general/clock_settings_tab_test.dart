@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'dart:async';
 
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -13,7 +13,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../../fakes/all.dart';
-import '../../../../../mocks/shared.mocks.dart';
+import '../../../../../mocks/mocks.dart';
 import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
@@ -31,15 +31,15 @@ void main() {
 
   setUp(() async {
     setupPermissions();
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     generics = [timepillarGeneric];
 
     genericDb = MockGenericDb();
-    when(genericDb.getAllNonDeletedMaxRevision())
+    when(() => genericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(generics));
-    when(genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(genericDb.insertAndAddDirty(any))
+    when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
+    when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     GetItInitializer()
@@ -159,11 +159,11 @@ void main() {
       await tester.dragUntilVisible(
         find.byKey(TestKey.use12hSwitch),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
-      final toggle =
-          tester.widget<Switch>(find.byKey(ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester
+          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
       expect(toggle.onChanged, isNull);
       expect(toggle.value, isTrue);
       expect(find.text('1'), findsOneWidget);
@@ -175,11 +175,11 @@ void main() {
       await tester.dragUntilVisible(
         find.byKey(TestKey.use12hSwitch),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
-      final toggle =
-          tester.widget<Switch>(find.byKey(ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester
+          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
 
       expect(toggle.onChanged, isNotNull);
       expect(toggle.value, isFalse);
@@ -209,7 +209,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.columnOfDots),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
       final timepillarBefore =
@@ -239,7 +239,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.lineAcrossCurrentTime),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
 
@@ -265,7 +265,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.linesForEachHour),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
 

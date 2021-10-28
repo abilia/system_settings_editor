@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -19,11 +18,12 @@ import 'package:seagull/utils/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
   final day = startTime.onlyDays();
-  final userFile = UserFile(
+  const userFile = UserFile(
     id: 'id',
     sha1: 'sha1',
     md5: 'md5',
@@ -97,10 +97,7 @@ void main() {
       );
 
   setUpAll(() {
-    registerFallbackValue(MemoplannerSettingsNotLoaded());
-    registerFallbackValue(UpdateMemoplannerSettings(MapView({})));
-    registerFallbackValue(UserFilesNotLoaded());
-    registerFallbackValue(LoadUserFiles());
+    registerFallbackValues();
   });
 
   const MethodChannel localNotificationChannel =
@@ -127,12 +124,14 @@ void main() {
     });
 
     mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.state).thenReturn(UserFilesLoaded([userFile]));
+    when(() => mockUserFileBloc.state)
+        .thenReturn(const UserFilesLoaded([userFile]));
     mockMPSettingsBloc = MockMemoplannerSettingBloc();
-    when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
-        MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+    when(() => mockMPSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+            MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
     await initializeDateFormatting();
     GetItInitializer()
       ..fileStorage = FakeFileStorage()
@@ -269,7 +268,7 @@ void main() {
 
     testWidgets('speech plays after time delay is up 5 min alarm',
         (WidgetTester tester) async {
-      final fiveMin = Duration(minutes: 5);
+      const fiveMin = Duration(minutes: 5);
       when(() => mockMPSettingsBloc.state).thenReturn(MemoplannerSettingsLoaded(
           MemoplannerSettings(
               alarm: AlarmSettings(durationMs: fiveMin.inMilliseconds))));

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -14,7 +14,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../../fakes/all.dart';
-import '../../../../mocks/shared.mocks.dart';
+import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/tts.dart';
 import '../../../../test_helpers/enter_text.dart';
 
@@ -28,22 +28,24 @@ void main() {
     setupPermissions();
     setupFakeTts();
 
-    notificationsPluginInstance = MockFlutterLocalNotificationsPlugin();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
 
     final mockActivityDb = MockActivityDb();
-    when(mockActivityDb.getAllNonDeleted())
+    when(() => mockActivityDb.getAllNonDeleted())
         .thenAnswer((_) => Future.value(activityResponse()));
-    when(mockActivityDb.getAllDirty()).thenAnswer((_) => Future.value([]));
-    when(mockActivityDb.insertAndAddDirty(any))
+    when(() => mockActivityDb.getAllDirty())
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
     mockGenericDb = MockGenericDb();
-    when(mockGenericDb.insertAndAddDirty(any))
+    when(() => mockGenericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(false));
-    when(mockGenericDb.getAllNonDeletedMaxRevision())
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
-    when(mockGenericDb.getById(any)).thenAnswer((_) => Future.value(null));
-    when(mockGenericDb.insert(any)).thenAnswer((_) async {});
+    when(() => mockGenericDb.getById(any()))
+        .thenAnswer((_) => Future.value(null));
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -54,7 +56,7 @@ void main() {
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
-      ..ticker = Ticker(stream: Stream.empty(), initialTime: initialDay)
+      ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
       ..init();
   });
 
@@ -213,7 +215,7 @@ void main() {
   });
 
   group('With preview', () {
-    final time = initialDay.withTime(TimeOfDay(hour: 16, minute: 16));
+    final time = initialDay.withTime(const TimeOfDay(hour: 16, minute: 16));
     const title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
     final friday = time.addDays(2);
     setUp(() {
@@ -267,7 +269,7 @@ void main() {
 
     testWidgets('Activities in the preview repspects show categories setting',
         (WidgetTester tester) async {
-      when(mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (realInvocation) => Future.value(
           [
             Generic.createNew<MemoplannerSettingData>(
@@ -319,7 +321,7 @@ void main() {
         FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(mockGenericDb.getAllNonDeletedMaxRevision())
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
@@ -340,7 +342,7 @@ void main() {
         FakeActivity.starts(initialDay, title: 'two').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(mockGenericDb.getAllNonDeletedMaxRevision())
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
@@ -357,7 +359,7 @@ void main() {
     testWidgets(
         'SGC-1062 Split month view: List not updated when editing activity',
         (WidgetTester tester) async {
-      when(mockGenericDb.getAllNonDeletedMaxRevision())
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());

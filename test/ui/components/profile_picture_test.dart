@@ -7,7 +7,7 @@ import 'package:seagull/ui/components/profile_picture.dart';
 void main() {
   testWidgets('no image shows icon place holder', (WidgetTester tester) async {
     await tester.pumpWidget(
-      Directionality(
+      const Directionality(
         textDirection: TextDirection.ltr,
         child: ProfilePicture(
           'url',
