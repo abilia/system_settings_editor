@@ -82,7 +82,7 @@ clockTenMinutesPastTts	ten past %s	Tio minuter över %s	Ti minutter over %s	tien
 clockTenMinutesToTts	ten to %s	Tio minuter i %s	Ti minutter i %s	tien voor %s	kymmentä vaille %s	10 Minuten vor %s	Ti på %s
 clockTwentyMinutesPastTts	twenty past %s	Tjugo minuter över %s	Tyve minutter over %s	twintig over %s	kaksikymmentä yli %s	20 Minuten nach %s	Ti på halv %s
 clockTwentyMinutesToTts	twenty to %s	Tjugo minuter i %s	Tyve minutter i %s	tien over half %s	kaksikymmentä vaille %s	20 Minuten vor %s	Ti over halv %s
-nbOneAClock	one o clock						: ett
+nbOneAClock	one o clock	&empty&	&empty&	&empty&	&empty&	&empty&	: ett
 timeMorningTts	%s in the early morning	%s på morgonen	%s om morgenen	%s in de ochtend	%s varhain aamulla	%s frühmorgens	%s på morgen
 timeForeNoonTts	%s in the mid-morning	%s på förmiddagen	%s om formiddagen	%s halverwege de ochtend	%s aamupäivän puolivälissä	%s vormittags	%s på formiddagen
 timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s 's middags	%s iltapäivällä	%s nachmittags	%s på ettermiddagen

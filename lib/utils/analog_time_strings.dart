@@ -1,18 +1,19 @@
+import 'package:meta/meta.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/i18n/translations_extensions.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
-const _wildcard = '%s';
-
 String analogTimeStringWithInterval(
     Translator translator, DateTime time, DayParts dayParts) {
-  String timeWithInterval =
-      intervalString(translator, time.dayPart(dayParts), time.hour)
-          .replaceFirst(_wildcard, analogTimeString(translator, time));
-  return translator.translate.clockTheTimeIsTts
-      .replaceFirst(_wildcard, timeWithInterval);
+  String timeWithInterval = translator.translate.replaceInString(
+      intervalString(translator, time.dayPart(dayParts), time.hour),
+      analogTimeString(translator, time));
+  return translator.translate.replaceInString(
+      translator.translate.clockTheTimeIsTts, timeWithInterval);
 }
 
+@visibleForTesting
 String intervalString(Translator translator, DayPart dayPart, int hour) {
   switch (dayPart) {
     case DayPart.day:
@@ -29,13 +30,15 @@ String intervalString(Translator translator, DayPart dayPart, int hour) {
   }
 }
 
+@visibleForTesting
 String analogTimeString(Translator translator, DateTime time) {
   int hour = hourForTime(translator.locale.languageCode, time);
-  return analogMinuteString(translator, time)
-      .replaceFirst(_wildcard, analogHourString(translator, hour));
+  return translator.translate.replaceInString(
+      _analogMinuteString(translator, time),
+      _analogHourString(translator, hour));
 }
 
-String analogHourString(Translator translator, int hour) {
+String _analogHourString(Translator translator, int hour) {
   String hourString = hour.toString();
 
   if (hour == 1) {
@@ -47,11 +50,12 @@ String analogHourString(Translator translator, int hour) {
   return hourString;
 }
 
-String analogMinuteString(Translator translator, DateTime time) {
+String _analogMinuteString(Translator translator, DateTime time) {
   var interval = fiveMinInterval(time);
   return _stringForInterval(translator, interval);
 }
 
+@visibleForTesting
 int hourForTime(String language, DateTime time) {
   int minute = time.minute;
   int hour = time.hour;
@@ -69,6 +73,7 @@ int hourForTime(String language, DateTime time) {
   return hour;
 }
 
+@visibleForTesting
 int fiveMinInterval(DateTime time) {
   return (((time.minute + 2) % 60) / 5).floor();
 }

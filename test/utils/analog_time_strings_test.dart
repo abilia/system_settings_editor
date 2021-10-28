@@ -36,7 +36,7 @@ void main() {
   });
 
   group('hours, basic cases', () {
-    String languageCode = Translator(Locale('en')).locale.languageCode;
+    const languageCode = 'en';
     test('5 hours,', () {
       expect(hourForTime(languageCode, DateTime(2021, 10, 25, 5, 02, 0)), 5);
     });
@@ -60,31 +60,19 @@ void main() {
 
   group('hour, special cases', () {
     test('past 32 minutes, en', () {
-      expect(
-          hourForTime(
-              Locale('en').languageCode, DateTime(2021, 10, 25, 5, 33, 0)),
-          6);
+      expect(hourForTime('en', DateTime(2021, 10, 25, 5, 33, 0)), 6);
     });
 
     test('past 17 minutes, nb', () {
-      expect(
-          hourForTime(
-              Locale('nb').languageCode, DateTime(2021, 10, 25, 5, 18, 0)),
-          6);
+      expect(hourForTime('nb', DateTime(2021, 10, 25, 5, 18, 0)), 6);
     });
 
     test('past 22 minutes, sv', () {
-      expect(
-          hourForTime(
-              Locale('sv').languageCode, DateTime(2021, 10, 25, 5, 23, 0)),
-          6);
+      expect(hourForTime('sv', DateTime(2021, 10, 25, 5, 23, 0)), 6);
     });
 
     test('past 22 minutes, da', () {
-      expect(
-          hourForTime(
-              Locale('da').languageCode, DateTime(2021, 10, 25, 5, 23, 0)),
-          6);
+      expect(hourForTime('da', DateTime(2021, 10, 25, 5, 23, 0)), 6);
     });
   });
 

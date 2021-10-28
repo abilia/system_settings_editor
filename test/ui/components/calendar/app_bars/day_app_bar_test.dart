@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../../fakes/fake_db_and_repository.dart';
 import '../../../../mocks/mock_bloc.dart';
 import '../../../../test_helpers/register_fallback_values.dart';
+import '../../../../fakes/all.dart';
+import '../../../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
@@ -219,5 +221,39 @@ void main() {
     expect(find.text('Monday'), findsOneWidget);
     expect(find.text('afternoon'), findsOneWidget);
     expect(find.text('5 October 2020'), findsOneWidget);
+  });
+
+  group('tts tests', () {
+    setUpAll(() async {
+      setupFakeTts();
+      GetItInitializer()
+        ..database = FakeDatabase()
+        ..sharedPreferences = await FakeSharedPreferences.getInstance()
+        ..init();
+    });
+
+    testWidgets('clock tts test afternoon', (WidgetTester tester) async {
+      final forenoon = DateTime(2020, 10, 05, 12, 5);
+      final clockBloc =
+          ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+      _expectSettings(MemoplannerSettings()); //
+      await tester
+          .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
+      await tester.pumpAndSettle();
+      tester.verifyTts(find.byType(AnalogClock),
+          exact: 'the time is five past 12 in the afternoon');
+    });
+
+    testWidgets('clock tts test forenoon', (WidgetTester tester) async {
+      final forenoon = DateTime(2020, 10, 05, 10, 25);
+      final clockBloc =
+          ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+      _expectSettings(MemoplannerSettings()); //
+      await tester
+          .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
+      await tester.pumpAndSettle();
+      tester.verifyTts(find.byType(AnalogClock),
+          exact: 'the time is twenty five past 10 in the mid-morning');
+    });
   });
 }
