@@ -116,7 +116,7 @@ class SelectPictureBody extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 8.0.s),
-                  if (state.displayPhotos) ...[
+                  if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
                       text: translate.uploadImage,
                       imageSource: ImageSource.gallery,
