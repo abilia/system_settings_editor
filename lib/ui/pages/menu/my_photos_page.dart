@@ -22,7 +22,7 @@ class MyPhotosPage extends StatelessWidget {
             iconData: AbiliaIcons.myPhotos,
             trailing: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-              child: AddPhotoButton(),
+              child: const AddPhotoButton(),
             ),
           ),
           body: GridView.count(
@@ -67,8 +67,8 @@ class AddPhotoButton extends StatelessWidget {
                 await showViewDialog(
                     useSafeArea: false,
                     context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: Permission.camera));
+                    builder: (context) => const PermissionInfoDialog(
+                        permission: Permission.camera));
               } else {
                 final image =
                     await ImagePicker().pickImage(source: ImageSource.camera);
@@ -90,7 +90,7 @@ class AddPhotoButton extends StatelessWidget {
                 }
               }
             },
-            child: Icon(AbiliaIcons.plus),
+            child: const Icon(AbiliaIcons.plus),
           ),
         ),
       );

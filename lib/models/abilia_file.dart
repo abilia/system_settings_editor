@@ -36,7 +36,7 @@ class UnstoredAbiliaFile extends AbiliaFile {
   ) : super._(id, path);
 
   factory UnstoredAbiliaFile.newFile(File file) {
-    final id = Uuid().v4();
+    final id = const Uuid().v4();
     return UnstoredAbiliaFile._(
       id,
       '${FileStorage.folder}/$id',

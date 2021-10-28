@@ -490,8 +490,8 @@ void main() {
             ),
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+              .thenAnswer((realInvocation) => const Stream.empty());
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -533,9 +533,9 @@ void main() {
             ),
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
+              .thenAnswer((realInvocation) => const Stream.empty());
 
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -573,10 +573,10 @@ void main() {
             folder,
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
+              .thenAnswer((realInvocation) => const Stream.empty());
 
           //Act
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -653,15 +653,15 @@ void main() {
             Sortable.createNew<BasicActivityDataItem>(
               data: BasicActivityDataItem.createNew(
                 title: title,
-                startTime: Duration(hours: 11),
+                startTime: const Duration(hours: 11),
               ),
             ),
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
+              .thenAnswer((realInvocation) => const Stream.empty());
 
           //Act
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -704,10 +704,10 @@ void main() {
             ),
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
+              .thenAnswer((realInvocation) => const Stream.empty());
 
           //Act
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -750,10 +750,10 @@ void main() {
             ),
           ]));
           when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => Stream.empty());
+              .thenAnswer((realInvocation) => const Stream.empty());
 
           //Act
-          await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddActivityButton));
@@ -943,7 +943,7 @@ void main() {
       initializeDateFormatting();
       memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
       when(() => memoplannerSettingBlocMock.stream)
-          .thenAnswer((_) => Stream.empty());
+          .thenAnswer((_) => const Stream.empty());
     });
 
     testWidgets(
@@ -951,11 +951,11 @@ void main() {
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
+          .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
-        CalendarPage(),
+        const CalendarPage(),
       ));
 
       // Navigate to EditActivityPage
@@ -973,8 +973,8 @@ void main() {
       await tester.ourEnterText(
           find.byKey(TestKey.editTitleTextFormField), testActivityTitle);
       await tester.pumpAndSettle();
-      await tester.dragFrom(
-          tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
+      await tester.dragFrom(tester.getCenter(find.byType(EditActivityPage)),
+          const Offset(0.0, -200));
       await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
@@ -991,11 +991,11 @@ void main() {
         (WidgetTester tester) async {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
+          .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(activityTimeBeforeCurrent: false),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
-        CalendarPage(),
+        const CalendarPage(),
         memoplannerSettingBloc: memoplannerSettingBlocMock,
       ));
 
@@ -1022,8 +1022,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      await tester.dragFrom(
-          tester.getCenter(find.byType(EditActivityPage)), Offset(0.0, -200));
+      await tester.dragFrom(tester.getCenter(find.byType(EditActivityPage)),
+          const Offset(0.0, -200));
       await tester.pump();
       await tester.tap(find.byKey(TestKey.fullDaySwitch));
       await tester.pumpAndSettle();
@@ -1060,7 +1060,7 @@ void main() {
           MemoplannerSettings(calendarDayColor: DayColor.allDays.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1093,7 +1093,7 @@ void main() {
               calendarDayColor: DayColor.saturdayAndSunday.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1125,7 +1125,7 @@ void main() {
           MemoplannerSettings(calendarDayColor: DayColor.noColors.index),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1156,11 +1156,11 @@ void main() {
       testWidgets('show next/previous day buttons',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
+            .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(dayCaptionShowDayButtons: true),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1177,11 +1177,11 @@ void main() {
       testWidgets('do not show next/previous day buttons',
           (WidgetTester tester) async {
         when(() => memoplannerSettingBlocMock.state)
-            .thenReturn(MemoplannerSettingsLoaded(
+            .thenReturn(const MemoplannerSettingsLoaded(
           MemoplannerSettings(dayCaptionShowDayButtons: false),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1207,7 +1207,7 @@ void main() {
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1228,7 +1228,7 @@ void main() {
           ),
         ));
         await tester.pumpWidget(wrapWithMaterialApp(
-          CalendarPage(),
+          const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock,
         ));
         await tester.pumpAndSettle();
@@ -1545,29 +1545,29 @@ void main() {
         (WidgetTester tester) async {
       final activities = [
         FakeActivity.starts(initialDay, title: 'one')
-            .copyWith(startTime: initialDay.add(Duration(hours: 1))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 1))),
         FakeActivity.starts(initialDay, title: 'two')
-            .copyWith(startTime: initialDay.add(Duration(hours: 2))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 2))),
         FakeActivity.starts(initialDay, title: 'three')
-            .copyWith(startTime: initialDay.add(Duration(hours: 3))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 3))),
         FakeActivity.starts(initialDay, title: 'four')
-            .copyWith(startTime: initialDay.add(Duration(hours: 4))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 4))),
         FakeActivity.starts(initialDay, title: 'five')
-            .copyWith(startTime: initialDay.add(Duration(hours: 5))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 5))),
         FakeActivity.starts(initialDay, title: 'six')
-            .copyWith(startTime: initialDay.add(Duration(hours: 6))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 6))),
         FakeActivity.starts(initialDay, title: 'seven')
-            .copyWith(startTime: initialDay.add(Duration(hours: 7))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 7))),
         FakeActivity.starts(initialDay, title: 'eight')
-            .copyWith(startTime: initialDay.add(Duration(hours: 8))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 8))),
         FakeActivity.starts(initialDay, title: 'nine')
-            .copyWith(startTime: initialDay.add(Duration(hours: 9))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 9))),
         FakeActivity.starts(initialDay, title: 'ten')
-            .copyWith(startTime: initialDay.add(Duration(hours: 10))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 10))),
         FakeActivity.starts(initialDay, title: 'eleven')
-            .copyWith(startTime: initialDay.add(Duration(hours: 11))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 11))),
         FakeActivity.starts(initialDay, title: 'twelve')
-            .copyWith(startTime: initialDay.add(Duration(hours: 12))),
+            .copyWith(startTime: initialDay.add(const Duration(hours: 12))),
       ];
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
@@ -1588,16 +1588,16 @@ void main() {
       initializeDateFormatting();
       memoplannerSettingBlocMock = MockMemoplannerSettingBloc();
       when(() => memoplannerSettingBlocMock.stream)
-          .thenAnswer((_) => Stream.empty());
+          .thenAnswer((_) => const Stream.empty());
     });
 
     testWidgets('displays alarm button', (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
+          .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(displayAlarmButton: true),
       ));
 
-      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+      await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
@@ -1609,11 +1609,11 @@ void main() {
 
     testWidgets('don\'t display alarm button', (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
-          .thenReturn(MemoplannerSettingsLoaded(
+          .thenReturn(const MemoplannerSettingsLoaded(
         MemoplannerSettings(displayAlarmButton: false),
       ));
 
-      await tester.pumpWidget(wrapWithMaterialApp(CalendarPage(),
+      await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
           memoplannerSettingBloc: memoplannerSettingBlocMock));
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));

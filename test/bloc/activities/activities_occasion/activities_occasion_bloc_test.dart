@@ -42,7 +42,7 @@ void main() {
   });
   group('ActivitiesOccasionBloc', () {
     test('initial state is ActivitiesOccasionLoading', () {
-      expect(activitiesOccasionBloc.state, ActivitiesOccasionLoading());
+      expect(activitiesOccasionBloc.state, const ActivitiesOccasionLoading());
     });
 
     test(
@@ -50,7 +50,7 @@ void main() {
         () {
       // Arrange
       when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -251,7 +251,7 @@ void main() {
         'only loads tomorrows activities with correct occasion in correct order and tomorrows full day',
         () {
       //Arrange
-      final tomorrow = initialMinutes.add(Duration(days: 1));
+      final tomorrow = initialMinutes.add(const Duration(days: 1));
       final nowActivity = FakeActivity.starts(tomorrow);
       final pastActivity = FakeActivity.ends(tomorrow.add(1.minutes()));
       final futureActivity = FakeActivity.starts(tomorrow.add(1.minutes()));
@@ -289,7 +289,7 @@ void main() {
         'only loads yesterday activities with correct occasion in correct order and yesterday full day',
         () {
       //Arrange
-      final yesterday = initialMinutes.subtract(Duration(days: 1));
+      final yesterday = initialMinutes.subtract(const Duration(days: 1));
       final nowActivity = FakeActivity.starts(yesterday);
       final pastActivity = FakeActivity.ends(yesterday.add(1.minutes()));
       final futureActivity = FakeActivity.starts(yesterday.add(1.minutes()));
@@ -376,7 +376,7 @@ void main() {
 
     test('Changing now changing order', () async {
       // Arrange
-      final nextMinute = initialMinutes.add(Duration(minutes: 1));
+      final nextMinute = initialMinutes.add(const Duration(minutes: 1));
       final nowActivity =
           FakeActivity.starts(initialMinutes.onlyDays(), duration: 16.hours());
       final endsSoonActivity = FakeActivity.ends(initialMinutes);
@@ -436,19 +436,19 @@ void main() {
   group('ActivitiesOccasionBloc recurring', () {
     test('Shows recurring past, present and future', () async {
       // Arrange
-      final longAgo = initialMinutes.subtract(Duration(days: 1111));
+      final longAgo = initialMinutes.subtract(const Duration(days: 1111));
       final weekendActivity = FakeActivity.reocurrsWeekends(longAgo);
       final tuesdayRecurring = FakeActivity.reocurrsTuedays(longAgo);
       final mondayRecurring = FakeActivity.reocurrsMondays(longAgo);
-      final activities = Iterable<Activity>.empty()
+      final activities = const Iterable<Activity>.empty()
           .followedBy([weekendActivity, tuesdayRecurring, mondayRecurring]);
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
 
-      final friday = initialDay.add(Duration(days: 3));
-      final saturday = friday.add(Duration(days: 1));
-      final sunday = saturday.add(Duration(days: 1));
-      final monday = sunday.add(Duration(days: 1));
+      final friday = initialDay.add(const Duration(days: 3));
+      final saturday = friday.add(const Duration(days: 1));
+      final sunday = saturday.add(const Duration(days: 1));
+      final monday = sunday.add(const Duration(days: 1));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -478,7 +478,7 @@ void main() {
               activities: <ActivityOccasion>[
                 ActivityOccasion.forTest(mondayRecurring,
                     occasion: Occasion.past,
-                    day: initialDay.subtract(Duration(days: 1))),
+                    day: initialDay.subtract(const Duration(days: 1))),
               ],
               fullDayActivities: const [],
               day: previusDay,
@@ -550,7 +550,7 @@ void main() {
         ),
       );
 
-      final activities = Iterable<Activity>.empty().followedBy([
+      final activities = const Iterable<Activity>.empty().followedBy([
         everyDayRecurring,
         todayActivity,
         yesterdayActivity,
@@ -641,7 +641,7 @@ void main() {
         recurs: Recurs.everyDay,
       );
 
-      final activities = Iterable<Activity>.empty().followedBy([
+      final activities = const Iterable<Activity>.empty().followedBy([
         everyDayRecurring,
       ]);
       when(() => mockActivityRepository.load())
@@ -709,7 +709,7 @@ void main() {
         duration: 9.hours(),
       );
 
-      final activities = Iterable<Activity>.empty().followedBy([
+      final activities = const Iterable<Activity>.empty().followedBy([
         mondayRecurring,
         earlyActivity,
         earlyCurrent,

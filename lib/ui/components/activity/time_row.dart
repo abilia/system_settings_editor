@@ -38,7 +38,7 @@ class TimeRow extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       _timeText(
                         context,
                         date: activityDay.start,
@@ -62,7 +62,7 @@ class TimeRow extends StatelessWidget {
                         now: now,
                         key: TestKey.endTime,
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ),

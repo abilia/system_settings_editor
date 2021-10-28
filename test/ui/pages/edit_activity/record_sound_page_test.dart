@@ -83,7 +83,7 @@ void main() {
     testWidgets('record page smoke test no previous file',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        wrapWithMaterialApp(RecordSoundPage()),
+        wrapWithMaterialApp(const RecordSoundPage()),
       );
       await tester.pumpAndSettle();
       expect(find.byType(RecordSoundPage), findsOneWidget);
@@ -98,7 +98,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          RecordSoundPage(),
+          const RecordSoundPage(),
           originalSoundFile: _dummyFile,
         ),
       );
@@ -115,7 +115,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(
         wrapWithMaterialApp(
-          RecordSoundPage(),
+          const RecordSoundPage(),
           originalSoundFile: _dummyFile,
         ),
       );
@@ -143,7 +143,7 @@ void main() {
         Permission.microphone: PermissionStatus.granted,
       });
       await tester.pumpWidget(
-        wrapWithMaterialApp(RecordSoundPage()),
+        wrapWithMaterialApp(const RecordSoundPage()),
       );
       await tester.pumpAndSettle();
 

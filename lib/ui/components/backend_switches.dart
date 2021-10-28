@@ -11,7 +11,7 @@ class BackendSwitchesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewDialog(
-      heading: AppBarHeading(
+      heading: const AppBarHeading(
         text: 'Switch backend',
         iconData: AbiliaIcons.oneDrive,
       ),

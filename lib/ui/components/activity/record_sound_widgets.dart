@@ -90,7 +90,7 @@ class RecordSoundWidget extends StatelessWidget {
                         onTap: () => showViewDialog(
                           useSafeArea: false,
                           context: context,
-                          builder: (context) => PermissionInfoDialog(
+                          builder: (context) => const PermissionInfoDialog(
                               permission: Permission.microphone),
                         ),
                       ),
@@ -135,7 +135,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                 : permissionStatus == PermissionStatus.denied
                     ? () async {
                         context.read<PermissionBloc>().add(
-                              RequestPermissions(const [Permission.microphone]),
+                              const RequestPermissions([Permission.microphone]),
                             );
                       }
                     : () async {
@@ -158,7 +158,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                 child: const RecordSoundPage(),
                               ),
                             ),
-                            settings: RouteSettings(name: 'SelectSpeechPage'),
+                            settings:
+                                const RouteSettings(name: 'SelectSpeechPage'),
                           ),
                         );
                         if (result is UnstoredAbiliaFile) {
@@ -198,11 +199,11 @@ class RecordingWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SubHeading(Translator.of(context).translate.duration),
-              _TimeDisplay(),
+              const _TimeDisplay(),
             ],
           ),
           SizedBox(height: 8.0.s),
-          _Progress(),
+          const _Progress(),
           SizedBox(height: 24.0.s),
           const _RecordActionRow(),
         ],
@@ -314,7 +315,7 @@ class _RecordActionRow extends StatelessWidget {
                     ),
                   )
                 else if (recordState is EmptyRecordSoundState)
-                  Expanded(child: const RecordAudioButton())
+                  const Expanded(child: RecordAudioButton())
               ],
             );
           },
@@ -387,7 +388,7 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ActionButtonDark(
         onPressed: () => context.read<RecordSoundCubit>().deleteRecording(),
-        child: Icon(AbiliaIcons.deleteAllClear),
+        child: const Icon(AbiliaIcons.deleteAllClear),
       );
 }
 

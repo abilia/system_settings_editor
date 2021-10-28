@@ -41,7 +41,7 @@ void main() {
   final alarmButtonFinder = find.byKey(TestKey.editAlarm);
   final alarmAtStartSwichFinder = find.byKey(TestKey.alarmAtStartSwitch);
 
-  final okInkWellFinder = find.byKey(ObjectKey(TestKey.okDialog));
+  final okInkWellFinder = find.byKey(const ObjectKey(TestKey.okDialog));
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
@@ -272,7 +272,7 @@ void main() {
   group('Change alarm', () {
     final alarmDialogFinder = find.byType(SelectAlarmPage);
     final vibrationRadioButtonFinder =
-        find.byKey(ObjectKey(AlarmType.vibration));
+        find.byKey(const ObjectKey(AlarmType.vibration));
     final noAlarmIconFinder = find.byIcon(AbiliaIcons.handiNoAlarmVibration);
     final vibrateAlarmIconFinder = find.byIcon(AbiliaIcons.handiVibration);
     final soundVibrateAlarmIconFinder =
@@ -374,7 +374,7 @@ void main() {
 
       final alarm = tester.widget<RadioField>(
         find.byKey(
-          ObjectKey(AlarmType.soundAndVibration),
+          const ObjectKey(AlarmType.soundAndVibration),
         ),
       );
 
@@ -404,7 +404,7 @@ void main() {
 
       final alarm = tester.widget<RadioField>(
         find.byKey(
-          ObjectKey(AlarmType.silent),
+          const ObjectKey(AlarmType.silent),
         ),
       );
 
@@ -427,7 +427,8 @@ void main() {
       // Assert -- alarm At Start Switch and ok button is disabled
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
               .onChanged,
           isNull);
       expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNull);
@@ -528,10 +529,11 @@ void main() {
   });
   group('Edit recurring', () {
     final editRecurrentFinder = find.byType(SelectRecurrentTypePage);
-    final onlyThisDayRadioFinder = find.byKey(ObjectKey(TestKey.onlyThisDay));
-    final allDaysRadioFinder = find.byKey(ObjectKey(TestKey.allDays));
+    final onlyThisDayRadioFinder =
+        find.byKey(const ObjectKey(TestKey.onlyThisDay));
+    final allDaysRadioFinder = find.byKey(const ObjectKey(TestKey.allDays));
     final thisDayAndForwardRadioFinder =
-        find.byKey(ObjectKey(TestKey.thisDayAndForward));
+        find.byKey(const ObjectKey(TestKey.thisDayAndForward));
 
     group('Delete recurring', () {
       testWidgets('Deleting recurring should show apply to dialog',
@@ -1159,7 +1161,7 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
             Activity.createNew(
                 title: 'title',
                 startTime: startTime,
-                infoItem: NoteInfoItem(noteText))
+                infoItem: const NoteInfoItem(noteText))
           ],
         ),
       );
@@ -1268,11 +1270,11 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
 
       // Assert -- tts
       await tester.verifyTts(
-        find.byKey(ObjectKey(AlarmType.soundAndVibration)),
+        find.byKey(const ObjectKey(AlarmType.soundAndVibration)),
         exact: translate.alarmAndVibration,
       );
       await tester.verifyTts(
-        find.byKey(ObjectKey(AlarmType.vibration)),
+        find.byKey(const ObjectKey(AlarmType.vibration)),
         exact: translate.vibration,
       );
       await tester.verifyTts(

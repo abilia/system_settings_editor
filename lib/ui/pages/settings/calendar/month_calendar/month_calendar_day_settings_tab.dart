@@ -19,7 +19,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
             Tts(child: Text(t.display)),
             Padding(
               padding: EdgeInsets.only(left: 4.0.s, right: 4.s, bottom: 8.s),
-              child: _MonthCalendarPreview(),
+              child: const _MonthCalendarPreview(),
             ),
             RadioField(
               key: TestKey.monthColorSwith,

@@ -71,7 +71,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final licenses = await authState.userRepository.getLicensesFromApi(token);
       if (licenses.anyValidLicense(clockBloc.state)) {
         authenticationBloc.add(LoggedIn(token: token));
-        yield LoginSucceeded();
+        yield const LoginSucceeded();
       } else {
         yield state.failure(
           cause: licenses.anyMemoplannerLicense()

@@ -6,14 +6,14 @@ import 'fake_db_and_repository.dart';
 
 class FakePushBloc extends Fake implements PushBloc {
   @override
-  Stream<PushState> get stream => Stream.empty();
+  Stream<PushState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
-  Stream<SyncState> get stream => Stream.empty();
+  Stream<SyncState> get stream => const Stream.empty();
   @override
   void add(SyncEvent event) {}
   @override
@@ -22,7 +22,7 @@ class FakeSyncBloc extends Fake implements SyncBloc {
 
 class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
-  Stream<AuthenticationState> get stream => Stream.empty();
+  Stream<AuthenticationState> get stream => const Stream.empty();
   @override
   AuthenticationState get state =>
       Authenticated(token: '', userId: 1, userRepository: FakeUserRepository());
@@ -32,7 +32,7 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
 
 class FakeSortableBloc extends Fake implements SortableBloc {
   @override
-  Stream<SortableState> get stream => Stream.empty();
+  Stream<SortableState> get stream => const Stream.empty();
   @override
   SortableState get state => SortablesNotLoaded();
   @override
@@ -41,7 +41,7 @@ class FakeSortableBloc extends Fake implements SortableBloc {
 
 class FakeGenericBloc extends Fake implements GenericBloc {
   @override
-  Stream<GenericState> get stream => Stream.empty();
+  Stream<GenericState> get stream => const Stream.empty();
   @override
   void add(GenericEvent event) {}
   @override
@@ -50,7 +50,7 @@ class FakeGenericBloc extends Fake implements GenericBloc {
 
 class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
   @override
-  Stream<ActivitiesState> get stream => Stream.empty();
+  Stream<ActivitiesState> get stream => const Stream.empty();
   @override
   ActivitiesState get state => ActivitiesNotLoaded();
   @override
@@ -62,17 +62,17 @@ class FakeActivitiesBloc extends Fake implements ActivitiesBloc {
 class FakeMemoplannerSettingsBloc extends Fake
     implements MemoplannerSettingBloc {
   @override
-  Stream<MemoplannerSettingsState> get stream => Stream.empty();
+  Stream<MemoplannerSettingsState> get stream => const Stream.empty();
   @override
   MemoplannerSettingsState get state =>
-      MemoplannerSettingsLoaded(MemoplannerSettings());
+      const MemoplannerSettingsLoaded(MemoplannerSettings());
   @override
   Future<void> close() async {}
 }
 
 class FakeTimepillarBloc extends Fake implements TimepillarBloc {
   @override
-  Stream<TimepillarState> get stream => Stream.empty();
+  Stream<TimepillarState> get stream => const Stream.empty();
   @override
   TimepillarState get state => TimepillarState(
         TimepillarInterval(
@@ -87,26 +87,26 @@ class FakeTimepillarBloc extends Fake implements TimepillarBloc {
 
 class FakeSettingsBloc extends Fake implements SettingsBloc {
   @override
-  Stream<SettingsState> get stream => Stream.empty();
+  Stream<SettingsState> get stream => const Stream.empty();
 }
 
 class FakeUserFileBloc extends Fake implements UserFileBloc {
   @override
-  Stream<UserFileState> get stream => Stream.empty();
+  Stream<UserFileState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeDayPickerBloc extends Fake implements DayPickerBloc {
   @override
-  Stream<DayPickerState> get stream => Stream.empty();
+  Stream<DayPickerState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeDayActivitiesBloc extends Fake implements DayActivitiesBloc {
   @override
-  Stream<DayActivitiesState> get stream => Stream.empty();
+  Stream<DayActivitiesState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
@@ -114,42 +114,42 @@ class FakeDayActivitiesBloc extends Fake implements DayActivitiesBloc {
 class FakeActivitiesOccasionBloc extends Fake
     implements ActivitiesOccasionBloc {
   @override
-  Stream<ActivitiesOccasionState> get stream => Stream.empty();
+  Stream<ActivitiesOccasionState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeAlarmCubit extends Fake implements AlarmCubit {
   @override
-  Stream<NotificationAlarm?> get stream => Stream.empty();
+  Stream<NotificationAlarm?> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeNotificationBloc extends Fake implements NotificationCubit {
   @override
-  Stream<NotificationAlarm?> get stream => Stream.empty();
+  Stream<NotificationAlarm?> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
   @override
-  Stream<CalendarViewState> get stream => Stream.empty();
+  Stream<CalendarViewState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeLicenseBloc extends Fake implements LicenseBloc {
   @override
-  Stream<LicenseState> get stream => Stream.empty();
+  Stream<LicenseState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
 
 class FakeEditActivityBloc extends Fake implements EditActivityBloc {
   @override
-  Stream<EditActivityState> get stream => Stream.empty();
+  Stream<EditActivityState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }

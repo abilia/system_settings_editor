@@ -19,21 +19,21 @@ class FunctionSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: t.functions,
             iconData: AbiliaIcons.menuSetup,
-            bottom: AbiliaTabBar(
-              tabs: const <Widget>[
+            bottom: const AbiliaTabBar(
+              tabs: <Widget>[
                 Icon(AbiliaIcons.shortcutMenu),
                 Icon(AbiliaIcons.browserHome),
                 Icon(AbiliaIcons.restore),
               ],
             ),
           ),
-          body: TabBarView(children: const [
+          body: const TabBarView(children: [
             ToolbarSettingsTab(),
             HomeScreenSettingsTab(),
             TimeoutSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () async {
@@ -91,7 +91,7 @@ class ToolbarSettingsTab extends StatelessWidget {
           hint: t.toolbarSettingsHint,
           children: [
             SwitchField(
-              leading: Icon(AbiliaIcons.plus),
+              leading: const Icon(AbiliaIcons.plus),
               value: state.displayNewActivity,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
@@ -100,12 +100,12 @@ class ToolbarSettingsTab extends StatelessWidget {
               child: Text(t.createActivity),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.day),
+              leading: const Icon(AbiliaIcons.day),
               value: true,
               child: Text(t.calendarView),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.week),
+              leading: const Icon(AbiliaIcons.week),
               value: state.displayWeek,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
@@ -113,7 +113,7 @@ class ToolbarSettingsTab extends StatelessWidget {
               child: Text(t.weekCalendar),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.month),
+              leading: const Icon(AbiliaIcons.month),
               value: state.displayMonth,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
@@ -121,7 +121,7 @@ class ToolbarSettingsTab extends StatelessWidget {
               child: Text(t.monthCalendar),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.appMenu),
+              leading: const Icon(AbiliaIcons.appMenu),
               value: state.displayMenu,
               onChanged: (v) => context
                   .read<FunctionSettingsCubit>()
@@ -150,7 +150,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
           hint: t.homeScreenSettingsHint,
           children: [
             RadioField(
-              leading: Icon(AbiliaIcons.day),
+              leading: const Icon(AbiliaIcons.day),
               text: Text(t.calendarView),
               value: StartView.dayCalendar,
               groupValue: state.startView,
@@ -158,7 +158,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
             ),
             if (state.displayWeek)
               RadioField(
-                leading: Icon(AbiliaIcons.week),
+                leading: const Icon(AbiliaIcons.week),
                 text: Text(t.weekCalendar),
                 value: StartView.weekCalendar,
                 groupValue: state.startView,
@@ -166,7 +166,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
               ),
             if (state.displayMonth)
               RadioField(
-                leading: Icon(AbiliaIcons.month),
+                leading: const Icon(AbiliaIcons.month),
                 text: Text(t.monthCalendar),
                 value: StartView.monthCalendar,
                 groupValue: state.startView,
@@ -174,14 +174,14 @@ class HomeScreenSettingsTab extends StatelessWidget {
               ),
             if (state.displayMenu)
               RadioField(
-                leading: Icon(AbiliaIcons.appMenu),
+                leading: const Icon(AbiliaIcons.appMenu),
                 text: Text(t.menu),
                 value: StartView.menu,
                 groupValue: state.startView,
                 onChanged: onChange,
               ),
             RadioField(
-              leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
               text: Text(t.photoCalendar.singleLine),
               value: StartView.photoAlbum,
               groupValue: state.startView,
@@ -221,7 +221,7 @@ class TimeoutSettingsTab extends StatelessWidget {
                 ),
             const Divider(),
             SwitchField(
-              leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
               value: state.shouldUseScreenSaver,
               onChanged: state.hasTimeOut
                   ? (v) => context

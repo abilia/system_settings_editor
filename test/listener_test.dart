@@ -439,7 +439,7 @@ void main() {
       expect(alarmScreenFinder, findsOneWidget);
 
       // Act - time goes which should display end alarm
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
+      mockTicker.add(activity1StartTime.add(const Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
       expect(alarmScreenFinder, findsOneWidget);
@@ -462,7 +462,7 @@ void main() {
 
       // Act - time goes which should display alarm
       mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
+      mockTicker.add(activity1StartTime.add(const Duration(minutes: 2)));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
@@ -489,9 +489,9 @@ void main() {
 
       // Act - time goes which should display alarms (start and end time)
       mockTicker.add(activity1StartTime);
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 1)));
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 2)));
-      mockTicker.add(activity1StartTime.add(Duration(minutes: 3)));
+      mockTicker.add(activity1StartTime.add(const Duration(minutes: 1)));
+      mockTicker.add(activity1StartTime.add(const Duration(minutes: 2)));
+      mockTicker.add(activity1StartTime.add(const Duration(minutes: 3)));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
@@ -568,7 +568,7 @@ void main() {
           Future.value([
             activity1.copyWith(startTime: activity1StartTime.add(1.minutes()))
           ]));
-      pushBloc.add(PushEvent('calendar'));
+      pushBloc.add(const PushEvent('calendar'));
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm

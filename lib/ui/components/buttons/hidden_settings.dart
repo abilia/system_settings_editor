@@ -36,7 +36,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
                         blocContext: context,
                         child: const SettingsPage(),
                       ),
-                      settings: RouteSettings(name: 'SettingsPage from hidden'),
+                      settings:
+                          const RouteSettings(name: 'SettingsPage from hidden'),
                     ),
                   );
                 }

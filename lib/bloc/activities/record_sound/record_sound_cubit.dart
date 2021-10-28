@@ -23,13 +23,13 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   static const maxRecordingTime = Duration(seconds: 30);
   final Record _recorder;
   StreamSubscription<Duration>? _tickerSubscription;
-  final AudioTicker _ticker = AudioTicker(50);
+  final AudioTicker _ticker = const AudioTicker(50);
 
   RecordSoundCubit({required AbiliaFile originalSoundFile, Record? record})
       : _recorder = record ?? Record(),
         super(
           originalSoundFile.isEmpty
-              ? EmptyRecordSoundState()
+              ? const EmptyRecordSoundState()
               : UnchangedRecordingSoundState(originalSoundFile),
         );
 
@@ -39,12 +39,12 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
         .tick(duration: maxRecordingTime.inMilliseconds)
         .map((event) => Duration(milliseconds: event))
         .listen((duration) => _ticking(duration));
-    emit(RecordingSoundState(Duration.zero));
+    emit(const RecordingSoundState(Duration.zero));
   }
 
   void _ticking(Duration duration) async {
     if (duration >= maxRecordingTime) {
-      emit(RecordingSoundState(maxRecordingTime));
+      emit(const RecordingSoundState(maxRecordingTime));
       await stopRecording();
     } else {
       emit(RecordingSoundState(duration));
@@ -70,7 +70,7 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
         await s.unstoredAbiliaFile.file.exists()) {
       await s.unstoredAbiliaFile.file.delete();
     }
-    emit(EmptyRecordSoundState());
+    emit(const EmptyRecordSoundState());
   }
 
   @override

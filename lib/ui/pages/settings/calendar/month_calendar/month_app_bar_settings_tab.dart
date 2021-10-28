@@ -11,7 +11,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
       builder: (context, state) => SettingsTab(
         children: [
           Tts(child: Text(t.topField)),
-          _MonthAppBarPreview(),
+          const _MonthAppBarPreview(),
           SwitchField(
             value: state.browseButtons,
             onChanged: (v) => context
@@ -55,13 +55,13 @@ class _MonthAppBarPreview extends StatelessWidget {
               leftAction: state.browseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.returnToPreviousPage),
+                      child: const Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
               rightAction: state.browseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.goToNextPage),
+                      child: const Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,
               day: currentTime,

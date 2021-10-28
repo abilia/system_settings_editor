@@ -16,7 +16,7 @@ import '../../../../test_helpers/tts.dart';
 
 void main() {
   late MockSettingsDb mockSettingsDb;
-  final user = User(
+  const user = User(
       id: 1,
       name: 'Slartibartfast',
       username: 'Zaphod Beeblebrox',
@@ -72,7 +72,7 @@ void main() {
       );
 
   testWidgets('Settings page shows', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.powerOffOn), findsOneWidget);
     await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
@@ -82,7 +82,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
         exact: translate.logout);
@@ -94,7 +94,7 @@ void main() {
   });
 
   testWidgets('Tts info page', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
@@ -105,7 +105,7 @@ void main() {
 
   testWidgets('Tts switched off', (WidgetTester tester) async {
     when(() => mockSettingsDb.textToSpeech).thenReturn(false);
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(InfoButton));
     await tester.pumpAndSettle();
@@ -114,7 +114,7 @@ void main() {
   });
 
   testWidgets('About page', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
@@ -135,7 +135,7 @@ void main() {
 
   testWidgets('code protect visible', (WidgetTester tester) async {
     setupPermissions();
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
     await tester.pumpAndSettle();
@@ -143,7 +143,7 @@ void main() {
   });
 
   testWidgets('android settings availible', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(SystemSettingsPage()));
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard));
     await tester.pumpAndSettle();

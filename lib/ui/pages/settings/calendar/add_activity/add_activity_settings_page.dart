@@ -20,8 +20,8 @@ class AddActivitySettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: Translator.of(context).translate.addActivity,
             iconData: AbiliaIcons.newIcon,
-            bottom: AbiliaTabBar(
-              tabs: const <Widget>[
+            bottom: const AbiliaTabBar(
+              tabs: <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(
                   AbiliaIcons.newIcon,
@@ -31,13 +31,13 @@ class AddActivitySettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(children: const [
+          body: const TabBarView(children: [
             AddActivityGeneralSettingsTab(),
             AddActivityAddSettingsTab(),
             AddActivityDefaultSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () {

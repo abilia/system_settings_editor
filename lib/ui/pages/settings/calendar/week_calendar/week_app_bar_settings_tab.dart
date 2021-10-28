@@ -14,7 +14,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
       builder: (context, state) => SettingsTab(
         children: [
           Tts(child: Text(t.topField)),
-          WeekAppBarPreview(),
+          const WeekAppBarPreview(),
           SwitchField(
             value: state.showBrowseButtons,
             onChanged: (v) => context
@@ -66,13 +66,13 @@ class WeekAppBarPreview extends StatelessWidget {
               leftAction: state.showBrowseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.returnToPreviousPage),
+                      child: const Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
               rightAction: state.showBrowseButtons
                   ? ActionButton(
                       onPressed: () => {},
-                      child: Icon(AbiliaIcons.goToNextPage),
+                      child: const Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,
               day: DateTime.now(),

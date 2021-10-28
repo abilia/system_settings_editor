@@ -13,9 +13,9 @@ class RecordSoundPage extends StatelessWidget {
         title: Translator.of(context).translate.speech,
         iconData: AbiliaIcons.speakText,
       ),
-      body: RecordingWidget(),
+      body: const RecordingWidget(),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: () {
             final recordState = context.read<RecordSoundCubit>().state;

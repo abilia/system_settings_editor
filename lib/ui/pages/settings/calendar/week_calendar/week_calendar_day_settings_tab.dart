@@ -20,7 +20,7 @@ class WeekSettingsTab extends StatelessWidget {
       return SettingsTab(
         children: [
           Tts(child: Text(t.display)),
-          WeekCalendarDisplay(),
+          const WeekCalendarDisplay(),
           RadioField(
             value: WeekDisplayDays.everyDay,
             groupValue: state.weekDisplayDays,
@@ -33,7 +33,7 @@ class WeekSettingsTab extends StatelessWidget {
             onChanged: onDisplaDaysChanged,
             text: Text(t.weekdays),
           ),
-          Divider(),
+          const Divider(),
           RadioField(
             value: WeekColor.captions,
             groupValue: state.weekColor,

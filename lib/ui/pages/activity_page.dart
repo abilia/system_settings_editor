@@ -29,7 +29,7 @@ class ActivityPage extends StatelessWidget {
             leftAction: ActionButton(
               key: TestKey.activityBackButton,
               onPressed: () => Navigator.of(context).maybePop(),
-              child: Icon(AbiliaIcons.navigationPrevious),
+              child: const Icon(AbiliaIcons.navigationPrevious),
             ),
           ),
           body: Padding(
@@ -93,7 +93,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           activityOccasion,
                         );
                       },
-                      child: Icon(AbiliaIcons.handiUncheck),
+                      child: const Icon(AbiliaIcons.handiUncheck),
                     ),
                   if (displayAlarmButton)
                     ActionButtonLight(
@@ -111,7 +111,8 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                                 child: SelectAlarmPage(activity: activity),
                               ),
                             ),
-                            settings: RouteSettings(name: 'SelectAlarmPage'),
+                            settings:
+                                const RouteSettings(name: 'SelectAlarmPage'),
                           ),
                         );
 
@@ -182,7 +183,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                           await Navigator.of(context).maybePop();
                         }
                       },
-                      child: Icon(AbiliaIcons.deleteAllClear),
+                      child: const Icon(AbiliaIcons.deleteAllClear),
                     ),
                   if (displayEditButton)
                     EditActivityButton(
@@ -239,7 +240,7 @@ class EditActivityButton extends StatelessWidget {
           ),
         );
       },
-      child: Icon(AbiliaIcons.edit),
+      child: const Icon(AbiliaIcons.edit),
     );
   }
 }
