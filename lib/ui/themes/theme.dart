@@ -25,7 +25,7 @@ final ordinaryPadding = EdgeInsets.fromLTRB(
 final abiliaTheme = ThemeData(
   primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
-  colorScheme: ColorScheme.light(
+  colorScheme: const ColorScheme.light(
     primary: AbiliaColors.black,
     onSurface: AbiliaColors.black,
     background: AbiliaColors.white110,
@@ -40,7 +40,7 @@ final abiliaTheme = ThemeData(
     size: defaultIconSize,
     color: AbiliaColors.black,
   ),
-  textSelectionTheme: TextSelectionThemeData(
+  textSelectionTheme: const TextSelectionThemeData(
     cursorColor: AbiliaColors.black,
     selectionHandleColor: AbiliaColors.black,
     selectionColor: AbiliaColors.white120,
@@ -67,7 +67,7 @@ final inputDecorationTheme = InputDecorationTheme(
     focusedErrorBorder: redOutlineInputBorder,
     filled: true,
     // Unfortunatly, can't use the validation without showing some error text, set the font size 0
-    errorStyle: TextStyle(height: 0),
+    errorStyle: const TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
 final outerRadius = 12.s;

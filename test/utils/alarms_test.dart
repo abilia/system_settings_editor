@@ -10,7 +10,7 @@ void main() {
     final day = startDate.onlyDays();
     test('no alarms', () {
       // Arrange
-      final activities = Iterable<Activity>.empty();
+      const activities = Iterable<Activity>.empty();
       // Act
       final alarms = activities.alarmsOnExactMinute(startDate);
       // Assert
@@ -200,7 +200,7 @@ void main() {
     final tomorrow = now.nextDay();
     test('no alarms with end', () {
       // Arrange
-      final activities = Iterable<Activity>.empty();
+      const activities = Iterable<Activity>.empty();
       // Act
       final alarms = activities.alarmsFrom(startDate);
       // Assert

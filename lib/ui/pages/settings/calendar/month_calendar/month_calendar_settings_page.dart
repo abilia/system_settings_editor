@@ -16,19 +16,19 @@ class MonthCalendarSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: Translator.of(context).translate.monthCalendar,
             iconData: AbiliaIcons.month,
-            bottom: AbiliaTabBar(
-              tabs: const <Widget>[
+            bottom: const AbiliaTabBar(
+              tabs: <Widget>[
                 Icon(AbiliaIcons.settings),
                 Icon(AbiliaIcons.menuSetup),
               ],
             ),
           ),
-          body: TabBarView(children: const [
+          body: const TabBarView(children: [
             MonthAppBarSettingsTab(),
             MonthDisplaySettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () {

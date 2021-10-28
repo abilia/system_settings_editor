@@ -55,7 +55,7 @@ void main() {
     test('state is DayActivitiesLoaded when ActivitiesBloc loadeds activities',
         () {
       // Arrange
-      final activities = Iterable<Activity>.empty();
+      const activities = Iterable<Activity>.empty();
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(activities));
       // Act
@@ -145,10 +145,10 @@ void main() {
 
     test('does not show next years activities', () async {
       // Arrange
-      final nextYear = today.add(Duration(days: 365));
+      final nextYear = today.add(const Duration(days: 365));
 
       when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value(Iterable<Activity>.empty().followedBy([
+          (_) => Future.value(const Iterable<Activity>.empty().followedBy([
                 FakeActivity.starts(nextYear),
                 FakeActivity.starts(nextYear.add(1.days())),
                 FakeActivity.starts(nextYear.subtract(1.days())),
@@ -220,7 +220,7 @@ void main() {
   group('Recurring tests activity', () {
     final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
     setUp(() {
-      final stream = Stream<DateTime>.empty();
+      const stream = Stream<DateTime>.empty();
       dayPickerBloc =
           DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
       mockActivityRepository = MockActivityRepository();
@@ -253,26 +253,28 @@ void main() {
           emitsInOrder([
             DayActivitiesLoaded(
               const <ActivityDay>[],
-              firstDay.add(Duration(days: 1)),
+              firstDay.add(const Duration(days: 1)),
               Occasion.future,
             ), // friday
             DayActivitiesLoaded(
               weekendActivity
-                  .map((a) => ActivityDay(a, firstDay.add(Duration(days: 2))))
+                  .map((a) =>
+                      ActivityDay(a, firstDay.add(const Duration(days: 2))))
                   .toList(),
-              firstDay.add(Duration(days: 2)),
+              firstDay.add(const Duration(days: 2)),
               Occasion.future,
             ), // saturday
             DayActivitiesLoaded(
               weekendActivity
-                  .map((a) => ActivityDay(a, firstDay.add(Duration(days: 3))))
+                  .map((a) =>
+                      ActivityDay(a, firstDay.add(const Duration(days: 3))))
                   .toList(),
-              firstDay.add(Duration(days: 3)),
+              firstDay.add(const Duration(days: 3)),
               Occasion.future,
             ), // sunday
             DayActivitiesLoaded(
               const <ActivityDay>[],
-              firstDay.add(Duration(days: 4)),
+              firstDay.add(const Duration(days: 4)),
               Occasion.future,
             ), // monday
           ]));
@@ -321,7 +323,7 @@ void main() {
       final boxingDay = DateTime(2022, 12, 23);
       final chrismasEve = DateTime(2022, 12, 24);
       final chrismasDay = DateTime(2022, 12, 25);
-      final christmas = Iterable<Activity>.empty().followedBy([
+      final christmas = const Iterable<Activity>.empty().followedBy([
         FakeActivity.reocurrsOnDate(
             chrismasEve, DateTime(2012, 01, 01), DateTime(2021, 01, 01))
       ]);
@@ -462,9 +464,10 @@ void main() {
             ),
             DayActivitiesLoaded(
               [splitRecurring]
-                  .map((e) => ActivityDay(e, dayOnSplit.add(Duration(days: 1))))
+                  .map((e) =>
+                      ActivityDay(e, dayOnSplit.add(const Duration(days: 1))))
                   .toList(),
-              dayOnSplit.add(Duration(days: 1)),
+              dayOnSplit.add(const Duration(days: 1)),
               Occasion.future,
             ),
           ]));

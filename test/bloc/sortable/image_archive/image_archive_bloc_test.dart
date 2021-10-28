@@ -16,24 +16,24 @@ void main() {
 
   test('Initial state is an empty ImageArchiveState', () {
     expect(imageArchiveBloc.state,
-        SortableArchiveState<ImageArchiveData>(const {}, const {}));
+        const SortableArchiveState<ImageArchiveData>({}, {}));
   });
 
   test('FolderChanged will set the folder in the state', () async {
     const folderId = '123';
-    imageArchiveBloc.add(FolderChanged(folderId));
+    imageArchiveBloc.add(const FolderChanged(folderId));
     await expectLater(
       imageArchiveBloc.stream,
-      emits(SortableArchiveState<ImageArchiveData>(const {}, const {},
+      emits(const SortableArchiveState<ImageArchiveData>({}, {},
           currentFolderId: folderId)),
     );
   });
 
   test('SortablesUpdated will set the sortables in the state', () async {
     final imageArchiveSortable =
-        Sortable.createNew<ImageArchiveData>(data: ImageArchiveData());
+        Sortable.createNew<ImageArchiveData>(data: const ImageArchiveData());
     final checklistSortable =
-        Sortable.createNew<RawSortableData>(data: RawSortableData(''));
+        Sortable.createNew<RawSortableData>(data: const RawSortableData(''));
     imageArchiveBloc
         .add(SortablesUpdated([imageArchiveSortable, checklistSortable]));
     await expectLater(
@@ -45,11 +45,11 @@ void main() {
   test('NavigateUp will set the parent of the current folder as current folder',
       () async {
     final imageArchiveFolder1 = Sortable.createNew<ImageArchiveData>(
-      data: ImageArchiveData(),
+      data: const ImageArchiveData(),
       isGroup: true,
     );
     final imageArchiveFolder2 = Sortable.createNew<ImageArchiveData>(
-      data: ImageArchiveData(),
+      data: const ImageArchiveData(),
       isGroup: true,
       groupId: imageArchiveFolder1.id,
     );

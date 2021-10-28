@@ -132,7 +132,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.flingFrom(Offset(200, 200), Offset(200, 0), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(200, 0), 200);
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
@@ -141,7 +141,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byType(SliverTimePillar), findsOneWidget);
     });
@@ -151,7 +151,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
@@ -161,13 +161,13 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
       await tester.tap(find.byKey(TestKey.goToNowButton));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsNothing);
-      await tester.flingFrom(Offset(200, 200), Offset(0, 200), 200);
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
@@ -268,7 +268,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -343,7 +343,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -400,7 +400,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 

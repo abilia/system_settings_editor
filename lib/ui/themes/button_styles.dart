@@ -279,7 +279,7 @@ ButtonStyle tabButtonStyle({
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: borderRadius,
-                side: BorderSide(color: AbiliaColors.transparentBlack30),
+                side: const BorderSide(color: AbiliaColors.transparentBlack30),
               ),
             ),
             backgroundColor:

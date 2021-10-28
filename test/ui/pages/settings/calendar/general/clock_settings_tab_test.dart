@@ -159,11 +159,11 @@ void main() {
       await tester.dragUntilVisible(
         find.byKey(TestKey.use12hSwitch),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
-      final toggle =
-          tester.widget<Switch>(find.byKey(ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester
+          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
       expect(toggle.onChanged, isNull);
       expect(toggle.value, isTrue);
       expect(find.text('1'), findsOneWidget);
@@ -175,11 +175,11 @@ void main() {
       await tester.dragUntilVisible(
         find.byKey(TestKey.use12hSwitch),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
-      final toggle =
-          tester.widget<Switch>(find.byKey(ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester
+          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
 
       expect(toggle.onChanged, isNotNull);
       expect(toggle.value, isFalse);
@@ -209,7 +209,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.columnOfDots),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
 
       final timepillarBefore =
@@ -239,7 +239,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.lineAcrossCurrentTime),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
 
@@ -265,7 +265,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.linesForEachHour),
         find.byType(ClockSettingsTab),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
 

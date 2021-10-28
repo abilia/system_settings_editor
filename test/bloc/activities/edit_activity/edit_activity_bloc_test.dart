@@ -83,7 +83,7 @@ void main() {
     // Arrange
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
-      startTime: Duration(minutes: 1),
+      startTime: const Duration(minutes: 1),
     );
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -108,7 +108,7 @@ void main() {
     );
     final expected = TimeInterval(
       startDate: aDay,
-      startTime: TimeOfDay(hour: 0, minute: 1),
+      startTime: const TimeOfDay(hour: 0, minute: 1),
     );
     final actual = editActivityBloc.state.timeInterval;
     expect(actual, expected);
@@ -121,7 +121,7 @@ void main() {
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: Duration.zero,
-      duration: Duration(minutes: 1),
+      duration: const Duration(minutes: 1),
     );
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -146,8 +146,8 @@ void main() {
     );
     final expected = TimeInterval(
       startDate: aDay,
-      startTime: TimeOfDay(hour: 0, minute: 0),
-      endTime: TimeOfDay(hour: 0, minute: 1),
+      startTime: const TimeOfDay(hour: 0, minute: 0),
+      endTime: const TimeOfDay(hour: 0, minute: 1),
     );
     final actual = editActivityBloc.state.timeInterval;
     expect(actual, expected);
@@ -160,7 +160,7 @@ void main() {
     final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: Duration.zero,
-      duration: Duration(minutes: 30),
+      duration: const Duration(minutes: 30),
     );
     // Act
     final editActivityBloc = EditActivityBloc.newActivity(
@@ -184,8 +184,8 @@ void main() {
     );
     final expected = TimeInterval(
       startDate: aDay,
-      startTime: TimeOfDay(hour: 0, minute: 0),
-      endTime: TimeOfDay(hour: 0, minute: 30),
+      startTime: const TimeOfDay(hour: 0, minute: 0),
+      endTime: const TimeOfDay(hour: 0, minute: 30),
     );
     final actual = editActivityBloc.state.timeInterval;
     expect(actual, expected);
@@ -246,7 +246,7 @@ void main() {
     final activity = editActivityBloc.state.activity;
 
     final newDate = DateTime(2011, 11, 11, 11, 11);
-    final newTime = TimeOfDay(hour: 1, minute: 1);
+    const newTime = TimeOfDay(hour: 1, minute: 1);
     final newActivity = activity.copyWith(title: 'newTile');
     final expectedTimeInterval1 = TimeInterval(
       startTime: newTime,
@@ -260,8 +260,8 @@ void main() {
     );
 
     // Act
-    editActivityBloc
-        .add(ChangeTimeInterval(startTime: TimeOfDay(hour: 1, minute: 1)));
+    editActivityBloc.add(
+        const ChangeTimeInterval(startTime: TimeOfDay(hour: 1, minute: 1)));
     editActivityBloc.add(ChangeDate(newDate));
     editActivityBloc.add(ReplaceActivity(newActivity));
 
@@ -336,8 +336,8 @@ void main() {
     final wizCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityBloc: editActivityBloc,
-      clockBloc: ClockBloc(Stream.empty(), initialTime: nowTime),
-      settings: MemoplannerSettingsLoaded(
+      clockBloc: ClockBloc(const Stream.empty(), initialTime: nowTime),
+      settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(advancedActivityTemplate: false)),
     );
     final activity = editActivityBloc.state.activity;
@@ -346,15 +346,15 @@ void main() {
     final expectedActivity = activityWithTitle.copyWith(
         startTime: aDay.copyWith(hour: 12, minute: 0), duration: 22.hours());
     final expectedTimeInterval = TimeInterval(
-      startTime: TimeOfDay(hour: 12, minute: 0),
-      endTime: TimeOfDay(hour: 10, minute: 0),
+      startTime: const TimeOfDay(hour: 12, minute: 0),
+      endTime: const TimeOfDay(hour: 10, minute: 0),
       startDate: aDay,
     );
 
     // Act
     editActivityBloc
-        .add(ChangeTimeInterval(endTime: TimeOfDay(hour: 10, minute: 0)));
-    editActivityBloc.add(ChangeTimeInterval(
+        .add(const ChangeTimeInterval(endTime: TimeOfDay(hour: 10, minute: 0)));
+    editActivityBloc.add(const ChangeTimeInterval(
         startTime: TimeOfDay(hour: 12, minute: 0),
         endTime: TimeOfDay(hour: 10, minute: 0)));
     editActivityBloc.add(ReplaceActivity(activityWithTitle));
@@ -367,7 +367,7 @@ void main() {
           UnstoredActivityState(
             activity,
             TimeInterval(
-              endTime: TimeOfDay(hour: 10, minute: 0),
+              endTime: const TimeOfDay(hour: 10, minute: 0),
               startDate: aDay,
             ),
           ),
@@ -403,11 +403,11 @@ void main() {
 
   test('Changing InfoItem', () async {
     // Arrange
-    final note = NoteInfoItem('anote');
+    const note = NoteInfoItem('anote');
     final withNote =
         Activity.createNew(title: 'null', startTime: aTime, infoItem: note);
     final withChecklist = withNote.copyWith(infoItem: Checklist());
-    final withNoInfoItem = withNote.copyWith(infoItem: NoInfoItem());
+    final withNoInfoItem = withNote.copyWith(infoItem: const NoInfoItem());
     final activityDay = ActivityDay(withNote, aDay);
     final timeInterval = TimeInterval(
       startTime: TimeOfDay.fromDateTime(aTime),
@@ -418,9 +418,9 @@ void main() {
     );
 
     // Act
-    editActivityBloc.add(ChangeInfoItemType(Checklist));
-    editActivityBloc.add(ChangeInfoItemType(NoteInfoItem));
-    editActivityBloc.add(ChangeInfoItemType(NoInfoItem));
+    editActivityBloc.add(const ChangeInfoItemType(Checklist));
+    editActivityBloc.add(const ChangeInfoItemType(NoteInfoItem));
+    editActivityBloc.add(const ChangeInfoItemType(NoInfoItem));
 
     // Assert
     await expectLater(

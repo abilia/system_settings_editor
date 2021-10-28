@@ -11,7 +11,7 @@ void setupPermissions(
   checkedPermissions = {};
   requestedPermissions = {};
   openAppSettingsCalls = 0;
-  MethodChannel('flutter.baseflow.com/permissions/methods')
+  const MethodChannel('flutter.baseflow.com/permissions/methods')
       .setMockMethodCallHandler(
     (MethodCall methodCall) async {
       switch (methodCall.method) {

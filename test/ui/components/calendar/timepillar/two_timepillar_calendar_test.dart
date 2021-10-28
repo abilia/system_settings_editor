@@ -223,7 +223,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -298,7 +298,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNWidgets(2));
     });
@@ -355,7 +355,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 

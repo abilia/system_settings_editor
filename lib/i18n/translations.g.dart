@@ -158,6 +158,42 @@ abstract class Translated {
 
   final String week = 'week';
 
+  final String clockTheTimeIsTts = 'the time is %s';
+
+  final String clockFiveMinutesPastTts = 'five past %s';
+
+  final String clockFiveMinutesHalfPastTts = 'twenty five to %s';
+
+  final String clockFiveMinutesToTts = 'five to %s';
+
+  final String clockFiveMinutesToHalfPastTts = 'twenty five past %s';
+
+  final String clockHalfPastTts = 'Half past %s';
+
+  final String clockQuarterPastTts = 'quarter past %s';
+
+  final String clockQuarterToTts = 'Quarter to %s';
+
+  final String clockTenMinutesPastTts = 'ten past %s';
+
+  final String clockTenMinutesToTts = 'ten to %s';
+
+  final String clockTwentyMinutesPastTts = 'twenty past %s';
+
+  final String clockTwentyMinutesToTts = 'twenty to %s';
+
+  final String nbOneAClock = 'one o clock';
+
+  final String timeMorningTts = '%s in the early morning';
+
+  final String timeForeNoonTts = '%s in the mid-morning';
+
+  final String timeAfternoonTts = '%s in the afternoon';
+
+  final String timeEveningTts = '%s in the evening';
+
+  final String timeNightTts = '%s at night';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -427,9 +463,9 @@ abstract class Translated {
 
   final String edge = 'Edge';
 
-  final String monthCalendarGrid = 'Grid';
+  final String monthCalendarGrid = 'Simple';
 
-  final String monthCalendarPreview = 'Preview';
+  final String monthCalendarPreview = 'Detailed';
 
   final String textToSpeech = 'Speech support';
 
@@ -918,6 +954,60 @@ class SV extends Translated {
   final String week = 'vecka';
 
   @override
+  final String clockTheTimeIsTts = 'Klockan är %s';
+
+  @override
+  final String clockFiveMinutesPastTts = 'Fem minuter över %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = 'Fem över halv %s';
+
+  @override
+  final String clockFiveMinutesToTts = 'Fem minuter i %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
+
+  @override
+  final String clockHalfPastTts = 'Halv %s';
+
+  @override
+  final String clockQuarterPastTts = 'Kvart över %s';
+
+  @override
+  final String clockQuarterToTts = 'Kvart i %s';
+
+  @override
+  final String clockTenMinutesPastTts = 'Tio minuter över %s';
+
+  @override
+  final String clockTenMinutesToTts = 'Tio minuter i %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = 'Tjugo minuter över %s';
+
+  @override
+  final String clockTwentyMinutesToTts = 'Tjugo minuter i %s';
+
+  @override
+  final String nbOneAClock = '';
+
+  @override
+  final String timeMorningTts = '%s på morgonen';
+
+  @override
+  final String timeForeNoonTts = '%s på förmiddagen';
+
+  @override
+  final String timeAfternoonTts = '%s på eftermiddagen';
+
+  @override
+  final String timeEveningTts = '%s på kvällen';
+
+  @override
+  final String timeNightTts = '%s på natten';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -1320,10 +1410,10 @@ class SV extends Translated {
   final String edge = 'Flärp';
 
   @override
-  final String monthCalendarGrid = 'Rutnät';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Förhandsgranskning';
+  final String monthCalendarPreview = 'Detaljerad';
 
   @override
   final String textToSpeech = 'Talstöd';
@@ -1937,6 +2027,60 @@ class DA extends Translated {
   final String week = 'uge';
 
   @override
+  final String clockTheTimeIsTts = 'Klokken er %s';
+
+  @override
+  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';
+
+  @override
+  final String clockFiveMinutesToTts = 'Fem minutter i %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
+
+  @override
+  final String clockHalfPastTts = 'Halv %s';
+
+  @override
+  final String clockQuarterPastTts = 'Kvart over %s';
+
+  @override
+  final String clockQuarterToTts = 'Kvart i %s';
+
+  @override
+  final String clockTenMinutesPastTts = 'Ti minutter over %s';
+
+  @override
+  final String clockTenMinutesToTts = 'Ti minutter i %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = 'Tyve minutter over %s';
+
+  @override
+  final String clockTwentyMinutesToTts = 'Tyve minutter i %s';
+
+  @override
+  final String nbOneAClock = '';
+
+  @override
+  final String timeMorningTts = '%s om morgenen';
+
+  @override
+  final String timeForeNoonTts = '%s om formiddagen';
+
+  @override
+  final String timeAfternoonTts = '%s om eftermiddagen';
+
+  @override
+  final String timeEveningTts = '%s om aftenen';
+
+  @override
+  final String timeNightTts = '%s om natten';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -2335,10 +2479,10 @@ class DA extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljeret';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -2953,6 +3097,60 @@ class NL extends Translated {
   final String week = 'week';
 
   @override
+  final String clockTheTimeIsTts = 'De tijd is %s';
+
+  @override
+  final String clockFiveMinutesPastTts = 'vijf over %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = 'vijfentwintig voor %s';
+
+  @override
+  final String clockFiveMinutesToTts = 'vijf voor %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = 'vijfentwintig over %s';
+
+  @override
+  final String clockHalfPastTts = 'Dertig over %s';
+
+  @override
+  final String clockQuarterPastTts = 'kwart over %s';
+
+  @override
+  final String clockQuarterToTts = 'Kwart voor %s';
+
+  @override
+  final String clockTenMinutesPastTts = 'tien over %s';
+
+  @override
+  final String clockTenMinutesToTts = 'tien voor %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = 'twintig over %s';
+
+  @override
+  final String clockTwentyMinutesToTts = 'tien over half %s';
+
+  @override
+  final String nbOneAClock = '';
+
+  @override
+  final String timeMorningTts = '%s in de ochtend';
+
+  @override
+  final String timeForeNoonTts = '%s halverwege de ochtend';
+
+  @override
+  final String timeAfternoonTts = "%s 's middags";
+
+  @override
+  final String timeEveningTts = "%s 's avonds";
+
+  @override
+  final String timeNightTts = "%s 's nachts";
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -3350,10 +3548,10 @@ class NL extends Translated {
   final String edge = 'Rand';
 
   @override
-  final String monthCalendarGrid = 'Raster';
+  final String monthCalendarGrid = 'Eenvoudig';
 
   @override
-  final String monthCalendarPreview = 'Voorbeeld';
+  final String monthCalendarPreview = 'Gedetailleerd';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -3968,6 +4166,60 @@ class FI extends Translated {
   final String week = 'viikko';
 
   @override
+  final String clockTheTimeIsTts = 'Kello on %s';
+
+  @override
+  final String clockFiveMinutesPastTts = 'viisi yli %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = 'kaksikymmentäviisi vaille %s';
+
+  @override
+  final String clockFiveMinutesToTts = 'viisi vaille %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = 'kaksikymmentäviisi yli %s';
+
+  @override
+  final String clockHalfPastTts = '%s kolmekymmentä';
+
+  @override
+  final String clockQuarterPastTts = 'viisitoista yli %s';
+
+  @override
+  final String clockQuarterToTts = 'Viisitoista vaille %s';
+
+  @override
+  final String clockTenMinutesPastTts = 'kymmenen yli %s';
+
+  @override
+  final String clockTenMinutesToTts = 'kymmentä vaille %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = 'kaksikymmentä yli %s';
+
+  @override
+  final String clockTwentyMinutesToTts = 'kaksikymmentä vaille %s';
+
+  @override
+  final String nbOneAClock = '';
+
+  @override
+  final String timeMorningTts = '%s varhain aamulla';
+
+  @override
+  final String timeForeNoonTts = '%s aamupäivän puolivälissä';
+
+  @override
+  final String timeAfternoonTts = '%s iltapäivällä';
+
+  @override
+  final String timeEveningTts = '%s illalla';
+
+  @override
+  final String timeNightTts = '%s yöllä';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -4366,10 +4618,10 @@ class FI extends Translated {
   final String edge = 'Reuna';
 
   @override
-  final String monthCalendarGrid = 'Ruudukko';
+  final String monthCalendarGrid = 'Helppo';
 
   @override
-  final String monthCalendarPreview = 'Esikatselu';
+  final String monthCalendarPreview = 'Yksityiskohtainen';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -4986,6 +5238,60 @@ class DE extends Translated {
   final String week = 'Woche';
 
   @override
+  final String clockTheTimeIsTts = 'Die Uhrzeit ist %s';
+
+  @override
+  final String clockFiveMinutesPastTts = '5 Minuten nach %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = '25 Minuten vor %s';
+
+  @override
+  final String clockFiveMinutesToTts = '5 Minuten vor %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = '25 Minuten nach %s';
+
+  @override
+  final String clockHalfPastTts = '30 Minuten nach %s';
+
+  @override
+  final String clockQuarterPastTts = '15 Minuten nach %s';
+
+  @override
+  final String clockQuarterToTts = '15 Minuten vor %s';
+
+  @override
+  final String clockTenMinutesPastTts = '10 Minuten nach %s';
+
+  @override
+  final String clockTenMinutesToTts = '10 Minuten vor %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = '20 Minuten nach %s';
+
+  @override
+  final String clockTwentyMinutesToTts = '20 Minuten vor %s';
+
+  @override
+  final String nbOneAClock = '';
+
+  @override
+  final String timeMorningTts = '%s frühmorgens';
+
+  @override
+  final String timeForeNoonTts = '%s vormittags';
+
+  @override
+  final String timeAfternoonTts = '%s nachmittags';
+
+  @override
+  final String timeEveningTts = '%s nachmittags';
+
+  @override
+  final String timeNightTts = '%s abends';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -5385,10 +5691,10 @@ class DE extends Translated {
   final String edge = 'Kante';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Einfach';
 
   @override
-  final String monthCalendarPreview = 'Vorschau';
+  final String monthCalendarPreview = 'Ausführlich';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -6004,6 +6310,60 @@ class NB extends Translated {
   final String week = 'uke';
 
   @override
+  final String clockTheTimeIsTts = 'Klokken er %s';
+
+  @override
+  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
+
+  @override
+  final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';
+
+  @override
+  final String clockFiveMinutesToTts = 'Fem på %s';
+
+  @override
+  final String clockFiveMinutesToHalfPastTts = 'Fem på halv %s';
+
+  @override
+  final String clockHalfPastTts = 'Halv %s';
+
+  @override
+  final String clockQuarterPastTts = 'Kvart over %s';
+
+  @override
+  final String clockQuarterToTts = 'Kvart på %s';
+
+  @override
+  final String clockTenMinutesPastTts = 'Ti over %s';
+
+  @override
+  final String clockTenMinutesToTts = 'Ti på %s';
+
+  @override
+  final String clockTwentyMinutesPastTts = 'Ti på halv %s';
+
+  @override
+  final String clockTwentyMinutesToTts = 'Ti over halv %s';
+
+  @override
+  final String nbOneAClock = ': ett';
+
+  @override
+  final String timeMorningTts = '%s på morgen';
+
+  @override
+  final String timeForeNoonTts = '%s på formiddagen';
+
+  @override
+  final String timeAfternoonTts = '%s på ettermiddagen';
+
+  @override
+  final String timeEveningTts = '%s på kvelden';
+
+  @override
+  final String timeNightTts = '%s på natten';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -6401,10 +6761,10 @@ class NB extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Nett';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljert';
 
   @override
   final String textToSpeech = 'Talesyntese';

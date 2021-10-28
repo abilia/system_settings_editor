@@ -114,7 +114,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     pushBloc: context.read<PushBloc>(),
                     initMyPhotos: Config.isMP,
                   )
-                ..add(LoadSortables(initDefaults: true)),
+                ..add(const LoadSortables(initDefaults: true)),
               lazy: false,
             ),
             BlocProvider<GenericBloc>(
@@ -174,7 +174,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<PermissionBloc>(
               create: (context) => PermissionBloc()
-                ..add(RequestPermissions(const [Permission.notification]))
+                ..add(const RequestPermissions([Permission.notification]))
                 ..checkAll(),
             ),
             BlocProvider<TimepillarBloc>(

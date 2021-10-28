@@ -102,7 +102,7 @@ void main() {
   tearDown(GetIt.I.reset);
 
   testWidgets('All DayList shows', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
+    await tester.pumpWidget(wrapWithMaterialApp(const AllDayList()));
     await tester.pumpAndSettle();
     expect(find.text(title0), findsOneWidget);
     expect(find.text(title1), findsOneWidget);
@@ -111,7 +111,7 @@ void main() {
   });
 
   testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(AllDayList()));
+    await tester.pumpWidget(wrapWithMaterialApp(const AllDayList()));
     await tester.pumpAndSettle();
     await tester.verifyTts(find.text(title0), contains: title0);
   });

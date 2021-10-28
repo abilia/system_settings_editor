@@ -194,7 +194,7 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        infoItem: NoteInfoItem('text'),
+        infoItem: const NoteInfoItem('text'),
       ),
     );
     expect(find.byIcon(AbiliaIcons.handiInfo), findsOneWidget);
@@ -289,7 +289,7 @@ void main() {
           Activity.createNew(
             title: 'title',
             startTime: startTime,
-            fileId: Uuid().v4(),
+            fileId: const Uuid().v4(),
           ),
           Occasion.past);
 
@@ -305,7 +305,7 @@ void main() {
           Activity.createNew(
             title: 'title',
             startTime: startTime,
-            fileId: Uuid().v4(),
+            fileId: const Uuid().v4(),
             checkable: true,
             signedOffDates: [startTime.onlyDays()],
           ),
@@ -319,7 +319,7 @@ void main() {
     final activity = Activity.createNew(
       title: 'title',
       startTime: startTime,
-      fileId: Uuid().v4(),
+      fileId: const Uuid().v4(),
       checkable: true,
       signedOffDates: [startTime.onlyDays()],
     );

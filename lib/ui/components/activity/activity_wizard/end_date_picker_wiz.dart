@@ -50,7 +50,7 @@ class EndDatePickerWiz extends StatelessWidget {
               ),
             ),
             bottomNavigationBar: Builder(
-              builder: (context) => WizardBottomNavigation(),
+              builder: (context) => const WizardBottomNavigation(),
             ),
           ),
         );

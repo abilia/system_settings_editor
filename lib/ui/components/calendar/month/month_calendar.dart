@@ -14,11 +14,11 @@ class MonthCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MonthAppBar(),
+    return const Scaffold(
+      appBar: MonthAppBar(),
       floatingActionButton: FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: const MonthCalendar(),
+      body: MonthCalendar(),
     );
   }
 }
@@ -268,7 +268,7 @@ class MonthDayView extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('${day.day.day}'),
-                        Spacer(),
+                        const Spacer(),
                         if (day.hasActivities)
                           ColorDot(color: dayTheme.theme.colorScheme.onSurface),
                       ],
@@ -346,7 +346,7 @@ class MonthDayContainer extends StatelessWidget {
                       MonthActivityContent(
                         activityDay: d.fullDayActivity!,
                       ),
-                    if (d.isPast) CrossOver(),
+                    if (d.isPast) const CrossOver(),
                   ],
                 )
               : null,

@@ -169,7 +169,7 @@ void main() {
       await tester.dragUntilVisible(
         find.text(translate.edit),
         find.byType(ActivityViewSettingsPage),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.text(translate.edit));
@@ -191,7 +191,7 @@ void main() {
       await tester.dragUntilVisible(
         find.byIcon(AbiliaIcons.timeline),
         find.byType(ActivityViewSettingsPage),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.timeline));
@@ -213,7 +213,7 @@ void main() {
       await tester.dragUntilVisible(
         find.byIcon(AbiliaIcons.timeline),
         find.byType(ActivityViewSettingsPage),
-        Offset(0, -100),
+        const Offset(0, -100),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.clock));

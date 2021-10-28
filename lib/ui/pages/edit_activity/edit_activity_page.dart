@@ -56,7 +56,7 @@ class EditActivityPage extends StatelessWidget {
                 body: TabBarView(
                   children: tabs,
                 ),
-                bottomNavigationBar: WizardBottomNavigation(),
+                bottomNavigationBar: const WizardBottomNavigation(),
               ),
             ),
           );

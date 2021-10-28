@@ -18,7 +18,7 @@ class SlideShowState extends Equatable {
   });
 
   factory SlideShowState.empty() {
-    return SlideShowState(currentIndex: 0, slideShowFolderContent: const []);
+    return const SlideShowState(currentIndex: 0, slideShowFolderContent: []);
   }
 
   @override

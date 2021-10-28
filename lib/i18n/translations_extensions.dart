@@ -1,6 +1,7 @@
 import 'package:seagull/i18n/all.dart';
 
 extension TranslatedExtensions on Translated {
+  static const String _stringWildcard = '%s';
   String inTime(String time) => '$inTimePre $time'.trim();
   String timeAgo(String time) => '$timeAgoPre $time $timeAgoPost'.trim();
 
@@ -30,4 +31,7 @@ extension TranslatedExtensions on Translated {
 
   String allowAccess(String accessTypeBodyText1) =>
       '$accessTypeBodyText1 $allowAccessBody2 $settingsLink';
+
+  String replaceInString(String string, String replacement) =>
+      string.replaceFirst(_stringWildcard, replacement);
 }

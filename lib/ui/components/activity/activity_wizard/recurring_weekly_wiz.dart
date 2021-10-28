@@ -17,7 +17,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 24.s),
-            Padding(
+            const Padding(
               padding: EdgeInsets.zero,
               child: WeekDays(),
             ),
@@ -31,7 +31,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
                 left: 12.s,
                 right: 16.s,
               ),
-              child: EveryOtherWeekSwitch(),
+              child: const EveryOtherWeekSwitch(),
             ),
             SizedBox(height: 8.s),
             Padding(
@@ -63,7 +63,7 @@ class SelectAllWeekdaysButton extends StatelessWidget {
               icon: AbiliaIcons.cancel,
               style: actionButtonStyleDark,
               onPressed: () =>
-                  context.read<RecurringWeekBloc>().add(SelectWeekdays()),
+                  context.read<RecurringWeekBloc>().add(const SelectWeekdays()),
             )
           : IconAndTextButton(
               text: Translator.of(context).translate.selectAll,
@@ -71,7 +71,7 @@ class SelectAllWeekdaysButton extends StatelessWidget {
               style: actionButtonStyleDark,
               onPressed: () => context
                   .read<RecurringWeekBloc>()
-                  .add(SelectWeekdays(RecurringWeekState.allWeekdays)),
+                  .add(const SelectWeekdays(RecurringWeekState.allWeekdays)),
             ),
     );
   }

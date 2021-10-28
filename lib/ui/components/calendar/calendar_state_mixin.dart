@@ -4,7 +4,7 @@ import 'package:seagull/bloc/all.dart';
 mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
   Future<void> refresh() {
     final pushBloc = context.read<PushBloc>();
-    pushBloc.add(PushEvent('refresh'));
+    pushBloc.add(const PushEvent('refresh'));
     return pushBloc.stream.firstWhere((s) => s is PushReceived);
   }
 

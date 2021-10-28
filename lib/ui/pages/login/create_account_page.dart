@@ -206,7 +206,7 @@ class MyAbiliaLogo extends StatelessWidget {
             width: 64.s,
             height: 64.s,
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(AbiliaColors.red),
+              valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
               strokeWidth: 6.s,
             ),
           );
