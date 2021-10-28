@@ -228,6 +228,9 @@ addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
 task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
 remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
+### Quick settings							
+screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke
+							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender

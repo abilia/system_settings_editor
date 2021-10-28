@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_screen/flutter_screen.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
 class QuickSettingsPage extends StatelessWidget {
   const QuickSettingsPage({Key? key}) : super(key: key);
@@ -34,7 +34,6 @@ class BrightnessSlider extends StatefulWidget {
 
 class _BrightnessSliderState extends State<BrightnessSlider> {
   final _log = Logger((_BrightnessSliderState).toString());
-  static const screenChannel = MethodChannel('abilia.com/screen');
   double _brightness = 1.0;
   String? version = '';
 
@@ -42,25 +41,13 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
   void initState() {
     super.initState();
     initBrightness();
-    initPlatform();
-  }
-
-  void initPlatform() async {
-    final v = await FlutterScreen.platformVersion;
-    try {
-      setState(() {
-        version = v;
-      });
-    } on PlatformException catch (e) {
-      _log.warning('message', e);
-    }
   }
 
   void initBrightness() async {
     try {
-      final b = await screenChannel.invokeMethod('getBrightness');
+      final b = await SystemSettingsEditor.brightness;
       setState(() {
-        _brightness = b;
+        _brightness = b ?? 0;
       });
     } on PlatformException catch (e) {
       _log.warning('message', e);
@@ -69,18 +56,29 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(version ?? ''),
-        Slider(
-            value: _brightness,
-            onChanged: (double b) {
-              setState(() {
-                _brightness = b;
-                screenChannel.invokeMethod('setBrightness', {'brightness': b});
-              });
-            }),
-      ],
+    final t = Translator.of(context).translate;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text(version ?? ''),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SubHeading(t.screenBrightness),
+              AbiliaSlider(
+                  leading: const Icon(AbiliaIcons.brightnessNormal),
+                  value: _brightness,
+                  onChanged: (double b) {
+                    setState(() {
+                      _brightness = b;
+                      SystemSettingsEditor.setBrightness(b);
+                    });
+                  }),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

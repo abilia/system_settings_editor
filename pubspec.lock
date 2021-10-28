@@ -459,13 +459,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-  flutter_screen:
-    dependency: "direct main"
-    description:
-      path: "../flutter_screen"
-      relative: true
-    source: path
-    version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1023,6 +1016,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
+  system_settings_editor:
+    dependency: "direct main"
+    description:
+      path: "../system_settings_editor"
+      relative: true
+    source: path
+    version: "0.0.1"
   term_glyph:
     dependency: transitive
     description:

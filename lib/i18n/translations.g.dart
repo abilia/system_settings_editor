@@ -445,6 +445,8 @@ abstract class Translated {
 
   final String remove = 'Delete';
 
+  final String screenBrightness = 'Screen brightness';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -1381,6 +1383,9 @@ class SV extends Translated {
 
   @override
   final String remove = 'Ta bort';
+
+  @override
+  final String screenBrightness = 'Skärmens ljusstyrka';
 
   @override
   final String settings = 'Inställningar';
@@ -2452,6 +2457,9 @@ class DA extends Translated {
   final String remove = 'Slet';
 
   @override
+  final String screenBrightness = 'Skærmens lysstyrke';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -3519,6 +3527,9 @@ class NL extends Translated {
 
   @override
   final String remove = 'Verwijderen';
+
+  @override
+  final String screenBrightness = 'Schermhelderheid';
 
   @override
   final String settings = 'Instellingen';
@@ -4589,6 +4600,9 @@ class FI extends Translated {
 
   @override
   final String remove = 'Poista';
+
+  @override
+  final String screenBrightness = 'Näytön kirkkaus';
 
   @override
   final String settings = 'Asetukset';
@@ -5664,6 +5678,9 @@ class DE extends Translated {
   final String remove = 'Löschen';
 
   @override
+  final String screenBrightness = 'Bildschirmhelligkeit';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6732,6 +6749,9 @@ class NB extends Translated {
 
   @override
   final String remove = 'Slett';
+
+  @override
+  final String screenBrightness = 'Skjermens lysstyrke';
 
   @override
   final String settings = 'Innstillinger';

@@ -165,7 +165,7 @@ class QuickSettingsButton extends StatelessWidget {
         MaterialPageRoute(
           builder: (_) => CopiedAuthProviders(
             blocContext: context,
-            child: QuickSettingsPage(),
+            child: const QuickSettingsPage(),
           ),
         ),
       ),
