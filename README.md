@@ -1,6 +1,6 @@
 # system_settings_editor
 
-A new flutter plugin project.
+A flutter plugin to read and write system settings.
 
 ## Getting Started
 
