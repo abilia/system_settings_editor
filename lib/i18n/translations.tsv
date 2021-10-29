@@ -355,6 +355,7 @@ codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne
 codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
 enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
 confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
+incorrectCode	Incorrect code	Felaktig kod	Forkert kodeord	Onjuiste code	Virheellinen koodi	Falscher Code	Feil kode
 							
 ### Permissions							
 permissions	Permissions	Behörigheter	Tilladelser	Rechten	Käyttöoikeudet	Berechtigungen	Tillatelser

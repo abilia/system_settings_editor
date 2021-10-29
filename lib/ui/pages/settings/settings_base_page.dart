@@ -19,11 +19,17 @@ class SettingsBasePage extends StatelessWidget {
         title: title,
         iconData: icon,
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
-        itemBuilder: (context, i) => widgets[i],
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: 16.s),
+        itemBuilder: (context, i) {
+          final w = widgets[i];
+          if (w is Divider) return w;
+          return Padding(
+            padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
+            child: w,
+          );
+        },
         itemCount: widgets.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
       ),
       bottomNavigationBar: bottomNavigationBar ??
           const BottomNavigation(backNavigationWidget: PreviousButton()),

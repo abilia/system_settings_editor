@@ -10,6 +10,8 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
+export 'package:mocktail/mocktail.dart';
+
 // Repository
 class MockActivityRepository extends Mock implements ActivityRepository {}
 
