@@ -32,15 +32,23 @@ class BrightnessSlider extends StatefulWidget {
   State<BrightnessSlider> createState() => _BrightnessSliderState();
 }
 
-class _BrightnessSliderState extends State<BrightnessSlider> {
+class _BrightnessSliderState extends State<BrightnessSlider>
+    with WidgetsBindingObserver {
   final _log = Logger((_BrightnessSliderState).toString());
   double _brightness = 1.0;
-  String? version = '';
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     initBrightness();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      initBrightness();
+    }
   }
 
   void initBrightness() async {
@@ -50,7 +58,7 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
         _brightness = b ?? 0;
       });
     } on PlatformException catch (e) {
-      _log.warning('message', e);
+      _log.warning('Could not get brightness', e);
     }
   }
 
@@ -61,7 +69,6 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text(version ?? ''),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -80,5 +87,11 @@ class _BrightnessSliderState extends State<BrightnessSlider> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 }
