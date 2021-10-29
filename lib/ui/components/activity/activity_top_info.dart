@@ -82,7 +82,7 @@ class _ActivityTopInfo extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               leading ?? SizedBox(width: 48.s),
               if (activity.fullDay)
@@ -168,7 +168,7 @@ class _TimeBox extends StatelessWidget {
             constraints: BoxConstraints(
               minWidth: 92.0.s,
               minHeight: 52.0.s,
-              maxWidth: 102.s,
+              maxWidth: 92.s,
               maxHeight: 52.0.s,
             ),
             decoration: boxDecoration,
