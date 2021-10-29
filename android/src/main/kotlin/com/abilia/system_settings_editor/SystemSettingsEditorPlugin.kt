@@ -40,23 +40,14 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
 
   @RequiresApi(Build.VERSION_CODES.M)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getBrightness") {
-      if (Settings.System.canWrite(context)) {
-        result.success(getBrightness())
-      } else {
-        openAndroidPermissionsMenu()
-        result.success(getBrightness())
-      }
-    } else if (call.method == "setBrightness") {
-      if (Settings.System.canWrite(context)) {
-        val brightness: Double = call.argument("brightness")!!
-        setBrightness(brightness)
-        result.success(true)
-      } else {
-        openAndroidPermissionsMenu()
-        val brightness: Double = call.argument("brightness")!!
-        setBrightness(brightness)
-        result.success(true)
+    if (!Settings.System.canWrite(context)) {
+      openAndroidPermissionsMenu()
+      result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
+    } else {
+      when (call.method) {
+        "getBrightness" -> result.success(getBrightness())
+        "setBrightness" -> setBrightnessHandler(call, result)
+        else -> result.notImplemented()
       }
     }
   }
@@ -81,6 +72,16 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
       Log.e("Error", "Cannot access system brightness")
     }
     return 1.0
+  }
+
+  private fun setBrightnessHandler(call: MethodCall, result: MethodChannel.Result) {
+    val brightness: Double? = call.argument("brightness")
+    brightness?.let {
+      setBrightness(it)
+      result.success(true)
+    } ?: run {
+      result.error("ARGUMENT", "No argument brightness of type double provided", null)
+    }
   }
 
   private fun setBrightness(brightness: Double) {
