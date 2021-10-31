@@ -16,6 +16,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.onCancel,
     this.appBar,
     this.rootHeading,
+    this.initialFolder = '',
   }) : super(key: key);
   final PreferredSizeWidget? appBar;
   final Function(Sortable<T>) onOk;
@@ -25,16 +26,22 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T>? libraryFolderGenerator;
   final String emptyLibraryMessage;
   final String? rootHeading;
+  final String initialFolder;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SortableArchiveBloc<T>>(
       create: (_) => SortableArchiveBloc<T>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
+        initialFolder: initialFolder,
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) {
           final selected = state.selected;
+          // if (initialFolder.isNotEmpty) {
+          //   BlocProvider.of<SortableArchiveBloc<T>>(context)
+          //       .add(FolderChanged(initialFolder));
+          // }
           return Scaffold(
             appBar: appBar ??
                 AbiliaAppBar(
