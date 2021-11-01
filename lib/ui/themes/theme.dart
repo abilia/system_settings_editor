@@ -8,6 +8,7 @@ import 'package:seagull/utils/all.dart';
 final smallIconSize = 24.s,
     buttonIconSize = 28.s,
     defaultIconSize = 32.s,
+    largeIconSize = 48.s,
     hugeIconSize = 96.s;
 
 final verticalPadding = 24.s,

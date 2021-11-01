@@ -447,6 +447,8 @@ abstract class Translated {
 
   final String screenBrightness = 'Screen brightness';
 
+  final String battery = 'Battery';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -1386,6 +1388,9 @@ class SV extends Translated {
 
   @override
   final String screenBrightness = 'Skärmens ljusstyrka';
+
+  @override
+  final String battery = 'Batteri';
 
   @override
   final String settings = 'Inställningar';
@@ -2460,6 +2465,9 @@ class DA extends Translated {
   final String screenBrightness = 'Skærmens lysstyrke';
 
   @override
+  final String battery = 'Batteri';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -3530,6 +3538,9 @@ class NL extends Translated {
 
   @override
   final String screenBrightness = 'Schermhelderheid';
+
+  @override
+  final String battery = 'Batterij';
 
   @override
   final String settings = 'Instellingen';
@@ -4603,6 +4614,9 @@ class FI extends Translated {
 
   @override
   final String screenBrightness = 'Näytön kirkkaus';
+
+  @override
+  final String battery = 'Akku';
 
   @override
   final String settings = 'Asetukset';
@@ -5681,6 +5695,9 @@ class DE extends Translated {
   final String screenBrightness = 'Bildschirmhelligkeit';
 
   @override
+  final String battery = 'Akkus';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6752,6 +6769,9 @@ class NB extends Translated {
 
   @override
   final String screenBrightness = 'Skjermens lysstyrke';
+
+  @override
+  final String battery = 'Batteri';
 
   @override
   final String settings = 'Innstillinger';
