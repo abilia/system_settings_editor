@@ -1020,9 +1020,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: SGC-582-quick-settings
-      resolved-ref: ca0c056b51f54a4ce23d302d2556088d2595ec65
-      url: "git@github.com:abilia/system_settings_editor.git"
+      ref: "v1.0.0"
+      resolved-ref: b79c08d8e751c634be42863eb57ce0e64edd5edc
+      url: "git://github.com/abilia/system_settings_editor.git"
     source: git
     version: "0.0.1"
   term_glyph:
