@@ -957,13 +957,13 @@ class SV extends Translated {
   final String clockTheTimeIsTts = 'Klockan är %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem över %s';
+  final String clockFiveMinutesPastTts = 'Fem minuter över %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem över halv %s';
 
   @override
-  final String clockFiveMinutesToTts = 'Fem I %s';
+  final String clockFiveMinutesToTts = 'Fem minuter i %s';
 
   @override
   final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
@@ -2030,13 +2030,13 @@ class DA extends Translated {
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem over %s';
+  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';
 
   @override
-  final String clockFiveMinutesToTts = 'Fem I %s';
+  final String clockFiveMinutesToTts = 'Fem minutter i %s';
 
   @override
   final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
