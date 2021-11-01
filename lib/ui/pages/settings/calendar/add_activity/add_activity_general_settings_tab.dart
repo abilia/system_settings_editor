@@ -12,7 +12,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
         children: [
           Tts(child: Text(t.general)),
           SwitchField(
-            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.allowPassedStartTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -21,7 +21,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.allowPassedStartTime),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.week),
+            leading: const Icon(AbiliaIcons.week),
             value: state.addRecurringActivity,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -30,16 +30,16 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.addRecurringActivity),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.showEndTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
                 .changeAddActivitySettings(state.copyWith(showEndTime: v)),
             child: Text(t.showEndTime),
           ),
-          SizedBox(),
+          const SizedBox(),
           SwitchField(
-            leading: Icon(AbiliaIcons.handiAlarmVibration),
+            leading: const Icon(AbiliaIcons.handiAlarmVibration),
             value: state.showAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -47,7 +47,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.showAlarm),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.handiAlarm),
+            leading: const Icon(AbiliaIcons.handiAlarm),
             value: state.showSilentAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
@@ -55,7 +55,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
             child: Text(t.showSilentAlarm),
           ),
           SwitchField(
-            leading: Icon(AbiliaIcons.handiNoAlarm),
+            leading: const Icon(AbiliaIcons.handiNoAlarm),
             value: state.showNoAlarm,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()

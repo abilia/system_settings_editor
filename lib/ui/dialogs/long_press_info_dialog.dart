@@ -13,7 +13,7 @@ class LongPressInfoDialog extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Spacer(flex: 128),
+          const Spacer(flex: 128),
           Stack(children: [
             buildPreviewActivityCard(translate),
             Align(
@@ -24,7 +24,7 @@ class LongPressInfoDialog extends StatelessWidget {
               ),
             ),
           ]),
-          Spacer(flex: 80),
+          const Spacer(flex: 80),
           Tts(
             child: Text(
               translate.longpressToSpeak,
@@ -42,7 +42,7 @@ class LongPressInfoDialog extends StatelessWidget {
               ),
             ),
           ),
-          Spacer(flex: 111),
+          const Spacer(flex: 111),
         ],
       ),
       backNavigationWidget: CloseButton(
@@ -58,7 +58,8 @@ class LongPressInfoDialog extends StatelessWidget {
         activityOccasion: ActivityOccasion(
           Activity.createNew(
             title: translate.lunch,
-            startTime: DateTime.now().withTime(TimeOfDay(hour: 12, minute: 0)),
+            startTime:
+                DateTime.now().withTime(const TimeOfDay(hour: 12, minute: 0)),
           ),
           DateTime.now(),
           Occasion.future,

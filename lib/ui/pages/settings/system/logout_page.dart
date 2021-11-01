@@ -20,9 +20,9 @@ class LogoutPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 64.0.s),
-        child: Center(child: ProfilePictureNameAndEmail()),
+        child: const Center(child: ProfilePictureNameAndEmail()),
       ),
-      bottomNavigationBar: BottomNavigation(
+      bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: CancelButton(),
         forwardNavigationWidget: LogoutButton(),
       ),
@@ -101,7 +101,7 @@ class LogoutButton extends StatelessWidget {
         text: Translator.of(context).translate.logout,
         icon: AbiliaIcons.powerOffOn,
         onPressed: () =>
-            BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut()),
+            BlocProvider.of<AuthenticationBloc>(context).add(const LoggedOut()),
         style: iconTextButtonStyleRed,
       );
 }

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 String? _spoken;
 void setupFakeTts() {
   _spoken = null;
-  MethodChannel('flutter_tts').setMockMethodCallHandler(
+  const MethodChannel('flutter_tts').setMockMethodCallHandler(
     (MethodCall methodCall) async {
       switch (methodCall.method) {
         case 'speak':

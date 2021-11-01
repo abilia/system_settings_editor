@@ -49,6 +49,7 @@ void main() {
         ..ticker = Ticker(
             stream: StreamController<DateTime>().stream, initialTime: time)
         ..database = FakeDatabase()
+        ..syncDelay = SyncDelays.zero
         ..init();
     });
 
@@ -62,7 +63,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
 
-      pushBloc.add(PushEvent('calendar'));
+      pushBloc.add(const PushEvent('calendar'));
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);

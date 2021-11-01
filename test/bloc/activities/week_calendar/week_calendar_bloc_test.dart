@@ -49,7 +49,7 @@ void main() {
         () {
       // Arrange
       when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       // Assert
@@ -69,7 +69,7 @@ void main() {
     test('week changes with NextWeek and PreviousWeek events', () {
       // Arrange
       when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
       activitiesBloc.add(LoadActivities());
       weekCalendarBloc.add(NextWeek());
@@ -264,7 +264,7 @@ class _WeekCalendarLoadedMatcher extends Matcher {
   @override
   bool matches(dynamic object, Map matchState) {
     return value.currentWeekStart == object.currentWeekStart &&
-        DeepCollectionEquality()
+        const DeepCollectionEquality()
             .equals(value.currentWeekActivities, object.currentWeekActivities);
   }
 }

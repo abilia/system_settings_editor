@@ -18,7 +18,7 @@ class SystemSettingsPage extends StatelessWidget {
         ),
         const TextToSpeechSwitch(),
         PickField(
-          leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           text: Text(t.androidSettings),
           onTap: AndroidIntents.openSettings,
         ),

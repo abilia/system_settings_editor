@@ -75,7 +75,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(infoItemType),
         ),

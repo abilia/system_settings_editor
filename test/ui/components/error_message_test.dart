@@ -14,7 +14,7 @@ void main() {
       MaterialApp(
         home: BlocProvider<SettingsBloc>(
           create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
-          child: ErrorMessage(text: Text('')),
+          child: const ErrorMessage(text: Text('')),
         ),
       ),
     );

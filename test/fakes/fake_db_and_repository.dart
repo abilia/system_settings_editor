@@ -64,6 +64,13 @@ class FakeSortableDb extends Fake implements SortableDb {
   @override
   Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
       Future.value([]);
+
+  @override
+  Future<bool> insertAndAddDirty(Iterable<Sortable> data) => Future.value(true);
+
+  @override
+  Future<Iterable<DbModel<Sortable>>> getAllDirty() =>
+      Future.value(<DbModel<Sortable>>[]);
 }
 
 class FakeGenericDb extends Fake implements GenericDb {
@@ -86,6 +93,24 @@ class FakeDatabase extends Fake implements Database {
       Future.value([]);
   @override
   Batch batch() => FakeBatch();
+
+  @override
+  Future<List<Map<String, Object?>>> query(String table,
+          {bool? distinct,
+          List<String>? columns,
+          String? where,
+          List<Object?>? whereArgs,
+          String? groupBy,
+          String? having,
+          String? orderBy,
+          int? limit,
+          int? offset}) =>
+      Future.value([]);
+
+  @override
+  Future<int> insert(String table, Map<String, Object?> values,
+          {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) =>
+      Future.value(values.length);
 }
 
 class FakeBatch extends Fake implements Batch {

@@ -463,9 +463,9 @@ abstract class Translated {
 
   final String edge = 'Edge';
 
-  final String monthCalendarGrid = 'Grid';
+  final String monthCalendarGrid = 'Simple';
 
-  final String monthCalendarPreview = 'Preview';
+  final String monthCalendarPreview = 'Detailed';
 
   final String textToSpeech = 'Speech support';
 
@@ -957,13 +957,13 @@ class SV extends Translated {
   final String clockTheTimeIsTts = 'Klockan är %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem minuter över %s';
+  final String clockFiveMinutesPastTts = 'Fem över %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem över halv %s';
 
   @override
-  final String clockFiveMinutesToTts = 'Fem minuter i %s';
+  final String clockFiveMinutesToTts = 'Fem I %s';
 
   @override
   final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
@@ -988,6 +988,9 @@ class SV extends Translated {
 
   @override
   final String clockTwentyMinutesToTts = 'Tjugo minuter i %s';
+
+  @override
+  final String nbOneAClock = '';
 
   @override
   final String timeMorningTts = '%s på morgonen';
@@ -1407,10 +1410,10 @@ class SV extends Translated {
   final String edge = 'Flärp';
 
   @override
-  final String monthCalendarGrid = 'Rutnät';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Förhandsgranskning';
+  final String monthCalendarPreview = 'Detaljerad';
 
   @override
   final String textToSpeech = 'Talstöd';
@@ -2027,13 +2030,13 @@ class DA extends Translated {
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
+  final String clockFiveMinutesPastTts = 'Fem over %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';
 
   @override
-  final String clockFiveMinutesToTts = 'Fem minutter i %s';
+  final String clockFiveMinutesToTts = 'Fem I %s';
 
   @override
   final String clockFiveMinutesToHalfPastTts = 'Fem i halv %s';
@@ -2058,6 +2061,9 @@ class DA extends Translated {
 
   @override
   final String clockTwentyMinutesToTts = 'Tyve minutter i %s';
+
+  @override
+  final String nbOneAClock = '';
 
   @override
   final String timeMorningTts = '%s om morgenen';
@@ -2473,10 +2479,10 @@ class DA extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljeret';
 
   @override
   final String textToSpeech = 'Talestøtte';
@@ -3127,6 +3133,9 @@ class NL extends Translated {
   final String clockTwentyMinutesToTts = 'tien over half %s';
 
   @override
+  final String nbOneAClock = '';
+
+  @override
   final String timeMorningTts = '%s in de ochtend';
 
   @override
@@ -3539,10 +3548,10 @@ class NL extends Translated {
   final String edge = 'Rand';
 
   @override
-  final String monthCalendarGrid = 'Raster';
+  final String monthCalendarGrid = 'Eenvoudig';
 
   @override
-  final String monthCalendarPreview = 'Voorbeeld';
+  final String monthCalendarPreview = 'Gedetailleerd';
 
   @override
   final String textToSpeech = 'Spraakondersteuning';
@@ -4193,6 +4202,9 @@ class FI extends Translated {
   final String clockTwentyMinutesToTts = 'kaksikymmentä vaille %s';
 
   @override
+  final String nbOneAClock = '';
+
+  @override
   final String timeMorningTts = '%s varhain aamulla';
 
   @override
@@ -4606,10 +4618,10 @@ class FI extends Translated {
   final String edge = 'Reuna';
 
   @override
-  final String monthCalendarGrid = 'Ruudukko';
+  final String monthCalendarGrid = 'Helppo';
 
   @override
-  final String monthCalendarPreview = 'Esikatselu';
+  final String monthCalendarPreview = 'Yksityiskohtainen';
 
   @override
   final String textToSpeech = 'Puhetuki';
@@ -5262,6 +5274,9 @@ class DE extends Translated {
   final String clockTwentyMinutesToTts = '20 Minuten vor %s';
 
   @override
+  final String nbOneAClock = '';
+
+  @override
   final String timeMorningTts = '%s frühmorgens';
 
   @override
@@ -5676,10 +5691,10 @@ class DE extends Translated {
   final String edge = 'Kante';
 
   @override
-  final String monthCalendarGrid = 'Gitter';
+  final String monthCalendarGrid = 'Einfach';
 
   @override
-  final String monthCalendarPreview = 'Vorschau';
+  final String monthCalendarPreview = 'Ausführlich';
 
   @override
   final String textToSpeech = 'Sprachausgabe';
@@ -6298,7 +6313,7 @@ class NB extends Translated {
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
+  final String clockFiveMinutesPastTts = 'Fem over %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';
@@ -6746,10 +6761,10 @@ class NB extends Translated {
   final String edge = 'Flik';
 
   @override
-  final String monthCalendarGrid = 'Nett';
+  final String monthCalendarGrid = 'Enkel';
 
   @override
-  final String monthCalendarPreview = 'Forhåndsvisning';
+  final String monthCalendarPreview = 'Detaljert';
 
   @override
   final String textToSpeech = 'Talesyntese';

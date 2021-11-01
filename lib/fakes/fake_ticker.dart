@@ -35,7 +35,7 @@ class _FakeTickerState extends State<FakeTicker> {
                 cb.resetTicker(GetIt.I<Ticker>());
               }
             },
-            child: Text('Fake time'),
+            child: const Text('Fake time'),
           ),
           CollapsableWidget(
             collapsed: !useMockTime,

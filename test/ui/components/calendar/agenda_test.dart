@@ -194,7 +194,7 @@ void main() {
     expect(find.text(currentTitle), findsOneWidget);
     expect(find.text(futureTitle), findsOneWidget);
 
-    await tester.drag(find.byType(Agenda), Offset(0.0, 300));
+    await tester.drag(find.byType(Agenda), const Offset(0.0, 300));
     await tester.pumpAndSettle();
 
     expect(find.text(pastTitle), findsOneWidget);
@@ -548,7 +548,7 @@ void main() {
               ),
             )
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 
@@ -578,7 +578,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(PushEvent('collapse_key'));
+      pushBloc.add(const PushEvent('collapse_key'));
 
       await tester.pumpAndSettle();
 

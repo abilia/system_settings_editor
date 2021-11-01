@@ -35,7 +35,7 @@ void main() {
   group('Calendar days are correct', () {
     setUp(() {
       when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(Iterable.empty()));
+          .thenAnswer((_) => Future.value(const Iterable.empty()));
     });
     test('initial state basics', () {
       // Arrange
@@ -1120,6 +1120,6 @@ class _MonthCalendarStateMatcher extends Matcher {
     return object is MonthCalendarState &&
         value.firstDay == object.firstDay &&
         value.occasion == object.occasion &&
-        ListEquality().equals(value.weeks, object.weeks);
+        const ListEquality().equals(value.weeks, object.weeks);
   }
 }

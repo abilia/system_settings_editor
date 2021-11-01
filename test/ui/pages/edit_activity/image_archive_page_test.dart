@@ -27,7 +27,8 @@ void main() {
 
     setUp(() async {
       mockSortableBloc = MockSortableBloc();
-      when(() => mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
+      when(() => mockSortableBloc.stream)
+          .thenAnswer((_) => const Stream.empty());
       setupFakeTts();
       GetItInitializer()
         ..fileStorage = FakeFileStorage()
@@ -96,8 +97,8 @@ void main() {
 
     testWidgets('Image archive smoke test', (WidgetTester tester) async {
       when(() => mockSortableBloc.state)
-          .thenAnswer((_) => SortablesLoaded(sortables: const []));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+          .thenAnswer((_) => const SortablesLoaded(sortables: []));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsNothing);
@@ -107,7 +108,7 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -117,7 +118,7 @@ void main() {
         (WidgetTester tester) async {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image, folder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
@@ -128,7 +129,7 @@ void main() {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image]));
       await mockNetworkImages(() async {
-        await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+        await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
         await tester.pumpAndSettle();
         expect(find.byType(ArchiveImage), findsOneWidget);
         await tester.tap(find.byType(ArchiveImage));
@@ -147,7 +148,7 @@ void main() {
     testWidgets('tts', (WidgetTester tester) async {
       when(() => mockSortableBloc.state)
           .thenAnswer((_) => SortablesLoaded(sortables: [image, folder]));
-      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
       await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
       await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
@@ -161,7 +162,7 @@ void main() {
       when(() => mockSortableBloc.state).thenAnswer(
           (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
       await mockNetworkImages(() async {
-        await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage()));
+        await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
         await tester.pumpAndSettle();
 
         // Assert - root heading

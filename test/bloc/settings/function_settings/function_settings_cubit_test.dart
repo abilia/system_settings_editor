@@ -14,7 +14,7 @@ void main() {
   });
 
   test('initial state', () {
-    final settingsState = MemoplannerSettingsNotLoaded();
+    const settingsState = MemoplannerSettingsNotLoaded();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: settingsState,
       genericBloc: FakeGenericBloc(),
@@ -52,7 +52,7 @@ void main() {
 
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: MemoplannerSettingsNotLoaded(),
+      settingsState: const MemoplannerSettingsNotLoaded(),
       genericBloc: FakeGenericBloc(),
     );
 
@@ -98,7 +98,7 @@ void main() {
   test('Removing a display state changes start view', () {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: MemoplannerSettingsNotLoaded(),
+      settingsState: const MemoplannerSettingsNotLoaded(),
       genericBloc: FakeGenericBloc(),
     );
 
@@ -206,7 +206,7 @@ void main() {
   test('saving', () {
     final genericBloc = MockGenericBloc();
     final functionSettingsCubit = FunctionSettingsCubit(
-      settingsState: MemoplannerSettingsNotLoaded(),
+      settingsState: const MemoplannerSettingsNotLoaded(),
       genericBloc: genericBloc,
     );
 

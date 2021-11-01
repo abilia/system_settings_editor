@@ -16,11 +16,11 @@ class RecurringMonthlyWiz extends StatelessWidget {
           children: <Widget>[
             ...[
               SizedBox(height: 24.s),
-              MonthDays(),
+              const MonthDays(),
               SizedBox(height: 16.s),
-              Divider(),
+              const Divider(),
               SizedBox(height: 24.s),
-              EndDateWizWidget(),
+              const EndDateWizWidget(),
             ].map(
               (w) => w is Divider
                   ? w

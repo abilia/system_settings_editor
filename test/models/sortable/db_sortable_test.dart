@@ -82,7 +82,7 @@ void main() {
 
     expect(
       checkistData.checklist.questions,
-      [
+      const [
         Question(
           image: '/Handi/User/Picture/key.gif',
           name: 'key',

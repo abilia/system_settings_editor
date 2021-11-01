@@ -15,7 +15,7 @@ class _EyeButton extends StatelessWidget {
       borderRadius: borderRadius,
       child: ActionButtonBlack(
         onPressed: onPressed,
-        child: Icon(AbiliaIcons.show),
+        child: const Icon(AbiliaIcons.show),
       ),
     );
   }

@@ -29,39 +29,39 @@ class ActivityWizardPage extends StatelessWidget {
     final step = context.read<ActivityWizardCubit>().state.currentStep;
     switch (step) {
       case WizardStep.basic:
-        return BasicActivityStepPage();
+        return const BasicActivityStepPage();
       case WizardStep.advance:
-        return EditActivityPage();
+        return const EditActivityPage();
       case WizardStep.date:
-        return DatePickerWiz();
+        return const DatePickerWiz();
       case WizardStep.title:
-        return TitleWiz();
+        return const TitleWiz();
       case WizardStep.image:
-        return ImageWiz();
+        return const ImageWiz();
       case WizardStep.time:
-        return TimeWiz();
+        return const TimeWiz();
       case WizardStep.connectedFunction:
-        return ExtraFunctionWiz();
+        return const ExtraFunctionWiz();
       case WizardStep.availableFor:
-        return AvailableForWiz();
+        return const AvailableForWiz();
       case WizardStep.checkable:
-        return CheckableWiz();
+        return const CheckableWiz();
       case WizardStep.type:
-        return TypeWiz();
+        return const TypeWiz();
       case WizardStep.recurring:
-        return RecurringWiz();
+        return const RecurringWiz();
       case WizardStep.deleteAfter:
-        return RemoveAfterWiz();
+        return const RemoveAfterWiz();
       case WizardStep.alarm:
-        return AlarmWiz();
+        return const AlarmWiz();
       case WizardStep.reminder:
-        return RemindersWiz();
+        return const RemindersWiz();
       case WizardStep.recursWeekly:
-        return RecurringWeeklyWiz();
+        return const RecurringWeeklyWiz();
       case WizardStep.recursMonthly:
-        return RecurringMonthlyWiz();
+        return const RecurringMonthlyWiz();
       case WizardStep.endDate:
-        return EndDatePickerWiz();
+        return const EndDatePickerWiz();
     }
   }
 }

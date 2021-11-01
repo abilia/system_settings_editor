@@ -25,7 +25,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.alarmAndVibration),
-            leading: Icon(
+            leading: const Icon(
               AbiliaIcons.handiAlarmVibration,
             ),
           ),
@@ -34,7 +34,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.vibration),
-            leading: Icon(
+            leading: const Icon(
               AbiliaIcons.handiVibration,
             ),
           ),
@@ -43,7 +43,7 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.silentAlarm),
-            leading: Icon(
+            leading: const Icon(
               AbiliaIcons.handiAlarm,
             ),
           ),
@@ -52,13 +52,13 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
             groupValue: state.defaultsTabSettingsState.alarmType,
             onChanged: onAlarmTypeChanged,
             text: Text(t.noAlarm),
-            leading: Icon(
+            leading: const Icon(
               AbiliaIcons.handiNoAlarmVibration,
             ),
           ),
-          Divider(),
+          const Divider(),
           SwitchField(
-            leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.defaultsTabSettingsState.alarmOnlyAtStartTime,
             onChanged: (v) => context
                 .read<AddActivitySettingsCubit>()
