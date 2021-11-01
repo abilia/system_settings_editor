@@ -37,7 +37,7 @@ dependencies:
   system_settings_editor:
     git:
       url: git@github.com:abilia/system_settings_editor.git
-      ref: SGC-582-quick-settings
+      ref: v1.0.0
   flutter_tts: ^3.2.2
   get_it: ^7.2.0
   google_fonts: ^2.1.0
