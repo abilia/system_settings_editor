@@ -71,9 +71,9 @@ minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
 now	Now	Nu	Nu	Nu	Nyt	Jetzt	Nå
 week	week	vecka	uge	week	viikko	Woche	uke
 clockTheTimeIsTts	the time is %s	Klockan är %s	Klokken er %s	De tijd is %s	Kello on %s	Die Uhrzeit ist %s	Klokken er %s
-clockFiveMinutesPastTts	five past %s	Fem minuter över %s	Fem minutter over %s	vijf over %s	viisi yli %s	5 Minuten nach %s	Fem minutter over %s
+clockFiveMinutesPastTts	five past %s	Fem över %s	Fem over %s	vijf over %s	viisi yli %s	5 Minuten nach %s	Fem over %s
 clockFiveMinutesHalfPastTts	twenty five to %s	Fem över halv %s	Fem over halv %s	vijfentwintig voor %s	kaksikymmentäviisi vaille %s	25 Minuten vor %s	Fem over halv %s
-clockFiveMinutesToTts	five to %s	Fem minuter i %s	Fem minutter i %s	vijf voor %s	viisi vaille %s	5 Minuten vor %s	Fem på %s
+clockFiveMinutesToTts	five to %s	Fem I %s	Fem I %s	vijf voor %s	viisi vaille %s	5 Minuten vor %s	Fem på %s
 clockFiveMinutesToHalfPastTts	twenty five past %s	Fem i halv %s	Fem i halv %s	vijfentwintig over %s	kaksikymmentäviisi yli %s	25 Minuten nach %s	Fem på halv %s
 clockHalfPastTts	Half past %s	Halv %s	Halv %s	Dertig over %s	%s kolmekymmentä	30 Minuten nach %s	Halv %s
 clockQuarterPastTts	quarter past %s	Kvart över %s	Kvart over %s	kwart over %s	viisitoista yli %s	15 Minuten nach %s	Kvart over %s
