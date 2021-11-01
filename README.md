@@ -1,6 +1,9 @@
-# system_settings_editor
+# System Settings Editor
 
 A flutter plugin to read and write system settings.
+
+**Currently supported settings:**
+* Brightness
 
 ## Getting Started
 
