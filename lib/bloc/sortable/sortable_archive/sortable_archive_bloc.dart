@@ -13,10 +13,8 @@ part 'sortable_archive_state.dart';
 class SortableArchiveBloc<T extends SortableData>
     extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
   late final StreamSubscription sortableSubscription;
-  final String initialFolder;
 
-  SortableArchiveBloc(
-      {required SortableBloc sortableBloc, this.initialFolder = ''})
+  SortableArchiveBloc({required SortableBloc sortableBloc})
       : super(SortableArchiveState(const {}, const {})) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
@@ -26,9 +24,6 @@ class SortableArchiveBloc<T extends SortableData>
     final sortableState = sortableBloc.state;
     if (sortableState is SortablesLoaded) {
       add(SortablesUpdated(sortableState.sortables));
-    }
-    if (initialFolder.isNotEmpty) {
-      add(FolderChanged(initialFolder));
     }
   }
 
@@ -47,12 +42,14 @@ class SortableArchiveBloc<T extends SortableData>
         allById,
         currentFolderId: currentFolder?.id ?? '',
         selected: state.selected,
+        initialFolderId: state.initialFolderId,
       );
     } else if (event is FolderChanged) {
       yield SortableArchiveState<T>(
         state.allByFolder,
         state.allById,
         currentFolderId: event.folderId,
+        initialFolderId: state.initialFolderId,
       );
     } else if (event is NavigateUp) {
       final currentFolder = state.allById[state.currentFolderId];
@@ -60,6 +57,7 @@ class SortableArchiveBloc<T extends SortableData>
         state.allByFolder,
         state.allById,
         currentFolderId: currentFolder?.groupId ?? '',
+        initialFolderId: state.initialFolderId,
       );
     } else if (event is SortableSelected<T>) {
       yield SortableArchiveState<T>(
@@ -67,6 +65,14 @@ class SortableArchiveBloc<T extends SortableData>
         state.allById,
         currentFolderId: state.currentFolderId,
         selected: event.selected,
+        initialFolderId: state.initialFolderId,
+      );
+    } else if (event is InitialFolder) {
+      yield SortableArchiveState<T>(
+        state.allByFolder,
+        state.allById,
+        initialFolderId: event.folderId,
+        currentFolderId: event.folderId,
       );
     }
   }

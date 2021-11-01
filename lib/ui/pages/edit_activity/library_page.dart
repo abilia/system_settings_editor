@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -33,15 +35,15 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     return BlocProvider<SortableArchiveBloc<T>>(
       create: (_) => SortableArchiveBloc<T>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
-        initialFolder: initialFolder,
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) {
           final selected = state.selected;
-          // if (initialFolder.isNotEmpty) {
-          //   BlocProvider.of<SortableArchiveBloc<T>>(context)
-          //       .add(FolderChanged(initialFolder));
-          // }
+          if (initialFolder.isNotEmpty &&
+              state.currentFolderId != initialFolder) {
+            BlocProvider.of<SortableArchiveBloc<T>>(context)
+                .add(InitialFolder(initialFolder));
+          }
           return Scaffold(
             appBar: appBar ??
                 AbiliaAppBar(
@@ -137,6 +139,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
+    log('selected ' + state.isSelected.toString());
     if (state.isSelected) {
       BlocProvider.of<SortableArchiveBloc<T>>(context)
           .add(FolderChanged(state.currentFolderId));
