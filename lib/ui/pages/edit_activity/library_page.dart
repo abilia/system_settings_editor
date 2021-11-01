@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -139,7 +137,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   }
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
-    log('selected ' + state.isSelected.toString());
     if (state.isSelected) {
       BlocProvider.of<SortableArchiveBloc<T>>(context)
           .add(FolderChanged(state.currentFolderId));

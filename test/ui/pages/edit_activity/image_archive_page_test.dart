@@ -192,16 +192,18 @@ void main() {
       });
     });
 
-    testWidgets('Image archive with one image inside folder, folder is initialFolder',
-            (WidgetTester tester) async {
-          when(() => mockSortableBloc.state)
-              .thenAnswer((_) => SortablesLoaded(sortables: [folder, imageInFolder]));
-          await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(initialFolder: folder.id,)));
-          await tester.pumpAndSettle();
-          expect(find.byType(ImageArchivePage), findsOneWidget);
-          expect(find.byType(ArchiveImage), findsOneWidget);
-          expect(find.byType(LibraryFolder), findsNothing);
-
-          });
+    testWidgets(
+        'Image archive with one image inside folder, folder is initialFolder',
+        (WidgetTester tester) async {
+      when(() => mockSortableBloc.state).thenAnswer(
+          (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
+        initialFolder: folder.id,
+      )));
+      await tester.pumpAndSettle();
+      expect(find.byType(ImageArchivePage), findsOneWidget);
+      expect(find.byType(ArchiveImage), findsOneWidget);
+      expect(find.byType(LibraryFolder), findsNothing);
+    });
   });
 }
