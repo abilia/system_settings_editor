@@ -16,24 +16,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  double? _brightness;
+  double? _sliderBrightness;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    getBrightness();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
+  Future<void> getBrightness() async {
+    double? brightness;
+
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await SystemSettingsEditor.platformVersion ?? 'Unknown platform version';
+      brightness = await SystemSettingsEditor.brightness;
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      brightness = null;
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -42,19 +43,40 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      _brightness = _sliderBrightness = brightness;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final brightness = _brightness;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('System settings example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: brightness != null
+                  ? Text('${brightness * 100}% brightness')
+                  : const Text('brightness unknown'),
+            ),
+            ElevatedButton(
+              onPressed: getBrightness,
+              child: const Text('Get brigthness'),
+            ),
+            Slider(
+              onChanged: brightness != null
+                  ? (b) {
+                      SystemSettingsEditor.setBrightness(b);
+                      setState(() => _sliderBrightness = b);
+                    }
+                  : null,
+              value: _sliderBrightness ?? 0,
+            )
+          ],
         ),
       ),
     );
