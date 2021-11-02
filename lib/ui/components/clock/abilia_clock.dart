@@ -3,25 +3,34 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaClock extends StatelessWidget {
-  const AbiliaClock({Key? key}) : super(key: key);
+  final TextStyle? style;
+  const AbiliaClock({
+    Key? key,
+    this.style,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.clockType != current.clockType,
-        builder: (context, state) => FittedAbiliaClock(state.clockType),
+        builder: (context, state) => FittedAbiliaClock(
+          state.clockType,
+          style: style,
+        ),
       );
 }
 
 class FittedAbiliaClock extends StatelessWidget {
   final ClockType clockType;
   final double? height, width;
+  final TextStyle? style;
 
   const FittedAbiliaClock(
     this.clockType, {
     Key? key,
     this.height,
     this.width,
+    this.style,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,10 @@ class FittedAbiliaClock extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (analog) const AnalogClock(),
-            if (digital) const DigitalClock(),
+            if (digital)
+              DigitalClock(
+                style: style,
+              ),
           ],
         ),
       ),

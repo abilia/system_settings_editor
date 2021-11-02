@@ -39,11 +39,11 @@ void main() {
 
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
-        .thenReturn(MemoplannerSettingsNotLoaded());
+        .thenReturn(const MemoplannerSettingsNotLoaded());
     mockSettingStream = StreamController<MemoplannerSettingsState>();
     when(() => mockMemoplannerSettingBloc.stream)
         .thenAnswer((realInvocation) => mockSettingStream.stream);
-    clockBloc = ClockBloc(Stream.empty(), initialTime: initialMinutes);
+    clockBloc = ClockBloc(const Stream.empty(), initialTime: initialMinutes);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     nightActivitiesCubit = NightActivitiesCubit(

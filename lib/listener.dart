@@ -61,7 +61,7 @@ class TopLevelListeners extends StatelessWidget {
                       builder: (_) {
                         return AuthenticatedBlocsProvider(
                           authenticatedState: state,
-                          child: AlarmListeners(
+                          child: const AlarmListeners(
                             child: AuthenticatedListeners(
                               child: CalendarPage(),
                             ),
@@ -164,7 +164,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
-        ..read<PushBloc>().add(PushEvent('app-resumed'))
+        ..read<PushBloc>().add(const PushEvent('app-resumed'))
         ..read<PermissionBloc>().checkAll();
     }
   }
@@ -210,7 +210,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           listener: (context, state) async {
             if (state is NoValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
-                LoggedOut(
+                const LoggedOut(
                   loggedOutReason: LoggedOutReason.licenseExpired,
                 ),
               );
@@ -258,7 +258,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
       },
       listener: (context, state) => showViewDialog(
         context: context,
-        builder: (context) => FullscreenAlarmInfoDialog(
+        builder: (context) => const FullscreenAlarmInfoDialog(
           showRedirect: true,
         ),
       ),

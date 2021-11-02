@@ -24,7 +24,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                   .changeCategorySettings(
                     state.categories.copyWith(show: value),
                   ),
-              leading: Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+              leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
               child: Text(t.showCagetories),
             ),
             CollapsableWidget(
@@ -53,7 +53,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                         .changeCategorySettings(
                           state.categories.copyWith(colors: value),
                         ),
-                    leading: Icon(AbiliaIcons.changePageColor),
+                    leading: const Icon(AbiliaIcons.changePageColor),
                     child: Text(t.showColours),
                   ),
                 ],

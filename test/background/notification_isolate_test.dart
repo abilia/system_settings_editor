@@ -18,7 +18,7 @@ void main() {
   final now = DateTime(2020, 05, 14, 18, 53);
   final mockedFileStorage = MockFileStorage();
   late MockFlutterLocalNotificationsPlugin mockedNotificationsPlugin;
-  final fileId = Uuid().v4();
+  final fileId = const Uuid().v4();
   final allActivities = [
     Activity.createNew(
       title: 'passed',
@@ -96,7 +96,7 @@ void main() {
       allActivities,
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
@@ -114,7 +114,7 @@ void main() {
       allActivities,
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );
@@ -153,7 +153,7 @@ void main() {
       allActivities.take(2),
       'en',
       true,
-      AlarmSettings(),
+      const AlarmSettings(),
       mockedFileStorage,
       now: () => now,
     );

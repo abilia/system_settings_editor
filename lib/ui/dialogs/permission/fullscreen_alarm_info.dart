@@ -123,7 +123,7 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
         onPressed: () async {
           context
               .read<PermissionBloc>()
-              .add(RequestPermissions(const [Permission.systemAlertWindow]));
+              .add(const RequestPermissions([Permission.systemAlertWindow]));
           await Navigator.of(context).maybePop();
         },
       );

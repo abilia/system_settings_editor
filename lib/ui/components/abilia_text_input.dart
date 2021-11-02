@@ -189,7 +189,7 @@ class _DefaultInputPageState
             ),
             const Spacer(),
             BottomNavigation(
-              backNavigationWidget: CancelButton(),
+              backNavigationWidget: const CancelButton(),
               forwardNavigationWidget: OkButton(
                 key: TestKey.inputOk,
                 onPressed: _validInput ? _returnNewText : null,

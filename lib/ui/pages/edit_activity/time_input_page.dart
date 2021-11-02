@@ -26,7 +26,7 @@ class TimeInputPage extends StatelessWidget {
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
         onSave: onSave,
         bottomNavigationBuilder: (context, newTimInput) => BottomNavigation(
-          backNavigationWidget: CancelButton(),
+          backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             onPressed: () => onSave(context, newTimInput),
           ),
@@ -492,12 +492,12 @@ class DeleteInputFormatter extends TextInputFormatter {
     if (oldValue.text.length == 4 && newValue.text.isEmpty) {
       return TextEditingValue(
         text: oldValue.text.substring(0, 3),
-        selection: TextSelection.collapsed(offset: 3),
+        selection: const TextSelection.collapsed(offset: 3),
       );
     } else if (oldValue.text.length == 1 && newValue.text.length == 4) {
       return TextEditingValue(
         text: oldValue.text + newValue.text.substring(3, 4),
-        selection: TextSelection.collapsed(offset: 2),
+        selection: const TextSelection.collapsed(offset: 2),
       );
     } else {
       return newValue;
@@ -519,7 +519,7 @@ class LeadingZeroInputFormatter extends TextInputFormatter {
         intVal > (twelveHourClock ? 1 : 2)) {
       return TextEditingValue(
         text: pad0(newValue.text),
-        selection: TextSelection.collapsed(offset: 2),
+        selection: const TextSelection.collapsed(offset: 2),
       );
     } else {
       return newValue;

@@ -58,8 +58,8 @@ void main() {
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.wednesday));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.wednesday));
     recurringWeekBloc.add(AddOrRemoveWeekday(day.weekday));
 
     await expectLater(
@@ -115,8 +115,8 @@ void main() {
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.wednesday));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.wednesday));
     recurringWeekBloc.add(AddOrRemoveWeekday(day.weekday));
 
     await expectLater(
@@ -172,8 +172,8 @@ void main() {
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
 
     await expectLater(
       recurringWeekBloc.stream,
@@ -218,8 +218,8 @@ void main() {
     final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
 
     await expectLater(
       editActivityBloc.stream,
@@ -265,8 +265,8 @@ void main() {
     final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
     editActivityBloc.add(ChangeDate(newStartDate));
 
     await expectLater(
@@ -333,8 +333,8 @@ void main() {
     );
 
     // Act
-    recurringWeekBloc.add(AddOrRemoveWeekday(DateTime.monday));
-    recurringWeekBloc.add(ChangeEveryOtherWeek(true));
+    recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
 
     // Assert
     await expectLater(

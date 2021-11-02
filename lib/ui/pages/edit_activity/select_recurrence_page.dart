@@ -62,7 +62,7 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: OkButton(
           onPressed: () => Navigator.of(context).maybePop(newType),
         ),

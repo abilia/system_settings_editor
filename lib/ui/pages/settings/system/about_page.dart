@@ -31,7 +31,7 @@ class AboutPage extends StatelessWidget {
               SizedBox(height: 8.0.s),
               DefaultTextStyle(
                 style: textTheme.headline6 ?? headline6,
-                child: Version(),
+                child: const Version(),
               ),
               Divider(height: 32.0.s),
               SizedBox(height: 8.0.s),
@@ -46,13 +46,13 @@ class AboutPage extends StatelessWidget {
                 style: textTheme.headline6,
               ),
               SizedBox(height: 24.0.s),
-              Text('Råsundavägen 6, 169 67 Solna, Sweden'),
+              const Text('Råsundavägen 6, 169 67 Solna, Sweden'),
               SizedBox(height: 8.0.s),
-              Text('+46 (0)8- 594 694 00\n'
+              const Text('+46 (0)8- 594 694 00\n'
                   'info@abilia.com\n'
                   'www.abilia.com'),
               SizedBox(height: 32.0.s),
-              Text(
+              const Text(
                 'This product is developed in accordance with and complies to '
                 'all necessary requirements, regulations and directives for '
                 'medical devices.',
@@ -61,7 +61,7 @@ class AboutPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigation(
+      bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: PreviousButton(),
       ),
     );

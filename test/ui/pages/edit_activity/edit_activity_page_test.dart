@@ -50,15 +50,15 @@ void main() {
     tz.initializeTimeZones();
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
-    when(() => mockSortableBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(
+        const MemoplannerSettingsLoaded(
             MemoplannerSettings(advancedActivityTemplate: false)));
     when(() => mockMemoplannerSettingsBloc.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
@@ -142,7 +142,7 @@ void main() {
           ),
         ),
       ),
-      home: ActivityWizardPage(),
+      home: const ActivityWizardPage(),
     );
   }
 
@@ -206,8 +206,10 @@ void main() {
         expect(find.byType(SelectPicturePage), findsNothing);
       });
 
-      final cameraPickFieldFinder = find.byKey(ObjectKey(ImageSource.camera)),
-          photoPickFieldFinder = find.byKey(ObjectKey(ImageSource.gallery)),
+      final cameraPickFieldFinder =
+              find.byKey(const ObjectKey(ImageSource.camera)),
+          photoPickFieldFinder =
+              find.byKey(const ObjectKey(ImageSource.gallery)),
           photoInfoButtonFinder =
               find.byKey(Key('${ImageSource.gallery}${Permission.photos}')),
           cameraInfoButtonFinder =
@@ -287,7 +289,8 @@ void main() {
       // Assert -- Fullday switch is off
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
       // Assert -- Start time, left and rigth category visible
@@ -310,7 +313,8 @@ void main() {
       // Assert -- Fullday switch is on,
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.fullDaySwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
       // Assert -- Start time, left and rigth category not visible
@@ -328,7 +332,7 @@ void main() {
         expect(
             tester
                 .widget<Switch>(
-                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                    find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
                 .value,
             isFalse);
         expect(find.byKey(TestKey.alarmAtStartSwitch), findsOneWidget);
@@ -338,7 +342,7 @@ void main() {
         expect(
             tester
                 .widget<Switch>(
-                    find.byKey(ObjectKey(TestKey.alarmAtStartSwitch)))
+                    find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
                 .value,
             isTrue);
       });
@@ -353,7 +357,7 @@ void main() {
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
-        await tester.tap(find.byKey(ObjectKey(AlarmType.vibration)));
+        await tester.tap(find.byKey(const ObjectKey(AlarmType.vibration)));
         await tester.pumpAndSettle();
         expect(find.text(translate.vibration), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.handiVibration), findsOneWidget);
@@ -377,8 +381,8 @@ void main() {
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
-        final radio =
-            tester.widget<RadioField>(find.byKey(ObjectKey(AlarmType.silent)));
+        final radio = tester
+            .widget<RadioField>(find.byKey(const ObjectKey(AlarmType.silent)));
         expect(radio.groupValue, AlarmType.silent);
       });
 
@@ -401,8 +405,8 @@ void main() {
         await tester.tap(find.byKey(TestKey.selectAlarm));
         await tester.pumpAndSettle();
         expect(find.byType(SelectAlarmTypePage), findsOneWidget);
-        final radio = tester
-            .widget<RadioField>(find.byKey(ObjectKey(AlarmType.vibration)));
+        final radio = tester.widget<RadioField>(
+            find.byKey(const ObjectKey(AlarmType.vibration)));
         expect(radio.groupValue, AlarmType.soundAndVibration);
       });
     });
@@ -413,7 +417,8 @@ void main() {
       await tester.scrollDown();
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.checkableSwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.checkableSwitch)))
               .value,
           isFalse);
       expect(find.byKey(TestKey.checkableSwitch), findsOneWidget);
@@ -422,7 +427,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.checkableSwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.checkableSwitch)))
               .value,
           isTrue);
     });
@@ -433,7 +439,8 @@ void main() {
       await tester.scrollDown();
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isFalse);
       expect(find.byKey(TestKey.deleteAfterSwitch), findsOneWidget);
@@ -442,14 +449,15 @@ void main() {
       await tester.pumpAndSettle();
       expect(
           tester
-              .widget<Switch>(find.byKey(ObjectKey(TestKey.deleteAfterSwitch)))
+              .widget<Switch>(
+                  find.byKey(const ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isTrue);
     });
 
     testWidgets('Category picker', (WidgetTester tester) async {
-      final rightRadioKey = ObjectKey(TestKey.rightCategoryRadio);
-      final leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
+      const rightRadioKey = ObjectKey(TestKey.rightCategoryRadio);
+      const leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -150);
@@ -674,7 +682,7 @@ that it is visible in the info item tab
         final activity = Activity.createNew(
             title: 'null',
             startTime: startTime,
-            infoItem: NoteInfoItem(aLongNote));
+            infoItem: const NoteInfoItem(aLongNote));
         await tester
             .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
@@ -693,7 +701,7 @@ that it is visible in the info item tab
         final activity = Activity.createNew(
             title: 'null',
             startTime: startTime,
-            infoItem: NoteInfoItem(aLongNote));
+            infoItem: const NoteInfoItem(aLongNote));
         await tester
             .pumpWidget(createEditActivityPage(givenActivity: activity));
         await tester.pumpAndSettle();
@@ -796,7 +804,7 @@ Internal improvements to tests and examples.''';
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
-                data: NoteData(
+                data: const NoteData(
                   name: 'NAAAMAE',
                   text: content,
                 ),
@@ -840,7 +848,7 @@ Internal improvements to tests and examples.''';
           SortablesLoaded(
             sortables: [
               Sortable.createNew<NoteData>(
-                data: NoteData(
+                data: const NoteData(
                   name: 'NAAAMAE',
                   text: content,
                 ),
@@ -913,7 +921,8 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state)
+            .thenReturn(const UserFilesNotLoaded());
         await tester.pumpWidget(
           createEditActivityPage(
             givenActivity: Activity.createNew(
@@ -1097,7 +1106,8 @@ text''';
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state)
+            .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         when(() => mockSortableBloc.state).thenReturn(
           SortablesLoaded(
@@ -1143,7 +1153,8 @@ text''';
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state)
+            .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const checklisttitle1 = 'checklisttitle1',
             checklisttitle2 = 'checklisttitle2';
@@ -1693,7 +1704,7 @@ text''';
         (WidgetTester tester) async {
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityEndTimeEditable: false,
       )));
 
@@ -2022,7 +2033,7 @@ text''';
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDateEditable: false,
       )));
       await tester.pumpWidget(createEditActivityPage());
@@ -2035,7 +2046,7 @@ text''';
 
     testWidgets('Right/left not visible', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTypeEditable: false,
       )));
       await tester.pumpWidget(createEditActivityPage());
@@ -2047,7 +2058,7 @@ text''';
 
     testWidgets('No end time', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityEndTimeEditable: false,
       )));
       await tester.pumpWidget(createEditActivityPage());
@@ -2059,7 +2070,7 @@ text''';
 
     testWidgets('No recurring option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityRecurringEditable: false,
       )));
       await tester.pumpWidget(createEditActivityPage());
@@ -2070,7 +2081,7 @@ text''';
 
     testWidgets('Alarm options', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDisplayAlarmOption: false,
         activityDisplaySilentAlarmOption: false,
       )));
@@ -2089,7 +2100,7 @@ text''';
     testWidgets('Alarm options - silent option alarm and vibration',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityDisplayAlarmOption: false,
         activityDisplayNoAlarmOption: false,
       )));
@@ -2116,7 +2127,7 @@ text''';
         'activityTimeBeforeCurrent true - Cant save when start time is past',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
       await tester.pumpWidget(
@@ -2150,7 +2161,7 @@ text''';
         'activityTimeBeforeCurrent true - CAN save when start time is future',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
       await tester.pumpWidget(
@@ -2179,7 +2190,7 @@ text''';
         'activityTimeBeforeCurrent true - CAN save recurring when start time is future',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(MemoplannerSettingsLoaded(MemoplannerSettings(
+          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
         activityTimeBeforeCurrent: false,
       )));
 
@@ -2214,7 +2225,7 @@ text''';
           rightCategoryName =
               'HÖGER IS SUPER LONG AND WILL PROBABLY OVERFLOW BADLY!';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(
+        const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeLeft: leftCategoryName,
             calendarActivityTypeRight: rightCategoryName,
@@ -2235,7 +2246,7 @@ text''';
     testWidgets('calendarActivityTypeShowTypes false does not show categories',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(
+        const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             calendarActivityTypeShowTypes: false,
           ),
@@ -2569,7 +2580,7 @@ text''';
       await tester.tap(find.byKey(TestKey.selectAlarm));
       await tester.pumpAndSettle();
 
-      await tester.verifyTts(find.byKey(ObjectKey(AlarmType.vibration)),
+      await tester.verifyTts(find.byKey(const ObjectKey(AlarmType.vibration)),
           exact: translate.vibration);
     });
 
@@ -2642,7 +2653,8 @@ text''';
 
       testWidgets('checklist', (WidgetTester tester) async {
         // Arrange
-        when(() => mockUserFileBloc.state).thenReturn(UserFilesNotLoaded());
+        when(() => mockUserFileBloc.state)
+            .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const item1Name = 'Item 1 name';
         when(() => mockSortableBloc.state).thenReturn(
@@ -2694,7 +2706,7 @@ text''';
         SortablesLoaded(
           sortables: [
             Sortable.createNew<NoteData>(
-              data: NoteData(
+              data: const NoteData(
                 name: name,
                 text: content,
               ),

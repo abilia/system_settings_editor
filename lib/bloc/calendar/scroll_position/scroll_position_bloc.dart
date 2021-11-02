@@ -31,9 +31,9 @@ class ScrollPositionBloc
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
-        .listen((_) => add(WrongDaySelected()));
+        .listen((_) => add(const WrongDaySelected()));
     clockBlocSubscription =
-        clockBloc.stream.listen((now) => add(ScrollPositionUpdated()));
+        clockBloc.stream.listen((now) => add(const ScrollPositionUpdated()));
   }
 
   @override

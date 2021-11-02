@@ -42,13 +42,14 @@ void main() {
     await initializeDateFormatting();
     mockActivitiesBloc = MockActivitiesBloc();
     when(() => mockActivitiesBloc.state).thenReturn(ActivitiesLoaded(const []));
-    when(() => mockActivitiesBloc.stream).thenAnswer((_) => Stream.empty());
+    when(() => mockActivitiesBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        MemoplannerSettingsLoaded(
+        const MemoplannerSettingsLoaded(
             MemoplannerSettings(advancedActivityTemplate: false)));
     when(() => mockMemoplannerSettingsBloc.stream)
-        .thenAnswer((_) => Stream.empty());
+        .thenAnswer((_) => const Stream.empty());
   });
 
   tearDown(GetIt.I.reset);
@@ -134,7 +135,7 @@ void main() {
           ),
         ),
       ),
-      home: ActivityWizardPage(),
+      home: const ActivityWizardPage(),
     );
   }
 

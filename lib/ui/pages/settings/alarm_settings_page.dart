@@ -71,7 +71,7 @@ class AlarmSettingsPage extends StatelessWidget {
                 separatorBuilder: (context, index) => SizedBox(height: 16.0.s),
               ),
               bottomNavigationBar: BottomNavigation(
-                backNavigationWidget: CancelButton(),
+                backNavigationWidget: const CancelButton(),
                 forwardNavigationWidget: OkButton(
                   onPressed: () {
                     context.read<AlarmSettingsCubit>().save();

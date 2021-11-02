@@ -266,7 +266,7 @@ class SideDotsLarge extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: <Widget>[
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
               child: BigDots(
@@ -292,7 +292,7 @@ class SideDotsLarge extends StatelessWidget {
                         ),
                       ),
                     ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
             ),

@@ -90,7 +90,7 @@ class ErrorDialog extends StatelessWidget {
           iconData: AbiliaIcons.irError,
         ),
         body: Tts(child: Text(text)),
-        backNavigationWidget: backNavigationWidget ?? PreviousButton(),
+        backNavigationWidget: backNavigationWidget ?? const PreviousButton(),
       );
 }
 
@@ -113,8 +113,8 @@ class YesNoDialog extends StatelessWidget {
         iconData: headingIcon,
       ),
       body: Tts(child: Text(text)),
-      backNavigationWidget: NoButton(),
-      forwardNavigationWidget: YesButton(),
+      backNavigationWidget: const NoButton(),
+      forwardNavigationWidget: const YesButton(),
     );
   }
 }
@@ -137,7 +137,7 @@ class ConfirmWarningDialog extends StatelessWidget {
       forwardNavigationWidget: OkButton(
         onPressed: () => Navigator.of(context).maybePop(true),
       ),
-      backNavigationWidget: PreviousButton(),
+      backNavigationWidget: const PreviousButton(),
     );
   }
 }

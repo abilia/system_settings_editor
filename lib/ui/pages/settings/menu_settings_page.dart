@@ -38,7 +38,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
       icon: AbiliaIcons.appMenu,
       title: Translator.of(context).translate.menu,
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: Builder(
           builder: (context) => OkButton(
             onPressed: () async {
@@ -96,37 +96,37 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
       ),
       widgets: [
         SwitchField(
-          leading: Icon(AbiliaIcons.cameraPhoto),
+          leading: const Icon(AbiliaIcons.cameraPhoto),
           value: camera,
           onChanged: (v) => setState(() => camera = v),
           child: Text(t.camera),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.myPhotos),
+          leading: const Icon(AbiliaIcons.myPhotos),
           value: myPhotos,
           onChanged: (v) => setState(() => myPhotos = v),
           child: Text(t.myPhotos),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.day),
+          leading: const Icon(AbiliaIcons.day),
           value: photoCalendar,
           onChanged: (v) => setState(() => photoCalendar = v),
           child: Text(t.photoCalendar.singleLine),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.stopWatch),
+          leading: const Icon(AbiliaIcons.stopWatch),
           value: countdown,
           onChanged: (v) => setState(() => countdown = v),
           child: Text(t.countdown),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.menuSetup),
+          leading: const Icon(AbiliaIcons.menuSetup),
           value: quickSettings,
           onChanged: (v) => setState(() => quickSettings = v),
           child: Text(t.quickSettingsMenu.singleLine),
         ),
         SwitchField(
-          leading: Icon(AbiliaIcons.settings),
+          leading: const Icon(AbiliaIcons.settings),
           value: settings,
           onChanged: (v) => setState(() => settings = v),
           child: Text(t.settings),

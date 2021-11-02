@@ -57,7 +57,7 @@ class _EditNotePageState extends State<EditNotePage> {
           title: translate.enterText,
         ),
         bottomSheet: BottomNavigation(
-          backNavigationWidget: CancelButton(),
+          backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             onPressed: _textEditingController.text.isNotEmpty
                 ? () =>
@@ -99,7 +99,7 @@ class _EditNotePageState extends State<EditNotePage> {
                         autofocus: true,
                         maxLines: null,
                         expands: true,
-                        scrollPhysics: NeverScrollableScrollPhysics(),
+                        scrollPhysics: const NeverScrollableScrollPhysics(),
                       ),
                     ),
                   ],

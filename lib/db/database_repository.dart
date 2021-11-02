@@ -85,9 +85,8 @@ class DatabaseRepository {
 
   @visibleForTesting
   static final migrations = <String>[
-    '''
-      alter table $calendarTableName add column extras text
-    ''',
+    'alter table $calendarTableName add column extras text',
+    'alter table $sortableTableName add column fixed int',
   ];
 
   static Future<Database> createSqfliteDb() async {

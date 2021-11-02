@@ -56,7 +56,7 @@ void main() {
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
-      ..ticker = Ticker(stream: Stream.empty(), initialTime: initialDay)
+      ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
       ..init();
   });
 
@@ -215,7 +215,7 @@ void main() {
   });
 
   group('With preview', () {
-    final time = initialDay.withTime(TimeOfDay(hour: 16, minute: 16));
+    final time = initialDay.withTime(const TimeOfDay(hour: 16, minute: 16));
     const title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
     final friday = time.addDays(2);
     setUp(() {

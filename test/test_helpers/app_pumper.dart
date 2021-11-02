@@ -6,7 +6,7 @@ import 'package:seagull/ui/all.dart';
 extension IncreaseSizeOnMp on WidgetTester {
   Future<void> pumpApp({bool use24 = false, PushBloc? pushBloc}) async {
     if (Config.isMP) {
-      binding.window.physicalSizeTestValue = Size(800, 1280);
+      binding.window.physicalSizeTestValue = const Size(800, 1280);
       binding.window.devicePixelRatioTestValue = 1;
 
       // resets the screen to its orinal size after the test end

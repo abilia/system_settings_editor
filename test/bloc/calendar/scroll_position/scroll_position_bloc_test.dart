@@ -180,7 +180,7 @@ void main() {
       // Act
       for (var i = activityAt; i < max; i++) {
         when(() => mockScrollController.offset).thenReturn(i);
-        scrollPositionBloc.add(ScrollPositionUpdated());
+        scrollPositionBloc.add(const ScrollPositionUpdated());
       }
 
       // Assert
@@ -210,7 +210,7 @@ void main() {
     // Act
     for (var i = activityAt; i > 0; i--) {
       when(() => mockScrollController.offset).thenReturn(i);
-      scrollPositionBloc.add(ScrollPositionUpdated());
+      scrollPositionBloc.add(const ScrollPositionUpdated());
     }
 
     // Assert
@@ -230,7 +230,7 @@ void main() {
 
     // Act
     scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-    scrollPositionBloc.add(GoToNow());
+    scrollPositionBloc.add(const GoToNow());
 
     // Assert
     await untilCalled(() => mockScrollController.animateTo(initialOffset,
@@ -311,7 +311,7 @@ void main() {
       );
 
       // Act
-      scrollPositionBloc.add(GoToNow());
+      scrollPositionBloc.add(const GoToNow());
       // Assert
       await untilCalled(() => mockScrollController.animateTo(nowPos,
           duration: any(named: 'duration'), curve: any(named: 'curve')));

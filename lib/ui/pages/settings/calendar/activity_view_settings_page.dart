@@ -26,7 +26,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
             ),
             SizedBox(height: 16.s),
             SwitchField(
-              leading: Icon(AbiliaIcons.handiAlarmVibration),
+              leading: const Icon(AbiliaIcons.handiAlarmVibration),
               value: state.alarm,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
@@ -34,7 +34,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.alarm),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.deleteAllClear),
+              leading: const Icon(AbiliaIcons.deleteAllClear),
               value: state.delete,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
@@ -42,7 +42,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.delete),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.edit),
+              leading: const Icon(AbiliaIcons.edit),
               value: state.edit,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
@@ -51,7 +51,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
             ),
             const SizedBox.shrink(),
             SwitchField(
-              leading: Icon(AbiliaIcons.timeline),
+              leading: const Icon(AbiliaIcons.timeline),
               value: state.quarterHour,
               onChanged: (v) => context
                   .read<ActivityViewSettingsCubit>()
@@ -59,7 +59,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.showQuarterHourWatchBar),
             ),
             SwitchField(
-              leading: Icon(AbiliaIcons.clock),
+              leading: const Icon(AbiliaIcons.clock),
               value: state.quarterHour && state.timeOnQuarterHour,
               onChanged: state.quarterHour
                   ? (v) => context
@@ -70,7 +70,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
             )
           ],
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () {

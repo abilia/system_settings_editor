@@ -81,7 +81,7 @@ class CalendarAppBar extends StatelessWidget {
                     SizedBox(width: clockPadding)
                   ],
                   rightAction ??
-                      (clockToTheRight ? AbiliaClock() : _emptyAction),
+                      (clockToTheRight ? const AbiliaClock() : _emptyAction),
                 ],
               ),
             ),

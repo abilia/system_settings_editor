@@ -244,13 +244,13 @@ void main() {
 
   test('create, serialize and deserialize test', () {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
-    final fileId = Uuid().v4();
-    final duration = Duration(minutes: 90);
+    final fileId = const Uuid().v4();
+    const duration = Duration(minutes: 90);
     final reminders = {
-      Duration(minutes: 5).inMilliseconds,
-      Duration(hours: 1).inMilliseconds
+      const Duration(minutes: 5).inMilliseconds,
+      const Duration(hours: 1).inMilliseconds
     };
-    final infoItem = NoteInfoItem('just a note');
+    const infoItem = NoteInfoItem('just a note');
 
     final activity = Activity.createNew(
       title: 'An interesting title',

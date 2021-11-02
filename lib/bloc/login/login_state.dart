@@ -17,12 +17,7 @@ class LoginState extends Equatable {
     required this.password,
   });
 
-  factory LoginState.initial() {
-    return LoginState(
-      username: '',
-      password: '',
-    );
-  }
+  factory LoginState.initial() => const LoginState(username: '', password: '');
 
   LoginState copyWith({
     String? username,

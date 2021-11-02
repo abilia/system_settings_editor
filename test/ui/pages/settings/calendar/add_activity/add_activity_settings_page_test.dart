@@ -137,7 +137,7 @@ void main() {
       testWidgets('Show no alarm', (tester) async {
         await tester.goToNewActivitySettingsPage();
         await tester.dragUntilVisible(find.text(translate.showNoAlarm),
-            find.byType(AddActivityGeneralSettingsTab), Offset(0, 100));
+            find.byType(AddActivityGeneralSettingsTab), const Offset(0, 100));
         await tester.pumpAndSettle();
         await tester.tap(find.text(translate.showNoAlarm));
         await tester.pumpAndSettle();
@@ -374,7 +374,7 @@ extension on WidgetTester {
     await pumpAndSettle();
     expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
     await dragUntilVisible(
-        finder, find.byType(AddActivityAddSettingsTab), Offset(0, -100));
+        finder, find.byType(AddActivityAddSettingsTab), const Offset(0, -100));
     await pumpAndSettle();
     await tap(finder);
     await pumpAndSettle();

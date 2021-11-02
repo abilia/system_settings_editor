@@ -17,8 +17,8 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: t.general,
             iconData: AbiliaIcons.settings,
-            bottom: AbiliaTabBar(
-              tabs: const <Widget>[
+            bottom: const AbiliaTabBar(
+              tabs: <Widget>[
                 Icon(AbiliaIcons.clock),
                 Icon(AbiliaIcons.dayInterval),
                 Icon(AbiliaIcons.changePageColor),
@@ -26,14 +26,14 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(children: const [
+          body: const TabBarView(children: [
             ClockSettingsTab(),
             IntervalsSettingsTab(),
             DayColorsSettingsTab(),
             CategoriesSettingsTab(),
           ]),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () async {

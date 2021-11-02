@@ -121,7 +121,7 @@ extension DateTimeExtensions on DateTime {
     final mondayWeekx = day.subtract(Duration(days: day.weekday - 1));
     final diff = mondayWeekx.difference(sundayWeek1).inDays;
     final week = (diff ~/ 7) + 1;
-    final thursdayWeekx = mondayWeekx.add(Duration(days: 3));
+    final thursdayWeekx = mondayWeekx.add(const Duration(days: 3));
     if (week == 53 && thursdayWeekx.month == 1) return 1;
     return week;
   }

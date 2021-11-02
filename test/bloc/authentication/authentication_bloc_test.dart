@@ -49,7 +49,7 @@ void main() {
         () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
 
       // Assert
       await expectLater(
@@ -69,8 +69,8 @@ void main() {
     test('state change back to Unauthenticated when loggin out', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedOut());
 
       // Assert
       await expectLater(
@@ -107,8 +107,8 @@ void main() {
       notificationMock = MockNotification();
 
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(() => mockedUserRepository.me(any()))
-          .thenAnswer((_) => Future.value(User(id: 0, type: '', name: '')));
+      when(() => mockedUserRepository.me(any())).thenAnswer(
+          (_) => Future.value(const User(id: 0, type: '', name: '')));
       authenticationBloc = AuthenticationBloc(
         mockedUserRepository,
         onLogout: () {
@@ -120,7 +120,7 @@ void main() {
     test('loggedIn event saves token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedIn(token: Fakes.token));
+      authenticationBloc.add(const LoggedIn(token: Fakes.token));
       // Assert
       await untilCalled(() => mockedUserRepository.persistToken(Fakes.token));
     });
@@ -128,7 +128,7 @@ void main() {
     test('loggedOut calls deletes token', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
       await untilCalled(() => mockedUserRepository.logout());
     });
@@ -136,7 +136,7 @@ void main() {
     test('logged out cancel all Notification Function is called', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
       await untilCalled(() => notificationMock.mockCancelAll());
     });
@@ -173,7 +173,7 @@ void main() {
     test('logged out cancel all on logout and repo in order', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(LoggedOut());
+      authenticationBloc.add(const LoggedOut());
       // Assert
       await untilCalled(() => mockedUserRepository.logout());
       await untilCalled(() => notificationMock.mockCancelAll());

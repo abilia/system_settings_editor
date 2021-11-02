@@ -235,9 +235,9 @@ class MemoplannerSettingsLoaded extends MemoplannerSettingsState {
 }
 
 class MemoplannerSettingsNotLoaded extends MemoplannerSettingsState {
-  MemoplannerSettingsNotLoaded() : super(MemoplannerSettings());
+  const MemoplannerSettingsNotLoaded() : super(const MemoplannerSettings());
 }
 
 class MemoplannerSettingsFailed extends MemoplannerSettingsState {
-  MemoplannerSettingsFailed() : super(MemoplannerSettings());
+  const MemoplannerSettingsFailed() : super(const MemoplannerSettings());
 }

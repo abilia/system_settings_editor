@@ -27,7 +27,7 @@ void main() {
   test('requesting a permission requests the permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
     final permissionBloc = PermissionBloc();
-    permissionBloc.add(RequestPermissions(const [Permission.camera]));
+    permissionBloc.add(const RequestPermissions([Permission.camera]));
     await expectLater(
       permissionBloc.stream,
       emits(PermissionState.empty()
@@ -57,7 +57,7 @@ void main() {
   test('checking a permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
     final permissionBloc = PermissionBloc();
-    permissionBloc.add(CheckStatusForPermissions(const [Permission.camera]));
+    permissionBloc.add(const CheckStatusForPermissions([Permission.camera]));
     await expectLater(
       permissionBloc.stream,
       emits(PermissionState.empty()

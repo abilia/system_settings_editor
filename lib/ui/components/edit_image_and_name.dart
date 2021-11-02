@@ -84,7 +84,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
           const Spacer(),
           BottomNavigation(
             useSafeArea: false,
-            backNavigationWidget: CancelButton(),
+            backNavigationWidget: const CancelButton(),
             forwardNavigationWidget: OkButton(
               onPressed: !widget.allowEmpty && imageAndName.isEmpty
                   ? null

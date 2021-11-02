@@ -29,7 +29,7 @@ class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
           children: <Widget>[
             RadioField<bool>(
               key: TestKey.newActivityChoice,
-              leading: Icon(AbiliaIcons.newIcon),
+              leading: const Icon(AbiliaIcons.newIcon),
               text: Text(translate.newActivityChoice),
               value: false,
               groupValue: pickBasicActivityView,
@@ -38,7 +38,7 @@ class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
             SizedBox(height: 8.0.s),
             RadioField<bool>(
               key: TestKey.basicActivityChoice,
-              leading: Icon(AbiliaIcons.folder),
+              leading: const Icon(AbiliaIcons.folder),
               text: Text(translate.fromBasicActivity),
               value: true,
               groupValue: pickBasicActivityView,
@@ -59,7 +59,7 @@ class _BasicActivityStepPageState extends State<BasicActivityStepPage> {
                         create: (_) => SortableArchiveBloc<BasicActivityData>(
                           sortableBloc: BlocProvider.of<SortableBloc>(context),
                         ),
-                        child: BasicActivityPickerPage(),
+                        child: const BasicActivityPickerPage(),
                       ),
                     ),
                   ),

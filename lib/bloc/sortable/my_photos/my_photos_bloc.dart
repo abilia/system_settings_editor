@@ -14,7 +14,7 @@ part 'my_photos_event.dart';
 class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
   late final StreamSubscription sortableSubscription;
   final SortableBloc sortableBloc;
-  MyPhotosBloc({required this.sortableBloc}) : super(MyPhotosState()) {
+  MyPhotosBloc({required this.sortableBloc}) : super(const MyPhotosState()) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesArrived(sortableState.sortables));

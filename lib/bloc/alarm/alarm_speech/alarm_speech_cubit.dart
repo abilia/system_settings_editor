@@ -28,7 +28,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required this.soundCubit,
     required AlarmSettings alarmSettings,
     required Stream<NotificationAlarm> selectedNotificationStream,
-  }) : super(AlarmSpeechUnplayed()) {
+  }) : super(const AlarmSpeechUnplayed()) {
     final speechDelay = _alarmDuration(alarmSettings, fullScreenAlarm);
 
     _log.fine('alarm length: $speechDelay');
