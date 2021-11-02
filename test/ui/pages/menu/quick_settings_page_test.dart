@@ -66,7 +66,6 @@ void main() {
     testWidgets('Correct battery level icon is shown', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(BatteryLevelDisplay), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.batteryLevel_20), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }
