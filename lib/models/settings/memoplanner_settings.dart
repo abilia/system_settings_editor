@@ -162,6 +162,7 @@ class MemoplannerSettings extends Equatable {
 
   final AlarmSettings alarm;
   final WizardStepsSettings wizard;
+  final CodeProtectSettings codeProtect;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -237,6 +238,7 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsZoom = true,
     this.settingViewOptionsDurationDots = true,
     this.wizard = const WizardStepsSettings(),
+    this.codeProtect = const CodeProtectSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -482,6 +484,7 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsDurationDotsKey,
       ),
       wizard: WizardStepsSettings.fromSettingsMap(settings),
+      codeProtect: CodeProtectSettings.fromSettingsMap(settings),
     );
   }
 
@@ -560,6 +563,7 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsZoom,
         settingViewOptionsDurationDots,
         wizard,
+        codeProtect,
       ];
 }
 
