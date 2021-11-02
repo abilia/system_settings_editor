@@ -14,7 +14,7 @@ const _dash = '-';
 class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
   late final TextEditingController controller;
 
-  int? firstCode;
+  String? firstCode;
   bool get isAtFirstCode => firstCode == null;
   @override
   void initState() {
@@ -85,18 +85,16 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
   }
 
   void onPressed() {
-    final textEditValue = int.tryParse(controller.text);
-    if (textEditValue != null) {
-      if (firstCode == null) {
-        return setState(() {
-          firstCode = textEditValue;
-          controller.text = _fourDash;
-          controller.selection =
-              const TextSelection(baseOffset: 0, extentOffset: 0);
-        });
-      } else if (firstCode == textEditValue) {
-        return Navigator.pop(context, firstCode);
-      }
+    final textEditValue = controller.text;
+    if (firstCode == null) {
+      return setState(() {
+        firstCode = textEditValue;
+        controller.text = _fourDash;
+        controller.selection =
+            const TextSelection(baseOffset: 0, extentOffset: 0);
+      });
+    } else if (firstCode == textEditValue) {
+      return Navigator.pop(context, firstCode);
     }
     showDialog(
       context: context,

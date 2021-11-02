@@ -108,7 +108,7 @@ void main() {
 
     testWidgets('can change code protect code', (tester) async {
       const placeHoderText = '----';
-      const newCode = '8008';
+      const newCode = '0808';
       await tester._goToCodeProtectPage();
 
       expect(find.text(CodeProtectSettings.defaultCode), findsOneWidget);
