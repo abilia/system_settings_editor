@@ -148,46 +148,44 @@ class ActivityPagePreview extends StatelessWidget {
     final startTime = day.add(const Duration(hours: 17));
     final time = startTime.subtract(const Duration(hours: 1, minutes: 4));
     return AbsorbPointer(
-      child: Column(
-        children: [
-          Material(
-            borderRadius: BorderRadius.all(Radius.circular(4.s)),
-            elevation: 3,
-            shadowColor: Colors.black,
-            clipBehavior: Clip.hardEdge,
-            child: SizedBox(
-              height: 256.s,
-              child: FittedBox(
-                child: SizedBox(
-                  width: 450.0.s,
-                  height: 800.0.s,
-                  child: BlocProvider(
-                    create: (context) => ClockBloc(
-                      StreamController<DateTime>().stream,
-                      initialTime: time,
+      child: Center(
+        child: Material(
+          borderRadius: BorderRadius.all(Radius.circular(4.s)),
+          elevation: 3,
+          shadowColor: Colors.black,
+          clipBehavior: Clip.hardEdge,
+          child: SizedBox(
+            height: 256.s,
+            child: FittedBox(
+              child: SizedBox(
+                width: 450.0.s,
+                height: 800.0.s,
+                child: BlocProvider(
+                  create: (context) => ClockBloc(
+                    StreamController<DateTime>().stream,
+                    initialTime: time,
+                  ),
+                  child: ActivityPage(
+                    occasion: ActivityOccasion(
+                      Activity.createNew(
+                          title: Translator.of(context)
+                              .translate
+                              .previewActivityTitle,
+                          startTime: startTime,
+                          duration: const Duration(hours: 1)),
+                      startTime,
+                      Occasion.future,
                     ),
-                    child: ActivityPage(
-                      occasion: ActivityOccasion(
-                        Activity.createNew(
-                            title: Translator.of(context)
-                                .translate
-                                .previewActivityTitle,
-                            startTime: startTime,
-                            duration: const Duration(hours: 1)),
-                        startTime,
-                        Occasion.future,
-                      ),
-                      previewImage: const Image(
-                        image: AssetImage('assets/graphics/cake.gif'),
-                        fit: BoxFit.cover,
-                      ),
+                    previewImage: const Image(
+                      image: AssetImage('assets/graphics/cake.gif'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

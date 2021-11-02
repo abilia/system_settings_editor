@@ -64,34 +64,18 @@ class DayAppBarPreview extends StatelessWidget {
           BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) =>
             BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, currentTime) => SizedBox(
-            height: CalendarAppBar.size.height,
-            child: CalendarAppBar(
-              leftAction: state.showBrowseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.returnToPreviousPage),
-                    )
-                  : null,
-              rightAction: state.showBrowseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.goToNextPage),
-                    )
-                  : null,
-              day: DateTime.now(),
-              calendarDayColor: memoSettingsState.calendarDayColor,
-              rows: AppBarTitleRows.day(
-                displayWeekDay: state.showWeekday,
-                displayPartOfDay: state.showDayPeriod,
-                displayDate: state.showDate,
-                currentTime: currentTime,
-                day: currentTime.onlyDays(),
-                dayParts: memoSettingsState.dayParts,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-                translator: Translator.of(context).translate,
-              ),
-              showClock: state.showClock,
+          builder: (context, currentTime) => AppBarPreview(
+            showBrowseButtons: state.showBrowseButtons,
+            showClock: state.showClock,
+            rows: AppBarTitleRows.day(
+              displayWeekDay: state.showWeekday,
+              displayPartOfDay: state.showDayPeriod,
+              displayDate: state.showDate,
+              currentTime: currentTime,
+              day: currentTime.onlyDays(),
+              dayParts: memoSettingsState.dayParts,
+              langCode: Localizations.localeOf(context).toLanguageTag(),
+              translator: Translator.of(context).translate,
             ),
           ),
         ),
