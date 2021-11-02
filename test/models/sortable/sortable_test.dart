@@ -71,6 +71,7 @@ void main() {
       'visible': 1,
       'revision': 999,
       'dirty': 1,
+      'fixed': 0,
     };
     final dbSortable = DbSortable.fromDbMap(dbMap);
     expect(dbSortable.dirty, 1);
@@ -84,6 +85,7 @@ void main() {
     expect(s.isGroup, true);
     expect(s.visible, true);
     expect(s.deleted, true);
+    expect(s.fixed, false);
 
     final mapAgain = dbSortable.toMapForDb();
     expect(mapAgain, dbMap);

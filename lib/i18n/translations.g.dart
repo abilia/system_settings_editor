@@ -6347,7 +6347,7 @@ class NB extends Translated {
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
-  final String clockFiveMinutesPastTts = 'Fem minutter over %s';
+  final String clockFiveMinutesPastTts = 'Fem over %s';
 
   @override
   final String clockFiveMinutesHalfPastTts = 'Fem over halv %s';

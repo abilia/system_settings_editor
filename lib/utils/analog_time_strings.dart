@@ -4,6 +4,8 @@ import 'package:seagull/i18n/translations_extensions.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
+const String _clockNoMinutesTts = '%s';
+
 String analogTimeStringWithInterval(
     Translator translator, DateTime time, DayParts dayParts) {
   String timeWithInterval = translator.translate.replaceInString(
@@ -104,6 +106,6 @@ String _stringForInterval(Translator translator, int interval) {
     case 11:
       return translate.clockFiveMinutesToTts;
     default:
-      return translate.clockTheTimeIsTts;
+      return _clockNoMinutesTts;
   }
 }
