@@ -161,7 +161,14 @@ class QuickSettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuItemButton(
       icon: AbiliaIcons.menuSetup,
-      onPressed: () {},
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => CopiedAuthProviders(
+            blocContext: context,
+            child: const QuickSettingsPage(),
+          ),
+        ),
+      ),
       style: yellowButtonStyle,
       text: Translator.of(context).translate.quickSettingsMenu,
     );

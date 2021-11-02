@@ -11,7 +11,7 @@ open class MainActivity : FlutterActivity() {
         screenOn()
     }
 
-    fun screenOn() {
+    private fun screenOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setTurnScreenOn(true)
         } else {
