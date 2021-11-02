@@ -68,6 +68,8 @@ void main() {
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     mockGenericDb = MockGenericDb();
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision())
+        .thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -278,7 +280,7 @@ void main() {
     });
 
     testWidgets(
-        'Change date in edit activity does not show in activity page for recurring activities',
+        'Change date in edit activity show in activity page for recurring activities',
         (WidgetTester tester) async {
       // Arrange
       const day = 14;
@@ -301,15 +303,44 @@ void main() {
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(AbiliaIcons.week));
-      await tester.pumpAndSettle();
+      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
 
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
-      // original text still stands
+      // text change stands
+      expect(find.textContaining('11 November 2111'), findsNothing);
+      expect(find.text('$day November 2111'), findsOneWidget);
+    });
+
+    testWidgets(
+        'Change date for recurring activities only option is Only this day',
+        (WidgetTester tester) async {
+      // Arrange
+      const day = 19;
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
+          Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
+      await navigateToActivityPage(tester);
+
       expect(find.textContaining('11 November 2111'), findsOneWidget);
-      expect(find.text('$day November 2111'), findsNothing);
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
+      expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
+      expect(find.byKey(TestKey.allDays), findsNothing);
+      expect(find.byKey(TestKey.thisDayAndForward), findsNothing);
     });
   });
 
