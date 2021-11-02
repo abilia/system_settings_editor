@@ -1388,7 +1388,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(editPictureFinder);
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.folder));
+      await tester.tap(find.byKey(TestKey.imageArchiveButton));
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
     });

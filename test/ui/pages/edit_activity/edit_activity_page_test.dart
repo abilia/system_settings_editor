@@ -208,9 +208,9 @@ void main() {
 
       final cameraPickFieldFinder = find.byKey(ObjectKey(ImageSource.camera)),
           photoPickFieldFinder = find.byKey(ObjectKey(ImageSource.gallery)),
-          photoInfoButtonFiner =
+          photoInfoButtonFinder =
               find.byKey(Key('${ImageSource.gallery}${Permission.photos}')),
-          cameraInfoButtonFiner =
+          cameraInfoButtonFinder =
               find.byKey(Key('${ImageSource.camera}${Permission.camera}'));
       testWidgets(
           'Select picture dialog picker options are disabled and shows info button when permission denied',
@@ -225,15 +225,18 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(SelectPicturePage), findsOneWidget);
 
-        final photoPickField = tester.widget<PickField>(photoPickFieldFinder);
+        if (Config.isMPGO) {
+          final photoPickField = tester.widget<PickField>(photoPickFieldFinder);
+          expect(photoPickField.onTap, isNull);
+          expect(find.byType(InfoButton), findsNWidgets(2));
+          expect(photoInfoButtonFinder, findsOneWidget);
+        } else {
+          expect(find.byType(InfoButton), findsNWidgets(1));
+        }
+
         final cameraPickField = tester.widget<PickField>(cameraPickFieldFinder);
-
-        expect(photoPickField.onTap, isNull);
         expect(cameraPickField.onTap, isNull);
-        expect(find.byType(InfoButton), findsNWidgets(2));
-
-        expect(cameraInfoButtonFiner, findsOneWidget);
-        expect(photoInfoButtonFiner, findsOneWidget);
+        expect(cameraInfoButtonFinder, findsOneWidget);
       });
 
       testWidgets('Image dialog picker options camera info button calls',
@@ -245,7 +248,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
-        await tester.tap(cameraInfoButtonFiner);
+        await tester.tap(cameraInfoButtonFinder);
         await tester.pumpAndSettle();
 
         final permissionDialog = tester
@@ -265,7 +268,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
-        await tester.tap(photoInfoButtonFiner);
+        await tester.tap(photoInfoButtonFinder);
         await tester.pumpAndSettle();
 
         final permissionDialog = tester
@@ -274,7 +277,7 @@ void main() {
         expect(permissionDialog.permission, Permission.photos);
         expect(find.byIcon(Permission.photos.iconData), findsWidgets);
         expect(find.byType(PermissionSwitch), findsOneWidget);
-      });
+      }, skip: Config.isMP);
     });
 
     testWidgets('full day switch', (WidgetTester tester) async {
