@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
   package="com.abilia.memoplanner">
 
-  <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions"/>
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
   <application>
     <activity 
