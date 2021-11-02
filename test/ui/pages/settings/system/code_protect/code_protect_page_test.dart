@@ -156,7 +156,13 @@ void main() {
       expect(find.byType(ErrorDialog), findsOneWidget);
       await tester.tap(find.byType(PreviousButton));
       await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), '123');
+      await tester.tap(find.byType(GreenButton));
+      await tester.pumpAndSettle();
 
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      await tester.tap(find.byType(PreviousButton));
+      await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '1234');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GreenButton));

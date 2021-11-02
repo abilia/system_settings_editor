@@ -86,15 +86,17 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
 
   void onPressed() {
     final textEditValue = controller.text;
-    if (firstCode == null) {
-      return setState(() {
-        firstCode = textEditValue;
-        controller.text = _fourDash;
-        controller.selection =
-            const TextSelection(baseOffset: 0, extentOffset: 0);
-      });
-    } else if (firstCode == textEditValue) {
-      return Navigator.pop(context, firstCode);
+    if (int.tryParse(textEditValue) != null) {
+      if (firstCode == null) {
+        return setState(() {
+          firstCode = textEditValue;
+          controller.text = _fourDash;
+          controller.selection =
+              const TextSelection(baseOffset: 0, extentOffset: 0);
+        });
+      } else if (firstCode == textEditValue) {
+        return Navigator.pop(context, firstCode);
+      }
     }
     showDialog(
       context: context,
