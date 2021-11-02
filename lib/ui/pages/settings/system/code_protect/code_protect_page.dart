@@ -25,7 +25,7 @@ class CodeProtectPage extends StatelessWidget {
               PickField(
                   text: Text(state.code),
                   onTap: () async {
-                    final newCode = await Navigator.of(context).push<int>(
+                    final newCode = await Navigator.of(context).push<String>(
                       MaterialPageRoute(
                         builder: (_) => const ChangeCodeProtectPage(),
                         settings:
@@ -35,7 +35,7 @@ class CodeProtectPage extends StatelessWidget {
                     if (newCode != null) {
                       context
                           .read<CodeProtectCubit>()
-                          .change(state.copyWith(code: '$newCode'));
+                          .change(state.copyWith(code: newCode));
                     }
                   }),
               SizedBox(height: 8.s),
