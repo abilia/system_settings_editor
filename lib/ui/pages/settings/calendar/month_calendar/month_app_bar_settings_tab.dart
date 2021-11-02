@@ -45,33 +45,14 @@ class _MonthAppBarPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettingsState>(
-      builder: (context, state) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) =>
-            BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, currentTime) => SizedBox(
-            height: CalendarAppBar.size.height,
-            child: CalendarAppBar(
-              leftAction: state.browseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.returnToPreviousPage),
-                    )
-                  : null,
-              rightAction: state.browseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.goToNextPage),
-                    )
-                  : null,
-              day: currentTime,
-              rows: AppBarTitleRows.month(
-                currentTime: currentTime,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-                showYear: state.year,
-              ),
-              showClock: state.clock,
-            ),
+      builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, currentTime) => AppBarPreview(
+          showBrowseButtons: state.browseButtons,
+          showClock: state.clock,
+          rows: AppBarTitleRows.month(
+            currentTime: currentTime,
+            langCode: Localizations.localeOf(context).toLanguageTag(),
+            showYear: state.year,
           ),
         ),
       ),

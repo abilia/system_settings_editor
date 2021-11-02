@@ -686,6 +686,8 @@ abstract class Translated {
 
   final String confirmCode = 'Confirm code';
 
+  final String incorrectCode = 'Incorrect code';
+
   final String permissions = 'Permissions';
 
   final String notifications = 'Notifications';
@@ -1743,6 +1745,9 @@ class SV extends Translated {
 
   @override
   final String confirmCode = 'Bekräfta kod';
+
+  @override
+  final String incorrectCode = 'Felaktig kod';
 
   @override
   final String permissions = 'Behörigheter';
@@ -2821,6 +2826,9 @@ class DA extends Translated {
   final String confirmCode = 'Bekræft kodeord';
 
   @override
+  final String incorrectCode = 'Forkert kodeord';
+
+  @override
   final String permissions = 'Tilladelser';
 
   @override
@@ -3897,6 +3905,9 @@ class NL extends Translated {
   final String confirmCode = 'Bevestig code';
 
   @override
+  final String incorrectCode = 'Onjuiste code';
+
+  @override
   final String permissions = 'Rechten';
 
   @override
@@ -4970,6 +4981,9 @@ class FI extends Translated {
 
   @override
   final String confirmCode = 'Vahvista koodi';
+
+  @override
+  final String incorrectCode = 'Virheellinen koodi';
 
   @override
   final String permissions = 'Käyttöoikeudet';
@@ -6053,6 +6067,9 @@ class DE extends Translated {
   final String confirmCode = 'Code bestätigen';
 
   @override
+  final String incorrectCode = 'Falscher Code';
+
+  @override
   final String permissions = 'Berechtigungen';
 
   @override
@@ -7125,6 +7142,9 @@ class NB extends Translated {
 
   @override
   final String confirmCode = 'Bekreft kode';
+
+  @override
+  final String incorrectCode = 'Feil kode';
 
   @override
   final String permissions = 'Tillatelser';

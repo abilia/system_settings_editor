@@ -56,37 +56,17 @@ class WeekAppBarPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
-      builder: (context, state) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) =>
-            BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, currentTime) => SizedBox(
-            height: CalendarAppBar.size.height,
-            child: CalendarAppBar(
-              leftAction: state.showBrowseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.returnToPreviousPage),
-                    )
-                  : null,
-              rightAction: state.showBrowseButtons
-                  ? ActionButton(
-                      onPressed: () => {},
-                      child: const Icon(AbiliaIcons.goToNextPage),
-                    )
-                  : null,
-              day: DateTime.now(),
-              calendarDayColor: memoSettingsState.calendarDayColor,
-              rows: AppBarTitleRows.week(
-                translator: Translator.of(context).translate,
-                selectedDay: currentTime.onlyDays(),
-                selectedWeekStart: currentTime.firstInWeek(),
-                showWeekNumber: state.showWeekNumber,
-                showYear: state.showYear,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-              ),
-              showClock: state.showClock,
-            ),
+      builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, currentTime) => AppBarPreview(
+          showBrowseButtons: state.showBrowseButtons,
+          showClock: state.showClock,
+          rows: AppBarTitleRows.week(
+            translator: Translator.of(context).translate,
+            selectedDay: currentTime.onlyDays(),
+            selectedWeekStart: currentTime.firstInWeek(),
+            showWeekNumber: state.showWeekNumber,
+            showYear: state.showYear,
+            langCode: Localizations.localeOf(context).toLanguageTag(),
           ),
         ),
       ),
