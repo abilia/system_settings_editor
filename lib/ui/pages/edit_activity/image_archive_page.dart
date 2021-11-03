@@ -5,8 +5,10 @@ import 'package:seagull/ui/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
   final VoidCallback? onCancel;
+  final String initialFolder;
 
-  const ImageArchivePage({Key? key, this.onCancel}) : super(key: key);
+  const ImageArchivePage({Key? key, this.onCancel, this.initialFolder = ''})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -15,6 +17,7 @@ class ImageArchivePage extends StatelessWidget {
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectPicture,
       ),
+      initialFolder: initialFolder,
       rootHeading: translate.imageArchive,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
