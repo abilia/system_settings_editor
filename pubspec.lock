@@ -1022,7 +1022,7 @@ packages:
       path: "."
       ref: "v1.0.0"
       resolved-ref: b79c08d8e751c634be42863eb57ce0e64edd5edc
-      url: "git://github.com/abilia/system_settings_editor.git"
+      url: "https://github.com/abilia/system_settings_editor.git"
     source: git
     version: "0.0.1"
   term_glyph:
