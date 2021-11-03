@@ -51,10 +51,7 @@ class _BatteryLevelDisplayState extends State<BatteryLevelDisplay> {
             SizedBox(
               width: 18.s,
             ),
-            Icon(
-              _batteryLevelIcon(_batteryLevel),
-              size: largeIconSize,
-            ),
+            _batteryLevelIcon(_batteryLevel),
             SizedBox(
               width: 16.s,
             ),
@@ -69,33 +66,118 @@ class _BatteryLevelDisplayState extends State<BatteryLevelDisplay> {
     );
   }
 
-  IconData? _batteryLevelIcon(int batteryLevel) {
+  Widget _batteryLevelIcon(int batteryLevel) {
     if (batteryLevel > 90) {
-      return AbiliaIcons.batteryLevel_100;
+      return const BatteryIcon100();
     }
     if (batteryLevel > 70) {
-      return AbiliaIcons.batteryLevel_80;
+      return const BatteryIcon80();
     }
     if (batteryLevel > 50) {
-      return AbiliaIcons.batteryLevel_60;
+      return const BatteryIcon60();
     }
     if (batteryLevel > 30) {
-      return AbiliaIcons.batteryLevel_40;
+      return const BatteryIcon40();
     }
     if (batteryLevel > 10) {
-      return AbiliaIcons.batteryLevel_20;
+      return const BatteryIcon20();
     }
     if (batteryLevel > 5) {
-      return AbiliaIcons.batteryLevel_10;
+      return const BatteryIcon10();
     }
     if (batteryLevel > 0) {
-      return AbiliaIcons.batteryLevelCritical;
+      return const BatteryIconCritical();
     }
+    return const SizedBox();
   }
 
   @override
   void dispose() {
     super.dispose();
     _batterySubscription?.cancel();
+  }
+}
+
+class BatteryIconCritical extends StatelessWidget {
+  const BatteryIconCritical({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevelCritical,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon10 extends StatelessWidget {
+  const BatteryIcon10({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_10,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon20 extends StatelessWidget {
+  const BatteryIcon20({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_20,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon40 extends StatelessWidget {
+  const BatteryIcon40({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_40,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon60 extends StatelessWidget {
+  const BatteryIcon60({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_60,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon80 extends StatelessWidget {
+  const BatteryIcon80({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_80,
+      size: largeIconSize,
+    );
+  }
+}
+
+class BatteryIcon100 extends StatelessWidget {
+  const BatteryIcon100({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      AbiliaIcons.batteryLevel_100,
+      size: largeIconSize,
+    );
   }
 }
