@@ -26,16 +26,12 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
-  private lateinit var activity : Activity
+  private var activity : Activity? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "system_settings_editor")
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
-  }
-
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    this.activity = binding.activity;
   }
 
   @RequiresApi(Build.VERSION_CODES.M)
@@ -54,10 +50,12 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
 
   @RequiresApi(Build.VERSION_CODES.M)
   private fun openAndroidPermissionsMenu() {
-    val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    intent.data = Uri.parse("package:" + activity.packageName)
-    startActivity(context, intent, null)
+    activity?.let {
+      val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      intent.data = Uri.parse("package:" + it.packageName)
+      startActivity(context, intent, null)
+    }
   }
 
   private fun getBrightness(): Double {
@@ -74,7 +72,7 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
     return 1.0
   }
 
-  private fun setBrightnessHandler(call: MethodCall, result: MethodChannel.Result) {
+  private fun setBrightnessHandler(call: MethodCall, result: Result) {
     val brightness: Double? = call.argument("brightness")
     brightness?.let {
       setBrightness(it)
@@ -85,9 +83,11 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
   }
 
   private fun setBrightness(brightness: Double) {
-    val lp = activity.window.attributes
-    lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-    activity.window.attributes = lp
+    activity?.let {
+      val lp = it.window.attributes
+      lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+      it.window.attributes = lp
+    }
     val cResolver: ContentResolver = context.contentResolver
     Settings.System.putInt(
       cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
@@ -116,15 +116,20 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
     channel.setMethodCallHandler(null)
   }
 
+  // ActivityAware
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    this.activity = binding.activity
+  }
+
   override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
+    this.activity = null
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    TODO("Not yet implemented")
+    this.activity = binding.activity
   }
 
   override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
+    this.activity = null
   }
 }
