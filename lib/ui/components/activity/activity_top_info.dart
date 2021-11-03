@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -77,78 +79,88 @@ class _ActivityTopInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
     final day = activityDay.day;
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, now) {
-        return Padding(
-          padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              leading ?? SizedBox(width: 48.s),
-              if (activity.fullDay)
-                _TimeBox(
-                  occasion:
-                      day.isDayBefore(now) ? Occasion.past : Occasion.future,
-                  text: Translator.of(context).translate.fullDay,
-                )
-              else if (!activity.hasEndTime)
-                _TimeBox(
-                  text: hourAndMinuteFormat(context)(activityDay.start),
-                  occasion: activityDay.start.occasion(now),
-                  key: TestKey.startTime,
-                )
-              else ...[
-                Expanded(
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      _TimeBox(
-                        key: TestKey.startTime,
-                        text: hourAndMinuteFormat(context)(activityDay.start),
-                        occasion: activityDay.start.occasion(now),
-                      )
-                    ],
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      final minPadding = 8.s;
+      final middleDashWidth = 7.s;
+      final timeBoxMaxWidth = (constraints.maxWidth -
+              (actionButtonMinSize * 2) -
+              (minPadding * 4 + middleDashWidth)) /
+          2;
+      return BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, now) {
+          return Padding(
+            padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                leading ?? SizedBox(width: actionButtonMinSize),
+                if (activity.fullDay)
+                  _TimeBox(
+                    occasion:
+                        day.isDayBefore(now) ? Occasion.past : Occasion.future,
+                    text: Translator.of(context).translate.fullDay,
+                  )
+                else if (!activity.hasEndTime)
+                  _TimeBox(
+                    text: hourAndMinuteFormat(context)(activityDay.start),
+                    occasion: activityDay.start.occasion(now),
+                    key: TestKey.startTime,
+                  )
+                else ...[
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        _TimeBox(
+                          maxWidth: timeBoxMaxWidth,
+                          key: TestKey.startTime,
+                          text: hourAndMinuteFormat(context)(activityDay.start),
+                          occasion: activityDay.start.occasion(now),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0.s),
-                  child:
-                      Text('-', style: Theme.of(context).textTheme.headline5),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      _TimeBox(
-                        key: TestKey.endTime,
-                        text: hourAndMinuteFormat(context)(activityDay.end),
-                        occasion: activityDay.end.occasion(now),
-                      ),
-                      const Spacer(),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: minPadding),
+                    child:
+                        Text('-', style: Theme.of(context).textTheme.headline5),
                   ),
-                ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        _TimeBox(
+                          maxWidth: timeBoxMaxWidth,
+                          key: TestKey.endTime,
+                          text: hourAndMinuteFormat(context)(activityDay.end),
+                          occasion: activityDay.end.occasion(now),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ],
+                trailing ?? SizedBox(width: actionButtonMinSize),
               ],
-              trailing ?? SizedBox(width: 48.s),
-            ],
-          ),
-        );
-      },
-    );
+            ),
+          );
+        },
+      );
+    });
   }
 }
 
 class _TimeBox extends StatelessWidget {
-  const _TimeBox({
-    Key? key,
-    required this.text,
-    required Occasion occasion,
-  })  : current = occasion == Occasion.current,
+  const _TimeBox(
+      {Key? key, required this.text, required Occasion occasion, this.maxWidth})
+      : current = occasion == Occasion.current,
         past = occasion == Occasion.past,
         future = occasion == Occasion.future,
         super(key: key);
 
   final bool current, past, future;
   final String text;
+  final double? maxWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +169,7 @@ class _TimeBox extends StatelessWidget {
         .headline6
         ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
     final boxDecoration = _decoration;
+    final maxMaxWidth = 92.s;
     return Tts.data(
       data: text,
       child: Stack(
@@ -166,9 +179,9 @@ class _TimeBox extends StatelessWidget {
             duration: ActivityInfo.animationDuration,
             padding: EdgeInsets.all(8.s),
             constraints: BoxConstraints(
-              minWidth: 92.0.s,
+              minWidth: 72.0.s,
               minHeight: 52.0.s,
-              maxWidth: 92.s,
+              maxWidth: min(maxWidth ?? maxMaxWidth, maxMaxWidth),
               maxHeight: 52.0.s,
             ),
             decoration: boxDecoration,
