@@ -5,10 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "System Settings Example",
+      "name": "Debug mode",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
+    },
+    {
+      "name": "Release mode",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
     },
   ]
 }
