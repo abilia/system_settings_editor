@@ -39,7 +39,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIconCritical), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevelCritical), findsOneWidget);
   });
 
   testWidgets('Battery level 10%', (WidgetTester tester) async {
@@ -48,7 +48,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon10), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_10), findsOneWidget);
   });
 
   testWidgets('Battery level 20%', (WidgetTester tester) async {
@@ -57,7 +57,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon20), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_20), findsOneWidget);
   });
 
   testWidgets('Battery level 40%', (WidgetTester tester) async {
@@ -66,7 +66,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon40), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_40), findsOneWidget);
   });
 
   testWidgets('Battery level 60%', (WidgetTester tester) async {
@@ -75,7 +75,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon60), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_60), findsOneWidget);
   });
 
   testWidgets('Battery level 80%', (WidgetTester tester) async {
@@ -84,7 +84,7 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon80), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_80), findsOneWidget);
   });
 
   testWidgets('Battery level 100%', (WidgetTester tester) async {
@@ -93,6 +93,6 @@ void main() {
     });
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
-    expect(find.byType(BatteryIcon100), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.batteryLevel_100), findsOneWidget);
   });
 }
