@@ -62,7 +62,7 @@ extension RecurringActivityExtension on Activity {
 
     return [
       for (var dayIterator = day;
-          endClock(dayIterator).isAfter(day);
+          endClock(dayIterator).isAtSameMomentOrAfter(day);
           dayIterator = dayIterator.previousDay())
         if (recursOnDay(dayIterator)) ActivityDay(this, dayIterator)
     ];
