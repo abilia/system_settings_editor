@@ -1,6 +1,6 @@
 name: system_settings_editor
-description: A new flutter plugin project.
-version: 0.0.1
+description: A plugin to edit system settings
+version: 1.0.1
 homepage:
 
 environment:
