@@ -98,91 +98,18 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                   if (displayAlarmButton)
                     ActionButtonLight(
                       key: TestKey.editAlarm,
-                      onPressed: () async {
-                        final result =
-                            await Navigator.of(context).push<Activity>(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: BlocProvider<EditActivityBloc>(
-                                create: (_) => EditActivityBloc.edit(
-                                  activityOccasion,
-                                ),
-                                child: SelectAlarmPage(activity: activity),
-                              ),
-                            ),
-                            settings:
-                                const RouteSettings(name: 'SelectAlarmPage'),
-                          ),
-                        );
-
-                        if (result != null) {
-                          if (activity.isRecurring) {
-                            final applyTo = await Navigator.of(context)
-                                .push(MaterialPageRoute(
-                              builder: (_) => SelectRecurrentTypePage(
-                                heading: Translator.of(context)
-                                    .translate
-                                    .editRecurringActivity,
-                                headingIcon: AbiliaIcons.edit,
-                              ),
-                            ));
-                            if (applyTo == null) return;
-                            BlocProvider.of<ActivitiesBloc>(context).add(
-                              UpdateRecurringActivity(
-                                ActivityDay(
-                                  result,
-                                  activityOccasion.day,
-                                ),
-                                applyTo,
-                              ),
-                            );
-                          } else {
-                            BlocProvider.of<ActivitiesBloc>(context)
-                                .add(UpdateActivity(result));
-                          }
-                        }
-                      },
+                      onPressed: () => _alarmButtonPressed(
+                        context,
+                        activityOccasion,
+                      ),
                       child: Icon(activity.alarm.iconData()),
                     ),
                   if (displayDeleteButton)
                     ActionButtonLight(
-                      onPressed: () async {
-                        final shouldDelete = await showViewDialog<bool>(
-                          context: context,
-                          builder: (_) => YesNoDialog(
-                            heading: Translator.of(context).translate.remove,
-                            headingIcon: AbiliaIcons.deleteAllClear,
-                            text:
-                                Translator.of(context).translate.deleteActivity,
-                          ),
-                        );
-                        if (shouldDelete == true) {
-                          if (activity.isRecurring) {
-                            final applyTo = await Navigator.of(context)
-                                .push(MaterialPageRoute(
-                              builder: (_) => SelectRecurrentTypePage(
-                                heading: Translator.of(context)
-                                    .translate
-                                    .deleteRecurringActivity,
-                                allDaysVisible: true,
-                                headingIcon: AbiliaIcons.deleteAllClear,
-                              ),
-                            ));
-                            if (applyTo == null) return;
-                            BlocProvider.of<ActivitiesBloc>(context).add(
-                              DeleteRecurringActivity(
-                                activityOccasion,
-                                applyTo,
-                              ),
-                            );
-                          } else {
-                            BlocProvider.of<ActivitiesBloc>(context)
-                                .add(DeleteActivity(activity));
-                          }
-                          await Navigator.of(context).maybePop();
-                        }
-                      },
+                      onPressed: () => _deleteButtonPressed(
+                        context,
+                        activity,
+                      ),
                       child: const Icon(AbiliaIcons.deleteAllClear),
                     ),
                   if (displayEditButton)
@@ -197,6 +124,91 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         );
       },
     );
+  }
+
+  Future<void> _alarmButtonPressed(
+    BuildContext context,
+    ActivityOccasion activityOccasion,
+  ) async {
+    final activity = activityOccasion.activity;
+    final result = await Navigator.of(context).push<Activity>(
+      MaterialPageRoute(
+        builder: (_) => CopiedAuthProviders(
+          blocContext: context,
+          child: BlocProvider<EditActivityBloc>(
+            create: (_) => EditActivityBloc.edit(activityOccasion),
+            child: SelectAlarmPage(activity: activity),
+          ),
+        ),
+        settings: const RouteSettings(name: 'SelectAlarmPage'),
+      ),
+    );
+
+    if (result != null) {
+      final activitiesBloc = context.read<ActivitiesBloc>();
+      if (activity.isRecurring ||
+          activitiesBloc.state.isPartOfSeries(activity)) {
+        final applyTo = await Navigator.of(context).push<ApplyTo>(
+          MaterialPageRoute(
+            builder: (_) => SelectRecurrentTypePage(
+              heading: Translator.of(context).translate.editRecurringActivity,
+              headingIcon: AbiliaIcons.edit,
+            ),
+          ),
+        );
+        if (applyTo == null) return;
+        activitiesBloc.add(
+          UpdateRecurringActivity(
+            ActivityDay(
+              result,
+              activityOccasion.day,
+            ),
+            applyTo,
+          ),
+        );
+      } else {
+        activitiesBloc.add(UpdateActivity(result));
+      }
+    }
+  }
+
+  Future<void> _deleteButtonPressed(
+    BuildContext context,
+    Activity activity,
+  ) async {
+    final shouldDelete = await showViewDialog<bool>(
+      context: context,
+      builder: (_) => YesNoDialog(
+        heading: Translator.of(context).translate.remove,
+        headingIcon: AbiliaIcons.deleteAllClear,
+        text: Translator.of(context).translate.deleteActivity,
+      ),
+    );
+    if (shouldDelete == true) {
+      final activitiesBloc = context.read<ActivitiesBloc>();
+      if (activity.isRecurring ||
+          activitiesBloc.state.isPartOfSeries(activity)) {
+        final applyTo = await Navigator.of(context).push<ApplyTo>(
+          MaterialPageRoute(
+            builder: (_) => SelectRecurrentTypePage(
+              heading: Translator.of(context).translate.deleteRecurringActivity,
+              allDaysVisible: true,
+              headingIcon: AbiliaIcons.deleteAllClear,
+            ),
+          ),
+        );
+        if (applyTo == null) return;
+        activitiesBloc.add(
+          DeleteRecurringActivity(
+            activityOccasion,
+            applyTo,
+          ),
+        );
+      } else {
+        activitiesBloc.add(DeleteActivity(activity));
+      }
+      await Navigator.of(context).maybePop();
+    }
   }
 }
 

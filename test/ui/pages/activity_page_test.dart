@@ -496,6 +496,25 @@ void main() {
       // Assert -- ok button is enabled
       expect(tester.widget<OkButton>(okButtonFinder).onPressed, isNotNull);
     });
+
+    testWidgets('Changing alarm on single instance should show apply to dialog',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(FakeActivity.singleInstance(startTime)));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(alarmButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(alarmAtStartSwichFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
+    });
   });
 
   group('Delete activity', () {
@@ -569,6 +588,23 @@ void main() {
       expect(activityCardFinder, findsNothing);
       expect(activityPageFinder, findsNothing);
       expect(agendaFinder, findsOneWidget);
+    });
+
+    testWidgets(
+        'When delete button pressed Delete recurring is showing for single instance',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+          (_) => Future.value(FakeActivity.singleInstance(startTime)));
+      await navigateToActivityPage(tester);
+
+      // Act
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(yesButtonFinder);
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(SelectRecurrentTypePage), findsOneWidget);
     });
   });
   group('Edit recurring', () {
