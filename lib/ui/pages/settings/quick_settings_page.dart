@@ -19,7 +19,7 @@ class QuickSettingsPage extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
-            child: const BatteryLevelDisplay(),
+            child: const BatteryLevel(),
           ),
           const QuickSettingsGroup(children: [
             BrightnessSlider(),
