@@ -46,7 +46,7 @@ void main() {
     GetIt.I.reset();
   });
 
-  group('Quick settings page', () {
+  group('Quick settings page brightness', () {
     testWidgets('Brightness slider is shown with correct value',
         (tester) async {
       await tester.goToQuickSettings();
@@ -56,7 +56,9 @@ void main() {
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
       );
     });
+  }, skip: !Config.isMP);
 
+  group('Quick settings page battery', () {
     testWidgets('Battery level is shown', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(BatteryLevel), findsOneWidget);
