@@ -36,14 +36,8 @@ extension ActivitiesStateExtensions on ActivitiesState {
     return false;
   }
 
-  bool isPartOfSeries(Activity activity) {
-    for (var element in activities) {
-      if (activity.id != element.id && activity.seriesId == element.seriesId) {
-        return true;
-      }
-    }
-    return false;
-  }
+  bool isPartOfSeries(Activity activity) => activities.any((other) =>
+      activity.id != other.id && activity.seriesId == other.seriesId);
 }
 
 extension ActivityDayConflict on ActivityDay {
