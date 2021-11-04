@@ -22,14 +22,17 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   late final StreamSubscription<NotificationAlarm?> _notificationSubscription;
   late final StreamSubscription<SoundState> _speechSubscription;
   late final StreamSubscription _delayedSubscription;
+
   AlarmSpeechCubit({
     required this.alarm,
-    required bool fullScreenAlarm,
+    required bool fullscreenAlarm,
     required this.soundCubit,
     required AlarmSettings alarmSettings,
     required Stream<NotificationAlarm> selectedNotificationStream,
   }) : super(const AlarmSpeechUnplayed()) {
-    final speechDelay = _alarmDuration(alarmSettings, fullScreenAlarm);
+    _log.fine('fullscrenAlarm: $fullscreenAlarm');
+    _log.fine('$alarm');
+    final speechDelay = _alarmDuration(alarmSettings, fullscreenAlarm);
 
     _log.fine('alarm length: $speechDelay');
 
@@ -46,11 +49,12 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
         .listen((_) => emit(const AlarmSpeechPlayed()));
   }
 
-  Future<void> _maybePlay(_) async {
-    _log.fine('maybePlay $_');
+  Future<void> _maybePlay(parameter) async {
+    _log.fine('maybePlay $parameter');
     if (state is AlarmSpeechUnplayed) {
-      final hasActiveNotification = await _hasActiveNotification();
-      if (!hasActiveNotification) {
+      final playNow =
+          parameter is! NotificationAlarm || !await _notificationActive();
+      if (playNow) {
         _log.fine('playing AlarmSpeech');
         emit(const AlarmSpeechPlayed());
         soundCubit.play(alarm.speech);
@@ -60,7 +64,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     }
   }
 
-  Future<bool> _hasActiveNotification() async => (await notificationPlugin
+  Future<bool> _notificationActive() async => (await notificationPlugin
               .resolvePlatformSpecificImplementation<
                   AndroidFlutterLocalNotificationsPlugin>()
               ?.getActiveNotifications() ??
