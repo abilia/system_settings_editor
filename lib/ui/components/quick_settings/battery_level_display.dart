@@ -7,18 +7,6 @@ class BatteryLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BatteryCubit>(
-      create: (context) => BatteryCubit(),
-      child: const BatteryLevelDisplay(),
-    );
-  }
-}
-
-class BatteryLevelDisplay extends StatelessWidget {
-  const BatteryLevelDisplay({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocBuilder<BatteryCubit, int>(
       builder: (context, batteryState) => Column(

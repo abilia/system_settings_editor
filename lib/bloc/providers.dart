@@ -233,6 +233,9 @@ class TopLevelBlocsProvider extends StatelessWidget {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
           ),
+          BlocProvider<BatteryCubit>(
+            create: (context) => BatteryCubit(),
+          ),
           BlocProvider<SettingsBloc>(
             create: (context) => SettingsBloc(
               settingsDb: GetIt.I<SettingsDb>(),
