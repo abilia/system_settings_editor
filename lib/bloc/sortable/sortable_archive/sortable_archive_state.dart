@@ -4,12 +4,14 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
   final Map<String, List<Sortable<T>>> allByFolder;
   final Map<String, Sortable<T>> allById;
   final String currentFolderId;
+  final String initialFolderId;
   final Sortable<T>? selected;
 
   const SortableArchiveState(
     this.allByFolder,
     this.allById, {
     this.currentFolderId = '',
+    this.initialFolderId = '',
     this.selected,
   });
 
@@ -17,17 +19,20 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
     Map<String, List<Sortable<T>>>? allByFolder,
     Map<String, Sortable<T>>? allById,
     String? currentFolderId,
+    String? initialFolderId,
     Sortable<T>? selected,
   }) =>
       SortableArchiveState(
         allByFolder ?? this.allByFolder,
         allById ?? this.allById,
         currentFolderId: currentFolderId ?? this.currentFolderId,
+        initialFolderId: initialFolderId ?? this.initialFolderId,
         selected: selected ?? this.selected,
       );
 
   bool get isSelected => selected != null;
-  bool get isAtRoot => currentFolderId.isEmpty;
+  bool get isAtRoot =>
+      currentFolderId.isEmpty || currentFolderId == initialFolderId;
   bool get isAtRootAndNoSelection => isAtRoot && !isSelected;
 
   @override
@@ -35,6 +40,7 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
         allByFolder,
         allById,
         currentFolderId,
+        initialFolderId,
         selected,
       ];
 

@@ -46,7 +46,7 @@ abstract class Translated {
   final String enterPassword = 'Enter password';
 
   final String userTypeNotSupported =
-      "Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia";
+      "Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.";
 
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
@@ -379,7 +379,7 @@ abstract class Translated {
 
   final String imageArchive = 'Image Archive';
 
-  final String uploadImage = 'Upload image';
+  final String uploadImage = 'Device’s local images';
 
   final String myPhotos = 'My photos';
 
@@ -796,7 +796,7 @@ class SV extends Translated {
 
   @override
   final String userTypeNotSupported =
-      'Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia';
+      'Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';
@@ -1244,7 +1244,7 @@ class SV extends Translated {
 
   @override
   final String missingRequiredActivitySetting =
-      'Du behöver ha antingen “Visa basaktiviteter”, “Välj namn, eller “Välj bild” vald.';
+      'Du behöver ha antingen “Visa basaktiviteter”, “Välj namn”, eller “Välj bild” vald.';
 
   @override
   final String availableFor = 'Tillgänglig för';
@@ -1290,7 +1290,7 @@ class SV extends Translated {
   final String imageArchive = 'Bildarkiv';
 
   @override
-  final String uploadImage = 'Ladda upp bild';
+  final String uploadImage = 'Enhetens bilder';
 
   @override
   final String myPhotos = 'Mina foton';
@@ -1880,6 +1880,10 @@ class DA extends Translated {
   final String enterPassword = 'Angiv din adgangskode';
 
   @override
+  final String userTypeNotSupported =
+      'Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner Go. Brug venligst myAbilia.';
+
+  @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto endnu?';
 
   @override
@@ -2325,6 +2329,10 @@ class DA extends Translated {
       'For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.';
 
   @override
+  final String missingRequiredActivitySetting =
+      'Du skal have enten “Vis standardaktiviteter”, “Vælg navn”, eller “Vælg billede” valgt.';
+
+  @override
   final String availableFor = 'Fås til';
 
   @override
@@ -2368,7 +2376,7 @@ class DA extends Translated {
   final String imageArchive = 'Billedarkiv';
 
   @override
-  final String uploadImage = 'Upload billede';
+  final String uploadImage = 'Enhedens billeder';
 
   @override
   final String myPhotos = 'Mine fotos';
@@ -2959,6 +2967,10 @@ class NL extends Translated {
   final String enterPassword = 'Wachtwoord invoeren';
 
   @override
+  final String userTypeNotSupported =
+      'Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner Go. Gebruik myAbilia.';
+
+  @override
   final String createAccountHint = 'Heeft u nog geen myAbilia-account?';
 
   @override
@@ -3403,6 +3415,10 @@ class NL extends Translated {
       'Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.';
 
   @override
+  final String missingRequiredActivitySetting =
+      'U moet ofwel “Toon basisactiviteiten”, “Naam selecteren” of “Afbeelding selecteren” selecteren.';
+
+  @override
   final String availableFor = 'Beschikbaar voor';
 
   @override
@@ -3446,7 +3462,7 @@ class NL extends Translated {
   final String imageArchive = 'Afbeeldingenarchief';
 
   @override
-  final String uploadImage = 'Afbeelding uploaden';
+  final String uploadImage = 'Afbeeldingen van het apparaat';
 
   @override
   final String myPhotos = "Mijn foto's";
@@ -4038,6 +4054,10 @@ class FI extends Translated {
   final String enterPassword = 'Anna salasana';
 
   @override
+  final String userTypeNotSupported =
+      'ukihenkilö- tai järjestelmänvalvojatyyppiset käyttäjät eivät voi kirjautua sisään MEMOPlanner Go -palveluun. Käytä myAbiliaa.';
+
+  @override
   final String createAccountHint = 'Eikö sinulla ole vielä myAbilia-tiliä?';
 
   @override
@@ -4482,6 +4502,10 @@ class FI extends Translated {
       'Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.';
 
   @override
+  final String missingRequiredActivitySetting =
+      'Sinun on valittava joko “Näytä perustoiminnot”, “Valitse nimi” tai “Valitse kuva”.';
+
+  @override
   final String availableFor = 'Käytettävissä';
 
   @override
@@ -4525,7 +4549,7 @@ class FI extends Translated {
   final String imageArchive = 'Kuva-arkisto';
 
   @override
-  final String uploadImage = 'Lataa kuva';
+  final String uploadImage = 'Laitteen kuvat ';
 
   @override
   final String myPhotos = 'Omat valokuvat';
@@ -5116,6 +5140,10 @@ class DE extends Translated {
   final String enterPassword = 'Passwort eingeben';
 
   @override
+  final String userTypeNotSupported =
+      'Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner Go anmelden. Bitte verwenden Sie myAbilia.';
+
+  @override
   final String createAccountHint = 'Sie haben noch kein myAbilia-Konto?';
 
   @override
@@ -5563,6 +5591,10 @@ class DE extends Translated {
       'Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.';
 
   @override
+  final String missingRequiredActivitySetting =
+      'Sie müssen entweder “Grundaktivitäten anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.';
+
+  @override
   final String availableFor = 'Verfügbar für';
 
   @override
@@ -5606,7 +5638,7 @@ class DE extends Translated {
   final String imageArchive = 'Bildarchiv';
 
   @override
-  final String uploadImage = 'Bild hochladen';
+  final String uploadImage = 'Bilder des Geräts';
 
   @override
   final String myPhotos = 'Meine Fotos';
@@ -6200,6 +6232,10 @@ class NB extends Translated {
   final String enterPassword = 'Angi ditt passord';
 
   @override
+  final String userTypeNotSupported =
+      'Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner Go. Vennligst bruk myAbilia.';
+
+  @override
   final String createAccountHint = 'Har du ikke en myAbilia-konto ennå?';
 
   @override
@@ -6643,6 +6679,10 @@ class NB extends Translated {
       'For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.';
 
   @override
+  final String missingRequiredActivitySetting =
+      'Du må ha enten “Vis liste med standardaktiviteter”, “Velg navn”, eller “Velg bilde” valgt.';
+
+  @override
   final String availableFor = 'Tilgjengelig for';
 
   @override
@@ -6686,7 +6726,7 @@ class NB extends Translated {
   final String imageArchive = 'Bildearkiv';
 
   @override
-  final String uploadImage = 'Last opp bilde';
+  final String uploadImage = 'Enhetens bilder ';
 
   @override
   final String myPhotos = 'Mine foto';
