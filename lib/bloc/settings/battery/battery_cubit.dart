@@ -7,7 +7,7 @@ class BatteryCubit extends Cubit<int> {
   final _battery = Battery();
   late final StreamSubscription _batterySubscription;
   BatteryCubit() : super(-1) {
-    _batterySubscription = _battery.onBatteryStateChanged.listen((event) async {
+    _batterySubscription = _battery.onBatteryStateChanged.listen((_) async {
       emit(await _battery.batteryLevel);
     });
     init();
