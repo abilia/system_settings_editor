@@ -5,27 +5,6 @@ import 'package:seagull/utils/all.dart';
 
 void main() {
   group('Activities for 24h day', () {
-    test('SGC-757 Activity starting at 00:00 without duration shows', () {
-      // Arrange
-      final day0 = DateTime(2021, 11, 04);
-      final day1 = DateTime(2021, 11, 05);
-      final day2 = DateTime(2021, 11, 06);
-      final midnightRecurring = Activity.createNew(
-        title: '00:00 recurring ',
-        recurs: Recurs.everyDay,
-        startTime: day0,
-      );
-      // Act
-      final resultD0 = midnightRecurring.dayActivitiesForDay(day0);
-      final resultD1 = midnightRecurring.dayActivitiesForDay(day1);
-      final resultD2 = midnightRecurring.dayActivitiesForDay(day2);
-
-      // Assert
-      expect(resultD0, [ActivityDay(midnightRecurring, day0)]);
-      expect(resultD1, [ActivityDay(midnightRecurring, day1)]);
-      expect(resultD2, [ActivityDay(midnightRecurring, day2)]);
-    });
-
     test('Split up activity shows on day it was split up on ( bug test )', () {
       // Arrange
       final splitStartTime = 1574380800000
@@ -468,6 +447,81 @@ void main() {
             ]));
       });
     });
+
+    test('Split up activity shows on day it was split up on ( bug test )', () {
+      final day = DateTime(2019, 11, 22);
+      final test = Activity.createNew(
+        title: 'Pre split Recurring fullday ',
+        startTime: DateTime(2019, 11, 12),
+        duration: const Duration(
+            hours: 23, minutes: 59, seconds: 59, milliseconds: 999),
+        fullDay: true,
+        recurs: Recurs.raw(
+          Recurs.typeWeekly,
+          Recurs.allDaysOfWeek,
+          DateTime(2019, 11, 21, 23, 59, 59, 999).millisecondsSinceEpoch,
+        ),
+      );
+
+      final result = test.dayActivitiesForDay(day);
+      expect(result, isEmpty);
+    });
+
+    test('SGC-755 Activity spanning midnight shows up on correct days', () {
+      // Arrange
+      final day1 = DateTime(2021, 11, 08);
+      final day2 = DateTime(2021, 11, 09);
+
+      final day6 = DateTime(2021, 11, 13);
+      final day7 = DateTime(2021, 11, 14);
+      final day8 = DateTime(2021, 11, 15);
+      final startTime = day1.add(const Duration(hours: 22));
+      final spanningMidnightRecurring = Activity.createNew(
+        title: 'spanning 00:00 recurring ',
+        startTime: startTime,
+        duration: const Duration(hours: 4),
+        recurs: Recurs.everyDay.changeEnd(day7),
+      );
+
+      // Act
+      final resultD1 = spanningMidnightRecurring.dayActivitiesForDay(day1);
+      final resultD2 = spanningMidnightRecurring.dayActivitiesForDay(day2);
+      final resultD7 = spanningMidnightRecurring.dayActivitiesForDay(day7);
+      final resultD8 = spanningMidnightRecurring.dayActivitiesForDay(day8);
+
+      // Assert
+      expect(resultD1, [ActivityDay(spanningMidnightRecurring, day1)]);
+      expect(resultD2, [
+        ActivityDay(spanningMidnightRecurring, day2),
+        ActivityDay(spanningMidnightRecurring, day1),
+      ]);
+      expect(resultD7, [
+        ActivityDay(spanningMidnightRecurring, day7),
+        ActivityDay(spanningMidnightRecurring, day6),
+      ]);
+      expect(resultD8, [ActivityDay(spanningMidnightRecurring, day7)]);
+    });
+
+    test('SGC-757 Activity starting at 00:00 without duration shows', () {
+      // Arrange
+      final day0 = DateTime(2021, 11, 04);
+      final day1 = DateTime(2021, 11, 05);
+      final day2 = DateTime(2021, 11, 06);
+      final midnightRecurring = Activity.createNew(
+        title: '00:00 recurring ',
+        recurs: Recurs.everyDay,
+        startTime: day0,
+      );
+      // Act
+      final resultD0 = midnightRecurring.dayActivitiesForDay(day0);
+      final resultD1 = midnightRecurring.dayActivitiesForDay(day1);
+      final resultD2 = midnightRecurring.dayActivitiesForDay(day2);
+
+      // Assert
+      expect(resultD0, [ActivityDay(midnightRecurring, day0)]);
+      expect(resultD1, [ActivityDay(midnightRecurring, day1)]);
+      expect(resultD2, [ActivityDay(midnightRecurring, day2)]);
+    });
   });
 
   group('Activities for night span', () {
@@ -855,6 +909,78 @@ void main() {
               ActivityDay(activity, day),
               ActivityDay(activity, nextDay),
             ]);
+          });
+
+          test('SGC-755 Activity spanning two nights shows up on correct days',
+              () {
+            // Arrange
+            final dayParts = DayParts.standard();
+
+            final day0 = DateTime(2021, 11, 07);
+            final day1 = DateTime(2021, 11, 08);
+            final day2 = DateTime(2021, 11, 09);
+
+            final day6 = DateTime(2021, 11, 13);
+            final day7 = DateTime(2021, 11, 14);
+
+            final startTime = day1.add(const Duration(hours: 04));
+            final middleNightToNextNight = Activity.createNew(
+              title: 'spanning two nights recurring ',
+              startTime: startTime,
+              duration: const Duration(hours: 23),
+              recurs: Recurs.everyDay.changeEnd(day7),
+            );
+
+            // Act
+            final resultD0 =
+                middleNightToNextNight.nightActivitiesForDay(day0, dayParts);
+            final resultD1 =
+                middleNightToNextNight.nightActivitiesForDay(day1, dayParts);
+
+            final resultD6 =
+                middleNightToNextNight.nightActivitiesForDay(day6, dayParts);
+            final resultD7 =
+                middleNightToNextNight.nightActivitiesForDay(day7, dayParts);
+
+            // Assert
+            expect(resultD0, [ActivityDay(middleNightToNextNight, day1)]);
+            expect(resultD1, [
+              ActivityDay(middleNightToNextNight, day1),
+              ActivityDay(middleNightToNextNight, day2),
+            ]);
+            expect(resultD6, [
+              ActivityDay(middleNightToNextNight, day6),
+              ActivityDay(middleNightToNextNight, day7),
+            ]);
+            expect(resultD7, [ActivityDay(middleNightToNextNight, day7)]);
+          });
+
+          test(
+              'SGC-757 Activity starting at exact night without duration shows',
+              () {
+            // Arrange
+            final dayParts = DayParts.standard();
+
+            final day0 = DateTime(2021, 11, 04);
+            final day1 = DateTime(2021, 11, 05);
+            final day2 = DateTime(2021, 11, 06);
+            final midnightRecurring = Activity.createNew(
+              title: 'night start recurring ',
+              recurs: Recurs.everyDay,
+              startTime: day0.add(dayParts.night),
+            );
+            // Act
+            final resultD0 =
+                midnightRecurring.nightActivitiesForDay(day0, dayParts);
+            final resultD1 =
+                midnightRecurring.nightActivitiesForDay(day1, dayParts);
+            final resultD2 =
+                midnightRecurring.nightActivitiesForDay(day2, dayParts);
+
+            // Assert
+            expect(resultD0, [ActivityDay(midnightRecurring, day0)]);
+            expect(resultD1, [ActivityDay(midnightRecurring, day1)]);
+            expect(resultD2, [ActivityDay(midnightRecurring, day2)]);
           });
         });
       });
