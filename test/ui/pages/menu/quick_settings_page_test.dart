@@ -14,11 +14,13 @@ import '../../../fakes/all.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('system_settings_editor');
+  const MethodChannel systemSettingsChannel =
+      MethodChannel('system_settings_editor');
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    systemSettingsChannel
+        .setMockMethodCallHandler((MethodCall methodCall) async {
       return 0.5;
     });
     setupPermissions();
@@ -40,18 +42,20 @@ void main() {
   });
 
   tearDown(() {
-    channel.setMockMethodCallHandler(null);
+    systemSettingsChannel.setMockMethodCallHandler(null);
     GetIt.I.reset();
   });
 
   group('Quick settings page', () {
-    testWidgets('The page shows', (tester) async {
+    testWidgets('All fields are setup correctly', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(
         tester.widget(find.byType(AbiliaSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
       );
+
+      expect(find.byType(BatteryLevel), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }
