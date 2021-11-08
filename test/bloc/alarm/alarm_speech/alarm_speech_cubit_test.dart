@@ -105,7 +105,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: false,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -121,7 +121,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: true,
+        fullscreenAlarm: true,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -140,8 +140,30 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarmNoSound,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: false,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
+        soundCubit: SoundCubit(
+          storage: FakeFileStorage(),
+          userFileBloc: mockUserFileBloc,
+        ),
+      ),
+      expect: () => [const AlarmSpeechPlayed()],
+      verify: (_) => () {
+        expect(audioLog, hasLength(1));
+        expect(audioLog.single.method, 'play');
+      },
+    );
+
+    blocTest(
+      'emits if active notification but and alarm time goes out ',
+      setUp: () => activeNotifications = [
+        ActiveNotification(startAlarm.hashCode, 'channelId', 'title', 'body'),
+      ],
+      build: () => AlarmSpeechCubit(
+        alarm: startAlarm,
+        alarmSettings: const AlarmSettings(),
+        fullscreenAlarm: true,
+        selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
@@ -162,7 +184,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: true,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -178,7 +200,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
-        fullScreenAlarm: false,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -198,7 +220,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: false,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -216,7 +238,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        fullScreenAlarm: false,
+        fullscreenAlarm: false,
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),

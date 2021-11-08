@@ -10,7 +10,7 @@ wrongCredentials	Username or password doesn't match.\nVerify your credentials an
 noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kontakt med myAbilia. Kontrollera din internetanslutning.	Enheden er ikke tilsluttet myAbilia. Kontroller din internetforbindelse.	Het apparaat is niet aangesloten op het myAbilia. Controleer uw internetverbinding.	Laitetta ei ole yhdistetty myAbilia. Tarkista Internet-yhteys.	Das Gerät ist nicht mit dem myAbilia verbunden. Überprüfen Sie Ihre Internetverbindung.	Enheten er ikke koblet til myAbilia. Sjekk din Internettforbindelse.
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
-userTypeNotSupported	Users of type Support person and Admin can't log in to MEMOPlanner Go. Please use myAbilia	Användare av typen Supportperson och Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia					
+userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner Go. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner Go. Gebruik myAbilia.	ukihenkilö- tai järjestelmänvalvojatyyppiset käyttäjät eivät voi kirjautua sisään MEMOPlanner Go -palveluun. Käytä myAbiliaa.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner Go anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner Go. Vennligst bruk myAbilia.
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -169,7 +169,7 @@ startTimeBeforeNowWarning	You have selected a start time which has already passe
 conflictWarning	There are activities conflicting with this activity. Press OK to continue.	Det finns aktiviteter som krockar med din aktivitet. Tryck ok om du vill fortsätta.	Der er aktiviteter, der falder sammen med denne aktivitet. Tryk på OK for at fortsætte.	Er zijn activiteiten die conflicteren met deze activiteit. Druk op OK om door te gaan.	On olemassa aktiviteetteja, jotka ovat ristiriidassa tämän aktiviteetin kanssa. Jatka painamalla OK.	Mit dieser Aktivität stehen andere Aktivitäten im Konflikt. Drücken Sie auf OK, um fortzufahren.	Der er aktiviteter som kolliderer med denne aktivitet. Trykk på OK for å fortsette.
 noBasicActivityError1	There are no basic activities and you have not selected name or image in adding an activity step-by-step.	Det finns inga basaktiviteter och du har inte valt namn och bild i lägga in stegvis.	Det er ingen standardaktivitet, og du har ikke valgt navn og billede i sekvensmodus.	Er zijn geen standaardactiviteiten en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.	Perusaktiviteetteja ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.	Es gibt keine Standardaktivitäten und Sie haben beim schrittweisen Hinzufügen einer Aktivität keinen Namen oder kein Bild ausgewählt.	Det er ingen standardaktivitet, og du har ikke valgt navn og bilde i sekvensmodus.
 noBasicActivityError2	To fix this, either create basic activities or select either name or image for step-by-step.	För att åtgärda, skapa några basaktiviteter eller aktivera antingen namn eller bild i lägga in stegvis.	For at fikse det skal der oprettes standardaktiviteter eller aktiveres enten navn eller billede i sekvensmodus.	Om dit op te lossen creëert u standaardactiviteiten of selecteer een naam of afbeelding voor stap voor stap.	Korjaa tämä joko luomalla perusaktiviteetteja tai valitsemalla joko nimi tai kuva vaiheittaisten ohjeiden mukaisesti.	Um dies zu beheben, erstellen Sie entweder Standardaktivitäten oder wählen einen Namen oder ein Bild für die schrittweise Prozedur aus.	For å fikse, opprette noen standardaktiviteter eller aktivere enten navn eller bilde i sekvensmodus.
-missingRequiredActivitySetting	You need either “Show basic activities”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa basaktiviteter”, “Välj namn, eller “Välj bild” vald.					
+missingRequiredActivitySetting	You need either “Show basic activities”, “Select name” or “Select image” selected.	Du behöver ha antingen “Visa basaktiviteter”, “Välj namn”, eller “Välj bild” vald.	Du skal have enten “Vis standardaktiviteter”, “Vælg navn”, eller “Vælg billede” valgt.	U moet ofwel “Toon basisactiviteiten”, “Naam selecteren” of “Afbeelding selecteren” selecteren.	Sinun on valittava joko “Näytä perustoiminnot”, “Valitse nimi” tai “Valitse kuva”.	Sie müssen entweder “Grundaktivitäten anzeigen”, “Namen auswählen” oder “Bild auswählen” auswählen.	Du må ha enten “Vis liste med standardaktiviteter”, “Velg navn”, eller “Velg bilde” valgt.
 							
 ### Privacy							
 availableFor	Available for	Tillgänglig för	Fås til	Beschikbaar voor	Käytettävissä	Verfügbar für	Tilgjengelig for
@@ -190,7 +190,7 @@ alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Al
 selectPicture	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
 removePicture	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
-uploadImage	Upload image	Ladda upp bild	Upload billede	Afbeelding uploaden	Lataa kuva	Bild hochladen	Last opp bilde
+uploadImage	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat 	Bilder des Geräts	Enhetens bilder 
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
 							
@@ -230,6 +230,7 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Quick settings							
 screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke
+battery	Battery	Batteri	Batteri	Batterij	Akku	Akkus	Batteri
 							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger

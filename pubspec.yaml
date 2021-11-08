@@ -15,6 +15,7 @@ dependencies:
   android_intent_plus: ^3.0.1
   audioplayers: ^0.20.1
   auto_size_text: ^3.0.0-nullsafety.0
+  battery_plus: ^2.0.1
   collection: ^1.15.0
   devicelocale: ^0.5.0
   dotted_border: ^2.0.0
@@ -29,7 +30,7 @@ dependencies:
   flutter_bloc: ^7.3.1
   flutter_local_notifications:
     git:
-      url: git://github.com/abilia/flutter_local_notifications.git
+      url: https://github.com/abilia/flutter_local_notifications.git
       ref: flutter_local_notifications-v9.0.0-fork-1.12
       path: flutter_local_notifications/
   flutter_native_timezone: ^2.0.0
@@ -37,7 +38,7 @@ dependencies:
   system_settings_editor:
     git:
       url: https://github.com/abilia/system_settings_editor.git
-      ref: v1.0.0
+      ref: v1.0.1
   flutter_tts: ^3.2.2
   get_it: ^7.2.0
   google_fonts: ^2.1.0

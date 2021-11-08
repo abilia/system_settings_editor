@@ -79,5 +79,6 @@ class TestKey {
       speechAtEnd = Key('speechAtEnd'),
       fullDayCategoryRadio = Key('allDayCategoryRadio'),
       checkableRadio = Key('checkableRadio'),
-      removeAfterRadio = Key('removeAfterRadio');
+      removeAfterRadio = Key('removeAfterRadio'),
+      myPhotosButton = Key('myPhotosButton');
 }

@@ -95,12 +95,15 @@ void main() {
   }, skip: !Config.isMP);
 
   group('select image visisbility settings', () {
-    testWidgets('both camera and folder option shows', (tester) async {
+    testWidgets('both camera, folder and myphotos option shows',
+        (tester) async {
       await tester.goToAddActivityImagePicker();
-      expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.upload), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.folder), findsNWidgets(2));
+      if (Config.isMPGO) {
+        expect(find.byIcon(AbiliaIcons.upload), findsOneWidget);
+      }
       expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
-    });
+    }, skip: Config.release); // TODO: remove beta in 1.4
 
     testWidgets('hides camera image option', (tester) async {
       // Arrange
