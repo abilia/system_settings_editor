@@ -12,6 +12,7 @@ void main() {
   setUp(() async {
     setLocalLocation(Location(localTimezoneName, [], [], []));
   });
+
   test('parse json test', () {
     const response = '''[ {
           "id" : "33451ee6-cec6-4ce0-b515-f58767b13c8f",
@@ -53,11 +54,11 @@ void main() {
     expect(result.title, 'Title');
     expect(result.icon, '/images/play.png');
     expect(result.signedOffDates, [
-      DateTime(2020, 02, 12),
-      DateTime(2020, 02, 13),
-      DateTime(2020, 02, 15),
-      DateTime(2020, 02, 20),
-      DateTime(2020, 02, 27),
+      '20-02-12',
+      '20-02-13',
+      '20-02-15',
+      '20-02-20',
+      '20-02-27',
     ]);
     expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore,
@@ -265,7 +266,7 @@ void main() {
       ]),
       fileId: fileId,
       checkable: true,
-      signedOffDates: [DateTime(2000, 02, 20)],
+      signedOffDates: ['00-02-20'],
       infoItem: infoItem,
       extras: Extras.createNew(
         startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
