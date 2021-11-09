@@ -51,7 +51,8 @@ class ActivityDay extends Equatable implements Comparable {
   DateTime get start => activity.startClock(day);
   DateTime get end => activity.endClock(day);
   bool get isSignedOff =>
-      activity.checkable && activity.signedOffDates.contains(day);
+      activity.checkable &&
+      activity.signedOffDates.contains(whaleDateFormat(day));
 
   const ActivityDay(this.activity, this.day);
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);

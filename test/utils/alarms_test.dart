@@ -182,7 +182,7 @@ void main() {
         title: 'null',
         startTime: startDate.subtract(reminder),
         checkable: true,
-        signedOffDates: [day],
+        signedOffDates: [day].map(whaleDateFormat),
       );
       final activities = [uncheckedReminder];
 
@@ -551,7 +551,7 @@ void main() {
         alarmType: noAlarm,
         duration: 1.hours(),
         checkable: true,
-        signedOffDates: [day],
+        signedOffDates: [day].map(whaleDateFormat),
       );
       final activities = [checkable];
 
