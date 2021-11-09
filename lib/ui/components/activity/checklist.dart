@@ -68,11 +68,11 @@ class QuestionView extends StatelessWidget {
     this.question, {
     this.onTap,
     this.signedOff = false,
-    key,
     this.inactive = false,
+    Key? key,
   }) : super(key: key);
 
-  static const duration = Duration(milliseconds: 400);
+  static const duration = Duration(milliseconds: 200);
   static final padding = EdgeInsets.only(bottom: 6.0.s);
 
   @override
