@@ -115,7 +115,7 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
   }
 
   private fun setSoundEffectsHandler(call: MethodCall, result: Result) {
-    val enabled: Boolean? = call.argument("sound_effects_enabled")
+    val enabled: Boolean? = call.argument("soundEffectsEnabled")
     enabled?.let {
       setSoundEffectsEnabled(it)
       result.success(true)

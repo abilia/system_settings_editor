@@ -19,6 +19,6 @@ class SystemSettingsEditor {
 
   static Future<void> setSoundEffectsEnabled(bool on) async {
     await _channel
-        .invokeMethod('setSoundEffectsEnabled', {'sound_effects_enabled': on});
+        .invokeMethod('setSoundEffectsEnabled', {'soundEffectsEnabled': on});
   }
 }
