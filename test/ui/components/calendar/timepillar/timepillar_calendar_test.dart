@@ -692,7 +692,7 @@ void main() {
                 title: 'title',
                 startTime: time.subtract(40.minutes()),
                 checkable: true,
-                signedOffDates: [time.onlyDays()])
+                signedOffDates: [time].map(whaleDateFormat))
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

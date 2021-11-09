@@ -148,15 +148,18 @@ void main() {
         (WidgetTester tester) async {
       // Arrange
       final reminder = 15.minutes();
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value([
-                Activity.createNew(
-                  title: 'Reminder',
-                  startTime: activityWithAlarmTime.subtract(reminder),
-                  checkable: true,
-                  signedOffDates: [activityWithAlarmTime.onlyDays()],
-                )
-              ]));
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          [
+            Activity.createNew(
+              title: 'Reminder',
+              startTime: activityWithAlarmTime.subtract(reminder),
+              checkable: true,
+              signedOffDates: [activityWithAlarmTime].map(whaleDateFormat),
+            )
+          ],
+        ),
+      );
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Act

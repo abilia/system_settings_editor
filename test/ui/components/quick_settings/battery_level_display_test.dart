@@ -1,15 +1,19 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
-  const MethodChannel batteryChannel =
-      MethodChannel('dev.fluttercommunity.plus/battery');
+  late MockBatteryCubit mockBatteryCubit;
+
+  setUp(() {
+    mockBatteryCubit = MockBatteryCubit();
+  });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -30,67 +34,54 @@ void main() {
               settingsDb: FakeSettingsDb(),
             ),
           ),
+          BlocProvider<BatteryCubit>.value(value: mockBatteryCubit),
         ], child: widget),
       );
 
   testWidgets('Battery level critical', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 1;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(1);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevelCritical), findsOneWidget);
   });
 
   testWidgets('Battery level 10%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 10;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(10);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_10), findsOneWidget);
   });
 
   testWidgets('Battery level 20%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 20;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(20);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_20), findsOneWidget);
   });
 
   testWidgets('Battery level 40%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 40;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(40);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_40), findsOneWidget);
   });
 
   testWidgets('Battery level 60%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 60;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(60);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_60), findsOneWidget);
   });
 
   testWidgets('Battery level 80%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 80;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(80);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_80), findsOneWidget);
   });
 
   testWidgets('Battery level 100%', (WidgetTester tester) async {
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 100;
-    });
+    when(() => mockBatteryCubit.state).thenReturn(100);
     await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_100), findsOneWidget);

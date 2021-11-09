@@ -458,7 +458,7 @@ packages:
       path: flutter_local_notifications
       ref: "flutter_local_notifications-v9.0.0-fork-1.12"
       resolved-ref: "58e8f4614653638fc4f14568921f0a92d38b0775"
-      url: "git://github.com/abilia/flutter_local_notifications.git"
+      url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
     version: "9.0.0"
   flutter_local_notifications_linux:
@@ -1118,11 +1118,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.0.0"
-      resolved-ref: b79c08d8e751c634be42863eb57ce0e64edd5edc
-      url: "git://github.com/abilia/system_settings_editor.git"
+      ref: "v1.0.1"
+      resolved-ref: "271b65a380ebbd56ab06b231681d21bbbfa7e312"
+      url: "https://github.com/abilia/system_settings_editor.git"
     source: git
-    version: "0.0.1"
+    version: "1.0.1"
   term_glyph:
     dependency: transitive
     description:

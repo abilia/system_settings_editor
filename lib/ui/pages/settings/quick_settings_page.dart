@@ -20,7 +20,7 @@ class QuickSettingsPage extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
-            child: const BatteryLevelDisplay(),
+            child: const BatteryLevel(),
           ),
           const QuickSettingsGroup(children: [
             WiFiPickField(),
@@ -117,22 +117,18 @@ class _BrightnessSliderState extends State<BrightnessSlider>
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SubHeading(t.screenBrightness),
-            AbiliaSlider(
-                leading: const Icon(AbiliaIcons.brightnessNormal),
-                value: _brightness,
-                onChanged: (double b) {
-                  setState(() {
-                    _brightness = b;
-                    SystemSettingsEditor.setBrightness(b);
-                  });
-                }),
-          ],
-        ),
+        SubHeading(t.screenBrightness),
+        AbiliaSlider(
+            leading: const Icon(AbiliaIcons.brightnessNormal),
+            value: _brightness,
+            onChanged: (double b) {
+              setState(() {
+                _brightness = b;
+                SystemSettingsEditor.setBrightness(b);
+              });
+            }),
       ],
     );
   }

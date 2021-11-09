@@ -1,71 +1,54 @@
-import 'dart:async';
-
-import 'package:battery_plus/battery_plus.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/battery/battery_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
-class BatteryLevelDisplay extends StatefulWidget {
-  const BatteryLevelDisplay({Key? key}) : super(key: key);
+class BatteryLevel extends StatelessWidget {
+  const BatteryLevel({Key? key}) : super(key: key);
 
   @override
-  State<BatteryLevelDisplay> createState() => _BatteryLevelDisplayState();
+  Widget build(BuildContext context) {
+    return BlocProvider<BatteryCubit>(
+      create: (context) => BatteryCubit(),
+      child: const BatteryLevelDisplay(),
+    );
+  }
 }
 
-class _BatteryLevelDisplayState extends State<BatteryLevelDisplay> {
-  int _batteryLevel = -1;
-  final battery = Battery();
-  StreamSubscription<BatteryState>? _batterySubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    initBatteryLevel();
-  }
-
-  void initBatteryLevel() async {
-    final b = await battery.batteryLevel;
-    setState(() {
-      _batteryLevel = b;
-    });
-
-    _batterySubscription =
-        battery.onBatteryStateChanged.listen((BatteryState state) async {
-      final b = await battery.batteryLevel;
-      setState(() {
-        _batteryLevel = b;
-      });
-    });
-  }
+class BatteryLevelDisplay extends StatelessWidget {
+  const BatteryLevelDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SubHeading(
-          t.battery,
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 18.s,
-            ),
-            Icon(
-              _batteryLevelIcon(_batteryLevel),
-              size: largeIconSize,
-            ),
-            SizedBox(
-              width: 16.s,
-            ),
-            Text(
-              _batteryLevel > 0 ? '$_batteryLevel%' : '',
-              style: Theme.of(context).textTheme.headline6,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        )
-      ],
+    return BlocBuilder<BatteryCubit, int>(
+      builder: (context, batteryState) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SubHeading(
+            t.battery,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 18.s,
+              ),
+              Icon(
+                _batteryLevelIcon(batteryState),
+                size: largeIconSize,
+              ),
+              SizedBox(
+                width: 16.s,
+              ),
+              Text(
+                batteryState > 0 ? '$batteryState%' : '',
+                style: Theme.of(context).textTheme.headline6,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -88,14 +71,8 @@ class _BatteryLevelDisplayState extends State<BatteryLevelDisplay> {
     if (batteryLevel > 5) {
       return AbiliaIcons.batteryLevel_10;
     }
-    if (batteryLevel > 0) {
+    if (batteryLevel >= 0) {
       return AbiliaIcons.batteryLevelCritical;
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _batterySubscription?.cancel();
   }
 }

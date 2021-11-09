@@ -3,13 +3,14 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class SelectRecurrentTypePage extends StatefulWidget {
-  final bool allDaysVisible;
+  final bool allDaysVisible, thisDayAndForwardVisible;
   final String heading;
   final IconData headingIcon;
 
   const SelectRecurrentTypePage({
     Key? key,
     this.allDaysVisible = false,
+    this.thisDayAndForwardVisible = true,
     required this.heading,
     required this.headingIcon,
   }) : super(key: key);
@@ -45,8 +46,8 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
               groupValue: applyTo,
               onChanged: _radioChanged,
             ),
-            if (widget.allDaysVisible) SizedBox(height: 8.0.s),
-            if (widget.allDaysVisible)
+            if (widget.allDaysVisible) ...[
+              SizedBox(height: 8.0.s),
               RadioField(
                 key: TestKey.allDays,
                 leading: const Icon(AbiliaIcons.month),
@@ -55,15 +56,18 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
                 groupValue: applyTo,
                 onChanged: _radioChanged,
               ),
-            SizedBox(height: 8.0.s),
-            RadioField(
-              key: TestKey.thisDayAndForward,
-              leading: const Icon(AbiliaIcons.week),
-              text: Text(translate.thisDayAndForward),
-              value: ApplyTo.thisDayAndForward,
-              groupValue: applyTo,
-              onChanged: _radioChanged,
-            ),
+            ],
+            if (widget.thisDayAndForwardVisible) ...[
+              SizedBox(height: 8.0.s),
+              RadioField(
+                key: TestKey.thisDayAndForward,
+                leading: const Icon(AbiliaIcons.week),
+                text: Text(translate.thisDayAndForward),
+                value: ApplyTo.thisDayAndForward,
+                groupValue: applyTo,
+                onChanged: _radioChanged,
+              ),
+            ],
           ],
         ),
       ),

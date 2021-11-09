@@ -16,17 +16,12 @@ import '../../../test_helpers/app_pumper.dart';
 void main() {
   const MethodChannel systemSettingsChannel =
       MethodChannel('system_settings_editor');
-  const MethodChannel batteryChannel =
-      MethodChannel('dev.fluttercommunity.plus/battery');
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
     systemSettingsChannel
         .setMockMethodCallHandler((MethodCall methodCall) async {
       return 0.5;
-    });
-    batteryChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return 20;
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
@@ -48,24 +43,19 @@ void main() {
 
   tearDown(() {
     systemSettingsChannel.setMockMethodCallHandler(null);
-    batteryChannel.setMethodCallHandler(null);
     GetIt.I.reset();
   });
 
   group('Quick settings page', () {
-    testWidgets('Brightness slider is shown with correct value',
-        (tester) async {
+    testWidgets('All fields are setup correctly', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(
         tester.widget(find.byType(AbiliaSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
       );
-    });
 
-    testWidgets('Correct battery level icon is shown', (tester) async {
-      await tester.goToQuickSettings();
-      expect(find.byType(BatteryLevelDisplay), findsOneWidget);
+      expect(find.byType(BatteryLevel), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }

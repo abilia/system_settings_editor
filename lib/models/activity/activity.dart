@@ -15,37 +15,41 @@ part 'db_activity.dart';
 part 'activity_extras.dart';
 
 class Activity extends DataModel {
-  Alarm get alarm => Alarm.fromInt(alarmType);
   DateTime endClock(DateTime day) => fullDay
       ? day.nextDay().millisecondBefore()
       : startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
-  DateTime get noneRecurringEnd => startTime.add(duration);
   bool get hasEndTime => duration.inMinutes > 0;
   bool get isRecurring => recurs.isRecurring;
-  Iterable<Duration> get reminders =>
-      reminderBefore.map((r) => r.milliseconds()).toSet();
   bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
   bool get hasTitle => title.isNotEmpty;
   bool get hasAttachment => infoItem is! NoInfoItem;
 
-  Activity signOff(DateTime day) => copyWith(
-      signedOffDates: signedOffDates.contains(day)
-          ? (signedOffDates.toList()..remove(day))
-          : signedOffDates.followedBy([day]));
+  Activity signOff(DateTime day) {
+    final d = whaleDateFormat(day);
+    return copyWith(
+      signedOffDates: signedOffDates.contains(d)
+          ? (signedOffDates.toList()..remove(d))
+          : signedOffDates.followedBy([d]),
+    );
+  }
 
   final String seriesId, title, fileId, icon, timezone;
   final DateTime startTime;
+  final DateTime noneRecurringEnd;
   final Duration duration;
   final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
-  final UnmodifiableListView<DateTime> signedOffDates;
+  final UnmodifiableListView<String> signedOffDates;
   final InfoItem infoItem;
   final Recurs recurs;
   final Extras extras;
-  const Activity._({
+  final UnmodifiableSetView<Duration> reminders;
+  final Alarm alarm;
+
+  Activity._({
     required String id,
     required this.seriesId,
     required this.title,
@@ -68,6 +72,11 @@ class Activity extends DataModel {
     required this.extras,
   })  : assert(alarmType >= 0),
         assert(category >= 0),
+        noneRecurringEnd = startTime.add(duration),
+        reminders = UnmodifiableSetView(
+          reminderBefore.map((ms) => Duration(milliseconds: ms)).toSet(),
+        ),
+        alarm = Alarm.fromInt(alarmType),
         super(id);
 
   static Activity createNew({
@@ -85,7 +94,7 @@ class Activity extends DataModel {
     String fileId = '',
     String icon = '',
     Iterable<int> reminderBefore = const [],
-    Iterable<DateTime> signedOffDates = const [],
+    Iterable<String> signedOffDates = const [],
     String timezone = '',
     Extras extras = Extras.empty,
   }) {
@@ -145,7 +154,7 @@ class Activity extends DataModel {
     Alarm? alarm,
     Recurs? recurs,
     InfoItem? infoItem,
-    Iterable<DateTime>? signedOffDates,
+    Iterable<String>? signedOffDates,
     String? timezone,
     Extras? extras,
   }) =>
@@ -221,7 +230,7 @@ class Activity extends DataModel {
         id,
         seriesId,
         title,
-        startTime,
+        startTime.millisecondsSinceEpoch,
         duration,
         category,
         deleted,
@@ -241,5 +250,5 @@ class Activity extends DataModel {
       ];
 
   @override
-  String toString() => 'Activity: { ${props.join(', ')} }';
+  bool get stringify => true;
 }

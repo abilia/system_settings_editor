@@ -1,12 +1,8 @@
 part of 'day_activities_bloc.dart';
 
-abstract class DayActivitiesState extends Equatable {
-  @override
-  List<Object> get props => [];
-
-  @override
-  bool get stringify => true;
-}
+// This does not extends Equatable because of preformance issues
+// when we do equals on a large amount of DateTime
+abstract class DayActivitiesState {}
 
 class DayActivitiesUninitialized extends DayActivitiesState {}
 
@@ -16,9 +12,6 @@ class DayActivitiesLoaded extends DayActivitiesState {
   final Occasion occasion;
 
   DayActivitiesLoaded(this.activities, this.day, this.occasion);
-
-  @override
-  List<Object> get props => [activities, day, occasion];
 
   @override
   String toString() =>

@@ -135,7 +135,7 @@ void main() {
       startTime: startTime,
       checkable: true,
       reminderBefore: [],
-      signedOffDates: [day],
+      signedOffDates: [day].map(whaleDateFormat),
     );
     await tester.pumpWidget(
       wrapWithMaterialApp(

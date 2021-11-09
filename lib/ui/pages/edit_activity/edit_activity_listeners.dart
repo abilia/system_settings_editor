@@ -56,6 +56,7 @@ class ErrorPopupListener extends StatelessWidget {
             builder: (_) => SelectRecurrentTypePage(
               heading: translate.editRecurringActivity,
               headingIcon: AbiliaIcons.edit,
+              thisDayAndForwardVisible: state.unchangedDate,
             ),
           ),
         );
