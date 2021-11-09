@@ -23,10 +23,10 @@ import androidx.core.content.ContextCompat.startActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
-class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
-  private lateinit var channel : MethodChannel
-  private lateinit var context : Context
-  private var activity : Activity? = null
+class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+  private lateinit var channel: MethodChannel
+  private lateinit var context: Context
+  private var activity: Activity? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "system_settings_editor")
@@ -43,6 +43,8 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
       when (call.method) {
         "getBrightness" -> result.success(getBrightness())
         "setBrightness" -> setBrightnessHandler(call, result)
+        "getSoundEffectsEnabled" -> result.success(getSoundEffectsEnabled())
+        "setSoundEffectsEnabled" -> setSoundEffectsHandler(call, result)
         else -> result.notImplemented()
       }
     }
@@ -110,6 +112,35 @@ class SystemSettingsEditorPlugin: FlutterPlugin, MethodCallHandler, ActivityAwar
       Log.e("Error", "Cannot access max brightness")
     }
     return 255
+  }
+
+  private fun setSoundEffectsHandler(call: MethodCall, result: Result) {
+    val enabled: Boolean? = call.argument("sound_effects_enabled")
+    enabled?.let {
+      setSoundEffectsEnabled(it)
+      result.success(true)
+    } ?: run {
+      result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
+    }
+  }
+
+  private fun setSoundEffectsEnabled(on: Boolean) {
+    val cResolver: ContentResolver = context.contentResolver
+    Settings.System.putInt(
+      cResolver, Settings.System.SOUND_EFFECTS_ENABLED,
+      if (on) 1 else 0
+    )
+  }
+
+  private fun getSoundEffectsEnabled(): Boolean {
+    val cResolver: ContentResolver = context.contentResolver
+    try {
+      val enabled = Settings.System.getInt(cResolver, Settings.System.SOUND_EFFECTS_ENABLED)
+      return enabled == 1
+    } catch (e: Settings.SettingNotFoundException) {
+      Log.e("Error", "Cannot access sound settings")
+    }
+    return true
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {

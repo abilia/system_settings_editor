@@ -12,4 +12,13 @@ class SystemSettingsEditor {
   static Future<void> setBrightness(double brightness) async {
     await _channel.invokeMethod('setBrightness', {'brightness': brightness});
   }
+
+  static Future<bool?> get soundEffectsEnabled async {
+    return await _channel.invokeMethod('getSoundEffectsEnabled');
+  }
+
+  static Future<void> setSoundEffectsEnabled(bool on) async {
+    await _channel
+        .invokeMethod('setSoundEffectsEnabled', {'sound_effects_enabled': on});
+  }
 }
