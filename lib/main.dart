@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
@@ -138,7 +139,10 @@ class SeagullApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         builder: (context, child) => child != null
             ? MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                data: MediaQuery.of(context).copyWith(
+                  textScaleFactor: 1.0,
+                  devicePixelRatio: Device.devicePixelRatioCorrection,
+                ),
                 child: child,
               )
             : const SplashPage(),

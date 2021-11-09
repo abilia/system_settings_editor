@@ -16,13 +16,48 @@ class QuickSettingsPage extends StatelessWidget {
         iconData: AbiliaIcons.settings,
       ),
       body: Column(
-        children: const [
-          BrightnessSlider(),
-          SoundEffectsSwitch(),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
+            child: const BatteryLevel(),
+          ),
+          const QuickSettingsGroup(children: [
+            SoundEffectsSwitch(),
+          ]),
+          const QuickSettingsGroup(children: [
+            BrightnessSlider(),
+          ]),
         ],
       ),
       bottomNavigationBar:
           const BottomNavigation(backNavigationWidget: PreviousButton()),
+    );
+  }
+}
+
+class QuickSettingsGroup extends StatelessWidget {
+  const QuickSettingsGroup({
+    Key? key,
+    required this.children,
+  }) : super(key: key);
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Divider(),
+        Padding(
+          padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 20.s),
+          child: Column(
+            children: [
+              ...children,
+            ],
+          ),
+        )
+      ],
     );
   }
 }
@@ -67,27 +102,20 @@ class _BrightnessSliderState extends State<BrightnessSlider>
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SubHeading(t.screenBrightness),
-              AbiliaSlider(
-                  leading: const Icon(AbiliaIcons.brightnessNormal),
-                  value: _brightness,
-                  onChanged: (double b) {
-                    setState(() {
-                      _brightness = b;
-                      SystemSettingsEditor.setBrightness(b);
-                    });
-                  }),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SubHeading(t.screenBrightness),
+        AbiliaSlider(
+            leading: const Icon(AbiliaIcons.brightnessNormal),
+            value: _brightness,
+            onChanged: (double b) {
+              setState(() {
+                _brightness = b;
+                SystemSettingsEditor.setBrightness(b);
+              });
+            }),
+      ],
     );
   }
 

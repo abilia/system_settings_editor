@@ -25,6 +25,11 @@ abstract class EditActivityState extends Equatable with Finest {
       timeInterval == originalTimeInterval &&
       originalActivity.recurs == activity.recurs;
 
+  bool get unchangedDate =>
+      this is StoredActivityState &&
+      timeInterval.endTime == originalTimeInterval.endTime &&
+      timeInterval.startDate == originalTimeInterval.startDate;
+
   bool get storedRecurring =>
       this is StoredActivityState && originalActivity.isRecurring;
 

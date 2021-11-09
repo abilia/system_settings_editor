@@ -57,6 +57,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0-nullsafety.0"
+  battery_plus:
+    dependency: "direct main"
+    description:
+      name: battery_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+  battery_plus_linux:
+    dependency: transitive
+    description:
+      name: battery_plus_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
+  battery_plus_macos:
+    dependency: transitive
+    description:
+      name: battery_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  battery_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: battery_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  battery_plus_web:
+    dependency: transitive
+    description:
+      name: battery_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  battery_plus_windows:
+    dependency: transitive
+    description:
+      name: battery_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   bloc:
     dependency: transitive
     description:
@@ -416,7 +458,7 @@ packages:
       path: flutter_local_notifications
       ref: "flutter_local_notifications-v9.0.0-fork-1.12"
       resolved-ref: "58e8f4614653638fc4f14568921f0a92d38b0775"
-      url: "git://github.com/abilia/flutter_local_notifications.git"
+      url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
     version: "9.0.0"
   flutter_local_notifications_linux:
@@ -1019,12 +1061,10 @@ packages:
   system_settings_editor:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v1.0.0"
-      resolved-ref: b79c08d8e751c634be42863eb57ce0e64edd5edc
-      url: "git://github.com/abilia/system_settings_editor.git"
-    source: git
-    version: "0.0.1"
+      path: "/media/rickard/Development/Projects/Github/system_settings_editor/"
+      relative: false
+    source: path
+    version: "1.0.1"
   term_glyph:
     dependency: transitive
     description:

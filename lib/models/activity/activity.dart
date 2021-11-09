@@ -21,19 +21,30 @@ class Activity extends DataModel {
       : startClock(day).add(duration);
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
+
   DateTime get noneRecurringEnd => startTime.add(duration);
+
   bool get hasEndTime => duration.inMinutes > 0;
+
   bool get isRecurring => recurs.isRecurring;
+
   Iterable<Duration> get reminders =>
       reminderBefore.map((r) => r.milliseconds()).toSet();
+
   bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+
   bool get hasTitle => title.isNotEmpty;
+
   bool get hasAttachment => infoItem is! NoInfoItem;
 
-  Activity signOff(DateTime day) => copyWith(
-      signedOffDates: signedOffDates.contains(day)
-          ? (signedOffDates.toList()..remove(day))
-          : signedOffDates.followedBy([day]));
+  Activity signOff(DateTime day) {
+    final d = whaleDateFormat(day);
+    return copyWith(
+      signedOffDates: signedOffDates.contains(d)
+          ? (signedOffDates.toList()..remove(d))
+          : signedOffDates.followedBy([d]),
+    );
+  }
 
   final String seriesId, title, fileId, icon, timezone;
   final DateTime startTime;
@@ -41,10 +52,11 @@ class Activity extends DataModel {
   final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
-  final UnmodifiableListView<DateTime> signedOffDates;
+  final UnmodifiableListView<String> signedOffDates;
   final InfoItem infoItem;
   final Recurs recurs;
   final Extras extras;
+
   const Activity._({
     required String id,
     required this.seriesId,
@@ -85,7 +97,7 @@ class Activity extends DataModel {
     String fileId = '',
     String icon = '',
     Iterable<int> reminderBefore = const [],
-    Iterable<DateTime> signedOffDates = const [],
+    Iterable<String> signedOffDates = const [],
     String timezone = '',
     Extras extras = Extras.empty,
   }) {
@@ -145,7 +157,7 @@ class Activity extends DataModel {
     Alarm? alarm,
     Recurs? recurs,
     InfoItem? infoItem,
-    Iterable<DateTime>? signedOffDates,
+    Iterable<String>? signedOffDates,
     String? timezone,
     Extras? extras,
   }) =>

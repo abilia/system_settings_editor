@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 
-@visibleForTesting
 String whaleDateFormat(DateTime date) {
   String _twoDigits(int n) => (n >= 10) ? '$n' : '0$n';
   final year = _twoDigits(date.year % 100);
@@ -13,19 +11,16 @@ String whaleDateFormat(DateTime date) {
   return '$year-$month-$day';
 }
 
-extension EncodeSignOffDates on Iterable<DateTime> {
+extension EncodeSignOffDates on Iterable<String> {
   String? tryEncodeSignedOffDates() {
     if (isEmpty != false) return null;
-    return map(whaleDateFormat).join(';').zipAndEncode();
+    return join(';').zipAndEncode();
   }
 }
 
 extension DeserializeSignOffDates on String {
-  Iterable<DateTime>? tryDecodeSignedOffDates() => tryUnzipAndDecode()
-      ?.split(';')
-      .map((d) => '20' + d)
-      .map(DateTime.tryParse)
-      .whereNotNull();
+  Iterable<String>? tryDecodeSignedOffDates() =>
+      tryUnzipAndDecode()?.split(';').where((s) => s.isNotEmpty);
 
   @visibleForTesting
   String? tryUnzipAndDecode() {

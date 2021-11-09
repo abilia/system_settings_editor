@@ -46,14 +46,25 @@ class FakeActivity {
   static Activity reocurrsFridays([DateTime? startDate]) =>
       _reoccurs(startDate, Recurs.weeklyOnDay(DateTime.friday),
           title: 'recurs friday');
+
   static Activity reocurrsOnDay(int day,
           [DateTime? startDate, DateTime? endDate]) =>
       _reoccurs(startDate, Recurs.monthly(day, ends: endDate),
           title: 'recurs on month day $day');
+
   static Activity reocurrsOnDate(DateTime day,
           [DateTime? startTime, DateTime? endTime]) =>
       _reoccurs(startTime ?? day, Recurs.yearly(day, ends: endTime),
           title: 'recurs on date $day');
+
+  static List<Activity> singleInstance(DateTime startDate) {
+    Activity activity = starts(startDate);
+    Activity activity2 = activity.copyWith(
+        newId: true,
+        title: 'activity2',
+        startTime: startDate.add(const Duration(days: 31)));
+    return {activity, activity2}.toList();
+  }
 
   static Activity _reoccurs(
     DateTime? startTime,
