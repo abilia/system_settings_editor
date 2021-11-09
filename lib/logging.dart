@@ -20,8 +20,6 @@ import 'package:seagull/utils/all.dart';
 
 export 'package:logging/logging.dart';
 
-// ignore_for_file: avoid_print
-
 enum LoggingType { file, print, analytic }
 
 class SeagullLogger {
@@ -135,12 +133,12 @@ class SeagullLogger {
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) {
-          print(format(record));
+          debugPrint(format(record));
           if (record.error != null) {
-            print(record.error);
+            debugPrint('${record.error}');
           }
           if (record.stackTrace != null) {
-            print(record.stackTrace);
+            debugPrint('${record.stackTrace}');
           }
         },
       ),
