@@ -18,11 +18,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   double? _brightness;
   double? _sliderBrightness;
+  bool? _soundEffectsEnabled;
 
   @override
   void initState() {
     super.initState();
     getBrightness();
+    getSoundEffectsEnabled();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -47,6 +49,25 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> getSoundEffectsEnabled() async {
+    bool? enabled;
+
+    try {
+      enabled = await SystemSettingsEditor.soundEffectsEnabled;
+    } on PlatformException {
+      enabled = false;
+    }
+    if(!mounted) return;
+    setState(() {
+      _soundEffectsEnabled = enabled;
+    });
+  }
+
+  void toggleSoundEffects() {
+    SystemSettingsEditor.setSoundEffectsEnabled(_soundEffectsEnabled != null && _soundEffectsEnabled == false);
+    getSoundEffectsEnabled();
+  }
+
   @override
   Widget build(BuildContext context) {
     final brightness = _brightness;
@@ -58,6 +79,14 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text('Click sounds'),
+            ElevatedButton(
+              onPressed: toggleSoundEffects,
+              child: const Text('Toggle Click Sounds'),
+            ),
+            Text('Sound is $_soundEffectsEnabled'),
+            const SizedBox(height: 20,),
+            const Text('Brightness'),
             Center(
               child: brightness != null
                   ? Text('${brightness * 100}% brightness')
@@ -65,7 +94,7 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: getBrightness,
-              child: const Text('Get brigthness'),
+              child: const Text('Get brightness'),
             ),
             Slider(
               onChanged: brightness != null
@@ -82,3 +111,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
