@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/quick_settings/sound_effects_switch.dart';
 import 'package:seagull/utils/strings.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -17,6 +18,7 @@ class QuickSettingsPage extends StatelessWidget {
       body: Column(
         children: const [
           BrightnessSlider(),
+          SoundEffectsSwitch(),
         ],
       ),
       bottomNavigationBar:

@@ -48,6 +48,7 @@ void main() {
     testWidgets('The page shows', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
+      expect(tester.widget(find.byIcon(AbiliaIcons.touch)), findsOneWidget);
       expect(
         tester.widget(find.byType(AbiliaSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),

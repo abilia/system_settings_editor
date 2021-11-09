@@ -379,7 +379,7 @@ abstract class Translated {
 
   final String imageArchive = 'Image Archive';
 
-  final String uploadImage = 'Upload image';
+  final String uploadImage = 'Device’s local images';
 
   final String myPhotos = 'My photos';
 
@@ -446,6 +446,8 @@ abstract class Translated {
   final String remove = 'Delete';
 
   final String screenBrightness = 'Screen brightness';
+
+  final String clickSound = 'Click Sound';
 
   final String settings = 'Settings';
 
@@ -1288,7 +1290,7 @@ class SV extends Translated {
   final String imageArchive = 'Bildarkiv';
 
   @override
-  final String uploadImage = 'Ladda upp bild';
+  final String uploadImage = 'Enhetens bilder';
 
   @override
   final String myPhotos = 'Mina foton';
@@ -1388,6 +1390,9 @@ class SV extends Translated {
 
   @override
   final String screenBrightness = 'Skärmens ljusstyrka';
+
+  @override
+  final String clickSound = 'Klickljud';
 
   @override
   final String settings = 'Inställningar';
@@ -2363,7 +2368,7 @@ class DA extends Translated {
   final String imageArchive = 'Billedarkiv';
 
   @override
-  final String uploadImage = 'Upload billede';
+  final String uploadImage = 'Enhedens billeder';
 
   @override
   final String myPhotos = 'Mine fotos';
@@ -2463,6 +2468,9 @@ class DA extends Translated {
 
   @override
   final String screenBrightness = 'Skærmens lysstyrke';
+
+  @override
+  final String clickSound = 'Kliklyd';
 
   @override
   final String settings = 'Indstillinger';
@@ -3438,7 +3446,7 @@ class NL extends Translated {
   final String imageArchive = 'Afbeeldingenarchief';
 
   @override
-  final String uploadImage = 'Afbeelding uploaden';
+  final String uploadImage = 'Afbeeldingen van het apparaat';
 
   @override
   final String myPhotos = "Mijn foto's";
@@ -3538,6 +3546,9 @@ class NL extends Translated {
 
   @override
   final String screenBrightness = 'Schermhelderheid';
+
+  @override
+  final String clickSound = 'Klikgeluid';
 
   @override
   final String settings = 'Instellingen';
@@ -4514,7 +4525,7 @@ class FI extends Translated {
   final String imageArchive = 'Kuva-arkisto';
 
   @override
-  final String uploadImage = 'Lataa kuva';
+  final String uploadImage = 'Laitteen kuvat ';
 
   @override
   final String myPhotos = 'Omat valokuvat';
@@ -4614,6 +4625,9 @@ class FI extends Translated {
 
   @override
   final String screenBrightness = 'Näytön kirkkaus';
+
+  @override
+  final String clickSound = 'Kosketusääni';
 
   @override
   final String settings = 'Asetukset';
@@ -5592,7 +5606,7 @@ class DE extends Translated {
   final String imageArchive = 'Bildarchiv';
 
   @override
-  final String uploadImage = 'Bild hochladen';
+  final String uploadImage = 'Bilder des Geräts';
 
   @override
   final String myPhotos = 'Meine Fotos';
@@ -5693,6 +5707,9 @@ class DE extends Translated {
 
   @override
   final String screenBrightness = 'Bildschirmhelligkeit';
+
+  @override
+  final String clickSound = 'Klang anklicken';
 
   @override
   final String settings = 'Einstellungen';
@@ -6669,7 +6686,7 @@ class NB extends Translated {
   final String imageArchive = 'Bildearkiv';
 
   @override
-  final String uploadImage = 'Last opp bilde';
+  final String uploadImage = 'Enhetens bilder ';
 
   @override
   final String myPhotos = 'Mine foto';
@@ -6769,6 +6786,9 @@ class NB extends Translated {
 
   @override
   final String screenBrightness = 'Skjermens lysstyrke';
+
+  @override
+  final String clickSound = 'Lyd ved valg';
 
   @override
   final String settings = 'Innstillinger';

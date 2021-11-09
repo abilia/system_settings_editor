@@ -1,0 +1,58 @@
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
+
+import '../../../logging.dart';
+
+class SoundEffectsSwitch extends StatefulWidget {
+  const SoundEffectsSwitch({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _SoundEffectSwitchState();
+  }
+}
+
+class _SoundEffectSwitchState extends State<SoundEffectsSwitch>
+    with WidgetsBindingObserver {
+  final _log = Logger((_SoundEffectSwitchState).toString());
+  bool _on = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+    initSetting();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchField(
+      leading: Icon(
+        AbiliaIcons.touch,
+        size: smallIconSize,
+      ),
+      value: _on,
+      onChanged: (switchOn) {
+        setState(() {
+          _on = switchOn;
+          SystemSettingsEditor.setSoundEffectsEnabled(switchOn);
+        });
+      },
+      child: Text(Translator.of(context).translate.clickSound),
+    );
+  }
+
+  initSetting() async {
+    try {
+      final on = await SystemSettingsEditor.soundEffectsEnabled;
+      setState(() {
+        _on = on ?? false;
+      });
+    } on PlatformException catch (e) {
+      _log.warning('Could not get sound effects setting', e);
+    }
+  }
+}
