@@ -449,6 +449,10 @@ abstract class Translated {
 
   final String battery = 'Battery';
 
+  final String wifi = 'Wi-Fi';
+
+  final String notConnected = 'Not connected';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -1393,6 +1397,12 @@ class SV extends Translated {
 
   @override
   final String battery = 'Batteri';
+
+  @override
+  final String wifi = 'Wi-Fi';
+
+  @override
+  final String notConnected = 'Ej ansluten';
 
   @override
   final String settings = 'Inställningar';
@@ -2481,6 +2491,12 @@ class DA extends Translated {
   final String battery = 'Batteri';
 
   @override
+  final String wifi = 'Wi-Fi';
+
+  @override
+  final String notConnected = 'Ikke tilsluttet';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -3565,6 +3581,12 @@ class NL extends Translated {
 
   @override
   final String battery = 'Batterij';
+
+  @override
+  final String wifi = 'Wifi';
+
+  @override
+  final String notConnected = 'Niet verbonden';
 
   @override
   final String settings = 'Instellingen';
@@ -4652,6 +4674,12 @@ class FI extends Translated {
 
   @override
   final String battery = 'Akku';
+
+  @override
+  final String wifi = 'Wi-Fi';
+
+  @override
+  final String notConnected = 'Ei yhteyttä';
 
   @override
   final String settings = 'Asetukset';
@@ -5744,6 +5772,12 @@ class DE extends Translated {
   final String battery = 'Akkus';
 
   @override
+  final String wifi = 'WLAN';
+
+  @override
+  final String notConnected = 'Nicht verbunden';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6829,6 +6863,12 @@ class NB extends Translated {
 
   @override
   final String battery = 'Batteri';
+
+  @override
+  final String wifi = 'Wi-Fi';
+
+  @override
+  final String notConnected = 'Ikke tilkoblet';
 
   @override
   final String settings = 'Innstillinger';

@@ -490,6 +490,7 @@ class AbiliaIcons {
       show = IconData(0xeafe, fontFamily: fontFamily),
       hide = IconData(0xeaff, fontFamily: fontFamily),
       wifi = IconData(0xeb10, fontFamily: fontFamily),
+      noWifi = IconData(0xeb11, fontFamily: fontFamily),
       flarp = IconData(0xeb12, fontFamily: fontFamily),
       handiUncheck = IconData(0xEB28, fontFamily: fontFamily),
       calendarList = IconData(0xEB29, fontFamily: fontFamily),

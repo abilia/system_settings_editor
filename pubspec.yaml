@@ -57,7 +57,6 @@ dependencies:
   shared_preferences: ^2.0.8
   sqflite: ^2.0.0+3
   synchronized: ^3.0.0
-  system_settings: ^2.0.0
   transparent_image: ^2.0.0
   uuid: ^3.0.5
   webview_flutter: ^2.1.2

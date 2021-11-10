@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/utils/strings.dart';
-import 'package:system_settings/system_settings.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class QuickSettingsPage extends StatelessWidget {
@@ -32,20 +32,6 @@ class QuickSettingsPage extends StatelessWidget {
       ),
       bottomNavigationBar:
           const BottomNavigation(backNavigationWidget: PreviousButton()),
-    );
-  }
-}
-
-class WiFiPickField extends StatelessWidget {
-  const WiFiPickField({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PickField(
-      leading: const Icon(AbiliaIcons.wifi),
-      text: const Text('WiFi'),
-      secondaryText: const Text('name of internet'),
-      onTap: () => SystemSettings.wifi(),
     );
   }
 }
