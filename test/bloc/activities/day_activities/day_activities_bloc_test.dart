@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
@@ -19,9 +20,9 @@ void main() {
   final tomorrow = today.nextDay();
   group('DayActivitiesBloc', () {
     setUp(() {
-      final stream = Stream<DateTime>.value(today);
       dayPickerBloc = DayPickerBloc(
-        clockBloc: ClockBloc(stream, initialTime: today),
+        clockBloc:
+            ClockBloc(const Stream<DateTime>.empty(), initialTime: today),
       );
       mockActivityRepository = MockActivityRepository();
       activitiesBloc = ActivitiesBloc(
@@ -34,13 +35,14 @@ void main() {
     });
 
     test('initial state is DayActivitiesUninitialized', () {
-      expect(dayActivitiesBloc.state, DayActivitiesUninitialized());
+      expect(dayActivitiesBloc.state,
+          _DayActivitiesMatcher(DayActivitiesUninitialized()));
     });
 
     test('initial state is DayActivitiesLoaded if started with loaded activity',
-        () async {
-      // Arrange
-      when(() => mockActivityRepository.load())
+            () async {
+          // Arrange
+          when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([]));
 
       // Act
@@ -48,25 +50,32 @@ void main() {
       await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
 
       // Assert
-      expect(dayActivitiesBloc.state,
-          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current));
+      expect(
+        dayActivitiesBloc.state,
+        _DayActivitiesMatcher(
+          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+        ),
+      );
     });
 
     test('state is DayActivitiesLoaded when ActivitiesBloc loadeds activities',
-        () {
-      // Arrange
-      const activities = Iterable<Activity>.empty();
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(activities));
-      // Act
-      activitiesBloc.add(LoadActivities());
-      // Assert
-      expectLater(
-        dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(
-            const <ActivityDay>[], today, Occasion.current)),
+            () {
+          // Arrange
+          const activities = Iterable<Activity>.empty();
+          when(() => mockActivityRepository.load())
+              .thenAnswer((_) => Future.value(activities));
+          // Act
+          activitiesBloc.add(LoadActivities());
+          // Assert
+          expectLater(
+            dayActivitiesBloc.stream,
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          ),
+        ),
       );
-    });
+        });
 
     test('DayActivitiesLoaded only loads todays activities', () {
       // Arrange
@@ -75,7 +84,7 @@ void main() {
       final activitiesTomorrow = [FakeActivity.starts(today.add(1.days()))];
 
       when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
+              (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -83,7 +92,11 @@ void main() {
       // Assert
       expectLater(
         dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(expected, today, Occasion.current)),
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expected, today, Occasion.current),
+          ),
+        ),
       );
     });
 
@@ -91,13 +104,13 @@ void main() {
       // Arrange
       final activitiesNow = [FakeActivity.starts(today)];
       final expextedToday =
-          activitiesNow.map((a) => ActivityDay(a, today)).toList();
+      activitiesNow.map((a) => ActivityDay(a, today)).toList();
       final activitiesTomorrow = [FakeActivity.starts(tomorrow)];
       final expextedTomorrow = activitiesTomorrow
           .map((a) => ActivityDay(a, today.nextDay()))
           .toList();
       when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
+              (_) => Future.value(activitiesNow.followedBy(activitiesTomorrow)));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -108,8 +121,12 @@ void main() {
       await expectLater(
         dayActivitiesBloc.stream,
         emitsInOrder([
-          DayActivitiesLoaded(expextedToday, today, Occasion.current),
-          DayActivitiesLoaded(expextedTomorrow, tomorrow, Occasion.future),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expextedToday, today, Occasion.current),
+          ),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expextedTomorrow, tomorrow, Occasion.future),
+          ),
         ]),
       );
     });
@@ -118,7 +135,7 @@ void main() {
       // Arrange
       final activitiesNow = [(FakeActivity.starts(today))];
       final expectedNow =
-          activitiesNow.map((a) => ActivityDay(a, today)).toList();
+      activitiesNow.map((a) => ActivityDay(a, today)).toList();
       final activitiesYesterDay = [
         FakeActivity.starts(today.subtract(1.days()))
       ];
@@ -126,7 +143,7 @@ void main() {
           .map((e) => ActivityDay(e, today.previousDay()))
           .toList();
       when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
+              (_) => Future.value(activitiesNow.followedBy(activitiesYesterDay)));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -137,8 +154,12 @@ void main() {
       await expectLater(
         dayActivitiesBloc.stream,
         emitsInOrder([
-          DayActivitiesLoaded(expectedNow, today, Occasion.current),
-          DayActivitiesLoaded(expectedYesterday, yesterday, Occasion.past),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expectedNow, today, Occasion.current),
+          ),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expectedYesterday, yesterday, Occasion.past),
+          ),
         ]),
       );
     });
@@ -148,11 +169,11 @@ void main() {
       final nextYear = today.add(const Duration(days: 365));
 
       when(() => mockActivityRepository.load()).thenAnswer(
-          (_) => Future.value(const Iterable<Activity>.empty().followedBy([
-                FakeActivity.starts(nextYear),
-                FakeActivity.starts(nextYear.add(1.days())),
-                FakeActivity.starts(nextYear.subtract(1.days())),
-              ])));
+              (_) => Future.value(const Iterable<Activity>.empty().followedBy([
+            FakeActivity.starts(nextYear),
+            FakeActivity.starts(nextYear.add(1.days())),
+            FakeActivity.starts(nextYear.subtract(1.days())),
+          ])));
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -165,10 +186,20 @@ void main() {
       await expectLater(
         dayActivitiesBloc.stream,
         emitsInOrder([
-          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
-          DayActivitiesLoaded(const <ActivityDay>[], tomorrow, Occasion.future),
-          DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
-          DayActivitiesLoaded(const <ActivityDay>[], yesterday, Occasion.past),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          ),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(
+                const <ActivityDay>[], tomorrow, Occasion.future),
+          ),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          ),
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(
+                const <ActivityDay>[], yesterday, Occasion.past),
+          ),
         ]),
       );
     });
@@ -179,7 +210,7 @@ void main() {
         FakeActivity.starts(today),
       ];
       final expectedActivity =
-          todayActivity.map((a) => ActivityDay(a, today)).toList();
+      todayActivity.map((a) => ActivityDay(a, today)).toList();
       final activitiesAdded = todayActivity.followedBy([
         FakeActivity.starts(today.add(1.days())),
         FakeActivity.starts(today.subtract(1.days())),
@@ -193,8 +224,11 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(
-            const <ActivityDay>[], today, Occasion.current)),
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          ),
+        ),
       );
 
       // Arrange
@@ -207,7 +241,11 @@ void main() {
       // Assert
       await expectLater(
         dayActivitiesBloc.stream,
-        emits(DayActivitiesLoaded(expectedActivity, today, Occasion.current)),
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(expectedActivity, today, Occasion.current),
+          ),
+        ),
       );
     });
 
@@ -251,31 +289,40 @@ void main() {
       await expectLater(
           dayActivitiesBloc.stream,
           emitsInOrder([
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              firstDay.add(const Duration(days: 1)),
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                firstDay.add(const Duration(days: 1)),
+                Occasion.future,
+              ),
             ), // friday
-            DayActivitiesLoaded(
-              weekendActivity
-                  .map((a) =>
-                      ActivityDay(a, firstDay.add(const Duration(days: 2))))
-                  .toList(),
-              firstDay.add(const Duration(days: 2)),
-              Occasion.future,
-            ), // saturday
-            DayActivitiesLoaded(
-              weekendActivity
-                  .map((a) =>
-                      ActivityDay(a, firstDay.add(const Duration(days: 3))))
-                  .toList(),
-              firstDay.add(const Duration(days: 3)),
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                weekendActivity
+                    .map((a) =>
+                        ActivityDay(a, firstDay.add(const Duration(days: 2))))
+                    .toList(),
+                firstDay.add(const Duration(days: 2)),
+                Occasion.future,
+              ),
+            ),
+            _DayActivitiesMatcher(
+              // saturday
+              DayActivitiesLoaded(
+                weekendActivity
+                    .map((a) =>
+                        ActivityDay(a, firstDay.add(const Duration(days: 3))))
+                    .toList(),
+                firstDay.add(const Duration(days: 3)),
+                Occasion.future,
+              ),
             ), // sunday
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              firstDay.add(const Duration(days: 4)),
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                firstDay.add(const Duration(days: 4)),
+                Occasion.future,
+              ),
             ), // monday
           ]));
     });
@@ -300,20 +347,26 @@ void main() {
       await expectLater(
           dayActivitiesBloc.stream,
           emitsInOrder([
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              boxingDay,
-              Occasion.past,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                boxingDay,
+                Occasion.past,
+              ),
             ),
-            DayActivitiesLoaded(
-              christmas.map((a) => ActivityDay(a, chrismasEve)).toList(),
-              chrismasEve,
-              Occasion.past,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                christmas.map((a) => ActivityDay(a, chrismasEve)).toList(),
+                chrismasEve,
+                Occasion.past,
+              ),
             ),
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              chrismasDay,
-              Occasion.past,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                chrismasDay,
+                Occasion.past,
+              ),
             ),
           ]));
     });
@@ -339,20 +392,26 @@ void main() {
       await expectLater(
           dayActivitiesBloc.stream,
           emitsInOrder([
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              boxingDay,
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                boxingDay,
+                Occasion.future,
+              ),
             ),
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              chrismasEve,
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                chrismasEve,
+                Occasion.future,
+              ),
             ),
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              chrismasDay,
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                chrismasDay,
+                Occasion.future,
+              ),
             ),
           ]));
     });
@@ -382,12 +441,16 @@ void main() {
         dayActivitiesBloc.stream,
         emitsInOrder(
           allOtherDays.map(
-            (day) => DayActivitiesLoaded(
-              day.day == 1
-                  ? monthStartActivity.map((a) => ActivityDay(a, day)).toList()
-                  : <ActivityDay>[],
-              day,
-              Occasion.future,
+            (day) => _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                day.day == 1
+                    ? monthStartActivity
+                        .map((a) => ActivityDay(a, day))
+                        .toList()
+                    : <ActivityDay>[],
+                day,
+                Occasion.future,
+              ),
             ),
           ),
         ),
@@ -395,80 +458,90 @@ void main() {
     });
 
     test('Split up activity shows on day it was split up on ( bug test )',
-        () async {
-      // Arrange
-      final preSplitStartTime = 1573513200000.fromMillisecondsSinceEpoch(),
-          preSplitEndTime = 1574377199999.fromMillisecondsSinceEpoch(),
-          splitStartTime = 1574380800000.fromMillisecondsSinceEpoch(),
-          splitEndTime = 253402297199000.fromMillisecondsSinceEpoch();
+            () async {
+          // Arrange
+          final preSplitStartTime = 1573513200000.fromMillisecondsSinceEpoch(),
+              preSplitEndTime = 1574377199999.fromMillisecondsSinceEpoch(),
+              splitStartTime = 1574380800000.fromMillisecondsSinceEpoch(),
+              splitEndTime = 253402297199000.fromMillisecondsSinceEpoch();
 
-      final dayBeforeSplit = preSplitEndTime.onlyDays();
-      final dayOnSplit = splitStartTime.onlyDays();
+          final dayBeforeSplit = preSplitEndTime.onlyDays();
+          final dayOnSplit = splitStartTime.onlyDays();
 
-      final preSplitRecurring = Activity.createNew(
-        title: 'Pre Split Recurring',
-        recurs: Recurs.raw(
-          Recurs.typeWeekly,
-          16383,
-          preSplitEndTime.millisecondsSinceEpoch,
-        ),
-        alarmType: 104,
-        duration: 86399999.milliseconds(),
-        startTime: preSplitStartTime,
-        fullDay: true,
-      );
-
-      final splitRecurring = Activity.createNew(
-        title: 'Split recurring ',
-        recurs: Recurs.raw(
-          Recurs.typeWeekly,
-          16383,
-          splitEndTime.millisecondsSinceEpoch,
-        ),
-        alarmType: 104,
-        duration: 86399999.milliseconds(),
-        startTime: splitStartTime,
-        fullDay: true,
-      );
-
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value([preSplitRecurring, splitRecurring]));
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
-      dayPickerBloc.add(GoTo(day: dayBeforeSplit));
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(NextDay());
-
-      // Assert
-      await expectLater(
-          dayActivitiesBloc.stream,
-          emitsInOrder([
-            DayActivitiesLoaded(
-              const <ActivityDay>[],
-              firstDay,
-              Occasion.current,
+          final preSplitRecurring = Activity.createNew(
+            title: 'Pre Split Recurring',
+            recurs: Recurs.raw(
+              Recurs.typeWeekly,
+              16383,
+              preSplitEndTime.millisecondsSinceEpoch,
             ),
-            DayActivitiesLoaded(
-              [preSplitRecurring]
-                  .map((a) => ActivityDay(a, dayBeforeSplit))
-                  .toList(),
-              dayBeforeSplit,
-              Occasion.future,
+            alarmType: 104,
+            duration: 86399999.milliseconds(),
+            startTime: preSplitStartTime,
+            fullDay: true,
+          );
+
+          final splitRecurring = Activity.createNew(
+            title: 'Split recurring ',
+            recurs: Recurs.raw(
+              Recurs.typeWeekly,
+              16383,
+              splitEndTime.millisecondsSinceEpoch,
             ),
-            DayActivitiesLoaded(
-              [splitRecurring].map((a) => ActivityDay(a, dayOnSplit)).toList(),
-              dayOnSplit,
-              Occasion.future,
+            alarmType: 104,
+            duration: 86399999.milliseconds(),
+            startTime: splitStartTime,
+            fullDay: true,
+          );
+
+          when(() => mockActivityRepository.load())
+              .thenAnswer((_) => Future.value([preSplitRecurring, splitRecurring]));
+
+          // Act
+          activitiesBloc.add(LoadActivities());
+          await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+          dayPickerBloc.add(GoTo(day: dayBeforeSplit));
+          dayPickerBloc.add(NextDay());
+          dayPickerBloc.add(NextDay());
+
+          // Assert
+          await expectLater(
+              dayActivitiesBloc.stream,
+              emitsInOrder([
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                const <ActivityDay>[],
+                firstDay,
+                Occasion.current,
+              ),
             ),
-            DayActivitiesLoaded(
-              [splitRecurring]
-                  .map((e) =>
-                      ActivityDay(e, dayOnSplit.add(const Duration(days: 1))))
-                  .toList(),
-              dayOnSplit.add(const Duration(days: 1)),
-              Occasion.future,
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                [preSplitRecurring]
+                    .map((a) => ActivityDay(a, dayBeforeSplit))
+                    .toList(),
+                dayBeforeSplit,
+                Occasion.future,
+              ),
+            ),
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                [splitRecurring]
+                    .map((a) => ActivityDay(a, dayOnSplit))
+                    .toList(),
+                dayOnSplit,
+                Occasion.future,
+              ),
+            ),
+            _DayActivitiesMatcher(
+              DayActivitiesLoaded(
+                [splitRecurring]
+                    .map((e) =>
+                        ActivityDay(e, dayOnSplit.add(const Duration(days: 1))))
+                    .toList(),
+                dayOnSplit.add(const Duration(days: 1)),
+                Occasion.future,
+              ),
             ),
           ]));
     });
@@ -478,4 +551,27 @@ void main() {
       activitiesBloc.close();
     });
   });
+}
+
+class _DayActivitiesMatcher extends Matcher {
+  const _DayActivitiesMatcher(this.value);
+
+  final DayActivitiesState value;
+
+  @override
+  Description describe(Description description) =>
+      description.add('${value.runtimeType} $value ');
+
+  @override
+  bool matches(dynamic object, Map matchState) {
+    final value = this.value;
+    if (value is DayActivitiesLoaded) {
+      return object is DayActivitiesLoaded &&
+          object.occasion == value.occasion &&
+          object.day == value.day &&
+          const DeepCollectionEquality()
+              .equals(value.activities, object.activities);
+    }
+    return value.runtimeType == object.runtimeType;
+  }
 }
