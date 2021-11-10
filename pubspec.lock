@@ -1061,9 +1061,11 @@ packages:
   system_settings_editor:
     dependency: "direct main"
     description:
-      path: "/media/rickard/Development/Projects/Github/system_settings_editor/"
-      relative: false
-    source: path
+      path: "."
+      ref: "v1.1.0"
+      resolved-ref: "223839aa618899b73eb7ac5df429d78b2dc441ef"
+      url: "git://github.com/abilia/system_settings_editor.git"
+    source: git
     version: "1.0.1"
   term_glyph:
     dependency: transitive
