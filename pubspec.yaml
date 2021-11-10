@@ -37,7 +37,7 @@ dependencies:
   flutter_ringtone_player: ^3.1.0
   system_settings_editor:
     git:
-      url: git://github.com/abilia/system_settings_editor.git
+      url: https://github.com/abilia/system_settings_editor.git
       ref: v1.1.0
   flutter_tts: ^3.2.2
   get_it: ^7.2.0

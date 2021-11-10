@@ -1064,7 +1064,7 @@ packages:
       path: "."
       ref: "v1.1.0"
       resolved-ref: "223839aa618899b73eb7ac5df429d78b2dc441ef"
-      url: "git://github.com/abilia/system_settings_editor.git"
+      url: "https://github.com/abilia/system_settings_editor.git"
     source: git
     version: "1.0.1"
   term_glyph:
