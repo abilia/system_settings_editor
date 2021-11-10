@@ -83,7 +83,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
         event.unstoredFile.id, event.unstoredFile.file.path, fileBytes);
 
     await userFileRepository.save([userFile]);
-    syncBloc.add(FileSaved());
+    syncBloc.add(SyncEvent.fileSaved);
     yield state.add(userFile);
   }
 

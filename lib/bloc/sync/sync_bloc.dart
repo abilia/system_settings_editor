@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import 'package:seagull/repository/all.dart';
 
-part 'sync_event.dart';
 part 'sync_state.dart';
 part 'sync_delays.dart';
+
+enum SyncEvent {
+  activitySaved,
+  fileSaved,
+  sortableSaved,
+  genericSaved,
+}
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final ActivityRepository activityRepository;
@@ -23,7 +28,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.syncDelay,
     required this.genericRepository,
-  }) : super(SyncInitial());
+  }) : super(const SyncDone());
 
   final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
 
@@ -43,9 +48,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   Stream<SyncState> mapEventToState(
     SyncEvent event,
   ) async* {
-    yield SyncPending();
+    yield const SyncPending();
     if (!await _sync(event)) {
-      yield SyncFailed();
+      yield const SyncFailed();
       if (!_syncQueue.contains(event)) {
         _syncQueue.add(event);
       }
@@ -59,21 +64,20 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       // dequeuing
       super.add(_syncQueue.removeFirst());
     } else {
-      yield SyncDone();
+      yield const SyncDone();
     }
   }
 
   Future<bool> _sync(SyncEvent event) async {
-    if (event is ActivitySaved) {
-      return activityRepository.synchronize();
-    } else if (event is FileSaved) {
-      return userFileRepository.synchronize();
-    } else if (event is SortableSaved) {
-      return sortableRepository.synchronize();
-    } else if (event is GenericSaved) {
-      return genericRepository.synchronize();
+    switch (event) {
+      case SyncEvent.activitySaved:
+        return activityRepository.synchronize();
+      case SyncEvent.fileSaved:
+        return userFileRepository.synchronize();
+      case SyncEvent.sortableSaved:
+        return sortableRepository.synchronize();
+      case SyncEvent.genericSaved:
+        return genericRepository.synchronize();
     }
-
-    return true;
   }
 }
