@@ -47,7 +47,7 @@ abstract class NotificationAlarm extends Equatable {
       NotificationAlarm.fromJson(json.decode(data));
 
   @override
-  List<Object> get props => [activityDay];
+  List<Object> get props => [activityDay.activity, activityDay.day];
   @override
   bool get stringify => true;
 }

@@ -65,6 +65,14 @@ Future scheduleAlarmNotifications(
   );
 }
 
+Future cancelNotifications(
+    Iterable<NotificationAlarm> notificationAlarms) async {
+  for (final notification in notificationAlarms) {
+    _log.fine('canceling ${notification.hashCode} $notification');
+    await notificationPlugin.cancel(notification.hashCode);
+  }
+}
+
 // ignore: prefer_function_declarations_over_variables
 late AlarmScheduler scheduleAlarmNotificationsIsolated = (
   Iterable<Activity> allActivities,

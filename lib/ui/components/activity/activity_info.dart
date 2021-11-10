@@ -125,8 +125,11 @@ mixin ActivityMixin {
       ),
     );
     if (check == true) {
-      BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
-          activityOccasion.activity.signOff(activityOccasion.day)));
+      context.read<ActivitiesBloc>().add(
+            UpdateActivity(
+              activityOccasion.activity.signOff(activityOccasion.day),
+            ),
+          );
     }
     return check;
   }

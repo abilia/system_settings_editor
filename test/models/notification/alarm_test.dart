@@ -103,4 +103,19 @@ void main() {
     expect(nonCheckableAlarm.sound(settings), Sound.Default);
     expect(checkableActivityAlarm.sound(settings), Sound.Default);
   });
+
+  test('Alarms.from same as Alarms constuctor ', () {
+    final a = Activity.createNew(
+      title: 'test',
+      startTime: DateTime(2021, 11, 10, 13, 37),
+    );
+    final alarm = StartAlarm(a, day);
+    final activtyDayAlarm = StartAlarm.from(ActivityDay(a, day));
+    final activityOccasionoAlarm = StartAlarm.from(
+      ActivityOccasion.forTest(a, day: day),
+    );
+
+    expect(alarm, activtyDayAlarm);
+    expect(alarm, activityOccasionoAlarm);
+  });
 }
