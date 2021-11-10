@@ -70,8 +70,7 @@ class Activity extends DataModel {
     required this.signedOffDates,
     required this.timezone,
     required this.extras,
-  })
-      : assert(alarmType >= 0),
+  })  : assert(alarmType >= 0),
         assert(category >= 0),
         noneRecurringEnd = startTime.add(duration),
         reminders = UnmodifiableSetView(
@@ -227,8 +226,7 @@ class Activity extends DataModel {
       );
 
   @override
-  List<Object> get props =>
-      [
+  List<Object> get props => [
         id,
         seriesId,
         title,
