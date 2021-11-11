@@ -1,16 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mocks.dart';
 
 void main() {
-  const MethodChannel networkChannel =
-      MethodChannel('dev.fluttercommunity.plus/network_info');
+  final mockNetworkInfo = MockNetworkInfo();
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -35,26 +33,24 @@ void main() {
       );
 
   testWidgets('Not connected', (WidgetTester tester) async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    networkChannel.setMockMethodCallHandler((_) async {
-      return null;
-    });
-    await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
+    when(() => mockNetworkInfo.getWifiName())
+        .thenAnswer((_) => Future.value(null));
+    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
+      networkInfo: mockNetworkInfo,
+    )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
-    debugDefaultTargetPlatformOverride = null;
   });
 
   testWidgets('Connected', (WidgetTester tester) async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
     const networkName = 'my network';
-    networkChannel.setMockMethodCallHandler((_) async {
-      return networkName;
-    });
-    await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
+    when(() => mockNetworkInfo.getWifiName())
+        .thenAnswer((_) => Future.value(networkName));
+    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
+      networkInfo: mockNetworkInfo,
+    )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
     expect(find.text(networkName), findsOneWidget);
-    debugDefaultTargetPlatformOverride = null;
   });
 }

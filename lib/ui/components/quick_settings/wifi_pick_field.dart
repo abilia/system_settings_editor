@@ -3,7 +3,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class WiFiPickField extends StatefulWidget {
-  const WiFiPickField({Key? key}) : super(key: key);
+  const WiFiPickField({Key? key, this.networkInfo}) : super(key: key);
+  final NetworkInfo? networkInfo;
 
   @override
   State<WiFiPickField> createState() => _WiFiPickFieldState();
@@ -12,16 +13,17 @@ class WiFiPickField extends StatefulWidget {
 class _WiFiPickFieldState extends State<WiFiPickField>
     with WidgetsBindingObserver {
   String? wifiName;
+  late final NetworkInfo info;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
+    info = widget.networkInfo ?? NetworkInfo();
     initWifiName();
   }
 
   void initWifiName() async {
-    final info = NetworkInfo();
     final name = await info.getWifiName();
     setState(() {
       wifiName = name;
@@ -32,7 +34,6 @@ class _WiFiPickFieldState extends State<WiFiPickField>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      final info = NetworkInfo();
       final name = await info.getWifiName();
       setState(() {
         wifiName = name;
