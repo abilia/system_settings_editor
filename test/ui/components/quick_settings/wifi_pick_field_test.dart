@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -34,15 +35,18 @@ void main() {
       );
 
   testWidgets('Not connected', (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
     networkChannel.setMockMethodCallHandler((_) async {
       return null;
     });
     await tester.pumpWidget(wrapWithMaterialApp(const WiFiPickField()));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 
   testWidgets('Connected', (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
     const networkName = 'my network';
     networkChannel.setMockMethodCallHandler((_) async {
       return networkName;
@@ -51,5 +55,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
     expect(find.text(networkName), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 }
