@@ -29,7 +29,6 @@ class PlayAlarmSpeechButton extends StatelessWidget {
               alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
               soundCubit: context.read<SoundCubit>(),
               selectedNotificationStream: selectNotificationSubject,
-              fullscreenAlarm: fullScreenAlarm,
             ),
             lazy: false,
           ),
