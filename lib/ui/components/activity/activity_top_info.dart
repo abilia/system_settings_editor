@@ -13,12 +13,11 @@ import 'package:seagull/utils/all.dart';
 class ActivityTopInfo extends StatelessWidget {
   final ActivityDay activityDay;
   final NotificationAlarm? alarm;
-  final bool fullScreenAlarm;
+
   const ActivityTopInfo(
     this.activityDay, {
     Key? key,
     this.alarm,
-    this.fullScreenAlarm = false,
   }) : super(key: key);
 
   @override
@@ -30,7 +29,6 @@ class ActivityTopInfo extends StatelessWidget {
           activityDay,
           leading: PlayAlarmSpeechButton(
             alarm: alarm,
-            fullScreenAlarm: fullScreenAlarm,
           ),
         );
       } else if (alarm is EndAlarm) {
@@ -38,7 +36,6 @@ class ActivityTopInfo extends StatelessWidget {
           activityDay,
           trailing: PlayAlarmSpeechButton(
             alarm: alarm,
-            fullScreenAlarm: fullScreenAlarm,
           ),
         );
       }
