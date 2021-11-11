@@ -171,6 +171,9 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                       final checked =
                           await checkConfirmation(context, activityOccasion);
                       if (checked == true) {
+                        await cancelNotifications(
+                          uncheckedReminders(activityOccasion),
+                        );
                         await popAlarm(context, alarm);
                       }
                     },
