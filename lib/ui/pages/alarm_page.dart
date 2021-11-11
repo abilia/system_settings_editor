@@ -7,11 +7,9 @@ import 'package:seagull/ui/all.dart';
 class AlarmPage extends StatelessWidget {
   final NewAlarm alarm;
   final Widget? previewImage;
-  final bool fullScreenAlarm;
 
   const AlarmPage({
     required this.alarm,
-    this.fullScreenAlarm = false,
     this.previewImage,
     Key? key,
   }) : super(key: key);
@@ -37,7 +35,6 @@ class AlarmPage extends StatelessWidget {
                 alarm.activityDay.fromActivitiesState(activitiesState),
                 previewImage: previewImage,
                 alarm: alarm,
-                fullScreenAlarm: fullScreenAlarm,
               ),
             ),
             bottomNavigationBar: AlarmBottomAppBar(
