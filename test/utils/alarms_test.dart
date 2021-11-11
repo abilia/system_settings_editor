@@ -518,7 +518,7 @@ void main() {
       expect(
           alarms,
           containsAll([
-            ...unSignedOffActivityReminders
+            ...unsignedOffActivityReminders
                 .map((r) => ReminderUnchecked(checkable, day, reminder: r))
           ]));
     });
@@ -538,7 +538,7 @@ void main() {
       // Assert
       expect(
           alarms,
-          containsAll(unSignedOffActivityReminders
+          containsAll(unsignedOffActivityReminders
               .where((rt) => rt >= 1.hours())
               .map((r) => ReminderUnchecked(checkable, day, reminder: r))));
     });
@@ -590,7 +590,7 @@ void main() {
             EndAlarm(maxed, nextDay),
             ...reminders
                 .map((r) => ReminderBefore(maxed, nextDay, reminder: r)),
-            ...unSignedOffActivityReminders
+            ...unsignedOffActivityReminders
                 .map((r) => ReminderUnchecked(maxed, nextDay, reminder: r))
           ]));
     });

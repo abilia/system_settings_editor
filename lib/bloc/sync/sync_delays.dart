@@ -7,6 +7,8 @@ class SyncDelays {
     this.betweenSync = const Duration(seconds: 3),
     this.retryDelay = const Duration(minutes: 1),
   });
-  static const SyncDelays zero =
-      SyncDelays(betweenSync: Duration.zero, retryDelay: Duration.zero);
+  static const SyncDelays zero = SyncDelays(
+    betweenSync: Duration.zero,
+    retryDelay: Duration.zero,
+  );
 }

@@ -43,13 +43,12 @@ class ActivityInfo extends StatefulWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final NotificationAlarm? alarm;
-  final bool fullScreenAlarm;
+
   const ActivityInfo(
     this.activityDay, {
     Key? key,
     this.previewImage,
     this.alarm,
-    this.fullScreenAlarm = false,
   }) : super(key: key);
   factory ActivityInfo.from({
     required Activity activity,
@@ -78,7 +77,6 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
           ActivityTopInfo(
             widget.activityDay,
             alarm: widget.alarm,
-            fullScreenAlarm: widget.fullScreenAlarm,
           ),
           Expanded(
             child: Container(
@@ -125,8 +123,11 @@ mixin ActivityMixin {
       ),
     );
     if (check == true) {
-      BlocProvider.of<ActivitiesBloc>(context).add(UpdateActivity(
-          activityOccasion.activity.signOff(activityOccasion.day)));
+      context.read<ActivitiesBloc>().add(
+            UpdateActivity(
+              activityOccasion.activity.signOff(activityOccasion.day),
+            ),
+          );
     }
     return check;
   }
