@@ -232,7 +232,9 @@ remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke
 battery	Battery	Batteri	Batteri	Batterij	Akku	Akkus	Batteri
 clickSound	Click Sound	Klickljud	Kliklyd	Klikgeluid	Kosketusääni	Klang anklicken	Lyd ved valg
-
+volumeAlarm	Volume for alarm	Volym för alarm	Volumen for alarm	Volume voor alarm	Hälytyksen äänenvoimakkuus	Lautstärke für Alarm	Volum for alarm
+volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor media	Median äänenvoimakkuus	Lautstärke für Medien	Volum for media
+							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
