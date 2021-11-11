@@ -37,6 +37,7 @@ void main() {
         .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
       networkInfo: mockNetworkInfo,
+      locationPermission: PermissionStatus.granted,
     )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
@@ -48,6 +49,7 @@ void main() {
         .thenAnswer((_) => Future.value(networkName));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
       networkInfo: mockNetworkInfo,
+      locationPermission: PermissionStatus.granted,
     )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);

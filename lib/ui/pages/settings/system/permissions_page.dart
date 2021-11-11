@@ -18,6 +18,7 @@ class PermissionsPage extends StatelessWidget {
         builder: (context, state) => ListView(
           padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 0),
           children: state.status.entries
+              .where((p) => PermissionBloc.allPermissions.contains(p.key))
               .map((e) => PermissionSetting(e))
               .expand((e) => [e, SizedBox(height: 8.0.s)])
               .toList(),

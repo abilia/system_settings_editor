@@ -211,8 +211,8 @@ void main() {
       final perms = PermissionBloc.allPermissions;
 
       for (final permission in perms) {
+        await tester.scrollTo(find.byKey(ObjectKey(permission)));
         await tester.tap(find.byKey(ObjectKey(permission)));
-        await tester.scrollDown();
         await tester.pumpAndSettle();
       }
 
@@ -324,9 +324,7 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future scrollDown({double dy = -30.0}) async {
-    final center = getCenter(find.byType(PermissionsPage));
-    await dragFrom(center, Offset(0.0, dy));
-    await pump();
+  Future scrollTo(Finder f, {double dy = -30.0}) async {
+    await dragUntilVisible(f, find.byType(PermissionsPage), Offset(0.0, dy));
   }
 }

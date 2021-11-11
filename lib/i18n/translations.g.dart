@@ -743,6 +743,8 @@ abstract class Translated {
   final String allowAccessMicrophoneBody =
       'Allow access to microphone to be able to record speech from the device';
 
+  final String location = 'Location';
+
   final String about = 'About';
 
   final String version = 'Version';
@@ -1830,6 +1832,9 @@ class SV extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten';
+
+  @override
+  final String location = 'Plats';
 
   @override
   final String about = 'Information';
@@ -2925,6 +2930,9 @@ class DA extends Translated {
       'Tillad adgang til mikrofon for at kunne optage tale fra enheden';
 
   @override
+  final String location = 'Beliggenhed';
+
+  @override
   final String about = 'Information';
 
   @override
@@ -4018,6 +4026,9 @@ class NL extends Translated {
       'Toegang tot microfoon toestaan om spraak van het apparaat op te nemen';
 
   @override
+  final String location = 'Plaats';
+
+  @override
   final String about = 'Informatie';
 
   @override
@@ -5107,6 +5118,9 @@ class FI extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta';
+
+  @override
+  final String location = 'Sijainti';
 
   @override
   final String about = 'Tiedot';
@@ -6208,6 +6222,9 @@ class DE extends Translated {
       'Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können';
 
   @override
+  final String location = 'Lage';
+
+  @override
   final String about = 'Information';
 
   @override
@@ -7297,6 +7314,9 @@ class NB extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten';
+
+  @override
+  final String location = 'Plassering';
 
   @override
   final String about = 'Informasjon';
