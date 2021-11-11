@@ -55,7 +55,7 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
         final anyDirty = await genericRepository.save(toUpdate.values);
         if (anyDirty) {
           yield* _mapLoadGenericsToState();
-          syncBloc.add(GenericSaved());
+          syncBloc.add(SyncEvent.genericSaved);
         }
       }
     }

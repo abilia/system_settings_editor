@@ -31,16 +31,16 @@ void main() {
     });
     test('ActivitySaved event calls synchronize on activity repository ',
         () async {
-      syncBloc.add(ActivitySaved());
+      syncBloc.add(SyncEvent.activitySaved);
       await untilCalled(() => activityRepository.synchronize());
     });
     test('FileSaved event calls synchronize on user file repository', () async {
-      syncBloc.add(FileSaved());
+      syncBloc.add(SyncEvent.fileSaved);
       await untilCalled(() => userFileRepository.synchronize());
     });
     test('SortableSaved event calls synchronize on sortable repository',
         () async {
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.sortableSaved);
       await untilCalled(() => sortableRepository.synchronize());
     });
   });
@@ -63,7 +63,7 @@ void main() {
           .thenAnswer((_) => Future.value(false));
     });
     test('Failed ActivitySaved synchronize retrys to syncronize', () async {
-      syncBloc.add(ActivitySaved());
+      syncBloc.add(SyncEvent.activitySaved);
       await untilCalled(() => activityRepository.synchronize());
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
@@ -71,7 +71,7 @@ void main() {
       verify(() => activityRepository.synchronize()).called(2);
     });
     test('Failed FileSaved synchronize retrys to syncronize', () async {
-      syncBloc.add(FileSaved());
+      syncBloc.add(SyncEvent.fileSaved);
       await untilCalled(() => userFileRepository.synchronize());
       when(() => userFileRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
@@ -79,7 +79,7 @@ void main() {
       verify(() => userFileRepository.synchronize()).called(2);
     });
     test('Failed SortableSaved synchronize retrys to syncronize', () async {
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.sortableSaved);
       await untilCalled(() => sortableRepository.synchronize());
       when(() => sortableRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
@@ -108,29 +108,29 @@ void main() {
           .thenAnswer((_) => Future.value(true));
     });
     test('calls all repositories', () async {
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
       await untilCalled(() => activityRepository.synchronize());
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
     });
 
     test('throttles invocations of event', () async {
-      syncBloc.add(ActivitySaved());
+      syncBloc.add(SyncEvent.activitySaved);
       await untilCalled(() => activityRepository.synchronize());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
       await Future.delayed(stallTime * 2);
       await untilCalled(() => userFileRepository.synchronize());
       await Future.delayed(stallTime * 2);
@@ -146,20 +146,20 @@ void main() {
         () async {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(false));
-      syncBloc.add(ActivitySaved());
+      syncBloc.add(SyncEvent.activitySaved);
       await untilCalled(() => activityRepository.synchronize());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(ActivitySaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(FileSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.activitySaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.fileSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
     });
