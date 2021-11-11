@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -32,7 +34,7 @@ void main() {
         ], child: widget),
       );
 
-  testWidgets('Not connected', (WidgetTester tester) async {
+  testWidgets('Not connected shows no wifi icon', (WidgetTester tester) async {
     when(() => mockNetworkInfo.getWifiName())
         .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
@@ -43,7 +45,7 @@ void main() {
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
   });
 
-  testWidgets('Connected', (WidgetTester tester) async {
+  testWidgets('Connected shows wifi icon', (WidgetTester tester) async {
     const networkName = 'my network';
     when(() => mockNetworkInfo.getWifiName())
         .thenAnswer((_) => Future.value(networkName));
@@ -54,5 +56,17 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
     expect(find.text(networkName), findsOneWidget);
+  });
+
+  testWidgets('No location permission shows wifi icon',
+      (WidgetTester tester) async {
+    when(() => mockNetworkInfo.getWifiName())
+        .thenAnswer((_) => Future.value(null));
+    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
+      networkInfo: mockNetworkInfo,
+      locationPermission: PermissionStatus.denied,
+    )));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
   });
 }
