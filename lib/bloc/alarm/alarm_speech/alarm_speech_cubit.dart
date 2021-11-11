@@ -25,14 +25,12 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
 
   AlarmSpeechCubit({
     required this.alarm,
-    required bool fullscreenAlarm,
     required this.soundCubit,
     required AlarmSettings alarmSettings,
     required Stream<NotificationAlarm> selectedNotificationStream,
   }) : super(const AlarmSpeechUnplayed()) {
-    _log.fine('fullscrenAlarm: $fullscreenAlarm');
     _log.fine('$alarm');
-    final speechDelay = _alarmDuration(alarmSettings, fullscreenAlarm);
+    final speechDelay = _alarmDuration(alarmSettings);
 
     _log.fine('alarm length: $speechDelay');
 
@@ -71,8 +69,8 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
           [])
       .any((n) => n.id == alarm.hashCode);
 
-  Duration _alarmDuration(AlarmSettings alarmSettings, bool fullScreenAlarm) {
-    final noAlarm = fullScreenAlarm || !alarm.activity.alarm.sound;
+  Duration _alarmDuration(AlarmSettings alarmSettings) {
+    final noAlarm = !alarm.activity.alarm.sound;
     if (noAlarm) {
       return Duration.zero;
     }

@@ -8,11 +8,9 @@ import 'package:seagull/ui/all.dart';
 
 class PlayAlarmSpeechButton extends StatelessWidget {
   final NewAlarm alarm;
-  final bool fullScreenAlarm;
   const PlayAlarmSpeechButton({
     Key? key,
     required this.alarm,
-    required this.fullScreenAlarm,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -29,7 +27,6 @@ class PlayAlarmSpeechButton extends StatelessWidget {
               alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
               soundCubit: context.read<SoundCubit>(),
               selectedNotificationStream: selectNotificationSubject,
-              fullscreenAlarm: fullScreenAlarm,
             ),
             lazy: false,
           ),
