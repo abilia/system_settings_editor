@@ -10,33 +10,38 @@ class FloatingActions extends StatelessWidget {
     return BlocBuilder<PermissionBloc, PermissionState>(
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
-      builder: (context, state) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (tabController != null)
-              _ToggleAlarmAndEyeButtons(tabController: tabController)
-            else if (context
-                .read<MemoplannerSettingBloc>()
-                .state
-                .displayAlarmButton)
-              const ToggleAlarmButton(),
-            if (state.notificationDenied)
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 12.s,
-                    right: 24.s,
-                    bottom: 12.s,
-                  ),
-                  child: ErrorMessage(
-                    text: Text(
-                      Translator.of(context).translate.notificationsWarningText,
+      builder: (context, permission) {
+        return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          buildWhen: (previous, current) =>
+              previous.displayAlarmButton != current.displayAlarmButton,
+          builder: (context, settings) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (tabController != null)
+                  _ToggleAlarmAndEyeButtons(tabController: tabController)
+                else if (settings.displayAlarmButton)
+                  const ToggleAlarmButton(),
+                if (permission.notificationDenied)
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 12.s,
+                        right: 24.s,
+                        bottom: 12.s,
+                      ),
+                      child: ErrorMessage(
+                        text: Text(
+                          Translator.of(context)
+                              .translate
+                              .notificationsWarningText,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-          ],
+              ],
+            );
+          },
         );
       },
     );
