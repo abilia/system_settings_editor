@@ -39,21 +39,21 @@ class WiFiPickField extends StatefulWidget {
 
 class _WiFiPickFieldState extends State<WiFiPickField>
     with WidgetsBindingObserver {
-  String? wifiName;
-  late final NetworkInfo info;
+  String? _wifiName;
+  late final NetworkInfo _info;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    info = widget.networkInfo ?? NetworkInfo();
+    _info = widget.networkInfo ?? NetworkInfo();
     initWifiName();
   }
 
   void initWifiName() async {
-    final name = await info.getWifiName();
+    final name = await _info.getWifiName();
     setState(() {
-      wifiName = name;
+      _wifiName = name;
     });
   }
 
@@ -61,9 +61,9 @@ class _WiFiPickFieldState extends State<WiFiPickField>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      final name = await info.getWifiName();
+      final name = await _info.getWifiName();
       setState(() {
-        wifiName = name;
+        _wifiName = name;
       });
     }
   }
@@ -72,17 +72,17 @@ class _WiFiPickFieldState extends State<WiFiPickField>
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return PickField(
-      leading: Icon(wifiName == null &&
+      leading: Icon(_wifiName == null &&
               widget.locationPermission == PermissionStatus.granted
           ? AbiliaIcons.noWifi
           : AbiliaIcons.wifi),
       text: Text(t.wifi),
       secondaryText: widget.locationPermission == PermissionStatus.granted
           ? Text(
-              wifiName ?? t.notConnected,
+              _wifiName ?? t.notConnected,
             )
           : null,
-      secondaryStyle: wifiName == null
+      secondaryStyle: _wifiName == null
           ? (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
               height: 1.0,
               color: AbiliaColors.red,
