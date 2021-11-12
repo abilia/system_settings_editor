@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -22,6 +24,10 @@ class _MyAppState extends State<MyApp> {
   bool? _soundEffectsEnabled;
   double? _alarmVolume;
   double? _mediaVolume;
+  Duration? _timeout;
+  double? _sliderTimeout;
+
+  static const _maxTimeOutSec = 600;
 
   @override
   void initState() {
@@ -30,23 +36,17 @@ class _MyAppState extends State<MyApp> {
     getSoundEffectsEnabled();
     getAlarmVolume();
     getMediaVolume();
+    getScreenOffTimeout();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> getBrightness() async {
     double? brightness;
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
     try {
       brightness = await SystemSettingsEditor.brightness;
     } on PlatformException {
       brightness = null;
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
@@ -106,11 +106,30 @@ class _MyAppState extends State<MyApp> {
     getSoundEffectsEnabled();
   }
 
+  Future<void> getScreenOffTimeout() async {
+    Duration? timeout;
+    try {
+      timeout = await SystemSettingsEditor.screenOffTimeout;
+    } on PlatformException {
+      timeout = null;
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _timeout = timeout;
+      final timeoutSec = timeout?.inSeconds.toDouble();
+      if (timeoutSec != null) {
+        _sliderTimeout = min(timeoutSec, _maxTimeOutSec.toDouble());
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final brightness = _brightness;
     final alarmVolume = _alarmVolume;
     final mediaVolume = _mediaVolume;
+    final timeout = _timeout;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -171,7 +190,30 @@ class _MyAppState extends State<MyApp> {
                     }
                   : null,
               value: _sliderBrightness ?? 0,
-            )
+            ),
+            const SizedBox(height: 20),
+            const Text('Screen off timeout'),
+            Center(
+              child: timeout != null
+                  ? Text('${timeout.inSeconds}')
+                  : const Text('timeout unknown'),
+            ),
+            ElevatedButton(
+              onPressed: getScreenOffTimeout,
+              child: const Text('Get timeout'),
+            ),
+            Slider(
+              max: _maxTimeOutSec.toDouble(),
+              divisions: _maxTimeOutSec,
+              onChanged: timeout != null
+                  ? (b) {
+                      SystemSettingsEditor.setScreenOffTimeout(
+                          Duration(seconds: b.toInt()));
+                      setState(() => _sliderTimeout = b);
+                    }
+                  : null,
+              value: _sliderTimeout ?? 0,
+            ),
           ],
         ),
       ),

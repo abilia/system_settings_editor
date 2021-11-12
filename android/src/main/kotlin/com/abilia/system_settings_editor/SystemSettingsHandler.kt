@@ -15,8 +15,11 @@ class SystemSettingsHandler(private val context: Context) {
   internal fun getBrightness(): Double {
     val cResolver: ContentResolver = context.contentResolver
     try {
-      Settings.System.putInt(cResolver,
-        Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
+      Settings.System.putInt(
+          cResolver,
+          Settings.System.SCREEN_BRIGHTNESS_MODE,
+          Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+      )
       val brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS)
       val max = getBrightnessMax()
       return brightness.toDouble() / max
@@ -26,14 +29,17 @@ class SystemSettingsHandler(private val context: Context) {
     return 1.0
   }
 
-  internal fun setBrightnessHandler(activity: Activity?, call: MethodCall, result: MethodChannel.Result) {
+  internal fun setBrightnessHandler(
+      activity: Activity?,
+      call: MethodCall,
+      result: MethodChannel.Result
+  ) {
     val brightness: Double? = call.argument("brightness")
     brightness?.let {
       setBrightness(activity, it)
       result.success(true)
-    } ?: run {
-      result.error("ARGUMENT", "No argument brightness of type double provided", null)
     }
+        ?: run { result.error("ARGUMENT", "No argument brightness of type double provided", null) }
   }
 
   internal fun getSoundEffectsEnabled(): Boolean {
@@ -52,9 +58,10 @@ class SystemSettingsHandler(private val context: Context) {
     enabled?.let {
       setSoundEffectsEnabled(it)
       result.success(true)
-    } ?: run {
-      result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
     }
+        ?: run {
+          result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
+        }
   }
 
   private fun setBrightness(activity: Activity?, brightness: Double) {
@@ -65,19 +72,22 @@ class SystemSettingsHandler(private val context: Context) {
     }
     val cResolver: ContentResolver = context.contentResolver
     Settings.System.putInt(
-      cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
-      Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+        cResolver,
+        Settings.System.SCREEN_BRIGHTNESS_MODE,
+        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
     )
     Settings.System.putInt(
-      cResolver, Settings.System.SCREEN_BRIGHTNESS,
-      (brightness * getBrightnessMax()).toInt()
+        cResolver,
+        Settings.System.SCREEN_BRIGHTNESS,
+        (brightness * getBrightnessMax()).toInt()
     )
   }
 
   private fun getBrightnessMax(): Int {
     try {
       val system: Resources = Resources.getSystem()
-      val resId: Int = system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android")
+      val resId: Int =
+          system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android")
       if (resId != 0) {
         return system.getInteger(resId)
       }
@@ -89,9 +99,30 @@ class SystemSettingsHandler(private val context: Context) {
 
   private fun setSoundEffectsEnabled(on: Boolean) {
     val cResolver: ContentResolver = context.contentResolver
-    Settings.System.putInt(
-      cResolver, Settings.System.SOUND_EFFECTS_ENABLED,
-      if (on) 1 else 0
-    )
+    Settings.System.putInt(cResolver, Settings.System.SOUND_EFFECTS_ENABLED, if (on) 1 else 0)
+  }
+
+  internal fun setScreenOffTimeoutHandler(call: MethodCall, result: MethodChannel.Result) {
+    val timeout: Int? = call.argument("timeout")
+    timeout?.let {
+      setScreenOffTimeout(it)
+      result.success(true)
+    }
+        ?: run { result.error("ARGUMENT", "No argument timeout of type int provided", null) }
+  }
+
+  private fun setScreenOffTimeout(timeout: Int) {
+    val cResolver: ContentResolver = context.contentResolver
+    Settings.System.putInt(cResolver, Settings.System.SCREEN_OFF_TIMEOUT, timeout)
+  }
+
+  internal fun getScreenOffTimeout(): Int {
+    val cResolver: ContentResolver = context.contentResolver
+    try {
+      return Settings.System.getInt(cResolver, Settings.System.SCREEN_OFF_TIMEOUT)
+    } catch (e: Settings.SettingNotFoundException) {
+      Log.e("Error", "Cannot access SCREEN_OFF_TIMEOUT settings")
+      return 0
+    }
   }
 }

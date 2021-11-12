@@ -21,4 +21,14 @@ class SystemSettingsEditor {
     await _channel
         .invokeMethod('setSoundEffectsEnabled', {'soundEffectsEnabled': on});
   }
+
+  static Future<Duration?> get screenOffTimeout async {
+    final r = await _channel.invokeMethod('getScreenOffTimeout');
+    return Duration(milliseconds: r);
+  }
+
+  static Future<void> setScreenOffTimeout(Duration timout) async {
+    await _channel.invokeMethod(
+        'setScreenOffTimeout', {'timeout': timout.inMilliseconds});
+  }
 }
