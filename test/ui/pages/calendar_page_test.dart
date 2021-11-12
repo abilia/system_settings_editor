@@ -1604,7 +1604,7 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsOneWidget);
-    }, skip: Config.release); // TODO remove skip in 1.4
+    });
 
     testWidgets("don't display alarm button", (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
@@ -1651,6 +1651,6 @@ void main() {
       );
       expect(find.byType(ToggleAlarmButtonInactive), findsNothing);
       expect(find.byType(ToggleAlarmButtonActive), findsOneWidget);
-    }, skip: Config.release); // TODO remove skip in 1.4
+    });
   });
 }

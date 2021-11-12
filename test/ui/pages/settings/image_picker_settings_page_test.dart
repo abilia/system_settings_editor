@@ -103,7 +103,7 @@ void main() {
         expect(find.byIcon(AbiliaIcons.upload), findsOneWidget);
       }
       expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
-    }, skip: Config.release); // TODO: remove beta in 1.4
+    });
 
     testWidgets('hides camera image option', (tester) async {
       // Arrange
