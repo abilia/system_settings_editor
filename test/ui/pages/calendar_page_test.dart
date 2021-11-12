@@ -1624,6 +1624,7 @@ void main() {
 
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
+      final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           [
@@ -1640,6 +1641,26 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage()));
       await tester.pumpAndSettle();
       expect(find.byType(ToggleAlarmButtonInactive), findsOneWidget);
+
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+        (_) => Future.value(
+          [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: MemoplannerSettings.displayAlarmButtonKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: expectedTime,
+                identifier: AlarmSettings.alarmsDisabledUntilKey,
+              ),
+            ),
+          ],
+        ),
+      );
+
       await tester.tap(find.byType(ToggleAlarmButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -1648,10 +1669,10 @@ void main() {
         tester,
         mockGenericDb,
         key: AlarmSettings.alarmsDisabledUntilKey,
-        matcher: initialDay.nextDay().millisecondsSinceEpoch,
+        matcher: expectedTime,
       );
       expect(find.byType(ToggleAlarmButtonInactive), findsNothing);
       expect(find.byType(ToggleAlarmButtonActive), findsOneWidget);
-    }, skip: Config.isMP); //TODO Fix test
+    });
   });
 }
