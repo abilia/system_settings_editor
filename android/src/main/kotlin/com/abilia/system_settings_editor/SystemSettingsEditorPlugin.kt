@@ -42,16 +42,16 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
       result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
     } else {
       when (call.method) {
-        METHOD_GET_BRIGHTNESS -> result.success(systemSettingsHandler.getBrightness())
-        METHOD_SET_BRIGHTNESS -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
-        METHOD_GET_SOUND_EFFECTS -> result.success(systemSettingsHandler.getSoundEffectsEnabled())
-        METHOD_SET_SOUND_EFFECTS -> systemSettingsHandler.setSoundEffectsHandler(call, result)
-        METHOD_GET_ALARM_VOLUME -> result.success(volumeSettingsHandler.getAlarmVolume())
-        METHOD_GET_MEDIA_VOLUME -> result.success(volumeSettingsHandler.getMediaVolume())
-        METHOD_SET_ALARM_VOLUME -> volumeSettingsHandler.setAlarmVolumeHandler(call,result)
-        METHOD_SET_MEDIA_VOLUME -> volumeSettingsHandler.setMediaVolumeHandler(call,result)
-        METHOD_GET_ALARM_MAX_VOLUME -> result.success(volumeSettingsHandler.getAlarmMaxVolume())
-        METHOD_GET_MEDIA_MAX_VOLUME -> result.success(volumeSettingsHandler.getMediaMaxVolume())
+        "getBrightness" -> result.success(systemSettingsHandler.getBrightness())
+        "setBrightness" -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
+        "getSoundEffectsEnabled" -> result.success(systemSettingsHandler.getSoundEffectsEnabled())
+        "setSoundEffectsEnabled" -> systemSettingsHandler.setSoundEffectsHandler(call, result)
+        "getAlarmVolume" -> result.success(volumeSettingsHandler.getAlarmVolume())
+        "getMediaVolume" -> result.success(volumeSettingsHandler.getMediaVolume())
+        "setAlarmVolume" -> volumeSettingsHandler.setAlarmVolumeHandler(call, result)
+        "setMediaVolume" -> volumeSettingsHandler.setMediaVolumeHandler(call, result)
+        "getAlarmMaxVolume" -> result.success(volumeSettingsHandler.getAlarmMaxVolume())
+        "getMediaMaxVolume" -> result.success(volumeSettingsHandler.getMediaMaxVolume())
         else -> result.notImplemented()
       }
     }
@@ -86,20 +86,5 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
 
   override fun onDetachedFromActivity() {
     this.activity = null
-  }
-
-  companion object{
-
-    const val METHOD_GET_BRIGHTNESS = "getBrightness"
-    const val METHOD_SET_BRIGHTNESS = "setBrightness"
-    const val METHOD_GET_SOUND_EFFECTS = "getSoundEffectsEnabled"
-    const val METHOD_SET_SOUND_EFFECTS = "setSoundEffectsEnabled"
-    const val METHOD_GET_ALARM_VOLUME = "getAlarmVolume"
-    const val METHOD_GET_MEDIA_VOLUME = "getMediaVolume"
-    const val METHOD_SET_ALARM_VOLUME = "setAlarmVolume"
-    const val METHOD_SET_MEDIA_VOLUME = "setMediaVolume"
-    const val METHOD_GET_ALARM_MAX_VOLUME = "getAlarmMaxVolume"
-    const val METHOD_GET_MEDIA_MAX_VOLUME = "getMediaMaxVolume"
-
   }
 }
