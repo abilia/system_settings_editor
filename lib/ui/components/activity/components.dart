@@ -81,6 +81,8 @@ class PickField extends StatelessWidget {
   final EdgeInsets? padding;
   final bool errorState;
   final String? semanticsLabel;
+  final Text? secondaryText;
+  final TextStyle? secondaryStyle;
   static final defaultHeigth = 56.s;
 
   const PickField({
@@ -93,10 +95,13 @@ class PickField extends StatelessWidget {
     this.errorState = false,
     this.semanticsLabel,
     this.padding,
+    this.secondaryText,
+    this.secondaryStyle,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final l = leading;
+    final secondary = secondaryText;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data?.isEmpty == true ? semanticsLabel : text.data,
@@ -133,6 +138,20 @@ class PickField extends StatelessWidget {
                     child: text,
                   ),
                 ),
+                if (secondary != null)
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.s),
+                    child: DefaultTextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      style: secondaryStyle ??
+                          (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                              .copyWith(
+                            height: 1.0,
+                            color: AbiliaColors.white140,
+                          ),
+                      child: secondary,
+                    ),
+                  ),
                 trailing ?? trailingArrow,
               ],
             ),
