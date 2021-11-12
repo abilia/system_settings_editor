@@ -4,6 +4,11 @@ A flutter plugin to read and write system settings.
 
 **Currently supported settings:**
 * Brightness
+* Sound effect
+* Volume
+    * Alarm
+    * Media
+* Screen timeout
 
 ## Getting Started
 
