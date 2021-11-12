@@ -4,22 +4,22 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/ui/components/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 
-class AlarmVolumeSlider extends VolumeSlider {
+class AlarmVolumeSlider extends _VolumeSlider {
   const AlarmVolumeSlider({Key? key}) : super(key: key);
 
   @override
-  State<VolumeSlider> createState() => _AlarmVolumeSliderState();
+  State<_VolumeSlider> createState() => _AlarmVolumeSliderState();
 }
 
-class MediaVolumeSlider extends VolumeSlider {
+class MediaVolumeSlider extends _VolumeSlider {
   const MediaVolumeSlider({Key? key}) : super(key: key);
 
   @override
-  State<VolumeSlider> createState() => _MediaVolumeSliderState();
+  State<_VolumeSlider> createState() => _MediaVolumeSliderState();
 }
 
-abstract class VolumeSlider extends StatefulWidget {
-  const VolumeSlider({Key? key}) : super(key: key);
+abstract class _VolumeSlider extends StatefulWidget {
+  const _VolumeSlider({Key? key}) : super(key: key);
 }
 
 class _AlarmVolumeSliderState extends _VolumeSliderState {
@@ -61,7 +61,7 @@ class _MediaVolumeSliderState extends _VolumeSliderState {
   }
 }
 
-abstract class _VolumeSliderState extends State<VolumeSlider>
+abstract class _VolumeSliderState extends State<_VolumeSlider>
     with WidgetsBindingObserver {
   final _log = Logger((_VolumeSliderState).toString());
   final Widget leading;
@@ -73,17 +73,17 @@ abstract class _VolumeSliderState extends State<VolumeSlider>
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    initVolume();
+    _initVolume();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      initVolume();
+      _initVolume();
     }
   }
 
-  void initVolume() async {
+  void _initVolume() async {
     try {
       final b = await getVolume();
       setState(() {
