@@ -1,10 +1,8 @@
 package com.abilia.system_settings_editor
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.NonNull
@@ -16,22 +14,25 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 import android.provider.Settings
-import android.util.Log
-import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
 class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+
   private lateinit var channel: MethodChannel
   private lateinit var context: Context
   private var activity: Activity? = null
+  private lateinit var systemSettingsHandler: SystemSettingsHandler
+  private lateinit var volumeSettingsHandler: VolumeSettingsHandler
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "system_settings_editor")
     channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
+    systemSettingsHandler = SystemSettingsHandler(context)
+    volumeSettingsHandler = VolumeSettingsHandler(context)
   }
 
   @RequiresApi(Build.VERSION_CODES.M)
@@ -41,10 +42,16 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
       result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
     } else {
       when (call.method) {
-        "getBrightness" -> result.success(getBrightness())
-        "setBrightness" -> setBrightnessHandler(call, result)
-        "getSoundEffectsEnabled" -> result.success(getSoundEffectsEnabled())
-        "setSoundEffectsEnabled" -> setSoundEffectsHandler(call, result)
+        "getBrightness" -> result.success(systemSettingsHandler.getBrightness())
+        "setBrightness" -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
+        "getSoundEffectsEnabled" -> result.success(systemSettingsHandler.getSoundEffectsEnabled())
+        "setSoundEffectsEnabled" -> systemSettingsHandler.setSoundEffectsHandler(call, result)
+        "getAlarmVolume" -> result.success(volumeSettingsHandler.getAlarmVolume())
+        "getMediaVolume" -> result.success(volumeSettingsHandler.getMediaVolume())
+        "setAlarmVolume" -> volumeSettingsHandler.setAlarmVolumeHandler(call, result)
+        "setMediaVolume" -> volumeSettingsHandler.setMediaVolumeHandler(call, result)
+        "getAlarmMaxVolume" -> result.success(volumeSettingsHandler.getAlarmMaxVolume())
+        "getMediaMaxVolume" -> result.success(volumeSettingsHandler.getMediaMaxVolume())
         else -> result.notImplemented()
       }
     }
@@ -58,89 +65,6 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
       intent.data = Uri.parse("package:" + it.packageName)
       startActivity(context, intent, null)
     }
-  }
-
-  private fun getBrightness(): Double {
-    val cResolver: ContentResolver = context.contentResolver
-    try {
-      Settings.System.putInt(cResolver,
-        Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
-      val brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS)
-      val max = getBrightnessMax()
-      return brightness.toDouble() / max
-    } catch (e: Settings.SettingNotFoundException) {
-      Log.e("Error", "Cannot access system brightness")
-    }
-    return 1.0
-  }
-
-  private fun setBrightnessHandler(call: MethodCall, result: Result) {
-    val brightness: Double? = call.argument("brightness")
-    brightness?.let {
-      setBrightness(it)
-      result.success(true)
-    } ?: run {
-      result.error("ARGUMENT", "No argument brightness of type double provided", null)
-    }
-  }
-
-  private fun setBrightness(brightness: Double) {
-    activity?.let {
-      val lp = it.window.attributes
-      lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-      it.window.attributes = lp
-    }
-    val cResolver: ContentResolver = context.contentResolver
-    Settings.System.putInt(
-      cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
-      Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-    )
-    Settings.System.putInt(
-      cResolver, Settings.System.SCREEN_BRIGHTNESS,
-      (brightness * getBrightnessMax()).toInt()
-    )
-  }
-
-  private fun getBrightnessMax(): Int {
-    try {
-      val system: Resources = Resources.getSystem()
-      val resId: Int = system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android")
-      if (resId != 0) {
-        return system.getInteger(resId)
-      }
-    } catch (ignore: Exception) {
-      Log.e("Error", "Cannot access max brightness")
-    }
-    return 255
-  }
-
-  private fun setSoundEffectsHandler(call: MethodCall, result: Result) {
-    val enabled: Boolean? = call.argument("soundEffectsEnabled")
-    enabled?.let {
-      setSoundEffectsEnabled(it)
-      result.success(true)
-    } ?: run {
-      result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
-    }
-  }
-
-  private fun setSoundEffectsEnabled(on: Boolean) {
-    val cResolver: ContentResolver = context.contentResolver
-    Settings.System.putInt(
-      cResolver, Settings.System.SOUND_EFFECTS_ENABLED,
-      if (on) 1 else 0
-    )
-  }
-
-  private fun getSoundEffectsEnabled(): Boolean {
-    val cResolver: ContentResolver = context.contentResolver
-    try {
-      val enabled = Settings.System.getInt(cResolver, Settings.System.SOUND_EFFECTS_ENABLED)
-      return enabled == 1
-    } catch (e: Settings.SettingNotFoundException) {
-      Log.e("Error", "Cannot access sound settings")
-    }
-    return true
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
