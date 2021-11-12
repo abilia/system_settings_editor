@@ -27,7 +27,7 @@ class MenuButton extends StatelessWidget {
                 ),
                 child: const Icon(AbiliaIcons.appMenu),
               )
-            else if (Config.isMPGO)
+            else
               ActionButtonLight(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(

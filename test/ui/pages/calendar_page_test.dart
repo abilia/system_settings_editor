@@ -1604,7 +1604,7 @@ void main() {
       expect(find.byType(MonthCalendarTab), findsOneWidget);
       expect(find.byType(MonthAppBar), findsOneWidget);
       expect(find.byType(ToggleAlarmButton), findsOneWidget);
-    }, skip: Config.release); // TODO remove skip in 1.4
+    });
 
     testWidgets("don't display alarm button", (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
@@ -1624,7 +1624,7 @@ void main() {
 
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
-      // SeagullLogger.test();
+      final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           [
@@ -1641,16 +1641,38 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage()));
       await tester.pumpAndSettle();
       expect(find.byType(ToggleAlarmButtonInactive), findsOneWidget);
+
+      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+        (_) => Future.value(
+          [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: MemoplannerSettings.displayAlarmButtonKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: expectedTime,
+                identifier: AlarmSettings.alarmsDisabledUntilKey,
+              ),
+            ),
+          ],
+        ),
+      );
+
       await tester.tap(find.byType(ToggleAlarmButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       verifyUnsyncGeneric(
         tester,
         mockGenericDb,
         key: AlarmSettings.alarmsDisabledUntilKey,
-        matcher: initialDay.nextDay().millisecondsSinceEpoch,
+        matcher: expectedTime,
       );
       expect(find.byType(ToggleAlarmButtonInactive), findsNothing);
       expect(find.byType(ToggleAlarmButtonActive), findsOneWidget);
-    }, skip: Config.release); // TODO remove skip in 1.4
+    });
   });
 }
