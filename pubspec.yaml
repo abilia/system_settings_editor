@@ -25,9 +25,9 @@ dependencies:
   firebase_analytics: ^8.3.4
   firebase_core: ^1.8.0
   firebase_crashlytics: ^2.2.4
-  firebase_messaging: ^10.0.9
+  firebase_messaging: ^11.1.0
   flutter_archive: ^4.0.1
-  flutter_bloc: ^7.3.1
+  flutter_bloc: ^7.3.3
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
@@ -68,11 +68,11 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   build_runner: ^2.1.4
-  bloc_test: ^8.3.0
+  bloc_test: ^8.5.0
   file: ^6.1.0
   flutter_launcher_icons: ^0.9.1
   flutter_lints: ^1.0.4
-  mocktail_image_network: ^0.1.0
+  mocktail_image_network: ^0.2.0
   sqflite_common_ffi: ^2.0.0+1
 
 flutter_icons:
