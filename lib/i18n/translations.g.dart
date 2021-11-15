@@ -451,6 +451,10 @@ abstract class Translated {
 
   final String clickSound = 'Click Sound';
 
+  final String volumeAlarm = 'Volume for alarm';
+
+  final String volumeMedia = 'Volume for media';
+
   final String wifi = 'Wi-Fi';
 
   final String notConnected = 'Not connected';
@@ -1404,6 +1408,12 @@ class SV extends Translated {
 
   @override
   final String clickSound = 'Klickljud';
+
+  @override
+  final String volumeAlarm = 'Volym för alarm';
+
+  @override
+  final String volumeMedia = 'Volym för media';
 
   @override
   final String wifi = 'Wi-Fi';
@@ -2504,6 +2514,12 @@ class DA extends Translated {
   final String clickSound = 'Kliklyd';
 
   @override
+  final String volumeAlarm = 'Volumen for alarm';
+
+  @override
+  final String volumeMedia = 'Volumen for media';
+
+  @override
   final String wifi = 'Wi-Fi';
 
   @override
@@ -3600,6 +3616,12 @@ class NL extends Translated {
 
   @override
   final String clickSound = 'Klikgeluid';
+
+  @override
+  final String volumeAlarm = 'Volume voor alarm';
+
+  @override
+  final String volumeMedia = 'Volume voor media';
 
   @override
   final String wifi = 'Wifi';
@@ -4699,6 +4721,12 @@ class FI extends Translated {
 
   @override
   final String clickSound = 'Kosketusääni';
+
+  @override
+  final String volumeAlarm = 'Hälytyksen äänenvoimakkuus';
+
+  @override
+  final String volumeMedia = 'Median äänenvoimakkuus';
 
   @override
   final String wifi = 'Wi-Fi';
@@ -5803,6 +5831,12 @@ class DE extends Translated {
   final String clickSound = 'Klang anklicken';
 
   @override
+  final String volumeAlarm = 'Lautstärke für Alarm';
+
+  @override
+  final String volumeMedia = 'Lautstärke für Medien';
+
+  @override
   final String wifi = 'WLAN';
 
   @override
@@ -6900,6 +6934,12 @@ class NB extends Translated {
 
   @override
   final String clickSound = 'Lyd ved valg';
+
+  @override
+  final String volumeAlarm = 'Volum for alarm';
+
+  @override
+  final String volumeMedia = 'Volum for media';
 
   @override
   final String wifi = 'Wi-Fi';

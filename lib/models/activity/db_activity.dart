@@ -139,6 +139,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'dirty': dirty,
       };
+
   static UnmodifiableListView<String> _parseSignedOffDates(
           String? signedOffDates) =>
       UnmodifiableListView(signedOffDates?.tryDecodeSignedOffDates() ?? []);

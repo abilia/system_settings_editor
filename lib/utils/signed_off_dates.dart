@@ -21,6 +21,7 @@ extension EncodeSignOffDates on Iterable<String> {
 extension DeserializeSignOffDates on String {
   Iterable<String>? tryDecodeSignedOffDates() =>
       tryUnzipAndDecode()?.split(';').where((s) => s.isNotEmpty);
+
   @visibleForTesting
   String? tryUnzipAndDecode() {
     try {

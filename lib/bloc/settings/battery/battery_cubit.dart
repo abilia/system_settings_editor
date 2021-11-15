@@ -6,6 +6,7 @@ import 'package:seagull/bloc/all.dart';
 class BatteryCubit extends Cubit<int> {
   final _battery = Battery();
   late final StreamSubscription _batterySubscription;
+
   BatteryCubit() : super(-1) {
     _batterySubscription = _battery.onBatteryStateChanged.listen((_) async {
       emit(await _battery.batteryLevel);

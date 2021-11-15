@@ -80,5 +80,6 @@ class TestKey {
       fullDayCategoryRadio = Key('allDayCategoryRadio'),
       checkableRadio = Key('checkableRadio'),
       removeAfterRadio = Key('removeAfterRadio'),
-      myPhotosButton = Key('myPhotosButton');
+      myPhotosButton = Key('myPhotosButton'),
+      brightnessSlider = Key('brightnessSlider');
 }

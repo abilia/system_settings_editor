@@ -29,7 +29,11 @@ class AbiliaSlider extends StatelessWidget {
       padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
       child: Row(
         children: <Widget>[
-          if (leading != null) leading,
+          if (leading != null)
+            Padding(
+              padding: EdgeInsets.only(right: 12.s),
+              child: leading,
+            ),
           Expanded(
             child: SliderTheme(
               data: SliderTheme.of(context).copyWith(
@@ -88,6 +92,7 @@ class AbiliaThumbShape extends SliderComponentShape {
   /// If no disabledRadius is provided, then it is equal to the
   /// [enabledThumbRadius]
   final double? disabledThumbRadius;
+
   double get _disabledThumbRadius => disabledThumbRadius ?? enabledThumbRadius;
 
   /// The resting elevation adds shadow to the unpressed thumb.

@@ -1132,8 +1132,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.1.0"
-      resolved-ref: "223839aa618899b73eb7ac5df429d78b2dc441ef"
+      ref: "v1.2.0"
+      resolved-ref: "93ea6c8c6bc605a187248b2332ee54f24678307e"
       url: "https://github.com/abilia/system_settings_editor.git"
     source: git
     version: "1.0.1"
