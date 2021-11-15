@@ -98,7 +98,7 @@ void main() {
 
     test('AddActivity calls add activities on mockActivityRepostitory',
         () async {
-          final anActivity = FakeActivity.starts(anyTime);
+      final anActivity = FakeActivity.starts(anyTime);
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
       activitiesBloc.add(AddActivity(anActivity));

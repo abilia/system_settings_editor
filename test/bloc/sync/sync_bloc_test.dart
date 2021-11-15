@@ -40,7 +40,7 @@ void main() {
     });
     test('SortableSaved event calls synchronize on sortable repository',
         () async {
-          syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(SyncEvent.sortableSaved);
       await untilCalled(() => sortableRepository.synchronize());
     });
   });

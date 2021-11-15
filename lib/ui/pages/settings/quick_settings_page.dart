@@ -22,11 +22,10 @@ class QuickSettingsPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
               child: const BatteryLevel(),
             ),
-            const QuickSettingsGroup(children: [
-              WifiPickWithLocationCheck(),
-            ]),
-            const QuickSettingsGroup(children: [
-              SoundEffectsSwitch(),
+            QuickSettingsGroup(children: [
+              const WifiPickWithLocationCheck(),
+              SizedBox(height: 8.s),
+              const SoundEffectsSwitch(),
             ]),
             QuickSettingsGroup(children: [
               SubHeading(t.volumeAlarm),

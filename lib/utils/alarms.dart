@@ -46,8 +46,7 @@ extension IterableActivity on Iterable<Activity> {
         .map<NotificationAlarm>((a) => EndAlarm(a.activity, a.day));
 
     final reminders = activitiesThisDay.expand(
-      (ad) =>
-          [
+      (ad) => [
         ...ad.activity.reminders
             .map((r) => ReminderBefore.from(ad, reminder: r)),
         if (!ad.isSignedOff && ad.activity.checkable) ...uncheckedReminders(ad),
