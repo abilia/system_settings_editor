@@ -136,7 +136,13 @@ void main() {
     blocTest(
       'emits if active notification and alarm time goes out ',
       setUp: () => activeNotifications = [
-        ActiveNotification(startAlarm.hashCode, 'channelId', 'title', 'body'),
+        ActiveNotification(
+          startAlarm.hashCode,
+          'groupKey',
+          'channelId',
+          'title',
+          'body',
+        ),
       ],
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
@@ -158,7 +164,13 @@ void main() {
     blocTest(
       'emits nothing if active notification',
       setUp: () => activeNotifications = [
-        ActiveNotification(startAlarm.hashCode, 'channelId', 'title', 'body'),
+        ActiveNotification(
+          startAlarm.hashCode,
+          'groupKey',
+          'channelId',
+          'title',
+          'body',
+        ),
       ],
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
