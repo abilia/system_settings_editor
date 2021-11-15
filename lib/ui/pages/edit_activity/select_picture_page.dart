@@ -116,42 +116,39 @@ class SelectPictureBody extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 8.0.s),
-                  //TODO: remove beta in 1.4
-                  if (Config.beta)
-                    PickField(
-                      key: TestKey.myPhotosButton,
-                      leading: const Icon(AbiliaIcons.folder),
-                      text: Text(translate.myPhotos),
-                      onTap: () async {
-                        final selectedImage =
-                            await Navigator.of(context).push<AbiliaFile>(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: BlocProvider<MyPhotosBloc>(
-                                create: (_) => MyPhotosBloc(
-                                    sortableBloc:
-                                        BlocProvider.of<SortableBloc>(context)),
-                                child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
-                                  builder: (context, state) {
-                                    return ImageArchivePage(
+                  PickField(
+                    key: TestKey.myPhotosButton,
+                    leading: const Icon(AbiliaIcons.folder),
+                    text: Text(translate.myPhotos),
+                    onTap: () async {
+                      final selectedImage =
+                          await Navigator.of(context).push<AbiliaFile>(
+                        MaterialPageRoute(
+                          builder: (_) => CopiedAuthProviders(
+                            blocContext: context,
+                            child: BlocProvider<MyPhotosBloc>(
+                              create: (_) => MyPhotosBloc(
+                                  sortableBloc:
+                                      BlocProvider.of<SortableBloc>(context)),
+                              child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
+                                builder: (context, state) {
+                                  return ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder:
                                           state.currentFolderId ?? '',
                                       header: translate.myPhotos);
                                 },
-                                ),
                               ),
                             ),
                           ),
-                        );
-                        if (selectedImage != null) {
-                          imageCallback.call(selectedImage);
-                        }
-                      },
-                    ),
-                  //TODO: remove beta in 1.4
-                  if (Config.beta) SizedBox(height: 8.0.s),
+                        ),
+                      );
+                      if (selectedImage != null) {
+                        imageCallback.call(selectedImage);
+                      }
+                    },
+                  ),
+                  SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
                       text: translate.uploadImage,

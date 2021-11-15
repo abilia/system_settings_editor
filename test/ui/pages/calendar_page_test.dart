@@ -1624,7 +1624,7 @@ void main() {
 
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
-          final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
+      final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           [
