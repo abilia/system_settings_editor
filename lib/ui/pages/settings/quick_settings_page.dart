@@ -1,4 +1,5 @@
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:seagull/utils/strings.dart';
 
 class QuickSettingsPage extends StatelessWidget {
@@ -21,6 +22,9 @@ class QuickSettingsPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
               child: const BatteryLevel(),
             ),
+            const QuickSettingsGroup(children: [
+              WifiPickWithLocationCheck(),
+            ]),
             const QuickSettingsGroup(children: [
               SoundEffectsSwitch(),
             ]),

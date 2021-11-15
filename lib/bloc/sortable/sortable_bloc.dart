@@ -77,7 +77,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           fixed: true,
         );
         await sortableRepository.save([myPhotos]);
-        syncBloc.add(SortableSaved());
+        syncBloc.add(SyncEvent.sortableSaved);
       } else {
         add(const LoadSortables());
       }
@@ -95,7 +95,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           fixed: true,
         );
         await sortableRepository.save([upload]);
-        syncBloc.add(SortableSaved());
+        syncBloc.add(SyncEvent.sortableSaved);
       } else {
         add(const LoadSortables());
       }
@@ -130,7 +130,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         sortOrder: sortOrder,
       );
       await sortableRepository.save([newSortable]);
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.sortableSaved);
       yield SortablesLoaded(
         sortables: currentState.sortables.followedBy([newSortable]),
       );
@@ -143,7 +143,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     if (currentState is SortablesLoaded) {
       await sortableRepository.save([event.sortable]);
       yield* _mapLoadSortablesToState(false);
-      syncBloc.add(SortableSaved());
+      syncBloc.add(SyncEvent.sortableSaved);
     }
   }
 

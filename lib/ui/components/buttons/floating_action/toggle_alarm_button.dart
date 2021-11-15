@@ -11,7 +11,7 @@ class ToggleAlarmButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          current.alarm.disabledUntilEpoch != current.alarm.disabledUntilEpoch,
+          current.alarm.disabledUntilEpoch != previous.alarm.disabledUntilEpoch,
       builder: (context, settingsState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) => Material(
           color: Colors.transparent,
@@ -19,16 +19,16 @@ class ToggleAlarmButton extends StatelessWidget {
           shadowColor: AbiliaColors.black,
           borderRadius: borderRadius,
           child: now.isBefore(settingsState.alarm.disabledUntilDate)
-              ? const _ToggleAlarmButtonActive()
-              : _ToggleAlarmButtonInactive(now: now),
+              ? const ToggleAlarmButtonActive()
+              : ToggleAlarmButtonInactive(now: now),
         ),
       ),
     );
   }
 }
 
-class _ToggleAlarmButtonActive extends StatelessWidget {
-  const _ToggleAlarmButtonActive({Key? key}) : super(key: key);
+class ToggleAlarmButtonActive extends StatelessWidget {
+  const ToggleAlarmButtonActive({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class _ToggleAlarmButtonActive extends StatelessWidget {
   }
 }
 
-class _ToggleAlarmButtonInactive extends StatelessWidget {
-  const _ToggleAlarmButtonInactive({Key? key, required this.now})
+class ToggleAlarmButtonInactive extends StatelessWidget {
+  const ToggleAlarmButtonInactive({Key? key, required this.now})
       : super(key: key);
   final DateTime now;
 

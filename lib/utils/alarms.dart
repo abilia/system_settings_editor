@@ -1,7 +1,7 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-const List<Duration> unSignedOffActivityReminders = [
+const List<Duration> unsignedOffActivityReminders = [
   Duration(minutes: 15),
   Duration(minutes: 30),
   Duration(minutes: 45),
@@ -11,6 +11,10 @@ const List<Duration> unSignedOffActivityReminders = [
   Duration(hours: 1, minutes: 45),
   Duration(hours: 2),
 ];
+
+Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
+    unsignedOffActivityReminders
+        .map((r) => ReminderUnchecked.from(activityDay, reminder: r));
 
 extension IterableActivity on Iterable<Activity> {
   List<NotificationAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
@@ -42,12 +46,11 @@ extension IterableActivity on Iterable<Activity> {
         .map<NotificationAlarm>((a) => EndAlarm(a.activity, a.day));
 
     final reminders = activitiesThisDay.expand(
-      (ad) => [
+      (ad) =>
+          [
         ...ad.activity.reminders
             .map((r) => ReminderBefore.from(ad, reminder: r)),
-        if (!ad.isSignedOff && ad.activity.checkable)
-          ...unSignedOffActivityReminders
-              .map((r) => ReminderUnchecked.from(ad, reminder: r)),
+        if (!ad.isSignedOff && ad.activity.checkable) ...uncheckedReminders(ad),
       ].where(reminderTest),
     );
 

@@ -22,8 +22,8 @@ void registerFallbackValues() {
   registerFallbackValue(const NotificationDetails());
   registerFallbackValue(const PushEvent(''));
   registerFallbackValue(PushReady());
-  registerFallbackValue(ActivitySaved());
-  registerFallbackValue(SyncInitial());
+  registerFallbackValue(SyncEvent.activitySaved);
+  registerFallbackValue(const SyncDone());
   registerFallbackValue(ActivitiesNotLoaded());
   registerFallbackValue(LoadActivities());
   registerFallbackValue(const UserFilesNotLoaded());

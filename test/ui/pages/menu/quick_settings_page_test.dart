@@ -62,6 +62,8 @@ void main() {
       );
 
       expect(find.byType(BatteryLevel), findsOneWidget);
+
+      expect(find.byType(WiFiPickField), findsOneWidget);
     });
   }, skip: !Config.isMP);
 }

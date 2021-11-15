@@ -356,6 +356,30 @@ void main() {
       expect(find.byType(PopAwareAlarmPage), findsNothing);
     });
 
+    testWidgets(
+        'SGC-1125 Signing off checkable activity cancels Unchecked reminders alarm',
+        (WidgetTester tester) async {
+      // Arrange -- alarm time happend
+      final reminderUnchecked = uncheckedReminders(
+        ActivityDay(activity, activityWithAlarmday),
+      );
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      mockTicker.add(activityWithAlarmTime);
+      await tester.pumpAndSettle();
+
+      // Act -- Tap the check button
+      await tester.tap(find.byKey(TestKey.activityCheckButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(YesButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- All reminders canceled
+      for (var reminder in reminderUnchecked) {
+        verify(() => notificationPlugin.cancel(reminder.hashCode));
+      }
+    });
+
     testWidgets('Checkable Popup Alarm with checklist',
         (WidgetTester tester) async {
       // Arrange

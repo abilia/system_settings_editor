@@ -1,6 +1,6 @@
 name: seagull
 description: The seagull app.
-version: 1.3.0
+version: 1.4.0
 publish_to: none
 
 environment:
@@ -47,6 +47,7 @@ dependencies:
   logging: ^1.0.1
   meta: ^1.3.0
   mime: ^1.0.1
+  network_info_plus: ^2.0.2
   package_info: ^2.0.2
   path_provider: ^2.0.5
   permission_handler: ^8.2.5

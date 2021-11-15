@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/activity/record_sound_widgets.dart';
 
 class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
   const AlarmAndReminderTab({Key? key}) : super(key: key);
