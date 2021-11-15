@@ -67,9 +67,7 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // TODO remove beta in 1.4
-            if (state.displayAlarmButton && Config.beta)
-              const ToggleAlarmButton(),
+            if (state.displayAlarmButton) const ToggleAlarmButton(),
             if (state.displayEyeButton)
               if (tabController.index == 0)
                 Padding(
