@@ -1,37 +1,13 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:network_info_plus/network_info_plus.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-
-class WifiPickWithLocationCheck extends StatelessWidget {
-  const WifiPickWithLocationCheck({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, permissionState) {
-      final locationPermission = permissionState.status[Permission.location];
-      if (locationPermission == PermissionStatus.denied) {
-        context.read<PermissionBloc>().add(
-              const RequestPermissions([Permission.location]),
-            );
-      }
-      return WiFiPickField(
-        locationPermission: locationPermission,
-      );
-    });
-  }
-}
 
 class WiFiPickField extends StatefulWidget {
   const WiFiPickField({
     Key? key,
-    this.networkInfo,
-    required this.locationPermission,
+    this.connectivity,
   }) : super(key: key);
-  final NetworkInfo? networkInfo;
-  final PermissionStatus? locationPermission;
+  final Connectivity? connectivity;
 
   @override
   State<WiFiPickField> createState() => _WiFiPickFieldState();
@@ -39,21 +15,21 @@ class WiFiPickField extends StatefulWidget {
 
 class _WiFiPickFieldState extends State<WiFiPickField>
     with WidgetsBindingObserver {
-  String? _wifiName;
-  late final NetworkInfo _info;
+  bool _connected = false;
+  late final Connectivity _connectivity;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    _info = widget.networkInfo ?? NetworkInfo();
-    initWifiName();
+    _connectivity = widget.connectivity ?? Connectivity();
+    initWifiStatus();
   }
 
-  void initWifiName() async {
-    final name = await _info.getWifiName();
+  void initWifiStatus() async {
+    final connectivity = await _connectivity.checkConnectivity();
     setState(() {
-      _wifiName = name;
+      _connected = connectivity != ConnectivityResult.none;
     });
   }
 
@@ -61,10 +37,7 @@ class _WiFiPickFieldState extends State<WiFiPickField>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      final name = await _info.getWifiName();
-      setState(() {
-        _wifiName = name;
-      });
+      initWifiStatus();
     }
   }
 
@@ -72,22 +45,16 @@ class _WiFiPickFieldState extends State<WiFiPickField>
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return PickField(
-      leading: Icon(_wifiName == null &&
-              widget.locationPermission == PermissionStatus.granted
-          ? AbiliaIcons.noWifi
-          : AbiliaIcons.wifi),
+      leading: Icon(_connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
       text: Text(t.wifi),
-      secondaryText: widget.locationPermission == PermissionStatus.granted
-          ? Text(
-              _wifiName ?? t.notConnected,
-            )
-          : null,
-      secondaryStyle: _wifiName == null
-          ? (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
-              height: 1.0,
-              color: AbiliaColors.red,
-            )
-          : null,
+      secondaryText: Text(
+        _connected ? t.connected : t.notConnected,
+      ),
+      secondaryStyle:
+          (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
+        height: 1.0,
+        color: _connected ? AbiliaColors.green : AbiliaColors.red,
+      ),
       onTap: () => AndroidIntents.openWifiSettings(),
     );
   }

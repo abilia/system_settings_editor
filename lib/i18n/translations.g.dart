@@ -459,6 +459,8 @@ abstract class Translated {
 
   final String notConnected = 'Not connected';
 
+  final String connected = 'Connected';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -1420,6 +1422,9 @@ class SV extends Translated {
 
   @override
   final String notConnected = 'Ej ansluten';
+
+  @override
+  final String connected = 'Ansluten';
 
   @override
   final String settings = 'Inställningar';
@@ -2526,6 +2531,9 @@ class DA extends Translated {
   final String notConnected = 'Ikke tilsluttet';
 
   @override
+  final String connected = 'Tilsluttet';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -3628,6 +3636,9 @@ class NL extends Translated {
 
   @override
   final String notConnected = 'Niet verbonden';
+
+  @override
+  final String connected = 'Verbonden';
 
   @override
   final String settings = 'Instellingen';
@@ -4733,6 +4744,9 @@ class FI extends Translated {
 
   @override
   final String notConnected = 'Ei yhteyttä';
+
+  @override
+  final String connected = 'Yhdistetty';
 
   @override
   final String settings = 'Asetukset';
@@ -5843,6 +5857,9 @@ class DE extends Translated {
   final String notConnected = 'Nicht verbunden';
 
   @override
+  final String connected = 'Verbunden';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6946,6 +6963,9 @@ class NB extends Translated {
 
   @override
   final String notConnected = 'Ikke tilkoblet';
+
+  @override
+  final String connected = 'Tilkoblet';
 
   @override
   final String settings = 'Innstillinger';

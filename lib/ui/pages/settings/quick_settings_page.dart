@@ -23,7 +23,7 @@ class QuickSettingsPage extends StatelessWidget {
               child: const BatteryLevel(),
             ),
             QuickSettingsGroup(children: [
-              const WifiPickWithLocationCheck(),
+              const WiFiPickField(),
               SizedBox(height: 8.s),
               const SoundEffectsSwitch(),
             ]),
