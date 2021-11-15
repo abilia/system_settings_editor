@@ -29,7 +29,11 @@ class AbiliaSlider extends StatelessWidget {
       padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
       child: Row(
         children: <Widget>[
-          if (leading != null) leading,
+          if (leading != null)
+            Padding(
+              padding: EdgeInsets.only(right: 12.s),
+              child: leading,
+            ),
           Expanded(
             child: SliderTheme(
               data: SliderTheme.of(context).copyWith(
