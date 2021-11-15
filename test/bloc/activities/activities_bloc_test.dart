@@ -109,7 +109,7 @@ void main() {
 
     test('UpdateActivities calls save activities on mockActivityRepostitory',
         () async {
-          final anActivity = FakeActivity.starts(anyTime);
+      final anActivity = FakeActivity.starts(anyTime);
 
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(<Activity>[anActivity]));

@@ -6,8 +6,6 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/ui/widget_test_keys.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
-import '../abilia_icons.dart';
-
 class BrightnessSlider extends StatefulWidget {
   const BrightnessSlider({Key? key}) : super(key: key);
 

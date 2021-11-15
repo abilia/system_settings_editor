@@ -1,10 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/i18n/app_localizations.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
-
-import '../../../logging.dart';
 
 class SoundEffectsSwitch extends StatefulWidget {
   const SoundEffectsSwitch({Key? key}) : super(key: key);
@@ -15,15 +14,13 @@ class SoundEffectsSwitch extends StatefulWidget {
   }
 }
 
-class _SoundEffectSwitchState extends State<SoundEffectsSwitch>
-    with WidgetsBindingObserver {
+class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
   final _log = Logger((_SoundEffectSwitchState).toString());
   bool _on = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
     initSetting();
   }
 
