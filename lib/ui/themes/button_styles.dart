@@ -137,6 +137,7 @@ final _actionButtonStyle = ButtonStyle(
 
 final actionButtonStyleRed = _actionButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
+  foregroundColor: foregroundLight,
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
