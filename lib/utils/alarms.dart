@@ -11,6 +11,7 @@ const List<Duration> unsignedOffActivityReminders = [
   Duration(hours: 1, minutes: 45),
   Duration(hours: 2),
 ];
+
 Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
         .map((r) => ReminderUnchecked.from(activityDay, reminder: r));

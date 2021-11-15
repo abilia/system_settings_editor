@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:seagull/repository/all.dart';
 
 part 'sync_state.dart';
+
 part 'sync_delays.dart';
 
 enum SyncEvent {

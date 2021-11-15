@@ -19,9 +19,12 @@ void main() {
           Recurs.typeWeekly,
           16383,
           splitEndTime.millisecondsSinceEpoch,
-        ), // Weekly every day odd and even week
-        alarmType: 104, // NO_ALARM
-        duration: 86399999.milliseconds(), // 23:59:59.999000
+        ),
+        // Weekly every day odd and even week
+        alarmType: 104,
+        // NO_ALARM
+        duration: 86399999.milliseconds(),
+        // 23:59:59.999000
         startTime: splitStartTime,
         fullDay: true,
       );
@@ -41,8 +44,10 @@ void main() {
       final splitRecurring = Activity.createNew(
         title: 'Fullday ',
         recurs: Recurs.everyDay,
-        alarmType: 104, // NO_ALARM
-        duration: 86399999.milliseconds(), // 23:59:59.999000
+        alarmType: 104,
+        // NO_ALARM
+        duration: 86399999.milliseconds(),
+        // 23:59:59.999000
         category: Category.right,
         startTime: DateTime(1970, 01, 01, 12, 00),
         fullDay: true,

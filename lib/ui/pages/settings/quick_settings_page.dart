@@ -26,6 +26,9 @@ class QuickSettingsPage extends StatelessWidget {
             WifiPickWithLocationCheck(),
           ]),
           const QuickSettingsGroup(children: [
+            SoundEffectsSwitch(),
+          ]),
+          const QuickSettingsGroup(children: [
             BrightnessSlider(),
           ]),
         ],

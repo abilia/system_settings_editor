@@ -21,7 +21,13 @@ void main() {
   setUp(() async {
     systemSettingsChannel
         .setMockMethodCallHandler((MethodCall methodCall) async {
-      return 0.5;
+      if (methodCall.method.startsWith('getSoundEffectsEnabled')) {
+        return true;
+      }
+      if (methodCall.method.startsWith('getBrightness')) {
+        return 0.5;
+      }
+      return null;
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
@@ -50,11 +56,11 @@ void main() {
     testWidgets('All fields are setup correctly', (tester) async {
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
+      expect(find.byType(SoundEffectsSwitch), findsOneWidget);
       expect(
         tester.widget(find.byType(AbiliaSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
       );
-
       expect(find.byType(BatteryLevel), findsOneWidget);
 
       expect(find.byType(WiFiPickField), findsOneWidget);

@@ -449,6 +449,8 @@ abstract class Translated {
 
   final String battery = 'Battery';
 
+  final String clickSound = 'Click Sound';
+
   final String wifi = 'Wi-Fi';
 
   final String notConnected = 'Not connected';
@@ -1399,6 +1401,9 @@ class SV extends Translated {
 
   @override
   final String battery = 'Batteri';
+
+  @override
+  final String clickSound = 'Klickljud';
 
   @override
   final String wifi = 'Wi-Fi';
@@ -2496,6 +2501,9 @@ class DA extends Translated {
   final String battery = 'Batteri';
 
   @override
+  final String clickSound = 'Kliklyd';
+
+  @override
   final String wifi = 'Wi-Fi';
 
   @override
@@ -3589,6 +3597,9 @@ class NL extends Translated {
 
   @override
   final String battery = 'Batterij';
+
+  @override
+  final String clickSound = 'Klikgeluid';
 
   @override
   final String wifi = 'Wifi';
@@ -4685,6 +4696,9 @@ class FI extends Translated {
 
   @override
   final String battery = 'Akku';
+
+  @override
+  final String clickSound = 'Kosketusääni';
 
   @override
   final String wifi = 'Wi-Fi';
@@ -5786,6 +5800,9 @@ class DE extends Translated {
   final String battery = 'Akkus';
 
   @override
+  final String clickSound = 'Klang anklicken';
+
+  @override
   final String wifi = 'WLAN';
 
   @override
@@ -6880,6 +6897,9 @@ class NB extends Translated {
 
   @override
   final String battery = 'Batteri';
+
+  @override
+  final String clickSound = 'Lyd ved valg';
 
   @override
   final String wifi = 'Wi-Fi';
