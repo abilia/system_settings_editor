@@ -117,8 +117,8 @@ class SelectPictureBody extends StatelessWidget {
                   ),
                   SizedBox(height: 8.0.s),
                   //TODO: remove beta in 1.4
-                  if (Config.beta)
-                    PickField(
+                  // if (Config.beta)
+                  PickField(
                       key: TestKey.myPhotosButton,
                       leading: const Icon(AbiliaIcons.folder),
                       text: Text(translate.myPhotos),
@@ -135,10 +135,11 @@ class SelectPictureBody extends StatelessWidget {
                                 child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
                                   builder: (context, state) {
                                     return ImageArchivePage(
-                                        onCancel: onCancel,
-                                        initialFolder:
-                                            state.currentFolderId ?? '');
-                                  },
+                                      onCancel: onCancel,
+                                      initialFolder:
+                                          state.currentFolderId ?? '',
+                                      header: translate.myPhotos);
+                                },
                                 ),
                               ),
                             ),
@@ -150,7 +151,7 @@ class SelectPictureBody extends StatelessWidget {
                       },
                     ),
                   //TODO: remove beta in 1.4
-                  if (Config.beta) SizedBox(height: 8.0.s),
+                  // if (Config.beta) SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
                       text: translate.uploadImage,
