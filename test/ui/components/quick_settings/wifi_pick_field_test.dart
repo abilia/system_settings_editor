@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -8,7 +9,8 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  final mockNetworkInfo = MockNetworkInfo();
+  final mockConnectivity = MockConnectivity();
+  final translate = Locales.language.values.first;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -33,38 +35,24 @@ void main() {
       );
 
   testWidgets('Not connected shows no wifi icon', (WidgetTester tester) async {
-    when(() => mockNetworkInfo.getWifiName())
-        .thenAnswer((_) => Future.value(null));
+    when(() => mockConnectivity.onConnectivityChanged)
+        .thenAnswer((_) => Stream.value(ConnectivityResult.none));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
-      networkInfo: mockNetworkInfo,
-      locationPermission: PermissionStatus.granted,
+      connectivity: mockConnectivity,
     )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.noWifi), findsOneWidget);
+    expect(find.text(translate.notConnected), findsOneWidget);
   });
 
   testWidgets('Connected shows wifi icon', (WidgetTester tester) async {
-    const networkName = 'my network';
-    when(() => mockNetworkInfo.getWifiName())
-        .thenAnswer((_) => Future.value(networkName));
+    when(() => mockConnectivity.onConnectivityChanged)
+        .thenAnswer((_) => Stream.value(ConnectivityResult.wifi));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
-      networkInfo: mockNetworkInfo,
-      locationPermission: PermissionStatus.granted,
+      connectivity: mockConnectivity,
     )));
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
-    expect(find.text(networkName), findsOneWidget);
-  });
-
-  testWidgets('No location permission shows wifi icon',
-      (WidgetTester tester) async {
-    when(() => mockNetworkInfo.getWifiName())
-        .thenAnswer((_) => Future.value(null));
-    await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
-      networkInfo: mockNetworkInfo,
-      locationPermission: PermissionStatus.denied,
-    )));
-    await tester.pumpAndSettle();
-    expect(find.byIcon(AbiliaIcons.wifi), findsOneWidget);
+    expect(find.text(translate.connected), findsOneWidget);
   });
 }
