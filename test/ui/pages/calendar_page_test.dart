@@ -1593,7 +1593,7 @@ void main() {
     testWidgets('displays alarm button', (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(displayAlarmButton: true),
+        MemoplannerSettings(alarm: AlarmSettings(showAlarmOnOffSwitch: true)),
       ));
 
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
@@ -1609,7 +1609,7 @@ void main() {
     testWidgets("don't display alarm button", (WidgetTester tester) async {
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(displayAlarmButton: false),
+        MemoplannerSettings(alarm: AlarmSettings(showAlarmOnOffSwitch: false)),
       ));
 
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
@@ -1631,7 +1631,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
-                identifier: MemoplannerSettings.displayAlarmButtonKey,
+                identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
             )
           ],
@@ -1648,7 +1648,7 @@ void main() {
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
-                identifier: MemoplannerSettings.displayAlarmButtonKey,
+                identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
             ),
             Generic.createNew<MemoplannerSettingData>(

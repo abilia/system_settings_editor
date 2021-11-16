@@ -544,6 +544,8 @@ abstract class Translated {
 
   final String noSound = '- No sound -';
 
+  final String showDisableAlarms = 'Show Disable alarms';
+
   final String showWeekNumber = 'Show week number';
 
   final String showYear = 'Show year';
@@ -1547,6 +1549,9 @@ class SV extends Translated {
 
   @override
   final String noSound = '- Inget ljud -';
+
+  @override
+  final String showDisableAlarms = 'Visa Inaktivera larm';
 
   @override
   final String showWeekNumber = 'Visa veckonummer';
@@ -2653,6 +2658,9 @@ class DA extends Translated {
   final String noSound = '- Ingen lyd -';
 
   @override
+  final String showDisableAlarms = 'Vis Deaktiver alarmer';
+
+  @override
   final String showWeekNumber = 'Vis ugenummer';
 
   @override
@@ -3755,6 +3763,9 @@ class NL extends Translated {
 
   @override
   final String noSound = '- Geen geluid -';
+
+  @override
+  final String showDisableAlarms = 'Alarmen uitschakelen tonen';
 
   @override
   final String showWeekNumber = 'Weeknummer tonen';
@@ -4860,6 +4871,9 @@ class FI extends Translated {
 
   @override
   final String noSound = '- Ei ääntä -';
+
+  @override
+  final String showDisableAlarms = 'Näytä Poista hälytykset käytöstä-painike';
 
   @override
   final String showWeekNumber = 'Näytä viikon numero';
@@ -5971,6 +5985,9 @@ class DE extends Translated {
   final String noSound = '- Kein Klang -';
 
   @override
+  final String showDisableAlarms = 'Alarme deaktivieren anzeigen';
+
+  @override
   final String showWeekNumber = 'Wochennummer anzeigen';
 
   @override
@@ -7073,6 +7090,9 @@ class NB extends Translated {
 
   @override
   final String noSound = '- Ingen lyd -';
+
+  @override
+  final String showDisableAlarms = 'Vis Deaktiver alarmer';
 
   @override
   final String showWeekNumber = 'Vis ukenummer';

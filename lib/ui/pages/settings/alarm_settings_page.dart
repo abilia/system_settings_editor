@@ -7,6 +7,8 @@ class AlarmSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final defaultPadding = EdgeInsets.fromLTRB(12.s, 16.s, 20.s, 0);
+    final topPadding = EdgeInsets.fromLTRB(12.s, 24.s, 20.s, 0);
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
         alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
@@ -16,59 +18,68 @@ class AlarmSettingsPage extends StatelessWidget {
         create: (_) => AlarmSoundCubit(),
         child: BlocBuilder<AlarmSettingsCubit, AlarmSettings>(
           builder: (context, state) {
-            final widgets = [
-              AlarmSelector(
-                key: TestKey.nonCheckableAlarmSelector,
-                heading: t.nonCheckableActivities,
-                icon: AbiliaIcons.handiUncheck,
-                sound: state.nonCheckableSound,
-                onChanged: (sound) => context
-                    .read<AlarmSettingsCubit>()
-                    .changeAlarmSettings(
-                        state.copyWith(nonCheckableSound: sound)),
-              ),
-              AlarmSelector(
-                key: TestKey.checkableAlarmSelector,
-                heading: t.checkableActivities,
-                icon: AbiliaIcons.handiCheck,
-                sound: state.checkableSound,
-                onChanged: (sound) => context
-                    .read<AlarmSettingsCubit>()
-                    .changeAlarmSettings(state.copyWith(checkableSound: sound)),
-              ),
-              AlarmSelector(
-                key: TestKey.reminderAlarmSelector,
-                heading: t.reminders,
-                icon: AbiliaIcons.handiReminder,
-                sound: state.reminderSound,
-                noSoundOption: true,
-                onChanged: (sound) => context
-                    .read<AlarmSettingsCubit>()
-                    .changeAlarmSettings(state.copyWith(reminderSound: sound)),
-              ),
-              SwitchField(
-                key: TestKey.vibrateAtReminderSelector,
-                value: state.vibrateAtReminder,
-                onChanged: (v) => context
-                    .read<AlarmSettingsCubit>()
-                    .changeAlarmSettings(state.copyWith(vibrateAtReminder: v)),
-                child: Text(t.vibrationOnReminder),
-              ),
-              AlarmDurationSelector(
-                key: TestKey.alarmDurationSelector,
-                duration: state.alarmDuration,
-              ),
-            ];
             return Scaffold(
               appBar: AbiliaAppBar(
                 title: Translator.of(context).translate.alarmSettings,
                 iconData: AbiliaIcons.handiAlarmVibration,
               ),
-              body: ListView.separated(
-                padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
-                itemBuilder: (context, i) => widgets[i],
-                itemCount: widgets.length,
-                separatorBuilder: (context, index) => SizedBox(height: 16.0.s),
+              body: ListView(
+                children: [
+                  AlarmSelector(
+                    key: TestKey.nonCheckableAlarmSelector,
+                    heading: t.nonCheckableActivities,
+                    icon: AbiliaIcons.handiUncheck,
+                    sound: state.nonCheckableSound,
+                    onChanged: (sound) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(nonCheckableSound: sound)),
+                  ).pad(topPadding),
+                  AlarmSelector(
+                    key: TestKey.checkableAlarmSelector,
+                    heading: t.checkableActivities,
+                    icon: AbiliaIcons.handiCheck,
+                    sound: state.checkableSound,
+                    onChanged: (sound) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(checkableSound: sound)),
+                  ).pad(defaultPadding),
+                  AlarmSelector(
+                    key: TestKey.reminderAlarmSelector,
+                    heading: t.reminders,
+                    icon: AbiliaIcons.handiReminder,
+                    sound: state.reminderSound,
+                    noSoundOption: true,
+                    onChanged: (sound) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(reminderSound: sound)),
+                  ).pad(defaultPadding),
+                  SwitchField(
+                    key: TestKey.vibrateAtReminderSelector,
+                    value: state.vibrateAtReminder,
+                    onChanged: (v) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(vibrateAtReminder: v)),
+                    child: Text(t.vibrationOnReminder),
+                  ).pad(defaultPadding),
+                  AlarmDurationSelector(
+                    key: TestKey.alarmDurationSelector,
+                    duration: state.alarmDuration,
+                  ).pad(defaultPadding),
+                  const Divider().pad(EdgeInsets.only(top: 16.s)),
+                  SwitchField(
+                    key: TestKey.showAlarmOnOffSwitch,
+                    value: state.showAlarmOnOffSwitch,
+                    onChanged: (v) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(showAlarmOnOffSwitch: v)),
+                    child: Text(t.showDisableAlarms),
+                  ).pad(defaultPadding),
+                ],
               ),
               bottomNavigationBar: BottomNavigation(
                 backNavigationWidget: const CancelButton(),
