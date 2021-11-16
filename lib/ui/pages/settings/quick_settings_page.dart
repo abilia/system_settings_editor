@@ -37,6 +37,10 @@ class QuickSettingsPage extends StatelessWidget {
             const QuickSettingsGroup(children: [
               BrightnessSlider(),
             ]),
+            QuickSettingsGroup(children: [
+              SubHeading(t.volumeAlarm),
+              const PickField(),
+            ]),
           ],
         ),
       ),
