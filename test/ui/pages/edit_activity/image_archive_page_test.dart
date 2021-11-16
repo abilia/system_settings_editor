@@ -235,7 +235,7 @@ void main() {
         initialFolder: folder.id,
       )));
       await tester.pumpAndSettle();
-      expect(find.text('Image Archive'), findsOneWidget);
+      expect(find.text(translate.imageArchive), findsOneWidget);
       expect(find.byType(ImageArchivePage), findsOneWidget);
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
