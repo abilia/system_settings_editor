@@ -135,7 +135,8 @@ class SelectPictureBody extends StatelessWidget {
                                   return ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder:
-                                          state.currentFolderId ?? '');
+                                          state.currentFolderId ?? '',
+                                      header: translate.myPhotos);
                                 },
                               ),
                             ),
