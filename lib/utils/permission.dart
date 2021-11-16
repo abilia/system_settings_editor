@@ -11,7 +11,6 @@ extension PermissionExtension on Permission {
     if (this == Permission.systemAlertWindow) return translate.fullScreenAlarm;
     if (this == Permission.photos) return translate.accessToPhotos;
     if (this == Permission.microphone) return translate.accessToMicrophone;
-    if (this == Permission.location) return translate.location;
     return toString();
   }
 
