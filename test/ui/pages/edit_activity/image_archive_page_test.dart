@@ -239,7 +239,7 @@ void main() {
       expect(find.byType(ImageArchivePage), findsOneWidget);
       await tester.tap(find.byType(LibraryFolder));
       await tester.pumpAndSettle();
-      expect(find.text(translate.imageArchive), findsOneWidget);
+      expect(find.text(translate.imageArchive), findsNothing);
     });
   });
 }
