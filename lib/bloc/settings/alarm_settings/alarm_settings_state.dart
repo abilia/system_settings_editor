@@ -20,8 +20,7 @@ extension AlarmSettingsState on AlarmSettings {
         checkableActivity: checkableSound?.name() ?? checkableActivity,
         reminder: reminderSound?.name() ?? reminder,
         vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
-        showAlarmOnOffSwitch:
-            showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
+        showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
