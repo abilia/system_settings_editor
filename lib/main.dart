@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:devicelocale/devicelocale.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -113,17 +115,28 @@ class App extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TopLevelBlocsProvider(
-        pushBloc: pushBloc,
-        baseUrl: baseUrl,
-        child: TopLevelListeners(
-          navigatorKey: _navigatorKey,
-          payload: payload,
-          child: SeagullApp(
+  Widget build(BuildContext context) {
+    final l = ui.window.physicalSize.longestSide;
+    final s = ui.window.physicalSize.shortestSide;
+    return LayoutBuilder(builder: (a, b) {
+      final mw = b.maxWidth;
+      final mh = b.maxHeight;
+      return Provider<LayoutTheme>(
+        create: (context) => l > 1500 ? MediumTheme() : GoTheme(),
+        child: TopLevelBlocsProvider(
+          pushBloc: pushBloc,
+          baseUrl: baseUrl,
+          child: TopLevelListeners(
             navigatorKey: _navigatorKey,
+            payload: payload,
+            child: SeagullApp(
+              navigatorKey: _navigatorKey,
+            ),
           ),
         ),
       );
+    });
+  }
 }
 
 class SeagullApp extends StatelessWidget {

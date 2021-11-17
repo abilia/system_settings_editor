@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -50,7 +51,7 @@ class CalendarAppBar extends StatelessWidget {
           flexibleSpace: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: 16.0.s,
+                horizontal: context.read<LayoutTheme>().secondPadding,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
