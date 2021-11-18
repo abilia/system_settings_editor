@@ -26,6 +26,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
             ),
             SizedBox(height: 16.s),
             SwitchField(
+              key: TestKey.activityViewAlarmSwitch,
               leading: const Icon(AbiliaIcons.handiAlarmVibration),
               value: state.alarm,
               onChanged: (v) => context
@@ -34,6 +35,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.alarm),
             ),
             SwitchField(
+              key: TestKey.activityViewRemoveSwitch,
               leading: const Icon(AbiliaIcons.deleteAllClear),
               value: state.delete,
               onChanged: (v) => context
@@ -42,6 +44,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
               child: Text(t.delete),
             ),
             SwitchField(
+              key: TestKey.activityViewEditSwitch,
               leading: const Icon(AbiliaIcons.edit),
               value: state.edit,
               onChanged: (v) => context

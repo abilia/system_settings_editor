@@ -459,6 +459,8 @@ abstract class Translated {
 
   final String notConnected = 'Not connected';
 
+  final String connected = 'Connected';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -750,8 +752,6 @@ abstract class Translated {
 
   final String allowAccessMicrophoneBody =
       'Allow access to microphone to be able to record speech from the device';
-
-  final String location = 'Location';
 
   final String about = 'About';
 
@@ -1424,6 +1424,9 @@ class SV extends Translated {
   final String notConnected = 'Ej ansluten';
 
   @override
+  final String connected = 'Ansluten';
+
+  @override
   final String settings = 'Inställningar';
 
   @override
@@ -1852,9 +1855,6 @@ class SV extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten';
-
-  @override
-  final String location = 'Plats';
 
   @override
   final String about = 'Information';
@@ -2531,6 +2531,9 @@ class DA extends Translated {
   final String notConnected = 'Ikke tilsluttet';
 
   @override
+  final String connected = 'Tilsluttet';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -2960,9 +2963,6 @@ class DA extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillad adgang til mikrofon for at kunne optage tale fra enheden';
-
-  @override
-  final String location = 'Beliggenhed';
 
   @override
   final String about = 'Information';
@@ -3638,6 +3638,9 @@ class NL extends Translated {
   final String notConnected = 'Niet verbonden';
 
   @override
+  final String connected = 'Verbonden';
+
+  @override
   final String settings = 'Instellingen';
 
   @override
@@ -4068,9 +4071,6 @@ class NL extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Toegang tot microfoon toestaan om spraak van het apparaat op te nemen';
-
-  @override
-  final String location = 'Plaats';
 
   @override
   final String about = 'Informatie';
@@ -4746,6 +4746,9 @@ class FI extends Translated {
   final String notConnected = 'Ei yhteyttä';
 
   @override
+  final String connected = 'Yhdistetty';
+
+  @override
   final String settings = 'Asetukset';
 
   @override
@@ -5174,9 +5177,6 @@ class FI extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta';
-
-  @override
-  final String location = 'Sijainti';
 
   @override
   final String about = 'Tiedot';
@@ -5857,6 +5857,9 @@ class DE extends Translated {
   final String notConnected = 'Nicht verbunden';
 
   @override
+  final String connected = 'Verbunden';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6288,9 +6291,6 @@ class DE extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können';
-
-  @override
-  final String location = 'Lage';
 
   @override
   final String about = 'Information';
@@ -6965,6 +6965,9 @@ class NB extends Translated {
   final String notConnected = 'Ikke tilkoblet';
 
   @override
+  final String connected = 'Tilkoblet';
+
+  @override
   final String settings = 'Innstillinger';
 
   @override
@@ -7394,9 +7397,6 @@ class NB extends Translated {
   @override
   final String allowAccessMicrophoneBody =
       'Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten';
-
-  @override
-  final String location = 'Plassering';
 
   @override
   final String about = 'Informasjon';

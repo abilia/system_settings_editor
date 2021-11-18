@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -61,6 +60,12 @@ void main() {
         Sortable.createNew<ImageArchiveData>(data: ImageArchiveData.fromJson('''
           {"name":"$imageInFolderName","fileId":"351d5e7d-0d87-4037-9829-538a14936129","file":"/images/Basic/Basic/infolder.gif"}
           '''), groupId: folder.id);
+
+    final folderData2 = ImageArchiveData.fromJson('''
+          {"name":"folder2","fileId":"20da3060-be12-42f9-922e-7e1632993199","icon":"/images/Basic/Basic.png"}
+          ''');
+    final folderInsideFolder = Sortable.createNew<ImageArchiveData>(
+        data: folderData2, isGroup: true, groupId: folder.id);
 
     final navObserver = NavObserver();
 
@@ -205,6 +210,36 @@ void main() {
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.byType(ArchiveImage), findsOneWidget);
       expect(find.byType(LibraryFolder), findsNothing);
+    });
+
+    testWidgets('Image archive with custom header',
+        (WidgetTester tester) async {
+      const testHeader = 'MyTestHeader';
+      when(() => mockSortableBloc.state).thenAnswer(
+          (_) => SortablesLoaded(sortables: [folder, imageInFolder]));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
+        initialFolder: folder.id,
+        header: testHeader,
+      )));
+      await tester.pumpAndSettle();
+      expect(find.byType(ImageArchivePage), findsOneWidget);
+      expect(find.text(testHeader), findsOneWidget);
+    });
+
+    testWidgets(
+        'Image archive with one folder inside initial folder, can go into folder',
+        (WidgetTester tester) async {
+      when(() => mockSortableBloc.state).thenAnswer(
+          (_) => SortablesLoaded(sortables: [folder, folderInsideFolder]));
+      await tester.pumpWidget(wrapWithMaterialApp(ImageArchivePage(
+        initialFolder: folder.id,
+      )));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.imageArchive), findsOneWidget);
+      expect(find.byType(ImageArchivePage), findsOneWidget);
+      await tester.tap(find.byType(LibraryFolder));
+      await tester.pumpAndSettle();
+      expect(find.text(translate.imageArchive), findsNothing);
     });
   });
 }

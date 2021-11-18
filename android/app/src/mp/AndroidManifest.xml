@@ -4,7 +4,6 @@
   package="com.abilia.memoplanner">
 
   <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
   <application>
     <activity 
