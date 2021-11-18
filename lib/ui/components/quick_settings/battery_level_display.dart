@@ -7,10 +7,7 @@ class BatteryLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BatteryCubit>(
-      create: (context) => BatteryCubit(),
-      child: const BatteryLevelDisplay(),
-    );
+    return const BatteryLevelDisplay();
   }
 }
 
@@ -20,7 +17,7 @@ class BatteryLevelDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<BatteryCubit, int>(
+    return BlocBuilder<BatteryCubit, BatteryCubitState>(
       builder: (context, batteryState) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -34,14 +31,16 @@ class BatteryLevelDisplay extends StatelessWidget {
                 width: 18.s,
               ),
               Icon(
-                _batteryLevelIcon(batteryState),
+                _batteryLevelIcon(batteryState.batteryLevel),
                 size: largeIconSize,
               ),
               SizedBox(
                 width: 16.s,
               ),
               Text(
-                batteryState > 0 ? '$batteryState%' : '',
+                batteryState.batteryLevel > 0
+                    ? batteryState.batteryLevel.toString() + '%'
+                    : '',
                 style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
               ),

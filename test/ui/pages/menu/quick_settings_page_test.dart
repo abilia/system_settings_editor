@@ -58,7 +58,7 @@ void main() {
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(AlarmVolumeSlider), findsOneWidget);
       expect(find.byType(MediaVolumeSlider), findsOneWidget);
-      expect(find.byType(SoundEffectsSwitch), findsOneWidget);
+      expect(find.byType(KeepOnWhileChargingSwitch), findsOneWidget);
       expect(
         tester.widget(find.byKey(TestKey.brightnessSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),

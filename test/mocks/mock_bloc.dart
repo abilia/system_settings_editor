@@ -29,4 +29,5 @@ class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
 class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
     implements UserFileBloc {}
 
-class MockBatteryCubit extends MockCubit<int> implements BatteryCubit {}
+class MockBatteryCubit extends MockCubit<BatteryCubitState>
+    implements BatteryCubit {}

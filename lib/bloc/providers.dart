@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
 import 'package:seagull/bloc/sync/sync_bloc.dart';
 import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/config.dart';
@@ -16,6 +17,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;
   final MemoplannerSettingBloc? memoplannerSettingBloc;
   final SortableBloc? sortableBloc;
+
   AuthenticatedBlocsProvider({
     required this.authenticatedState,
     required this.child,
@@ -25,6 +27,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   }) : super(key: key) {
     ensureNotificationPluginInitialized();
   }
+
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
@@ -183,7 +186,16 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
               ),
-            )
+            ),
+            BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                    genericBloc: context.read<GenericBloc>(),
+                    batteryCubit: context.read<BatteryCubit>(),
+                    screenAwakeSettings: context
+                        .read<MemoplannerSettingBloc>()
+                        .state
+                        .settings
+                        .keepScreenAwakeSettings))
           ],
           child: child,
         ),
@@ -194,6 +206,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
   final Widget child;
   final PushBloc? pushBloc;
   final String baseUrl;
+
   const TopLevelBlocsProvider({
     Key? key,
     required this.child,
@@ -238,6 +251,9 @@ class TopLevelBlocsProvider extends StatelessWidget {
               settingsDb: GetIt.I<SettingsDb>(),
             ),
           ),
+          BlocProvider<BatteryCubit>(
+            create: (context) => BatteryCubit(),
+          ),
           if (Config.isMP)
             BlocProvider<InactivityCubit>(
               create: (context) => InactivityCubit(
@@ -261,6 +277,7 @@ class CopiedAuthProviders extends StatelessWidget {
     required this.blocContext,
     required this.child,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // DON'T change  to
@@ -312,6 +329,9 @@ class CopiedAuthProviders extends StatelessWidget {
         ),
         BlocProvider<TimepillarBloc>.value(
           value: blocContext.read<TimepillarBloc>(),
+        ),
+        BlocProvider<WakeLockCubit>.value(
+          value: blocContext.read<WakeLockCubit>(),
         ),
       ],
       child: child,

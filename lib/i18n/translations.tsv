@@ -236,6 +236,8 @@ volumeAlarm	Volume for alarm	Volym för alarm	Volumen for alarm	Volume voor alar
 volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor media	Median äänenvoimakkuus	Lautstärke für Medien	Volum for media
 wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wifi	Wi-Fi	WLAN	Wi-Fi
 notConnected	Not connected	Ej ansluten	Ikke tilsluttet	Niet verbonden	Ei yhteyttä	Nicht verbunden	Ikke tilkoblet
+screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
+alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
