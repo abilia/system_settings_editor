@@ -113,19 +113,17 @@ class App extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return TopLevelBlocsProvider(
-      pushBloc: pushBloc,
-      baseUrl: baseUrl,
-      child: TopLevelListeners(
-        navigatorKey: _navigatorKey,
-        payload: payload,
-        child: SeagullApp(
+  Widget build(BuildContext context) => TopLevelBlocsProvider(
+        pushBloc: pushBloc,
+        baseUrl: baseUrl,
+        child: TopLevelListeners(
           navigatorKey: _navigatorKey,
+          payload: payload,
+          child: SeagullApp(
+            navigatorKey: _navigatorKey,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class SeagullApp extends StatelessWidget {

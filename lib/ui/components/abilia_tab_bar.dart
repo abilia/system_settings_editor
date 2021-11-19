@@ -126,8 +126,8 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       first: widget.index == 0,
       last: widget.last,
       beginIconThemeData: iconTheme.copyWith(size: Lay.out.icon.small),
-      endIconThemeData:
-          iconTheme.copyWith(color: AbiliaColors.white, size: Lay.out.icon.small),
+      endIconThemeData: iconTheme.copyWith(
+          color: AbiliaColors.white, size: Lay.out.icon.small),
       onTap: () {
         widget.onTabTap?.call(widget.index - widget.offset);
         widget.controller.animateTo(widget.index - widget.offset);
