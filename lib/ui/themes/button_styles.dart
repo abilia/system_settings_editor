@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 final buttonBackgroundLight = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
@@ -125,7 +126,7 @@ final actionIconTextButtonStyleRed = ButtonStyle(
   ),
 );
 
-final double actionButtonMinSize = 48.0.s;
+final double actionButtonMinSize = Lay.out.actionButton.size;
 final double secondaryActionButtonMinSize = 40.0.s;
 
 final _actionButtonStyle = ButtonStyle(

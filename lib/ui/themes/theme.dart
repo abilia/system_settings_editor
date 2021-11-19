@@ -5,12 +5,6 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final smallIconSize = 24.s,
-    buttonIconSize = 28.s,
-    defaultIconSize = 32.s,
-    largeIconSize = 48.s,
-    hugeIconSize = 96.s;
-
 final verticalPadding = 24.s,
     horizontalPadding = 16.s,
     rightPadding = horizontalPadding,
@@ -38,7 +32,7 @@ final abiliaTheme = ThemeData(
   textTheme: abiliaTextTheme,
   highlightColor: AbiliaColors.transparentBlack40,
   iconTheme: IconThemeData(
-    size: defaultIconSize,
+    size: Lay.out.icon.normal,
     color: AbiliaColors.black,
   ),
   textSelectionTheme: const TextSelectionThemeData(
@@ -245,13 +239,13 @@ final inputErrorDecoration = InputDecoration(
     child: Icon(
       AbiliaIcons.irError,
       color: AbiliaColors.red,
-      size: smallIconSize,
+      size: Lay.out.icon.small,
     ),
   ),
 );
 
 // Icon theme
 final lightIconThemeData = IconThemeData(
-  size: buttonIconSize,
+  size: Lay.out.icon.button,
   color: AbiliaColors.white,
 );

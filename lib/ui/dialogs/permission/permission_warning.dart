@@ -74,7 +74,7 @@ class _WarningContent extends StatelessWidget {
           SizedBox(height: 128.0.s),
           Icon(
             AbiliaIcons.irError,
-            size: hugeIconSize,
+            size: Lay.out.icon.huge,
             color: AbiliaColors.orange,
           ),
           SizedBox(height: 80.0.s),

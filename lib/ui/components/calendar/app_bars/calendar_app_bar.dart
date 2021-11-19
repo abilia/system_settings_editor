@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -14,10 +13,10 @@ class CalendarAppBar extends StatelessWidget {
   final DateTime day;
   final DayColor calendarDayColor;
 
-  static final _emptyAction = SizedBox(width: 48.s);
+  static final _emptyAction = SizedBox(width: actionButtonMinSize);
 
   static final double clockPadding = 8.s;
-  static final Size size = Size.fromHeight(80.s);
+  static final Size size = Size.fromHeight(Lay.out.appBar.height);
 
   const CalendarAppBar({
     Key? key,
@@ -51,7 +50,7 @@ class CalendarAppBar extends StatelessWidget {
           flexibleSpace: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: context.read<LayoutTheme>().secondPadding,
+                horizontal: Lay.out.appBar.horizontalPadding,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

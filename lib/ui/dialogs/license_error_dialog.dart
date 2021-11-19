@@ -25,7 +25,7 @@ class LicenseErrorDialog extends StatelessWidget {
         children: [
           Icon(
             AbiliaIcons.gewaRadioError,
-            size: hugeIconSize,
+            size: Lay.out.icon.huge,
             color: AbiliaColors.red,
           ),
           SizedBox(height: 24.0.s),

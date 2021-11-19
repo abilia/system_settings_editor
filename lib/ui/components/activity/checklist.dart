@@ -158,7 +158,7 @@ class QuestionView extends StatelessWidget {
                       IconTheme(
                         data: Theme.of(context)
                             .iconTheme
-                            .copyWith(size: smallIconSize),
+                            .copyWith(size: Lay.out.icon.small),
                         child: Padding(
                           padding:
                               EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),
