@@ -81,5 +81,9 @@ class TestKey {
       checkableRadio = Key('checkableRadio'),
       removeAfterRadio = Key('removeAfterRadio'),
       myPhotosButton = Key('myPhotosButton'),
-      brightnessSlider = Key('brightnessSlider');
+      brightnessSlider = Key('brightnessSlider'),
+      showAlarmOnOffSwitch = Key('showAlarmOnOffSwitch'),
+      activityViewAlarmSwitch = Key('activityViewAlarmSwitch'),
+      activityViewRemoveSwitch = Key('activityViewRemoveSwitch'),
+      activityViewEditSwitch = Key('activityViewEditSwitch');
 }

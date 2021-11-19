@@ -12,6 +12,7 @@ extension AlarmSettingsState on AlarmSettings {
     Sound? reminderSound,
     bool? vibrateAtReminder,
     AlarmDuration? alarmDuration,
+    bool? showAlarmOnOffSwitch,
   }) =>
       AlarmSettings(
         durationMs: alarmDuration?.milliseconds() ?? durationMs,
@@ -19,6 +20,7 @@ extension AlarmSettingsState on AlarmSettings {
         checkableActivity: checkableSound?.name() ?? checkableActivity,
         reminder: reminderSound?.name() ?? reminder,
         vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
+        showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -41,6 +43,10 @@ extension AlarmSettingsState on AlarmSettings {
         MemoplannerSettingData.fromData(
           data: alarmDuration.milliseconds(),
           identifier: AlarmSettings.alarmDurationKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: showAlarmOnOffSwitch,
+          identifier: AlarmSettings.showAlarmOnOffSwitchKey,
         ),
       ];
 }

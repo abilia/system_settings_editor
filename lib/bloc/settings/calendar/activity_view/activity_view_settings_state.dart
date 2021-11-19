@@ -3,23 +3,23 @@ part of 'activity_view_settings_cubit.dart';
 class ActivityViewSettingsState extends Equatable {
   final bool alarm, delete, edit, quarterHour, timeOnQuarterHour;
 
-  const ActivityViewSettingsState._(
-    this.alarm,
-    this.delete,
-    this.edit,
-    this.quarterHour,
-    this.timeOnQuarterHour,
-  );
+  const ActivityViewSettingsState._({
+    required this.alarm,
+    required this.delete,
+    required this.edit,
+    required this.quarterHour,
+    required this.timeOnQuarterHour,
+  });
 
   factory ActivityViewSettingsState.fromMemoplannerSettings(
     MemoplannerSettingsState state,
   ) =>
       ActivityViewSettingsState._(
-        state.displayDeleteButton,
-        state.displayEditButton,
-        state.displayAlarmButton,
-        state.displayQuarterHour,
-        state.displayTimeLeft,
+        alarm: state.displayAlarmButton,
+        delete: state.displayDeleteButton,
+        edit: state.displayEditButton,
+        quarterHour: state.displayQuarterHour,
+        timeOnQuarterHour: state.displayTimeLeft,
       );
 
   ActivityViewSettingsState copyWith({
@@ -30,11 +30,11 @@ class ActivityViewSettingsState extends Equatable {
     bool? timeOnQuarterHour,
   }) =>
       ActivityViewSettingsState._(
-        alarm ?? this.alarm,
-        delete ?? this.delete,
-        edit ?? this.edit,
-        quarterHour ?? this.quarterHour,
-        timeOnQuarterHour ?? this.timeOnQuarterHour,
+        alarm: alarm ?? this.alarm,
+        delete: delete ?? this.delete,
+        edit: edit ?? this.edit,
+        quarterHour: quarterHour ?? this.quarterHour,
+        timeOnQuarterHour: timeOnQuarterHour ?? this.timeOnQuarterHour,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [

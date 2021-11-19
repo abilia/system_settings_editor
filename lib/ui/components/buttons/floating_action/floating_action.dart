@@ -13,14 +13,16 @@ class FloatingActions extends StatelessWidget {
       builder: (context, permission) {
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           buildWhen: (previous, current) =>
-              previous.displayAlarmButton != current.displayAlarmButton,
+              previous.displayAlarmButton != current.displayAlarmButton ||
+              previous.alarm.showAlarmOnOffSwitch !=
+                  current.alarm.showAlarmOnOffSwitch,
           builder: (context, settings) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (tabController != null)
                   _ToggleAlarmAndEyeButtons(tabController: tabController)
-                else if (settings.displayAlarmButton)
+                else if (settings.alarm.showAlarmOnOffSwitch)
                   const ToggleAlarmButton(),
                 if (permission.notificationDenied)
                   Expanded(
@@ -62,12 +64,14 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.displayEyeButton != current.displayEyeButton ||
           previous.displayAlarmButton != current.displayAlarmButton ||
-          previous.calendarCount != current.calendarCount,
+          previous.calendarCount != current.calendarCount ||
+          previous.alarm.showAlarmOnOffSwitch !=
+              current.alarm.showAlarmOnOffSwitch,
       builder: (context, state) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (state.displayAlarmButton) const ToggleAlarmButton(),
+            if (state.alarm.showAlarmOnOffSwitch) const ToggleAlarmButton(),
             if (state.displayEyeButton)
               if (tabController.index == 0)
                 Padding(

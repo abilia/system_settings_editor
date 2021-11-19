@@ -131,6 +131,54 @@ void main() {
       expect(find.byKey(TestKey.sideDotsTimeText), findsNothing);
     });
 
+    testWidgets('respects memoSettings with different values ', (tester) async {
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.displayAlarmButtonKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.displayDeleteButtonKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.displayEditButtonKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: true,
+            identifier: MemoplannerSettings.displayQuarterHourKey,
+          ),
+        ),
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.displayTimeLeftKey,
+          ),
+        ),
+      ];
+
+      await tester.goToActivityViewSettingsPage();
+      expect(find.byType(ActivityViewSettingsPage), findsOneWidget);
+      expect(find.byType(ActivityPagePreview), findsOneWidget);
+      final alarmSwitch = tester
+          .widget<SwitchField>(find.byKey(TestKey.activityViewAlarmSwitch));
+      expect(alarmSwitch.value, true);
+      final removeSwitch = tester
+          .widget<SwitchField>(find.byKey(TestKey.activityViewRemoveSwitch));
+      expect(removeSwitch.value, false);
+      final editSwitch = tester
+          .widget<SwitchField>(find.byKey(TestKey.activityViewEditSwitch));
+      expect(editSwitch.value, false);
+    });
+
     testWidgets('hide alarm button saved', (tester) async {
       await tester.goToActivityViewSettingsPage();
       expect(find.byKey(TestKey.editAlarm), findsOneWidget);
