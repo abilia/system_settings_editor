@@ -13,95 +13,85 @@ class ActivityImage extends StatelessWidget {
   final bool past;
   final ImageSize imageSize;
   final BoxFit fit;
-  final double? size;
+  final EdgeInsets? crossPadding;
+  final EdgeInsets? checkPadding;
+
   static const duration = Duration(milliseconds: 400);
-  static const crossPadding = 8.0;
+  static final fallbackCrossPadding = EdgeInsets.all(4.s);
+  static final fallbackCheckPadding = EdgeInsets.all(8.s);
 
   const ActivityImage({
     required this.activityDay,
-    this.size,
     this.past = false,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
+    this.crossPadding,
+    this.checkPadding,
     Key? key,
   }) : super(key: key);
 
   static Widget fromActivityOccasion({
     Key? key,
     required ActivityOccasion activityOccasion,
-    double? size,
     ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
+    EdgeInsets? crossPadding,
+    EdgeInsets? checkPadding,
   }) =>
       preview
           ? FadeInCalendarImage(
               key: key,
               imageFileId: activityOccasion.activity.fileId,
               imageFilePath: activityOccasion.activity.icon,
-              width: size,
-              height: size,
               imageSize: imageSize,
               fit: fit,
             )
           : ActivityImage(
               key: key,
               activityDay: activityOccasion,
-              size: size,
               past: activityOccasion.occasion == Occasion.past,
               imageSize: imageSize,
               fit: fit,
+              crossPadding: crossPadding,
+              checkPadding: crossPadding,
             );
 
   @override
   Widget build(BuildContext context) {
-    final size = this.size;
     final activity = activityDay.activity;
-    final signedOff = activityDay.isSignedOff, inactive = past || signedOff;
-    final image = activity.hasImage
-        ? getImage(
-            context,
-            activity.fileId,
-            activity.icon,
-          ) // all calls to blocs needs to be outside of Hero
-        : null;
+    final signedOff = activityDay.isSignedOff;
+    final inactive = past || signedOff;
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (image != null)
+        if (activity.hasImage)
           AnimatedOpacity(
             duration: duration,
             opacity: inactive ? 0.5 : 1.0,
-            child: SizedBox(
-              height: size,
-              width: size,
-              child: ClipRRect(
-                borderRadius: borderRadius,
-                child: Container(
-                  color: AbiliaColors.white,
-                  child: FadeInImage(
-                    fit: fit,
-                    image: image.image,
-                    placeholder: MemoryImage(kTransparentImage),
-                  ),
-                ),
+            child: ClipRRect(
+              borderRadius: borderRadius,
+              child: FadeInImage(
+                fit: fit,
+                image: getImage(
+                  context,
+                  activity.fileId,
+                  activity.icon,
+                ).image,
+                placeholder: MemoryImage(kTransparentImage),
               ),
             ),
           ),
-        if (past || activity.checkable)
-          Center(
-            child: SizedBox(
-              height: size != null ? size - crossPadding : null,
-              width: size != null ? size - crossPadding : null,
-              child: past && !signedOff
-                  ? const CrossOver()
-                  : AnimatedOpacity(
-                      opacity: signedOff ? 1.0 : 0.0,
-                      duration: duration,
-                      child: const CheckMark(),
-                    ),
-            ),
-          ),
+        if (signedOff)
+          Padding(
+            padding: checkPadding ?? fallbackCheckPadding,
+            child: const CheckMark(),
+          )
+        else if (past)
+          Padding(
+            padding: crossPadding ?? fallbackCrossPadding,
+            child: const CrossOver(),
+          )
       ],
     );
   }
@@ -136,12 +126,10 @@ class ActivityImage extends StatelessWidget {
 
 class CheckedImageWithImagePopup extends StatelessWidget {
   final ActivityDay activityDay;
-  final double? size;
 
   const CheckedImageWithImagePopup({
     Key? key,
     required this.activityDay,
-    this.size,
   }) : super(key: key);
 
   @override
@@ -155,7 +143,6 @@ class CheckedImageWithImagePopup extends StatelessWidget {
       child: ActivityImage(
         activityDay: activityDay,
         imageSize: ImageSize.original,
-        size: size,
         fit: BoxFit.contain,
       ),
     );

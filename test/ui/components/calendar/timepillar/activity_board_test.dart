@@ -141,6 +141,25 @@ void main() {
     expect(find.text(title), findsOneWidget);
   });
 
+  testWidgets('long title without white spave ', (WidgetTester tester) async {
+    const title = 'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD'
+        'DDDDDDDDDD';
+    await tester.pumpWidget(
+      wrap(
+        ActivityOccasion.forTest(
+          Activity.createNew(
+            title: title,
+            startTime: startTime,
+          ),
+        ),
+      ),
+    );
+    expect(find.text(title), findsOneWidget);
+  });
+
   testWidgets('tts', (WidgetTester tester) async {
     final duration = 30.minutes();
     final endTime = startTime.add(duration);
