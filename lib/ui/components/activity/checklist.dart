@@ -34,7 +34,7 @@ class _ChecklistViewState extends State<ChecklistView> {
 
   @override
   Widget build(BuildContext context) {
-    return VerticalScrollArrows(
+    return ArrowScrollable.verticalScrollArrows(
       controller: _controller,
       child: ListView.builder(
         controller: _controller,

@@ -13,7 +13,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
-        return VerticalScrollArrows(
+        return ArrowScrollable.verticalScrollArrows(
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
