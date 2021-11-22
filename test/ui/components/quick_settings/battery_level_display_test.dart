@@ -14,7 +14,6 @@ void main() {
 
   setUp(() {
     registerFallbackValue(const BatteryCubitState(BatteryState.full, 100));
-
     mockBatteryCubit = MockBatteryCubit();
   });
 

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 
 class BatteryCubit extends Cubit<BatteryCubitState> {

@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
 
 // Blocs
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
@@ -31,3 +32,6 @@ class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
 
 class MockBatteryCubit extends MockCubit<BatteryCubitState>
     implements BatteryCubit {}
+
+class MockWakeLockCubit extends MockCubit<KeepScreenAwakeState>
+    implements WakeLockCubit {}

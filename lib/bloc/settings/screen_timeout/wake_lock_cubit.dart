@@ -9,15 +9,15 @@ import 'package:seagull/models/settings/keep_screen_awake_settings.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 import 'package:wakelock/wakelock.dart';
 
-class WakeLockCubit extends Cubit<ScreenAwakeState> {
+class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
   WakeLockCubit({
     required this.genericBloc,
     required batteryCubit,
     required screenAwakeSettings,
-  }) : super(ScreenAwakeState(
+  }) : super(KeepScreenAwakeState(
             screenOnWhileCharging:
                 screenAwakeSettings.keepScreenOnWhileCharging,
-            screenTimeout: timeoutDisabled,
+            screenTimeout: _timeoutDisabled,
             wakeLockEnabled: false)) {
     _batterySubscription = batteryCubit.stream.listen((event) {
       _onBatteryUpdated(event);
@@ -26,19 +26,19 @@ class WakeLockCubit extends Cubit<ScreenAwakeState> {
     _keepScreenAwakeWhilePluggedIn =
         screenAwakeSettings.keepScreenOnWhileCharging;
     _screenTimeoutDuration = screenAwakeSettings.keepScreenOnAlways
-        ? timeoutDisabled
-        : timeoutUnknown;
+        ? _timeoutDisabled
+        : _timeoutUnknown;
     _init();
   }
 
   final GenericBloc genericBloc;
   late final StreamSubscription _batterySubscription;
   late bool _keepScreenAwakeWhilePluggedIn;
-  static Duration timeoutUnknown = const Duration(minutes: -1);
-  static Duration timeoutDisabled = const Duration(minutes: 0);
+  static const Duration _timeoutUnknown = Duration(minutes: -1);
+  static const Duration _timeoutDisabled = Duration(minutes: 0);
 
   bool _batteryCharging = false;
-  Duration _screenTimeoutDuration = timeoutUnknown;
+  Duration _screenTimeoutDuration = _timeoutUnknown;
 
   _init() async {
     if (_screenTimeoutDuration.isNegative) {
@@ -100,19 +100,19 @@ class WakeLockCubit extends Cubit<ScreenAwakeState> {
     } else {
       Wakelock.disable();
     }
-    emit(ScreenAwakeState(
+    emit(KeepScreenAwakeState(
         screenTimeout: _screenTimeoutDuration,
         screenOnWhileCharging: _keepScreenAwakeWhilePluggedIn,
         wakeLockEnabled: await Wakelock.enabled));
   }
 }
 
-class ScreenAwakeState extends Equatable {
+class KeepScreenAwakeState extends Equatable {
   final Duration screenTimeout;
   final bool screenOnWhileCharging;
   final bool wakeLockEnabled;
 
-  const ScreenAwakeState(
+  const KeepScreenAwakeState(
       {required this.screenTimeout,
       required this.screenOnWhileCharging,
       required this.wakeLockEnabled});

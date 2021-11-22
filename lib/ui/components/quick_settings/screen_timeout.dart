@@ -1,22 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/generic/generic_bloc.dart';
-import 'package:seagull/bloc/generic/memoplannersetting/memoplanner_setting_bloc.dart';
 import 'package:seagull/bloc/providers.dart';
-import 'package:seagull/bloc/settings/screen_timeout/screen_timeout_cubit.dart';
 import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/models/generic/generic.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/duration.dart';
 
-class ScreenTimeout extends StatelessWidget {
-  const ScreenTimeout({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const ScreenTimeoutPickField();
-  }
-}
+// class ScreenTimeout extends StatelessWidget {
+//   const ScreenTimeout({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const ScreenTimeoutPickField();
+//   }
+// }
 
 class ScreenTimeoutPickField extends StatelessWidget {
   const ScreenTimeoutPickField({Key? key}) : super(key: key);
@@ -24,7 +19,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<WakeLockCubit, ScreenAwakeState>(
+    return BlocBuilder<WakeLockCubit, KeepScreenAwakeState>(
       builder: (context, wakeLockState) => PickField(
         text: Text(wakeLockState.screenTimeout.inMinutes != 0
             ? wakeLockState.screenTimeout.toDurationString(t, shortMin: false)
@@ -72,7 +67,7 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: t.selectType,
+        title: t.screenTimeout,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
@@ -129,14 +124,15 @@ class KeepOnWhileChargingSwitch extends StatefulWidget {
 class _KeepOnWhileChargingSwitchState extends State<KeepOnWhileChargingSwitch> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WakeLockCubit, ScreenAwakeState>(
+    return BlocBuilder<WakeLockCubit, KeepScreenAwakeState>(
       builder: (context, wakeLockState) => SwitchField(
         value: wakeLockState.screenOnWhileCharging,
         onChanged: (switchOn) {
           BlocProvider.of<WakeLockCubit>(context)
               .setKeepScreenAwakeWhilePluggedIn(switchOn);
         },
-        child: Text(Translator.of(context).translate.clickSound),
+        child:
+            Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
       ),
     );
   }

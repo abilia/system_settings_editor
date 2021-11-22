@@ -39,7 +39,7 @@ class QuickSettingsPage extends StatelessWidget {
             ]),
             QuickSettingsGroup(children: [
               SubHeading(t.screenTimeout),
-              const ScreenTimeout(),
+              const ScreenTimeoutPickField(),
               SizedBox(height: 8.s),
               const KeepOnWhileChargingSwitch(),
             ]),
