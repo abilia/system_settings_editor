@@ -87,14 +87,15 @@ class ArrowScrollable extends StatelessWidget {
         valueListenable: scrollMetricsNotifier,
         builder: (context, value, child) {
           return Stack(
-            children: [
-              if (verticalScrollBar)
-                AbiliaScrollBar(
-                  isAlwaysShown: verticalScrollbarAlwaysShown,
-                  controller: verticalController,
-                  child: child!,
-                ),
-              if (!verticalScrollBar) child!,
+              if (child != null)
+                if (verticalScrollBar)
+                  AbiliaScrollBar(
+                    isAlwaysShown: verticalScrollbarAlwaysShown,
+                    controller: verticalController,
+                    child: child,
+                  )
+                else
+                  child,
               if (upArrow)
                 _ArrowUp(
                   controller: verticalController,
