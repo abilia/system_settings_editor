@@ -73,7 +73,7 @@ class ActivityBoard extends StatelessWidget {
 
       final textHeight = (a.hasTitle
           ? a.title
-              .textPainter(textStyle, ts.width, scaleFactor: scaleFactor)
+              .textPainter(textStyle, ts.textWidth, scaleFactor: scaleFactor)
               .height
           : 0.0);
       final imageHeight = a.hasImage || ao.isSignedOff || ao.isPast
