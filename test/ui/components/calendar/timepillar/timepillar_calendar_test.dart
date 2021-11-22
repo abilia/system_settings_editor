@@ -684,6 +684,25 @@ void main() {
       expect(find.byType(CrossOver), findsWidgets);
     });
 
+    testWidgets('SGC-735 past activity with long title shows CrossOver',
+        (WidgetTester tester) async {
+      // Arrange
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title title title title title title title '
+                  'title title title title title title title title '
+                  'title title title title title title title title ',
+              startTime: time.subtract(2.hours()),
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Act
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(CrossOver), findsWidgets);
+    });
+
     testWidgets('signed off past activity shows no CrossOver',
         (WidgetTester tester) async {
       // Arrange
