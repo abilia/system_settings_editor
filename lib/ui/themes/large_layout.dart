@@ -20,7 +20,7 @@ class LargeLayout extends Lay {
             minuteHandLength: 30,
             fontSize: 12,
           ),
-          font: const FontSize(
+          fontSize: const FontSize(
             headline1: 144,
             headline2: 90,
             headline3: 72,

@@ -28,7 +28,7 @@ class PermissionInfoDialog extends StatelessWidget {
             const Spacer(flex: 96),
             Icon(
               permission.iconData,
-              size: Lay.out.icon.huge,
+              size: Lay.out.iconSize.huge,
             ),
             const Spacer(flex: 64),
             Tts(

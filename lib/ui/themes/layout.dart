@@ -12,15 +12,15 @@ class Lay {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
   final ClockLayout clock;
-  final FontSize font;
-  final IconSize icon;
+  final FontSize fontSize;
+  final IconSize iconSize;
 
   const Lay({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.clock = const ClockLayout(),
-    this.font = const FontSize(),
-    this.icon = const IconSize(),
+    this.fontSize = const FontSize(),
+    this.iconSize = const IconSize(),
   });
 }
 

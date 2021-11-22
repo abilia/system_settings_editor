@@ -188,7 +188,7 @@ class SelectedImageWidget extends StatelessWidget {
                 height: innerSize,
                 child: Icon(
                   AbiliaIcons.addPhoto,
-                  size: Lay.out.icon.normal,
+                  size: Lay.out.iconSize.normal,
                   color: AbiliaColors.black75,
                 ),
               ),
@@ -404,7 +404,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
         key: TestKey.alarmAtStartSwitch,
         leading: Icon(
           AbiliaIcons.handiAlarm,
-          size: Lay.out.icon.small,
+          size: Lay.out.iconSize.small,
         ),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
@@ -428,7 +428,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           key: TestKey.checkableSwitch,
           leading: Icon(
             AbiliaIcons.handiCheck,
-            size: Lay.out.icon.small,
+            size: Lay.out.iconSize.small,
           ),
           value: activity.checkable,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
@@ -440,7 +440,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
             AbiliaIcons.deleteAllClear,
-            size: Lay.out.icon.small,
+            size: Lay.out.iconSize.small,
           ),
           value: activity.removeAfter,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
@@ -600,7 +600,7 @@ class EndDateWidget extends StatelessWidget {
             SwitchField(
               leading: Icon(
                 AbiliaIcons.basicActivity,
-                size: Lay.out.icon.small,
+                size: Lay.out.iconSize.small,
               ),
               value: recurs.hasNoEnd,
               onChanged: disabled
@@ -638,7 +638,7 @@ class EndDateWizWidget extends StatelessWidget {
         return SwitchField(
           leading: Icon(
             AbiliaIcons.basicActivity,
-            size: Lay.out.icon.small,
+            size: Lay.out.iconSize.small,
           ),
           value: recurs.hasNoEnd,
           onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(

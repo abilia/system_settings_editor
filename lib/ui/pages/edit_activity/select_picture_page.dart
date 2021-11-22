@@ -83,7 +83,7 @@ class SelectPictureBody extends StatelessWidget {
                           icon: Icon(
                             AbiliaIcons.deleteAllClear,
                             color: AbiliaColors.white,
-                            size: Lay.out.icon.small,
+                            size: Lay.out.iconSize.small,
                           ),
                           text: translate.removePicture,
                         ),

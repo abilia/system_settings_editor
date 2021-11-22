@@ -32,7 +32,7 @@ final abiliaTheme = ThemeData(
   textTheme: abiliaTextTheme,
   highlightColor: AbiliaColors.transparentBlack40,
   iconTheme: IconThemeData(
-    size: Lay.out.icon.normal,
+    size: Lay.out.iconSize.normal,
     color: AbiliaColors.black,
   ),
   textSelectionTheme: const TextSelectionThemeData(
@@ -239,13 +239,13 @@ final inputErrorDecoration = InputDecoration(
     child: Icon(
       AbiliaIcons.irError,
       color: AbiliaColors.red,
-      size: Lay.out.icon.small,
+      size: Lay.out.iconSize.small,
     ),
   ),
 );
 
 // Icon theme
 final lightIconThemeData = IconThemeData(
-  size: Lay.out.icon.button,
+  size: Lay.out.iconSize.button,
   color: AbiliaColors.white,
 );

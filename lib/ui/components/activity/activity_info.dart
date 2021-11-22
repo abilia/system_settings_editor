@@ -330,7 +330,7 @@ class TopInfo extends StatelessWidget {
 
     final checkableImage = CheckedImageWithImagePopup(
       activityDay: activityDay,
-      size: Lay.out.icon.huge,
+      size: Lay.out.iconSize.huge,
     );
 
     return Row(

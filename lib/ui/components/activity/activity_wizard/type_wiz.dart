@@ -51,7 +51,7 @@ class _TypeWidget extends StatelessWidget {
                     ),
                     leading: Icon(
                       AbiliaIcons.restore,
-                      size: Lay.out.icon.small,
+                      size: Lay.out.iconSize.small,
                     ),
                     value: _fullDayValue,
                     groupValue: groupValue,
