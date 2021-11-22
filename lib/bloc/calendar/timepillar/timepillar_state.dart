@@ -30,6 +30,7 @@ class TimepillarState extends Equatable {
   double get padding => _padding * zoom;
   double get minHeight => _minHeight * zoom;
   double get totalWidth => (_dotSize + _width + _padding) * zoom;
+  double get textWidth => width - cardPadding * 2;
 
   // Dots
   double get dotSize => _dotSize * zoom;
