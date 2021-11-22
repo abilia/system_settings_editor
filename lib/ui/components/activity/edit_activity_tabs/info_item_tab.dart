@@ -165,7 +165,8 @@ class EditChecklistWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             SizedBox(width: 12.0.s),
-                            Icon(AbiliaIcons.newIcon, size: Lay.out.iconSize.small),
+                            Icon(AbiliaIcons.newIcon,
+                                size: Lay.out.iconSize.small),
                             SizedBox(width: 12.0.s),
                             Text(
                               Translator.of(context).translate.addNew,
