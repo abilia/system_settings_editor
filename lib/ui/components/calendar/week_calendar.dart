@@ -428,42 +428,43 @@ class WeekActivityContent extends StatelessWidget {
           previous.showCategoryColor != current.showCategoryColor &&
           previous.showCategories != current.showCategories,
       builder: (context, settings) {
-        return Container(
-          clipBehavior: Clip.hardEdge,
-          height: activityOccasion.activity.fullDay ? 36.s : null,
-          foregroundDecoration: BoxDecoration(
-            border: getCategoryBorder(
-              inactive: inactive,
-              current: activityOccasion.isCurrent,
-              showCategoryColor: settings.showCategoryColor &&
-                  !activityOccasion.activity.fullDay,
-              category: activityOccasion.activity.category,
+        return Tts.fromSemantics(
+          activityOccasion.activity.semanticsProperties(context),
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            height: activityOccasion.activity.fullDay ? 36.s : null,
+            foregroundDecoration: BoxDecoration(
+              border: getCategoryBorder(
+                inactive: inactive,
+                current: activityOccasion.isCurrent,
+                showCategoryColor: settings.showCategoryColor &&
+                    !activityOccasion.activity.fullDay,
+                category: activityOccasion.activity.category,
+              ),
+              borderRadius: borderRadius,
             ),
-            borderRadius: borderRadius,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color: AbiliaColors.white,
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              if (activityOccasion.activity.hasImage)
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: inactive ? 0.5 : 1.0,
-                  child: FadeInAbiliaImage(
-                    imageFileId: activityOccasion.activity.fileId,
-                    imageFilePath: activityOccasion.activity.icon,
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                )
-              else
-                Padding(
-                  padding: EdgeInsets.all(3.0.s),
-                  child: Center(
-                    child: Tts(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              color: AbiliaColors.white,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (activityOccasion.activity.hasImage)
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 400),
+                    opacity: inactive ? 0.5 : 1.0,
+                    child: FadeInAbiliaImage(
+                      imageFileId: activityOccasion.activity.fileId,
+                      imageFilePath: activityOccasion.activity.icon,
+                      height: double.infinity,
+                      width: double.infinity,
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: EdgeInsets.all(3.0.s),
+                    child: Center(
                       child: Text(
                         activityOccasion.activity.title,
                         overflow: TextOverflow.clip,
@@ -473,20 +474,20 @@ class WeekActivityContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              if (activityOccasion.isSignedOff)
-                FractionallySizedBox(
-                  widthFactor: scaleFactor,
-                  heightFactor: scaleFactor,
-                  child: const CheckMark(),
-                )
-              else if (activityOccasion.isPast)
-                FractionallySizedBox(
-                  widthFactor: scaleFactor,
-                  heightFactor: scaleFactor,
-                  child: const CrossOver(),
-                ),
-            ],
+                if (activityOccasion.isSignedOff)
+                  FractionallySizedBox(
+                    widthFactor: scaleFactor,
+                    heightFactor: scaleFactor,
+                    child: const CheckMark(),
+                  )
+                else if (activityOccasion.isPast)
+                  FractionallySizedBox(
+                    widthFactor: scaleFactor,
+                    heightFactor: scaleFactor,
+                    child: const CrossOver(),
+                  ),
+              ],
+            ),
           ),
         );
       },
