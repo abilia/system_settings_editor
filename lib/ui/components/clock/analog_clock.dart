@@ -17,15 +17,15 @@ class AnalogClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _AnalogClock(
-      borderWidth: 1.0.s,
+      borderWidth: layout.clock.borderWidth,
       borderColor: AbiliaColors.transparentBlack30,
-      height: actionButtonMinSize,
-      width: actionButtonMinSize,
-      centerPointRadius: 4.0.s,
-      hourNumberScale: 1.5.s,
-      hourHandLength: 11.s,
-      minuteHandLength: 15.s,
-      fontSize: 7.s,
+      height: layout.actionButton.size,
+      width: layout.actionButton.size,
+      centerPointRadius: layout.clock.centerPointRadius,
+      hourNumberScale: layout.clock.hourNumberScale,
+      hourHandLength: layout.clock.hourHandLength,
+      minuteHandLength: layout.clock.minuteHandLength,
+      fontSize: layout.clock.fontSize,
     );
   }
 }

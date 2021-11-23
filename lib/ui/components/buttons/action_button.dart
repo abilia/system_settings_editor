@@ -89,7 +89,7 @@ class SecondaryActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconTheme(
-        data: Theme.of(context).iconTheme.copyWith(size: smallIconSize),
+        data: Theme.of(context).iconTheme.copyWith(size: layout.iconSize.small),
         child: ActionButton(
           onPressed: onPressed,
           style: style,

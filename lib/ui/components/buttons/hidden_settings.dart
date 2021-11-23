@@ -43,8 +43,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
                 }
               },
               child: SizedBox(
-                width: actionButtonMinSize,
-                height: actionButtonMinSize,
+                width: layout.actionButton.size,
+                height: layout.actionButton.size,
               ),
             ),
             GestureDetector(
@@ -59,8 +59,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
                 }
               },
               child: SizedBox(
-                width: actionButtonMinSize,
-                height: actionButtonMinSize,
+                width: layout.actionButton.size,
+                height: layout.actionButton.size,
               ),
             ),
           ],

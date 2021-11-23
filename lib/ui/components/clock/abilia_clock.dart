@@ -39,8 +39,8 @@ class FittedAbiliaClock extends StatelessWidget {
     final digital = clockType == ClockType.digital ||
         clockType == ClockType.analogueDigital;
     return SizedBox(
-      height: height ?? 60.s,
-      width: width ?? 48.s,
+      height: height ?? layout.clock.height,
+      width: width ?? layout.clock.width,
       child: FittedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
