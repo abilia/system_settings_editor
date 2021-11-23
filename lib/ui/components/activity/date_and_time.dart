@@ -47,7 +47,7 @@ class DateAndTimeWidget extends StatelessWidget {
                 key: TestKey.fullDaySwitch,
                 leading: Icon(
                   AbiliaIcons.restore,
-                  size: Lay.out.iconSize.small,
+                  size: layout.iconSize.small,
                 ),
                 value: fullDay,
                 onChanged: (v) => context.read<EditActivityBloc>().add(
@@ -78,7 +78,7 @@ class ReminderSwitch extends StatelessWidget {
     return SwitchField(
       leading: Icon(
         AbiliaIcons.handiReminder,
-        size: Lay.out.iconSize.small,
+        size: layout.iconSize.small,
       ),
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {

@@ -28,7 +28,7 @@ class ProfilePicture extends StatelessWidget {
               Icon(
                 AbiliaIcons.contact,
                 color: AbiliaColors.black75,
-                size: Lay.out.iconSize.huge,
+                size: layout.iconSize.huge,
               ),
               if (user.image.isNotEmpty && baseUrl.isNotEmpty)
                 FadeInImage.memoryNetwork(

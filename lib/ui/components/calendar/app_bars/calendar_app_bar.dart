@@ -13,10 +13,10 @@ class CalendarAppBar extends StatelessWidget {
   final DateTime day;
   final DayColor calendarDayColor;
 
-  static final _emptyAction = SizedBox(width: actionButtonMinSize);
+  static final _emptyAction = SizedBox(width: layout.actionButton.size);
 
   static final double clockPadding = 8.s;
-  static final Size size = Size.fromHeight(Lay.out.appBar.height);
+  static final Size size = Size.fromHeight(layout.appBar.height);
 
   const CalendarAppBar({
     Key? key,
@@ -50,7 +50,7 @@ class CalendarAppBar extends StatelessWidget {
           flexibleSpace: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: Lay.out.appBar.horizontalPadding,
+                horizontal: layout.appBar.horizontalPadding,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +58,7 @@ class CalendarAppBar extends StatelessWidget {
                 children: <Widget>[
                   leftAction ?? _emptyAction,
                   if (!clockSpaceEmpty)
-                    SizedBox(width: clockPadding + actionButtonMinSize),
+                    SizedBox(width: clockPadding + layout.actionButton.size),
                   Flexible(
                     child: Stack(
                       alignment: Alignment.center,

@@ -111,7 +111,7 @@ class NextButton extends StatelessWidget {
               Text(Translator.of(context).translate.next),
               Icon(
                 AbiliaIcons.navigationNext,
-                size: Lay.out.iconSize.button,
+                size: layout.iconSize.button,
               ),
               const Spacer(flex: 47),
             ],

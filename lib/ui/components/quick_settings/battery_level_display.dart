@@ -35,7 +35,7 @@ class BatteryLevelDisplay extends StatelessWidget {
               ),
               Icon(
                 _batteryLevelIcon(batteryState),
-                size: Lay.out.iconSize.large,
+                size: layout.iconSize.large,
               ),
               SizedBox(
                 width: 16.s,

@@ -1,7 +1,7 @@
-import 'all.dart';
+part of 'layout.dart';
 
-class MediumLayout extends Lay {
-  const MediumLayout()
+class _MediumLayout extends Layout {
+  const _MediumLayout()
       : super(
           appBar: const AppBarLayout(
             height: 148,

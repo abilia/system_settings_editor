@@ -1,21 +1,23 @@
 import 'package:seagull/utils/all.dart';
 
-import 'all.dart';
+part 'large_layout.dart';
+part 'medium_layout.dart';
+part 'go_layout.dart';
 
-class Lay {
-  static final Lay out = Device.screenSize.longestSide > 1500
-      ? const LargeLayout()
-      : Device.screenSize.longestSide > 1000
-          ? const MediumLayout()
-          : const GoLayout();
+final Layout layout = Device.screenSize.longestSide > 1500
+    ? const _LargeLayout()
+    : Device.screenSize.longestSide > 1000
+        ? const _MediumLayout()
+        : const _GoLayout();
 
+class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
   final ClockLayout clock;
   final FontSize fontSize;
   final IconSize iconSize;
 
-  const Lay({
+  const Layout({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.clock = const ClockLayout(),

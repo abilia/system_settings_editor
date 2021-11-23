@@ -1,7 +1,7 @@
-import 'package:seagull/ui/all.dart';
+part of 'layout.dart';
 
-class LargeLayout extends Lay {
-  const LargeLayout()
+class _LargeLayout extends Layout {
+  const _LargeLayout()
       : super(
           appBar: const AppBarLayout(
             height: 225,

@@ -1,5 +1,5 @@
-import 'all.dart';
+part of 'layout.dart';
 
-class GoLayout extends Lay {
-  const GoLayout() : super();
+class _GoLayout extends Layout {
+  const _GoLayout() : super();
 }

@@ -60,7 +60,7 @@ class SwitchField extends StatelessWidget {
                       IconTheme(
                         data: Theme.of(context)
                             .iconTheme
-                            .copyWith(size: Lay.out.iconSize.small),
+                            .copyWith(size: layout.iconSize.small),
                         child: leading,
                       ),
                       SizedBox(width: 12.s),

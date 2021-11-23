@@ -46,7 +46,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               value: NoInfoItem,
               leading: Icon(
                 AbiliaIcons.information,
-                size: Lay.out.iconSize.small,
+                size: layout.iconSize.small,
               ),
               text: Text(translate.infoTypeNone),
             ),
