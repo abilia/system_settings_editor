@@ -16,34 +16,32 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
-      builder: (context, activitiesState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, now) {
-          return Scaffold(
-            appBar: AbiliaAppBar(
-              title: Translator.of(context).translate.alarm,
-              iconData: AbiliaIcons.alarmBell,
-              trailing: AbiliaClock(
-                style: Theme.of(context).textTheme.caption?.copyWith(
-                      color: AbiliaColors.white,
-                    ),
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        title: Translator.of(context).translate.alarm,
+        iconData: AbiliaIcons.alarmBell,
+        trailing: AbiliaClock(
+          style: Theme.of(context).textTheme.caption?.copyWith(
+                color: AbiliaColors.white,
               ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.all(ActivityInfo.margin),
-              child: ActivityInfo(
-                alarm.activityDay.fromActivitiesState(activitiesState),
-                previewImage: previewImage,
-                alarm: alarm,
-              ),
-            ),
-            bottomNavigationBar: AlarmBottomAppBar(
-              activityOccasion: alarm.activityDay.toOccasion(alarm.day),
-              alarm: alarm,
-            ),
-          );
-        },
+        ),
       ),
+      body: Padding(
+        padding: EdgeInsets.all(ActivityInfo.margin),
+        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+          selector: (activitiesState) => ActivityDay(
+            activitiesState
+                .newActivityFromLoadedOrGiven(alarm.activityDay.activity),
+            alarm.activityDay.day,
+          ),
+          builder: (context, ad) => ActivityInfo(
+            ad,
+            previewImage: previewImage,
+            alarm: alarm,
+          ),
+        ),
+      ),
+      bottomNavigationBar: AlarmBottomAppBar(alarm: alarm),
     );
   }
 }
@@ -85,20 +83,19 @@ class ReminderPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-                builder: (context, activitiesState) => ActivityInfo(
-                  reminder.activityDay.fromActivitiesState(activitiesState),
-                  alarm: reminder,
+              child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+                selector: (activitiesState) => ActivityDay(
+                  activitiesState.newActivityFromLoadedOrGiven(
+                      reminder.activityDay.activity),
+                  reminder.activityDay.day,
                 ),
+                builder: (context, ad) => ActivityInfo(ad, alarm: reminder),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: AlarmBottomAppBar(
-        activityOccasion: reminder.activityDay.toOccasion(reminder.day),
-        alarm: reminder,
-      ),
+      bottomNavigationBar: AlarmBottomAppBar(alarm: reminder),
     );
   }
 }
@@ -130,18 +127,17 @@ class PopAwareAlarmPage extends StatelessWidget {
 class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
   const AlarmBottomAppBar({
     Key? key,
-    required this.activityOccasion,
     required this.alarm,
   }) : super(key: key);
 
-  final ActivityOccasion activityOccasion;
   final NotificationAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
+    final activityDay = alarm.activityDay;
     final displayCheckButton =
-        activityOccasion.activity.checkable && !activityOccasion.isSignedOff;
+        activityDay.activity.checkable && !activityDay.isSignedOff;
     final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
     return BottomAppBar(
       elevation: 0.0,
@@ -166,10 +162,10 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                     icon: AbiliaIcons.handiCheck,
                     onPressed: () async {
                       final checked =
-                          await checkConfirmation(context, activityOccasion);
+                          await checkConfirmation(context, activityDay);
                       if (checked == true) {
                         await cancelNotifications(
-                          uncheckedReminders(activityOccasion),
+                          uncheckedReminders(activityDay),
                         );
                         await popAlarm(context, alarm);
                       }

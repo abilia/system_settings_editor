@@ -3,19 +3,19 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CheckActivityConfirmDialog extends StatelessWidget {
-  final ActivityOccasion activityOccasion;
+  final ActivityDay activityDay;
   final String? message;
 
   const CheckActivityConfirmDialog({
     Key? key,
-    required this.activityOccasion,
+    required this.activityDay,
     this.message,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    final signedOff = activityOccasion.isSignedOff;
+    final signedOff = activityDay.isSignedOff;
 
     final bodyText = message ??
         (signedOff

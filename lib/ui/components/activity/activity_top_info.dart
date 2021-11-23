@@ -75,15 +75,13 @@ class _ActivityTopInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final day = activityDay.day;
+    final minPadding = 8.s;
+    final middleDashWidth = 7.s;
+    final totalWidth =
+        layout.actionButton.size * 2 - minPadding * 4 + middleDashWidth;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      final minPadding = 8.s;
-      final middleDashWidth = 7.s;
-      final timeBoxMaxWidth = (constraints.maxWidth -
-              (layout.actionButton.size * 2) -
-              (minPadding * 4 + middleDashWidth)) /
-          2;
+      final timeBoxMaxWidth = (constraints.maxWidth - totalWidth) / 2;
       return BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) {
           return Padding(
@@ -94,8 +92,9 @@ class _ActivityTopInfo extends StatelessWidget {
                 leading ?? SizedBox(width: layout.actionButton.size),
                 if (activity.fullDay)
                   _TimeBox(
-                    occasion:
-                        day.isDayBefore(now) ? Occasion.past : Occasion.future,
+                    occasion: activityDay.day.isDayBefore(now)
+                        ? Occasion.past
+                        : Occasion.future,
                     text: Translator.of(context).translate.fullDay,
                   )
                 else if (!activity.hasEndTime)
@@ -120,8 +119,14 @@ class _ActivityTopInfo extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: minPadding),
-                    child:
-                        Text('-', style: Theme.of(context).textTheme.headline5),
+                    child: SizedBox(
+                      height: middleDashWidth,
+                      child: Text(
+                        '-',
+                        style: Theme.of(context).textTheme.headline5,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: Row(

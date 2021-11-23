@@ -80,7 +80,9 @@ class ActivityCard extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (_) => CopiedAuthProviders(
                                 blocContext: context,
-                                child: ActivityPage(occasion: activityOccasion),
+                                child: ActivityPage(
+                                  activityDay: activityOccasion,
+                                ),
                               ),
                               settings: RouteSettings(
                                   name: 'ActivityPage $activityOccasion'),

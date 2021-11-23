@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:seagull/bloc/all.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -16,11 +16,6 @@ class ActivityOccasion extends ActivityDay {
     DateTime day,
     this.occasion,
   ) : super(activity, day);
-
-  @override
-  ActivityOccasion fromActivitiesState(ActivitiesState activitiesState) =>
-      ActivityOccasion(activitiesState.newActivityFromLoadedOrGiven(activity),
-          day, occasion);
 
   @visibleForTesting
   factory ActivityOccasion.forTest(
@@ -56,8 +51,6 @@ class ActivityDay extends Equatable implements Comparable {
 
   const ActivityDay(this.activity, this.day);
   ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
-  ActivityDay fromActivitiesState(ActivitiesState activitiesState) =>
-      ActivityDay(activitiesState.newActivityFromLoadedOrGiven(activity), day);
   ActivityOccasion toOccasion(DateTime now) => ActivityOccasion(
       activity,
       day,
