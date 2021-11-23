@@ -4,40 +4,128 @@ import 'package:flutter/widgets.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class VerticalScrollArrows extends StatelessWidget {
-  final ScrollController? controller;
+class ScrollArrows extends StatelessWidget {
   final Widget child;
-  final bool scrollbarAlwaysShown;
-  final double? downCollapseMargin;
+  final bool upArrow, downArrow, leftArrow, rightArrow;
+  final double? upCollapseMargin,
+      downCollapseMargin,
+      leftCollapseMargin,
+      rightCollapseMargin;
+  final bool verticalScrollBar;
+  final bool verticalScrollbarAlwaysShown;
+  final ScrollController? verticalController, horizontalController;
+  late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
 
-  const VerticalScrollArrows({
+  ScrollArrows({
     Key? key,
-    this.controller,
     required this.child,
-    this.scrollbarAlwaysShown = false,
+    required this.upArrow,
+    required this.downArrow,
+    required this.leftArrow,
+    required this.rightArrow,
+    this.upCollapseMargin,
     this.downCollapseMargin,
+    this.leftCollapseMargin,
+    this.rightCollapseMargin,
+    required this.verticalScrollBar,
+    this.verticalScrollbarAlwaysShown = false,
+    this.verticalController,
+    this.horizontalController,
   }) : super(key: key);
+
+  ScrollArrows.vertical({
+    Key? key,
+    required this.child,
+    this.upCollapseMargin,
+    this.downCollapseMargin,
+    bool hasScrollBar = true,
+    bool scrollbarAlwaysShown = false,
+    ScrollController? controller,
+  })  : verticalScrollBar = hasScrollBar,
+        verticalController = controller,
+        verticalScrollbarAlwaysShown = scrollbarAlwaysShown,
+        upArrow = true,
+        downArrow = true,
+        leftArrow = false,
+        rightArrow = false,
+        leftCollapseMargin = null,
+        rightCollapseMargin = null,
+        horizontalController = null,
+        super(key: key);
+
+  ScrollArrows.all({
+    Key? key,
+    required this.child,
+    this.upCollapseMargin,
+    this.downCollapseMargin,
+    this.leftCollapseMargin,
+    this.rightCollapseMargin,
+    this.verticalScrollBar = false,
+    this.verticalScrollbarAlwaysShown = false,
+    this.verticalController,
+    this.horizontalController,
+  })  : upArrow = true,
+        downArrow = true,
+        leftArrow = true,
+        rightArrow = true,
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AbiliaScrollBar(
-          isAlwaysShown: scrollbarAlwaysShown,
-          controller: controller,
-          child: child,
-        ),
-        ArrowUp(controller: controller),
-        ArrowDown(
-          controller: controller,
-          collapseMargin: downCollapseMargin,
-        ),
-      ],
+    final Widget scrollMetricsNotifyingChild =
+        NotificationListener<ScrollMetricsNotification>(
+      onNotification: (scrollMetricNotification) {
+        maxScrollExtent.value =
+            scrollMetricNotification.metrics.maxScrollExtent;
+        return false;
+      },
+      child: child,
     );
+
+    return ValueListenableBuilder(
+        child: scrollMetricsNotifyingChild,
+        valueListenable: maxScrollExtent,
+        builder: (context, value, child) {
+          assert(child != null, 'child should never be null');
+          return Stack(
+            children: [
+              if (child != null)
+                if (verticalScrollBar)
+                  AbiliaScrollBar(
+                    isAlwaysShown: verticalScrollbarAlwaysShown,
+                    controller: verticalController,
+                    child: child,
+                  )
+                else
+                  child,
+              if (upArrow)
+                _ArrowUp(
+                  controller: verticalController,
+                  collapseMargin: upCollapseMargin,
+                ),
+              if (downArrow)
+                _ArrowDown(
+                  controller: verticalController,
+                  collapseMargin: downCollapseMargin,
+                ),
+              if (leftArrow)
+                _ArrowLeft(
+                  controller: horizontalController,
+                  collapseMargin: leftCollapseMargin,
+                ),
+              if (rightArrow)
+                _ArrowRight(
+                  controller: horizontalController,
+                  collapseMargin: rightCollapseMargin,
+                ),
+            ],
+          );
+        });
   }
 }
 
-class ArrowLeft extends _ArrowBase {
-  const ArrowLeft({
+class _ArrowLeft extends _ArrowBase {
+  const _ArrowLeft({
     Key? key,
     ScrollController? controller,
     double? collapseMargin,
@@ -59,8 +147,8 @@ class ArrowLeft extends _ArrowBase {
       );
 }
 
-class ArrowUp extends _ArrowBase {
-  const ArrowUp({
+class _ArrowUp extends _ArrowBase {
+  const _ArrowUp({
     Key? key,
     ScrollController? controller,
     double? collapseMargin,
@@ -82,8 +170,8 @@ class ArrowUp extends _ArrowBase {
       );
 }
 
-class ArrowRight extends _ArrowBase {
-  const ArrowRight({
+class _ArrowRight extends _ArrowBase {
+  const _ArrowRight({
     Key? key,
     ScrollController? controller,
     double? collapseMargin,
@@ -105,8 +193,8 @@ class ArrowRight extends _ArrowBase {
       );
 }
 
-class ArrowDown extends _ArrowBase {
-  const ArrowDown({
+class _ArrowDown extends _ArrowBase {
+  const _ArrowDown({
     Key? key,
     ScrollController? controller,
     double? collapseMargin,

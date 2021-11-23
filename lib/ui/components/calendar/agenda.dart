@@ -111,53 +111,43 @@ class ActivityList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sc = scrollController ?? ScrollController();
-    return Stack(
-      children: [
-        AbiliaScrollBar(
-          controller: sc,
-          child: CustomScrollView(
-            center: state.isToday ? center : null,
-            controller: sc,
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              if (state.activities.isEmpty && state.fullDayActivities.isEmpty)
-                SliverNoActivities(key: center)
-              else ...[
-                if (!state.isTodayAndNoPast)
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: topPadding),
-                    sliver: SliverActivityList(
-                      state.pastActivities,
-                      reversed: state.isToday,
-                      lastMargin: _lastPastPadding(
-                        state.pastActivities,
-                        state.notPastActivities,
-                      ),
-                    ),
-                  ),
-                SliverPadding(
-                  key: center,
-                  padding: EdgeInsets.only(
-                    top: state.isTodayAndNoPast ? topPadding : 0.0,
-                    bottom: bottomPadding,
-                  ),
-                  sliver: SliverActivityList(
+    return ScrollArrows.vertical(
+      upCollapseMargin: topPadding,
+      downCollapseMargin: bottomPadding,
+      controller: sc,
+      child: CustomScrollView(
+        center: state.isToday ? center : null,
+        controller: sc,
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          if (state.activities.isEmpty && state.fullDayActivities.isEmpty)
+            SliverNoActivities(key: center)
+          else ...[
+            if (!state.isTodayAndNoPast)
+              SliverPadding(
+                padding: EdgeInsets.only(top: topPadding),
+                sliver: SliverActivityList(
+                  state.pastActivities,
+                  reversed: state.isToday,
+                  lastMargin: _lastPastPadding(
+                    state.pastActivities,
                     state.notPastActivities,
                   ),
                 ),
-              ],
-            ],
-          ),
-        ),
-        ArrowUp(
-          controller: sc,
-          collapseMargin: topPadding,
-        ),
-        ArrowDown(
-          controller: sc,
-          collapseMargin: bottomPadding,
-        ),
-      ],
+              ),
+            SliverPadding(
+              key: center,
+              padding: EdgeInsets.only(
+                top: state.isTodayAndNoPast ? topPadding : 0.0,
+                bottom: bottomPadding,
+              ),
+              sliver: SliverActivityList(
+                state.notPastActivities,
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 
