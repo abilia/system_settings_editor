@@ -103,9 +103,9 @@ class SystemSettingsHandler(private val context: Context) {
   }
 
   internal fun setScreenOffTimeoutHandler(call: MethodCall, result: MethodChannel.Result) {
-    val timeout: Int? = call.argument("timeout")
+    val timeout: Long? = call.argument("timeout")
     timeout?.let {
-      setScreenOffTimeout(it)
+      setScreenOffTimeout(it.toInt())
       result.success(true)
     }
         ?: run { result.error("ARGUMENT", "No argument timeout of type int provided", null) }
