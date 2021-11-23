@@ -20,7 +20,7 @@ class CalendarBottomBar extends StatelessWidget {
                 if (settingsState.displayNewActivity)
                   AddActivityButton(day: dayState.day)
                 else
-                  SizedBox(width: actionButtonMinSize),
+                  SizedBox(width: layout.actionButton.size),
                 if (!settingsState.displayOnlyDayCalendar)
                   AbiliaTabBar(
                     tabs: <Widget>[
@@ -53,7 +53,7 @@ class CalendarBottomBar extends StatelessWidget {
                 if (settingsState.displayMenu)
                   const MenuButton()
                 else
-                  SizedBox(width: actionButtonMinSize),
+                  SizedBox(width: layout.actionButton.size),
               ],
             ),
           ),

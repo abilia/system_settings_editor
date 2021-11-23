@@ -81,7 +81,7 @@ class _ActivityTopInfo extends StatelessWidget {
       final minPadding = 8.s;
       final middleDashWidth = 7.s;
       final timeBoxMaxWidth = (constraints.maxWidth -
-              (actionButtonMinSize * 2) -
+              (layout.actionButton.size * 2) -
               (minPadding * 4 + middleDashWidth)) /
           2;
       return BlocBuilder<ClockBloc, DateTime>(
@@ -91,7 +91,7 @@ class _ActivityTopInfo extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                leading ?? SizedBox(width: actionButtonMinSize),
+                leading ?? SizedBox(width: layout.actionButton.size),
                 if (activity.fullDay)
                   _TimeBox(
                     occasion:
@@ -137,7 +137,7 @@ class _ActivityTopInfo extends StatelessWidget {
                     ),
                   ),
                 ],
-                trailing ?? SizedBox(width: actionButtonMinSize),
+                trailing ?? SizedBox(width: layout.actionButton.size),
               ],
             ),
           );

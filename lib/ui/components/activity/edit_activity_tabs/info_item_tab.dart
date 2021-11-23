@@ -165,7 +165,8 @@ class EditChecklistWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             SizedBox(width: 12.0.s),
-                            Icon(AbiliaIcons.newIcon, size: smallIconSize),
+                            Icon(AbiliaIcons.newIcon,
+                                size: layout.iconSize.small),
                             SizedBox(width: 12.0.s),
                             Text(
                               Translator.of(context).translate.addNew,
@@ -377,7 +378,7 @@ class _LibraryButton extends StatelessWidget {
         onPressed: onPressed,
         child: Icon(
           AbiliaIcons.showText,
-          size: defaultIconSize,
+          size: layout.iconSize.normal,
           color: AbiliaColors.black,
         ),
       ),
