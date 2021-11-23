@@ -95,12 +95,14 @@ class ActivityTimepillarCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
-                                child: ActivityPage(occasion: activityOccasion),
-                              ),
-                          settings: RouteSettings(
-                              name: 'ActivityPage $activityOccasion')),
+                        builder: (_) => CopiedAuthProviders(
+                          blocContext: context,
+                          child: ActivityPage(occasion: activityOccasion),
+                        ),
+                        settings: RouteSettings(
+                          name: 'ActivityPage $activityOccasion',
+                        ),
+                      ),
                     );
                   },
                   child: Container(

@@ -1482,7 +1482,10 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
-      await tester.tap(find.text(fridayTitle));
+      await tester.tap(find.text(translate.shortWeekday(friday.weekday)));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+      await tester.tap(find.text(translate.shortWeekday(friday.weekday)));
       await tester.pumpAndSettle();
 
       expect(find.byType(Agenda), findsOneWidget);
@@ -1492,6 +1495,26 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(fridayTitle), findsNothing);
       expect(find.text(todaytitle), findsOneWidget);
+    });
+
+    testWidgets('Clicking activity in week calendar navigates to activity view',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(Agenda), findsOneWidget);
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
+
+      await tester.tap(find.text(fridayTitle));
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityPage), findsOneWidget);
+      expect(find.text(fridayTitle), findsOneWidget);
+
+      await tester.tap(find.byKey(TestKey.activityBackButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(WeekCalendar), findsOneWidget);
     });
 
     testWidgets('BUG SGC-833 expanded day updates in when returning to week',

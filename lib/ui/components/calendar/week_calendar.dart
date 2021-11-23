@@ -158,7 +158,12 @@ class WeekCalenderHeadingContent extends StatelessWidget {
       flex: selected ? 77 : 45,
       child: GestureDetector(
         onTap: () {
-          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
+          final currentDay = context.read<DayPickerBloc>().state.day;
+          if (currentDay.isAtSameDay(day)) {
+            DefaultTabController.of(context)?.animateTo(0);
+          } else {
+            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
+          }
         },
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 2.0.s),
@@ -342,8 +347,8 @@ class WeekDayColumn extends StatelessWidget {
               flex: selected ? 77 : 45,
               child: GestureDetector(
                 onTap: () {
-                  BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
                   DefaultTabController.of(context)?.animateTo(0);
+                  BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
                 },
                 child: Padding(
                   padding: EdgeInsets.only(right: 2.s, left: 2.s, bottom: 4.s),
@@ -430,63 +435,80 @@ class WeekActivityContent extends StatelessWidget {
       builder: (context, settings) {
         return Tts.fromSemantics(
           activityOccasion.activity.semanticsProperties(context),
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            height: activityOccasion.activity.fullDay ? 36.s : null,
-            foregroundDecoration: BoxDecoration(
-              border: getCategoryBorder(
-                inactive: inactive,
-                current: activityOccasion.isCurrent,
-                showCategoryColor: settings.showCategoryColor &&
-                    !activityOccasion.activity.fullDay,
-                category: activityOccasion.activity.category,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: ActivityPage(occasion: activityOccasion),
+                  ),
+                  settings: RouteSettings(
+                    name: 'ActivityPage $activityOccasion',
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              height: activityOccasion.activity.fullDay ? 36.s : null,
+              foregroundDecoration: BoxDecoration(
+                border: getCategoryBorder(
+                  inactive: inactive,
+                  current: activityOccasion.isCurrent,
+                  showCategoryColor: settings.showCategoryColor &&
+                      !activityOccasion.activity.fullDay,
+                  category: activityOccasion.activity.category,
+                ),
+                borderRadius: borderRadius,
               ),
-              borderRadius: borderRadius,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              color: AbiliaColors.white,
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (activityOccasion.activity.hasImage)
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 400),
-                    opacity: inactive ? 0.5 : 1.0,
-                    child: FadeInAbiliaImage(
-                      imageFileId: activityOccasion.activity.fileId,
-                      imageFilePath: activityOccasion.activity.icon,
-                      height: double.infinity,
-                      width: double.infinity,
-                    ),
-                  )
-                else
-                  Padding(
-                    padding: EdgeInsets.all(3.0.s),
-                    child: Center(
-                      child: Text(
-                        activityOccasion.activity.title,
-                        overflow: TextOverflow.clip,
-                        style: (Theme.of(context).textTheme.caption ?? caption)
-                            .copyWith(height: 20 / 16),
-                        textAlign: TextAlign.center,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                color: AbiliaColors.white,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (activityOccasion.activity.hasImage)
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 400),
+                      opacity: inactive ? 0.5 : 1.0,
+                      child: FadeInAbiliaImage(
+                        imageFileId: activityOccasion.activity.fileId,
+                        imageFilePath: activityOccasion.activity.icon,
+                        height: double.infinity,
+                        width: double.infinity,
+                      ),
+                    )
+                  else
+                    Padding(
+                      padding: EdgeInsets.all(3.0.s),
+                      child: Center(
+                        child: Text(
+                          activityOccasion.activity.title,
+                          overflow: TextOverflow.clip,
+                          style:
+                              (Theme.of(context).textTheme.caption ?? caption)
+                                  .copyWith(height: 20 / 16),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                if (activityOccasion.isSignedOff)
-                  FractionallySizedBox(
-                    widthFactor: scaleFactor,
-                    heightFactor: scaleFactor,
-                    child: const CheckMark(),
-                  )
-                else if (activityOccasion.isPast)
-                  FractionallySizedBox(
-                    widthFactor: scaleFactor,
-                    heightFactor: scaleFactor,
-                    child: const CrossOver(),
-                  ),
-              ],
+                  if (activityOccasion.isSignedOff)
+                    FractionallySizedBox(
+                      widthFactor: scaleFactor,
+                      heightFactor: scaleFactor,
+                      child: const CheckMark(),
+                    )
+                  else if (activityOccasion.isPast)
+                    FractionallySizedBox(
+                      widthFactor: scaleFactor,
+                      heightFactor: scaleFactor,
+                      child: const CrossOver(),
+                    ),
+                ],
+              ),
             ),
           ),
         );
