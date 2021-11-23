@@ -12,7 +12,7 @@ class QuickSettingsPage extends StatelessWidget {
         title: t.quickSettingsMenu.singleLine,
         iconData: AbiliaIcons.settings,
       ),
-      body: ArrowScrollable.verticalScrollArrows(
+      body: ScrollArrows.vertical(
         controller: scrollController,
         child: ListView(
           controller: scrollController,

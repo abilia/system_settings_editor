@@ -197,7 +197,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             color: interval.intervalPart == IntervalPart.night
                 ? TimepillarCalendar.nightBackgroundColor
                 : Theme.of(context).scaffoldBackgroundColor,
-            child: ArrowScrollable.allArrows(
+            child: ScrollArrows.all(
               upCollapseMargin: topMargin,
               downCollapseMargin: bottomMargin,
               leftCollapseMargin: ts.padding,

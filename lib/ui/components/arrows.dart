@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class ArrowScrollable extends StatelessWidget {
+class ScrollArrows extends StatelessWidget {
   final Widget child;
   final bool upArrow, downArrow, leftArrow, rightArrow;
   final double? upCollapseMargin,
@@ -14,10 +14,9 @@ class ArrowScrollable extends StatelessWidget {
   final bool verticalScrollBar;
   final bool verticalScrollbarAlwaysShown;
   final ScrollController? verticalController, horizontalController;
-  late final ValueNotifier<ScrollMetrics?> scrollMetricsNotifier =
-      ValueNotifier(null);
+  late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
 
-  ArrowScrollable({
+  ScrollArrows({
     Key? key,
     required this.child,
     required this.upArrow,
@@ -34,7 +33,7 @@ class ArrowScrollable extends StatelessWidget {
     this.horizontalController,
   }) : super(key: key);
 
-  ArrowScrollable.verticalScrollArrows({
+  ScrollArrows.vertical({
     Key? key,
     required this.child,
     this.upCollapseMargin,
@@ -54,7 +53,7 @@ class ArrowScrollable extends StatelessWidget {
         horizontalController = null,
         super(key: key);
 
-  ArrowScrollable.allArrows({
+  ScrollArrows.all({
     Key? key,
     required this.child,
     this.upCollapseMargin,
@@ -76,7 +75,8 @@ class ArrowScrollable extends StatelessWidget {
     final Widget scrollMetricsNotifyingChild =
         NotificationListener<ScrollMetricsNotification>(
       onNotification: (scrollMetricNotification) {
-        scrollMetricsNotifier.value = scrollMetricNotification.metrics;
+        maxScrollExtent.value =
+            scrollMetricNotification.metrics.maxScrollExtent;
         return false;
       },
       child: child,
@@ -84,9 +84,11 @@ class ArrowScrollable extends StatelessWidget {
 
     return ValueListenableBuilder(
         child: scrollMetricsNotifyingChild,
-        valueListenable: scrollMetricsNotifier,
+        valueListenable: maxScrollExtent,
         builder: (context, value, child) {
+          assert(child != null, 'child should never be null');
           return Stack(
+            children: [
               if (child != null)
                 if (verticalScrollBar)
                   AbiliaScrollBar(

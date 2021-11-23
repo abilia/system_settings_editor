@@ -111,7 +111,7 @@ class ActivityList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sc = scrollController ?? ScrollController();
-    return ArrowScrollable.verticalScrollArrows(
+    return ScrollArrows.vertical(
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
       controller: sc,

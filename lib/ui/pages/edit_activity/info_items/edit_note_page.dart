@@ -75,7 +75,7 @@ class _EditNotePageState extends State<EditNotePage> {
               padding: EditNotePage.padding,
               textScaleFactor: MediaQuery.of(context).textScaleFactor,
             );
-            return ArrowScrollable.verticalScrollArrows(
+            return ScrollArrows.vertical(
               controller: _scrollController,
               scrollbarAlwaysShown: true,
               downCollapseMargin: _bottomBottomNavigationHeight,

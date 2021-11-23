@@ -10,7 +10,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
     return BlocBuilder<EditActivityBloc, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
-        return ArrowScrollable.verticalScrollArrows(
+        return ScrollArrows.vertical(
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,

@@ -47,7 +47,7 @@ class _NoteBlockState extends State<NoteBlock> {
           );
           return DefaultTextStyle(
             style: textStyle,
-            child: ArrowScrollable.verticalScrollArrows(
+            child: ScrollArrows.vertical(
               controller: controller,
               child: SingleChildScrollView(
                 padding: Attachment.padding,

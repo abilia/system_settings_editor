@@ -187,7 +187,7 @@ class _SortableLibraryState<T extends SortableData>
           );
         }
         final libraryFolderGenerator = widget.libraryFolderGenerator;
-        return ArrowScrollable.verticalScrollArrows(
+        return ScrollArrows.vertical(
           controller: _controller,
           child: GridView.count(
             controller: _controller,
