@@ -208,7 +208,6 @@ class ActivityContainer extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(12.s, 0, 12.s, 12.s),
                   child: previewImage ??
                       CheckedImageWithImagePopup(
-                        size: double.infinity,
                         activityDay: activityDay,
                       ),
                 ),
@@ -328,10 +327,7 @@ class TopInfo extends StatelessWidget {
     final themeData = Theme.of(context);
     final imageToTheLeft = (hasImage || signedOff) && hasAttachment && hasTitle;
 
-    final checkableImage = CheckedImageWithImagePopup(
-      activityDay: activityDay,
-      size: layout.iconSize.huge,
-    );
+    final checkableImage = CheckedImageWithImagePopup(activityDay: activityDay);
 
     return Row(
       mainAxisAlignment:

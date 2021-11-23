@@ -42,8 +42,8 @@ class ActivityBoard extends StatelessWidget {
         topMargin +
         bottomMargin +
         ts.dotDistance +
-        ts.imageHeight +
-        ts.padding * 2 +
+        ts.minImageHeight +
+        ts.padding * 3 +
         (textStyle.fontSize ?? catptionFontSize) *
             (textStyle.height ?? 1.0) *
             ActivityTimepillarCard.maxTitleLines;
@@ -73,11 +73,15 @@ class ActivityBoard extends StatelessWidget {
 
       final textHeight = (a.hasTitle
           ? a.title
-              .textPainter(textStyle, ts.width, scaleFactor: scaleFactor)
+              .textPainter(textStyle, ts.textWidth, scaleFactor: scaleFactor)
               .height
           : 0.0);
-      final imageHeight = a.hasImage || ao.isSignedOff ? ts.imageHeight : 0.0;
-      final renderedHeight = max(textHeight + imageHeight, ts.minHeight);
+      final imageHeight = a.hasImage || ao.isSignedOff || ao.isPast
+          ? ts.minImageHeight + ts.cardPadding
+          : 0.0;
+      final contentHeight =
+          ts.cardPadding + textHeight + imageHeight + ts.cardPadding;
+      final renderedHeight = max(contentHeight, ts.minHeight);
 
       final topOffset = startsBeforeInterval
           ? 0
@@ -100,6 +104,7 @@ class ActivityBoard extends StatelessWidget {
             top: top,
             column: col,
             height: height,
+            textHeight: textHeight,
             textStyle: textStyle,
             timepillarInterval: interval,
             dayParts: dayParts,

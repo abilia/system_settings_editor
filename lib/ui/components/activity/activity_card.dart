@@ -94,10 +94,12 @@ class ActivityCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             if (activity.hasImage || signedOff || past)
-                              ActivityImage.fromActivityOccasion(
-                                activityOccasion: activityOccasion,
-                                size: imageSize,
-                                fit: BoxFit.cover,
+                              SizedBox(
+                                width: 48.s,
+                                child: ActivityImage.fromActivityOccasion(
+                                  activityOccasion: activityOccasion,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             Expanded(
                               child: Padding(

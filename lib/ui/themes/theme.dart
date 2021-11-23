@@ -182,7 +182,7 @@ BoxDecoration getCategoryBoxDecoration({
   required int category,
 }) =>
     BoxDecoration(
-      color: AbiliaColors.white,
+      color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       borderRadius: borderRadius,
       border: getCategoryBorder(
         inactive: inactive,
