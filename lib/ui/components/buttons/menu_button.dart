@@ -14,32 +14,18 @@ class MenuButton extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            if (Config.isMP)
-              ActionButtonLight(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: const MenuPage(),
-                    ),
-                    settings: const RouteSettings(name: 'MenuPage'),
+            ActionButtonLight(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: const MenuPage(),
                   ),
+                  settings: const RouteSettings(name: 'MenuPage'),
                 ),
-                child: const Icon(AbiliaIcons.appMenu),
-              )
-            else
-              ActionButtonLight(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: const SettingsPage(),
-                    ),
-                    settings: const RouteSettings(name: 'SettingsPage'),
-                  ),
-                ),
-                child: const Icon(AbiliaIcons.settings),
               ),
+              child: const Icon(AbiliaIcons.appMenu),
+            ),
             if (state.importantPermissionMissing)
               Positioned(
                 top: -3.s,
