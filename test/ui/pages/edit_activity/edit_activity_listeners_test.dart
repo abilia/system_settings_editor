@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
-
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
-import 'package:seagull/ui/all.dart';
-
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
@@ -129,7 +128,20 @@ void main() {
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   dayPickerBloc: context.read<DayPickerBloc>(),
                 ),
-              )
+              ),
+              BlocProvider<BatteryCubit>(
+                create: (context) => BatteryCubit(battery: FakeBattery()),
+              ),
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                    genericBloc: context.read<GenericBloc>(),
+                    batteryCubit: context.read<BatteryCubit>(),
+                    screenAwakeSettings: context
+                        .read<MemoplannerSettingBloc>()
+                        .state
+                        .settings
+                        .keepScreenAwakeSettings),
+              ),
             ],
             child: child!,
           ),

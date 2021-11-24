@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,18 +14,12 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  const MethodChannel systemSettingsChannel =
-      MethodChannel('system_settings_editor');
-  TestWidgetsFlutterBinding.ensureInitialized();
-
   late MockWakeLockCubit mockWakeLockCubit;
   const Translator _translator = Translator(Locale('en'));
 
   setUp(() {
     registerFallbackValue(const KeepScreenAwakeState(
-        screenTimeout: Duration(minutes: -1),
-        screenOnWhileCharging: false,
-        wakeLockEnabled: false));
+        screenTimeout: Duration(minutes: -1), screenOnWhileCharging: false));
     mockWakeLockCubit = MockWakeLockCubit();
   });
 
@@ -54,17 +47,38 @@ void main() {
       );
 
   testWidgets('Timeout set to one minute', (WidgetTester tester) async {
+    const time = Duration(minutes: 1);
+
     when(() => mockWakeLockCubit.state).thenReturn(const KeepScreenAwakeState(
-        screenTimeout: Duration(minutes: 1),
-        screenOnWhileCharging: false,
-        wakeLockEnabled: false));
+        screenTimeout: time, screenOnWhileCharging: false));
     await tester
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
     await tester.pumpAndSettle();
 
-    expect(
-        find.text(const Duration(minutes: 1)
-            .toDurationString(_translator.translate, shortMin: false)),
+    expect(find.text(time.toDurationString(_translator.translate)),
         findsOneWidget);
-  });
+  }, skip: !Config.isMP);
+
+  testWidgets('Timeout set to 30 minutes', (WidgetTester tester) async {
+    const time = Duration(minutes: 30);
+    when(() => mockWakeLockCubit.state).thenReturn(const KeepScreenAwakeState(
+        screenTimeout: time, screenOnWhileCharging: false));
+    await tester
+        .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
+    await tester.pumpAndSettle();
+
+    expect(find.text(time.toDurationString(_translator.translate)),
+        findsOneWidget);
+  }, skip: !Config.isMP);
+
+  testWidgets('Timeout disabled', (WidgetTester tester) async {
+    const time = Duration(days: 0);
+    when(() => mockWakeLockCubit.state).thenReturn(const KeepScreenAwakeState(
+        screenTimeout: time, screenOnWhileCharging: false));
+    await tester
+        .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
+    await tester.pumpAndSettle();
+
+    expect(find.text(_translator.translate.alwaysOn), findsOneWidget);
+  }, skip: !Config.isMP);
 }

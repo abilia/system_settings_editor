@@ -3,47 +3,44 @@ import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/generic/generic.dart';
 import 'package:seagull/models/settings/keep_screen_awake_settings.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
-import 'package:wakelock/wakelock.dart';
 
 class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
   WakeLockCubit({
     required this.genericBloc,
-    required batteryCubit,
-    required screenAwakeSettings,
+    required BatteryCubit batteryCubit,
+    required KeepScreenAwakeSettings screenAwakeSettings,
   }) : super(KeepScreenAwakeState(
             screenOnWhileCharging:
                 screenAwakeSettings.keepScreenOnWhileCharging,
-            screenTimeout: _timeoutDisabled,
-            wakeLockEnabled: false)) {
+            screenTimeout: KeepScreenAwakeState.timeoutDisabled)) {
     _batterySubscription = batteryCubit.stream.listen((event) {
-      _onBatteryUpdated(event);
+      onBatteryUpdated(event);
       _updateKeepScreenAwake();
     });
     _keepScreenAwakeWhilePluggedIn =
         screenAwakeSettings.keepScreenOnWhileCharging;
     _screenTimeoutDuration = screenAwakeSettings.keepScreenOnAlways
-        ? _timeoutDisabled
-        : _timeoutUnknown;
+        ? KeepScreenAwakeState.timeoutDisabled
+        : KeepScreenAwakeState.timeoutUnknown;
     _init();
   }
 
   final GenericBloc genericBloc;
   late final StreamSubscription _batterySubscription;
   late bool _keepScreenAwakeWhilePluggedIn;
-  static const Duration _timeoutUnknown = Duration(minutes: -1);
-  static const Duration _timeoutDisabled = Duration(minutes: 0);
 
   bool _batteryCharging = false;
-  Duration _screenTimeoutDuration = _timeoutUnknown;
+  Duration _screenTimeoutDuration = KeepScreenAwakeState.timeoutUnknown;
 
   _init() async {
     if (_screenTimeoutDuration.isNegative) {
       _screenTimeoutDuration = await SystemSettingsEditor.screenOffTimeout ??
-          const Duration(minutes: 1);
+          KeepScreenAwakeState.timeoutOneMinute;
     }
     _updateKeepScreenAwake();
   }
@@ -65,12 +62,18 @@ class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
 
   setScreenTimeout(Duration? timeout) {
     if (timeout != null) {
-      _screenTimeoutDuration = timeout;
+      if (timeout.inMinutes > 1) {
+        _screenTimeoutDuration = KeepScreenAwakeState.timeoutThirtyMinutes;
+      } else if (timeout.inMinutes > 0) {
+        _screenTimeoutDuration = KeepScreenAwakeState.timeoutOneMinute;
+      } else {
+        _screenTimeoutDuration = KeepScreenAwakeState.timeoutDisabled;
+      }
       genericBloc.add(
         GenericUpdated(
           [
             MemoplannerSettingData.fromData(
-              data: timeout.inMinutes < 1,
+              data: timeout.inMilliseconds == 0,
               identifier: KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
             ),
           ],
@@ -87,37 +90,37 @@ class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
     return super.close();
   }
 
-  _onBatteryUpdated(BatteryCubitState state) {
+  @visibleForTesting
+  onBatteryUpdated(BatteryCubitState state) {
     _batteryCharging = state.batteryState == BatteryState.charging ||
         state.batteryState == BatteryState.full;
-    // TODO: special case if batterlyLevel is low?
   }
 
   _updateKeepScreenAwake() async {
-    if (_screenTimeoutDuration.inMinutes < 1 ||
+    if (_screenTimeoutDuration == KeepScreenAwakeState.timeoutDisabled ||
         (_keepScreenAwakeWhilePluggedIn && _batteryCharging)) {
-      Wakelock.enable();
+      SystemSettingsEditor.setScreenOffTimeout(const Duration(days: 400));
     } else {
-      Wakelock.disable();
+      SystemSettingsEditor.setScreenOffTimeout(_screenTimeoutDuration);
     }
     emit(KeepScreenAwakeState(
         screenTimeout: _screenTimeoutDuration,
-        screenOnWhileCharging: _keepScreenAwakeWhilePluggedIn,
-        wakeLockEnabled: await Wakelock.enabled));
+        screenOnWhileCharging: _keepScreenAwakeWhilePluggedIn));
   }
 }
 
 class KeepScreenAwakeState extends Equatable {
   final Duration screenTimeout;
   final bool screenOnWhileCharging;
-  final bool wakeLockEnabled;
+
+  static const Duration timeoutUnknown = Duration(minutes: -1);
+  static const Duration timeoutDisabled = Duration(milliseconds: 0);
+  static const Duration timeoutOneMinute = Duration(minutes: 1);
+  static const Duration timeoutThirtyMinutes = Duration(minutes: 30);
 
   const KeepScreenAwakeState(
-      {required this.screenTimeout,
-      required this.screenOnWhileCharging,
-      required this.wakeLockEnabled});
+      {required this.screenTimeout, required this.screenOnWhileCharging});
 
   @override
-  List<Object?> get props =>
-      [screenTimeout, screenOnWhileCharging, wakeLockEnabled];
+  List<Object?> get props => [screenTimeout, screenOnWhileCharging];
 }

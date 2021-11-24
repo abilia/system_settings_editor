@@ -29,6 +29,7 @@ void main() {
         ..database = FakeDatabase()
         ..syncDelay = SyncDelays.zero
         ..genericDb = FakeGenericDb()
+        ..battery = FakeBattery()
         ..init();
     });
 

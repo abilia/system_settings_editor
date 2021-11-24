@@ -75,6 +75,7 @@ void main() {
       ..alarmNavigator = AlarmNavigator()
       ..sortableDb = FakeSortableDb()
       ..genericDb = FakeGenericDb()
+      ..battery = FakeBattery()
       ..init();
   });
 

@@ -1,29 +1,59 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/providers.dart';
 import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/duration.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
-// class ScreenTimeout extends StatelessWidget {
-//   const ScreenTimeout({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const ScreenTimeoutPickField();
-//   }
-// }
-
-class ScreenTimeoutPickField extends StatelessWidget {
+class ScreenTimeoutPickField extends StatefulWidget {
   const ScreenTimeoutPickField({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ScreenTimeoutPickState();
+  }
+}
+
+class ScreenTimeoutPickState extends State<ScreenTimeoutPickField>
+    with WidgetsBindingObserver {
+  final _log = Logger((ScreenTimeOutSelectorState).toString());
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+    _initTimeout();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initTimeout();
+    }
+  }
+
+  void _initTimeout() async {
+    try {
+      final timeout = await SystemSettingsEditor.screenOffTimeout;
+      if (timeout != null && timeout > KeepScreenAwakeState.timeoutUnknown) {
+        BlocProvider.of<WakeLockCubit>(context).setScreenTimeout(timeout);
+      }
+    } on PlatformException catch (e) {
+      _log.warning('Could not get timeout', e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return BlocBuilder<WakeLockCubit, KeepScreenAwakeState>(
       builder: (context, wakeLockState) => PickField(
-        text: Text(wakeLockState.screenTimeout.inMinutes != 0
-            ? wakeLockState.screenTimeout.toDurationString(t, shortMin: false)
-            : t.alwaysOn),
+        text: Text(
+            wakeLockState.screenTimeout == KeepScreenAwakeState.timeoutDisabled
+                ? t.alwaysOn
+                : wakeLockState.screenTimeout.toDurationString(t)),
         onTap: () async {
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
@@ -39,6 +69,12 @@ class ScreenTimeoutPickField extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
 }
 
 class ScreenTimeOutSelector extends StatefulWidget {
@@ -52,13 +88,34 @@ class ScreenTimeOutSelector extends StatefulWidget {
   }
 }
 
-class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
+class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector>
+    with WidgetsBindingObserver {
   Duration? _timeout;
+  final _log = Logger((ScreenTimeOutSelectorState).toString());
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     _timeout = widget.timeout;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initTimeout();
+    }
+  }
+
+  void _initTimeout() async {
+    try {
+      final timeout = await SystemSettingsEditor.screenOffTimeout;
+      setState(() {
+        _timeout = timeout ?? const Duration(minutes: -1);
+      });
+    } on PlatformException catch (e) {
+      _log.warning('Could not get timeout', e);
+    }
   }
 
   @override
@@ -81,19 +138,19 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
                 children: [
                   ...[1, 30, 0].map((d) => d.minutes()).map(
                         (d) => Padding(
-                          padding: EdgeInsets.only(
-                              left: 12.s, right: 16.s, bottom: 8.s),
-                          child: RadioField<Duration>(
-                              text: Text(
-                                d.inMilliseconds == 0
+                      padding: EdgeInsets.only(
+                          left: 12.s, right: 16.s, bottom: 8.s),
+                      child: RadioField<Duration>(
+                          text: Text(
+                            d.inMilliseconds == 0
                                     ? t.alwaysOn
-                                    : d.toDurationString(t, shortMin: false),
+                                    : d.toDurationString(t),
                               ),
-                              onChanged: (v) => setState(() => _timeout = v),
-                              groupValue: _timeout,
-                              value: d),
-                        ),
-                      ),
+                          onChanged: (v) => setState(() => _timeout = v),
+                          groupValue: _timeout,
+                          value: d),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -109,6 +166,12 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 }
 
@@ -132,7 +195,7 @@ class _KeepOnWhileChargingSwitchState extends State<KeepOnWhileChargingSwitch> {
               .setKeepScreenAwakeWhilePluggedIn(switchOn);
         },
         child:
-            Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
+        Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
       ),
     );
   }

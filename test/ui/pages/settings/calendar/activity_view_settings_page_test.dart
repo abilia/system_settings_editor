@@ -60,6 +60,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
       ..activityDb = activityDb
+      ..battery = FakeBattery()
       ..init();
   });
 

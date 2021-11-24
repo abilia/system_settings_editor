@@ -27,6 +27,9 @@ void main() {
       if (methodCall.method.startsWith('getBrightness')) {
         return 0.5;
       }
+      if (methodCall.method.startsWith('getScreenOffTimeout')) {
+        return 60000;
+      }
       return null;
     });
     setupPermissions();
@@ -44,6 +47,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..genericDb = FakeGenericDb()
       ..sortableDb = FakeSortableDb()
+      ..battery = FakeBattery()
       ..init();
   });
 

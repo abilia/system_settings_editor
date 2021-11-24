@@ -68,6 +68,7 @@ void main() {
       ..genericDb = mockGenericDb
       ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
+      ..battery = FakeBattery()
       ..init();
   });
 

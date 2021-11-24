@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -79,15 +80,22 @@ class GetItInitializer {
       _seagullLogger = seagullLogger;
 
   late AlarmNavigator _alarmNavigator = AlarmNavigator();
+
   set alarmNavigator(AlarmNavigator alarmNavigator) =>
       _alarmNavigator = alarmNavigator;
 
   late FlutterTts _flutterTts = FlutterTts();
+
   set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
 
   late PackageInfo _packageInfo =
       PackageInfo(appName: '', buildNumber: '', packageName: '', version: '');
+
   set packageInfo(PackageInfo packageInfo) => _packageInfo = packageInfo;
+
+  late Battery _battery = Battery();
+
+  set battery(Battery battery) => _battery = battery;
 
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
@@ -102,16 +110,16 @@ class GetItInitializer {
     ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
     ..registerSingleton<Ticker>(_ticker)
     ..registerSingleton<AlarmNavigator>(_alarmNavigator)
-    ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
-    ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
-    ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
-    ..registerSingleton<SettingsDb>(
-      _settingsDb ?? SettingsDb(_sharedPreferences),
-    )
-    ..registerSingleton<FileStorage>(
-        _fileStorage ?? FileStorage(_documentsDirectory?.path))
-    ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
-    ..registerSingleton<SyncDelays>(_syncDelay)
-    ..registerSingleton<FlutterTts>(_flutterTts)
-    ..registerSingleton<PackageInfo>(_packageInfo);
+    ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))..registerSingleton<
+          GenericDb>(_genericDb ?? GenericDb(_database))..registerSingleton<
+          UserFileDb>(_userFileDb ?? UserFileDb(_database))..registerSingleton<
+          SettingsDb>(
+        _settingsDb ?? SettingsDb(_sharedPreferences),
+      )..registerSingleton<FileStorage>(
+          _fileStorage ??
+              FileStorage(_documentsDirectory?.path))..registerSingleton<
+          MultipartRequestBuilder>(_multipartRequestBuilder)..registerSingleton<
+          SyncDelays>(_syncDelay)..registerSingleton<FlutterTts>(
+          _flutterTts)..registerSingleton<PackageInfo>(
+          _packageInfo)..registerSingleton<Battery>(_battery);
 }

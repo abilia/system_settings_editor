@@ -88,6 +88,7 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
+      ..battery = FakeBattery()
       ..init();
   });
 

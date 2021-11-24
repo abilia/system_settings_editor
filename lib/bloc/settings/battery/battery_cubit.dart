@@ -5,18 +5,18 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 
 class BatteryCubit extends Cubit<BatteryCubitState> {
-  final _battery = Battery();
+  final Battery battery;
   late final StreamSubscription _batterySubscription;
 
-  BatteryCubit() : super(BatteryCubitState.initState) {
-    _batterySubscription = _battery.onBatteryStateChanged.listen((state) async {
-      emit(BatteryCubitState(state, await _battery.batteryLevel));
+  BatteryCubit({required this.battery}) : super(BatteryCubitState.initState) {
+    _batterySubscription = battery.onBatteryStateChanged.listen((state) async {
+      emit(BatteryCubitState(state, await battery.batteryLevel));
     });
     init();
   }
 
   init() async {
-    emit(BatteryCubitState(BatteryState.unknown, await _battery.batteryLevel));
+    emit(BatteryCubitState(BatteryState.unknown, await battery.batteryLevel));
   }
 
   @override
