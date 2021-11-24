@@ -55,7 +55,7 @@ class SelectAlarmTypeBody extends StatelessWidget {
     final scrollController = ScrollController();
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => VerticalScrollArrows(
+      builder: (context, memoSettingsState) => ScrollArrows.vertical(
         controller: scrollController,
         child: ListView(
           controller: scrollController,

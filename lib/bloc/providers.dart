@@ -31,176 +31,176 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
-    providers: [
-      RepositoryProvider<ActivityRepository>(
-        create: (context) => ActivityRepository(
-          client: authenticatedState.userRepository.client,
-          baseUrl: authenticatedState.userRepository.baseUrl,
-          activityDb: GetIt.I<ActivityDb>(),
-          userId: authenticatedState.userId,
-          authToken: authenticatedState.token,
-        ),
-      ),
-      RepositoryProvider<UserFileRepository>(
-        create: (context) => UserFileRepository(
-          client: authenticatedState.userRepository.client,
-          baseUrl: authenticatedState.userRepository.baseUrl,
-          userFileDb: GetIt.I<UserFileDb>(),
-          fileStorage: GetIt.I<FileStorage>(),
-          userId: authenticatedState.userId,
-          authToken: authenticatedState.token,
-          multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
-        ),
-      ),
-      RepositoryProvider<SortableRepository>(
-        create: (context) => SortableRepository(
-          baseUrl: authenticatedState.userRepository.baseUrl,
-          client: authenticatedState.userRepository.client,
-          sortableDb: GetIt.I<SortableDb>(),
-          userId: authenticatedState.userId,
-          authToken: authenticatedState.token,
-        ),
-      ),
-      RepositoryProvider<GenericRepository>(
-        create: (context) => GenericRepository(
-          baseUrl: authenticatedState.userRepository.baseUrl,
-          client: authenticatedState.userRepository.client,
-          genericDb: GetIt.I<GenericDb>(),
-          userId: authenticatedState.userId,
-          authToken: authenticatedState.token,
-        ),
-      ),
-    ],
-    child: MultiBlocProvider(
-      providers: [
-        BlocProvider<SyncBloc>(
-          create: (context) => SyncBloc(
-            activityRepository: context.read<ActivityRepository>(),
-            userFileRepository: context.read<UserFileRepository>(),
-            sortableRepository: context.read<SortableRepository>(),
-            genericRepository: context.read<GenericRepository>(),
-            syncDelay: GetIt.I<SyncDelays>(),
+        providers: [
+          RepositoryProvider<ActivityRepository>(
+            create: (context) => ActivityRepository(
+              client: authenticatedState.userRepository.client,
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              activityDb: GetIt.I<ActivityDb>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+            ),
           ),
-        ),
-        BlocProvider<ActivitiesBloc>(
-          create: (context) => ActivitiesBloc(
-            activityRepository: context.read<ActivityRepository>(),
-            syncBloc: context.read<SyncBloc>(),
-            pushBloc: context.read<PushBloc>(),
-          )..add(LoadActivities()),
-        ),
-        BlocProvider<WeekCalendarBloc>(
-          create: (context) => WeekCalendarBloc(
-            activitiesBloc: context.read<ActivitiesBloc>(),
-            clockBloc: context.read<ClockBloc>(),
+          RepositoryProvider<UserFileRepository>(
+            create: (context) => UserFileRepository(
+              client: authenticatedState.userRepository.client,
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              userFileDb: GetIt.I<UserFileDb>(),
+              fileStorage: GetIt.I<FileStorage>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+              multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
+            ),
           ),
-        ),
-        BlocProvider<MonthCalendarBloc>(
-          create: (context) => MonthCalendarBloc(
-            activitiesBloc: context.read<ActivitiesBloc>(),
-            clockBloc: context.read<ClockBloc>(),
+          RepositoryProvider<SortableRepository>(
+            create: (context) => SortableRepository(
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              client: authenticatedState.userRepository.client,
+              sortableDb: GetIt.I<SortableDb>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+            ),
           ),
-        ),
-        BlocProvider<UserFileBloc>(
-          create: (context) => UserFileBloc(
-            userFileRepository: context.read<UserFileRepository>(),
-            syncBloc: context.read<SyncBloc>(),
-            fileStorage: GetIt.I<FileStorage>(),
-            pushBloc: context.read<PushBloc>(),
-          )..add(LoadUserFiles()),
-          lazy: false,
-        ),
-        BlocProvider<SortableBloc>(
-          create: (context) => sortableBloc ??
-              SortableBloc(
+          RepositoryProvider<GenericRepository>(
+            create: (context) => GenericRepository(
+              baseUrl: authenticatedState.userRepository.baseUrl,
+              client: authenticatedState.userRepository.client,
+              genericDb: GetIt.I<GenericDb>(),
+              userId: authenticatedState.userId,
+              authToken: authenticatedState.token,
+            ),
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<SyncBloc>(
+              create: (context) => SyncBloc(
+                activityRepository: context.read<ActivityRepository>(),
+                userFileRepository: context.read<UserFileRepository>(),
                 sortableRepository: context.read<SortableRepository>(),
+                genericRepository: context.read<GenericRepository>(),
+                syncDelay: GetIt.I<SyncDelays>(),
+              ),
+            ),
+            BlocProvider<ActivitiesBloc>(
+              create: (context) => ActivitiesBloc(
+                activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 pushBloc: context.read<PushBloc>(),
-                initMyPhotos: Config.isMP,
-              )
-                ..add(const LoadSortables(initDefaults: true)),
-          lazy: false,
-        ),
-        BlocProvider<GenericBloc>(
-          create: (context) => GenericBloc(
-            genericRepository: context.read<GenericRepository>(),
-            syncBloc: context.read<SyncBloc>(),
-            pushBloc: context.read<PushBloc>(),
-          )..add(LoadGenerics()),
-        ),
-        BlocProvider<MemoplannerSettingBloc>(
-          create: (context) =>
-          memoplannerSettingBloc ??
-              MemoplannerSettingBloc(
-                genericBloc: context.read<GenericBloc>(),
+              )..add(LoadActivities()),
+            ),
+            BlocProvider<WeekCalendarBloc>(
+              create: (context) => WeekCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
               ),
+            ),
+            BlocProvider<MonthCalendarBloc>(
+              create: (context) => MonthCalendarBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
+            BlocProvider<UserFileBloc>(
+              create: (context) => UserFileBloc(
+                userFileRepository: context.read<UserFileRepository>(),
+                syncBloc: context.read<SyncBloc>(),
+                fileStorage: GetIt.I<FileStorage>(),
+                pushBloc: context.read<PushBloc>(),
+              )..add(LoadUserFiles()),
+              lazy: false,
+            ),
+            BlocProvider<SortableBloc>(
+              create: (context) => sortableBloc ??
+                  SortableBloc(
+                    sortableRepository: context.read<SortableRepository>(),
+                    syncBloc: context.read<SyncBloc>(),
+                    pushBloc: context.read<PushBloc>(),
+                    initMyPhotos: Config.isMP,
+                  )
+                ..add(const LoadSortables(initDefaults: true)),
+              lazy: false,
+            ),
+            BlocProvider<GenericBloc>(
+              create: (context) => GenericBloc(
+                genericRepository: context.read<GenericRepository>(),
+                syncBloc: context.read<SyncBloc>(),
+                pushBloc: context.read<PushBloc>(),
+              )..add(LoadGenerics()),
+            ),
+            BlocProvider<MemoplannerSettingBloc>(
+              create: (context) =>
+                  memoplannerSettingBloc ??
+                  MemoplannerSettingBloc(
+                    genericBloc: context.read<GenericBloc>(),
+                  ),
+            ),
+            BlocProvider<DayPickerBloc>(
+              create: (context) => DayPickerBloc(
+                clockBloc: context.read<ClockBloc>(),
+              ),
+            ),
+            BlocProvider<DayActivitiesBloc>(
+              create: (context) => DayActivitiesBloc(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                dayPickerBloc: context.read<DayPickerBloc>(),
+              ),
+            ),
+            BlocProvider<ActivitiesOccasionBloc>(
+              create: (context) => ActivitiesOccasionBloc(
+                clockBloc: context.read<ClockBloc>(),
+                dayActivitiesBloc: context.read<DayActivitiesBloc>(),
+              ),
+            ),
+            BlocProvider<AlarmCubit>(
+              create: (context) => AlarmCubit(
+                clockBloc: context.read<ClockBloc>(),
+                activitiesBloc: context.read<ActivitiesBloc>(),
+              ),
+            ),
+            BlocProvider<NotificationCubit>(
+              create: (context) => NotificationCubit(
+                selectedNotificationSubject: selectNotificationSubject,
+              ),
+            ),
+            BlocProvider<CalendarViewCubit>(
+              create: (context) => CalendarViewCubit(
+                GetIt.I<SettingsDb>(),
+              ),
+            ),
+            BlocProvider<LicenseBloc>(
+              create: (context) => LicenseBloc(
+                clockBloc: context.read<ClockBloc>(),
+                pushBloc: context.read<PushBloc>(),
+                userRepository: authenticatedState.userRepository,
+                authenticationBloc: context.read<AuthenticationBloc>(),
+              )..add(ReloadLicenses()),
+            ),
+            BlocProvider<PermissionBloc>(
+              create: (context) => PermissionBloc()
+                ..add(const RequestPermissions([Permission.notification]))
+                ..checkAll(),
+            ),
+            BlocProvider<TimepillarBloc>(
+              create: (context) => TimepillarBloc(
+                clockBloc: context.read<ClockBloc>(),
+                dayPickerBloc: context.read<DayPickerBloc>(),
+                memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+              ),
+            ),
+            BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                    genericBloc: context.read<GenericBloc>(),
+                    batteryCubit: context.read<BatteryCubit>(),
+                    screenAwakeSettings: context
+                        .read<MemoplannerSettingBloc>()
+                        .state
+                        .settings
+                        .keepScreenAwakeSettings))
+          ],
+          child: child,
         ),
-        BlocProvider<DayPickerBloc>(
-          create: (context) => DayPickerBloc(
-            clockBloc: context.read<ClockBloc>(),
-          ),
-        ),
-        BlocProvider<DayActivitiesBloc>(
-          create: (context) => DayActivitiesBloc(
-            activitiesBloc: context.read<ActivitiesBloc>(),
-            dayPickerBloc: context.read<DayPickerBloc>(),
-          ),
-        ),
-        BlocProvider<ActivitiesOccasionBloc>(
-          create: (context) => ActivitiesOccasionBloc(
-            clockBloc: context.read<ClockBloc>(),
-            dayActivitiesBloc: context.read<DayActivitiesBloc>(),
-          ),
-        ),
-        BlocProvider<AlarmCubit>(
-          create: (context) => AlarmCubit(
-            clockBloc: context.read<ClockBloc>(),
-            activitiesBloc: context.read<ActivitiesBloc>(),
-          ),
-        ),
-        BlocProvider<NotificationCubit>(
-          create: (context) => NotificationCubit(
-            selectedNotificationSubject: selectNotificationSubject,
-          ),
-        ),
-        BlocProvider<CalendarViewCubit>(
-          create: (context) => CalendarViewCubit(
-            GetIt.I<SettingsDb>(),
-          ),
-        ),
-        BlocProvider<LicenseBloc>(
-          create: (context) => LicenseBloc(
-            clockBloc: context.read<ClockBloc>(),
-            pushBloc: context.read<PushBloc>(),
-            userRepository: authenticatedState.userRepository,
-            authenticationBloc: context.read<AuthenticationBloc>(),
-          )..add(ReloadLicenses()),
-        ),
-        BlocProvider<PermissionBloc>(
-          create: (context) => PermissionBloc()
-            ..add(const RequestPermissions([Permission.notification]))
-            ..checkAll(),
-        ),
-        BlocProvider<TimepillarBloc>(
-          create: (context) => TimepillarBloc(
-            clockBloc: context.read<ClockBloc>(),
-            dayPickerBloc: context.read<DayPickerBloc>(),
-            memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
-          ),
-        ),
-        BlocProvider<WakeLockCubit>(
-            create: (context) => WakeLockCubit(
-                genericBloc: context.read<GenericBloc>(),
-                batteryCubit: context.read<BatteryCubit>(),
-                screenAwakeSettings: context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .settings
-                    .keepScreenAwakeSettings))
-      ],
-      child: child,
-    ),
-  );
+      );
 }
 
 class TopLevelBlocsProvider extends StatelessWidget {

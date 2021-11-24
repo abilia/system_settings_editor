@@ -225,6 +225,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  connectivity_plus:
+    dependency: "direct main"
+    description:
+      name: connectivity_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
+  connectivity_plus_linux:
+    dependency: transitive
+    description:
+      name: connectivity_plus_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  connectivity_plus_macos:
+    dependency: transitive
+    description:
+      name: connectivity_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
+  connectivity_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
+  connectivity_plus_web:
+    dependency: transitive
+    description:
+      name: connectivity_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0+1"
+  connectivity_plus_windows:
+    dependency: transitive
+    description:
+      name: connectivity_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   convert:
     dependency: transitive
     description:
@@ -463,11 +505,11 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_local_notifications
-      ref: "flutter_local_notifications-v9.0.0-fork-1.12"
-      resolved-ref: "58e8f4614653638fc4f14568921f0a92d38b0775"
+      ref: "flutter_local_notifications-v9.1.2-fork-1.13"
+      resolved-ref: "252d377a319d04a64538bf479d71311bd163bc7c"
       url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "9.0.0"
+    version: "9.1.2"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -703,48 +745,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  network_info_plus:
-    dependency: "direct main"
-    description:
-      name: network_info_plus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
-  network_info_plus_linux:
-    dependency: transitive
-    description:
-      name: network_info_plus_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
-  network_info_plus_macos:
-    dependency: transitive
-    description:
-      name: network_info_plus_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.0"
-  network_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: network_info_plus_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
-  network_info_plus_web:
-    dependency: transitive
-    description:
-      name: network_info_plus_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  network_info_plus_windows:
-    dependency: transitive
-    description:
-      name: network_info_plus_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   nm:
     dependency: transitive
     description:
@@ -1132,7 +1132,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.3.3"
+      ref: HEAD
       resolved-ref: "8a36625411e33ced2f190c32b9f4fff2b165fc12"
       url: "/media/rickard/Development/Projects/Github/system_settings_editor"
     source: git

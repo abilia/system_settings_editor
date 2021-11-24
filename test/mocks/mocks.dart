@@ -1,8 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 import 'package:mocktail/mocktail.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 
 import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -71,4 +71,4 @@ class Notification {
   mockCancelAll() {}
 }
 
-class MockNetworkInfo extends Mock implements NetworkInfo {}
+class MockConnectivity extends Mock implements Connectivity {}

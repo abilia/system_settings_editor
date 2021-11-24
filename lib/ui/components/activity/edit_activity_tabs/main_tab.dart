@@ -14,7 +14,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
           buildWhen: (previous, current) =>
               previous.showCategories != current.showCategories ||
               previous.activityTypeEditable != current.activityTypeEditable,
-          builder: (context, memoSettingsState) => VerticalScrollArrows(
+          builder: (context, memoSettingsState) => ScrollArrows.vertical(
             controller: _scrollController,
             child: ListView(
               controller: _scrollController,

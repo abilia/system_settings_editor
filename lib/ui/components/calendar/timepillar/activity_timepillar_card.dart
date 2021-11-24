@@ -10,7 +10,7 @@ class ActivityTimepillarCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
   final TextStyle textStyle;
   final int dots, column;
-  final double top, endPos, height;
+  final double top, endPos, height, textHeight;
   final TimepillarInterval timepillarInterval;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
@@ -23,6 +23,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     required this.top,
     required this.column,
     required this.height,
+    required this.textHeight,
     required this.textStyle,
     required this.timepillarInterval,
     required this.dayParts,
@@ -94,12 +95,14 @@ class ActivityTimepillarCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
-                                child: ActivityPage(occasion: activityOccasion),
-                              ),
-                          settings: RouteSettings(
-                              name: 'ActivityPage $activityOccasion')),
+                        builder: (_) => CopiedAuthProviders(
+                          blocContext: context,
+                          child: ActivityPage(occasion: activityOccasion),
+                        ),
+                        settings: RouteSettings(
+                          name: 'ActivityPage $activityOccasion',
+                        ),
+                      ),
                     );
                   },
                   child: Container(
@@ -114,28 +117,36 @@ class ActivityTimepillarCard extends StatelessWidget {
                         minHeight: ts.minHeight,
                         maxHeight: height,
                       ),
-                      child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(ts.cardPadding),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             if (hasTitle)
-                              Text(
-                                activity.title,
-                                overflow: TextOverflow.visible,
-                                textAlign: TextAlign.center,
-                                maxLines: maxTitleLines,
-                                style: textStyle,
-                              ),
-                            if (hasImage || signedOff)
-                              ActivityImage.fromActivityOccasion(
-                                activityOccasion: activityOccasion,
-                                size: ts.imageSize,
-                              )
-                            else if (past)
                               SizedBox(
-                                width: ts.crossWidth,
-                                height: height - ts.crossVerticalPadding,
-                                child: const CrossOver(),
+                                height: textHeight,
+                                child: Text(
+                                  activity.title,
+                                  overflow: TextOverflow.visible,
+                                  textAlign: TextAlign.center,
+                                  maxLines: maxTitleLines,
+                                  style: textStyle,
+                                ),
+                              ),
+                            if (hasImage || signedOff || past)
+                              Padding(
+                                padding: EdgeInsets.only(top: ts.cardPadding),
+                                child: SizedBox(
+                                  height:
+                                      height - textHeight - ts.cardPadding * 3,
+                                  child: ActivityImage.fromActivityOccasion(
+                                    activityOccasion: activityOccasion,
+                                    crossPadding:
+                                        EdgeInsets.all(ts.cardPadding),
+                                    checkPadding:
+                                        EdgeInsets.all(ts.cardPadding * 2),
+                                  ),
+                                ),
                               )
                           ],
                         ),

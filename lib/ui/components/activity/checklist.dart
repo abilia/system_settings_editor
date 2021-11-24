@@ -34,7 +34,7 @@ class _ChecklistViewState extends State<ChecklistView> {
 
   @override
   Widget build(BuildContext context) {
-    return VerticalScrollArrows(
+    return ScrollArrows.vertical(
       controller: _controller,
       child: ListView.builder(
         controller: _controller,
@@ -158,7 +158,7 @@ class QuestionView extends StatelessWidget {
                       IconTheme(
                         data: Theme.of(context)
                             .iconTheme
-                            .copyWith(size: smallIconSize),
+                            .copyWith(size: layout.iconSize.small),
                         child: Padding(
                           padding:
                               EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),

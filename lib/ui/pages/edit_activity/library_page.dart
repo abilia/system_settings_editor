@@ -37,8 +37,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) {
           final selected = state.selected;
-          if (initialFolder.isNotEmpty &&
-              state.currentFolderId != initialFolder) {
+          if (initialFolder.isNotEmpty && state.currentFolderId.isEmpty) {
             BlocProvider.of<SortableArchiveBloc<T>>(context)
                 .add(InitialFolder(initialFolder));
           }
@@ -188,7 +187,7 @@ class _SortableLibraryState<T extends SortableData>
           );
         }
         final libraryFolderGenerator = widget.libraryFolderGenerator;
-        return VerticalScrollArrows(
+        return ScrollArrows.vertical(
           controller: _controller,
           child: GridView.count(
             controller: _controller,

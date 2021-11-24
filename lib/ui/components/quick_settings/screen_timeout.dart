@@ -138,19 +138,19 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector>
                 children: [
                   ...[1, 30, 0].map((d) => d.minutes()).map(
                         (d) => Padding(
-                      padding: EdgeInsets.only(
-                          left: 12.s, right: 16.s, bottom: 8.s),
-                      child: RadioField<Duration>(
-                          text: Text(
-                            d.inMilliseconds == 0
+                          padding: EdgeInsets.only(
+                              left: 12.s, right: 16.s, bottom: 8.s),
+                          child: RadioField<Duration>(
+                              text: Text(
+                                d.inMilliseconds == 0
                                     ? t.alwaysOn
                                     : d.toDurationString(t),
                               ),
-                          onChanged: (v) => setState(() => _timeout = v),
-                          groupValue: _timeout,
-                          value: d),
-                    ),
-                  ),
+                              onChanged: (v) => setState(() => _timeout = v),
+                              groupValue: _timeout,
+                              value: d),
+                        ),
+                      ),
                 ],
               ),
             ),
@@ -195,7 +195,7 @@ class _KeepOnWhileChargingSwitchState extends State<KeepOnWhileChargingSwitch> {
               .setKeepScreenAwakeWhilePluggedIn(switchOn);
         },
         child:
-        Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
+            Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
       ),
     );
   }

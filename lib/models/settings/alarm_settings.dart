@@ -7,7 +7,8 @@ class AlarmSettings extends Equatable {
       reminderAlarmKey = 'activity_reminder_alarm',
       vibrateAtReminderKey = 'setting_vibrate_at_reminder',
       alarmDurationKey = 'alarm_duration',
-      alarmsDisabledUntilKey = 'alarms_disabled_until';
+      alarmsDisabledUntilKey = 'alarms_disabled_until',
+      showAlarmOnOffSwitchKey = 'show_alarms_button';
 
   static const keys = [
     nonCheckableActivityAlarmKey,
@@ -16,18 +17,25 @@ class AlarmSettings extends Equatable {
     vibrateAtReminderKey,
     alarmDurationKey,
     alarmsDisabledUntilKey,
+    showAlarmOnOffSwitchKey,
   ];
 
   final int durationMs, disabledUntilEpoch;
-  final bool vibrateAtReminder;
+  final bool vibrateAtReminder, showAlarmOnOffSwitch;
 
   final String checkableActivity, nonCheckableActivity, reminder;
+
   Sound get nonCheckableAlarm => nonCheckableActivity.toSound();
+
   Sound get checkableAlarm => checkableActivity.toSound();
+
   Sound get reminderAlarm => reminder.toSound();
+
   Duration get duration => Duration(milliseconds: durationMs);
+
   DateTime get disabledUntilDate =>
       DateTime.fromMillisecondsSinceEpoch(disabledUntilEpoch);
+
   const AlarmSettings({
     this.durationMs = 30000,
     this.vibrateAtReminder = true,
@@ -35,6 +43,7 @@ class AlarmSettings extends Equatable {
     this.nonCheckableActivity = SoundExtension.defaultName,
     this.reminder = SoundExtension.defaultName,
     this.disabledUntilEpoch = 0,
+    this.showAlarmOnOffSwitch = false,
   });
 
   factory AlarmSettings.fromSettingsMap(
@@ -64,15 +73,21 @@ class AlarmSettings extends Equatable {
           alarmsDisabledUntilKey,
           0,
         ),
+        showAlarmOnOffSwitch: settings.getBool(
+          showAlarmOnOffSwitchKey,
+          defaultValue: false,
+        ),
       );
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         duration,
         vibrateAtReminder,
         checkableActivity,
         nonCheckableActivity,
         reminder,
         disabledUntilEpoch,
+        showAlarmOnOffSwitch,
       ];
 }

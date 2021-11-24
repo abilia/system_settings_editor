@@ -13,7 +13,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
-        return VerticalScrollArrows(
+        return ScrollArrows.vertical(
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
@@ -148,7 +148,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
       builder: (context, state) => SwitchField(
         leading: Icon(
           AbiliaIcons.thisWeek,
-          size: smallIconSize,
+          size: layout.iconSize.small,
         ),
         value: state.everyOtherWeek,
         onChanged: (v) =>

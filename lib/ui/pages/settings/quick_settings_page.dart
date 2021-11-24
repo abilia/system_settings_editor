@@ -1,5 +1,4 @@
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/utils/strings.dart';
 
 class QuickSettingsPage extends StatelessWidget {
@@ -13,7 +12,7 @@ class QuickSettingsPage extends StatelessWidget {
         title: t.quickSettingsMenu.singleLine,
         iconData: AbiliaIcons.settings,
       ),
-      body: VerticalScrollArrows(
+      body: ScrollArrows.vertical(
         controller: scrollController,
         child: ListView(
           controller: scrollController,
@@ -23,7 +22,7 @@ class QuickSettingsPage extends StatelessWidget {
               child: const BatteryLevel(),
             ),
             QuickSettingsGroup(children: [
-              const WifiPickWithLocationCheck(),
+              const WiFiPickField(),
               SizedBox(height: 8.s),
               const SoundEffectsSwitch(),
             ]),

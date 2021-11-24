@@ -197,142 +197,127 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             color: interval.intervalPart == IntervalPart.night
                 ? TimepillarCalendar.nightBackgroundColor
                 : Theme.of(context).scaffoldBackgroundColor,
-            child: Stack(
-              children: <Widget>[
-                NotificationListener<ScrollNotification>(
-                  onNotification:
-                      enableScrollNotification ? onScrollNotification : null,
-                  child: SingleChildScrollView(
-                    controller: verticalScrollController,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: LimitedBox(
-                      maxHeight: height,
-                      child: BlocBuilder<ClockBloc, DateTime>(
-                        builder: (context, now) => Stack(
-                          children: <Widget>[
-                            ...np.map((p) {
-                              return Positioned(
-                                top: p.start,
-                                child: SizedBox(
-                                  width: boxConstraints.maxWidth,
-                                  height: p.length,
-                                  child: const DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        color: TimepillarCalendar
-                                            .nightBackgroundColor),
-                                  ),
-                                ),
-                              );
-                            }),
-                            if (widget.displayHourLines)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: topMargin,
-                                ),
-                                child: HourLines(
-                                  numberOfLines: interval.lengthInHours + 1,
-                                  hourHeight: ts.hourHeight,
+            child: ScrollArrows.all(
+              upCollapseMargin: topMargin,
+              downCollapseMargin: bottomMargin,
+              leftCollapseMargin: ts.padding,
+              rightCollapseMargin: ts.padding,
+              horizontalController: horizontalScrollController,
+              verticalController: verticalScrollController,
+              child: NotificationListener<ScrollNotification>(
+                onNotification:
+                    enableScrollNotification ? onScrollNotification : null,
+                child: SingleChildScrollView(
+                  controller: verticalScrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: LimitedBox(
+                    maxHeight: height,
+                    child: BlocBuilder<ClockBloc, DateTime>(
+                      builder: (context, now) => Stack(
+                        children: <Widget>[
+                          ...np.map((p) {
+                            return Positioned(
+                              top: p.start,
+                              child: SizedBox(
+                                width: boxConstraints.maxWidth,
+                                height: p.length,
+                                child: const DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      color: TimepillarCalendar
+                                          .nightBackgroundColor),
                                 ),
                               ),
-                            if (showTimeLine)
-                              BlocBuilder<ClockBloc, DateTime>(
-                                builder: (context, now) {
-                                  if (now.inRangeWithInclusiveStart(
-                                      startDate:
-                                          ts.timepillarInterval.startTime,
-                                      endDate: ts.timepillarInterval.endTime)) {
-                                    return Timeline(
-                                      now: now,
-                                      width: boxConstraints.maxWidth,
-                                      offset: ts.topOffset(now) - topMargin,
-                                      timepillarState: ts,
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                },
+                            );
+                          }),
+                          if (widget.displayHourLines)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: topMargin,
                               ),
-                            CustomScrollView(
-                              anchor: horizontalAnchor,
-                              center: center,
-                              scrollDirection: Axis.horizontal,
-                              controller: horizontalScrollController,
-                              slivers: <Widget>[
-                                if (widget.showCategories)
-                                  category(
-                                    widget.showCategoryLabels
-                                        ? const LeftCategory()
-                                        : null,
-                                    height: boxConstraints.maxHeight,
-                                    sliver: SliverToBoxAdapter(
-                                      child: ActivityBoard(
-                                        leftBoardData,
-                                        categoryMinWidth: categoryMinWidth,
-                                        timepillarWidth: ts.totalWidth,
-                                      ),
-                                    ),
-                                  ),
-                                SliverTimePillar(
-                                  key: center,
-                                  child: BlocBuilder<MemoplannerSettingBloc,
-                                      MemoplannerSettingsState>(
-                                    buildWhen: (previous, current) =>
-                                        previous.timepillar12HourFormat !=
-                                            current.timepillar12HourFormat ||
-                                        previous.columnOfDots !=
-                                            current.columnOfDots,
-                                    builder: (context, memoSettings) =>
-                                        TimePillar(
-                                      interval: interval,
-                                      dayOccasion:
-                                          widget.activityState.occasion,
-                                      use12h:
-                                          memoSettings.timepillar12HourFormat,
-                                      nightParts: np,
-                                      dayParts: widget.dayParts,
-                                      columnOfDots: memoSettings.columnOfDots,
-                                      topMargin: topMargin,
-                                      timePillarState: ts,
-                                    ),
-                                  ),
-                                ),
+                              child: HourLines(
+                                numberOfLines: interval.lengthInHours + 1,
+                                hourHeight: ts.hourHeight,
+                              ),
+                            ),
+                          if (showTimeLine)
+                            BlocBuilder<ClockBloc, DateTime>(
+                              builder: (context, now) {
+                                if (now.inRangeWithInclusiveStart(
+                                    startDate: ts.timepillarInterval.startTime,
+                                    endDate: ts.timepillarInterval.endTime)) {
+                                  return Timeline(
+                                    now: now,
+                                    width: boxConstraints.maxWidth,
+                                    offset: ts.topOffset(now) - topMargin,
+                                    timepillarState: ts,
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                          CustomScrollView(
+                            anchor: horizontalAnchor,
+                            center: center,
+                            scrollDirection: Axis.horizontal,
+                            controller: horizontalScrollController,
+                            slivers: <Widget>[
+                              if (widget.showCategories)
                                 category(
                                   widget.showCategoryLabels
-                                      ? const RightCategory()
+                                      ? const LeftCategory()
                                       : null,
                                   height: boxConstraints.maxHeight,
                                   sliver: SliverToBoxAdapter(
                                     child: ActivityBoard(
-                                      rightBoardData,
+                                      leftBoardData,
                                       categoryMinWidth: categoryMinWidth,
                                       timepillarWidth: ts.totalWidth,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              SliverTimePillar(
+                                key: center,
+                                child: BlocBuilder<MemoplannerSettingBloc,
+                                    MemoplannerSettingsState>(
+                                  buildWhen: (previous, current) =>
+                                      previous.timepillar12HourFormat !=
+                                          current.timepillar12HourFormat ||
+                                      previous.columnOfDots !=
+                                          current.columnOfDots,
+                                  builder: (context, memoSettings) =>
+                                      TimePillar(
+                                    interval: interval,
+                                    dayOccasion: widget.activityState.occasion,
+                                    use12h: memoSettings.timepillar12HourFormat,
+                                    nightParts: np,
+                                    dayParts: widget.dayParts,
+                                    columnOfDots: memoSettings.columnOfDots,
+                                    topMargin: topMargin,
+                                    timePillarState: ts,
+                                  ),
+                                ),
+                              ),
+                              category(
+                                widget.showCategoryLabels
+                                    ? const RightCategory()
+                                    : null,
+                                height: boxConstraints.maxHeight,
+                                sliver: SliverToBoxAdapter(
+                                  child: ActivityBoard(
+                                    rightBoardData,
+                                    categoryMinWidth: categoryMinWidth,
+                                    timepillarWidth: ts.totalWidth,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                ArrowLeft(
-                  controller: horizontalScrollController,
-                  collapseMargin: ts.padding,
-                ),
-                ArrowUp(
-                  controller: verticalScrollController,
-                  collapseMargin: topMargin,
-                ),
-                ArrowRight(
-                  controller: horizontalScrollController,
-                  collapseMargin: ts.padding,
-                ),
-                ArrowDown(
-                  controller: verticalScrollController,
-                  collapseMargin: bottomMargin,
-                ),
-              ],
+              ),
             ),
           ),
         );

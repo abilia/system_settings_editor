@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 final buttonBackgroundLight = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
@@ -125,18 +126,18 @@ final actionIconTextButtonStyleRed = ButtonStyle(
   ),
 );
 
-final double actionButtonMinSize = 48.0.s;
 final double secondaryActionButtonMinSize = 40.0.s;
 
 final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
-  minimumSize:
-      MaterialStateProperty.all(Size(actionButtonMinSize, actionButtonMinSize)),
+  minimumSize: MaterialStateProperty.all(
+      Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(EdgeInsets.all(8.0.s)),
 );
 
 final actionButtonStyleRed = _actionButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
+  foregroundColor: foregroundLight,
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {

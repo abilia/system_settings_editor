@@ -139,7 +139,7 @@ class Hour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final h6 = Theme.of(context).textTheme.headline6 ?? headline6;
-    final fontSize = h6.fontSize ?? headline6FontSize;
+    final fontSize = h6.fontSize ?? layout.fontSize.headline6;
     final ts = timepillarState;
 
     return DefaultTextStyle(

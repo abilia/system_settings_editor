@@ -161,6 +161,21 @@ void main() {
       );
     });
 
+    testWidgets('Display switch for alarms', (tester) async {
+      await tester.goToAlarmSettingsPage();
+      await tester.scrollDown();
+      await tester.tap(find.byKey(TestKey.showAlarmOnOffSwitch));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifyUnsyncGeneric(
+        tester,
+        genericDb,
+        key: AlarmSettings.showAlarmOnOffSwitchKey,
+        matcher: true,
+      );
+    });
+
     testWidgets('Changes to alarm triggers an alarm schedualing',
         (tester) async {
       await tester.goToAlarmSettingsPage();
@@ -199,5 +214,11 @@ extension on WidgetTester {
 
     await tap(find.byIcon(AbiliaIcons.handiAlarmVibration));
     await pumpAndSettle();
+  }
+
+  Future scrollDown({double dy = -800.0}) async {
+    final center = getCenter(find.byType(AlarmSettingsPage));
+    await dragFrom(center, Offset(0.0, dy));
+    await pump();
   }
 }

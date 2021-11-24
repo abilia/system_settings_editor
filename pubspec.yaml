@@ -17,6 +17,7 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   battery_plus: ^2.0.1
   collection: ^1.15.0
+  connectivity_plus: ^2.0.3
   devicelocale: ^0.5.0
   dotted_border: ^2.0.0
   dotted_line: ^3.1.0
@@ -31,7 +32,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v9.0.0-fork-1.12
+      ref: flutter_local_notifications-v9.1.2-fork-1.13
       path: flutter_local_notifications/
   flutter_native_timezone: ^2.0.0
   flutter_ringtone_player: ^3.1.0
@@ -47,7 +48,6 @@ dependencies:
   logging: ^1.0.1
   meta: ^1.3.0
   mime: ^1.0.1
-  network_info_plus: ^2.0.2
   package_info: ^2.0.2
   path_provider: ^2.0.5
   permission_handler: ^8.2.5

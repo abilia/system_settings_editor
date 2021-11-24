@@ -83,7 +83,7 @@ class SelectPictureBody extends StatelessWidget {
                           icon: Icon(
                             AbiliaIcons.deleteAllClear,
                             color: AbiliaColors.white,
-                            size: smallIconSize,
+                            size: layout.iconSize.small,
                           ),
                           text: translate.removePicture,
                         ),
@@ -135,7 +135,8 @@ class SelectPictureBody extends StatelessWidget {
                                   return ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder:
-                                          state.currentFolderId ?? '');
+                                          state.currentFolderId ?? '',
+                                      header: translate.myPhotos);
                                 },
                               ),
                             ),

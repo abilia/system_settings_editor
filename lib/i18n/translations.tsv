@@ -236,10 +236,11 @@ volumeAlarm	Volume for alarm	Volym för alarm	Volumen for alarm	Volume voor alar
 volumeMedia	Volume for media	Volym för media	Volumen for media	Volume voor media	Median äänenvoimakkuus	Lautstärke für Medien	Volum for media
 wifi	Wi-Fi	Wi-Fi	Wi-Fi	Wifi	Wi-Fi	WLAN	Wi-Fi
 notConnected	Not connected	Ej ansluten	Ikke tilsluttet	Niet verbonden	Ei yhteyttä	Nicht verbunden	Ikke tilkoblet
+connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
 screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
-							
+
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
@@ -283,6 +284,7 @@ alarmTime	Alarm time	Larmtid	Alarmtid	Alarmtijd	Hälytysaika	Alarmzeit	Alarmtid
 alert	Alert	Signal	Signal	Alert	Hälytys	Anruffunktion	Signal
 defaultSound	Default	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
 noSound	- No sound -	- Inget ljud -	- Ingen lyd -	- Geen geluid -	- Ei ääntä -	- Kein Klang -	- Ingen lyd -
+showDisableAlarms	Show Disable alarms	Visa Inaktivera larm	Vis Deaktiver alarmer	Alarmen uitschakelen tonen	Näytä Poista hälytykset käytöstä-painike	Alarme deaktivieren anzeigen	Vis Deaktiver alarmer
 showWeekNumber	Show week number	Visa veckonummer	Vis ugenummer	Weeknummer tonen	Näytä viikon numero	Wochennummer anzeigen	Vis ukenummer
 showYear	Show year	Visa år	Vis år	Jaar tonen	Näytä vuosi	Jahr anzeigen	Vis år
 everyDay	Every day (7)	Alla dagar (7)	Alle dage (7)	Elke dag (7)	Joka päivä (7)	Täglich (7)	Alle dager (7)
@@ -391,7 +393,6 @@ allowAccessCameraBody	Allow access to camera to be able to take a photo from the
 allowAccessBody2	You can always do that later from the	Du kan alltid göra det senare från	Du kan altid gøre det senere fra	U kunt dat later altijd doen vanuit het	Voit aina tehdä sen myöhemmin	Das können Sie später immer noch von der	Du kan alltids gjøre det senere fra
 accessToMicrophone	Access to Microphone	Tillgång till mikrofon	Adgang til mikrofon	Toegang tot microfoon	Pääsy mikrofoniin	Zugang zum Mikrofon	Tilgang til mikrofon
 allowAccessMicrophoneBody	Allow access to microphone to be able to record speech from the device	Tillåt åtkomst till mikrofon för att kunna spela in tal från enheten	Tillad adgang til mikrofon for at kunne optage tale fra enheden	Toegang tot microfoon toestaan om spraak van het apparaat op te nemen	Salli mikrofonin käyttö, jotta voit tallentaa puhetta laitteelta	Erlauben Sie den Zugriff auf das Mikrofon, um Sprache vom Gerät aufzeichnen zu können	Tillat tilgang til mikrofon for å kunne ta opp tale fra enheten
-location	Location	Plats	Beliggenhed	Plaats	Sijainti	Lage	Plassering
 							
 ### About							
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon

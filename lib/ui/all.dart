@@ -11,3 +11,5 @@ export 'package:seagull/config.dart';
 
 export 'package:transparent_image/transparent_image.dart';
 export 'package:flutter/material.dart' hide CloseButton, BackButton;
+
+export 'widget_utils.dart';
