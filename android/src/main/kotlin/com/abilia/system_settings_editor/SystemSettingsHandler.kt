@@ -16,9 +16,9 @@ class SystemSettingsHandler(private val context: Context) {
     val cResolver: ContentResolver = context.contentResolver
     try {
       Settings.System.putInt(
-          cResolver,
-          Settings.System.SCREEN_BRIGHTNESS_MODE,
-          Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+        cResolver,
+        Settings.System.SCREEN_BRIGHTNESS_MODE,
+        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
       )
       val brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS)
       val max = getBrightnessMax()
@@ -30,16 +30,16 @@ class SystemSettingsHandler(private val context: Context) {
   }
 
   internal fun setBrightnessHandler(
-      activity: Activity?,
-      call: MethodCall,
-      result: MethodChannel.Result
+    activity: Activity?,
+    call: MethodCall,
+    result: MethodChannel.Result
   ) {
     val brightness: Double? = call.argument("brightness")
     brightness?.let {
       setBrightness(activity, it)
       result.success(true)
     }
-        ?: run { result.error("ARGUMENT", "No argument brightness of type double provided", null) }
+      ?: run { result.error("ARGUMENT", "No argument brightness of type double provided", null) }
   }
 
   internal fun getSoundEffectsEnabled(): Boolean {
@@ -59,9 +59,9 @@ class SystemSettingsHandler(private val context: Context) {
       setSoundEffectsEnabled(it)
       result.success(true)
     }
-        ?: run {
-          result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
-        }
+      ?: run {
+        result.error("ARGUMENT", "No argument sound_effects_enabled of type int provided", null)
+      }
   }
 
   private fun setBrightness(activity: Activity?, brightness: Double) {
@@ -72,14 +72,14 @@ class SystemSettingsHandler(private val context: Context) {
     }
     val cResolver: ContentResolver = context.contentResolver
     Settings.System.putInt(
-        cResolver,
-        Settings.System.SCREEN_BRIGHTNESS_MODE,
-        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+      cResolver,
+      Settings.System.SCREEN_BRIGHTNESS_MODE,
+      Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
     )
     Settings.System.putInt(
-        cResolver,
-        Settings.System.SCREEN_BRIGHTNESS,
-        (brightness * getBrightnessMax()).toInt()
+      cResolver,
+      Settings.System.SCREEN_BRIGHTNESS,
+      (brightness * getBrightnessMax()).toInt()
     )
   }
 
@@ -87,7 +87,7 @@ class SystemSettingsHandler(private val context: Context) {
     try {
       val system: Resources = Resources.getSystem()
       val resId: Int =
-          system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android")
+        system.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android")
       if (resId != 0) {
         return system.getInteger(resId)
       }
@@ -108,12 +108,12 @@ class SystemSettingsHandler(private val context: Context) {
       setScreenOffTimeout(it.toInt())
       result.success(true)
     }
-        ?: run { result.error("ARGUMENT", "No argument timeout of type int provided", null) }
+      ?: run { result.error("ARGUMENT", "No argument timeout of type int provided", null) }
   }
 
-  private fun setScreenOffTimeout(timeout: Int) {
+  private fun setScreenOffTimeout(timeout: Long) {
     val cResolver: ContentResolver = context.contentResolver
-    Settings.System.putInt(cResolver, Settings.System.SCREEN_OFF_TIMEOUT, timeout)
+    Settings.System.putInt(cResolver, Settings.System.SCREEN_OFF_TIMEOUT, timeout.toInt())
   }
 
   internal fun getScreenOffTimeout(): Int {
