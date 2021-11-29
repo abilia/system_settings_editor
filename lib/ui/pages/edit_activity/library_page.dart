@@ -91,8 +91,11 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String heading = _getLibraryHeading(sortableArchiveState, rootHeading,
-            Translator.of(context).translate) ??
+    String heading = _getLibraryHeading(
+          sortableArchiveState,
+          rootHeading,
+          Translator.of(context).translate.myPhotos,
+        ) ??
         '';
     return Tts.data(
       data: heading,
@@ -127,7 +130,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   static String? _getLibraryHeading(
     SortableArchiveState state,
     String? rootHeading,
-    translate,
+    String myPhotoHeading,
   ) {
     if (state.isAtRootAndNoSelection) {
       return rootHeading;
@@ -135,10 +138,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     if (state.isSelected) {
       return state.selected?.data.title();
     }
-    if (state.allById[state.currentFolderId]?.data is ImageArchiveData &&
-        (state.allById[state.currentFolderId]?.data as ImageArchiveData)
-            .myPhotos) {
-      return translate.myPhotos;
+    if (state.inMyPhotos) {
+      return myPhotoHeading;
     }
     return state.allById[state.currentFolderId]?.data.title();
   }
