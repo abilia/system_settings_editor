@@ -285,6 +285,8 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final folderIconSize = 86.s;
+
     return Tts.fromSemantics(
       SemanticsProperties(
         label: title,
@@ -304,22 +306,21 @@ class LibraryFolder extends StatelessWidget {
               children: [
                 Icon(
                   AbiliaIcons.folder,
-                  size: 86.s,
+                  size: folderIconSize,
                   color: color ?? AbiliaColors.orange,
                 ),
-                Positioned(
-                  bottom: 16.s,
-                  left: 10.s,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6.s),
-                    child: Align(
-                      alignment: Alignment.center,
-                      heightFactor: 42 / 66,
+                SizedBox(
+                  height: folderIconSize,
+                  width: folderIconSize,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 10.s, right: 10.s, bottom: 16.s, top: 28.s),
+                    child: Center(
                       child: FadeInAbiliaImage(
                         imageFileId: fileId,
                         imageFilePath: filePath,
-                        width: 66.s,
-                        height: 66.s,
+                        fit: BoxFit.contain,
+                        borderRadius: BorderRadius.circular(4.s),
                       ),
                     ),
                   ),
