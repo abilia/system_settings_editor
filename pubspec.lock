@@ -344,13 +344,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  exif:
-    dependency: "direct main"
-    description:
-      name: exif
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -1051,13 +1044,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-  sprintf:
-    dependency: transitive
-    description:
-      name: sprintf
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.0"
   sqflite:
     dependency: "direct main"
     description:

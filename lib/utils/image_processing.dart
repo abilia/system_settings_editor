@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:exif/exif.dart' as exif;
 import 'package:image/image.dart' as img;
 // ignore: implementation_imports
 import 'package:image/src/exif_data.dart';
@@ -70,31 +69,35 @@ Future<img.Image> adjustRotationToExif(List<int> imageBytes) async {
   final image = img.decodeImage(imageBytes);
   if (image == null) throw 'could not decode image bytes $imageBytes';
   final bakedImage = img.Image.from(image);
-  final data = await exif.readExifFromBytes(imageBytes);
-  final orientationData = data[imageOrientationFlag];
-  final orientation = orientationData?.values.firstAsInt() ?? 1;
-  if (orientation == 1) {
+
+  if (!bakedImage.exif.hasOrientation) {
+    bakedImage.exif = ExifData();
+    return bakedImage;
+  } else {
+    final orientation = bakedImage.exif.orientation;
+    if (orientation == 1) {
+      return bakedImage;
+    }
+
+    bakedImage.exif = ExifData();
+    switch (orientation) {
+      case 2:
+        return img.flipHorizontal(bakedImage);
+      case 3:
+        return img.flip(bakedImage, img.Flip.both);
+      case 4:
+        return img.flipHorizontal(img.copyRotate(bakedImage, 180));
+      case 5:
+        return img.flipHorizontal(img.copyRotate(bakedImage, 90));
+      case 6:
+        return img.copyRotate(bakedImage, 90);
+      case 7:
+        return img.flipHorizontal(img.copyRotate(bakedImage, -90));
+      case 8:
+        return img.copyRotate(bakedImage, -90);
+    }
     return bakedImage;
   }
-
-  bakedImage.exif = ExifData();
-  switch (orientation) {
-    case 2:
-      return img.flipHorizontal(bakedImage);
-    case 3:
-      return img.flip(bakedImage, img.Flip.both);
-    case 4:
-      return img.flipHorizontal(img.copyRotate(bakedImage, 180));
-    case 5:
-      return img.flipHorizontal(img.copyRotate(bakedImage, 90));
-    case 6:
-      return img.copyRotate(bakedImage, 90);
-    case 7:
-      return img.flipHorizontal(img.copyRotate(bakedImage, -90));
-    case 8:
-      return img.copyRotate(bakedImage, -90);
-  }
-  return bakedImage;
 }
 
 Future<ImageResponse> adjustRotationAndCreateThumbs(

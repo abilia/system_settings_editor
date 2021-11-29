@@ -22,7 +22,6 @@ dependencies:
   dotted_border: ^2.0.0
   dotted_line: ^3.1.0
   equatable: ^2.0.3
-  exif: ^3.0.1
   firebase_analytics: ^8.3.4
   firebase_core: ^1.8.0
   firebase_crashlytics: ^2.2.4
