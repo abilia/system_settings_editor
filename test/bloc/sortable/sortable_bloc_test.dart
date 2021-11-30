@@ -16,7 +16,6 @@ void main() {
       sortableRepository: mockSortableRepository,
       pushBloc: FakePushBloc(),
       syncBloc: FakeSyncBloc(),
-      initMyPhotos: false,
     );
   });
 
@@ -43,13 +42,7 @@ void main() {
     );
   });
 
-  test('Defaults are created for MP', () async {
-    sortableBloc = SortableBloc(
-      sortableRepository: mockSortableRepository,
-      pushBloc: FakePushBloc(),
-      syncBloc: FakeSyncBloc(),
-      initMyPhotos: true,
-    );
+  test('Defaults are created', () async {
     when(() => mockSortableRepository.load())
         .thenAnswer((_) => Future.value([]));
     when(() => mockSortableRepository.createUploadsFolder())
@@ -65,24 +58,6 @@ void main() {
     );
     verify(() => mockSortableRepository.createUploadsFolder());
     verify(() => mockSortableRepository.createMyPhotosFolder());
-  });
-
-  test('Defaults are created for MPGO', () async {
-    when(() => mockSortableRepository.load())
-        .thenAnswer((_) => Future.value([]));
-
-    when(() => mockSortableRepository.createUploadsFolder())
-        .thenAnswer((_) => Future.value());
-
-    when(() => mockSortableRepository.save(any()))
-        .thenAnswer((_) => Future.value(true));
-    sortableBloc.add(const LoadSortables(initDefaults: true));
-    await expectLater(
-      sortableBloc.stream,
-      emits(isA<SortablesLoaded>()),
-    );
-    verify(() => mockSortableRepository.createUploadsFolder());
-    verifyNever(() => mockSortableRepository.createMyPhotosFolder());
   });
 
   test('Generates new imagearchive sortable with existing upload folder',

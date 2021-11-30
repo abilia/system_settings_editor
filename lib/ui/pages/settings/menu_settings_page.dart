@@ -22,13 +22,14 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
   @override
   void initState() {
     super.initState();
-    final memosettingsState = context.read<MemoplannerSettingBloc>().state;
-    camera = memosettingsState.displayMenuCamera;
-    myPhotos = memosettingsState.displayMenuMyPhotos;
-    photoCalendar = memosettingsState.displayMenuPhotoCalendar;
-    countdown = memosettingsState.displayMenuCountdown;
-    quickSettings = memosettingsState.displayMenuQuickSettings;
-    settingsInitial = settings = memosettingsState.displayMenuSettings;
+    final memosettingsState =
+        context.read<MemoplannerSettingBloc>().state.settings.menu;
+    camera = memosettingsState.showCamera;
+    myPhotos = memosettingsState.showPhotos;
+    photoCalendar = memosettingsState.showPhotoCalendar;
+    countdown = memosettingsState.showTimers;
+    quickSettings = memosettingsState.showQuickSettings;
+    settingsInitial = settings = memosettingsState.showSettings;
   }
 
   @override
@@ -58,33 +59,27 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                       [
                         MemoplannerSettingData.fromData(
                           data: camera,
-                          identifier:
-                              MemoplannerSettings.settingsMenuShowCameraKey,
+                          identifier: MenuSettings.showCameraKey,
                         ),
                         MemoplannerSettingData.fromData(
                           data: myPhotos,
-                          identifier:
-                              MemoplannerSettings.settingsMenuShowPhotosKey,
+                          identifier: MenuSettings.showPhotosKey,
                         ),
                         MemoplannerSettingData.fromData(
                           data: photoCalendar,
-                          identifier: MemoplannerSettings
-                              .settingsMenuShowPhotoCalendarKey,
+                          identifier: MenuSettings.showPhotoCalendarKey,
                         ),
                         MemoplannerSettingData.fromData(
                           data: countdown,
-                          identifier:
-                              MemoplannerSettings.settingsMenuShowTimersKey,
+                          identifier: MenuSettings.showTimersKey,
                         ),
                         MemoplannerSettingData.fromData(
                           data: quickSettings,
-                          identifier: MemoplannerSettings
-                              .settingsMenuShowQuickSettingsKey,
+                          identifier: MenuSettings.showQuickSettingsKey,
                         ),
                         MemoplannerSettingData.fromData(
                           data: settings,
-                          identifier:
-                              MemoplannerSettings.settingsMenuShowSettingsKey,
+                          identifier: MenuSettings.showSettingsKey,
                         ),
                       ],
                     ),

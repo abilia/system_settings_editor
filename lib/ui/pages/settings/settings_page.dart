@@ -10,6 +10,8 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     return SettingsBasePage(
+      icon: AbiliaIcons.settings,
+      title: t.settings,
       widgets: [
         if (Config.isMP) ...[
           MenuItemPickField(
@@ -66,11 +68,6 @@ class SettingsPage extends StatelessWidget {
         ],
         if (Config.alpha) const FakeTicker(),
       ],
-      icon: AbiliaIcons.settings,
-      title: t.settings,
-      bottomNavigationBar: Config.isMPGO
-          ? const BottomNavigation(backNavigationWidget: CloseButton())
-          : null,
     );
   }
 }

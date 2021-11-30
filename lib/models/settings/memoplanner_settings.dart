@@ -73,12 +73,6 @@ class MemoplannerSettings extends Equatable {
       functionMenuStartViewKey = 'function_menu_start_view',
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
       imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
-      settingsMenuShowCameraKey = 'settings_menu_show_camera',
-      settingsMenuShowPhotosKey = 'settings_menu_show_photos',
-      settingsMenuShowPhotoCalendarKey = 'settings_menu_show_photo_calendar',
-      settingsMenuShowTimersKey = 'settings_menu_show_timers',
-      settingsMenuShowQuickSettingsKey = 'settings_menu_show_quick_settings',
-      settingsMenuShowSettingsKey = 'settings_menu_show_settings',
       settingClockTypeKey = 'setting_clock_type',
       settingTimePillarTimelineKey = 'setting_time_pillar_timeline',
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
@@ -126,12 +120,6 @@ class MemoplannerSettings extends Equatable {
       useScreensaver,
       imageMenuDisplayPhotoItem,
       imageMenuDisplayCameraItem,
-      settingsMenuShowCamera,
-      settingsMenuShowPhotos,
-      settingsMenuShowPhotoCalendar,
-      settingsMenuShowTimers,
-      settingsMenuShowQuickSettings,
-      settingsMenuShowSettings,
       settingTimePillarTimeline,
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
@@ -163,6 +151,7 @@ class MemoplannerSettings extends Equatable {
   final AlarmSettings alarm;
   final WizardStepsSettings wizard;
   final CodeProtectSettings codeProtect;
+  final MenuSettings menu;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -225,12 +214,6 @@ class MemoplannerSettings extends Equatable {
     this.activityTimeout = 0,
     this.useScreensaver = false,
     this.functionMenuStartView = 0,
-    this.settingsMenuShowCamera = true,
-    this.settingsMenuShowPhotos = true,
-    this.settingsMenuShowPhotoCalendar = true,
-    this.settingsMenuShowTimers = true,
-    this.settingsMenuShowQuickSettings = true,
-    this.settingsMenuShowSettings = true,
     this.settingClockType = 0,
     this.settingTimePillarTimeline = false,
     this.settingViewOptionsTimeView = true,
@@ -239,6 +222,7 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsDurationDots = true,
     this.wizard = const WizardStepsSettings(),
     this.codeProtect = const CodeProtectSettings(),
+    this.menu = const MenuSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -346,24 +330,6 @@ class MemoplannerSettings extends Equatable {
       ),
       calendarActivityTypeShowColor: settings.getBool(
         calendarActivityTypeShowColorKey,
-      ),
-      settingsMenuShowCamera: settings.getBool(
-        settingsMenuShowCameraKey,
-      ),
-      settingsMenuShowPhotos: settings.getBool(
-        settingsMenuShowPhotosKey,
-      ),
-      settingsMenuShowPhotoCalendar: settings.getBool(
-        settingsMenuShowPhotoCalendarKey,
-      ),
-      settingsMenuShowTimers: settings.getBool(
-        settingsMenuShowTimersKey,
-      ),
-      settingsMenuShowQuickSettings: settings.getBool(
-        settingsMenuShowQuickSettingsKey,
-      ),
-      settingsMenuShowSettings: settings.getBool(
-        settingsMenuShowSettingsKey,
       ),
       setting12hTimeFormatTimeline: settings.getBool(
         setting12hTimeFormatTimelineKey,
@@ -485,6 +451,7 @@ class MemoplannerSettings extends Equatable {
       ),
       wizard: WizardStepsSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
+      menu: MenuSettings.fromSettingsMap(settings),
     );
   }
 
@@ -550,12 +517,6 @@ class MemoplannerSettings extends Equatable {
         functionMenuStartView,
         imageMenuDisplayPhotoItem,
         imageMenuDisplayCameraItem,
-        settingsMenuShowCamera,
-        settingsMenuShowPhotos,
-        settingsMenuShowPhotoCalendar,
-        settingsMenuShowTimers,
-        settingsMenuShowQuickSettings,
-        settingsMenuShowSettings,
         settingClockType,
         settingTimePillarTimeline,
         settingViewOptionsTimeView,
@@ -564,6 +525,7 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsDurationDots,
         wizard,
         codeProtect,
+        menu,
       ];
 }
 

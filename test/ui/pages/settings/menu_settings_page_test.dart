@@ -74,7 +74,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowCameraKey,
+        key: MenuSettings.showCameraKey,
         matcher: isFalse,
       );
     });
@@ -87,7 +87,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowPhotosKey,
+        key: MenuSettings.showPhotosKey,
         matcher: isFalse,
       );
     });
@@ -100,7 +100,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
+        key: MenuSettings.showPhotoCalendarKey,
         matcher: isFalse,
       );
     });
@@ -113,7 +113,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowTimersKey,
+        key: MenuSettings.showTimersKey,
         matcher: isFalse,
       );
     });
@@ -126,7 +126,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
+        key: MenuSettings.showQuickSettingsKey,
         matcher: isFalse,
       );
     });
@@ -142,7 +142,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowSettingsKey,
+        key: MenuSettings.showSettingsKey,
         matcher: isFalse,
       );
     });
@@ -153,7 +153,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
+            identifier: MenuSettings.showSettingsKey,
           ),
         ),
       ];
@@ -174,7 +174,7 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
-        key: MemoplannerSettings.settingsMenuShowSettingsKey,
+        key: MenuSettings.showSettingsKey,
         matcher: isTrue,
       );
     });
@@ -198,7 +198,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowCameraKey,
+            identifier: MenuSettings.showCameraKey,
           ),
         ),
       ];
@@ -211,7 +211,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
+            identifier: MenuSettings.showPhotosKey,
           ),
         ),
       ];
@@ -225,7 +225,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
+            identifier: MenuSettings.showPhotoCalendarKey,
           ),
         ),
       ];
@@ -239,7 +239,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowTimersKey,
+            identifier: MenuSettings.showTimersKey,
           ),
         ),
       ];
@@ -253,7 +253,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
+            identifier: MenuSettings.showQuickSettingsKey,
           ),
         ),
       ];
@@ -267,7 +267,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
+            identifier: MenuSettings.showSettingsKey,
           ),
         ),
       ];
@@ -282,7 +282,7 @@ void main() {
         Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
+            identifier: MenuSettings.showSettingsKey,
           ),
         ),
       ];
@@ -298,37 +298,37 @@ void main() {
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowCameraKey,
+          identifier: MenuSettings.showCameraKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowPhotosKey,
+          identifier: MenuSettings.showPhotosKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowPhotoCalendarKey,
+          identifier: MenuSettings.showPhotoCalendarKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowTimersKey,
+          identifier: MenuSettings.showTimersKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowQuickSettingsKey,
+          identifier: MenuSettings.showQuickSettingsKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MemoplannerSettings.settingsMenuShowSettingsKey,
+          identifier: MenuSettings.showSettingsKey,
         ),
       ),
     ];
