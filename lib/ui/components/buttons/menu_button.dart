@@ -9,8 +9,9 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, state) {
+    return BlocSelector<PermissionBloc, PermissionState, bool>(
+      selector: (state) => state.importantPermissionMissing,
+      builder: (context, importantPermissionMissing) {
         return Stack(
           clipBehavior: Clip.none,
           children: [
@@ -26,7 +27,7 @@ class MenuButton extends StatelessWidget {
               ),
               child: const Icon(AbiliaIcons.appMenu),
             ),
-            if (state.importantPermissionMissing)
+            if (importantPermissionMissing)
               Positioned(
                 top: -3.s,
                 right: -3.s,
