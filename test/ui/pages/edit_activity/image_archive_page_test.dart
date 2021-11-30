@@ -198,6 +198,33 @@ void main() {
       });
     });
 
+    testWidgets('Image archive heading', (WidgetTester tester) async {
+      when(() => mockSortableBloc.state).thenAnswer(
+        (_) => SortablesLoaded(
+          sortables: [
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(myPhotos: true),
+            ),
+          ],
+        ),
+      );
+
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
+      await tester.pumpAndSettle();
+
+      // Act -- go to myPhotos
+      await tester.tap(find.text(translate.myPhotos));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+            of: find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+            matching: find.text(translate.myPhotos)),
+        findsOneWidget,
+      );
+    });
+
     testWidgets(
         'Image archive with one image inside folder, folder is initialFolder',
         (WidgetTester tester) async {
