@@ -4,8 +4,6 @@ abstract class ActivitiesOccasionState extends Equatable {
   const ActivitiesOccasionState();
   @override
   List<Object> get props => [];
-  @override
-  bool get stringify => true;
 }
 
 class ActivitiesOccasionLoading extends ActivitiesOccasionState {
@@ -41,5 +39,6 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
       ];
 
   @override
-  bool get stringify => true;
+  String toString() =>
+      'ActivitiesOccasionLoaded {${activities.length} loaded, $occasion, ${yMd(day)} }';
 }
