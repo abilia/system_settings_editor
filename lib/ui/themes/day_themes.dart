@@ -9,7 +9,8 @@ class DayTheme {
       borderColor,
       monthColor,
       monthSurfaceColor,
-      monthPastColor;
+      monthPastColor,
+      monthPastHeadingColor;
   final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
@@ -17,6 +18,7 @@ class DayTheme {
     ThemeData theme,
     this.color,
     this.secondaryColor,
+    this.monthPastHeadingColor,
     bool background, {
     Color? onSurface,
     this.isColor = true,
@@ -42,16 +44,18 @@ class DayTheme {
   DayTheme._light(
     Color color,
     Color secondaryColor, {
+    Color? monthPastHeadingColor,
     Color? onSurface,
     background = true,
     isColor = true,
     Color? monthColor,
-    Color? monthSurfaceColor,
+    Color monthSurfaceColor = AbiliaColors.white,
     Color? monthPastColor,
   }) : this._(
           _lightAppBarTheme,
           color,
           secondaryColor,
+          monthPastHeadingColor ?? secondaryColor,
           background,
           onSurface: onSurface,
           isColor: isColor,
@@ -61,11 +65,16 @@ class DayTheme {
           monthPastColor: monthPastColor,
         );
 
-  DayTheme._dark(Color color, Color secondaryColor, {bool background = true})
-      : this._(
+  DayTheme._dark(
+    Color color,
+    Color secondaryColor, {
+    Color? monthPastHeadingColor,
+    bool background = true,
+  }) : this._(
           _darkAppBarTheme,
           color,
           secondaryColor,
+          monthPastHeadingColor ?? secondaryColor,
           background,
           isLight: false,
         );
@@ -74,6 +83,7 @@ class DayTheme {
 final _noColor = DayTheme._light(
       AbiliaColors.black80,
       AbiliaColors.white110,
+      monthPastHeadingColor: AbiliaColors.white140,
       onSurface: AbiliaColors.white,
       background: false,
       isColor: false,
@@ -82,7 +92,7 @@ final _noColor = DayTheme._light(
       monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white, AbiliaColors.white110,
-        background: false),
+        monthPastHeadingColor: AbiliaColors.white, background: false),
     _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
     _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
     _blue = DayTheme._light(AbiliaColors.blue, AbiliaColors.tuesdayBlue40),

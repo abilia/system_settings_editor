@@ -240,8 +240,9 @@ void main() {
   group('respected in month calendar', () {
     testWidgets('defaults', (tester) async {
       await tester.goToMonthCalendar();
-      final dayContainer =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
+      final dayContainer = tester.firstWidget<MonthDayContainer>(
+          find.byWidgetPredicate((widget) =>
+              widget is MonthDayContainer && widget.day?.isPast == false));
       expect(dayContainer.color, isNot(AbiliaColors.white110));
     });
 

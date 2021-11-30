@@ -231,6 +231,10 @@ class MonthDayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final headingTextStyle = dayTheme.theme.textTheme.subtitle2 ?? subtitle2;
+    final headingTextStyleCorrectColor = day.isPast
+        ? headingTextStyle.copyWith(color: AbiliaColors.black)
+        : headingTextStyle;
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -258,19 +262,25 @@ class MonthDayView extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: dayTheme.color,
+                    color: day.isPast
+                        ? dayTheme.monthPastHeadingColor
+                        : dayTheme.color,
                     borderRadius: BorderRadius.vertical(top: monthDayRadius),
                   ),
                   height: 24.s,
                   padding: EdgeInsets.symmetric(horizontal: 4.s),
                   child: DefaultTextStyle(
-                    style: dayTheme.theme.textTheme.subtitle2!,
+                    style: headingTextStyleCorrectColor,
                     child: Row(
                       children: [
                         Text('${day.day.day}'),
                         const Spacer(),
                         if (day.hasActivities)
-                          ColorDot(color: dayTheme.theme.colorScheme.onSurface),
+                          ColorDot(
+                            color: day.isPast
+                                ? AbiliaColors.black
+                                : dayTheme.theme.colorScheme.onSurface,
+                          ),
                       ],
                     ),
                   ),
@@ -281,9 +291,11 @@ class MonthDayView extends StatelessWidget {
                     buildWhen: (previous, current) =>
                         previous.monthWeekColor != current.monthWeekColor,
                     builder: (context, settingState) => MonthDayContainer(
-                      color: settingState.monthWeekColor == WeekColor.columns
-                          ? dayTheme.secondaryColor
-                          : AbiliaColors.white110,
+                      color:
+                          settingState.monthWeekColor == WeekColor.captions ||
+                                  day.isPast
+                              ? AbiliaColors.white110
+                              : dayTheme.secondaryColor,
                       day: day,
                     ),
                   ),
@@ -346,7 +358,10 @@ class MonthDayContainer extends StatelessWidget {
                       MonthActivityContent(
                         activityDay: d.fullDayActivity!,
                       ),
-                    if (d.isPast) const CrossOver(),
+                    if (d.isPast)
+                      const CrossOver(
+                        color: AbiliaColors.transparentBlack30,
+                      ),
                   ],
                 )
               : null,
