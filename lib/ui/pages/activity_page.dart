@@ -7,25 +7,30 @@ import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActivityPage extends StatelessWidget {
-  final ActivityOccasion occasion;
+  final ActivityDay activityDay;
   final Widget? previewImage;
 
   const ActivityPage({
     Key? key,
-    required this.occasion,
+    required this.activityDay,
     this.previewImage,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesBloc, ActivitiesState>(
-      builder: (context, state) {
-        final activityOccasion = occasion.fromActivitiesState(state);
+    return BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+      selector: (activitiesState) {
+        final a =
+            activitiesState.newActivityFromLoadedOrGiven(activityDay.activity);
+        return ActivityDay(
+          a,
+          a.isRecurring ? activityDay.day : a.startTime,
+        );
+      },
+      builder: (context, ad) {
         return Scaffold(
           appBar: DayAppBar(
-            day: activityOccasion.activity.isRecurring
-                ? activityOccasion.day
-                : activityOccasion.activity.startTime,
+            day: ad.day,
             leftAction: ActionButton(
               key: TestKey.activityBackButton,
               onPressed: () => Navigator.of(context).maybePop(),
@@ -36,12 +41,11 @@ class ActivityPage extends StatelessWidget {
             padding: EdgeInsets.all(ActivityInfo.margin)
                 .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
             child: ActivityInfoWithDots(
-              activityOccasion,
+              ad,
               previewImage: previewImage,
             ),
           ),
-          bottomNavigationBar:
-              ActivityBottomAppBar(activityOccasion: activityOccasion),
+          bottomNavigationBar: ActivityBottomAppBar(activityDay: ad),
         );
       },
     );
@@ -51,21 +55,21 @@ class ActivityPage extends StatelessWidget {
 class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   const ActivityBottomAppBar({
     Key? key,
-    required this.activityOccasion,
+    required this.activityDay,
   }) : super(key: key);
 
-  final ActivityOccasion activityOccasion;
+  final ActivityDay activityDay;
 
   @override
   Widget build(BuildContext context) {
-    final activity = activityOccasion.activity;
+    final activity = activityDay.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) {
         final displayDeleteButton = memoSettingsState.displayDeleteButton;
         final displayEditButton = memoSettingsState.displayEditButton;
         final displayAlarmButton =
             memoSettingsState.displayAlarmButton && !activity.fullDay;
-        final displayUncheckButton = activityOccasion.isSignedOff;
+        final displayUncheckButton = activityDay.isSignedOff;
         final numberOfButtons = [
           displayDeleteButton,
           displayEditButton,
@@ -90,7 +94,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                       onPressed: () async {
                         await checkConfirmation(
                           context,
-                          activityOccasion,
+                          activityDay,
                         );
                       },
                       child: const Icon(AbiliaIcons.handiUncheck),
@@ -100,7 +104,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                       key: TestKey.editAlarm,
                       onPressed: () => _alarmButtonPressed(
                         context,
-                        activityOccasion,
+                        activityDay,
                       ),
                       child: Icon(activity.alarm.iconData()),
                     ),
@@ -114,7 +118,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     ),
                   if (displayEditButton)
                     EditActivityButton(
-                      activityOccasion: activityOccasion,
+                      activityDay: activityDay,
                       settings: memoSettingsState,
                     ),
                 ],
@@ -128,15 +132,15 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
   Future<void> _alarmButtonPressed(
     BuildContext context,
-    ActivityOccasion activityOccasion,
+    ActivityDay activityDay,
   ) async {
-    final activity = activityOccasion.activity;
+    final activity = activityDay.activity;
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
         builder: (_) => CopiedAuthProviders(
           blocContext: context,
           child: BlocProvider<EditActivityBloc>(
-            create: (_) => EditActivityBloc.edit(activityOccasion),
+            create: (_) => EditActivityBloc.edit(activityDay),
             child: SelectAlarmPage(activity: activity),
           ),
         ),
@@ -161,7 +165,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           UpdateRecurringActivity(
             ActivityDay(
               result,
-              activityOccasion.day,
+              activityDay.day,
             ),
             applyTo,
           ),
@@ -200,7 +204,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         if (applyTo == null) return;
         activitiesBloc.add(
           DeleteRecurringActivity(
-            activityOccasion,
+            activityDay,
             applyTo,
           ),
         );
@@ -215,11 +219,11 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 class EditActivityButton extends StatelessWidget {
   const EditActivityButton({
     Key? key,
-    required this.activityOccasion,
+    required this.activityDay,
     required this.settings,
   }) : super(key: key);
 
-  final ActivityOccasion activityOccasion;
+  final ActivityDay activityDay;
   final MemoplannerSettingsState settings;
 
   @override
@@ -233,7 +237,7 @@ class EditActivityButton extends StatelessWidget {
               child: MultiBlocProvider(
                 providers: [
                   BlocProvider<EditActivityBloc>(
-                    create: (_) => EditActivityBloc.edit(activityOccasion),
+                    create: (_) => EditActivityBloc.edit(activityDay),
                   ),
                   BlocProvider(
                     create: (context) => ActivityWizardCubit.edit(
@@ -247,8 +251,7 @@ class EditActivityButton extends StatelessWidget {
                 child: const ActivityWizardPage(),
               ),
             ),
-            settings:
-                RouteSettings(name: '$ActivityWizardPage $activityOccasion'),
+            settings: RouteSettings(name: '$ActivityWizardPage $activityDay'),
           ),
         );
       },

@@ -15,27 +15,25 @@ class ActivityInfoWithDots extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, settingsState) {
-        final displayQuarter = settingsState.displayQuarterHour;
-        return Row(
+  Widget build(BuildContext context) =>
+      BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+        selector: (state) => state.displayQuarterHour,
+        builder: (context, displayQuarter) => Row(
           children: <Widget>[
             if (displayQuarter) ActivityInfoSideDots(activityDay),
             Expanded(
-                child: Padding(
-              padding: EdgeInsets.only(
-                  left: displayQuarter ? 0 : ActivityInfo.margin),
-              child: ActivityInfo(
-                activityDay,
-                previewImage: previewImage,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: displayQuarter ? 0 : ActivityInfo.margin),
+                child: ActivityInfo(
+                  activityDay,
+                  previewImage: previewImage,
+                ),
               ),
-            )),
+            ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
 }
 
 class ActivityInfo extends StatefulWidget {
@@ -112,20 +110,20 @@ mixin ActivityMixin {
   static final _log = Logger((ActivityMixin).toString());
   Future<bool?> checkConfirmation(
     BuildContext context,
-    ActivityOccasion activityOccasion, {
+    ActivityDay activityDay, {
     String? message,
   }) async {
     final check = await showViewDialog<bool>(
       context: context,
       builder: (_) => CheckActivityConfirmDialog(
-        activityOccasion: activityOccasion,
+        activityDay: activityDay,
         message: message,
       ),
     );
     if (check == true) {
       context.read<ActivitiesBloc>().add(
             UpdateActivity(
-              activityOccasion.activity.signOff(activityOccasion.day),
+              activityDay.activity.signOff(activityDay.day),
             ),
           );
     }

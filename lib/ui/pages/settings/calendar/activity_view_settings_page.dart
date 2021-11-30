@@ -169,7 +169,7 @@ class ActivityPagePreview extends StatelessWidget {
                     initialTime: time,
                   ),
                   child: ActivityPage(
-                    occasion: ActivityOccasion(
+                    activityDay: ActivityDay(
                       Activity.createNew(
                           title: Translator.of(context)
                               .translate
@@ -177,7 +177,6 @@ class ActivityPagePreview extends StatelessWidget {
                           startTime: startTime,
                           duration: const Duration(hours: 1)),
                       startTime,
-                      Occasion.future,
                     ),
                     previewImage: const Image(
                       image: AssetImage('assets/graphics/cake.gif'),

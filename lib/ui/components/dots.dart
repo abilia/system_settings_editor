@@ -225,9 +225,8 @@ class ActivityInfoSideDots extends StatelessWidget {
               child: child,
             ),
           ),
-          child: !shouldHaveSideDots
-              ? const SizedBox()
-              : now.isBefore(startTime)
+          child: shouldHaveSideDots
+              ? now.isBefore(startTime)
                   ? SideDotsLarge(
                       dots: dots,
                       startTime: startTime.subtract(hours.hours()),
@@ -239,7 +238,8 @@ class ActivityInfoSideDots extends StatelessWidget {
                       startTime: startTime,
                       endTime: endTime,
                       now: now,
-                    ),
+                    )
+              : const SizedBox.shrink(),
         );
       }),
     );
