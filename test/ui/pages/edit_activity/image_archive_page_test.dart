@@ -199,12 +199,14 @@ void main() {
     });
 
     testWidgets('Image archive heading', (WidgetTester tester) async {
+      const folderName = 'Folder Name';
+
       when(() => mockSortableBloc.state).thenAnswer(
         (_) => SortablesLoaded(
           sortables: [
             Sortable.createNew<ImageArchiveData>(
               isGroup: true,
-              data: const ImageArchiveData(myPhotos: true),
+              data: const ImageArchiveData(name: folderName),
             ),
           ],
         ),
@@ -213,16 +215,36 @@ void main() {
       await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
       await tester.pumpAndSettle();
 
-      // Act -- go to myPhotos
-      await tester.tap(find.text(translate.myPhotos));
+      // Act -- go to folder
+      await tester.tap(find.text(folderName));
       await tester.pumpAndSettle();
 
       expect(
         find.descendant(
             of: find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
-            matching: find.text(translate.myPhotos)),
+            matching: find.text(folderName)),
         findsOneWidget,
       );
+    });
+
+    testWidgets('MyPhotos folder hidden in ImageArchivePage',
+        (WidgetTester tester) async {
+      const myPhotosFolderName = 'MyPhotos';
+      when(() => mockSortableBloc.state).thenAnswer(
+        (_) => SortablesLoaded(
+          sortables: [
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(
+                  name: myPhotosFolderName, myPhotos: true),
+            ),
+          ],
+        ),
+      );
+
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
+      await tester.pumpAndSettle();
+      expect(find.byType(LibraryFolder), findsNothing);
     });
 
     testWidgets(
