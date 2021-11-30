@@ -145,6 +145,12 @@ class MonthDayViewCompact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
+    final textWithCorrectColor = day.isPast
+        ? textStyle.copyWith(color: AbiliaColors.black)
+        : textStyle.copyWith(
+            color: dayTheme.monthSurfaceColor,
+          );
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -174,22 +180,23 @@ class MonthDayViewCompact extends StatelessWidget {
             ),
             padding: EdgeInsets.all(4.s),
             child: DefaultTextStyle(
-              style: dayTheme.theme.textTheme.subtitle2!
-                  .copyWith(color: dayTheme.monthSurfaceColor),
+              style: textWithCorrectColor,
               child: Stack(
                 children: [
                   Center(child: Text('${day.day.day}')),
                   if (day.hasActivities)
-                    Align(
+                    const Align(
                       alignment: Alignment.topRight,
                       child: ColorDot(
-                        color: dayTheme.monthSurfaceColor,
+                        color: AbiliaColors.black,
                       ),
                     ),
                   if (day.isPast)
                     Padding(
-                      padding: EdgeInsets.all(8.s),
-                      child: const CrossOver(),
+                      padding: EdgeInsets.all(4.s),
+                      child: const CrossOver(
+                        color: AbiliaColors.transparentBlack30,
+                      ),
                     ),
                 ],
               ),
