@@ -81,17 +81,22 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 }
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
-  LibraryHeading({
+  const LibraryHeading({
     Key? key,
     required this.sortableArchiveState,
-    required String? rootHeading,
-  })  : heading = _getLibraryHeading(sortableArchiveState, rootHeading) ?? '',
-        super(key: key);
+    this.rootHeading,
+  }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
-  final String heading;
+  final String? rootHeading;
 
   @override
   Widget build(BuildContext context) {
+    String heading = _getLibraryHeading(
+          sortableArchiveState,
+          rootHeading,
+          Translator.of(context).translate.myPhotos,
+        ) ??
+        '';
     return Tts.data(
       data: heading,
       child: Padding(
@@ -125,12 +130,16 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   static String? _getLibraryHeading(
     SortableArchiveState state,
     String? rootHeading,
+    String myPhotoHeading,
   ) {
     if (state.isAtRootAndNoSelection) {
       return rootHeading;
     }
     if (state.isSelected) {
       return state.selected?.data.title();
+    }
+    if (state.inMyPhotos) {
+      return myPhotoHeading;
     }
     return state.allById[state.currentFolderId]?.data.title();
   }
