@@ -31,7 +31,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v9.1.2-fork-1.13
+      ref: flutter_local_notifications-v9.1.4-fork-1.16
       path: flutter_local_notifications/
   flutter_native_timezone: ^2.0.0
   flutter_ringtone_player: ^3.1.0
