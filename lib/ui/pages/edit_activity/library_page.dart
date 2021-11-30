@@ -5,9 +5,6 @@ import 'package:seagull/ui/all.dart';
 typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
-typedef LibraryItemVisibility<T extends SortableData> = bool Function(
-    Sortable<T>);
-
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage({
     Key? key,
@@ -16,7 +13,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.emptyLibraryMessage,
     required this.onOk,
     this.libraryFolderGenerator,
-    this.libraryFolderVisibility,
     this.onCancel,
     this.appBar,
     this.rootHeading,
@@ -28,7 +24,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T> selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
   final LibraryItemGenerator<T>? libraryFolderGenerator;
-  final LibraryItemVisibility<T>? libraryFolderVisibility;
   final String emptyLibraryMessage;
   final String? rootHeading;
   final String initialFolder;
@@ -66,7 +61,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                           libraryItemGenerator,
                           emptyLibraryMessage,
                           libraryFolderGenerator: libraryFolderGenerator,
-                          libraryFolderVisibility: libraryFolderVisibility,
                         ),
                 ),
               ],
@@ -165,14 +159,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final LibraryItemGenerator<T>? libraryFolderGenerator;
-  final LibraryItemVisibility<T>? libraryFolderVisibility;
   final String emptyLibraryMessage;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.libraryFolderGenerator,
-    this.libraryFolderVisibility,
     Key? key,
   }) : super(key: key);
 
@@ -196,11 +188,6 @@ class _SortableLibraryState<T extends SortableData>
       builder: (context, archiveState) {
         final currentFolderContent =
             archiveState.allByFolder[archiveState.currentFolderId] ?? [];
-        final libraryFolderVisibility = widget.libraryFolderVisibility;
-        if (libraryFolderVisibility != null) {
-          currentFolderContent
-              .removeWhere((sortable) => !libraryFolderVisibility(sortable));
-        }
         currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         if (currentFolderContent.isEmpty) {
           return EmptyLibraryMessage(

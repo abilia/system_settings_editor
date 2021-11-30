@@ -32,7 +32,15 @@ class SortableArchiveBloc<T extends SortableData>
     SortableArchiveEvent event,
   ) async* {
     if (event is SortablesUpdated) {
-      final sortableArchive = event.sortables.whereType<Sortable<T>>();
+      final sortableArchive =
+          event.sortables.whereType<Sortable<T>>().where((sortable) {
+        final data = sortable.data;
+        if (data is ImageArchiveData) {
+          return !data.myPhotos;
+        } else {
+          return true;
+        }
+      });
       final allByFolder =
           groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId);
       final allById = {for (var s in sortableArchive) s.id: s};
