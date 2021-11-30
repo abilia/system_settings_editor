@@ -99,27 +99,28 @@ class GetItInitializer {
 
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
-        _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))..registerSingleton<
-        TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))..registerSingleton<
-        LicenseDb>(
-        _licenseDb ?? LicenseDb(_sharedPreferences))..registerSingleton<
-        FirebasePushService>(_firebasePushService)..registerSingleton<
-        ActivityDb>(_activityDb ?? ActivityDb(_database))..registerSingleton<
-        UserDb>(_userDb ?? UserDb(_sharedPreferences))..registerSingleton<
-        Database>(_database)..registerSingleton<SeagullLogger>(
-        _seagullLogger)..registerSingleton<BaseUrlDb>(
-        _baseUrlDb ?? BaseUrlDb(_sharedPreferences))..registerSingleton<Ticker>(
-        _ticker)..registerSingleton<AlarmNavigator>(
-        _alarmNavigator)..registerSingleton<SortableDb>(
-        _sortableDb ?? SortableDb(_database))..registerSingleton<GenericDb>(
-        _genericDb ?? GenericDb(_database))..registerSingleton<UserFileDb>(
-        _userFileDb ?? UserFileDb(_database))..registerSingleton<SettingsDb>(
+        _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
+    ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
+    ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
+    ..registerSingleton<FirebasePushService>(_firebasePushService)
+    ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
+    ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
+    ..registerSingleton<Database>(_database)
+    ..registerSingleton<SeagullLogger>(_seagullLogger)
+    ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+    ..registerSingleton<Ticker>(_ticker)
+    ..registerSingleton<AlarmNavigator>(_alarmNavigator)
+    ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
+    ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
+    ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
+    ..registerSingleton<SettingsDb>(
       _settingsDb ?? SettingsDb(_sharedPreferences),
-    )..registerSingleton<FileStorage>(
-        _fileStorage ??
-            FileStorage(_documentsDirectory?.path))..registerSingleton<
-        MultipartRequestBuilder>(_multipartRequestBuilder)..registerSingleton<
-        SyncDelays>(_syncDelay)..registerSingleton<FlutterTts>(
-        _flutterTts)..registerSingleton<PackageInfo>(
-        _packageInfo)..registerSingleton<Battery>(_battery);
+    )
+    ..registerSingleton<FileStorage>(
+        _fileStorage ?? FileStorage(_documentsDirectory?.path))
+    ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
+    ..registerSingleton<SyncDelays>(_syncDelay)
+    ..registerSingleton<FlutterTts>(_flutterTts)
+    ..registerSingleton<PackageInfo>(_packageInfo)
+    ..registerSingleton<Battery>(_battery);
 }

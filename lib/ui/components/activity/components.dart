@@ -402,7 +402,7 @@ class SelectableField extends StatelessWidget {
                                 ),
                       child: selected
                           ? Icon(
-                        AbiliaIcons.radiocheckboxSelected,
+                              AbiliaIcons.radiocheckboxSelected,
                               color: AbiliaColors.green,
                               size: layout.iconSize.small,
                             )

@@ -98,7 +98,7 @@ class ActivityBoard extends StatelessWidget {
       final top = topOffset + topMargin + ts.topPadding;
 
       ActivityTimepillarCard card(int col) => ActivityTimepillarCard(
-        key: ObjectKey(ao),
+            key: ObjectKey(ao),
             activityOccasion: ao,
             dots: dots,
             top: top,

@@ -44,15 +44,21 @@ class TimepillarState extends Equatable {
   double get dotDistance => (_dotSize + _dotPadding) * zoom;
 
   double get hourHeight => _dotDistance * dotsPerHour * zoom;
+
   double get hourPadding => _hourPadding * zoom;
+
   double get dotPadding => _dotPadding * zoom;
 
   // Timepillar
   double get timePillarPadding => _timePillarPadding * zoom;
+
   double get timePillarWidth => defaultTimePillarWidth * zoom;
+
   double get timePillarTotalWidth =>
       (defaultTimePillarWidth + _timePillarPadding * 2) * zoom;
+
   double get topPadding => 2 * hourPadding;
+
   bool get intervalSpansMidnight =>
       timepillarInterval.endTime.isDayAfter(timepillarInterval.startTime);
 

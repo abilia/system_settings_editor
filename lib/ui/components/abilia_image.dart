@@ -48,7 +48,7 @@ class ActivityImage extends StatelessWidget {
               fit: fit,
             )
           : ActivityImage(
-        key: key,
+              key: key,
               activityDay: activityOccasion,
               past: activityOccasion.occasion == Occasion.past,
               imageSize: imageSize,
