@@ -194,6 +194,10 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
+  final String hoursCap = 'Hours';
+
+  final String minutesCap = 'Minutes';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1026,6 +1030,12 @@ class SV extends Translated {
 
   @override
   final String timeNightTts = '%s på natten';
+
+  @override
+  final String hoursCap = 'Timmar';
+
+  @override
+  final String minutesCap = 'Minuter';
 
   @override
   final String reminders = 'Påminnelser';
@@ -2133,6 +2143,12 @@ class DA extends Translated {
 
   @override
   final String timeNightTts = '%s om natten';
+
+  @override
+  final String hoursCap = 'Timer';
+
+  @override
+  final String minutesCap = 'Minutter';
 
   @override
   final String reminders = 'Påmindelser';
@@ -3243,6 +3259,12 @@ class NL extends Translated {
   final String timeNightTts = "%s 's nachts";
 
   @override
+  final String hoursCap = 'Uur';
+
+  @override
+  final String minutesCap = 'Minuten';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -4348,6 +4370,12 @@ class FI extends Translated {
 
   @override
   final String timeNightTts = '%s yöllä';
+
+  @override
+  final String hoursCap = 'Tunnit';
+
+  @override
+  final String minutesCap = 'Minuuttia';
 
   @override
   final String reminders = 'Muistutukset';
@@ -5460,6 +5488,12 @@ class DE extends Translated {
   final String timeNightTts = '%s abends';
 
   @override
+  final String hoursCap = 'Stunden';
+
+  @override
+  final String minutesCap = 'Minuten';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -6568,6 +6602,12 @@ class NB extends Translated {
 
   @override
   final String timeNightTts = '%s på natten';
+
+  @override
+  final String hoursCap = 'Timer';
+
+  @override
+  final String minutesCap = 'Minutter';
 
   @override
   final String reminders = 'Påminnelser';
