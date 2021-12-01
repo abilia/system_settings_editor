@@ -82,7 +82,7 @@ class DayTheme {
 }
 
 final _noColor = DayTheme._light(
-  AbiliaColors.black80,
+      AbiliaColors.black80,
       AbiliaColors.white110,
       monthPastHeadingColor: AbiliaColors.white140,
       onSurface: AbiliaColors.white,

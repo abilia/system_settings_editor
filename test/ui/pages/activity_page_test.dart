@@ -316,7 +316,7 @@ void main() {
         'Change date for recurring activities only option is Only this day',
         (WidgetTester tester) async {
       // Arrange
-          const day = 19;
+      const day = 19;
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);
