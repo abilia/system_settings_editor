@@ -36,6 +36,7 @@ class ImageArchivePage extends StatelessWidget {
               fileId: imageArchive.data.folderFileId(),
               filePath: imageArchive.data.folderFilePath(),
             ),
+      visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),
       emptyLibraryMessage: translate.noImages,

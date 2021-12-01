@@ -13,9 +13,12 @@ part 'sortable_archive_state.dart';
 class SortableArchiveBloc<T extends SortableData>
     extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
   late final StreamSubscription sortableSubscription;
+  final bool Function(Sortable<T>)? visibilityFilter;
 
-  SortableArchiveBloc({required SortableBloc sortableBloc})
-      : super(SortableArchiveState<T>(const {}, const {})) {
+  SortableArchiveBloc({
+    required SortableBloc sortableBloc,
+    this.visibilityFilter,
+  }) : super(SortableArchiveState<T>(const {}, const {})) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
@@ -32,11 +35,9 @@ class SortableArchiveBloc<T extends SortableData>
     SortableArchiveEvent event,
   ) async* {
     if (event is SortablesUpdated) {
-      final sortableArchive =
-          event.sortables.whereType<Sortable<T>>().whereNot((sortable) {
-        final data = sortable.data;
-        return (data is ImageArchiveData && data.myPhotos);
-      });
+      final sortableArchive = event.sortables
+          .whereType<Sortable<T>>()
+          .where(visibilityFilter ?? (_) => true);
       final allByFolder =
           groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId);
       final allById = {for (var s in sortableArchive) s.id: s};
