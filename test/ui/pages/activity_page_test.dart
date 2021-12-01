@@ -288,7 +288,7 @@ void main() {
         'Change date in edit activity show in activity page for recurring activities',
         (WidgetTester tester) async {
       // Arrange
-          const day = 14;
+      const day = 14;
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);

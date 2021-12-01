@@ -53,7 +53,7 @@ class DayTheme {
     Color monthSurfaceColor = AbiliaColors.white,
     Color? monthPastColor,
   }) : this._(
-    _lightAppBarTheme,
+          _lightAppBarTheme,
           color,
           secondaryColor,
           monthPastHeadingColor ?? secondaryColor,

@@ -162,25 +162,25 @@ class MonthDayViewCompact extends StatelessWidget {
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
-                  border: currentBorder,
-                  borderRadius: MonthDayView.monthDayborderRadius,
-                )
-                    : dayPickerState.day.isAtSameDay(day.day)
+                    border: currentBorder,
+                    borderRadius: MonthDayView.monthDayborderRadius,
+                  )
+                : dayPickerState.day.isAtSameDay(day.day)
                     ? BoxDecoration(
-                  border: selectedActivityBorder,
-                  borderRadius: MonthDayView.monthDayborderRadius,
-                )
+                        border: selectedActivityBorder,
+                        borderRadius: MonthDayView.monthDayborderRadius,
+                      )
                     : BoxDecoration(
-                  border: transparentBlackBorder,
-                  borderRadius: MonthDayView.monthDayborderRadius,
-                ),
-                decoration: BoxDecoration(
-                  color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
-                  borderRadius: MonthDayView.monthDayborderRadius,
-                ),
-                padding: EdgeInsets.all(4.s),
-                child: DefaultTextStyle(
-                  style: textWithCorrectColor,
+                        border: transparentBlackBorder,
+                        borderRadius: MonthDayView.monthDayborderRadius,
+                      ),
+            decoration: BoxDecoration(
+              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
+              borderRadius: MonthDayView.monthDayborderRadius,
+            ),
+            padding: EdgeInsets.all(4.s),
+            child: DefaultTextStyle(
+              style: textWithCorrectColor,
               child: Stack(
                 children: [
                   Center(child: Text('${day.day.day}')),
@@ -192,16 +192,16 @@ class MonthDayViewCompact extends StatelessWidget {
                       ),
                     ),
                   if (day.isPast)
-                        Padding(
+                    Padding(
                       padding: EdgeInsets.all(4.s),
                       child: const CrossOver(
                         color: AbiliaColors.transparentBlack30,
                       ),
                     ),
-                    ],
-                  ),
-                ),
+                ],
               ),
+            ),
+          ),
         ),
       ),
     );

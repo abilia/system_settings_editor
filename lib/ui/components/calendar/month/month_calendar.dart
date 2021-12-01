@@ -248,15 +248,15 @@ class MonthDayView extends StatelessWidget {
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
-              border: currentBorder,
-              borderRadius: monthDayborderRadius,
-            )
+                    border: currentBorder,
+                    borderRadius: monthDayborderRadius,
+                  )
                 : dayPickerState.day.isAtSameDay(day.day)
-                ? BoxDecoration(
-              border: selectedActivityBorder,
-              borderRadius: monthDayborderRadius,
-            )
-                : null,
+                    ? BoxDecoration(
+                        border: selectedActivityBorder,
+                        borderRadius: monthDayborderRadius,
+                      )
+                    : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -289,7 +289,7 @@ class MonthDayView extends StatelessWidget {
                   child: BlocBuilder<MemoplannerSettingBloc,
                       MemoplannerSettingsState>(
                     buildWhen: (previous, current) =>
-                    previous.monthWeekColor != current.monthWeekColor,
+                        previous.monthWeekColor != current.monthWeekColor,
                     builder: (context, settingState) => MonthDayContainer(
                       color:
                           settingState.monthWeekColor == WeekColor.captions ||
