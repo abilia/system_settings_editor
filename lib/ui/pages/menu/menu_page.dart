@@ -182,19 +182,34 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MenuItemButton(
-      style: actionButtonStyleBlack,
-      text: Translator.of(context).translate.settings,
-      icon: AbiliaIcons.settings,
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
-            child: const SettingsPage(),
-          ),
-          settings: const RouteSettings(name: 'SettingsPage'),
-        ),
-      ),
+    return BlocSelector<PermissionBloc, PermissionState, bool>(
+      selector: (state) => state.importantPermissionMissing,
+      builder: (context, importantPermissionMissing) {
+        return Stack(
+          children: [
+            MenuItemButton(
+              style: actionButtonStyleBlack,
+              text: Translator.of(context).translate.settings,
+              icon: AbiliaIcons.settings,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CopiedAuthProviders(
+                    blocContext: context,
+                    child: const SettingsPage(),
+                  ),
+                  settings: const RouteSettings(name: 'SettingsPage'),
+                ),
+              ),
+            ),
+            if (importantPermissionMissing)
+              Positioned(
+                top: 4.s,
+                right: 4.s,
+                child: const OrangeDot(),
+              ),
+          ],
+        );
+      },
     );
   }
 }
