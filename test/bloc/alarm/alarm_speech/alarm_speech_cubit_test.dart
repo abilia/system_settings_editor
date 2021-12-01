@@ -138,7 +138,6 @@ void main() {
       setUp: () => activeNotifications = [
         ActiveNotification(
           startAlarm.hashCode,
-          'groupKey',
           'channelId',
           'title',
           'body',
@@ -166,7 +165,6 @@ void main() {
       setUp: () => activeNotifications = [
         ActiveNotification(
           startAlarm.hashCode,
-          'groupKey',
           'channelId',
           'title',
           'body',
