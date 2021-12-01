@@ -21,19 +21,21 @@ class MenuPage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
-        child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-          builder: (context, state) {
+        child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+            MenuSettings>(
+          selector: (state) => state.settings.menu,
+          builder: (context, menu) {
             return GridView.count(
               crossAxisSpacing: 7.5.s,
               mainAxisSpacing: 7.s,
               crossAxisCount: 3,
               children: [
-                if (state.displayMenuCamera) const CameraButton(),
-                if (state.displayMenuMyPhotos) const MyPhotosButton(),
-                if (state.displayMenuPhotoCalendar) const PhotoCalendarButton(),
-                if (state.displayMenuCountdown) const CountdownButton(),
-                if (state.displayMenuQuickSettings) const QuickSettingsButton(),
-                if (state.displayMenuSettings) const SettingsButton(),
+                if (menu.showCamera) const CameraButton(),
+                if (menu.showPhotos) const MyPhotosButton(),
+                if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
+                if (menu.timersEnabled) const CountdownButton(),
+                if (menu.quickSettingsEnabled) const QuickSettingsButton(),
+                if (menu.showSettings) const SettingsButton(),
               ],
             );
           },

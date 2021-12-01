@@ -281,9 +281,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(MenuButton));
       await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.settings));
+      await tester.pumpAndSettle();
       if (Config.isMP) {
-        await tester.tap(find.byIcon(AbiliaIcons.settings));
-        await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
         await tester.pumpAndSettle();
       }

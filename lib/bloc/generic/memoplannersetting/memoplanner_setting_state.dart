@@ -48,26 +48,13 @@ abstract class MemoplannerSettingsState extends Equatable {
       displayWeekCalendar;
   bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
   bool get displayMenu =>
-      settings.functionMenuDisplayMenu && !allMenuItemsDisabled;
+      settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
   bool get useScreensaver => settings.useScreensaver;
   bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
 
-  bool get settingsInaccessible => !displayMenu || !displayMenuSettings;
+  bool get settingsInaccessible => !displayMenu || !settings.menu.showSettings;
 
-  bool get allMenuItemsDisabled =>
-      !displayMenuCamera &&
-      !displayMenuMyPhotos &&
-      !displayMenuPhotoCalendar &&
-      !displayMenuCountdown &&
-      !displayMenuQuickSettings &&
-      !displayMenuSettings;
-  bool get displayMenuCamera => settings.settingsMenuShowCamera;
-  bool get displayMenuMyPhotos => settings.settingsMenuShowPhotos;
-  bool get displayMenuPhotoCalendar => settings.settingsMenuShowPhotoCalendar;
-  bool get displayMenuCountdown => settings.settingsMenuShowTimers;
-  bool get displayMenuQuickSettings => settings.settingsMenuShowQuickSettings;
-  bool get displayMenuSettings => settings.settingsMenuShowSettings;
   bool get dotsInTimepillar => settings.dotsInTimepillar;
   bool get settingViewOptionsTimeView => settings.settingViewOptionsTimeView;
   bool get settingViewOptionsTimeInterval =>

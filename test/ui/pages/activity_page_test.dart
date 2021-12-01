@@ -243,6 +243,16 @@ void main() {
       expect(find.text(newTitle), findsOneWidget);
     });
 
+    Future _changeDate(WidgetTester tester, int day) async {
+      await tester.tap(find.byType(DatePicker));
+      await tester.pumpAndSettle();
+      await tester.tap(find.ancestor(
+          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+    }
+
     testWidgets(
         'Change date in edit activity shows in activity page for non recurring activities',
         (WidgetTester tester) async {
@@ -259,13 +269,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(DatePicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.text('$day'), matching: find.byType(MonthDayView)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      await _changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -284,7 +288,7 @@ void main() {
         'Change date in edit activity show in activity page for recurring activities',
         (WidgetTester tester) async {
       // Arrange
-      const day = 14;
+          const day = 14;
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);
@@ -293,13 +297,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(DatePicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.text('$day'), matching: find.byType(MonthDayView)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      await _changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -318,7 +316,7 @@ void main() {
         'Change date for recurring activities only option is Only this day',
         (WidgetTester tester) async {
       // Arrange
-      const day = 19;
+          const day = 19;
       when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
           Future.value(<Activity>[FakeActivity.reocurrsEveryDay(startTime)]));
       await navigateToActivityPage(tester);
@@ -327,13 +325,7 @@ void main() {
       await tester.tap(editActivityButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(DatePicker));
-      await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.text('$day'), matching: find.byType(MonthDayView)));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
+      await _changeDate(tester, day);
 
       await tester.tap(finishActivityFinder);
       await tester.pumpAndSettle();
@@ -342,6 +334,66 @@ void main() {
       expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
       expect(find.byKey(TestKey.allDays), findsNothing);
       expect(find.byKey(TestKey.thisDayAndForward), findsNothing);
+    });
+
+    testWidgets(
+        'SGC-934 Change date for past activity to future updates Occasion state (no cross over)',
+        (WidgetTester tester) async {
+      final _startTime = startTime.subtract(1.days()).add(1.hours());
+      final toDay = startTime.day;
+      // Arrange
+      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer(
+        (_) => Future.value(
+          <Activity>[
+            Activity.createNew(
+              startTime: _startTime,
+              title: 'a title for activity',
+            )
+          ],
+        ),
+      );
+
+      // Act -- go back one day and open activity
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+      await tester.pumpAndSettle();
+      await tester.tap(activityCardFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- is past, crossover showing and no sideDots showing
+      expect(
+          tester
+              .widget<AnimatedOpacity>(
+                find.ancestor(
+                  of: find.byType(CrossOver),
+                  matching: find.byType(AnimatedOpacity),
+                ),
+              )
+              .opacity,
+          1.0);
+      expect(find.byType(SideDotsLarge), findsNothing);
+
+      // Act --  edit acvtivity date to today and save
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await _changeDate(tester, toDay);
+      await tester.tap(finishActivityFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- we are at activity page, cross over is gone and side time dots visible
+      expect(activityPageFinder, findsOneWidget);
+      expect(
+          tester
+              .widget<AnimatedOpacity>(
+                find.ancestor(
+                  of: find.byType(CrossOver),
+                  matching: find.byType(AnimatedOpacity),
+                ),
+              )
+              .opacity,
+          0.0);
+      expect(find.byType(SideDotsLarge), findsOneWidget);
     });
   });
 

@@ -31,9 +31,16 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       );
 
   bool get isSelected => selected != null;
+
   bool get isAtRoot =>
       currentFolderId.isEmpty || currentFolderId == initialFolderId;
+
   bool get isAtRootAndNoSelection => isAtRoot && !isSelected;
+
+  bool get inMyPhotos {
+    final s = allById[currentFolderId]?.data;
+    return s is ImageArchiveData && s.myPhotos;
+  }
 
   @override
   List<Object?> get props => [

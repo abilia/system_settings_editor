@@ -204,10 +204,10 @@ extension on WidgetTester {
 
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
+    await tap(find.byType(SettingsButton));
+    await pumpAndSettle();
 
     if (Config.isMP) {
-      await tap(find.byType(SettingsButton));
-      await pumpAndSettle();
       await tap(find.byIcon(AbiliaIcons.month));
       await pumpAndSettle();
     }

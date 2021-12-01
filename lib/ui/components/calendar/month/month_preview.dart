@@ -145,6 +145,12 @@ class MonthDayViewCompact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
+    final textWithCorrectColor = day.isPast
+        ? textStyle.copyWith(color: AbiliaColors.black)
+        : textStyle.copyWith(
+            color: dayTheme.monthSurfaceColor,
+          );
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -156,45 +162,46 @@ class MonthDayViewCompact extends StatelessWidget {
           builder: (context, dayPickerState) => Container(
             foregroundDecoration: day.isCurrent
                 ? BoxDecoration(
-                    border: currentBorder,
-                    borderRadius: MonthDayView.monthDayborderRadius,
-                  )
-                : dayPickerState.day.isAtSameDay(day.day)
+                  border: currentBorder,
+                  borderRadius: MonthDayView.monthDayborderRadius,
+                )
+                    : dayPickerState.day.isAtSameDay(day.day)
                     ? BoxDecoration(
-                        border: selectedActivityBorder,
-                        borderRadius: MonthDayView.monthDayborderRadius,
-                      )
+                  border: selectedActivityBorder,
+                  borderRadius: MonthDayView.monthDayborderRadius,
+                )
                     : BoxDecoration(
-                        border: transparentBlackBorder,
-                        borderRadius: MonthDayView.monthDayborderRadius,
-                      ),
-            decoration: BoxDecoration(
-              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
-              borderRadius: MonthDayView.monthDayborderRadius,
-            ),
-            padding: EdgeInsets.all(4.s),
-            child: DefaultTextStyle(
-              style: dayTheme.theme.textTheme.subtitle2!
-                  .copyWith(color: dayTheme.monthSurfaceColor),
+                  border: transparentBlackBorder,
+                  borderRadius: MonthDayView.monthDayborderRadius,
+                ),
+                decoration: BoxDecoration(
+                  color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
+                  borderRadius: MonthDayView.monthDayborderRadius,
+                ),
+                padding: EdgeInsets.all(4.s),
+                child: DefaultTextStyle(
+                  style: textWithCorrectColor,
               child: Stack(
                 children: [
                   Center(child: Text('${day.day.day}')),
                   if (day.hasActivities)
-                    Align(
+                    const Align(
                       alignment: Alignment.topRight,
                       child: ColorDot(
-                        color: dayTheme.monthSurfaceColor,
+                        color: AbiliaColors.black,
                       ),
                     ),
                   if (day.isPast)
-                    Padding(
-                      padding: EdgeInsets.all(8.s),
-                      child: const CrossOver(),
+                        Padding(
+                      padding: EdgeInsets.all(4.s),
+                      child: const CrossOver(
+                        color: AbiliaColors.transparentBlack30,
+                      ),
                     ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
         ),
       ),
     );

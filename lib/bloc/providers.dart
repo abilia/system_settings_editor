@@ -116,7 +116,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
                     pushBloc: context.read<PushBloc>(),
-                    initMyPhotos: Config.isMP,
                   )
                 ..add(const LoadSortables(initDefaults: true)),
               lazy: false,

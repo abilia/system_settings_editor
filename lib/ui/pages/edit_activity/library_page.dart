@@ -81,17 +81,22 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 }
 
 class LibraryHeading<T extends SortableData> extends StatelessWidget {
-  LibraryHeading({
+  const LibraryHeading({
     Key? key,
     required this.sortableArchiveState,
-    required String? rootHeading,
-  })  : heading = _getLibraryHeading(sortableArchiveState, rootHeading) ?? '',
-        super(key: key);
+    this.rootHeading,
+  }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
-  final String heading;
+  final String? rootHeading;
 
   @override
   Widget build(BuildContext context) {
+    String heading = _getLibraryHeading(
+          sortableArchiveState,
+          rootHeading,
+          Translator.of(context).translate.myPhotos,
+        ) ??
+        '';
     return Tts.data(
       data: heading,
       child: Padding(
@@ -125,12 +130,16 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   static String? _getLibraryHeading(
     SortableArchiveState state,
     String? rootHeading,
+    String myPhotoHeading,
   ) {
     if (state.isAtRootAndNoSelection) {
       return rootHeading;
     }
     if (state.isSelected) {
       return state.selected?.data.title();
+    }
+    if (state.inMyPhotos) {
+      return myPhotoHeading;
     }
     return state.allById[state.currentFolderId]?.data.title();
   }
@@ -285,6 +294,8 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final folderIconSize = 86.s;
+
     return Tts.fromSemantics(
       SemanticsProperties(
         label: title,
@@ -304,22 +315,21 @@ class LibraryFolder extends StatelessWidget {
               children: [
                 Icon(
                   AbiliaIcons.folder,
-                  size: 86.s,
+                  size: folderIconSize,
                   color: color ?? AbiliaColors.orange,
                 ),
-                Positioned(
-                  bottom: 16.s,
-                  left: 10.s,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6.s),
-                    child: Align(
-                      alignment: Alignment.center,
-                      heightFactor: 42 / 66,
+                SizedBox(
+                  height: folderIconSize,
+                  width: folderIconSize,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 10.s, right: 10.s, bottom: 16.s, top: 28.s),
+                    child: Center(
                       child: FadeInAbiliaImage(
                         imageFileId: fileId,
                         imageFilePath: filePath,
-                        width: 66.s,
-                        height: 66.s,
+                        fit: BoxFit.contain,
+                        borderRadius: BorderRadius.circular(4.s),
                       ),
                     ),
                   ),

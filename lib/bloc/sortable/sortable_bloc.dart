@@ -18,13 +18,11 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   final SortableRepository sortableRepository;
   late final StreamSubscription pushSubscription;
   final SyncBloc syncBloc;
-  final bool initMyPhotos;
 
   SortableBloc({
     required this.sortableRepository,
     required PushBloc pushBloc,
     required this.syncBloc,
-    required this.initMyPhotos,
   }) : super(SortablesNotLoaded()) {
     pushSubscription = pushBloc.stream.listen((state) {
       if (state is PushReceived) {
@@ -67,7 +65,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   }
 
   Future<void> _addMissingMyPhotos(Iterable<Sortable> sortables) async {
-    if (initMyPhotos && sortables.getMyPhotosFolder() == null) {
+    if (sortables.getMyPhotosFolder() == null) {
       final myPhotosFolder = await sortableRepository.createMyPhotosFolder();
       if (myPhotosFolder == null) {
         final myPhotos = Sortable.createNew<ImageArchiveData>(
