@@ -11,6 +11,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     this.libraryFolderGenerator,
+    this.visibilityFilter,
     this.onCancel,
     this.appBar,
     this.bottomNavigationBar,
