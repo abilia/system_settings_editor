@@ -27,9 +27,7 @@ class MyPhotosPage extends StatelessWidget {
             iconData: AbiliaIcons.myPhotos,
             trailing: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-              child: AddPhotoButton(
-                folderId: state.currentFolderId,
-              ),
+              child: const AddPhotoButton(),
             ),
           ),
           bottomNavigationBar: const BottomNavigation(
@@ -54,9 +52,7 @@ final _log = Logger((AddPhotoButton).toString());
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({
     Key? key,
-    this.folderId,
   }) : super(key: key);
-  final String? folderId;
 
   @override
   Widget build(BuildContext context) =>
