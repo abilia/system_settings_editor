@@ -1,11 +1,13 @@
 part of 'my_photos_bloc.dart';
 
-abstract class MyPhotosEvent extends Equatable {}
+abstract class MyPhotosEvent extends Equatable {
+  const MyPhotosEvent();
+}
 
 class SortablesArrived extends MyPhotosEvent {
   final Iterable<Sortable> sortables;
 
-  SortablesArrived(this.sortables);
+  const SortablesArrived(this.sortables);
 
   @override
   List<Object> get props => [sortables];
@@ -18,12 +20,14 @@ class PhotoAdded extends MyPhotosEvent {
   final String imageId;
   final String imagePath;
   final String name;
+  final String? folderId;
 
-  PhotoAdded(
+  const PhotoAdded(
     this.imageId,
     this.imagePath,
-    this.name,
-  );
+    this.name, {
+    this.folderId,
+  });
 
   @override
   bool get stringify => true;

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:seagull/logging.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -11,49 +12,51 @@ class MyPhotosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+
     return BlocProvider<MyPhotosBloc>(
       create: (_) => MyPhotosBloc(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
-      child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
-        builder: (context, state) => Scaffold(
+      child:
+          BlocBuilder<MyPhotosBloc, MyPhotosState>(builder: (context, state) {
+        final myPhotosRootFolderId = state.rootFolderId;
+        return LibraryPage<ImageArchiveData>.nonSelectable(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.myPhotos,
+            title: translate.myPhotos,
             iconData: AbiliaIcons.myPhotos,
             trailing: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-              child: const AddPhotoButton(),
+              child: AddPhotoButton(
+                folderId: state.currentFolderId,
+              ),
             ),
-          ),
-          body: GridView.count(
-            padding: EdgeInsets.only(
-              top: verticalPadding,
-              left: leftPadding,
-              right: rightPadding,
-            ),
-            crossAxisCount: 3,
-            mainAxisSpacing: 8.0.s,
-            crossAxisSpacing: 8.0.s,
-            children: state.currentFolderContent
-                .where((s) => !s.isGroup)
-                .map(
-                  (sortable) => Photo(sortable: sortable),
-                )
-                .toList(),
           ),
           bottomNavigationBar: const BottomNavigation(
             backNavigationWidget: CloseButton(),
           ),
-        ),
-      ),
+          initialFolder: myPhotosRootFolderId ?? '',
+          emptyLibraryMessage: translate.noImages,
+          libraryItemGenerator: (imageArchive) => Photo(sortable: imageArchive),
+          libraryFolderGenerator: (imageArchive) => LibraryFolder(
+            title: imageArchive.data.title(),
+            fileId: imageArchive.data.folderFileId(),
+            filePath: imageArchive.data.folderFilePath(),
+          ),
+        );
+      }),
     );
   }
 }
 
+final _log = Logger((AddPhotoButton).toString());
+
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({
     Key? key,
+    this.folderId,
   }) : super(key: key);
+  final String? folderId;
 
   @override
   Widget build(BuildContext context) =>
@@ -78,6 +81,17 @@ class AddPhotoButton extends StatelessWidget {
                   BlocProvider.of<UserFileBloc>(context).add(
                     ImageAdded(selectedImage),
                   );
+                  String? uploadFolderId;
+                  try {
+                    uploadFolderId =
+                        BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
+                                context)
+                            .state
+                            .currentFolderId;
+                  } catch (e) {
+                    _log.warning(
+                        'Could not find ID of folder to upload photo into: $e');
+                  }
                   BlocProvider.of<MyPhotosBloc>(context).add(
                     PhotoAdded(
                       selectedImage.id,
@@ -85,6 +99,7 @@ class AddPhotoButton extends StatelessWidget {
                       DateFormat.yMd(
                               Localizations.localeOf(context).toLanguageTag())
                           .format(time),
+                      folderId: uploadFolderId,
                     ),
                   );
                 }

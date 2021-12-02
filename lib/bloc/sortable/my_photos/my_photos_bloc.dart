@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/sortable/sortable.dart';
-import 'package:collection/collection.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -43,13 +42,8 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     final myPhotosRoot = imageArchiveSortables.getMyPhotosFolder();
     if (myPhotosRoot == null) return;
 
-    final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-        imageArchiveSortables, (s) => s.groupId);
-    final allById = {for (var s in imageArchiveSortables) s.id: s};
     yield MyPhotosState(
-      allByFolder: allByFolder,
-      allById: allById,
-      currentFolderId: myPhotosRoot.id,
+      rootFolderId: myPhotosRoot.id,
     );
   }
 
@@ -58,24 +52,25 @@ class MyPhotosBloc extends Bloc<MyPhotosEvent, MyPhotosState> {
     if (sortablesState is SortablesLoaded) {
       final imageArchiveSortables =
           sortablesState.sortables.whereType<Sortable<ImageArchiveData>>();
-      final myPhotosFolder = imageArchiveSortables.getMyPhotosFolder();
-      if (myPhotosFolder == null) return;
+
+      final folderId =
+          event.folderId ?? imageArchiveSortables.getMyPhotosFolder()?.id;
+      if (folderId == null) return;
 
       final sortableData = ImageArchiveData(
         name: event.name,
         file: '${FileStorage.folder}/${event.imageId}',
         fileId: event.imageId,
       );
-      final myPhotosFolderContent = sortablesState.sortables
-          .where((s) => s.groupId == myPhotosFolder.id)
-          .toList();
-      myPhotosFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-      final sortOrder = myPhotosFolderContent.isEmpty
+      final folderContent =
+          sortablesState.sortables.where((s) => s.groupId == folderId).toList();
+      folderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+      final sortOrder = folderContent.isEmpty
           ? startSordOrder
-          : calculateNextSortOrder(myPhotosFolderContent.last.sortOrder, 1);
+          : calculateNextSortOrder(folderContent.last.sortOrder, 1);
       final newSortable = Sortable.createNew<ImageArchiveData>(
         data: sortableData,
-        groupId: myPhotosFolder.id,
+        groupId: folderId,
         sortOrder: sortOrder,
       );
       sortableBloc.add(SortableUpdated(newSortable));

@@ -15,7 +15,7 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return LibraryPage<ImageArchiveData>(
+    return LibraryPage<ImageArchiveData>.selectable(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectPicture,
