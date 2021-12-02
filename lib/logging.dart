@@ -292,26 +292,46 @@ class BlocLoggingObserver extends BlocObserver {
   final bool analyticsLogging;
   final _loggers = <BlocBase, Logger>{};
 
-  Logger _log(BlocBase bloc) =>
+  Logger _getLog(BlocBase bloc) =>
       _loggers[bloc] ??= Logger(bloc.runtimeType.toString());
+
+  void _log(BlocBase bloc, Object? message) {
+    if (bloc is Silent) return;
+    final log = _getLog(bloc);
+    if (bloc is Shout) {
+      log.shout(message);
+    } else if (bloc is Warning) {
+      log.warning(message);
+    } else if (bloc is Info) {
+      log.info(message);
+    } else if (bloc is Fine) {
+      log.fine(message);
+    } else if (bloc is Finest) {
+      log.finest(message);
+    } else {
+      log.finer(message);
+    }
+  }
+
+  @override
+  void onCreate(BlocBase bloc) {
+    super.onCreate(bloc);
+    if (bloc is Silent) return;
+    _log(bloc, 'onCreate : ${bloc.runtimeType}');
+  }
+
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
     if (event is Silent || bloc is Silent) return;
-    final log = _log(bloc);
-    if (event is Shout) {
-      log.shout(event);
-    } else if (event is Warning) {
-      log.warning(event);
-    } else if (event is Info) {
-      log.info(event);
-    } else if (event is Fine) {
-      log.fine(event);
-    } else if (event is Finest) {
-      log.finest(event);
-    } else {
-      log.finer(event);
-    }
+    _log(bloc, 'onEvent : ${bloc.runtimeType}, event: $event');
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    if (bloc is Silent) return;
+    _log(bloc, 'onChange : ${bloc.runtimeType}, change: $change');
   }
 
   @override
@@ -319,26 +339,20 @@ class BlocLoggingObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     if (analyticsLogging) logEventToAnalytics(transition);
     if (bloc is Silent) return;
-    final log = _log(bloc);
-    if (bloc is Shout) {
-      log.shout(transition);
-    } else if (bloc is Warning) {
-      log.warning(transition);
-    } else if (bloc is Info) {
-      log.info(transition);
-    } else if (bloc is Fine) {
-      log.fine(transition);
-    } else if (bloc is Finest) {
-      log.finest(transition);
-    } else {
-      log.finer(transition);
-    }
+    _log(bloc, 'onTransition : ${bloc.runtimeType}, transition: $onTransition');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    _log(bloc).severe('error in $bloc', error, stackTrace);
+    _getLog(bloc).severe('error in $bloc', error, stackTrace);
+  }
+
+  @override
+  void onClose(BlocBase bloc) {
+    super.onClose(bloc);
+    if (bloc is Silent) return;
+    _log(bloc, 'onClose : ${bloc.runtimeType}');
   }
 
   void logEventToAnalytics(Transition transition) async {

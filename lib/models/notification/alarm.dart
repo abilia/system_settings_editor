@@ -50,7 +50,8 @@ abstract class NotificationAlarm extends Equatable {
   List<Object> get props => [activityDay.activity, activityDay.day];
 
   @override
-  bool get stringify => true;
+  String toString() =>
+      '$type {notificationTime: $notificationTime, ${activity.id} }';
 }
 
 abstract class NewAlarm extends NotificationAlarm {

@@ -28,6 +28,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.emptyLibraryMessage,
     required this.onOk,
     this.libraryFolderGenerator,
+    this.visibilityFilter,
     this.onCancel,
     this.appBar,
     this.bottomNavigationBar,
@@ -47,6 +48,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final LibraryItemGenerator<T>? selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
   final LibraryItemGenerator<T>? libraryFolderGenerator;
+  final bool Function(Sortable<T>)? visibilityFilter;
   final String emptyLibraryMessage;
   final String? rootHeading;
   final String initialFolder;
@@ -56,6 +58,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     return BlocProvider<SortableArchiveBloc<T>>(
       create: (_) => SortableArchiveBloc<T>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
+        visibilityFilter: visibilityFilter,
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) {
