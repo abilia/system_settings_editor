@@ -1,9 +1,7 @@
 import 'package:seagull/utils/all.dart';
 
 part 'large_layout.dart';
-
 part 'medium_layout.dart';
-
 part 'go_layout.dart';
 
 final Layout layout = Device.screenSize.longestSide > 1500

@@ -12,9 +12,7 @@ class MenuSettings extends Equatable {
       !quickSettingsEnabled;
 
   bool get timersEnabled => showTimers && Config.isMP;
-
   bool get quickSettingsEnabled => showQuickSettings && Config.isMP;
-
   bool get photoCalendarEnabled => showPhotoCalendar && Config.isMP;
 
   static const showCameraKey = 'settings_menu_show_camera',

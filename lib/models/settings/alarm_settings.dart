@@ -24,18 +24,12 @@ class AlarmSettings extends Equatable {
   final bool vibrateAtReminder, showAlarmOnOffSwitch;
 
   final String checkableActivity, nonCheckableActivity, reminder;
-
   Sound get nonCheckableAlarm => nonCheckableActivity.toSound();
-
   Sound get checkableAlarm => checkableActivity.toSound();
-
   Sound get reminderAlarm => reminder.toSound();
-
   Duration get duration => Duration(milliseconds: durationMs);
-
   DateTime get disabledUntilDate =>
       DateTime.fromMillisecondsSinceEpoch(disabledUntilEpoch);
-
   const AlarmSettings({
     this.durationMs = 30000,
     this.vibrateAtReminder = true,

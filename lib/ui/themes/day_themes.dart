@@ -12,7 +12,6 @@ class DayTheme {
       monthPastColor,
       monthPastHeadingColor;
   final bool isColor, isLight;
-
   Color? get dayColor => isColor ? color : null;
 
   DayTheme._(
