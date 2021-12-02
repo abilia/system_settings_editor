@@ -37,7 +37,8 @@ class ActivityOccasion extends ActivityDay {
   }
 
   @override
-  String toString() => 'ActivityOccasion { $activity ${yMd(day)} $occasion }';
+  String toString() =>
+      'ActivityOccasion { ${activity.id} ${activity.title} ${yMd(day)} $occasion }';
 }
 
 class ActivityDay extends Equatable implements Comparable {

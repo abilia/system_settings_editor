@@ -19,5 +19,5 @@ class ActivitiesChanged extends ActivitiesOccasionEvent {
   @override
   List<Object> get props => [dayActivitiesLoadedState];
   @override
-  bool get stringify => true;
+  String toString() => 'ActivitiesChanged { $dayActivitiesLoadedState }';
 }

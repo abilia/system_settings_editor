@@ -1,10 +1,7 @@
 part of 'week_calendar_bloc.dart';
 
-abstract class WeekCalendarEvent extends Equatable {
+abstract class WeekCalendarEvent {
   const WeekCalendarEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class NextWeek extends WeekCalendarEvent {}
@@ -17,7 +14,4 @@ class UpdateWeekActivites extends WeekCalendarEvent {
   final Iterable<Activity> activities;
 
   const UpdateWeekActivites(this.activities);
-
-  @override
-  List<Object> get props => [activities];
 }
