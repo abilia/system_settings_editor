@@ -15,38 +15,34 @@ class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
     required BatteryCubit batteryCubit,
     required KeepScreenAwakeSettings screenAwakeSettings,
   }) : super(KeepScreenAwakeState(
+            screenTimeout: timeoutOneMinute,
             screenOnWhileCharging:
-                screenAwakeSettings.keepScreenOnWhileCharging,
-            screenTimeout: KeepScreenAwakeState.timeoutDisabled)) {
+                screenAwakeSettings.keepScreenOnWhileCharging)) {
     _batterySubscription = batteryCubit.stream.listen((event) {
       onBatteryUpdated(event);
-      _updateKeepScreenAwake();
     });
-    _keepScreenAwakeWhilePluggedIn =
-        screenAwakeSettings.keepScreenOnWhileCharging;
-    _screenTimeoutDuration = screenAwakeSettings.keepScreenOnAlways
-        ? KeepScreenAwakeState.timeoutDisabled
-        : KeepScreenAwakeState.timeoutUnknown;
-    _init();
+    _initDuration(screenAwakeSettings.keepScreenOnAlways);
   }
+
+  static const int _maxInt = 2147483647;
+  static const Duration timeoutUnknown = Duration(milliseconds: -1);
+  static const Duration timeoutDisabled = Duration(milliseconds: 0);
+  static const Duration timeoutOneMinute = Duration(minutes: 1);
+  static const Duration timeoutThirtyMinutes = Duration(minutes: 30);
 
   final GenericBloc genericBloc;
   late final StreamSubscription _batterySubscription;
-  late bool _keepScreenAwakeWhilePluggedIn;
 
-  bool _batteryCharging = false;
-  Duration _screenTimeoutDuration = KeepScreenAwakeState.timeoutUnknown;
-
-  _init() async {
-    if (_screenTimeoutDuration.isNegative) {
-      _screenTimeoutDuration = await SystemSettingsEditor.screenOffTimeout ??
-          KeepScreenAwakeState.timeoutOneMinute;
+  _initDuration(bool keepScreenOnAlways) async {
+    if (keepScreenOnAlways) {
+      setScreenTimeout(timeoutDisabled);
+    } else {
+      setScreenTimeout(
+          await SystemSettingsEditor.screenOffTimeout ?? timeoutOneMinute);
     }
-    _updateKeepScreenAwake();
   }
 
   setKeepScreenAwakeWhilePluggedIn(bool keepOn) {
-    _keepScreenAwakeWhilePluggedIn = keepOn;
     genericBloc.add(
       GenericUpdated(
         [
@@ -57,31 +53,36 @@ class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
         ],
       ),
     );
-    _updateKeepScreenAwake();
+    _updateKeepScreenAwake(state.screenTimeout, keepOn, state.batteryCharging);
   }
 
-  setScreenTimeout(Duration? timeout) {
-    if (timeout != null) {
-      if (timeout.inMinutes > 1) {
-        _screenTimeoutDuration = KeepScreenAwakeState.timeoutThirtyMinutes;
-      } else if (timeout.inMinutes > 0) {
-        _screenTimeoutDuration = KeepScreenAwakeState.timeoutOneMinute;
-      } else {
-        _screenTimeoutDuration = KeepScreenAwakeState.timeoutDisabled;
-      }
-      genericBloc.add(
-        GenericUpdated(
-          [
-            MemoplannerSettingData.fromData(
-              data: timeout.inMilliseconds == 0,
-              identifier: KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
-            ),
-          ],
-        ),
-      );
-      SystemSettingsEditor.setScreenOffTimeout(timeout);
-      _updateKeepScreenAwake();
+  // the timeout coming from SystemSettings could be set to very long
+  // ("disabled"), but we don't know whether it's because the screen is always on
+  // or because the charger is plugged in. Hence, if it's more than 30 minutes
+  // it's ignored
+  setScreenTimeout(Duration timeout) {
+    Duration duration;
+    if (timeout > timeoutThirtyMinutes) {
+      duration = state.screenTimeout;
+    } else if (timeout == timeoutDisabled) {
+      duration = timeoutDisabled;
+    } else if (timeout.inMinutes > 1) {
+      duration = timeoutThirtyMinutes;
+    } else {
+      duration = timeoutOneMinute;
     }
+    genericBloc.add(
+      GenericUpdated(
+        [
+          MemoplannerSettingData.fromData(
+            data: duration == timeoutDisabled,
+            identifier: KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
+          ),
+        ],
+      ),
+    );
+    _updateKeepScreenAwake(
+        duration, state.screenOnWhileCharging, state.batteryCharging);
   }
 
   @override
@@ -91,36 +92,41 @@ class WakeLockCubit extends Cubit<KeepScreenAwakeState> {
   }
 
   @visibleForTesting
-  onBatteryUpdated(BatteryCubitState state) {
-    _batteryCharging = state.batteryState == BatteryState.charging ||
-        state.batteryState == BatteryState.full;
+  onBatteryUpdated(BatteryCubitState batteryState) {
+    final _batteryCharging =
+        batteryState.batteryState == BatteryState.charging ||
+            batteryState.batteryState == BatteryState.full;
+    _updateKeepScreenAwake(
+        state.screenTimeout, state.screenOnWhileCharging, _batteryCharging);
   }
 
-  _updateKeepScreenAwake() async {
-    if (_screenTimeoutDuration == KeepScreenAwakeState.timeoutDisabled ||
-        (_keepScreenAwakeWhilePluggedIn && _batteryCharging)) {
-      SystemSettingsEditor.setScreenOffTimeout(const Duration(days: 400));
+  _updateKeepScreenAwake(Duration screenTimeoutDuration,
+      bool keepScreenOnWhileCharging, bool batteryCharging) async {
+    if (screenTimeoutDuration == timeoutDisabled ||
+        (keepScreenOnWhileCharging && state.batteryCharging)) {
+      SystemSettingsEditor.setScreenOffTimeout(
+          const Duration(milliseconds: _maxInt));
     } else {
-      SystemSettingsEditor.setScreenOffTimeout(_screenTimeoutDuration);
+      SystemSettingsEditor.setScreenOffTimeout(screenTimeoutDuration);
     }
     emit(KeepScreenAwakeState(
-        screenTimeout: _screenTimeoutDuration,
-        screenOnWhileCharging: _keepScreenAwakeWhilePluggedIn));
+        screenTimeout: screenTimeoutDuration,
+        screenOnWhileCharging: keepScreenOnWhileCharging,
+        batteryCharging: batteryCharging));
   }
 }
 
 class KeepScreenAwakeState extends Equatable {
   final Duration screenTimeout;
   final bool screenOnWhileCharging;
-
-  static const Duration timeoutUnknown = Duration(minutes: -1);
-  static const Duration timeoutDisabled = Duration(milliseconds: 0);
-  static const Duration timeoutOneMinute = Duration(minutes: 1);
-  static const Duration timeoutThirtyMinutes = Duration(minutes: 30);
+  final bool batteryCharging;
 
   const KeepScreenAwakeState(
-      {required this.screenTimeout, required this.screenOnWhileCharging});
+      {required this.screenTimeout,
+      required this.screenOnWhileCharging,
+      this.batteryCharging = false});
 
   @override
-  List<Object?> get props => [screenTimeout, screenOnWhileCharging];
+  List<Object?> get props =>
+      [screenTimeout, screenOnWhileCharging, batteryCharging];
 }

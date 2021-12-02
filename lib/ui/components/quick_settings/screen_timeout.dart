@@ -37,7 +37,7 @@ class ScreenTimeoutPickState extends State<ScreenTimeoutPickField>
   void _initTimeout() async {
     try {
       final timeout = await SystemSettingsEditor.screenOffTimeout;
-      if (timeout != null && timeout > KeepScreenAwakeState.timeoutUnknown) {
+      if (timeout != null) {
         BlocProvider.of<WakeLockCubit>(context).setScreenTimeout(timeout);
       }
     } on PlatformException catch (e) {
@@ -50,10 +50,9 @@ class ScreenTimeoutPickState extends State<ScreenTimeoutPickField>
     final t = Translator.of(context).translate;
     return BlocBuilder<WakeLockCubit, KeepScreenAwakeState>(
       builder: (context, wakeLockState) => PickField(
-        text: Text(
-            wakeLockState.screenTimeout == KeepScreenAwakeState.timeoutDisabled
-                ? t.alwaysOn
-                : wakeLockState.screenTimeout.toDurationString(t)),
+        text: Text(wakeLockState.screenTimeout == WakeLockCubit.timeoutDisabled
+            ? t.alwaysOn
+            : wakeLockState.screenTimeout.toDurationString(t)),
         onTap: () async {
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
@@ -64,7 +63,9 @@ class ScreenTimeoutPickState extends State<ScreenTimeoutPickField>
               ),
             ),
           );
-          BlocProvider.of<WakeLockCubit>(context).setScreenTimeout(timeout);
+          if (timeout != null) {
+            BlocProvider.of<WakeLockCubit>(context).setScreenTimeout(timeout);
+          }
         },
       ),
     );
