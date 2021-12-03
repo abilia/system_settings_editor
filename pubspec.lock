@@ -499,7 +499,7 @@ packages:
     description:
       path: flutter_local_notifications
       ref: "flutter_local_notifications-v9.1.2-fork-1.13"
-      resolved-ref: "252d377a319d04a64538bf479d71311bd163bc7c"
+      resolved-ref: f305eeda8feea0f1797173d622c217817754f3bd
       url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
     version: "9.1.2"
