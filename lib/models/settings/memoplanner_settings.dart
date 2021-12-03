@@ -455,6 +455,8 @@ class MemoplannerSettings extends Equatable {
       wizard: WizardStepsSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
+      keepScreenAwakeSettings:
+          KeepScreenAwakeSettings.fromSettingsMap(settings),
     );
   }
 
@@ -529,6 +531,7 @@ class MemoplannerSettings extends Equatable {
         wizard,
         codeProtect,
         menu,
+        keepScreenAwakeSettings,
       ];
 }
 

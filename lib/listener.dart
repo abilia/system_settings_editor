@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:seagull/background/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
@@ -166,6 +167,11 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
         ..read<PushBloc>().add(const PushEvent('app-resumed'))
         ..read<PermissionBloc>().checkAll();
+      if (Config.isMP) {
+        context
+            .read<WakeLockCubit>()
+            .setScreenTimeout(await SystemSettingsEditor.screenOffTimeout);
+      }
     }
   }
 
@@ -224,7 +230,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
             builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
-        if (Config.isMP)
+        if (Config.isMP) ...[
           BlocListener<InactivityCubit, InactivityState>(
             listenWhen: (previous, current) =>
                 current is InactivityThresholdReachedState &&
@@ -235,6 +241,23 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
               context.read<DayPickerBloc>().add(CurrentDay());
             },
           ),
+          BlocListener<WakeLockCubit, WakeLockState>(
+            listener: (context, state) async {
+              if (!await SystemSettingsEditor.canWriteSettings) return;
+              if (state.onNow) {
+                await SystemSettingsEditor.setScreenOffTimeout(
+                  const Duration(milliseconds: 2147483647),
+                );
+              } else if (state.systemScreenTimeout > Duration.zero &&
+                  await SystemSettingsEditor.screenOffTimeout !=
+                      state.systemScreenTimeout) {
+                await SystemSettingsEditor.setScreenOffTimeout(
+                  state.systemScreenTimeout,
+                );
+              }
+            },
+          ),
+        ],
         if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
