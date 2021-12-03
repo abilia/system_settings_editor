@@ -66,7 +66,7 @@ void main() {
       );
     });
 
-    test('state change back to Unauthenticated when loggin out', () async {
+    test('state change back to Unauthenticated when logging out', () async {
       // Act
       authenticationBloc.add(CheckAuthentication());
       authenticationBloc.add(const LoggedIn(token: Fakes.token));

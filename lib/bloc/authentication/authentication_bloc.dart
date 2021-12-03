@@ -18,76 +18,91 @@ class AuthenticationBloc
   AuthenticationBloc(
     UserRepository userRepository, {
     this.onLogout,
-  }) : super(AuthenticationLoading(userRepository));
+  }) : super(AuthenticationLoading(userRepository)) {
+    on<NotReady>(_notReady);
+    on<ChangeRepository>(_changeRepository);
+    on<CheckAuthentication>(_checkAuthentication);
+    on<LoggedIn>(_loggedIn);
+    on<LoggedOut>(_loggedOut);
+  }
 
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
+  void _notReady(NotReady event, Emitter<AuthenticationState> emit) async {
+    await Future.delayed(const Duration(milliseconds: 50));
+    emit(state._forceNew());
+  }
+
+  void _changeRepository(
+      ChangeRepository event, Emitter<AuthenticationState> emit) async {
+    emit(Unauthenticated(
+      event.repository,
+      forcedNewState: state.forcedNewState,
+    ));
+  }
+
+  void _checkAuthentication(
+      CheckAuthentication event, Emitter<AuthenticationState> emit) async {
     final repo = state.userRepository;
-
-    if (event is NotReady) {
-      await Future.delayed(const Duration(milliseconds: 50));
-      yield state._forceNew();
-    } else if (event is ChangeRepository) {
-      yield Unauthenticated(
-        event.repository,
-        forcedNewState: state.forcedNewState,
-      );
-    } else if (event is CheckAuthentication) {
-      final token = state.userRepository.getToken();
-      if (token != null) {
-        yield* _tryGetUser(repo, token);
-      } else {
-        yield Unauthenticated(repo);
-      }
-    } else if (event is LoggedIn) {
-      await repo.persistToken(event.token);
-      yield* _tryGetUser(repo, event.token, newlyLoggedIn: true);
-    } else if (event is LoggedOut) {
-      yield* _logout(repo, loggedOutReason: event.loggedOutReason);
+    final token = state.userRepository.getToken();
+    if (token != null) {
+      final nextState = await _tryGetUser(repo, token);
+      emit(nextState);
+    } else {
+      emit(Unauthenticated(repo));
     }
   }
 
-  Stream<AuthenticationState> _tryGetUser(
+  void _loggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {
+    final repo = state.userRepository;
+    await repo.persistToken(event.token);
+    final nextState = await _tryGetUser(repo, event.token, newlyLoggedIn: true);
+    emit(nextState);
+  }
+
+  void _loggedOut(LoggedOut event, Emitter<AuthenticationState> emit) async {
+    final repo = state.userRepository;
+    final nextState =
+        await _logout(repo, loggedOutReason: event.loggedOutReason);
+    emit(nextState);
+  }
+
+  Future<AuthenticationState> _tryGetUser(
     UserRepository repo,
     String token, {
     bool newlyLoggedIn = false,
-  }) async* {
+  }) async {
     try {
       final user = await repo.me(token);
-      yield Authenticated(
+      return Authenticated(
         token: token,
         userId: user.id,
         userRepository: repo,
         newlyLoggedIn: newlyLoggedIn,
       );
     } on UnauthorizedException {
-      yield* _logout(
+      return await _logout(
         repo,
         token: token,
       );
     } catch (_) {
-      yield Unauthenticated(repo);
+      return Unauthenticated(repo);
       // Do nothing
     }
   }
 
-  Stream<AuthenticationState> _logout(
+  Future<AuthenticationState> _logout(
     UserRepository repo, {
     String? token,
     LoggedOutReason loggedOutReason = LoggedOutReason.logOut,
-  }) async* {
+  }) async {
     try {
       await onLogout?.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
-    } finally {
-      yield Unauthenticated(
-        state.userRepository,
-        loggedOutReason: loggedOutReason,
-      );
     }
     await repo.logout(token);
+    return Unauthenticated(
+      state.userRepository,
+      loggedOutReason: loggedOutReason,
+    );
   }
 }
