@@ -3,6 +3,7 @@
 A flutter plugin to read and write system settings.
 
 **Currently supported settings:**
+* Check write settings permission
 * Brightness
 * Sound effect
 * Volume

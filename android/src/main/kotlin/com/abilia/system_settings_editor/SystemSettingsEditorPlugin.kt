@@ -37,7 +37,10 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
 
   @RequiresApi(Build.VERSION_CODES.M)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (!Settings.System.canWrite(context)) {
+    val canWrite = Settings.System.canWrite(context)
+    if (call.method == "canWriteSettings") {
+      result.success(canWrite)
+    } else if (!canWrite) {
       openAndroidPermissionsMenu()
       result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
     } else {
