@@ -37,28 +37,30 @@ class SystemSettingsEditorPlugin : FlutterPlugin, MethodCallHandler, ActivityAwa
 
   @RequiresApi(Build.VERSION_CODES.M)
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    val canWrite = Settings.System.canWrite(context)
-    if (call.method == "canWriteSettings") {
-      result.success(canWrite)
-    } else if (!canWrite) {
-      openAndroidPermissionsMenu()
-      result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
-    } else {
-      when (call.method) {
-        "getBrightness" -> result.success(systemSettingsHandler.getBrightness())
-        "setBrightness" -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
-        "getSoundEffectsEnabled" -> result.success(systemSettingsHandler.getSoundEffectsEnabled())
-        "setSoundEffectsEnabled" -> systemSettingsHandler.setSoundEffectsHandler(call, result)
-        "getAlarmVolume" -> result.success(volumeSettingsHandler.getAlarmVolume())
-        "getMediaVolume" -> result.success(volumeSettingsHandler.getMediaVolume())
-        "setAlarmVolume" -> volumeSettingsHandler.setAlarmVolumeHandler(call, result)
-        "setMediaVolume" -> volumeSettingsHandler.setMediaVolumeHandler(call, result)
-        "getAlarmMaxVolume" -> result.success(volumeSettingsHandler.getAlarmMaxVolume())
-        "getMediaMaxVolume" -> result.success(volumeSettingsHandler.getMediaMaxVolume())
-        "getScreenOffTimeout" -> result.success(systemSettingsHandler.getScreenOffTimeout())
-        "setScreenOffTimeout" -> systemSettingsHandler.setScreenOffTimeoutHandler(call, result)
-        else -> result.notImplemented()
-      }
+    when (call.method) {
+      "canWriteSettings" -> result.success(Settings.System.canWrite(context))
+      "getSoundEffectsEnabled" -> result.success(systemSettingsHandler.getSoundEffectsEnabled())
+      "getAlarmVolume" -> result.success(volumeSettingsHandler.getAlarmVolume())
+      "getAlarmMaxVolume" -> result.success(volumeSettingsHandler.getAlarmMaxVolume())
+      "getMediaVolume" -> result.success(volumeSettingsHandler.getMediaVolume())
+      "getMediaMaxVolume" -> result.success(volumeSettingsHandler.getMediaMaxVolume())
+      "getScreenOffTimeout" -> result.success(systemSettingsHandler.getScreenOffTimeout())
+      "setAlarmVolume" -> volumeSettingsHandler.setAlarmVolumeHandler(call, result)
+      "setMediaVolume" -> volumeSettingsHandler.setMediaVolumeHandler(call, result)
+      else ->
+          if (!Settings.System.canWrite(context)) {
+            openAndroidPermissionsMenu()
+            result.error("ACCESS", "Cannot write to system settings. Permission needed.", null)
+          } else {
+            when (call.method) {
+              "getBrightness" -> result.success(systemSettingsHandler.getBrightness())
+              "setBrightness" -> systemSettingsHandler.setBrightnessHandler(activity, call, result)
+              "setSoundEffectsEnabled" -> systemSettingsHandler.setSoundEffectsHandler(call, result)
+              "setScreenOffTimeout" ->
+                  systemSettingsHandler.setScreenOffTimeoutHandler(call, result)
+              else -> result.notImplemented()
+            }
+          }
     }
   }
 
