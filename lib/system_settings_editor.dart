@@ -5,6 +5,10 @@ import 'package:flutter/services.dart';
 class SystemSettingsEditor {
   static const MethodChannel _channel = MethodChannel('system_settings_editor');
 
+  static Future<bool> get canWriteSettings async {
+    return await _channel.invokeMethod('canWriteSettings');
+  }
+
   static Future<double?> get brightness async {
     return await _channel.invokeMethod('getBrightness');
   }

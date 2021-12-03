@@ -22,6 +22,7 @@ class _MyAppState extends State<MyApp> {
   double? _brightness;
   double? _sliderBrightness;
   bool? _soundEffectsEnabled;
+  bool _canWrite = false;
   double? _alarmVolume;
   double? _mediaVolume;
   Duration? _timeout;
@@ -32,11 +33,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    getCanWriteSettings();
     getBrightness();
     getSoundEffectsEnabled();
     getAlarmVolume();
     getMediaVolume();
     getScreenOffTimeout();
+  }
+
+  Future<void> getCanWriteSettings() async {
+    bool canWrite = await SystemSettingsEditor.canWriteSettings;
+    if (!mounted) return;
+    setState(() {
+      _canWrite = canWrite;
+    });
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -138,6 +148,11 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ElevatedButton(
+              onPressed: getCanWriteSettings,
+              child: Text(
+                  'Check write settings access (${_canWrite ? 'granted' : 'not granted'})'),
+            ),
             const Text('Click sounds'),
             ElevatedButton(
               onPressed: toggleSoundEffects,
