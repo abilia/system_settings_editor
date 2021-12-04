@@ -21,16 +21,16 @@ void main() {
   setUp(() async {
     systemSettingsChannel
         .setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method.startsWith('getSoundEffectsEnabled')) {
-        return true;
+      switch (methodCall.method) {
+        case 'getSoundEffectsEnabled':
+          return true;
+        case 'getBrightness':
+          return 0.5;
+        case 'getScreenOffTimeout':
+          return 60000;
+        case 'canWriteSettings':
+          return true;
       }
-      if (methodCall.method.startsWith('getBrightness')) {
-        return 0.5;
-      }
-      if (methodCall.method.startsWith('getScreenOffTimeout')) {
-        return 60000;
-      }
-      return null;
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
