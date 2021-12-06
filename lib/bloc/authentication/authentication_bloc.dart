@@ -99,7 +99,7 @@ class AuthenticationBloc
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }
-    await repo.logout(token);
+    repo.logout(token);
     return Unauthenticated(
       state.userRepository,
       loggedOutReason: loggedOutReason,
