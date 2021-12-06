@@ -176,8 +176,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ..add(const RequestPermissions([Permission.notification]))
                 ..checkAll(),
             ),
-            BlocProvider<TimepillarBloc>(
-              create: (context) => TimepillarBloc(
+            BlocProvider<TimepillarCubit>(
+              create: (context) => TimepillarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
@@ -309,8 +309,8 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<PermissionBloc>.value(
           value: blocContext.read<PermissionBloc>(),
         ),
-        BlocProvider<TimepillarBloc>.value(
-          value: blocContext.read<TimepillarBloc>(),
+        BlocProvider<TimepillarCubit>.value(
+          value: blocContext.read<TimepillarCubit>(),
         ),
       ],
       child: child,

@@ -32,7 +32,7 @@ void main() {
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
-      timepillarBloc: FakeTimepillarBloc(),
+      timepillarCubit: FaketimepillarCubit(),
     );
     when(() => mockScrollController.position).thenReturn(mockScrollPosition);
     when(() => mockScrollController.hasClients).thenReturn(true);

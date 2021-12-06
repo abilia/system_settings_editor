@@ -46,8 +46,8 @@ void main() {
                 settingsDb: FakeSettingsDb(),
               ),
             ),
-            BlocProvider<TimepillarBloc>(
-              create: (context) => FakeTimepillarBloc(),
+            BlocProvider<TimepillarCubit>(
+              create: (context) => FaketimepillarCubit(),
             ),
           ],
           child: MaterialApp(

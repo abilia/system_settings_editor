@@ -18,14 +18,14 @@ class ScrollPositionBloc
 
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
-  final TimepillarBloc timepillarBloc;
+  final TimepillarCubit timepillarCubit;
   late final StreamSubscription dayPickerBlocSubscription;
   late final StreamSubscription clockBlocSubscription;
 
   ScrollPositionBloc({
     required this.dayPickerBloc,
     required this.clockBloc,
-    required this.timepillarBloc,
+    required this.timepillarCubit,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
@@ -124,7 +124,7 @@ class ScrollPositionBloc
       final hours = diff.inHours;
       final minutes = diff.inMinutes % Duration.minutesPerHour;
 
-      return timeToPixels(hours, minutes, timepillarBloc.state.dotDistance);
+      return timeToPixels(hours, minutes, timepillarCubit.state.dotDistance);
     }
     return 0.0;
   }

@@ -130,8 +130,8 @@ void main() {
               BlocProvider<PermissionBloc>(
                 create: (context) => PermissionBloc()..checkAll(),
               ),
-              BlocProvider<TimepillarBloc>(
-                create: (context) => TimepillarBloc(
+              BlocProvider<TimepillarCubit>(
+                create: (context) => TimepillarCubit(
                   clockBloc: context.read<ClockBloc>(),
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   dayPickerBloc: context.read<DayPickerBloc>(),

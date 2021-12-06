@@ -1,4 +1,4 @@
-part of 'timepillar_bloc.dart';
+part of 'timepillar_cubit.dart';
 
 // ActivityTimepillarCard
 final double _imageHeightMin = 56.s;

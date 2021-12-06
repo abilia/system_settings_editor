@@ -4,15 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'timepillar_event.dart';
 part 'timepillar_state.dart';
 
-class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
-  /// All fields are null when TimepillarBloc is fixed
+class TimepillarCubit extends Cubit<TimepillarState> {
+  /// All fields are null when timepillarCubit is fixed
   /// in Timepillar settings (`PreviewTimePillar`), or `TwoTimepillarCalendar`
   final ClockBloc? clockBloc;
   final MemoplannerSettingBloc? memoSettingsBloc;
@@ -22,7 +20,7 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
   StreamSubscription? _dayPickerSubscription;
 
   // ignore_for_file: prefer_initializing_formals
-  TimepillarBloc({
+  TimepillarCubit({
     required ClockBloc clockBloc,
     required MemoplannerSettingBloc memoSettingsBloc,
     required DayPickerBloc dayPickerBloc,
@@ -35,37 +33,34 @@ class TimepillarBloc extends Bloc<TimepillarEvent, TimepillarState> {
           memoSettingsBloc.state.timepillarZoom.zoomValue,
         )) {
     _clockSubscription = clockBloc.stream.listen((state) {
-      add(TimepillarConditionsChangedEvent());
+      _onTimepillarConditionsChanged();
     });
     _memoSettingsSubscription = memoSettingsBloc.stream.listen((state) {
-      add(TimepillarConditionsChangedEvent());
+      _onTimepillarConditionsChanged();
     });
     _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
-      add(TimepillarConditionsChangedEvent());
+      _onTimepillarConditionsChanged();
     });
   }
 
-  TimepillarBloc.fixed({
+  TimepillarCubit.fixed({
     this.clockBloc,
     this.memoSettingsBloc,
     this.dayPickerBloc,
     required TimepillarState state,
   }) : super(state);
 
-  @override
-  Stream<TimepillarState> mapEventToState(
-    TimepillarEvent event,
-  ) async* {
-    if (event is TimepillarConditionsChangedEvent) {
-      final time = clockBloc?.state;
-      final day = dayPickerBloc?.state.day;
-      final settings = memoSettingsBloc?.state;
-      if (time != null && day != null && settings != null) {
-        yield TimepillarState(
+  void _onTimepillarConditionsChanged() {
+    final time = clockBloc?.state;
+    final day = dayPickerBloc?.state.day;
+    final settings = memoSettingsBloc?.state;
+    if (time != null && day != null && settings != null) {
+      emit(
+        TimepillarState(
           generateInterval(time, day, settings),
           settings.timepillarZoom.zoomValue,
-        );
-      }
+        ),
+      );
     }
   }
 
