@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:seagull/bloc/all.dart';
@@ -23,9 +24,29 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
         ) {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
+    on<DayPickerEvent>(
+      (event, emit) {
+        if (event is NextDay) {
+          emit(generateState(state.day.nextDay()));
+        }
+        if (event is PreviousDay) {
+          emit(generateState(state.day.previousDay()));
+        }
+        if (event is CurrentDay) {
+          emit(generateState(clockBloc.state));
+        }
+        if (event is GoTo) {
+          emit(generateState(event.day));
+        }
+        if (event is TimeChanged) {
+          emit(state._timeChange(event.now));
+        }
+      },
+      transformer: sequential(),
+    );
   }
 
-  @override
+  /* @override
   Stream<DayPickerState> mapEventToState(DayPickerEvent event) async* {
     if (event is NextDay) {
       yield generateState(state.day.nextDay());
@@ -42,7 +63,7 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
     if (event is TimeChanged) {
       yield state._timeChange(event.now);
     }
-  }
+  }*/
 
   DayPickerState generateState(DateTime day) =>
       DayPickerState(day.onlyDays(), clockBloc.state);
