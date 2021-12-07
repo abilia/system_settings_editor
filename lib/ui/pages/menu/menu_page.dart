@@ -54,46 +54,45 @@ class CameraButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PermissionBloc, PermissionState>(
-      builder: (context, permissionState) => BlocProvider<MyPhotosBloc>(
-        create: (_) => MyPhotosBloc(
-          sortableBloc: BlocProvider.of<SortableBloc>(context),
-        ),
-        child: BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, time) => MenuItemButton(
-            icon: AbiliaIcons.cameraPhoto,
-            onPressed: () async {
-              if (permissionState
-                      .status[Permission.camera]?.isPermanentlyDenied ==
-                  true) {
-                await showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) => const PermissionInfoDialog(
-                        permission: Permission.camera));
-              } else {
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  final selectedImage =
-                      UnstoredAbiliaFile.newFile(File(image.path));
-                  BlocProvider.of<UserFileBloc>(context).add(
-                    ImageAdded(selectedImage),
-                  );
-                  BlocProvider.of<MyPhotosBloc>(context).add(
-                    PhotoAdded(
-                      selectedImage.id,
-                      selectedImage.file.path,
-                      DateFormat.yMd(
-                              Localizations.localeOf(context).toLanguageTag())
-                          .format(time),
-                    ),
-                  );
-                }
+      builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, time) => MenuItemButton(
+          icon: AbiliaIcons.cameraPhoto,
+          onPressed: () async {
+            if (permissionState
+                    .status[Permission.camera]?.isPermanentlyDenied ==
+                true) {
+              await showViewDialog(
+                  useSafeArea: false,
+                  context: context,
+                  builder: (context) => const PermissionInfoDialog(
+                      permission: Permission.camera));
+            } else {
+              final image =
+                  await ImagePicker().pickImage(source: ImageSource.camera);
+              if (image != null) {
+                final selectedImage =
+                    UnstoredAbiliaFile.newFile(File(image.path));
+                BlocProvider.of<UserFileBloc>(context).add(
+                  ImageAdded(selectedImage),
+                );
+                BlocProvider.of<SortableBloc>(context).add(
+                  PhotoAdded(
+                    selectedImage.id,
+                    selectedImage.file.path,
+                    DateFormat.yMd(
+                            Localizations.localeOf(context).toLanguageTag())
+                        .format(time),
+                    context
+                        .read<SortableArchiveBloc<ImageArchiveData>>()
+                        .state
+                        .currentFolderId,
+                  ),
+                );
               }
-            },
-            style: blueButtonStyle,
-            text: Translator.of(context).translate.camera,
-          ),
+            }
+          },
+          style: blueButtonStyle,
+          text: Translator.of(context).translate.camera,
         ),
       ),
     );
@@ -105,18 +104,25 @@ class MyPhotosButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MenuItemButton(
-      icon: AbiliaIcons.myPhotos,
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
-            child: const MyPhotosPage(),
-          ),
-        ),
+    return BlocSelector<SortableBloc, SortableState, String?>(
+      selector: (state) => state is SortablesLoaded
+          ? state.sortables.getMyPhotosFolder()?.id
+          : null,
+      builder: (context, myPhotoFolderId) => MenuItemButton(
+        icon: AbiliaIcons.myPhotos,
+        onPressed: myPhotoFolderId != null
+            ? () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: MyPhotosPage(myPhotoFolderId: myPhotoFolderId),
+                    ),
+                  ),
+                )
+            : null,
+        style: blueButtonStyle,
+        text: Translator.of(context).translate.myPhotos,
       ),
-      style: blueButtonStyle,
-      text: Translator.of(context).translate.myPhotos,
     );
   }
 }
@@ -215,7 +221,7 @@ class SettingsButton extends StatelessWidget {
 }
 
 class MenuItemButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final ButtonStyle style;
   final IconData icon;

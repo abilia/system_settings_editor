@@ -2,52 +2,45 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:seagull/logging.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MyPhotosPage extends StatelessWidget {
-  const MyPhotosPage({Key? key}) : super(key: key);
+  final String myPhotoFolderId;
+  const MyPhotosPage({
+    required this.myPhotoFolderId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-
-    return BlocProvider<MyPhotosBloc>(
-      create: (_) => MyPhotosBloc(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
+    return LibraryPage<ImageArchiveData>.nonSelectable(
+      appBar: AbiliaAppBar(
+        title: translate.myPhotos,
+        iconData: AbiliaIcons.myPhotos,
+        trailing: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0.s),
+          child: const AddPhotoButton(),
+        ),
       ),
-      child:
-          BlocBuilder<MyPhotosBloc, MyPhotosState>(builder: (context, state) {
-        final myPhotosRootFolderId = state.rootFolderId;
-        return LibraryPage<ImageArchiveData>.nonSelectable(
-          appBar: AbiliaAppBar(
-            title: translate.myPhotos,
-            iconData: AbiliaIcons.myPhotos,
-            trailing: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-              child: const AddPhotoButton(),
-            ),
-          ),
-          bottomNavigationBar: const BottomNavigation(
-            backNavigationWidget: CloseButton(),
-          ),
-          initialFolder: myPhotosRootFolderId ?? '',
-          emptyLibraryMessage: translate.noImages,
-          libraryItemGenerator: (imageArchive) => Photo(sortable: imageArchive),
-          libraryFolderGenerator: (imageArchive) => LibraryFolder(
-            title: imageArchive.data.title(),
-            fileId: imageArchive.data.folderFileId(),
-            filePath: imageArchive.data.folderFilePath(),
-          ),
-        );
-      }),
+      bottomNavigationBar: const BottomNavigation(
+        backNavigationWidget: CloseButton(),
+      ),
+      initialFolder: myPhotoFolderId,
+      emptyLibraryMessage: translate.noImages,
+      libraryItemGenerator: (imageArchive) => Photo(sortable: imageArchive),
+      libraryFolderGenerator: (imageArchive) => LibraryFolder(
+        title: imageArchive.data.title(),
+        fileId: imageArchive.data.folderFileId(),
+        filePath: imageArchive.data.folderFilePath(),
+      ),
     );
   }
 }
-
-final _log = Logger((AddPhotoButton).toString());
 
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({
@@ -74,30 +67,21 @@ class AddPhotoButton extends StatelessWidget {
                 if (image != null) {
                   final selectedImage =
                       UnstoredAbiliaFile.newFile(File(image.path));
-                  BlocProvider.of<UserFileBloc>(context).add(
-                    ImageAdded(selectedImage),
-                  );
-                  String? uploadFolderId;
-                  try {
-                    uploadFolderId =
-                        BlocProvider.of<SortableArchiveBloc<ImageArchiveData>>(
-                                context)
-                            .state
-                            .currentFolderId;
-                  } catch (e) {
-                    _log.warning(
-                        'Could not find ID of folder to upload photo into: $e');
-                  }
-                  BlocProvider.of<MyPhotosBloc>(context).add(
-                    PhotoAdded(
-                      selectedImage.id,
-                      selectedImage.file.path,
-                      DateFormat.yMd(
-                              Localizations.localeOf(context).toLanguageTag())
-                          .format(time),
-                      folderId: uploadFolderId,
-                    ),
-                  );
+                  BlocProvider.of<UserFileBloc>(context)
+                      .add(ImageAdded(selectedImage));
+                  context.read<SortableBloc>().add(
+                        PhotoAdded(
+                          selectedImage.id,
+                          selectedImage.file.path,
+                          DateFormat.yMd(Localizations.localeOf(context)
+                                  .toLanguageTag())
+                              .format(time),
+                          context
+                              .read<SortableArchiveBloc<ImageArchiveData>>()
+                              .state
+                              .currentFolderId,
+                        ),
+                      );
                 }
               }
             },

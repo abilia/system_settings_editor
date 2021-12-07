@@ -38,6 +38,9 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     if (event is LoadSortables) {
       yield* _mapLoadSortablesToState(event.initDefaults);
     }
+    if (event is PhotoAdded) {
+      yield* _mapPhotoAddedToState(event);
+    }
     if (event is ImageArchiveImageAdded) {
       yield* _mapImageArchiveImageAddedToState(event);
     }
@@ -101,37 +104,52 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   }
 
   Stream<SortableState> _mapImageArchiveImageAddedToState(
-      ImageArchiveImageAdded event) async* {
+    ImageArchiveImageAdded event,
+  ) async* {
     final currentState = state;
     if (currentState is SortablesLoaded) {
       final uploadFolder = currentState.sortables.getUploadFolder();
       if (uploadFolder == null) return;
-
       final name = event.imagePath.split('/').last.split('.').first;
-      final sortableData = ImageArchiveData(
-        name: name,
-        file: '${FileStorage.folder}/${event.imageId}',
-        fileId: event.imageId,
-      );
 
-      final uploadFolderContent = currentState.sortables
-          .where((s) => s.groupId == uploadFolder.id)
-          .toList();
-      uploadFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-      final sortOrder = uploadFolderContent.isEmpty
-          ? startSordOrder
-          : calculateNextSortOrder(uploadFolderContent.last.sortOrder, 1);
+      yield* _mapPhotoAddedToState(
+        PhotoAdded(
+          event.imageId,
+          event.imagePath,
+          name,
+          uploadFolder.id,
+        ),
+      );
+    }
+  }
 
-      final newSortable = Sortable.createNew<ImageArchiveData>(
-        data: sortableData,
-        groupId: uploadFolder.id,
-        sortOrder: sortOrder,
-      );
-      await sortableRepository.save([newSortable]);
-      syncBloc.add(SyncEvent.sortableSaved);
-      yield SortablesLoaded(
-        sortables: currentState.sortables.followedBy([newSortable]),
-      );
+  Stream<SortableState> _mapPhotoAddedToState(PhotoAdded event) async* {
+    {
+      final currentState = state;
+      if (currentState is SortablesLoaded) {
+        final sortableData = ImageArchiveData(
+          name: event.name,
+          file: '${FileStorage.folder}/${event.imageId}',
+          fileId: event.imageId,
+        );
+        final folderContent = currentState.sortables
+            .where((s) => s.groupId == event.folderId)
+            .toList();
+        folderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        final sortOrder = folderContent.isEmpty
+            ? startSordOrder
+            : calculateNextSortOrder(folderContent.last.sortOrder, 1);
+        final newSortable = Sortable.createNew<ImageArchiveData>(
+          data: sortableData,
+          groupId: event.folderId,
+          sortOrder: sortOrder,
+        );
+        await sortableRepository.save([newSortable]);
+        syncBloc.add(SyncEvent.sortableSaved);
+        yield SortablesLoaded(
+          sortables: currentState.sortables.followedBy([newSortable]),
+        );
+      }
     }
   }
 

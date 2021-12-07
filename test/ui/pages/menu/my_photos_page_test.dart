@@ -6,10 +6,12 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
@@ -17,6 +19,26 @@ void main() {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    final mockSortableDb = MockSortableDb();
+    when(() => mockSortableDb.getAllNonDeleted()).thenAnswer(
+      (invocation) => Future.value(
+        <Sortable<ImageArchiveData>>[
+          Sortable.createNew(
+            data: const ImageArchiveData(myPhotos: true),
+            fixed: true,
+          ),
+          Sortable.createNew(
+            data: const ImageArchiveData(upload: true),
+            fixed: true,
+          ),
+        ],
+      ),
+    );
+    when(() => mockSortableDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+
+    when(() => mockSortableDb.getAllDirty())
+        .thenAnswer((_) => Future.value(<DbModel<Sortable>>[]));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -28,7 +50,7 @@ void main() {
       ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..genericDb = FakeGenericDb()
-      ..sortableDb = FakeSortableDb()
+      ..sortableDb = mockSortableDb
       ..init();
   });
 
@@ -47,7 +69,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
     });
-  }, skip: !Config.isMP);
+  });
 }
 
 extension on WidgetTester {
