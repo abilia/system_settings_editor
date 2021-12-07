@@ -53,9 +53,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 232,
-                  child: BlocProvider<TimepillarBloc>(
+                  child: BlocProvider<TimepillarCubit>(
                     create: (_) =>
-                        TimepillarBloc.fixed(state: dayTimepillarState),
+                        TimepillarCubit.fixed(state: dayTimepillarState),
                     child: OneTimepillarCalendar(
                       activityState: activityState,
                       timepillarState: dayTimepillarState,
@@ -75,9 +75,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
                   flex: 135,
                   child: MultiBlocProvider(
                     providers: [
-                      BlocProvider<TimepillarBloc>(
+                      BlocProvider<TimepillarCubit>(
                         create: (_) =>
-                            TimepillarBloc.fixed(state: nightTimepillarState),
+                            TimepillarCubit.fixed(state: nightTimepillarState),
                       ),
                       BlocProvider<NightActivitiesCubit>(
                         create: (context) => NightActivitiesCubit(

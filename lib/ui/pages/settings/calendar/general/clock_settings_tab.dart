@@ -114,7 +114,7 @@ class PreviewTimePillar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TimepillarBloc.fixed(state: ts),
+          create: (context) => TimepillarCubit.fixed(state: ts),
         ),
         BlocProvider(
           create: (context) => ClockBloc(

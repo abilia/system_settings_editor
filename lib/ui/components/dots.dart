@@ -100,7 +100,7 @@ class Dots extends StatelessWidget {
   const Dots({Key? key, required this.decoration}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimepillarBloc, TimepillarState>(
+    return BlocBuilder<TimepillarCubit, TimepillarState>(
       buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
       builder: (context, ts) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +129,7 @@ class AnimatedDot extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<TimepillarBloc, TimepillarState>(
+      BlocBuilder<TimepillarCubit, TimepillarState>(
         buildWhen: (previous, current) =>
             size == null && previous.dotSize != current.dotSize,
         builder: (context, ts) => AnimatedContainer(
@@ -157,7 +157,7 @@ class SideDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
-    return BlocBuilder<TimepillarBloc, TimepillarState>(
+    return BlocBuilder<TimepillarCubit, TimepillarState>(
       builder: (context, ts) => BlocBuilder<ClockBloc, DateTime>(
         builder: (_, now) => Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

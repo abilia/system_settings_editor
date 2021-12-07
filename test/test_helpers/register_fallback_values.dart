@@ -16,7 +16,6 @@ void registerFallbackValues() {
       TimepillarInterval(
           start: DateTime(1910, 01, 01), end: DateTime(1987, 05, 23)),
       1.0));
-  registerFallbackValue(TimepillarConditionsChangedEvent());
   registerFallbackValue(File(''));
   registerFallbackValue(TZDateTime.utc(2021));
   registerFallbackValue(const NotificationDetails());
