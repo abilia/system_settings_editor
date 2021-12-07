@@ -27,6 +27,31 @@ class ImageArchiveImageAdded extends SortableEvent {
   List<Object> get props => [imageId, imagePath];
 }
 
+class PhotoAdded extends SortableEvent {
+  final String imageId;
+  final String imagePath;
+  final String name;
+  final String folderId;
+
+  const PhotoAdded(
+    this.imageId,
+    this.imagePath,
+    this.name,
+    this.folderId,
+  );
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object> get props => [
+        imageId,
+        imagePath,
+        name,
+        folderId,
+      ];
+}
+
 class SortableUpdated extends SortableEvent {
   final Sortable sortable;
 
