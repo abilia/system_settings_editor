@@ -32,7 +32,8 @@ class MyPhotosPage extends StatelessWidget {
       ),
       initialFolder: myPhotoFolderId,
       emptyLibraryMessage: translate.noImages,
-      libraryItemGenerator: (imageArchive) => Photo(sortable: imageArchive),
+      libraryItemGenerator: (imageArchive) =>
+          FullscreenViewablePhoto(sortable: imageArchive),
       libraryFolderGenerator: (imageArchive) => LibraryFolder(
         title: imageArchive.data.title(),
         fileId: imageArchive.data.folderFileId(),
@@ -89,6 +90,31 @@ class AddPhotoButton extends StatelessWidget {
           ),
         ),
       );
+}
+
+class FullscreenViewablePhoto extends StatelessWidget {
+  const FullscreenViewablePhoto({
+    required this.sortable,
+    Key? key,
+  }) : super(key: key);
+  final Sortable<ImageArchiveData> sortable;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async => await showViewDialog<bool>(
+        useSafeArea: false,
+        context: context,
+        builder: (_) {
+          return FullscreenImageDialog(
+            fileId: sortable.data.fileId,
+            filePath: sortable.data.file,
+          );
+        },
+      ),
+      child: Photo(sortable: sortable),
+    );
+  }
 }
 
 class Photo extends StatelessWidget {
