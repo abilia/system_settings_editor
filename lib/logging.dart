@@ -339,7 +339,7 @@ class BlocLoggingObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     if (analyticsLogging) logEventToAnalytics(transition);
     if (bloc is Silent) return;
-    _log(bloc, 'onTransition : ${bloc.runtimeType}, transition: $onTransition');
+    _log(bloc, 'onTransition : ${bloc.runtimeType}, transition: $transition');
   }
 
   @override

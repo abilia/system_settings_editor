@@ -109,10 +109,20 @@ void main() {
       );
     });
 
-    test('when time is 00:00', () {
-      clockBloc.add(initialDay.add(1.hours()));
+    test('when time changes from 00:00 to 00:01', () async {
+      clockBloc.add(initialDay.add(1.minutes()));
+      await expectLater(
+        nightActivitiesCubit.stream,
+        emits(
+          ActivitiesOccasionLoaded(
+            activities: const [],
+            day: initialDay,
+            occasion: Occasion.future,
+          ),
+        ),
+      );
       dayPickerBloc.add(PreviousDay());
-      expectLater(
+      await expectLater(
         nightActivitiesCubit.stream,
         emits(
           ActivitiesOccasionLoaded(

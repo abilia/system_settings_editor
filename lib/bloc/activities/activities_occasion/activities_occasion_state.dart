@@ -39,6 +39,9 @@ class ActivitiesOccasionLoaded extends ActivitiesOccasionState {
       ];
 
   @override
-  String toString() =>
-      'ActivitiesOccasionLoaded {${activities.length} loaded, $occasion, ${yMd(day)} }';
+  String toString() => 'ActivitiesOccasionLoaded '
+      '{${pastActivities.length} pastActivities, '
+      '${notPastActivities.length} notPastActivities, '
+      '${fullDayActivities.length} fullDayActivities, '
+      '$occasion, ${yMd(day)} }';
 }
