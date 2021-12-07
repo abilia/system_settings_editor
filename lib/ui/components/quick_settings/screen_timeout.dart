@@ -21,8 +21,12 @@ class ScreenTimeoutPickField extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => CopiedAuthProviders(
                 blocContext: context,
-                child:
-                    ScreenTimeOutSelector(timeout: wakeLockState.screenTimeout),
+                child: ScreenTimeOutSelector(
+                  timeout:
+                      wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways
+                          ? Duration.zero
+                          : wakeLockState.screenTimeout,
+                ),
               ),
             ),
           );

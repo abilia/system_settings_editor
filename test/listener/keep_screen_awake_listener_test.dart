@@ -87,11 +87,6 @@ void main() {
         ),
       );
 
-  testWidgets('test', (tester) async {
-    await tester.pumpWidget(_wrapWithMaterialApp());
-    await tester.pumpAndSettle();
-  });
-
   testWidgets('When new timeout, but same as settings, do nothing',
       (tester) async {
     const newTimeout = Duration(minutes: 3);
