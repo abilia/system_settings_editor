@@ -40,7 +40,7 @@ class WakeLockCubit extends Cubit<WakeLockState> {
       setScreenTimeout(await screenTimeoutCallback);
 
   void setScreenTimeout(Duration? duration) =>
-      emit(state.copyWith(systemScreenTimeout: duration));
+      emit(state.copyWith(screenTimeout: duration));
 
   @override
   Future<void> close() async {
@@ -51,31 +51,28 @@ class WakeLockCubit extends Cubit<WakeLockState> {
 }
 
 class WakeLockState extends Equatable {
-  final Duration systemScreenTimeout;
+  final Duration screenTimeout;
   final KeepScreenAwakeSettings keepScreenAwakeSettings;
   final bool batteryCharging;
 
-  bool get alwaysOn =>
-      systemScreenTimeout == Duration.zero ||
-      keepScreenAwakeSettings.keepScreenOnAlways;
+  bool get alwaysOn => keepScreenAwakeSettings.keepScreenOnAlways;
   bool get onNow =>
       alwaysOn ||
       keepScreenAwakeSettings.keepScreenOnWhileCharging && batteryCharging;
-  Duration get screenTimeout => alwaysOn ? Duration.zero : systemScreenTimeout;
 
   const WakeLockState({
     required this.keepScreenAwakeSettings,
-    this.systemScreenTimeout = const Duration(milliseconds: -1),
+    this.screenTimeout = const Duration(milliseconds: -1),
     this.batteryCharging = false,
   });
 
   WakeLockState copyWith({
-    Duration? systemScreenTimeout,
+    Duration? screenTimeout,
     KeepScreenAwakeSettings? keepScreenAwakeSettings,
     bool? batteryCharging,
   }) =>
       WakeLockState(
-        systemScreenTimeout: systemScreenTimeout ?? this.systemScreenTimeout,
+        screenTimeout: screenTimeout ?? this.screenTimeout,
         keepScreenAwakeSettings:
             keepScreenAwakeSettings ?? this.keepScreenAwakeSettings,
         batteryCharging: batteryCharging ?? this.batteryCharging,
@@ -83,7 +80,7 @@ class WakeLockState extends Equatable {
 
   @override
   List<Object?> get props => [
-        systemScreenTimeout,
+        screenTimeout,
         keepScreenAwakeSettings,
         batteryCharging,
       ];

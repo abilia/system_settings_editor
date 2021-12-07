@@ -14,7 +14,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
         text: Text(
           wakeLockState.alwaysOn
               ? t.alwaysOn
-              : wakeLockState.systemScreenTimeout.toDurationString(t),
+              : wakeLockState.screenTimeout.toDurationString(t),
         ),
         onTap: () async {
           final timeout = await Navigator.of(context).push<Duration>(

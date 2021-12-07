@@ -57,7 +57,7 @@ void main() {
     const time = Duration(minutes: 1);
 
     when(() => mockWakeLockCubit.state).thenReturn(
-      baseState.copyWith(systemScreenTimeout: time),
+      baseState.copyWith(screenTimeout: time),
     );
     await tester
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));
@@ -70,7 +70,7 @@ void main() {
   testWidgets('Timeout set to 30 minutes', (WidgetTester tester) async {
     const time = Duration(minutes: 30);
     when(() => mockWakeLockCubit.state).thenReturn(
-      baseState.copyWith(systemScreenTimeout: time),
+      baseState.copyWith(screenTimeout: time),
     );
     await tester
         .pumpWidget(wrapWithMaterialApp(const ScreenTimeoutPickField()));

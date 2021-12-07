@@ -54,7 +54,7 @@ void main() {
       _wakeLockCubit.stream,
       emits(
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
@@ -69,7 +69,7 @@ void main() {
       _wakeLockCubit.stream,
       emits(
         const WakeLockState(
-          systemScreenTimeout: newTimeout,
+          screenTimeout: newTimeout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: false,
         ),
@@ -84,7 +84,7 @@ void main() {
       _wakeLockCubit.stream,
       emits(
         const WakeLockState(
-          systemScreenTimeout: newTimeout,
+          screenTimeout: newTimeout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: false,
         ),
@@ -98,7 +98,7 @@ void main() {
     expect(
       _wakeLockCubit.state,
       const WakeLockState(
-        systemScreenTimeout: _timout,
+        screenTimeout: _timout,
         keepScreenAwakeSettings: KeepScreenAwakeSettings(),
         batteryCharging: false,
       ),
@@ -110,17 +110,17 @@ void main() {
       _wakeLockCubit.stream,
       emitsInOrder([
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: false,
         ),
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings: KeepScreenAwakeSettings(),
           batteryCharging: true,
         ),
@@ -136,13 +136,13 @@ void main() {
       _wakeLockCubit.stream,
       emitsInOrder([
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings:
               KeepScreenAwakeSettings(keepScreenOnAlways: true),
           batteryCharging: false,
         ),
         const WakeLockState(
-          systemScreenTimeout: _timout,
+          screenTimeout: _timout,
           keepScreenAwakeSettings:
               KeepScreenAwakeSettings(keepScreenOnWhileCharging: true),
           batteryCharging: false,
