@@ -23,25 +23,12 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
         ) {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
-  }
-
-  @override
-  Stream<DayPickerState> mapEventToState(DayPickerEvent event) async* {
-    if (event is NextDay) {
-      yield generateState(state.day.nextDay());
-    }
-    if (event is PreviousDay) {
-      yield generateState(state.day.previousDay());
-    }
-    if (event is CurrentDay) {
-      yield generateState(clockBloc.state);
-    }
-    if (event is GoTo) {
-      yield generateState(event.day);
-    }
-    if (event is TimeChanged) {
-      yield state._timeChange(event.now);
-    }
+    on<NextDay>((event, emit) => emit(generateState(state.day.nextDay())));
+    on<PreviousDay>(
+        (event, emit) => emit(generateState(state.day.previousDay())));
+    on<CurrentDay>((event, emit) => emit(generateState(clockBloc.state)));
+    on<GoTo>((event, emit) => emit(generateState(event.day)));
+    on<TimeChanged>((event, emit) => emit(state._timeChange(event.now)));
   }
 
   DayPickerState generateState(DateTime day) =>
