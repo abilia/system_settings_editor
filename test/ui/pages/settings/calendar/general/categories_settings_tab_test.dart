@@ -633,7 +633,7 @@ void main() {
         () async {
           // Act
           await tester.pumpApp();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();

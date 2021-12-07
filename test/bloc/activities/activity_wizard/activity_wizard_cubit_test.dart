@@ -66,7 +66,6 @@ void main() {
         0,
         UnmodifiableListView(
           [
-            WizardStep.basic,
             WizardStep.advance,
           ],
         ),
@@ -92,7 +91,6 @@ void main() {
         0,
         UnmodifiableListView(
           [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
@@ -1714,7 +1712,6 @@ void main() {
         ActivityWizardState(
           0,
           const [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
@@ -1763,7 +1760,6 @@ void main() {
         ActivityWizardState(
           0,
           const [
-            WizardStep.basic,
             WizardStep.type,
             WizardStep.deleteAfter,
             WizardStep.time,
@@ -1840,7 +1836,6 @@ void main() {
     );
 
     const allWizStep = [
-      WizardStep.basic,
       WizardStep.date,
       WizardStep.title,
       WizardStep.image,
@@ -1982,7 +1977,6 @@ void main() {
         wizCubit.stream,
         emitsInOrder([
           ActivityWizardState(0, const [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,

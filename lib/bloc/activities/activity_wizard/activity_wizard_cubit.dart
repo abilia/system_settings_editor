@@ -31,7 +31,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
             settings.addActivityType == NewActivityMode.editView
                 ? UnmodifiableListView(
                     [
-                      if (settings.advancedActivityTemplate) WizardStep.basic,
                       WizardStep.advance,
                     ],
                   )
@@ -56,7 +55,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     Activity activity,
   ) =>
       [
-        if (settings.settings.wizard.template) WizardStep.basic,
         if (settings.settings.wizard.datePicker) WizardStep.date,
         if (settings.settings.wizard.title) WizardStep.title,
         if (settings.settings.wizard.image) WizardStep.image,

@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/edit_activity/activity_wizard_page.dart';
+import 'package:seagull/ui/pages/create_new_page.dart';
 
-class AddActivityButton extends StatelessWidget {
-  const AddActivityButton({
+class AddButton extends StatelessWidget {
+  const AddButton({
     Key? key,
-    required this.day,
   }) : super(key: key);
-
-  final DateTime day;
 
   @override
   Widget build(BuildContext context) =>
@@ -25,25 +22,7 @@ class AddActivityButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => CopiedAuthProviders(
                   blocContext: context,
-                  child: MultiBlocProvider(
-                    providers: [
-                      BlocProvider<EditActivityBloc>(
-                        create: (_) => EditActivityBloc.newActivity(
-                          day: day,
-                          defaultAlarmTypeSetting:
-                              state.defaultAlarmTypeSetting,
-                        ),
-                      ),
-                      BlocProvider(
-                        create: (context) => ActivityWizardCubit.newActivity(
-                            activitiesBloc: context.read<ActivitiesBloc>(),
-                            editActivityBloc: context.read<EditActivityBloc>(),
-                            clockBloc: context.read<ClockBloc>(),
-                            settings: state),
-                      ),
-                    ],
-                    child: const ActivityWizardPage(),
-                  ),
+                  child: const CreateNewPage(),
                 ),
               ),
             );

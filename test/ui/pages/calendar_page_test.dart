@@ -167,7 +167,7 @@ void main() {
       testWidgets('New activity', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddActivityButton));
+        await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
         expect(find.byType(BasicActivityStepPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -191,7 +191,7 @@ void main() {
         const title = 'title';
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddActivityButton));
+        await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
         expect(find.byType(ActivityWizardPage), findsOneWidget);
 
@@ -298,7 +298,7 @@ void main() {
         const title = 'title';
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddActivityButton));
+        await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
         expect(find.byType(ActivityWizardPage), findsOneWidget);
 
@@ -372,7 +372,7 @@ void main() {
           );
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(BasicActivityStepPage), findsNothing);
           expect(find.byType(EditActivityPage), findsOneWidget);
@@ -382,7 +382,7 @@ void main() {
             (WidgetTester tester) async {
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(BasicActivityStepPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -428,7 +428,7 @@ void main() {
 
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(ErrorDialog), findsOneWidget);
           expect(find.byType(BasicActivityStepPage), findsNothing);
@@ -471,7 +471,7 @@ void main() {
 
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(ErrorDialog), findsNothing);
           expect(find.byType(BasicActivityStepPage), findsOneWidget);
@@ -493,7 +493,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(BasicActivityStepPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
@@ -537,7 +537,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
@@ -578,7 +578,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -663,7 +663,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -709,7 +709,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -755,7 +755,7 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddActivityButton));
+          await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -959,7 +959,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddActivityButton));
+      await tester.tap(find.byType(AddButton));
       await tester.pumpAndSettle();
       expect(find.byType(BasicActivityStepPage), findsOneWidget);
       await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -1000,7 +1000,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddActivityButton));
+      await tester.tap(find.byType(AddButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();

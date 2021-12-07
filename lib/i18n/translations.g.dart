@@ -245,6 +245,8 @@ abstract class Translated {
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
+  final String start = 'Start';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1104,6 +1106,9 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
+
+  @override
+  final String start = 'Starta';
 
   @override
   final String menu = 'Meny';
@@ -2213,6 +2218,9 @@ class DA extends Translated {
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
+  final String start = 'Start';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3317,6 +3325,9 @@ class NL extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
+
+  @override
+  final String start = 'Begin';
 
   @override
   final String menu = 'Menu';
@@ -4425,6 +4436,9 @@ class FI extends Translated {
   @override
   final String checklistDoneInfo =
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
+
+  @override
+  final String start = 'Alkaa';
 
   @override
   final String menu = 'Valikko';
@@ -5537,6 +5551,9 @@ class DE extends Translated {
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
+  final String start = 'Anfang';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -6645,6 +6662,9 @@ class NB extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
+
+  @override
+  final String start = 'Start';
 
   @override
   final String menu = 'Meny';

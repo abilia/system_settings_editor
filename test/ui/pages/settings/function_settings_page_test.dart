@@ -312,7 +312,7 @@ void main() {
 
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AddActivityButton), findsOneWidget);
+      expect(find.byType(AddButton), findsOneWidget);
       expect(find.byType(AbiliaTabBar), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
@@ -334,7 +334,7 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AddActivityButton), findsNothing);
+      expect(find.byType(AddButton), findsNothing);
     });
 
     testWidgets('hides Menu Button in bottomBar', (tester) async {
