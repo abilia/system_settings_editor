@@ -9,16 +9,17 @@ class KeepScreenAwakeListener
       : super(
           key: key,
           listener: (context, state) async {
-            if (!await SystemSettingsEditor.canWriteSettings) return;
             if (state.onNow) {
               await Wakelock.enable();
-            } else if (state.systemScreenTimeout > Duration.zero &&
-                await SystemSettingsEditor.screenOffTimeout !=
-                    state.systemScreenTimeout) {
-              await Wakelock.disable();
-              await SystemSettingsEditor.setScreenOffTimeout(
-                state.systemScreenTimeout,
-              );
+            } else {
+              if (state.systemScreenTimeout > Duration.zero &&
+                  await SystemSettingsEditor.screenOffTimeout !=
+                      state.systemScreenTimeout) {
+                await SystemSettingsEditor.setScreenOffTimeout(
+                  state.systemScreenTimeout,
+                );
+                await Wakelock.disable();
+              }
             }
           },
         );

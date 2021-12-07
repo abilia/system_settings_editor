@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/listener/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../mocks/mock_bloc.dart';
@@ -14,7 +13,6 @@ import '../mocks/mocks.dart';
 import '../test_helpers/register_fallback_values.dart';
 
 void main() {
-  SeagullLogger.test();
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late WakeLockCubit wakeLockCubit;
