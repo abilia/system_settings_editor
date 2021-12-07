@@ -70,6 +70,7 @@ hourInessive	&empty&	&empty&	&empty&	&empty&	tunnissa	&empty&	&empty&
 minuteInessive	&empty&	&empty&	&empty&	&empty&	minuutissa	&empty&	&empty&
 now	Now	Nu	Nu	Nu	Nyt	Jetzt	Nå
 week	week	vecka	uge	week	viikko	Woche	uke
+month	Month	Månad	Måned	Maand	Kuukausi	Monat	Måned
 clockTheTimeIsTts	the time is %s	Klockan är %s	Klokken er %s	De tijd is %s	Kello on %s	Die Uhrzeit ist %s	Klokken er %s
 clockFiveMinutesPastTts	five past %s	Fem minuter över %s	Fem minutter over %s	vijf over %s	viisi yli %s	5 Minuten nach %s	Fem over %s
 clockFiveMinutesHalfPastTts	twenty five to %s	Fem över halv %s	Fem over halv %s	vijfentwintig voor %s	kaksikymmentäviisi vaille %s	25 Minuten vor %s	Fem over halv %s
@@ -215,6 +216,7 @@ sa	Sat	lör	lør	Za	La	Sa	lør
 su	Sun	sön	søn	Zo	Su	So	søn
 							
 ### Info item							
+extra	Extra	Extra	Ekstra	Extra	Ekstrat	Extra	Ekstra
 infoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 selectInfoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 infoTypeNone	No extra function selected	Ingen extra funktion vald	Ingen yderligere funktion er valgt	Geen extra functie geselecteerd	Lisätoimintoa ei ole valittu	Keine Extrafunktion ausgewählt	Ingen ekstra funksjon valgt

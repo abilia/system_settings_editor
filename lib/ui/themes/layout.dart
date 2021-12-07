@@ -13,16 +13,20 @@ final Layout layout = Device.screenSize.longestSide > 1500
 class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
-  final ClockLayout clock;
+  final TabBarLayout tab;
+  final ToolbarLayout toolbar;
   final FontSize fontSize;
   final IconSize iconSize;
+  final ClockLayout clock;
 
   const Layout({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
-    this.clock = const ClockLayout(),
+    this.toolbar = const ToolbarLayout(),
+    this.tab = const TabBarLayout(),
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
+    this.clock = const ClockLayout(),
   });
 }
 
@@ -44,25 +48,33 @@ class ActionButtonLayout {
   });
 }
 
-class ClockLayout {
-  final double height,
-      width,
-      borderWidth,
-      centerPointRadius,
-      hourNumberScale,
-      hourHandLength,
-      minuteHandLength,
-      fontSize;
+class ToolbarLayout {
+  final double heigth, horizontalPadding, bottomPadding;
+  final List<double> itemsPaddings;
 
-  const ClockLayout({
-    this.height = 60,
-    this.width = 48,
+  const ToolbarLayout({
+    this.heigth = 64,
+    this.horizontalPadding = 16,
+    this.bottomPadding = 0,
+    this.itemsPaddings = const [0, 0, 70, 39, 23],
+  });
+}
+
+class TabBarLayout {
+  final double preferedHeigth,
+      width,
+      heigth,
+      borderWidth,
+      topPadding,
+      horizontalPadding;
+
+  const TabBarLayout({
+    this.preferedHeigth = 64,
+    this.heigth = 48,
+    this.width = 64,
     this.borderWidth = 1,
-    this.centerPointRadius = 4,
-    this.hourNumberScale = 1.5,
-    this.hourHandLength = 11,
-    this.minuteHandLength = 15,
-    this.fontSize = 7,
+    this.topPadding = 4,
+    this.horizontalPadding = 4,
   });
 }
 
@@ -107,5 +119,27 @@ class IconSize {
     this.normal = 32,
     this.large = 48,
     this.huge = 96,
+  });
+}
+
+class ClockLayout {
+  final double height,
+      width,
+      borderWidth,
+      centerPointRadius,
+      hourNumberScale,
+      hourHandLength,
+      minuteHandLength,
+      fontSize;
+
+  const ClockLayout({
+    this.height = 60,
+    this.width = 48,
+    this.borderWidth = 1,
+    this.centerPointRadius = 4,
+    this.hourNumberScale = 1.5,
+    this.hourHandLength = 11,
+    this.minuteHandLength = 15,
+    this.fontSize = 7,
   });
 }

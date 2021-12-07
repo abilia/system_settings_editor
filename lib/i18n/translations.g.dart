@@ -158,6 +158,8 @@ abstract class Translated {
 
   final String week = 'week';
 
+  final String month = 'Month';
+
   final String clockTheTimeIsTts = 'the time is %s';
 
   final String clockFiveMinutesPastTts = 'five past %s';
@@ -420,6 +422,8 @@ abstract class Translated {
   final String sa = 'Sat';
 
   final String su = 'Sun';
+
+  final String extra = 'Extra';
 
   final String infoType = 'Select extra function';
 
@@ -980,6 +984,9 @@ class SV extends Translated {
   final String week = 'vecka';
 
   @override
+  final String month = 'Månad';
+
+  @override
   final String clockTheTimeIsTts = 'Klockan är %s';
 
   @override
@@ -1371,6 +1378,9 @@ class SV extends Translated {
 
   @override
   final String su = 'sön';
+
+  @override
+  final String extra = 'Extra';
 
   @override
   final String infoType = 'Välj extra funktion';
@@ -2096,6 +2106,9 @@ class DA extends Translated {
   final String week = 'uge';
 
   @override
+  final String month = 'Måned';
+
+  @override
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
@@ -2487,6 +2500,9 @@ class DA extends Translated {
 
   @override
   final String su = 'søn';
+
+  @override
+  final String extra = 'Ekstra';
 
   @override
   final String infoType = 'Vælg ekstra funktion';
@@ -3214,6 +3230,9 @@ class NL extends Translated {
   final String week = 'week';
 
   @override
+  final String month = 'Maand';
+
+  @override
   final String clockTheTimeIsTts = 'De tijd is %s';
 
   @override
@@ -3604,6 +3623,9 @@ class NL extends Translated {
 
   @override
   final String su = 'Zo';
+
+  @override
+  final String extra = 'Extra';
 
   @override
   final String infoType = 'Extra functie selecteren';
@@ -4331,6 +4353,9 @@ class FI extends Translated {
   final String week = 'viikko';
 
   @override
+  final String month = 'Kuukausi';
+
+  @override
   final String clockTheTimeIsTts = 'Kello on %s';
 
   @override
@@ -4722,6 +4747,9 @@ class FI extends Translated {
 
   @override
   final String su = 'Su';
+
+  @override
+  final String extra = 'Ekstrat';
 
   @override
   final String infoType = 'Valitse lisätoiminto';
@@ -5451,6 +5479,9 @@ class DE extends Translated {
   final String week = 'Woche';
 
   @override
+  final String month = 'Monat';
+
+  @override
   final String clockTheTimeIsTts = 'Die Uhrzeit ist %s';
 
   @override
@@ -5843,6 +5874,9 @@ class DE extends Translated {
 
   @override
   final String su = 'So';
+
+  @override
+  final String extra = 'Extra';
 
   @override
   final String infoType = 'Extrafunktion auswählen';
@@ -6571,6 +6605,9 @@ class NB extends Translated {
   final String week = 'uke';
 
   @override
+  final String month = 'Måned';
+
+  @override
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
@@ -6961,6 +6998,9 @@ class NB extends Translated {
 
   @override
   final String su = 'søn';
+
+  @override
+  final String extra = 'Ekstra';
 
   @override
   final String infoType = 'Velg ekstra funksjon';

@@ -10,15 +10,17 @@ class _MediumLayout extends Layout {
             size: 88,
             radius: 20,
           ),
-          clock: const ClockLayout(
-            height: 124,
-            width: 92,
+          toolbar: const ToolbarLayout(
+            heigth: 120,
+            bottomPadding: 8,
+          ),
+          tab: const TabBarLayout(
+            preferedHeigth: 104,
+            width: 118,
+            heigth: 88,
             borderWidth: 2,
-            centerPointRadius: 8,
-            hourNumberScale: 1.5,
-            hourHandLength: 22,
-            minuteHandLength: 30,
-            fontSize: 12,
+            topPadding: 6,
+            horizontalPadding: 5,
           ),
           fontSize: const FontSize(
             headline1: 144,
@@ -31,7 +33,7 @@ class _MediumLayout extends Layout {
             subtitle2: 21,
             bodyText1: 24,
             bodyText2: 21,
-            caption: 18,
+            caption: 20,
             button: 24,
             overline: 15,
           ),
@@ -41,6 +43,16 @@ class _MediumLayout extends Layout {
             normal: 64,
             large: 96,
             huge: 192,
+          ),
+          clock: const ClockLayout(
+            height: 124,
+            width: 92,
+            borderWidth: 2,
+            centerPointRadius: 8,
+            hourNumberScale: 1.5,
+            hourHandLength: 22,
+            minuteHandLength: 30,
+            fontSize: 12,
           ),
         );
 }
