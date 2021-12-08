@@ -199,9 +199,21 @@ void main() {
     });
 
     group('picture dialog', () {
-      tearDown(() {
-        setupPermissions();
+      setUp(() {
+        when(() => mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: [
+              Sortable.createNew(
+                  data: const ImageArchiveData(upload: true), fixed: true),
+              Sortable.createNew(
+                  data: const ImageArchiveData(myPhotos: true), fixed: true),
+            ],
+          ),
+        );
       });
+
+      tearDown(setupPermissions);
+
       testWidgets('Select picture dialog shows', (WidgetTester tester) async {
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();

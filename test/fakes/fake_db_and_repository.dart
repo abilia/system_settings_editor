@@ -62,8 +62,16 @@ class FakeUserFileDb extends Fake implements UserFileDb {
 
 class FakeSortableDb extends Fake implements SortableDb {
   @override
-  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() =>
-      Future.value([]);
+  Future<Iterable<Sortable<SortableData>>> getAllNonDeleted() => Future.value([
+        Sortable.createNew(
+          data: const ImageArchiveData(myPhotos: true),
+          fixed: true,
+        ),
+        Sortable.createNew(
+          data: const ImageArchiveData(upload: true),
+          fixed: true,
+        ),
+      ]);
 
   @override
   Future<bool> insertAndAddDirty(Iterable<Sortable> data) => Future.value(true);

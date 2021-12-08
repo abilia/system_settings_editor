@@ -6,7 +6,23 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
-  const LibraryPage({
+  const LibraryPage.nonSelectable({
+    Key? key,
+    required this.libraryItemGenerator,
+    required this.emptyLibraryMessage,
+    required this.initialFolder,
+    this.libraryFolderGenerator,
+    this.visibilityFilter,
+    this.onCancel,
+    this.appBar,
+    this.bottomNavigationBar,
+    this.rootHeading,
+  })  : selectableItems = false,
+        selectedItemGenerator = null,
+        onOk = null,
+        super(key: key);
+
+  const LibraryPage.selectable({
     Key? key,
     required this.selectedItemGenerator,
     required this.libraryItemGenerator,
@@ -16,13 +32,21 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.visibilityFilter,
     this.onCancel,
     this.appBar,
+    this.bottomNavigationBar,
     this.rootHeading,
     this.initialFolder = '',
-  }) : super(key: key);
+  })  : selectableItems = true,
+        assert(
+            onOk != null, 'onOk should not be null in LibraryPage.selectable'),
+        assert(selectedItemGenerator != null,
+            'selectedItemGenerator should not be null in LibraryPage.selectable'),
+        super(key: key);
+  final bool selectableItems;
   final PreferredSizeWidget? appBar;
-  final Function(Sortable<T>) onOk;
+  final Widget? bottomNavigationBar;
+  final Function(Sortable<T>)? onOk;
   final VoidCallback? onCancel;
-  final LibraryItemGenerator<T> selectedItemGenerator;
+  final LibraryItemGenerator<T>? selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
   final LibraryItemGenerator<T>? libraryFolderGenerator;
   final bool Function(Sortable<T>)? visibilityFilter;
@@ -35,15 +59,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     return BlocProvider<SortableArchiveBloc<T>>(
       create: (_) => SortableArchiveBloc<T>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
+        initialFolderId: initialFolder,
         visibilityFilter: visibilityFilter,
       ),
       child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
         builder: (context, state) {
-          final selected = state.selected;
-          if (initialFolder.isNotEmpty && state.currentFolderId.isEmpty) {
-            BlocProvider.of<SortableArchiveBloc<T>>(context)
-                .add(InitialFolder(initialFolder));
-          }
+          final selected = selectableItems ? state.selected : null;
+          final selectedGenerator = selectedItemGenerator;
           return Scaffold(
             appBar: appBar ??
                 AbiliaAppBar(
@@ -58,24 +80,26 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                     rootHeading: rootHeading,
                   ),
                 Expanded(
-                  child: selected != null
-                      ? selectedItemGenerator(selected)
+                  child: selected != null && selectedGenerator != null
+                      ? selectedGenerator(selected)
                       : SortableLibrary<T>(
                           libraryItemGenerator,
                           emptyLibraryMessage,
                           libraryFolderGenerator: libraryFolderGenerator,
+                          selectableItems: selectableItems,
                         ),
                 ),
               ],
             ),
-            bottomNavigationBar: BottomNavigation(
-              backNavigationWidget: CancelButton(onPressed: onCancel),
-              forwardNavigationWidget: selected != null
-                  ? OkButton(
-                      onPressed: () => onOk(selected),
-                    )
-                  : null,
-            ),
+            bottomNavigationBar: bottomNavigationBar ??
+                BottomNavigation(
+                  backNavigationWidget: CancelButton(onPressed: onCancel),
+                  forwardNavigationWidget: selected != null
+                      ? OkButton(
+                          onPressed: () => onOk?.call(selected),
+                        )
+                      : null,
+                ),
           );
         },
       ),
@@ -163,11 +187,13 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final LibraryItemGenerator<T>? libraryFolderGenerator;
   final String emptyLibraryMessage;
+  final bool selectableItems;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.libraryFolderGenerator,
+    this.selectableItems = true,
     Key? key,
   }) : super(key: key);
 
@@ -232,16 +258,19 @@ class _SortableLibraryState<T extends SortableData>
                                 : libraryFolderGenerator(sortable),
                           ),
                         )
-                      : Material(
-                          type: MaterialType.transparency,
-                          child: InkWell(
-                            onTap: () =>
-                                BlocProvider.of<SortableArchiveBloc<T>>(context)
-                                    .add(SortableSelected(sortable)),
-                            borderRadius: borderRadius,
-                            child: widget.libraryItemGenerator(sortable),
-                          ),
-                        ),
+                      : widget.selectableItems
+                          ? Material(
+                              type: MaterialType.transparency,
+                              child: InkWell(
+                                onTap: () =>
+                                    BlocProvider.of<SortableArchiveBloc<T>>(
+                                            context)
+                                        .add(SortableSelected(sortable)),
+                                borderRadius: borderRadius,
+                                child: widget.libraryItemGenerator(sortable),
+                              ),
+                            )
+                          : widget.libraryItemGenerator(sortable),
                 )
                 .toList(),
           ),
