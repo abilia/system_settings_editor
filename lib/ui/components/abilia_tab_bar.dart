@@ -282,68 +282,72 @@ class _AnimatedTab extends AnimatedWidget {
               ? borderRadiusRight
               : null,
       onTap: onTap,
-      child: Container(
-        decoration: DecorationTween(
-          begin: selectedDecoration,
-          end: notSelectedBorder,
-        ).lerp(selectedValue),
+      child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: layout.tabBar.item.width * collapsedValue,
           maxWidth: layout.tabBar.item.width * 2 * collapsedValue,
         ),
-        height: layout.tabBar.item.heigth,
-        padding: padding,
-        child: Container(
+        child: Ink(
           decoration: DecorationTween(
-            end: notSelectedInnerDecoration.copyWith(
-              color: AbiliaColors.black80,
-            ),
+            begin: selectedDecoration,
+            end: notSelectedBorder,
           ).lerp(selectedValue),
-          child: Container(
-            margin: last
-                ? EdgeInsets.only(left: marginValue)
-                : first
-                    ? EdgeInsets.only(right: marginValue)
-                    : EdgeInsets.symmetric(horizontal: marginValue),
+          height: layout.tabBar.item.heigth,
+          padding: padding,
+          child: Ink(
             decoration: DecorationTween(
-              begin: null,
-              end: notSelectedInnerDecoration,
+              end: notSelectedInnerDecoration.copyWith(
+                color: AbiliaColors.black80,
+              ),
             ).lerp(selectedValue),
-            child: collapsedValue == 0.0
-                ? null
-                : Padding(
-                    padding: EdgeInsets.only(
-                      left: layout.tabBar.item.horizontalPadding,
-                      top: layout.tabBar.item.topPadding,
-                      right: layout.tabBar.item.horizontalPadding,
-                    ),
-                    child: DefaultTextStyle(
-                      maxLines: 1,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle.lerp(
-                            beginTextStyle,
-                            endTextStyle,
-                            selectedValue,
-                          ) ??
-                          beginTextStyle,
-                      child: IconTheme(
-                        data: IconThemeData.lerp(
-                          beginIconThemeData,
-                          endIconThemeData,
-                          selectedValue,
+            child: Padding(
+              padding: last
+                  ? EdgeInsets.only(left: marginValue)
+                  : first
+                      ? EdgeInsets.only(right: marginValue)
+                      : EdgeInsets.symmetric(horizontal: marginValue),
+              child: Ink(
+                decoration: DecorationTween(
+                  begin: null,
+                  end: notSelectedInnerDecoration,
+                ).lerp(selectedValue),
+                child: collapsedValue == 0.0
+                    ? null
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          left: layout.tabBar.item.horizontalPadding,
+                          top: layout.tabBar.item.topPadding,
+                          right: layout.tabBar.item.horizontalPadding,
                         ),
-                        child: Transform(
-                          transform: Matrix4.identity()
-                            ..scale(collapsedValue, collapsedValue, 1.0),
-                          alignment: Alignment.center,
-                          child: Opacity(
-                            opacity: collapsedValue,
-                            child: child,
+                        child: DefaultTextStyle(
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle.lerp(
+                                beginTextStyle,
+                                endTextStyle,
+                                selectedValue,
+                              ) ??
+                              beginTextStyle,
+                          child: IconTheme(
+                            data: IconThemeData.lerp(
+                              beginIconThemeData,
+                              endIconThemeData,
+                              selectedValue,
+                            ),
+                            child: Transform(
+                              transform: Matrix4.identity()
+                                ..scale(collapsedValue, collapsedValue, 1.0),
+                              alignment: Alignment.center,
+                              child: Opacity(
+                                opacity: collapsedValue,
+                                child: child,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+              ),
+            ),
           ),
         ),
       ),
