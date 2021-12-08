@@ -85,7 +85,7 @@ class _TimeInputContentState extends State<TimeInputContent>
   @override
   void initState() {
     super.initState();
-
+    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
     hourFocus = FocusNode()
       ..addListener(() {
         if (hourFocus.hasFocus) {
