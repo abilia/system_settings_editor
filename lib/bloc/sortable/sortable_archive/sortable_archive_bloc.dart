@@ -17,17 +17,55 @@ class SortableArchiveBloc<T extends SortableData>
 
   SortableArchiveBloc({
     required SortableBloc sortableBloc,
+    String initialFolderId = '',
     this.visibilityFilter,
-  }) : super(SortableArchiveState<T>(const {}, const {})) {
+  }) : super(_initialState<T>(
+          sortableBloc.state,
+          initialFolderId,
+          visibilityFilter,
+        )) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         add(SortablesUpdated(sortableState.sortables));
       }
     });
-    final sortableState = sortableBloc.state;
-    if (sortableState is SortablesLoaded) {
-      add(SortablesUpdated(sortableState.sortables));
-    }
+  }
+
+  static SortableArchiveState<T> _initialState<T extends SortableData>(
+    SortableState sortableState,
+    String initialFolderId,
+    bool Function(Sortable<T>)? visibilityFilter,
+  ) =>
+      _stateFromSortables(
+        sortables: sortableState is SortablesLoaded
+            ? sortableState.sortables
+            : <Sortable<SortableData>>[],
+        initialFolderId: initialFolderId,
+        currentFolderId: initialFolderId,
+        visibilityFilter: visibilityFilter,
+      );
+
+  static SortableArchiveState<T> _stateFromSortables<T extends SortableData>({
+    required Iterable<Sortable<SortableData>> sortables,
+    required String initialFolderId,
+    required String currentFolderId,
+    bool Function(Sortable<T>)? visibilityFilter,
+    Sortable<T>? selected,
+  }) {
+    final sortableArchive = sortables
+        .whereType<Sortable<T>>()
+        .where(visibilityFilter ?? (_) => true);
+    final allByFolder =
+        groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId);
+    final allById = {for (var s in sortableArchive) s.id: s};
+    final currentFolder = allById[currentFolderId];
+    return SortableArchiveState<T>(
+      allByFolder,
+      allById,
+      currentFolderId: currentFolder?.id ?? '',
+      selected: selected,
+      initialFolderId: initialFolderId,
+    );
   }
 
   @override
@@ -35,19 +73,12 @@ class SortableArchiveBloc<T extends SortableData>
     SortableArchiveEvent event,
   ) async* {
     if (event is SortablesUpdated) {
-      final sortableArchive = event.sortables
-          .whereType<Sortable<T>>()
-          .where(visibilityFilter ?? (_) => true);
-      final allByFolder =
-          groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId);
-      final allById = {for (var s in sortableArchive) s.id: s};
-      final currentFolder = allById[state.currentFolderId];
-      yield SortableArchiveState<T>(
-        allByFolder,
-        allById,
-        currentFolderId: currentFolder?.id ?? '',
-        selected: state.selected,
+      yield _stateFromSortables<T>(
+        sortables: event.sortables,
         initialFolderId: state.initialFolderId,
+        currentFolderId: state.currentFolderId,
+        visibilityFilter: visibilityFilter,
+        selected: state.selected,
       );
     } else if (event is FolderChanged) {
       yield SortableArchiveState<T>(

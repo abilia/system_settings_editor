@@ -35,6 +35,16 @@ void main() {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(() => mockSortableBloc.state).thenReturn(
+      SortablesLoaded(
+        sortables: [
+          Sortable.createNew(
+              data: const ImageArchiveData(upload: true), fixed: true),
+          Sortable.createNew(
+              data: const ImageArchiveData(myPhotos: true), fixed: true),
+        ],
+      ),
+    );
     mockUserFileBloc = MockUserFileBloc();
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();

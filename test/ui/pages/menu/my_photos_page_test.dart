@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
 
 void main() {
@@ -17,6 +20,40 @@ void main() {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+    final mockSortableDb = MockSortableDb();
+
+    final myPhotosFolder = Sortable.createNew(
+      data: const ImageArchiveData(myPhotos: true),
+      fixed: true,
+    );
+    when(() => mockSortableDb.getAllNonDeleted()).thenAnswer(
+      (invocation) => Future.value(
+        <Sortable<ImageArchiveData>>[
+          myPhotosFolder,
+          Sortable.createNew(
+            data: const ImageArchiveData(upload: true),
+            fixed: true,
+          ),
+          Sortable.createNew(
+            groupId: myPhotosFolder.id,
+            data: const ImageArchiveData(
+              name: 'image',
+              fileId: 'fileId',
+            ),
+          ),
+          Sortable.createNew(
+            groupId: myPhotosFolder.id,
+            isGroup: true,
+            data: const ImageArchiveData(name: 'folder'),
+          ),
+        ],
+      ),
+    );
+    when(() => mockSortableDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+
+    when(() => mockSortableDb.getAllDirty())
+        .thenAnswer((_) => Future.value(<DbModel<Sortable>>[]));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -28,7 +65,7 @@ void main() {
       ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..genericDb = FakeGenericDb()
-      ..sortableDb = FakeSortableDb()
+      ..sortableDb = mockSortableDb
       ..init();
   });
 
@@ -47,7 +84,20 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
     });
-  }, skip: !Config.isMP);
+
+    testWidgets('Folders and photos shows, image is clickable', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byType(MyPhotosPage), findsOneWidget);
+        expect(find.byType(LibraryFolder), findsOneWidget);
+        expect(find.byType(FullscreenViewablePhoto), findsOneWidget);
+        await tester.tap(find.byType(FullscreenViewablePhoto));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullscreenImageDialog), findsOneWidget);
+        expect(find.byType(FullScreenImage), findsOneWidget);
+      });
+    });
+  });
 }
 
 extension on WidgetTester {

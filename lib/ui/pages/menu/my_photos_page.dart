@@ -2,49 +2,42 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MyPhotosPage extends StatelessWidget {
-  const MyPhotosPage({Key? key}) : super(key: key);
+  final String myPhotoFolderId;
+  const MyPhotosPage({
+    required this.myPhotoFolderId,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MyPhotosBloc>(
-      create: (_) => MyPhotosBloc(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
-      ),
-      child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
-        builder: (context, state) => Scaffold(
-          appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.myPhotos,
-            iconData: AbiliaIcons.myPhotos,
-            trailing: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-              child: const AddPhotoButton(),
-            ),
-          ),
-          body: GridView.count(
-            padding: EdgeInsets.only(
-              top: verticalPadding,
-              left: leftPadding,
-              right: rightPadding,
-            ),
-            crossAxisCount: 3,
-            mainAxisSpacing: 8.0.s,
-            crossAxisSpacing: 8.0.s,
-            children: state.currentFolderContent
-                .where((s) => !s.isGroup)
-                .map(
-                  (sortable) => Photo(sortable: sortable),
-                )
-                .toList(),
-          ),
-          bottomNavigationBar: const BottomNavigation(
-            backNavigationWidget: CloseButton(),
-          ),
+    final translate = Translator.of(context).translate;
+    return LibraryPage<ImageArchiveData>.nonSelectable(
+      appBar: AbiliaAppBar(
+        title: translate.myPhotos,
+        iconData: AbiliaIcons.myPhotos,
+        trailing: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0.s),
+          child: const AddPhotoButton(),
         ),
+      ),
+      bottomNavigationBar: const BottomNavigation(
+        backNavigationWidget: CloseButton(),
+      ),
+      initialFolder: myPhotoFolderId,
+      emptyLibraryMessage: translate.noImages,
+      libraryItemGenerator: (imageArchive) =>
+          FullscreenViewablePhoto(sortable: imageArchive),
+      libraryFolderGenerator: (imageArchive) => LibraryFolder(
+        title: imageArchive.data.title(),
+        fileId: imageArchive.data.folderFileId(),
+        filePath: imageArchive.data.folderFilePath(),
       ),
     );
   }
@@ -75,18 +68,21 @@ class AddPhotoButton extends StatelessWidget {
                 if (image != null) {
                   final selectedImage =
                       UnstoredAbiliaFile.newFile(File(image.path));
-                  BlocProvider.of<UserFileBloc>(context).add(
-                    ImageAdded(selectedImage),
-                  );
-                  BlocProvider.of<MyPhotosBloc>(context).add(
-                    PhotoAdded(
-                      selectedImage.id,
-                      selectedImage.file.path,
-                      DateFormat.yMd(
-                              Localizations.localeOf(context).toLanguageTag())
-                          .format(time),
-                    ),
-                  );
+                  BlocProvider.of<UserFileBloc>(context)
+                      .add(ImageAdded(selectedImage));
+                  context.read<SortableBloc>().add(
+                        PhotoAdded(
+                          selectedImage.id,
+                          selectedImage.file.path,
+                          DateFormat.yMd(Localizations.localeOf(context)
+                                  .toLanguageTag())
+                              .format(time),
+                          context
+                              .read<SortableArchiveBloc<ImageArchiveData>>()
+                              .state
+                              .currentFolderId,
+                        ),
+                      );
                 }
               }
             },
@@ -94,6 +90,31 @@ class AddPhotoButton extends StatelessWidget {
           ),
         ),
       );
+}
+
+class FullscreenViewablePhoto extends StatelessWidget {
+  const FullscreenViewablePhoto({
+    required this.sortable,
+    Key? key,
+  }) : super(key: key);
+  final Sortable<ImageArchiveData> sortable;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async => await showViewDialog<bool>(
+        useSafeArea: false,
+        context: context,
+        builder: (_) {
+          return FullscreenImageDialog(
+            fileId: sortable.data.fileId,
+            filePath: sortable.data.file,
+          );
+        },
+      ),
+      child: Photo(sortable: sortable),
+    );
+  }
 }
 
 class Photo extends StatelessWidget {
