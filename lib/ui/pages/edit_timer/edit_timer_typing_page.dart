@@ -227,6 +227,7 @@ class _TimeTextField extends StatelessWidget {
             key: key,
             onTap: () => focusNode.requestFocus(),
             focusNode: focusNode,
+            enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
             showCursor: false,
             controller: editController,
