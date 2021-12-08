@@ -10,6 +10,7 @@ import 'package:seagull/utils/all.dart';
 
 class MyPhotosPage extends StatelessWidget {
   final String myPhotoFolderId;
+
   const MyPhotosPage({
     required this.myPhotoFolderId,
     Key? key,

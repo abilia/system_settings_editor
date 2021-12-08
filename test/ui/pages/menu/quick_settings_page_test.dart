@@ -21,13 +21,16 @@ void main() {
   setUp(() async {
     systemSettingsChannel
         .setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method.startsWith('getSoundEffectsEnabled')) {
-        return true;
+      switch (methodCall.method) {
+        case 'getSoundEffectsEnabled':
+          return true;
+        case 'getBrightness':
+          return 0.5;
+        case 'getScreenOffTimeout':
+          return 60000;
+        case 'canWriteSettings':
+          return true;
       }
-      if (methodCall.method.startsWith('getBrightness')) {
-        return 0.5;
-      }
-      return null;
     });
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
@@ -44,6 +47,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..genericDb = FakeGenericDb()
       ..sortableDb = FakeSortableDb()
+      ..battery = FakeBattery()
       ..init();
   });
 
@@ -58,7 +62,7 @@ void main() {
       expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(AlarmVolumeSlider), findsOneWidget);
       expect(find.byType(MediaVolumeSlider), findsOneWidget);
-      expect(find.byType(SoundEffectsSwitch), findsOneWidget);
+      expect(find.byType(KeepOnWhileChargingSwitch), findsOneWidget);
       expect(
         tester.widget(find.byKey(TestKey.brightnessSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),

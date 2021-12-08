@@ -157,6 +157,7 @@ void main() {
       ..sortableDb = mockSortableDb
       ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
+      ..battery = FakeBattery()
       ..init();
   });
 

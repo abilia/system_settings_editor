@@ -85,6 +85,13 @@ class FakeGenericDb extends Fake implements GenericDb {
   @override
   Future<Iterable<Generic<GenericData>>> getAllNonDeletedMaxRevision() =>
       Future.value([]);
+
+  @override
+  Future<bool> insertAndAddDirty(Iterable<Generic> data) => Future.value(true);
+
+  @override
+  Future<Iterable<DbModel<Generic<GenericData>>>> getAllDirty() =>
+      Future.value(const Iterable.empty());
 }
 
 class FakeActivityDb extends Fake implements ActivityDb {

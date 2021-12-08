@@ -64,6 +64,7 @@ void main() {
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
+      ..battery = FakeBattery()
       ..init();
   });
 

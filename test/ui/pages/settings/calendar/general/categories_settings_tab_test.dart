@@ -75,6 +75,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
       ..sortableDb = sortableDb
+      ..battery = FakeBattery()
       ..init();
   });
 

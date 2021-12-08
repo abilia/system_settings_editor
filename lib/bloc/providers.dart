@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sync/sync_bloc.dart';
-import 'package:seagull/bloc/user_file/user_file_bloc.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
@@ -16,6 +18,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   final Widget child;
   final MemoplannerSettingBloc? memoplannerSettingBloc;
   final SortableBloc? sortableBloc;
+
   AuthenticatedBlocsProvider({
     required this.authenticatedState,
     required this.child,
@@ -25,6 +28,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
   }) : super(key: key) {
     ensureNotificationPluginInitialized();
   }
+
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
@@ -182,7 +186,15 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
               ),
-            )
+            ),
+            if (Config.isMP)
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                  screenTimeoutCallback: SystemSettingsEditor.screenOffTimeout,
+                  battery: GetIt.I<Battery>(),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                ),
+              ),
           ],
           child: child,
         ),
@@ -193,6 +205,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
   final Widget child;
   final PushBloc? pushBloc;
   final String baseUrl;
+
   const TopLevelBlocsProvider({
     Key? key,
     required this.child,
@@ -260,6 +273,7 @@ class CopiedAuthProviders extends StatelessWidget {
     required this.blocContext,
     required this.child,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // DON'T change  to
@@ -312,6 +326,10 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<TimepillarCubit>.value(
           value: blocContext.read<TimepillarCubit>(),
         ),
+        if (Config.isMP)
+          BlocProvider<WakeLockCubit>.value(
+            value: blocContext.read<WakeLockCubit>(),
+          ),
       ],
       child: child,
     );

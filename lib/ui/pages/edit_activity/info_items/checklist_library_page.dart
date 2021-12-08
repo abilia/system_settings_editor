@@ -5,6 +5,7 @@ import 'package:seagull/ui/all.dart';
 
 class ChecklistLibraryPage extends StatelessWidget {
   const ChecklistLibraryPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => LibraryPage<ChecklistData>.selectable(
         libraryItemGenerator: (checklist) =>

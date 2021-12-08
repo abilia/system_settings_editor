@@ -73,6 +73,7 @@ class FakeMemoplannerSettingsBloc extends Fake
 class FaketimepillarCubit extends Fake implements TimepillarCubit {
   @override
   Stream<TimepillarState> get stream => const Stream.empty();
+
   @override
   TimepillarState get state => TimepillarState(
         TimepillarInterval(

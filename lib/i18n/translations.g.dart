@@ -461,6 +461,12 @@ abstract class Translated {
 
   final String connected = 'Connected';
 
+  final String screenTimeout = 'Screen timeout';
+
+  final String alwaysOn = 'Always on';
+
+  final String keepScreenAwakeWhileCharging = 'Keep screen awake when charging';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -1425,6 +1431,15 @@ class SV extends Translated {
 
   @override
   final String connected = 'Ansluten';
+
+  @override
+  final String screenTimeout = 'Skärmens tidsgräns';
+
+  @override
+  final String alwaysOn = 'Alltid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging = 'Håll skärmen tänd vid laddning';
 
   @override
   final String settings = 'Inställningar';
@@ -2534,6 +2549,16 @@ class DA extends Translated {
   final String connected = 'Tilsluttet';
 
   @override
+  final String screenTimeout = 'Skærmens tidsgrænse';
+
+  @override
+  final String alwaysOn = 'Altid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Lad skærmen være tændt under opladning';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -3639,6 +3664,16 @@ class NL extends Translated {
 
   @override
   final String connected = 'Verbonden';
+
+  @override
+  final String screenTimeout = 'Timeout scherm';
+
+  @override
+  final String alwaysOn = 'Altijd aan';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Houd scherm wakker tijdens opladen';
 
   @override
   final String settings = 'Instellingen';
@@ -4747,6 +4782,16 @@ class FI extends Translated {
 
   @override
   final String connected = 'Yhdistetty';
+
+  @override
+  final String screenTimeout = 'Näytön pimennys';
+
+  @override
+  final String alwaysOn = 'Aina käytössä';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Pidä näyttö päällä latauksen aikana';
 
   @override
   final String settings = 'Asetukset';
@@ -5860,6 +5905,16 @@ class DE extends Translated {
   final String connected = 'Verbunden';
 
   @override
+  final String screenTimeout = 'Bildschirm Zeitüberschreitung';
+
+  @override
+  final String alwaysOn = 'Immer ein';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Bildschirm während Aufladen aktiv lassen';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -6966,6 +7021,15 @@ class NB extends Translated {
 
   @override
   final String connected = 'Tilkoblet';
+
+  @override
+  final String screenTimeout = 'Skjermens tidsgrense';
+
+  @override
+  final String alwaysOn = 'Alltid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging = 'Hold skjermen på ved lading';
 
   @override
   final String settings = 'Innstillinger';

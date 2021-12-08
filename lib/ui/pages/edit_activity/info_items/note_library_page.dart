@@ -6,6 +6,7 @@ import 'package:seagull/utils/all.dart';
 
 class NoteLibraryPage extends StatelessWidget {
   const NoteLibraryPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => LibraryPage<NoteData>.selectable(
         libraryItemGenerator: (note) => LibraryNote(content: note.data.text),

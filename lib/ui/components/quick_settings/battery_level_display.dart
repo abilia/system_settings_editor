@@ -1,53 +1,43 @@
-import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/battery/battery_cubit.dart';
+import 'package:battery_plus/battery_plus.dart';
+
 import 'package:seagull/ui/all.dart';
 
 class BatteryLevel extends StatelessWidget {
-  const BatteryLevel({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<BatteryCubit>(
-      create: (context) => BatteryCubit(),
-      child: const BatteryLevelDisplay(),
-    );
-  }
-}
-
-class BatteryLevelDisplay extends StatelessWidget {
-  const BatteryLevelDisplay({Key? key}) : super(key: key);
+  final Battery battery;
+  const BatteryLevel({required this.battery, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<BatteryCubit, int>(
-      builder: (context, batteryState) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SubHeading(
-            t.battery,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return StreamBuilder(
+      stream: battery.onBatteryStateChanged,
+      builder: (context, _) => FutureBuilder<int>(
+        future: battery.batteryLevel,
+        builder: (context, snapshot) {
+          final batteryLevel = snapshot.data ?? 0;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 18.s,
-              ),
-              Icon(
-                _batteryLevelIcon(batteryState),
-                size: layout.iconSize.large,
-              ),
-              SizedBox(
-                width: 16.s,
-              ),
-              Text(
-                batteryState > 0 ? '$batteryState%' : '',
-                style: Theme.of(context).textTheme.headline6,
-                textAlign: TextAlign.center,
-              ),
+              SubHeading(t.battery),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: 18.s),
+                  Icon(
+                    _batteryLevelIcon(batteryLevel),
+                    size: layout.iconSize.large,
+                  ),
+                  SizedBox(width: 16.s),
+                  Text(
+                    batteryLevel > 0 ? batteryLevel.toString() + '%' : '',
+                    style: Theme.of(context).textTheme.headline6,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )
             ],
-          )
-        ],
+          );
+        },
       ),
     );
   }

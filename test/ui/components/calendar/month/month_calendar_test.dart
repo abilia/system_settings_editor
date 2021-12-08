@@ -57,6 +57,7 @@ void main() {
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
       ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
+      ..battery = FakeBattery()
       ..init();
   });
 

@@ -63,7 +63,15 @@ void main() {
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => FaketimepillarCubit(),
-              )
+              ),
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                  screenTimeoutCallback:
+                      Future.value(const Duration(minutes: 30)),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  battery: FakeBattery(),
+                ),
+              ),
             ],
             child: child!,
           ),

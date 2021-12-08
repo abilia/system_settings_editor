@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -89,6 +90,9 @@ class GetItInitializer {
       PackageInfo(appName: '', buildNumber: '', packageName: '', version: '');
   set packageInfo(PackageInfo packageInfo) => _packageInfo = packageInfo;
 
+  late Battery _battery = Battery();
+  set battery(Battery battery) => _battery = battery;
+
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
         _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
@@ -113,5 +117,6 @@ class GetItInitializer {
     ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
     ..registerSingleton<SyncDelays>(_syncDelay)
     ..registerSingleton<FlutterTts>(_flutterTts)
-    ..registerSingleton<PackageInfo>(_packageInfo);
+    ..registerSingleton<PackageInfo>(_packageInfo)
+    ..registerSingleton<Battery>(_battery);
 }
