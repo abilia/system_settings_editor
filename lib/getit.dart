@@ -80,21 +80,17 @@ class GetItInitializer {
       _seagullLogger = seagullLogger;
 
   late AlarmNavigator _alarmNavigator = AlarmNavigator();
-
   set alarmNavigator(AlarmNavigator alarmNavigator) =>
       _alarmNavigator = alarmNavigator;
 
   late FlutterTts _flutterTts = FlutterTts();
-
   set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
 
   late PackageInfo _packageInfo =
       PackageInfo(appName: '', buildNumber: '', packageName: '', version: '');
-
   set packageInfo(PackageInfo packageInfo) => _packageInfo = packageInfo;
 
   late Battery _battery = Battery();
-
   set battery(Battery battery) => _battery = battery;
 
   void init() => GetIt.I
