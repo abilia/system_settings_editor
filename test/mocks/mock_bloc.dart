@@ -24,8 +24,8 @@ class MockMemoplannerSettingBloc
     extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements MemoplannerSettingBloc {}
 
-class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
-    implements TimepillarBloc {}
+class MocktimepillarCubit extends MockCubit<TimepillarState>
+    implements TimepillarCubit {}
 
 class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
     implements UserFileBloc {}

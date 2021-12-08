@@ -129,7 +129,7 @@ class _CategoriesPreview extends StatelessWidget {
             StreamController<DateTime>().stream,
             initialTime: DateTime(2021, 1, 1, 8, 30),
           ),
-          child: BlocBuilder<TimepillarBloc, TimepillarState>(
+          child: BlocBuilder<TimepillarCubit, TimepillarState>(
             builder: (context, ts) => LayoutBuilder(
               builder: (context, boxConstraints) {
                 final categoryWidth =

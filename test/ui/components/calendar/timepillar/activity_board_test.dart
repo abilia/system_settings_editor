@@ -65,11 +65,11 @@ void main() {
       start: startInterval,
       end: startInterval.add(1.days()),
     );
-    final mockTimepillarBloc = MockTimepillarBloc();
+    final mocktimepillarCubit = MocktimepillarCubit();
     final ts = TimepillarState(interval, 1);
-    when(() => mockTimepillarBloc.state).thenReturn(TimepillarState(
+    when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
         TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
-    when(() => mockTimepillarBloc.stream).thenAnswer((_) =>
+    when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
         Stream.fromIterable([
           TimepillarState(
               TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
@@ -90,8 +90,8 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
-            BlocProvider<TimepillarBloc>(
-              create: (context) => mockTimepillarBloc,
+            BlocProvider<TimepillarCubit>(
+              create: (context) => mocktimepillarCubit,
             ),
           ],
           child: Stack(

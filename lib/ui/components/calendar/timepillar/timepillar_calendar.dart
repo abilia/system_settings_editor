@@ -32,7 +32,7 @@ class TimepillarCalendar extends StatelessWidget {
           previous.displayHourLines != current.displayHourLines,
       builder: (context, memoplannerSettingsState) {
         if (type == DayCalendarType.oneTimepillar) {
-          return BlocBuilder<TimepillarBloc, TimepillarState>(
+          return BlocBuilder<TimepillarCubit, TimepillarState>(
             builder: (context, timepillarState) => OneTimepillarCalendar(
               key: ValueKey(timepillarState.timepillarInterval),
               activityState: activityState,

@@ -198,15 +198,10 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
-      dayPickerBloc.add(NextDay());
-      dayPickerBloc.add(PreviousDay());
-      dayPickerBloc.add(PreviousDay());
-
       // Assert
       await expectLater(
         activitiesOccasionBloc.stream,
-        emitsInOrder([
+        emits(
           ActivitiesOccasionLoaded(
             activities: const <ActivityOccasion>[],
             fullDayActivities: [
@@ -216,6 +211,18 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
+        ),
+      );
+
+      // Act
+      dayPickerBloc.add(NextDay());
+      dayPickerBloc.add(PreviousDay());
+      dayPickerBloc.add(PreviousDay());
+
+      // Assert
+      await expectLater(
+        activitiesOccasionBloc.stream,
+        emitsInOrder([
           ActivitiesOccasionLoaded(
             activities: const <ActivityOccasion>[],
             fullDayActivities: [
@@ -452,7 +459,21 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+      await expectLater(
+        activitiesOccasionBloc.stream,
+        emits(
+          // Tuesday
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(tuesdayRecurring,
+                  occasion: Occasion.current, day: initialDay),
+            ],
+            fullDayActivities: const [],
+            day: initialDay,
+            occasion: Occasion.current,
+          ),
+        ),
+      );
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(GoTo(day: friday));
       dayPickerBloc.add(NextDay());
@@ -463,16 +484,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc.stream,
           emitsInOrder([
-            // Tuesday
-            ActivitiesOccasionLoaded(
-              activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(tuesdayRecurring,
-                    occasion: Occasion.current, day: initialDay),
-              ],
-              fullDayActivities: const [],
-              day: initialDay,
-              occasion: Occasion.current,
-            ),
             // monday
             ActivitiesOccasionLoaded(
               activities: <ActivityOccasion>[
@@ -562,7 +573,28 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+
+      // Assert
+      await expectLater(
+        activitiesOccasionBloc.stream,
+        emits(
+          // Tuesday
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: initialDay),
+              ActivityOccasion.forTest(todayActivity,
+                  occasion: Occasion.future, day: initialDay),
+            ],
+            fullDayActivities: [
+              ActivityOccasion.forTest(everyDayFullDayRecurring,
+                  occasion: Occasion.future, day: initialDay),
+            ],
+            day: initialDay,
+            occasion: Occasion.current,
+          ),
+        ),
+      );
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
@@ -571,21 +603,6 @@ void main() {
       await expectLater(
           activitiesOccasionBloc.stream,
           emitsInOrder([
-            // Tuesday
-            ActivitiesOccasionLoaded(
-              activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: initialDay),
-                ActivityOccasion.forTest(todayActivity,
-                    occasion: Occasion.future, day: initialDay),
-              ],
-              fullDayActivities: [
-                ActivityOccasion.forTest(everyDayFullDayRecurring,
-                    occasion: Occasion.future, day: initialDay),
-              ],
-              day: initialDay,
-              occasion: Occasion.current,
-            ),
             // Monday
             ActivitiesOccasionLoaded(
               activities: const <ActivityOccasion>[],
@@ -649,42 +666,51 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+
+      // Assert
+      await expectLater(
+        activitiesOccasionBloc.stream,
+        emits(
+          // Tuesday
+          ActivitiesOccasionLoaded(
+            activities: <ActivityOccasion>[
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: dayBeforeyesterday),
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: yesterday),
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: initialDay),
+            ],
+            fullDayActivities: const [],
+            day: initialDay,
+            occasion: Occasion.current,
+          ),
+        ),
+      );
+
+      // Act
       dayPickerBloc.add(NextDay());
 
       // Assert
       await expectLater(
-          activitiesOccasionBloc.stream,
-          emitsInOrder([
-            // Tuesday
-            ActivitiesOccasionLoaded(
-              activities: <ActivityOccasion>[
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: dayBeforeyesterday),
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: yesterday),
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: initialDay),
-              ],
-              fullDayActivities: const [],
-              day: initialDay,
-              occasion: Occasion.current,
-            ),
-            // Monday
-            ActivitiesOccasionLoaded(
-              activities: [
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: yesterday),
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.current, day: initialDay),
-                ActivityOccasion.forTest(everyDayRecurring,
-                    occasion: Occasion.future, day: tomorrow),
-              ],
-              fullDayActivities: const [],
-              day: tomorrow,
-              occasion: Occasion.future,
-            ),
-          ]));
+        activitiesOccasionBloc.stream,
+        emits(
+          // Monday
+          ActivitiesOccasionLoaded(
+            activities: [
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: yesterday),
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.current, day: initialDay),
+              ActivityOccasion.forTest(everyDayRecurring,
+                  occasion: Occasion.future, day: tomorrow),
+            ],
+            fullDayActivities: const [],
+            day: tomorrow,
+            occasion: Occasion.future,
+          ),
+        ),
+      );
     });
 
     test(' overlapping into this day before starting early today', () async {
