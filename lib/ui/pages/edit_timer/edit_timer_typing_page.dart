@@ -135,7 +135,7 @@ class _TimeInputContentState extends State<TimeInputContent>
         Theme(
           data: theme.copyWith(
               textSelectionTheme: theme.textSelectionTheme.copyWith(
-                selectionColor: AbiliaColors.white,
+                selectionColor: Colors.transparent,
               ),
               textTheme: theme.textTheme
                   .copyWith(subtitle1: abiliaTextTheme.headline4)),
