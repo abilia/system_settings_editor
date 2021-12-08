@@ -13,9 +13,10 @@ class KeepScreenAwakeSettings extends Equatable {
 
   final bool keepScreenOnWhileCharging, keepScreenOnAlways;
 
-  const KeepScreenAwakeSettings(
-      {this.keepScreenOnWhileCharging = false,
-      this.keepScreenOnAlways = false});
+  const KeepScreenAwakeSettings({
+    this.keepScreenOnWhileCharging = false,
+    this.keepScreenOnAlways = false,
+  });
 
   KeepScreenAwakeSettings copyWith({
     bool? keepScreenOnWhileCharging,

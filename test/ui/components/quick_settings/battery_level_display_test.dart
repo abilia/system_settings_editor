@@ -6,15 +6,16 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late MockBatteryCubit mockBatteryCubit;
+  late MockBattery mockBattery;
 
   setUp(() {
-    registerFallbackValue(const BatteryCubitState(BatteryState.full, 100));
-    mockBatteryCubit = MockBatteryCubit();
+    registerFallbackValue(BatteryState.unknown);
+    mockBattery = MockBattery();
+    when(() => mockBattery.onBatteryStateChanged)
+        .thenAnswer((_) => Stream.value(BatteryState.unknown));
   });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -36,62 +37,68 @@ void main() {
               settingsDb: FakeSettingsDb(),
             ),
           ),
-          BlocProvider<BatteryCubit>.value(value: mockBatteryCubit),
         ], child: widget),
       );
 
   testWidgets('Battery level critical', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 1));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(1));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevelCritical), findsOneWidget);
   });
 
   testWidgets('Battery level 10%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 10));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(10));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_10), findsOneWidget);
   });
 
   testWidgets('Battery level 20%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 20));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(20));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_20), findsOneWidget);
   });
 
   testWidgets('Battery level 40%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 40));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(40));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_40), findsOneWidget);
   });
 
   testWidgets('Battery level 60%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 60));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(60));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_60), findsOneWidget);
   });
 
   testWidgets('Battery level 80%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 80));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(80));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_80), findsOneWidget);
   });
 
   testWidgets('Battery level 100%', (WidgetTester tester) async {
-    when(() => mockBatteryCubit.state)
-        .thenReturn(const BatteryCubitState(BatteryState.unknown, 100));
-    await tester.pumpWidget(wrapWithMaterialApp(const BatteryLevelDisplay()));
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(100));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_100), findsOneWidget);
   });

@@ -1,3 +1,5 @@
+import 'package:battery_plus/battery_plus.dart';
+import 'package:get_it/get_it.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
 
@@ -19,7 +21,7 @@ class QuickSettingsPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
-              child: const BatteryLevel(),
+              child: BatteryLevel(battery: GetIt.I<Battery>()),
             ),
             QuickSettingsGroup(children: [
               const WiFiPickField(),

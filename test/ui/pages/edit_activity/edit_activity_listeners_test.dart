@@ -129,18 +129,12 @@ void main() {
                   dayPickerBloc: context.read<DayPickerBloc>(),
                 ),
               ),
-              BlocProvider<BatteryCubit>(
-                create: (context) => BatteryCubit(battery: FakeBattery()),
-              ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
-                    genericBloc: context.read<GenericBloc>(),
-                    batteryCubit: context.read<BatteryCubit>(),
-                    screenAwakeSettings: context
-                        .read<MemoplannerSettingBloc>()
-                        .state
-                        .settings
-                        .keepScreenAwakeSettings),
+                  screenTimeoutCallback: Future.value(30.minutes()),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  battery: FakeBattery(),
+                ),
               ),
             ],
             child: child!,

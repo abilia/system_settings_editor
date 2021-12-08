@@ -18,6 +18,8 @@ extension DurationExtensions on Duration {
     if (inDays == 1) return '$inDays ${translator.day}';
     if (inHours > 1) return '$inHours ${translator.hours}';
     if (inHours == 1) return '$inHours ${translator.hour}';
+    if (inMinutes < 1) return '$inSeconds ${translator.seconds}';
+    if (inSeconds == 1) return '$inSeconds ${translator.second}';
     if (shortMin) return '$inMinutes ${translator.min}';
     if (inMinutes == 1) return '$inMinutes ${translator.minute}';
     return '$inMinutes ${translator.minutes}';

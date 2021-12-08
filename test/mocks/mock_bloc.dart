@@ -30,8 +30,5 @@ class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
 class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
     implements UserFileBloc {}
 
-class MockBatteryCubit extends MockCubit<BatteryCubitState>
-    implements BatteryCubit {}
-
-class MockWakeLockCubit extends MockCubit<KeepScreenAwakeState>
+class MockWakeLockCubit extends MockCubit<WakeLockState>
     implements WakeLockCubit {}
