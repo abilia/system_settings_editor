@@ -1760,18 +1760,6 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Recurrence present', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(createEditActivityPage(newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.text(translate.recurrence), findsOneWidget);
-    });
-
     testWidgets('Shows time picker widget ', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(newActivity: true));
