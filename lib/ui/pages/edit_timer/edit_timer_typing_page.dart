@@ -241,7 +241,7 @@ class _TimeTextField extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                 borderRadius: borderRadius,
                 borderSide: BorderSide(
-                  color: focusNode.hasFocus ? Colors.grey : Colors.black,
+                  color: Colors.black,
                   width: 2.s,
                 ),
               ),
