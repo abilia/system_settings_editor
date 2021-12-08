@@ -113,7 +113,7 @@ class FullScreenArchiveImage extends StatelessWidget {
         child: FullScreenImage(
           backgroundDecoration: whiteNoBorderBoxDecoration,
           fileId: selected.fileId,
-          filePath: selected.icon,
+          filePath: selected.file,
         ),
       ),
     );

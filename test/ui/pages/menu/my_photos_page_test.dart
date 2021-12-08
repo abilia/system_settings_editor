@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
@@ -20,16 +21,30 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     final mockSortableDb = MockSortableDb();
+
+    final myPhotosFolder = Sortable.createNew(
+      data: const ImageArchiveData(myPhotos: true),
+      fixed: true,
+    );
     when(() => mockSortableDb.getAllNonDeleted()).thenAnswer(
       (invocation) => Future.value(
         <Sortable<ImageArchiveData>>[
-          Sortable.createNew(
-            data: const ImageArchiveData(myPhotos: true),
-            fixed: true,
-          ),
+          myPhotosFolder,
           Sortable.createNew(
             data: const ImageArchiveData(upload: true),
             fixed: true,
+          ),
+          Sortable.createNew(
+            groupId: myPhotosFolder.id,
+            data: const ImageArchiveData(
+              name: 'image',
+              fileId: 'fileId',
+            ),
+          ),
+          Sortable.createNew(
+            groupId: myPhotosFolder.id,
+            isGroup: true,
+            data: const ImageArchiveData(name: 'folder'),
           ),
         ],
       ),
@@ -68,6 +83,19 @@ void main() {
       await tester.tap(find.byType(CloseButton));
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
+    });
+
+    testWidgets('Folders and photos shows, image is clickable', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byType(MyPhotosPage), findsOneWidget);
+        expect(find.byType(LibraryFolder), findsOneWidget);
+        expect(find.byType(FullscreenViewablePhoto), findsOneWidget);
+        await tester.tap(find.byType(FullscreenViewablePhoto));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullscreenImageDialog), findsOneWidget);
+        expect(find.byType(FullScreenImage), findsOneWidget);
+      });
     });
   });
 }
