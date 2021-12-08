@@ -508,6 +508,10 @@ abstract class Translated {
 
   final String interval = 'Interval';
 
+  final String intervals = 'Intervals';
+
+  final String categories = 'Categories';
+
   final String viewDay = 'Day';
 
   final String dayAndNight = 'Day and night';
@@ -563,6 +567,8 @@ abstract class Translated {
   final String showYear = 'Show year';
 
   final String everyDay = 'Every day (7)';
+
+  final String view = 'View';
 
   final String viewSettings = 'View settings';
 
@@ -627,13 +633,19 @@ abstract class Translated {
 
   final String defaults = 'Defaults';
 
+  final String toolbar = 'Toolbar';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
+
+  final String homeScreen = 'Home screen';
 
   final String homeScreenSettingsHint =
       'View displayed when the home button is pressed';
 
+  final String timeout = 'Timeout';
+
   final String timeoutSettingsHint =
-      'Returns to the home screen after a period of inactivity.';
+      'Returns to the home screen after a period of inactivity';
 
   final String noTimeout = 'No timeout';
 
@@ -1507,6 +1519,12 @@ class SV extends Translated {
   final String interval = 'Intervall';
 
   @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
+
+  @override
   final String viewDay = 'Dagen';
 
   @override
@@ -1589,6 +1607,9 @@ class SV extends Translated {
 
   @override
   final String everyDay = 'Alla dagar (7)';
+
+  @override
+  final String view = 'Vy';
 
   @override
   final String viewSettings = 'Visa inställningar';
@@ -1685,14 +1706,23 @@ class SV extends Translated {
   final String defaults = 'Förval';
 
   @override
+  final String toolbar = 'Knapprad';
+
+  @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
+
+  @override
+  final String homeScreen = 'Startsida';
 
   @override
   final String homeScreenSettingsHint = 'Visad vy vid tryck på hemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Återgång till startsidan efter en tids inaktivitet.';
+      'Återgång till startsidan efter en tids inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
@@ -2630,6 +2660,12 @@ class DA extends Translated {
   final String interval = 'Interval';
 
   @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
+
+  @override
   final String viewDay = 'Dagen';
 
   @override
@@ -2712,6 +2748,9 @@ class DA extends Translated {
 
   @override
   final String everyDay = 'Alle dage (7)';
+
+  @override
+  final String view = 'Side';
 
   @override
   final String viewSettings = 'Se indstillinger';
@@ -2808,15 +2847,24 @@ class DA extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String toolbar = 'Værktøjslinje';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
+
+  @override
+  final String homeScreen = 'Startside';
 
   @override
   final String homeScreenSettingsHint =
       'Side der bliver vist ved tryk på hjemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Gå tilbage til startsiden, efter en periode med inaktivitet.';
+      'Gå tilbage til startsiden, efter en periode med inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
@@ -3753,6 +3801,12 @@ class NL extends Translated {
   final String interval = 'Interval';
 
   @override
+  final String intervals = 'Intervallen';
+
+  @override
+  final String categories = 'Categorieën';
+
+  @override
   final String viewDay = 'Dag';
 
   @override
@@ -3835,6 +3889,9 @@ class NL extends Translated {
 
   @override
   final String everyDay = 'Elke dag (7)';
+
+  @override
+  final String view = 'Weergave';
 
   @override
   final String viewSettings = 'Laat instellingen zien';
@@ -3931,15 +3988,24 @@ class NL extends Translated {
   final String defaults = 'Voorselectie';
 
   @override
+  final String toolbar = 'Werkbalk';
+
+  @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
+
+  @override
+  final String homeScreen = 'Thuisscherm';
 
   @override
   final String homeScreenSettingsHint =
       'Weergave getoond als de homeknop wordt ingedrukt';
 
   @override
+  final String timeout = 'Time-out';
+
+  @override
   final String timeoutSettingsHint =
-      'Gaat terug naar het thuisscherm na een periode van inactiviteit.';
+      'Gaat terug naar het thuisscherm na een periode van inactiviteit';
 
   @override
   final String noTimeout = 'Geen time-out';
@@ -4877,6 +4943,12 @@ class FI extends Translated {
   final String interval = 'Aikaväli';
 
   @override
+  final String intervals = 'Aikavälit';
+
+  @override
+  final String categories = 'Kategoriat';
+
+  @override
   final String viewDay = 'Päivä';
 
   @override
@@ -4959,6 +5031,9 @@ class FI extends Translated {
 
   @override
   final String everyDay = 'Joka päivä (7)';
+
+  @override
+  final String view = 'Näytä';
 
   @override
   final String viewSettings = 'Näytä asetukset';
@@ -5055,15 +5130,24 @@ class FI extends Translated {
   final String defaults = 'Esivalinta';
 
   @override
+  final String toolbar = 'Työkalurivi';
+
+  @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
+
+  @override
+  final String homeScreen = 'Aloitusnäyttö';
 
   @override
   final String homeScreenSettingsHint =
       'Näkymä näytetään, kun aloitussivun painiketta painetaan';
 
   @override
+  final String timeout = 'Aikakatkaisu';
+
+  @override
   final String timeoutSettingsHint =
-      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.';
+      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen';
 
   @override
   final String noTimeout = 'Ei aikakatkaisua';
@@ -6005,6 +6089,12 @@ class DE extends Translated {
   final String interval = 'Intervall';
 
   @override
+  final String intervals = 'Intervalle';
+
+  @override
+  final String categories = 'Kategorien';
+
+  @override
   final String viewDay = 'Tag';
 
   @override
@@ -6087,6 +6177,9 @@ class DE extends Translated {
 
   @override
   final String everyDay = 'Täglich (7)';
+
+  @override
+  final String view = 'Anzeigen';
 
   @override
   final String viewSettings = 'Einstellungen anzeigen';
@@ -6183,15 +6276,24 @@ class DE extends Translated {
   final String defaults = 'Vorauswahl';
 
   @override
+  final String toolbar = 'Symbolleiste';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
+
+  @override
+  final String homeScreen = 'Startbildschirm';
 
   @override
   final String homeScreenSettingsHint =
       'Wird nach Drücken der Schaltfläche Home angezeigt';
 
   @override
+  final String timeout = 'Zeitüberschreitung';
+
+  @override
   final String timeoutSettingsHint =
-      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.';
+      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität';
 
   @override
   final String noTimeout = 'Keine Zeitüberschreitung';
@@ -7127,6 +7229,12 @@ class NB extends Translated {
   final String interval = 'Intervall';
 
   @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
+
+  @override
   final String viewDay = 'Dagen';
 
   @override
@@ -7209,6 +7317,9 @@ class NB extends Translated {
 
   @override
   final String everyDay = 'Alle dager (7)';
+
+  @override
+  final String view = 'Vindu';
 
   @override
   final String viewSettings = 'Visningsinnstillinger';
@@ -7305,15 +7416,24 @@ class NB extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String toolbar = 'Knapperad';
+
+  @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
+
+  @override
+  final String homeScreen = 'Startside';
 
   @override
   final String homeScreenSettingsHint =
       'Vindu som vil bli vist ved trykk på hjemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Återgång till startsidan efter en tids inaktivitet.';
+      'Återgång till startsidan efter en tids inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
