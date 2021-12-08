@@ -16,7 +16,7 @@ class TabItem extends StatelessWidget {
         child: Column(
           children: [
             Text(text),
-            SizedBox(height: layout.tabbar.item.spacing),
+            SizedBox(height: layout.tabBar.item.spacing),
             Icon(iconData),
           ],
         ),
@@ -38,11 +38,11 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
-  Size get preferredSize => Size.fromHeight(layout.tabbar.heigth);
+  Size get preferredSize => Size.fromHeight(layout.tabBar.heigth);
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(bottom: layout.tabbar.bottomPadding),
+        padding: EdgeInsets.only(bottom: layout.tabBar.bottomPadding),
         child: AbiliaTabs(
           tabs: tabs,
           collapsedCondition: collapsedCondition,
@@ -190,9 +190,9 @@ class _AnimatedTab extends AnimatedWidget {
   static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius),
       firstInnerBorderRadius = BorderRadius.horizontal(
-          left: innerRadiusFromBorderSize(layout.tabbar.item.border)),
+          left: innerRadiusFromBorderSize(layout.tabBar.item.border)),
       lastInnerBorderRadius = BorderRadius.horizontal(
-          right: innerRadiusFromBorderSize(layout.tabbar.item.border));
+          right: innerRadiusFromBorderSize(layout.tabBar.item.border));
   _AnimatedTab({
     Key? key,
     required this.child,
@@ -243,15 +243,15 @@ class _AnimatedTab extends AnimatedWidget {
                 : const BoxDecoration(color: AbiliaColors.transparentWhite20),
         padding = first
             ? EdgeInsets.only(
-                left: layout.tabbar.item.border,
-                top: layout.tabbar.item.border,
-                bottom: layout.tabbar.item.border)
+                left: layout.tabBar.item.border,
+                top: layout.tabBar.item.border,
+                bottom: layout.tabBar.item.border)
             : last
                 ? EdgeInsets.only(
-                    top: layout.tabbar.item.border,
-                    right: layout.tabbar.item.border,
-                    bottom: layout.tabbar.item.border)
-                : EdgeInsets.symmetric(vertical: layout.tabbar.item.border),
+                    top: layout.tabBar.item.border,
+                    right: layout.tabBar.item.border,
+                    bottom: layout.tabBar.item.border)
+                : EdgeInsets.symmetric(vertical: layout.tabBar.item.border),
         super(key: key, listenable: listenable);
 
   final Widget child;
@@ -274,7 +274,7 @@ class _AnimatedTab extends AnimatedWidget {
     final collapsedValue = collapsedAnimation.value;
     final selectedValue =
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
-    final marginValue = layout.tabbar.item.border * collapsedValue / 2;
+    final marginValue = layout.tabBar.item.border * collapsedValue / 2;
     return InkWell(
       borderRadius: first
           ? borderRadiusLeft
@@ -288,10 +288,10 @@ class _AnimatedTab extends AnimatedWidget {
           end: notSelectedBorder,
         ).lerp(selectedValue),
         constraints: BoxConstraints(
-          minWidth: layout.tabbar.item.width * collapsedValue,
-          maxWidth: layout.tabbar.item.width * 2 * collapsedValue,
+          minWidth: layout.tabBar.item.width * collapsedValue,
+          maxWidth: layout.tabBar.item.width * 2 * collapsedValue,
         ),
-        height: layout.tabbar.item.heigth,
+        height: layout.tabBar.item.heigth,
         padding: padding,
         child: Container(
           decoration: DecorationTween(
@@ -313,9 +313,9 @@ class _AnimatedTab extends AnimatedWidget {
                 ? null
                 : Padding(
                     padding: EdgeInsets.only(
-                      left: layout.tabbar.item.horizontalPadding,
-                      top: layout.tabbar.item.topPadding,
-                      right: layout.tabbar.item.horizontalPadding,
+                      left: layout.tabBar.item.horizontalPadding,
+                      top: layout.tabBar.item.topPadding,
+                      right: layout.tabBar.item.horizontalPadding,
                     ),
                     child: DefaultTextStyle(
                       maxLines: 1,

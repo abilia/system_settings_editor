@@ -3,7 +3,7 @@ part of 'layout.dart';
 class _LargeLayout extends Layout {
   const _LargeLayout()
       : super(
-          appbar: const AppBarLayout(
+          appBar: const AppBarLayout(
             height: 225,
           ),
           actionButton: const ActionButtonLayout(

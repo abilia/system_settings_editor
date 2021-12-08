@@ -11,19 +11,19 @@ final Layout layout = Device.screenSize.longestSide > 1500
         : const _GoLayout();
 
 class Layout {
-  final AppBarLayout appbar;
+  final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
-  final TabBarLayout tabbar;
+  final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
   final IconSize iconSize;
   final ClockLayout clock;
 
   const Layout({
-    this.appbar = const AppBarLayout(),
+    this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.toolbar = const ToolbarLayout(),
-    this.tabbar = const TabBarLayout(),
+    this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
