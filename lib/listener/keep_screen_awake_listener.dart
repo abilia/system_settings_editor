@@ -15,11 +15,11 @@ class KeepScreenAwakeListener
               await SystemSettingsEditor.setScreenOffTimeout(
                 state.screenTimeout,
               );
-              if (state.onNow) {
-                await Wakelock.enable();
-              } else {
-                await Wakelock.disable();
-              }
+            }
+            if (state.onNow) {
+              await Wakelock.enable();
+            } else {
+              await Wakelock.disable();
             }
           },
         );
