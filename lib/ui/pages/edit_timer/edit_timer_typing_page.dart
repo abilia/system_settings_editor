@@ -135,7 +135,7 @@ class _TimeInputContentState extends State<TimeInputContent>
         Theme(
           data: theme.copyWith(
               textSelectionTheme: theme.textSelectionTheme.copyWith(
-                selectionColor: AbiliaColors.white,
+                selectionColor: Colors.transparent,
               ),
               textTheme: theme.textTheme
                   .copyWith(subtitle1: abiliaTextTheme.headline4)),
@@ -227,6 +227,7 @@ class _TimeTextField extends StatelessWidget {
             key: key,
             onTap: () => focusNode.requestFocus(),
             focusNode: focusNode,
+            enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
             showCursor: false,
             controller: editController,
@@ -240,7 +241,7 @@ class _TimeTextField extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                 borderRadius: borderRadius,
                 borderSide: BorderSide(
-                  color: focusNode.hasFocus ? Colors.grey : Colors.black,
+                  color: Colors.black,
                   width: 2.s,
                 ),
               ),
