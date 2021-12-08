@@ -36,7 +36,7 @@ class SortableArchiveBloc<T extends SortableData>
     String initialFolderId,
     bool Function(Sortable<T>)? visibilityFilter,
   ) =>
-      _stateFromSortabled(
+      _stateFromSortables(
         sortables: sortableState is SortablesLoaded
             ? sortableState.sortables
             : <Sortable<SortableData>>[],
@@ -45,7 +45,7 @@ class SortableArchiveBloc<T extends SortableData>
         visibilityFilter: visibilityFilter,
       );
 
-  static SortableArchiveState<T> _stateFromSortabled<T extends SortableData>({
+  static SortableArchiveState<T> _stateFromSortables<T extends SortableData>({
     required Iterable<Sortable<SortableData>> sortables,
     required String initialFolderId,
     required String currentFolderId,
@@ -73,7 +73,7 @@ class SortableArchiveBloc<T extends SortableData>
     SortableArchiveEvent event,
   ) async* {
     if (event is SortablesUpdated) {
-      yield _stateFromSortabled<T>(
+      yield _stateFromSortables<T>(
         sortables: event.sortables,
         initialFolderId: state.initialFolderId,
         currentFolderId: state.currentFolderId,
