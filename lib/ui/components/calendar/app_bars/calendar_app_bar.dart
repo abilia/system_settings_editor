@@ -16,7 +16,7 @@ class CalendarAppBar extends StatelessWidget {
   static final _emptyAction = SizedBox(width: layout.actionButton.size);
 
   static final double clockPadding = 8.s;
-  static final Size size = Size.fromHeight(layout.appBar.height);
+  static final Size size = Size.fromHeight(layout.appbar.height);
 
   const CalendarAppBar({
     Key? key,
@@ -50,7 +50,7 @@ class CalendarAppBar extends StatelessWidget {
           flexibleSpace: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: layout.appBar.horizontalPadding,
+                horizontal: layout.appbar.horizontalPadding,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

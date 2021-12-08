@@ -14,9 +14,9 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(text),
+            SizedBox(height: layout.tabbar.item.spacing),
             Icon(iconData),
           ],
         ),
@@ -38,7 +38,32 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
-  Size get preferredSize => Size.fromHeight(layout.tab.preferedHeigth);
+  Size get preferredSize => Size.fromHeight(layout.tabbar.heigth);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(bottom: layout.tabbar.bottomPadding),
+        child: AbiliaTabs(
+          tabs: tabs,
+          collapsedCondition: collapsedCondition,
+          onTabTap: onTabTap,
+        ),
+      );
+}
+
+class AbiliaTabs extends StatelessWidget {
+  const AbiliaTabs({
+    Key? key,
+    required this.tabs,
+    this.collapsedCondition,
+    this.onTabTap,
+  }) : super(key: key);
+
+  final List<Widget> tabs;
+
+  final bool Function(int index)? collapsedCondition;
+  final void Function(int index)? onTabTap;
+  bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +190,9 @@ class _AnimatedTab extends AnimatedWidget {
   static final firstBorderRadius = BorderRadius.horizontal(left: radius),
       lastBorderRadius = BorderRadius.horizontal(right: radius),
       firstInnerBorderRadius = BorderRadius.horizontal(
-          left: innerRadiusFromBorderSize(layout.tab.borderWidth)),
+          left: innerRadiusFromBorderSize(layout.tabbar.item.border)),
       lastInnerBorderRadius = BorderRadius.horizontal(
-          right: innerRadiusFromBorderSize(layout.tab.borderWidth));
+          right: innerRadiusFromBorderSize(layout.tabbar.item.border));
   _AnimatedTab({
     Key? key,
     required this.child,
@@ -218,15 +243,15 @@ class _AnimatedTab extends AnimatedWidget {
                 : const BoxDecoration(color: AbiliaColors.transparentWhite20),
         padding = first
             ? EdgeInsets.only(
-                left: layout.tab.borderWidth,
-                top: layout.tab.borderWidth,
-                bottom: layout.tab.borderWidth)
+                left: layout.tabbar.item.border,
+                top: layout.tabbar.item.border,
+                bottom: layout.tabbar.item.border)
             : last
                 ? EdgeInsets.only(
-                    top: layout.tab.borderWidth,
-                    right: layout.tab.borderWidth,
-                    bottom: layout.tab.borderWidth)
-                : EdgeInsets.symmetric(vertical: layout.tab.borderWidth),
+                    top: layout.tabbar.item.border,
+                    right: layout.tabbar.item.border,
+                    bottom: layout.tabbar.item.border)
+                : EdgeInsets.symmetric(vertical: layout.tabbar.item.border),
         super(key: key, listenable: listenable);
 
   final Widget child;
@@ -249,7 +274,7 @@ class _AnimatedTab extends AnimatedWidget {
     final collapsedValue = collapsedAnimation.value;
     final selectedValue =
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
-    final marginValue = layout.tab.borderWidth * collapsedValue / 2;
+    final marginValue = layout.tabbar.item.border * collapsedValue / 2;
     return InkWell(
       borderRadius: first
           ? borderRadiusLeft
@@ -263,10 +288,10 @@ class _AnimatedTab extends AnimatedWidget {
           end: notSelectedBorder,
         ).lerp(selectedValue),
         constraints: BoxConstraints(
-          minWidth: layout.tab.width * collapsedValue,
-          maxWidth: layout.tab.width * 2 * collapsedValue,
+          minWidth: layout.tabbar.item.width * collapsedValue,
+          maxWidth: layout.tabbar.item.width * 2 * collapsedValue,
         ),
-        height: layout.tab.heigth,
+        height: layout.tabbar.item.heigth,
         padding: padding,
         child: Container(
           decoration: DecorationTween(
@@ -286,28 +311,35 @@ class _AnimatedTab extends AnimatedWidget {
             ).lerp(selectedValue),
             child: collapsedValue == 0.0
                 ? null
-                : DefaultTextStyle(
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle.lerp(
+                : Padding(
+                    padding: EdgeInsets.only(
+                      left: layout.tabbar.item.horizontalPadding,
+                      top: layout.tabbar.item.topPadding,
+                      right: layout.tabbar.item.horizontalPadding,
+                    ),
+                    child: DefaultTextStyle(
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle.lerp(
+                            beginTextStyle,
+                            endTextStyle,
+                            selectedValue,
+                          ) ??
                           beginTextStyle,
-                          endTextStyle,
+                      child: IconTheme(
+                        data: IconThemeData.lerp(
+                          beginIconThemeData,
+                          endIconThemeData,
                           selectedValue,
-                        ) ??
-                        beginTextStyle,
-                    child: IconTheme(
-                      data: IconThemeData.lerp(
-                        beginIconThemeData,
-                        endIconThemeData,
-                        selectedValue,
-                      ),
-                      child: Transform(
-                        transform: Matrix4.identity()
-                          ..scale(collapsedValue, collapsedValue, 1.0),
-                        alignment: Alignment.center,
-                        child: Opacity(
-                          opacity: collapsedValue,
-                          child: child,
+                        ),
+                        child: Transform(
+                          transform: Matrix4.identity()
+                            ..scale(collapsedValue, collapsedValue, 1.0),
+                          alignment: Alignment.center,
+                          child: Opacity(
+                            opacity: collapsedValue,
+                            child: child,
+                          ),
                         ),
                       ),
                     ),

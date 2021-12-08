@@ -3,7 +3,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
-  static final barHeigt = layout.toolbar.heigth;
   const CalendarBottomBar({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +13,7 @@ class CalendarBottomBar extends StatelessWidget {
           BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, dayState) => BottomAppBar(
           child: Container(
-            height: barHeigt,
+            height: layout.toolbar.heigth,
             padding: EdgeInsets.only(
               left: layout.toolbar.horizontalPadding,
               right: layout.toolbar.horizontalPadding,
@@ -28,7 +27,7 @@ class CalendarBottomBar extends StatelessWidget {
                 else
                   SizedBox(width: layout.actionButton.size),
                 if (!settingsState.displayOnlyDayCalendar)
-                  AbiliaTabBar(
+                  AbiliaTabs(
                     tabs: <Widget>[
                       TabItem(
                         translate.day.capitalize(),

@@ -3,7 +3,7 @@ part of 'layout.dart';
 class _MediumLayout extends Layout {
   const _MediumLayout()
       : super(
-          appBar: const AppBarLayout(
+          appbar: const AppBarLayout(
             height: 148,
           ),
           actionButton: const ActionButtonLayout(
@@ -14,13 +14,17 @@ class _MediumLayout extends Layout {
             heigth: 120,
             bottomPadding: 8,
           ),
-          tab: const TabBarLayout(
-            preferedHeigth: 104,
-            width: 118,
-            heigth: 88,
-            borderWidth: 2,
-            topPadding: 6,
-            horizontalPadding: 5,
+          tabbar: const TabBarLayout(
+            item: TabItemLayout(
+              heigth: 88,
+              width: 118,
+              border: 2,
+              spacing: 4,
+              topPadding: 6,
+              horizontalPadding: 5,
+            ),
+            heigth: 104,
+            bottomPadding: 8,
           ),
           fontSize: const FontSize(
             headline1: 144,

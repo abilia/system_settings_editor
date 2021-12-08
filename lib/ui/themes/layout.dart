@@ -11,19 +11,19 @@ final Layout layout = Device.screenSize.longestSide > 1500
         : const _GoLayout();
 
 class Layout {
-  final AppBarLayout appBar;
+  final AppBarLayout appbar;
   final ActionButtonLayout actionButton;
-  final TabBarLayout tab;
+  final TabBarLayout tabbar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
   final IconSize iconSize;
   final ClockLayout clock;
 
   const Layout({
-    this.appBar = const AppBarLayout(),
+    this.appbar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.toolbar = const ToolbarLayout(),
-    this.tab = const TabBarLayout(),
+    this.tabbar = const TabBarLayout(),
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
@@ -61,18 +61,23 @@ class ToolbarLayout {
 }
 
 class TabBarLayout {
-  final double preferedHeigth,
-      width,
-      heigth,
-      borderWidth,
-      topPadding,
-      horizontalPadding;
+  final TabItemLayout item;
+  final double heigth, bottomPadding;
 
   const TabBarLayout({
-    this.preferedHeigth = 64,
+    this.item = const TabItemLayout(),
+    this.heigth = 64,
+    this.bottomPadding = 0,
+  });
+}
+
+class TabItemLayout {
+  final double width, heigth, border, spacing, topPadding, horizontalPadding;
+  const TabItemLayout({
     this.heigth = 48,
     this.width = 64,
-    this.borderWidth = 1,
+    this.border = 1,
+    this.spacing = 0,
     this.topPadding = 4,
     this.horizontalPadding = 4,
   });

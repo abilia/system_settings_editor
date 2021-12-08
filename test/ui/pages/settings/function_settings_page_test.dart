@@ -314,7 +314,7 @@ void main() {
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
       expect(find.byType(AddActivityButton), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
@@ -369,7 +369,7 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsNothing);
     });
 
@@ -387,7 +387,7 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsNothing);
     });
 
