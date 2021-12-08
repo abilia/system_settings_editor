@@ -317,21 +317,21 @@ class BlocLoggingObserver extends BlocObserver {
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
     if (bloc is Silent) return;
-    _log(bloc, 'onCreate : ${bloc.runtimeType}');
+    _log(bloc, 'created');
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
     if (event is Silent || bloc is Silent) return;
-    _log(bloc, 'onEvent : ${bloc.runtimeType}, event: $event');
+    _log(bloc, 'event $event');
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     if (bloc is Silent) return;
-    _log(bloc, 'onChange : ${bloc.runtimeType}, change: $change');
+    _log(bloc, change);
   }
 
   @override
@@ -339,20 +339,20 @@ class BlocLoggingObserver extends BlocObserver {
     super.onTransition(bloc, transition);
     if (analyticsLogging) logEventToAnalytics(transition);
     if (bloc is Silent) return;
-    _log(bloc, 'onTransition : ${bloc.runtimeType}, transition: $transition');
+    _log(bloc, transition);
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    _getLog(bloc).severe('error in $bloc', error, stackTrace);
+    _getLog(bloc).severe(error, stackTrace);
   }
 
   @override
   void onClose(BlocBase bloc) {
     super.onClose(bloc);
     if (bloc is Silent) return;
-    _log(bloc, 'onClose : ${bloc.runtimeType}');
+    _log(bloc, 'closed');
   }
 
   void logEventToAnalytics(Transition transition) async {

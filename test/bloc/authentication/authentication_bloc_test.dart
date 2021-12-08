@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
@@ -11,8 +12,6 @@ import '../../mocks/mocks.dart';
 import '../../fakes/all.dart';
 
 void main() {
-  late AuthenticationBloc authenticationBloc;
-
   group('AuthenticationBloc event order', () {
     late UserRepository userRepository;
     setUp(() async {
@@ -24,73 +23,58 @@ void main() {
         licenseDb: LicenseDb(prefs),
         baseUrl: 'fake',
       );
-      authenticationBloc = AuthenticationBloc(
-        userRepository,
-        onLogout: () {},
-      );
     });
 
-    test('initial state is AuthenticationUninitialized', () {
-      expect(authenticationBloc.state, AuthenticationLoading(userRepository));
-    });
+    blocTest(
+      'initial state is AuthenticationUninitialized',
+      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      verify: (AuthenticationBloc bloc) => expect(
+        bloc.state,
+        AuthenticationLoading(userRepository),
+      ),
+    );
 
-    test('state change to Unauthenticated when app starts', () {
+    blocTest('state change to Unauthenticated when app starts',
+        build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+        act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
+        expect: () => [Unauthenticated(userRepository)]);
+
+    blocTest(
+      'state change to AuthenticationAuthenticated when token provided',
       // Act
-      authenticationBloc.add(CheckAuthentication());
+      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedIn(token: Fakes.token)),
+      expect: () => [
+        Unauthenticated(userRepository),
+        Authenticated(
+          token: Fakes.token,
+          userId: Fakes.userId,
+          userRepository: userRepository,
+          newlyLoggedIn: true,
+        ),
+      ],
+    );
 
-      // Assert
-      expectLater(
-        authenticationBloc.stream,
-        emits(Unauthenticated(userRepository)),
-      );
-    });
-
-    test('state change to AuthenticationAuthenticated when token provided',
-        () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedIn(token: Fakes.token));
-
-      // Assert
-      await expectLater(
-        authenticationBloc.stream,
-        emitsInOrder([
-          Unauthenticated(userRepository),
-          Authenticated(
-            token: Fakes.token,
-            userId: Fakes.userId,
-            userRepository: userRepository,
-            newlyLoggedIn: true,
-          ),
-        ]),
-      );
-    });
-
-    test('state change back to Unauthenticated when logging out', () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedIn(token: Fakes.token));
-      authenticationBloc.add(const LoggedOut());
-
-      // Assert
-      await expectLater(
-        authenticationBloc.stream,
-        emitsInOrder([
-          Unauthenticated(userRepository),
-          Authenticated(
-            token: Fakes.token,
-            userId: Fakes.userId,
-            userRepository: userRepository,
-            newlyLoggedIn: true,
-          ),
-          Unauthenticated(userRepository),
-        ]),
-      );
-    });
-
-    tearDown(() {
-      authenticationBloc.close();
-    });
+    blocTest(
+      'state change back to Unauthenticated when logging out',
+      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedIn(token: Fakes.token))
+        ..add(const LoggedOut()),
+      expect: () => [
+        Unauthenticated(userRepository),
+        Authenticated(
+          token: Fakes.token,
+          userId: Fakes.userId,
+          userRepository: userRepository,
+          newlyLoggedIn: true,
+        ),
+        Unauthenticated(userRepository),
+      ],
+    );
   });
 
   group('AuthenticationBloc token side effect', () {
@@ -109,82 +93,80 @@ void main() {
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
       when(() => mockedUserRepository.me(any())).thenAnswer(
           (_) => Future.value(const User(id: 0, type: '', name: '')));
-      authenticationBloc = AuthenticationBloc(
+    });
+
+    blocTest(
+      'loggedIn event saves token',
+      build: () => AuthenticationBloc(
         mockedUserRepository,
         onLogout: () {
           notificationMock.mockCancelAll();
         },
-      );
-    });
+      ),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedIn(token: Fakes.token)),
+      verify: (bloc) =>
+          verify(() => mockedUserRepository.persistToken(Fakes.token))
+              .called(1),
+    );
 
-    test('loggedIn event saves token', () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedIn(token: Fakes.token));
-      // Assert
-      await untilCalled(() => mockedUserRepository.persistToken(Fakes.token));
-    });
+    blocTest(
+      'loggedOut calls deletes token',
+      build: () => AuthenticationBloc(
+        mockedUserRepository,
+        onLogout: () {
+          notificationMock.mockCancelAll();
+        },
+      ),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedOut()),
+      verify: (bloc) => verify(() => mockedUserRepository.logout()).called(1),
+    );
 
-    test('loggedOut calls deletes token', () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedOut());
-      // Assert
-      await untilCalled(() => mockedUserRepository.logout());
-    });
+    blocTest(
+      'logged out cancel all Notification Function is called',
+      build: () => AuthenticationBloc(
+        mockedUserRepository,
+        onLogout: () {
+          notificationMock.mockCancelAll();
+        },
+      ),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedOut()),
+      verify: (bloc) =>
+          verify(() => notificationMock.mockCancelAll()).called(1),
+    );
 
-    test('logged out cancel all Notification Function is called', () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedOut());
-      // Assert
-      await untilCalled(() => notificationMock.mockCancelAll());
-    });
+    blocTest(
+      'unauthed token gets deleted and returns state Unauthenticated',
+      setUp: () => when(() => mockedUserRepository.me(any()))
+          .thenAnswer((_) => Future.error(UnauthorizedException())),
+      build: () => AuthenticationBloc(mockedUserRepository, onLogout: () {}),
+      act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
+      expect: () => [Unauthenticated(mockedUserRepository)],
+      verify: (bloc) => verify(
+        () => mockedUserRepository.logout(any()),
+      ).called(1),
+    );
 
-    test('unauthed token gets deleted', () async {
-      // Arrange
-      when(() => mockedUserRepository.me(any()))
-          .thenAnswer((_) => Future.error(UnauthorizedException()));
-
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-
-      // Assert
-      await untilCalled(() => mockedUserRepository.logout(any()));
-    });
-
-    test('unauthed token returns state Unauthenticated', () async {
-      // Arrange
-      when(() => mockedUserRepository.me(any()))
-          .thenAnswer((_) => Future.error(UnauthorizedException()));
-
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-
-      // Assert
-      await expectLater(
-        authenticationBloc.stream,
-        emits(
-          Unauthenticated(mockedUserRepository),
-        ),
-      );
-    });
-
-    test('logged out cancel all on logout and repo in order', () async {
-      // Act
-      authenticationBloc.add(CheckAuthentication());
-      authenticationBloc.add(const LoggedOut());
-      // Assert
-      await untilCalled(() => mockedUserRepository.logout());
-      await untilCalled(() => notificationMock.mockCancelAll());
-      verifyInOrder([
-        () => notificationMock.mockCancelAll(),
-        () => mockedUserRepository.logout(),
-      ]);
-    });
-
-    tearDown(() {
-      authenticationBloc.close();
-    });
+    blocTest(
+      'logged out cancel all on logout and repo in order',
+      setUp: () => when(() => mockedUserRepository.me(any()))
+          .thenAnswer((_) => Future.error(UnauthorizedException())),
+      build: () => AuthenticationBloc(mockedUserRepository,
+          onLogout: notificationMock.mockCancelAll),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(CheckAuthentication())
+        ..add(const LoggedOut()),
+      verify: (AuthenticationBloc bloc) => verifyInOrder(
+        [
+          () => notificationMock.mockCancelAll(),
+          () => mockedUserRepository.logout(),
+        ],
+      ),
+    );
   });
 }
