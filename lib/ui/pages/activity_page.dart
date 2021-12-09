@@ -77,10 +77,10 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
           displayUncheckButton,
         ].where((b) => b).length;
 
-        final padding = [0.0, 0.0, 70.0.s, 39.0.s, 23.0.s][numberOfButtons];
+        final padding = layout.toolbar.itemsPaddings[numberOfButtons];
         return BottomAppBar(
           child: SizedBox(
-            height: numberOfButtons == 0 ? 0 : 64.s,
+            height: numberOfButtons == 0 ? 0 : layout.toolbar.heigth,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: padding),
               child: Row(

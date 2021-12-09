@@ -1,24 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
 
+class TabItem extends StatelessWidget {
+  final String text;
+  final IconData iconData;
+  const TabItem(
+    this.text,
+    this.iconData, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Tts.data(
+        data: text,
+        child: Column(
+          children: [
+            Text(text),
+            SizedBox(height: layout.tabBar.item.spacing),
+            Icon(iconData),
+          ],
+        ),
+      );
+}
+
 class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   const AbiliaTabBar({
     Key? key,
     required this.tabs,
-    this.height,
     this.collapsedCondition,
     this.onTabTap,
   }) : super(key: key);
 
   final List<Widget> tabs;
-  final double? height;
 
   final bool Function(int index)? collapsedCondition;
   final void Function(int index)? onTabTap;
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
-  Size get preferredSize => Size.fromHeight(height ?? 64.0.s);
+  Size get preferredSize => Size.fromHeight(layout.tabBar.heigth);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(bottom: layout.tabBar.bottomPadding),
+        child: AbiliaTabs(
+          tabs: tabs,
+          collapsedCondition: collapsedCondition,
+          onTabTap: onTabTap,
+        ),
+      );
+}
+
+class AbiliaTabs extends StatelessWidget {
+  const AbiliaTabs({
+    Key? key,
+    required this.tabs,
+    this.collapsedCondition,
+    this.onTabTap,
+  }) : super(key: key);
+
+  final List<Widget> tabs;
+
+  final bool Function(int index)? collapsedCondition;
+  final void Function(int index)? onTabTap;
+  bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +120,7 @@ class _Tab extends StatefulWidget {
 class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   _TabState();
   late AnimationController _collapsedController;
-  late Animation<double> _scaleAnimation;
+  late Animation<double> _collapseAnimation;
   late bool collapsed;
 
   @override
@@ -84,7 +129,7 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
     collapsed = widget.collapsed();
     _collapsedController =
         AnimationController(vsync: this, duration: kTabScrollDuration);
-    _scaleAnimation = _collapsedController
+    _collapseAnimation = _collapsedController
         .drive(ReverseTween<double>(Tween<double>(begin: 0.0, end: 1.0)));
     if (collapsed) {
       _collapsedController.forward(from: 1.0);
@@ -114,11 +159,13 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
+    final textStyle =
+        (Theme.of(context).textTheme.caption ?? caption).copyWith(height: 1);
     final controllerAnimation = widget.controller.animation;
     if (controllerAnimation == null) throw 'TabController missing animation';
     return _AnimatedTab(
       selectedTabAnimation: controllerAnimation,
-      scaleAnimation: _scaleAnimation,
+      collapsedAnimation: _collapseAnimation,
       listenable:
           Listenable.merge([widget.controller.animation, _collapsedController]),
       index: widget.index,
@@ -128,6 +175,8 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       beginIconThemeData: iconTheme.copyWith(size: layout.iconSize.small),
       endIconThemeData: iconTheme.copyWith(
           color: AbiliaColors.white, size: layout.iconSize.small),
+      beginTextStyle: textStyle,
+      endTextStyle: textStyle.copyWith(color: AbiliaColors.white),
       onTap: () {
         widget.onTabTap?.call(widget.index - widget.offset);
         widget.controller.animateTo(widget.index - widget.offset);
@@ -138,74 +187,94 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
 }
 
 class _AnimatedTab extends AnimatedWidget {
-  static final beginBorder = Border.fromBorderSide(
-        BorderSide(color: AbiliaColors.white, width: 1.0.s),
-      ),
-      endBorder = Border.fromBorderSide(
-        BorderSide(color: AbiliaColors.transparentWhite30, width: 1.0.s),
-      );
   static final firstBorderRadius = BorderRadius.horizontal(left: radius),
-      lastBorderRadius = BorderRadius.horizontal(right: radius);
+      lastBorderRadius = BorderRadius.horizontal(right: radius),
+      firstInnerBorderRadius = BorderRadius.horizontal(
+          left: innerRadiusFromBorderSize(layout.tabBar.item.border)),
+      lastInnerBorderRadius = BorderRadius.horizontal(
+          right: innerRadiusFromBorderSize(layout.tabBar.item.border));
   _AnimatedTab({
     Key? key,
     required this.child,
-    required this.scaleAnimation,
+    required this.collapsedAnimation,
     required this.selectedTabAnimation,
     required this.beginIconThemeData,
     required this.endIconThemeData,
+    required this.beginTextStyle,
+    required this.endTextStyle,
     required Listenable listenable,
     required this.index,
     required this.offset,
     required this.last,
     required this.first,
     required this.onTap,
-  })  : beginDecoration = first
+  })  : selectedDecoration = first
             ? BoxDecoration(
                 borderRadius: firstBorderRadius,
                 color: AbiliaColors.white,
-                border: beginBorder)
+              )
             : last
                 ? BoxDecoration(
                     borderRadius: lastBorderRadius,
                     color: AbiliaColors.white,
-                    border: beginBorder,
                   )
-                : BoxDecoration(
-                    borderRadius: BorderRadius.zero,
-                    color: AbiliaColors.white,
-                    border: beginBorder),
-        endDecoration = first
+                : const BoxDecoration(color: AbiliaColors.white),
+        notSelectedBorder = first
             ? BoxDecoration(
                 borderRadius: firstBorderRadius,
-                color: AbiliaColors.transparentWhite20,
-                border: endBorder)
+                color: AbiliaColors.transparentWhite30,
+              )
             : last
                 ? BoxDecoration(
                     borderRadius: lastBorderRadius,
-                    color: AbiliaColors.transparentWhite20,
-                    border: endBorder,
+                    color: AbiliaColors.transparentWhite30,
                   )
-                : BoxDecoration(
-                    borderRadius: BorderRadius.zero,
+                : const BoxDecoration(color: AbiliaColors.transparentWhite30),
+        notSelectedInnerDecoration = first
+            ? BoxDecoration(
+                borderRadius: firstInnerBorderRadius,
+                color: AbiliaColors.transparentWhite20,
+              )
+            : last
+                ? BoxDecoration(
+                    borderRadius: lastInnerBorderRadius,
                     color: AbiliaColors.transparentWhite20,
-                    border: endBorder),
+                  )
+                : const BoxDecoration(color: AbiliaColors.transparentWhite20),
+        padding = first
+            ? EdgeInsets.only(
+                left: layout.tabBar.item.border,
+                top: layout.tabBar.item.border,
+                bottom: layout.tabBar.item.border)
+            : last
+                ? EdgeInsets.only(
+                    top: layout.tabBar.item.border,
+                    right: layout.tabBar.item.border,
+                    bottom: layout.tabBar.item.border)
+                : EdgeInsets.symmetric(vertical: layout.tabBar.item.border),
         super(key: key, listenable: listenable);
 
   final Widget child;
   final Animation<double> selectedTabAnimation;
-  final Animation<double> scaleAnimation;
+  final Animation<double> collapsedAnimation;
   final int index, offset;
-  final Decoration beginDecoration, endDecoration;
   final bool last, first;
   final IconThemeData beginIconThemeData, endIconThemeData;
+  final TextStyle beginTextStyle, endTextStyle;
   final GestureTapCallback onTap;
+
+  final BoxDecoration selectedDecoration,
+      notSelectedBorder,
+      notSelectedInnerDecoration;
+
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    final scaleValue = scaleAnimation.value;
-    final lerpValue =
+    final collapsedValue = collapsedAnimation.value;
+    final selectedValue =
         (selectedTabAnimation.value - index + offset).abs().clamp(0.0, 1.0);
-
+    final marginValue = layout.tabBar.item.border * collapsedValue / 2;
     return InkWell(
       borderRadius: first
           ? borderRadiusLeft
@@ -213,32 +282,74 @@ class _AnimatedTab extends AnimatedWidget {
               ? borderRadiusRight
               : null,
       onTap: onTap,
-      child: Container(
-        width: 64.0.s * scaleAnimation.value,
-        height: 48.0.s,
-        margin: last
-            ? EdgeInsets.only(left: 1.0.s)
-            : first
-                ? EdgeInsets.only(right: 1.0.s)
-                : EdgeInsets.symmetric(
-                    horizontal: 1.0.s * scaleAnimation.value),
-        decoration: DecorationTween(begin: beginDecoration, end: endDecoration)
-            .lerp(lerpValue),
-        child: scaleAnimation.value == 0.0
-            ? null
-            : IconTheme(
-                data: IconThemeData.lerp(
-                    beginIconThemeData, endIconThemeData, lerpValue),
-                child: Transform(
-                  transform: Matrix4.identity()
-                    ..scale(scaleValue, scaleValue, 1.0),
-                  alignment: Alignment.center,
-                  child: Opacity(
-                    opacity: scaleValue,
-                    child: child,
-                  ),
-                ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: layout.tabBar.item.width * collapsedValue,
+          maxWidth: layout.tabBar.item.width * 2 * collapsedValue,
+        ),
+        child: Ink(
+          decoration: DecorationTween(
+            begin: selectedDecoration,
+            end: notSelectedBorder,
+          ).lerp(selectedValue),
+          height: layout.tabBar.item.heigth,
+          padding: padding,
+          child: Ink(
+            decoration: DecorationTween(
+              end: notSelectedInnerDecoration.copyWith(
+                color: AbiliaColors.black80,
               ),
+            ).lerp(selectedValue),
+            child: Padding(
+              padding: last
+                  ? EdgeInsets.only(left: marginValue)
+                  : first
+                      ? EdgeInsets.only(right: marginValue)
+                      : EdgeInsets.symmetric(horizontal: marginValue),
+              child: Ink(
+                decoration: DecorationTween(
+                  begin: null,
+                  end: notSelectedInnerDecoration,
+                ).lerp(selectedValue),
+                child: collapsedValue == 0.0
+                    ? null
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          left: layout.tabBar.item.horizontalPadding,
+                          top: layout.tabBar.item.topPadding,
+                          right: layout.tabBar.item.horizontalPadding,
+                        ),
+                        child: DefaultTextStyle(
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle.lerp(
+                                beginTextStyle,
+                                endTextStyle,
+                                selectedValue,
+                              ) ??
+                              beginTextStyle,
+                          child: IconTheme(
+                            data: IconThemeData.lerp(
+                              beginIconThemeData,
+                              endIconThemeData,
+                              selectedValue,
+                            ),
+                            child: Transform(
+                              transform: Matrix4.identity()
+                                ..scale(collapsedValue, collapsedValue, 1.0),
+                              alignment: Alignment.center,
+                              child: Opacity(
+                                opacity: collapsedValue,
+                                child: child,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
