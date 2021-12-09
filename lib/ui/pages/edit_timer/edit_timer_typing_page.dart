@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
 
 String _pad0(String s) => s.padLeft(2, '0');
 
-typedef BottomNavigationBuilder = Widget Function(
+typedef _BottomNavigationBuilder = Widget Function(
     BuildContext context, Duration? newDuration);
-typedef _OnValidTimeInput = void Function(Duration duration);
 
 const _textSelection = TextSelection(baseOffset: 0, extentOffset: 2);
 const _emptyPattern = '00';
@@ -25,7 +22,7 @@ class EditTimerByTypingPage extends StatelessWidget {
         title: Translator.of(context).translate.setTime,
         iconData: AbiliaIcons.clock,
       ),
-      body: TimeInputContent(
+      body: _TimerInputContent(
         bottomNavigationBuilder: (context, duration) => BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: duration != null && duration.inMinutes > 0
@@ -41,90 +38,43 @@ class EditTimerByTypingPage extends StatelessWidget {
   }
 }
 
-class TimeInputContent extends StatefulWidget {
-  final BottomNavigationBuilder bottomNavigationBuilder;
-  final _OnValidTimeInput? onValidTimeInput;
+class _TimerInputContent extends StatefulWidget {
+  final _BottomNavigationBuilder bottomNavigationBuilder;
 
-  const TimeInputContent({
+  const _TimerInputContent({
     Key? key,
     required this.bottomNavigationBuilder,
-    this.onValidTimeInput,
   }) : super(key: key);
 
   @override
   _TimeInputContentState createState() => _TimeInputContentState();
 }
 
-class _TimeInputContentState extends State<TimeInputContent>
-    with WidgetsBindingObserver {
-  late TextEditingController hourEditingController;
-  late TextEditingController minuteEditingController;
-  late FocusNode hourFocus;
-  late FocusNode minuteFocus;
-  late String validatedNewStartTime;
-  String hourText = _emptyPattern;
-  String minuteText = _emptyPattern;
-  bool _hourFocus = true;
-  bool _paused = false;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      if (_hourFocus) {
-        hourFocus.requestFocus();
-      } else {
-        minuteFocus.requestFocus();
-      }
-      _paused = true;
-    } else if (state == AppLifecycleState.paused) {
-      hourFocus.unfocus();
-      minuteFocus.unfocus();
-    }
-  }
+class _TimeInputContentState extends State<_TimerInputContent> {
+  final TextEditingController _hourEditingController =
+      TextEditingController(text: _emptyPattern);
+  final TextEditingController _minuteEditingController =
+      TextEditingController(text: _emptyPattern);
+  late final FocusNode _hourFocus;
+  late final FocusNode _minuteFocus;
 
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
-    hourFocus = FocusNode()
+    _hourFocus = FocusNode()
       ..addListener(() {
-        if (hourFocus.hasFocus) {
-          if (_paused) {
-            _paused = false;
-          } else {
-            _hourFocus = true;
-            hourEditingController.selection = _textSelection;
-          }
+        if (_hourFocus.hasFocus) {
+          _hourEditingController.selection = _textSelection;
         }
       });
-
-    minuteFocus = FocusNode()
+    _minuteFocus = FocusNode()
       ..requestFocus()
       ..addListener(() {
-        if (minuteFocus.hasFocus) {
-          if (_paused) {
-            _paused = false;
-          } else {
-            _hourFocus = false;
-            minuteEditingController.selection = _textSelection;
-          }
+        if (_minuteFocus.hasFocus) {
+          _minuteEditingController.selection = _textSelection;
         }
       });
-    hourEditingController = TextEditingController(text: _emptyPattern);
-    minuteEditingController = TextEditingController(text: _emptyPattern);
   }
-
-  @override
-  void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
-    hourEditingController.dispose();
-    minuteEditingController.dispose();
-    super.dispose();
-  }
-
-  Duration get newDuration => Duration(
-      hours: int.tryParse(hourEditingController.text) ?? 0,
-      minutes: int.tryParse(minuteEditingController.text) ?? 0);
 
   @override
   Widget build(BuildContext context) {
@@ -148,8 +98,8 @@ class _TimeInputContentState extends State<TimeInputContent>
                 _TimeTextField(
                     key: TestKey.hours,
                     header: translate.hoursCap,
-                    editController: hourEditingController,
-                    focusNode: hourFocus,
+                    editController: _hourEditingController,
+                    focusNode: _hourFocus,
                     onChanged: (value) => _onTimeChanged(value),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -171,8 +121,8 @@ class _TimeInputContentState extends State<TimeInputContent>
                 _TimeTextField(
                     key: TestKey.minutes,
                     header: translate.minutesCap,
-                    editController: minuteEditingController,
-                    focusNode: minuteFocus,
+                    editController: _minuteEditingController,
+                    focusNode: _minuteFocus,
                     onChanged: (value) => _onTimeChanged(value),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -188,7 +138,9 @@ class _TimeInputContentState extends State<TimeInputContent>
         const Spacer(),
         widget.bottomNavigationBuilder(
           context,
-          newDuration,
+          Duration(
+              hours: int.tryParse(_hourEditingController.text) ?? 0,
+              minutes: int.tryParse(_minuteEditingController.text) ?? 0),
         ),
       ],
     );

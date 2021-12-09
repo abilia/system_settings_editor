@@ -9,3 +9,4 @@ export 'activity_page.dart';
 export 'edit_activity/all.dart';
 export 'menu/photo_calendar_page.dart';
 export 'menu/my_photos_page.dart';
+export 'edit_timer/edit_timer_typing_page.dart';
