@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/edit_activity/activity_wizard_page.dart';
 
 class AddActivityButton extends StatelessWidget {
   const AddActivityButton({

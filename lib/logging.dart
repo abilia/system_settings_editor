@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:bloc/bloc.dart';
 
 import 'package:seagull/analytics/analytics_service.dart';
 import 'package:seagull/bloc/all.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/all.dart';
 
 const jsonTestString1 =

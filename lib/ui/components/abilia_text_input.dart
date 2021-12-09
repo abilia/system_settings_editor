@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:seagull/ui/all.dart';

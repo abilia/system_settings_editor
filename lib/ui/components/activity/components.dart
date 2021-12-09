@@ -1,6 +1,4 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';

@@ -1,6 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 

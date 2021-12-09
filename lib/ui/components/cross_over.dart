@@ -1,7 +1,4 @@
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/scale_util.dart';
 
 class CrossOver extends StatelessWidget {
   const CrossOver({
