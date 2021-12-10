@@ -66,6 +66,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         builder: (context, state) {
           final selected = selectableItems ? state.selected : null;
           final selectedGenerator = selectedItemGenerator;
+          if (initialFolder.isNotEmpty && state.currentFolderId.isEmpty) {
+            BlocProvider.of<SortableArchiveBloc<T>>(context)
+                .add(InitialFolder(initialFolder));
+          }
           return Scaffold(
             appBar: appBar ??
                 AbiliaAppBar(
