@@ -134,7 +134,7 @@ class _TimeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatters;
   final String header;
-  final FocusNode focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
   final String text;
   final bool focus;
 
@@ -150,7 +150,7 @@ class _TimeTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (focus) {
-      focusNode.requestFocus();
+      _focusNode.requestFocus();
     }
     return Expanded(
       child: Column(
@@ -160,8 +160,8 @@ class _TimeTextField extends StatelessWidget {
           SubHeading(header),
           TextField(
             key: key,
-            onTap: () => focusNode.requestFocus(),
-            focusNode: focusNode,
+            onTap: () => _focusNode.requestFocus(),
+            focusNode: _focusNode,
             enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
             showCursor: false,
@@ -230,8 +230,7 @@ class _MinuteInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final input = newValue.text;
-    final intVal = int.tryParse(input);
+    final intVal = int.tryParse(newValue.text);
     if (intVal == null || intVal > 59) {
       return oldValue;
     }
@@ -243,8 +242,7 @@ class _HourInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final input = newValue.text;
-    final intVal = int.tryParse(input);
+    final intVal = int.tryParse(newValue.text);
     if (intVal == null || intVal > 23) {
       return oldValue;
     }
