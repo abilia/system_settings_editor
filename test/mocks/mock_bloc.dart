@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
+export 'package:mocktail/mocktail.dart';
 
 // Blocs
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>

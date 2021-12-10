@@ -4,12 +4,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_test/src/deprecated.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/settings/alarm_settings.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';

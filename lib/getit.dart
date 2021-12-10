@@ -9,7 +9,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/default_http_client.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';

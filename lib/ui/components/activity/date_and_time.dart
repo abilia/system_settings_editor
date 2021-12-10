@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';

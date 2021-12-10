@@ -19,11 +19,11 @@ class FunctionSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: t.functions,
             iconData: AbiliaIcons.menuSetup,
-            bottom: const AbiliaTabBar(
+            bottom: AbiliaTabBar(
               tabs: <Widget>[
-                Icon(AbiliaIcons.shortcutMenu),
-                Icon(AbiliaIcons.browserHome),
-                Icon(AbiliaIcons.restore),
+                TabItem(t.toolbar, AbiliaIcons.shortcutMenu),
+                TabItem(t.homeScreen, AbiliaIcons.browserHome),
+                TabItem(t.timeout, AbiliaIcons.restore),
               ],
             ),
           ),

@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:seagull/bloc/activities/activities_bloc.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';

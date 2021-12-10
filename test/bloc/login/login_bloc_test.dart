@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/models/user.dart';
 
 import '../../mocks/mocks.dart';
 

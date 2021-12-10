@@ -1,11 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'dart:async';
 
 import '../fakes/fake_db_and_repository.dart';
 import '../mocks/mocks.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart' hide Logger;
-import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:path/path.dart' as _path;
 import 'package:mime/mime.dart' as _mime;

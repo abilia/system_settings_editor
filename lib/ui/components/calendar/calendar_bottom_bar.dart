@@ -1,19 +1,24 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CalendarBottomBar extends StatelessWidget {
-  static final barHeigt = 64.0.s;
   const CalendarBottomBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, settingsState) =>
           BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, dayState) => BottomAppBar(
           child: Container(
-            height: barHeigt,
-            padding: EdgeInsets.symmetric(horizontal: 16.0.s),
+            height: layout.toolbar.heigth,
+            padding: EdgeInsets.only(
+              left: layout.toolbar.horizontalPadding,
+              right: layout.toolbar.horizontalPadding,
+              bottom: layout.toolbar.bottomPadding,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -22,13 +27,22 @@ class CalendarBottomBar extends StatelessWidget {
                 else
                   SizedBox(width: layout.actionButton.size),
                 if (!settingsState.displayOnlyDayCalendar)
-                  AbiliaTabBar(
+                  AbiliaTabs(
                     tabs: <Widget>[
-                      const Icon(AbiliaIcons.day),
+                      TabItem(
+                        translate.day.capitalize(),
+                        AbiliaIcons.day,
+                      ),
                       if (settingsState.displayWeekCalendar)
-                        const Icon(AbiliaIcons.week),
+                        TabItem(
+                          translate.week.capitalize(),
+                          AbiliaIcons.week,
+                        ),
                       if (settingsState.displayMonthCalendar)
-                        const Icon(AbiliaIcons.month),
+                        TabItem(
+                          translate.month,
+                          AbiliaIcons.month,
+                        ),
                     ],
                     onTabTap: (index) {
                       context.read<DayPickerBloc>().add(CurrentDay());

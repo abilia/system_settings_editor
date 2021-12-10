@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';

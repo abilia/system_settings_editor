@@ -1,4 +1,4 @@
-import 'all.dart';
+import 'package:seagull/models/all.dart';
 
 class UserFile extends DataModel {
   static const imageEndings = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];

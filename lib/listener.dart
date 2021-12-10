@@ -1,20 +1,16 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/dialogs/all.dart';
-import 'package:seagull/ui/pages/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TopLevelListeners extends StatelessWidget {

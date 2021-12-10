@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/db/database_repository.dart';
 
 import '../mocks/mocks.dart';

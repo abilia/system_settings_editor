@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -1760,18 +1758,6 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Recurrence present', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(createEditActivityPage(newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.text(translate.recurrence), findsOneWidget);
-    });
-
     testWidgets('Shows time picker widget ', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(newActivity: true));

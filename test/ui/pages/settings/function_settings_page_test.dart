@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -314,7 +313,7 @@ void main() {
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
       expect(find.byType(AddActivityButton), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsOneWidget);
@@ -369,7 +368,7 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.week), findsNothing);
     });
 
@@ -387,7 +386,7 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AbiliaTabBar), findsOneWidget);
+      expect(find.byType(AbiliaTabs), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsNothing);
     });
 

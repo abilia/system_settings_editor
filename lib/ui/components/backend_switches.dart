@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class BackendSwitchesDialog extends StatelessWidget {
   const BackendSwitchesDialog({Key? key}) : super(key: key);
