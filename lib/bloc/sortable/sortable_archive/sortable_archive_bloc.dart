@@ -57,11 +57,10 @@ class SortableArchiveBloc<T extends SortableData>
     final allByFolder =
         groupBy<Sortable<T>, String>(sortableArchive, (s) => s.groupId);
     final allById = {for (var s in sortableArchive) s.id: s};
-    final currentFolder = allById[currentFolderId];
     return SortableArchiveState<T>(
       allByFolder,
       allById,
-      currentFolderId: currentFolder?.id ?? '',
+      currentFolderId: currentFolderId,
       selected: selected,
       initialFolderId: initialFolderId,
     );
@@ -101,13 +100,6 @@ class SortableArchiveBloc<T extends SortableData>
         currentFolderId: state.currentFolderId,
         selected: event.selected,
         initialFolderId: state.initialFolderId,
-      );
-    } else if (event is InitialFolder) {
-      yield SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
-        initialFolderId: event.folderId,
-        currentFolderId: event.folderId,
       );
     }
   }
