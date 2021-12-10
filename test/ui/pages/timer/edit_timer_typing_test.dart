@@ -29,8 +29,6 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
     expect(find.byType(EditTimerByTypingPage), findsOneWidget);
-    expect(find.byType(SaveButton), findsNothing);
-    expect(find.byType(DarkGreyButton), findsOneWidget);
   });
 
   testWidgets('Page cancelled', (WidgetTester tester) async {

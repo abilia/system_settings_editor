@@ -194,9 +194,7 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
-  final String hoursCap = 'Hours';
-
-  final String minutesCap = 'Minutes';
+  final String timerInvalidDuration = 'Duration can not be zero.';
 
   final String reminders = 'Reminders';
 
@@ -1032,10 +1030,7 @@ class SV extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
-  final String hoursCap = 'Timmar';
-
-  @override
-  final String minutesCap = 'Minuter';
+  final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
 
   @override
   final String reminders = 'Påminnelser';
@@ -2145,10 +2140,7 @@ class DA extends Translated {
   final String timeNightTts = '%s om natten';
 
   @override
-  final String hoursCap = 'Timer';
-
-  @override
-  final String minutesCap = 'Minutter';
+  final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
 
   @override
   final String reminders = 'Påmindelser';
@@ -3259,10 +3251,7 @@ class NL extends Translated {
   final String timeNightTts = "%s 's nachts";
 
   @override
-  final String hoursCap = 'Uur';
-
-  @override
-  final String minutesCap = 'Minuten';
+  final String timerInvalidDuration = 'De duur kan niet nul zijn.';
 
   @override
   final String reminders = 'Herinneringen';
@@ -4372,10 +4361,7 @@ class FI extends Translated {
   final String timeNightTts = '%s yöllä';
 
   @override
-  final String hoursCap = 'Tunnit';
-
-  @override
-  final String minutesCap = 'Minuuttia';
+  final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
 
   @override
   final String reminders = 'Muistutukset';
@@ -5488,10 +5474,7 @@ class DE extends Translated {
   final String timeNightTts = '%s abends';
 
   @override
-  final String hoursCap = 'Stunden';
-
-  @override
-  final String minutesCap = 'Minuten';
+  final String timerInvalidDuration = 'Dauer kann nicht Null sein';
 
   @override
   final String reminders = 'Erinnerungen';
@@ -6604,10 +6587,7 @@ class NB extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
-  final String hoursCap = 'Timer';
-
-  @override
-  final String minutesCap = 'Minutter';
+  final String timerInvalidDuration = 'Varigheten kan ikke være null.';
 
   @override
   final String reminders = 'Påminnelser';

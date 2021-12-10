@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/edit_timer/edit_timer_cubit.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/strings.dart';
 
 String _pad0(String s) => s.padLeft(2, '0');
 
@@ -26,25 +26,18 @@ class EditTimerByTypingPage extends StatelessWidget {
   }
 }
 
-class _TimerInputContent extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _TimerInputState();
-  }
-}
-
-class _TimerInputState extends State<_TimerInputContent> {
-  bool _minuteFocus = true;
+class _TimerInputContent extends StatelessWidget {
+  final FocusNode hourFocus = FocusNode();
+  final FocusNode minuteFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    return BlocProvider<EditTimerCubit>(
-      create: (context) => EditTimerCubit(0, 0),
-      child: BlocSelector<EditTimerCubit, EditTimerState, Duration>(
-        selector: (state) => state.duration,
-        builder: (context, duration) {
+    return BlocProvider<_EditTimerCubit>(
+      create: (context) => _EditTimerCubit(0, 0),
+      child: BlocBuilder<_EditTimerCubit, _EditTimerState>(
+        builder: (context, state) {
           return Column(
             children: [
               Theme(
@@ -62,14 +55,15 @@ class _TimerInputState extends State<_TimerInputContent> {
                     children: [
                       _TimeTextField(
                           key: TestKey.hours,
-                          header: translate.hoursCap,
-                          text: _pad0(duration.inHours.toString()),
-                          focus: !_minuteFocus,
+                          header: translate.hours.capitalize(),
+                          text: _pad0(state.duration.inHours.toString()),
+                          focusNode: state.minuteFocus
+                              ? hourFocus
+                              : (hourFocus..requestFocus()),
                           onChanged: (hours) {
                             context
-                                .read<EditTimerCubit>()
+                                .read<_EditTimerCubit>()
                                 .updateDuration(hours: int.tryParse(hours));
-                            _minuteFocus = false;
                           },
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -90,15 +84,17 @@ class _TimerInputState extends State<_TimerInputContent> {
                       ),
                       _TimeTextField(
                           key: TestKey.minutes,
-                          header: translate.minutesCap,
-                          text: (duration.inMinutes % Duration.minutesPerHour)
+                          header: translate.minutes.capitalize(),
+                          text: (state.duration.inMinutes %
+                                  Duration.minutesPerHour)
                               .toString(),
-                          focus: _minuteFocus,
+                          focusNode: !state.minuteFocus
+                              ? minuteFocus
+                              : (minuteFocus..requestFocus()),
                           onChanged: (minutes) {
                             context
-                                .read<EditTimerCubit>()
+                                .read<_EditTimerCubit>()
                                 .updateDuration(minutes: int.tryParse(minutes));
-                            _minuteFocus = true;
                           },
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -113,20 +109,28 @@ class _TimerInputState extends State<_TimerInputContent> {
               ),
               const Spacer(),
               BottomNavigation(
-                backNavigationWidget: const CancelButton(),
-                forwardNavigationWidget: duration.inMinutes > 0
-                    ? SaveButton(
-                        onPressed: () => Navigator.of(context).pop(duration),
-                      )
-                    : DarkGreyButton(
-                        text: Translator.of(context).translate.save,
-                        icon: AbiliaIcons.ok),
-              ),
+                  backNavigationWidget: const CancelButton(),
+                  forwardNavigationWidget: SaveButton(
+                    onPressed: () => onSave(context, state.duration),
+                  )),
             ],
           );
         },
       ),
     );
+  }
+
+  Future<void> onSave(BuildContext context, Duration duration) async {
+    if (duration.inMinutes > 0) {
+      Navigator.of(context).pop(duration);
+    } else {
+      await showViewDialog(
+        context: context,
+        builder: (context) => ErrorDialog(
+          text: Translator.of(context).translate.timerInvalidDuration,
+        ),
+      );
+    }
   }
 }
 
@@ -134,24 +138,20 @@ class _TimeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatters;
   final String header;
-  final FocusNode focusNode = FocusNode();
+  final FocusNode focusNode;
   final String text;
-  final bool focus;
 
-  _TimeTextField(
+  const _TimeTextField(
       {Key? key,
       required this.text,
-      required this.focus,
       required this.header,
       required this.onChanged,
+      required this.focusNode,
       required this.inputFormatters})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (focus) {
-      focusNode.requestFocus();
-    }
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -230,8 +230,7 @@ class _MinuteInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final input = newValue.text;
-    final intVal = int.tryParse(input);
+    final intVal = int.tryParse(newValue.text);
     if (intVal == null || intVal > 59) {
       return oldValue;
     }
@@ -243,11 +242,35 @@ class _HourInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final input = newValue.text;
-    final intVal = int.tryParse(input);
+    final intVal = int.tryParse(newValue.text);
     if (intVal == null || intVal > 23) {
       return oldValue;
     }
     return newValue;
+  }
+}
+
+class _EditTimerCubit extends Cubit<_EditTimerState> {
+  _EditTimerCubit(int hours, int minutes)
+      : super(_EditTimerState(minutes, hours, true));
+
+  void updateDuration({int? hours, int? minutes}) {
+    emit(state.copyWith(hours, minutes));
+  }
+}
+
+class _EditTimerState {
+  final int hours;
+  final int minutes;
+  final bool minuteFocus;
+  late final Duration duration;
+
+  _EditTimerState(this.hours, this.minutes, this.minuteFocus) {
+    duration = Duration(hours: hours, minutes: minutes);
+  }
+
+  _EditTimerState copyWith(int? hours, int? minutes) {
+    return _EditTimerState(hours ?? this.hours, minutes ?? this.minutes,
+        minutes != null || (hours != null && hours > 9));
   }
 }
