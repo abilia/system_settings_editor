@@ -316,7 +316,7 @@ class BlocLoggingObserver extends BlocObserver {
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
     if (bloc is Silent) return;
-    _log(bloc, 'created');
+    _log(bloc, 'created ${bloc.state}');
   }
 
   @override
