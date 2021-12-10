@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:seagull/ui/all.dart';
 
 class NotificationPermissionOffWarningDialog extends StatelessWidget {

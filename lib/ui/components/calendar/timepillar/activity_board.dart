@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:seagull/bloc/all.dart';
 
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';

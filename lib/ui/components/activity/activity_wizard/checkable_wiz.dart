@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/edit_activity/edit_activity_bloc.dart';
 import 'package:seagull/ui/all.dart';

@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/components/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:seagull/utils/all.dart';
 

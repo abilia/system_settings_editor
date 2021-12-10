@@ -2,8 +2,6 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/db/all.dart';
 
-import 'all.dart';
-
 class UserFileDb extends DataDb<UserFile> {
   UserFileDb(Database database) : super(database);
 

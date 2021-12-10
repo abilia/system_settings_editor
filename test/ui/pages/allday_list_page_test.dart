@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
+
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/ui/pages/all.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:seagull/ui/all.dart';
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';

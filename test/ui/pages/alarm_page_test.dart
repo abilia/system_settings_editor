@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/background/all.dart';

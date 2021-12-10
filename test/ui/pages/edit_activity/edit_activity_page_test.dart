@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';

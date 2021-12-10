@@ -1,6 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';

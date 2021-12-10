@@ -1,18 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/screen_timeout/wake_lock_cubit.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/duration.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
-import '../../../mocks/mocks.dart';
 
 void main() {
   late MockWakeLockCubit mockWakeLockCubit;
