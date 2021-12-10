@@ -25,7 +25,6 @@ class ImageArchivePage extends StatelessWidget {
       libraryFolderGenerator: (imageArchive) => imageArchive.data.upload
           ? LibraryFolder(
               title: imageArchive.data.title(),
-              color: AbiliaColors.blue,
               fileId: imageArchive.data.folderFileId(),
               filePath: imageArchive.data.folderFilePath(),
             )
