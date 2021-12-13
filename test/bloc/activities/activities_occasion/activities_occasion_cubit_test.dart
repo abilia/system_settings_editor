@@ -15,7 +15,7 @@ void main() {
   late DayPickerBloc dayPickerBloc;
   late ClockBloc clockBloc;
   late ActivitiesBloc activitiesBloc;
-  late ActivitiesOccasionBloc activitiesOccasionBloc;
+  late ActivitiesOccasionCubit activitiesOccasionBloc;
   late MockActivityRepository mockActivityRepository;
   late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
@@ -35,7 +35,7 @@ void main() {
     );
     dayActivitiesBloc = DayActivitiesBloc(
         dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
-    activitiesOccasionBloc = ActivitiesOccasionBloc(
+    activitiesOccasionBloc = ActivitiesOccasionCubit(
       clockBloc: clockBloc,
       dayActivitiesBloc: dayActivitiesBloc,
     );

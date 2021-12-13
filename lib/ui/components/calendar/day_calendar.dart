@@ -102,7 +102,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         itemBuilder: (context, index) {
-          return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+          return BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
             buildWhen: (oldState, newState) {
               return (oldState is ActivitiesOccasionLoaded &&
                       newState is ActivitiesOccasionLoaded &&
