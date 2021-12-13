@@ -9,23 +9,23 @@ import 'package:seagull/utils/all.dart';
 part 'activities_occasion_state.dart';
 
 class ActivitiesOccasionCubit extends Cubit<ActivitiesOccasionState> {
-  final DayActivitiesBloc dayActivitiesBloc;
+  final DayActivitiesCubit dayActivitiesCubit;
   final ClockBloc clockBloc;
   late final StreamSubscription activitiesSubscription;
   late final StreamSubscription clockSubscription;
 
   ActivitiesOccasionCubit({
     required this.clockBloc,
-    required this.dayActivitiesBloc,
+    required this.dayActivitiesCubit,
   }) : super(const ActivitiesOccasionLoading()) {
-    activitiesSubscription = dayActivitiesBloc.stream
+    activitiesSubscription = dayActivitiesCubit.stream
         .whereType<DayActivitiesLoaded>()
         .listen(_onActivitiesChanged);
     clockSubscription = clockBloc.stream.listen(_onNowChanged);
   }
 
   void _onNowChanged(DateTime now) {
-    final dayActivitiesState = dayActivitiesBloc.state;
+    final dayActivitiesState = dayActivitiesCubit.state;
     if (dayActivitiesState is DayActivitiesLoaded) {
       emit(
         mapActivitiesToActivityOccasionsState(
