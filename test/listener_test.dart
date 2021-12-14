@@ -69,7 +69,6 @@ void main() {
       ..client = Fakes.client(activityResponse: () => response)
       ..fileStorage = MockFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
       ..alarmNavigator = AlarmNavigator()
       ..sortableDb = FakeSortableDb()

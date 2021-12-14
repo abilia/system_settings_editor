@@ -68,6 +68,7 @@ Future<String> initServices() async {
     ..database = await DatabaseRepository.createSqfliteDb()
     ..flutterTts = await flutterTts()
     ..packageInfo = await PackageInfo.fromPlatform()
+    ..syncDelay = const SyncDelays()
     ..init();
 
   return await baseUrlDb.initialize();

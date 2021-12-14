@@ -10,7 +10,7 @@ class MockActivitiesOccasionBloc
     extends MockBloc<ActivitiesOccasionEvent, ActivitiesOccasionState>
     implements ActivitiesOccasionBloc {}
 
-class MockSyncBloc extends MockBloc<SyncEvent, SyncState> implements SyncBloc {}
+class MockSyncBloc extends MockBloc<SyncEvent, dynamic> implements SyncBloc {}
 
 class MockPushBloc extends MockBloc<PushEvent, PushState> implements PushBloc {}
 

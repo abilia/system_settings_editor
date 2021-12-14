@@ -1,22 +1,15 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-part 'sync_state.dart';
+part 'sync_event.dart';
 
-part 'sync_delays.dart';
-
-enum SyncEvent {
-  activitySaved,
-  fileSaved,
-  sortableSaved,
-  genericSaved,
-}
-
-class SyncBloc extends Bloc<SyncEvent, SyncState> {
+class SyncBloc extends Bloc<SyncEvent, dynamic> {
   final ActivityRepository activityRepository;
   final UserFileRepository userFileRepository;
   final SortableRepository sortableRepository;
@@ -29,56 +22,39 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.sortableRepository,
     required this.syncDelay,
     required this.genericRepository,
-  }) : super(const SyncDone());
-
-  final Queue<SyncEvent> _syncQueue = Queue<SyncEvent>();
-
-  @override
-  void add(SyncEvent event) {
-    if (state is SyncUnavailable) {
-      if (!_syncQueue.contains(event)) {
-        // queueing event
-        _syncQueue.add(event);
-      } // else dropping event
-    } else {
-      super.add(event);
-    }
+  }) : super(null) {
+    on<ActivitySaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
+    on<FileSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
+    on<SortableSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
+    on<GenericSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
   }
 
-  @override
-  Stream<SyncState> mapEventToState(
+  Future _mapEventToState(
     SyncEvent event,
-  ) async* {
-    yield const SyncPending();
+    Emitter emit,
+  ) async {
     if (!await _sync(event)) {
-      yield const SyncFailed();
-      if (!_syncQueue.contains(event)) {
-        _syncQueue.add(event);
-      }
-      Future.delayed(
-          syncDelay.retryDelay, () => super.add(_syncQueue.removeFirst()));
-      return;
-    }
-    // Throttle sync to queue up potential fast incoming event
-    await Future.delayed(syncDelay.betweenSync);
-    if (_syncQueue.isNotEmpty) {
-      // dequeuing
-      super.add(_syncQueue.removeFirst());
-    } else {
-      yield const SyncDone();
+      Future.delayed(syncDelay.retryDelay);
+      add(event);
     }
   }
 
   Future<bool> _sync(SyncEvent event) async {
-    switch (event) {
-      case SyncEvent.activitySaved:
+    switch (event.runtimeType) {
+      case ActivitySaved:
         return activityRepository.synchronize();
-      case SyncEvent.fileSaved:
+      case FileSaved:
         return userFileRepository.synchronize();
-      case SyncEvent.sortableSaved:
+      case SortableSaved:
         return sortableRepository.synchronize();
-      case SyncEvent.genericSaved:
+      case GenericSaved:
         return genericRepository.synchronize();
     }
+    throw Exception('Unknown event type $event');
   }
 }
+
+EventTransformer<Event> bufferTimer<Event>(SyncDelays syncDelays) =>
+    (events, mapper) => events
+        .throttleTime(syncDelays.betweenSync, trailing: true, leading: true)
+        .asyncExpand(mapper); // sequential

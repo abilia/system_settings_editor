@@ -13,7 +13,7 @@ class FakePushBloc extends Fake implements PushBloc {
 
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
-  Stream<SyncState> get stream => const Stream.empty();
+  Stream<dynamic> get stream => const Stream.empty();
   @override
   void add(SyncEvent event) {}
   @override

@@ -153,7 +153,6 @@ void main() {
       ..settingsDb = FakeSettingsDb()
       ..genericDb = mockGenericDb
       ..sortableDb = mockSortableDb
-      ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..init();
