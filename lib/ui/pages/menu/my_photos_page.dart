@@ -54,35 +54,39 @@ class AddPhotoButton extends StatelessWidget {
         builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
           builder: (context, time) => ActionButtonLight(
             onPressed: () async {
-              if (permissionState
-                      .status[Permission.camera]?.isPermanentlyDenied ==
-                  true) {
-                await showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) => const PermissionInfoDialog(
-                        permission: Permission.camera));
+              if (Config.isMP) {
+                if (permissionState
+                        .status[Permission.camera]?.isPermanentlyDenied ==
+                    true) {
+                  await showViewDialog(
+                      useSafeArea: false,
+                      context: context,
+                      builder: (context) => const PermissionInfoDialog(
+                          permission: Permission.camera));
+                } else {
+                  final image =
+                      await ImagePicker().pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    final selectedImage =
+                        UnstoredAbiliaFile.newFile(File(image.path));
+                    _addImage(context, selectedImage, time);
+                  }
+                }
               } else {
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  final selectedImage =
-                      UnstoredAbiliaFile.newFile(File(image.path));
-                  BlocProvider.of<UserFileBloc>(context)
-                      .add(ImageAdded(selectedImage));
-                  context.read<SortableBloc>().add(
-                        PhotoAdded(
-                          selectedImage.id,
-                          selectedImage.file.path,
-                          DateFormat.yMd(Localizations.localeOf(context)
-                                  .toLanguageTag())
-                              .format(time),
-                          context
-                              .read<SortableArchiveBloc<ImageArchiveData>>()
-                              .state
-                              .currentFolderId,
-                        ),
-                      );
+                final selectedImage =
+                    await Navigator.of(context).push<UnstoredAbiliaFile>(
+                  MaterialPageRoute(
+                    builder: (_) => CopiedAuthProviders(
+                      blocContext: context,
+                      child: const SelectPicturePage(
+                        selectedImage: AbiliaFile.empty,
+                        showOnlyDeviceImagesAndCamera: true,
+                      ),
+                    ),
+                  ),
+                );
+                if (selectedImage != null) {
+                  _addImage(context, selectedImage, time);
                 }
               }
             },
@@ -90,6 +94,23 @@ class AddPhotoButton extends StatelessWidget {
           ),
         ),
       );
+
+  void _addImage(
+      BuildContext context, UnstoredAbiliaFile selectedImage, DateTime time) {
+    BlocProvider.of<UserFileBloc>(context).add(ImageAdded(selectedImage));
+    context.read<SortableBloc>().add(
+          PhotoAdded(
+            selectedImage.id,
+            selectedImage.file.path,
+            DateFormat.yMd(Localizations.localeOf(context).toLanguageTag())
+                .format(time),
+            context
+                .read<SortableArchiveBloc<ImageArchiveData>>()
+                .state
+                .currentFolderId,
+          ),
+        );
+  }
 }
 
 class FullscreenViewablePhoto extends StatelessWidget {
