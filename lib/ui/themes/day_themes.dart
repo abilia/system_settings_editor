@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -164,7 +164,7 @@ DayTheme _danish(int weekday) {
 
 ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
-    brightness: Brightness.dark,
+    systemOverlayStyle: SystemUiOverlayStyle.light,
   ),
   textTheme: abiliaTextTheme.apply(
     displayColor: AbiliaColors.white,
@@ -176,7 +176,7 @@ ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
 ThemeData _darkAppBarTheme = abiliaTheme.copyWith(
   primaryColor: AbiliaColors.white,
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
-    brightness: Brightness.light,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
   ),
   textButtonTheme: TextButtonThemeData(style: actionButtonStyleDark),
 );

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,37 +115,36 @@ class SelectPictureBody extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 8.0.s),
-                  PickField(
-                    key: TestKey.myPhotosButton,
-                    leading: const Icon(AbiliaIcons.folder),
-                    text: Text(translate.myPhotos),
-                    onTap: () async {
-                      final selectedImage =
-                          await Navigator.of(context).push<AbiliaFile>(
-                        MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
-                            child: BlocProvider<MyPhotosBloc>(
-                              create: (_) => MyPhotosBloc(
-                                  sortableBloc:
-                                      BlocProvider.of<SortableBloc>(context)),
-                              child: BlocBuilder<MyPhotosBloc, MyPhotosState>(
-                                builder: (context, state) {
-                                  return ImageArchivePage(
+                  BlocSelector<SortableBloc, SortableState,
+                      Sortable<ImageArchiveData>?>(
+                    selector: (state) => state is SortablesLoaded
+                        ? state.sortables.getMyPhotosFolder()
+                        : null,
+                    builder: (context, myPhotoFolder) => PickField(
+                      key: TestKey.myPhotosButton,
+                      leading: const Icon(AbiliaIcons.folder),
+                      text: Text(translate.myPhotos),
+                      onTap: (myPhotoFolder != null)
+                          ? () async {
+                              final selectedImage =
+                                  await Navigator.of(context).push<AbiliaFile>(
+                                MaterialPageRoute(
+                                  builder: (_) => CopiedAuthProviders(
+                                    blocContext: context,
+                                    child: ImageArchivePage(
                                       onCancel: onCancel,
-                                      initialFolder:
-                                          state.currentFolderId ?? '',
-                                      header: translate.myPhotos);
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                      if (selectedImage != null) {
-                        imageCallback.call(selectedImage);
-                      }
-                    },
+                                      initialFolder: myPhotoFolder.id,
+                                      header: translate.myPhotos,
+                                    ),
+                                  ),
+                                ),
+                              );
+                              if (selectedImage != null) {
+                                imageCallback.call(selectedImage);
+                              }
+                            }
+                          : null,
+                    ),
                   ),
                   SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -57,6 +56,7 @@ void main() {
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
       ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
+      ..battery = FakeBattery()
       ..init();
   });
 

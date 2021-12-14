@@ -4,7 +4,6 @@ import 'package:timezone/timezone.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 void main() {

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -15,7 +13,7 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return LibraryPage<ImageArchiveData>(
+    return LibraryPage<ImageArchiveData>.selectable(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectPicture,
@@ -27,7 +25,6 @@ class ImageArchivePage extends StatelessWidget {
       libraryFolderGenerator: (imageArchive) => imageArchive.data.upload
           ? LibraryFolder(
               title: imageArchive.data.title(),
-              color: AbiliaColors.blue,
               fileId: imageArchive.data.folderFileId(),
               filePath: imageArchive.data.folderFilePath(),
             )
@@ -113,7 +110,7 @@ class FullScreenArchiveImage extends StatelessWidget {
         child: FullScreenImage(
           backgroundDecoration: whiteNoBorderBoxDecoration,
           fileId: selected.fileId,
-          filePath: selected.icon,
+          filePath: selected.file,
         ),
       ),
     );

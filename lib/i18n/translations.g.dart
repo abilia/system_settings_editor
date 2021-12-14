@@ -158,6 +158,8 @@ abstract class Translated {
 
   final String week = 'week';
 
+  final String month = 'Month';
+
   final String clockTheTimeIsTts = 'the time is %s';
 
   final String clockFiveMinutesPastTts = 'five past %s';
@@ -423,6 +425,8 @@ abstract class Translated {
 
   final String su = 'Sun';
 
+  final String extra = 'Extra';
+
   final String infoType = 'Select extra function';
 
   final String selectInfoType = 'Select extra function';
@@ -463,6 +467,12 @@ abstract class Translated {
 
   final String connected = 'Connected';
 
+  final String screenTimeout = 'Screen timeout';
+
+  final String alwaysOn = 'Always on';
+
+  final String keepScreenAwakeWhileCharging = 'Keep screen awake when charging';
+
   final String settings = 'Settings';
 
   final String calendarView = 'Day Calendar';
@@ -499,6 +509,10 @@ abstract class Translated {
   final String dayInterval = 'Day interval';
 
   final String interval = 'Interval';
+
+  final String intervals = 'Intervals';
+
+  final String categories = 'Categories';
 
   final String viewDay = 'Day';
 
@@ -555,6 +569,8 @@ abstract class Translated {
   final String showYear = 'Show year';
 
   final String everyDay = 'Every day (7)';
+
+  final String view = 'View';
 
   final String viewSettings = 'View settings';
 
@@ -619,13 +635,19 @@ abstract class Translated {
 
   final String defaults = 'Defaults';
 
+  final String toolbar = 'Toolbar';
+
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
+
+  final String homeScreen = 'Home screen';
 
   final String homeScreenSettingsHint =
       'View displayed when the home button is pressed';
 
+  final String timeout = 'Timeout';
+
   final String timeoutSettingsHint =
-      'Returns to the home screen after a period of inactivity.';
+      'Returns to the home screen after a period of inactivity';
 
   final String noTimeout = 'No timeout';
 
@@ -974,6 +996,9 @@ class SV extends Translated {
 
   @override
   final String week = 'vecka';
+
+  @override
+  final String month = 'Månad';
 
   @override
   final String clockTheTimeIsTts = 'Klockan är %s';
@@ -1372,6 +1397,9 @@ class SV extends Translated {
   final String su = 'sön';
 
   @override
+  final String extra = 'Extra';
+
+  @override
   final String infoType = 'Välj extra funktion';
 
   @override
@@ -1432,6 +1460,15 @@ class SV extends Translated {
   final String connected = 'Ansluten';
 
   @override
+  final String screenTimeout = 'Skärmens tidsgräns';
+
+  @override
+  final String alwaysOn = 'Alltid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging = 'Håll skärmen tänd vid laddning';
+
+  @override
   final String settings = 'Inställningar';
 
   @override
@@ -1485,6 +1522,12 @@ class SV extends Translated {
 
   @override
   final String interval = 'Intervall';
+
+  @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
 
   @override
   final String viewDay = 'Dagen';
@@ -1569,6 +1612,9 @@ class SV extends Translated {
 
   @override
   final String everyDay = 'Alla dagar (7)';
+
+  @override
+  final String view = 'Vy';
 
   @override
   final String viewSettings = 'Visa inställningar';
@@ -1665,14 +1711,23 @@ class SV extends Translated {
   final String defaults = 'Förval';
 
   @override
+  final String toolbar = 'Knapprad';
+
+  @override
   final String toolbarSettingsHint = 'Visningar visas i verktygsfältet';
+
+  @override
+  final String homeScreen = 'Startsida';
 
   @override
   final String homeScreenSettingsHint = 'Visad vy vid tryck på hemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Återgång till startsidan efter en tids inaktivitet.';
+      'Återgång till startsidan efter en tids inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
@@ -2086,6 +2141,9 @@ class DA extends Translated {
   final String week = 'uge';
 
   @override
+  final String month = 'Måned';
+
+  @override
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
@@ -2482,6 +2540,9 @@ class DA extends Translated {
   final String su = 'søn';
 
   @override
+  final String extra = 'Ekstra';
+
+  @override
   final String infoType = 'Vælg ekstra funktion';
 
   @override
@@ -2542,6 +2603,16 @@ class DA extends Translated {
   final String connected = 'Tilsluttet';
 
   @override
+  final String screenTimeout = 'Skærmens tidsgrænse';
+
+  @override
+  final String alwaysOn = 'Altid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Lad skærmen være tændt under opladning';
+
+  @override
   final String settings = 'Indstillinger';
 
   @override
@@ -2595,6 +2666,12 @@ class DA extends Translated {
 
   @override
   final String interval = 'Interval';
+
+  @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
 
   @override
   final String viewDay = 'Dagen';
@@ -2679,6 +2756,9 @@ class DA extends Translated {
 
   @override
   final String everyDay = 'Alle dage (7)';
+
+  @override
+  final String view = 'Side';
 
   @override
   final String viewSettings = 'Se indstillinger';
@@ -2775,15 +2855,24 @@ class DA extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String toolbar = 'Værktøjslinje';
+
+  @override
   final String toolbarSettingsHint = 'Visninger vises i værktøjslinjen';
+
+  @override
+  final String homeScreen = 'Startside';
 
   @override
   final String homeScreenSettingsHint =
       'Side der bliver vist ved tryk på hjemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Gå tilbage til startsiden, efter en periode med inaktivitet.';
+      'Gå tilbage til startsiden, efter en periode med inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';
@@ -3197,6 +3286,9 @@ class NL extends Translated {
   final String week = 'week';
 
   @override
+  final String month = 'Maand';
+
+  @override
   final String clockTheTimeIsTts = 'De tijd is %s';
 
   @override
@@ -3592,6 +3684,9 @@ class NL extends Translated {
   final String su = 'Zo';
 
   @override
+  final String extra = 'Extra';
+
+  @override
   final String infoType = 'Extra functie selecteren';
 
   @override
@@ -3652,6 +3747,16 @@ class NL extends Translated {
   final String connected = 'Verbonden';
 
   @override
+  final String screenTimeout = 'Timeout scherm';
+
+  @override
+  final String alwaysOn = 'Altijd aan';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Houd scherm wakker tijdens opladen';
+
+  @override
   final String settings = 'Instellingen';
 
   @override
@@ -3705,6 +3810,12 @@ class NL extends Translated {
 
   @override
   final String interval = 'Interval';
+
+  @override
+  final String intervals = 'Intervallen';
+
+  @override
+  final String categories = 'Categorieën';
 
   @override
   final String viewDay = 'Dag';
@@ -3789,6 +3900,9 @@ class NL extends Translated {
 
   @override
   final String everyDay = 'Elke dag (7)';
+
+  @override
+  final String view = 'Weergave';
 
   @override
   final String viewSettings = 'Laat instellingen zien';
@@ -3885,15 +3999,24 @@ class NL extends Translated {
   final String defaults = 'Voorselectie';
 
   @override
+  final String toolbar = 'Werkbalk';
+
+  @override
   final String toolbarSettingsHint = 'Weergaven weergegeven in de werkbalk';
+
+  @override
+  final String homeScreen = 'Thuisscherm';
 
   @override
   final String homeScreenSettingsHint =
       'Weergave getoond als de homeknop wordt ingedrukt';
 
   @override
+  final String timeout = 'Time-out';
+
+  @override
   final String timeoutSettingsHint =
-      'Gaat terug naar het thuisscherm na een periode van inactiviteit.';
+      'Gaat terug naar het thuisscherm na een periode van inactiviteit';
 
   @override
   final String noTimeout = 'Geen time-out';
@@ -4307,6 +4430,9 @@ class FI extends Translated {
   final String week = 'viikko';
 
   @override
+  final String month = 'Kuukausi';
+
+  @override
   final String clockTheTimeIsTts = 'Kello on %s';
 
   @override
@@ -4703,6 +4829,9 @@ class FI extends Translated {
   final String su = 'Su';
 
   @override
+  final String extra = 'Ekstrat';
+
+  @override
   final String infoType = 'Valitse lisätoiminto';
 
   @override
@@ -4763,6 +4892,16 @@ class FI extends Translated {
   final String connected = 'Yhdistetty';
 
   @override
+  final String screenTimeout = 'Näytön pimennys';
+
+  @override
+  final String alwaysOn = 'Aina käytössä';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Pidä näyttö päällä latauksen aikana';
+
+  @override
   final String settings = 'Asetukset';
 
   @override
@@ -4816,6 +4955,12 @@ class FI extends Translated {
 
   @override
   final String interval = 'Aikaväli';
+
+  @override
+  final String intervals = 'Aikavälit';
+
+  @override
+  final String categories = 'Kategoriat';
 
   @override
   final String viewDay = 'Päivä';
@@ -4900,6 +5045,9 @@ class FI extends Translated {
 
   @override
   final String everyDay = 'Joka päivä (7)';
+
+  @override
+  final String view = 'Näytä';
 
   @override
   final String viewSettings = 'Näytä asetukset';
@@ -4996,15 +5144,24 @@ class FI extends Translated {
   final String defaults = 'Esivalinta';
 
   @override
+  final String toolbar = 'Työkalurivi';
+
+  @override
   final String toolbarSettingsHint = 'Näkymät näkyvät työkalupalkissa';
+
+  @override
+  final String homeScreen = 'Aloitusnäyttö';
 
   @override
   final String homeScreenSettingsHint =
       'Näkymä näytetään, kun aloitussivun painiketta painetaan';
 
   @override
+  final String timeout = 'Aikakatkaisu';
+
+  @override
   final String timeoutSettingsHint =
-      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen.';
+      'Palaa aloitusnäyttöön käyttämättömyysjakson jälkeen';
 
   @override
   final String noTimeout = 'Ei aikakatkaisua';
@@ -5420,6 +5577,9 @@ class DE extends Translated {
   final String week = 'Woche';
 
   @override
+  final String month = 'Monat';
+
+  @override
   final String clockTheTimeIsTts = 'Die Uhrzeit ist %s';
 
   @override
@@ -5817,6 +5977,9 @@ class DE extends Translated {
   final String su = 'So';
 
   @override
+  final String extra = 'Extra';
+
+  @override
   final String infoType = 'Extrafunktion auswählen';
 
   @override
@@ -5877,6 +6040,16 @@ class DE extends Translated {
   final String connected = 'Verbunden';
 
   @override
+  final String screenTimeout = 'Bildschirm Zeitüberschreitung';
+
+  @override
+  final String alwaysOn = 'Immer ein';
+
+  @override
+  final String keepScreenAwakeWhileCharging =
+      'Bildschirm während Aufladen aktiv lassen';
+
+  @override
   final String settings = 'Einstellungen';
 
   @override
@@ -5931,6 +6104,12 @@ class DE extends Translated {
 
   @override
   final String interval = 'Intervall';
+
+  @override
+  final String intervals = 'Intervalle';
+
+  @override
+  final String categories = 'Kategorien';
 
   @override
   final String viewDay = 'Tag';
@@ -6015,6 +6194,9 @@ class DE extends Translated {
 
   @override
   final String everyDay = 'Täglich (7)';
+
+  @override
+  final String view = 'Anzeigen';
 
   @override
   final String viewSettings = 'Einstellungen anzeigen';
@@ -6111,15 +6293,24 @@ class DE extends Translated {
   final String defaults = 'Vorauswahl';
 
   @override
+  final String toolbar = 'Symbolleiste';
+
+  @override
   final String toolbarSettingsHint = 'In der Symbolleiste angezeigte Ansichten';
+
+  @override
+  final String homeScreen = 'Startbildschirm';
 
   @override
   final String homeScreenSettingsHint =
       'Wird nach Drücken der Schaltfläche Home angezeigt';
 
   @override
+  final String timeout = 'Zeitüberschreitung';
+
+  @override
   final String timeoutSettingsHint =
-      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität.';
+      'Rückkehr zum Startbildschirm nach einer Zeit der Inaktivität';
 
   @override
   final String noTimeout = 'Keine Zeitüberschreitung';
@@ -6533,6 +6724,9 @@ class NB extends Translated {
   final String week = 'uke';
 
   @override
+  final String month = 'Måned';
+
+  @override
   final String clockTheTimeIsTts = 'Klokken er %s';
 
   @override
@@ -6928,6 +7122,9 @@ class NB extends Translated {
   final String su = 'søn';
 
   @override
+  final String extra = 'Ekstra';
+
+  @override
   final String infoType = 'Velg ekstra funksjon';
 
   @override
@@ -6988,6 +7185,15 @@ class NB extends Translated {
   final String connected = 'Tilkoblet';
 
   @override
+  final String screenTimeout = 'Skjermens tidsgrense';
+
+  @override
+  final String alwaysOn = 'Alltid på';
+
+  @override
+  final String keepScreenAwakeWhileCharging = 'Hold skjermen på ved lading';
+
+  @override
   final String settings = 'Innstillinger';
 
   @override
@@ -7041,6 +7247,12 @@ class NB extends Translated {
 
   @override
   final String interval = 'Intervall';
+
+  @override
+  final String intervals = 'Intervaller';
+
+  @override
+  final String categories = 'Kategorier';
 
   @override
   final String viewDay = 'Dagen';
@@ -7125,6 +7337,9 @@ class NB extends Translated {
 
   @override
   final String everyDay = 'Alle dager (7)';
+
+  @override
+  final String view = 'Vindu';
 
   @override
   final String viewSettings = 'Visningsinnstillinger';
@@ -7221,15 +7436,24 @@ class NB extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String toolbar = 'Knapperad';
+
+  @override
   final String toolbarSettingsHint = 'Visninger som vises på verktøylinjen';
+
+  @override
+  final String homeScreen = 'Startside';
 
   @override
   final String homeScreenSettingsHint =
       'Vindu som vil bli vist ved trykk på hjemknappen';
 
   @override
+  final String timeout = 'Timeout';
+
+  @override
   final String timeoutSettingsHint =
-      'Återgång till startsidan efter en tids inaktivitet.';
+      'Återgång till startsidan efter en tids inaktivitet';
 
   @override
   final String noTimeout = 'Ingen timeout';

@@ -1,0 +1,157 @@
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/duration.dart';
+
+class ScreenTimeoutPickField extends StatelessWidget {
+  const ScreenTimeoutPickField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return BlocBuilder<WakeLockCubit, WakeLockState>(
+      builder: (context, wakeLockState) => PickField(
+        text: Text(
+          wakeLockState.alwaysOn
+              ? t.alwaysOn
+              : wakeLockState.screenTimeout.toDurationString(t),
+        ),
+        onTap: () async {
+          final timeout = await Navigator.of(context).push<Duration>(
+            MaterialPageRoute(
+              builder: (_) => CopiedAuthProviders(
+                blocContext: context,
+                child: ScreenTimeOutSelector(
+                  timeout:
+                      wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways
+                          ? Duration.zero
+                          : wakeLockState.screenTimeout,
+                ),
+              ),
+            ),
+          );
+          if (timeout != null) {
+            context.read<GenericBloc>().add(
+                  GenericUpdated(
+                    [
+                      MemoplannerSettingData.fromData(
+                        data: timeout == Duration.zero,
+                        identifier:
+                            KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
+                      ),
+                    ],
+                  ),
+                );
+            context.read<WakeLockCubit>().setScreenTimeout(timeout);
+          }
+        },
+      ),
+    );
+  }
+}
+
+class ScreenTimeOutSelector extends StatefulWidget {
+  final Duration timeout;
+
+  const ScreenTimeOutSelector({
+    Key? key,
+    required this.timeout,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ScreenTimeOutSelectorState();
+  }
+}
+
+class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
+  late Duration _timeout;
+
+  @override
+  void initState() {
+    super.initState();
+    _timeout = widget.timeout;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return Scaffold(
+      appBar: AbiliaAppBar(
+        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        title: t.screenTimeout,
+      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: DefaultTextStyle(
+              style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                  .copyWith(color: AbiliaColors.black75),
+              child: ListView(
+                padding: EdgeInsets.only(top: 24.0.s),
+                children: [
+                  ...([1, 30, 0].map((d) => d.minutes()).toSet()..add(_timeout))
+                      .map(
+                    (d) => Padding(
+                      padding:
+                          EdgeInsets.only(left: 12.s, right: 16.s, bottom: 8.s),
+                      child: RadioField<Duration>(
+                        text: Text(
+                          d.inMilliseconds == 0
+                              ? t.alwaysOn
+                              : d.toDurationString(t),
+                        ),
+                        onChanged: (v) {
+                          if (v != null) setState(() => _timeout = v);
+                        },
+                        groupValue: _timeout,
+                        value: d,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: const CancelButton(),
+        forwardNavigationWidget: OkButton(
+          onPressed: () => Navigator.of(context).pop(_timeout),
+        ),
+      ),
+    );
+  }
+}
+
+class KeepOnWhileChargingSwitch extends StatelessWidget {
+  const KeepOnWhileChargingSwitch({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) =>
+          state.settings.keepScreenAwakeSettings.keepScreenOnWhileCharging,
+      builder: (context, keepScreenOnWhileCharging) => SwitchField(
+        value: keepScreenOnWhileCharging,
+        onChanged: (switchOn) {
+          context.read<GenericBloc>().add(
+                GenericUpdated(
+                  [
+                    MemoplannerSettingData.fromData(
+                      data: switchOn,
+                      identifier:
+                          KeepScreenAwakeSettings.keepScreenOnWhileChargingKey,
+                    ),
+                  ],
+                ),
+              );
+        },
+        child:
+            Text(Translator.of(context).translate.keepScreenAwakeWhileCharging),
+      ),
+    );
+  }
+}

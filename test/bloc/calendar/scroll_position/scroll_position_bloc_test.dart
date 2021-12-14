@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -32,7 +31,7 @@ void main() {
     scrollPositionBloc = ScrollPositionBloc(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
-      timepillarBloc: FakeTimepillarBloc(),
+      timepillarCubit: FaketimepillarCubit(),
     );
     when(() => mockScrollController.position).thenReturn(mockScrollPosition);
     when(() => mockScrollController.hasClients).thenReturn(true);

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -46,8 +45,15 @@ void main() {
                 settingsDb: FakeSettingsDb(),
               ),
             ),
-            BlocProvider<TimepillarBloc>(
-              create: (context) => FakeTimepillarBloc(),
+            BlocProvider<TimepillarCubit>(
+              create: (context) => FaketimepillarCubit(),
+            ),
+            BlocProvider<WakeLockCubit>(
+              create: (context) => WakeLockCubit(
+                screenTimeoutCallback: Future.value(30.minutes()),
+                memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                battery: FakeBattery(),
+              ),
             ),
           ],
           child: MaterialApp(

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
@@ -65,8 +65,9 @@ void main() {
     // Arrange
     final uploadFolder = Sortable.createNew<ImageArchiveData>(
       isGroup: true,
+      fixed: true,
       sortOrder: 'A',
-      data: ImageArchiveData.fromJson('{"upload": true}'),
+      data: const ImageArchiveData(upload: true),
     );
     when(() => mockSortableRepository.load())
         .thenAnswer((_) => Future.value([uploadFolder]));

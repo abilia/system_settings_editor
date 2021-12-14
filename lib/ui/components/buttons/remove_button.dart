@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:seagull/ui/all.dart';
 
 class RemoveButton extends StatelessWidget {

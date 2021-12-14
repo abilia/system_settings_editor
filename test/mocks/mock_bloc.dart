@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:seagull/bloc/all.dart';
+export 'package:mocktail/mocktail.dart';
 
 // Blocs
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
@@ -23,10 +24,11 @@ class MockMemoplannerSettingBloc
     extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements MemoplannerSettingBloc {}
 
-class MockTimepillarBloc extends MockBloc<TimepillarEvent, TimepillarState>
-    implements TimepillarBloc {}
+class MocktimepillarCubit extends MockCubit<TimepillarState>
+    implements TimepillarCubit {}
 
 class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
     implements UserFileBloc {}
 
-class MockBatteryCubit extends MockCubit<int> implements BatteryCubit {}
+class MockWakeLockCubit extends MockCubit<WakeLockState>
+    implements WakeLockCubit {}

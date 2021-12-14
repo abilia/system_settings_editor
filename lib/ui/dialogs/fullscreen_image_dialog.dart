@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart' hide CloseButton;
 import 'package:seagull/ui/all.dart';
-
-import 'all.dart';
 
 class FullscreenImageDialog extends StatelessWidget {
   final String fileId;

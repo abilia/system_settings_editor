@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:intl/intl.dart';
 
 import 'package:seagull/background/all.dart';
@@ -78,6 +75,7 @@ void main() {
       ..userFileDb = FakeUserFileDb()
       ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
+      ..battery = FakeBattery()
       ..init();
   });
 

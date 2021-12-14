@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
@@ -129,7 +128,7 @@ class _CategoriesPreview extends StatelessWidget {
             StreamController<DateTime>().stream,
             initialTime: DateTime(2021, 1, 1, 8, 30),
           ),
-          child: BlocBuilder<TimepillarBloc, TimepillarState>(
+          child: BlocBuilder<TimepillarCubit, TimepillarState>(
             builder: (context, ts) => LayoutBuilder(
               builder: (context, boxConstraints) {
                 final categoryWidth =

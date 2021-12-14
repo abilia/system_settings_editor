@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -35,6 +32,16 @@ void main() {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(() => mockSortableBloc.state).thenReturn(
+      SortablesLoaded(
+        sortables: [
+          Sortable.createNew(
+              data: const ImageArchiveData(upload: true), fixed: true),
+          Sortable.createNew(
+              data: const ImageArchiveData(myPhotos: true), fixed: true),
+        ],
+      ),
+    );
     mockUserFileBloc = MockUserFileBloc();
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
@@ -103,13 +110,20 @@ void main() {
               BlocProvider<PermissionBloc>(
                 create: (context) => PermissionBloc()..checkAll(),
               ),
-              BlocProvider<TimepillarBloc>(
-                create: (context) => TimepillarBloc(
+              BlocProvider<TimepillarCubit>(
+                create: (context) => TimepillarCubit(
                   clockBloc: context.read<ClockBloc>(),
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   dayPickerBloc: context.read<DayPickerBloc>(),
                 ),
-              )
+              ),
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                  screenTimeoutCallback: Future.value(30.minutes()),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  battery: FakeBattery(),
+                ),
+              ),
             ],
             child: child!,
           ),

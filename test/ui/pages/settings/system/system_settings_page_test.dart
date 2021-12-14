@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:package_info/package_info.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:collection/collection.dart';
@@ -61,9 +61,17 @@ void main() {
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),
               ),
-              BlocProvider<TimepillarBloc>(
-                create: (context) => FakeTimepillarBloc(),
-              )
+              BlocProvider<TimepillarCubit>(
+                create: (context) => FaketimepillarCubit(),
+              ),
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                  screenTimeoutCallback:
+                      Future.value(const Duration(minutes: 30)),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  battery: FakeBattery(),
+                ),
+              ),
             ],
             child: child!,
           ),

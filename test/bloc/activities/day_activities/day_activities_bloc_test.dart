@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
@@ -114,20 +114,26 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
-      dayPickerBloc.add(NextDay());
-
       // Assert
       await expectLater(
         dayActivitiesBloc.stream,
-        emitsInOrder([
+        emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expextedToday, today, Occasion.current),
           ),
+        ),
+      );
+
+      // Act
+      dayPickerBloc.add(NextDay());
+      // Assert
+      await expectLater(
+        dayActivitiesBloc.stream,
+        emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expextedTomorrow, tomorrow, Occasion.future),
           ),
-        ]),
+        ),
       );
     });
 
@@ -147,20 +153,26 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
-      dayPickerBloc.add(PreviousDay());
-
       // Assert
       await expectLater(
         dayActivitiesBloc.stream,
-        emitsInOrder([
+        emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expectedNow, today, Occasion.current),
           ),
+        ),
+      );
+
+      // Act
+      dayPickerBloc.add(PreviousDay());
+      // Assert
+      await expectLater(
+        dayActivitiesBloc.stream,
+        emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expectedYesterday, yesterday, Occasion.past),
           ),
-        ]),
+        ),
       );
     });
 
@@ -177,7 +189,18 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+
+      // Assert
+      await expectLater(
+        dayActivitiesBloc.stream,
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
+          ),
+        ),
+      );
+
+      // Act
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(PreviousDay());
       dayPickerBloc.add(PreviousDay());
@@ -186,9 +209,6 @@ void main() {
       await expectLater(
         dayActivitiesBloc.stream,
         emitsInOrder([
-          _DayActivitiesMatcher(
-            DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
-          ),
           _DayActivitiesMatcher(
             DayActivitiesLoaded(
                 const <ActivityDay>[], tomorrow, Occasion.future),
@@ -500,6 +520,20 @@ void main() {
       // Act
       activitiesBloc.add(LoadActivities());
       await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
+      // Assert
+      await expectLater(
+        dayActivitiesBloc.stream,
+        emits(
+          _DayActivitiesMatcher(
+            DayActivitiesLoaded(
+              const <ActivityDay>[],
+              firstDay,
+              Occasion.current,
+            ),
+          ),
+        ),
+      );
+      // Act
       dayPickerBloc.add(GoTo(day: dayBeforeSplit));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
@@ -508,13 +542,6 @@ void main() {
       await expectLater(
           dayActivitiesBloc.stream,
           emitsInOrder([
-            _DayActivitiesMatcher(
-              DayActivitiesLoaded(
-                const <ActivityDay>[],
-                firstDay,
-                Occasion.current,
-              ),
-            ),
             _DayActivitiesMatcher(
               DayActivitiesLoaded(
                 [preSplitRecurring]

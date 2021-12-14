@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 final buttonBackgroundLight = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {

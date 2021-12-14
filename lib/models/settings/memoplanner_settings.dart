@@ -4,6 +4,7 @@ import 'package:seagull/models/all.dart';
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings = {
     ...AlarmSettings.keys,
+    ...KeepScreenAwakeSettings.keys,
     // eye button settings
     viewOptionsZoomKey,
     viewOptionsTimeIntervalKey,
@@ -151,6 +152,7 @@ class MemoplannerSettings extends Equatable {
   final AlarmSettings alarm;
   final WizardStepsSettings wizard;
   final CodeProtectSettings codeProtect;
+  final KeepScreenAwakeSettings keepScreenAwakeSettings;
   final MenuSettings menu;
 
   const MemoplannerSettings({
@@ -223,6 +225,7 @@ class MemoplannerSettings extends Equatable {
     this.wizard = const WizardStepsSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
+    this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -452,6 +455,8 @@ class MemoplannerSettings extends Equatable {
       wizard: WizardStepsSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
+      keepScreenAwakeSettings:
+          KeepScreenAwakeSettings.fromSettingsMap(settings),
     );
   }
 
@@ -526,6 +531,7 @@ class MemoplannerSettings extends Equatable {
         wizard,
         codeProtect,
         menu,
+        keepScreenAwakeSettings,
       ];
 }
 

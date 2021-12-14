@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
@@ -47,6 +47,7 @@ void main() {
       ..database = FakeDatabase()
       ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
+      ..battery = FakeBattery()
       ..init();
   });
 

@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -130,13 +128,20 @@ void main() {
               BlocProvider<PermissionBloc>(
                 create: (context) => PermissionBloc()..checkAll(),
               ),
-              BlocProvider<TimepillarBloc>(
-                create: (context) => TimepillarBloc(
+              BlocProvider<TimepillarCubit>(
+                create: (context) => TimepillarCubit(
                   clockBloc: context.read<ClockBloc>(),
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   dayPickerBloc: context.read<DayPickerBloc>(),
                 ),
-              )
+              ),
+              BlocProvider<WakeLockCubit>(
+                create: (context) => WakeLockCubit(
+                  screenTimeoutCallback: Future.value(30.minutes()),
+                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
+                  battery: FakeBattery(),
+                ),
+              ),
             ],
             child: child!,
           ),
@@ -192,9 +197,21 @@ void main() {
     });
 
     group('picture dialog', () {
-      tearDown(() {
-        setupPermissions();
+      setUp(() {
+        when(() => mockSortableBloc.state).thenReturn(
+          SortablesLoaded(
+            sortables: [
+              Sortable.createNew(
+                  data: const ImageArchiveData(upload: true), fixed: true),
+              Sortable.createNew(
+                  data: const ImageArchiveData(myPhotos: true), fixed: true),
+            ],
+          ),
+        );
       });
+
+      tearDown(setupPermissions);
+
       testWidgets('Select picture dialog shows', (WidgetTester tester) async {
         await tester.pumpWidget(createEditActivityPage());
         await tester.pumpAndSettle();
@@ -1741,18 +1758,6 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Recurrence present', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(createEditActivityPage(newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.text(translate.recurrence), findsOneWidget);
-    });
-
     testWidgets('Shows time picker widget ', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(createEditActivityPage(newActivity: true));

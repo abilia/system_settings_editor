@@ -17,12 +17,12 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: t.general,
             iconData: AbiliaIcons.settings,
-            bottom: const AbiliaTabBar(
+            bottom: AbiliaTabBar(
               tabs: <Widget>[
-                Icon(AbiliaIcons.clock),
-                Icon(AbiliaIcons.dayInterval),
-                Icon(AbiliaIcons.changePageColor),
-                Icon(AbiliaIcons.calendarList),
+                TabItem(t.clock, AbiliaIcons.clock),
+                TabItem(t.intervals, AbiliaIcons.dayInterval),
+                TabItem(t.dayColours, AbiliaIcons.changePageColor),
+                TabItem(t.categories, AbiliaIcons.calendarList),
               ],
             ),
           ),

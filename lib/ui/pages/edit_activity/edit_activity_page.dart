@@ -45,11 +45,11 @@ class EditActivityPage extends StatelessWidget {
                           return false;
                       }
                     },
-                    tabs: const <Widget>[
-                      Icon(AbiliaIcons.myPhotos),
-                      Icon(AbiliaIcons.attention),
-                      Icon(AbiliaIcons.repeat),
-                      Icon(AbiliaIcons.attachment),
+                    tabs: <Widget>[
+                      TabItem(translate.name, AbiliaIcons.myPhotos),
+                      TabItem(translate.alarm, AbiliaIcons.attention),
+                      TabItem(translate.recurrence, AbiliaIcons.repeat),
+                      TabItem(translate.extra, AbiliaIcons.attachment),
                     ],
                   ),
                 ),
