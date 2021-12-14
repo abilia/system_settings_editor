@@ -104,6 +104,7 @@ void main() {
           .thenAnswer((_) => Future.value());
       when(() => mockedUserRepository.persistToken(any()))
           .thenAnswer((_) => Future.value());
+      when(() => mockedUserRepository.baseUrl).thenReturn('url');
       notificationMock = MockNotification();
 
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);

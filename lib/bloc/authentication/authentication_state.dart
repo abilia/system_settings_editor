@@ -5,7 +5,7 @@ abstract class AuthenticationState extends Equatable {
   final bool forcedNewState;
   const AuthenticationState(this.userRepository, this.forcedNewState);
   @override
-  List<Object> get props => [userRepository, forcedNewState];
+  List<Object> get props => [userRepository.baseUrl, forcedNewState];
   @override
   bool get stringify => true;
   AuthenticationState _forceNew();

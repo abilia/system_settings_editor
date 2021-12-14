@@ -13,20 +13,26 @@ class BackendSwitchesDialog extends StatelessWidget {
         text: 'Switch backend',
         iconData: AbiliaIcons.oneDrive,
       ),
-      body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) => Wrap(
-          spacing: 8.s,
-          children: [
-            ...backEndEnvironments.entries.map(
-              (kvp) => BackEndButton(
-                kvp.key,
-                userRepository: state.userRepository,
-                client: GetIt.I<BaseClient>(),
-                backEndUrl: kvp.value,
-              ),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) => Wrap(
+              spacing: 8.s,
+              children: [
+                ...backEndEnvironments.entries.map(
+                  (kvp) => BackEndButton(
+                    kvp.key,
+                    userRepository: state.userRepository,
+                    client: GetIt.I<BaseClient>(),
+                    backEndUrl: kvp.value,
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 8.s),
+          const Version(),
+        ],
       ),
       backNavigationWidget: OkButton(onPressed: Navigator.of(context).maybePop),
     );
