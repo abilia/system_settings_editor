@@ -9,68 +9,63 @@ class CalendarBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, settingsState) =>
-          BlocBuilder<DayPickerBloc, DayPickerState>(
-        builder: (context, dayState) => BottomAppBar(
-          child: Container(
-            height: layout.toolbar.heigth,
-            padding: EdgeInsets.only(
-              left: layout.toolbar.horizontalPadding,
-              right: layout.toolbar.horizontalPadding,
-              bottom: layout.toolbar.bottomPadding,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                if (settingsState.displayNewActivity)
-                  AddActivityButton(day: dayState.day)
-                else
-                  SizedBox(width: layout.actionButton.size),
-                if (!settingsState.displayOnlyDayCalendar)
-                  AbiliaTabs(
-                    tabs: <Widget>[
-                      TabItem(
-                        translate.day.capitalize(),
-                        AbiliaIcons.day,
-                      ),
-                      if (settingsState.displayWeekCalendar)
-                        TabItem(
-                          translate.week.capitalize(),
-                          AbiliaIcons.week,
-                        ),
-                      if (settingsState.displayMonthCalendar)
-                        TabItem(
-                          translate.month,
-                          AbiliaIcons.month,
-                        ),
-                    ],
-                    onTabTap: (index) {
-                      context.read<DayPickerBloc>().add(CurrentDay());
-                      switch (index) {
-                        case 0:
-                          return;
-                        case 1:
-                          if (settingsState.displayWeekCalendar) {
-                            return context
-                                .read<WeekCalendarBloc>()
-                                .add(GoToCurrentWeek());
-                          }
-                          break;
+      builder: (context, settingsState) => Container(
+        height: layout.toolbar.heigth,
+        padding: EdgeInsets.only(
+          left: layout.toolbar.horizontalPadding,
+          right: layout.toolbar.horizontalPadding,
+          bottom: layout.toolbar.bottomPadding,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            if (settingsState.displayNewActivity)
+              const AddButton()
+            else
+              SizedBox(width: layout.actionButton.size),
+            if (!settingsState.displayOnlyDayCalendar)
+              AbiliaTabs(
+                tabs: <Widget>[
+                  TabItem(
+                    translate.day.capitalize(),
+                    AbiliaIcons.day,
+                  ),
+                  if (settingsState.displayWeekCalendar)
+                    TabItem(
+                      translate.week.capitalize(),
+                      AbiliaIcons.week,
+                    ),
+                  if (settingsState.displayMonthCalendar)
+                    TabItem(
+                      translate.month,
+                      AbiliaIcons.month,
+                    ),
+                ],
+                onTabTap: (index) {
+                  context.read<DayPickerBloc>().add(CurrentDay());
+                  switch (index) {
+                    case 0:
+                      return;
+                    case 1:
+                      if (settingsState.displayWeekCalendar) {
+                        return context
+                            .read<WeekCalendarBloc>()
+                            .add(GoToCurrentWeek());
                       }
-                      return context
-                          .read<MonthCalendarBloc>()
-                          .add(GoToCurrentMonth());
-                    },
-                  )
-                else
-                  const Spacer(),
-                if (settingsState.displayMenu)
-                  const MenuButton()
-                else
-                  SizedBox(width: layout.actionButton.size),
-              ],
-            ),
-          ),
+                      break;
+                  }
+                  return context
+                      .read<MonthCalendarBloc>()
+                      .add(GoToCurrentMonth());
+                },
+              )
+            else
+              const Spacer(),
+            if (settingsState.displayMenu)
+              const MenuButton()
+            else
+              SizedBox(width: layout.actionButton.size),
+          ],
         ),
       ),
     );
