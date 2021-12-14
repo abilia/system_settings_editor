@@ -13,6 +13,7 @@ class DatabaseRepository {
   static const sortableTableName = 'sortable';
   static const userFileTableName = 'user_file';
   static const genericTableName = 'generic';
+  static const timerTableName = 'timer';
   @visibleForTesting
   static final initialScript = [
     '''
@@ -22,7 +23,7 @@ class DatabaseRepository {
         title text,
         start_time int,
         end_time int,
-        duration int ,
+        duration int,
         file_id text,
         category int,
         deleted int,
@@ -83,10 +84,19 @@ class DatabaseRepository {
 '''
   ];
 
+  static const String _createTimersTable = '''
+    create table $timerTableName (
+          id text primary key not null,
+          start_time int,
+          duration int
+        )
+  ''';
+
   @visibleForTesting
   static final migrations = <String>[
     'alter table $calendarTableName add column extras text',
     'alter table $sortableTableName add column fixed int',
+    _createTimersTable,
   ];
 
   static Future<Database> createSqfliteDb() async {

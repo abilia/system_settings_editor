@@ -36,4 +36,4 @@ export 'activities/activity_wizard/activity_wizard_cubit.dart';
 export 'activities/record_sound/record_sound_cubit.dart';
 export 'activities/activities_occasion/night_activities_cubit.dart';
 export 'calendar/inactivity_cubit.dart';
-export 'timer/timer_wizard_cubit.dart';
+export 'timer/all.dart';

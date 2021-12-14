@@ -14,12 +14,13 @@ class TimerNameAndImageWiz extends StatelessWidget {
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(
           onPressed: () {
-            context.read<TimerWizardCubit>().next();
+            context.read<TimerWizardCubit>().previous();
           },
         ),
         forwardNavigationWidget: StartButton(
           onPressed: () {
             context.read<TimerWizardCubit>().next();
+            Navigator.of(context).maybePop();
           },
         ),
       ),

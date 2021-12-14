@@ -15,6 +15,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final EditActivityBloc editActivityBloc;
   final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
+  final bool edit;
 
   bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
 
@@ -25,7 +26,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-  }) : super(
+  })  : edit = false,
+        super(
           ActivityWizardState(
             0,
             settings.addActivityType == NewActivityMode.editView
@@ -82,7 +84,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-  }) : super(ActivityWizardState(0, const [WizardStep.advance]));
+  })  : edit = true,
+        super(ActivityWizardState(0, const [WizardStep.advance]));
 
   void next({
     bool warningConfirmed = false,

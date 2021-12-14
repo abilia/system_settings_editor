@@ -6,6 +6,7 @@ class TimerWizardState extends Equatable {
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step >= steps.length - 1;
+  bool get isFirstStep => step == 0;
 
   TimerWizardStep get currentStep => steps[step];
 
@@ -18,6 +19,7 @@ class TimerWizardState extends Equatable {
   TimerWizardState copyWith({
     Duration? duration,
     int? step,
+    DateTime? startTime,
   }) {
     return TimerWizardState(
       steps: steps,
@@ -27,5 +29,5 @@ class TimerWizardState extends Equatable {
   }
 
   @override
-  List<Object> get props => [duration];
+  List<Object?> get props => [steps, duration, step];
 }

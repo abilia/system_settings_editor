@@ -59,13 +59,26 @@ class CreateNewPage extends StatelessWidget {
           PickField(
             leading: const Icon(AbiliaIcons.stopWatch),
             text: const Text('New timer'),
-            onTap: () {
+            onTap: () async {
+              await Navigator.of(context).maybePop();
               Navigator.of(context).push(
                 _createRoute(
                   CopiedAuthProviders(
                     blocContext: context,
                     child: BlocProvider(
-                      create: (context) => TimerWizardCubit(),
+                      create: (context) => TimerWizardCubit(
+                        timerCubit: context.read<TimerCubit>(),
+                        onBack: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => CopiedAuthProviders(
+                                blocContext: context,
+                                child: const CreateNewPage(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       child: const TimerWizardPage(),
                     ),
                   ),
@@ -86,11 +99,8 @@ Route _createRoute(Widget page) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)
+          .chain(CurveTween(curve: Curves.ease));
 
       return SlideTransition(
         position: animation.drive(tween),

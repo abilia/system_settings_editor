@@ -25,6 +25,9 @@ class GetItInitializer {
   ActivityDb? _activityDb;
   set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
 
+  TimerDb? _timerDb;
+  set timerDb(TimerDb timerDb) => _timerDb = timerDb;
+
   late FirebasePushService _firebasePushService = FirebasePushService();
   set fireBasePushService(FirebasePushService firebasePushService) =>
       _firebasePushService = firebasePushService;
@@ -96,6 +99,7 @@ class GetItInitializer {
     ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
     ..registerSingleton<FirebasePushService>(_firebasePushService)
     ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
+    ..registerSingleton<TimerDb>(_timerDb ?? TimerDb(_database))
     ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
     ..registerSingleton<Database>(_database)
     ..registerSingleton<SeagullLogger>(_seagullLogger)
