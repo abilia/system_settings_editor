@@ -35,12 +35,3 @@ class NavigateUp extends SortableArchiveEvent {
   @override
   List<Object> get props => [];
 }
-
-class InitialFolder extends SortableArchiveEvent {
-  final String folderId;
-
-  const InitialFolder(this.folderId);
-
-  @override
-  List<Object> get props => [folderId];
-}
