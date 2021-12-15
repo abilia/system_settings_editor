@@ -1,34 +1,109 @@
 import 'dart:math';
 import 'package:seagull/ui/all.dart';
 
-const _minutesInOneHour = 60;
-const _secondsInOneHour = _minutesInOneHour * _minutesInOneHour;
-const _startAngle = -pi / 2;
-const _nrOfWheelSections = 12;
-const _minutesInEachSection = 5;
-// The side of the smallest possible square that contains the full timer in the design
-const _timerWheelSides = 292.0;
-// The side of the smallest possible square that contains the simplified timer in the design
-const _simplifiedTimerWheelSides = _outerWheelDiameter;
-// The diameter of the circle on which the numbers are placed in the design
-const _numberCircleDiameter = 268.0;
-// The diameter of the circle on which the number pointers are placed in the design
-const _numberPointerCircleDiameter = 236.0;
-// The diameter of the outer circle of the wheel in the design
-const _outerWheelDiameter = 212.0;
-// The diameter of the inner circle of the wheel in the design
-const _innerWheelDiameter = 106.0;
-// The stroke width of the wheel in the design
-const _wheelStrokeWidth = 1.5;
-// The width of the number pointers in the design
-const _numberPointerWidth = 2.0;
-// The length of the number pointers in the design
-const _numberPointerLengthInDesign = 8.0;
-//The font size of the numbers in the design.
-// Only used as fallback if [bodyText1] has no [FontSize]
-const _fallbackNumberFontSize = 16.0;
+class TimerWheelConfiguration {
+  // The side of the smallest possible square that contains the full timer in the design
+  static const _timerWheelSides = 292.0;
+  // The side of the smallest possible square that contains the simplified timer in the design
+  static const _simplifiedTimerWheelSides = _outerWheelDiameter;
+  // The diameter of the circle on which the numbers are placed in the design
+  static const _numberCircleDiameter = 268.0;
+  // The diameter of the circle on which the number pointers are placed in the design
+  static const _numberPointerCircleDiameter = 236.0;
+  // The diameter of the outer circle of the wheel in the design
+  static const _outerWheelDiameter = 212.0;
+  // The diameter of the inner circle of the wheel in the design
+  static const _innerWheelDiameter = 106.0;
+  // The stroke width of the wheel in the design
+  static const _wheelStrokeWidth = 1.5;
+  // The width of the number pointers in the design
+  static const _numberPointerWidth = 2.0;
+  // The length of the number pointers in the design
+  static const _numberPointerLengthInDesign = 8.0;
+  //The font size of the numbers in the design. Only used as fallback if bodyText1 has no FontSize
+  static const _fallbackNumberFontSize = 16.0;
+
+  TimerWheelConfiguration({
+    required this.canvasSize,
+    required this.simplified,
+  });
+
+  final Size canvasSize;
+  final bool simplified;
+
+  late final centerPoint = Offset(canvasSize.width / 2, canvasSize.height / 2);
+  // The timer needs a square size to render properly, find the side of the largest possible square.
+  late final shortestSide = min(canvasSize.width, canvasSize.height);
+  late final scaleFactor = shortestSide /
+      (simplified ? _simplifiedTimerWheelSides : _timerWheelSides);
+  late final outerCircleDiameter = _outerWheelDiameter * scaleFactor;
+  late final innerCircleDiameter = _innerWheelDiameter * scaleFactor;
+  late final numberTextCircleDiameter = _numberCircleDiameter * scaleFactor;
+  late final numberPointersCircleDiameter =
+      _numberPointerCircleDiameter * scaleFactor;
+  late final strokeWidth = _wheelStrokeWidth * scaleFactor;
+
+  late final numberPointerWidth = _numberPointerWidth * scaleFactor;
+  late final numberPointerLength = _numberPointerLengthInDesign * scaleFactor;
+  late final numberPointerRoundedEdgeRadius = numberPointerWidth / 2;
+
+  late final wheelSectionsOutline = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = strokeWidth
+    ..color = AbiliaColors.white140;
+
+  late final timeLeftFill = Paint()
+    ..style = PaintingStyle.fill
+    ..color = AbiliaColors.red100;
+
+  late final timeLeftStroke = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = strokeWidth
+    ..color = AbiliaColors.red100;
+
+  late final inactiveSectionFill = Paint()
+    ..style = PaintingStyle.fill
+    ..color = AbiliaColors.white110;
+
+  late final inactiveSectionStroke = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = strokeWidth
+    ..color = AbiliaColors.white110;
+
+  late final numberPointerPaint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = numberPointerWidth
+    ..color = AbiliaColors.white140;
+
+  late final numberPointerRoundedEdgePaint = Paint()
+    ..style = PaintingStyle.fill
+    ..color = AbiliaColors.white140;
+
+  late final numberTextStyle = bodyText1.copyWith(
+      height: 1,
+      leadingDistribution: TextLeadingDistribution.even,
+      fontSize: (bodyText1.fontSize ?? _fallbackNumberFontSize) *
+          (shortestSide / _timerWheelSides));
+
+  late final timeLeftTextStyle = headline6.copyWith(
+      height: 1,
+      leadingDistribution: TextLeadingDistribution.even,
+      fontSize: (headline6.fontSize ?? headline6FontSize) *
+          (shortestSide / _timerWheelSides));
+
+  String secondsToTimeLeft(int value) {
+    final duration = Duration(seconds: value);
+    return duration.toString().split('.').first.padLeft(8, '0');
+  }
+}
 
 class TimerWheelPainter extends CustomPainter {
+  static const _minutesInOneHour = 60;
+  static const _secondsInOneHour = _minutesInOneHour * _minutesInOneHour;
+  static const _startAngle = -pi / 2;
+  static const _nrOfWheelSections = 12;
+  static const _minutesInEachSection = 5;
+
   TimerWheelPainter({
     this.simplified = false,
     required this.secondsLeft,
@@ -56,62 +131,25 @@ class TimerWheelPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final centerPoint = Offset(size.width / 2, size.height / 2);
+    final config = TimerWheelConfiguration(
+      canvasSize: size,
+      simplified: simplified,
+    );
 
-    // The timer needs a square size to render properly,
-    // find the side of the largest possible square.
-    final shortestSide = min(size.width, size.height);
-
-    final scaleFactor = shortestSide /
-        (simplified ? _simplifiedTimerWheelSides : _timerWheelSides);
-
-    // Scaled sizes
-    final outerCircleDiameter = _outerWheelDiameter * scaleFactor;
-    final innerCircleDiameter = _innerWheelDiameter * scaleFactor;
-    final numberTextCircleDiameter = _numberCircleDiameter * scaleFactor;
-    final numberPointersCircleDiameter =
-        _numberPointerCircleDiameter * scaleFactor;
-    final strokeWidth = _wheelStrokeWidth * scaleFactor;
-
-    // Paints
-    Paint wheelSectionsOutline = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..color = AbiliaColors.white140;
-
-    Paint timeLeftFill = Paint()
-      ..style = PaintingStyle.fill
-      ..color = AbiliaColors.red100;
-
-    Paint timeLeftStroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..color = AbiliaColors.red100;
-
-    Paint inactiveSectionFill = Paint()
-      ..style = PaintingStyle.fill
-      ..color = AbiliaColors.white110;
-
-    Paint inactiveSectionStroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth
-      ..color = AbiliaColors.white110;
-
-    // Paths
     var wheelShape = _wheelShape(Size(
-      outerCircleDiameter,
-      outerCircleDiameter,
+      config.outerCircleDiameter,
+      config.outerCircleDiameter,
     ));
     wheelShape = wheelShape.shift(Offset(
-      (size.width - outerCircleDiameter) / 2,
-      (size.height - outerCircleDiameter) / 2,
+      (size.width - config.outerCircleDiameter) / 2,
+      (size.height - config.outerCircleDiameter) / 2,
     ));
 
     Path timeLeftArc = Path()
       ..arcTo(
         Rect.fromCircle(
-          center: centerPoint,
-          radius: outerCircleDiameter / 2,
+          center: config.centerPoint,
+          radius: config.outerCircleDiameter / 2,
         ),
         _startAngle,
         _timeLeftSweepRadians,
@@ -119,8 +157,8 @@ class TimerWheelPainter extends CustomPainter {
       )
       ..arcTo(
         Rect.fromCircle(
-          center: centerPoint,
-          radius: innerCircleDiameter / 2,
+          center: config.centerPoint,
+          radius: config.innerCircleDiameter / 2,
         ),
         _startAngle + _timeLeftSweepRadians,
         -_timeLeftSweepRadians,
@@ -131,8 +169,8 @@ class TimerWheelPainter extends CustomPainter {
     Path inactiveSectionArc = Path()
       ..arcTo(
         Rect.fromCircle(
-          center: centerPoint,
-          radius: outerCircleDiameter / 2,
+          center: config.centerPoint,
+          radius: config.outerCircleDiameter / 2,
         ),
         _startAngle,
         _totalTimeSweepRadians,
@@ -140,8 +178,8 @@ class TimerWheelPainter extends CustomPainter {
       )
       ..arcTo(
         Rect.fromCircle(
-          center: centerPoint,
-          radius: innerCircleDiameter / 2,
+          center: config.centerPoint,
+          radius: config.innerCircleDiameter / 2,
         ),
         _startAngle + _totalTimeSweepRadians,
         -_totalTimeSweepRadians,
@@ -161,53 +199,21 @@ class TimerWheelPainter extends CustomPainter {
       wheelShape,
     );
 
-    canvas.drawPath(wheelShape, wheelSectionsOutline);
-    canvas.drawPath(timeLeft, timeLeftFill);
-    canvas.drawPath(timeLeft, timeLeftStroke);
-    canvas.drawPath(inactiveTime, inactiveSectionFill);
-    canvas.drawPath(inactiveTime, inactiveSectionStroke);
+    canvas.drawPath(wheelShape, config.wheelSectionsOutline);
+    canvas.drawPath(timeLeft, config.timeLeftFill);
+    canvas.drawPath(timeLeft, config.timeLeftStroke);
+    canvas.drawPath(inactiveTime, config.inactiveSectionFill);
+    canvas.drawPath(inactiveTime, config.inactiveSectionStroke);
 
     // If timer is simplified, also paint section numbers and time left as text
     if (!simplified) {
-      // Scaled sizes
-      final numberPointerWidth = _numberPointerWidth * scaleFactor;
-      final numberPointerLength = _numberPointerLengthInDesign * scaleFactor;
-      final numberPointerRoundedEdgeRadius = numberPointerWidth / 2;
-
-      // Paints
-      Paint numberPointerPaint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = numberPointerWidth
-        ..color = AbiliaColors.white140;
-
-      Paint numberPointerRoundedEdgePaint = Paint()
-        ..style = PaintingStyle.fill
-        ..color = AbiliaColors.white140;
-
-      // TextStyles
-      assert(bodyText1.fontSize != null,
-          'If fontSize is null, we cannot set it correctly in the timer wheel');
-      final TextStyle numberTextStyle = bodyText1.copyWith(
-          height: 1,
-          leadingDistribution: TextLeadingDistribution.even,
-          fontSize: (bodyText1.fontSize ?? _fallbackNumberFontSize) *
-              (shortestSide / _timerWheelSides));
-
-      assert(headline6.fontSize != null,
-          'If fontSize is null, we cannot set it correctly in the timer wheel');
-      final TextStyle timeLeftTextStyle = headline6.copyWith(
-          height: 1,
-          leadingDistribution: TextLeadingDistribution.even,
-          fontSize: (headline6.fontSize ?? headline6FontSize) *
-              (shortestSide / _timerWheelSides));
-
       for (int i = 0; i < _nrOfWheelSections; i++) {
         if (timerLengthInMinutes >= (i * _minutesInEachSection)) {
           final numberPointerAngle = (pi * 2 / _nrOfWheelSections) * i + pi;
-          final innerRadius =
-              numberPointersCircleDiameter / 2 - numberPointerLength;
-          final outerRadius =
-              numberPointersCircleDiameter / 2 - numberPointerRoundedEdgeRadius;
+          final innerRadius = config.numberPointersCircleDiameter / 2 -
+              config.numberPointerLength;
+          final outerRadius = config.numberPointersCircleDiameter / 2 -
+              config.numberPointerRoundedEdgeRadius;
 
           final sinAngle = sin(numberPointerAngle);
           final cosAngle = cos(numberPointerAngle);
@@ -228,19 +234,19 @@ class TimerWheelPainter extends CustomPainter {
           var roundedEdge = Path()
             ..addOval(Rect.fromCircle(
               center: Offset(endX, endY),
-              radius: numberPointerRoundedEdgeRadius,
+              radius: config.numberPointerRoundedEdgeRadius,
             ));
 
-          canvas.drawPath(numberPointer, numberPointerPaint);
-          canvas.drawPath(roundedEdge, numberPointerRoundedEdgePaint);
+          canvas.drawPath(numberPointer, config.numberPointerPaint);
+          canvas.drawPath(roundedEdge, config.numberPointerRoundedEdgePaint);
 
           // Paint numbers
-          final numberTextCircleRadius = numberTextCircleDiameter / 2;
+          final numberTextCircleRadius = config.numberTextCircleDiameter / 2;
 
           final TextPainter numberTextPainter = TextPainter(
             text: TextSpan(
               text: (i * _minutesInEachSection).toString(),
-              style: numberTextStyle,
+              style: config.numberTextStyle,
             ),
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr,
@@ -260,8 +266,8 @@ class TimerWheelPainter extends CustomPainter {
       // Paint time left as text
       final TextPainter timeLeftText = TextPainter(
         text: TextSpan(
-          text: _secondsToTimeLeft(secondsLeft),
-          style: timeLeftTextStyle,
+          text: config.secondsToTimeLeft(secondsLeft),
+          style: config.timeLeftTextStyle,
         ),
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -279,11 +285,6 @@ class TimerWheelPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
-}
-
-String _secondsToTimeLeft(int value) {
-  final duration = Duration(seconds: value);
-  return duration.toString().split('.').first.padLeft(8, '0');
 }
 
 /// TODO: Replace this method with a code gen package from pub.dev and have the SVG file in repo?
