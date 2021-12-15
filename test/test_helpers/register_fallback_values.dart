@@ -38,4 +38,5 @@ void registerFallbackValues() {
   registerFallbackValue(NowChanged(DateTime(1337)));
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
+  registerFallbackValue(const TimerState(timers: []));
 }

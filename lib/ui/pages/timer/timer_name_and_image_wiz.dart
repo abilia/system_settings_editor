@@ -6,10 +6,11 @@ class TimerNameAndImageWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.about,
-        title: 'Start timer',
+        iconData: AbiliaIcons.stopWatch,
+        title: t.startTimer,
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(

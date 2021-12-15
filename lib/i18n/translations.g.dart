@@ -249,6 +249,12 @@ abstract class Translated {
 
   final String start = 'Start';
 
+  final String newTimer = 'New timer';
+
+  final String setDuration = 'Set duration';
+
+  final String startTimer = 'Start timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1134,6 +1140,15 @@ class SV extends Translated {
 
   @override
   final String start = 'Starta';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Ange varaktighet';
+
+  @override
+  final String startTimer = 'Starta timer';
 
   @override
   final String menu = 'Meny';
@@ -2279,6 +2294,15 @@ class DA extends Translated {
   final String start = 'Start';
 
   @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Indstille varighed';
+
+  @override
+  final String startTimer = 'Start timeren';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3420,6 +3444,15 @@ class NL extends Translated {
 
   @override
   final String start = 'Begin';
+
+  @override
+  final String newTimer = 'Nieuwe timer';
+
+  @override
+  final String setDuration = 'Duur instellen';
+
+  @override
+  final String startTimer = 'Start timer';
 
   @override
   final String menu = 'Menu';
@@ -4565,6 +4598,15 @@ class FI extends Translated {
 
   @override
   final String start = 'Alkaa';
+
+  @override
+  final String newTimer = 'Uusi ajastin';
+
+  @override
+  final String setDuration = 'Aseta kesto';
+
+  @override
+  final String startTimer = 'Käynnistysajastin';
 
   @override
   final String menu = 'Valikko';
@@ -5714,6 +5756,15 @@ class DE extends Translated {
   final String start = 'Anfang';
 
   @override
+  final String newTimer = 'Neuer Timer';
+
+  @override
+  final String setDuration = 'Dauer einstellen';
+
+  @override
+  final String startTimer = 'Timer starten';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -6859,6 +6910,15 @@ class NB extends Translated {
 
   @override
   final String start = 'Start';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Angi varighet';
+
+  @override
+  final String startTimer = 'Start timer';
 
   @override
   final String menu = 'Meny';

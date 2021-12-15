@@ -168,10 +168,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
-        expect(find.byType(BasicActivityStepPage), findsOneWidget);
+        expect(find.byType(CreateNewPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
         expect(find.byType(EditActivityPage), findsOneWidget);
       });
@@ -192,17 +190,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
-        expect(find.byType(ActivityWizardPage), findsOneWidget);
+        expect(find.byType(CreateNewPage), findsOneWidget);
 
-        expect(find.byType(BasicActivityStepPage), findsOneWidget);
-        await tester.tap(find.byType(NextButton));
+        await tester.tap(find.byKey(TestKey.newActivityChoice));
         await tester.pumpAndSettle();
-
         expect(find.byType(DatePickerWiz), findsOneWidget);
+
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
-
         expect(find.byType(TitleWiz), findsOneWidget);
+
         await tester.enterText(find.byType(TextField), title);
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
@@ -299,7 +296,9 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddButton));
         await tester.pumpAndSettle();
-        expect(find.byType(ActivityWizardPage), findsOneWidget);
+        expect(find.byType(CreateNewPage), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.newActivityChoice));
+        await tester.pumpAndSettle();
 
         expect(find.byType(TitleWiz), findsOneWidget);
         await tester.enterText(find.byType(TextField), title);
@@ -373,8 +372,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
-          expect(find.byType(BasicActivityStepPage), findsNothing);
-          expect(find.byType(EditActivityPage), findsOneWidget);
+          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
         });
 
         testWidgets('Empty message when no basic activities',
@@ -383,59 +382,14 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
           expect(find.text(translate.noBasicActivities), findsOneWidget);
         });
 
         testWidgets(
             'if wizard enabled, title and image disabled and '
-            'no basic activites: Can not add activity and warning shows',
-            (WidgetTester tester) async {
-          when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-            (_) => Future.value(
-              [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-                  ),
-                ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: WizardStepsSettings.wizardTitleStepKey,
-                  ),
-                ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: WizardStepsSettings.wizardImageStepKey,
-                  ),
-                ),
-              ],
-            ),
-          );
-
-          final folder = Sortable.createNew(
-            data: BasicActivityDataFolder.createNew(name: 'name'),
-          );
-          sortableResponse = () => [folder];
-
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          expect(find.byType(ErrorDialog), findsOneWidget);
-          expect(find.byType(BasicActivityStepPage), findsNothing);
-        });
-
-        testWidgets(
-            'if wizard enabled, title and image disabled and '
-            'one basic activites: Can add activity and no warning shows',
+            'one basic activites: No new activity option',
             (WidgetTester tester) async {
           when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
             (_) => Future.value(
@@ -472,8 +426,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
-          expect(find.byType(ErrorDialog), findsNothing);
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
+          expect(find.byKey(TestKey.newActivityChoice), findsNothing);
+          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
         });
 
         testWidgets('New activity from basic activity gets correct title',
@@ -494,10 +448,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
           expect(find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
               findsOneWidget);
@@ -540,8 +491,6 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
           await tester.tap(find.text(title));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(NextButton));
@@ -582,8 +531,6 @@ void main() {
 
           // Act Go to basic activity archive
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
 
           // Act Go to into folder
@@ -626,18 +573,17 @@ void main() {
           await tester.pumpAndSettle();
 
           // Assert back at create acitivy page
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
+          expect(find.byType(CreateNewPage), findsOneWidget);
           expect(
             find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
             findsNothing,
           );
 
           // Act - Go back
-          await tester.tap(find.byType(PreviousWizardStepButton));
+          await tester.tap(find.byType(CancelButton));
           await tester.pumpAndSettle();
 
           // Assert - Back at calendar page
-          expect(find.byType(BasicActivityStepPage), findsNothing);
           expect(find.byType(CalendarPage), findsOneWidget);
         });
 
@@ -668,8 +614,6 @@ void main() {
           // Act Go to basic activity archive
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
 
           expect(find.byType(BasicActivityPickerPage), findsOneWidget);
           // Act - choose basic activity
@@ -685,7 +629,6 @@ void main() {
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page
-          expect(find.byType(BasicActivityStepPage), findsNothing);
           expect(find.byType(BasicActivityPickerPage), findsNothing);
           expect(find.byType(CalendarPage), findsOneWidget);
         });
@@ -714,8 +657,6 @@ void main() {
           // Act Go to basic activity archive
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
 
           expect(find.byType(BasicActivityPickerPage), findsOneWidget);
           // Act - Select item
@@ -731,7 +672,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
+          expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byType(BasicActivityPickerPage), findsNothing);
         });
 
@@ -760,8 +701,6 @@ void main() {
           // Act Go to basic activity archive
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
 
           expect(find.byType(BasicActivityPickerPage), findsOneWidget);
           // Act - Select item
@@ -773,7 +712,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Assert - Back at picker page
-          expect(find.byType(BasicActivityStepPage), findsOneWidget);
+          expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byType(BasicActivityPickerPage), findsNothing);
         });
       });
@@ -960,10 +899,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(AddButton));
       await tester.pumpAndSettle();
-      expect(find.byType(BasicActivityStepPage), findsOneWidget);
       await tester.tap(find.byKey(TestKey.newActivityChoice));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);
@@ -1002,8 +938,6 @@ void main() {
       await tester.tap(find.byType(AddButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byType(CalendarPage), findsNothing);

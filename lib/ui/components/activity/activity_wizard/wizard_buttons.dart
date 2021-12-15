@@ -36,8 +36,9 @@ class PreviousWizardStepButton extends StatelessWidget {
           ? context.read<ActivityWizardCubit>().edit
               ? const CancelButton()
               : PreviousButton(
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
+                  onPressed: () async {
+                    await Navigator.of(context).maybePop();
+                    context.read<ActivityWizardCubit>().previous();
                   },
                 )
           : PreviousButton(

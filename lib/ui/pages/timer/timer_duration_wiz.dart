@@ -7,11 +7,9 @@ class TimerDurationWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return Scaffold(
-      appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.about,
-        title: 'Set timer time',
-      ),
+      appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,8 +32,8 @@ class TimerDurationWiz extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(
-          onPressed: () {
-            Navigator.of(context).maybePop();
+          onPressed: () async {
+            await Navigator.of(context).maybePop();
             context.read<TimerWizardCubit>().previous();
           },
         ),

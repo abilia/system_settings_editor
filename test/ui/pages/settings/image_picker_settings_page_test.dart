@@ -151,7 +151,7 @@ extension on WidgetTester {
     await pumpApp();
     await tap(find.byType(AddButton));
     await pumpAndSettle();
-    await tap(find.byType(NextButton));
+    await tap(find.byKey(TestKey.newActivityChoice));
     await pumpAndSettle();
     await tap(find.byType(SelectPictureWidget));
     await pumpAndSettle();

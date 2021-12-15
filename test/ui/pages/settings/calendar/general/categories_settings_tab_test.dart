@@ -636,7 +636,7 @@ void main() {
           await tester.pumpApp();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
+          await tester.tap(find.byKey(TestKey.newActivityChoice));
           await tester.pumpAndSettle();
           await tester.dragUntilVisible(
             find.byType(CategoryWidget),

@@ -18,6 +18,7 @@ class Layout {
   final FontSize fontSize;
   final IconSize iconSize;
   final ClockLayout clock;
+  final FormPaddingLayout formPadding;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -27,6 +28,7 @@ class Layout {
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
+    this.formPadding = const FormPaddingLayout(),
   });
 }
 
@@ -146,5 +148,16 @@ class ClockLayout {
     this.hourHandLength = 11,
     this.minuteHandLength = 15,
     this.fontSize = 7,
+  });
+}
+
+class FormPaddingLayout {
+  final double left, right, top, verticalItemDistance;
+
+  const FormPaddingLayout({
+    this.left = 12,
+    this.right = 16,
+    this.top = 20,
+    this.verticalItemDistance = 8,
   });
 }

@@ -1893,7 +1893,6 @@ void main() {
           allWizStep,
         ),
       );
-      wizCubit.next(); // basic
       wizCubit.next(); // date
       wizCubit.next(); // title
       wizCubit.next(); // image ---> error
@@ -1901,7 +1900,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          3,
+          2,
           allWizStep,
           saveErrors: const {SaveError.noTitleOrImage},
           sucessfullSave: false,
@@ -1922,7 +1921,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          8,
+          7,
           allWizStep,
           saveErrors: const {SaveError.noStartTime},
           sucessfullSave: false,
@@ -1941,7 +1940,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          12,
+          11,
           allWizStep,
           sucessfullSave: true,
         ),
