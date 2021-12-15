@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/edit_timer/edit_timer_typing_page.dart';
 
 import '../../../fakes/all.dart';
 import '../../../test_helpers/navigation_observer.dart';
