@@ -6,36 +6,26 @@ const _secondsInOneHour = _minutesInOneHour * _minutesInOneHour;
 const _startAngle = -pi / 2;
 const _nrOfWheelSections = 12;
 const _minutesInEachSection = 5;
-
-/// The side of the smallest possible square that contains the full timer in the design
+// The side of the smallest possible square that contains the full timer in the design
 const _timerWheelSides = 292.0;
-
-/// The side of the smallest possible square that contains the simplified timer in the design
+// The side of the smallest possible square that contains the simplified timer in the design
 const _simplifiedTimerWheelSides = _outerWheelDiameter;
-
-/// The diameter of the circle on which the numbers are placed in the design
+// The diameter of the circle on which the numbers are placed in the design
 const _numberCircleDiameter = 268.0;
-
-/// The diameter of the circle on which the number pointers are placed in the design
+// The diameter of the circle on which the number pointers are placed in the design
 const _numberPointerCircleDiameter = 236.0;
-
-/// The diameter of the outer circle of the wheel in the design
+// The diameter of the outer circle of the wheel in the design
 const _outerWheelDiameter = 212.0;
-
-/// The diameter of the inner circle of the wheel in the design
+// The diameter of the inner circle of the wheel in the design
 const _innerWheelDiameter = 106.0;
-
-/// The stroke width of the wheel in the design
+// The stroke width of the wheel in the design
 const _wheelStrokeWidth = 1.5;
-
-/// The width of the number pointers in the design
+// The width of the number pointers in the design
 const _numberPointerWidth = 2.0;
-
-/// The length of the number pointers in the design
+// The length of the number pointers in the design
 const _numberPointerLengthInDesign = 8.0;
-
-/// The font size of the numbers in the design.
-/// Only used as fallback if [bodyText1] has no [FontSize]
+//The font size of the numbers in the design.
+// Only used as fallback if [bodyText1] has no [FontSize]
 const _fallbackNumberFontSize = 16.0;
 
 class TimerWheelPainter extends CustomPainter {
@@ -68,14 +58,14 @@ class TimerWheelPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final centerPoint = Offset(size.width / 2, size.height / 2);
 
-    ///The timer needs a square size to render properly,
-    ///find the side of the largest possible square.
+    // The timer needs a square size to render properly,
+    // find the side of the largest possible square.
     final shortestSide = min(size.width, size.height);
 
     final scaleFactor = shortestSide /
         (simplified ? _simplifiedTimerWheelSides : _timerWheelSides);
 
-    /// Scaled sizes
+    // Scaled sizes
     final outerCircleDiameter = _outerWheelDiameter * scaleFactor;
     final innerCircleDiameter = _innerWheelDiameter * scaleFactor;
     final numberTextCircleDiameter = _numberCircleDiameter * scaleFactor;
@@ -83,7 +73,7 @@ class TimerWheelPainter extends CustomPainter {
         _numberPointerCircleDiameter * scaleFactor;
     final strokeWidth = _wheelStrokeWidth * scaleFactor;
 
-    /// Paints
+    // Paints
     Paint wheelSectionsOutline = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
@@ -107,7 +97,7 @@ class TimerWheelPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..color = AbiliaColors.white110;
 
-    /// Paths
+    // Paths
     var wheelShape = _wheelShape(Size(
       outerCircleDiameter,
       outerCircleDiameter,
@@ -177,14 +167,14 @@ class TimerWheelPainter extends CustomPainter {
     canvas.drawPath(inactiveTime, inactiveSectionFill);
     canvas.drawPath(inactiveTime, inactiveSectionStroke);
 
-    /// If timer is simplified, also paint section numbers and time left as text
+    // If timer is simplified, also paint section numbers and time left as text
     if (!simplified) {
-      /// Scaled sizes
+      // Scaled sizes
       final numberPointerWidth = _numberPointerWidth * scaleFactor;
       final numberPointerLength = _numberPointerLengthInDesign * scaleFactor;
       final numberPointerRoundedEdgeRadius = numberPointerWidth / 2;
 
-      /// Paints
+      // Paints
       Paint numberPointerPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = numberPointerWidth
@@ -194,7 +184,7 @@ class TimerWheelPainter extends CustomPainter {
         ..style = PaintingStyle.fill
         ..color = AbiliaColors.white140;
 
-      /// TextStyles
+      // TextStyles
       assert(bodyText1.fontSize != null,
           'If fontSize is null, we cannot set it correctly in the timer wheel');
       final TextStyle numberTextStyle = bodyText1.copyWith(
@@ -225,7 +215,7 @@ class TimerWheelPainter extends CustomPainter {
           final xShiftAmount = size.width / 2;
           final yShiftAmount = size.height / 2;
 
-          /// Paint number pointers
+          // Paint number pointers
           final startX = innerRadius * sinAngle + xShiftAmount;
           final startY = innerRadius * cosAngle + yShiftAmount;
           final endX = outerRadius * sinAngle + xShiftAmount;
@@ -244,7 +234,7 @@ class TimerWheelPainter extends CustomPainter {
           canvas.drawPath(numberPointer, numberPointerPaint);
           canvas.drawPath(roundedEdge, numberPointerRoundedEdgePaint);
 
-          /// Paint numbers
+          // Paint numbers
           final numberTextCircleRadius = numberTextCircleDiameter / 2;
 
           final TextPainter numberTextPainter = TextPainter(
@@ -267,7 +257,7 @@ class TimerWheelPainter extends CustomPainter {
         }
       }
 
-      /// Paint time left as text
+      // Paint time left as text
       final TextPainter timeLeftText = TextPainter(
         text: TextSpan(
           text: _secondsToTimeLeft(secondsLeft),
