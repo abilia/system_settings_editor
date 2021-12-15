@@ -39,6 +39,7 @@ class TimerDb {
           AbiliaTimer.fromDbMap,
           onException: _log.logAndReturnNull,
         )
-        .whereNotNull().toList();
+        .whereNotNull()
+        .toList();
   }
 }
