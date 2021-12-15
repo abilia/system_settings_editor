@@ -57,6 +57,7 @@ class CreateNewPage extends StatelessWidget {
               ).pad(formItemPadding),
             const Divider().pad(const EdgeInsets.only(top: 16)),
             PickField(
+              key: TestKey.newTimerChoice,
               leading: const Icon(AbiliaIcons.stopWatch),
               text: Text(t.newTimer),
               onTap: () async {

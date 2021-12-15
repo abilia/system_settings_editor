@@ -81,6 +81,7 @@ void main() {
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockSortableDb mockSortableDb;
+  late MockTimerDb mockTimerDb;
 
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
@@ -138,6 +139,10 @@ void main() {
     when(() => mockSortableDb.getLastRevision())
         .thenAnswer((_) => Future.value(100));
 
+    mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
+    when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future.value());
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -156,6 +161,7 @@ void main() {
       ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
       ..battery = FakeBattery()
+      ..timerDb = mockTimerDb
       ..init();
   });
 
@@ -715,6 +721,37 @@ void main() {
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byType(BasicActivityPickerPage), findsNothing);
         });
+      });
+    });
+
+    group('Add timer', () {
+      testWidgets('New timer choice', (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CreateNewPage), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.newTimerChoice));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerWizardPage), findsOneWidget);
+        expect(find.byType(TimerDurationWiz), findsOneWidget);
+        await tester.tap(find.byType(TextField));
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byType(TextField), '20');
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerNameAndImageWiz), findsOneWidget);
+
+        await tester.tap(find.byType(StartButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsOneWidget);
+
+        final captured =
+            verify(() => mockTimerDb.insert(captureAny())).captured;
+        final savedTimer = captured.single.single as AbiliaTimer;
+        expect(savedTimer.duration, 20.minutes());
       });
     });
 
