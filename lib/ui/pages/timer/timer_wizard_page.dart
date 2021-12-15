@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/timer/timer_wizard_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimerWizardPage extends StatelessWidget {

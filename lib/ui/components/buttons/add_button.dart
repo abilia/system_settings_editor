@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/create_new_page.dart';
 
 class AddButton extends StatelessWidget {
   const AddButton({
