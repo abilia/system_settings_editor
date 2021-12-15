@@ -100,7 +100,7 @@ noActivities	No activities today	Inga aktiviteter idag	Ingen aktiviteter i dag	G
 left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
-uncheck	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
+undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
 fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
 basicActivities	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
@@ -129,6 +129,7 @@ ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 							
 ### Edit activity							
+newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet

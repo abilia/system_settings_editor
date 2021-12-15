@@ -13,7 +13,9 @@ class AddActivityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) => ActionButtonLight(
+        builder: (context, state) => TextActionButtonLight(
+          Translator.of(context).translate.newActivityButton,
+          AbiliaIcons.plus,
           onPressed: () {
             if (!_canAddActivity(context, state)) {
               _showNoBasicActivityError(context);
@@ -46,7 +48,6 @@ class AddActivityButton extends StatelessWidget {
               ),
             );
           },
-          child: const Icon(AbiliaIcons.plus),
         ),
       );
 
