@@ -67,18 +67,21 @@ ActivitiesOccasionLoaded mapActivitiesToActivityOccasionsState({
     case Occasion.past:
       return createState(
         activities: dayActivities.where(
-          (a) => !a.activity.removeAfter || !a.end.isDayBefore(now),
+          (activity) =>
+              !activity.activity.removeAfter || !activity.end.isDayBefore(now),
         ),
-        asActivityOccasion: (ad) => ad.toOccasion(now),
-        asFulldayOccasion: includeFullday ? (ad) => ad.toPast() : null,
+        asActivityOccasion: (activityDay) => activityDay.toOccasion(now),
+        asFulldayOccasion:
+            includeFullday ? (activityDay) => activityDay.toPast() : null,
         day: day,
         occasion: occasion,
       );
     case Occasion.future:
       return createState(
         activities: dayActivities,
-        asActivityOccasion: (ad) => ad.toOccasion(now),
-        asFulldayOccasion: includeFullday ? (ad) => ad.toFuture() : null,
+        asActivityOccasion: (activityDay) => activityDay.toOccasion(now),
+        asFulldayOccasion:
+            includeFullday ? (activityDay) => activityDay.toFuture() : null,
         day: day,
         occasion: occasion,
       );
@@ -86,8 +89,9 @@ ActivitiesOccasionLoaded mapActivitiesToActivityOccasionsState({
     default:
       return createState(
         activities: dayActivities,
-        asActivityOccasion: (ad) => ad.toOccasion(now),
-        asFulldayOccasion: includeFullday ? (ad) => ad.toFuture() : null,
+        asActivityOccasion: (activityDay) => activityDay.toOccasion(now),
+        asFulldayOccasion:
+            includeFullday ? (activityDay) => activityDay.toFuture() : null,
         day: day,
         occasion: occasion,
       );
@@ -103,13 +107,13 @@ ActivitiesOccasionLoaded createState({
 }) =>
     ActivitiesOccasionLoaded(
       activities: activities
-          .where((ad) => !ad.activity.fullDay)
+          .where((activityDay) => !activityDay.activity.fullDay)
           .map(asActivityOccasion)
           .toList()
         ..sort(),
       fullDayActivities: asFulldayOccasion != null
           ? activities
-              .where((ad) => ad.activity.fullDay)
+              .where((activityDay) => activityDay.activity.fullDay)
               .map(asFulldayOccasion)
               .toList()
           : [],
