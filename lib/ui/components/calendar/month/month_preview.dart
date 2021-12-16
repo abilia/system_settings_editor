@@ -50,7 +50,7 @@ class MonthPreview extends StatelessWidget {
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
-        child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
           builder: (context, activityState) =>
               activityState is ActivitiesOccasionLoaded
                   ? ActivityList(
@@ -90,7 +90,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
           buildWhen: (oldState, newState) =>
               (oldState is ActivitiesOccasionLoaded &&
                   newState is ActivitiesOccasionLoaded &&

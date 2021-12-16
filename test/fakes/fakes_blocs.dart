@@ -112,8 +112,8 @@ class FakeDayActivitiesBloc extends Fake implements DayActivitiesBloc {
   Future<void> close() async {}
 }
 
-class FakeActivitiesOccasionBloc extends Fake
-    implements ActivitiesOccasionBloc {
+class FakeActivitiesOccasionCubit extends Fake
+    implements ActivitiesOccasionCubit {
   @override
   Stream<ActivitiesOccasionState> get stream => const Stream.empty();
   @override
