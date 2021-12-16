@@ -1,6 +1,152 @@
 import 'dart:math';
 import 'package:seagull/ui/all.dart';
 
+const _secondsInOneMinute = 60;
+const _minutesInOneHour = 60;
+const _secondsInOneHour = _minutesInOneHour * _secondsInOneMinute;
+
+class TimerWheel extends StatefulWidget {
+  const TimerWheel({
+    Key? key,
+    required this.simplified,
+  }) : super(key: key);
+
+  final bool simplified;
+
+  @override
+  _TimerWheelState createState() => _TimerWheelState();
+}
+
+class _TimerWheelState extends State<TimerWheel> {
+  double sliderValue = 0;
+  int get minutesSelected => _percentToMinutes(sliderValue);
+  int? minutesSelectedOnTapDown;
+  bool sliderTemporaryLocked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      final config = TimerWheelConfiguration(
+        canvasSize: constraints.biggest,
+        simplified: widget.simplified,
+      );
+
+      final Widget timerWheel = CustomPaint(
+        size: constraints.biggest,
+        painter: TimerWheelPainter(
+          config: config,
+          simplified: widget.simplified,
+          timerLengthInMinutes: 80,
+          secondsLeft: minutesSelected * _secondsInOneMinute,
+        ),
+      );
+
+      if (widget.simplified) {
+        return timerWheel;
+      } else {
+        return GestureDetector(
+          onPanDown: (details) => _onPanDown(details, config),
+          onPanUpdate: (details) => _onPanUpdate(details, config),
+          onTapUp: _onTapUp,
+          child: timerWheel,
+        );
+      }
+    });
+  }
+
+  _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
+    sliderTemporaryLocked = false;
+    if (_pointIsOnWheel(details.localPosition, config)) {
+      sliderValue = _percentageFromPoint(details.localPosition, config);
+      minutesSelectedOnTapDown = minutesSelected;
+    }
+  }
+
+  _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
+    void maybeLockSlider(double value) {
+      const margin = 5;
+
+      final isCrossingZeroForwards =
+          minutesSelected > _minutesInOneHour - margin &&
+              _percentToMinutes(value) < margin;
+      final isCrossingZeroBackwards = minutesSelected < margin &&
+          _percentToMinutes(value) > _minutesInOneHour - margin;
+
+      if (isCrossingZeroForwards || isCrossingZeroBackwards) {
+        setState(() {
+          sliderTemporaryLocked = true;
+          sliderValue = isCrossingZeroBackwards ? 0 : 1;
+        });
+        return;
+      }
+
+      if (minutesSelected >= _minutesInOneHour - margin &&
+              _percentToMinutes(value) >= _minutesInOneHour - margin ||
+          minutesSelected <= margin && _percentToMinutes(value) <= margin) {
+        sliderTemporaryLocked = false;
+      }
+    }
+
+    if (_pointIsOnWheel(details.localPosition, config)) {
+      final sliderValue = _percentageFromPoint(details.localPosition, config);
+
+      maybeLockSlider(sliderValue);
+
+      if (sliderTemporaryLocked) {
+        return;
+      }
+
+      setState(() {
+        this.sliderValue = sliderValue;
+      });
+    }
+  }
+
+  _onTapUp(TapUpDetails details) {
+    if (minutesSelectedOnTapDown == minutesSelected) {
+      int desiredMinutesLeft =
+          ((sliderValue * _minutesInOneHour) / 5).ceil() * 5;
+      assert(desiredMinutesLeft >= 0 && desiredMinutesLeft <= _minutesInOneHour,
+          'Tried setting timer wheel to invalid time');
+      desiredMinutesLeft.clamp(0, _minutesInOneHour);
+      setState(() {
+        sliderValue = desiredMinutesLeft / _minutesInOneHour;
+      });
+    }
+    minutesSelectedOnTapDown = null;
+  }
+
+  bool _pointIsOnWheel(Offset point, TimerWheelConfiguration config) {
+    final distanceFromCenter = sqrt(
+      pow((point.dx - config.centerPoint.dx), 2) +
+          pow((point.dy - config.centerPoint.dy), 2),
+    );
+
+    return distanceFromCenter <= config.outerCircleDiameter / 2 &&
+        distanceFromCenter >= config.innerCircleDiameter / 2;
+  }
+
+  int _percentToMinutes(double value) {
+    assert(value >= 0 && value <= 1, 'Given value is out of range [0..1]');
+    value.clamp(0, 1);
+    return (value * _minutesInOneHour).floor();
+  }
+
+  // Returns a value between [0..1]
+  double _percentageFromPoint(Offset point, TimerWheelConfiguration config) {
+    final deltaX = point.dx - config.centerPoint.dx;
+    final deltaY = config.centerPoint.dy - point.dy;
+    var angle = atan2(deltaY, deltaX);
+    angle = angle - pi / 2;
+
+    if (angle.isNegative) {
+      angle = angle + 2 * pi;
+    }
+
+    return angle / (2 * pi);
+  }
+}
+
 class TimerWheelConfiguration {
   // The side of the smallest possible square that contains the full timer in the design
   static const _timerWheelSides = 292.0;
@@ -42,7 +188,6 @@ class TimerWheelConfiguration {
   late final numberPointersCircleDiameter =
       _numberPointerCircleDiameter * scaleFactor;
   late final strokeWidth = _wheelStrokeWidth * scaleFactor;
-
   late final numberPointerWidth = _numberPointerWidth * scaleFactor;
   late final numberPointerLength = _numberPointerLengthInDesign * scaleFactor;
   late final numberPointerRoundedEdgeRadius = numberPointerWidth / 2;
@@ -90,25 +235,21 @@ class TimerWheelConfiguration {
       leadingDistribution: TextLeadingDistribution.even,
       fontSize: (headline6.fontSize ?? headline6FontSize) *
           (shortestSide / _timerWheelSides));
-
-  String secondsToTimeLeft(int value) {
-    final duration = Duration(seconds: value);
-    return duration.toString().split('.').first.padLeft(8, '0');
-  }
 }
 
 class TimerWheelPainter extends CustomPainter {
-  static const _minutesInOneHour = 60;
-  static const _secondsInOneHour = _minutesInOneHour * _minutesInOneHour;
   static const _startAngle = -pi / 2;
   static const _nrOfWheelSections = 12;
   static const _minutesInEachSection = 5;
 
   TimerWheelPainter({
-    this.simplified = false,
+    required this.config,
+    required this.simplified,
     required this.secondsLeft,
     required this.timerLengthInMinutes,
-  })  : assert(secondsLeft >= 0 && secondsLeft <= timerLengthInMinutes * 60,
+  })  : assert(
+            secondsLeft >= 0 &&
+                secondsLeft <= timerLengthInMinutes * _secondsInOneMinute,
             'secondsLeft is not in range'),
         assert(timerLengthInMinutes >= 0,
             'timerLengthInMinutes has to be non-negative') {
@@ -117,12 +258,13 @@ class TimerWheelPainter extends CustomPainter {
             0.001 // If we want to fill the circle, we can't use 2 pi because that is the same as 0 sweep. Adding a very small number solves this.
         : -(pi * 2) * (secondsLeft / _secondsInOneHour);
 
-    _totalTimeSweepRadians = timerLengthInMinutes >= 60
+    _totalTimeSweepRadians = timerLengthInMinutes >= _minutesInOneHour
         ? 0
         : (pi * 2) *
             ((_minutesInOneHour - timerLengthInMinutes) / _minutesInOneHour);
   }
 
+  final TimerWheelConfiguration config;
   final bool simplified;
   final int secondsLeft;
   final int timerLengthInMinutes;
@@ -131,11 +273,6 @@ class TimerWheelPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final config = TimerWheelConfiguration(
-      canvasSize: size,
-      simplified: simplified,
-    );
-
     var wheelShape = _wheelShape(Size(
       config.outerCircleDiameter,
       config.outerCircleDiameter,
@@ -264,9 +401,13 @@ class TimerWheelPainter extends CustomPainter {
       }
 
       // Paint time left as text
+      final durationLeft = Duration(seconds: secondsLeft);
+      final timeLeftString =
+          durationLeft.toString().split('.').first.padLeft(8, '0');
+
       final TextPainter timeLeftText = TextPainter(
         text: TextSpan(
-          text: config.secondsToTimeLeft(secondsLeft),
+          text: timeLeftString,
           style: config.timeLeftTextStyle,
         ),
         textAlign: TextAlign.center,
