@@ -29,9 +29,7 @@ class EditTimerByTypingPage extends StatelessWidget {
 }
 
 class _TimerInputContent extends StatelessWidget {
-  final FocusNode minuteFocus = FocusNode();
-  final FocusNode hourFocus = FocusNode();
-
+  final FocusNode minuteFocus = FocusNode()..requestFocus();
   final Duration initialDuration;
 
   _TimerInputContent({Key? key, required this.initialDuration})
@@ -41,7 +39,6 @@ class _TimerInputContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    minuteFocus.requestFocus();
     return BlocProvider<_EditTimerCubit>(
       create: (context) => _EditTimerCubit(initialDuration.inHours,
           initialDuration.inMinutes % Duration.minutesPerHour),
@@ -51,8 +48,6 @@ class _TimerInputContent extends StatelessWidget {
             listener: (context, state) {
               if (state.hours > 2) {
                 minuteFocus.requestFocus();
-              } else if (!minuteFocus.hasFocus) {
-                hourFocus.requestFocus();
               }
             },
             child: Column(
@@ -74,8 +69,7 @@ class _TimerInputContent extends StatelessWidget {
                         _TimeTextField(
                             key: TestKey.hours,
                             header: translate.hours.capitalize(),
-                            text: _pad0(state.duration.inHours.toString()),
-                            focusNode: hourFocus,
+                            text: _pad0(state.hours.toString()),
                             onChanged: (hours) {
                               context
                                   .read<_EditTimerCubit>()
@@ -136,7 +130,7 @@ class _TimeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextInputFormatter granularityFormatter;
   final String header;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final String text;
 
   const _TimeTextField(
@@ -144,7 +138,7 @@ class _TimeTextField extends StatelessWidget {
       required this.text,
       required this.header,
       required this.onChanged,
-      required this.focusNode,
+      this.focusNode,
       required this.granularityFormatter})
       : super(key: key);
 
@@ -158,7 +152,7 @@ class _TimeTextField extends StatelessWidget {
           SubHeading(header),
           TextField(
             key: key,
-            onTap: () => focusNode.requestFocus(),
+            onTap: () => focusNode?.requestFocus(),
             focusNode: focusNode,
             enableInteractiveSelection: false,
             keyboardType: TextInputType.number,
@@ -266,11 +260,10 @@ class _EditTimerCubit extends Cubit<_EditTimerState> {
 class _EditTimerState {
   final int hours;
   final int minutes;
-  late final Duration duration;
 
-  _EditTimerState(this.hours, this.minutes) {
-    duration = Duration(hours: hours, minutes: minutes);
-  }
+  get duration => Duration(hours: hours, minutes: minutes);
+
+  _EditTimerState(this.hours, this.minutes);
 
   _EditTimerState copyWith(int? hours, int? minutes) {
     return _EditTimerState(hours ?? this.hours, minutes ?? this.minutes);
