@@ -85,5 +85,7 @@ class TestKey {
       showAlarmOnOffSwitch = Key('showAlarmOnOffSwitch'),
       activityViewAlarmSwitch = Key('activityViewAlarmSwitch'),
       activityViewRemoveSwitch = Key('activityViewRemoveSwitch'),
-      activityViewEditSwitch = Key('activityViewEditSwitch');
+      activityViewEditSwitch = Key('activityViewEditSwitch'),
+      hours = Key('hours'),
+      minutes = Key('minutes');
 }
