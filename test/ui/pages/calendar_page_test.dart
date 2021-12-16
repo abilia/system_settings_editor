@@ -737,7 +737,11 @@ void main() {
         expect(find.byType(TimerDurationWiz), findsOneWidget);
         await tester.tap(find.byType(TextField));
         await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextField), '20');
+        expect(find.byType(EditTimerByTypingPage), findsOneWidget);
+
+        await tester.enterText(find.byKey(TestKey.minutes), '20');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(NextButton));
@@ -752,6 +756,9 @@ void main() {
             verify(() => mockTimerDb.insert(captureAny())).captured;
         final savedTimer = captured.single.single as AbiliaTimer;
         expect(savedTimer.duration, 20.minutes());
+        expect(savedTimer.title, '20');
+        expect(savedTimer.paused, false);
+        expect(savedTimer.pausedAt, Duration.zero);
       });
     });
 

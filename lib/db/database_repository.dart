@@ -88,8 +88,10 @@ class DatabaseRepository {
           id text primary key not null,
           title text,
           file_id text,
+          paused int,
           start_time int,
-          duration int
+          duration int,
+          paused_at int
         )
   ''';
 
