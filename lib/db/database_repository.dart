@@ -86,6 +86,8 @@ class DatabaseRepository {
   static const String _createTimersTable = '''
     create table $timerTableName (
           id text primary key not null,
+          title text,
+          file_id text,
           start_time int,
           duration int
         )
@@ -149,6 +151,7 @@ class DatabaseRepository {
       ..delete(calendarTableName)
       ..delete(sortableTableName)
       ..delete(userFileTableName)
+      ..delete(timerTableName)
       ..delete(genericTableName);
     return batch.commit();
   }

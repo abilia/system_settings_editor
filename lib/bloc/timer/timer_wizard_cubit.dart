@@ -30,6 +30,7 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
       timerCubit.addTimer(
         AbiliaTimer(
           id: const Uuid().v4(),
+          title: state.duration.inMinutes.toString(),
           duration: state.duration,
           startTime: DateTime.now(),
         ),
