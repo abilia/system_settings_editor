@@ -196,6 +196,8 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
+  final String timerInvalidDuration = 'Duration can not be zero.';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1059,6 +1061,9 @@ class SV extends Translated {
 
   @override
   final String timeNightTts = '%s på natten';
+
+  @override
+  final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
 
   @override
   final String reminders = 'Påminnelser';
@@ -2211,6 +2216,9 @@ class DA extends Translated {
 
   @override
   final String timeNightTts = '%s om natten';
+
+  @override
+  final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
 
   @override
   final String reminders = 'Påmindelser';
@@ -3367,6 +3375,9 @@ class NL extends Translated {
   final String timeNightTts = "%s 's nachts";
 
   @override
+  final String timerInvalidDuration = 'De duur kan niet nul zijn.';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -4518,6 +4529,9 @@ class FI extends Translated {
 
   @override
   final String timeNightTts = '%s yöllä';
+
+  @override
+  final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
 
   @override
   final String reminders = 'Muistutukset';
@@ -5676,6 +5690,9 @@ class DE extends Translated {
   final String timeNightTts = '%s abends';
 
   @override
+  final String timerInvalidDuration = 'Dauer kann nicht Null sein';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -6830,6 +6847,9 @@ class NB extends Translated {
 
   @override
   final String timeNightTts = '%s på natten';
+
+  @override
+  final String timerInvalidDuration = 'Varigheten kan ikke være null.';
 
   @override
   final String reminders = 'Påminnelser';
