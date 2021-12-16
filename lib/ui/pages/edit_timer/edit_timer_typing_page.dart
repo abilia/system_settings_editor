@@ -9,8 +9,11 @@ const _textSelection = TextSelection(baseOffset: 0, extentOffset: 2);
 const _emptyPattern = '00';
 
 class EditTimerByTypingPage extends StatelessWidget {
+  final Duration initialDuration;
+
   const EditTimerByTypingPage({
     Key? key,
+    this.initialDuration = Duration.zero,
   }) : super(key: key);
 
   @override
@@ -20,99 +23,95 @@ class EditTimerByTypingPage extends StatelessWidget {
         title: Translator.of(context).translate.setTime,
         iconData: AbiliaIcons.clock,
       ),
-      body: _TimerInputContent(),
+      body: _TimerInputContent(initialDuration: initialDuration),
     );
   }
 }
 
 class _TimerInputContent extends StatelessWidget {
-  final FocusNode hourFocus = FocusNode();
   final FocusNode minuteFocus = FocusNode();
+  final FocusNode hourFocus = FocusNode();
+
+  final Duration initialDuration;
+
+  _TimerInputContent({Key? key, required this.initialDuration})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
+    minuteFocus.requestFocus();
     return BlocProvider<_EditTimerCubit>(
-      create: (context) => _EditTimerCubit(0, 0),
+      create: (context) => _EditTimerCubit(initialDuration.inHours,
+          initialDuration.inMinutes % Duration.minutesPerHour),
       child: BlocBuilder<_EditTimerCubit, _EditTimerState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Theme(
-                data: theme.copyWith(
-                    textSelectionTheme: theme.textSelectionTheme.copyWith(
-                      selectionColor: Colors.transparent,
-                    ),
-                    textTheme: theme.textTheme
-                        .copyWith(subtitle1: abiliaTextTheme.headline4)),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 42.s, top: 64.s, right: 42.s),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      _TimeTextField(
-                          key: TestKey.hours,
-                          header: translate.hours.capitalize(),
-                          text: _pad0(state.duration.inHours.toString()),
-                          focusNode: state.minuteFocus
-                              ? hourFocus
-                              : (hourFocus..requestFocus()),
-                          onChanged: (hours) {
-                            context
-                                .read<_EditTimerCubit>()
-                                .updateDuration(hours: int.tryParse(hours));
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            _EmptyInputFormatter(),
-                            _LeadingZeroInputFormatter(),
-                            LengthLimitingTextInputFormatter(2),
-                            _HourInputFormatter()
-                          ]),
-                      Padding(
-                        padding: EdgeInsets.all(16.s),
-                        child: Text(
-                          ':',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              ?.copyWith(color: AbiliaColors.black100),
-                        ),
+          return BlocListener<_EditTimerCubit, _EditTimerState>(
+            listener: (context, state) {
+              if (state.hours > 2) {
+                minuteFocus.requestFocus();
+              } else if (!minuteFocus.hasFocus) {
+                hourFocus.requestFocus();
+              }
+            },
+            child: Column(
+              children: [
+                Theme(
+                  data: theme.copyWith(
+                      textSelectionTheme: theme.textSelectionTheme.copyWith(
+                        selectionColor: Colors.transparent,
                       ),
-                      _TimeTextField(
-                          key: TestKey.minutes,
-                          header: translate.minutes.capitalize(),
-                          text: (state.duration.inMinutes %
-                                  Duration.minutesPerHour)
-                              .toString(),
-                          focusNode: !state.minuteFocus
-                              ? minuteFocus
-                              : (minuteFocus..requestFocus()),
-                          onChanged: (minutes) {
-                            context
-                                .read<_EditTimerCubit>()
-                                .updateDuration(minutes: int.tryParse(minutes));
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            _EmptyInputFormatter(),
-                            _LeadingZeroInputFormatter(),
-                            LengthLimitingTextInputFormatter(2),
-                            _MinuteInputFormatter()
-                          ]),
-                    ],
+                      textTheme: theme.textTheme
+                          .copyWith(subtitle1: abiliaTextTheme.headline4)),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 42.s, top: 64.s, right: 42.s),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _TimeTextField(
+                            key: TestKey.hours,
+                            header: translate.hours.capitalize(),
+                            text: _pad0(state.duration.inHours.toString()),
+                            focusNode: hourFocus,
+                            onChanged: (hours) {
+                              context
+                                  .read<_EditTimerCubit>()
+                                  .updateDuration(hours: int.tryParse(hours));
+                            },
+                            granularityFormatter: _HourInputFormatter()),
+                        Padding(
+                          padding: EdgeInsets.all(16.s),
+                          child: DefaultTextStyle(
+                            style: (theme.textTheme.headline5 ?? headline5),
+                            child: const Text(':'),
+                          ),
+                        ),
+                        _TimeTextField(
+                            key: TestKey.minutes,
+                            header: translate.minutes.capitalize(),
+                            text: (state.minutes % Duration.minutesPerHour)
+                                .toString(),
+                            focusNode: minuteFocus,
+                            onChanged: (minutes) {
+                              context.read<_EditTimerCubit>().updateDuration(
+                                  minutes: int.tryParse(minutes));
+                            },
+                            granularityFormatter: _MinuteInputFormatter()),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const Spacer(),
-              BottomNavigation(
-                  backNavigationWidget: const CancelButton(),
-                  forwardNavigationWidget: SaveButton(
-                    onPressed: () => onSave(context, state.duration),
-                  )),
-            ],
+                const Spacer(),
+                BottomNavigation(
+                    backNavigationWidget: const CancelButton(),
+                    forwardNavigationWidget: SaveButton(
+                      onPressed: () => onSave(context, state.duration),
+                    )),
+              ],
+            ),
           );
         },
       ),
@@ -135,7 +134,7 @@ class _TimerInputContent extends StatelessWidget {
 
 class _TimeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
-  final List<TextInputFormatter> inputFormatters;
+  final TextInputFormatter granularityFormatter;
   final String header;
   final FocusNode focusNode;
   final String text;
@@ -146,7 +145,7 @@ class _TimeTextField extends StatelessWidget {
       required this.header,
       required this.onChanged,
       required this.focusNode,
-      required this.inputFormatters})
+      required this.granularityFormatter})
       : super(key: key);
 
   @override
@@ -168,7 +167,13 @@ class _TimeTextField extends StatelessWidget {
               ..selection = _textSelection,
             onChanged: (value) => onChanged.call(value),
             textInputAction: TextInputAction.done,
-            inputFormatters: inputFormatters,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              _EmptyInputFormatter(),
+              _LeadingZeroInputFormatter(),
+              LengthLimitingTextInputFormatter(2),
+              granularityFormatter,
+            ],
             textAlign: TextAlign.center,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
@@ -251,7 +256,7 @@ class _HourInputFormatter extends TextInputFormatter {
 
 class _EditTimerCubit extends Cubit<_EditTimerState> {
   _EditTimerCubit(int hours, int minutes)
-      : super(_EditTimerState(minutes, hours, true));
+      : super(_EditTimerState(minutes, hours));
 
   void updateDuration({int? hours, int? minutes}) {
     emit(state.copyWith(hours, minutes));
@@ -261,15 +266,13 @@ class _EditTimerCubit extends Cubit<_EditTimerState> {
 class _EditTimerState {
   final int hours;
   final int minutes;
-  final bool minuteFocus;
   late final Duration duration;
 
-  _EditTimerState(this.hours, this.minutes, this.minuteFocus) {
+  _EditTimerState(this.hours, this.minutes) {
     duration = Duration(hours: hours, minutes: minutes);
   }
 
   _EditTimerState copyWith(int? hours, int? minutes) {
-    return _EditTimerState(hours ?? this.hours, minutes ?? this.minutes,
-        minutes != null || (hours != null && hours > 9));
+    return _EditTimerState(hours ?? this.hours, minutes ?? this.minutes);
   }
 }
