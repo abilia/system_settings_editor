@@ -8,7 +8,8 @@ import '../../../test_helpers/navigation_observer.dart';
 final navObserver = NavObserver();
 
 void main() {
-  Widget wrapWithMaterialApp() => MaterialApp(
+  Widget wrapWithMaterialApp({Duration initialDuration = Duration.zero}) =>
+      MaterialApp(
         supportedLocales: Translator.supportedLocals,
         navigatorObservers: [navObserver],
         localizationsDelegates: const [Translator.delegate],
@@ -19,13 +20,24 @@ void main() {
             create: (context) => SettingsBloc(
                   settingsDb: FakeSettingsDb(),
                 ),
-            child: const EditTimerByTypingPage()),
+            child: EditTimerByTypingPage(
+              initialDuration: initialDuration,
+            )),
       );
 
   testWidgets('Page visible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
     expect(find.byType(EditTimerByTypingPage), findsOneWidget);
+  });
+
+  testWidgets('initialDuration displayed correctly',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(
+        initialDuration: const Duration(hours: 12, minutes: 34)));
+    await tester.pumpAndSettle();
+    expect(find.text('12'), findsOneWidget);
+    expect(find.text('34'), findsOneWidget);
   });
 
   testWidgets('Page cancelled', (WidgetTester tester) async {

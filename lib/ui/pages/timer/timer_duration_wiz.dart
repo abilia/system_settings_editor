@@ -29,7 +29,8 @@ class TimerDurationWiz extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) => CopiedAuthProviders(
                           blocContext: context,
-                          child: const EditTimerByTypingPage(),
+                          child: EditTimerByTypingPage(
+                              initialDuration: state.duration),
                         ),
                       ),
                     );

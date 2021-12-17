@@ -250,7 +250,7 @@ class _HourInputFormatter extends TextInputFormatter {
 
 class _EditTimerCubit extends Cubit<_EditTimerState> {
   _EditTimerCubit(int hours, int minutes)
-      : super(_EditTimerState(minutes, hours));
+      : super(_EditTimerState(hours, minutes));
 
   void updateDuration({int? hours, int? minutes}) {
     emit(state.copyWith(hours, minutes));
