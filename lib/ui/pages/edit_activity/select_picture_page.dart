@@ -13,12 +13,8 @@ final _log = Logger((SelectPicturePage).toString());
 
 class SelectPicturePage extends StatelessWidget {
   final AbiliaFile selectedImage;
-  final bool showOnlyDeviceImagesAndCamera;
 
-  const SelectPicturePage(
-      {Key? key,
-      required this.selectedImage,
-      this.showOnlyDeviceImagesAndCamera = false})
+  const SelectPicturePage({Key? key, required this.selectedImage})
       : super(key: key);
 
   @override
@@ -34,7 +30,6 @@ class SelectPicturePage extends StatelessWidget {
           await Navigator.of(context).maybePop(selectedImage);
         },
         selectedImage: selectedImage,
-        showOnlyDeviceImagesAndCamera: showOnlyDeviceImagesAndCamera,
         onCancel: () => {
           Navigator.of(context)
             ..pop()
@@ -52,15 +47,13 @@ class SelectPictureBody extends StatelessWidget {
   final ValueChanged<AbiliaFile> imageCallback;
   final AbiliaFile selectedImage;
   final VoidCallback? onCancel;
-  final bool showOnlyDeviceImagesAndCamera;
 
-  const SelectPictureBody({
-    Key? key,
-    required this.imageCallback,
-    required this.selectedImage,
-    this.showOnlyDeviceImagesAndCamera = false,
-    this.onCancel,
-  }) : super(key: key);
+  const SelectPictureBody(
+      {Key? key,
+      required this.imageCallback,
+      required this.selectedImage,
+      this.onCancel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,61 +95,58 @@ class SelectPictureBody extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
               child: Column(
                 children: [
-                  if (!showOnlyDeviceImagesAndCamera) ...[
-                    PickField(
-                      key: TestKey.imageArchiveButton,
-                      leading: const Icon(AbiliaIcons.folder),
-                      text: Text(translate.imageArchive),
-                      onTap: () async {
-                        final selectedImage =
-                            await Navigator.of(context).push<AbiliaFile>(
-                          MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
-                              child: ImageArchivePage(onCancel: onCancel),
-                            ),
+                  PickField(
+                    key: TestKey.imageArchiveButton,
+                    leading: const Icon(AbiliaIcons.folder),
+                    text: Text(translate.imageArchive),
+                    onTap: () async {
+                      final selectedImage =
+                          await Navigator.of(context).push<AbiliaFile>(
+                        MaterialPageRoute(
+                          builder: (_) => CopiedAuthProviders(
+                            blocContext: context,
+                            child: ImageArchivePage(onCancel: onCancel),
                           ),
-                        );
-                        if (selectedImage != null) {
-                          imageCallback.call(selectedImage);
-                        }
-                      },
-                    ),
-                    SizedBox(height: 8.0.s),
-                    BlocSelector<SortableBloc, SortableState,
-                        Sortable<ImageArchiveData>?>(
-                      selector: (state) => state is SortablesLoaded
-                          ? state.sortables.getMyPhotosFolder()
-                          : null,
-                      builder: (context, myPhotoFolder) => PickField(
-                        key: TestKey.myPhotosButton,
-                        leading: const Icon(AbiliaIcons.folder),
-                        text: Text(translate.myPhotos),
-                        onTap: (myPhotoFolder != null)
-                            ? () async {
-                                final selectedImage =
-                                    await Navigator.of(context)
-                                        .push<AbiliaFile>(
-                                  MaterialPageRoute(
-                                    builder: (_) => CopiedAuthProviders(
-                                      blocContext: context,
-                                      child: ImageArchivePage(
-                                        onCancel: onCancel,
-                                        initialFolder: myPhotoFolder.id,
-                                        header: translate.myPhotos,
-                                      ),
+                        ),
+                      );
+                      if (selectedImage != null) {
+                        imageCallback.call(selectedImage);
+                      }
+                    },
+                  ),
+                  SizedBox(height: 8.0.s),
+                  BlocSelector<SortableBloc, SortableState,
+                      Sortable<ImageArchiveData>?>(
+                    selector: (state) => state is SortablesLoaded
+                        ? state.sortables.getMyPhotosFolder()
+                        : null,
+                    builder: (context, myPhotoFolder) => PickField(
+                      key: TestKey.myPhotosButton,
+                      leading: const Icon(AbiliaIcons.folder),
+                      text: Text(translate.myPhotos),
+                      onTap: (myPhotoFolder != null)
+                          ? () async {
+                              final selectedImage =
+                                  await Navigator.of(context).push<AbiliaFile>(
+                                MaterialPageRoute(
+                                  builder: (_) => CopiedAuthProviders(
+                                    blocContext: context,
+                                    child: ImageArchivePage(
+                                      onCancel: onCancel,
+                                      initialFolder: myPhotoFolder.id,
+                                      header: translate.myPhotos,
                                     ),
                                   ),
-                                );
-                                if (selectedImage != null) {
-                                  imageCallback.call(selectedImage);
-                                }
+                                ),
+                              );
+                              if (selectedImage != null) {
+                                imageCallback.call(selectedImage);
                               }
-                            : null,
-                      ),
+                            }
+                          : null,
                     ),
-                    SizedBox(height: 8.0.s),
-                  ],
+                  ),
+                  SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
                       text: translate.uploadImage,

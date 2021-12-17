@@ -78,10 +78,7 @@ class AddPhotoButton extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => CopiedAuthProviders(
                       blocContext: context,
-                      child: const SelectPicturePage(
-                        selectedImage: AbiliaFile.empty,
-                        showOnlyDeviceImagesAndCamera: true,
-                      ),
+                      child: const ImportPicturePage(),
                     ),
                   ),
                 );

@@ -79,7 +79,7 @@ void main() {
         await tester.goToMyPhotos();
         await tester.tap(find.byIcon(AbiliaIcons.plus));
         await tester.pumpAndSettle();
-        expect(find.byType(SelectPicturePage), findsOneWidget);
+        expect(find.byType(ImportPicturePage), findsOneWidget);
         expect(find.byType(ImageSourceWidget), findsNWidgets(2));
         expect(find.byType(PickField), findsNWidgets(2));
       });
