@@ -35,6 +35,7 @@ dependencies:
       path: flutter_local_notifications/
   flutter_native_timezone: ^2.0.0
   flutter_ringtone_player: ^3.1.0
+  matrix4_transform: ^2.0.1
   system_settings_editor:
     git:
       url: https://github.com/abilia/system_settings_editor.git
