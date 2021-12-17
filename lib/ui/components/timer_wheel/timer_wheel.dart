@@ -19,7 +19,7 @@ class TimerWheel extends StatefulWidget {
   })  : assert(
             !(style == TimerWheelStyle.interactive &&
                 (timerLengthInMinutes != null || secondsLeft != null)),
-            'When style is TimerWheelStyle.interactive, timerLengthInMinutes and secondsLeft will be ignored and should be null'),
+            'When style is TimerWheelStyle.interactive, timerLengthInMinutes and secondsLeft will be ignored and should not be set'),
         super(key: key);
 
   final TimerWheelStyle style;
