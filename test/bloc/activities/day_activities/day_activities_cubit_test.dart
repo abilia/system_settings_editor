@@ -10,7 +10,7 @@ import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late DayActivitiesBloc dayActivitiesBloc;
+  late DayActivitiesCubit dayActivitiesCubit;
   late DayPickerBloc dayPickerBloc;
   late ActivitiesBloc activitiesBloc;
   late MockActivityRepository mockActivityRepository;
@@ -30,12 +30,12 @@ void main() {
         syncBloc: FakeSyncBloc(),
         pushBloc: FakePushBloc(),
       );
-      dayActivitiesBloc = DayActivitiesBloc(
+      dayActivitiesCubit = DayActivitiesCubit(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
 
     test('initial state is DayActivitiesUninitialized', () {
-      expect(dayActivitiesBloc.state,
+      expect(dayActivitiesCubit.state,
           _DayActivitiesMatcher(DayActivitiesUninitialized()));
     });
 
@@ -47,11 +47,11 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesCubit.stream.any((s) => s is DayActivitiesLoaded);
 
       // Assert
       expect(
-        dayActivitiesBloc.state,
+        dayActivitiesCubit.state,
         _DayActivitiesMatcher(
           DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
         ),
@@ -68,7 +68,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
@@ -91,7 +91,7 @@ void main() {
 
       // Assert
       expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expected, today, Occasion.current),
@@ -116,7 +116,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expextedToday, today, Occasion.current),
@@ -128,7 +128,7 @@ void main() {
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expextedTomorrow, tomorrow, Occasion.future),
@@ -155,7 +155,7 @@ void main() {
       activitiesBloc.add(LoadActivities());
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expectedNow, today, Occasion.current),
@@ -167,7 +167,7 @@ void main() {
       dayPickerBloc.add(PreviousDay());
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expectedYesterday, yesterday, Occasion.past),
@@ -192,7 +192,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
@@ -207,7 +207,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emitsInOrder([
           _DayActivitiesMatcher(
             DayActivitiesLoaded(
@@ -243,7 +243,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(const <ActivityDay>[], today, Occasion.current),
@@ -260,7 +260,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(expectedActivity, today, Occasion.current),
@@ -287,7 +287,7 @@ void main() {
         syncBloc: FakeSyncBloc(),
         pushBloc: FakePushBloc(),
       );
-      dayActivitiesBloc = DayActivitiesBloc(
+      dayActivitiesCubit = DayActivitiesCubit(
           dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     });
 
@@ -300,14 +300,14 @@ void main() {
           .thenAnswer((_) => Future.value(weekendActivity));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesCubit.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc.stream,
+          dayActivitiesCubit.stream,
           emitsInOrder([
             _DayActivitiesMatcher(
               DayActivitiesLoaded(
@@ -359,13 +359,13 @@ void main() {
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesCubit.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: boxingDay));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc.stream,
+          dayActivitiesCubit.stream,
           emitsInOrder([
             _DayActivitiesMatcher(
               DayActivitiesLoaded(
@@ -404,13 +404,13 @@ void main() {
           .thenAnswer((_) => Future.value(christmas));
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesCubit.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: boxingDay));
       dayPickerBloc.add(NextDay());
       dayPickerBloc.add(NextDay());
       // Assert
       await expectLater(
-          dayActivitiesBloc.stream,
+          dayActivitiesCubit.stream,
           emitsInOrder([
             _DayActivitiesMatcher(
               DayActivitiesLoaded(
@@ -450,7 +450,7 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayActivitiesBloc.stream.any((s) => s is DayActivitiesLoaded);
+      await dayActivitiesCubit.stream.any((s) => s is DayActivitiesLoaded);
       dayPickerBloc.add(GoTo(day: startTime));
       for (final _ in allOtherDays) {
         dayPickerBloc.add(NextDay());
@@ -458,7 +458,7 @@ void main() {
 
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emitsInOrder(
           allOtherDays.map(
             (day) => _DayActivitiesMatcher(
@@ -519,10 +519,9 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       // Assert
       await expectLater(
-        dayActivitiesBloc.stream,
+        dayActivitiesCubit.stream,
         emits(
           _DayActivitiesMatcher(
             DayActivitiesLoaded(
@@ -540,7 +539,7 @@ void main() {
 
       // Assert
       await expectLater(
-          dayActivitiesBloc.stream,
+          dayActivitiesCubit.stream,
           emitsInOrder([
             _DayActivitiesMatcher(
               DayActivitiesLoaded(

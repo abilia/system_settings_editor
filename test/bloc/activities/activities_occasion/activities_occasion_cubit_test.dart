@@ -11,7 +11,7 @@ import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late DayActivitiesBloc dayActivitiesBloc;
+  late DayActivitiesCubit dayActivitiesCubit;
   late DayPickerBloc dayPickerBloc;
   late ClockBloc clockBloc;
   late ActivitiesBloc activitiesBloc;
@@ -33,11 +33,11 @@ void main() {
       syncBloc: FakeSyncBloc(),
       pushBloc: FakePushBloc(),
     );
-    dayActivitiesBloc = DayActivitiesBloc(
+    dayActivitiesCubit = DayActivitiesCubit(
         dayPickerBloc: dayPickerBloc, activitiesBloc: activitiesBloc);
     activitiesOccasionBloc = ActivitiesOccasionCubit(
       clockBloc: clockBloc,
-      dayActivitiesBloc: dayActivitiesBloc,
+      dayActivitiesCubit: dayActivitiesCubit,
     );
   });
   group('ActivitiesOccasionBloc', () {
@@ -772,7 +772,7 @@ void main() {
     dayPickerBloc.close();
     activitiesBloc.close();
     activitiesOccasionBloc.close();
-    dayActivitiesBloc.close();
+    dayActivitiesCubit.close();
     clockBloc.close();
     mockedTicker.close();
   });
