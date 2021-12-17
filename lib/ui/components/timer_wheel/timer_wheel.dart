@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:seagull/ui/all.dart';
+import 'package:flutter/material.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_painters.dart';
 import 'package:seagull/ui/components/timer_wheel/constants.dart';
