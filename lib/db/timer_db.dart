@@ -9,7 +9,6 @@ class TimerDb {
   final Database db;
 
   TimerDb(this.db);
-
   static const _getAll = 'SELECT * FROM ${DatabaseRepository.timerTableName}';
   final _log = Logger((TimerDb).toString());
 

@@ -8,7 +8,6 @@ final _log = Logger((DatabaseRepository).toString());
 
 class DatabaseRepository {
   DatabaseRepository._();
-
   static const calendarTableName = 'calendar_activity';
   static const sortableTableName = 'sortable';
   static const userFileTableName = 'user_file';

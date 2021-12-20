@@ -22,7 +22,6 @@ class AddBasicActivity extends ActivityChangedEvent {
   final BasicActivityDataItem basicActivityData;
 
   const AddBasicActivity(this.basicActivityData);
-
   @override
   List<Object> get props => [basicActivityData];
 }

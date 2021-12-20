@@ -100,9 +100,7 @@ abstract class MemoplannerSettingsState extends Equatable {
   StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
-
   ClockType get clockType => ClockType.values[settings.settingClockType];
-
   MonthCalendarType get monthCalendarType =>
       MonthCalendarType.values[settings.viewOptionsMonthCalendar];
 
@@ -128,7 +126,6 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   WeekColor get weekColor =>
       WeekColor.values[settings.weekDisplayShowColorMode];
-
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 

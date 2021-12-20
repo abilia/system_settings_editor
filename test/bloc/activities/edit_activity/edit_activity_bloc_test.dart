@@ -81,7 +81,7 @@ void main() {
   test('Initial state with basic activity starting at 00:01 has start time',
       () async {
     // Arrange
-        final basicActivity = BasicActivityDataItem.createNew(
+    final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: const Duration(minutes: 1),
     );

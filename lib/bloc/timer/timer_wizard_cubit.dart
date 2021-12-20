@@ -11,7 +11,6 @@ part 'timer_wizard_state.dart';
 class TimerWizardCubit extends Cubit<TimerWizardState> {
   final TimerCubit timerCubit;
   final VoidCallback onBack;
-
   TimerWizardCubit({
     required this.timerCubit,
     required this.onBack,

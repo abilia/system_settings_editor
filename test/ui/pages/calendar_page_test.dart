@@ -384,7 +384,7 @@ void main() {
 
         testWidgets('Empty message when no basic activities',
             (WidgetTester tester) async {
-              await tester.pumpWidget(App());
+          await tester.pumpWidget(App());
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();

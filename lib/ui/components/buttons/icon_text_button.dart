@@ -219,7 +219,6 @@ class SaveButton extends StatelessWidget {
 
 class StartButton extends StatelessWidget {
   final VoidCallback? onPressed;
-
   const StartButton({this.onPressed, Key? key}) : super(key: key);
 
   @override

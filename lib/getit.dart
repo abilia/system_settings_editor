@@ -15,34 +15,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GetItInitializer {
   Directory? _documentsDirectory;
-
   set documentsDirectory(Directory documentsDirectory) =>
       _documentsDirectory = documentsDirectory;
 
   late SharedPreferences _sharedPreferences;
-
   set sharedPreferences(SharedPreferences sharedPreferences) =>
       _sharedPreferences = sharedPreferences;
 
   ActivityDb? _activityDb;
-
   set activityDb(ActivityDb activityDb) => _activityDb = activityDb;
 
   TimerDb? _timerDb;
-
   set timerDb(TimerDb timerDb) => _timerDb = timerDb;
 
   late FirebasePushService _firebasePushService = FirebasePushService();
-
   set fireBasePushService(FirebasePushService firebasePushService) =>
       _firebasePushService = firebasePushService;
 
   UserDb? _userDb;
-
   set userDb(UserDb userDb) => _userDb = userDb;
 
   TokenDb? _tokenDb;
-
   set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
 
   LicenseDb? _licenseDb;
