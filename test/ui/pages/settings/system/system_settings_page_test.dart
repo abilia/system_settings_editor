@@ -11,7 +11,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
+import '../../../../mocks/mock_bloc.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -26,6 +28,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
+    registerFallbackValues();
     mockSettingsDb = MockSettingsDb();
     when(() => mockSettingsDb.textToSpeech).thenReturn(true);
     final userDb = MockUserDb();
@@ -71,6 +74,9 @@ void main() {
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   battery: FakeBattery(),
                 ),
+              ),
+              BlocProvider<TimerCubit>(
+                create: (context) => MockTimerCubit(),
               ),
             ],
             child: child!,

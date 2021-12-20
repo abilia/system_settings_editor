@@ -37,4 +37,5 @@ void registerFallbackValues() {
   registerFallbackValue(const ActivitiesOccasionLoading());
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
+  registerFallbackValue(const TimerState(timers: []));
 }

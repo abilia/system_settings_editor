@@ -21,6 +21,7 @@ void main() {
 
   late MockSortableBloc mockSortableBloc;
   late MockUserFileBloc mockUserFileBloc;
+  late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
@@ -44,6 +45,7 @@ void main() {
     );
     mockUserFileBloc = MockUserFileBloc();
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
       const MemoplannerSettingsLoaded(
@@ -59,6 +61,7 @@ void main() {
 
   Widget wizardPage({
     bool use24H = false,
+    BasicActivityDataItem? basicActivityData,
   }) {
     return MaterialApp(
       supportedLocales: Translator.supportedLocals,
@@ -85,6 +88,7 @@ void main() {
                   day: today,
                   defaultAlarmTypeSetting:
                       mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
+                  basicActivityData: basicActivityData,
                 ),
               ),
               BlocProvider<ActivityWizardCubit>(
@@ -124,6 +128,7 @@ void main() {
                   battery: FakeBattery(),
                 ),
               ),
+              BlocProvider<TimerCubit>.value(value: mockTimerCubit),
             ],
             child: child!,
           ),
@@ -138,10 +143,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityWizardPage), findsOneWidget);
-    expect(find.byType(BasicActivityStepPage), findsOneWidget);
-    await tester.tap(find.byType(NextButton));
-    await tester.pumpAndSettle();
-
     expect(find.byType(DatePickerWiz), findsOneWidget);
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
@@ -328,26 +329,12 @@ void main() {
       );
       const title = 'testtitle';
 
-      when(() => mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
-        Sortable.createNew<BasicActivityDataItem>(
-          data: BasicActivityDataItem.createNew(title: title),
+      await tester.pumpWidget(
+        wizardPage(
+          basicActivityData: BasicActivityDataItem.createNew(title: title),
         ),
-      ]));
-      await tester.pumpWidget(wizardPage());
+      );
       await tester.pumpAndSettle();
-
-      expect(find.byType(BasicActivityStepPage), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.basicActivityChoice));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-      await tester.tap(find.text(title));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
       expect(find.byType(TitleWiz), findsOneWidget);
       expect(find.text(title), findsOneWidget);
     });
@@ -378,28 +365,15 @@ void main() {
       );
       const title = 'testtitle';
 
-      when(() => mockSortableBloc.state).thenReturn(SortablesLoaded(sortables: [
-        Sortable.createNew<BasicActivityDataItem>(
-          data: BasicActivityDataItem.createNew(
+      await tester.pumpWidget(
+        wizardPage(
+          basicActivityData: BasicActivityDataItem.createNew(
             title: title,
             startTime: const Duration(hours: 5, minutes: 55),
             duration: const Duration(hours: 2, minutes: 5),
           ),
         ),
-      ]));
-      await tester.pumpWidget(wizardPage());
-      await tester.pumpAndSettle();
-
-      expect(find.byType(BasicActivityStepPage), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.basicActivityChoice));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-      await tester.tap(find.text(title));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(NextButton));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(TitleWiz), findsOneWidget);

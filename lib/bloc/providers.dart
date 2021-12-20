@@ -89,6 +89,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 pushBloc: context.read<PushBloc>(),
               )..add(LoadActivities()),
             ),
+            BlocProvider<TimerCubit>(
+              create: (context) => TimerCubit(
+                timerDb: GetIt.I<TimerDb>(),
+              )..loadTimers(),
+            ),
             BlocProvider<WeekCalendarBloc>(
               create: (context) => WeekCalendarBloc(
                 activitiesBloc: context.read<ActivitiesBloc>(),
@@ -325,6 +330,9 @@ class CopiedAuthProviders extends StatelessWidget {
         ),
         BlocProvider<TimepillarCubit>.value(
           value: blocContext.read<TimepillarCubit>(),
+        ),
+        BlocProvider<TimerCubit>.value(
+          value: blocContext.read<TimerCubit>(),
         ),
         if (Config.isMP)
           BlocProvider<WakeLockCubit>.value(

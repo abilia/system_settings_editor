@@ -38,6 +38,7 @@ void main() {
 
   late MockSortableBloc mockSortableBloc;
   late MockUserFileBloc mockUserFileBloc;
+  late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
   setUpAll(() {
@@ -51,6 +52,7 @@ void main() {
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
@@ -142,6 +144,7 @@ void main() {
                   battery: FakeBattery(),
                 ),
               ),
+              BlocProvider<TimerCubit>.value(value: mockTimerCubit),
             ],
             child: child!,
           ),
