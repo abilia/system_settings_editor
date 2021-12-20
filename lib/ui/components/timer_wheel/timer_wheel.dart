@@ -14,17 +14,31 @@ class TimerWheel extends StatefulWidget {
   const TimerWheel({
     Key? key,
     required this.style,
+    this.onMinutesSelectedChanged,
     this.timerLengthInMinutes,
     this.secondsLeft,
   })  : assert(
             !(style == TimerWheelStyle.interactive &&
-                (timerLengthInMinutes != null || secondsLeft != null)),
-            'When style is TimerWheelStyle.interactive, timerLengthInMinutes and secondsLeft will be ignored and should not be set'),
+                (timerLengthInMinutes != null)),
+            'If style is TimerWheelStyle.interactive, timerLengthInMinutes will be ignored and should not be set'),
+        assert(!(style == TimerWheelStyle.interactive && (secondsLeft != null)),
+            'If style is TimerWheelStyle.interactive, secondsLeft will be ignored and should not be set'),
+        assert(
+            !(style != TimerWheelStyle.interactive &&
+                (onMinutesSelectedChanged != null)),
+            'If style is not TimerWheelStyle.interactive, onMinutesSelectedChanged will be ignored and should not be set'),
         super(key: key);
 
   final TimerWheelStyle style;
+
+  /// Ignored if [style] is [TimerWheelStyle.interactive]
   final int? timerLengthInMinutes;
+
+  /// Ignored if [style] is [TimerWheelStyle.interactive]
   final int? secondsLeft;
+
+  /// Ignored if [style] is not [TimerWheelStyle.interactive]
+  final Function(int minutesSelected)? onMinutesSelectedChanged;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -36,6 +50,15 @@ class _TimerWheelState extends State<TimerWheel> {
   ValueNotifier<int> minutesSelected = ValueNotifier(0);
   int? minutesSelectedOnTapDown;
   bool sliderTemporaryLocked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.style == TimerWheelStyle.interactive) {
+      minutesSelected.addListener(
+          () => widget.onMinutesSelectedChanged?.call(minutesSelected.value));
+    }
+  }
 
   @override
   void dispose() {
@@ -51,7 +74,7 @@ class _TimerWheelState extends State<TimerWheel> {
         style: widget.style,
       );
 
-      final Widget stackedWheel = Stack(
+      final Widget timerWheel = Stack(
         children: [
           RepaintBoundary(
             child: CustomPaint(
@@ -81,13 +104,13 @@ class _TimerWheelState extends State<TimerWheel> {
       );
 
       if (widget.style != TimerWheelStyle.interactive) {
-        return stackedWheel;
+        return timerWheel;
       } else {
         return GestureDetector(
           onPanDown: (details) => _onPanDown(details, config),
           onPanUpdate: (details) => _onPanUpdate(details, config),
           onTapUp: _onTapUp,
-          child: stackedWheel,
+          child: timerWheel,
         );
       }
     });
