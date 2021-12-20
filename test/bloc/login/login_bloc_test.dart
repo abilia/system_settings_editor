@@ -24,6 +24,7 @@ void main() {
 
       when(() => mockUserRepository.persistToken(any()))
           .thenAnswer((_) => Future.value());
+      when(() => mockUserRepository.baseUrl).thenReturn('url');
 
       authenticationBloc = AuthenticationBloc(mockUserRepository);
       loginBloc = LoginBloc(
