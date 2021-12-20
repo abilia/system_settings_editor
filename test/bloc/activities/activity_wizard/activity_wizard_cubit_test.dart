@@ -64,7 +64,6 @@ void main() {
         0,
         UnmodifiableListView(
           [
-            WizardStep.basic,
             WizardStep.advance,
           ],
         ),
@@ -90,7 +89,6 @@ void main() {
         0,
         UnmodifiableListView(
           [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
@@ -1712,7 +1710,6 @@ void main() {
         ActivityWizardState(
           0,
           const [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
@@ -1761,7 +1758,6 @@ void main() {
         ActivityWizardState(
           0,
           const [
-            WizardStep.basic,
             WizardStep.type,
             WizardStep.deleteAfter,
             WizardStep.time,
@@ -1838,7 +1834,6 @@ void main() {
     );
 
     const allWizStep = [
-      WizardStep.basic,
       WizardStep.date,
       WizardStep.title,
       WizardStep.image,
@@ -1898,7 +1893,6 @@ void main() {
           allWizStep,
         ),
       );
-      wizCubit.next(); // basic
       wizCubit.next(); // date
       wizCubit.next(); // title
       wizCubit.next(); // image ---> error
@@ -1906,7 +1900,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          3,
+          2,
           allWizStep,
           saveErrors: const {SaveError.noTitleOrImage},
           sucessfullSave: false,
@@ -1927,7 +1921,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          8,
+          7,
           allWizStep,
           saveErrors: const {SaveError.noStartTime},
           sucessfullSave: false,
@@ -1946,7 +1940,7 @@ void main() {
       expect(
         wizCubit.state,
         ActivityWizardState(
-          12,
+          11,
           allWizStep,
           sucessfullSave: true,
         ),
@@ -1980,7 +1974,6 @@ void main() {
         wizCubit.stream,
         emitsInOrder([
           ActivityWizardState(0, const [
-            WizardStep.basic,
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,

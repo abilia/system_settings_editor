@@ -134,6 +134,9 @@ void main() {
                   battery: FakeBattery(),
                 ),
               ),
+              BlocProvider<TimerCubit>(
+                create: (context) => MockTimerCubit(),
+              ),
             ],
             child: child!,
           ),

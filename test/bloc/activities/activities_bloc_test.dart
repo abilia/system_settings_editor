@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -19,9 +20,7 @@ void main() {
   late PushBloc mockPushBloc;
   late SyncBloc mockSyncBloc;
 
-  setUpAll(() {
-    registerFallbackValues();
-  });
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     mockActivityRepository = MockActivityRepository();
@@ -41,164 +40,190 @@ void main() {
   });
 
   group('ActivitiesBloc', () {
-    test('initial state is ActivitiesNotLoaded', () {
-      expect(activitiesBloc.state, ActivitiesNotLoaded());
-    });
+    blocTest(
+      'initial state is ActivitiesNotLoaded',
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      verify: (ActivitiesBloc bloc) => expect(
+        bloc.state,
+        ActivitiesNotLoaded(),
+      ),
+    );
+    blocTest(
+      'load activities calls load activities on mockActivityRepostitory',
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
+      verify: (ActivitiesBloc bloc) =>
+          verify(() => mockActivityRepository.load()),
+    );
 
-    test('load activities calls load activities on mockActivityRepostitory',
-        () async {
-      activitiesBloc.add(LoadActivities());
-      await untilCalled(() => mockActivityRepository.load());
-      verify(() => mockActivityRepository.load());
-    });
+    blocTest(
+      'LoadActivities event returns ActivitiesLoaded state',
+      setUp: () => when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(<Activity>[])),
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
+      expect: () => [ActivitiesLoaded(const [])],
+    );
 
-    test('LoadActivities event returns ActivitiesLoaded state', () async {
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[]));
+    final storedActivity = Activity.createNew(
+          title: 'title',
+          startTime: DateTime(1900),
+          duration: 2.milliseconds(),
+          alarmType: alarmSilentOnlyOnStart,
+        ),
+        activity1 = Activity.createNew(title: 'a1', startTime: anyTime),
+        activity2 = Activity.createNew(title: 'a2', startTime: anyTime),
+        activity3 = Activity.createNew(title: 'a3', startTime: anyTime),
+        activity4 = Activity.createNew(title: 'a4', startTime: anyTime),
+        updatedActivity1 = activity1.copyWith(title: 'new title'),
+        deletedStoredActivity = storedActivity.copyWith(deleted: true);
 
-      activitiesBloc.add(LoadActivities());
-      await expectLater(
-        activitiesBloc.stream,
-        emits(ActivitiesLoaded(const [])),
-      );
-    });
+    blocTest(
+      'LoadActivities event returns ActivitiesLoaded state with Activity',
+      setUp: () => when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
+      expect: () => [
+        ActivitiesLoaded([storedActivity])
+      ],
+    );
 
-    test('LoadActivities event returns ActivitiesLoaded state with Activity',
-        () {
-      final exptectedActivity = Activity.createNew(
-        title: 'title',
-        startTime: DateTime(1900),
-        duration: 2.milliseconds(),
-        alarmType: alarmSilentOnlyOnStart,
-      );
+    blocTest('calls add activities on mockActivityRepostitory',
+        setUp: () => when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
+        build: () => ActivitiesBloc(
+              activityRepository: mockActivityRepository,
+              pushBloc: mockPushBloc,
+              syncBloc: mockSyncBloc,
+            ),
+        act: (ActivitiesBloc bloc) => bloc
+          ..add(LoadActivities())
+          ..add(AddActivity(activity1)),
+        expect: () => [
+              ActivitiesLoaded([storedActivity]),
+              ActivitiesLoaded([storedActivity, activity1])
+            ],
+        verify: (bloc) async {
+          await untilCalled(() => mockActivityRepository.save(any()));
+          await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
+          verify(() => mockActivityRepository.save([activity1]));
+          verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
+        });
 
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[exptectedActivity]));
+    blocTest(
+        'UpdateActivities calls save activities on mockActivityRepostitory',
+        setUp: () => when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(<Activity>[activity1])),
+        build: () => ActivitiesBloc(
+              activityRepository: mockActivityRepository,
+              pushBloc: mockPushBloc,
+              syncBloc: mockSyncBloc,
+            ),
+        act: (ActivitiesBloc bloc) => bloc
+          ..add(LoadActivities())
+          ..add(UpdateActivity(updatedActivity1)),
+        expect: () => [
+              ActivitiesLoaded([activity1]),
+              ActivitiesLoaded([updatedActivity1]),
+            ],
+        verify: (bloc) async {
+          await untilCalled(
+              () => mockActivityRepository.save([updatedActivity1]));
+          await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
+          verify(() => mockActivityRepository.save([updatedActivity1]));
+          verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
+        });
 
-      activitiesBloc.add(LoadActivities());
-      expectLater(
-        activitiesBloc.stream,
-        emits(ActivitiesLoaded([exptectedActivity])),
-      );
-    });
+    blocTest(
+        'DeleteActivities calls save activities on mockActivityRepostitory',
+        setUp: () => when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
+        build: () => ActivitiesBloc(
+              activityRepository: mockActivityRepository,
+              pushBloc: mockPushBloc,
+              syncBloc: mockSyncBloc,
+            ),
+        act: (ActivitiesBloc bloc) => bloc
+          ..add(LoadActivities())
+          ..add(DeleteActivity(storedActivity)),
+        expect: () => [
+              ActivitiesLoaded([storedActivity]),
+              ActivitiesLoaded(const []),
+            ],
+        verify: (bloc) async {
+          await untilCalled(
+              () => mockActivityRepository.save([deletedStoredActivity]));
+          await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
+          verify(() => mockActivityRepository.save([deletedStoredActivity]));
+          verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
+        });
 
-    test('calls add activities on mockActivityRepostitory', () async {
-      final anActivity = FakeActivity.starts(anyTime);
-      activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
-      activitiesBloc.add(AddActivity(anActivity));
-      await untilCalled(() => mockActivityRepository.save(any()));
-      await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
+    final fullActivityList = [activity1, activity2, activity3, activity4],
+        activityListDeleted = [activity1, activity2, activity4];
+    blocTest(
+      'DeleteActivities does not yeild the deleted activity',
+      setUp: () => when(() => mockActivityRepository.load())
+          .thenAnswer((_) => Future.value(fullActivityList)),
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      act: (ActivitiesBloc bloc) => bloc
+        ..add(LoadActivities())
+        ..add(DeleteActivity(activity3)),
+      expect: () => [
+        ActivitiesLoaded(fullActivityList),
+        ActivitiesLoaded(activityListDeleted),
+      ],
+      verify: (bloc) => verify(() => mockSyncBloc.add(SyncEvent.activitySaved)),
+    );
 
-      verify(() => mockActivityRepository.save([anActivity]));
-      verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
-
-    test('AddActivity calls add activities on mockActivityRepostitory',
-        () async {
-      final anActivity = FakeActivity.starts(anyTime);
-      activitiesBloc.add(LoadActivities());
-      await activitiesBloc.stream.firstWhere((s) => s is ActivitiesLoaded);
-      activitiesBloc.add(AddActivity(anActivity));
-
-      await untilCalled(() => mockActivityRepository.save(any()));
-      await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
-
-    test('UpdateActivities calls save activities on mockActivityRepostitory',
-        () async {
-      final anActivity = FakeActivity.starts(anyTime);
-
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[anActivity]));
-      activitiesBloc.add(LoadActivities());
-
-      final updatedActivity = anActivity.copyWith(title: 'new title');
-      activitiesBloc.add(UpdateActivity(updatedActivity));
-
-      await untilCalled(() => mockActivityRepository.save([updatedActivity]));
-      await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
-
-    test('DeleteActivities calls save activities on mockActivityRepostitory',
-        () async {
-      // Arrange
-      final anActivity = FakeActivity.starts(anyTime);
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(<Activity>[anActivity]));
-      activitiesBloc.add(LoadActivities());
-      final deletedActivity = anActivity.copyWith(deleted: true);
-
-      // Act
-      activitiesBloc.add(DeleteActivity(anActivity));
-
-      // Assert
-      await untilCalled(() => mockActivityRepository.save([deletedActivity]));
-      await untilCalled(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
-
-    test('DeleteActivities does not yeild the deleted activity', () async {
-      // Arrange
-      final activity1 = FakeActivity.starts(anyTime);
-      final activity2 = FakeActivity.starts(anyTime);
-      final activity3 = FakeActivity.starts(anyTime);
-      final activity4 = FakeActivity.starts(anyTime);
-      final fullActivityList = [
-        activity1,
-        activity2,
-        activity3,
-        activity4,
-      ];
-      final activityListDeleted = [
-        activity1,
-        activity2,
-        activity4,
-      ].followedBy({});
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(fullActivityList));
-
-      activitiesBloc.add(LoadActivities());
-
-      // Act
-      activitiesBloc.add(DeleteActivity(activity3));
-
-      // Assert
-      await expectLater(
-        activitiesBloc.stream,
-        emitsInOrder([
-          ActivitiesLoaded(fullActivityList),
-          ActivitiesLoaded(activityListDeleted),
-        ]),
-      );
-      verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
-
-    test('UpdateActivities state order', () async {
-      // Arrange
-      final anActivity = FakeActivity.starts(anyTime);
-      final activityList = [anActivity];
-      final updatedActivity = anActivity.copyWith(title: 'new title');
-      final updatedActivityList = [updatedActivity];
-
-      when(() => mockActivityRepository.load())
-          .thenAnswer((_) => Future.value(activityList));
-      when(() => mockActivityRepository.save(updatedActivityList))
-          .thenAnswer((_) => Future.value(true));
-
-      // Act
-      activitiesBloc.add(LoadActivities());
-      activitiesBloc.add(UpdateActivity(updatedActivity));
-
-      // Assert
-      await expectLater(
-        activitiesBloc.stream,
-        emitsInOrder([
-          ActivitiesLoaded(activityList),
-          ActivitiesLoaded(updatedActivityList.followedBy([])),
-        ]),
-      );
-      verify(() => mockSyncBloc.add(SyncEvent.activitySaved));
-    });
+    final updatedActivityList = [
+      updatedActivity1,
+      activity2,
+      activity3,
+      activity4
+    ];
+    blocTest(
+      'UpdateActivities state order',
+      setUp: () {
+        when(() => mockActivityRepository.load())
+            .thenAnswer((_) => Future.value(fullActivityList));
+        when(() => mockActivityRepository.save(updatedActivityList))
+            .thenAnswer((_) => Future.value(true));
+      },
+      build: () => ActivitiesBloc(
+        activityRepository: mockActivityRepository,
+        pushBloc: mockPushBloc,
+        syncBloc: mockSyncBloc,
+      ),
+      act: (ActivitiesBloc bloc) => bloc
+        ..add(LoadActivities())
+        ..add(UpdateActivity(updatedActivity1)),
+      expect: () => [
+        ActivitiesLoaded(fullActivityList),
+        ActivitiesLoaded(updatedActivityList),
+      ],
+      verify: (bloc) => verify(() => mockSyncBloc.add(SyncEvent.activitySaved)),
+    );
   });
 
   group('Delete recurring activity', () {

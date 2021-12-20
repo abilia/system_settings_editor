@@ -24,6 +24,7 @@ void main() {
 
       when(() => mockUserRepository.persistToken(any()))
           .thenAnswer((_) => Future.value());
+      when(() => mockUserRepository.baseUrl).thenReturn('url');
 
       authenticationBloc = AuthenticationBloc(mockUserRepository);
       loginBloc = LoginBloc(
@@ -174,6 +175,7 @@ void main() {
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc(StreamController<DateTime>().stream),
       );
+      when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
       when(() => mockedUserRepository.me(any())).thenAnswer(
           (_) => Future.value(const User(id: 0, name: '', type: '')));

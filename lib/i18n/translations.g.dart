@@ -196,6 +196,8 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
+  final String timerInvalidDuration = 'Duration can not be zero.';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -246,6 +248,14 @@ abstract class Translated {
 
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
+
+  final String start = 'Start';
+
+  final String newTimer = 'New timer';
+
+  final String setDuration = 'Set duration';
+
+  final String startTimer = 'Start timer';
 
   final String menu = 'Menu';
 
@@ -1055,6 +1065,9 @@ class SV extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
+  final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -1131,6 +1144,18 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
+
+  @override
+  final String start = 'Starta';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Ange varaktighet';
+
+  @override
+  final String startTimer = 'Starta timer';
 
   @override
   final String menu = 'Meny';
@@ -2198,6 +2223,9 @@ class DA extends Translated {
   final String timeNightTts = '%s om natten';
 
   @override
+  final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -2274,6 +2302,18 @@ class DA extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
+
+  @override
+  final String start = 'Start';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Indstille varighed';
+
+  @override
+  final String startTimer = 'Start timeren';
 
   @override
   final String menu = 'Menu';
@@ -3343,6 +3383,9 @@ class NL extends Translated {
   final String timeNightTts = "%s 's nachts";
 
   @override
+  final String timerInvalidDuration = 'De duur kan niet nul zijn.';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -3417,6 +3460,18 @@ class NL extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
+
+  @override
+  final String start = 'Begin';
+
+  @override
+  final String newTimer = 'Nieuwe timer';
+
+  @override
+  final String setDuration = 'Duur instellen';
+
+  @override
+  final String startTimer = 'Start timer';
 
   @override
   final String menu = 'Menu';
@@ -4487,6 +4542,9 @@ class FI extends Translated {
   final String timeNightTts = '%s yöllä';
 
   @override
+  final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -4562,6 +4620,18 @@ class FI extends Translated {
   @override
   final String checklistDoneInfo =
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
+
+  @override
+  final String start = 'Alkaa';
+
+  @override
+  final String newTimer = 'Uusi ajastin';
+
+  @override
+  final String setDuration = 'Aseta kesto';
+
+  @override
+  final String startTimer = 'Käynnistysajastin';
 
   @override
   final String menu = 'Valikko';
@@ -5634,6 +5704,9 @@ class DE extends Translated {
   final String timeNightTts = '%s abends';
 
   @override
+  final String timerInvalidDuration = 'Dauer kann nicht Null sein';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -5709,6 +5782,18 @@ class DE extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
+
+  @override
+  final String start = 'Anfang';
+
+  @override
+  final String newTimer = 'Neuer Timer';
+
+  @override
+  final String setDuration = 'Dauer einstellen';
+
+  @override
+  final String startTimer = 'Timer starten';
 
   @override
   final String menu = 'Menü';
@@ -6781,6 +6866,9 @@ class NB extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
+  final String timerInvalidDuration = 'Varigheten kan ikke være null.';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -6856,6 +6944,18 @@ class NB extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
+
+  @override
+  final String start = 'Start';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Angi varighet';
+
+  @override
+  final String startTimer = 'Start timer';
 
   @override
   final String menu = 'Meny';

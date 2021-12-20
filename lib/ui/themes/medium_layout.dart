@@ -57,5 +57,11 @@ class _MediumLayout extends Layout {
             minuteHandLength: 30,
             fontSize: 12,
           ),
+          formPadding: const FormPaddingLayout(
+            left: 18,
+            right: 24,
+            top: 36,
+            verticalItemDistance: 12,
+          ),
         );
 }

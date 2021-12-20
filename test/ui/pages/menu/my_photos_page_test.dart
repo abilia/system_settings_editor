@@ -73,6 +73,18 @@ void main() {
   tearDown(GetIt.I.reset);
 
   group('My photos page', () {
+    testWidgets('Pressing + sign on MPGo shows SelectPicturePage',
+        (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        await tester.tap(find.byIcon(AbiliaIcons.plus));
+        await tester.pumpAndSettle();
+        expect(find.byType(ImportPicturePage), findsOneWidget);
+        expect(find.byType(ImageSourceWidget), findsNWidgets(2));
+        expect(find.byType(PickField), findsNWidgets(2));
+      });
+    }, skip: Config.isMP);
+
     testWidgets('The page shows', (tester) async {
       await tester.goToMyPhotos();
       expect(find.byType(MyPhotosPage), findsOneWidget);
