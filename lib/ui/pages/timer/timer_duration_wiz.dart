@@ -17,7 +17,7 @@ class TimerDurationWiz extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 119,
+                width: 119.s,
                 child: TextField(
                   textAlign: TextAlign.center,
                   style: abiliaTextTheme.headline6,
@@ -29,7 +29,8 @@ class TimerDurationWiz extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) => CopiedAuthProviders(
                           blocContext: context,
-                          child: const EditTimerByTypingPage(),
+                          child: EditTimerByTypingPage(
+                              initialDuration: state.duration),
                         ),
                       ),
                     );

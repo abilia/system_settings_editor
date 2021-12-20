@@ -55,7 +55,7 @@ class CreateNewPage extends StatelessWidget {
                   }
                 },
               ).pad(formItemPadding),
-            const Divider().pad(const EdgeInsets.only(top: 16)),
+            const Divider().pad(EdgeInsets.only(top: 16.s)),
             PickField(
               key: TestKey.newTimerChoice,
               leading: const Icon(AbiliaIcons.stopWatch),
