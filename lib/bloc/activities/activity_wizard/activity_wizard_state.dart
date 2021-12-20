@@ -1,7 +1,6 @@
 part of 'activity_wizard_cubit.dart';
 
 enum WizardStep {
-  basic,
   advance,
   date,
   title,

@@ -31,3 +31,5 @@ class MockUserFileBloc extends MockBloc<UserFileEvent, UserFileState>
 
 class MockWakeLockCubit extends MockCubit<WakeLockState>
     implements WakeLockCubit {}
+
+class MockTimerCubit extends MockCubit<TimerState> implements TimerCubit {}

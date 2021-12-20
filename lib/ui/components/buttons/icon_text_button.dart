@@ -216,3 +216,18 @@ class SaveButton extends StatelessWidget {
     );
   }
 }
+
+class StartButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const StartButton({this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      text: Translator.of(context).translate.start,
+      icon: AbiliaIcons.ok,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
+    );
+  }
+}

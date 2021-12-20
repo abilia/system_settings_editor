@@ -8,10 +8,12 @@ final _log = Logger((DatabaseRepository).toString());
 
 class DatabaseRepository {
   DatabaseRepository._();
+
   static const calendarTableName = 'calendar_activity';
   static const sortableTableName = 'sortable';
   static const userFileTableName = 'user_file';
   static const genericTableName = 'generic';
+  static const timerTableName = 'timer';
   @visibleForTesting
   static final initialScript = [
     '''
@@ -21,7 +23,7 @@ class DatabaseRepository {
         title text,
         start_time int,
         end_time int,
-        duration int ,
+        duration int,
         file_id text,
         category int,
         deleted int,
@@ -82,10 +84,23 @@ class DatabaseRepository {
 '''
   ];
 
+  static const String _createTimersTable = '''
+    create table $timerTableName (
+          id text primary key not null,
+          title text,
+          file_id text,
+          paused int,
+          start_time int,
+          duration int,
+          paused_at int
+        )
+  ''';
+
   @visibleForTesting
   static final migrations = <String>[
     'alter table $calendarTableName add column extras text',
     'alter table $sortableTableName add column fixed int',
+    _createTimersTable,
   ];
 
   static Future<Database> createSqfliteDb() async {
@@ -139,6 +154,7 @@ class DatabaseRepository {
       ..delete(calendarTableName)
       ..delete(sortableTableName)
       ..delete(userFileTableName)
+      ..delete(timerTableName)
       ..delete(genericTableName);
     return batch.commit();
   }

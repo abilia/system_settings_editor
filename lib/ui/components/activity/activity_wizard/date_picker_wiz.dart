@@ -39,7 +39,9 @@ class DatePickerWiz extends StatelessWidget {
             bottomNavigationBar: Builder(
               builder: (context) => WizardBottomNavigation(beforeOnNext: () {
                 context.read<EditActivityBloc>().add(
-                      ChangeDate(context.read<DayPickerBloc>().state.day),
+                      ChangeDate(
+                        context.read<DayPickerBloc>().state.day,
+                      ),
                     );
               }),
             ),

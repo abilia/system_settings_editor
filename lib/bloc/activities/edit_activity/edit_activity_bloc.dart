@@ -37,16 +37,23 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   EditActivityBloc.newActivity({
     required this.day,
     required int defaultAlarmTypeSetting,
+    BasicActivityDataItem? basicActivityData,
   }) : super(
-          UnstoredActivityState(
-            Activity.createNew(
-              title: '',
-              startTime: day,
-              timezone: tz.local.name,
-              alarmType: defaultAlarmTypeSetting,
-            ),
-            TimeInterval(startDate: day),
-          ),
+          basicActivityData == null
+              ? UnstoredActivityState(
+                  Activity.createNew(
+                    title: '',
+                    startTime: day,
+                    timezone: tz.local.name,
+                    alarmType: defaultAlarmTypeSetting,
+                  ),
+                  TimeInterval(startDate: day),
+                )
+              : UnstoredActivityState(
+                  basicActivityData.toActivity(
+                      timezone: tz.local.name, day: day),
+                  basicActivityData.toTimeInterval(startDate: day),
+                ),
         ) {
     on<EditActivityEvent>(_mapEventToState, transformer: sequential());
   }
@@ -76,7 +83,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is ChangeInfoItemType) {
       await _mapChangeInfoItemTypeToState(event, emit);
     }
-    if (event is AddBasiActivity) {
+    if (event is AddBasicActivity) {
       await _mapAddBasicActivityToState(event, emit);
     }
   }
@@ -170,7 +177,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Future _mapAddBasicActivityToState(
-      AddBasiActivity event, Emitter<EditActivityState> emit) async {
+      AddBasicActivity event, Emitter<EditActivityState> emit) async {
     emit(UnstoredActivityState(
       event.basicActivityData.toActivity(timezone: tz.local.name, day: day),
       event.basicActivityData.toTimeInterval(startDate: day),

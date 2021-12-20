@@ -15,6 +15,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
@@ -55,6 +57,9 @@ void main() {
                 battery: FakeBattery(),
               ),
             ),
+            BlocProvider<TimerCubit>(
+              create: (context) => MockTimerCubit(),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,
@@ -71,6 +76,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
+    registerFallbackValues();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
     GetItInitializer()
       ..fileStorage = FakeFileStorage()

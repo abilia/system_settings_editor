@@ -58,7 +58,7 @@ void main() {
       defaultAlarmTypeSetting: alarmSilent,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -81,7 +81,7 @@ void main() {
   test('Initial state with basic activity starting at 00:01 has start time',
       () async {
     // Arrange
-    final basicActivity = BasicActivityDataItem.createNew(
+        final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: const Duration(minutes: 1),
     );
@@ -91,7 +91,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -129,7 +129,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -157,7 +157,7 @@ void main() {
       'Initial state with basic activity starting at 00:00 but with duration has start time',
       () async {
     // Arrange
-    final basicActivity = BasicActivityDataItem.createNew(
+        final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: Duration.zero,
       duration: const Duration(minutes: 30),
@@ -167,7 +167,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
       day: aDay,
     );
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,

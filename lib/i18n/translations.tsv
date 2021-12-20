@@ -118,6 +118,12 @@ timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 							
+### Timer related							
+start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
+newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
+setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
+startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
+							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt

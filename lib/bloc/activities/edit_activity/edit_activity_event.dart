@@ -18,10 +18,11 @@ class ReplaceActivity extends ActivityChangedEvent {
   List<Object> get props => [activity];
 }
 
-class AddBasiActivity extends ActivityChangedEvent {
+class AddBasicActivity extends ActivityChangedEvent {
   final BasicActivityDataItem basicActivityData;
 
-  const AddBasiActivity(this.basicActivityData);
+  const AddBasicActivity(this.basicActivityData);
+
   @override
   List<Object> get props => [basicActivityData];
 }

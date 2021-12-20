@@ -100,7 +100,9 @@ abstract class MemoplannerSettingsState extends Equatable {
   StartView get startView => StartView.values[settings.functionMenuStartView];
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
+
   ClockType get clockType => ClockType.values[settings.settingClockType];
+
   MonthCalendarType get monthCalendarType =>
       MonthCalendarType.values[settings.viewOptionsMonthCalendar];
 
@@ -110,11 +112,23 @@ abstract class MemoplannerSettingsState extends Equatable {
       ? NewActivityMode.editView
       : NewActivityMode.stepByStep;
 
+  bool get basicActivityOption =>
+      (addActivityType == NewActivityMode.editView &&
+          advancedActivityTemplate) ||
+      (addActivityType == NewActivityMode.stepByStep &&
+          settings.wizard.template);
+
+  bool get newActivityOption =>
+      addActivityType == NewActivityMode.editView ||
+      settings.wizard.title ||
+      settings.wizard.image;
+
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
 
   WeekColor get weekColor =>
       WeekColor.values[settings.weekDisplayShowColorMode];
+
   WeekColor get monthWeekColor =>
       WeekColor.values[settings.calendarMonthViewShowColors];
 
