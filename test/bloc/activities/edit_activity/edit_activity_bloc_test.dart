@@ -157,7 +157,7 @@ void main() {
       'Initial state with basic activity starting at 00:00 but with duration has start time',
       () async {
     // Arrange
-      final basicActivity = BasicActivityDataItem.createNew(
+    final basicActivity = BasicActivityDataItem.createNew(
       title: 'basic title',
       startTime: Duration.zero,
       duration: const Duration(minutes: 30),
