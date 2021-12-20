@@ -38,6 +38,12 @@ class _TimerWheelState extends State<TimerWheel> {
   bool sliderTemporaryLocked = false;
 
   @override
+  void dispose() {
+    minutesSelected.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final config = TimerWheelConfiguration(
