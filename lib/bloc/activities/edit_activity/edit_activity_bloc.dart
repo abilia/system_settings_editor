@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/timezone.dart' as tz;
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import 'package:seagull/repository/timezone.dart' as tz;
-
 part 'edit_activity_event.dart';
+
 part 'edit_activity_state.dart';
 
 class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
@@ -30,7 +30,9 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
                           ? activityDay.activity.endClock(activityDay.day)
                           : null),
               activityDay.day),
-        );
+        ) {
+    on<EditActivityEvent>(_mapEventToState, transformer: sequential());
+  }
 
   EditActivityBloc.newActivity({
     required this.day,
@@ -45,91 +47,113 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
             ),
             TimeInterval(startDate: day),
           ),
-        );
+        ) {
+    on<EditActivityEvent>(_mapEventToState, transformer: sequential());
+  }
 
-  @override
-  Stream<EditActivityState> mapEventToState(
+  Future _mapEventToState(
     EditActivityEvent event,
-  ) async* {
+    Emitter<EditActivityState> emit,
+  ) async {
     if (event is ReplaceActivity) {
-      yield state.copyWith(event.activity);
+      await _replaceActivity(event, emit);
     }
     if (event is ChangeDate) {
-      yield* _mapChangeDateToState(event);
+      await _mapChangeDateToState(event, emit);
     }
     if (event is AddOrRemoveReminder) {
-      yield* _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds);
+      await _mapAddOrRemoveReminderToState(event.reminder.inMilliseconds, emit);
     }
     if (event is ActivitySavedSuccessfully) {
-      final state = this.state;
-      yield StoredActivityState(
-        event.activitySaved,
-        state.timeInterval,
-        state is StoredActivityState
-            ? state.day
-            : event.activitySaved.startTime.onlyDays(),
-      );
+      await _activitySaved(event, emit);
     }
     if (event is ChangeTimeInterval) {
-      yield state.copyWith(
-        state.activity,
-        timeInterval: state.timeInterval.copyWith(
-          startTime: event.startTime,
-          endTime: event.endTime ?? event.startTime,
-        ),
-      );
+      await _changeTimeInterval(event, emit);
     }
     if (event is ImageSelected) {
-      yield state.copyWith(
-        state.activity.copyWith(
-          fileId: event.imageId,
-          icon: event.path,
-        ),
-      );
+      await _imageSelected(event, emit);
     }
     if (event is ChangeInfoItemType) {
-      yield* _mapChangeInfoItemTypeToState(event);
+      await _mapChangeInfoItemTypeToState(event, emit);
     }
     if (event is AddBasiActivity) {
-      yield* _mapAddBasicActivityToState(event);
+      await _mapAddBasicActivityToState(event, emit);
     }
   }
 
-  Stream<EditActivityState> _mapAddOrRemoveReminderToState(
-    int reminder,
-  ) async* {
+  Future _replaceActivity(
+      ReplaceActivity event, Emitter<EditActivityState> emit) async {
+    emit(state.copyWith(event.activity));
+  }
+
+  Future _activitySaved(
+      ActivitySavedSuccessfully event, Emitter<EditActivityState> emit) async {
+    final state = this.state;
+    emit(StoredActivityState(
+      event.activitySaved,
+      state.timeInterval,
+      state is StoredActivityState
+          ? state.day
+          : event.activitySaved.startTime.onlyDays(),
+    ));
+  }
+
+  Future _changeTimeInterval(
+      ChangeTimeInterval event, Emitter<EditActivityState> emit) async {
+    emit(state.copyWith(
+      state.activity,
+      timeInterval: state.timeInterval.copyWith(
+        startTime: event.startTime,
+        endTime: event.endTime ?? event.startTime,
+      ),
+    ));
+  }
+
+  Future _imageSelected(
+      ImageSelected event, Emitter<EditActivityState> emit) async {
+    emit(state.copyWith(
+      state.activity.copyWith(
+        fileId: event.imageId,
+        icon: event.path,
+      ),
+    ));
+  }
+
+  Future _mapAddOrRemoveReminderToState(
+      int reminder, Emitter<EditActivityState> emit) async {
     final reminders = state.activity.reminderBefore.toSet();
     if (!reminders.add(reminder)) {
       reminders.remove(reminder);
     }
-    yield state.copyWith(state.activity.copyWith(reminderBefore: reminders));
+    emit(state.copyWith(state.activity.copyWith(reminderBefore: reminders)));
   }
 
-  Stream<EditActivityState> _mapChangeDateToState(ChangeDate event) async* {
+  Future _mapChangeDateToState(
+      ChangeDate event, Emitter<EditActivityState> emit) async {
     final newTimeInterval = state.timeInterval.copyWith(startDate: event.date);
     if (state.activity.recurs.yearly) {
-      yield state.copyWith(
+      emit(state.copyWith(
         state.activity.copyWith(recurs: Recurs.yearly(event.date)),
         timeInterval: newTimeInterval,
-      );
+      ));
     } else if (state.activity.isRecurring &&
         state.activity.recurs.end.isDayBefore(event.date)) {
-      yield state.copyWith(
+      emit(state.copyWith(
         state.activity.copyWith(
           recurs: state.activity.recurs.changeEnd(event.date),
         ),
         timeInterval: newTimeInterval,
-      );
+      ));
     } else {
-      yield state.copyWith(
+      emit(state.copyWith(
         state.activity,
         timeInterval: newTimeInterval,
-      );
+      ));
     }
   }
 
-  Stream<EditActivityState> _mapChangeInfoItemTypeToState(
-      ChangeInfoItemType event) async* {
+  Future _mapChangeInfoItemTypeToState(
+      ChangeInfoItemType event, Emitter<EditActivityState> emit) async {
     final oldInfoItem = state.activity.infoItem;
     final oldInfoItemType = oldInfoItem.runtimeType;
     final newInfoType = event.infoItemType;
@@ -137,20 +161,20 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     final infoItems = Map.fromEntries(state.infoItems.entries);
     infoItems[oldInfoItemType] = oldInfoItem;
 
-    yield state.copyWith(
+    emit(state.copyWith(
       state.activity.copyWith(
         infoItem: infoItems[newInfoType] ?? _newInfoItem(newInfoType),
       ),
       infoItems: infoItems,
-    );
+    ));
   }
 
-  Stream<EditActivityState> _mapAddBasicActivityToState(
-      AddBasiActivity event) async* {
-    yield UnstoredActivityState(
+  Future _mapAddBasicActivityToState(
+      AddBasiActivity event, Emitter<EditActivityState> emit) async {
+    emit(UnstoredActivityState(
       event.basicActivityData.toActivity(timezone: tz.local.name, day: day),
       event.basicActivityData.toTimeInterval(startDate: day),
-    );
+    ));
   }
 
   InfoItem _newInfoItem(Type infoItemType) {
