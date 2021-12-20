@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:seagull/ui/all.dart';
 
-class TextActionButton extends StatelessWidget {
-  const TextActionButton(
+class _TextAndIconActionButton extends StatelessWidget {
+  const _TextAndIconActionButton(
     this.text,
     this.iconData, {
     Key? key,
@@ -36,8 +36,8 @@ class TextActionButton extends StatelessWidget {
       );
 }
 
-class TextActionButtonLight extends StatelessWidget {
-  const TextActionButtonLight(
+class TextAndOrIconActionButtonLight extends StatelessWidget {
+  const TextAndOrIconActionButtonLight(
     this.text,
     this.iconData, {
     Key? key,
@@ -52,11 +52,11 @@ class TextActionButtonLight extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: layout.go
-            ? ActionButtonLight(
+            ? IconActionButtonLight(
                 onPressed: onPressed,
                 child: Icon(iconData),
               )
-            : TextActionButton(
+            : _TextAndIconActionButton(
                 text,
                 iconData,
                 onPressed: onPressed,

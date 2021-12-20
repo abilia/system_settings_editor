@@ -14,7 +14,7 @@ class MenuButton extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            TextActionButtonLight(
+            TextAndOrIconActionButtonLight(
               Translator.of(context).translate.menu,
               AbiliaIcons.appMenu,
               onPressed: () => Navigator.of(context).push(

@@ -52,7 +52,7 @@ class AddPhotoButton extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<PermissionBloc, PermissionState>(
         builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, time) => ActionButtonLight(
+          builder: (context, time) => IconActionButtonLight(
             onPressed: () async {
               if (Config.isMP) {
                 if (permissionState

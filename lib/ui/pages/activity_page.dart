@@ -28,7 +28,7 @@ class ActivityPage extends StatelessWidget {
         return Scaffold(
           appBar: DayAppBar(
             day: ad.day,
-            leftAction: ActionButton(
+            leftAction: IconActionButton(
               key: TestKey.activityBackButton,
               onPressed: () => Navigator.of(context).maybePop(),
               child: const Icon(AbiliaIcons.navigationPrevious),
@@ -83,7 +83,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
             child: Row(
               children: <Widget>[
                 if (displayUncheckButton)
-                  TextActionButtonLight(
+                  TextAndOrIconActionButtonLight(
                     t.undo,
                     AbiliaIcons.handiUncheck,
                     key: TestKey.uncheckButton,
@@ -95,7 +95,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     },
                   ),
                 if (displayAlarmButton)
-                  TextActionButtonLight(
+                  TextAndOrIconActionButtonLight(
                     t.alarm,
                     activity.alarm.iconData(),
                     key: TestKey.editAlarm,
@@ -105,7 +105,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     ),
                   ),
                 if (displayDeleteButton)
-                  TextActionButtonLight(
+                  TextAndOrIconActionButtonLight(
                     t.delete,
                     AbiliaIcons.deleteAllClear,
                     onPressed: () => _deleteButtonPressed(
@@ -222,7 +222,7 @@ class EditActivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextActionButtonLight(
+    return TextAndOrIconActionButtonLight(
       Translator.of(context).translate.edit,
       AbiliaIcons.edit,
       onPressed: () async {

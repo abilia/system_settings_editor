@@ -9,7 +9,7 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) => TextActionButtonLight(
+        builder: (context, state) => TextAndOrIconActionButtonLight(
           Translator.of(context).translate.newActivityButton,
           AbiliaIcons.plus,
           onPressed: () {
