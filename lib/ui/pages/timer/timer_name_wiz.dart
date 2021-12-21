@@ -14,24 +14,25 @@ class TimerNameWiz extends StatelessWidget {
       ),
       body: Padding(
         padding: ordinaryPadding,
-        child: BlocBuilder<TimerWizardCubit, TimerWizardState>(
-            builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SubHeading(t.name),
-              TextField(
-                controller: TextEditingController(text: state.name),
-                textCapitalization: TextCapitalization.sentences,
-                style: Theme.of(context).textTheme.bodyText1,
-                autofocus: true,
-                onChanged: (text) =>
-                    context.read<TimerWizardCubit>().updateName(text),
-                maxLines: 1,
-              ),
-            ],
-          );
-        }),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SubHeading(t.name),
+            BlocBuilder<TimerWizardCubit, TimerWizardState>(
+              builder: (context, state) {
+                return TextField(
+                  controller: TextEditingController(text: state.name),
+                  textCapitalization: TextCapitalization.sentences,
+                  style: Theme.of(context).textTheme.bodyText1,
+                  autofocus: true,
+                  onChanged: (text) =>
+                      context.read<TimerWizardCubit>().updateName(text),
+                  maxLines: 1,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(

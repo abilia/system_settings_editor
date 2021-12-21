@@ -8,15 +8,15 @@ class TimerDurationWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<TimerWizardCubit, TimerWizardState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
+    return Scaffold(
+      appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BlocBuilder<TimerWizardCubit, TimerWizardState>(
+              builder: (context, state) => SizedBox(
                 width: 119.s,
                 child: TextField(
                   textAlign: TextAlign.center,
@@ -43,21 +43,21 @@ class TimerDurationWiz extends StatelessWidget {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: PreviousButton(
-            onPressed: () async {
-              await Navigator.of(context).maybePop();
-              context.read<TimerWizardCubit>().previous();
-            },
-          ),
-          forwardNavigationWidget: NextButton(
-            onPressed: () {
-              context.read<TimerWizardCubit>().next();
-            },
-          ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        backNavigationWidget: PreviousButton(
+          onPressed: () async {
+            await Navigator.of(context).maybePop();
+            context.read<TimerWizardCubit>().previous();
+          },
+        ),
+        forwardNavigationWidget: NextButton(
+          onPressed: () {
+            context.read<TimerWizardCubit>().next();
+          },
         ),
       ),
     );
