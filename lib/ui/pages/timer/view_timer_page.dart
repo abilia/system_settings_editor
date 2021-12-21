@@ -3,7 +3,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
 class ViewTimerPage extends StatelessWidget {
-  static const Duration duration = Duration(seconds: 1);
   final AbiliaTimer timer;
 
   const ViewTimerPage({Key? key, required this.timer}) : super(key: key);
@@ -16,7 +15,7 @@ class ViewTimerPage extends StatelessWidget {
     return Scaffold(
       appBar: DayAppBar(
         day: timer.startTime.onlyDays(),
-        leftAction: ActionButton(
+        leftAction: IconActionButton(
           key: TestKey.activityBackButton,
           onPressed: () => Navigator.of(context).maybePop(),
           child: const Icon(AbiliaIcons.navigationPrevious),
@@ -47,12 +46,13 @@ class ViewTimerPage extends StatelessWidget {
               Flexible(
                 flex: 298,
                 child: Column(
+                  // TODO: Replace with timer wheel thing widget
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
                       child: Text(timer.duration.toString(),
                           style: Theme.of(context).textTheme.headline5),
-                    ), // TODO: Replace with timer wheel thing widget
+                    ),
                   ],
                 ),
               ),
@@ -130,11 +130,11 @@ class _TimerBottomBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              ActionButtonLight(
+              IconActionButtonLight(
                 onPressed: () {}, // TODO: add pause/play functionality
                 child: const Icon(AbiliaIcons.pause),
               ),
-              ActionButtonLight(
+              IconActionButtonLight(
                 onPressed: () {}, // TODO: add delete functionality
                 child: const Icon(AbiliaIcons.deleteAllClear),
               ),
