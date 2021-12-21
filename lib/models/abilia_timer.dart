@@ -19,6 +19,8 @@ class AbiliaTimer extends Equatable {
     this.pausedAt = Duration.zero,
   });
 
+  bool get hasImage => fileId.isNotEmpty;
+
   Map<String, dynamic> toMapForDb() => {
         'id': id,
         'title': title,
