@@ -1,20 +1,20 @@
 import 'dart:async';
-import 'package:equatable/equatable.dart';
+
+import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'day_activities_event.dart';
 part 'day_activities_state.dart';
 
-class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
+class DayActivitiesCubit extends Cubit<DayActivitiesState> {
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _dayPickerSubscription;
 
-  DayActivitiesBloc({
+  DayActivitiesCubit({
     required this.activitiesBloc,
     required this.dayPickerBloc,
   }) : super(activitiesBloc.state is ActivitiesLoaded
@@ -24,32 +24,29 @@ class DayActivitiesBloc extends Bloc<DayActivitiesEvent, DayActivitiesState> {
                 dayPickerBloc.state.occasion,
               )
             : DayActivitiesUninitialized()) {
-    _activitiesSubscription = activitiesBloc.stream.listen((state) {
-      final activityState = state;
-      if (activityState is ActivitiesLoaded) {
-        add(UpdateActivities(activityState.activities));
-      }
-    });
-    _dayPickerSubscription = dayPickerBloc.stream
-        .listen((state) => add(UpdateDay(state.day, state.occasion)));
+    _activitiesSubscription = activitiesBloc.stream
+        .whereType<ActivitiesLoaded>()
+        .listen(_activitiesUpdated);
+    _dayPickerSubscription = dayPickerBloc.stream.listen(_dayUpdated);
   }
 
-  @override
-  Stream<DayActivitiesState> mapEventToState(DayActivitiesEvent event) async* {
-    if (event is UpdateDay) {
-      final activityState = activitiesBloc.state;
-      if (activityState is ActivitiesLoaded) {
-        yield _mapToState(
+  void _activitiesUpdated(final ActivitiesLoaded activityState) => emit(
+        _mapToState(
           activityState.activities,
-          event.dayFilter,
-          event.occasion,
-        );
-      }
-    } else if (event is UpdateActivities) {
-      yield _mapToState(
-        event.activities,
-        dayPickerBloc.state.day,
-        dayPickerBloc.state.occasion,
+          dayPickerBloc.state.day,
+          dayPickerBloc.state.occasion,
+        ),
+      );
+
+  void _dayUpdated(final DayPickerState state) {
+    final activityState = activitiesBloc.state;
+    if (activityState is ActivitiesLoaded) {
+      emit(
+        _mapToState(
+          activityState.activities,
+          state.day,
+          state.occasion,
+        ),
       );
     }
   }

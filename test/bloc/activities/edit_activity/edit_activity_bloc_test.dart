@@ -58,7 +58,7 @@ void main() {
       defaultAlarmTypeSetting: alarmSilent,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -91,7 +91,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -129,7 +129,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
     );
 
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,
@@ -167,7 +167,7 @@ void main() {
       defaultAlarmTypeSetting: noAlarm,
       day: aDay,
     );
-    editActivityBloc.add(AddBasiActivity(basicActivity));
+    editActivityBloc.add(AddBasicActivity(basicActivity));
     // Assert
     await expectLater(
       editActivityBloc.stream,

@@ -40,6 +40,8 @@ class MockGenericDb extends Mock implements GenericDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
+class MockTimerDb extends Mock implements TimerDb {}
+
 class MockScrollController extends Mock implements ScrollController {}
 
 class MockScrollPosition extends Mock implements ScrollPosition {}

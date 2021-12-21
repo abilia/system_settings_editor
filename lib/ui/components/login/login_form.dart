@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/repository/end_point.dart';
 import 'package:seagull/ui/all.dart';
 
 class LoginForm extends StatelessWidget {
@@ -148,16 +149,24 @@ class LoginButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Tts.data(
       data: translate.login,
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) => TextButton(
-          style: textButtonStyleGreen,
-          onPressed: state is! LoginLoading
-              ? () {
-                  BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed());
-                  FocusScope.of(context).requestFocus(FocusNode());
-                }
-              : null,
-          child: Text(translate.login),
+      child: BlocSelector<AuthenticationBloc, AuthenticationState, String>(
+        selector: (state) {
+          final endPoint = state.userRepository.baseUrl;
+          if (endPoint == prod) return '';
+          return ' (${RegExp(r'//(\w+)').firstMatch(endPoint)?.group(1) ?? ''})';
+        },
+        builder: (context, end) => BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) => TextButton(
+            style: textButtonStyleGreen,
+            onPressed: state is! LoginLoading
+                ? () {
+                    BlocProvider.of<LoginBloc>(context)
+                        .add(LoginButtonPressed());
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  }
+                : null,
+            child: Text('${translate.login}$end'),
+          ),
         ),
       ),
     );

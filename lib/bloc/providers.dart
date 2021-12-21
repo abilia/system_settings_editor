@@ -89,6 +89,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 pushBloc: context.read<PushBloc>(),
               )..add(LoadActivities()),
             ),
+            BlocProvider<TimerCubit>(
+              create: (context) => TimerCubit(
+                timerDb: GetIt.I<TimerDb>(),
+              )..loadTimers(),
+            ),
             BlocProvider<WeekCalendarBloc>(
               create: (context) => WeekCalendarBloc(
                 activitiesBloc: context.read<ActivitiesBloc>(),
@@ -139,16 +144,16 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<DayActivitiesBloc>(
-              create: (context) => DayActivitiesBloc(
+            BlocProvider<DayActivitiesCubit>(
+              create: (context) => DayActivitiesCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
               ),
             ),
-            BlocProvider<ActivitiesOccasionBloc>(
-              create: (context) => ActivitiesOccasionBloc(
+            BlocProvider<ActivitiesOccasionCubit>(
+              create: (context) => ActivitiesOccasionCubit(
                 clockBloc: context.read<ClockBloc>(),
-                dayActivitiesBloc: context.read<DayActivitiesBloc>(),
+                dayActivitiesCubit: context.read<DayActivitiesCubit>(),
               ),
             ),
             BlocProvider<AlarmCubit>(
@@ -302,11 +307,11 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<DayPickerBloc>.value(
           value: blocContext.read<DayPickerBloc>(),
         ),
-        BlocProvider<DayActivitiesBloc>.value(
-          value: blocContext.read<DayActivitiesBloc>(),
+        BlocProvider<DayActivitiesCubit>.value(
+          value: blocContext.read<DayActivitiesCubit>(),
         ),
-        BlocProvider<ActivitiesOccasionBloc>.value(
-          value: blocContext.read<ActivitiesOccasionBloc>(),
+        BlocProvider<ActivitiesOccasionCubit>.value(
+          value: blocContext.read<ActivitiesOccasionCubit>(),
         ),
         BlocProvider<AlarmCubit>.value(
           value: blocContext.read<AlarmCubit>(),
@@ -325,6 +330,9 @@ class CopiedAuthProviders extends StatelessWidget {
         ),
         BlocProvider<TimepillarCubit>.value(
           value: blocContext.read<TimepillarCubit>(),
+        ),
+        BlocProvider<TimerCubit>.value(
+          value: blocContext.read<TimerCubit>(),
         ),
         if (Config.isMP)
           BlocProvider<WakeLockCubit>.value(

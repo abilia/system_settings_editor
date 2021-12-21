@@ -196,6 +196,8 @@ abstract class Translated {
 
   final String timeNightTts = '%s at night';
 
+  final String timerInvalidDuration = 'Duration can not be zero.';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -214,7 +216,7 @@ abstract class Translated {
 
   final String check = 'Check';
 
-  final String uncheck = 'Undo';
+  final String undo = 'Undo';
 
   final String fromBasicActivity = 'From Basic Activity';
 
@@ -247,6 +249,14 @@ abstract class Translated {
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
+  final String start = 'Start';
+
+  final String newTimer = 'New timer';
+
+  final String setDuration = 'Set duration';
+
+  final String startTimer = 'Start timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -264,6 +274,8 @@ abstract class Translated {
   final String ok = 'OK';
 
   final String record = 'Record';
+
+  final String newActivityButton = 'New';
 
   final String newActivityChoice = 'New';
 
@@ -1053,6 +1065,9 @@ class SV extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
+  final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -1080,7 +1095,7 @@ class SV extends Translated {
   final String check = 'Kvittera';
 
   @override
-  final String uncheck = 'Ångra';
+  final String undo = 'Ångra';
 
   @override
   final String fromBasicActivity = 'Från basaktivitet';
@@ -1131,6 +1146,18 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
+  final String start = 'Starta';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Ange varaktighet';
+
+  @override
+  final String startTimer = 'Starta timer';
+
+  @override
   final String menu = 'Meny';
 
   @override
@@ -1156,6 +1183,9 @@ class SV extends Translated {
 
   @override
   final String record = 'Spela in';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -2193,6 +2223,9 @@ class DA extends Translated {
   final String timeNightTts = '%s om natten';
 
   @override
+  final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -2220,7 +2253,7 @@ class DA extends Translated {
   final String check = 'Kvittere';
 
   @override
-  final String uncheck = 'Fortryd';
+  final String undo = 'Fortryd';
 
   @override
   final String fromBasicActivity = 'Fra standardaktivitet';
@@ -2271,6 +2304,18 @@ class DA extends Translated {
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
+  final String start = 'Start';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Indstille varighed';
+
+  @override
+  final String startTimer = 'Start timeren';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -2296,6 +2341,9 @@ class DA extends Translated {
 
   @override
   final String record = 'Indspil';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -3335,6 +3383,9 @@ class NL extends Translated {
   final String timeNightTts = "%s 's nachts";
 
   @override
+  final String timerInvalidDuration = 'De duur kan niet nul zijn.';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -3362,7 +3413,7 @@ class NL extends Translated {
   final String check = 'Afvinken';
 
   @override
-  final String uncheck = 'Ongedaan maken';
+  final String undo = 'Ongedaan maken';
 
   @override
   final String fromBasicActivity = 'Uit standaardactiviteit';
@@ -3411,6 +3462,18 @@ class NL extends Translated {
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
 
   @override
+  final String start = 'Begin';
+
+  @override
+  final String newTimer = 'Nieuwe timer';
+
+  @override
+  final String setDuration = 'Duur instellen';
+
+  @override
+  final String startTimer = 'Start timer';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3436,6 +3499,9 @@ class NL extends Translated {
 
   @override
   final String record = 'Opnemen';
+
+  @override
+  final String newActivityButton = 'Nieuw';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -4476,6 +4542,9 @@ class FI extends Translated {
   final String timeNightTts = '%s yöllä';
 
   @override
+  final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -4503,7 +4572,7 @@ class FI extends Translated {
   final String check = 'Tarkista';
 
   @override
-  final String uncheck = 'Peruuta';
+  final String undo = 'Peruuta';
 
   @override
   final String fromBasicActivity = 'Perusaktiviteetista';
@@ -4553,6 +4622,18 @@ class FI extends Translated {
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
 
   @override
+  final String start = 'Alkaa';
+
+  @override
+  final String newTimer = 'Uusi ajastin';
+
+  @override
+  final String setDuration = 'Aseta kesto';
+
+  @override
+  final String startTimer = 'Käynnistysajastin';
+
+  @override
   final String menu = 'Valikko';
 
   @override
@@ -4578,6 +4659,9 @@ class FI extends Translated {
 
   @override
   final String record = 'Nauhoita';
+
+  @override
+  final String newActivityButton = 'Uusi';
 
   @override
   final String newActivityChoice = 'Uusi';
@@ -5620,6 +5704,9 @@ class DE extends Translated {
   final String timeNightTts = '%s abends';
 
   @override
+  final String timerInvalidDuration = 'Dauer kann nicht Null sein';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -5647,7 +5734,7 @@ class DE extends Translated {
   final String check = 'Kontrollieren';
 
   @override
-  final String uncheck = 'Rückgängig';
+  final String undo = 'Rückgängig';
 
   @override
   final String fromBasicActivity = 'Von Standardaktivität';
@@ -5697,6 +5784,18 @@ class DE extends Translated {
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
+  final String start = 'Anfang';
+
+  @override
+  final String newTimer = 'Neuer Timer';
+
+  @override
+  final String setDuration = 'Dauer einstellen';
+
+  @override
+  final String startTimer = 'Timer starten';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -5722,6 +5821,9 @@ class DE extends Translated {
 
   @override
   final String record = 'Aufnahme';
+
+  @override
+  final String newActivityButton = 'Neu';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -6764,6 +6866,9 @@ class NB extends Translated {
   final String timeNightTts = '%s på natten';
 
   @override
+  final String timerInvalidDuration = 'Varigheten kan ikke være null.';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -6791,7 +6896,7 @@ class NB extends Translated {
   final String check = 'Kvittere';
 
   @override
-  final String uncheck = 'Angre';
+  final String undo = 'Angre';
 
   @override
   final String fromBasicActivity = 'Fra standardaktivitet';
@@ -6841,6 +6946,18 @@ class NB extends Translated {
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
 
   @override
+  final String start = 'Start';
+
+  @override
+  final String newTimer = 'Ny timer';
+
+  @override
+  final String setDuration = 'Angi varighet';
+
+  @override
+  final String startTimer = 'Start timer';
+
+  @override
   final String menu = 'Meny';
 
   @override
@@ -6866,6 +6983,9 @@ class NB extends Translated {
 
   @override
   final String record = 'Spill inn';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';

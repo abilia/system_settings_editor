@@ -18,7 +18,7 @@ import '../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2111, 11, 11);
-  late MockActivitiesOccasionBloc activitiesOccasionBlocMock;
+  late MockActivitiesOccasionCubit activitiesOccasionCubitMock;
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
@@ -28,8 +28,8 @@ void main() {
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
               create: (context) => FakeAuthenticationBloc()),
-          BlocProvider<ActivitiesOccasionBloc>(
-            create: (context) => activitiesOccasionBlocMock,
+          BlocProvider<ActivitiesOccasionCubit>(
+            create: (context) => activitiesOccasionCubitMock,
           ),
           BlocProvider<ActivitiesBloc>(
             create: (context) => FakeActivitiesBloc(),
@@ -61,7 +61,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
-    activitiesOccasionBlocMock = MockActivitiesOccasionBloc();
+    activitiesOccasionCubitMock = MockActivitiesOccasionCubit();
 
     final allDayActivities = [
       Activity.createNew(
@@ -89,8 +89,8 @@ void main() {
       occasion: Occasion.current,
     );
 
-    when(() => activitiesOccasionBlocMock.state).thenReturn(expected);
-    when(() => activitiesOccasionBlocMock.stream)
+    when(() => activitiesOccasionCubitMock.state).thenReturn(expected);
+    when(() => activitiesOccasionCubitMock.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

@@ -373,7 +373,7 @@ class _LibraryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
-      child: ActionButtonDark(
+      child: IconActionButtonDark(
         onPressed: onPressed,
         child: Icon(
           AbiliaIcons.showText,

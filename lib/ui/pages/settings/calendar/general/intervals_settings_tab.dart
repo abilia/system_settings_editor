@@ -46,7 +46,7 @@ class IntervalStepper extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ActionButtonDark(
+                  IconActionButtonDark(
                     key: leftStepKey(part),
                     onPressed: state.dayParts.atMin(part)
                         ? null
@@ -65,7 +65,7 @@ class IntervalStepper extends StatelessWidget {
                       style: abiliaTextTheme.headline5,
                     ),
                   ),
-                  ActionButtonDark(
+                  IconActionButtonDark(
                     key: rightStepKey(part),
                     onPressed: state.dayParts.atMax(part)
                         ? null

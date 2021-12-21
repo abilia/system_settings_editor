@@ -14,7 +14,9 @@ class MenuButton extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            ActionButtonLight(
+            TextAndOrIconActionButtonLight(
+              Translator.of(context).translate.menu,
+              AbiliaIcons.appMenu,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => CopiedAuthProviders(
@@ -24,7 +26,6 @@ class MenuButton extends StatelessWidget {
                   settings: const RouteSettings(name: 'MenuPage'),
                 ),
               ),
-              child: const Icon(AbiliaIcons.appMenu),
             ),
             if (importantPermissionMissing)
               Positioned(

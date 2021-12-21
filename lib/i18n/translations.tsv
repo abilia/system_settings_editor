@@ -89,6 +89,7 @@ timeForeNoonTts	%s in the mid-morning	%s på förmiddagen	%s om formiddagen	%s h
 timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s 's middags	%s iltapäivällä	%s nachmittags	%s på ettermiddagen
 timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s illalla	%s nachmittags	%s på kvelden
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
+timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
 							
 ### Activity related							
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
@@ -100,7 +101,7 @@ noActivities	No activities today	Inga aktiviteter idag	Ingen aktiviteter i dag	G
 left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
-uncheck	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
+undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
 fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
 basicActivities	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
@@ -117,6 +118,12 @@ timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 							
+### Timer related							
+start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
+newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
+setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
+startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
+							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
@@ -129,6 +136,7 @@ ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 							
 ### Edit activity							
+newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
