@@ -35,7 +35,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                 langCode: Localizations.localeOf(context).toLanguageTag(),
               ),
               leftAction: memoSettingsState.weekCaptionShowBrowseButtons
-                  ? ActionButton(
+                  ? IconActionButton(
                       onPressed: () =>
                           BlocProvider.of<WeekCalendarBloc>(context)
                               .add(PreviousWeek()),
@@ -51,7 +51,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                     )
                   : null,
               rightAction: memoSettingsState.weekCaptionShowBrowseButtons
-                  ? ActionButton(
+                  ? IconActionButton(
                       onPressed: () =>
                           BlocProvider.of<WeekCalendarBloc>(context)
                               .add(NextWeek()),

@@ -13,7 +13,7 @@ class _EyeButton extends StatelessWidget {
       elevation: 3,
       shadowColor: AbiliaColors.black,
       borderRadius: borderRadius,
-      child: ActionButtonBlack(
+      child: IconActionButtonBlack(
         onPressed: onPressed,
         child: const Icon(AbiliaIcons.show),
       ),

@@ -22,7 +22,7 @@ class CheckActivityConfirmDialog extends StatelessWidget {
             : translate.checkActivityQuestion);
     return ViewDialog(
       heading: AppBarHeading(
-        text: signedOff ? translate.uncheck : translate.check,
+        text: signedOff ? translate.undo : translate.check,
         iconData: signedOff ? AbiliaIcons.handiUncheck : AbiliaIcons.handiCheck,
       ),
       body: Tts(

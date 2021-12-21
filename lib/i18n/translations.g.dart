@@ -216,7 +216,7 @@ abstract class Translated {
 
   final String check = 'Check';
 
-  final String uncheck = 'Undo';
+  final String undo = 'Undo';
 
   final String fromBasicActivity = 'From Basic Activity';
 
@@ -274,6 +274,8 @@ abstract class Translated {
   final String ok = 'OK';
 
   final String record = 'Record';
+
+  final String newActivityButton = 'New';
 
   final String newActivityChoice = 'New';
 
@@ -1093,7 +1095,7 @@ class SV extends Translated {
   final String check = 'Kvittera';
 
   @override
-  final String uncheck = 'Ångra';
+  final String undo = 'Ångra';
 
   @override
   final String fromBasicActivity = 'Från basaktivitet';
@@ -1181,6 +1183,9 @@ class SV extends Translated {
 
   @override
   final String record = 'Spela in';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -2248,7 +2253,7 @@ class DA extends Translated {
   final String check = 'Kvittere';
 
   @override
-  final String uncheck = 'Fortryd';
+  final String undo = 'Fortryd';
 
   @override
   final String fromBasicActivity = 'Fra standardaktivitet';
@@ -2336,6 +2341,9 @@ class DA extends Translated {
 
   @override
   final String record = 'Indspil';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
@@ -3405,7 +3413,7 @@ class NL extends Translated {
   final String check = 'Afvinken';
 
   @override
-  final String uncheck = 'Ongedaan maken';
+  final String undo = 'Ongedaan maken';
 
   @override
   final String fromBasicActivity = 'Uit standaardactiviteit';
@@ -3491,6 +3499,9 @@ class NL extends Translated {
 
   @override
   final String record = 'Opnemen';
+
+  @override
+  final String newActivityButton = 'Nieuw';
 
   @override
   final String newActivityChoice = 'Nieuw';
@@ -4561,7 +4572,7 @@ class FI extends Translated {
   final String check = 'Tarkista';
 
   @override
-  final String uncheck = 'Peruuta';
+  final String undo = 'Peruuta';
 
   @override
   final String fromBasicActivity = 'Perusaktiviteetista';
@@ -4648,6 +4659,9 @@ class FI extends Translated {
 
   @override
   final String record = 'Nauhoita';
+
+  @override
+  final String newActivityButton = 'Uusi';
 
   @override
   final String newActivityChoice = 'Uusi';
@@ -5720,7 +5734,7 @@ class DE extends Translated {
   final String check = 'Kontrollieren';
 
   @override
-  final String uncheck = 'Rückgängig';
+  final String undo = 'Rückgängig';
 
   @override
   final String fromBasicActivity = 'Von Standardaktivität';
@@ -5807,6 +5821,9 @@ class DE extends Translated {
 
   @override
   final String record = 'Aufnahme';
+
+  @override
+  final String newActivityButton = 'Neu';
 
   @override
   final String newActivityChoice = 'Neu';
@@ -6879,7 +6896,7 @@ class NB extends Translated {
   final String check = 'Kvittere';
 
   @override
-  final String uncheck = 'Angre';
+  final String undo = 'Angre';
 
   @override
   final String fromBasicActivity = 'Fra standardaktivitet';
@@ -6966,6 +6983,9 @@ class NB extends Translated {
 
   @override
   final String record = 'Spill inn';
+
+  @override
+  final String newActivityButton = 'Ny';
 
   @override
   final String newActivityChoice = 'Helt ny';
