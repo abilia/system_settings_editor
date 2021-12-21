@@ -746,7 +746,7 @@ void main() {
 
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerNameAndImageWiz), findsOneWidget);
+        expect(find.byType(TimerNameWiz), findsOneWidget);
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();

@@ -123,6 +123,7 @@ start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
+enterNameForTimer	Enter name for timer	Ange namn för timer					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -249,7 +250,7 @@ connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
 screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
-
+							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender

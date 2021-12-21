@@ -1,3 +1,5 @@
 export 'timer_duration_wiz.dart';
 export 'timer_wizard_page.dart';
-export 'timer_name_and_image_wiz.dart';
+export 'timer_name_wiz.dart';
+export 'timer_start_wiz.dart';
+export 'edit_timer_widgets.dart';
