@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
 
 class TimerNameAndPictureWidget extends StatelessWidget {
   const TimerNameAndPictureWidget({Key? key}) : super(key: key);
@@ -12,11 +11,7 @@ class TimerNameAndPictureWidget extends StatelessWidget {
       builder: (context, state) {
         return NameAndPictureWidget(
           selectedImage: state.image,
-          text: state.name.isNotEmpty
-              ? state.name
-              : state.duration.toDurationString(
-                  Translator.of(context).translate,
-                  shortMin: false),
+          text: state.name,
           inputFormatters: [LengthLimitingTextInputFormatter(50)],
           onImageSelected: (selectedImage) {
             BlocProvider.of<TimerWizardCubit>(context)

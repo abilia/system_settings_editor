@@ -21,7 +21,6 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
             steps: UnmodifiableListView(
               [
                 TimerWizardStep.duration,
-                TimerWizardStep.name,
                 TimerWizardStep.start,
               ],
             ),
@@ -62,6 +61,5 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
 
 enum TimerWizardStep {
   duration,
-  name,
   start,
 }

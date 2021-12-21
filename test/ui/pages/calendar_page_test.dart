@@ -746,7 +746,7 @@ void main() {
 
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerNameWiz), findsOneWidget);
+        expect(find.byType(TimerStartWiz), findsOneWidget);
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
@@ -756,7 +756,10 @@ void main() {
             verify(() => mockTimerDb.insert(captureAny())).captured;
         final savedTimer = captured.single.single as AbiliaTimer;
         expect(savedTimer.duration, 20.minutes());
-        expect(savedTimer.title, '20');
+        expect(
+            savedTimer.title,
+            const Duration(minutes: 20)
+                .toDurationString(translate, shortMin: false));
         expect(savedTimer.paused, false);
         expect(savedTimer.pausedAt, Duration.zero);
       });

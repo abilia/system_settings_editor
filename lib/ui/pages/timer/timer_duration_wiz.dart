@@ -36,6 +36,9 @@ class TimerDurationWiz extends StatelessWidget {
                     );
                     if (duration != null) {
                       context.read<TimerWizardCubit>().updateDuration(duration);
+                      context.read<TimerWizardCubit>().updateName(duration
+                          .toDurationString(Translator.of(context).translate,
+                              shortMin: false));
                     }
                   },
                 ),

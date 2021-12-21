@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
 
 class TimerNameWiz extends StatelessWidget {
   const TimerNameWiz({Key? key}) : super(key: key);
@@ -22,12 +21,7 @@ class TimerNameWiz extends StatelessWidget {
             children: <Widget>[
               SubHeading(t.name),
               TextField(
-                controller: TextEditingController(
-                    text: state.name.isNotEmpty
-                        ? state.name
-                        : state.duration.toDurationString(
-                            Translator.of(context).translate,
-                            shortMin: false)),
+                controller: TextEditingController(text: state.name),
                 textCapitalization: TextCapitalization.sentences,
                 style: Theme.of(context).textTheme.bodyText1,
                 autofocus: true,
