@@ -32,7 +32,7 @@ class ToggleAlarmButtonActive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionButton(
+    return IconActionButton(
       style: actionButtonStyleRed,
       onPressed: () => context.read<GenericBloc>().add(
             GenericUpdated(
@@ -56,7 +56,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionButtonBlack(
+    return IconActionButtonBlack(
       onPressed: () {
         showViewDialog(
           context: context,

@@ -9,7 +9,9 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) => ActionButtonLight(
+        builder: (context, state) => TextAndOrIconActionButtonLight(
+          Translator.of(context).translate.newActivityButton,
+          AbiliaIcons.plus,
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -20,7 +22,6 @@ class AddButton extends StatelessWidget {
               ),
             );
           },
-          child: const Icon(AbiliaIcons.plus),
         ),
       );
 }
