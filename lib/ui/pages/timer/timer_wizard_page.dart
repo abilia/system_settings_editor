@@ -26,8 +26,8 @@ class TimerWizardPage extends StatelessWidget {
     switch (step) {
       case TimerWizardStep.duration:
         return const TimerDurationWiz();
-      case TimerWizardStep.nameAndImage:
-        return const TimerNameAndImageWiz();
+      case TimerWizardStep.start:
+        return const TimerStartWiz();
     }
   }
 }
