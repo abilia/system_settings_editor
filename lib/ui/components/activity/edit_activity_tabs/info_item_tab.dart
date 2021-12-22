@@ -13,7 +13,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final translate = Translator.of(context).translate;
         final activity = state.activity;
@@ -30,8 +30,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
             ),
           );
           if (result != null) {
-            BlocProvider.of<EditActivityBloc>(context)
-                .add(ChangeInfoItemType(result));
+            context.read<EditActivityCubit>().changeInfoItemType(result);
           }
         }
 
@@ -111,9 +110,9 @@ class EditChecklistWidget extends StatelessWidget {
                 );
                 if (selectedChecklist != null &&
                     selectedChecklist != checklist) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(
-                          activity.copyWith(infoItem: selectedChecklist)));
+                  context.read<EditActivityCubit>().replaceActivity(
+                        activity.copyWith(infoItem: selectedChecklist),
+                      );
                 }
               },
             )
@@ -217,13 +216,11 @@ class EditChecklistWidget extends StatelessWidget {
         );
       }
 
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(questions: questionMap.values),
-          ),
-        ),
-      );
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: checklist.copyWith(questions: questionMap.values),
+            ),
+          );
     }
   }
 
@@ -240,23 +237,21 @@ class EditChecklistWidget extends StatelessWidget {
     if (result != null && result.isNotEmpty) {
       final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(
-              questions: [
-                ...checklist.questions,
-                Question(
-                  id: uniqueId,
-                  name: result.name,
-                  fileId: result.image.id,
-                  image: result.image.path,
-                ),
-              ],
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: checklist.copyWith(
+                questions: [
+                  ...checklist.questions,
+                  Question(
+                    id: uniqueId,
+                    name: result.name,
+                    fileId: result.image.id,
+                    image: result.image.path,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-      );
+          );
     }
   }
 }
@@ -299,11 +294,11 @@ class EditNoteWidget extends StatelessWidget {
                   ),
                 );
                 if (result != null && result != infoItem.text) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(activity.copyWith(
-                      infoItem: NoteInfoItem(result),
-                    )),
-                  );
+                  context.read<EditActivityCubit>().replaceActivity(
+                        activity.copyWith(
+                          infoItem: NoteInfoItem(result),
+                        ),
+                      );
                 }
               },
             )
@@ -354,13 +349,11 @@ class EditNoteWidget extends StatelessWidget {
       ),
     );
     if (result != null && result != infoItem.text) {
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: NoteInfoItem(result),
-          ),
-        ),
-      );
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: NoteInfoItem(result),
+            ),
+          );
     }
   }
 }

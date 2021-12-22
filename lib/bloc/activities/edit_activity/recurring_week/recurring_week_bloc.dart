@@ -11,13 +11,13 @@ part 'recurring_week_event.dart';
 part 'recurring_week_state.dart';
 
 class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
-  late final StreamSubscription _editActivityBlocSubscription,
+  late final StreamSubscription _editActivityCubitSubscription,
       _selfSubscription;
 
-  RecurringWeekBloc(EditActivityBloc editActivityBloc)
-      : super(RecurringWeekState.initial(editActivityBloc.state)) {
-    _editActivityBlocSubscription =
-        editActivityBloc.stream.listen((editActivityState) {
+  RecurringWeekBloc(EditActivityCubit editActivityCubit)
+      : super(RecurringWeekState.initial(editActivityCubit.state)) {
+    _editActivityCubitSubscription =
+        editActivityCubit.stream.listen((editActivityState) {
       final startDate = editActivityState.timeInterval.startDate;
       final endDate = editActivityState.activity.recurs.end;
       if (editActivityState.activity.recurs.weekly) {
@@ -31,11 +31,9 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
     });
 
     _selfSubscription = stream.listen((recurringWeekState) {
-      editActivityBloc.add(
-        ReplaceActivity(
-          editActivityBloc.state.activity.copyWith(
-            recurs: recurringWeekState.recurs,
-          ),
+      editActivityCubit.replaceActivity(
+        editActivityCubit.state.activity.copyWith(
+          recurs: recurringWeekState.recurs,
         ),
       );
     });
@@ -68,7 +66,7 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
 
   @override
   Future<void> close() async {
-    await _editActivityBlocSubscription.cancel();
+    await _editActivityCubitSubscription.cancel();
     await _selfSubscription.cancel();
     return super.close();
   }

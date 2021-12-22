@@ -7,7 +7,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     final _scrollController = ScrollController();
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
@@ -103,7 +103,7 @@ class Weekly extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RecurringWeekBloc(context.read<EditActivityBloc>()),
+      create: (context) => RecurringWeekBloc(context.read<EditActivityCubit>()),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

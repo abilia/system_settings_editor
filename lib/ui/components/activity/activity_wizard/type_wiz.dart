@@ -24,21 +24,20 @@ class _TypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, setting) {
-        return BlocBuilder<EditActivityBloc, EditActivityState>(
+        return BlocBuilder<EditActivityCubit, EditActivityState>(
           buildWhen: (previous, current) =>
               previous.activity.fullDay != current.activity.fullDay ||
               previous.activity.category != current.activity.category,
           builder: (typeContext, state) {
             const _fullDayValue = -1;
             final activity = state.activity;
-            _onChange(int? value) => context.read<EditActivityBloc>().add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      fullDay: value == _fullDayValue,
-                      category: value?.isNegative == true ? null : value,
-                    ),
-                  ),
-                );
+            _onChange(int? value) =>
+                context.read<EditActivityCubit>().replaceActivity(
+                      activity.copyWith(
+                        fullDay: value == _fullDayValue,
+                        category: value?.isNegative == true ? null : value,
+                      ),
+                    );
             final groupValue =
                 activity.fullDay ? _fullDayValue : activity.category;
 

@@ -104,8 +104,8 @@ class CreateNewPage extends StatelessWidget {
           blocContext: context,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<EditActivityBloc>(
-                create: (_) => EditActivityBloc.newActivity(
+              BlocProvider<EditActivityCubit>(
+                create: (_) => EditActivityCubit.newActivity(
                   day: context.read<DayPickerBloc>().state.day,
                   defaultAlarmTypeSetting: context
                       .read<MemoplannerSettingBloc>()
@@ -117,7 +117,7 @@ class CreateNewPage extends StatelessWidget {
               BlocProvider(
                 create: (context) => ActivityWizardCubit.newActivity(
                     activitiesBloc: context.read<ActivitiesBloc>(),
-                    editActivityBloc: context.read<EditActivityBloc>(),
+                    editActivityCubit: context.read<EditActivityCubit>(),
                     clockBloc: context.read<ClockBloc>(),
                     settings: context.read<MemoplannerSettingBloc>().state,
                     onBack: () async {

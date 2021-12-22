@@ -14,7 +14,7 @@ void main() {
 
   test('Initial state', () {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'title',
@@ -23,9 +23,9 @@ void main() {
         day,
       ),
     );
-    final initialS = editActivityBloc.state;
+    final initialS = editActivityCubit.state;
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
 
     // Act // Assert
     expect(
@@ -45,7 +45,7 @@ void main() {
 
   test('Adding and removing days', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -55,7 +55,7 @@ void main() {
       ),
     );
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
@@ -72,7 +72,7 @@ void main() {
               DateTime.monday,
             }),
             false,
-            editActivityBloc.state.timeInterval.startDate,
+            editActivityCubit.state.timeInterval.startDate,
             Recurs.noEndDate,
           ),
           RecurringWeekState(
@@ -82,7 +82,7 @@ void main() {
               DateTime.wednesday,
             }),
             false,
-            editActivityBloc.state.timeInterval.startDate,
+            editActivityCubit.state.timeInterval.startDate,
             Recurs.noEndDate,
           ),
           RecurringWeekState(
@@ -91,7 +91,7 @@ void main() {
               DateTime.wednesday,
             }),
             false,
-            editActivityBloc.state.timeInterval.startDate,
+            editActivityCubit.state.timeInterval.startDate,
             Recurs.noEndDate,
           ),
         ],
@@ -99,9 +99,9 @@ void main() {
     );
   });
 
-  test('Adding and removing days on EditActivityBloc', () async {
+  test('Adding and removing days on editActivityCubit', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -110,9 +110,9 @@ void main() {
         day,
       ),
     );
-    final initialS = editActivityBloc.state;
+    final initialS = editActivityCubit.state;
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
@@ -120,7 +120,7 @@ void main() {
     recurringWeekBloc.add(AddOrRemoveWeekday(day.weekday));
 
     await expectLater(
-      editActivityBloc.stream,
+      editActivityCubit.stream,
       emitsInOrder([
         initialS.copyWith(
           initialS.activity.copyWith(
@@ -159,7 +159,7 @@ void main() {
 
   test('Changing to every other week ', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -169,7 +169,7 @@ void main() {
       ),
     );
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
@@ -185,7 +185,7 @@ void main() {
               DateTime.monday,
             }),
             false,
-            editActivityBloc.state.timeInterval.startDate,
+            editActivityCubit.state.timeInterval.startDate,
             Recurs.noEndDate,
           ),
           RecurringWeekState(
@@ -194,7 +194,7 @@ void main() {
               DateTime.monday,
             }),
             true,
-            editActivityBloc.state.timeInterval.startDate,
+            editActivityCubit.state.timeInterval.startDate,
             Recurs.noEndDate,
           ),
         ],
@@ -202,9 +202,9 @@ void main() {
     );
   });
 
-  test('Changing to every other week on EditActivityBloc', () async {
+  test('Changing to every other week on editActivityCubit', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -213,16 +213,16 @@ void main() {
         day,
       ),
     );
-    final initialS = editActivityBloc.state;
+    final initialS = editActivityCubit.state;
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
     recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
 
     await expectLater(
-      editActivityBloc.stream,
+      editActivityCubit.stream,
       emitsInOrder([
         initialS.copyWith(
           initialS.activity.copyWith(
@@ -250,7 +250,7 @@ void main() {
 
   test('Changing to every other week on even weeks', () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -260,14 +260,14 @@ void main() {
       ),
     );
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
     final newStartDate = day.add(7.days());
     final noEnd = DateTime.fromMillisecondsSinceEpoch(Recurs.noEnd);
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
     recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
-    editActivityBloc.add(ChangeDate(newStartDate));
+    editActivityCubit.changeDate(newStartDate);
 
     await expectLater(
       recurringWeekBloc.stream,
@@ -305,10 +305,10 @@ void main() {
     );
   });
 
-  test('Changing to every other week on even week on EditActivityBloc',
+  test('Changing to every other week on even week on editActivityCubit',
       () async {
     // Arrange
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityCubit = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -317,9 +317,9 @@ void main() {
         day,
       ),
     );
-    final initialState = editActivityBloc.state;
+    final initialState = editActivityCubit.state;
 
-    final recurringWeekBloc = RecurringWeekBloc(editActivityBloc);
+    final recurringWeekBloc = RecurringWeekBloc(editActivityCubit);
     final activity2 = initialState.activity.copyWith(
       recurs: Recurs.weeklyOnDays([day.weekday, DateTime.monday]),
     );
@@ -334,15 +334,20 @@ void main() {
 
     // Act
     recurringWeekBloc.add(const AddOrRemoveWeekday(DateTime.monday));
+    await expectLater(
+      editActivityCubit.stream,
+      emits(
+        initialState.copyWith(activity2),
+      ),
+    );
     recurringWeekBloc.add(const ChangeEveryOtherWeek(true));
 
     // Assert
     await expectLater(
-      editActivityBloc.stream,
-      emitsInOrder([
-        initialState.copyWith(activity2),
+      editActivityCubit.stream,
+      emits(
         initialState.copyWith(activity3),
-      ]),
+      ),
     );
 
     // Arrange
@@ -360,15 +365,14 @@ void main() {
     );
 
     // Act
-    editActivityBloc.add(ChangeDate(newStartDay));
+    editActivityCubit.changeDate(newStartDay);
 
     // Assert
     await expectLater(
-      editActivityBloc.stream,
-      emitsInOrder([
-        initialState.copyWith(activity3, timeInterval: newTimeInterval),
+      editActivityCubit.stream,
+      emits(
         initialState.copyWith(activity4, timeInterval: newTimeInterval),
-      ]),
+      ),
     );
   });
 }

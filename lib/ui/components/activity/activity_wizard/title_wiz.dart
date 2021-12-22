@@ -15,7 +15,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
   @override
   void initState() {
     super.initState();
-    activity = context.read<EditActivityBloc>().state.activity;
+    activity = context.read<EditActivityCubit>().state.activity;
     controller = TextEditingController(text: activity.title);
   }
 
@@ -51,8 +51,8 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                       autofocus: true,
                       focusNode: focusNode,
                       onChanged: (s) => context
-                          .read<EditActivityBloc>()
-                          .add(ReplaceActivity(activity.copyWith(title: s))),
+                          .read<EditActivityCubit>()
+                          .replaceActivity(activity.copyWith(title: s)),
                       maxLines: 1,
                     ),
                   ],
