@@ -4,67 +4,43 @@ import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_painters.dart';
 import 'package:seagull/ui/components/timer_wheel/constants.dart';
 
-enum TimerWheelStyle {
-  simplified,
-  interactive,
-  nonInteractive,
-}
-
 class TimerWheel extends StatefulWidget {
-  const TimerWheel({
+  const TimerWheel.interactive({
     Key? key,
-    required this.style,
+    required this.activeSeconds,
     this.onMinutesSelectedChanged,
+  })  : style = TimerWheelStyle.interactive,
+        timerLengthInMinutes = null,
+        super(key: key);
+
+  const TimerWheel.nonInteractive({
+    Key? key,
+    required this.activeSeconds,
     this.timerLengthInMinutes,
-    this.secondsLeft,
-  })  : assert(
-            !(style == TimerWheelStyle.interactive &&
-                (timerLengthInMinutes != null)),
-            'If style is TimerWheelStyle.interactive, timerLengthInMinutes will be ignored and should not be set'),
-        assert(!(style == TimerWheelStyle.interactive && (secondsLeft != null)),
-            'If style is TimerWheelStyle.interactive, secondsLeft will be ignored and should not be set'),
-        assert(
-            !(style != TimerWheelStyle.interactive &&
-                (onMinutesSelectedChanged != null)),
-            'If style is not TimerWheelStyle.interactive, onMinutesSelectedChanged will be ignored and should not be set'),
+  })  : style = TimerWheelStyle.nonInteractive,
+        onMinutesSelectedChanged = null,
+        super(key: key);
+
+  const TimerWheel.simplified({
+    Key? key,
+    required this.activeSeconds,
+    this.timerLengthInMinutes,
+  })  : style = TimerWheelStyle.simplified,
+        onMinutesSelectedChanged = null,
         super(key: key);
 
   final TimerWheelStyle style;
-
-  /// Ignored if [style] is [TimerWheelStyle.interactive]
-  final int? timerLengthInMinutes;
-
-  /// Ignored if [style] is [TimerWheelStyle.interactive]
-  final int? secondsLeft;
-
-  /// Ignored if [style] is not [TimerWheelStyle.interactive]
+  final int activeSeconds;
   final Function(int minutesSelected)? onMinutesSelectedChanged;
+  final int? timerLengthInMinutes;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
 }
 
 class _TimerWheelState extends State<TimerWheel> {
-  //Range [0..1]
-  late double sliderValue = _sliderValueFromSeconds(widget.secondsLeft ?? 0);
-  ValueNotifier<int> minutesSelected = ValueNotifier(0);
   int? minutesSelectedOnTapDown;
   bool sliderTemporaryLocked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.style == TimerWheelStyle.interactive) {
-      minutesSelected.addListener(
-          () => widget.onMinutesSelectedChanged?.call(minutesSelected.value));
-    }
-  }
-
-  @override
-  void dispose() {
-    minutesSelected.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +62,12 @@ class _TimerWheelState extends State<TimerWheel> {
               ),
             ),
           ),
-          ValueListenableBuilder(
-            valueListenable: minutesSelected,
-            builder: (context, value, child) {
-              return CustomPaint(
-                size: constraints.biggest,
-                painter: TimerWheelForegroundPainter(
-                  config: config,
-                  secondsLeft: widget.style == TimerWheelStyle.interactive
-                      ? minutesSelected.value * secondsInOneMinute
-                      : widget.secondsLeft ?? 0,
-                ),
-              );
-            },
+          CustomPaint(
+            size: constraints.biggest,
+            painter: TimerWheelForegroundPainter(
+              config: config,
+              activeSeconds: widget.activeSeconds,
+            ),
           ),
         ],
       );
@@ -109,76 +78,76 @@ class _TimerWheelState extends State<TimerWheel> {
         return GestureDetector(
           onPanDown: (details) => _onPanDown(details, config),
           onPanUpdate: (details) => _onPanUpdate(details, config),
-          onTapUp: _onTapUp,
+          onTapUp: (details) => _onTapUp(details, config),
           child: timerWheel,
         );
       }
     });
   }
 
+  _updateMinutesSelected(int minutes) {
+    if (widget.activeSeconds / secondsInOneMinute != minutes) {
+      widget.onMinutesSelectedChanged?.call(minutes);
+    }
+  }
+
   _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
     sliderTemporaryLocked = false;
     if (_pointIsOnWheel(details.localPosition, config)) {
-      sliderValue = _sliderValueFromPoint(details.localPosition, config);
-      minutesSelectedOnTapDown = minutesSelected.value;
+      minutesSelectedOnTapDown =
+          _minutesFromPoint(details.localPosition, config);
     }
   }
 
   _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
-    void maybeLockSlider(double value) {
-      const margin = 5;
+    void maybeLockSlider() {
+      const controlMargin = 5;
+
+      final activeMinutes = widget.activeSeconds / secondsInOneMinute;
 
       final isCrossingZeroForwards =
-          minutesSelected.value > minutesInOneHour - margin &&
-              _minutesFromSliderValue(value) < margin;
-      final isCrossingZeroBackwards = minutesSelected.value < margin &&
-          _minutesFromSliderValue(value) > minutesInOneHour - margin;
+          activeMinutes > minutesInOneHour - controlMargin &&
+              _minutesFromPoint(details.localPosition, config) < controlMargin;
+      final isCrossingZeroBackwards = activeMinutes < controlMargin &&
+          _minutesFromPoint(details.localPosition, config) >
+              minutesInOneHour - controlMargin;
 
       if (isCrossingZeroForwards || isCrossingZeroBackwards) {
         sliderTemporaryLocked = true;
-        _updateSliderValue(isCrossingZeroBackwards ? 0 : 1);
+        _updateMinutesSelected(isCrossingZeroBackwards ? 0 : minutesInOneHour);
         return;
       }
 
-      if (minutesSelected.value >= minutesInOneHour - margin &&
-              _minutesFromSliderValue(value) >= minutesInOneHour - margin ||
-          minutesSelected.value <= margin &&
-              _minutesFromSliderValue(value) <= margin) {
+      if (activeMinutes >= minutesInOneHour - controlMargin &&
+              _minutesFromPoint(details.localPosition, config) >=
+                  minutesInOneHour - controlMargin ||
+          activeMinutes <= controlMargin &&
+              _minutesFromPoint(details.localPosition, config) <=
+                  controlMargin) {
         sliderTemporaryLocked = false;
       }
     }
 
     if (_pointIsOnWheel(details.localPosition, config)) {
-      final sliderValue = _sliderValueFromPoint(details.localPosition, config);
-      maybeLockSlider(sliderValue);
-      if (sliderTemporaryLocked) {
-        return;
+      maybeLockSlider();
+      if (!sliderTemporaryLocked) {
+        final activeMinutes = _minutesFromPoint(details.localPosition, config);
+        _updateMinutesSelected(activeMinutes);
       }
-      _updateSliderValue(sliderValue);
     }
   }
 
-  _onTapUp(TapUpDetails details) {
-    if (minutesSelectedOnTapDown == minutesSelected.value) {
+  _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
+    if (minutesSelectedOnTapDown ==
+        _minutesFromPoint(details.localPosition, config)) {
       int desiredMinutesLeft =
-          ((sliderValue * minutesInOneHour) / 5).ceil() * 5;
+          (_minutesFromPoint(details.localPosition, config) / 5).ceil() * 5;
       assert(desiredMinutesLeft >= 0 && desiredMinutesLeft <= minutesInOneHour,
           'Tried setting timer wheel to invalid time');
       desiredMinutesLeft.clamp(0, minutesInOneHour);
-      _updateSliderValue(desiredMinutesLeft / minutesInOneHour);
+      _updateMinutesSelected(desiredMinutesLeft);
     }
     minutesSelectedOnTapDown = null;
-  }
-
-  void _updateSliderValue(double value) {
-    assert(value >= 0 && value <= 1, 'Value not in range [0..1]');
-    value.clamp(0, 1);
-    final oldMinutesSelected = _minutesFromSliderValue(sliderValue);
-    sliderValue = value;
-    final newMinutesSelected = _minutesFromSliderValue(sliderValue);
-    if (oldMinutesSelected != newMinutesSelected) {
-      minutesSelected.value = newMinutesSelected;
-    }
   }
 
   bool _pointIsOnWheel(Offset point, TimerWheelConfiguration config) {
@@ -192,14 +161,7 @@ class _TimerWheelState extends State<TimerWheel> {
   }
 
   // Returns a value in range: [0..60]
-  int _minutesFromSliderValue(double value) {
-    assert(value >= 0 && value <= 1, 'Given value is out of range [0..1]');
-    value.clamp(0, 1);
-    return (value * minutesInOneHour).floor();
-  }
-
-  // Returns a value in range: [0..1]
-  double _sliderValueFromPoint(Offset point, TimerWheelConfiguration config) {
+  int _minutesFromPoint(Offset point, TimerWheelConfiguration config) {
     final deltaX = point.dx - config.centerPoint.dx;
     final deltaY = config.centerPoint.dy - point.dy;
     var angle = atan2(deltaY, deltaX);
@@ -209,11 +171,10 @@ class _TimerWheelState extends State<TimerWheel> {
       angle = angle + 2 * pi;
     }
 
-    return angle / (2 * pi);
-  }
-
-  // Returns a value in range: [0..1]
-  double _sliderValueFromSeconds(int seconds) {
-    return seconds.clamp(0, secondsInOneHour) / secondsInOneHour;
+    final percentage = angle / (2 * pi);
+    assert(percentage >= 0 && percentage <= 1,
+        'Given value is out of range [0..1]');
+    percentage.clamp(0, 1);
+    return (percentage * minutesInOneHour).floor();
   }
 }

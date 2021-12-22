@@ -137,15 +137,15 @@ class TimerWheelForegroundPainter extends CustomPainter {
 
   TimerWheelForegroundPainter({
     required this.config,
-    required this.secondsLeft,
-  }) : assert(!secondsLeft.isNegative, 'secondsLeft cannot be negative') {
-    _timeLeftSweepRadians = secondsLeft >= secondsInOneHour
+    required this.activeSeconds,
+  }) : assert(!activeSeconds.isNegative, 'secondsLeft cannot be negative') {
+    _timeLeftSweepRadians = activeSeconds >= secondsInOneHour
         ? -pi * 2 + 0.001
-        : -(pi * 2) * (secondsLeft / secondsInOneHour);
+        : -(pi * 2) * (activeSeconds / secondsInOneHour);
   }
 
   final TimerWheelConfiguration config;
-  final int secondsLeft;
+  final int activeSeconds;
   late final double _timeLeftSweepRadians;
 
   @override
@@ -192,7 +192,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
     // If timer is not simplified, paint section numbers and time left as text
     if (config.style != TimerWheelStyle.simplified) {
       // Paint time left as text
-      final durationLeft = Duration(seconds: secondsLeft);
+      final durationLeft = Duration(seconds: activeSeconds);
       final timeLeftString =
           durationLeft.toString().split('.').first.padLeft(8, '0');
 
@@ -284,6 +284,6 @@ class TimerWheelForegroundPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant TimerWheelForegroundPainter oldDelegate) {
-    return oldDelegate.secondsLeft != secondsLeft;
+    return oldDelegate.activeSeconds != activeSeconds;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/components/timer_wheel/constants.dart';
 
 class TimerWheelConfiguration {
   // The side of the smallest possible square that contains the full timer in the design
