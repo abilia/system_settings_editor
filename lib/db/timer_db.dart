@@ -1,14 +1,15 @@
+import 'package:collection/collection.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/iterable.dart';
 import 'package:seagull/utils/logger.dart';
-import 'package:collection/collection.dart';
 
 class TimerDb {
   final Database db;
 
   TimerDb(this.db);
+
   static const _getAll = 'SELECT * FROM ${DatabaseRepository.timerTableName}';
   final _log = Logger((TimerDb).toString());
 
@@ -30,6 +31,11 @@ class TimerDb {
         );
 
     batch.commit();
+  }
+
+  Future<int> delete(AbiliaTimer timer) async {
+    return db.delete(DatabaseRepository.timerTableName,
+        where: 'id = "${timer.id}"');
   }
 
   Future<List<AbiliaTimer>> getAllTimers() async {

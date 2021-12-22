@@ -11,16 +11,18 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/fake_db_and_repository.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final defaultTimer = AbiliaTimer(
-      id: '',
+      id: 'fake-id',
       title: 'test timer',
-      duration: Duration.zero,
+      duration: const Duration(minutes: 5),
       startTime: DateTime.now());
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   late MockUserFileBloc mockUserFileBloc;
+  late MockTimerDb mockTimerDb;
 
   final startTime = DateTime(2021, 12, 22, 08, 10);
 
@@ -39,6 +41,9 @@ void main() {
         .thenAnswer((_) => const Stream.empty());
     mockUserFileBloc = MockUserFileBloc();
     when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future(() => [defaultTimer]));
   });
 
   Widget wrapWithMaterialApp({required AbiliaTimer timer}) => MaterialApp(
@@ -51,6 +56,9 @@ void main() {
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc(StreamController<DateTime>().stream,
                 initialTime: startTime),
+          ),
+          BlocProvider<TimerCubit>(
+            create: (context) => TimerCubit(timerDb: mockTimerDb),
           ),
           BlocProvider<MemoplannerSettingBloc>.value(
             value: mockMemoplannerSettingsBloc,

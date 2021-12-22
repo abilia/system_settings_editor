@@ -1,17 +1,16 @@
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
-import 'package:seagull/listener/all.dart';
-import 'package:system_settings_editor/system_settings_editor.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
 class TopLevelListeners extends StatelessWidget {
   final Widget child;
@@ -96,6 +95,7 @@ class TopLevelListeners extends StatelessWidget {
 
 class AlarmListeners extends StatelessWidget {
   final Widget child;
+
   const AlarmListeners({Key? key, required this.child}) : super(key: key);
 
   @override
@@ -130,6 +130,7 @@ class AuthenticatedListeners extends StatefulWidget {
   }) : super(key: key);
 
   final Widget child;
+
   @override
   _AuthenticatedListenersState createState() => _AuthenticatedListenersState();
 }
@@ -240,14 +241,15 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
           ),
           KeepScreenAwakeListener(),
         ],
-        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
+        if (!Platform.isIOS) _fullscreenAlarmPermissionListener(context),
+        _timerListener(context),
       ],
       child: widget.child,
     );
   }
 
   BlocListener<PermissionBloc, PermissionState>
-      fullscreenAlarmPremissionListener(BuildContext context) {
+      _fullscreenAlarmPermissionListener(BuildContext context) {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -268,6 +270,22 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
         ),
       ),
     );
+  }
+
+  BlocListener<TimerCubit, TimerState> _timerListener(BuildContext context) {
+    return BlocListener<TimerCubit, TimerState>(listener: (context, state) {
+      for (AbiliaTimer timer in state.timers) {
+        if (!timer.paused &&
+            DateTime.now().isAfter(timer.startTime) &&
+            DateTime.now().isBefore(timer.startTime.add(timer.duration))) {
+          showViewDialog(
+            context: context,
+            builder: (context) => ViewTimerPage(timer: timer),
+          );
+          break;
+        }
+      }
+    });
   }
 
   bool _notificationsDenied(

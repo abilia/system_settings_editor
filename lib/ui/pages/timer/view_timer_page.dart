@@ -1,3 +1,4 @@
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/abilia_timer.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/datetime.dart';
@@ -133,7 +134,7 @@ class _TimerBottomBar extends StatelessWidget {
                 child: const Icon(AbiliaIcons.pause),
               ),
               IconActionButtonLight(
-                onPressed: () {}, // TODO: add delete functionality
+                onPressed: () => context.read<TimerCubit>().deleteTimer(timer),
                 child: const Icon(AbiliaIcons.deleteAllClear),
               ),
             ],
