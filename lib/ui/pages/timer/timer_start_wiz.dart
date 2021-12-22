@@ -24,26 +24,10 @@ class TimerStartWiz extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(12.s, 12.s, 16.s, 12.s),
               child: SizedBox(
                 width: 119.s,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  style: abiliaTextTheme.headline6,
-                  controller:
-                      TextEditingController(text: state.duration.toHMS()),
-                  readOnly: true,
-                  onTap: () async {
-                    final duration = await Navigator.of(context).push<Duration>(
-                      MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
-                          child: EditTimerByTypingPage(
-                              initialDuration: state.duration),
-                        ),
-                      ),
-                    );
-                    if (duration != null) {
-                      context.read<TimerWizardCubit>().updateDuration(duration);
-                    }
-                  },
+                child: Tts(
+                  child: Text(state.duration.toHMS(),
+                      textAlign: TextAlign.center,
+                      style: abiliaTextTheme.headline6),
                 ),
               ),
             ),

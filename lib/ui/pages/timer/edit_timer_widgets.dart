@@ -12,6 +12,8 @@ class TimerNameAndPictureWidget extends StatelessWidget {
         return NameAndPictureWidget(
           selectedImage: state.image,
           text: state.name,
+          inputHeadingForNameField:
+              Translator.of(context).translate.enterNameForTimer,
           inputFormatters: [LengthLimitingTextInputFormatter(50)],
           onImageSelected: (selectedImage) {
             BlocProvider.of<TimerWizardCubit>(context)
