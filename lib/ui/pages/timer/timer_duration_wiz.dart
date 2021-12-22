@@ -11,13 +11,14 @@ class TimerDurationWiz extends StatelessWidget {
     final t = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
-      body: Center(
-        child: Column(
+      body: BlocBuilder<TimerWizardCubit, TimerWizardState>(
+        builder: (context, state) => Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BlocBuilder<TimerWizardCubit, TimerWizardState>(
-              builder: (context, state) => SizedBox(
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 36.s),
+              child: SizedBox(
                 width: 119.s,
                 child: TextField(
                   textAlign: TextAlign.center,
@@ -45,6 +46,24 @@ class TimerDurationWiz extends StatelessWidget {
                 ),
               ),
             ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 26.s),
+                child: TimerWheel.interactive(
+                  activeSeconds: state.duration.inSeconds,
+                  onMinutesSelectedChanged: (minutesSelected) {
+                    HapticFeedback.selectionClick();
+                    context.read<TimerWizardCubit>().updateDuration(
+                          Duration(minutes: minutesSelected),
+                        );
+                    context.read<TimerWizardCubit>().updateName(
+                        Duration(minutes: minutesSelected).toDurationString(
+                            Translator.of(context).translate,
+                            shortMin: false));
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
