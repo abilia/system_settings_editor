@@ -2,8 +2,10 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:uuid/uuid.dart';
 
 part 'timer_wizard_state.dart';
@@ -19,7 +21,7 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
             steps: UnmodifiableListView(
               [
                 TimerWizardStep.duration,
-                TimerWizardStep.nameAndImage,
+                TimerWizardStep.start,
               ],
             ),
           ),
@@ -30,7 +32,8 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
       timerCubit.addTimer(
         AbiliaTimer(
           id: const Uuid().v4(),
-          title: state.duration.inMinutes.toString(),
+          title: state.name,
+          fileId: state.image.id,
           duration: state.duration,
           startTime: DateTime.now(),
         ),
@@ -50,9 +53,13 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
 
   void updateDuration(Duration duration) =>
       emit(state.copyWith(duration: duration));
+
+  void updateName(String text) => emit(state.copyWith(name: text));
+
+  void updateImage(AbiliaFile file) => emit(state.copyWith(image: file));
 }
 
 enum TimerWizardStep {
   duration,
-  nameAndImage,
+  start,
 }

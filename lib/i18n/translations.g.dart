@@ -257,6 +257,8 @@ abstract class Translated {
 
   final String startTimer = 'Start timer';
 
+  final String enterNameForTimer = 'Enter name for timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1156,6 +1158,9 @@ class SV extends Translated {
 
   @override
   final String startTimer = 'Starta timer';
+
+  @override
+  final String enterNameForTimer = 'Ange namn för timer';
 
   @override
   final String menu = 'Meny';
