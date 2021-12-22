@@ -1,0 +1,72 @@
+import 'dart:async';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/abilia_timer.dart';
+import 'package:seagull/models/settings/memoplanner_settings.dart';
+import 'package:seagull/ui/all.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:intl/date_symbol_data_local.dart';
+
+import '../../../fakes/fake_db_and_repository.dart';
+import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/register_fallback_values.dart';
+
+void main() {
+  final defaultTimer = AbiliaTimer(
+      id: '',
+      title: 'test timer',
+      duration: Duration.zero,
+      startTime: DateTime.now());
+  late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
+  late MockUserFileBloc mockUserFileBloc;
+
+  final startTime = DateTime(2021, 12, 22, 08, 10);
+
+  setUpAll(() {
+    registerFallbackValues();
+  });
+
+  setUp(() async {
+    tz.initializeTimeZones();
+    await initializeDateFormatting();
+    mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
+    when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+            MemoplannerSettings(advancedActivityTemplate: false)));
+    when(() => mockMemoplannerSettingsBloc.stream)
+        .thenAnswer((_) => const Stream.empty());
+    mockUserFileBloc = MockUserFileBloc();
+    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+  });
+
+  Widget wrapWithMaterialApp({required AbiliaTimer timer}) => MaterialApp(
+        supportedLocales: Translator.supportedLocals,
+        localizationsDelegates: const [Translator.delegate],
+        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+            .firstWhere((l) => l.languageCode == locale?.languageCode,
+                orElse: () => supportedLocales.first),
+        home: MultiBlocProvider(providers: [
+          BlocProvider<ClockBloc>(
+            create: (context) => ClockBloc(StreamController<DateTime>().stream,
+                initialTime: startTime),
+          ),
+          BlocProvider<MemoplannerSettingBloc>.value(
+            value: mockMemoplannerSettingsBloc,
+          ),
+          BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+          BlocProvider<SettingsBloc>(
+            create: (context) => SettingsBloc(
+              settingsDb: FakeSettingsDb(),
+            ),
+          ),
+        ], child: ViewTimerPage(timer: timer)),
+      );
+
+  testWidgets('Page visible', (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
+    await tester.pumpAndSettle();
+    expect(find.byType(ViewTimerPage), findsOneWidget);
+  });
+}

@@ -9,14 +9,11 @@ class ViewTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final current = DateTime.now().isAfter(timer.startTime) &&
-        DateTime.now().isBefore(timer.startTime.add(timer.duration));
     final hasImage = timer.hasImage;
     return Scaffold(
       appBar: DayAppBar(
         day: timer.startTime.onlyDays(),
         leftAction: IconActionButton(
-          key: TestKey.activityBackButton,
           onPressed: () => Navigator.of(context).maybePop(),
           child: const Icon(AbiliaIcons.navigationPrevious),
         ),
@@ -25,7 +22,7 @@ class ViewTimerPage extends StatelessWidget {
         padding: EdgeInsets.all(ActivityInfo.margin),
         child: Container(
           decoration: BoxDecoration(
-            color: current ? Theme.of(context).cardColor : inactiveGrey,
+            color: Theme.of(context).cardColor,
             borderRadius: borderRadius,
           ),
           constraints: const BoxConstraints.expand(),
@@ -80,14 +77,15 @@ class _TopInfo extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-              left: ActivityInfo.margin, right: ActivityInfo.margin),
-          child: FadeInCalendarImage(
-            imageFileId: timer.fileId,
-            imageFilePath: '',
+        if (timer.hasImage)
+          Padding(
+            padding: EdgeInsets.only(
+                left: ActivityInfo.margin, right: ActivityInfo.margin),
+            child: FadeInCalendarImage(
+              imageFileId: timer.fileId,
+              imageFilePath: '',
+            ),
           ),
-        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
