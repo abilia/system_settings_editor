@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/duration.dart';
@@ -51,10 +52,12 @@ class TimerDurationWiz extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 26.s),
                   child: TimerWheel.interactive(
                     activeSeconds: state.duration.inSeconds,
-                    onMinutesSelectedChanged: (minutesSelected) =>
-                        context.read<TimerWizardCubit>().updateDuration(
-                              Duration(minutes: minutesSelected),
-                            ),
+                    onMinutesSelectedChanged: (minutesSelected) {
+                      HapticFeedback.selectionClick();
+                      context.read<TimerWizardCubit>().updateDuration(
+                            Duration(minutes: minutesSelected),
+                          );
+                    },
                   ),
                 ),
               )
