@@ -343,9 +343,9 @@ Path _getWheelShape(Size size) {
     timerWheelShape.addPath(
         sectionShape.transform(Matrix4Transform()
             .rotate(
-          (pi / 6) * i,
-          origin: Offset(size.width / 2, size.height / 2),
-        )
+              (pi / 6) * i,
+              origin: Offset(size.width / 2, size.height / 2),
+            )
             .matrix4
             .storage),
         const Offset(0, 0));
