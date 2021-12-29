@@ -46,8 +46,8 @@ void main() {
               BlocProvider<SortableBloc>.value(
                 value: FakeSortableBloc(),
               ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => UserFileBloc(
+              BlocProvider<UserFileCubit>(
+                create: (context) => UserFileCubit(
                   fileStorage: FakeFileStorage(),
                   pushBloc: FakePushBloc(),
                   syncBloc: FakeSyncBloc(),
@@ -71,7 +71,7 @@ void main() {
               BlocProvider<SoundCubit>(
                 create: (context) => SoundCubit(
                   storage: FakeFileStorage(),
-                  userFileBloc: context.read<UserFileBloc>(),
+                  userFileCubit: context.read<UserFileCubit>(),
                 ),
               ),
             ], child: child!),

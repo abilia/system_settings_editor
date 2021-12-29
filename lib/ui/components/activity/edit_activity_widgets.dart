@@ -137,8 +137,9 @@ class SelectPictureWidget extends StatelessWidget {
 
     if (newSelectedImage != null) {
       if (newSelectedImage is UnstoredAbiliaFile) {
-        BlocProvider.of<UserFileBloc>(context).add(
-          ImageAdded(newSelectedImage),
+        BlocProvider.of<UserFileCubit>(context).fileAdded(
+          newSelectedImage,
+          image: true,
         );
         BlocProvider.of<SortableBloc>(context).add(
           ImageArchiveImageAdded(

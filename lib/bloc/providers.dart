@@ -107,13 +107,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<UserFileBloc>(
-              create: (context) => UserFileBloc(
+            BlocProvider<UserFileCubit>(
+              create: (context) => UserFileCubit(
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
                 pushBloc: context.read<PushBloc>(),
-              )..add(LoadUserFiles()),
+              )..loadUserFiles(),
               lazy: false,
             ),
             BlocProvider<SortableBloc>(
@@ -293,8 +293,8 @@ class CopiedAuthProviders extends StatelessWidget {
         BlocProvider<ActivitiesBloc>.value(
           value: blocContext.read<ActivitiesBloc>(),
         ),
-        BlocProvider<UserFileBloc>.value(
-          value: blocContext.read<UserFileBloc>(),
+        BlocProvider<UserFileCubit>.value(
+          value: blocContext.read<UserFileCubit>(),
         ),
         BlocProvider<SortableBloc>.value(
           value: blocContext.read<SortableBloc>(),

@@ -81,8 +81,8 @@ void main() {
               BlocProvider<SortableBloc>.value(
                 value: mockSortableBloc,
               ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => UserFileBloc(
+              BlocProvider<UserFileCubit>(
+                create: (context) => UserFileCubit(
                   fileStorage: FakeFileStorage(),
                   pushBloc: FakePushBloc(),
                   syncBloc: FakeSyncBloc(),

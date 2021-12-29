@@ -91,7 +91,7 @@ class FakeSettingsBloc extends Fake implements SettingsBloc {
   Stream<SettingsState> get stream => const Stream.empty();
 }
 
-class FakeUserFileBloc extends Fake implements UserFileBloc {
+class FakeUserFileCubit extends Fake implements UserFileCubit {
   @override
   Stream<UserFileState> get stream => const Stream.empty();
   @override

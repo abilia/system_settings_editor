@@ -72,8 +72,9 @@ class CameraButton extends StatelessWidget {
               if (image != null) {
                 final selectedImage =
                     UnstoredAbiliaFile.newFile(File(image.path));
-                BlocProvider.of<UserFileBloc>(context).add(
-                  ImageAdded(selectedImage),
+                BlocProvider.of<UserFileCubit>(context).fileAdded(
+                  selectedImage,
+                  image: true,
                 );
                 BlocProvider.of<SortableBloc>(context).add(
                   PhotoAdded(

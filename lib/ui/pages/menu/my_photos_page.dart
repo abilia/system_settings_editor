@@ -89,7 +89,10 @@ class AddPhotoButton extends StatelessWidget {
 
   void _addImage(
       BuildContext context, UnstoredAbiliaFile selectedImage, DateTime time) {
-    BlocProvider.of<UserFileBloc>(context).add(ImageAdded(selectedImage));
+    context.read<UserFileCubit>().fileAdded(
+          selectedImage,
+          image: true,
+        );
     context.read<SortableBloc>().add(
           PhotoAdded(
             selectedImage.id,

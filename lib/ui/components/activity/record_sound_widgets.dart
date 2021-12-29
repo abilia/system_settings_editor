@@ -23,7 +23,7 @@ class RecordSoundWidget extends StatelessWidget {
         return BlocProvider<SoundCubit>(
           create: (context) => SoundCubit(
             storage: GetIt.I<FileStorage>(),
-            userFileBloc: context.read<UserFileBloc>(),
+            userFileCubit: context.read<UserFileCubit>(),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                           ),
                         );
                         if (result is UnstoredAbiliaFile) {
-                          context.read<UserFileBloc>().add(FileAdded(result));
+                          context.read<UserFileCubit>().fileAdded(result);
                         }
                         if (result != null) {
                           onResult.call(result);
@@ -170,7 +170,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
           ),
         ),
         if (recordedAudio.isNotEmpty)
-          BlocBuilder<UserFileBloc, UserFileState>(
+          BlocBuilder<UserFileCubit, UserFileState>(
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.only(left: 12.s),
