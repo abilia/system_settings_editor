@@ -389,15 +389,17 @@ abstract class Translated {
   final String alertAlarmsDisabled =
       'All alarms will be disabled until midnight on this device';
 
-  final String selectPicture = 'Select image';
+  final String selectImage = 'Select image';
 
-  final String removePicture = 'Remove image';
+  final String removeImage = 'Remove image';
 
   final String imageArchive = 'Image Archive';
 
-  final String uploadImage = 'Device’s local images';
+  final String devicesLocalImages = 'Device’s local images';
 
   final String myPhotos = 'My photos';
+
+  final String mobilePictures = 'Mobile pictures';
 
   final String takeNewPhoto = 'Take new photo';
 
@@ -619,8 +621,6 @@ abstract class Translated {
   final String showBasicActivities = 'Show basic activities';
 
   final String selectName = 'Select name';
-
-  final String selectImage = 'Select image';
 
   final String selectDate = 'Select date';
 
@@ -1355,19 +1355,22 @@ class SV extends Translated {
       'Alla larm kommer att inaktiveras fram till midnatt på den här enheten';
 
   @override
-  final String selectPicture = 'Välj bild';
+  final String selectImage = 'Välj bild';
 
   @override
-  final String removePicture = 'Ta bort bild';
+  final String removeImage = 'Ta bort bild';
 
   @override
   final String imageArchive = 'Bildarkiv';
 
   @override
-  final String uploadImage = 'Enhetens bilder';
+  final String devicesLocalImages = 'Enhetens bilder';
 
   @override
   final String myPhotos = 'Mina foton';
+
+  @override
+  final String mobilePictures = 'Mobilbilder';
 
   @override
   final String takeNewPhoto = 'Ta ny bild';
@@ -1699,9 +1702,6 @@ class SV extends Translated {
 
   @override
   final String selectName = 'Välj namn';
-
-  @override
-  final String selectImage = 'Välj bild';
 
   @override
   final String selectDate = 'Välj datum';
@@ -2513,19 +2513,22 @@ class DA extends Translated {
       'Alle alarmer vill være deaktivert til midnatt på denne enheten';
 
   @override
-  final String selectPicture = 'Vælg billede';
+  final String selectImage = 'Vælg billede';
 
   @override
-  final String removePicture = 'Fjern billede';
+  final String removeImage = 'Fjern billede';
 
   @override
   final String imageArchive = 'Billedarkiv';
 
   @override
-  final String uploadImage = 'Enhedens billeder';
+  final String devicesLocalImages = 'Enhedens billeder';
 
   @override
   final String myPhotos = 'Mine fotos';
+
+  @override
+  final String mobilePictures = 'Telefonbilleder';
 
   @override
   final String takeNewPhoto = 'Tag et nyt billede';
@@ -2858,9 +2861,6 @@ class DA extends Translated {
 
   @override
   final String selectName = 'Vælg navn';
-
-  @override
-  final String selectImage = 'Vælg billede';
 
   @override
   final String selectDate = 'Vælg dato';
@@ -3672,19 +3672,22 @@ class NL extends Translated {
       'Alle alarmen worden tot middernacht uitgeschakeld op dit toestel';
 
   @override
-  final String selectPicture = 'Afbeelding selecteren';
+  final String selectImage = 'Afbeelding selecteren';
 
   @override
-  final String removePicture = 'Afbeelding verwijderen';
+  final String removeImage = 'Afbeelding verwijderen';
 
   @override
   final String imageArchive = 'Afbeeldingenarchief';
 
   @override
-  final String uploadImage = 'Afbeeldingen van het apparaat';
+  final String devicesLocalImages = 'Afbeeldingen van het apparaat';
 
   @override
   final String myPhotos = "Mijn foto's";
+
+  @override
+  final String mobilePictures = 'Telefoonafbeeldingen';
 
   @override
   final String takeNewPhoto = 'Nieuwe foto nemen';
@@ -4017,9 +4020,6 @@ class NL extends Translated {
 
   @override
   final String selectName = 'Naam selecteren';
-
-  @override
-  final String selectImage = 'Afbeelding selecteren';
 
   @override
   final String selectDate = 'Datum selecteren';
@@ -4832,19 +4832,22 @@ class FI extends Translated {
       'Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti';
 
   @override
-  final String selectPicture = 'Valitse kuva';
+  final String selectImage = 'Valitse kuva';
 
   @override
-  final String removePicture = 'Poista kuva';
+  final String removeImage = 'Poista kuva';
 
   @override
   final String imageArchive = 'Kuva-arkisto';
 
   @override
-  final String uploadImage = 'Laitteen kuvat ';
+  final String devicesLocalImages = 'Laitteen kuvat ';
 
   @override
   final String myPhotos = 'Omat valokuvat';
+
+  @override
+  final String mobilePictures = 'Matkapuhelimen kuvat';
 
   @override
   final String takeNewPhoto = 'Ota uusi kuva';
@@ -5177,9 +5180,6 @@ class FI extends Translated {
 
   @override
   final String selectName = 'Valitse nimi';
-
-  @override
-  final String selectImage = 'Valitse kuva';
 
   @override
   final String selectDate = 'Valitse päivämäärä';
@@ -5994,19 +5994,22 @@ class DE extends Translated {
       'Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert';
 
   @override
-  final String selectPicture = 'Bild auswählen';
+  final String selectImage = 'Bild auswählen';
 
   @override
-  final String removePicture = 'Entferne Bild';
+  final String removeImage = 'Entferne Bild';
 
   @override
   final String imageArchive = 'Bildarchiv';
 
   @override
-  final String uploadImage = 'Bilder des Geräts';
+  final String devicesLocalImages = 'Bilder des Geräts';
 
   @override
   final String myPhotos = 'Meine Fotos';
+
+  @override
+  final String mobilePictures = 'Mobilgerät Bilder';
 
   @override
   final String takeNewPhoto = 'Neues Foto machen';
@@ -6341,9 +6344,6 @@ class DE extends Translated {
 
   @override
   final String selectName = 'Name auswählen';
-
-  @override
-  final String selectImage = 'Bild auswählen';
 
   @override
   final String selectDate = 'Datum auswählen';
@@ -7155,19 +7155,22 @@ class NB extends Translated {
       'Alle alarmer deaktiveres indtil midat på denne enhed';
 
   @override
-  final String selectPicture = 'Velg bilde';
+  final String selectImage = 'Velg bilde';
 
   @override
-  final String removePicture = 'Fjern bildet';
+  final String removeImage = 'Fjern bildet';
 
   @override
   final String imageArchive = 'Bildearkiv';
 
   @override
-  final String uploadImage = 'Enhetens bilder ';
+  final String devicesLocalImages = 'Enhetens bilder ';
 
   @override
   final String myPhotos = 'Mine foto';
+
+  @override
+  final String mobilePictures = 'Mobilbilder';
 
   @override
   final String takeNewPhoto = 'Ta nytt bilde';
@@ -7499,9 +7502,6 @@ class NB extends Translated {
 
   @override
   final String selectName = 'Velg navn';
-
-  @override
-  final String selectImage = 'Velg bilde';
 
   @override
   final String selectDate = 'Velg dato';

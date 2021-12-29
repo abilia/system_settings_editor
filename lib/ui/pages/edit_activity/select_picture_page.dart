@@ -23,7 +23,7 @@ class SelectPicturePage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: translate.selectPicture,
+        title: translate.selectImage,
       ),
       body: SelectPictureBody(
         imageCallback: (selectedImage) async {
@@ -84,7 +84,7 @@ class SelectPictureBody extends StatelessWidget {
                             color: AbiliaColors.white,
                             size: layout.iconSize.small,
                           ),
-                          text: translate.removePicture,
+                          text: translate.removeImage,
                         ),
                       ],
                     ),
@@ -149,7 +149,7 @@ class SelectPictureBody extends StatelessWidget {
                   SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
-                      text: translate.uploadImage,
+                      text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,
                       permission: Permission.photos,
                       imageCallback: imageCallback,

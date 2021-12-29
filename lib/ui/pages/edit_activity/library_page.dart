@@ -77,7 +77,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 if (!state.isAtRootAndNoSelection || rootHeading != null)
                   LibraryHeading<T>(
                     sortableArchiveState: state,
-                    rootHeading: rootHeading,
+                    rootHeading: rootHeading ?? '',
                   ),
                 Expanded(
                   child: selected != null && selectedGenerator != null
@@ -111,19 +111,18 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   const LibraryHeading({
     Key? key,
     required this.sortableArchiveState,
-    this.rootHeading,
+    required this.rootHeading,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
-  final String? rootHeading;
+  final String rootHeading;
 
   @override
   Widget build(BuildContext context) {
-    String heading = _getLibraryHeading(
-          sortableArchiveState,
-          rootHeading,
-          Translator.of(context).translate.myPhotos,
-        ) ??
-        '';
+    final heading = sortableArchiveState.isAtRootAndNoSelection
+        ? rootHeading
+        : sortableArchiveState.title(
+            Translator.of(context).translate,
+          );
     return Tts.data(
       data: heading,
       child: Padding(
@@ -152,23 +151,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String? _getLibraryHeading(
-    SortableArchiveState state,
-    String? rootHeading,
-    String myPhotoHeading,
-  ) {
-    if (state.isAtRootAndNoSelection) {
-      return rootHeading;
-    }
-    if (state.isSelected) {
-      return state.selected?.data.title();
-    }
-    if (state.inMyPhotos) {
-      return myPhotoHeading;
-    }
-    return state.allById[state.currentFolderId]?.data.title();
   }
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
@@ -251,7 +233,9 @@ class _SortableLibraryState<T extends SortableData>
                             },
                             child: libraryFolderGenerator == null
                                 ? LibraryFolder(
-                                    title: sortable.data.title(),
+                                    title: sortable.data.title(
+                                      Translator.of(context).translate,
+                                    ),
                                     fileId: sortable.data.folderFileId(),
                                     filePath: sortable.data.folderFilePath(),
                                   )

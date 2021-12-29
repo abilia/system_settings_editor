@@ -35,7 +35,7 @@ class MyPhotosPage extends StatelessWidget {
       libraryItemGenerator: (imageArchive) =>
           FullscreenViewablePhoto(sortable: imageArchive),
       libraryFolderGenerator: (imageArchive) => LibraryFolder(
-        title: imageArchive.data.title(),
+        title: imageArchive.data.title(translate),
         fileId: imageArchive.data.folderFileId(),
         filePath: imageArchive.data.folderFilePath(),
       ),
