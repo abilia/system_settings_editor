@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_painters.dart';
-import 'package:seagull/ui/components/timer_wheel/constants.dart';
+import 'package:seagull/ui/components/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({
@@ -58,7 +58,7 @@ class _TimerWheelState extends State<TimerWheel> {
               painter: TimerWheelBackgroundPainter(
                 config: config,
                 timerLengthInMinutes:
-                    widget.timerLengthInMinutes ?? minutesInOneHour,
+                    widget.timerLengthInMinutes ?? Duration.minutesPerHour,
               ),
             ),
           ),
@@ -86,7 +86,7 @@ class _TimerWheelState extends State<TimerWheel> {
   }
 
   _updateMinutesSelected(int minutes) {
-    if (widget.activeSeconds / secondsInOneMinute != minutes) {
+    if (widget.activeSeconds / Duration.secondsPerMinute != minutes) {
       widget.onMinutesSelectedChanged?.call(minutes);
     }
   }
@@ -103,24 +103,25 @@ class _TimerWheelState extends State<TimerWheel> {
     void maybeLockSlider() {
       const controlMargin = 5;
 
-      final activeMinutes = widget.activeSeconds / secondsInOneMinute;
+      final activeMinutes = widget.activeSeconds / Duration.secondsPerMinute;
 
       final isCrossingZeroForwards =
-          activeMinutes > minutesInOneHour - controlMargin &&
+          activeMinutes > Duration.minutesPerHour - controlMargin &&
               _minutesFromPoint(details.localPosition, config) < controlMargin;
       final isCrossingZeroBackwards = activeMinutes < controlMargin &&
           _minutesFromPoint(details.localPosition, config) >
-              minutesInOneHour - controlMargin;
+              Duration.minutesPerHour - controlMargin;
 
       if (isCrossingZeroForwards || isCrossingZeroBackwards) {
         sliderTemporaryLocked = true;
-        _updateMinutesSelected(isCrossingZeroBackwards ? 0 : minutesInOneHour);
+        _updateMinutesSelected(
+            isCrossingZeroBackwards ? 0 : Duration.minutesPerHour);
         return;
       }
 
-      if (activeMinutes >= minutesInOneHour - controlMargin &&
+      if (activeMinutes >= Duration.minutesPerHour - controlMargin &&
               _minutesFromPoint(details.localPosition, config) >=
-                  minutesInOneHour - controlMargin ||
+                  Duration.minutesPerHour - controlMargin ||
           activeMinutes <= controlMargin &&
               _minutesFromPoint(details.localPosition, config) <=
                   controlMargin) {
@@ -142,9 +143,11 @@ class _TimerWheelState extends State<TimerWheel> {
         _minutesFromPoint(details.localPosition, config)) {
       int desiredMinutesLeft =
           (_minutesFromPoint(details.localPosition, config) / 5).ceil() * 5;
-      assert(desiredMinutesLeft >= 0 && desiredMinutesLeft <= minutesInOneHour,
+      assert(
+          desiredMinutesLeft >= 0 &&
+              desiredMinutesLeft <= Duration.minutesPerHour,
           'Tried setting timer wheel to invalid time');
-      desiredMinutesLeft.clamp(0, minutesInOneHour);
+      desiredMinutesLeft.clamp(0, Duration.minutesPerHour);
       _updateMinutesSelected(desiredMinutesLeft);
     }
     minutesSelectedOnTapDown = null;
@@ -175,6 +178,6 @@ class _TimerWheelState extends State<TimerWheel> {
     assert(percentage >= 0 && percentage <= 1,
         'Given value is out of range [0..1]');
     percentage.clamp(0, 1);
-    return (percentage * minutesInOneHour).floor();
+    return (percentage * Duration.minutesPerHour).floor();
   }
 }

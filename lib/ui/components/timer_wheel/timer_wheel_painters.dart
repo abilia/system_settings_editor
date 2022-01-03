@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:matrix4_transform/matrix4_transform.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/timer_wheel/constants.dart';
+import 'package:seagull/ui/components/timer_wheel/timer_wheel_styles.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
 
 class TimerWheelBackgroundPainter extends CustomPainter {
@@ -14,10 +14,11 @@ class TimerWheelBackgroundPainter extends CustomPainter {
     required this.timerLengthInMinutes,
   }) : assert(!timerLengthInMinutes.isNegative,
             'timerLengthInMinutes cannot be negative') {
-    _totalTimeSweepRadians = timerLengthInMinutes >= minutesInOneHour
+    _totalTimeSweepRadians = timerLengthInMinutes >= Duration.minutesPerHour
         ? 0
         : (pi * 2) *
-            ((minutesInOneHour - timerLengthInMinutes) / minutesInOneHour);
+            ((Duration.minutesPerHour - timerLengthInMinutes) /
+                Duration.minutesPerHour);
   }
 
   final TimerWheelConfiguration config;
@@ -138,9 +139,9 @@ class TimerWheelForegroundPainter extends CustomPainter {
     required this.config,
     required this.activeSeconds,
   }) : assert(!activeSeconds.isNegative, 'secondsLeft cannot be negative') {
-    _timeLeftSweepRadians = activeSeconds >= secondsInOneHour
+    _timeLeftSweepRadians = activeSeconds >= Duration.secondsPerHour
         ? -pi * 2 + 0.001
-        : -(pi * 2) * (activeSeconds / secondsInOneHour);
+        : -(pi * 2) * (activeSeconds / Duration.secondsPerHour);
   }
 
   final TimerWheelConfiguration config;
