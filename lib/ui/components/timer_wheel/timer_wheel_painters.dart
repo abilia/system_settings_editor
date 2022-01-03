@@ -5,10 +5,6 @@ import 'package:seagull/ui/components/timer_wheel/timer_wheel_styles.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
 
 class TimerWheelBackgroundPainter extends CustomPainter {
-  static const _startAngle = -pi / 2;
-  static const _nrOfWheelSections = 12;
-  static const _minutesInEachSection = 5;
-
   TimerWheelBackgroundPainter({
     required this.config,
     required this.timerLengthInMinutes,
@@ -16,9 +12,10 @@ class TimerWheelBackgroundPainter extends CustomPainter {
             'timerLengthInMinutes cannot be negative') {
     _totalTimeSweepRadians = timerLengthInMinutes >= Duration.minutesPerHour
         ? 0
-        : (pi * 2) *
-            ((Duration.minutesPerHour - timerLengthInMinutes) /
-                Duration.minutesPerHour);
+        : pi *
+            2 *
+            (Duration.minutesPerHour - timerLengthInMinutes) /
+            Duration.minutesPerHour;
   }
 
   final TimerWheelConfiguration config;
@@ -42,7 +39,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
           center: config.centerPoint,
           radius: config.outerCircleDiameter / 2,
         ),
-        _startAngle,
+        TimerWheelConfiguration.startAngle,
         _totalTimeSweepRadians,
         false,
       )
@@ -51,7 +48,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
           center: config.centerPoint,
           radius: config.innerCircleDiameter / 2,
         ),
-        _startAngle + _totalTimeSweepRadians,
+        TimerWheelConfiguration.startAngle + _totalTimeSweepRadians,
         -_totalTimeSweepRadians,
         false,
       )
@@ -63,15 +60,18 @@ class TimerWheelBackgroundPainter extends CustomPainter {
       wheelShape,
     );
 
-    canvas.drawPath(wheelShape, config.wheelSectionsOutline);
-    canvas.drawPath(inactiveTime, config.inactiveSectionFill);
-    canvas.drawPath(inactiveTime, config.inactiveSectionStroke);
+    canvas
+      ..drawPath(wheelShape, config.wheelSectionsOutline)
+      ..drawPath(inactiveTime, config.inactiveSectionFill)
+      ..drawPath(inactiveTime, config.inactiveSectionStroke);
 
     // If timer is not simplified, also paint section numbers and time left as text
     if (config.style != TimerWheelStyle.simplified) {
-      for (int i = 0; i < _nrOfWheelSections; i++) {
-        if (timerLengthInMinutes >= (i * _minutesInEachSection)) {
-          final numberPointerAngle = (pi * 2 / _nrOfWheelSections) * i + pi;
+      for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
+        if (timerLengthInMinutes >=
+            i * TimerWheelConfiguration.minutesInEachSection) {
+          final numberPointerAngle =
+              pi * 2 / TimerWheelConfiguration.nrOfWheelSections * i + pi;
           final innerRadius = config.numberPointersCircleDiameter / 2 -
               config.numberPointerLength;
           final outerRadius = config.numberPointersCircleDiameter / 2;
@@ -98,15 +98,17 @@ class TimerWheelBackgroundPainter extends CustomPainter {
               radius: config.numberPointerRoundedEdgeRadius,
             ));
 
-          canvas.drawPath(numberPointer, config.numberPointerPaint);
-          canvas.drawPath(roundedEdge, config.numberPointerRoundedEdgePaint);
+          canvas
+            ..drawPath(numberPointer, config.numberPointerPaint)
+            ..drawPath(roundedEdge, config.numberPointerRoundedEdgePaint);
 
           // Paint numbers
           final numberTextCircleRadius = config.numberTextCircleDiameter / 2;
 
           final TextPainter numberTextPainter = TextPainter(
             text: TextSpan(
-              text: (i * _minutesInEachSection).toString(),
+              text:
+                  (i * TimerWheelConfiguration.minutesInEachSection).toString(),
               style: config.numberTextStyle,
             ),
             textAlign: TextAlign.center,
@@ -133,8 +135,6 @@ class TimerWheelBackgroundPainter extends CustomPainter {
 }
 
 class TimerWheelForegroundPainter extends CustomPainter {
-  static const _startAngle = -pi / 2;
-
   TimerWheelForegroundPainter({
     required this.config,
     required this.activeSeconds,
@@ -165,7 +165,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
           center: config.centerPoint,
           radius: config.outerCircleDiameter / 2,
         ),
-        _startAngle,
+        TimerWheelConfiguration.startAngle,
         _timeLeftSweepRadians,
         false,
       )
@@ -174,7 +174,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
           center: config.centerPoint,
           radius: config.innerCircleDiameter / 2,
         ),
-        _startAngle + _timeLeftSweepRadians,
+        TimerWheelConfiguration.startAngle + _timeLeftSweepRadians,
         -_timeLeftSweepRadians,
         false,
       )
@@ -275,9 +275,10 @@ class TimerWheelForegroundPainter extends CustomPainter {
             .matrix4
             .storage);
 
-        canvas.drawPath(nowLine, config.nowLinePaint);
-        canvas.drawPath(thumbRectangle, config.thumbRectanglePaint);
-        canvas.drawPath(thumbLines, config.thumbLinesPaint);
+        canvas
+          ..drawPath(nowLine, config.nowLinePaint)
+          ..drawPath(thumbRectangle, config.thumbRectanglePaint)
+          ..drawPath(thumbLines, config.thumbLinesPaint);
       }
     }
   }
@@ -340,7 +341,7 @@ Path _getWheelShape(Size size) {
 
   final timerWheelShape = Path();
 
-  for (int i = 0; i < 12; i++) {
+  for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
     timerWheelShape.addPath(
         sectionShape.transform(Matrix4Transform()
             .rotate(

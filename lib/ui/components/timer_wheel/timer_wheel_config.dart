@@ -3,6 +3,10 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheelConfiguration {
+  static const startAngle = -pi / 2;
+  static const nrOfWheelSections = 12;
+  static const minutesInEachSection = 5;
+
   // The side of the smallest possible square that contains the full timer in the design
   static const _timerWheelSides = 292.0;
   // The side of the smallest possible square that contains the simplified timer in the design
