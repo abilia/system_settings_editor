@@ -11,7 +11,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     required this.initialFolder,
-    this.libraryFolderGenerator,
     this.visibilityFilter,
     this.onCancel,
     this.appBar,
@@ -28,7 +27,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     required this.onOk,
-    this.libraryFolderGenerator,
     this.visibilityFilter,
     this.onCancel,
     this.appBar,
@@ -48,7 +46,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final VoidCallback? onCancel;
   final LibraryItemGenerator<T>? selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final LibraryItemGenerator<T>? libraryFolderGenerator;
   final bool Function(Sortable<T>)? visibilityFilter;
   final String emptyLibraryMessage;
   final String? rootHeading;
@@ -85,7 +82,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                       : SortableLibrary<T>(
                           libraryItemGenerator,
                           emptyLibraryMessage,
-                          libraryFolderGenerator: libraryFolderGenerator,
                           selectableItems: selectableItems,
                         ),
                 ),
@@ -167,14 +163,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
 class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final LibraryItemGenerator<T>? libraryFolderGenerator;
   final String emptyLibraryMessage;
   final bool selectableItems;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
-    this.libraryFolderGenerator,
     this.selectableItems = true,
     Key? key,
   }) : super(key: key);
@@ -206,7 +200,6 @@ class _SortableLibraryState<T extends SortableData>
             rootFolder: archiveState.isAtRoot,
           );
         }
-        final libraryFolderGenerator = widget.libraryFolderGenerator;
         return ScrollArrows.vertical(
           controller: _controller,
           child: GridView.count(
@@ -231,15 +224,7 @@ class _SortableLibraryState<T extends SortableData>
                               BlocProvider.of<SortableArchiveBloc<T>>(context)
                                   .add(FolderChanged(sortable.id));
                             },
-                            child: libraryFolderGenerator == null
-                                ? LibraryFolder(
-                                    title: sortable.data.title(
-                                      Translator.of(context).translate,
-                                    ),
-                                    fileId: sortable.data.folderFileId(),
-                                    filePath: sortable.data.folderFilePath(),
-                                  )
-                                : libraryFolderGenerator(sortable),
+                            child: LibraryFolder(sortableData: sortable.data),
                           ),
                         )
                       : widget.selectableItems
@@ -297,21 +282,17 @@ class EmptyLibraryMessage extends StatelessWidget {
 }
 
 class LibraryFolder extends StatelessWidget {
-  final String title, fileId, filePath;
-  final Color? color;
+  final SortableData sortableData;
 
   const LibraryFolder({
     Key? key,
-    required this.title,
-    this.fileId = '',
-    this.filePath = '',
-    this.color,
+    required this.sortableData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final folderIconSize = 86.s;
-
+    final title = sortableData.title(Translator.of(context).translate);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: title,
@@ -332,7 +313,7 @@ class LibraryFolder extends StatelessWidget {
                 Icon(
                   AbiliaIcons.folder,
                   size: folderIconSize,
-                  color: color ?? AbiliaColors.orange,
+                  color: AbiliaColors.orange,
                 ),
                 SizedBox(
                   height: folderIconSize,
@@ -342,8 +323,8 @@ class LibraryFolder extends StatelessWidget {
                         left: 10.s, right: 10.s, bottom: 16.s, top: 28.s),
                     child: Center(
                       child: FadeInAbiliaImage(
-                        imageFileId: fileId,
-                        imageFilePath: filePath,
+                        imageFileId: sortableData.folderFileId(),
+                        imageFilePath: sortableData.folderFilePath(),
                         fit: BoxFit.contain,
                         borderRadius: BorderRadius.circular(4.s),
                       ),
