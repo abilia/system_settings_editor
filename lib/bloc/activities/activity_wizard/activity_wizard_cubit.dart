@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
@@ -13,6 +14,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final EditActivityBloc editActivityBloc;
   final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
+  final bool edit;
+  final VoidCallback? onBack;
 
   bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
 
@@ -23,13 +26,14 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-  }) : super(
+    this.onBack,
+  })  : edit = false,
+        super(
           ActivityWizardState(
             0,
             settings.addActivityType == NewActivityMode.editView
                 ? UnmodifiableListView(
                     [
-                      if (settings.advancedActivityTemplate) WizardStep.basic,
                       WizardStep.advance,
                     ],
                   )
@@ -54,7 +58,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     Activity activity,
   ) =>
       [
-        if (settings.settings.wizard.template) WizardStep.basic,
         if (settings.settings.wizard.datePicker) WizardStep.date,
         if (settings.settings.wizard.title) WizardStep.title,
         if (settings.settings.wizard.image) WizardStep.image,
@@ -82,7 +85,9 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-  }) : super(ActivityWizardState(0, const [WizardStep.advance]));
+    this.onBack,
+  })  : edit = true,
+        super(ActivityWizardState(0, const [WizardStep.advance]));
 
   void next({
     bool warningConfirmed = false,
@@ -114,7 +119,13 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     emit(state.copyWith(newStep: (state.step + 1)));
   }
 
-  void previous() => emit(state.copyWith(newStep: (state.step - 1)));
+  void previous() async {
+    if (state.isFirstStep) {
+      onBack?.call();
+    } else {
+      emit(state.copyWith(newStep: (state.step - 1)));
+    }
+  }
 
   ActivityWizardState _saveActivity(
     EditActivityState editState, {

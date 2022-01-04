@@ -1,10 +1,10 @@
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:bloc/bloc.dart';
 export 'activities/activities_bloc.dart';
-export 'activities/day_activities/day_activities_bloc.dart';
+export 'activities/day_activities/day_activities_cubit.dart';
 export 'activities/edit_activity/edit_activity_bloc.dart';
 export 'activities/edit_activity/recurring_week/recurring_week_cubit.dart';
-export 'activities/activities_occasion/activities_occasion_bloc.dart';
+export 'activities/activities_occasion/activities_occasion_cubit.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/all.dart';
 export 'calendar/day_picker_bloc.dart';
@@ -35,3 +35,4 @@ export 'activities/activity_wizard/activity_wizard_cubit.dart';
 export 'activities/record_sound/record_sound_cubit.dart';
 export 'activities/activities_occasion/night_activities_cubit.dart';
 export 'calendar/inactivity_cubit.dart';
+export 'timer/all.dart';

@@ -9,6 +9,9 @@ class _MediumLayout extends Layout {
           actionButton: const ActionButtonLayout(
             size: 88,
             radius: 20,
+            spacing: 4,
+            padding: EdgeInsets.all(12),
+            withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
           ),
           toolbar: const ToolbarLayout(
             heigth: 120,
@@ -16,12 +19,8 @@ class _MediumLayout extends Layout {
           ),
           tabBar: const TabBarLayout(
             item: TabItemLayout(
-              heigth: 88,
               width: 118,
               border: 2,
-              spacing: 4,
-              topPadding: 6,
-              horizontalPadding: 5,
             ),
             heigth: 104,
             bottomPadding: 8,
@@ -57,6 +56,12 @@ class _MediumLayout extends Layout {
             hourHandLength: 22,
             minuteHandLength: 30,
             fontSize: 12,
+          ),
+          formPadding: const FormPaddingLayout(
+            left: 18,
+            right: 24,
+            top: 36,
+            verticalItemDistance: 12,
           ),
         );
 }

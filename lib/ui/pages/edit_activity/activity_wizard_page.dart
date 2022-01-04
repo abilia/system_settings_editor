@@ -28,8 +28,6 @@ class ActivityWizardPage extends StatelessWidget {
   Widget getPage(BuildContext context) {
     final step = context.read<ActivityWizardCubit>().state.currentStep;
     switch (step) {
-      case WizardStep.basic:
-        return const BasicActivityStepPage();
       case WizardStep.advance:
         return const EditActivityPage();
       case WizardStep.date:

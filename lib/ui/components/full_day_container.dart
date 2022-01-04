@@ -72,7 +72,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
-      child: ActionButton(
+      child: IconActionButton(
         onPressed: () {
           Navigator.of(context).push(
             PageRouteBuilder(

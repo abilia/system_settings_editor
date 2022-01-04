@@ -8,7 +8,7 @@ class AllDayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesOccasionBloc, ActivitiesOccasionState>(
+    return BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
       builder: (context, state) {
         if (state is ActivitiesOccasionLoaded) {
           return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(

@@ -1,4 +1,4 @@
-part of 'activities_occasion_bloc.dart';
+part of 'activities_occasion_cubit.dart';
 
 abstract class ActivitiesOccasionState extends Equatable {
   const ActivitiesOccasionState();

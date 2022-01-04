@@ -35,16 +35,23 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   EditActivityBloc.newActivity({
     required this.day,
     required int defaultAlarmTypeSetting,
+    BasicActivityDataItem? basicActivityData,
   }) : super(
-          UnstoredActivityState(
-            Activity.createNew(
-              title: '',
-              startTime: day,
-              timezone: tz.local.name,
-              alarmType: defaultAlarmTypeSetting,
-            ),
-            TimeInterval(startDate: day),
-          ),
+          basicActivityData == null
+              ? UnstoredActivityState(
+                  Activity.createNew(
+                    title: '',
+                    startTime: day,
+                    timezone: tz.local.name,
+                    alarmType: defaultAlarmTypeSetting,
+                  ),
+                  TimeInterval(startDate: day),
+                )
+              : UnstoredActivityState(
+                  basicActivityData.toActivity(
+                      timezone: tz.local.name, day: day),
+                  basicActivityData.toTimeInterval(startDate: day),
+                ),
         );
 
   @override
@@ -90,7 +97,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
     if (event is ChangeInfoItemType) {
       yield* _mapChangeInfoItemTypeToState(event);
     }
-    if (event is AddBasiActivity) {
+    if (event is AddBasicActivity) {
       yield* _mapAddBasicActivityToState(event);
     }
   }
@@ -146,7 +153,7 @@ class EditActivityBloc extends Bloc<EditActivityEvent, EditActivityState> {
   }
 
   Stream<EditActivityState> _mapAddBasicActivityToState(
-      AddBasiActivity event) async* {
+      AddBasicActivity event) async* {
     yield UnstoredActivityState(
       event.basicActivityData.toActivity(timezone: tz.local.name, day: day),
       event.basicActivityData.toTimeInterval(startDate: day),
