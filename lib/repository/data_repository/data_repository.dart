@@ -16,7 +16,7 @@ typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> json);
 
 abstract class DataRepository<M extends DataModel> extends Repository {
-  DataRepository({
+  const DataRepository({
     required BaseClient client,
     required String baseUrl,
     required this.path,

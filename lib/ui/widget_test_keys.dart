@@ -55,6 +55,7 @@ class TestKey {
       photosPickField = Key('photosPickField'),
       newActivityChoice = Key('newActivityChoice'),
       basicActivityChoice = Key('basicActivityChoice'),
+      newTimerChoice = Key('newTimerChoice'),
       nonCheckableAlarmSelector = Key('nonCheckableAlarmSelector'),
       checkableAlarmSelector = Key('checkableAlarmSelector'),
       reminderAlarmSelector = Key('reminderAlarmSelector'),
@@ -85,5 +86,7 @@ class TestKey {
       showAlarmOnOffSwitch = Key('showAlarmOnOffSwitch'),
       activityViewAlarmSwitch = Key('activityViewAlarmSwitch'),
       activityViewRemoveSwitch = Key('activityViewRemoveSwitch'),
-      activityViewEditSwitch = Key('activityViewEditSwitch');
+      activityViewEditSwitch = Key('activityViewEditSwitch'),
+      hours = Key('hours'),
+      minutes = Key('minutes');
 }

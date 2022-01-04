@@ -1,3 +1,4 @@
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'large_layout.dart';
@@ -18,6 +19,7 @@ class Layout {
   final FontSize fontSize;
   final IconSize iconSize;
   final ClockLayout clock;
+  final FormPaddingLayout formPadding;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -27,7 +29,10 @@ class Layout {
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
+    this.formPadding = const FormPaddingLayout(),
   });
+
+  bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
@@ -40,23 +45,25 @@ class AppBarLayout {
 }
 
 class ActionButtonLayout {
-  final double size, radius;
+  final double size, radius, spacing;
+  final EdgeInsets padding, withTextPadding;
 
   const ActionButtonLayout({
     this.size = 48,
     this.radius = 12,
+    this.spacing = 0,
+    this.padding = const EdgeInsets.all(8),
+    this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
   });
 }
 
 class ToolbarLayout {
   final double heigth, horizontalPadding, bottomPadding;
-  final List<double> itemsPaddings;
 
   const ToolbarLayout({
     this.heigth = 64,
     this.horizontalPadding = 16,
     this.bottomPadding = 0,
-    this.itemsPaddings = const [0, 0, 70, 39, 23],
   });
 }
 
@@ -72,14 +79,10 @@ class TabBarLayout {
 }
 
 class TabItemLayout {
-  final double width, heigth, border, spacing, topPadding, horizontalPadding;
+  final double width, border;
   const TabItemLayout({
-    this.heigth = 48,
     this.width = 64,
     this.border = 1,
-    this.spacing = 0,
-    this.topPadding = 4,
-    this.horizontalPadding = 4,
   });
 }
 
@@ -146,5 +149,16 @@ class ClockLayout {
     this.hourHandLength = 11,
     this.minuteHandLength = 15,
     this.fontSize = 7,
+  });
+}
+
+class FormPaddingLayout {
+  final double left, right, top, verticalItemDistance;
+
+  const FormPaddingLayout({
+    this.left = 12,
+    this.right = 16,
+    this.top = 20,
+    this.verticalItemDistance = 8,
   });
 }

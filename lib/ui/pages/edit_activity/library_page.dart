@@ -133,7 +133,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(16.s, 12.s, 0.0, 4.s),
             child: Row(
               children: [
-                ActionButtonDark(
+                IconActionButtonDark(
                   onPressed: () => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),

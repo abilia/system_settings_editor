@@ -147,9 +147,9 @@ extension on WidgetTester {
 
   Future<void> goToAddActivityImagePicker() async {
     await pumpApp();
-    await tap(find.byType(AddActivityButton));
+    await tap(find.byType(AddButton));
     await pumpAndSettle();
-    await tap(find.byType(NextButton));
+    await tap(find.byKey(TestKey.newActivityChoice));
     await pumpAndSettle();
     await tap(find.byType(SelectPictureWidget));
     await pumpAndSettle();

@@ -110,6 +110,17 @@ abstract class MemoplannerSettingsState extends Equatable {
       ? NewActivityMode.editView
       : NewActivityMode.stepByStep;
 
+  bool get basicActivityOption =>
+      (addActivityType == NewActivityMode.editView &&
+          advancedActivityTemplate) ||
+      (addActivityType == NewActivityMode.stepByStep &&
+          settings.wizard.template);
+
+  bool get newActivityOption =>
+      addActivityType == NewActivityMode.editView ||
+      settings.wizard.title ||
+      settings.wizard.image;
+
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
 

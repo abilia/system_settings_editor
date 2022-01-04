@@ -18,7 +18,7 @@ class UserRepository extends Repository {
   final UserDb userDb;
   final LicenseDb licenseDb;
 
-  UserRepository({
+  const UserRepository({
     required String baseUrl,
     required BaseClient client,
     required this.tokenDb,

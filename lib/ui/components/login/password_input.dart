@@ -214,7 +214,7 @@ class HidePasswordButton extends StatelessWidget {
         collapsed: state.password.isEmpty,
         padding: padding,
         axis: Axis.horizontal,
-        child: ActionButtonDark(
+        child: IconActionButtonDark(
           onPressed: () => context.read<PasswordCubit>().toggleHidden(),
           child: Icon(
             state.hide ? AbiliaIcons.show : AbiliaIcons.hide,

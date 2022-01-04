@@ -1,4 +1,4 @@
-part of 'day_activities_bloc.dart';
+part of 'day_activities_cubit.dart';
 
 // This does not extends Equatable because of preformance issues
 // when we do equals on a large amount of DateTime

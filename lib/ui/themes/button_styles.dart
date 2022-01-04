@@ -130,7 +130,7 @@ final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
   minimumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
-  padding: MaterialStateProperty.all(EdgeInsets.all(8.0.s)),
+  padding: MaterialStateProperty.all(layout.actionButton.padding),
 );
 
 final actionButtonStyleRed = _actionButtonStyle.copyWith(
@@ -244,6 +244,17 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
     return ligthShapeBorder;
   }),
 );
+
+final _textActionButtonStyle = ButtonStyle(
+  textStyle:
+      MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
+  maximumSize: MaterialStateProperty.all(
+      Size(layout.actionButton.size, layout.actionButton.size)),
+  padding: MaterialStateProperty.all(layout.actionButton.withTextPadding),
+);
+
+final textActionButtonStyleLight =
+    _textActionButtonStyle.merge(actionButtonStyleLight);
 
 final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {

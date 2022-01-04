@@ -47,6 +47,7 @@ class NameAndPictureWidget extends StatelessWidget {
   final String text;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
+  final String? inputHeadingForNameField;
 
   const NameAndPictureWidget({
     Key? key,
@@ -57,6 +58,7 @@ class NameAndPictureWidget extends StatelessWidget {
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
     required this.text,
+    this.inputHeadingForNameField,
   }) : super(key: key);
 
   @override
@@ -79,6 +81,7 @@ class NameAndPictureWidget extends StatelessWidget {
               errorState: errorState,
               maxLines: maxLines,
               inputFormatters: inputFormatters,
+              inputHeading: inputHeadingForNameField,
             ),
           ),
         ],
@@ -205,6 +208,7 @@ class NameInput extends StatelessWidget {
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
+    this.inputHeading,
   }) : super(key: key);
 
   final String text;
@@ -212,6 +216,7 @@ class NameInput extends StatelessWidget {
   final bool errorState;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
+  final String? inputHeading;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +227,7 @@ class NameInput extends StatelessWidget {
       errorState: errorState,
       icon: AbiliaIcons.edit,
       heading: Translator.of(context).translate.name,
-      inputHeading: Translator.of(context).translate.name,
+      inputHeading: inputHeading ?? Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
