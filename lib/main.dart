@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -113,7 +114,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) => TopLevelBlocsProvider(
         pushBloc: pushBloc,
         baseUrl: baseUrl,
-        child: TopLevelListeners(
+        child: TopLevelListener(
           navigatorKey: _navigatorKey,
           payload: payload,
           child: SeagullApp(
