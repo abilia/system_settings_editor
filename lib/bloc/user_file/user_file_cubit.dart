@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -14,77 +15,70 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'user_file_event.dart';
 part 'user_file_state.dart';
 
-class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
+class UserFileCubit extends Cubit<UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
   late final StreamSubscription pushSubscription;
 
-  UserFileBloc({
+  UserFileCubit({
     required this.userFileRepository,
     required this.syncBloc,
     required this.fileStorage,
     required PushBloc pushBloc,
   }) : super(const UserFilesNotLoaded()) {
-    pushSubscription = pushBloc.stream.listen((state) {
-      if (state is PushReceived) {
-        add(LoadUserFiles());
-      }
-    });
+    pushSubscription =
+        pushBloc.stream.whereType<PushReceived>().listen(loadUserFiles);
   }
 
-  @override
-  Stream<UserFileState> mapEventToState(
-    UserFileEvent event,
-  ) async* {
-    if (event is FileAdded) {
-      yield* _mapFileAddedToState(event);
-    }
-    if (event is LoadUserFiles) {
-      yield* _mapLoadUserFilesToState();
-    }
-    if (event is _DownloadUserFiles) {
-      yield* _mapDownloadUserFilesToState();
-    }
-  }
-
-  Stream<UserFileState> _mapLoadUserFilesToState() async* {
+  Future loadUserFiles([_]) async {
     await userFileRepository.fetchIntoDatabaseSynchronized();
     final storedFiles = await userFileRepository.getAllLoadedFiles();
-    yield UserFilesLoaded(storedFiles, state._tempFiles);
-    add(_DownloadUserFiles());
+    emit(UserFilesLoaded(storedFiles, state._tempFiles));
+    _downloadUserFiles();
   }
 
-  Stream<UserFileState> _mapDownloadUserFilesToState() async* {
+  Future _downloadUserFiles() async {
     final downloadedUserFiles =
         await userFileRepository.downloadUserFiles(limit: 10);
     if (downloadedUserFiles.isNotEmpty) {
-      yield UserFilesLoaded(
-          [...state.userFiles, ...downloadedUserFiles], state._tempFiles);
-      add(_DownloadUserFiles());
+      emit(
+        UserFilesLoaded(
+          [...state.userFiles, ...downloadedUserFiles],
+          state._tempFiles,
+        ),
+      );
+      _downloadUserFiles();
     }
   }
 
-  Stream<UserFileState> _mapFileAddedToState(FileAdded event) async* {
-    yield state.addTempFile(
-      event.unstoredFile.id,
-      event.unstoredFile.file,
+  Future fileAdded(
+    UnstoredAbiliaFile unstoredFile, {
+    bool image = false,
+  }) async {
+    emit(
+      state.addTempFile(
+        unstoredFile.id,
+        unstoredFile.file,
+      ),
     );
 
-    final fileBytes = event is ImageAdded
-        ? await _adjustImageAndStoreThumb(event.unstoredFile)
-        : await event.unstoredFile.file.readAsBytes();
+    final fileBytes = image
+        ? await _adjustImageAndStoreThumb(unstoredFile)
+        : await unstoredFile.file.readAsBytes();
 
-    await fileStorage.storeFile(fileBytes, event.unstoredFile.id);
+    await fileStorage.storeFile(fileBytes, unstoredFile.id);
     final userFile = _generateUserFile(
-        event.unstoredFile.id, event.unstoredFile.file.path, fileBytes);
+      unstoredFile.id,
+      unstoredFile.file.path,
+      fileBytes,
+    );
 
     await userFileRepository.save([userFile]);
     syncBloc.add(const FileSaved());
-    yield state.add(userFile);
+    emit(state.add(userFile));
   }
 
   Future<List<int>> _adjustImageAndStoreThumb(

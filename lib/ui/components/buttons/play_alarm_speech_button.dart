@@ -18,7 +18,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
           BlocProvider(
             create: (context) => SoundCubit(
               storage: GetIt.I<FileStorage>(),
-              userFileBloc: context.read<UserFileBloc>(),
+              userFileCubit: context.read<UserFileCubit>(),
             ),
           ),
           BlocProvider(

@@ -26,7 +26,6 @@ void registerFallbackValues() {
   registerFallbackValue(ActivitiesNotLoaded());
   registerFallbackValue(LoadActivities());
   registerFallbackValue(const UserFilesNotLoaded());
-  registerFallbackValue(LoadUserFiles());
   registerFallbackValue(Duration.zero);
   registerFallbackValue(Curves.ease);
   registerFallbackValue(GenericsNotLoaded());
