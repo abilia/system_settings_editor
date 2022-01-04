@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -15,7 +16,7 @@ class AlarmNavigator {
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListeners(child: _alarmPage(alarm)),
+        child: AlarmListener(child: _alarmPage(alarm)),
       ),
     );
     _alarmRoutesOnStack[alarm.activity.id] = route;
