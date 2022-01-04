@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -51,7 +50,6 @@ void main() {
       ..activityDb = mockActivityDb
       ..ticker = Ticker(
           stream: StreamController<DateTime>().stream, initialTime: initialDay)
-      ..syncDelay = SyncDelays.zero
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
