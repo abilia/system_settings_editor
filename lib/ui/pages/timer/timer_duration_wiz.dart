@@ -38,9 +38,6 @@ class TimerDurationWiz extends StatelessWidget {
                     );
                     if (duration != null) {
                       context.read<TimerWizardCubit>().updateDuration(duration);
-                      context.read<TimerWizardCubit>().updateName(duration
-                          .toDurationString(Translator.of(context).translate,
-                              shortMin: false));
                     }
                   },
                 ),
@@ -56,28 +53,19 @@ class TimerDurationWiz extends StatelessWidget {
                     context.read<TimerWizardCubit>().updateDuration(
                           Duration(minutes: minutesSelected),
                         );
-                    context.read<TimerWizardCubit>().updateName(
-                        Duration(minutes: minutesSelected).toDurationString(
-                            Translator.of(context).translate,
-                            shortMin: false));
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(
-          onPressed: () async {
-            await Navigator.of(context).maybePop();
-            context.read<TimerWizardCubit>().previous();
-          },
+          onPressed: context.read<TimerWizardCubit>().previous,
         ),
         forwardNavigationWidget: NextButton(
-          onPressed: () {
-            context.read<TimerWizardCubit>().next();
-          },
+          onPressed: context.read<TimerWizardCubit>().next,
         ),
       ),
     );

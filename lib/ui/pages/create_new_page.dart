@@ -22,10 +22,7 @@ class CreateNewPage extends StatelessWidget {
                 key: TestKey.newActivityChoice,
                 leading: const Icon(AbiliaIcons.basicActivity),
                 text: Text(t.newActivity),
-                onTap: () async {
-                  await Navigator.of(context).maybePop();
-                  navigateToActivityWizard(context);
-                },
+                onTap: () => navigateToActivityWizard(context),
               ).pad(formItemPadding),
             if (memoplannerSettingsState.basicActivityOption)
               PickField(
@@ -50,8 +47,7 @@ class CreateNewPage extends StatelessWidget {
                     ),
                   );
                   if (basicActivityData is BasicActivityDataItem) {
-                    await Navigator.of(context).maybePop();
-                    navigateToActivityWizard(context, basicActivityData);
+                    await navigateToActivityWizard(context, basicActivityData);
                   }
                 },
               ).pad(formItemPadding),
@@ -61,30 +57,21 @@ class CreateNewPage extends StatelessWidget {
               leading: const Icon(AbiliaIcons.stopWatch),
               text: Text(t.newTimer),
               onTap: () async {
-                await Navigator.of(context).maybePop();
-                Navigator.of(context).push(
+                final timerStarted = await Navigator.of(context).push(
                   _createRoute(
                     CopiedAuthProviders(
                       blocContext: context,
                       child: BlocProvider(
                         create: (context) => TimerWizardCubit(
                           timerCubit: context.read<TimerCubit>(),
-                          onBack: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => CopiedAuthProviders(
-                                  blocContext: context,
-                                  child: const CreateNewPage(),
-                                ),
-                              ),
-                            );
-                          },
+                          translate: t,
                         ),
                         child: const TimerWizardPage(),
                       ),
                     ),
                   ),
                 );
+                if (timerStarted == true) Navigator.pop(context);
               },
             ).pad(topPadding),
           ],
@@ -96,16 +83,16 @@ class CreateNewPage extends StatelessWidget {
     );
   }
 
-  void navigateToActivityWizard(BuildContext context,
-      [BasicActivityDataItem? basicActivity]) {
-    Navigator.of(context).push(
+  Future navigateToActivityWizard(BuildContext context,
+      [BasicActivityDataItem? basicActivity]) async {
+    final activityCreated = await Navigator.of(context).push<bool>(
       _createRoute(
         CopiedAuthProviders(
           blocContext: context,
           child: MultiBlocProvider(
             providers: [
               BlocProvider<EditActivityBloc>(
-                create: (_) => EditActivityBloc.newActivity(
+                create: (context) => EditActivityBloc.newActivity(
                   day: context.read<DayPickerBloc>().state.day,
                   defaultAlarmTypeSetting: context
                       .read<MemoplannerSettingBloc>()
@@ -116,20 +103,11 @@ class CreateNewPage extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => ActivityWizardCubit.newActivity(
-                    activitiesBloc: context.read<ActivitiesBloc>(),
-                    editActivityBloc: context.read<EditActivityBloc>(),
-                    clockBloc: context.read<ClockBloc>(),
-                    settings: context.read<MemoplannerSettingBloc>().state,
-                    onBack: () async {
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
-                            child: const CreateNewPage(),
-                          ),
-                        ),
-                      );
-                    }),
+                  activitiesBloc: context.read<ActivitiesBloc>(),
+                  editActivityBloc: context.read<EditActivityBloc>(),
+                  clockBloc: context.read<ClockBloc>(),
+                  settings: context.read<MemoplannerSettingBloc>().state,
+                ),
               ),
             ],
             child: const ActivityWizardPage(),
@@ -137,20 +115,19 @@ class CreateNewPage extends StatelessWidget {
         ),
       ),
     );
+    if (activityCreated == true) Navigator.pop(context);
   }
 
-  Route _createRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)
-            .chain(CurveTween(curve: Curves.ease));
-
-        return SlideTransition(
-          position: animation.drive(tween),
+  Route<bool> _createRoute(Widget page) => PageRouteBuilder<bool>(
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            SlideTransition(
+          position: animation.drive(
+            Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(
+              CurveTween(curve: Curves.ease),
+            ),
+          ),
           child: child,
-        );
-      },
-    );
-  }
+        ),
+      );
 }
