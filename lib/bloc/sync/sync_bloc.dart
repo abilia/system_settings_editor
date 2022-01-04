@@ -34,7 +34,7 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
     Emitter emit,
   ) async {
     if (!await _sync(event)) {
-      Future.delayed(syncDelay.retryDelay);
+      await Future.delayed(syncDelay.retryDelay);
       add(event);
     }
   }
