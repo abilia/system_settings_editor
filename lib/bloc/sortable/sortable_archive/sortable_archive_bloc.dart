@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 
 part 'sortable_archive_event.dart';

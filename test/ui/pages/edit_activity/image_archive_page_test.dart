@@ -274,6 +274,32 @@ void main() {
       expect(find.text(testHeader), findsOneWidget);
     });
 
+    testWidgets('mobilePicture gets correct folder title',
+        (WidgetTester tester) async {
+      when(() => mockSortableBloc.state).thenAnswer(
+        (_) => SortablesLoaded(
+          sortables: [
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(
+                name: "some name we don't care about",
+                upload: true,
+              ),
+            ),
+          ],
+        ),
+      );
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+            of: find.byType(LibraryFolder),
+            matching: find.text(translate.mobilePictures)),
+        findsOneWidget,
+      );
+    });
+
     testWidgets(
         'Image archive with one folder inside initial folder, can go into folder',
         (WidgetTester tester) async {

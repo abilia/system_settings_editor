@@ -6,9 +6,12 @@ class ImageArchivePage extends StatelessWidget {
   final String initialFolder;
   final String? header;
 
-  const ImageArchivePage(
-      {Key? key, this.onCancel, this.initialFolder = '', this.header})
-      : super(key: key);
+  const ImageArchivePage({
+    Key? key,
+    this.onCancel,
+    this.initialFolder = '',
+    this.header,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +19,12 @@ class ImageArchivePage extends StatelessWidget {
     return LibraryPage<ImageArchiveData>.selectable(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: translate.selectPicture,
+        title: translate.selectImage,
       ),
       initialFolder: initialFolder,
       rootHeading: header ?? translate.imageArchive,
       libraryItemGenerator: (imageArchive) =>
           ArchiveImage(sortable: imageArchive),
-      libraryFolderGenerator: (imageArchive) => imageArchive.data.upload
-          ? LibraryFolder(
-              title: imageArchive.data.title(),
-              fileId: imageArchive.data.folderFileId(),
-              filePath: imageArchive.data.folderFilePath(),
-            )
-          : LibraryFolder(
-              title: imageArchive.data.title(),
-              fileId: imageArchive.data.folderFileId(),
-              filePath: imageArchive.data.folderFilePath(),
-            ),
       visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
       selectedItemGenerator: (imageArchive) =>
           FullScreenArchiveImage(selected: imageArchive.data),

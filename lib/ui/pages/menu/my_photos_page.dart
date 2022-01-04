@@ -34,11 +34,6 @@ class MyPhotosPage extends StatelessWidget {
       emptyLibraryMessage: translate.noImages,
       libraryItemGenerator: (imageArchive) =>
           FullscreenViewablePhoto(sortable: imageArchive),
-      libraryFolderGenerator: (imageArchive) => LibraryFolder(
-        title: imageArchive.data.title(),
-        fileId: imageArchive.data.folderFileId(),
-        filePath: imageArchive.data.folderFilePath(),
-      ),
     );
   }
 }

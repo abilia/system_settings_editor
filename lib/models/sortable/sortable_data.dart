@@ -3,7 +3,7 @@ part of 'sortable.dart';
 abstract class SortableData extends Equatable {
   const SortableData();
   String toRaw();
-  String title();
+  String title(Translated t);
   String folderFileId();
   String folderFilePath();
 }
@@ -22,7 +22,7 @@ class RawSortableData extends SortableData {
   static RawSortableData fromJson(String data) => RawSortableData(data);
 
   @override
-  String title() => '';
+  String title(t) => '';
 
   @override
   String folderFileId() => '';
@@ -70,7 +70,11 @@ class ImageArchiveData extends SortableData {
   }
 
   @override
-  String title() => name;
+  String title(Translated t) => myPhotos
+      ? t.myPhotos
+      : upload
+          ? t.mobilePictures
+          : name;
 
   @override
   String folderFileId() => fileId;
@@ -111,7 +115,7 @@ class NoteData extends SortableData {
   }
 
   @override
-  String title() => name;
+  String title(t) => name;
 
   @override
   String folderFileId() => fileId;
@@ -155,7 +159,7 @@ class ChecklistData extends SortableData {
   }
 
   @override
-  String title() => checklist.name;
+  String title(t) => checklist.name;
 
   @override
   String folderFileId() => checklist.fileId;
@@ -252,7 +256,7 @@ class BasicActivityDataItem extends BasicActivityData {
       ];
 
   @override
-  String title() => activityTitle.isEmpty ? name : activityTitle;
+  String title(t) => activityTitle.isEmpty ? name : activityTitle;
 
   @override
   String toRaw() => json.encode({
@@ -341,7 +345,7 @@ class BasicActivityDataFolder extends BasicActivityData {
   List<Object> get props => [name, icon, fileId];
 
   @override
-  String title() => name;
+  String title(t) => name;
 
   @override
   String toRaw() => json.encode({
