@@ -13,12 +13,17 @@ class AlarmListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     return MultiBlocListener(
       listeners: [
         BlocListener<NotificationCubit, NotificationAlarm?>(
           listener: (context, state) async {
             if (state != null) {
-              await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
+              await GetIt.I<AlarmNavigator>().pushAlarm(
+                context,
+                state,
+                authProviders,
+              );
             }
           },
         ),
@@ -26,7 +31,11 @@ class AlarmListener extends StatelessWidget {
           BlocListener<AlarmCubit, NotificationAlarm?>(
             listener: (context, state) async {
               if (state != null) {
-                await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
+                await GetIt.I<AlarmNavigator>().pushAlarm(
+                  context,
+                  state,
+                  authProviders,
+                );
               }
             },
           ),

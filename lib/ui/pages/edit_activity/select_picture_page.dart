@@ -57,6 +57,7 @@ class SelectPictureBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
@@ -103,8 +104,8 @@ class SelectPictureBody extends StatelessWidget {
                       final selectedImage =
                           await Navigator.of(context).push<AbiliaFile>(
                         MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
+                          builder: (_) => MultiBlocProvider(
+                            providers: authProviders,
                             child: ImageArchivePage(onCancel: onCancel),
                           ),
                         ),
@@ -129,8 +130,8 @@ class SelectPictureBody extends StatelessWidget {
                               final selectedImage =
                                   await Navigator.of(context).push<AbiliaFile>(
                                 MaterialPageRoute(
-                                  builder: (_) => CopiedAuthProviders(
-                                    blocContext: context,
+                                  builder: (_) => MultiBlocProvider(
+                                    providers: authProviders,
                                     child: ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder: myPhotoFolder.id,
@@ -190,6 +191,8 @@ class ImageSourceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
         return Row(
@@ -214,8 +217,10 @@ class ImageSourceWidget extends StatelessWidget {
                   onTap: () => showViewDialog(
                     useSafeArea: false,
                     context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: permission),
+                    builder: (context) => PermissionInfoDialog(
+                      permission: permission,
+                    ),
+                    authProviders: authProviders,
                   ),
                 ),
               )

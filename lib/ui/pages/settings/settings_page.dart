@@ -75,6 +75,8 @@ class TextToSpeechSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settingsState) => Row(children: [
         Expanded(
@@ -92,6 +94,7 @@ class TextToSpeechSwitch extends StatelessWidget {
             onTap: () => showViewDialog(
               useSafeArea: false,
               context: context,
+              authProviders: authProviders,
               builder: (context) => const LongPressInfoDialog(),
             ),
           ),
@@ -105,33 +108,35 @@ class PermissionPickField extends StatelessWidget {
   const PermissionPickField({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, state) => Stack(
-          children: [
-            PickField(
-              leading: const Icon(AbiliaIcons.menuSetup),
-              text: Text(Translator.of(context).translate.permissions),
-              onTap: () async {
-                context.read<PermissionBloc>().checkAll();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: const PermissionsPage(),
-                    ),
-                    settings: const RouteSettings(name: 'PermissionPage'),
+  Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, state) => Stack(
+        children: [
+          PickField(
+            leading: const Icon(AbiliaIcons.menuSetup),
+            text: Text(Translator.of(context).translate.permissions),
+            onTap: () async {
+              context.read<PermissionBloc>().checkAll();
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: const PermissionsPage(),
                   ),
-                );
-              },
+                  settings: const RouteSettings(name: 'PermissionPage'),
+                ),
+              );
+            },
+          ),
+          if (state.importantPermissionMissing)
+            Positioned(
+              top: 8.0.s,
+              right: 8.0.s,
+              child: const OrangeDot(),
             ),
-            if (state.importantPermissionMissing)
-              Positioned(
-                top: 8.0.s,
-                right: 8.0.s,
-                child: const OrangeDot(),
-              ),
-          ],
-        ),
-      );
+        ],
+      ),
+    );
+  }
 }

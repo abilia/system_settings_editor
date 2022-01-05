@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
             heading: translate.licenseExpired,
             message: translate.licenseExpiredMessage,
           ),
-          wrapWithAuthProviders: false,
+          authProviders: null,
         ),
       );
     }
@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
                   heading: cause.heading(translate),
                   message: cause.message(translate),
                 ),
-                wrapWithAuthProviders: false,
+                authProviders: null,
               );
             } else {
               await showViewDialog(
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                 builder: (_) => ErrorDialog(
                   text: cause.message(translate),
                 ),
-                wrapWithAuthProviders: false,
+                authProviders: null,
               );
             }
           }

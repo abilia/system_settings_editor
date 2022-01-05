@@ -26,6 +26,8 @@ class EyeButtonDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => _EyeButton(
         onPressed: () async {
@@ -37,6 +39,7 @@ class EyeButtonDay extends StatelessWidget {
               currentDayInterval: memoSettingsState.timepillarIntervalType,
               currentZoom: memoSettingsState.timepillarZoom,
             ),
+            authProviders: authProviders,
           );
           if (settings != null) {
             if (memoSettingsState.dayCalendarType != settings.calendarType) {
@@ -73,6 +76,8 @@ class EyeButtonMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.monthCalendarType != current.monthCalendarType,
@@ -81,7 +86,9 @@ class EyeButtonMonth extends StatelessWidget {
           final monthCalendarType = await showViewDialog<MonthCalendarType?>(
             context: context,
             builder: (context) => EyeButtonMonthDialog(
-                currentCalendarType: memoSettingsState.monthCalendarType),
+              currentCalendarType: memoSettingsState.monthCalendarType,
+            ),
+            authProviders: authProviders,
           );
           if (monthCalendarType != null) {
             context.read<GenericBloc>().add(

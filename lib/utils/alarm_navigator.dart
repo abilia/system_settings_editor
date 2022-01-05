@@ -26,11 +26,12 @@ class AlarmNavigator {
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
+    List<BlocProvider> authProviders,
   ) async {
     log.fine('pushAlarm: $alarm');
     final route = MaterialPageRoute(
-      builder: (_) => CopiedAuthProviders(
-        blocContext: context,
+      builder: (_) => MultiBlocProvider(
+        providers: authProviders,
         child: _alarmPage(alarm),
       ),
       fullscreenDialog: true,

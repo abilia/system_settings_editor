@@ -56,6 +56,8 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return IconActionButtonBlack(
       onPressed: () {
         showViewDialog(
@@ -63,6 +65,7 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
           builder: (context) => WarningDialog(
             text: Translator.of(context).translate.alertAlarmsDisabled,
           ),
+          authProviders: authProviders,
         );
         context.read<GenericBloc>().add(
               GenericUpdated(

@@ -7,6 +7,7 @@ class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
@@ -43,6 +44,7 @@ class FunctionSettingsPage extends StatelessWidget {
                       .displayMenuChangedToDisabled) {
                     final answer = await showViewDialog<bool>(
                       context: context,
+                      authProviders: authProviders,
                       builder: (context) => YesNoDialog(
                         heading: t.functions,
                         text: t.menuRemovalWarning,

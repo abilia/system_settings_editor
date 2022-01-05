@@ -16,6 +16,7 @@ class RecordSoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
@@ -90,6 +91,7 @@ class RecordSoundWidget extends StatelessWidget {
                           context: context,
                           builder: (context) => const PermissionInfoDialog(
                               permission: Permission.microphone),
+                          authProviders: authProviders,
                         ),
                       ),
                     ),
@@ -119,6 +121,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -140,8 +143,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
+                            builder: (_) => MultiBlocProvider(
+                              providers: authProviders,
                               child: MultiBlocProvider(
                                 providers: [
                                   BlocProvider.value(

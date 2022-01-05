@@ -33,6 +33,7 @@ class ActivityTimepillarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
@@ -94,8 +95,8 @@ class ActivityTimepillarCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
                           child: ActivityPage(activityDay: activityOccasion),
                         ),
                         settings: RouteSettings(

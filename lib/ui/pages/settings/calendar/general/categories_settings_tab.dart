@@ -78,38 +78,41 @@ class _CategoryPickField extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => PickField(
-        text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
-        padding: imageAndName.image.isNotEmpty
-            ? EdgeInsets.fromLTRB(4.s, 4.s, 12.s, 4.s)
-            : null,
-        leading: imageAndName.image.isNotEmpty
-            ? FadeInAbiliaImage(
-                imageFileId: imageAndName.image.id,
-                imageFilePath: imageAndName.image.path,
-                width: 48.s,
-                height: 48.s,
-              )
-            : null,
-        onTap: () async {
-          final result = await Navigator.of(context).push<ImageAndName>(
-            MaterialPageRoute(
-              builder: (_) => CopiedAuthProviders(
-                blocContext: context,
-                child: EditCategoryPage(
-                  imageAndName: imageAndName,
-                  hintText: defaultName,
-                ),
+  Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+    return PickField(
+      text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
+      padding: imageAndName.image.isNotEmpty
+          ? EdgeInsets.fromLTRB(4.s, 4.s, 12.s, 4.s)
+          : null,
+      leading: imageAndName.image.isNotEmpty
+          ? FadeInAbiliaImage(
+              imageFileId: imageAndName.image.id,
+              imageFilePath: imageAndName.image.path,
+              width: 48.s,
+              height: 48.s,
+            )
+          : null,
+      onTap: () async {
+        final result = await Navigator.of(context).push<ImageAndName>(
+          MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: EditCategoryPage(
+                imageAndName: imageAndName,
+                hintText: defaultName,
               ),
             ),
-          );
-          if (result != null) {
-            context
-                .read<GeneralCalendarSettingsCubit>()
-                .changeCategorySettings(onResult(result));
-          }
-        },
-      );
+          ),
+        );
+        if (result != null) {
+          context
+              .read<GeneralCalendarSettingsCubit>()
+              .changeCategorySettings(onResult(result));
+        }
+      },
+    );
+  }
 }
 
 class _CategoriesPreview extends StatelessWidget {

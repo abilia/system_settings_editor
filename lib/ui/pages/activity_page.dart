@@ -59,6 +59,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final activity = activityDay.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) {
@@ -91,6 +92,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                       await checkConfirmation(
                         context,
                         activityDay,
+                        authProviders,
                       );
                     },
                   ),
@@ -102,6 +104,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     onPressed: () => _alarmButtonPressed(
                       context,
                       activityDay,
+                      authProviders,
                     ),
                   ),
                 if (displayDeleteButton)
@@ -111,6 +114,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     onPressed: () => _deleteButtonPressed(
                       context,
                       activity,
+                      authProviders,
                     ),
                   ),
                 if (displayEditButton)
@@ -129,12 +133,13 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   Future<void> _alarmButtonPressed(
     BuildContext context,
     ActivityDay activityDay,
+    List<BlocProvider> authProviders,
   ) async {
     final activity = activityDay.activity;
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: BlocProvider<EditActivityBloc>(
             create: (_) => EditActivityBloc.edit(activityDay),
             child: SelectAlarmPage(activity: activity),
@@ -175,6 +180,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   Future<void> _deleteButtonPressed(
     BuildContext context,
     Activity activity,
+    List<BlocProvider> authProviders,
   ) async {
     final shouldDelete = await showViewDialog<bool>(
       context: context,
@@ -183,6 +189,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         headingIcon: AbiliaIcons.deleteAllClear,
         text: Translator.of(context).translate.deleteActivity,
       ),
+      authProviders: authProviders,
     );
     if (shouldDelete == true) {
       final activitiesBloc = context.read<ActivitiesBloc>();
@@ -222,14 +229,16 @@ class EditActivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return TextAndOrIconActionButtonLight(
       Translator.of(context).translate.edit,
       AbiliaIcons.edit,
       onPressed: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
               child: MultiBlocProvider(
                 providers: [
                   BlocProvider<EditActivityBloc>(

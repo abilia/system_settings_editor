@@ -106,6 +106,7 @@ class SelectPictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final heading = Translator.of(context).translate.picture;
     return Tts.fromSemantics(
       SemanticsProperties(button: true, label: heading),
@@ -115,7 +116,7 @@ class SelectPictureWidget extends StatelessWidget {
           SubHeading(heading),
           SelectedImageWidget(
             errorState: errorState,
-            onTap: () => imageClick(context),
+            onTap: () => imageClick(context, authProviders),
             selectedImage: selectedImage,
           ),
         ],
@@ -123,11 +124,14 @@ class SelectPictureWidget extends StatelessWidget {
     );
   }
 
-  void imageClick(BuildContext context) async {
+  void imageClick(
+    BuildContext context,
+    List<BlocProvider> authProviders,
+  ) async {
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: SelectPicturePage(
             selectedImage: selectedImage,
           ),
@@ -348,6 +352,7 @@ class AlarmWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     final alarm = activity.alarm;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -363,8 +368,8 @@ class AlarmWidget extends StatelessWidget {
                 ? () async {
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: SelectAlarmTypePage(
                           alarm: alarm.typeSeagull,
                         ),

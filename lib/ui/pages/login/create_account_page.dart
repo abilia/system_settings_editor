@@ -25,7 +25,7 @@ class CreateAccountPage extends StatelessWidget {
             listener: (context, state) async {
               await showViewDialog(
                 context: context,
-                wrapWithAuthProviders: false,
+                authProviders: null,
                 builder: (context) => ViewDialog(
                   heading: AppBarHeading(
                     text: t.accountCreatedHeading,
@@ -45,7 +45,7 @@ class CreateAccountPage extends StatelessWidget {
               if (state is CreateAccountFailed) {
                 await showViewDialog(
                   context: context,
-                  wrapWithAuthProviders: false,
+                  authProviders: null,
                   builder: (_) => ErrorDialog(
                     text: state.errorMessage(t),
                     backNavigationWidget:
@@ -183,7 +183,7 @@ class AcceptTermsSwitch extends StatelessWidget {
                 ..onTap = () => showViewDialog(
                       context: context,
                       builder: (_) => WebViewDialog(url: '$abiliaUrl$url'),
-                      wrapWithAuthProviders: false,
+                      authProviders: null,
                     ),
             ),
           ],

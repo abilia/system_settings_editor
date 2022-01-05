@@ -8,6 +8,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return BlocBuilder<WakeLockCubit, WakeLockState>(
       builder: (context, wakeLockState) => PickField(
@@ -19,8 +20,8 @@ class ScreenTimeoutPickField extends StatelessWidget {
         onTap: () async {
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
-              builder: (_) => CopiedAuthProviders(
-                blocContext: context,
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
                 child: ScreenTimeOutSelector(
                   timeout:
                       wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways

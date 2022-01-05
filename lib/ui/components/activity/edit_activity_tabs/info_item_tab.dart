@@ -85,6 +85,7 @@ class EditChecklistWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
@@ -103,8 +104,8 @@ class EditChecklistWidget extends StatelessWidget {
                 final selectedChecklist =
                     await Navigator.of(context).push<Checklist>(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const ChecklistLibraryPage(),
                     ),
                   ),
@@ -139,7 +140,11 @@ class EditChecklistWidget extends StatelessWidget {
                         checklist,
                         padding:
                             EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
-                        onTap: (r) => _handleEditQuestionResult(r, context),
+                        onTap: (r) => _handleEditQuestionResult(
+                          r,
+                          context,
+                          authProviders,
+                        ),
                         preview: true,
                       ),
                     ),
@@ -160,7 +165,10 @@ class EditChecklistWidget extends StatelessWidget {
                         focusElevation: 0.0,
                         highlightElevation: 0.0,
                         hoverElevation: 0.0,
-                        onPressed: () => _handleNewQuestion(context),
+                        onPressed: () => _handleNewQuestion(
+                          context,
+                          authProviders,
+                        ),
                         child: Row(
                           children: [
                             SizedBox(width: 12.0.s),
@@ -189,11 +197,14 @@ class EditChecklistWidget extends StatelessWidget {
   }
 
   void _handleEditQuestionResult(
-      final Question oldQuestion, BuildContext context) async {
+    final Question oldQuestion,
+    BuildContext context,
+    List<BlocProvider> authProviders,
+  ) async {
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: EditQuestionPage(
             question: oldQuestion,
           ),
@@ -227,11 +238,14 @@ class EditChecklistWidget extends StatelessWidget {
     }
   }
 
-  void _handleNewQuestion(BuildContext context) async {
+  void _handleNewQuestion(
+    BuildContext context,
+    List<BlocProvider> authProviders,
+  ) async {
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: const EditQuestionPage(),
         ),
       ),
@@ -275,6 +289,7 @@ class EditNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
@@ -292,8 +307,8 @@ class EditNoteWidget extends StatelessWidget {
               onPressed: () async {
                 final result = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const NoteLibraryPage(),
                     ),
                   ),
@@ -312,7 +327,7 @@ class EditNoteWidget extends StatelessWidget {
         SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
-            onTap: () => editText(context, activity, infoItem),
+            onTap: () => editText(context, activity, infoItem, authProviders),
             child: Container(
               decoration: whiteBoxDecoration,
               child: NoteBlock(
@@ -336,11 +351,12 @@ class EditNoteWidget extends StatelessWidget {
     BuildContext context,
     Activity activity,
     NoteInfoItem infoItem,
+    List<BlocProvider> authProviders,
   ) async {
     final result = await Navigator.of(context).push<String>(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => CopiedAuthProviders(
-          blocContext: context,
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: authProviders,
           child: EditNotePage(text: infoItem.text),
         ),
         settings: const RouteSettings(name: 'EditNotePage'),

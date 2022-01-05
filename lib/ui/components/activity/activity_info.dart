@@ -68,6 +68,8 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
       final occasion = widget.activityDay.toOccasion(now);
       return Column(
@@ -96,6 +98,7 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
                   await checkConfirmation(
                     context,
                     occasion,
+                    authProviders,
                   );
                 },
               ),
@@ -110,7 +113,8 @@ mixin ActivityMixin {
   static final _log = Logger((ActivityMixin).toString());
   Future<bool?> checkConfirmation(
     BuildContext context,
-    ActivityDay activityDay, {
+    ActivityDay activityDay,
+    List<BlocProvider> authProviders, {
     String? message,
   }) async {
     final check = await showViewDialog<bool>(
@@ -119,6 +123,7 @@ mixin ActivityMixin {
         activityDay: activityDay,
         message: message,
       ),
+      authProviders: authProviders,
     );
     if (check == true) {
       context.read<ActivitiesBloc>().add(
@@ -230,6 +235,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     final activity = activityDay.activity;
     final item = activity.infoItem;
@@ -259,6 +265,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
               context,
               ActivityDay(updatedActivity, activityDay.day)
                   .toOccasion(DateTime.now()),
+              authProviders,
               message: translate.checklistDoneInfo,
             );
             final a = alarm;

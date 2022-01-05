@@ -37,6 +37,7 @@ class _TimerInputContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
     return BlocProvider<_EditTimerCubit>(
@@ -100,10 +101,15 @@ class _TimerInputContent extends StatelessWidget {
                 ),
                 const Spacer(),
                 BottomNavigation(
-                    backNavigationWidget: const CancelButton(),
-                    forwardNavigationWidget: SaveButton(
-                      onPressed: () => onSave(context, state.duration),
-                    )),
+                  backNavigationWidget: const CancelButton(),
+                  forwardNavigationWidget: SaveButton(
+                    onPressed: () => onSave(
+                      context,
+                      state.duration,
+                      authProviders,
+                    ),
+                  ),
+                ),
               ],
             ),
           );
@@ -112,12 +118,17 @@ class _TimerInputContent extends StatelessWidget {
     );
   }
 
-  Future<void> onSave(BuildContext context, Duration duration) async {
+  Future<void> onSave(
+    BuildContext context,
+    Duration duration,
+    List<BlocProvider> authProviders,
+  ) async {
     if (duration.inMinutes > 0) {
       Navigator.of(context).pop(duration);
     } else {
       await showViewDialog(
         context: context,
+        authProviders: authProviders,
         builder: (context) => ErrorDialog(
           text: Translator.of(context).translate.timerInvalidDuration,
         ),

@@ -8,6 +8,8 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocSelector<PermissionBloc, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
@@ -19,8 +21,8 @@ class MenuButton extends StatelessWidget {
               AbiliaIcons.appMenu,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
                     child: const MenuPage(),
                   ),
                   settings: const RouteSettings(name: 'MenuPage'),

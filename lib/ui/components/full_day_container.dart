@@ -70,6 +70,8 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return Padding(
       padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
       child: IconActionButton(
@@ -77,8 +79,8 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (_, animation, secondaryAnimation) =>
-                  CopiedAuthProviders(
-                blocContext: context,
+                  MultiBlocProvider(
+                providers: authProviders,
                 child: FadeTransition(
                   opacity: CurvedAnimation(
                     parent: animation,

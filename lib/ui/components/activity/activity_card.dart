@@ -30,6 +30,7 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final textTheme = abiliaTheme.textTheme;
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
@@ -77,8 +78,8 @@ class ActivityCard extends StatelessWidget {
                       : () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
+                              builder: (_) => MultiBlocProvider(
+                                providers: authProviders,
                                 child: ActivityPage(
                                   activityDay: activityOccasion,
                                 ),

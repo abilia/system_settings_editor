@@ -53,6 +53,8 @@ class CameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => MenuItemButton(
@@ -62,10 +64,13 @@ class CameraButton extends StatelessWidget {
                     .status[Permission.camera]?.isPermanentlyDenied ==
                 true) {
               await showViewDialog(
-                  useSafeArea: false,
-                  context: context,
-                  builder: (context) => const PermissionInfoDialog(
-                      permission: Permission.camera));
+                useSafeArea: false,
+                context: context,
+                builder: (context) => const PermissionInfoDialog(
+                  permission: Permission.camera,
+                ),
+                authProviders: authProviders,
+              );
             } else {
               final image =
                   await ImagePicker().pickImage(source: ImageSource.camera);
@@ -105,6 +110,8 @@ class MyPhotosButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded
           ? state.sortables.getMyPhotosFolder()?.id
@@ -114,8 +121,8 @@ class MyPhotosButton extends StatelessWidget {
         onPressed: myPhotoFolderId != null
             ? () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: MyPhotosPage(myPhotoFolderId: myPhotoFolderId),
                     ),
                   ),
@@ -133,12 +140,14 @@ class PhotoCalendarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return MenuItemButton(
       icon: AbiliaIcons.day,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
+          builder: (_) => MultiBlocProvider(
+            providers: authProviders,
             child: const PhotoCalendarPage(),
           ),
         ),
@@ -168,12 +177,14 @@ class QuickSettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return MenuItemButton(
       icon: AbiliaIcons.menuSetup,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => CopiedAuthProviders(
-            blocContext: context,
+          builder: (_) => MultiBlocProvider(
+            providers: authProviders,
             child: const QuickSettingsPage(),
           ),
         ),
@@ -189,6 +200,8 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocSelector<PermissionBloc, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
@@ -200,8 +213,8 @@ class SettingsButton extends StatelessWidget {
               icon: AbiliaIcons.settings,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
                     child: const SettingsPage(),
                   ),
                   settings: const RouteSettings(name: 'SettingsPage'),

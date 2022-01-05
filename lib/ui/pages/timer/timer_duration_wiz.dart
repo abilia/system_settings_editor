@@ -8,6 +8,7 @@ class TimerDurationWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
@@ -29,8 +30,8 @@ class TimerDurationWiz extends StatelessWidget {
                   onTap: () async {
                     final duration = await Navigator.of(context).push<Duration>(
                       MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
                           child: EditTimerByTypingPage(
                               initialDuration: state.duration),
                         ),

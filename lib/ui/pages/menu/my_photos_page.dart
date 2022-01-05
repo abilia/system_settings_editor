@@ -44,48 +44,51 @@ class AddPhotoButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, time) => IconActionButtonLight(
-            onPressed: () async {
-              if (Config.isMP) {
-                if (permissionState
-                        .status[Permission.camera]?.isPermanentlyDenied ==
-                    true) {
-                  await showViewDialog(
-                      useSafeArea: false,
-                      context: context,
-                      builder: (context) => const PermissionInfoDialog(
-                          permission: Permission.camera));
-                } else {
-                  final image =
-                      await ImagePicker().pickImage(source: ImageSource.camera);
-                  if (image != null) {
-                    final selectedImage =
-                        UnstoredAbiliaFile.newFile(File(image.path));
-                    _addImage(context, selectedImage, time);
-                  }
-                }
+  Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, time) => IconActionButtonLight(
+          onPressed: () async {
+            if (Config.isMP) {
+              if (permissionState
+                      .status[Permission.camera]?.isPermanentlyDenied ==
+                  true) {
+                await showViewDialog(
+                    useSafeArea: false,
+                    authProviders: authProviders,
+                    context: context,
+                    builder: (context) => const PermissionInfoDialog(
+                        permission: Permission.camera));
               } else {
-                final selectedImage =
-                    await Navigator.of(context).push<UnstoredAbiliaFile>(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: const ImportPicturePage(),
-                    ),
-                  ),
-                );
-                if (selectedImage != null) {
+                final image =
+                    await ImagePicker().pickImage(source: ImageSource.camera);
+                if (image != null) {
+                  final selectedImage =
+                      UnstoredAbiliaFile.newFile(File(image.path));
                   _addImage(context, selectedImage, time);
                 }
               }
-            },
-            child: const Icon(AbiliaIcons.plus),
-          ),
+            } else {
+              final selectedImage =
+                  await Navigator.of(context).push<UnstoredAbiliaFile>(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: const ImportPicturePage(),
+                  ),
+                ),
+              );
+              if (selectedImage != null) {
+                _addImage(context, selectedImage, time);
+              }
+            }
+          },
+          child: const Icon(AbiliaIcons.plus),
         ),
-      );
+      ),
+    );
+  }
 
   void _addImage(
       BuildContext context, UnstoredAbiliaFile selectedImage, DateTime time) {
@@ -117,10 +120,13 @@ class FullscreenViewablePhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return InkWell(
       onTap: () async => await showViewDialog<bool>(
         useSafeArea: false,
         context: context,
+        authProviders: authProviders,
         builder: (_) {
           return FullscreenImageDialog(
             fileId: sortable.data.fileId,

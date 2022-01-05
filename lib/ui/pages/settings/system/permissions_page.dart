@@ -87,6 +87,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     final denied = status.isDeniedOrPermenantlyDenied;
     return Column(
@@ -105,6 +106,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                 } else if (status.isGranted) {
                   await showViewDialog(
                     context: context,
+                    authProviders: authProviders,
                     builder: (context) =>
                         const NotificationPermissionOffWarningDialog(
                       onOk: openAppSettings,
@@ -160,6 +162,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     final denied = status.isDeniedOrPermenantlyDenied;
     return Column(
@@ -181,6 +184,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                       if (status.isGranted) {
                         await showViewDialog(
                           context: context,
+                          authProviders: authProviders,
                           builder: (context) =>
                               const NotificationPermissionOffWarningDialog(
                             onOk: AndroidIntents.openSystemAlertSetting,
@@ -221,6 +225,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
               child: InfoButton(
                 onTap: () => showViewDialog(
                   context: context,
+                  authProviders: authProviders,
                   builder: (context) => const FullscreenAlarmInfoDialog(),
                 ),
               ),

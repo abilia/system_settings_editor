@@ -1,4 +1,4 @@
-import 'package:seagull/bloc/providers.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class HiddenSetting extends StatefulWidget {
@@ -13,6 +13,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
   bool rightTapped = false, leftTapped = false;
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
@@ -32,8 +34,8 @@ class _HiddenSettingState extends State<HiddenSetting> {
                   rightTapped = false;
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: const SettingsPage(),
                       ),
                       settings:
