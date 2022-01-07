@@ -1,4 +1,3 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -75,7 +74,6 @@ class QuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final selectedTheme = theme.copyWith(
@@ -121,7 +119,6 @@ class QuestionView extends StatelessWidget {
                             question.fileId,
                             question.image,
                             context,
-                            authProviders,
                           ),
                           child: Padding(
                             padding:
@@ -193,12 +190,7 @@ class QuestionView extends StatelessWidget {
     );
   }
 
-  void _showImage(
-    String fileId,
-    String filePath,
-    BuildContext context,
-    List<BlocProvider> authProviders,
-  ) async {
+  void _showImage(String fileId, String filePath, BuildContext context) async {
     await showViewDialog<bool>(
       useSafeArea: false,
       context: context,
@@ -208,7 +200,6 @@ class QuestionView extends StatelessWidget {
           filePath: filePath,
         );
       },
-      authProviders: authProviders,
     );
   }
 }

@@ -34,7 +34,6 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return SettingsBasePage(
       icon: AbiliaIcons.appMenu,
@@ -48,7 +47,6 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
               if (settingsChangeToDisable) {
                 final answer = await showViewDialog<bool>(
                   context: context,
-                  authProviders: authProviders,
                   builder: (context) => YesNoDialog(
                     heading: t.menu,
                     text: t.menuRemovalWarning,

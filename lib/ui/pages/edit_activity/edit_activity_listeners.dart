@@ -8,16 +8,14 @@ class ErrorPopupListener extends StatelessWidget {
   const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocListener<ActivityWizardCubit, ActivityWizardState>(
       listenWhen: (_, current) => current.saveErrors.isNotEmpty,
       listener: (context, state) async {
         final errors = state.saveErrors;
         if (errors.noGoErrors) {
-          return _noProceed(errors, context, authProviders);
+          return _noProceed(errors, context);
         } else {
-          return _inputNeeded(errors, context, authProviders);
+          return _inputNeeded(errors, context);
         }
       },
       child: child,
@@ -27,13 +25,11 @@ class ErrorPopupListener extends StatelessWidget {
   Future _noProceed(
     Set<SaveError> errors,
     BuildContext context,
-    List<BlocProvider> authProviders,
   ) async {
     final translate = Translator.of(context).translate;
     showError(String msg) => showViewDialog(
           context: context,
           builder: (context) => ErrorDialog(text: msg),
-          authProviders: authProviders,
         );
 
     if (errors.containsAll({SaveError.noTitleOrImage, SaveError.noStartTime})) {
@@ -54,7 +50,6 @@ class ErrorPopupListener extends StatelessWidget {
   Future _inputNeeded(
     Set<SaveError> errors,
     BuildContext context,
-    List<BlocProvider> authProviders,
   ) async {
     final translate = Translator.of(context).translate;
     SaveRecurring? saveEvent;
@@ -85,7 +80,6 @@ class ErrorPopupListener extends StatelessWidget {
           builder: (context) => ConfirmWarningDialog(
             text: translate.startTimeBeforeNowWarning,
           ),
-          authProviders: authProviders,
         );
         if (confirmStartTimeBeforeNow != true) return;
       }
@@ -96,7 +90,6 @@ class ErrorPopupListener extends StatelessWidget {
           builder: (context) => ConfirmWarningDialog(
             text: translate.conflictWarning,
           ),
-          authProviders: authProviders,
         );
         if (confirmConflict != true) return;
       }

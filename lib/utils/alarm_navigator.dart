@@ -3,6 +3,7 @@ import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AlarmNavigator {
   final _alarmRoutesOnStack = <String, MaterialPageRoute>{};
@@ -26,8 +27,8 @@ class AlarmNavigator {
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
-    List<BlocProvider> authProviders,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
     final route = MaterialPageRoute(
       builder: (_) => MultiBlocProvider(

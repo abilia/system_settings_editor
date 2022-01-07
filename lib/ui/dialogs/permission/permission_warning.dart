@@ -1,4 +1,3 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class NotificationPermissionOffWarningDialog extends StatelessWidget {
@@ -96,7 +95,6 @@ class NotificationBodyTextWarning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final b1 = Theme.of(context)
         .textTheme
         .bodyText2
@@ -116,7 +114,7 @@ class NotificationBodyTextWarning extends StatelessWidget {
               text: '${translate.allowNotificationsDescription1} ',
               style: b1,
             ),
-            buildSettingsLinkTextSpan(context, authProviders),
+            buildSettingsLinkTextSpan(context),
           ],
         ),
       ),

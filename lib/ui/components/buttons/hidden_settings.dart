@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class HiddenSetting extends StatefulWidget {
   const HiddenSetting(this.showCategories, {Key? key}) : super(key: key);

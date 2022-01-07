@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CreateNewPage extends StatelessWidget {
   const CreateNewPage({Key? key}) : super(key: key);

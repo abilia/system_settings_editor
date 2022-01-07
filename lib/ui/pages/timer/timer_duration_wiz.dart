@@ -1,14 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
+import 'package:seagull/utils/all.dart';
 
 class TimerDurationWiz extends StatelessWidget {
   const TimerDurationWiz({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return Scaffold(
       appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
@@ -28,6 +27,7 @@ class TimerDurationWiz extends StatelessWidget {
                       TextEditingController(text: state.duration.toHMS()),
                   readOnly: true,
                   onTap: () async {
+                    final authProviders = copiedAuthProviders(context);
                     final duration = await Navigator.of(context).push<Duration>(
                       MaterialPageRoute(
                         builder: (_) => MultiBlocProvider(

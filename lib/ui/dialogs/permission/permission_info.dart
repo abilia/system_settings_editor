@@ -74,7 +74,6 @@ class PermissionInfoBodyText extends StatelessWidget {
   final String allowAccessBodyText;
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final bodyText2 = Theme.of(context)
         .textTheme
         .bodyText2
@@ -94,7 +93,7 @@ class PermissionInfoBodyText extends StatelessWidget {
             children: [
               TextSpan(text: '$allowAccessBodyText '),
               TextSpan(text: '${translate.allowAccessBody2} '),
-              buildSettingsLinkTextSpan(context, authProviders),
+              buildSettingsLinkTextSpan(context),
             ],
           ),
         ),
@@ -103,11 +102,7 @@ class PermissionInfoBodyText extends StatelessWidget {
   }
 }
 
-TextSpan buildSettingsLinkTextSpan(
-  BuildContext context,
-  List<BlocProvider> authProviders,
-) =>
-    TextSpan(
+TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
       children: [
         TextSpan(
           text: Translator.of(context).translate.settingsLink,
@@ -116,6 +111,7 @@ TextSpan buildSettingsLinkTextSpan(
               .copyWith(decoration: TextDecoration.underline),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
+              final authProviders = copiedAuthProviders(context);
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
