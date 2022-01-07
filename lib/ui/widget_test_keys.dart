@@ -38,6 +38,8 @@ class TestKey {
       infoItemChecklistRadio = Key('infoItemChecklistRadio'),
       infoItemNoteRadio = Key('infoItemNoteRadio'),
       checklistQuestionImageKey = Key('checklistQuestionImageKey'),
+      checklistToolbarEditQButton = Key('checklistToolbarEditQButton'),
+      checklistToolbarDeleteQButton = Key('checklistToolbarDeleteQButton'),
       preview = Key('preview'),
       edgePreview = Key('edgePreview'),
       dotsPreview = Key('dotsPreview'),

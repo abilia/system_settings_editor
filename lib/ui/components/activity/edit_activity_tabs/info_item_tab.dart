@@ -135,11 +135,14 @@ class EditChecklistWidget extends StatelessWidget {
                           bottom: BorderSide(color: AbiliaColors.white120),
                         ),
                       ),
-                      child: ChecklistView(
+                      child: ChecklistView.withToolbar(
                         checklist,
                         padding:
                             EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
-                        onTap: (r) => _handleEditQuestionResult(r, context),
+                        onTapEdit: (r) => _handleEditQuestionResult(r, context),
+                        onTapDelete: (q) => _handleDeleteQuestion(q, context),
+                        onTapReorder: (q, d) =>
+                            _handleReorderQuestion(q, d, context),
                         preview: true,
                       ),
                     ),
@@ -217,14 +220,51 @@ class EditChecklistWidget extends StatelessWidget {
         );
       }
 
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(questions: questionMap.values),
-          ),
-        ),
+      _replaceActivity(
+        activity.copyWith(
+            infoItem: checklist.copyWith(questions: questionMap.values)),
+        context,
       );
     }
+  }
+
+  void _handleDeleteQuestion(
+    final Question oldQuestion,
+    BuildContext context,
+  ) {
+    final questionMap = {for (var q in checklist.questions) q.id: q};
+    questionMap.remove(oldQuestion.id);
+
+    _replaceActivity(
+      activity.copyWith(
+          infoItem: checklist.copyWith(questions: questionMap.values)),
+      context,
+    );
+  }
+
+  void _handleReorderQuestion(
+    final Question question,
+    ChecklistReorderDirection direction,
+    BuildContext context,
+  ) {
+    var questions = checklist.questions.toList();
+    final qIndex = questions.indexWhere((q) => q.id == question.id);
+    final swapWithIndex =
+        direction == ChecklistReorderDirection.up ? qIndex - 1 : qIndex + 1;
+
+    if (qIndex >= 0 &&
+        qIndex < questions.length &&
+        swapWithIndex >= 0 &&
+        swapWithIndex < questions.length) {
+      final tmpQ = questions[qIndex];
+      questions[qIndex] = questions[swapWithIndex];
+      questions[swapWithIndex] = tmpQ;
+    }
+
+    _replaceActivity(
+      activity.copyWith(infoItem: checklist.copyWith(questions: questions)),
+      context,
+    );
   }
 
   void _handleNewQuestion(BuildContext context) async {
@@ -240,24 +280,29 @@ class EditChecklistWidget extends StatelessWidget {
     if (result != null && result.isNotEmpty) {
       final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(
-              questions: [
-                ...checklist.questions,
-                Question(
-                  id: uniqueId,
-                  name: result.name,
-                  fileId: result.image.id,
-                  image: result.image.path,
-                ),
-              ],
-            ),
+      _replaceActivity(
+        activity.copyWith(
+          infoItem: checklist.copyWith(
+            questions: [
+              ...checklist.questions,
+              Question(
+                id: uniqueId,
+                name: result.name,
+                fileId: result.image.id,
+                image: result.image.path,
+              ),
+            ],
           ),
         ),
+        context,
       );
     }
+  }
+
+  void _replaceActivity(Activity newActivity, BuildContext context) {
+    BlocProvider.of<EditActivityBloc>(context).add(
+      ReplaceActivity(newActivity),
+    );
   }
 }
 

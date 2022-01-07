@@ -1032,7 +1032,32 @@ Internal improvements to tests and examples.''';
         expect(find.text(questionName), findsOneWidget);
       });
 
-      testWidgets('Can remove questions', (WidgetTester tester) async {
+      testWidgets('Can remove questions from edit question page',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+
+        expect(find.text(questions[0]!), findsOneWidget);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
+        expect(find.text(questions[3]!, skipOffstage: false), findsOneWidget);
+        await tester.tap(find.text(questions[0]!));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(RemoveButton));
+        await tester.pumpAndSettle();
+        expect(find.text(questions[0]!), findsNothing);
+        expect(find.text(questions[1]!), findsOneWidget);
+        expect(find.text(questions[2]!), findsOneWidget);
+        expect(find.text(questions[3]!), findsOneWidget);
+      });
+
+      testWidgets('Can remove questions from toolbar',
+          (WidgetTester tester) async {
         await tester.pumpWidget(
             createEditActivityPage(givenActivity: activityWithChecklist));
         await tester.pumpAndSettle();
@@ -1045,12 +1070,34 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byType(RemoveButton));
+        await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
         await tester.pumpAndSettle();
         expect(find.text(questions[0]!), findsNothing);
         expect(find.text(questions[1]!), findsOneWidget);
         expect(find.text(questions[2]!), findsOneWidget);
         expect(find.text(questions[3]!), findsOneWidget);
+      });
+
+      testWidgets('Can bring up and hide the toolbar on questions',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+
+        await tester.tap(find.text(questions[0]!));
+        await tester.pumpAndSettle();
+        expect(find.byType(ChecklistToolbar), findsOneWidget);
+
+        await tester.tap(find.text(questions[0]!));
+        await tester.pumpAndSettle();
+        expect(find.byType(ChecklistToolbar), findsNothing);
+
+        await tester.tap(find.text(questions[1]!));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(questions[2]!));
+        await tester.pumpAndSettle();
+        expect(find.byType(ChecklistToolbar), findsOneWidget);
       });
 
       testWidgets('Can edit question', (WidgetTester tester) async {
@@ -1061,7 +1108,8 @@ Internal improvements to tests and examples.''';
         await tester.goToInfoItemTab();
 
         await tester.tap(find.text(questions[0]!));
-
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);
@@ -1105,7 +1153,8 @@ text''';
 
         expect(find.text(questions[0]!), findsOneWidget);
         await tester.tap(find.text(questions[1]!));
-
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);
