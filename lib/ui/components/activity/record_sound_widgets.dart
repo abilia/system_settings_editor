@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
@@ -137,11 +138,12 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             );
                       }
                     : () async {
+                        final authProviders = copiedAuthProviders(context);
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
+                            builder: (_) => MultiBlocProvider(
+                              providers: authProviders,
                               child: MultiBlocProvider(
                                 providers: [
                                   BlocProvider.value(

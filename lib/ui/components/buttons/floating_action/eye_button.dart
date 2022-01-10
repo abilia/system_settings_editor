@@ -81,7 +81,8 @@ class EyeButtonMonth extends StatelessWidget {
           final monthCalendarType = await showViewDialog<MonthCalendarType?>(
             context: context,
             builder: (context) => EyeButtonMonthDialog(
-                currentCalendarType: memoSettingsState.monthCalendarType),
+              currentCalendarType: memoSettingsState.monthCalendarType,
+            ),
           );
           if (monthCalendarType != null) {
             context.read<GenericBloc>().add(

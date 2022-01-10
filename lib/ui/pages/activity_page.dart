@@ -131,10 +131,11 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     ActivityDay activityDay,
   ) async {
     final activity = activityDay.activity;
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: BlocProvider<EditActivityBloc>(
             create: (_) => EditActivityBloc.edit(activityDay),
             child: SelectAlarmPage(activity: activity),
@@ -222,14 +223,16 @@ class EditActivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return TextAndOrIconActionButtonLight(
       Translator.of(context).translate.edit,
       AbiliaIcons.edit,
       onPressed: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
               child: MultiBlocProvider(
                 providers: [
                   BlocProvider<EditActivityBloc>(

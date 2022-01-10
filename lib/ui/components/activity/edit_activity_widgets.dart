@@ -124,10 +124,11 @@ class SelectPictureWidget extends StatelessWidget {
   }
 
   void imageClick(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: SelectPicturePage(
             selectedImage: selectedImage,
           ),
@@ -361,10 +362,11 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
+                    final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: SelectAlarmTypePage(
                           alarm: alarm.typeSeagull,
                         ),

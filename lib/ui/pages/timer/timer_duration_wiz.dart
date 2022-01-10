@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
+import 'package:seagull/utils/all.dart';
 
 class TimerDurationWiz extends StatelessWidget {
   const TimerDurationWiz({Key? key}) : super(key: key);
@@ -27,10 +27,11 @@ class TimerDurationWiz extends StatelessWidget {
                       TextEditingController(text: state.duration.toHMS()),
                   readOnly: true,
                   onTap: () async {
+                    final authProviders = copiedAuthProviders(context);
                     final duration = await Navigator.of(context).push<Duration>(
                       MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
                           child: EditTimerByTypingPage(
                               initialDuration: state.duration),
                         ),
