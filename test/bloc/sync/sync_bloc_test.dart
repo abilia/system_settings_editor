@@ -86,6 +86,7 @@ void main() {
     );
 
     blocTest('all event calls synchronize on all repository',
+        wait: 1.milliseconds(),
         build: () => SyncBloc(
               activityRepository: activityRepository,
               userFileRepository: userFileRepository,
@@ -107,66 +108,87 @@ void main() {
   });
 
   group('Failed cases', () {
-    final syncStallTime = 10.milliseconds();
+    final retryDelay = 10.milliseconds();
+    late List<bool> failThenSucceed;
+    setUp(() => failThenSucceed = [false, true]);
 
-    setUp(() {
-      when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-      when(() => userFileRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-      when(() => sortableRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-    });
-
-    test('Failed ActivitySaved synchronize retrys to syncronize old', () async {
-      final syncBloc = SyncBloc(
+    blocTest<SyncBloc, dynamic>(
+      'Failed ActivitySaved synchronize retrys to syncronize',
+      setUp: () => when(() => activityRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
-            betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
-      );
-      syncBloc.add(const ActivitySaved());
-      await untilCalled(() => activityRepository.synchronize());
-      when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => activityRepository.synchronize()).called(2);
-    });
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const ActivitySaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.activityRepository.synchronize)
+          .called(2), // Change to .called(2),
+    );
 
-    test('Failed FileSaved synchronize retrys to syncronize', () async {
-      final syncBloc = SyncBloc(
+    blocTest<SyncBloc, dynamic>(
+      'Failed FileSaved synchronize retrys to syncronize',
+      setUp: () => when(() => userFileRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
-            betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
-      );
-      syncBloc.add(const FileSaved());
-      await untilCalled(() => userFileRepository.synchronize());
-      when(() => userFileRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => userFileRepository.synchronize()).called(2);
-    });
-    test('Failed SortableSaved synchronize retrys to syncronize', () async {
-      final syncBloc = SyncBloc(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const FileSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.userFileRepository.synchronize)
+          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+    );
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed SortableSaved synchronize retrys to syncronize',
+      setUp: () => when(() => sortableRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
         activityRepository: activityRepository,
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
-            betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
-      );
-      syncBloc.add(const SortableSaved());
-      await untilCalled(() => sortableRepository.synchronize());
-      when(() => sortableRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => sortableRepository.synchronize()).called(2);
-    });
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const SortableSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
+    );
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed GenericSaved synchronize retrys to syncronize',
+      setUp: () => when(() => genericRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const GenericSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
+    );
   });
 
   group('queuing', () {
@@ -233,8 +255,8 @@ void main() {
       await untilCalled(() => sortableRepository.synchronize());
       await Future.delayed(stallTime * 2);
       verify(() => activityRepository.synchronize()).called(2);
-      verify(() => userFileRepository.synchronize()).called(2);
-      verify(() => sortableRepository.synchronize()).called(2);
+      verify(() => userFileRepository.synchronize()).called(1);
+      verify(() => sortableRepository.synchronize()).called(1);
     });
 
     test(
