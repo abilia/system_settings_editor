@@ -59,5 +59,5 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
 
 EventTransformer<Event> bufferTimer<Event>(SyncDelays syncDelays) =>
     (events, mapper) => events
-        .throttleTime(syncDelays.betweenSync, trailing: true, leading: true)
+        .throttleTime(syncDelays.betweenSync, trailing: true, leading: false)
         .asyncExpand(mapper); // sequential
