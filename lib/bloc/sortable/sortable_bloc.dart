@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 
@@ -28,42 +29,41 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         add(const LoadSortables());
       }
     });
+    on<SortableEvent>(_mapEventToState, transformer: sequential());
   }
 
-  @override
-  Stream<SortableState> mapEventToState(
+  Future<void> _mapEventToState(
     SortableEvent event,
-  ) async* {
+    Emitter<SortableState> emit,
+  ) async {
     if (event is LoadSortables) {
-      yield* _mapLoadSortablesToState(event.initDefaults);
-    }
-    if (event is PhotoAdded) {
-      yield* _mapPhotoAddedToState(event);
-    }
-    if (event is ImageArchiveImageAdded) {
-      yield* _mapImageArchiveImageAddedToState(event);
-    }
-    if (event is SortableUpdated) {
-      yield* _mapSortableUpdatedToState(event);
+      await _mapLoadSortablesToState(event.initDefaults, emit);
+    } else if (event is PhotoAdded) {
+      await _mapPhotoAddedToState(event, emit);
+    } else if (event is ImageArchiveImageAdded) {
+      await _mapImageArchiveImageAddedToState(event, emit);
+    } else if (event is SortableUpdated) {
+      await _mapSortableUpdatedToState(event, emit);
     }
   }
 
-  Stream<SortableState> _mapLoadSortablesToState(bool initDefaults) async* {
+  Future<void> _mapLoadSortablesToState(
+      bool initDefaults, Emitter<SortableState> emit) async {
     try {
       final sortables = await sortableRepository.load();
-      yield SortablesLoaded(sortables: sortables);
+      emit(SortablesLoaded(sortables: sortables));
       if (initDefaults) {
         await _addMissingDefaults(sortables);
       }
     } catch (e) {
       _log.warning('exception when loadning sortable $e');
-      yield SortablesLoadedFailed();
+      emit(SortablesLoadedFailed());
     }
   }
 
   Future<void> _addMissingDefaults(Iterable<Sortable> sortables) async {
-    _addMissingMyPhotos(sortables);
-    _addMissingUploadFolder(sortables);
+    await _addMissingMyPhotos(sortables);
+    await _addMissingUploadFolder(sortables);
   }
 
   Future<void> _addMissingMyPhotos(Iterable<Sortable> sortables) async {
@@ -102,27 +102,32 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
-  Stream<SortableState> _mapImageArchiveImageAddedToState(
+  Future<void> _mapImageArchiveImageAddedToState(
     ImageArchiveImageAdded event,
-  ) async* {
+    Emitter<SortableState> emit,
+  ) async {
     final currentState = state;
     if (currentState is SortablesLoaded) {
       final uploadFolder = currentState.sortables.getUploadFolder();
       if (uploadFolder == null) return;
       final name = event.imagePath.split('/').last.split('.').first;
 
-      yield* _mapPhotoAddedToState(
+      _mapPhotoAddedToState(
         PhotoAdded(
           event.imageId,
           event.imagePath,
           name,
           uploadFolder.id,
         ),
+        emit,
       );
     }
   }
 
-  Stream<SortableState> _mapPhotoAddedToState(PhotoAdded event) async* {
+  Future<void> _mapPhotoAddedToState(
+    PhotoAdded event,
+    Emitter<SortableState> emit,
+  ) async {
     {
       final currentState = state;
       if (currentState is SortablesLoaded) {
@@ -145,19 +150,19 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         );
         await sortableRepository.save([newSortable]);
         syncBloc.add(const SortableSaved());
-        yield SortablesLoaded(
+        emit(SortablesLoaded(
           sortables: currentState.sortables.followedBy([newSortable]),
-        );
+        ));
       }
     }
   }
 
-  Stream<SortableState> _mapSortableUpdatedToState(
-      SortableUpdated event) async* {
+  Future<void> _mapSortableUpdatedToState(
+      SortableUpdated event, Emitter<SortableState> emit) async {
     final currentState = state;
     if (currentState is SortablesLoaded) {
       await sortableRepository.save([event.sortable]);
-      yield* _mapLoadSortablesToState(false);
+      await _mapLoadSortablesToState(false, emit);
       syncBloc.add(const SortableSaved());
     }
   }
