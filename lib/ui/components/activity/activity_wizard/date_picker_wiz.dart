@@ -12,7 +12,7 @@ class DatePickerWiz extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => MonthCalendarBloc(
+              create: (context) => MonthCalendarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
               ),
