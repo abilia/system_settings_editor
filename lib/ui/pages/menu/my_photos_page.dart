@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MyPhotosPage extends StatelessWidget {
   final String myPhotoFolderId;
@@ -45,7 +46,6 @@ class AddPhotoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => IconActionButtonLight(
@@ -56,7 +56,6 @@ class AddPhotoButton extends StatelessWidget {
                   true) {
                 await showViewDialog(
                     useSafeArea: false,
-                    authProviders: authProviders,
                     context: context,
                     builder: (context) => const PermissionInfoDialog(
                         permission: Permission.camera));
@@ -70,6 +69,7 @@ class AddPhotoButton extends StatelessWidget {
                 }
               }
             } else {
+              final authProviders = copiedAuthProviders(context);
               final selectedImage =
                   await Navigator.of(context).push<UnstoredAbiliaFile>(
                 MaterialPageRoute(
@@ -120,13 +120,10 @@ class FullscreenViewablePhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return InkWell(
       onTap: () async => await showViewDialog<bool>(
         useSafeArea: false,
         context: context,
-        authProviders: authProviders,
         builder: (_) {
           return FullscreenImageDialog(
             fileId: sortable.data.fileId,

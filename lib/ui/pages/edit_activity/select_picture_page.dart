@@ -57,7 +57,6 @@ class SelectPictureBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
@@ -101,6 +100,7 @@ class SelectPictureBody extends StatelessWidget {
                     leading: const Icon(AbiliaIcons.folder),
                     text: Text(translate.imageArchive),
                     onTap: () async {
+                      final authProviders = copiedAuthProviders(context);
                       final selectedImage =
                           await Navigator.of(context).push<AbiliaFile>(
                         MaterialPageRoute(
@@ -127,6 +127,8 @@ class SelectPictureBody extends StatelessWidget {
                       text: Text(translate.myPhotos),
                       onTap: (myPhotoFolder != null)
                           ? () async {
+                              final authProviders =
+                                  copiedAuthProviders(context);
                               final selectedImage =
                                   await Navigator.of(context).push<AbiliaFile>(
                                 MaterialPageRoute(
@@ -191,8 +193,6 @@ class ImageSourceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
         return Row(
@@ -220,7 +220,6 @@ class ImageSourceWidget extends StatelessWidget {
                     builder: (context) => PermissionInfoDialog(
                       permission: permission,
                     ),
-                    authProviders: authProviders,
                   ),
                 ),
               )

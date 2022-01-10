@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   final bool showNote, showChecklist;
@@ -85,7 +86,6 @@ class EditChecklistWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
@@ -101,6 +101,7 @@ class EditChecklistWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final selectedChecklist =
                     await Navigator.of(context).push<Checklist>(
                   MaterialPageRoute(
@@ -140,11 +141,7 @@ class EditChecklistWidget extends StatelessWidget {
                         checklist,
                         padding:
                             EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
-                        onTap: (r) => _handleEditQuestionResult(
-                          r,
-                          context,
-                          authProviders,
-                        ),
+                        onTap: (r) => _handleEditQuestionResult(r, context),
                         preview: true,
                       ),
                     ),
@@ -165,10 +162,7 @@ class EditChecklistWidget extends StatelessWidget {
                         focusElevation: 0.0,
                         highlightElevation: 0.0,
                         hoverElevation: 0.0,
-                        onPressed: () => _handleNewQuestion(
-                          context,
-                          authProviders,
-                        ),
+                        onPressed: () => _handleNewQuestion(context),
                         child: Row(
                           children: [
                             SizedBox(width: 12.0.s),
@@ -199,8 +193,8 @@ class EditChecklistWidget extends StatelessWidget {
   void _handleEditQuestionResult(
     final Question oldQuestion,
     BuildContext context,
-    List<BlocProvider> authProviders,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -238,10 +232,8 @@ class EditChecklistWidget extends StatelessWidget {
     }
   }
 
-  void _handleNewQuestion(
-    BuildContext context,
-    List<BlocProvider> authProviders,
-  ) async {
+  void _handleNewQuestion(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -289,7 +281,6 @@ class EditNoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     return Expanded(
       child: Column(children: [
@@ -305,6 +296,7 @@ class EditNoteWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final result = await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
@@ -327,7 +319,7 @@ class EditNoteWidget extends StatelessWidget {
         SizedBox(height: 16.0.s),
         Expanded(
           child: GestureDetector(
-            onTap: () => editText(context, activity, infoItem, authProviders),
+            onTap: () => editText(context, activity, infoItem),
             child: Container(
               decoration: whiteBoxDecoration,
               child: NoteBlock(
@@ -351,8 +343,8 @@ class EditNoteWidget extends StatelessWidget {
     BuildContext context,
     Activity activity,
     NoteInfoItem infoItem,
-    List<BlocProvider> authProviders,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<String>(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => MultiBlocProvider(

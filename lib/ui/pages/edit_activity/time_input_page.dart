@@ -15,8 +15,6 @@ class TimeInputPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.setTime,
@@ -25,12 +23,11 @@ class TimeInputPage extends StatelessWidget {
       body: TimeInputContent(
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-        onSave: (context, newTimInput) =>
-            onSave(context, newTimInput, authProviders),
+        onSave: (context, newTimInput) => onSave(context, newTimInput),
         bottomNavigationBuilder: (context, newTimInput) => BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(context, newTimInput, authProviders),
+            onPressed: () => onSave(context, newTimInput),
           ),
         ),
       ),
@@ -40,7 +37,6 @@ class TimeInputPage extends StatelessWidget {
   Future<bool> onSave(
     BuildContext context,
     TimeInput? newTimInput,
-    List<BlocProvider> authProviders,
   ) async {
     if (newTimInput != null) {
       Navigator.of(context).maybePop(newTimInput);
@@ -51,7 +47,6 @@ class TimeInputPage extends StatelessWidget {
         builder: (context) => ErrorDialog(
           text: Translator.of(context).translate.missingStartTime,
         ),
-        authProviders: authProviders,
       );
       return false;
     }

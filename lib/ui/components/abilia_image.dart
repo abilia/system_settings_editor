@@ -133,8 +133,6 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return InkWell(
       key: TestKey.viewImage,
       onTap: () => activityDay.activity.hasImage
@@ -142,7 +140,6 @@ class CheckedImageWithImagePopup extends StatelessWidget {
               activityDay.activity.fileId,
               activityDay.activity.icon,
               context,
-              authProviders,
             )
           : null,
       child: ActivityImage(
@@ -157,7 +154,6 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     String fileId,
     String filePath,
     BuildContext context,
-    List<BlocProvider> authProviders,
   ) async {
     await showViewDialog<bool>(
       useSafeArea: false,
@@ -168,7 +164,6 @@ class CheckedImageWithImagePopup extends StatelessWidget {
           filePath: filePath,
         );
       },
-      authProviders: authProviders,
     );
   }
 }

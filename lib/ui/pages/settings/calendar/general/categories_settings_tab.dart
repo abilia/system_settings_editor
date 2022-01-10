@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
@@ -79,7 +80,6 @@ class _CategoryPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     return PickField(
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
       padding: imageAndName.image.isNotEmpty
@@ -94,6 +94,7 @@ class _CategoryPickField extends StatelessWidget {
             )
           : null,
       onTap: () async {
+        final authProviders = copiedAuthProviders(context);
         final result = await Navigator.of(context).push<ImageAndName>(
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(

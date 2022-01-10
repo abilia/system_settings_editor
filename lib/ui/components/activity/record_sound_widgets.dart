@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
@@ -16,7 +17,6 @@ class RecordSoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) {
@@ -91,7 +91,6 @@ class RecordSoundWidget extends StatelessWidget {
                           context: context,
                           builder: (context) => const PermissionInfoDialog(
                               permission: Permission.microphone),
-                          authProviders: authProviders,
                         ),
                       ),
                     ),
@@ -121,7 +120,6 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -140,6 +138,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             );
                       }
                     : () async {
+                        final authProviders = copiedAuthProviders(context);
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(

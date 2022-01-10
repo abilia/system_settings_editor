@@ -53,8 +53,6 @@ class CameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => MenuItemButton(
@@ -69,7 +67,6 @@ class CameraButton extends StatelessWidget {
                 builder: (context) => const PermissionInfoDialog(
                   permission: Permission.camera,
                 ),
-                authProviders: authProviders,
               );
             } else {
               final image =

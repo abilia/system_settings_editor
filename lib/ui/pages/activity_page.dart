@@ -59,7 +59,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final activity = activityDay.activity;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) {
@@ -92,7 +91,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                       await checkConfirmation(
                         context,
                         activityDay,
-                        authProviders,
                       );
                     },
                   ),
@@ -104,7 +102,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     onPressed: () => _alarmButtonPressed(
                       context,
                       activityDay,
-                      authProviders,
                     ),
                   ),
                 if (displayDeleteButton)
@@ -114,7 +111,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                     onPressed: () => _deleteButtonPressed(
                       context,
                       activity,
-                      authProviders,
                     ),
                   ),
                 if (displayEditButton)
@@ -133,9 +129,9 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   Future<void> _alarmButtonPressed(
     BuildContext context,
     ActivityDay activityDay,
-    List<BlocProvider> authProviders,
   ) async {
     final activity = activityDay.activity;
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -180,7 +176,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   Future<void> _deleteButtonPressed(
     BuildContext context,
     Activity activity,
-    List<BlocProvider> authProviders,
   ) async {
     final shouldDelete = await showViewDialog<bool>(
       context: context,
@@ -189,7 +184,6 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         headingIcon: AbiliaIcons.deleteAllClear,
         text: Translator.of(context).translate.deleteActivity,
       ),
-      authProviders: authProviders,
     );
     if (shouldDelete == true) {
       final activitiesBloc = context.read<ActivitiesBloc>();

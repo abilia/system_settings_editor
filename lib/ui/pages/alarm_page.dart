@@ -134,7 +134,6 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final translate = Translator.of(context).translate;
     final activityDay = alarm.activityDay;
     final displayCheckButton =
@@ -162,11 +161,8 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
                     text: translate.check,
                     icon: AbiliaIcons.handiCheck,
                     onPressed: () async {
-                      final checked = await checkConfirmation(
-                        context,
-                        activityDay,
-                        authProviders,
-                      );
+                      final checked =
+                          await checkConfirmation(context, activityDay);
                       if (checked == true) {
                         await cancelNotifications(
                           uncheckedReminders(activityDay),

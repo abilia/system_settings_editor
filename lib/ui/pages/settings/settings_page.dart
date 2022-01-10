@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -75,8 +76,6 @@ class TextToSpeechSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, settingsState) => Row(children: [
         Expanded(
@@ -94,7 +93,6 @@ class TextToSpeechSwitch extends StatelessWidget {
             onTap: () => showViewDialog(
               useSafeArea: false,
               context: context,
-              authProviders: authProviders,
               builder: (context) => const LongPressInfoDialog(),
             ),
           ),
@@ -109,7 +107,6 @@ class PermissionPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     return BlocBuilder<PermissionBloc, PermissionState>(
       builder: (context, state) => Stack(
         children: [
@@ -117,6 +114,7 @@ class PermissionPickField extends StatelessWidget {
             leading: const Icon(AbiliaIcons.menuSetup),
             text: Text(Translator.of(context).translate.permissions),
             onTap: () async {
+              final authProviders = copiedAuthProviders(context);
               context.read<PermissionBloc>().checkAll();
               await Navigator.of(context).push(
                 MaterialPageRoute(

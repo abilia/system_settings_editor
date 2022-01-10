@@ -62,8 +62,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return MultiBlocListener(
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
@@ -115,7 +113,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           listener: (context, state) => showViewDialog(
             context: context,
             builder: (context) => const NotificationPermissionWarningDialog(),
-            authProviders: authProviders,
           ),
         ),
         if (Config.isMP) ...[
@@ -131,21 +128,14 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
           KeepScreenAwakeListener(),
         ],
-        if (!Platform.isIOS)
-          fullscreenAlarmPremissionListener(
-            context,
-            authProviders,
-          ),
+        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
   }
 
   BlocListener<PermissionBloc, PermissionState>
-      fullscreenAlarmPremissionListener(
-    BuildContext context,
-    List<BlocProvider> authProviders,
-  ) {
+      fullscreenAlarmPremissionListener(BuildContext context) {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -164,7 +154,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         builder: (context) => const FullscreenAlarmInfoDialog(
           showRedirect: true,
         ),
-        authProviders: authProviders,
       ),
     );
   }
