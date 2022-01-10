@@ -86,6 +86,7 @@ void main() {
     );
 
     blocTest('all event calls synchronize on all repository',
+        wait: 1.milliseconds(),
         build: () => SyncBloc(
               activityRepository: activityRepository,
               userFileRepository: userFileRepository,
@@ -107,15 +108,9 @@ void main() {
   });
 
   group('Failed cases', () {
-    // These test is wrong, because we should only call the repository twice.
-    // One fail and one success.
-    // But for some reason our event transformer does not work that way,
-    // and I have put to much time into trying different things,
-    // so I give up (for the moment) (2022-01-05) [bornold]
     final retryDelay = 10.milliseconds();
     late List<bool> failThenSucceed;
-    setUp(() =>
-        failThenSucceed = [false, true, true, true]); // Change to [false, true]
+    setUp(() => failThenSucceed = [false, true]);
 
     blocTest<SyncBloc, dynamic>(
       'Failed ActivitySaved synchronize retrys to syncronize',
@@ -134,7 +129,7 @@ void main() {
       act: (bloc) => bloc.add(const ActivitySaved()),
       wait: retryDelay * 2,
       verify: (bloc) => verify(bloc.activityRepository.synchronize)
-          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+          .called(2), // Change to .called(2),
     );
 
     blocTest<SyncBloc, dynamic>(
@@ -173,8 +168,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(const SortableSaved()),
       wait: retryDelay * 2,
-      verify: (bloc) => verify(bloc.sortableRepository.synchronize)
-          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+      verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
     );
 
     blocTest<SyncBloc, dynamic>(
@@ -193,8 +187,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(const GenericSaved()),
       wait: retryDelay * 2,
-      verify: (bloc) => verify(bloc.genericRepository.synchronize)
-          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+      verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
     );
   });
 
@@ -262,8 +255,8 @@ void main() {
       await untilCalled(() => sortableRepository.synchronize());
       await Future.delayed(stallTime * 2);
       verify(() => activityRepository.synchronize()).called(2);
-      verify(() => userFileRepository.synchronize()).called(2);
-      verify(() => sortableRepository.synchronize()).called(2);
+      verify(() => userFileRepository.synchronize()).called(1);
+      verify(() => sortableRepository.synchronize()).called(1);
     });
 
     test(
