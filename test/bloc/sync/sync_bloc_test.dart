@@ -127,7 +127,7 @@ void main() {
         ),
       ),
       act: (bloc) => bloc.add(const ActivitySaved()),
-      wait: retryDelay * 2,
+      wait: retryDelay * 3,
       verify: (bloc) => verify(bloc.activityRepository.synchronize)
           .called(2), // Change to .called(2),
     );
@@ -147,7 +147,7 @@ void main() {
         ),
       ),
       act: (bloc) => bloc.add(const FileSaved()),
-      wait: retryDelay * 2,
+      wait: retryDelay * 3,
       verify: (bloc) => verify(bloc.userFileRepository.synchronize)
           .called(greaterThanOrEqualTo(2)), // Change to .called(2),
     );
@@ -167,7 +167,7 @@ void main() {
         ),
       ),
       act: (bloc) => bloc.add(const SortableSaved()),
-      wait: retryDelay * 2,
+      wait: retryDelay * 3,
       verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
     );
 
@@ -186,7 +186,7 @@ void main() {
         ),
       ),
       act: (bloc) => bloc.add(const GenericSaved()),
-      wait: retryDelay * 2,
+      wait: retryDelay * 3,
       verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
     );
   });
