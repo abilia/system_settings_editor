@@ -22,7 +22,10 @@ class ErrorPopupListener extends StatelessWidget {
     );
   }
 
-  Future _noProceed(Set<SaveError> errors, BuildContext context) async {
+  Future _noProceed(
+    Set<SaveError> errors,
+    BuildContext context,
+  ) async {
     final translate = Translator.of(context).translate;
     showError(String msg) => showViewDialog(
           context: context,
@@ -44,7 +47,10 @@ class ErrorPopupListener extends StatelessWidget {
     }
   }
 
-  Future _inputNeeded(Set<SaveError> errors, BuildContext context) async {
+  Future _inputNeeded(
+    Set<SaveError> errors,
+    BuildContext context,
+  ) async {
     final translate = Translator.of(context).translate;
     SaveRecurring? saveEvent;
     final state = context.read<EditActivityBloc>().state;

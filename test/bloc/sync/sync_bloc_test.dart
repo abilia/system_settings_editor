@@ -1,104 +1,199 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
 
-import 'package:seagull/bloc/sync/sync_bloc.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../fakes/fake_db_and_repository.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
-  final activityRepository = MockActivityRepository();
-  final userFileRepository = MockUserFileRepository();
-  final sortableRepository = MockSortableRepository();
+  late ActivityRepository activityRepository;
+  late UserFileRepository userFileRepository;
+  late SortableRepository sortableRepository;
+  late GenericRepository genericRepository;
 
-  group('happy caseas', () {
-    final syncBloc = SyncBloc(
-      activityRepository: activityRepository,
-      userFileRepository: userFileRepository,
-      sortableRepository: sortableRepository,
-      genericRepository: FakeGenericRepository(),
-      syncDelay: SyncDelays.zero,
-    );
-    setUp(() {
-      when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-      when(() => userFileRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-      when(() => sortableRepository.synchronize())
-          .thenAnswer((_) => Future.value(true));
-    });
-    test('ActivitySaved event calls synchronize on activity repository ',
-        () async {
-      syncBloc.add(SyncEvent.activitySaved);
-      await untilCalled(() => activityRepository.synchronize());
-    });
-    test('FileSaved event calls synchronize on user file repository', () async {
-      syncBloc.add(SyncEvent.fileSaved);
-      await untilCalled(() => userFileRepository.synchronize());
-    });
-    test('SortableSaved event calls synchronize on sortable repository',
-        () async {
-      syncBloc.add(SyncEvent.sortableSaved);
-      await untilCalled(() => sortableRepository.synchronize());
-    });
+  setUp(() {
+    activityRepository = MockActivityRepository();
+    userFileRepository = MockUserFileRepository();
+    sortableRepository = MockSortableRepository();
+    genericRepository = MockGenericRepository();
   });
-  group('Failed cases', () {
-    final syncStallTime = 10.milliseconds();
-    final syncBloc = SyncBloc(
-      activityRepository: activityRepository,
-      userFileRepository: userFileRepository,
-      sortableRepository: sortableRepository,
-      genericRepository: FakeGenericRepository(),
-      syncDelay:
-          SyncDelays(betweenSync: 10.milliseconds(), retryDelay: Duration.zero),
-    );
+  group('happy caseas', () {
     setUp(() {
       when(() => activityRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-      when(() => userFileRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-      when(() => sortableRepository.synchronize())
-          .thenAnswer((_) => Future.value(false));
-    });
-    test('Failed ActivitySaved synchronize retrys to syncronize', () async {
-      syncBloc.add(SyncEvent.activitySaved);
-      await untilCalled(() => activityRepository.synchronize());
-      when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => activityRepository.synchronize()).called(2);
-    });
-    test('Failed FileSaved synchronize retrys to syncronize', () async {
-      syncBloc.add(SyncEvent.fileSaved);
-      await untilCalled(() => userFileRepository.synchronize());
       when(() => userFileRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => userFileRepository.synchronize()).called(2);
-    });
-    test('Failed SortableSaved synchronize retrys to syncronize', () async {
-      syncBloc.add(SyncEvent.sortableSaved);
-      await untilCalled(() => sortableRepository.synchronize());
       when(() => sortableRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
-      await Future.delayed(syncStallTime * 2);
-      verify(() => sortableRepository.synchronize()).called(2);
+      when(() => genericRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
     });
+
+    blocTest(
+      'ActivitySaved event calls synchronize on activity repository',
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      ),
+      act: (SyncBloc syncBloc) => syncBloc.add(const ActivitySaved()),
+      verify: (bloc) => verify(() => activityRepository.synchronize()),
+    );
+
+    blocTest(
+      'FileSaved event calls synchronize on user file repository',
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      ),
+      act: (SyncBloc syncBloc) => syncBloc.add(const FileSaved()),
+      verify: (bloc) => verify(() => userFileRepository.synchronize()),
+    );
+
+    blocTest(
+      'SortableSaved event calls synchronize on sortable repository',
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      ),
+      act: (SyncBloc syncBloc) => syncBloc.add(const SortableSaved()),
+      verify: (bloc) => verify(() => sortableRepository.synchronize()),
+    );
+
+    blocTest(
+      'GenericSaved event calls synchronize on sortable repository',
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays.zero,
+      ),
+      act: (SyncBloc syncBloc) => syncBloc.add(const GenericSaved()),
+      verify: (bloc) => verify(() => genericRepository.synchronize()),
+    );
+
+    blocTest('all event calls synchronize on all repository',
+        wait: 1.milliseconds(),
+        build: () => SyncBloc(
+              activityRepository: activityRepository,
+              userFileRepository: userFileRepository,
+              sortableRepository: sortableRepository,
+              genericRepository: genericRepository,
+              syncDelay: SyncDelays.zero,
+            ),
+        act: (SyncBloc syncBloc) => syncBloc
+          ..add(const ActivitySaved())
+          ..add(const FileSaved())
+          ..add(const SortableSaved())
+          ..add(const GenericSaved()),
+        verify: (bloc) {
+          verify(() => activityRepository.synchronize());
+          verify(() => userFileRepository.synchronize());
+          verify(() => sortableRepository.synchronize());
+          verify(() => genericRepository.synchronize());
+        });
+  });
+
+  group('Failed cases', () {
+    final retryDelay = 10.milliseconds();
+    late List<bool> failThenSucceed;
+    setUp(() => failThenSucceed = [false, true]);
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed ActivitySaved synchronize retrys to syncronize',
+      setUp: () => when(() => activityRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const ActivitySaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.activityRepository.synchronize)
+          .called(2), // Change to .called(2),
+    );
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed FileSaved synchronize retrys to syncronize',
+      setUp: () => when(() => userFileRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const FileSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.userFileRepository.synchronize)
+          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+    );
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed SortableSaved synchronize retrys to syncronize',
+      setUp: () => when(() => sortableRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const SortableSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
+    );
+
+    blocTest<SyncBloc, dynamic>(
+      'Failed GenericSaved synchronize retrys to syncronize',
+      setUp: () => when(() => genericRepository.synchronize())
+          .thenAnswer((_) => Future.value(failThenSucceed.removeAt(0))),
+      build: () => SyncBloc(
+        activityRepository: activityRepository,
+        userFileRepository: userFileRepository,
+        sortableRepository: sortableRepository,
+        genericRepository: genericRepository,
+        syncDelay: SyncDelays(
+          retryDelay: retryDelay,
+          betweenSync: Duration.zero,
+        ),
+      ),
+      act: (bloc) => bloc.add(const GenericSaved()),
+      wait: retryDelay * 2,
+      verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
+    );
   });
 
   group('queuing', () {
     final stallTime = 50.milliseconds();
-    final syncBloc = SyncBloc(
-        activityRepository: activityRepository,
-        userFileRepository: userFileRepository,
-        sortableRepository: sortableRepository,
-        genericRepository: FakeGenericRepository(),
-        syncDelay: SyncDelays(
-          betweenSync: stallTime,
-          retryDelay: stallTime,
-        ));
+
     setUp(() {
       when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
@@ -106,31 +201,54 @@ void main() {
           .thenAnswer((_) => Future.value(true));
       when(() => sortableRepository.synchronize())
           .thenAnswer((_) => Future.value(true));
+      when(() => genericRepository.synchronize())
+          .thenAnswer((_) => Future.value(true));
     });
+
     test('calls all repositories', () async {
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
+      final syncBloc = SyncBloc(
+          activityRepository: activityRepository,
+          userFileRepository: userFileRepository,
+          sortableRepository: sortableRepository,
+          genericRepository: genericRepository,
+          syncDelay: SyncDelays(
+            betweenSync: stallTime,
+            retryDelay: stallTime,
+          ));
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const GenericSaved());
       await untilCalled(() => activityRepository.synchronize());
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
+      await untilCalled(() => genericRepository.synchronize());
     });
 
     test('throttles invocations of event', () async {
-      syncBloc.add(SyncEvent.activitySaved);
+      final syncBloc = SyncBloc(
+          activityRepository: activityRepository,
+          userFileRepository: userFileRepository,
+          sortableRepository: sortableRepository,
+          genericRepository: genericRepository,
+          syncDelay: SyncDelays(
+            betweenSync: stallTime,
+            retryDelay: stallTime,
+          ));
+      syncBloc.add(const ActivitySaved());
       await untilCalled(() => activityRepository.synchronize());
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
       await Future.delayed(stallTime * 2);
       await untilCalled(() => userFileRepository.synchronize());
       await Future.delayed(stallTime * 2);
@@ -143,30 +261,34 @@ void main() {
 
     test(
         'Failed syncs with other events in queue should dequeue other events before retrying (no starvation)',
-        () async {
-      when(() => activityRepository.synchronize())
+            () async {
+          when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(false));
-      syncBloc.add(SyncEvent.activitySaved);
+      final syncBloc = SyncBloc(
+          activityRepository: activityRepository,
+          userFileRepository: userFileRepository,
+          sortableRepository: sortableRepository,
+          genericRepository: genericRepository,
+          syncDelay: SyncDelays(
+            betweenSync: stallTime,
+            retryDelay: stallTime,
+          ));
+      syncBloc.add(const ActivitySaved());
       await untilCalled(() => activityRepository.synchronize());
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.activitySaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.fileSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
-      syncBloc.add(SyncEvent.sortableSaved);
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const ActivitySaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const FileSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
+      syncBloc.add(const SortableSaved());
       await untilCalled(() => userFileRepository.synchronize());
       await untilCalled(() => sortableRepository.synchronize());
     });
-  });
-  tearDown(() {
-    clearInteractions(activityRepository);
-    clearInteractions(userFileRepository);
-    clearInteractions(sortableRepository);
   });
 }

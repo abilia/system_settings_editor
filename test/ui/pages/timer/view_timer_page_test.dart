@@ -21,7 +21,7 @@ void main() {
       duration: const Duration(minutes: 5),
       startTime: DateTime.now());
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
-  late MockUserFileBloc mockUserFileBloc;
+  late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
 
   final startTime = DateTime(2021, 12, 22, 08, 10);
@@ -39,8 +39,9 @@ void main() {
             MemoplannerSettings(advancedActivityTemplate: false)));
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
-    mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockUserFileCubit = MockUserFileCubit();
+    when(() => mockUserFileCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
@@ -63,7 +64,7 @@ void main() {
           BlocProvider<MemoplannerSettingBloc>.value(
             value: mockMemoplannerSettingsBloc,
           ),
-          BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+          BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
           BlocProvider<SettingsBloc>(
             create: (context) => SettingsBloc(
               settingsDb: FakeSettingsDb(),

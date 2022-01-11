@@ -1,4 +1,4 @@
-part of 'user_file_bloc.dart';
+part of 'user_file_cubit.dart';
 
 abstract class UserFileState extends Equatable {
   const UserFileState(this.userFiles, this._tempFiles);
@@ -48,7 +48,7 @@ class UserFilesLoaded extends UserFileState {
 
   @override
   String toString() =>
-      'UserFlesLoaded { userFiles: $userFiles, tempFiles: $_tempFiles }';
+      'UserFilesLoaded { userFiles: $userFiles, tempFiles: $_tempFiles }';
 
   @override
   UserFileState addTempFile(String id, File file) =>

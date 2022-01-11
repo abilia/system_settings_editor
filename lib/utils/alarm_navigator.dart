@@ -1,7 +1,9 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AlarmNavigator {
   final _alarmRoutesOnStack = <String, MaterialPageRoute>{};
@@ -15,7 +17,7 @@ class AlarmNavigator {
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListeners(child: _alarmPage(alarm)),
+        child: AlarmListener(child: _alarmPage(alarm)),
       ),
     );
     _alarmRoutesOnStack[alarm.activity.id] = route;
@@ -26,10 +28,11 @@ class AlarmNavigator {
     BuildContext context,
     NotificationAlarm alarm,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
     final route = MaterialPageRoute(
-      builder: (_) => CopiedAuthProviders(
-        blocContext: context,
+      builder: (_) => MultiBlocProvider(
+        providers: authProviders,
         child: _alarmPage(alarm),
       ),
       fullscreenDialog: true,

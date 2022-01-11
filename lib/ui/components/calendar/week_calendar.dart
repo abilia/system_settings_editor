@@ -426,6 +426,7 @@ class WeekActivityContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final inactive = activityOccasion.isPast || activityOccasion.isSignedOff;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
@@ -439,8 +440,8 @@ class WeekActivityContent extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
                     child: ActivityPage(activityDay: activityOccasion),
                   ),
                   settings: RouteSettings(
@@ -488,8 +489,8 @@ class WeekActivityContent extends StatelessWidget {
                           activityOccasion.activity.title,
                           overflow: TextOverflow.clip,
                           style:
-                              (Theme.of(context).textTheme.caption ?? caption)
-                                  .copyWith(height: 20 / 16),
+                          (Theme.of(context).textTheme.caption ?? caption)
+                              .copyWith(height: 20 / 16),
                           textAlign: TextAlign.center,
                         ),
                       ),

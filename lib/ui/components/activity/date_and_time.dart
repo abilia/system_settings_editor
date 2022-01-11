@@ -162,6 +162,7 @@ class TimeIntervallPicker extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => Row(
@@ -173,15 +174,15 @@ class TimeIntervallPicker extends StatelessWidget {
               translator.time,
               TimeInput(
                 timeInterval.startTime,
-                timeInterval.sameTime ? null : timeInterval.endTime,
-              ),
-              errorState: startTimeError,
-              onTap: () async {
-                final newTimeInterval =
+                    timeInterval.sameTime ? null : timeInterval.endTime,
+                  ),
+                  errorState: startTimeError,
+                  onTap: () async {
+                    final newTimeInterval =
                     await Navigator.of(context).push<TimeInput>(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                      MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: TimeInputPage(
                         timeInput: TimeInput(
                             timeInterval.startTime,
@@ -193,20 +194,20 @@ class TimeIntervallPicker extends StatelessWidget {
                     ),
                     settings: const RouteSettings(name: 'TimeInputPage'),
                   ),
-                );
+                    );
 
-                if (newTimeInterval != null) {
-                  BlocProvider.of<EditActivityBloc>(context)
-                      .add(ChangeTimeInterval(
-                    startTime: newTimeInterval.startTime,
-                    endTime: newTimeInterval.endTime,
-                  ));
-                }
-              },
-            ),
+                    if (newTimeInterval != null) {
+                      BlocProvider.of<EditActivityBloc>(context)
+                          .add(ChangeTimeInterval(
+                        startTime: newTimeInterval.startTime,
+                        endTime: newTimeInterval.endTime,
+                      ));
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }

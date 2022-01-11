@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -105,33 +106,35 @@ class PermissionPickField extends StatelessWidget {
   const PermissionPickField({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<PermissionBloc, PermissionState>(
-        builder: (context, state) => Stack(
-          children: [
-            PickField(
-              leading: const Icon(AbiliaIcons.menuSetup),
-              text: Text(Translator.of(context).translate.permissions),
-              onTap: () async {
-                context.read<PermissionBloc>().checkAll();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
-                      child: const PermissionsPage(),
-                    ),
-                    settings: const RouteSettings(name: 'PermissionPage'),
+  Widget build(BuildContext context) {
+    return BlocBuilder<PermissionBloc, PermissionState>(
+      builder: (context, state) => Stack(
+        children: [
+          PickField(
+            leading: const Icon(AbiliaIcons.menuSetup),
+            text: Text(Translator.of(context).translate.permissions),
+            onTap: () async {
+              final authProviders = copiedAuthProviders(context);
+              context.read<PermissionBloc>().checkAll();
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: const PermissionsPage(),
                   ),
-                );
-              },
+                  settings: const RouteSettings(name: 'PermissionPage'),
+                ),
+              );
+            },
+          ),
+          if (state.importantPermissionMissing)
+            Positioned(
+              top: 8.0.s,
+              right: 8.0.s,
+              child: const OrangeDot(),
             ),
-            if (state.importantPermissionMissing)
-              Positioned(
-                top: 8.0.s,
-                right: 8.0.s,
-                child: const OrangeDot(),
-              ),
-          ],
-        ),
-      );
+        ],
+      ),
+    );
+  }
 }

@@ -1,4 +1,4 @@
-part of 'recurring_week_bloc.dart';
+part of 'recurring_week_cubit.dart';
 
 class RecurringWeekState extends Equatable {
   static const allWeekdays = {1, 2, 3, 4, 5, 6, 7};

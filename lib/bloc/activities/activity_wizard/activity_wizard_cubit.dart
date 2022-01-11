@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +14,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
   final bool edit;
-  final VoidCallback? onBack;
 
   bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
 
@@ -26,7 +24,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-    this.onBack,
   })  : edit = false,
         super(
           ActivityWizardState(
@@ -85,7 +82,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.editActivityBloc,
     required this.clockBloc,
     required this.settings,
-    this.onBack,
   })  : edit = true,
         super(ActivityWizardState(0, const [WizardStep.advance]));
 
@@ -119,13 +115,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     emit(state.copyWith(newStep: (state.step + 1)));
   }
 
-  void previous() async {
-    if (state.isFirstStep) {
-      onBack?.call();
-    } else {
-      emit(state.copyWith(newStep: (state.step - 1)));
-    }
-  }
+  void previous() => emit(state.copyWith(newStep: (state.step - 1)));
 
   ActivityWizardState _saveActivity(
     EditActivityState editState, {

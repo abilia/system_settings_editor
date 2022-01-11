@@ -1,5 +1,3 @@
-part of 'sync_bloc.dart';
-
 class SyncDelays {
   final Duration betweenSync;
   final Duration retryDelay;

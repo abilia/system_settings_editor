@@ -61,7 +61,7 @@ void main() {
       EndAlarm(activityWithStartAndEndSpeech, day);
   AlarmNavigator _alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
-  late MockUserFileBloc mockUserFileBloc;
+  late MockUserFileCubit mockUserFileCubit;
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -87,8 +87,8 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMPSettingsBloc,
             ),
-            BlocProvider<UserFileBloc>(
-              create: (context) => mockUserFileBloc,
+            BlocProvider<UserFileCubit>(
+              create: (context) => mockUserFileCubit,
             ),
           ],
           child: widget,
@@ -122,10 +122,11 @@ void main() {
       }
     });
 
-    mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
-    mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.state)
+    mockUserFileCubit = MockUserFileCubit();
+    when(() => mockUserFileCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
+    mockUserFileCubit = MockUserFileCubit();
+    when(() => mockUserFileCubit.state)
         .thenReturn(const UserFilesLoaded([userFile]));
     mockMPSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMPSettingsBloc.state).thenReturn(

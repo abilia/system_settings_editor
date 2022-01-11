@@ -73,7 +73,6 @@ void main() {
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
-      ..syncDelay = SyncDelays.zero
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..init();

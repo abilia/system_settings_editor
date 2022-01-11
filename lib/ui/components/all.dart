@@ -23,5 +23,6 @@ export 'clock/all.dart';
 export 'menu_item_pick_field.dart';
 export 'edit_image_and_name.dart';
 export 'quick_settings/all.dart';
+export 'timer_wheel/all.dart';
 
 export 'package:flutter/semantics.dart';

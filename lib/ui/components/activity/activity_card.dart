@@ -30,6 +30,7 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final textTheme = abiliaTheme.textTheme;
     final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
@@ -41,10 +42,10 @@ class ActivityCard extends StatelessWidget {
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
               bodyText1:
-                  textTheme.bodyText1?.copyWith(color: AbiliaColors.white140),
-            ),
-            iconTheme:
-                abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
+          textTheme.bodyText1?.copyWith(color: AbiliaColors.white140),
+        ),
+        iconTheme:
+        abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
         : abiliaTheme;
     return AnimatedTheme(
       duration: duration,
@@ -66,8 +67,8 @@ class ActivityCard extends StatelessWidget {
               margin: preview || activity.fullDay || !showCategories
                   ? EdgeInsets.zero
                   : activity.category == Category.right
-                      ? EdgeInsets.only(left: categorySideOffset)
-                      : EdgeInsets.only(right: categorySideOffset),
+                  ? EdgeInsets.only(left: categorySideOffset)
+                  : EdgeInsets.only(right: categorySideOffset),
               child: Material(
                 type: MaterialType.transparency,
                 child: InkWell(
@@ -75,10 +76,10 @@ class ActivityCard extends StatelessWidget {
                   onTap: preview
                       ? null
                       : () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => CopiedAuthProviders(
-                                blocContext: context,
+                    context,
+                    MaterialPageRoute(
+                              builder: (_) => MultiBlocProvider(
+                                providers: authProviders,
                                 child: ActivityPage(
                                   activityDay: activityOccasion,
                                 ),
@@ -86,7 +87,7 @@ class ActivityCard extends StatelessWidget {
                               settings: RouteSettings(
                                   name: 'ActivityPage $activityOccasion'),
                             ),
-                          ),
+                  ),
                   child: Padding(
                     padding: EdgeInsets.all(cardPadding),
                     child: Stack(
@@ -110,7 +111,7 @@ class ActivityCard extends StatelessWidget {
                                     Text(
                                       activity.title,
                                       style:
-                                          Theme.of(context).textTheme.subtitle1,
+                                      Theme.of(context).textTheme.subtitle1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   Align(
@@ -118,7 +119,7 @@ class ActivityCard extends StatelessWidget {
                                     child: Text(
                                       activity.subtitle(context),
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                      Theme.of(context).textTheme.bodyText1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),

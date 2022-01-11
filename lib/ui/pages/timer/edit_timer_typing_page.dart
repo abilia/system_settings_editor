@@ -100,10 +100,14 @@ class _TimerInputContent extends StatelessWidget {
                 ),
                 const Spacer(),
                 BottomNavigation(
-                    backNavigationWidget: const CancelButton(),
-                    forwardNavigationWidget: SaveButton(
-                      onPressed: () => onSave(context, state.duration),
-                    )),
+                  backNavigationWidget: const CancelButton(),
+                  forwardNavigationWidget: SaveButton(
+                    onPressed: () => onSave(
+                      context,
+                      state.duration,
+                    ),
+                  ),
+                ),
               ],
             ),
           );

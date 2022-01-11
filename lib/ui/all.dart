@@ -5,7 +5,6 @@ export 'dialogs/all.dart';
 export 'pages/all.dart';
 
 export 'package:seagull/i18n/all.dart';
-export 'package:seagull/listener.dart';
 export 'package:seagull/utils/scale_util.dart';
 export 'package:seagull/config.dart';
 

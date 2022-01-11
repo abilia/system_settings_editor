@@ -5,9 +5,9 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
 import 'package:seagull/utils/all.dart';
@@ -63,21 +63,26 @@ class GetItInitializer {
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
   SettingsDb? _settingsDb;
+
   set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
 
   late MultipartRequestBuilder _multipartRequestBuilder =
       MultipartRequestBuilder();
+
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
       _multipartRequestBuilder = multipartRequestBuilder;
 
-  late SyncDelays _syncDelay = const SyncDelays();
+  late SyncDelays _syncDelay = SyncDelays.zero;
+
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
   late Database _database;
+
   set database(Database database) => _database = database;
 
   late SeagullLogger _seagullLogger = SeagullLogger.nothing();
+
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 

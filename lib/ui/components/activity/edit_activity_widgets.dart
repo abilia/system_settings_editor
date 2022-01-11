@@ -124,10 +124,11 @@ class SelectPictureWidget extends StatelessWidget {
   }
 
   void imageClick(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: SelectPicturePage(
             selectedImage: selectedImage,
           ),
@@ -137,8 +138,9 @@ class SelectPictureWidget extends StatelessWidget {
 
     if (newSelectedImage != null) {
       if (newSelectedImage is UnstoredAbiliaFile) {
-        BlocProvider.of<UserFileBloc>(context).add(
-          ImageAdded(newSelectedImage),
+        BlocProvider.of<UserFileCubit>(context).fileAdded(
+          newSelectedImage,
+          image: true,
         );
         BlocProvider.of<SortableBloc>(context).add(
           ImageArchiveImageAdded(
@@ -360,10 +362,11 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
+              final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: SelectAlarmTypePage(
                           alarm: alarm.typeSeagull,
                         ),
@@ -371,11 +374,11 @@ class AlarmWidget extends StatelessWidget {
                       settings:
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
-                    if (result != null) {
-                      BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(activity.copyWith(
-                              alarm: activity.alarm.copyWith(type: result))));
-                    }
+              if (result != null) {
+                BlocProvider.of<EditActivityBloc>(context).add(
+                    ReplaceActivity(activity.copyWith(
+                        alarm: activity.alarm.copyWith(type: result))));
+              }
                   }
                 : null,
           ),
@@ -671,7 +674,7 @@ class WeekDays extends StatelessWidget {
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
           .copyWith(height: 1.5.s),
-      child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+      child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
         builder: (context, state) => Wrap(
           spacing: 14.s,
@@ -681,9 +684,8 @@ class WeekDays extends StatelessWidget {
               (d) => SelectableField(
                 text: Text(translate.shortWeekday(d)),
                 selected: state.weekdays.contains(d),
-                onTap: () => context
-                    .read<RecurringWeekBloc>()
-                    .add(AddOrRemoveWeekday(d)),
+                onTap: () =>
+                    context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
               ),
             ),
           ],

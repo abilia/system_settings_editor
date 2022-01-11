@@ -35,15 +35,10 @@ class TimerStartWiz extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: PreviousButton(
-            onPressed: () {
-              context.read<TimerWizardCubit>().previous();
-            },
+            onPressed: context.read<TimerWizardCubit>().previous,
           ),
           forwardNavigationWidget: StartButton(
-            onPressed: () {
-              context.read<TimerWizardCubit>().next();
-              Navigator.of(context).maybePop();
-            },
+            onPressed: context.read<TimerWizardCubit>().next,
           ),
         ),
       ),

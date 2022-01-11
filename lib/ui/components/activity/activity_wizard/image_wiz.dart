@@ -26,8 +26,9 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
       builder: (context, state) => SelectPictureBody(
         imageCallback: (newImage) {
           if (newImage is UnstoredAbiliaFile) {
-            BlocProvider.of<UserFileBloc>(context).add(
-              ImageAdded(newImage),
+            BlocProvider.of<UserFileCubit>(context).fileAdded(
+              newImage,
+              image: true,
             );
             BlocProvider.of<SortableBloc>(context).add(
               ImageArchiveImageAdded(

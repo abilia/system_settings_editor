@@ -1,6 +1,6 @@
 import 'package:seagull/bloc/all.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 /// copied from [showDialog]
 Future<T?> showViewDialog<T>({
@@ -10,11 +10,13 @@ Future<T?> showViewDialog<T>({
   bool useSafeArea = true,
   bool wrapWithAuthProviders = true,
 }) {
+  final authProviders =
+      wrapWithAuthProviders ? copiedAuthProviders(context) : null;
   return showDialog<T>(
     context: context,
-    builder: wrapWithAuthProviders
-        ? (_) => CopiedAuthProviders(
-              blocContext: context,
+    builder: authProviders != null
+        ? (_) => MultiBlocProvider(
+              providers: authProviders,
               child: Builder(builder: builder),
             )
         : builder,
