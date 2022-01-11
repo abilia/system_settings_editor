@@ -309,9 +309,10 @@ void main() {
       'Changing to every other week on even week on EditActivityBloc',
       build: () => EditActivityCubit.edit(ActivityDay(activity, day)),
       act: (EditActivityCubit bloc) async {
-        RecurringWeekCubit(bloc)
-          ..addOrRemoveWeekday(DateTime.monday)
-          ..changeEveryOtherWeek(true);
+        final rwc = RecurringWeekCubit(bloc)
+          ..addOrRemoveWeekday(DateTime.monday);
+        await bloc.stream.any((element) => true);
+        rwc.changeEveryOtherWeek(true);
         await bloc.stream.any((element) => true);
         bloc.changeDate(newStartDay);
       },
