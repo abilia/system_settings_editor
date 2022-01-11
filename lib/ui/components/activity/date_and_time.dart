@@ -9,7 +9,7 @@ class DateAndTimeWidget extends StatelessWidget {
   const DateAndTimeWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
         builder: (context, editActivityState) {
       final fullDay = editActivityState.activity.fullDay;
       return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -24,9 +24,7 @@ class DateAndTimeWidget extends StatelessWidget {
                 editActivityState.timeInterval.startDate,
                 onChange: memoSettingsState.activityDateEditable
                     ? (newDate) =>
-                        BlocProvider.of<EditActivityBloc>(context).add(
-                          ChangeDate(newDate),
-                        )
+                        context.read<EditActivityCubit>().changeDate(newDate)
                     : null,
               ),
               SizedBox(height: 24.0.s),
@@ -49,11 +47,10 @@ class DateAndTimeWidget extends StatelessWidget {
                   size: layout.iconSize.small,
                 ),
                 value: fullDay,
-                onChanged: (v) => context.read<EditActivityBloc>().add(
-                      ReplaceActivity(
-                        editActivityState.activity.copyWith(fullDay: v),
-                      ),
-                    ),
+                onChanged: (v) =>
+                    context.read<EditActivityCubit>().replaceActivity(
+                          editActivityState.activity.copyWith(fullDay: v),
+                        ),
                 child: Text(Translator.of(context).translate.fullDay),
               ),
             ],
@@ -82,8 +79,9 @@ class ReminderSwitch extends StatelessWidget {
       value: activity.reminders.isNotEmpty,
       onChanged: (switchOn) {
         final reminders = switchOn ? [15.minutes().inMilliseconds] : <int>[];
-        BlocProvider.of<EditActivityBloc>(context)
-            .add(ReplaceActivity(activity.copyWith(reminderBefore: reminders)));
+        context
+            .read<EditActivityCubit>()
+            .replaceActivity(activity.copyWith(reminderBefore: reminders));
       },
       child: Text(Translator.of(context).translate.reminders),
     );
@@ -196,11 +194,10 @@ class TimeIntervallPicker extends StatelessWidget {
                 );
 
                 if (newTimeInterval != null) {
-                  BlocProvider.of<EditActivityBloc>(context)
-                      .add(ChangeTimeInterval(
-                    startTime: newTimeInterval.startTime,
-                    endTime: newTimeInterval.endTime,
-                  ));
+                  context.read<EditActivityCubit>().changeTimeInterval(
+                        startTime: newTimeInterval.startTime,
+                        endTime: newTimeInterval.endTime,
+                      );
                 }
               },
             ),
@@ -294,8 +291,8 @@ class Reminders extends StatelessWidget {
                     ?.copyWith(height: 1.5),
               ),
               selected: activity.reminders.contains(r),
-              onTap: () => BlocProvider.of<EditActivityBloc>(context)
-                  .add(AddOrRemoveReminder(r)),
+              onTap: () =>
+                  context.read<EditActivityCubit>().addOrRemoveReminder(r),
             ),
           )
           .toList(),

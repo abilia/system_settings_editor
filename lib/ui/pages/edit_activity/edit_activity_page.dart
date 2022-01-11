@@ -11,7 +11,7 @@ class EditActivityPage extends StatelessWidget {
           previous.activityRecurringEditable !=
           current.activityRecurringEditable,
       builder: (context, memoSettingsState) =>
-          BlocBuilder<EditActivityBloc, EditActivityState>(
+          BlocBuilder<EditActivityCubit, EditActivityState>(
         buildWhen: (previous, current) =>
             previous.activity.fullDay != current.activity.fullDay,
         builder: (context, state) {

@@ -10,7 +10,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
           builder: (context, wizState) {
@@ -21,14 +21,15 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
               text: state.activity.title,
               inputFormatters: [LengthLimitingTextInputFormatter(50)],
               onImageSelected: (selectedImage) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ImageSelected(selectedImage),
-                );
+                context.read<EditActivityCubit>().imageSelected(
+                      selectedImage,
+                    );
               },
               onTextEdit: (text) {
                 if (state.activity.title != text) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(state.activity.copyWith(title: text)));
+                  context
+                      .read<EditActivityCubit>()
+                      .replaceActivity(state.activity.copyWith(title: text));
                 }
               },
             );
@@ -239,8 +240,8 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     _onChange(v) => context
-        .read<EditActivityBloc>()
-        .add(ReplaceActivity(activity.copyWith(category: v)));
+        .read<EditActivityCubit>()
+        .replaceActivity(activity.copyWith(category: v));
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, state) {
         return Column(
@@ -367,9 +368,11 @@ class AlarmWidget extends StatelessWidget {
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
                     if (result != null) {
-                      BlocProvider.of<EditActivityBloc>(context).add(
-                          ReplaceActivity(activity.copyWith(
-                              alarm: activity.alarm.copyWith(type: result))));
+                      context.read<EditActivityCubit>().replaceActivity(
+                            activity.copyWith(
+                              alarm: activity.alarm.copyWith(type: result),
+                            ),
+                          );
                     }
                   }
                 : null,
@@ -377,11 +380,9 @@ class AlarmWidget extends StatelessWidget {
           SizedBox(height: 8.0.s),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
-            onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
-              ReplaceActivity(
-                activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
-              ),
-            ),
+            onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
+                  activity.copyWith(alarm: alarm.copyWith(onlyStart: v)),
+                ),
           ),
         ],
       ),
@@ -431,8 +432,9 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             size: layout.iconSize.small,
           ),
           value: activity.checkable,
-          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-              .add(ReplaceActivity(activity.copyWith(checkable: v))),
+          onChanged: (v) => context
+              .read<EditActivityCubit>()
+              .replaceActivity(activity.copyWith(checkable: v)),
           child: Text(translator.checkable),
         ),
         SizedBox(height: 8.0.s),
@@ -443,8 +445,9 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
             size: layout.iconSize.small,
           ),
           value: activity.removeAfter,
-          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context)
-              .add(ReplaceActivity(activity.copyWith(removeAfter: v))),
+          onChanged: (v) => context
+              .read<EditActivityCubit>()
+              .replaceActivity(activity.copyWith(removeAfter: v)),
           child: Text(translator.deleteAfter),
         ),
       ],
@@ -479,8 +482,9 @@ class AvailableForWidget extends StatelessWidget {
               ),
             );
             if (result != null) {
-              BlocProvider.of<EditActivityBloc>(context)
-                  .add(ReplaceActivity(activity.copyWith(secret: result)));
+              context
+                  .read<EditActivityCubit>()
+                  .replaceActivity(activity.copyWith(secret: result));
             }
           },
         ),
@@ -518,25 +522,21 @@ class RecurrenceWidget extends StatelessWidget {
             if (result != null) {
               if (state.storedRecurring &&
                   result == state.originalActivity.recurs.recurrance) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      recurs: state.originalActivity.recurs,
-                    ),
-                  ),
-                );
+                context.read<EditActivityCubit>().replaceActivity(
+                      activity.copyWith(
+                        recurs: state.originalActivity.recurs,
+                      ),
+                    );
               } else {
                 final recurentType = _newType(
                   result,
                   state.timeInterval.startDate,
                 );
-                BlocProvider.of<EditActivityBloc>(context).add(
-                  ReplaceActivity(
-                    activity.copyWith(
-                      recurs: recurentType,
-                    ),
-                  ),
-                );
+                context.read<EditActivityCubit>().replaceActivity(
+                      activity.copyWith(
+                        recurs: recurentType,
+                      ),
+                    );
               }
             }
           },
@@ -565,7 +565,7 @@ class EndDateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
@@ -585,13 +585,11 @@ class EndDateWidget extends StatelessWidget {
                     onChange: disabled
                         ? null
                         : (newDate) =>
-                            BlocProvider.of<EditActivityBloc>(context).add(
-                              ReplaceActivity(
-                                activity.copyWith(
-                                  recurs: recurs.changeEnd(newDate),
+                            context.read<EditActivityCubit>().replaceActivity(
+                                  activity.copyWith(
+                                    recurs: recurs.changeEnd(newDate),
+                                  ),
                                 ),
-                              ),
-                            ),
                   ),
                   SizedBox(height: 16.s),
                 ],
@@ -605,14 +603,10 @@ class EndDateWidget extends StatelessWidget {
               value: recurs.hasNoEnd,
               onChanged: disabled
                   ? null
-                  : (v) => BlocProvider.of<EditActivityBloc>(context).add(
-                        ReplaceActivity(
-                          activity.copyWith(
-                            recurs: recurs.changeEnd(
-                              v
-                                  ? Recurs.noEndDate
-                                  : state.timeInterval.startDate,
-                            ),
+                  : (v) => context.read<EditActivityCubit>().replaceActivity(
+                        activity.copyWith(
+                          recurs: recurs.changeEnd(
+                            v ? Recurs.noEndDate : state.timeInterval.startDate,
                           ),
                         ),
                       ),
@@ -631,7 +625,7 @@ class EndDateWizWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         final recurs = activity.recurs;
@@ -641,15 +635,13 @@ class EndDateWizWidget extends StatelessWidget {
             size: layout.iconSize.small,
           ),
           value: recurs.hasNoEnd,
-          onChanged: (v) => BlocProvider.of<EditActivityBloc>(context).add(
-            ReplaceActivity(
-              activity.copyWith(
-                recurs: recurs.changeEnd(
-                  v ? Recurs.noEndDate : state.timeInterval.startDate,
+          onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
+                activity.copyWith(
+                  recurs: recurs.changeEnd(
+                    v ? Recurs.noEndDate : state.timeInterval.startDate,
+                  ),
                 ),
               ),
-            ),
-          ),
           child: Text(translate.noEndDate),
         );
       },
@@ -693,7 +685,7 @@ class MonthDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final selectedMonthDays = state.activity.recurs.monthDays;
         return Wrap(
@@ -716,13 +708,11 @@ class MonthDays extends StatelessWidget {
                   if (!selectedMonthDays.add(d)) {
                     selectedMonthDays.remove(d);
                   }
-                  context.read<EditActivityBloc>().add(
-                        ReplaceActivity(
-                          state.activity.copyWith(
-                            recurs: Recurs.monthlyOnDays(
-                              selectedMonthDays,
-                              ends: state.activity.recurs.end,
-                            ),
+                  context.read<EditActivityCubit>().replaceActivity(
+                        state.activity.copyWith(
+                          recurs: Recurs.monthlyOnDays(
+                            selectedMonthDays,
+                            ends: state.activity.recurs.end,
                           ),
                         ),
                       );

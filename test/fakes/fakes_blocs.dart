@@ -148,7 +148,7 @@ class FakeLicenseBloc extends Fake implements LicenseBloc {
   Future<void> close() async {}
 }
 
-class FakeEditActivityBloc extends Fake implements EditActivityBloc {
+class FakeEditActivityCubit extends Fake implements EditActivityCubit {
   @override
   Stream<EditActivityState> get stream => const Stream.empty();
   @override
