@@ -128,8 +128,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(const ActivitySaved()),
       wait: retryDelay * 3,
-      verify: (bloc) => verify(bloc.activityRepository.synchronize)
-          .called(2), // Change to .called(2),
+      verify: (bloc) => verify(bloc.activityRepository.synchronize).called(2),
     );
 
     blocTest<SyncBloc, dynamic>(
@@ -148,8 +147,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(const FileSaved()),
       wait: retryDelay * 3,
-      verify: (bloc) => verify(bloc.userFileRepository.synchronize)
-          .called(greaterThanOrEqualTo(2)), // Change to .called(2),
+      verify: (bloc) => verify(bloc.userFileRepository.synchronize).called(2),
     );
 
     blocTest<SyncBloc, dynamic>(
