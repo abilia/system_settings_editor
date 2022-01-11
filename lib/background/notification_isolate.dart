@@ -287,9 +287,9 @@ NotificationChannel _notificationChannel(
         bool hasSound, bool vibrate, Sound sound) =>
     hasSound
         ? NotificationChannel(
-            'SoundVibration${sound.name()}',
-            'Sound and Vibration with sound ${sound.name()}',
-            'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name()}')
+            'SoundVibration${sound.name}',
+            'Sound and Vibration with sound ${sound.name}',
+            'Activities with Alarm and Vibration or Only Alarm with sound ${sound.name}')
         : vibrate
             ? NotificationChannel(
                 'Vibration', 'Vibration', 'Activities with Only vibration ')

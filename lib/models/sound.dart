@@ -53,10 +53,6 @@ extension SoundExtension on Sound {
     }
   }
 
-  String name() {
-    return toString().split('.').last;
-  }
-
   String fileName() {
     switch (this) {
       case Sound.Default:
