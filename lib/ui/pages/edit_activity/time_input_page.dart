@@ -23,7 +23,7 @@ class TimeInputPage extends StatelessWidget {
       body: TimeInputContent(
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-        onSave: onSave,
+        onSave: (context, newTimInput) => onSave(context, newTimInput),
         bottomNavigationBuilder: (context, newTimInput) => BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
@@ -34,7 +34,10 @@ class TimeInputPage extends StatelessWidget {
     );
   }
 
-  Future<bool> onSave(BuildContext context, TimeInput? newTimInput) async {
+  Future<bool> onSave(
+    BuildContext context,
+    TimeInput? newTimInput,
+  ) async {
     if (newTimInput != null) {
       Navigator.of(context).maybePop(newTimInput);
       return true;

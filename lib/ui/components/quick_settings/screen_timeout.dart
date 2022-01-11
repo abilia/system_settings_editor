@@ -1,13 +1,14 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
+import 'package:seagull/utils/all.dart';
 
 class ScreenTimeoutPickField extends StatelessWidget {
   const ScreenTimeoutPickField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return BlocBuilder<WakeLockCubit, WakeLockState>(
       builder: (context, wakeLockState) => PickField(
@@ -19,8 +20,8 @@ class ScreenTimeoutPickField extends StatelessWidget {
         onTap: () async {
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
-              builder: (_) => CopiedAuthProviders(
-                blocContext: context,
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
                 child: ScreenTimeOutSelector(
                   timeout:
                       wakeLockState.keepScreenAwakeSettings.keepScreenOnAlways

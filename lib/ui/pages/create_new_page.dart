@@ -1,12 +1,14 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CreateNewPage extends StatelessWidget {
   const CreateNewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoplannerSettingsState) => Scaffold(
@@ -22,7 +24,7 @@ class CreateNewPage extends StatelessWidget {
                 key: TestKey.newActivityChoice,
                 leading: const Icon(AbiliaIcons.basicActivity),
                 text: Text(t.newActivity),
-                onTap: () => navigateToActivityWizard(context),
+                onTap: () => navigateToActivityWizard(context, authProviders),
               ).pad(formItemPadding),
             if (memoplannerSettingsState.basicActivityOption)
               PickField(
@@ -33,8 +35,8 @@ class CreateNewPage extends StatelessWidget {
                   final basicActivityData =
                       await Navigator.of(context).push<BasicActivityData>(
                     MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: BlocProvider<
                             SortableArchiveBloc<BasicActivityData>>(
                           create: (_) => SortableArchiveBloc<BasicActivityData>(
@@ -47,7 +49,11 @@ class CreateNewPage extends StatelessWidget {
                     ),
                   );
                   if (basicActivityData is BasicActivityDataItem) {
-                    await navigateToActivityWizard(context, basicActivityData);
+                    await navigateToActivityWizard(
+                      context,
+                      authProviders,
+                      basicActivityData,
+                    );
                   }
                 },
               ).pad(formItemPadding),
@@ -59,8 +65,8 @@ class CreateNewPage extends StatelessWidget {
               onTap: () async {
                 final timerStarted = await Navigator.of(context).push(
                   _createRoute(
-                    CopiedAuthProviders(
-                      blocContext: context,
+                    MultiBlocProvider(
+                      providers: authProviders,
                       child: BlocProvider(
                         create: (context) => TimerWizardCubit(
                           timerCubit: context.read<TimerCubit>(),
@@ -83,35 +89,34 @@ class CreateNewPage extends StatelessWidget {
     );
   }
 
-  Future navigateToActivityWizard(BuildContext context,
+  Future navigateToActivityWizard(
+      BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
     final activityCreated = await Navigator.of(context).push<bool>(
       _createRoute(
-        CopiedAuthProviders(
-          blocContext: context,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<EditActivityBloc>(
-                create: (context) => EditActivityBloc.newActivity(
-                  day: context.read<DayPickerBloc>().state.day,
-                  defaultAlarmTypeSetting: context
-                      .read<MemoplannerSettingBloc>()
-                      .state
-                      .defaultAlarmTypeSetting,
-                  basicActivityData: basicActivity,
-                ),
+        MultiBlocProvider(
+          providers: [
+            ...authProviders,
+            BlocProvider<EditActivityCubit>(
+              create: (_) => EditActivityCubit.newActivity(
+                day: context.read<DayPickerBloc>().state.day,
+                defaultAlarmTypeSetting: context
+                    .read<MemoplannerSettingBloc>()
+                    .state
+                    .defaultAlarmTypeSetting,
+                basicActivityData: basicActivity,
               ),
-              BlocProvider(
-                create: (context) => ActivityWizardCubit.newActivity(
-                  activitiesBloc: context.read<ActivitiesBloc>(),
-                  editActivityBloc: context.read<EditActivityBloc>(),
-                  clockBloc: context.read<ClockBloc>(),
-                  settings: context.read<MemoplannerSettingBloc>().state,
-                ),
+            ),
+            BlocProvider(
+              create: (context) => ActivityWizardCubit.newActivity(
+                activitiesBloc: context.read<ActivitiesBloc>(),
+                editActivityCubit: context.read<EditActivityCubit>(),
+                clockBloc: context.read<ClockBloc>(),
+                settings: context.read<MemoplannerSettingBloc>().state,
               ),
-            ],
-            child: const ActivityWizardPage(),
-          ),
+            ),
+          ],
+          child: const ActivityWizardPage(),
         ),
       ),
     );

@@ -2,7 +2,7 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:bloc/bloc.dart';
 export 'activities/activities_bloc.dart';
 export 'activities/day_activities/day_activities_cubit.dart';
-export 'activities/edit_activity/edit_activity_bloc.dart';
+export 'activities/edit_activity/edit_activity_cubit.dart';
 export 'activities/edit_activity/recurring_week/recurring_week_cubit.dart';
 export 'activities/activities_occasion/activities_occasion_cubit.dart';
 export 'authentication/authentication_bloc.dart';

@@ -6,7 +6,6 @@ import 'package:seagull/models/all.dart';
 import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
-import '../../../test_helpers/types.dart';
 
 void main() {
   setUpAll(() {
@@ -263,7 +262,7 @@ void main() {
     // Assert -- calls genericBloc
     final captured = verify(() => genericBloc.add(captureAny())).captured;
     expect(captured, hasLength(1));
-    expect(captured.single.runtimeType, typeOf<GenericUpdated>());
+    expect(captured.single.runtimeType, GenericUpdated);
     expect(
       (captured.single as GenericUpdated).genericData,
       expectedSettingsData,

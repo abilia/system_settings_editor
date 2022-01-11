@@ -7,7 +7,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     final _scrollController = ScrollController();
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final activity = state.activity;
         return ScrollArrows.vertical(

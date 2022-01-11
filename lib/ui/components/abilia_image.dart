@@ -137,7 +137,10 @@ class CheckedImageWithImagePopup extends StatelessWidget {
       key: TestKey.viewImage,
       onTap: () => activityDay.activity.hasImage
           ? _showImage(
-              activityDay.activity.fileId, activityDay.activity.icon, context)
+              activityDay.activity.fileId,
+              activityDay.activity.icon,
+              context,
+            )
           : null,
       child: ActivityImage(
         activityDay: activityDay,
@@ -147,7 +150,11 @@ class CheckedImageWithImagePopup extends StatelessWidget {
     );
   }
 
-  void _showImage(String fileId, String filePath, BuildContext context) async {
+  void _showImage(
+    String fileId,
+    String filePath,
+    BuildContext context,
+  ) async {
     await showViewDialog<bool>(
       useSafeArea: false,
       context: context,

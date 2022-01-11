@@ -94,6 +94,7 @@ class FakeSettingsBloc extends Fake implements SettingsBloc {
 class FakeUserFileCubit extends Fake implements UserFileCubit {
   @override
   Stream<UserFileState> get stream => const Stream.empty();
+
   @override
   Future<void> close() async {}
 }
@@ -148,7 +149,7 @@ class FakeLicenseBloc extends Fake implements LicenseBloc {
   Future<void> close() async {}
 }
 
-class FakeEditActivityBloc extends Fake implements EditActivityBloc {
+class FakeEditActivityCubit extends Fake implements EditActivityCubit {
   @override
   Stream<EditActivityState> get stream => const Stream.empty();
   @override
