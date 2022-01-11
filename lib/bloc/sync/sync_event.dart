@@ -5,6 +5,7 @@ abstract class SyncEvent {
 
   const SyncEvent([this.id]);
 
+  @override
   String toString() => '$runtimeType(${id ?? ''})';
 }
 
