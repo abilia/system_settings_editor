@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_bloc.dart';
+import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
 import 'package:seagull/ui/all.dart';
 
 class CheckableWiz extends StatelessWidget {
@@ -8,7 +8,7 @@ class CheckableWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) => WizardScaffold(
         iconData: AbiliaIcons.handiCheck,
         title: translate.checkable,
@@ -20,16 +20,18 @@ class CheckableWiz extends StatelessWidget {
               RadioField<bool?>(
                 key: TestKey.checkableRadio,
                 groupValue: state.activity.checkable,
-                onChanged: (value) => context.read<EditActivityBloc>().add(
-                    ReplaceActivity(state.activity.copyWith(checkable: value))),
+                onChanged: (value) => context
+                    .read<EditActivityCubit>()
+                    .replaceActivity(state.activity.copyWith(checkable: value)),
                 value: true,
                 text: Text(translate.checkable),
               ),
               SizedBox(height: 8.0.s),
               RadioField<bool?>(
                 groupValue: state.activity.checkable,
-                onChanged: (value) => context.read<EditActivityBloc>().add(
-                    ReplaceActivity(state.activity.copyWith(checkable: value))),
+                onChanged: (value) => context
+                    .read<EditActivityCubit>()
+                    .replaceActivity(state.activity.copyWith(checkable: value)),
                 value: false,
                 text: Text(translate.notCheckable),
               ),

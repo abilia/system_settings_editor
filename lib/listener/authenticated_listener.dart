@@ -18,6 +18,7 @@ class AuthenticatedListener extends StatefulWidget {
   }) : super(key: key);
 
   final Widget child;
+
   @override
   _AuthenticatedListenerState createState() => _AuthenticatedListenerState();
 }

@@ -8,7 +8,9 @@ class TimerWizardState extends Equatable {
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step == steps.length - 1;
+
   bool get isPastLastStep => step >= steps.length;
+
   bool get isBeforeFirstStep => step < 0;
 
   TimerWizardStep get currentStep => steps[step];

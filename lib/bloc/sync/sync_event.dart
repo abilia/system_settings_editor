@@ -2,7 +2,9 @@ part of 'sync_bloc.dart';
 
 abstract class SyncEvent {
   final String? id;
+
   const SyncEvent([this.id]);
+
   @override
   String toString() => '$runtimeType(${id ?? ''})';
 }

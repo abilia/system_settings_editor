@@ -13,7 +13,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
       iconData: AbiliaIcons.week,
       body: BlocProvider(
         create: (context) =>
-            RecurringWeekCubit(context.read<EditActivityBloc>()),
+            RecurringWeekCubit(context.read<EditActivityCubit>()),
         child: Column(
           children: [
             SizedBox(height: 24.s),
