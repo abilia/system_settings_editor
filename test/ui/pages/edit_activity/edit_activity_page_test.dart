@@ -1164,8 +1164,7 @@ text''';
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
-        expect(find.byType(SortableLibrary<ChecklistData>),
-            findsOneWidget);
+        expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
       });
