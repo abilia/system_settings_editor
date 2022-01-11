@@ -189,7 +189,7 @@ void main() {
   test('State contains temp files when UserFileNotLoaded when file is added',
       () async {
     // Arrange
-        File file = MemoryFileSystem().file(filePath);
+    File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
 
     final expectedStream = expectLater(

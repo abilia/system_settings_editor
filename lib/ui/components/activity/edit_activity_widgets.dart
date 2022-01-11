@@ -363,7 +363,7 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
-              final authProviders = copiedAuthProviders(context);
+                    final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(

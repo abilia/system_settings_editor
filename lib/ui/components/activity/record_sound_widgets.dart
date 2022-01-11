@@ -136,7 +136,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             );
                       }
                     : () async {
-              final authProviders = copiedAuthProviders(context);
+                        final authProviders = copiedAuthProviders(context);
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(

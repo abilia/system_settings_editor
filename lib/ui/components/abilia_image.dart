@@ -185,7 +185,7 @@ class PhotoCalendarImage extends StatelessWidget {
     final errorImage = errorContent ?? Image.memory(kTransparentImage);
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          return BlocBuilder<UserFileCubit, UserFileState>(
+      return BlocBuilder<UserFileCubit, UserFileState>(
           builder: (context, userFileState) {
         final file = userFileState.getLoadedByIdOrPath(
           fileId,
@@ -237,7 +237,7 @@ class FullScreenImage extends StatelessWidget {
       onTap: onTap,
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-            return BlocBuilder<UserFileCubit, UserFileState>(
+        return BlocBuilder<UserFileCubit, UserFileState>(
             builder: (context, userFileState) {
           final file = userFileState.getLoadedByIdOrPath(
             fileId,

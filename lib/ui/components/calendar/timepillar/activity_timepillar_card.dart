@@ -50,7 +50,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final right = TimepillarSide.right == timepillarSide;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-      previous.dotsInTimepillar != current.dotsInTimepillar ||
+          previous.dotsInTimepillar != current.dotsInTimepillar ||
           previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settings) {
         final decoration = getCategoryBoxDecoration(
