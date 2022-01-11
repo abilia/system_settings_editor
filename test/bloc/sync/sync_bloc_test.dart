@@ -109,6 +109,7 @@ void main() {
 
   group('Failed cases', () {
     final retryDelay = 10.milliseconds();
+    final betweenSync = 5.milliseconds();
     late List<bool> failThenSucceed;
     setUp(() => failThenSucceed = [false, true]);
 
@@ -123,7 +124,7 @@ void main() {
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
           retryDelay: retryDelay,
-          betweenSync: Duration.zero,
+          betweenSync: betweenSync,
         ),
       ),
       act: (bloc) => bloc.add(const ActivitySaved()),
@@ -142,7 +143,7 @@ void main() {
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
           retryDelay: retryDelay,
-          betweenSync: Duration.zero,
+          betweenSync: betweenSync,
         ),
       ),
       act: (bloc) => bloc.add(const FileSaved()),
@@ -161,7 +162,7 @@ void main() {
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
           retryDelay: retryDelay,
-          betweenSync: Duration.zero,
+          betweenSync: betweenSync,
         ),
       ),
       act: (bloc) => bloc.add(const SortableSaved()),
@@ -180,7 +181,7 @@ void main() {
         genericRepository: genericRepository,
         syncDelay: SyncDelays(
           retryDelay: retryDelay,
-          betweenSync: Duration.zero,
+          betweenSync: betweenSync,
         ),
       ),
       act: (bloc) => bloc.add(const GenericSaved()),
