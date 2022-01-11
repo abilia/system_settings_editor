@@ -101,7 +101,7 @@ noActivities	No activities today	Inga aktiviteter idag	Ingen aktiviteter i dag	G
 left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
-uncheck	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
+undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
 fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
 basicActivities	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
@@ -123,6 +123,7 @@ start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
+enterNameForTimer	Enter name for timer	Ange namn för timer					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -136,6 +137,7 @@ ok	OK	OK	OK	OK	OK	OK	OK
 record	Record	Spela in	Indspil	Opnemen	Nauhoita	Aufnahme	Spill inn
 							
 ### Edit activity							
+newActivityButton	New	Ny	Ny	Nieuw	Uusi	Neu	Ny
 newActivityChoice	New	Helt ny	Helt ny	Nieuw	Uusi	Neu	Helt ny
 newActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuw activiteit	Uusi aktiviteettia	Neu Aktivität	Ny aktivitet
 editActivity	Edit activity	Ändra aktivitet	Ændre aktivitet	Activiteit bewerken	Muokkaa aktiviteettia	Aktivität bearbeiten	Endre aktivitet
@@ -195,11 +197,12 @@ alarmOnlyAtStartTime	Alarm only at Start time	Larm endast vid starttid	Kun alarm
 alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Alla larm kommer att inaktiveras fram till midnatt på den här enheten	Alle alarmer vill være deaktivert til midnatt på denne enheten	Alle alarmen worden tot middernacht uitgeschakeld op dit toestel	Kaikki tämän laitteen hälytykset poistetaan käytöstä keskiyöhön asti	Alle Alarme auf diesem Gerät werden bis Mitternacht deaktiviert	Alle alarmer deaktiveres indtil midat på denne enhed
 							
 ### Select picture							
-selectPicture	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
-removePicture	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
+selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
+removeImage	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
-uploadImage	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat 	Bilder des Geräts	Enhetens bilder 
+devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat 	Bilder des Geräts	Enhetens bilder 
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
+mobilePictures	Mobile pictures	Mobilbilder	Telefonbilleder	Telefoonafbeeldingen	Matkapuhelimen kuvat	Mobilgerät Bilder	Mobilbilder
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
 							
 ### Recurrence							
@@ -249,7 +252,7 @@ connected	Connected	Ansluten	Tilsluttet	Verbonden	Yhdistetty	Verbunden	Tilkoblet
 screenTimeout	Screen timeout	Skärmens tidsgräns	Skærmens tidsgrænse	Timeout scherm	Näytön pimennys	Bildschirm Zeitüberschreitung	Skjermens tidsgrense
 alwaysOn	Always on	Alltid på	Altid på	Altijd aan	Aina käytössä	Immer ein	Alltid på
 keepScreenAwakeWhileCharging	Keep screen awake when charging	Håll skärmen tänd vid laddning	Lad skærmen være tændt under opladning	Houd scherm wakker tijdens opladen	Pidä näyttö päällä latauksen aikana	Bildschirm während Aufladen aktiv lassen	Hold skjermen på ved lading
-
+							
 ### Settings							
 settings	Settings	Inställningar	Indstillinger	Instellingen	Asetukset	Einstellungen	Innstillinger
 calendarView	Day Calendar	Dagkalender	Dagkalender	Dagkalender	Päiväkalenteri	Tageskalender	Dagkalender
@@ -318,7 +321,6 @@ androidSettings	Android Settings	Android-inställningar	Android-indstillinger	An
 stepByStep	Step-by-step	Stegvis	Trinvist	Stap voor stap	Vaihe vaiheelta	Schritt für Schritt	Via sekvens
 showBasicActivities	Show basic activities	Visa basaktiviteter	Vis standardaktiviteter	Toon standaardactiviteiten	Näytä perusaktiviteetit	Standardaktivitäten anzeigen	Vis liste med standardaktiviteter
 selectName	Select name	Välj namn	Vælg navn	Naam selecteren	Valitse nimi	Name auswählen	Velg navn
-selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
 selectDate	Select date	Välj datum	Vælg dato	Datum selecteren	Valitse päivämäärä	Datum auswählen	Velg dato
 selectType	Select type	Välj typ	Vælg type	Type selecteren	Valitse tyyppi	Typ auswählen	Velg type
 selectCheckable	Select checkable	Välj kvitterbar	Vælg kvittering	Afvinkbaarheid selecteren	Valitse tarkistettava	Kontrollierbar auswählen	Velg kvittering

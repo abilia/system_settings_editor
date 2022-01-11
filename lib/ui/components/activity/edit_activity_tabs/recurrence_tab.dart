@@ -103,7 +103,8 @@ class Weekly extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RecurringWeekBloc(context.read<EditActivityCubit>()),
+      create: (context) =>
+          RecurringWeekCubit(context.read<EditActivityCubit>()),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -140,7 +141,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+    return BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
       buildWhen: (previous, current) =>
           previous.everyOtherWeek != current.everyOtherWeek,
       builder: (context, state) => SwitchField(
@@ -150,7 +151,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
         ),
         value: state.everyOtherWeek,
         onChanged: (v) =>
-            context.read<RecurringWeekBloc>().add(ChangeEveryOtherWeek(v)),
+            context.read<RecurringWeekCubit>().changeEveryOtherWeek(v),
         child: Text(
           Translator.of(context).translate.everyOtherWeek,
         ),

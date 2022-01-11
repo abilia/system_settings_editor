@@ -7,14 +7,13 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'recurring_week_event.dart';
 part 'recurring_week_state.dart';
 
-class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
+class RecurringWeekCubit extends Cubit<RecurringWeekState> {
   late final StreamSubscription _editActivityCubitSubscription,
       _selfSubscription;
 
-  RecurringWeekBloc(EditActivityCubit editActivityCubit)
+  RecurringWeekCubit(EditActivityCubit editActivityCubit)
       : super(RecurringWeekState.initial(editActivityCubit.state)) {
     _editActivityCubitSubscription =
         editActivityCubit.stream.listen((editActivityState) {
@@ -22,10 +21,10 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
       final endDate = editActivityState.activity.recurs.end;
       if (editActivityState.activity.recurs.weekly) {
         if (startDate != state.startDate) {
-          add(ChangeStartDate(startDate));
+          emit(state.copyWith(startDate: startDate));
         }
         if (endDate != state.endDate) {
-          add(ChangeEndDate(endDate));
+          emit(state.copyWith(endDate: endDate));
         }
       }
     });
@@ -39,30 +38,19 @@ class RecurringWeekBloc extends Bloc<RecurringWeekEvent, RecurringWeekState> {
     });
   }
 
-  @override
-  Stream<RecurringWeekState> mapEventToState(
-    RecurringWeekEvent event,
-  ) async* {
-    if (event is ChangeEveryOtherWeek) {
-      yield state.copyWith(everyOtherWeek: event.everyOtherWeek);
+  void changeEveryOtherWeek(final bool everyOtherWeek) =>
+      emit(state.copyWith(everyOtherWeek: everyOtherWeek));
+
+  void addOrRemoveWeekday(final int day) {
+    final weekdays = state.weekdays.toSet();
+    if (!weekdays.remove(day)) {
+      weekdays.add(day);
     }
-    if (event is ChangeStartDate) {
-      yield state.copyWith(startDate: event.startDate);
-    }
-    if (event is ChangeEndDate) {
-      yield state.copyWith(endDate: event.endDate);
-    }
-    if (event is AddOrRemoveWeekday) {
-      final weekdays = state.weekdays.toSet();
-      if (!weekdays.remove(event.day)) {
-        weekdays.add(event.day);
-      }
-      yield state.copyWith(weekdays: weekdays);
-    }
-    if (event is SelectWeekdays) {
-      yield state.copyWith(weekdays: event.days);
-    }
+    emit(state.copyWith(weekdays: weekdays));
   }
+
+  selectWeekdays([final Set<int> days = const {}]) =>
+      emit(state.copyWith(weekdays: days));
 
   @override
   Future<void> close() async {

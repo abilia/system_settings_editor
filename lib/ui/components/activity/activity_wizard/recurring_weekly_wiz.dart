@@ -13,7 +13,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
       iconData: AbiliaIcons.week,
       body: BlocProvider(
         create: (context) =>
-            RecurringWeekBloc(context.read<EditActivityCubit>()),
+            RecurringWeekCubit(context.read<EditActivityCubit>()),
         child: Column(
           children: [
             SizedBox(height: 24.s),
@@ -55,7 +55,7 @@ class SelectAllWeekdaysButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+    return BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
       buildWhen: (previous, current) => previous.weekdays != current.weekdays,
       builder: (context, state) => state.containsAllWeekdays
           ? IconAndTextButton(
@@ -63,15 +63,15 @@ class SelectAllWeekdaysButton extends StatelessWidget {
               icon: AbiliaIcons.cancel,
               style: actionButtonStyleDark,
               onPressed: () =>
-                  context.read<RecurringWeekBloc>().add(const SelectWeekdays()),
+                  context.read<RecurringWeekCubit>().selectWeekdays(),
             )
           : IconAndTextButton(
               text: Translator.of(context).translate.selectAll,
               icon: AbiliaIcons.radiocheckboxSelected,
               style: actionButtonStyleDark,
               onPressed: () => context
-                  .read<RecurringWeekBloc>()
-                  .add(const SelectWeekdays(RecurringWeekState.allWeekdays)),
+                  .read<RecurringWeekCubit>()
+                  .selectWeekdays(RecurringWeekState.allWeekdays),
             ),
     );
   }

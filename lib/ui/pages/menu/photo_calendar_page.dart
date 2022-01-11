@@ -60,7 +60,7 @@ class PhotoCalendarPage extends StatelessWidget {
                         Positioned(
                           bottom: 12.s,
                           right: 12.s,
-                          child: ActionButton(
+                          child: IconActionButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);

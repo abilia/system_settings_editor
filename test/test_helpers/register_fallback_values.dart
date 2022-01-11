@@ -21,12 +21,11 @@ void registerFallbackValues() {
   registerFallbackValue(const NotificationDetails());
   registerFallbackValue(const PushEvent(''));
   registerFallbackValue(PushReady());
-  registerFallbackValue(SyncEvent.activitySaved);
-  registerFallbackValue(const SyncDone());
+  registerFallbackValue(const ActivitySaved());
+  registerFallbackValue('');
   registerFallbackValue(ActivitiesNotLoaded());
   registerFallbackValue(LoadActivities());
   registerFallbackValue(const UserFilesNotLoaded());
-  registerFallbackValue(LoadUserFiles());
   registerFallbackValue(Duration.zero);
   registerFallbackValue(Curves.ease);
   registerFallbackValue(GenericsNotLoaded());

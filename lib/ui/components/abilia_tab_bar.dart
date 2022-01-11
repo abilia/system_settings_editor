@@ -15,7 +15,7 @@ class TabItem extends StatelessWidget {
         child: Column(
           children: [
             Text(text),
-            SizedBox(height: layout.tabBar.item.spacing),
+            SizedBox(height: layout.actionButton.spacing),
             Icon(iconData),
           ],
         ),
@@ -291,7 +291,7 @@ class _AnimatedTab extends AnimatedWidget {
             begin: selectedDecoration,
             end: notSelectedBorder,
           ).lerp(selectedValue),
-          height: layout.tabBar.item.heigth,
+          height: layout.actionButton.size,
           padding: padding,
           child: Ink(
             decoration: DecorationTween(
@@ -313,11 +313,7 @@ class _AnimatedTab extends AnimatedWidget {
                 child: collapsedValue == 0.0
                     ? null
                     : Padding(
-                        padding: EdgeInsets.only(
-                          left: layout.tabBar.item.horizontalPadding,
-                          top: layout.tabBar.item.topPadding,
-                          right: layout.tabBar.item.horizontalPadding,
-                        ),
+                  padding: layout.actionButton.withTextPadding,
                         child: DefaultTextStyle(
                           maxLines: 1,
                           overflow: TextOverflow.clip,

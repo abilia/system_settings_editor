@@ -17,8 +17,9 @@ class BasicActivityPickerPage extends StatelessWidget {
         return Scaffold(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.basicActivity,
-            title: state.allById[state.currentFolderId]?.data.title() ??
-                translate.basicActivities,
+            title:
+                state.allById[state.currentFolderId]?.data.title(translate) ??
+                    translate.basicActivities,
           ),
           body: SortableLibrary<BasicActivityData>(
             (Sortable<BasicActivityData> s) =>
@@ -64,7 +65,7 @@ class BasicActivityLibraryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final basicActivityData = sortable.data;
     final imageId = basicActivityData.fileId;
-    final name = basicActivityData.title();
+    final name = basicActivityData.title(Translator.of(context).translate);
     final iconPath = basicActivityData.icon;
 
     return BlocBuilder<SortableArchiveBloc<BasicActivityData>,

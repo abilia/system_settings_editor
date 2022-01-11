@@ -13,7 +13,7 @@ class _EyeButton extends StatelessWidget {
       elevation: 3,
       shadowColor: AbiliaColors.black,
       borderRadius: borderRadius,
-      child: ActionButtonBlack(
+      child: IconActionButtonBlack(
         onPressed: onPressed,
         child: const Icon(AbiliaIcons.show),
       ),
@@ -81,7 +81,8 @@ class EyeButtonMonth extends StatelessWidget {
           final monthCalendarType = await showViewDialog<MonthCalendarType?>(
             context: context,
             builder: (context) => EyeButtonMonthDialog(
-                currentCalendarType: memoSettingsState.monthCalendarType),
+              currentCalendarType: memoSettingsState.monthCalendarType,
+            ),
           );
           if (monthCalendarType != null) {
             context.read<GenericBloc>().add(

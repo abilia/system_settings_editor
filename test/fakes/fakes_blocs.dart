@@ -13,7 +13,7 @@ class FakePushBloc extends Fake implements PushBloc {
 
 class FakeSyncBloc extends Fake implements SyncBloc {
   @override
-  Stream<SyncState> get stream => const Stream.empty();
+  Stream<dynamic> get stream => const Stream.empty();
   @override
   void add(SyncEvent event) {}
   @override
@@ -91,9 +91,10 @@ class FakeSettingsBloc extends Fake implements SettingsBloc {
   Stream<SettingsState> get stream => const Stream.empty();
 }
 
-class FakeUserFileBloc extends Fake implements UserFileBloc {
+class FakeUserFileCubit extends Fake implements UserFileCubit {
   @override
   Stream<UserFileState> get stream => const Stream.empty();
+
   @override
   Future<void> close() async {}
 }

@@ -22,7 +22,7 @@ class PlaySoundButton extends StatelessWidget {
               previous.currentSound != current.currentSound),
       builder: (context, state) {
         final isPlaying = state is SoundPlaying && state.currentSound == sound;
-        return ActionButton(
+        return IconActionButton(
           style: buttonStyle ?? actionButtonStyleDark,
           onPressed: isPlaying
               ? context.read<SoundCubit>().stopSound

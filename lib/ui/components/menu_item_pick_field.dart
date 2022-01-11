@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MenuItemPickField extends StatelessWidget {
   final IconData icon;
@@ -13,17 +14,21 @@ class MenuItemPickField extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => PickField(
-        leading: Icon(icon),
-        text: Text(text),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
-              child: navigateTo,
-            ),
-            settings: RouteSettings(name: text),
+  Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
+    return PickField(
+      leading: Icon(icon),
+      text: Text(text),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: authProviders,
+            child: navigateTo,
           ),
+          settings: RouteSettings(name: text),
         ),
-      );
+      ),
+    );
+  }
 }

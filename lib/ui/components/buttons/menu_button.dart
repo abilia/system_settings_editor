@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
@@ -8,23 +9,26 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return BlocSelector<PermissionBloc, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            ActionButtonLight(
+            TextAndOrIconActionButtonLight(
+              Translator.of(context).translate.menu,
+              AbiliaIcons.appMenu,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
                     child: const MenuPage(),
                   ),
                   settings: const RouteSettings(name: 'MenuPage'),
                 ),
               ),
-              child: const Icon(AbiliaIcons.appMenu),
             ),
             if (importantPermissionMissing)
               Positioned(

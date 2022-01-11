@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   final bool showNote, showChecklist;
@@ -99,11 +100,12 @@ class EditChecklistWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final selectedChecklist =
                     await Navigator.of(context).push<Checklist>(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const ChecklistLibraryPage(),
                     ),
                   ),
@@ -188,11 +190,14 @@ class EditChecklistWidget extends StatelessWidget {
   }
 
   void _handleEditQuestionResult(
-      final Question oldQuestion, BuildContext context) async {
+    final Question oldQuestion,
+    BuildContext context,
+  ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: EditQuestionPage(
             question: oldQuestion,
           ),
@@ -225,10 +230,11 @@ class EditChecklistWidget extends StatelessWidget {
   }
 
   void _handleNewQuestion(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: const EditQuestionPage(),
         ),
       ),
@@ -285,10 +291,11 @@ class EditNoteWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final result = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const NoteLibraryPage(),
                     ),
                   ),
@@ -332,10 +339,11 @@ class EditNoteWidget extends StatelessWidget {
     Activity activity,
     NoteInfoItem infoItem,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<String>(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => CopiedAuthProviders(
-          blocContext: context,
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: authProviders,
           child: EditNotePage(text: infoItem.text),
         ),
         settings: const RouteSettings(name: 'EditNotePage'),
@@ -366,7 +374,7 @@ class _LibraryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
-      child: ActionButtonDark(
+      child: IconActionButtonDark(
         onPressed: onPressed,
         child: Icon(
           AbiliaIcons.showText,

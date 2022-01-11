@@ -160,6 +160,7 @@ class TimeIntervallPicker extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final translator = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => Row(
@@ -178,8 +179,8 @@ class TimeIntervallPicker extends StatelessWidget {
                 final newTimeInterval =
                     await Navigator.of(context).push<TimeInput>(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: TimeInputPage(
                         timeInput: TimeInput(
                             timeInterval.startTime,

@@ -23,7 +23,7 @@ class SelectPicturePage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: translate.selectPicture,
+        title: translate.selectImage,
       ),
       body: SelectPictureBody(
         imageCallback: (selectedImage) async {
@@ -84,7 +84,7 @@ class SelectPictureBody extends StatelessWidget {
                             color: AbiliaColors.white,
                             size: layout.iconSize.small,
                           ),
-                          text: translate.removePicture,
+                          text: translate.removeImage,
                         ),
                       ],
                     ),
@@ -100,11 +100,12 @@ class SelectPictureBody extends StatelessWidget {
                     leading: const Icon(AbiliaIcons.folder),
                     text: Text(translate.imageArchive),
                     onTap: () async {
+                      final authProviders = copiedAuthProviders(context);
                       final selectedImage =
                           await Navigator.of(context).push<AbiliaFile>(
                         MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
+                          builder: (_) => MultiBlocProvider(
+                            providers: authProviders,
                             child: ImageArchivePage(onCancel: onCancel),
                           ),
                         ),
@@ -126,11 +127,13 @@ class SelectPictureBody extends StatelessWidget {
                       text: Text(translate.myPhotos),
                       onTap: (myPhotoFolder != null)
                           ? () async {
+                              final authProviders =
+                                  copiedAuthProviders(context);
                               final selectedImage =
                                   await Navigator.of(context).push<AbiliaFile>(
                                 MaterialPageRoute(
-                                  builder: (_) => CopiedAuthProviders(
-                                    blocContext: context,
+                                  builder: (_) => MultiBlocProvider(
+                                    providers: authProviders,
                                     child: ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder: myPhotoFolder.id,
@@ -149,7 +152,7 @@ class SelectPictureBody extends StatelessWidget {
                   SizedBox(height: 8.0.s),
                   if (Config.isMPGO && state.displayPhotos) ...[
                     ImageSourceWidget(
-                      text: translate.uploadImage,
+                      text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,
                       permission: Permission.photos,
                       imageCallback: imageCallback,
@@ -214,8 +217,9 @@ class ImageSourceWidget extends StatelessWidget {
                   onTap: () => showViewDialog(
                     useSafeArea: false,
                     context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: permission),
+                    builder: (context) => PermissionInfoDialog(
+                      permission: permission,
+                    ),
                   ),
                 ),
               )

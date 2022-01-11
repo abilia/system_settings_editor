@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
   final Activity activity;
@@ -23,7 +24,7 @@ class RecordSoundWidget extends StatelessWidget {
         return BlocProvider<SoundCubit>(
           create: (context) => SoundCubit(
             storage: GetIt.I<FileStorage>(),
-            userFileBloc: context.read<UserFileBloc>(),
+            userFileCubit: context.read<UserFileCubit>(),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,11 +136,12 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             );
                       }
                     : () async {
+              final authProviders = copiedAuthProviders(context);
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
-                            builder: (_) => CopiedAuthProviders(
-                              blocContext: context,
+                            builder: (_) => MultiBlocProvider(
+                              providers: authProviders,
                               child: MultiBlocProvider(
                                 providers: [
                                   BlocProvider.value(
@@ -159,7 +161,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                           ),
                         );
                         if (result is UnstoredAbiliaFile) {
-                          context.read<UserFileBloc>().add(FileAdded(result));
+                          context.read<UserFileCubit>().fileAdded(result);
                         }
                         if (result != null) {
                           onResult.call(result);
@@ -168,7 +170,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
           ),
         ),
         if (recordedAudio.isNotEmpty)
-          BlocBuilder<UserFileBloc, UserFileState>(
+          BlocBuilder<UserFileCubit, UserFileState>(
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.only(left: 12.s),
@@ -382,7 +384,7 @@ class DeleteButton extends StatelessWidget {
   const DeleteButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ActionButtonDark(
+  Widget build(BuildContext context) => IconActionButtonDark(
         onPressed: () => context.read<RecordSoundCubit>().deleteRecording(),
         child: const Icon(AbiliaIcons.deleteAllClear),
       );

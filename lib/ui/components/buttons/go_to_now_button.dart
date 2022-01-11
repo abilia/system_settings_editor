@@ -41,7 +41,7 @@ class GoToCurrentActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionButton(
+    return IconActionButton(
       style: actionButtonStyleRed,
       onPressed: onPressed,
       child: const Icon(AbiliaIcons.reset),

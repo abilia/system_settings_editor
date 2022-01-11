@@ -30,8 +30,8 @@ void main() {
   Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<UserFileBloc>(
-              create: (context) => UserFileBloc(
+            BlocProvider<UserFileCubit>(
+              create: (context) => UserFileCubit(
                 fileStorage: FakeFileStorage(),
                 pushBloc: FakePushBloc(),
                 syncBloc: FakeSyncBloc(),

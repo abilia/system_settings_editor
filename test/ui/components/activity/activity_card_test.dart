@@ -38,8 +38,8 @@ void main() {
                 providers: [
                   BlocProvider<AuthenticationBloc>(
                       create: (context) => FakeAuthenticationBloc()),
-                  BlocProvider<UserFileBloc>(
-                    create: (context) => UserFileBloc(
+                  BlocProvider<UserFileCubit>(
+                    create: (context) => UserFileCubit(
                       fileStorage: FakeFileStorage(),
                       pushBloc: FakePushBloc(),
                       syncBloc: FakeSyncBloc(),

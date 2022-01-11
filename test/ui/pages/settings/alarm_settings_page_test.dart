@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -47,7 +46,6 @@ void main() {
         )
         ..client = Fakes.client(genericResponse: () => generics)
         ..database = FakeDatabase()
-        ..syncDelay = SyncDelays.zero
         ..genericDb = genericDb
         ..battery = FakeBattery()
         ..init();

@@ -12,7 +12,7 @@ class PlayAlarmSoundButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AlarmSoundCubit, Sound?>(
-      builder: (context, state) => ActionButton(
+      builder: (context, state) => IconActionButton(
         style: actionButtonStyleDark,
         onPressed: sound == Sound.NoSound
             ? null

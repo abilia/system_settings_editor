@@ -53,7 +53,7 @@ class _ImportPictureBody extends StatelessWidget {
                 children: [
                   if (state.displayPhotos) ...[
                     ImageSourceWidget(
-                      text: translate.uploadImage,
+                      text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,
                       permission: Permission.photos,
                       imageCallback: imageCallback,

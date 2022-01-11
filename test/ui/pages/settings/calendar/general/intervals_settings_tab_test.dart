@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
@@ -43,7 +42,6 @@ void main() {
       )
       ..client = Fakes.client(genericResponse: () => generics)
       ..database = FakeDatabase()
-      ..syncDelay = SyncDelays.zero
       ..genericDb = genericDb
       ..battery = FakeBattery()
       ..init();
@@ -122,13 +120,13 @@ void main() {
       await tester.stepRight(DayPart.evening, times: 2);
       await tester.stepRight(DayPart.night);
 
-      final morningRight = tester.widget<ActionButtonDark>(
+      final morningRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.morning)));
-      final dayRight = tester.widget<ActionButtonDark>(
+      final dayRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.day)));
-      final eveningRight = tester.widget<ActionButtonDark>(
+      final eveningRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.evening)));
-      final nightRight = tester.widget<ActionButtonDark>(
+      final nightRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.rightStepKey(DayPart.night)));
 
       expect(morningRight.onPressed, isNull);
@@ -159,13 +157,13 @@ void main() {
       await tester.stepLeft(DayPart.evening, times: 2);
       await tester.stepLeft(DayPart.night, times: 4);
 
-      final morningRight = tester.widget<ActionButtonDark>(
+      final morningRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.morning)));
-      final dayRight = tester.widget<ActionButtonDark>(
+      final dayRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.day)));
-      final eveningRight = tester.widget<ActionButtonDark>(
+      final eveningRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.evening)));
-      final nightRight = tester.widget<ActionButtonDark>(
+      final nightRight = tester.widget<IconActionButtonDark>(
           find.byKey(IntervalStepper.leftStepKey(DayPart.night)));
 
       expect(morningRight.onPressed, isNull);

@@ -111,11 +111,12 @@ TextSpan buildSettingsLinkTextSpan(BuildContext context) => TextSpan(
               .copyWith(decoration: TextDecoration.underline),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
+              final authProviders = copiedAuthProviders(context);
               Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => CopiedAuthProviders(
-                    blocContext: context,
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
                     child: const PermissionsPage(),
                   ),
                   settings: const RouteSettings(name: 'PermissionPage'),

@@ -106,7 +106,7 @@ void main() {
                       ),
               ),
               BlocProvider<SortableBloc>(create: (_) => FakeSortableBloc()),
-              BlocProvider<UserFileBloc>(create: (_) => FakeUserFileBloc()),
+              BlocProvider<UserFileCubit>(create: (_) => FakeUserFileCubit()),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),

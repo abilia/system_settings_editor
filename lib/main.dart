@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,9 +8,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:seagull/firebase_options.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/analytics/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -42,9 +43,7 @@ Future<String> initServices() async {
   if (Config.isMP) {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
-  await Firebase.initializeApp();
-  FirebaseMessaging.instance
-      .isAutoInitEnabled; // Dummy call to make the FirebaseMessaging instance connection initiated. No push will arrive otherwise. Will try to find another way.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
@@ -68,6 +67,7 @@ Future<String> initServices() async {
     ..database = await DatabaseRepository.createSqfliteDb()
     ..flutterTts = await flutterTts()
     ..packageInfo = await PackageInfo.fromPlatform()
+    ..syncDelay = const SyncDelays()
     ..init();
 
   return await baseUrlDb.initialize();
@@ -114,7 +114,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) => TopLevelBlocsProvider(
         pushBloc: pushBloc,
         baseUrl: baseUrl,
-        child: TopLevelListeners(
+    child: TopLevelListener(
           navigatorKey: _navigatorKey,
           payload: payload,
           child: SeagullApp(

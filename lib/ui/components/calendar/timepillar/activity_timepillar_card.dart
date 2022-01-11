@@ -33,6 +33,7 @@ class ActivityTimepillarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
     final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
@@ -49,7 +50,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final right = TimepillarSide.right == timepillarSide;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.dotsInTimepillar != current.dotsInTimepillar ||
+      previous.dotsInTimepillar != current.dotsInTimepillar ||
           previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settings) {
         final decoration = getCategoryBoxDecoration(
@@ -94,8 +95,8 @@ class ActivityTimepillarCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
                           child: ActivityPage(activityDay: activityOccasion),
                         ),
                         settings: RouteSettings(

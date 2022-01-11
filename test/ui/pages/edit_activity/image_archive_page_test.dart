@@ -81,8 +81,8 @@ void main() {
               BlocProvider<SortableBloc>.value(
                 value: mockSortableBloc,
               ),
-              BlocProvider<UserFileBloc>(
-                create: (context) => UserFileBloc(
+              BlocProvider<UserFileCubit>(
+                create: (context) => UserFileCubit(
                   fileStorage: FakeFileStorage(),
                   pushBloc: FakePushBloc(),
                   syncBloc: FakeSyncBloc(),
@@ -272,6 +272,32 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ImageArchivePage), findsOneWidget);
       expect(find.text(testHeader), findsOneWidget);
+    });
+
+    testWidgets('mobilePicture gets correct folder title',
+        (WidgetTester tester) async {
+      when(() => mockSortableBloc.state).thenAnswer(
+        (_) => SortablesLoaded(
+          sortables: [
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(
+                name: "some name we don't care about",
+                upload: true,
+              ),
+            ),
+          ],
+        ),
+      );
+      await tester.pumpWidget(wrapWithMaterialApp(const ImageArchivePage()));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+            of: find.byType(LibraryFolder),
+            matching: find.text(translate.mobilePictures)),
+        findsOneWidget,
+      );
     });
 
     testWidgets(

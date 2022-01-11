@@ -48,6 +48,7 @@ class NameAndPictureWidget extends StatelessWidget {
   final String text;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
+  final String? inputHeadingForNameField;
 
   const NameAndPictureWidget({
     Key? key,
@@ -58,6 +59,7 @@ class NameAndPictureWidget extends StatelessWidget {
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
     required this.text,
+    this.inputHeadingForNameField,
   }) : super(key: key);
 
   @override
@@ -80,6 +82,7 @@ class NameAndPictureWidget extends StatelessWidget {
               errorState: errorState,
               maxLines: maxLines,
               inputFormatters: inputFormatters,
+              inputHeading: inputHeadingForNameField,
             ),
           ),
         ],
@@ -122,10 +125,11 @@ class SelectPictureWidget extends StatelessWidget {
   }
 
   void imageClick(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: SelectPicturePage(
             selectedImage: selectedImage,
           ),
@@ -135,8 +139,9 @@ class SelectPictureWidget extends StatelessWidget {
 
     if (newSelectedImage != null) {
       if (newSelectedImage is UnstoredAbiliaFile) {
-        BlocProvider.of<UserFileBloc>(context).add(
-          ImageAdded(newSelectedImage),
+        BlocProvider.of<UserFileCubit>(context).fileAdded(
+          newSelectedImage,
+          image: true,
         );
         BlocProvider.of<SortableBloc>(context).add(
           ImageArchiveImageAdded(
@@ -206,6 +211,7 @@ class NameInput extends StatelessWidget {
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
+    this.inputHeading,
   }) : super(key: key);
 
   final String text;
@@ -213,6 +219,7 @@ class NameInput extends StatelessWidget {
   final bool errorState;
   final int maxLines;
   final List<TextInputFormatter> inputFormatters;
+  final String? inputHeading;
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +230,7 @@ class NameInput extends StatelessWidget {
       errorState: errorState,
       icon: AbiliaIcons.edit,
       heading: Translator.of(context).translate.name,
-      inputHeading: Translator.of(context).translate.name,
+      inputHeading: inputHeading ?? Translator.of(context).translate.name,
       textCapitalization: TextCapitalization.sentences,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
@@ -356,10 +363,11 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
+              final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
-                      builder: (_) => CopiedAuthProviders(
-                        blocContext: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
                         child: SelectAlarmTypePage(
                           alarm: alarm.typeSeagull,
                         ),
@@ -658,7 +666,7 @@ class WeekDays extends StatelessWidget {
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
           .copyWith(height: 1.5.s),
-      child: BlocBuilder<RecurringWeekBloc, RecurringWeekState>(
+      child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
         builder: (context, state) => Wrap(
           spacing: 14.s,
@@ -668,9 +676,8 @@ class WeekDays extends StatelessWidget {
               (d) => SelectableField(
                 text: Text(translate.shortWeekday(d)),
                 selected: state.weekdays.contains(d),
-                onTap: () => context
-                    .read<RecurringWeekBloc>()
-                    .add(AddOrRemoveWeekday(d)),
+                onTap: () =>
+                    context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
               ),
             ),
           ],
