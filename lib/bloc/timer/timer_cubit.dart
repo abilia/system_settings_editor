@@ -7,7 +7,6 @@ part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   final TimerDb timerDb;
-
   TimerCubit({
     required this.timerDb,
   }) : super(const TimerState(timers: []));

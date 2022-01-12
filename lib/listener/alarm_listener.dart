@@ -9,7 +9,6 @@ import 'package:seagull/utils/all.dart';
 
 class AlarmListener extends StatelessWidget {
   final Widget child;
-
   const AlarmListener({Key? key, required this.child}) : super(key: key);
 
   @override
