@@ -245,6 +245,34 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
   }),
 );
 
+final actionButtonStyleLightSelected = _actionButtonStyle.copyWith(
+  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.transparentWhite40;
+      }
+      return AbiliaColors.white;
+    },
+  ),
+  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.transparentBlack40;
+      }
+      return AbiliaColors.black;
+    },
+  ),
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    return noBorderShape;
+  }),
+);
+
 final _textActionButtonStyle = ButtonStyle(
   textStyle:
       MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
@@ -255,6 +283,9 @@ final _textActionButtonStyle = ButtonStyle(
 
 final textActionButtonStyleLight =
     _textActionButtonStyle.merge(actionButtonStyleLight);
+
+final textActionButtonStyleLightSelected =
+    _textActionButtonStyle.merge(actionButtonStyleLightSelected);
 
 final secondaryActionButtonStyleLight = actionButtonStyleLight.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {

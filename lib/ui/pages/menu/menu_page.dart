@@ -41,9 +41,6 @@ class MenuPage extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: CloseButton(),
-      ),
     );
   }
 }

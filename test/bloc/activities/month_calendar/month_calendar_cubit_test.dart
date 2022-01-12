@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,7 +13,7 @@ import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late MonthCalendarBloc monthCalendarBloc;
+  late MonthCalendarCubit monthCalendarCubit;
   late ActivitiesBloc activitiesBloc;
   late ActivityRepository mockActivityRepository;
 
@@ -39,25 +40,25 @@ void main() {
     });
     test('initial state basics', () {
       // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
       // Assert
       expect(
-        monthCalendarBloc.state.firstDay,
+        monthCalendarCubit.state.firstDay,
         DateTime(2021, 03, 01),
       );
-      expect(monthCalendarBloc.state.occasion, Occasion.current);
-      expect(monthCalendarBloc.state.weeks.length, 6);
+      expect(monthCalendarCubit.state.occasion, Occasion.current);
+      expect(monthCalendarCubit.state.weeks.length, 6);
     });
 
     test('initial state', () {
       // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Asserts
       expect(
-        monthCalendarBloc.state,
+        monthCalendarCubit.state,
         _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 03, 01),
           occasion: Occasion.current,
@@ -154,12 +155,12 @@ void main() {
 
     test('next month, basic', () async {
       // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Act
-      monthCalendarBloc.add(GoToNextMonth());
-      final state = await monthCalendarBloc.stream.first;
+      monthCalendarCubit.goToNextMonth();
+      final state = monthCalendarCubit.state;
 
       // Assert
       expect(
@@ -170,19 +171,14 @@ void main() {
       expect(state.occasion, Occasion.future);
     });
 
-    test('next month', () {
-      // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
-
-      // Act
-      monthCalendarBloc.add(GoToNextMonth());
-
-      // Assert
-      expectLater(
-        monthCalendarBloc.stream,
-        emits(
-          _MonthCalendarStateMatcher(MonthCalendarState(
+    blocTest<MonthCalendarCubit, MonthCalendarState>(
+      'next month',
+      build: () => MonthCalendarCubit(
+          activitiesBloc: activitiesBloc, clockBloc: clockBloc),
+      act: (bloc) => bloc.goToNextMonth(),
+      expect: () => [
+        _MonthCalendarStateMatcher(
+          MonthCalendarState(
             firstDay: DateTime(2021, 04, 01),
             occasion: Occasion.future,
             weeks: [
@@ -289,19 +285,19 @@ void main() {
                 ],
               ),
             ],
-          )),
+          ),
         ),
-      );
-    });
+      ],
+    );
 
     test('previous month, basic', () async {
       // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Act
-      monthCalendarBloc.add(GoToPreviousMonth());
-      final state = await monthCalendarBloc.stream.first;
+      monthCalendarCubit.goToPreviousMonth();
+      final state = monthCalendarCubit.state;
 
       // Assert
       expect(
@@ -312,19 +308,14 @@ void main() {
       expect(state.occasion, Occasion.past);
     });
 
-    test('previous month', () {
-      // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
-
-      // Act
-      monthCalendarBloc.add(GoToPreviousMonth());
-
-      // Assert
-      expectLater(
-        monthCalendarBloc.stream,
-        emits(
-          _MonthCalendarStateMatcher(MonthCalendarState(
+    blocTest<MonthCalendarCubit, MonthCalendarState>(
+      'previous month',
+      build: () => MonthCalendarCubit(
+          activitiesBloc: activitiesBloc, clockBloc: clockBloc),
+      act: (cubit) => cubit.goToPreviousMonth(),
+      expect: () => [
+        _MonthCalendarStateMatcher(
+          MonthCalendarState(
             firstDay: DateTime(2021, 02, 01),
             occasion: Occasion.past,
             weeks: [
@@ -429,17 +420,17 @@ void main() {
                 ],
               ),
             ],
-          )),
+          ),
         ),
-      );
-    });
+      ],
+    );
 
     test('when new day day is updated', () async {
       // Arrange
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
-      var week11 = monthCalendarBloc.state.weeks[2];
+      var week11 = monthCalendarCubit.state.weeks[2];
       var day18 = week11.days[3] as MonthDay,
           day19 = week11.days[4] as MonthDay,
           day20 = week11.days[5] as MonthDay;
@@ -452,7 +443,7 @@ void main() {
 
       // Act
       clock.add(initial.nextDay());
-      final nextState = await monthCalendarBloc.stream.first;
+      final nextState = await monthCalendarCubit.stream.first;
 
       week11 = nextState.weeks[2];
       day19 = week11.days[4] as MonthDay;
@@ -471,12 +462,12 @@ void main() {
       final newClock = StreamController<DateTime>();
 
       clockBloc = ClockBloc(newClock.stream, initialTime: january15);
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Asserts
       expect(
-        monthCalendarBloc.state,
+        monthCalendarCubit.state,
         _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 01, 01),
           occasion: Occasion.current,
@@ -581,7 +572,7 @@ void main() {
       final newClock = StreamController<DateTime>();
 
       clockBloc = ClockBloc(newClock.stream, initialTime: mayThe4);
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       final weeks = [
@@ -661,7 +652,7 @@ void main() {
 
       // Asserts
       expect(
-        monthCalendarBloc.state,
+        monthCalendarCubit.state,
         _MonthCalendarStateMatcher(MonthCalendarState(
           firstDay: DateTime(2021, 05, 01),
           occasion: Occasion.current,
@@ -686,7 +677,7 @@ void main() {
         ),
       );
 
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Act
@@ -694,7 +685,7 @@ void main() {
 
       // Asserts
       await expectLater(
-        monthCalendarBloc.stream,
+        monthCalendarCubit.stream,
         emits(
           _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: DateTime(2021, 03, 01),
@@ -823,7 +814,7 @@ void main() {
         ),
       );
 
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Act
@@ -831,7 +822,7 @@ void main() {
 
       // Asserts
       await expectLater(
-        monthCalendarBloc.stream,
+        monthCalendarCubit.stream,
         emits(
           _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: firstDay,
@@ -982,7 +973,7 @@ void main() {
         ),
       );
 
-      monthCalendarBloc = MonthCalendarBloc(
+      monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
       // Act
@@ -990,7 +981,7 @@ void main() {
 
       // Asserts
       await expectLater(
-        monthCalendarBloc.stream,
+        monthCalendarCubit.stream,
         emits(
           _MonthCalendarStateMatcher(MonthCalendarState(
             firstDay: firstDay,
