@@ -79,19 +79,12 @@ class CreateNewPage extends StatelessWidget {
                 );
                 if (timerStarted == true) {
                   Navigator.pop(context);
-                  for (AbiliaTimer timer
-                      in context.read<TimerCubit>().state.timers) {
-                    if (!timer.paused &&
-                        DateTime.now().isAfter(timer.startTime) &&
-                        DateTime.now()
-                            .isBefore(timer.startTime.add(timer.duration))) {
-                      showViewDialog(
-                        context: context,
-                        builder: (context) => ViewTimerPage(timer: timer),
-                      );
-                      break;
-                    }
-                  }
+                  AbiliaTimer timer =
+                      context.read<TimerCubit>().state.timers.last;
+                  showViewDialog(
+                    context: context,
+                    builder: (context) => ViewTimerPage(timer: timer),
+                  );
                 }
               },
             ).pad(topPadding),

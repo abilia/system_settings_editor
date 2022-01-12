@@ -43,8 +43,11 @@ class ViewTimerPage extends StatelessWidget {
               const Divider(),
               Flexible(
                 flex: 298,
-                child: TimerWheel.nonInteractive(
-                    activeSeconds: timer.duration.inSeconds),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(30.s, 28.s, 29.s, 28.s),
+                  child: TimerWheel.nonInteractive(
+                      activeSeconds: timer.duration.inSeconds),
+                ),
               ),
             ],
           ),
