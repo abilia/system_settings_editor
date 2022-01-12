@@ -17,6 +17,7 @@ class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
   final MenuPageLayout menuPage;
+  final MenuItemButtonLayout menuItemButton;
   final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
@@ -28,6 +29,7 @@ class Layout {
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.menuPage = const MenuPageLayout(),
+    this.menuItemButton = const MenuItemButtonLayout(),
     this.toolbar = const ToolbarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
@@ -71,6 +73,15 @@ class MenuPageLayout {
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
     this.crossAxisCount = 3,
+  });
+}
+
+class MenuItemButtonLayout {
+  final double size, borderRadius;
+
+  const MenuItemButtonLayout({
+    this.size = 48,
+    this.borderRadius = 12,
   });
 }
 

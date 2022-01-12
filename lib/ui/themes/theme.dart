@@ -121,6 +121,9 @@ final darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
   side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.s),
 );
+final menuButtonBorder = darkShapeBorder.copyWith(
+  borderRadius: BorderRadius.circular(layout.menuItemButton.borderRadius),
+);
 final inputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: AbiliaColors.white140, width: 1.s),
   borderRadius: borderRadius,

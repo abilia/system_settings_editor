@@ -16,6 +16,10 @@ class _LargeLayout extends Layout {
             mainAxisSpacing: 15,
             crossAxisCount: 3,
           ),
+          menuItemButton: const MenuItemButtonLayout(
+            size: 144,
+            borderRadius: 12,
+          ),
           clock: const ClockLayout(
             height: 124,
             width: 92,

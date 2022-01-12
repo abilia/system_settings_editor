@@ -19,6 +19,10 @@ class _MediumLayout extends Layout {
             mainAxisSpacing: 24,
             crossAxisCount: 3,
           ),
+          menuItemButton: const MenuItemButtonLayout(
+            size: 96,
+            borderRadius: 20,
+          ),
           toolbar: const ToolbarLayout(
             height: 120,
             bottomPadding: 8,

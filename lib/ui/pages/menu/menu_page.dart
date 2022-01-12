@@ -205,7 +205,7 @@ class SettingsButton extends StatelessWidget {
         return Stack(
           children: [
             MenuItemButton(
-              style: actionButtonStyleBlack,
+              style: blackButtonStyle,
               text: Translator.of(context).translate.settings,
               icon: AbiliaIcons.settings,
               onPressed: () => Navigator.of(context).push(
@@ -271,7 +271,7 @@ class MenuItemButton extends StatelessWidget {
               const Spacer(),
               Icon(
                 icon,
-                size: 48.s,
+                size: layout.menuItemButton.size,
               ),
               const Spacer(),
             ],
