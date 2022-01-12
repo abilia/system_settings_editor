@@ -20,15 +20,15 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
+        padding: layout.menuPage.padding,
         child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
             MenuSettings>(
           selector: (state) => state.settings.menu,
           builder: (context, menu) {
             return GridView.count(
-              crossAxisSpacing: 7.5.s,
-              mainAxisSpacing: 7.s,
-              crossAxisCount: 3,
+              crossAxisSpacing: layout.menuPage.crossAxisSpacing,
+              mainAxisSpacing: layout.menuPage.mainAxisSpacing,
+              crossAxisCount: layout.menuPage.crossAxisCount,
               children: [
                 if (menu.showCamera) const CameraButton(),
                 if (menu.showPhotos) const MyPhotosButton(),

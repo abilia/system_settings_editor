@@ -10,6 +10,12 @@ class _LargeLayout extends Layout {
             size: 100,
             radius: 22,
           ),
+          menuPage: const MenuPageLayout(
+            padding: EdgeInsets.symmetric(vertical: 60, horizontal: 36),
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 15,
+            crossAxisCount: 3,
+          ),
           clock: const ClockLayout(
             height: 124,
             width: 92,

@@ -16,6 +16,7 @@ final Layout layout = Device.screenSize.longestSide > 1500
 class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
+  final MenuPageLayout menuPage;
   final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
@@ -26,6 +27,7 @@ class Layout {
   const Layout({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
+    this.menuPage = const MenuPageLayout(),
     this.toolbar = const ToolbarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
@@ -56,6 +58,19 @@ class ActionButtonLayout {
     this.spacing = 0,
     this.padding = const EdgeInsets.all(8),
     this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
+  });
+}
+
+class MenuPageLayout {
+  final EdgeInsets padding;
+  final double crossAxisSpacing, mainAxisSpacing;
+  final int crossAxisCount;
+
+  const MenuPageLayout({
+    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+    this.crossAxisSpacing = 7.5,
+    this.mainAxisSpacing = 7,
+    this.crossAxisCount = 3,
   });
 }
 

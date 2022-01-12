@@ -13,6 +13,12 @@ class _MediumLayout extends Layout {
             padding: EdgeInsets.all(12),
             withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
           ),
+          menuPage: const MenuPageLayout(
+            padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
+            crossAxisSpacing: 24,
+            mainAxisSpacing: 24,
+            crossAxisCount: 3,
+          ),
           toolbar: const ToolbarLayout(
             heigth: 120,
             bottomPadding: 8,
