@@ -489,8 +489,8 @@ class WeekActivityContent extends StatelessWidget {
                           activityOccasion.activity.title,
                           overflow: TextOverflow.clip,
                           style:
-                          (Theme.of(context).textTheme.caption ?? caption)
-                              .copyWith(height: 20 / 16),
+                              (Theme.of(context).textTheme.caption ?? caption)
+                                  .copyWith(height: 20 / 16),
                           textAlign: TextAlign.center,
                         ),
                       ),

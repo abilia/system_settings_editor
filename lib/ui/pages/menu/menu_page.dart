@@ -124,10 +124,10 @@ class MyPhotosButton extends StatelessWidget {
                     ),
                   ),
                 )
-                : null,
-            style: blueButtonStyle,
-            text: Translator.of(context).translate.myPhotos,
-          ),
+            : null,
+        style: blueButtonStyle,
+        text: Translator.of(context).translate.myPhotos,
+      ),
     );
   }
 }

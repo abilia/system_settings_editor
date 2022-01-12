@@ -114,7 +114,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) => TopLevelBlocsProvider(
         pushBloc: pushBloc,
         baseUrl: baseUrl,
-    child: TopLevelListener(
+        child: TopLevelListener(
           navigatorKey: _navigatorKey,
           payload: payload,
           child: SeagullApp(

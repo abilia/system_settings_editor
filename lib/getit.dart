@@ -63,26 +63,21 @@ class GetItInitializer {
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
   SettingsDb? _settingsDb;
-
   set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
 
   late MultipartRequestBuilder _multipartRequestBuilder =
       MultipartRequestBuilder();
-
   set multipartRequestBuilder(
           MultipartRequestBuilder multipartRequestBuilder) =>
       _multipartRequestBuilder = multipartRequestBuilder;
 
   late SyncDelays _syncDelay = SyncDelays.zero;
-
   set syncDelay(SyncDelays syncDelay) => _syncDelay = syncDelay;
 
   late Database _database;
-
   set database(Database database) => _database = database;
 
   late SeagullLogger _seagullLogger = SeagullLogger.nothing();
-
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 

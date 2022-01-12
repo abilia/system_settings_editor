@@ -59,7 +59,7 @@ class TimerDurationWiz extends StatelessWidget {
               ),
             ),
           ],
-            ),
+        ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(

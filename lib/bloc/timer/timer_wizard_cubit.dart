@@ -40,7 +40,12 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
         ),
       );
     }
-    emit(state.copyWith(step: (state.step + 1)));
+    emit(state.copyWith(
+      step: (state.step + 1),
+      name: state.name.isEmpty
+          ? state.duration.toDurationString(translate, shortMin: false)
+          : null,
+    ));
   }
 
   void previous() => emit(state.copyWith(step: (state.step - 1)));
@@ -48,9 +53,6 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
   void updateDuration(Duration duration) => emit(
         state.copyWith(
           duration: duration,
-          name: state.name.isEmpty
-              ? duration.toDurationString(translate, shortMin: false)
-              : null,
         ),
       );
 

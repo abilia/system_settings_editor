@@ -141,10 +141,10 @@ class SelectPictureBody extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                        );
-                        if (selectedImage != null) {
-                          imageCallback.call(selectedImage);
-                        }
+                              );
+                              if (selectedImage != null) {
+                                imageCallback.call(selectedImage);
+                              }
                             }
                           : null,
                     ),

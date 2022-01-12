@@ -1174,7 +1174,7 @@ text''';
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
-            when(() => mockUserFileCubit.state)
+        when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const checklisttitle1 = 'checklisttitle1',

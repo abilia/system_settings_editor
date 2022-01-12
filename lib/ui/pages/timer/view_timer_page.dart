@@ -43,16 +43,8 @@ class ViewTimerPage extends StatelessWidget {
               const Divider(),
               Flexible(
                 flex: 298,
-                child: Column(
-                  // TODO: Replace with timer wheel thing widget
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Text(timer.duration.toString(),
-                          style: Theme.of(context).textTheme.headline5),
-                    ),
-                  ],
-                ),
+                child: TimerWheel.nonInteractive(
+                    activeSeconds: timer.duration.inSeconds),
               ),
             ],
           ),
@@ -134,7 +126,10 @@ class _TimerBottomBar extends StatelessWidget {
                 child: const Icon(AbiliaIcons.pause),
               ),
               IconActionButtonLight(
-                onPressed: () => context.read<TimerCubit>().deleteTimer(timer),
+                onPressed: () {
+                  context.read<TimerCubit>().deleteTimer(timer);
+                  Navigator.pop(context);
+                },
                 child: const Icon(AbiliaIcons.deleteAllClear),
               ),
             ],

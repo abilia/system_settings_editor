@@ -30,23 +30,23 @@ class ScreenTimeoutPickField extends StatelessWidget {
                 ),
               ),
             ),
-              );
-              if (timeout != null) {
-                context.read<GenericBloc>().add(
+          );
+          if (timeout != null) {
+            context.read<GenericBloc>().add(
                   GenericUpdated(
                     [
                       MemoplannerSettingData.fromData(
                         data: timeout == Duration.zero,
                         identifier:
-                        KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
+                            KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
                       ),
                     ],
                   ),
                 );
-                context.read<WakeLockCubit>().setScreenTimeout(timeout);
-              }
-            },
-          ),
+            context.read<WakeLockCubit>().setScreenTimeout(timeout);
+          }
+        },
+      ),
     );
   }
 }

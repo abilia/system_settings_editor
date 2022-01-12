@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
-import 'package:seagull/models/abilia_timer.dart';
 import 'package:seagull/models/notification/alarm.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
@@ -132,7 +131,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           KeepScreenAwakeListener(),
         ],
         if (!Platform.isIOS) _fullscreenAlarmPermissionListener(context),
-        _timerListener(context),
       ],
       child: widget.child,
     );
@@ -160,22 +158,6 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         ),
       ),
     );
-  }
-
-  BlocListener<TimerCubit, TimerState> _timerListener(BuildContext context) {
-    return BlocListener<TimerCubit, TimerState>(listener: (context, state) {
-      for (AbiliaTimer timer in state.timers) {
-        if (!timer.paused &&
-            DateTime.now().isAfter(timer.startTime) &&
-            DateTime.now().isBefore(timer.startTime.add(timer.duration))) {
-          showViewDialog(
-            context: context,
-            builder: (context) => ViewTimerPage(timer: timer),
-          );
-          break;
-        }
-      }
-    });
   }
 
   bool _notificationsDenied(

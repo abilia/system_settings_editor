@@ -174,13 +174,13 @@ class TimeIntervallPicker extends StatelessWidget {
               translator.time,
               TimeInput(
                 timeInterval.startTime,
-                    timeInterval.sameTime ? null : timeInterval.endTime,
-                  ),
-                  errorState: startTimeError,
-                  onTap: () async {
-                    final newTimeInterval =
+                timeInterval.sameTime ? null : timeInterval.endTime,
+              ),
+              errorState: startTimeError,
+              onTap: () async {
+                final newTimeInterval =
                     await Navigator.of(context).push<TimeInput>(
-                      MaterialPageRoute(
+                  MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,
                       child: TimeInputPage(
@@ -194,20 +194,20 @@ class TimeIntervallPicker extends StatelessWidget {
                     ),
                     settings: const RouteSettings(name: 'TimeInputPage'),
                   ),
-                    );
+                );
 
-                    if (newTimeInterval != null) {
-                      BlocProvider.of<EditActivityBloc>(context)
-                          .add(ChangeTimeInterval(
-                        startTime: newTimeInterval.startTime,
-                        endTime: newTimeInterval.endTime,
-                      ));
-                    }
-                  },
-                ),
-              ),
-            ],
+                if (newTimeInterval != null) {
+                  BlocProvider.of<EditActivityBloc>(context)
+                      .add(ChangeTimeInterval(
+                    startTime: newTimeInterval.startTime,
+                    endTime: newTimeInterval.endTime,
+                  ));
+                }
+              },
+            ),
           ),
+        ],
+      ),
     );
   }
 }

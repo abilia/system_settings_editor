@@ -261,8 +261,8 @@ void main() {
 
     test(
         'Failed syncs with other events in queue should dequeue other events before retrying (no starvation)',
-            () async {
-          when(() => activityRepository.synchronize())
+        () async {
+      when(() => activityRepository.synchronize())
           .thenAnswer((_) => Future.value(false));
       final syncBloc = SyncBloc(
           activityRepository: activityRepository,

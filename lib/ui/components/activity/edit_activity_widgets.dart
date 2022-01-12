@@ -362,7 +362,7 @@ class AlarmWidget extends StatelessWidget {
             text: Text(alarm.text(translator)),
             onTap: memoSettingsState.abilityToSelectAlarm
                 ? () async {
-              final authProviders = copiedAuthProviders(context);
+                    final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
@@ -374,11 +374,11 @@ class AlarmWidget extends StatelessWidget {
                       settings:
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
-              if (result != null) {
-                BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(activity.copyWith(
-                        alarm: activity.alarm.copyWith(type: result))));
-              }
+                    if (result != null) {
+                      BlocProvider.of<EditActivityBloc>(context).add(
+                          ReplaceActivity(activity.copyWith(
+                              alarm: activity.alarm.copyWith(type: result))));
+                    }
                   }
                 : null,
           ),

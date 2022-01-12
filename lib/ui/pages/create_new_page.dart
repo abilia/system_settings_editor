@@ -20,21 +20,21 @@ class CreateNewPage extends StatelessWidget {
           children: [
             formTopSpacer,
             if (memoplannerSettingsState.newActivityOption)
-                  PickField(
-                    key: TestKey.newActivityChoice,
+              PickField(
+                key: TestKey.newActivityChoice,
                 leading: const Icon(AbiliaIcons.basicActivity),
                 text: Text(t.newActivity),
                 onTap: () => navigateToActivityWizard(context, authProviders),
               ).pad(formItemPadding),
-                if (memoplannerSettingsState.basicActivityOption)
-                  PickField(
-                    key: TestKey.basicActivityChoice,
-                    leading: const Icon(AbiliaIcons.folder),
-                    text: Text(t.basicActivities),
-                    onTap: () async {
-                      final basicActivityData =
+            if (memoplannerSettingsState.basicActivityOption)
+              PickField(
+                key: TestKey.basicActivityChoice,
+                leading: const Icon(AbiliaIcons.folder),
+                text: Text(t.basicActivities),
+                onTap: () async {
+                  final basicActivityData =
                       await Navigator.of(context).push<BasicActivityData>(
-                        MaterialPageRoute(
+                    MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: BlocProvider<
@@ -47,8 +47,8 @@ class CreateNewPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                      );
-                      if (basicActivityData is BasicActivityDataItem) {
+                  );
+                  if (basicActivityData is BasicActivityDataItem) {
                     await navigateToActivityWizard(
                       context,
                       authProviders,
@@ -56,14 +56,14 @@ class CreateNewPage extends StatelessWidget {
                     );
                   }
                 },
-                  ).pad(formItemPadding),
-                const Divider().pad(EdgeInsets.only(top: 16.s)),
-                PickField(
-                  key: TestKey.newTimerChoice,
-                  leading: const Icon(AbiliaIcons.stopWatch),
-                  text: Text(t.newTimer),
-                  onTap: () async {
-                    final timerStarted = await Navigator.of(context).push(
+              ).pad(formItemPadding),
+            const Divider().pad(EdgeInsets.only(top: 16.s)),
+            PickField(
+              key: TestKey.newTimerChoice,
+              leading: const Icon(AbiliaIcons.stopWatch),
+              text: Text(t.newTimer),
+              onTap: () async {
+                final timerStarted = await Navigator.of(context).push(
                   _createRoute(
                     MultiBlocProvider(
                       providers: authProviders,
@@ -76,8 +76,23 @@ class CreateNewPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                    );
-                    if (timerStarted == true) Navigator.pop(context);
+                );
+                if (timerStarted == true) {
+                  Navigator.pop(context);
+                  for (AbiliaTimer timer
+                      in context.read<TimerCubit>().state.timers) {
+                    if (!timer.paused &&
+                        DateTime.now().isAfter(timer.startTime) &&
+                        DateTime.now()
+                            .isBefore(timer.startTime.add(timer.duration))) {
+                      showViewDialog(
+                        context: context,
+                        builder: (context) => ViewTimerPage(timer: timer),
+                      );
+                      break;
+                    }
+                  }
+                }
               },
             ).pad(topPadding),
           ],

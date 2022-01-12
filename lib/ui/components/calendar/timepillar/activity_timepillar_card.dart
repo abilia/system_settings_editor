@@ -50,7 +50,7 @@ class ActivityTimepillarCard extends StatelessWidget {
     final right = TimepillarSide.right == timepillarSide;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-      previous.dotsInTimepillar != current.dotsInTimepillar ||
+          previous.dotsInTimepillar != current.dotsInTimepillar ||
           previous.showCategoryColor != current.showCategoryColor,
       builder: (context, settings) {
         final decoration = getCategoryBoxDecoration(
@@ -138,13 +138,13 @@ class ActivityTimepillarCard extends StatelessWidget {
                                 padding: EdgeInsets.only(top: ts.cardPadding),
                                 child: SizedBox(
                                   height:
-                                  height - textHeight - ts.cardPadding * 3,
+                                      height - textHeight - ts.cardPadding * 3,
                                   child: ActivityImage.fromActivityOccasion(
                                     activityOccasion: activityOccasion,
                                     crossPadding:
-                                    EdgeInsets.all(ts.cardPadding),
+                                        EdgeInsets.all(ts.cardPadding),
                                     checkPadding:
-                                    EdgeInsets.all(ts.cardPadding * 2),
+                                        EdgeInsets.all(ts.cardPadding * 2),
                                   ),
                                 ),
                               )

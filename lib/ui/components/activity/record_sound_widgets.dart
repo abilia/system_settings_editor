@@ -138,7 +138,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                             );
                       }
                     : () async {
-              final authProviders = copiedAuthProviders(context);
+                        final authProviders = copiedAuthProviders(context);
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
@@ -155,19 +155,19 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                          child: const RecordSoundPage(),
-                        ),
-                      ),
-                  settings:
-                  const RouteSettings(name: 'SelectSpeechPage'),
-                ),
-              );
-              if (result is UnstoredAbiliaFile) {
-                context.read<UserFileCubit>().fileAdded(result);
+                                child: const RecordSoundPage(),
+                              ),
+                            ),
+                            settings:
+                                const RouteSettings(name: 'SelectSpeechPage'),
+                          ),
+                        );
+                        if (result is UnstoredAbiliaFile) {
+                          context.read<UserFileCubit>().fileAdded(result);
                         }
-              if (result != null) {
-                onResult.call(result);
-              }
+                        if (result != null) {
+                          onResult.call(result);
+                        }
                       },
           ),
         ),
