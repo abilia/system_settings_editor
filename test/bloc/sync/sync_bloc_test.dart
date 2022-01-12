@@ -110,6 +110,10 @@ void main() {
   group('Failed cases', () {
     final retryDelay = 10.milliseconds();
     final betweenSync = 5.milliseconds();
+    final syncDelays = SyncDelays(
+      betweenSync: betweenSync,
+      retryDelay: retryDelay,
+    );
     late List<bool> failThenSucceed;
     setUp(() => failThenSucceed = [false, true]);
 
@@ -122,13 +126,10 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
-        syncDelay: SyncDelays(
-          retryDelay: retryDelay,
-          betweenSync: betweenSync,
-        ),
+        syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const ActivitySaved()),
-      wait: retryDelay * 10,
+      wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.activityRepository.synchronize).called(2),
     );
 
@@ -141,13 +142,10 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
-        syncDelay: SyncDelays(
-          retryDelay: retryDelay,
-          betweenSync: betweenSync,
-        ),
+        syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const FileSaved()),
-      wait: retryDelay * 10,
+      wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.userFileRepository.synchronize).called(2),
     );
 
@@ -160,13 +158,10 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
-        syncDelay: SyncDelays(
-          retryDelay: retryDelay,
-          betweenSync: betweenSync,
-        ),
+        syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const SortableSaved()),
-      wait: retryDelay * 10,
+      wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.sortableRepository.synchronize).called(2),
     );
 
@@ -179,13 +174,10 @@ void main() {
         userFileRepository: userFileRepository,
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
-        syncDelay: SyncDelays(
-          retryDelay: retryDelay,
-          betweenSync: betweenSync,
-        ),
+        syncDelay: syncDelays,
       ),
       act: (bloc) => bloc.add(const GenericSaved()),
-      wait: retryDelay * 10,
+      wait: retryDelay * 30,
       verify: (bloc) => verify(bloc.genericRepository.synchronize).called(2),
     );
   });
