@@ -90,7 +90,12 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get activityTimeout => settings.activityTimeout;
 
   int get calendarCount =>
-      1 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
+      1 +
+      (displayWeekCalendar ? 1 : 0) +
+      (displayMonthCalendar ? 1 : 0) +
+      (displayMenu ? 1 : 0);
+  int get monthCalendarTabIndex =>
+      0 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
