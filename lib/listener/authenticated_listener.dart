@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
-import 'package:seagull/models/notification/alarm.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -19,7 +18,6 @@ class AuthenticatedListener extends StatefulWidget {
   }) : super(key: key);
 
   final Widget child;
-
   @override
   _AuthenticatedListenerState createState() => _AuthenticatedListenerState();
 }
@@ -130,14 +128,14 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
           KeepScreenAwakeListener(),
         ],
-        if (!Platform.isIOS) _fullscreenAlarmPermissionListener(context),
+        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
   }
 
   BlocListener<PermissionBloc, PermissionState>
-      _fullscreenAlarmPermissionListener(BuildContext context) {
+      fullscreenAlarmPremissionListener(BuildContext context) {
     return BlocListener<PermissionBloc, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -166,34 +164,4 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           false) &&
       !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
           false);
-}
-
-class AlarmListeners extends StatelessWidget {
-  final Widget child;
-
-  const AlarmListeners({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<NotificationCubit, NotificationAlarm?>(
-          listener: (context, state) async {
-            if (state != null) {
-              await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
-            }
-          },
-        ),
-        if (!Platform.isAndroid)
-          BlocListener<AlarmCubit, NotificationAlarm?>(
-            listener: (context, state) async {
-              if (state != null) {
-                await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
-              }
-            },
-          ),
-      ],
-      child: child,
-    );
-  }
 }

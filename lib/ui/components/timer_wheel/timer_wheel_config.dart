@@ -9,37 +9,26 @@ class TimerWheelConfiguration {
 
   // The side of the smallest possible square that contains the full timer in the design
   static const _timerWheelSides = 292.0;
-
   // The side of the smallest possible square that contains the simplified timer in the design
   static const _simplifiedTimerWheelSides = _outerWheelDiameter;
-
   // The diameter of the circle on which the numbers are placed in the design
   static const _numberCircleDiameter = 268.0;
-
   // The diameter of the circle on which the number pointers are placed in the design
   static const _numberPointerCircleDiameter = 236.0;
-
   // The diameter of the outer circle of the wheel in the design
   static const _outerWheelDiameter = 212.0;
-
   // The diameter of the inner circle of the wheel in the design
   static const _innerWheelDiameter = 106.0;
-
   // The stroke width of the wheel in the design
   static const _wheelStrokeWidth = 1.5;
-
   // The width of the number pointers in the design
   static const _numberPointerWidth = 2.0;
-
   // The length of the number pointers in the design
   static const _numberPointerLengthInDesign = 8.0;
-
   // The width of the lines on the slider thumb in the design.
   static const _sliderThumbLineWidth = 1.0;
-
   // The length of the shorter lines on the slider thumb in the design.
   static const _shorterSliderThumbLineLength = 12.0;
-
   // The length of the longer lines on the slider thumb in the design.
   static const _longerSliderThumbLineLength = 16.0;
 
@@ -52,7 +41,6 @@ class TimerWheelConfiguration {
   final TimerWheelStyle style;
 
   late final centerPoint = Offset(canvasSize.width / 2, canvasSize.height / 2);
-
   // The timer needs a square size to render properly, find the side of the largest possible square.
   late final shortestSide = min(canvasSize.width, canvasSize.height);
   late final scaleFactor = shortestSide /
