@@ -32,25 +32,25 @@ class ChecklistToolbar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(width: spacing),
-            ChecklistToolbarButton(
+            _ChecklistToolbarButton(
               disabled: disableUp,
               iconData: AbiliaIcons.cursorUp,
               onTap: () => onTapReorder(ChecklistReorderDirection.up),
             ),
             SizedBox(width: spacing),
-            ChecklistToolbarButton(
+            _ChecklistToolbarButton(
               key: TestKey.checklistToolbarDeleteQButton,
               iconData: AbiliaIcons.deleteAllClear,
               onTap: onTapDelete,
             ),
             SizedBox(width: spacing),
-            ChecklistToolbarButton(
+            _ChecklistToolbarButton(
               key: TestKey.checklistToolbarEditQButton,
               iconData: AbiliaIcons.edit,
               onTap: onTapEdit,
             ),
             SizedBox(width: spacing),
-            ChecklistToolbarButton(
+            _ChecklistToolbarButton(
               disabled: disableDown,
               iconData: AbiliaIcons.cursorDown,
               onTap: () => onTapReorder(ChecklistReorderDirection.down),
@@ -63,8 +63,8 @@ class ChecklistToolbar extends StatelessWidget {
   }
 }
 
-class ChecklistToolbarButton extends StatelessWidget {
-  const ChecklistToolbarButton({
+class _ChecklistToolbarButton extends StatelessWidget {
+  const _ChecklistToolbarButton({
     Key? key,
     required this.iconData,
     this.disabled = false,
