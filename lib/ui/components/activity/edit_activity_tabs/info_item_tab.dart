@@ -229,15 +229,15 @@ class EditChecklistWidget extends StatelessWidget {
   }
 
   void _handleDeleteQuestion(
-    final Question oldQuestion,
+    final Question deletedQuestion,
     BuildContext context,
   ) {
-    final questionMap = {for (var q in checklist.questions) q.id: q};
-    questionMap.remove(oldQuestion.id);
+    final filteredQuestions =
+        checklist.questions.where((q) => q.id != deletedQuestion.id);
 
     _replaceActivity(
       activity.copyWith(
-          infoItem: checklist.copyWith(questions: questionMap.values)),
+          infoItem: checklist.copyWith(questions: filteredQuestions)),
       context,
     );
   }
