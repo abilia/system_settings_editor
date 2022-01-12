@@ -1,4 +1,4 @@
-part of 'month_calendar_bloc.dart';
+part of 'month_calendar_cubit.dart';
 
 class MonthCalendarState {
   final DateTime firstDay;

@@ -94,8 +94,8 @@ class MonthContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(
-        initialPage: context.read<MonthCalendarBloc>().state.index);
-    return BlocListener<MonthCalendarBloc, MonthCalendarState>(
+        initialPage: context.read<MonthCalendarCubit>().state.index);
+    return BlocListener<MonthCalendarCubit, MonthCalendarState>(
       listener: (context, state) {
         pageController.animateToPage(state.index,
             duration: const Duration(milliseconds: 500),
@@ -105,7 +105,7 @@ class MonthContent extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         itemBuilder: (context, item) {
-          return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
+          return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
             buildWhen: (oldState, newState) => newState.index == item,
             builder: (context, state) {
               if (state.index != item) return Container();

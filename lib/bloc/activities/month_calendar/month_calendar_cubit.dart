@@ -7,17 +7,16 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'month_calendar_event.dart';
 part 'month_calendar_state.dart';
 
-class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
+class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   /// ActivitiesBloc is null when this bloc is used for date picking
   final ActivitiesBloc? activitiesBloc;
   final ClockBloc clockBloc;
   late final StreamSubscription? _activitiesSubscription;
   late final StreamSubscription _clockSubscription;
 
-  MonthCalendarBloc({
+  MonthCalendarCubit({
     this.activitiesBloc,
     required this.clockBloc,
     DateTime? initialDay,
@@ -28,8 +27,7 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
             clockBloc.state,
           ),
         ) {
-    _activitiesSubscription =
-        activitiesBloc?.stream.listen((state) => add(UpdateMonth()));
+    _activitiesSubscription = activitiesBloc?.stream.listen(_updateMonth);
     _clockSubscription = clockBloc.stream
         .where((time) =>
             state.weeks
@@ -39,39 +37,40 @@ class MonthCalendarBloc extends Bloc<MonthCalendarEvent, MonthCalendarState> {
                 ?.day
                 .isAtSameDay(time) ==
             false)
-        .listen((_) => add(UpdateMonth()));
+        .listen(_updateMonth);
   }
 
-  @override
-  Stream<MonthCalendarState> mapEventToState(
-    MonthCalendarEvent event,
-  ) async* {
-    if (event is GoToNextMonth) {
-      yield _mapToState(
-        state.firstDay.nextMonth(),
-        activitiesBloc?.state.activities,
-        clockBloc.state,
+  void goToNextMonth() => emit(
+        _mapToState(
+          state.firstDay.nextMonth(),
+          activitiesBloc?.state.activities,
+          clockBloc.state,
+        ),
       );
-    } else if (event is GoToPreviousMonth) {
-      yield _mapToState(
-        state.firstDay.previousMonth(),
-        activitiesBloc?.state.activities,
-        clockBloc.state,
+
+  void goToPreviousMonth() => emit(
+        _mapToState(
+          state.firstDay.previousMonth(),
+          activitiesBloc?.state.activities,
+          clockBloc.state,
+        ),
       );
-    } else if (event is GoToCurrentMonth) {
-      yield _mapToState(
-        clockBloc.state.firstDayOfMonth(),
-        activitiesBloc?.state.activities,
-        clockBloc.state,
+
+  void goToCurrentMonth() => emit(
+        _mapToState(
+          clockBloc.state.firstDayOfMonth(),
+          activitiesBloc?.state.activities,
+          clockBloc.state,
+        ),
       );
-    } else if (event is UpdateMonth) {
-      yield _mapToState(
-        state.firstDay,
-        activitiesBloc?.state.activities,
-        clockBloc.state,
+
+  void _updateMonth([_]) => emit(
+        _mapToState(
+          state.firstDay,
+          activitiesBloc?.state.activities,
+          clockBloc.state,
+        ),
       );
-    }
-  }
 
   static MonthCalendarState _mapToState(
     DateTime firstDayOfMonth,
