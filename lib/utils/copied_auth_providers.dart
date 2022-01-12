@@ -27,6 +27,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
     ].whereNotNull().toList();
 
 final _copyBlocLog = Logger('CopiedAuthProvider');
+
 BlocProvider? _tryGetBloc<B extends BlocBase>(BuildContext context) {
   try {
     return BlocProvider<B>.value(value: context.read<B>());

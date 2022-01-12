@@ -29,7 +29,7 @@ class _TimeWizContent extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.activityEndTimeEditable != current.activityEndTimeEditable,
       builder: (context, memoSettingsState) =>
-          BlocBuilder<EditActivityBloc, EditActivityState>(
+          BlocBuilder<EditActivityCubit, EditActivityState>(
         buildWhen: (previous, current) =>
             previous.timeInterval != current.timeInterval,
         builder: (context, state) => TimeInputContent(
@@ -45,11 +45,9 @@ class _TimeWizContent extends StatelessWidget {
             return false;
           },
           onValidTimeInput: (newTimeInput) =>
-              context.read<EditActivityBloc>().add(
-                    ChangeTimeInterval(
-                      startTime: newTimeInput.startTime,
-                      endTime: newTimeInput.endTime,
-                    ),
+              context.read<EditActivityCubit>().changeTimeInterval(
+                    startTime: newTimeInput.startTime,
+                    endTime: newTimeInput.endTime,
                   ),
           bottomNavigationBuilder: (_, __) => const WizardBottomNavigation(),
         ),

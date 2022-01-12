@@ -21,7 +21,6 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -90,14 +89,14 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<EditActivityBloc>(
+              BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
-                    ? EditActivityBloc.newActivity(
+                    ? EditActivityCubit.newActivity(
                         day: today,
                         defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
                             .state.defaultAlarmTypeSetting,
                       )
-                    : EditActivityBloc.edit(
+                    : EditActivityCubit.edit(
                         ActivityDay(activity, today),
                       ),
               ),
@@ -106,13 +105,13 @@ void main() {
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
-                        editActivityBloc: context.read<EditActivityBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
                         settings: context.read<MemoplannerSettingBloc>().state,
                       )
                     : ActivityWizardCubit.edit(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
-                        editActivityBloc: context.read<EditActivityBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
                         settings: mockMemoplannerSettingsBloc.state,
                       ),
               ),
@@ -853,8 +852,7 @@ Internal improvements to tests and examples.''';
         await goToNote(tester);
         await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
-        expect(
-            find.byType(typeOf<SortableLibrary<NoteData>>()), findsOneWidget);
+        expect(find.byType(SortableLibrary<NoteData>), findsOneWidget);
         expect(find.byType(LibraryNote), findsWidgets);
         expect(find.text(content), findsOneWidget);
       });
@@ -1166,8 +1164,7 @@ text''';
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
-        expect(find.byType(typeOf<SortableLibrary<ChecklistData>>()),
-            findsOneWidget);
+        expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
       });

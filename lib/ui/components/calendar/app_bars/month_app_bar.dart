@@ -39,7 +39,7 @@ class MonthAppBarStepper extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MonthCalendarBloc, MonthCalendarState>(
+    return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
       buildWhen: (previous, current) =>
           previous.firstDay != current.firstDay ||
           previous.occasion != current.occasion,
@@ -54,7 +54,7 @@ class MonthAppBarStepper extends StatelessWidget
         leftAction: showBrowseButtons
             ? IconActionButton(
                 onPressed: () =>
-                    context.read<MonthCalendarBloc>().add(GoToPreviousMonth()),
+                    context.read<MonthCalendarCubit>().goToPreviousMonth(),
                 child: const Icon(AbiliaIcons.returnToPreviousPage),
               )
             : null,
@@ -62,13 +62,13 @@ class MonthAppBarStepper extends StatelessWidget
         clockReplacement: state.occasion != Occasion.current
             ? GoToCurrentActionButton(
                 onPressed: () =>
-                    context.read<MonthCalendarBloc>().add(GoToCurrentMonth()),
+                    context.read<MonthCalendarCubit>().goToCurrentMonth(),
               )
             : null,
         rightAction: showBrowseButtons
             ? IconActionButton(
                 onPressed: () =>
-                    context.read<MonthCalendarBloc>().add(GoToNextMonth()),
+                    context.read<MonthCalendarCubit>().goToNextMonth(),
                 child: const Icon(AbiliaIcons.goToNextPage),
               )
             : null,

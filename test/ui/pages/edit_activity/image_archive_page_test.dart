@@ -12,7 +12,6 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/navigation_observer.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/types.dart';
 
 void main() {
   group('Image archive test', () {
@@ -157,7 +156,7 @@ void main() {
       await tester.verifyTts(find.byType(LibraryFolder), exact: folderName);
       await tester.verifyTts(find.byType(ArchiveImage), exact: imageName);
       await tester.verifyTts(
-        find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+        find.byType(LibraryHeading<ImageArchiveData>),
         exact: translate.imageArchive,
       );
     });
@@ -171,7 +170,7 @@ void main() {
 
         // Assert - root heading
         await tester.verifyTts(
-          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          find.byType(LibraryHeading<ImageArchiveData>),
           exact: translate.imageArchive,
         );
 
@@ -182,7 +181,7 @@ void main() {
 
         // Assert heading is folder tts
         await tester.verifyTts(
-          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          find.byType(LibraryHeading<ImageArchiveData>),
           exact: folderName,
         );
         // Act -- go into image
@@ -191,7 +190,7 @@ void main() {
 
         // Assert - image name tts
         await tester.verifyTts(
-          find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+          find.byType(LibraryHeading<ImageArchiveData>),
           exact: imageInFolderName,
         );
       });
@@ -220,7 +219,7 @@ void main() {
 
       expect(
         find.descendant(
-            of: find.byType(typeOf<LibraryHeading<ImageArchiveData>>()),
+            of: find.byType(LibraryHeading<ImageArchiveData>),
             matching: find.text(folderName)),
         findsOneWidget,
       );

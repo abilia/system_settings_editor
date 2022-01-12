@@ -44,12 +44,11 @@ class RecordSoundWidget extends StatelessWidget {
                           permissionStatus: permission,
                           recordedAudio: activity.extras.startTimeExtraAlarm,
                           onResult: (AbiliaFile result) {
-                            BlocProvider.of<EditActivityBloc>(context).add(
-                              ReplaceActivity(
-                                activity.copyWith(
-                                  extras: activity.extras.copyWith(
-                                    startTimeExtraAlarm: result,
-                                  ),
+                            BlocProvider.of<EditActivityCubit>(context)
+                                .replaceActivity(
+                              activity.copyWith(
+                                extras: activity.extras.copyWith(
+                                  startTimeExtraAlarm: result,
                                 ),
                               ),
                             );
@@ -73,9 +72,8 @@ class RecordSoundWidget extends StatelessWidget {
                                 endTimeExtraAlarm: result,
                               ),
                             );
-                            BlocProvider.of<EditActivityBloc>(context).add(
-                              ReplaceActivity(newActivity),
-                            );
+                            BlocProvider.of<EditActivityCubit>(context)
+                                .replaceActivity(newActivity);
                             soundChanged?.call(newActivity);
                           },
                         ),

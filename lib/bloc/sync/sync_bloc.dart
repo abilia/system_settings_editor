@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:seagull/logging.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -15,6 +15,7 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
   final SortableRepository sortableRepository;
   final GenericRepository genericRepository;
   final SyncDelays syncDelay;
+  final _log = Logger('SyncBloc');
 
   SyncBloc({
     required this.activityRepository,
@@ -34,7 +35,9 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
     Emitter emit,
   ) async {
     if (!await _sync(event)) {
+      _log.info('could not sync $event, retries in ${syncDelay.retryDelay}');
       await Future.delayed(syncDelay.retryDelay);
+      _log.info('retrying $event');
       add(event);
     }
   }
@@ -56,5 +59,5 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
 
 EventTransformer<Event> bufferTimer<Event>(SyncDelays syncDelays) =>
     (events, mapper) => events
-        .throttleTime(syncDelays.betweenSync, trailing: true, leading: true)
+        .throttleTime(syncDelays.betweenSync, trailing: true, leading: false)
         .asyncExpand(mapper); // sequential

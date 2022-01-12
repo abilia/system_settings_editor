@@ -1,4 +1,4 @@
-part of 'edit_activity_bloc.dart';
+part of 'edit_activity_cubit.dart';
 
 abstract class EditActivityState extends Equatable with Finest {
   const EditActivityState(
