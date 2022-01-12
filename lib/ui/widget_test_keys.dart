@@ -40,6 +40,7 @@ class TestKey {
       checklistQuestionImageKey = Key('checklistQuestionImageKey'),
       checklistToolbarEditQButton = Key('checklistToolbarEditQButton'),
       checklistToolbarDeleteQButton = Key('checklistToolbarDeleteQButton'),
+      checklistToolbarDownButton = Key('checklistToolbarDownButton'),
       preview = Key('preview'),
       edgePreview = Key('edgePreview'),
       dotsPreview = Key('dotsPreview'),
