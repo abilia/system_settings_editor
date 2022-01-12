@@ -1,23 +1,26 @@
 part of 'sync_bloc.dart';
 
-abstract class SyncEvent extends Equatable {
-  const SyncEvent();
+abstract class SyncEvent {
+  final String? id;
+
+  const SyncEvent([this.id]);
+
   @override
-  List<Object?> get props => [];
+  String toString() => '$runtimeType(${id ?? ''})';
 }
 
 class ActivitySaved extends SyncEvent {
-  const ActivitySaved();
+  const ActivitySaved([String? id]) : super(id);
 }
 
 class FileSaved extends SyncEvent {
-  const FileSaved();
+  const FileSaved([String? id]) : super(id);
 }
 
 class SortableSaved extends SyncEvent {
-  const SortableSaved();
+  const SortableSaved([String? id]) : super(id);
 }
 
 class GenericSaved extends SyncEvent {
-  const GenericSaved();
+  const GenericSaved([String? id]) : super(id);
 }

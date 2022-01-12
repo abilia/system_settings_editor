@@ -15,7 +15,7 @@ import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late UserFileBloc userFileBloc;
+  late UserFileCubit userFileCubit;
   late MockUserFileRepository mockUserFileRepository;
 
   const userFile = UserFile(
@@ -50,7 +50,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     when(() => mockedFileStorage.storeImageThumb(any(), any()))
         .thenAnswer((_) => Future.value());
-    userFileBloc = UserFileBloc(
+    userFileCubit = UserFileCubit(
       userFileRepository: mockUserFileRepository,
       pushBloc: FakePushBloc(),
       fileStorage: mockedFileStorage,
@@ -59,7 +59,7 @@ void main() {
   });
 
   test('Initial state is UserFilesNotLoaded', () {
-    expect(userFileBloc.state, const UserFilesNotLoaded());
+    expect(userFileCubit.state, const UserFilesNotLoaded());
   });
 
   test('User files loaded after successful loading of user files', () async {
@@ -68,11 +68,11 @@ void main() {
         .thenAnswer((_) => Future.value([userFile]));
 
     // Act
-    userFileBloc.add(LoadUserFiles());
+    userFileCubit.loadUserFiles();
 
     // Assert
     await expectLater(
-      userFileBloc.stream,
+      userFileCubit.stream,
       emits(const UserFilesLoaded([userFile])),
     );
   });
@@ -122,24 +122,26 @@ void main() {
       }
     });
 
+    final expectedStream = expectLater(
+        userFileCubit.stream,
+        emitsInOrder([
+          UserFilesNotLoaded({fileId: file}),
+          UserFilesLoaded(const [], {fileId: file}),
+          UserFilesLoaded(const [userFile], {fileId: file}),
+          UserFilesLoaded(const [userFile, userFile2], {fileId: file}),
+          UserFilesLoaded([userFile, userFile2, addedFile]),
+        ]));
+
     // Act -- Loadfiles
-    userFileBloc.add(LoadUserFiles());
+    userFileCubit.loadUserFiles();
     // Act -- while downloading files, user adds file
-    await untilCalled(() =>
-        mockUserFileRepository.downloadUserFiles(limit: any(named: 'limit')));
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId, filePath, file),
+      image: true,
     );
 
     // Assert --that added file is prioritized
-    await expectLater(
-        userFileBloc.stream,
-        emitsInOrder([
-          const UserFilesLoaded([userFile]),
-          UserFilesLoaded(const [userFile], {fileId: file}),
-          UserFilesLoaded([userFile, addedFile]),
-          UserFilesLoaded([userFile, addedFile, userFile2]),
-        ]));
+    await expectedStream;
   });
 
   test(
@@ -153,32 +155,35 @@ void main() {
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
 
-    // Act
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
-    );
-
     final expectedFile = UserFile(
       id: fileId,
       sha1: sha1.convert(processedFile1).toString(),
       md5: md5.convert(processedFile1).toString(),
       path: 'seagull/$fileId',
-      contentType: 'image/jpeg', // File is converted to jpeg
+      contentType: 'image/jpeg',
+      // File is converted to jpeg
       fileSize: processedFile1.length,
       deleted: false,
       fileLoaded: true,
     );
-
-    // Assert
-    await expectLater(
-      userFileBloc.stream,
+    final expectedStream = expectLater(
+      userFileCubit.stream,
       emitsInOrder([
-        const UserFilesLoaded([], {}),
+        UserFilesNotLoaded({fileId: file}),
         UserFilesLoaded(const [], {fileId: file}),
         UserFilesLoaded([expectedFile]),
       ]),
     );
+
+    // Act
+    userFileCubit.loadUserFiles();
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId, filePath, file),
+      image: true,
+    );
+
+    // Assert
+    await expectedStream;
   });
 
   test('State contains temp files when UserFileNotLoaded when file is added',
@@ -187,16 +192,19 @@ void main() {
     File file = MemoryFileSystem().file(filePath);
     await file.writeAsBytes(fileContent);
 
+    final expectedStream = expectLater(
+      userFileCubit.stream,
+      emits(UserFilesNotLoaded({fileId: file})),
+    );
+
     // Act
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath, file)),
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId, filePath, file),
+      image: true,
     );
 
     // Assert
-    await expectLater(
-      userFileBloc.stream,
-      emits(UserFilesNotLoaded({fileId: file})),
-    );
+    await expectedStream;
   });
 
   test('State contains two files when two is added in loaded state', () async {
@@ -214,16 +222,6 @@ void main() {
     when(() => mockUserFileRepository.getAllLoadedFiles())
         .thenAnswer((_) => Future.value([]));
 
-    // Act
-    userFileBloc.add(LoadUserFiles());
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath1, file)),
-    );
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId2, filePath2, file2)),
-    );
-
-    // Assert
     final expectedFile1 = UserFile(
       id: fileId,
       sha1: sha1.convert(processedFile1).toString(),
@@ -246,16 +244,30 @@ void main() {
       fileLoaded: true,
     );
 
-    await expectLater(
-      userFileBloc.stream,
+    final expectedStream = expectLater(
+      userFileCubit.stream,
       emitsInOrder([
-        const UserFilesLoaded([], {}),
-        UserFilesLoaded(const [], {fileId: file}),
-        UserFilesLoaded([expectedFile1]),
-        UserFilesLoaded([expectedFile1], {fileId2: file2}),
-        UserFilesLoaded([expectedFile1, expectedFile2]),
+        UserFilesNotLoaded({fileId: file}),
+        UserFilesNotLoaded({fileId: file, fileId2: file2}),
+        UserFilesLoaded(const [], {fileId: file, fileId2: file2}),
+        isA<UserFilesLoaded>(),
+        _StoredFileMatcher([expectedFile1, expectedFile2]),
       ]),
     );
+
+    // Act
+    userFileCubit.loadUserFiles();
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId, filePath1, file),
+      image: true,
+    );
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
+      image: true,
+    );
+
+    // Assert
+    await expectedStream;
   });
 
   test('State contains two temp files when not loaded state', () async {
@@ -269,21 +281,40 @@ void main() {
     File file2 = MemoryFileSystem().file(filePath2);
     await file2.writeAsBytes(fileContent);
 
-    // Act
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId, filePath1, file)),
-    );
-    userFileBloc.add(
-      ImageAdded(UnstoredAbiliaFile.forTest(fileId2, filePath2, file2)),
-    );
-
-    // Assert
-    await expectLater(
-      userFileBloc.stream,
+    final expectStream = expectLater(
+      userFileCubit.stream,
       emitsInOrder([
         UserFilesNotLoaded({fileId: file}),
         UserFilesNotLoaded({fileId: file, fileId2: file2}),
       ]),
     );
+
+    // Act
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId, filePath1, file),
+      image: true,
+    );
+    userFileCubit.fileAdded(
+      UnstoredAbiliaFile.forTest(fileId2, filePath2, file2),
+      image: true,
+    );
+
+    // Assert
+    await expectStream;
   });
+}
+
+class _StoredFileMatcher extends Matcher {
+  final List<UserFile> files;
+
+  _StoredFileMatcher(this.files);
+
+  @override
+  Description describe(Description description) =>
+      unorderedEquals(files).describe(description);
+
+  @override
+  bool matches(item, Map matchState) =>
+      (item is UserFilesLoaded) &&
+      unorderedEquals(files).matches(item.userFiles, matchState);
 }

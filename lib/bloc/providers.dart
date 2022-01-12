@@ -101,19 +101,19 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<MonthCalendarBloc>(
-              create: (context) => MonthCalendarBloc(
+            BlocProvider<MonthCalendarCubit>(
+              create: (context) => MonthCalendarCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<UserFileBloc>(
-              create: (context) => UserFileBloc(
+            BlocProvider<UserFileCubit>(
+              create: (context) => UserFileCubit(
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
                 pushBloc: context.read<PushBloc>(),
-              )..add(LoadUserFiles()),
+              )..loadUserFiles(),
               lazy: false,
             ),
             BlocProvider<SortableBloc>(
@@ -266,81 +266,6 @@ class TopLevelBlocsProvider extends StatelessWidget {
         ],
         child: child,
       ),
-    );
-  }
-}
-
-class CopiedAuthProviders extends StatelessWidget {
-  final Widget child;
-  final BuildContext blocContext;
-
-  const CopiedAuthProviders({
-    Key? key,
-    required this.blocContext,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // DON'T change  to
-    // BlocProvider<Bloc>( create: ...
-    // since create closes the blocs when widget is destroyed
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SyncBloc>.value(
-          value: blocContext.read<SyncBloc>(),
-        ),
-        BlocProvider<ActivitiesBloc>.value(
-          value: blocContext.read<ActivitiesBloc>(),
-        ),
-        BlocProvider<UserFileBloc>.value(
-          value: blocContext.read<UserFileBloc>(),
-        ),
-        BlocProvider<SortableBloc>.value(
-          value: blocContext.read<SortableBloc>(),
-        ),
-        BlocProvider<GenericBloc>.value(
-          value: blocContext.read<GenericBloc>(),
-        ),
-        BlocProvider<MemoplannerSettingBloc>.value(
-          value: blocContext.read<MemoplannerSettingBloc>(),
-        ),
-        BlocProvider<DayPickerBloc>.value(
-          value: blocContext.read<DayPickerBloc>(),
-        ),
-        BlocProvider<DayActivitiesCubit>.value(
-          value: blocContext.read<DayActivitiesCubit>(),
-        ),
-        BlocProvider<ActivitiesOccasionCubit>.value(
-          value: blocContext.read<ActivitiesOccasionCubit>(),
-        ),
-        BlocProvider<AlarmCubit>.value(
-          value: blocContext.read<AlarmCubit>(),
-        ),
-        BlocProvider<NotificationCubit>.value(
-          value: blocContext.read<NotificationCubit>(),
-        ),
-        BlocProvider<CalendarViewCubit>.value(
-          value: blocContext.read<CalendarViewCubit>(),
-        ),
-        BlocProvider<LicenseBloc>.value(
-          value: blocContext.read<LicenseBloc>(),
-        ),
-        BlocProvider<PermissionBloc>.value(
-          value: blocContext.read<PermissionBloc>(),
-        ),
-        BlocProvider<TimepillarCubit>.value(
-          value: blocContext.read<TimepillarCubit>(),
-        ),
-        BlocProvider<TimerCubit>.value(
-          value: blocContext.read<TimerCubit>(),
-        ),
-        if (Config.isMP)
-          BlocProvider<WakeLockCubit>.value(
-            value: blocContext.read<WakeLockCubit>(),
-          ),
-      ],
-      child: child,
     );
   }
 }

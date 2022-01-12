@@ -2,139 +2,28 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/logging.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class TopLevelListeners extends StatelessWidget {
-  final Widget child;
-  final GlobalKey<NavigatorState> navigatorKey;
-  final NotificationAlarm? payload;
-
-  const TopLevelListeners({
-    Key? key,
-    required this.child,
-    required this.navigatorKey,
-    this.payload,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => MultiBlocListener(
-        listeners: [
-          BlocListener<ClockBloc, DateTime>(
-            listener: (context, state) =>
-                GetIt.I<SeagullLogger>().maybeUploadLogs(),
-          ),
-          BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (last, current) =>
-                GetIt.I<BaseUrlDb>().getBaseUrl() !=
-                current.userRepository.baseUrl,
-            listener: (context, state) => GetIt.I<BaseUrlDb>().setBaseUrl(
-              state.userRepository.baseUrl,
-            ),
-          ),
-          BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (previous, current) =>
-                previous.runtimeType != current.runtimeType ||
-                previous.forcedNewState != current.forcedNewState,
-            listener: (context, state) async {
-              final _navigator = navigatorKey.currentState;
-              if (_navigator == null) {
-                context.read<AuthenticationBloc>().add(NotReady());
-                return;
-              }
-              if (state is Authenticated) {
-                await Permission.notification.request();
-                final _payload = payload;
-                if (_payload == null) {
-                  await _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                      builder: (_) {
-                        return AuthenticatedBlocsProvider(
-                          authenticatedState: state,
-                          child: const AlarmListeners(
-                            child: AuthenticatedListeners(
-                              child: CalendarPage(),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    (_) => false,
-                  );
-                } else {
-                  await _navigator.pushAndRemoveUntil(
-                      GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
-                        authenticatedState: state,
-                        alarm: _payload,
-                      ),
-                      (_) => false);
-                }
-              } else if (state is Unauthenticated) {
-                await _navigator.pushAndRemoveUntil<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) {
-                      return LoginPage(authState: state);
-                    },
-                  ),
-                  (_) => false,
-                );
-              }
-            },
-          ),
-        ],
-        child: child,
-      );
-}
-
-class AlarmListeners extends StatelessWidget {
-  final Widget child;
-  const AlarmListeners({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<NotificationCubit, NotificationAlarm?>(
-          listener: (context, state) async {
-            if (state != null) {
-              await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
-            }
-          },
-        ),
-        if (!Platform.isAndroid)
-          BlocListener<AlarmCubit, NotificationAlarm?>(
-            listener: (context, state) async {
-              if (state != null) {
-                await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
-              }
-            },
-          ),
-      ],
-      child: child,
-    );
-  }
-}
-
-class AuthenticatedListeners extends StatefulWidget {
-  const AuthenticatedListeners({
+class AuthenticatedListener extends StatefulWidget {
+  const AuthenticatedListener({
     Key? key,
     required this.child,
   }) : super(key: key);
 
   final Widget child;
+
   @override
-  _AuthenticatedListenersState createState() => _AuthenticatedListenersState();
+  _AuthenticatedListenerState createState() => _AuthenticatedListenerState();
 }
 
-class _AuthenticatedListenersState extends State<AuthenticatedListeners>
+class _AuthenticatedListenerState extends State<AuthenticatedListener>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -233,7 +122,7 @@ class _AuthenticatedListenersState extends State<AuthenticatedListeners>
                 current is InactivityThresholdReachedState &&
                 previous is ActivityDetectedState,
             listener: (context, state) {
-              context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
+              context.read<MonthCalendarCubit>().goToCurrentMonth();
               context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
               context.read<DayPickerBloc>().add(CurrentDay());
             },

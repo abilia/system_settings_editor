@@ -22,7 +22,6 @@ import '../../mocks/mocks.dart';
 
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
-import '../../test_helpers/types.dart';
 import '../../test_helpers/enter_text.dart';
 import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/verify_generic.dart';
@@ -455,8 +454,8 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          expect(find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
-              findsOneWidget);
+          expect(
+              find.byType(SortableLibrary<BasicActivityData>), findsOneWidget);
           expect(find.byType(BasicActivityLibraryItem), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           await tester.tap(find.text(title));
@@ -580,7 +579,7 @@ void main() {
           // Assert back at create acitivy page
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(
-            find.byType(typeOf<SortableLibrary<BasicActivityData>>()),
+            find.byType(SortableLibrary<BasicActivityData>),
             findsNothing,
           );
 

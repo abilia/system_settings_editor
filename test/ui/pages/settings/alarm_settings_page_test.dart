@@ -80,7 +80,7 @@ void main() {
         tester,
         genericDb,
         key: AlarmSettings.nonCheckableActivityAlarmKey,
-        matcher: Sound.AfloatSynth.name(),
+        matcher: Sound.AfloatSynth.name,
       );
     });
 
@@ -98,7 +98,7 @@ void main() {
         tester,
         genericDb,
         key: AlarmSettings.checkableActivityAlarmKey,
-        matcher: Sound.BreathlessPiano.name(),
+        matcher: Sound.BreathlessPiano.name,
       );
     });
 
@@ -116,7 +116,7 @@ void main() {
         tester,
         genericDb,
         key: AlarmSettings.reminderAlarmKey,
-        matcher: Sound.GibsonGuitar.name(),
+        matcher: Sound.GibsonGuitar.name,
       );
     });
 

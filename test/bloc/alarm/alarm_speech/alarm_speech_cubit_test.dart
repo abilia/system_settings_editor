@@ -15,7 +15,7 @@ import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late MockUserFileBloc mockUserFileBloc;
+  late MockUserFileCubit mockUserFileCubit;
   group('AlarmSpeechCubit', () {
     final startTime = DateTime(2021, 10, 15, 09, 29);
     final day = DateTime(2021, 10, 15);
@@ -88,8 +88,8 @@ void main() {
           return Future.value(1);
         }
       });
-      mockUserFileBloc = MockUserFileBloc();
-      when(() => mockUserFileBloc.state)
+      mockUserFileCubit = MockUserFileCubit();
+      when(() => mockUserFileCubit.state)
           .thenReturn(const UserFilesLoaded([userFile]));
     });
 
@@ -106,7 +106,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       expect: () => [],
@@ -121,7 +121,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       expect: () => [const AlarmSpeechPlayed()],
@@ -147,7 +147,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
@@ -174,7 +174,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       expect: () => [],
@@ -189,7 +189,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
@@ -208,7 +208,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         ),
       ),
       expect: () => [const AlarmSpeechPlayed()],
@@ -225,7 +225,7 @@ void main() {
         selectedNotificationStream: selectNotificationSubject,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
+          userFileCubit: mockUserFileCubit,
         )..play(speechFile),
       ),
       expect: () => [const AlarmSpeechPlayed()],

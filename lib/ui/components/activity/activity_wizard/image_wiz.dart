@@ -20,14 +20,15 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       buildWhen: (previous, current) =>
           previous.selectedImage != current.selectedImage,
       builder: (context, state) => SelectPictureBody(
         imageCallback: (newImage) {
           if (newImage is UnstoredAbiliaFile) {
-            BlocProvider.of<UserFileBloc>(context).add(
-              ImageAdded(newImage),
+            BlocProvider.of<UserFileCubit>(context).fileAdded(
+              newImage,
+              image: true,
             );
             BlocProvider.of<SortableBloc>(context).add(
               ImageArchiveImageAdded(
@@ -36,7 +37,7 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
               ),
             );
           }
-          context.read<EditActivityBloc>().add(ImageSelected(newImage));
+          context.read<EditActivityCubit>().imageSelected(newImage);
         },
         selectedImage: state.selectedImage,
         onCancel: Navigator.of(context).pop,

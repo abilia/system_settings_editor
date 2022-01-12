@@ -21,7 +21,6 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
-import '../../../test_helpers/types.dart';
 
 void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
@@ -37,7 +36,7 @@ void main() {
   final cancelButtonFinder = find.byType(CancelButton);
 
   late MockSortableBloc mockSortableBloc;
-  late MockUserFileBloc mockUserFileBloc;
+  late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
@@ -50,8 +49,9 @@ void main() {
     await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
-    mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockUserFileCubit = MockUserFileCubit();
+    when(() => mockUserFileCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -89,14 +89,14 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<EditActivityBloc>(
+              BlocProvider<EditActivityCubit>(
                 create: (context) => newActivity
-                    ? EditActivityBloc.newActivity(
+                    ? EditActivityCubit.newActivity(
                         day: today,
                         defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
                             .state.defaultAlarmTypeSetting,
                       )
-                    : EditActivityBloc.edit(
+                    : EditActivityCubit.edit(
                         ActivityDay(activity, today),
                       ),
               ),
@@ -105,18 +105,18 @@ void main() {
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
-                        editActivityBloc: context.read<EditActivityBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
                         settings: context.read<MemoplannerSettingBloc>().state,
                       )
                     : ActivityWizardCubit.edit(
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
-                        editActivityBloc: context.read<EditActivityBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
                         settings: mockMemoplannerSettingsBloc.state,
                       ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+              BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),
@@ -852,8 +852,7 @@ Internal improvements to tests and examples.''';
         await goToNote(tester);
         await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
-        expect(
-            find.byType(typeOf<SortableLibrary<NoteData>>()), findsOneWidget);
+        expect(find.byType(SortableLibrary<NoteData>), findsOneWidget);
         expect(find.byType(LibraryNote), findsWidgets);
         expect(find.text(content), findsOneWidget);
       });
@@ -941,7 +940,7 @@ Internal improvements to tests and examples.''';
       });
 
       testWidgets('Checklist with images shows', (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state)
+        when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
         await tester.pumpWidget(
           createEditActivityPage(
@@ -1196,7 +1195,7 @@ text''';
       });
 
       testWidgets('checklist library shows', (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state)
+        when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         when(() => mockSortableBloc.state).thenReturn(
@@ -1235,15 +1234,14 @@ text''';
         await goToChecklist(tester);
         await tester.tap(find.byIcon(AbiliaIcons.showText));
         await tester.pumpAndSettle();
-        expect(find.byType(typeOf<SortableLibrary<ChecklistData>>()),
-            findsOneWidget);
+        expect(find.byType(SortableLibrary<ChecklistData>), findsOneWidget);
         expect(find.byType(ChecklistLibraryPage), findsWidgets);
         expect(find.text(title1), findsOneWidget);
       });
 
       testWidgets('checklist from library is selectable',
           (WidgetTester tester) async {
-        when(() => mockUserFileBloc.state)
+        when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const checklisttitle1 = 'checklisttitle1',
@@ -2731,7 +2729,7 @@ text''';
 
       testWidgets('checklist', (WidgetTester tester) async {
         // Arrange
-        when(() => mockUserFileBloc.state)
+        when(() => mockUserFileCubit.state)
             .thenReturn(const UserFilesNotLoaded());
         const title1 = 'listtitle1';
         const item1Name = 'Item 1 name';

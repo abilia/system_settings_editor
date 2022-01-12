@@ -8,11 +8,18 @@ class TimerWizardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: 0);
     return BlocListener<TimerWizardCubit, TimerWizardState>(
-      listenWhen: (previous, current) =>
-          current.currentStep != previous.currentStep,
-      listener: (context, state) => pageController.animateToPage(state.step,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeOutQuad),
+      listenWhen: (previous, current) => current.step != previous.step,
+      listener: (context, state) {
+        if (state.isPastLastStep) {
+          return Navigator.pop(context, true);
+        }
+        if (state.isBeforeFirstStep) {
+          return Navigator.pop(context, false);
+        }
+        pageController.animateToPage(state.step,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOutQuad);
+      },
       child: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,

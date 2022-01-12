@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
+import 'package:seagull/utils/all.dart';
 
 class TimerDurationWiz extends StatelessWidget {
   const TimerDurationWiz({Key? key}) : super(key: key);
@@ -27,10 +27,11 @@ class TimerDurationWiz extends StatelessWidget {
                       TextEditingController(text: state.duration.toHMS()),
                   readOnly: true,
                   onTap: () async {
+                    final authProviders = copiedAuthProviders(context);
                     final duration = await Navigator.of(context).push<Duration>(
                       MaterialPageRoute(
-                        builder: (_) => CopiedAuthProviders(
-                          blocContext: context,
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
                           child: EditTimerByTypingPage(
                               initialDuration: state.duration),
                         ),
@@ -38,9 +39,6 @@ class TimerDurationWiz extends StatelessWidget {
                     );
                     if (duration != null) {
                       context.read<TimerWizardCubit>().updateDuration(duration);
-                      context.read<TimerWizardCubit>().updateName(duration
-                          .toDurationString(Translator.of(context).translate,
-                              shortMin: false));
                     }
                   },
                 ),
@@ -56,28 +54,19 @@ class TimerDurationWiz extends StatelessWidget {
                     context.read<TimerWizardCubit>().updateDuration(
                           Duration(minutes: minutesSelected),
                         );
-                    context.read<TimerWizardCubit>().updateName(
-                        Duration(minutes: minutesSelected).toDurationString(
-                            Translator.of(context).translate,
-                            shortMin: false));
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: PreviousButton(
-          onPressed: () async {
-            await Navigator.of(context).maybePop();
-            context.read<TimerWizardCubit>().previous();
-          },
+          onPressed: context.read<TimerWizardCubit>().previous,
         ),
         forwardNavigationWidget: NextButton(
-          onPressed: () {
-            context.read<TimerWizardCubit>().next();
-          },
+          onPressed: context.read<TimerWizardCubit>().next,
         ),
       ),
     );

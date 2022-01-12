@@ -100,11 +100,12 @@ class SelectPictureBody extends StatelessWidget {
                     leading: const Icon(AbiliaIcons.folder),
                     text: Text(translate.imageArchive),
                     onTap: () async {
+                      final authProviders = copiedAuthProviders(context);
                       final selectedImage =
                           await Navigator.of(context).push<AbiliaFile>(
                         MaterialPageRoute(
-                          builder: (_) => CopiedAuthProviders(
-                            blocContext: context,
+                          builder: (_) => MultiBlocProvider(
+                            providers: authProviders,
                             child: ImageArchivePage(onCancel: onCancel),
                           ),
                         ),
@@ -126,11 +127,13 @@ class SelectPictureBody extends StatelessWidget {
                       text: Text(translate.myPhotos),
                       onTap: (myPhotoFolder != null)
                           ? () async {
+                              final authProviders =
+                                  copiedAuthProviders(context);
                               final selectedImage =
                                   await Navigator.of(context).push<AbiliaFile>(
                                 MaterialPageRoute(
-                                  builder: (_) => CopiedAuthProviders(
-                                    blocContext: context,
+                                  builder: (_) => MultiBlocProvider(
+                                    providers: authProviders,
                                     child: ImageArchivePage(
                                       onCancel: onCancel,
                                       initialFolder: myPhotoFolder.id,
@@ -214,8 +217,9 @@ class ImageSourceWidget extends StatelessWidget {
                   onTap: () => showViewDialog(
                     useSafeArea: false,
                     context: context,
-                    builder: (context) =>
-                        PermissionInfoDialog(permission: permission),
+                    builder: (context) => PermissionInfoDialog(
+                      permission: permission,
+                    ),
                   ),
                 ),
               )

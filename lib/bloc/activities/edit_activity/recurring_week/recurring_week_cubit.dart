@@ -10,13 +10,13 @@ import 'package:seagull/utils/all.dart';
 part 'recurring_week_state.dart';
 
 class RecurringWeekCubit extends Cubit<RecurringWeekState> {
-  late final StreamSubscription _editActivityBlocSubscription,
+  late final StreamSubscription _editActivityCubitSubscription,
       _selfSubscription;
 
-  RecurringWeekCubit(EditActivityBloc editActivityBloc)
-      : super(RecurringWeekState.initial(editActivityBloc.state)) {
-    _editActivityBlocSubscription =
-        editActivityBloc.stream.listen((editActivityState) {
+  RecurringWeekCubit(EditActivityCubit editActivityCubit)
+      : super(RecurringWeekState.initial(editActivityCubit.state)) {
+    _editActivityCubitSubscription =
+        editActivityCubit.stream.listen((editActivityState) {
       final startDate = editActivityState.timeInterval.startDate;
       final endDate = editActivityState.activity.recurs.end;
       if (editActivityState.activity.recurs.weekly) {
@@ -30,11 +30,9 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     });
 
     _selfSubscription = stream.listen((recurringWeekState) {
-      editActivityBloc.add(
-        ReplaceActivity(
-          editActivityBloc.state.activity.copyWith(
-            recurs: recurringWeekState.recurs,
-          ),
+      editActivityCubit.replaceActivity(
+        editActivityCubit.state.activity.copyWith(
+          recurs: recurringWeekState.recurs,
         ),
       );
     });
@@ -56,7 +54,7 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
 
   @override
   Future<void> close() async {
-    await _editActivityBlocSubscription.cancel();
+    await _editActivityCubitSubscription.cancel();
     await _selfSubscription.cancel();
     return super.close();
   }

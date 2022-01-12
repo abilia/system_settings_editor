@@ -21,7 +21,7 @@ class SoundCubit extends Cubit<SoundState> {
   static const tmpFileEnding = 'mp3';
 
   final FileStorage storage;
-  final UserFileBloc userFileBloc;
+  final UserFileCubit userFileCubit;
   final AudioPlayer audioPlayer = AudioPlayer();
 
   final Map<AbiliaFile, File> _fileMap = {};
@@ -32,7 +32,7 @@ class SoundCubit extends Cubit<SoundState> {
 
   SoundCubit({
     required this.storage,
-    required this.userFileBloc,
+    required this.userFileCubit,
   }) : super(const NoSoundPlaying()) {
     onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
       emit(const NoSoundPlaying());
@@ -75,11 +75,12 @@ class SoundCubit extends Cubit<SoundState> {
     if (abiliaFile is UnstoredAbiliaFile) {
       return _fileMap[abiliaFile] = abiliaFile.file;
     }
-    if (userFileBloc.state is! UserFilesLoaded) {
-      log.fine('waiting for userFileBloc loaded');
-      await userFileBloc.stream.firstWhere((state) => state is UserFilesLoaded);
+    if (userFileCubit.state is! UserFilesLoaded) {
+      log.fine('waiting for user files loaded');
+      await userFileCubit.stream
+          .firstWhere((state) => state is UserFilesLoaded);
     }
-    final userFile = userFileBloc.state.getUserFileOrNull(abiliaFile);
+    final userFile = userFileCubit.state.getUserFileOrNull(abiliaFile);
     if (userFile != null) {
       final f = await _resoveFromUserFile(userFile);
       return f != null ? _fileMap[abiliaFile] = f : null;
@@ -87,7 +88,7 @@ class SoundCubit extends Cubit<SoundState> {
   }
 
   Future<File?> _resoveFromUserFile(UserFile userFile) async {
-    final file = userFileBloc.state.getFileOrTempFile(userFile, storage);
+    final file = userFileCubit.state.getFileOrTempFile(userFile, storage);
 
     if (file == null || !await file.exists()) return null;
 

@@ -7,7 +7,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
   @override
   Widget build(BuildContext context) {
     final _scrollController = ScrollController();
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, editActivityState) {
         final activity = editActivityState.activity;
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(

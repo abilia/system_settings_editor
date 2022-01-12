@@ -20,7 +20,7 @@ void main() {
   final translate = Locales.language.values.first;
 
   late MockSortableBloc mockSortableBloc;
-  late MockUserFileBloc mockUserFileBloc;
+  late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
@@ -43,8 +43,9 @@ void main() {
         ],
       ),
     );
-    mockUserFileBloc = MockUserFileBloc();
-    when(() => mockUserFileBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockUserFileCubit = MockUserFileCubit();
+    when(() => mockUserFileCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -83,8 +84,8 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<EditActivityBloc>(
-                create: (context) => EditActivityBloc.newActivity(
+              BlocProvider<EditActivityCubit>(
+                create: (context) => EditActivityCubit.newActivity(
                   day: today,
                   defaultAlarmTypeSetting:
                       mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
@@ -95,12 +96,12 @@ void main() {
                 create: (context) => ActivityWizardCubit.newActivity(
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
-                  editActivityBloc: context.read<EditActivityBloc>(),
+                  editActivityCubit: context.read<EditActivityCubit>(),
                   settings: context.read<MemoplannerSettingBloc>().state,
                 ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
-              BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
+              BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
                   clockBloc: context.read<ClockBloc>(),

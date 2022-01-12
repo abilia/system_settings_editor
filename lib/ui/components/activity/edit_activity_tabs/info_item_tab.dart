@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class InfoItemTab extends StatelessWidget with EditActivityTab {
   final bool showNote, showChecklist;
@@ -13,7 +14,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final translate = Translator.of(context).translate;
         final activity = state.activity;
@@ -30,8 +31,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
             ),
           );
           if (result != null) {
-            BlocProvider.of<EditActivityBloc>(context)
-                .add(ChangeInfoItemType(result));
+            context.read<EditActivityCubit>().changeInfoItemType(result);
           }
         }
 
@@ -100,20 +100,21 @@ class EditChecklistWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final selectedChecklist =
                     await Navigator.of(context).push<Checklist>(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const ChecklistLibraryPage(),
                     ),
                   ),
                 );
                 if (selectedChecklist != null &&
                     selectedChecklist != checklist) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                      ReplaceActivity(
-                          activity.copyWith(infoItem: selectedChecklist)));
+                  context.read<EditActivityCubit>().replaceActivity(
+                        activity.copyWith(infoItem: selectedChecklist),
+                      );
                 }
               },
             )
@@ -192,11 +193,14 @@ class EditChecklistWidget extends StatelessWidget {
   }
 
   void _handleEditQuestionResult(
-      final Question oldQuestion, BuildContext context) async {
+    final Question oldQuestion,
+    BuildContext context,
+  ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: EditQuestionPage(
             question: oldQuestion,
           ),
@@ -220,11 +224,11 @@ class EditChecklistWidget extends StatelessWidget {
         );
       }
 
-      _replaceActivity(
-        activity.copyWith(
-            infoItem: checklist.copyWith(questions: questionMap.values)),
-        context,
-      );
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: checklist.copyWith(questions: questionMap.values),
+            ),
+          );
     }
   }
 
@@ -235,11 +239,11 @@ class EditChecklistWidget extends StatelessWidget {
     final filteredQuestions =
         checklist.questions.where((q) => q.id != deletedQuestion.id);
 
-    _replaceActivity(
-      activity.copyWith(
-          infoItem: checklist.copyWith(questions: filteredQuestions)),
-      context,
-    );
+    context.read<EditActivityCubit>().replaceActivity(
+          activity.copyWith(
+            infoItem: checklist.copyWith(questions: filteredQuestions),
+          ),
+        );
   }
 
   void _handleReorderQuestion(
@@ -261,17 +265,19 @@ class EditChecklistWidget extends StatelessWidget {
       questions[swapWithIndex] = tmpQ;
     }
 
-    _replaceActivity(
-      activity.copyWith(infoItem: checklist.copyWith(questions: questions)),
-      context,
-    );
+    context.read<EditActivityCubit>().replaceActivity(
+          activity.copyWith(
+            infoItem: checklist.copyWith(questions: questions),
+          ),
+        );
   }
 
   void _handleNewQuestion(BuildContext context) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<ImageAndName>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: const EditQuestionPage(),
         ),
       ),
@@ -280,29 +286,22 @@ class EditChecklistWidget extends StatelessWidget {
     if (result != null && result.isNotEmpty) {
       final uniqueId = DateTime.now().millisecondsSinceEpoch;
 
-      _replaceActivity(
-        activity.copyWith(
-          infoItem: checklist.copyWith(
-            questions: [
-              ...checklist.questions,
-              Question(
-                id: uniqueId,
-                name: result.name,
-                fileId: result.image.id,
-                image: result.image.path,
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: checklist.copyWith(
+                questions: [
+                  ...checklist.questions,
+                  Question(
+                    id: uniqueId,
+                    name: result.name,
+                    fileId: result.image.id,
+                    image: result.image.path,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        context,
-      );
+            ),
+          );
     }
-  }
-
-  void _replaceActivity(Activity newActivity, BuildContext context) {
-    BlocProvider.of<EditActivityBloc>(context).add(
-      ReplaceActivity(newActivity),
-    );
   }
 }
 
@@ -335,20 +334,21 @@ class EditNoteWidget extends StatelessWidget {
             ),
             _LibraryButton(
               onPressed: () async {
+                final authProviders = copiedAuthProviders(context);
                 final result = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => CopiedAuthProviders(
-                      blocContext: context,
+                    builder: (_) => MultiBlocProvider(
+                      providers: authProviders,
                       child: const NoteLibraryPage(),
                     ),
                   ),
                 );
                 if (result != null && result != infoItem.text) {
-                  BlocProvider.of<EditActivityBloc>(context).add(
-                    ReplaceActivity(activity.copyWith(
-                      infoItem: NoteInfoItem(result),
-                    )),
-                  );
+                  context.read<EditActivityCubit>().replaceActivity(
+                        activity.copyWith(
+                          infoItem: NoteInfoItem(result),
+                        ),
+                      );
                 }
               },
             )
@@ -382,10 +382,11 @@ class EditNoteWidget extends StatelessWidget {
     Activity activity,
     NoteInfoItem infoItem,
   ) async {
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<String>(
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => CopiedAuthProviders(
-          blocContext: context,
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: authProviders,
           child: EditNotePage(text: infoItem.text),
         ),
         settings: const RouteSettings(name: 'EditNotePage'),
@@ -399,13 +400,11 @@ class EditNoteWidget extends StatelessWidget {
       ),
     );
     if (result != null && result != infoItem.text) {
-      BlocProvider.of<EditActivityBloc>(context).add(
-        ReplaceActivity(
-          activity.copyWith(
-            infoItem: NoteInfoItem(result),
-          ),
-        ),
-      );
+      context.read<EditActivityCubit>().replaceActivity(
+            activity.copyWith(
+              infoItem: NoteInfoItem(result),
+            ),
+          );
     }
   }
 }

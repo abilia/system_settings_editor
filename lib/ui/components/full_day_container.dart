@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class FullDayContainer extends StatelessWidget {
   const FullDayContainer({
@@ -70,6 +71,8 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return Padding(
       padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
       child: IconActionButton(
@@ -77,8 +80,8 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (_, animation, secondaryAnimation) =>
-                  CopiedAuthProviders(
-                blocContext: context,
+                  MultiBlocProvider(
+                providers: authProviders,
                 child: FadeTransition(
                   opacity: CurvedAnimation(
                     parent: animation,

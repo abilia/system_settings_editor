@@ -2,9 +2,13 @@ part of 'sortable.dart';
 
 abstract class SortableData extends Equatable {
   const SortableData();
+
   String toRaw();
+
   String title(Translated t);
+
   String folderFileId();
+
   String folderFilePath();
 }
 

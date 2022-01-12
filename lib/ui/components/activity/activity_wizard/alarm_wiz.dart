@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_bloc.dart';
+import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
 import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/models/alarm.dart';
 import 'package:seagull/ui/all.dart';
@@ -22,28 +22,27 @@ class SelectAlarmWizPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       buildWhen: (previous, current) => previous.activity != current.activity,
       builder: (context, state) => SelectAlarmTypeBody(
         alarm: state.activity.alarm.typeSeagull,
-        onChanged: (AlarmType? type) => context.read<EditActivityBloc>().add(
-              ReplaceActivity(
-                state.activity.copyWith(
-                  alarm: state.activity.alarm.copyWith(type: type),
+        onChanged: (AlarmType? type) =>
+            context.read<EditActivityCubit>().replaceActivity(
+                  state.activity.copyWith(
+                    alarm: state.activity.alarm.copyWith(type: type),
+                  ),
                 ),
-              ),
-            ),
         trailing: [
           const SizedBox(),
           const Divider(),
           SizedBox(height: 8.s),
           AlarmOnlyAtStartSwitch(
             alarm: state.activity.alarm,
-            onChanged: (bool onStart) => context.read<EditActivityBloc>().add(
-                  ReplaceActivity(
-                    state.activity.copyWith(
-                      alarm: state.activity.alarm.copyWith(onlyStart: onStart),
-                    ),
+            onChanged: (bool onStart) => context
+                .read<EditActivityCubit>()
+                .replaceActivity(
+                  state.activity.copyWith(
+                    alarm: state.activity.alarm.copyWith(onlyStart: onStart),
                   ),
                 ),
           ),
@@ -52,9 +51,8 @@ class SelectAlarmWizPage extends StatelessWidget {
           SizedBox(height: 24.s),
           RecordSoundWidget(
             activity: state.activity,
-            soundChanged: (Activity newActivity) => context
-                .read<EditActivityBloc>()
-                .add(ReplaceActivity(newActivity)),
+            soundChanged: (Activity newActivity) =>
+                context.read<EditActivityCubit>().replaceActivity(newActivity),
           ),
         ],
       ),

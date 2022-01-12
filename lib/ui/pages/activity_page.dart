@@ -131,12 +131,13 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     ActivityDay activityDay,
   ) async {
     final activity = activityDay.activity;
+    final authProviders = copiedAuthProviders(context);
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
-        builder: (_) => CopiedAuthProviders(
-          blocContext: context,
-          child: BlocProvider<EditActivityBloc>(
-            create: (_) => EditActivityBloc.edit(activityDay),
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
+          child: BlocProvider<EditActivityCubit>(
+            create: (_) => EditActivityCubit.edit(activityDay),
             child: SelectAlarmPage(activity: activity),
           ),
         ),
@@ -222,23 +223,25 @@ class EditActivityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
     return TextAndOrIconActionButtonLight(
       Translator.of(context).translate.edit,
       AbiliaIcons.edit,
       onPressed: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => CopiedAuthProviders(
-              blocContext: context,
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider<EditActivityBloc>(
-                    create: (_) => EditActivityBloc.edit(activityDay),
+                  BlocProvider<EditActivityCubit>(
+                    create: (_) => EditActivityCubit.edit(activityDay),
                   ),
                   BlocProvider(
                     create: (context) => ActivityWizardCubit.edit(
                       activitiesBloc: context.read<ActivitiesBloc>(),
-                      editActivityBloc: context.read<EditActivityBloc>(),
+                      editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
                       settings: context.read<MemoplannerSettingBloc>().state,
                     ),

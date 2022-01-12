@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
@@ -11,22 +10,20 @@ part 'activity_wizard_state.dart';
 
 class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final ActivitiesBloc activitiesBloc;
-  final EditActivityBloc editActivityBloc;
+  final EditActivityCubit editActivityCubit;
   final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
   final bool edit;
-  final VoidCallback? onBack;
 
   bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
 
-  StreamSubscription<EditActivityState>? _activityBlocSubscription;
+  StreamSubscription<EditActivityState>? _editActivityCubitSubscription;
 
   ActivityWizardCubit.newActivity({
     required this.activitiesBloc,
-    required this.editActivityBloc,
+    required this.editActivityCubit,
     required this.clockBloc,
     required this.settings,
-    this.onBack,
   })  : edit = false,
         super(
           ActivityWizardState(
@@ -38,11 +35,11 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
                     ],
                   )
                 : _generateWizardSteps(
-                    settings, editActivityBloc.state.activity),
+                    settings, editActivityCubit.state.activity),
           ),
         ) {
     if (settings.addActivityType == NewActivityMode.stepByStep) {
-      _activityBlocSubscription = editActivityBloc.stream.listen(
+      _editActivityCubitSubscription = editActivityCubit.stream.listen(
         (event) {
           final newSteps = _generateWizardSteps(settings, event.activity);
           if (newSteps != state.steps) {
@@ -82,10 +79,9 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
 
   ActivityWizardCubit.edit({
     required this.activitiesBloc,
-    required this.editActivityBloc,
+    required this.editActivityCubit,
     required this.clockBloc,
     required this.settings,
-    this.onBack,
   })  : edit = true,
         super(ActivityWizardState(0, const [WizardStep.advance]));
 
@@ -96,7 +92,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     if (state.isLastStep) {
       return emit(
         _saveActivity(
-          editActivityBloc.state,
+          editActivityCubit.state,
           beforeNowWarningConfirmed:
               warningConfirmed || !state.steps.contains(WizardStep.advance),
           conflictWarningConfirmed: warningConfirmed,
@@ -105,7 +101,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
       );
     }
 
-    final error = editActivityBloc.state.stepErrors(
+    final error = editActivityCubit.state.stepErrors(
       wizState: state,
       now: clockBloc.state,
       allowActivityTimeBeforeCurrent: allowActivityTimeBeforeCurrent,
@@ -119,13 +115,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     emit(state.copyWith(newStep: (state.step + 1)));
   }
 
-  void previous() async {
-    if (state.isFirstStep) {
-      onBack?.call();
-    } else {
-      emit(state.copyWith(newStep: (state.step - 1)));
-    }
-  }
+  void previous() => emit(state.copyWith(newStep: (state.step - 1)));
 
   ActivityWizardState _saveActivity(
     EditActivityState editState, {
@@ -164,13 +154,13 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
       activitiesBloc.add(UpdateActivity(activity));
     }
 
-    editActivityBloc.add(ActivitySavedSuccessfully(activity));
+    editActivityCubit.activitySaved(activity);
     return state.saveSucess();
   }
 
   @override
   Future<void> close() async {
-    await _activityBlocSubscription?.cancel();
+    await _editActivityCubitSubscription?.cancel();
     return super.close();
   }
 }
