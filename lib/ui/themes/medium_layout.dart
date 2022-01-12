@@ -20,7 +20,7 @@ class _MediumLayout extends Layout {
             crossAxisCount: 3,
           ),
           toolbar: const ToolbarLayout(
-            heigth: 120,
+            height: 120,
             bottomPadding: 8,
           ),
           tabBar: const TabBarLayout(
@@ -28,7 +28,7 @@ class _MediumLayout extends Layout {
               width: 118,
               border: 2,
             ),
-            heigth: 104,
+            height: 104,
             bottomPadding: 8,
           ),
           fontSize: const FontSize(

@@ -11,7 +11,7 @@ class CalendarBottomBar extends StatelessWidget {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, settingsState) => BottomAppBar(
         child: Container(
-          height: layout.toolbar.heigth,
+          height: layout.toolbar.height,
           padding: EdgeInsets.only(
             left: layout.toolbar.horizontalPadding,
             right: layout.toolbar.horizontalPadding,

@@ -75,10 +75,10 @@ class MenuPageLayout {
 }
 
 class ToolbarLayout {
-  final double heigth, horizontalPadding, bottomPadding;
+  final double height, horizontalPadding, bottomPadding;
 
   const ToolbarLayout({
-    this.heigth = 64,
+    this.height = 64,
     this.horizontalPadding = 16,
     this.bottomPadding = 0,
   });
@@ -86,11 +86,11 @@ class ToolbarLayout {
 
 class TabBarLayout {
   final TabItemLayout item;
-  final double heigth, bottomPadding;
+  final double height, bottomPadding;
 
   const TabBarLayout({
     this.item = const TabItemLayout(),
-    this.heigth = 64,
+    this.height = 64,
     this.bottomPadding = 0,
   });
 }
