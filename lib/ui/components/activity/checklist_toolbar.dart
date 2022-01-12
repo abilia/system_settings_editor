@@ -51,6 +51,7 @@ class ChecklistToolbar extends StatelessWidget {
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
+              key: TestKey.checklistToolbarDownButton,
               disabled: disableDown,
               iconData: AbiliaIcons.cursorDown,
               onTap: () => onTapReorder(ChecklistReorderDirection.down),

@@ -1100,6 +1100,27 @@ Internal improvements to tests and examples.''';
         expect(find.byType(ChecklistToolbar), findsOneWidget);
       });
 
+      testWidgets('Can reorder questions', (WidgetTester tester) async {
+        await tester.pumpWidget(
+            createEditActivityPage(givenActivity: activityWithChecklist));
+        await tester.pumpAndSettle();
+        await tester.goToInfoItemTab();
+
+        final question0y = tester.getCenter(find.text(questions[0]!)).dy;
+        final question1y = tester.getCenter(find.text(questions[1]!)).dy;
+        expect(true, question0y < question1y);
+
+        await tester.tap(find.text(questions[0]!));
+        await tester.pumpAndSettle();
+        expect(find.byType(ChecklistToolbar), findsOneWidget);
+        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
+        await tester.pumpAndSettle();
+
+        final newQuestion0y = tester.getCenter(find.text(questions[0]!)).dy;
+        final newQuestion1y = tester.getCenter(find.text(questions[1]!)).dy;
+        expect(true, newQuestion0y > newQuestion1y);
+      });
+
       testWidgets('Can edit question', (WidgetTester tester) async {
         const newQuestionName = 'laditatssss';
         await tester.pumpWidget(
