@@ -46,7 +46,9 @@ class ViewTimerPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(30.s, 28.s, 29.s, 28.s),
                   child: TimerWheel.nonInteractive(
-                      activeSeconds: timer.duration.inSeconds),
+                    activeSeconds: timer.duration.inSeconds,
+                    timerLengthInMinutes: timer.duration.inMinutes,
+                  ),
                 ),
               ),
             ],

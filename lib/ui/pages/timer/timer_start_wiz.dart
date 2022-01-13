@@ -30,7 +30,9 @@ class TimerStartWiz extends StatelessWidget {
                   ),
                   constraints: const BoxConstraints.expand(),
                   child: TimerWheel.nonInteractive(
-                      activeSeconds: state.duration.inSeconds),
+                    activeSeconds: state.duration.inSeconds,
+                    timerLengthInMinutes: state.duration.inMinutes,
+                  ),
                 ),
               ),
             ),
