@@ -136,11 +136,14 @@ class EditChecklistWidget extends StatelessWidget {
                           bottom: BorderSide(color: AbiliaColors.white120),
                         ),
                       ),
-                      child: ChecklistView(
+                      child: ChecklistView.withToolbar(
                         checklist,
                         padding:
                             EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
-                        onTap: (r) => _handleEditQuestionResult(r, context),
+                        onTapEdit: (r) => _handleEditQuestionResult(r, context),
+                        onTapDelete: (q) => _handleDeleteQuestion(q, context),
+                        onTapReorder: (q, d) =>
+                            _handleReorderQuestion(q, d, context),
                         preview: true,
                       ),
                     ),
@@ -227,6 +230,46 @@ class EditChecklistWidget extends StatelessWidget {
             ),
           );
     }
+  }
+
+  void _handleDeleteQuestion(
+    final Question deletedQuestion,
+    BuildContext context,
+  ) {
+    final filteredQuestions =
+        checklist.questions.where((q) => q.id != deletedQuestion.id);
+
+    context.read<EditActivityCubit>().replaceActivity(
+          activity.copyWith(
+            infoItem: checklist.copyWith(questions: filteredQuestions),
+          ),
+        );
+  }
+
+  void _handleReorderQuestion(
+    final Question question,
+    ChecklistReorderDirection direction,
+    BuildContext context,
+  ) {
+    var questions = checklist.questions.toList();
+    final qIndex = questions.indexWhere((q) => q.id == question.id);
+    final swapWithIndex =
+        direction == ChecklistReorderDirection.up ? qIndex - 1 : qIndex + 1;
+
+    if (qIndex >= 0 &&
+        qIndex < questions.length &&
+        swapWithIndex >= 0 &&
+        swapWithIndex < questions.length) {
+      final tmpQ = questions[qIndex];
+      questions[qIndex] = questions[swapWithIndex];
+      questions[swapWithIndex] = tmpQ;
+    }
+
+    context.read<EditActivityCubit>().replaceActivity(
+          activity.copyWith(
+            infoItem: checklist.copyWith(questions: questions),
+          ),
+        );
   }
 
   void _handleNewQuestion(BuildContext context) async {
