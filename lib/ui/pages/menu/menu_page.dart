@@ -140,7 +140,7 @@ class PhotoCalendarButton extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
 
     return MenuItemButton(
-      icon: AbiliaIcons.day,
+      icon: AbiliaIcons.photoCalendar,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -177,7 +177,7 @@ class QuickSettingsButton extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
 
     return MenuItemButton(
-      icon: AbiliaIcons.menuSetup,
+      icon: AbiliaIcons.quickSettings,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
