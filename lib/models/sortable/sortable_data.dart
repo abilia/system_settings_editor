@@ -172,6 +172,88 @@ class ChecklistData extends SortableData {
   String folderFilePath() => checklist.icon;
 }
 
+abstract class BasicTimerData extends SortableData {}
+
+class BasicTimerDataItem extends BasicTimerData {
+  final String fileId, icon, basicTimerTitle;
+  final int duration;
+
+  BasicTimerDataItem._({
+    required this.basicTimerTitle,
+    required this.icon,
+    required this.fileId,
+    this.duration = 0,
+  });
+
+  factory BasicTimerDataItem.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicTimerDataItem._(
+      basicTimerTitle: sortableData['title'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+      duration: sortableData['duration'] ?? 0,
+    );
+  }
+
+  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
+
+  @override
+  List<Object> get props => [title, icon, fileId];
+
+  @override
+  String title(t) => basicTimerTitle;
+
+  @override
+  String toRaw() => json.encode({
+        'name': basicTimerTitle,
+        'icon': icon,
+        'fileId': fileId,
+      });
+}
+
+class BasicTimerDataFolder extends BasicTimerData {
+  final String name, icon, fileId;
+  BasicTimerDataFolder._({
+    required this.name,
+    required this.icon,
+    required this.fileId,
+  });
+
+  factory BasicTimerDataFolder.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicTimerDataFolder._(
+      name: sortableData['name'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+    );
+  }
+
+  @override
+  String folderFileId() => fileId;
+
+  @override
+  String folderFilePath() => icon;
+
+  @override
+  List<Object> get props => [name, icon, fileId];
+
+  @override
+  String title(t) => name;
+
+  @override
+  String toRaw() => json.encode({
+        'name': name,
+        'icon': icon,
+        'fileId': fileId,
+      });
+}
+
 abstract class BasicActivityData extends SortableData {}
 
 class BasicActivityDataItem extends BasicActivityData {

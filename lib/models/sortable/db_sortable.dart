@@ -67,6 +67,30 @@ class DbSortable extends DbModel<Sortable> {
           visible: visible,
           fixed: fixed,
         );
+      case SortableType.basetimer:
+        return isGroup
+            ? Sortable<BasicTimerDataFolder>._(
+                id: id,
+                type: type,
+                data: BasicTimerDataFolder.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+                fixed: fixed,
+              )
+            : Sortable<BasicTimerDataItem>._(
+                id: id,
+                type: type,
+                data: BasicTimerDataItem.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+                fixed: fixed,
+              );
       case SortableType.basicactivity:
         return isGroup
             ? Sortable<BasicActivityDataFolder>._(

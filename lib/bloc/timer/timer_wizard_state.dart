@@ -4,7 +4,7 @@ class TimerWizardState extends Equatable {
   final Duration duration;
   final AbiliaFile image;
   final String name;
-  final int step;
+  final int step, startingStep;
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step == steps.length - 1;
@@ -21,6 +21,7 @@ class TimerWizardState extends Equatable {
     this.name = '',
     this.image = AbiliaFile.empty,
     this.step = 0,
+    this.startingStep = 0,
   });
 
   TimerWizardState copyWith({
@@ -36,6 +37,7 @@ class TimerWizardState extends Equatable {
       name: name ?? this.name,
       image: image ?? this.image,
       step: step ?? this.step,
+      startingStep: startingStep,
     );
   }
 

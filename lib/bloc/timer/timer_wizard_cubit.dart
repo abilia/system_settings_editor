@@ -17,15 +17,33 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
   TimerWizardCubit({
     required this.timerCubit,
     required this.translate,
+    BasicTimerDataItem? basicTimer,
   }) : super(
-          TimerWizardState(
-            steps: UnmodifiableListView(
-              [
-                TimerWizardStep.duration,
-                TimerWizardStep.start,
-              ],
-            ),
-          ),
+          basicTimer == null
+              ? TimerWizardState(
+                  steps: UnmodifiableListView(
+                    [
+                      TimerWizardStep.duration,
+                      TimerWizardStep.start,
+                    ],
+                  ),
+                )
+              : TimerWizardState(
+                  steps: UnmodifiableListView(
+                    [
+                      TimerWizardStep.duration,
+                      TimerWizardStep.start,
+                    ],
+                  ),
+                  duration: basicTimer.duration.milliseconds(),
+                  name: basicTimer.basicTimerTitle,
+                  image: basicTimer.hasImage
+                      ? AbiliaFile.from(
+                          id: basicTimer.fileId, path: basicTimer.icon)
+                      : AbiliaFile.empty,
+                  step: 1,
+                  startingStep: 1,
+                ),
         );
 
   void next() {
