@@ -52,16 +52,16 @@ class LongPressInfoDialog extends StatelessWidget {
   }
 
   Widget buildPreviewActivityCard(Translated translate) {
+    final time = DateTime.now();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.0.s),
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
           Activity.createNew(
             title: translate.lunch,
-            startTime:
-                DateTime.now().withTime(const TimeOfDay(hour: 12, minute: 0)),
+            startTime: time.withTime(const TimeOfDay(hour: 12, minute: 0)),
           ),
-          DateTime.now(),
+          time.onlyDays(),
           Occasion.future,
         ),
         preview: true,

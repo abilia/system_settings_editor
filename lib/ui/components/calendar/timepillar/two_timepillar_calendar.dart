@@ -6,14 +6,14 @@ import 'package:seagull/utils/all.dart';
 class TwoTimepillarCalendar extends StatelessWidget {
   TwoTimepillarCalendar({
     Key? key,
-    required this.activityState,
+    required this.eventState,
     required this.showCategories,
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
   }) : super(key: key);
 
-  final ActivitiesOccasionLoaded activityState;
+  final EventsOccasionLoaded eventState;
 
   final bool showCategories, displayHourLines, displayTimeline;
 
@@ -23,7 +23,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final day = activityState.day;
+    final day = eventState.day;
     final nightInterval = TimepillarInterval(
       start: day.add(dayParts.night),
       end: day.nextDay().add(dayParts.morningStart.milliseconds()),
@@ -57,7 +57,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     create: (_) =>
                         TimepillarCubit.fixed(state: dayTimepillarState),
                     child: OneTimepillarCalendar(
-                      activityState: activityState,
+                      eventState: eventState,
                       timepillarState: dayTimepillarState,
                       dayParts: dayParts,
                       displayTimeline: displayTimeline,
@@ -96,18 +96,23 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
                       child: BlocBuilder<NightActivitiesCubit,
-                          ActivitiesOccasionLoaded>(
-                        builder: (context, nightState) => OneTimepillarCalendar(
-                          activityState: nightState,
-                          timepillarState: nightTimepillarState,
-                          dayParts: dayParts,
-                          displayTimeline: displayTimeline,
-                          showCategories: showCategories,
-                          showCategoryLabels: false,
-                          scrollToTimeOffset: false,
-                          displayHourLines: displayHourLines,
-                          topMargin: verticalMargin,
-                          bottomMargin: verticalMargin,
+                          EventsOccasionLoaded>(
+                        builder: (context, nightState) =>
+                            BlocBuilder<ClockBloc, DateTime>(
+                          builder: (context, now) {
+                            return OneTimepillarCalendar(
+                              eventState: nightState,
+                              timepillarState: nightTimepillarState,
+                              dayParts: dayParts,
+                              displayTimeline: displayTimeline,
+                              showCategories: showCategories,
+                              showCategoryLabels: false,
+                              scrollToTimeOffset: false,
+                              displayHourLines: displayHourLines,
+                              topMargin: verticalMargin,
+                              bottomMargin: verticalMargin,
+                            );
+                          },
                         ),
                       ),
                     ),

@@ -145,16 +145,16 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 clockBloc: context.read<ClockBloc>(),
               ),
             ),
-            BlocProvider<DayActivitiesCubit>(
-              create: (context) => DayActivitiesCubit(
+            BlocProvider<DayEventsCubit>(
+              create: (context) => DayEventsCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
+                timerCubit: context.read<TimerCubit>(),
               ),
             ),
-            BlocProvider<ActivitiesOccasionCubit>(
-              create: (context) => ActivitiesOccasionCubit(
-                clockBloc: context.read<ClockBloc>(),
-                dayActivitiesCubit: context.read<DayActivitiesCubit>(),
+            BlocProvider<EventsOccasionCubit>(
+              create: (context) => EventsOccasionCubit(
+                dayEventsCubit: context.read<DayEventsCubit>(),
               ),
             ),
             BlocProvider<AlarmCubit>(

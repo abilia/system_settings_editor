@@ -6,8 +6,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks/mock_bloc.dart';
-import '../../../test_helpers/register_fallback_values.dart';
+import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ClockBloc clockBloc;
@@ -57,8 +57,9 @@ void main() {
     test('initial state morning before', () {
       expect(
         nightActivitiesCubit.state,
-        ActivitiesOccasionLoaded(
+        EventsOccasionLoaded(
           activities: const [],
+          timers: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),
@@ -70,8 +71,9 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: const [],
+            timers: const [],
             day: previusDay,
             occasion: Occasion.past,
           ),
@@ -84,8 +86,9 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: const [],
+            timers: const [],
             day: nextDay,
             occasion: Occasion.future,
           ),
@@ -99,8 +102,9 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: const [],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -113,8 +117,9 @@ void main() {
       await expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: const [],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),
@@ -124,8 +129,9 @@ void main() {
       await expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: const [],
+            timers: const [],
             day: previusDay,
             occasion: Occasion.current,
           ),
@@ -144,8 +150,9 @@ void main() {
         expectLater(
           nightActivitiesCubit.stream,
           emits(
-            ActivitiesOccasionLoaded(
+            EventsOccasionLoaded(
               activities: const [],
+              timers: const [],
               day: initialDay,
               occasion: Occasion.future,
             ),
@@ -159,8 +166,9 @@ void main() {
     test('no activity starting off night', () {
       expect(
         nightActivitiesCubit.state,
-        ActivitiesOccasionLoaded(
+        EventsOccasionLoaded(
           activities: const [],
+          timers: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),
@@ -176,10 +184,14 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: [
-              ActivityOccasion.forTest(activity, occasion: Occasion.future)
+              ActivityDay(
+                activity,
+                activity.startTime.onlyDays(),
+              )
             ],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),
@@ -197,10 +209,14 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsOccasionLoaded(
             activities: [
-              ActivityOccasion.forTest(activity, occasion: Occasion.future)
+              ActivityDay(
+                activity,
+                activity.startTime.onlyDays(),
+              )
             ],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),

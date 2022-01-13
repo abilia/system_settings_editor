@@ -50,9 +50,9 @@ class MonthPreview extends StatelessWidget {
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
-        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
+        child: BlocBuilder<EventsOccasionCubit, EventsOccasionState>(
           builder: (context, activityState) =>
-              activityState is ActivitiesOccasionLoaded
+              activityState is EventsOccasionLoaded
                   ? ActivityList(
                       state: activityState,
                       topPadding: 12.s,
@@ -90,14 +90,14 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
+        child: BlocBuilder<EventsOccasionCubit, EventsOccasionState>(
           buildWhen: (oldState, newState) =>
-              (oldState is ActivitiesOccasionLoaded &&
-                  newState is ActivitiesOccasionLoaded &&
+              (oldState is EventsOccasionLoaded &&
+                  newState is EventsOccasionLoaded &&
                   oldState.day != newState.day) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) {
-            final fullDayActivies = (activityState as ActivitiesOccasionLoaded)
+            final fullDayActivies = (activityState as EventsOccasionLoaded)
                 .fullDayActivities
                 .length;
             return Row(

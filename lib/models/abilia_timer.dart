@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/models/all.dart';
 
-class AbiliaTimer extends Equatable {
+class AbiliaTimer extends Equatable implements Event {
   final String id;
   final String title;
   final String fileId;
@@ -18,6 +19,14 @@ class AbiliaTimer extends Equatable {
     required this.duration,
     this.pausedAt = Duration.zero,
   });
+
+  DateTime get endTime => startTime.add(duration);
+  @override
+  DateTime startClock(DateTime day) => startTime;
+  @override
+  DateTime endClock(DateTime day) => endTime;
+  @override
+  final int category = Category.right;
 
   Map<String, dynamic> toMapForDb() => {
         'id': id,

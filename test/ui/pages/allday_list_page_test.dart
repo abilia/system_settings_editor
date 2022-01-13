@@ -18,7 +18,7 @@ import '../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2111, 11, 11);
-  late MockActivitiesOccasionCubit activitiesOccasionCubitMock;
+  late MockEventsOccasionCubit eventsOccasionCubitMock;
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
@@ -28,8 +28,8 @@ void main() {
         home: MultiBlocProvider(providers: [
           BlocProvider<AuthenticationBloc>(
               create: (context) => FakeAuthenticationBloc()),
-          BlocProvider<ActivitiesOccasionCubit>(
-            create: (context) => activitiesOccasionCubitMock,
+          BlocProvider<EventsOccasionCubit>(
+            create: (context) => eventsOccasionCubitMock,
           ),
           BlocProvider<ActivitiesBloc>(
             create: (context) => FakeActivitiesBloc(),
@@ -61,7 +61,7 @@ void main() {
   setUp(() async {
     await initializeDateFormatting();
     setupFakeTts();
-    activitiesOccasionCubitMock = MockActivitiesOccasionCubit();
+    eventsOccasionCubitMock = MockEventsOccasionCubit();
 
     final allDayActivities = [
       Activity.createNew(
@@ -82,15 +82,16 @@ void main() {
       ),
     ].map((a) => ActivityDay(a, day).toOccasion(day)).toList();
 
-    final expected = ActivitiesOccasionLoaded(
+    final expected = EventsOccasionLoaded(
       activities: const [],
+      timers: const [],
       fullDayActivities: allDayActivities,
       day: day,
       occasion: Occasion.current,
     );
 
-    when(() => activitiesOccasionCubitMock.state).thenReturn(expected);
-    when(() => activitiesOccasionCubitMock.stream)
+    when(() => eventsOccasionCubitMock.state).thenReturn(expected);
+    when(() => eventsOccasionCubitMock.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

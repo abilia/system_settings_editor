@@ -102,23 +102,23 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         itemBuilder: (context, index) {
-          return BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
+          return BlocBuilder<EventsOccasionCubit, EventsOccasionState>(
             buildWhen: (oldState, newState) {
-              return (oldState is ActivitiesOccasionLoaded &&
-                      newState is ActivitiesOccasionLoaded &&
+              return (oldState is EventsOccasionLoaded &&
+                      newState is EventsOccasionLoaded &&
                       oldState.day == newState.day) ||
                   oldState.runtimeType != newState.runtimeType;
             },
-            builder: (context, activityState) {
-              if (activityState is ActivitiesOccasionLoaded) {
-                if (activityState.day.dayIndex != index) return Container();
-                final fullDayActivities = activityState.fullDayActivities;
+            builder: (context, eventState) {
+              if (eventState is EventsOccasionLoaded) {
+                if (eventState.day.dayIndex != index) return Container();
                 return Column(
                   children: <Widget>[
-                    if (fullDayActivities.isNotEmpty)
+                    if (eventState.fullDayActivities.isNotEmpty)
                       FullDayContainer(
-                        fullDayActivities: fullDayActivities,
-                        day: activityState.day,
+                        fullDayActivities: eventState.fullDayActivities,
+                        day: eventState.day,
+                        dayOccasion: eventState.occasion,
                       ),
                     Expanded(
                       child: BlocBuilder<MemoplannerSettingBloc,
@@ -129,12 +129,15 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                           children: [
                             if (memoState.dayCalendarType ==
                                 DayCalendarType.list)
-                              Agenda(
-                                activityState: activityState,
+                              BlocBuilder<ClockBloc, DateTime>(
+                                builder: (context, now) => Agenda(
+                                  eventState: eventState,
+                                  now: now,
+                                ),
                               )
                             else
                               TimepillarCalendar(
-                                activityState: activityState,
+                                eventState: eventState,
                                 type: memoState.dayCalendarType,
                               ),
                             Align(
