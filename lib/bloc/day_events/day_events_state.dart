@@ -1,25 +1,60 @@
 part of 'day_events_cubit.dart';
 
-// This does not extends Equatable because of preformance issues
-// when we do equals on a large amount of DateTime
-abstract class DayEventsState {}
+abstract class DayEventsState extends Equatable {
+  const DayEventsState();
+  @override
+  List<Object> get props => [];
+}
 
-class DayEventsUninitialized extends DayEventsState {}
+class DayEventsLoading extends DayEventsState {
+  const DayEventsLoading() : super();
+}
 
 class DayEventsLoaded extends DayEventsState {
-  final List<ActivityDay> activities;
+  final List<EventDay> events;
   final List<TimerDay> timers;
-  final DateTime day;
-  final Occasion occasion;
+  final List<ActivityDay> activities;
 
-  DayEventsLoaded(
-    this.activities,
-    this.timers,
-    this.day,
-    this.occasion,
-  );
+  final List<ActivityOccasion> fullDayActivities;
+
+  final Occasion occasion;
+  final DateTime day;
+
+  bool get isToday => occasion == Occasion.current;
+
+  DayEventsLoaded({
+    required this.activities,
+    required this.timers,
+    this.fullDayActivities = const [],
+    required this.day,
+    required this.occasion,
+  })  : events = [...activities, ...timers]..sort(), // TODO Unecessary to sort?
+        super();
+
+  List<EventOccasion> pastEvents(DateTime now) => events
+      .where((event) => event.end.isBefore(now))
+      .map((e) => e.toOccasion(now))
+      .toList()
+    ..sort();
+
+  List<EventOccasion> notPastEvents(DateTime now) => events
+      .where((event) => event.end.isAtSameMomentOrAfter(now))
+      .map((e) => e.toOccasion(now))
+      .toList()
+    ..sort();
 
   @override
-  String toString() => 'DayEventsLoaded { ${activities.length} activities, '
-      '${timers.length} timers, day: ${yMd(day)}, $occasion }';
+  List<Object> get props => [
+        occasion,
+        events,
+        fullDayActivities,
+        day,
+      ];
+
+  @override
+  String toString() => 'EventsOccasionLoaded '
+      '$fullDayActivities fullDayActivities, '
+      '$activities activities, '
+      '$timers timers, '
+      '$occasion, ${yMd(day)} }';
 }

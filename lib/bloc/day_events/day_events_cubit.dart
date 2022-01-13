@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -27,7 +28,7 @@ class DayEventsCubit extends Cubit<DayEventsState> {
                 dayPickerBloc.state.day,
                 dayPickerBloc.state.occasion,
               )
-            : DayEventsUninitialized()) {
+            : const DayEventsLoading()) {
     _activitiesSubscription = activitiesBloc.stream
         .whereType<ActivitiesLoaded>()
         .listen(_activitiesUpdated);
@@ -73,18 +74,18 @@ class DayEventsCubit extends Cubit<DayEventsState> {
     final DateTime day,
     final Occasion occasion,
   ) =>
-      DayEventsLoaded(
-        activities
+      mapActivitiesToActivityOccasionsState(
+        dayActivities: activities
             .expand((activity) => activity.dayActivitiesForDay(day))
             .toList(),
-        timers
+        dayTimers: timers
             .where((timer) =>
                 timer.startTime.isAtSameDay(day) ||
                 timer.endTime.isAtSameDay(day))
             .map((timer) => TimerDay(timer, day))
             .toList(),
-        day,
-        occasion,
+        occasion: occasion,
+        day: day,
       );
 
   @override
@@ -94,4 +95,60 @@ class DayEventsCubit extends Cubit<DayEventsState> {
     await _timerSubscription.cancel();
     return super.close();
   }
+}
+
+DayEventsLoaded mapActivitiesToActivityOccasionsState({
+  required List<ActivityDay> dayActivities,
+  required List<TimerDay> dayTimers,
+  required Occasion occasion,
+  required DateTime day,
+  bool includeFullday = true,
+}) {
+  switch (occasion) {
+    case Occasion.past:
+      return _createState(
+        activities: dayActivities.where(
+          (activity) =>
+              !activity.activity.removeAfter || occasion != Occasion.past,
+        ),
+        timers: dayTimers,
+        day: day,
+        dayOccasion: occasion,
+      );
+    case Occasion.future:
+    case Occasion.current:
+    default:
+      return _createState(
+        activities: dayActivities,
+        timers: dayTimers,
+        day: day,
+        dayOccasion: occasion,
+      );
+  }
+}
+
+DayEventsLoaded _createState({
+  required Iterable<ActivityDay> activities,
+  required List<TimerDay> timers,
+  required DateTime day,
+  required Occasion dayOccasion,
+  bool fulldays = true,
+}) {
+  final timedActivities =
+      activities.where((activityDay) => !activityDay.activity.fullDay).toList();
+
+  final fullDayOccasion =
+      dayOccasion == Occasion.past ? Occasion.past : Occasion.future;
+  return DayEventsLoaded(
+    activities: timedActivities,
+    timers: timers,
+    fullDayActivities: fulldays
+        ? activities
+            .where((activityDay) => activityDay.activity.fullDay)
+            .map((e) => ActivityOccasion(e.activity, day, fullDayOccasion))
+            .toList()
+        : [],
+    day: day,
+    occasion: dayOccasion,
+  );
 }

@@ -57,7 +57,7 @@ void main() {
     test('initial state morning before', () {
       expect(
         nightActivitiesCubit.state,
-        EventsOccasionLoaded(
+        DayEventsLoaded(
           activities: const [],
           timers: const [],
           day: initialDay,
@@ -71,7 +71,7 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: const [],
             timers: const [],
             day: previusDay,
@@ -86,7 +86,7 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: const [],
             timers: const [],
             day: nextDay,
@@ -102,7 +102,7 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: const [],
             timers: const [],
             day: initialDay,
@@ -117,7 +117,7 @@ void main() {
       await expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: const [],
             timers: const [],
             day: initialDay,
@@ -129,7 +129,7 @@ void main() {
       await expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: const [],
             timers: const [],
             day: previusDay,
@@ -150,7 +150,7 @@ void main() {
         expectLater(
           nightActivitiesCubit.stream,
           emits(
-            EventsOccasionLoaded(
+            DayEventsLoaded(
               activities: const [],
               timers: const [],
               day: initialDay,
@@ -166,7 +166,7 @@ void main() {
     test('no activity starting off night', () {
       expect(
         nightActivitiesCubit.state,
-        EventsOccasionLoaded(
+        DayEventsLoaded(
           activities: const [],
           timers: const [],
           day: initialDay,
@@ -184,7 +184,7 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: [
               ActivityDay(
                 activity,
@@ -209,7 +209,7 @@ void main() {
       expectLater(
         nightActivitiesCubit.stream,
         emits(
-          EventsOccasionLoaded(
+          DayEventsLoaded(
             activities: [
               ActivityDay(
                 activity,

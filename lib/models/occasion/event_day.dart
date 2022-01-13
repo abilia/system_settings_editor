@@ -28,7 +28,6 @@ abstract class EventOccasion<E extends Event> extends EventDay<E> {
   const EventOccasion(E event, DateTime day) : super(event, day);
 
   Occasion get occasion;
-  // int get sortValue;
 
   @override
   int compareTo(other) {

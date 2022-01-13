@@ -11,7 +11,7 @@ class TimepillarCalendar extends StatelessWidget {
   static final topMargin = 96.0.s;
   static final bottomMargin = 64.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
-  final EventsOccasionLoaded eventState;
+  final DayEventsLoaded eventState;
   final DayCalendarType type;
 
   const TimepillarCalendar({
@@ -54,7 +54,7 @@ class TimepillarCalendar extends StatelessWidget {
 }
 
 class OneTimepillarCalendar extends StatefulWidget {
-  final EventsOccasionLoaded eventState;
+  final DayEventsLoaded eventState;
   final TimepillarState timepillarState;
   final bool showCategories,
       displayHourLines,

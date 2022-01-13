@@ -13,7 +13,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
     required this.dayParts,
   }) : super(key: key);
 
-  final EventsOccasionLoaded eventState;
+  final DayEventsLoaded eventState;
 
   final bool showCategories, displayHourLines, displayTimeline;
 
@@ -95,8 +95,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
-                      child: BlocBuilder<NightActivitiesCubit,
-                          EventsOccasionLoaded>(
+                      child: BlocBuilder<NightActivitiesCubit, DayEventsLoaded>(
                         builder: (context, nightState) =>
                             BlocBuilder<ClockBloc, DateTime>(
                           builder: (context, now) {

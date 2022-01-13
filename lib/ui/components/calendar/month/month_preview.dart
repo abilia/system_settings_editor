@@ -50,15 +50,14 @@ class MonthPreview extends StatelessWidget {
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
-        child: BlocBuilder<EventsOccasionCubit, EventsOccasionState>(
-          builder: (context, activityState) =>
-              activityState is EventsOccasionLoaded
-                  ? ActivityList(
-                      state: activityState,
-                      topPadding: 12.s,
-                      bottomPadding: 64.s,
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+        child: BlocBuilder<DayEventsCubit, DayEventsState>(
+          builder: (context, activityState) => activityState is DayEventsLoaded
+              ? ActivityList(
+                  state: activityState,
+                  topPadding: 12.s,
+                  bottomPadding: 64.s,
+                )
+              : const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -90,16 +89,15 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: BlocBuilder<EventsOccasionCubit, EventsOccasionState>(
+        child: BlocBuilder<DayEventsCubit, DayEventsState>(
           buildWhen: (oldState, newState) =>
-              (oldState is EventsOccasionLoaded &&
-                  newState is EventsOccasionLoaded &&
+              (oldState is DayEventsLoaded &&
+                  newState is DayEventsLoaded &&
                   oldState.day != newState.day) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) {
-            final fullDayActivies = (activityState as EventsOccasionLoaded)
-                .fullDayActivities
-                .length;
+            final fullDayActivies =
+                (activityState as DayEventsLoaded).fullDayActivities.length;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

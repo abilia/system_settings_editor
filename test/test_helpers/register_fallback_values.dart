@@ -33,7 +33,7 @@ void registerFallbackValues() {
   registerFallbackValue(const ImageThumb(id: ''));
   registerFallbackValue(Uri());
   registerFallbackValue(Uint8List(1));
-  registerFallbackValue(const EventsOccasionLoading());
+  registerFallbackValue(const DayEventsLoading());
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(const TimerState(timers: []));

@@ -31,7 +31,6 @@ export 'sound/alarm_sound_cubit.dart';
 export 'sound/sound_cubit.dart';
 export 'activities/activity_wizard/activity_wizard_cubit.dart';
 export 'activities/record_sound/record_sound_cubit.dart';
-export 'day_events/events_occasion_cubit.dart';
 export 'day_events/day_events_cubit.dart';
 export 'day_events/night_events_cubit.dart';
 export 'calendar/inactivity_cubit.dart';

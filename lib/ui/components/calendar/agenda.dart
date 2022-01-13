@@ -5,7 +5,7 @@ import 'package:seagull/models/all.dart';
 class Agenda extends StatefulWidget {
   static final topPadding = 60.0.s, bottomPadding = 125.0.s;
 
-  final EventsOccasionLoaded eventState;
+  final DayEventsLoaded eventState;
   final DateTime now;
 
   const Agenda({
@@ -104,7 +104,7 @@ class ActivityList extends StatelessWidget {
     required this.topPadding,
   }) : super(key: key);
 
-  final EventsOccasionLoaded state;
+  final DayEventsLoaded state;
 
   final ScrollController? scrollController;
 
