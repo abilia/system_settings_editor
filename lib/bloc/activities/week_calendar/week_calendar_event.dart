@@ -1,4 +1,4 @@
-part of 'week_calendar_bloc.dart';
+part of 'week_calendar_cubit.dart';
 
 abstract class WeekCalendarEvent {
   const WeekCalendarEvent();

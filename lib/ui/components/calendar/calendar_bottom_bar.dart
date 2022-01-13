@@ -50,8 +50,8 @@ class CalendarBottomBar extends StatelessWidget {
                       case 1:
                         if (settingsState.displayWeekCalendar) {
                           return context
-                              .read<WeekCalendarBloc>()
-                              .add(GoToCurrentWeek());
+                              .read<WeekCalendarCubit>()
+                              .goToCurrentWeek();
                         }
                         break;
                     }

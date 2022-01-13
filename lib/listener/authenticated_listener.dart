@@ -123,7 +123,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
                 previous is ActivityDetectedState,
             listener: (context, state) {
               context.read<MonthCalendarCubit>().goToCurrentMonth();
-              context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+              context.read<WeekCalendarCubit>().goToCurrentWeek();
               context.read<DayPickerBloc>().add(CurrentDay());
             },
           ),
