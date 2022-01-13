@@ -122,7 +122,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
                 current is InactivityThresholdReachedState &&
                 previous is ActivityDetectedState,
             listener: (context, state) {
-              context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
+              context.read<MonthCalendarCubit>().goToCurrentMonth();
               context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
               context.read<DayPickerBloc>().add(CurrentDay());
             },

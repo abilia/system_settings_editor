@@ -191,6 +191,11 @@ void main() {
       expect(find.byType(SettingsButton), findsOneWidget);
     });
 
+    testWidgets('CalendarBottomBar is visible', (tester) async {
+      await tester.goToMenuPage();
+      expect(find.byType(CalendarBottomBar), findsOneWidget);
+    });
+
     testWidgets('hides CameraButton', (tester) async {
       // Arrange
       generics = [

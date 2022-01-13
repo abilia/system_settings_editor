@@ -19,5 +19,5 @@ jobs:
     - run: flutter pub get
     - run: flutter analyze .
     - run: flutter format --set-exit-if-changed .
-    - run: flutter test
-    - run: flutter test --dart-define flavor=mp
+    - run: flutter test --reporter expanded
+    - run: flutter test --reporter expanded --dart-define flavor=mp

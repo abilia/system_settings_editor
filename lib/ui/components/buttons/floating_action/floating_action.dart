@@ -65,6 +65,7 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
           previous.displayEyeButton != current.displayEyeButton ||
           previous.displayAlarmButton != current.displayAlarmButton ||
           previous.calendarCount != current.calendarCount ||
+          previous.monthCalendarTabIndex != current.monthCalendarTabIndex ||
           previous.alarm.showAlarmOnOffSwitch !=
               current.alarm.showAlarmOnOffSwitch,
       builder: (context, state) {
@@ -79,7 +80,7 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
                   child: const EyeButtonDay(),
                 )
               else if (state.displayMonthCalendar &&
-                  tabController.index == tabController.length - 1)
+                  tabController.index == state.monthCalendarTabIndex)
                 Padding(
                   padding: EdgeInsets.only(top: 8.s),
                   child: const EyeButtonMonth(),
