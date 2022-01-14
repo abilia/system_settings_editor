@@ -16,7 +16,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
           BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, daypickerState) => BlocBuilder<ClockBloc, DateTime>(
           builder: (context, time) =>
-              BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+              BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
             buildWhen: (previous, current) =>
                 previous.currentWeekStart != current.currentWeekStart,
             builder: (context, state) => CalendarAppBar(
@@ -37,8 +37,8 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
               leftAction: memoSettingsState.weekCaptionShowBrowseButtons
                   ? IconActionButton(
                       onPressed: () =>
-                          BlocProvider.of<WeekCalendarBloc>(context)
-                              .add(PreviousWeek()),
+                          BlocProvider.of<WeekCalendarCubit>(context)
+                              .previousWeek(),
                       child: const Icon(AbiliaIcons.returnToPreviousPage),
                     )
                   : null,
@@ -46,15 +46,15 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ? GoToCurrentActionButton(
                       onPressed: () {
                         context.read<DayPickerBloc>().add(CurrentDay());
-                        context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+                        context.read<WeekCalendarCubit>().goToCurrentWeek();
                       },
                     )
                   : null,
               rightAction: memoSettingsState.weekCaptionShowBrowseButtons
                   ? IconActionButton(
                       onPressed: () =>
-                          BlocProvider.of<WeekCalendarBloc>(context)
-                              .add(NextWeek()),
+                          BlocProvider.of<WeekCalendarCubit>(context)
+                              .nextWeek(),
                       child: const Icon(AbiliaIcons.goToNextPage),
                     )
                   : null,

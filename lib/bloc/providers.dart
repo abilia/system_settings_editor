@@ -95,8 +95,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 timerDb: GetIt.I<TimerDb>(),
               )..loadTimers(),
             ),
-            BlocProvider<WeekCalendarBloc>(
-              create: (context) => WeekCalendarBloc(
+            BlocProvider<WeekCalendarCubit>(
+              create: (context) => WeekCalendarCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 clockBloc: context.read<ClockBloc>(),
               ),
