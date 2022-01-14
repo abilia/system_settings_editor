@@ -8,9 +8,9 @@ class AllDayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayEventsCubit, DayEventsState>(
+    return BlocBuilder<DayEventsCubit, EventsState>(
       builder: (context, state) {
-        if (state is DayEventsLoaded) {
+        if (state is EventsLoaded) {
           return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             builder: (context, memoSettingsState) => Theme(
               data: weekdayTheme(

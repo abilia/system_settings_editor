@@ -82,7 +82,7 @@ void main() {
       ),
     ].map((a) => ActivityDay(a, day).toOccasion(day)).toList();
 
-    final expected = DayEventsLoaded(
+    final expected = EventsLoaded(
       activities: const [],
       timers: const [],
       fullDayActivities: allDayActivities,

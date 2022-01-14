@@ -44,7 +44,7 @@ void main() {
   });
   group('dayEventsCubit', () {
     test('initial state is Loading', () {
-      expect(dayEventsCubit.state, const DayEventsLoading());
+      expect(dayEventsCubit.state, const EventsLoading());
     });
 
     test('state is EventsOccasionLoaded when ActivitiesBloc loadeds activities',
@@ -58,7 +58,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             timers: const <TimerDay>[],
             activities: const [],
             fullDayActivities: const [],
@@ -88,7 +88,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(pastActivity, initialDay),
               ActivityDay(nowActivity, initialDay),
@@ -123,7 +123,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             fullDayActivities: [
@@ -163,7 +163,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(pastActivity, initialDay),
               ActivityDay(nowActivity, initialDay),
@@ -199,7 +199,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             fullDayActivities: [
               ActivityOccasion(fullDayActivity, initialDay, Occasion.future)
@@ -220,7 +220,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emitsInOrder([
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             fullDayActivities: [
               ActivityOccasion(tomorrowFullday, nextDay, Occasion.future)
@@ -229,7 +229,7 @@ void main() {
             day: nextDay,
             occasion: Occasion.future,
           ),
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             fullDayActivities: [
               ActivityOccasion(fullDayActivity, initialDay, Occasion.future)
@@ -238,7 +238,7 @@ void main() {
             day: initialDay,
             occasion: Occasion.current,
           ),
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             fullDayActivities: [
               ActivityOccasion(yesterdayFullday, previusDay, Occasion.past)
@@ -269,7 +269,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(pastActivity, nextDay),
               ActivityDay(nowActivity, nextDay),
@@ -304,7 +304,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(pastActivity, previusDay),
               ActivityDay(nowActivity, previusDay),
@@ -333,7 +333,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(endsSoon, initialDay),
             ],
@@ -359,7 +359,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(startsNow, initialDay),
             ],
@@ -390,7 +390,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(nowActivity, initialDay),
               ActivityDay(endsSoonActivity, initialDay),
@@ -404,7 +404,7 @@ void main() {
         ),
       );
 
-      final dayEventsLoaded = dayEventsCubit.state as DayEventsLoaded;
+      final dayEventsLoaded = dayEventsCubit.state as EventsLoaded;
 
       final thisMinpastEvents = dayEventsLoaded.pastEvents(initialMinutes);
       final thisMinNotPastEvents =
@@ -451,7 +451,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           // Tuesday
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(tuesdayRecurring, initialDay),
             ],
@@ -473,7 +473,7 @@ void main() {
           dayEventsCubit.stream,
           emitsInOrder([
             // monday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(mondayRecurring,
                     initialDay.subtract(const Duration(days: 1))),
@@ -484,7 +484,7 @@ void main() {
               occasion: Occasion.past,
             ),
             // Friday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: const [],
               timers: const [],
               fullDayActivities: const [],
@@ -492,7 +492,7 @@ void main() {
               occasion: Occasion.future,
             ),
             // Saturday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(weekendActivity, saturday),
               ],
@@ -502,7 +502,7 @@ void main() {
               occasion: Occasion.future,
             ),
             // Sunday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(weekendActivity, sunday),
               ],
@@ -512,7 +512,7 @@ void main() {
               occasion: Occasion.future,
             ),
             // Monday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(mondayRecurring, monday),
               ],
@@ -568,7 +568,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           // Tuesday
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(everyDayRecurring, initialDay),
               ActivityDay(todayActivity, initialDay),
@@ -592,14 +592,14 @@ void main() {
           dayEventsCubit.stream,
           emitsInOrder([
             // Monday
-            DayEventsLoaded(
+            EventsLoaded(
                 activities: const [],
                 timers: const [],
                 fullDayActivities: const [],
                 day: yesterday,
                 occasion: Occasion.past),
             // Tuesday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(everyDayRecurring, initialDay),
                 ActivityDay(todayActivity, initialDay),
@@ -613,7 +613,7 @@ void main() {
               occasion: Occasion.current,
             ),
             // Wednesday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(everyDayRecurring, tomorrow),
                 ActivityDay(tomorrowActivity, tomorrow),
@@ -661,7 +661,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           // Tuesday
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(everyDayRecurring, dayBeforeyesterday),
               ActivityDay(everyDayRecurring, yesterday),
@@ -683,7 +683,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           // Monday
-          DayEventsLoaded(
+          EventsLoaded(
             activities: [
               ActivityDay(everyDayRecurring, yesterday),
               ActivityDay(everyDayRecurring, initialDay),
@@ -735,7 +735,7 @@ void main() {
           dayEventsCubit.stream,
           emitsInOrder([
             // Tuesday
-            DayEventsLoaded(
+            EventsLoaded(
               activities: [
                 ActivityDay(earlyActivity, initialDay),
                 ActivityDay(mondayRecurring, monday),
@@ -775,7 +775,7 @@ void main() {
     });
 
     test('initial state is DayActivitiesUninitialized', () {
-      expect(dayEventsCubit.state, const DayEventsLoading());
+      expect(dayEventsCubit.state, const EventsLoading());
     });
 
     test(
@@ -787,12 +787,12 @@ void main() {
 
       // Act
       activitiesBloc.add(LoadActivities());
-      await dayEventsCubit.stream.any((s) => s is DayEventsLoaded);
+      await dayEventsCubit.stream.any((s) => s is EventsLoaded);
 
       // Assert
       expect(
         dayEventsCubit.state,
-        DayEventsLoaded(
+        EventsLoaded(
           activities: const [],
           timers: const [],
           day: today,
@@ -813,7 +813,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             day: today,
@@ -839,7 +839,7 @@ void main() {
       expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expected,
             timers: const [],
             day: today,
@@ -867,7 +867,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expextedToday,
             timers: const [],
             day: today,
@@ -882,7 +882,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expextedTomorrow,
             timers: const [],
             day: tomorrow,
@@ -912,7 +912,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expectedNow,
             timers: const [],
             day: today,
@@ -927,7 +927,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expectedYesterday,
             timers: const [],
             day: yesterday,
@@ -954,7 +954,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
               activities: const [],
               timers: const [],
               day: today,
@@ -971,19 +971,19 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emitsInOrder([
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             day: tomorrow,
             occasion: Occasion.future,
           ),
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             day: today,
             occasion: Occasion.current,
           ),
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             day: yesterday,
@@ -1014,7 +1014,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: const [],
             timers: const [],
             day: today,
@@ -1034,7 +1034,7 @@ void main() {
       await expectLater(
         dayEventsCubit.stream,
         emits(
-          DayEventsLoaded(
+          EventsLoaded(
             activities: expectedActivity,
             timers: const [],
             day: today,
@@ -1077,7 +1077,7 @@ void main() {
             .thenAnswer((_) => Future.value(weekendActivity));
         // Act
         activitiesBloc.add(LoadActivities());
-        await dayEventsCubit.stream.any((s) => s is DayEventsLoaded);
+        await dayEventsCubit.stream.any((s) => s is EventsLoaded);
         dayPickerBloc.add(NextDay());
         dayPickerBloc.add(NextDay());
         dayPickerBloc.add(NextDay());
@@ -1086,13 +1086,13 @@ void main() {
         await expectLater(
             dayEventsCubit.stream,
             emitsInOrder([
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: firstDay.add(const Duration(days: 1)),
                 occasion: Occasion.future,
               ), // friday
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: weekendActivity
                     .map((a) =>
                         ActivityDay(a, firstDay.add(const Duration(days: 2))))
@@ -1103,7 +1103,7 @@ void main() {
               ),
 
               // saturday
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: weekendActivity
                     .map((a) =>
                         ActivityDay(a, firstDay.add(const Duration(days: 3))))
@@ -1112,7 +1112,7 @@ void main() {
                 day: firstDay.add(const Duration(days: 3)),
                 occasion: Occasion.future,
               ), // sunday
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: firstDay.add(const Duration(days: 4)),
@@ -1133,7 +1133,7 @@ void main() {
             .thenAnswer((_) => Future.value(christmas));
         // Act
         activitiesBloc.add(LoadActivities());
-        await dayEventsCubit.stream.any((s) => s is DayEventsLoaded);
+        await dayEventsCubit.stream.any((s) => s is EventsLoaded);
         dayPickerBloc.add(GoTo(day: boxingDay));
         dayPickerBloc.add(NextDay());
         dayPickerBloc.add(NextDay());
@@ -1141,20 +1141,20 @@ void main() {
         await expectLater(
             dayEventsCubit.stream,
             emitsInOrder([
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: boxingDay,
                 occasion: Occasion.past,
               ),
-              DayEventsLoaded(
+              EventsLoaded(
                 activities:
                     christmas.map((a) => ActivityDay(a, chrismasEve)).toList(),
                 timers: const [],
                 day: chrismasEve,
                 occasion: Occasion.past,
               ),
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: chrismasDay,
@@ -1176,7 +1176,7 @@ void main() {
             .thenAnswer((_) => Future.value(christmas));
         // Act
         activitiesBloc.add(LoadActivities());
-        await dayEventsCubit.stream.any((s) => s is DayEventsLoaded);
+        await dayEventsCubit.stream.any((s) => s is EventsLoaded);
         dayPickerBloc.add(GoTo(day: boxingDay));
         dayPickerBloc.add(NextDay());
         dayPickerBloc.add(NextDay());
@@ -1184,19 +1184,19 @@ void main() {
         await expectLater(
             dayEventsCubit.stream,
             emitsInOrder([
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: boxingDay,
                 occasion: Occasion.future,
               ),
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: chrismasEve,
                 occasion: Occasion.future,
               ),
-              DayEventsLoaded(
+              EventsLoaded(
                 activities: const [],
                 timers: const [],
                 day: chrismasDay,
@@ -1219,7 +1219,7 @@ void main() {
 
         // Act
         activitiesBloc.add(LoadActivities());
-        await dayEventsCubit.stream.any((s) => s is DayEventsLoaded);
+        await dayEventsCubit.stream.any((s) => s is EventsLoaded);
         dayPickerBloc.add(GoTo(day: startTime));
         for (final _ in allOtherDays) {
           dayPickerBloc.add(NextDay());
@@ -1230,7 +1230,7 @@ void main() {
           dayEventsCubit.stream,
           emitsInOrder(
             allOtherDays.map(
-              (day) => DayEventsLoaded(
+              (day) => EventsLoaded(
                 activities: day.day == 1
                     ? monthStartActivity
                         .map((a) => ActivityDay(a, day))
@@ -1291,7 +1291,7 @@ void main() {
         await expectLater(
           dayEventsCubit.stream,
           emits(
-            DayEventsLoaded(
+            EventsLoaded(
               activities: const [],
               timers: const [],
               day: firstDay,
@@ -1308,7 +1308,7 @@ void main() {
         await expectLater(
           dayEventsCubit.stream,
           emitsInOrder([
-            DayEventsLoaded(
+            EventsLoaded(
               activities: const [],
               fullDayActivities: [preSplitRecurring]
                   .map((a) =>
@@ -1318,7 +1318,7 @@ void main() {
               day: dayBeforeSplit,
               occasion: Occasion.future,
             ),
-            DayEventsLoaded(
+            EventsLoaded(
               activities: const [],
               fullDayActivities: [splitRecurring]
                   .map((a) => ActivityOccasion(a, dayOnSplit, Occasion.future))
@@ -1327,7 +1327,7 @@ void main() {
               day: dayOnSplit,
               occasion: Occasion.future,
             ),
-            DayEventsLoaded(
+            EventsLoaded(
               activities: const [],
               fullDayActivities: [splitRecurring]
                   .map((e) => ActivityOccasion(e,

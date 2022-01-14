@@ -1,16 +1,18 @@
-part of 'day_events_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/datetime.dart';
 
-abstract class DayEventsState extends Equatable {
-  const DayEventsState();
+abstract class EventsState extends Equatable {
+  const EventsState();
   @override
   List<Object> get props => [];
 }
 
-class DayEventsLoading extends DayEventsState {
-  const DayEventsLoading() : super();
+class EventsLoading extends EventsState {
+  const EventsLoading() : super();
 }
 
-class DayEventsLoaded extends DayEventsState {
+class EventsLoaded extends EventsState {
   final List<EventDay> events;
   final List<TimerDay> timers;
   final List<ActivityDay> activities;
@@ -22,7 +24,7 @@ class DayEventsLoaded extends DayEventsState {
 
   bool get isToday => occasion == Occasion.current;
 
-  DayEventsLoaded({
+  EventsLoaded({
     required this.activities,
     required this.timers,
     this.fullDayActivities = const [],

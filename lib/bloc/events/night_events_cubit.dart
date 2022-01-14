@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/events/helper.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NightActivitiesCubit extends Cubit<DayEventsLoaded> {
+class NightActivitiesCubit extends Cubit<EventsLoaded> {
   final MemoplannerSettingBloc memoplannerSettingBloc;
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
@@ -65,7 +66,7 @@ class NightActivitiesCubit extends Cubit<DayEventsLoaded> {
         ),
       );
 
-  static DayEventsLoaded _stateFromActivities(
+  static EventsLoaded _stateFromActivities(
     List<Activity> activities,
     DateTime day,
     DateTime now,
@@ -85,13 +86,13 @@ class NightActivitiesCubit extends Cubit<DayEventsLoaded> {
         dayParts,
       );
 
-  static DayEventsLoaded _stateFromActivityDays(
+  static EventsLoaded _stateFromActivityDays(
     List<ActivityDay> dayActivities,
     DateTime day,
     DateTime now,
     DayParts dayParts,
   ) =>
-      mapActivitiesToActivityOccasionsState(
+      mapToEventsState(
         dayActivities: dayActivities,
         dayTimers: [], // TODO add timers to night cubit
         day: day,

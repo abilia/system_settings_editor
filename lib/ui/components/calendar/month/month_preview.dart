@@ -50,8 +50,8 @@ class MonthPreview extends StatelessWidget {
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
-        child: BlocBuilder<DayEventsCubit, DayEventsState>(
-          builder: (context, activityState) => activityState is DayEventsLoaded
+        child: BlocBuilder<DayEventsCubit, EventsState>(
+          builder: (context, activityState) => activityState is EventsLoaded
               ? ActivityList(
                   state: activityState,
                   topPadding: 12.s,
@@ -89,15 +89,15 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: BlocBuilder<DayEventsCubit, DayEventsState>(
+        child: BlocBuilder<DayEventsCubit, EventsState>(
           buildWhen: (oldState, newState) =>
-              (oldState is DayEventsLoaded &&
-                  newState is DayEventsLoaded &&
+              (oldState is EventsLoaded &&
+                  newState is EventsLoaded &&
                   oldState.day != newState.day) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) {
             final fullDayActivies =
-                (activityState as DayEventsLoaded).fullDayActivities.length;
+                (activityState as EventsLoaded).fullDayActivities.length;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

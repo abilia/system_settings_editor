@@ -102,15 +102,15 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         itemBuilder: (context, index) {
-          return BlocBuilder<DayEventsCubit, DayEventsState>(
+          return BlocBuilder<DayEventsCubit, EventsState>(
             buildWhen: (oldState, newState) {
-              return (oldState is DayEventsLoaded &&
-                      newState is DayEventsLoaded &&
+              return (oldState is EventsLoaded &&
+                      newState is EventsLoaded &&
                       oldState.day == newState.day) ||
                   oldState.runtimeType != newState.runtimeType;
             },
             builder: (context, eventState) {
-              if (eventState is DayEventsLoaded) {
+              if (eventState is EventsLoaded) {
                 if (eventState.day.dayIndex != index) return Container();
                 return Column(
                   children: <Widget>[
