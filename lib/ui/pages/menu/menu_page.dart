@@ -268,7 +268,7 @@ class MenuItemButton extends StatelessWidget {
               const Spacer(),
               Icon(
                 icon,
-                size: layout.menuItemButton.size,
+                size: layout.menuPage.menuItemButton.size,
               ),
               const Spacer(),
             ],
