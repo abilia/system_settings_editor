@@ -456,7 +456,8 @@ void main() {
           await tester.pumpAndSettle();
           expect(
               find.byType(SortableLibrary<BasicActivityData>), findsOneWidget);
-          expect(find.byType(BasicActivityLibraryItem), findsOneWidget);
+          expect(
+              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           await tester.tap(find.text(title));
           await tester.pumpAndSettle();
@@ -541,9 +542,10 @@ void main() {
           await tester.tap(find.byType(LibraryFolder));
           await tester.pumpAndSettle();
 
-          // Assert no folder, on item, nothing selected, next button disabled
+          // Assert no folder, one item, nothing selected, next button disabled
           expect(find.byType(LibraryFolder), findsNothing);
-          expect(find.byType(BasicActivityLibraryItem), findsOneWidget);
+          expect(
+              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           expect(find.text(folderTitle), findsOneWidget);
           expect(

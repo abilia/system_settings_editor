@@ -7,9 +7,11 @@ abstract class SortableData extends Equatable {
 
   String title(Translated t);
 
-  String folderFileId();
+  String dataFileId();
 
-  String folderFilePath();
+  String dataFilePath();
+
+  bool hasImage();
 }
 
 class RawSortableData extends SortableData {
@@ -29,10 +31,13 @@ class RawSortableData extends SortableData {
   String title(t) => '';
 
   @override
-  String folderFileId() => '';
+  String dataFileId() => '';
 
   @override
-  String folderFilePath() => '';
+  String dataFilePath() => '';
+
+  @override
+  bool hasImage() => false;
 }
 
 class ImageArchiveData extends SortableData {
@@ -81,10 +86,13 @@ class ImageArchiveData extends SortableData {
           : name;
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 class NoteData extends SortableData {
@@ -122,10 +130,13 @@ class NoteData extends SortableData {
   String title(t) => name;
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 class ChecklistData extends SortableData {
@@ -166,10 +177,13 @@ class ChecklistData extends SortableData {
   String title(t) => checklist.name;
 
   @override
-  String folderFileId() => checklist.fileId;
+  String dataFileId() => checklist.fileId;
 
   @override
-  String folderFilePath() => checklist.icon;
+  String dataFilePath() => checklist.icon;
+
+  @override
+  bool hasImage() => checklist.fileId.isNotEmpty || checklist.icon.isNotEmpty;
 }
 
 abstract class BasicTimerData extends SortableData {}
@@ -195,13 +209,11 @@ class BasicTimerDataItem extends BasicTimerData {
     );
   }
 
-  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+  @override
+  String dataFileId() => fileId;
 
   @override
-  String folderFileId() => fileId;
-
-  @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
 
   @override
   List<Object> get props => [title, icon, fileId];
@@ -215,6 +227,9 @@ class BasicTimerDataItem extends BasicTimerData {
         'icon': icon,
         'fileId': fileId,
       });
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 class BasicTimerDataFolder extends BasicTimerData {
@@ -235,10 +250,10 @@ class BasicTimerDataFolder extends BasicTimerData {
   }
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
 
   @override
   List<Object> get props => [name, icon, fileId];
@@ -252,6 +267,9 @@ class BasicTimerDataFolder extends BasicTimerData {
         'icon': icon,
         'fileId': fileId,
       });
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 abstract class BasicActivityData extends SortableData {}
@@ -310,18 +328,19 @@ class BasicActivityDataItem extends BasicActivityData {
         duration: duration.inMilliseconds,
       );
 
-  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
-
   TimeOfDay? get startTimeOfDay =>
       startTime == 0 && duration <= 0 ? null : startTime.toTimeOfDay();
   TimeOfDay? get endTimeOfDay =>
       duration == 0 ? null : (startTime + duration).toTimeOfDay();
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
   @override
   List<Object> get props => [
@@ -422,10 +441,13 @@ class BasicActivityDataFolder extends BasicActivityData {
       );
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
   @override
   List<Object> get props => [name, icon, fileId];

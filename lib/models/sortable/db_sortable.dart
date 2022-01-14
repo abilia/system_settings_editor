@@ -46,7 +46,7 @@ class DbSortable extends DbModel<Sortable> {
       case SortableType.note:
         return Sortable<NoteData>._(
           id: id,
-          type: SortableType.note,
+          type: type,
           data: NoteData.fromJson(data),
           groupId: groupId,
           sortOrder: sortOrder,
@@ -95,7 +95,7 @@ class DbSortable extends DbModel<Sortable> {
         return isGroup
             ? Sortable<BasicActivityDataFolder>._(
                 id: id,
-                type: SortableType.basicactivity,
+                type: type,
                 data: BasicActivityDataFolder.fromJson(data),
                 groupId: groupId,
                 sortOrder: sortOrder,
@@ -106,7 +106,7 @@ class DbSortable extends DbModel<Sortable> {
               )
             : Sortable<BasicActivityDataItem>._(
                 id: id,
-                type: SortableType.basicactivity,
+                type: type,
                 data: BasicActivityDataItem.fromJson(data),
                 groupId: groupId,
                 sortOrder: sortOrder,

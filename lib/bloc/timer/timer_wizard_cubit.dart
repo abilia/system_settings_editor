@@ -37,7 +37,7 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
                   ),
                   duration: basicTimer.duration.milliseconds(),
                   name: basicTimer.basicTimerTitle,
-                  image: basicTimer.hasImage
+                  image: basicTimer.hasImage()
                       ? AbiliaFile.from(
                           id: basicTimer.fileId, path: basicTimer.icon)
                       : AbiliaFile.empty,
