@@ -15,7 +15,7 @@ class MonthListPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 8.s, top: 12.s, right: 8.s),
+      padding: layout.monthCalendarLayout.monthPreview.monthListPreviewPadding,
       child: Column(
         children: [
           BlocBuilder<DayPickerBloc, DayPickerState>(
@@ -46,7 +46,10 @@ class MonthPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 1.s, right: 1.s),
+      padding: EdgeInsets.symmetric(
+        horizontal:
+            layout.monthCalendarLayout.monthPreview.monthPreviewBorderWidth,
+      ),
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
@@ -55,8 +58,10 @@ class MonthPreview extends StatelessWidget {
               activityState is ActivitiesOccasionLoaded
                   ? ActivityList(
                       state: activityState,
-                      topPadding: 12.s,
-                      bottomPadding: 64.s,
+                      topPadding: layout.monthCalendarLayout.monthPreview
+                          .activityListTopPadding,
+                      bottomPadding: layout.monthCalendarLayout.monthPreview
+                          .activityListBottomPadding,
                     )
                   : const Center(child: CircularProgressIndicator()),
         ),
@@ -83,8 +88,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
     return Tts.data(
       data: text,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.s),
-        height: 48.s,
+        padding: layout.monthCalendarLayout.monthPreview.headingPadding,
+        height: layout.monthCalendarLayout.monthPreview.headingHeight,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: radius),
@@ -106,14 +111,18 @@ class MonthDayPreviewHeading extends StatelessWidget {
                 if (fullDayActivies > 1)
                   FullDayStack(
                     numberOfActivities: fullDayActivies,
-                    width: 34.s,
-                    height: 32.s,
+                    width: layout.monthCalendarLayout.monthPreview
+                        .headingFullDayActivityWidth,
+                    height: layout.monthCalendarLayout.monthPreview
+                        .headingFullDayActivityHeight,
                   )
                 else if (fullDayActivies > 0)
                   MonthActivityContent(
                     activityDay: activityState.fullDayActivities.first,
-                    width: 38.s,
-                    height: 36.s,
+                    width: layout.monthCalendarLayout.monthPreview
+                        .headingFullDayActivityWidth,
+                    height: layout.monthCalendarLayout.monthPreview
+                        .headingFullDayActivityHeight,
                   ),
                 Text(text, style: Theme.of(context).textTheme.subtitle1),
                 SecondaryActionButton(
@@ -133,6 +142,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
   }
 }
 
+//TODO: Flytta denna klassen till month_calendar.dart
 class MonthDayViewCompact extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
@@ -178,22 +188,26 @@ class MonthDayViewCompact extends StatelessWidget {
               color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
               borderRadius: MonthDayView.monthDayborderRadius,
             ),
-            padding: EdgeInsets.all(4.s),
+            padding:
+                layout.monthCalendarLayout.monthPreview.dayViewCompactPadding,
             child: DefaultTextStyle(
               style: textWithCorrectColor,
               child: Stack(
                 children: [
                   Center(child: Text('${day.day.day}')),
                   if (day.hasActivities)
-                    const Align(
+                    Align(
                       alignment: Alignment.topRight,
                       child: ColorDot(
+                        diameter:
+                            layout.monthCalendarLayout.hasActivitiesDotDiameter,
                         color: AbiliaColors.black,
                       ),
                     ),
                   if (day.isPast)
                     Padding(
-                      padding: EdgeInsets.all(4.s),
+                      padding: layout.monthCalendarLayout.monthPreview
+                          .compactCrossOverPadding,
                       child: const CrossOver(
                         color: AbiliaColors.transparentBlack30,
                       ),

@@ -63,5 +63,30 @@ class _MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
           ),
+          monthCalendarLayout: const MonthCalendarLayout(
+              monthContentFlex: 620,
+              monthListPreviewFlex: 344,
+              weekRowVerticalPadding: 4,
+              monthHeadingHeight: 48,
+              monthDayRadius: 12,
+              weekNumberWidth: 36,
+              hasActivitiesDotDiameter: 10,
+              weekNumberPadding: EdgeInsets.symmetric(horizontal: 4),
+              monthPreview: MonthPreviewLayout(
+                monthPreviewBorderWidth: 2,
+                activityListTopPadding: 32,
+                activityListBottomPadding: 96,
+                headingHeight: 72,
+                headingFullDayActivityHeight: 54,
+                headingFullDayActivityWidth: 57,
+                monthListPreviewPadding: EdgeInsets.only(
+                    left: 12,
+                    top: 32,
+                    right:
+                        12), //TODO: sannolikt skall denna ändras, kolla mot designen
+                headingPadding: EdgeInsets.only(left: 18, right: 16),
+                dayViewCompactPadding: EdgeInsets.all(8),
+                compactCrossOverPadding: EdgeInsets.all(3),
+              )),
         );
 }

@@ -22,6 +22,7 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
+  final MonthCalendarLayout monthCalendarLayout;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -32,6 +33,7 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
+    this.monthCalendarLayout = const MonthCalendarLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -163,5 +165,56 @@ class FormPaddingLayout {
     this.right = 16,
     this.top = 20,
     this.verticalItemDistance = 8,
+  });
+}
+
+class MonthCalendarLayout {
+  final int monthContentFlex, monthListPreviewFlex;
+  final double weekRowVerticalPadding,
+      monthHeadingHeight,
+      monthDayRadius,
+      weekNumberWidth,
+      hasActivitiesDotDiameter;
+  final EdgeInsets weekNumberPadding;
+
+  final MonthPreviewLayout monthPreview;
+
+  const MonthCalendarLayout({
+    this.monthContentFlex = 242,
+    this.monthListPreviewFlex = 229,
+    this.weekRowVerticalPadding = 2,
+    this.monthHeadingHeight = 32,
+    this.monthDayRadius = 8,
+    this.weekNumberWidth = 24,
+    this.hasActivitiesDotDiameter = 6,
+    this.weekNumberPadding = const EdgeInsets.symmetric(horizontal: 2),
+    this.monthPreview = const MonthPreviewLayout(),
+  });
+}
+
+class MonthPreviewLayout {
+  final double monthPreviewBorderWidth,
+      activityListTopPadding,
+      activityListBottomPadding,
+      headingHeight,
+      headingFullDayActivityHeight,
+      headingFullDayActivityWidth;
+  final EdgeInsets monthListPreviewPadding,
+      headingPadding,
+      dayViewCompactPadding,
+      compactCrossOverPadding;
+
+  const MonthPreviewLayout({
+    this.monthPreviewBorderWidth = 1,
+    this.activityListTopPadding = 12,
+    this.activityListBottomPadding = 64,
+    this.headingHeight = 48,
+    this.headingFullDayActivityHeight = 40,
+    this.headingFullDayActivityWidth = 40,
+    this.monthListPreviewPadding =
+        const EdgeInsets.only(left: 8, top: 14, right: 8),
+    this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
+    this.dayViewCompactPadding = const EdgeInsets.all(4),
+    this.compactCrossOverPadding = const EdgeInsets.all(3),
   });
 }

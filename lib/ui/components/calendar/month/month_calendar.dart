@@ -60,14 +60,16 @@ class MonthBody extends StatelessWidget {
         weekday: d + 1,
       ),
     );
-    final dayBuilder = monthCalendarType == MonthCalendarType.grid
+    final dayBuilder = monthCalendarType ==
+            MonthCalendarType
+                .grid //TODO: Använd MonthDayView för medium varianten stället för simplified
         ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
         : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
         Expanded(
-          flex: 256,
+          flex: layout.monthCalendarLayout.monthContentFlex,
           child: MonthContent(
             dayThemes: dayThemes,
             dayBuilder: dayBuilder,
@@ -75,7 +77,7 @@ class MonthBody extends StatelessWidget {
         ),
         if (monthCalendarType == MonthCalendarType.preview)
           Expanded(
-            flex: 168,
+            flex: layout.monthCalendarLayout.monthListPreviewFlex,
             child: MonthListPreview(dayThemes: dayThemes),
           ),
       ],
@@ -111,6 +113,9 @@ class MonthContent extends StatelessWidget {
               if (state.index != item) return Container();
               return Column(
                 children: [
+                  SizedBox(
+                    height: layout.monthCalendarLayout.weekRowVerticalPadding,
+                  ),
                   ...state.weeks.map(
                     (week) => Expanded(
                       child: week.inMonth
@@ -147,14 +152,16 @@ class WeekRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.s),
+      padding: EdgeInsets.symmetric(
+        vertical: layout.monthCalendarLayout.weekRowVerticalPadding,
+      ),
       child: Row(
         children: [
           WeekNumber(weekNumber: week.number),
           ...week.days.map(
             (day) => Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.s),
+                padding: layout.monthCalendarLayout.weekNumberPadding,
                 child: day is MonthDay
                     ? builder(day, dayThemes[day.day.weekday - 1])
                     : const SizedBox.shrink(),
@@ -199,7 +206,7 @@ class MonthHeading extends StatelessWidget {
               child: Tts.data(
                 data: weekdays[weekdayindex],
                 child: Container(
-                  height: 32.s,
+                  height: layout.monthCalendarLayout.monthHeadingHeight,
                   color: dayTheme.dayColor,
                   child: Center(
                     child: Text(
@@ -226,7 +233,8 @@ class MonthDayView extends StatelessWidget {
     Key? key,
     required this.dayTheme,
   }) : super(key: key);
-  static final monthDayRadius = Radius.circular(8.s);
+  static final monthDayRadius =
+      Radius.circular(layout.monthCalendarLayout.monthDayRadius);
   static final monthDayborderRadius = BorderRadius.all(monthDayRadius);
 
   @override
@@ -267,8 +275,10 @@ class MonthDayView extends StatelessWidget {
                         : dayTheme.color,
                     borderRadius: BorderRadius.vertical(top: monthDayRadius),
                   ),
-                  height: 24.s,
-                  padding: EdgeInsets.symmetric(horizontal: 4.s),
+                  height: 24.s, //TODO: hela denna widget ska nog bort iofs
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                          4.s), //TODO: hela denna widget ska nog bort iofs
                   child: DefaultTextStyle(
                     style: headingTextStyleCorrectColor,
                     child: Row(
@@ -277,6 +287,8 @@ class MonthDayView extends StatelessWidget {
                         const Spacer(),
                         if (day.hasActivities)
                           ColorDot(
+                            diameter: layout
+                                .monthCalendarLayout.hasActivitiesDotDiameter,
                             color: day.isPast
                                 ? AbiliaColors.black
                                 : dayTheme.theme.colorScheme.onSurface,
@@ -335,17 +347,22 @@ class MonthDayContainer extends StatelessWidget {
         borderRadius: bottomRadius,
       ),
       child: Container(
-        padding: EdgeInsets.only(left: 1.s, right: 1.s, bottom: 1.s),
+        padding: EdgeInsets.only(
+            left: 1.s,
+            right: 1.s,
+            bottom: 1.s), //TODO: hela denna widget ska bort kanakse?
         decoration: BoxDecoration(
           color: AbiliaColors.transparentBlack30,
           borderRadius: bottomRadius,
         ),
         child: Container(
-          padding: EdgeInsets.fromLTRB(4.s, 6.s, 4.s, 8.s),
+          padding: EdgeInsets.fromLTRB(
+              4.s, 6.s, 4.s, 8.s), //TODO: hela denna widget ska bort kanakse?
           decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(7.s),
+                bottom: Radius.circular(
+                    7.s), //TODO: hela denna widget ska bort kanakse?
               )),
           child: d != null
               ? Stack(
@@ -382,7 +399,7 @@ class WeekNumber extends StatelessWidget {
     return Tts.data(
       data: '$weekTranslation ${weekNumber ?? ''}',
       child: SizedBox(
-        width: 24.s,
+        width: layout.monthCalendarLayout.weekNumberWidth,
         child: Text(
           weekNumber?.toString() ?? weekTranslation[0],
           textAlign: TextAlign.center,
@@ -428,7 +445,8 @@ class MonthActivityContent extends StatelessWidget {
                 width: double.infinity,
               )
             : Padding(
-                padding: EdgeInsets.all(3.0.s),
+                padding: EdgeInsets.all(3.0
+                    .s), //TODO: denna widget ska kanske bort eller bli del av MP Medium och large bara
                 child: Tts(
                   child: Text(
                     activityDay.activity.title,
