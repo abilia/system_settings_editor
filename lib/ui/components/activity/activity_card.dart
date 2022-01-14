@@ -31,7 +31,7 @@ class ActivityCard extends StatelessWidget {
     final current = occasion == Occasion.current && !preview;
     final past = occasion == Occasion.past && !preview;
     final inactive = past || signedOff;
-    final hasImage = activity.hasImage || signedOff || past;
+    final hasSideContent = activity.hasImage || signedOff || past;
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
@@ -51,7 +51,7 @@ class ActivityCard extends StatelessWidget {
             activity.semanticsProperties(context),
             child: AnimatedContainer(
               duration: duration,
-              height: layout.activityCardLayout.cardHeight,
+              height: layout.activityCard.height,
               decoration: getCategoryBoxDecoration(
                 current: current,
                 inactive: inactive,
@@ -62,9 +62,9 @@ class ActivityCard extends StatelessWidget {
                   ? EdgeInsets.zero
                   : activity.category == Category.right
                       ? EdgeInsets.only(
-                          left: layout.activityCardLayout.categorySideOffset)
+                          left: layout.activityCard.categorySideOffset)
                       : EdgeInsets.only(
-                          right: layout.activityCardLayout.categorySideOffset),
+                          right: layout.activityCard.categorySideOffset),
               child: Material(
                 type: MaterialType.transparency,
                 child: InkWell(
@@ -84,17 +84,16 @@ class ActivityCard extends StatelessWidget {
                                   name: 'ActivityPage $activityOccasion'),
                             ),
                           ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.all(layout.activityCardLayout.cardPadding),
-                    child: Stack(
-                      children: [
-                        Row(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(layout.activityCard.padding),
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            if (hasImage)
+                            if (hasSideContent)
                               SizedBox(
-                                width: layout.activityCardLayout.imageSize,
+                                width: layout.activityCard.imageSize,
                                 child: ActivityImage.fromActivityOccasion(
                                   activityOccasion: activityOccasion,
                                   fit: BoxFit.cover,
@@ -103,12 +102,9 @@ class ActivityCard extends StatelessWidget {
                             Expanded(
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    left: (hasImage)
-                                        ? layout.activityCardLayout
-                                            .titleImagePadding
-                                        : layout.activityCardLayout.cardPadding,
-                                    bottom: layout
-                                        .activityCardLayout.cardPaddingBottom),
+                                    left: (hasSideContent)
+                                        ? layout.activityCard.titleImagePadding
+                                        : layout.activityCard.padding),
                                 child: Stack(children: <Widget>[
                                   if (activity.hasTitle)
                                     Text(
@@ -118,7 +114,9 @@ class ActivityCard extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   Align(
-                                    alignment: Alignment.bottomLeft,
+                                    alignment: activity.hasTitle
+                                        ? Alignment.bottomLeft
+                                        : Alignment.centerLeft,
                                     child: Text(
                                       activity.subtitle(context),
                                       style:
@@ -131,13 +129,13 @@ class ActivityCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: buildInfoIcons(activity, inactive),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Positioned(
+                        right: layout.activityCard.padding,
+                        bottom: layout.activityCard.padding,
+                        child: buildInfoIcons(activity, inactive),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -175,7 +173,7 @@ class CardIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: Icon(icon, size: layout.activityCardLayout.iconSize),
+      child: Icon(icon, size: layout.activityCard.iconSize),
     );
   }
 }
@@ -201,7 +199,7 @@ class PrivateIcon extends StatelessWidget {
       ),
       child: Icon(
         AbiliaIcons.passwordProtection,
-        size: layout.activityCardLayout.iconSize,
+        size: layout.activityCard.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),
     );
