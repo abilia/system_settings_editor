@@ -217,8 +217,8 @@ class SettingsButton extends StatelessWidget {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: 4.s,
-                right: 4.s,
+                top: layout.menuPage.menuItemButton.orangeDotInset,
+                right: layout.menuPage.menuItemButton.orangeDotInset,
                 child: const OrangeDot(),
               ),
           ],
