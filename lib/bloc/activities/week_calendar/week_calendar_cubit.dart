@@ -4,7 +4,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'week_calendar_event.dart';
 part 'week_calendar_state.dart';
 
 class WeekCalendarCubit extends Cubit<WeekCalendarState> {
