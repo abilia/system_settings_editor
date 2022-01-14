@@ -16,10 +16,10 @@ class BasicTimerPickerPage extends StatelessWidget {
         final selected = state.selected;
         return Scaffold(
           appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.basicActivity,
+            iconData: AbiliaIcons.stopWatch,
             title:
                 state.allById[state.currentFolderId]?.data.title(translate) ??
-                    'should be translated',
+                    translate.fromBasicTimer,
           ),
           body: SortableLibrary<BasicTimerData>(
             (Sortable<BasicTimerData> s) => s is Sortable<BasicTimerDataItem>
@@ -28,7 +28,7 @@ class BasicTimerPickerPage extends StatelessWidget {
                     fallbackHeight: BasicLibraryItem.imageHeight,
                     fallbackWidth: BasicLibraryItem.imageWidth,
                   ),
-            'should be translated',
+            translate.noBasicTimers,
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: PreviousButton(
