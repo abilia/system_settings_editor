@@ -156,8 +156,8 @@ class ActivityList extends StatelessWidget {
           ? 0.0
           : pastActivities.first.activity.category ==
                   notPastActivities.first.activity.category
-              ? ActivityCard.cardMarginSmall
-              : ActivityCard.cardMarginLarge;
+              ? layout.activityCardLayout.cardMarginSmall
+              : layout.activityCardLayout.cardMarginLarge;
 }
 
 class SliverNoActivities extends StatelessWidget {
@@ -214,7 +214,7 @@ class SliverActivityList extends StatelessWidget {
                   activityOccasion: activities[index],
                   bottomPadding: setting.showCategories
                       ? _padding(index)
-                      : ActivityCard.cardMarginSmall,
+                      : layout.activityCardLayout.cardMarginSmall,
                   showCategories: setting.showCategories,
                   showCategoryColor: setting.showCategoryColor,
                 );
@@ -231,6 +231,6 @@ class SliverActivityList extends StatelessWidget {
       ? lastMargin
       : activities[index].activity.category ==
               activities[index + 1].activity.category
-          ? ActivityCard.cardMarginSmall
-          : ActivityCard.cardMarginLarge;
+          ? layout.activityCardLayout.cardMarginSmall
+          : layout.activityCardLayout.cardMarginLarge;
 }
