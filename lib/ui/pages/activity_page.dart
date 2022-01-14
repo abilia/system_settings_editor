@@ -79,7 +79,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         final t = Translator.of(context).translate;
         return BottomAppBar(
           child: SizedBox(
-            height: layout.toolbar.heigth,
+            height: layout.toolbar.height,
             child: Row(
               children: <Widget>[
                 if (displayUncheckButton)
