@@ -69,7 +69,7 @@ class CreateNewPage extends StatelessWidget {
             PickField(
               key: TestKey.basicTimerChoice,
               leading: const Icon(AbiliaIcons.folder),
-              text: const Text('New basic timer'),
+              text: Text(t.selectBaseTimer),
               onTap: () async {
                 final basicTimerData =
                     await Navigator.of(context).push<BasicTimerData>(

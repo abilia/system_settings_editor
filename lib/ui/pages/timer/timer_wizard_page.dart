@@ -6,7 +6,7 @@ class TimerWizardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final startingStep = context.read<TimerWizardCubit>().state.startingStep;
+    final startingStep = context.read<TimerWizardCubit>().state.step;
     final pageController = PageController(initialPage: startingStep);
     return BlocListener<TimerWizardCubit, TimerWizardState>(
       listenWhen: (previous, current) => current.step != previous.step,

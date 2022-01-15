@@ -4,7 +4,7 @@ class TimerWizardState extends Equatable {
   final Duration duration;
   final AbiliaFile image;
   final String name;
-  final int step, startingStep;
+  final int step;
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step == steps.length - 1;
@@ -15,14 +15,36 @@ class TimerWizardState extends Equatable {
 
   TimerWizardStep get currentStep => steps[step];
 
-  const TimerWizardState({
+  static final _defaultSteps = UnmodifiableListView(
+    [
+      TimerWizardStep.duration,
+      TimerWizardStep.start,
+    ],
+  );
+
+  const TimerWizardState._({
     required this.steps,
     this.duration = Duration.zero,
     this.name = '',
     this.image = AbiliaFile.empty,
     this.step = 0,
-    this.startingStep = 0,
   });
+
+  factory TimerWizardState.initial() {
+    return TimerWizardState._(steps: _defaultSteps);
+  }
+
+  factory TimerWizardState.withBasicTimer(BasicTimerDataItem basicTimer) {
+    return TimerWizardState._(
+      steps: _defaultSteps,
+      duration: basicTimer.duration.milliseconds(),
+      name: basicTimer.basicTimerTitle,
+      image: basicTimer.hasImage()
+          ? AbiliaFile.from(id: basicTimer.fileId, path: basicTimer.icon)
+          : AbiliaFile.empty,
+      step: 1,
+    );
+  }
 
   TimerWizardState copyWith({
     Duration? duration,
@@ -31,13 +53,12 @@ class TimerWizardState extends Equatable {
     int? step,
     DateTime? startTime,
   }) {
-    return TimerWizardState(
+    return TimerWizardState._(
       steps: steps,
       duration: duration ?? this.duration,
       name: name ?? this.name,
       image: image ?? this.image,
       step: step ?? this.step,
-      startingStep: startingStep,
     );
   }
 

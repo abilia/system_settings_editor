@@ -126,6 +126,7 @@ startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 fromBasicTimer	From Basic Timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
 noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
+selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny

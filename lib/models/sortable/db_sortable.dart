@@ -67,7 +67,7 @@ class DbSortable extends DbModel<Sortable> {
           visible: visible,
           fixed: fixed,
         );
-      case SortableType.basetimer:
+      case SortableType.basicTimer:
         return isGroup
             ? Sortable<BasicTimerDataFolder>._(
                 id: id,
@@ -91,7 +91,7 @@ class DbSortable extends DbModel<Sortable> {
                 visible: visible,
                 fixed: fixed,
               );
-      case SortableType.basicactivity:
+      case SortableType.basicActivity:
         return isGroup
             ? Sortable<BasicActivityDataFolder>._(
                 id: id,
