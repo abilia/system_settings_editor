@@ -72,7 +72,7 @@ class _MediumLayout extends Layout {
             imageSize: 88,
             categorySideOffset: 120,
             iconSize: 24.0,
-            titleImagePadding: 4,
+            titleImagePadding: 12,
           ),
         );
 }

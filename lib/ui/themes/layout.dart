@@ -188,6 +188,6 @@ class ActivityCardLayout {
     this.imageSize = 48,
     this.categorySideOffset = 56,
     this.iconSize = 18,
-    this.titleImagePadding = 4,
+    this.titleImagePadding = 10,
   });
 }
