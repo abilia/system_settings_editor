@@ -174,7 +174,8 @@ class MonthCalendarLayout {
       monthHeadingHeight,
       monthDayRadius,
       weekNumberWidth,
-      hasActivitiesDotDiameter;
+      hasActivitiesDotDiameter,
+      currentBorderWidth;
   final EdgeInsets weekNumberPadding;
 
   final MonthPreviewLayout monthPreview;
@@ -187,6 +188,7 @@ class MonthCalendarLayout {
     this.monthDayRadius = 8,
     this.weekNumberWidth = 24,
     this.hasActivitiesDotDiameter = 6,
+    this.currentBorderWidth = 4,
     this.weekNumberPadding = const EdgeInsets.symmetric(horizontal: 2),
     this.monthPreview = const MonthPreviewLayout(),
   });

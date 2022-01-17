@@ -97,8 +97,12 @@ final circleRadius = BorderRadius.all(Radius.circular(24.s));
 final Border selectedActivityBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.black, width: 2.s),
 );
-final Border currentBorder =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0.s));
+final Border currentBorder = Border.fromBorderSide(
+  BorderSide(
+    color: AbiliaColors.red,
+    width: layout.monthCalendarLayout.currentBorderWidth,
+  ),
+);
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.s),
 );

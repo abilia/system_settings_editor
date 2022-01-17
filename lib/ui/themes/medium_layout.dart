@@ -71,6 +71,7 @@ class _MediumLayout extends Layout {
               monthDayRadius: 12,
               weekNumberWidth: 36,
               hasActivitiesDotDiameter: 10,
+              currentBorderWidth: 6,
               weekNumberPadding: EdgeInsets.symmetric(horizontal: 4),
               monthPreview: MonthPreviewLayout(
                 monthPreviewBorderWidth: 2,
