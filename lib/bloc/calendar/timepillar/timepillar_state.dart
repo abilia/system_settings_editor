@@ -1,21 +1,22 @@
 part of 'timepillar_cubit.dart';
 
 // ActivityTimepillarCard
-final double _imageHeightMin = 56.s;
-final double _cardPadding = 4.s;
-final double _width = 72.s;
-final double _padding = 12.s;
-final double _minHeight = 84.s;
+final double _imageHeightMin = layout.timePillarLayout.imageHeightMin.s;
+final double _cardPadding = layout.timePillarLayout.cardPadding.s;
+final double _width = layout.timePillarLayout.width.s;
+final double _padding = layout.timePillarLayout.padding.s;
+final double _minHeight = layout.timePillarLayout.minHeight.s;
 
 // Dots
-final double _dotSize = 10.s;
-final double _hourPadding = 1.s;
-final double _dotPadding = _hourPadding * 3;
-final double _dotDistance = _dotSize + _dotPadding;
+final double _dotSize = layout.timePillarLayout.dotSize.s;
+final double _hourPadding = layout.timePillarLayout.hourPadding.s;
+final double _dotPadding = layout.timePillarLayout.dotPadding.s;
+final double _dotDistance = layout.timePillarLayout.dotDistance.s;
 
 // Timepillar
-final double _timePillarPadding = 4.s;
-final double defaultTimePillarWidth = 42.s;
+final double _timePillarPadding = layout.timePillarLayout.timePillarPadding.s;
+final double defaultTimePillarWidth =
+    layout.timePillarLayout.defaultTimePillarWidth.s;
 
 class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;

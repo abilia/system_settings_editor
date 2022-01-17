@@ -43,8 +43,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
         final zoom = boxConstraints.maxHeight / tpHeight;
         final nightTimepillarState = TimepillarState(nightInterval, zoom);
         final dayTimepillarState = TimepillarState(dayInterval, zoom);
-        final categoryLabelWidth =
-            (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
+        final categoryLabelWidth = (boxConstraints.maxWidth -
+                layout.timePillarLayout.defaultTimePillarWidth.s) /
+            2;
         final nightTimepillarHeight =
             timePillarHeight(nightTimepillarState) + verticalMargin * 2;
         return Stack(

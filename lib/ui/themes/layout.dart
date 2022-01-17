@@ -1,11 +1,11 @@
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+part 'go_layout.dart';
+
 part 'large_layout.dart';
 
 part 'medium_layout.dart';
-
-part 'go_layout.dart';
 
 final Layout layout = Device.screenSize.longestSide > 1500
     ? const _LargeLayout()
@@ -23,6 +23,7 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
+  final TimepillarLayout timePillarLayout;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -34,6 +35,7 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
+    this.timePillarLayout = const TimepillarLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -191,5 +193,35 @@ class FormPaddingLayout {
     this.right = 16,
     this.top = 20,
     this.verticalItemDistance = 8,
+  });
+}
+
+class TimepillarLayout {
+  final double imageHeightMin,
+      cardPadding,
+      width,
+      padding,
+      minHeight,
+      dotSize,
+      hourPadding,
+      dotPadding,
+      dotDistance,
+      timePillarPadding,
+      defaultTimePillarWidth;
+
+  const TimepillarLayout({
+    this.imageHeightMin = 56,
+    this.cardPadding = 4,
+    this.width = 72,
+    this.padding = 12,
+    this.minHeight = 84,
+// Dots
+    this.dotSize = 10,
+    this.hourPadding = 1,
+    this.dotPadding = 3, // hourPadding * 3
+    this.dotDistance = 30, // dotPadding * dotSize
+// Timepillar
+    this.timePillarPadding = 4,
+    this.defaultTimePillarWidth = 42,
   });
 }

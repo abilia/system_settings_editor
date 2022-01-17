@@ -74,5 +74,18 @@ class _MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
           ),
+          timePillarLayout: const TimepillarLayout(
+            imageHeightMin: 96,
+            cardPadding: 8,
+            width: 110,
+            padding: 17,
+            minHeight: 112,
+            dotSize: 16,
+            hourPadding: 1.5,
+            dotPadding: 4.5,
+            dotDistance: 20,
+            timePillarPadding: 8,
+            defaultTimePillarWidth: 80,
+          ),
         );
 }

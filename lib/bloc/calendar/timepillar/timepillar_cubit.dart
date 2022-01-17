@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/themes/layout.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/models/all.dart';
 
