@@ -169,7 +169,6 @@ class FormPaddingLayout {
 }
 
 class MonthCalendarLayout {
-  //TODO: bryt ut allt som har med dagarna att göra till en egen klass?
   final int monthContentFlex, monthListPreviewFlex;
 
   final double monthHeadingHeight,
@@ -178,7 +177,6 @@ class MonthCalendarLayout {
       dayBorderWidth,
       dayBorderWidthHighlighted,
       dayHeaderHeight,
-      dayHeaderHeightHighlighted,
       dayHeadingFontSize,
       weekNumberWidth,
       hasActivitiesDotDiameter;
@@ -188,7 +186,7 @@ class MonthCalendarLayout {
       dayViewMargin,
       dayViewMarginHighlighted,
       dayHeaderPadding,
-      dayHeaderPaddingHighlighted,
+      dayContainerPadding,
       crossOverPadding,
       hasActivitiesDotPadding;
 
@@ -203,7 +201,6 @@ class MonthCalendarLayout {
     this.dayBorderWidth = 1,
     this.dayBorderWidthHighlighted = 4,
     this.dayHeaderHeight = 0,
-    this.dayHeaderHeightHighlighted = 0,
     this.dayHeadingFontSize = 0,
     this.weekNumberWidth = 24,
     this.hasActivitiesDotDiameter = 6,
@@ -212,7 +209,7 @@ class MonthCalendarLayout {
     this.dayViewMargin = const EdgeInsets.all(2),
     this.dayViewMarginHighlighted = const EdgeInsets.all(0),
     this.dayHeaderPadding = const EdgeInsets.all(0),
-    this.dayHeaderPaddingHighlighted = const EdgeInsets.all(0),
+    this.dayContainerPadding = const EdgeInsets.all(0),
     this.crossOverPadding = const EdgeInsets.all(3),
     this.hasActivitiesDotPadding = const EdgeInsets.all(0),
     this.monthPreview = const MonthPreviewLayout(),

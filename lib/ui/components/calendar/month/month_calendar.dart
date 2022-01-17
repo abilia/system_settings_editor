@@ -267,6 +267,9 @@ class MonthDayView extends StatelessWidget {
                   margin: highlighted
                       ? layout.monthCalendar.dayViewMarginHighlighted
                       : layout.monthCalendar.dayViewMargin,
+                  padding: highlighted
+                      ? layout.monthCalendar.dayViewPaddingHighlighted
+                      : layout.monthCalendar.dayViewPadding,
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: borderRadius,
@@ -289,9 +292,7 @@ class MonthDayView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(
-                        height: highlighted
-                            ? layout.monthCalendar.dayHeaderHeightHighlighted
-                            : layout.monthCalendar.dayHeaderHeight,
+                        height: layout.monthCalendar.dayHeaderHeight,
                         decoration: BoxDecoration(
                           color: day.isPast
                               ? dayTheme.monthPastHeadingColor
@@ -299,9 +300,7 @@ class MonthDayView extends StatelessWidget {
                           borderRadius:
                               BorderRadius.vertical(top: borderRadius.topRight),
                         ),
-                        padding: highlighted
-                            ? layout.monthCalendar.dayHeaderPaddingHighlighted
-                            : layout.monthCalendar.dayHeaderPadding,
+                        padding: layout.monthCalendar.dayHeaderPadding,
                         child: DefaultTextStyle(
                           style: headingTextStyleCorrectColor,
                           child: Row(
@@ -361,9 +360,7 @@ class MonthDayContainer extends StatelessWidget {
     final d = day;
 
     return Container(
-      padding: highlighted
-          ? layout.monthCalendar.dayViewPaddingHighlighted
-          : layout.monthCalendar.dayViewPadding,
+      padding: layout.monthCalendar.dayContainerPadding,
       child: d != null
           ? Stack(
               children: [

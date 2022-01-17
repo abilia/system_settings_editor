@@ -72,19 +72,16 @@ class _MediumLayout extends Layout {
               dayBorderWidth: 2,
               dayBorderWidthHighlighted: 6,
               dayHeaderHeight: 28,
-              dayHeaderHeightHighlighted: 31,
               weekNumberWidth: 36,
               hasActivitiesDotDiameter: 10,
               dayHeadingFontSize: 20,
               dayViewMargin: EdgeInsets.all(4),
               dayViewMarginHighlighted: EdgeInsets.all(1),
-              dayViewPadding:
+              dayViewPadding: EdgeInsets.all(0),
+              dayViewPaddingHighlighted: EdgeInsets.all(3),
+              dayContainerPadding:
                   EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
-              dayViewPaddingHighlighted:
-                  EdgeInsets.only(left: 9, right: 9, top: 4, bottom: 9),
               dayHeaderPadding: EdgeInsets.only(left: 6, right: 6, top: 6),
-              dayHeaderPaddingHighlighted:
-                  EdgeInsets.only(left: 9, right: 9, top: 9),
               hasActivitiesDotPadding: EdgeInsets.only(top: 2),
               monthPreview: MonthPreviewLayout(
                 monthPreviewBorderWidth: 2,
