@@ -1,11 +1,11 @@
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+part 'go_layout.dart';
+
 part 'large_layout.dart';
 
 part 'medium_layout.dart';
-
-part 'go_layout.dart';
 
 final Layout layout = Device.screenSize.longestSide > 1500
     ? const _LargeLayout()
@@ -23,6 +23,7 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
+  final ActivityCardLayout activityCard;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -34,6 +35,7 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
+    this.activityCard = const ActivityCardLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -191,5 +193,29 @@ class FormPaddingLayout {
     this.right = 16,
     this.top = 20,
     this.verticalItemDistance = 8,
+  });
+}
+
+class ActivityCardLayout {
+  final double height,
+      padding,
+      paddingBottom,
+      marginSmall,
+      marginLarge,
+      imageSize,
+      categorySideOffset,
+      iconSize,
+      titleImagePadding;
+
+  const ActivityCardLayout({
+    this.height = 56,
+    this.padding = 4,
+    this.paddingBottom = 0,
+    this.marginSmall = 6,
+    this.marginLarge = 10,
+    this.imageSize = 48,
+    this.categorySideOffset = 56,
+    this.iconSize = 18,
+    this.titleImagePadding = 10,
   });
 }

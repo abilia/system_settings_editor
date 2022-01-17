@@ -74,5 +74,16 @@ class _MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
           ),
+          activityCard: const ActivityCardLayout(
+            height: 104,
+            padding: 8,
+            paddingBottom: 8,
+            marginSmall: 8,
+            marginLarge: 16,
+            imageSize: 88,
+            categorySideOffset: 120,
+            iconSize: 24.0,
+            titleImagePadding: 12,
+          ),
         );
 }
