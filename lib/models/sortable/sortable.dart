@@ -13,8 +13,8 @@ part 'sortable_data.dart';
 class SortableType {
   static const String imageArchive = 'imagearchive',
       checklist = 'checklist',
-      basetimer = 'basetimer',
-      basicactivity = 'baseactivity',
+      basicTimer = 'basetimer',
+      basicActivity = 'baseactivity',
       note = 'note';
 }
 

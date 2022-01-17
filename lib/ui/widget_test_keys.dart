@@ -58,6 +58,7 @@ class TestKey {
       photosPickField = Key('photosPickField'),
       newActivityChoice = Key('newActivityChoice'),
       basicActivityChoice = Key('basicActivityChoice'),
+      basicTimerChoice = Key('basicTimerChoice'),
       newTimerChoice = Key('newTimerChoice'),
       nonCheckableAlarmSelector = Key('nonCheckableAlarmSelector'),
       checkableAlarmSelector = Key('checkableAlarmSelector'),

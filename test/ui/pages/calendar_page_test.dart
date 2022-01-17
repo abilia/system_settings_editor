@@ -456,7 +456,8 @@ void main() {
           await tester.pumpAndSettle();
           expect(
               find.byType(SortableLibrary<BasicActivityData>), findsOneWidget);
-          expect(find.byType(BasicActivityLibraryItem), findsOneWidget);
+          expect(
+              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           await tester.tap(find.text(title));
           await tester.pumpAndSettle();
@@ -541,9 +542,10 @@ void main() {
           await tester.tap(find.byType(LibraryFolder));
           await tester.pumpAndSettle();
 
-          // Assert no folder, on item, nothing selected, next button disabled
+          // Assert no folder, one item, nothing selected, next button disabled
           expect(find.byType(LibraryFolder), findsNothing);
-          expect(find.byType(BasicActivityLibraryItem), findsOneWidget);
+          expect(
+              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           expect(find.text(folderTitle), findsOneWidget);
           expect(
@@ -722,8 +724,8 @@ void main() {
       });
     });
 
-    group('Add timer', () {
-      testWidgets('New timer choice', (WidgetTester tester) async {
+    group('add timer', () {
+      testWidgets('from scratch is possible', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         await tester.tap(find.byType(AddButton));
@@ -760,6 +762,43 @@ void main() {
                 .toDurationString(translate, shortMin: false));
         expect(savedTimer.paused, false);
         expect(savedTimer.pausedAt, Duration.zero);
+      });
+
+      testWidgets('from basic timer gets correct title',
+          (WidgetTester tester) async {
+        await initializeDateFormatting();
+        final sortableBlocMock = MockSortableBloc();
+        const title = 'Basictajmer';
+        when(() => sortableBlocMock.state)
+            .thenReturn(SortablesLoaded(sortables: [
+          Sortable.createNew<BasicTimerDataItem>(
+            data: BasicTimerDataItem.fromJson(
+                '{"duration":60000,"title":"$title"}'),
+          ),
+        ]));
+        when(() => sortableBlocMock.stream)
+            .thenAnswer((_) => const Stream.empty());
+        await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
+            sortableBloc: sortableBlocMock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(AddButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.basicTimerChoice));
+        await tester.pumpAndSettle();
+        expect(find.byType(SortableLibrary<BasicTimerData>), findsOneWidget);
+        expect(find.byType(BasicLibraryItem<BasicTimerData>), findsOneWidget);
+        expect(find.text(title), findsOneWidget);
+        await tester.tap(find.text(title));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NextButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerWizardPage), findsOneWidget);
+        expect(find.byType(TimerStartWiz), findsOneWidget);
+        final nameAndPicture = find.byType(NameAndPictureWidget);
+        expect(nameAndPicture, findsOneWidget);
+        final nameAndPictureWidget =
+            tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
+        expect(nameAndPictureWidget.text, title);
       });
     });
 
