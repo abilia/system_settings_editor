@@ -104,7 +104,8 @@ class ActivityCard extends StatelessWidget {
                                 padding: EdgeInsets.only(
                                     left: (hasSideContent)
                                         ? layout.activityCard.titleImagePadding
-                                        : layout.activityCard.padding),
+                                        : layout.activityCard.padding,
+                                    bottom: layout.activityCard.paddingBottom),
                                 child: Stack(children: <Widget>[
                                   if (activity.hasTitle)
                                     Text(
