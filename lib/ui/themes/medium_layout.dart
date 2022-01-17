@@ -63,16 +63,29 @@ class _MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
           ),
-          monthCalendarLayout: const MonthCalendarLayout(
+          monthCalendar: const MonthCalendarLayout(
               monthContentFlex: 620,
               monthListPreviewFlex: 344,
-              weekRowVerticalPadding: 4,
               monthHeadingHeight: 48,
-              monthDayRadius: 12,
+              dayRadius: 12,
+              dayRadiusHighlighted: 14,
+              dayBorderWidth: 2,
+              dayBorderWidthHighlighted: 6,
+              dayHeaderHeight: 28,
+              dayHeaderHeightHighlighted: 31,
               weekNumberWidth: 36,
               hasActivitiesDotDiameter: 10,
-              currentBorderWidth: 6,
-              weekNumberPadding: EdgeInsets.symmetric(horizontal: 4),
+              dayHeadingFontSize: 20,
+              dayViewMargin: EdgeInsets.all(4),
+              dayViewMarginHighlighted: EdgeInsets.all(1),
+              dayViewPadding:
+                  EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
+              dayViewPaddingHighlighted:
+                  EdgeInsets.only(left: 9, right: 9, top: 4, bottom: 9),
+              dayHeaderPadding: EdgeInsets.only(left: 6, right: 6, top: 6),
+              dayHeaderPaddingHighlighted:
+                  EdgeInsets.only(left: 9, right: 9, top: 9),
+              hasActivitiesDotPadding: EdgeInsets.only(top: 2),
               monthPreview: MonthPreviewLayout(
                 monthPreviewBorderWidth: 2,
                 activityListTopPadding: 32,
@@ -86,8 +99,6 @@ class _MediumLayout extends Layout {
                     right:
                         12), //TODO: sannolikt skall denna ändras, kolla mot designen
                 headingPadding: EdgeInsets.only(left: 18, right: 16),
-                dayViewCompactPadding: EdgeInsets.all(8),
-                compactCrossOverPadding: EdgeInsets.all(3),
               )),
         );
 }

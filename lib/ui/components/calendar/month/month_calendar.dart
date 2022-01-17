@@ -34,7 +34,7 @@ class MonthCalendar extends StatelessWidget {
           previous.monthCalendarType != current.monthCalendarType,
       builder: (context, memoSettingsState) => MonthBody(
         calendarDayColor: memoSettingsState.calendarDayColor,
-        monthCalendarType: memoSettingsState.monthCalendarType,
+        monthCalendarType: memoSettingsState.monthCalendarType, //TODO: ta bort
       ),
     );
   }
@@ -60,26 +60,24 @@ class MonthBody extends StatelessWidget {
         weekday: d + 1,
       ),
     );
-    final dayBuilder = monthCalendarType ==
-            MonthCalendarType
-                .grid //TODO: Använd MonthDayView för medium varianten stället för simplified
+    final dayBuilder = Config.isMP
         ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
         : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
         Expanded(
-          flex: layout.monthCalendarLayout.monthContentFlex,
+          flex: layout.monthCalendar.monthContentFlex,
           child: MonthContent(
             dayThemes: dayThemes,
             dayBuilder: dayBuilder,
           ),
         ),
-        if (monthCalendarType == MonthCalendarType.preview)
-          Expanded(
-            flex: layout.monthCalendarLayout.monthListPreviewFlex,
-            child: MonthListPreview(dayThemes: dayThemes),
-          ),
+        //if (monthCalendarType == MonthCalendarType.preview) //TODO: ta bort
+        Expanded(
+          flex: layout.monthCalendar.monthListPreviewFlex,
+          child: MonthListPreview(dayThemes: dayThemes),
+        ),
       ],
     );
   }
@@ -114,7 +112,7 @@ class MonthContent extends StatelessWidget {
               return Column(
                 children: [
                   SizedBox(
-                    height: layout.monthCalendarLayout.weekRowVerticalPadding,
+                    height: layout.monthCalendar.dayViewMargin.top,
                   ),
                   ...state.weeks.map(
                     (week) => Expanded(
@@ -151,25 +149,17 @@ class WeekRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: layout.monthCalendarLayout.weekRowVerticalPadding,
-      ),
-      child: Row(
-        children: [
-          WeekNumber(weekNumber: week.number),
-          ...week.days.map(
-            (day) => Expanded(
-              child: Padding(
-                padding: layout.monthCalendarLayout.weekNumberPadding,
-                child: day is MonthDay
-                    ? builder(day, dayThemes[day.day.weekday - 1])
-                    : const SizedBox.shrink(),
-              ),
-            ),
+    return Row(
+      children: [
+        WeekNumber(weekNumber: week.number),
+        ...week.days.map(
+          (day) => Expanded(
+            child: day is MonthDay
+                ? builder(day, dayThemes[day.day.weekday - 1])
+                : const SizedBox.shrink(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -206,7 +196,7 @@ class MonthHeading extends StatelessWidget {
               child: Tts.data(
                 data: weekdays[weekdayindex],
                 child: Container(
-                  height: layout.monthCalendarLayout.monthHeadingHeight,
+                  height: layout.monthCalendar.monthHeadingHeight,
                   color: dayTheme.dayColor,
                   child: Center(
                     child: Text(
@@ -233,16 +223,19 @@ class MonthDayView extends StatelessWidget {
     Key? key,
     required this.dayTheme,
   }) : super(key: key);
-  static final monthDayRadius =
-      Radius.circular(layout.monthCalendarLayout.monthDayRadius);
+  //TODO: ta bort detta:
+  static final monthDayRadius = Radius.circular(layout.monthCalendar.dayRadius);
   static final monthDayborderRadius = BorderRadius.all(monthDayRadius);
 
   @override
   Widget build(BuildContext context) {
-    final headingTextStyle = dayTheme.theme.textTheme.subtitle2 ?? subtitle2;
-    final headingTextStyleCorrectColor = day.isPast
-        ? headingTextStyle.copyWith(color: AbiliaColors.black)
-        : headingTextStyle;
+    final headingTextStyleCorrectColor =
+        (dayTheme.theme.textTheme.subtitle2 ?? subtitle2).copyWith(
+      color: day.isPast ? AbiliaColors.black : null,
+      height: 1,
+      fontSize: layout.monthCalendar.dayHeadingFontSize,
+    );
+
     return Tts.data(
       data:
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
@@ -250,72 +243,99 @@ class MonthDayView extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-          DefaultTabController.of(context)?.animateTo(0);
+          //DefaultTabController.of(context)?.animateTo(0); //TODO: ta bort? Ska det vara någon annanstans?
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
-          builder: (context, dayPickerState) => Container(
-            foregroundDecoration: day.isCurrent
-                ? BoxDecoration(
-                    border: currentBorder,
-                    borderRadius: monthDayborderRadius,
-                  )
-                : dayPickerState.day.isAtSameDay(day.day)
-                    ? BoxDecoration(
-                        border: selectedActivityBorder,
-                        borderRadius: monthDayborderRadius,
-                      )
-                    : null,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
+            builder: (context, dayPickerState) {
+          return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+              buildWhen: (previous, current) =>
+                  previous.monthWeekColor != current.monthWeekColor,
+              builder: (context, settingState) {
+                final highlighted =
+                    (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
+                final borderRadius = BorderRadius.circular(highlighted
+                    ? layout.monthCalendar.dayRadiusHighlighted
+                    : layout.monthCalendar.dayRadius);
+
+                final backgroundColor =
+                    settingState.monthWeekColor == WeekColor.captions ||
+                            day.isPast
+                        ? AbiliaColors.white110
+                        : dayTheme.secondaryColor;
+
+                return Container(
+                  margin: highlighted
+                      ? layout.monthCalendar.dayViewMarginHighlighted
+                      : layout.monthCalendar.dayViewMargin,
                   decoration: BoxDecoration(
-                    color: day.isPast
-                        ? dayTheme.monthPastHeadingColor
-                        : dayTheme.color,
-                    borderRadius: BorderRadius.vertical(top: monthDayRadius),
+                    color: backgroundColor,
+                    borderRadius: borderRadius,
                   ),
-                  height: 24.s, //TODO: hela denna widget ska nog bort iofs
-                  padding: EdgeInsets.symmetric(
-                      horizontal:
-                          4.s), //TODO: hela denna widget ska nog bort iofs
-                  child: DefaultTextStyle(
-                    style: headingTextStyleCorrectColor,
-                    child: Row(
-                      children: [
-                        Text('${day.day.day}'),
-                        const Spacer(),
-                        if (day.hasActivities)
-                          ColorDot(
-                            diameter: layout
-                                .monthCalendarLayout.hasActivitiesDotDiameter,
-                            color: day.isPast
-                                ? AbiliaColors.black
-                                : dayTheme.theme.colorScheme.onSurface,
+                  foregroundDecoration: day.isCurrent
+                      ? BoxDecoration(
+                          border: currentBorder,
+                          borderRadius: borderRadius,
+                        )
+                      : dayPickerState.day.isAtSameDay(day.day)
+                          ? BoxDecoration(
+                              border: selectedActivityBorder,
+                              borderRadius: borderRadius,
+                            )
+                          : BoxDecoration(
+                              border: transparentBlackBorder,
+                              borderRadius: borderRadius,
+                            ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        height: highlighted
+                            ? layout.monthCalendar.dayHeaderHeightHighlighted
+                            : layout.monthCalendar.dayHeaderHeight,
+                        decoration: BoxDecoration(
+                          color: day.isPast
+                              ? dayTheme.monthPastHeadingColor
+                              : dayTheme.color,
+                          borderRadius:
+                              BorderRadius.vertical(top: borderRadius.topRight),
+                        ),
+                        padding: highlighted
+                            ? layout.monthCalendar.dayHeaderPaddingHighlighted
+                            : layout.monthCalendar.dayHeaderPadding,
+                        child: DefaultTextStyle(
+                          style: headingTextStyleCorrectColor,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${day.day.day}'),
+                              const Spacer(),
+                              if (day.hasActivities)
+                                Padding(
+                                  padding: layout
+                                      .monthCalendar.hasActivitiesDotPadding,
+                                  child: ColorDot(
+                                    diameter: layout
+                                        .monthCalendar.hasActivitiesDotDiameter,
+                                    color: day.isPast
+                                        ? AbiliaColors.black
+                                        : dayTheme.theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
+                        ),
+                      ),
+                      Expanded(
+                        child: MonthDayContainer(
+                          day: day,
+                          highlighted: highlighted,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: BlocBuilder<MemoplannerSettingBloc,
-                      MemoplannerSettingsState>(
-                    buildWhen: (previous, current) =>
-                        previous.monthWeekColor != current.monthWeekColor,
-                    builder: (context, settingState) => MonthDayContainer(
-                      color:
-                          settingState.monthWeekColor == WeekColor.captions ||
-                                  day.isPast
-                              ? AbiliaColors.white110
-                              : dayTheme.secondaryColor,
-                      day: day,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+                );
+              });
+        }),
       ),
     );
   }
@@ -327,62 +347,128 @@ class MonthDayContainer extends StatelessWidget {
 
   const MonthDayContainer({
     Key? key,
-    required this.color,
+    this.color = Colors.lime, //TODO: Ta bort!
     this.day,
+    this.highlighted = false,
   }) : super(key: key);
 
-  final Color color;
+  final Color color; //TODO: Ta bort!
   final MonthDay? day;
+  final bool highlighted;
 
   @override
   Widget build(BuildContext context) {
     final d = day;
-    // A borderRadius can only be given for a uniform Border.
-    // https://github.com/flutter/flutter/issues/12583
-    // So work around is wrapping containers with
-    // background color
+
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: bottomRadius,
-      ),
-      child: Container(
-        padding: EdgeInsets.only(
-            left: 1.s,
-            right: 1.s,
-            bottom: 1.s), //TODO: hela denna widget ska bort kanakse?
-        decoration: BoxDecoration(
-          color: AbiliaColors.transparentBlack30,
-          borderRadius: bottomRadius,
-        ),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(
-              4.s, 6.s, 4.s, 8.s), //TODO: hela denna widget ska bort kanakse?
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(
-                    7.s), //TODO: hela denna widget ska bort kanakse?
-              )),
-          child: d != null
-              ? Stack(
-                  children: [
-                    if (d.fullDayActivityCount > 1)
-                      FullDayStack(
-                        numberOfActivities: d.fullDayActivityCount,
+      padding: highlighted
+          ? layout.monthCalendar.dayViewPaddingHighlighted
+          : layout.monthCalendar.dayViewPadding,
+      child: d != null
+          ? Stack(
+              children: [
+                if (d.fullDayActivityCount > 1)
+                  FullDayStack(
+                    numberOfActivities: d.fullDayActivityCount,
+                  )
+                else if (d.fullDayActivity != null)
+                  MonthActivityContent(
+                    activityDay: d.fullDayActivity!,
+                  ),
+                if (d.isPast)
+                  const CrossOver(
+                    color: AbiliaColors.transparentBlack30,
+                  ),
+              ],
+            )
+          : null,
+    );
+  }
+}
+
+class MonthDayViewCompact extends StatelessWidget {
+  final MonthDay day;
+  final DayTheme dayTheme;
+
+  const MonthDayViewCompact(
+    this.day, {
+    Key? key,
+    required this.dayTheme,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
+    final textWithCorrectColor = day.isPast
+        ? textStyle.copyWith(color: AbiliaColors.black)
+        : textStyle.copyWith(
+            color: dayTheme.monthSurfaceColor,
+          );
+    return Tts.data(
+      data:
+          DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
+              .format(day.day),
+      child: GestureDetector(
+        onTap: () =>
+            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day)),
+        child: BlocBuilder<DayPickerBloc, DayPickerState>(
+            builder: (context, dayPickerState) {
+          final dayIsHighlighted =
+              (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
+          final borderRadius = BorderRadius.circular(dayIsHighlighted
+              ? layout.monthCalendar.dayRadiusHighlighted
+              : layout.monthCalendar.dayRadius);
+
+          return Container(
+            foregroundDecoration: day.isCurrent
+                ? BoxDecoration(
+                    border: currentBorder,
+                    borderRadius: borderRadius,
+                  )
+                : dayPickerState.day.isAtSameDay(day.day)
+                    ? BoxDecoration(
+                        border: selectedActivityBorder,
+                        borderRadius: borderRadius,
                       )
-                    else if (d.fullDayActivity != null)
-                      MonthActivityContent(
-                        activityDay: d.fullDayActivity!,
+                    : BoxDecoration(
+                        border: transparentBlackBorder,
+                        borderRadius: borderRadius,
                       ),
-                    if (d.isPast)
-                      const CrossOver(
+            decoration: BoxDecoration(
+              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
+              borderRadius: borderRadius,
+            ),
+            padding: dayIsHighlighted
+                ? layout.monthCalendar.dayViewPaddingHighlighted
+                : layout.monthCalendar.dayViewPadding,
+            margin: dayIsHighlighted
+                ? layout.monthCalendar.dayViewMarginHighlighted
+                : layout.monthCalendar.dayViewMargin,
+            child: DefaultTextStyle(
+              style: textWithCorrectColor,
+              child: Stack(
+                children: [
+                  Center(child: Text('${day.day.day}')),
+                  if (day.hasActivities)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: ColorDot(
+                        diameter: layout.monthCalendar.hasActivitiesDotDiameter,
+                        color: AbiliaColors.black,
+                      ),
+                    ),
+                  if (day.isPast)
+                    Padding(
+                      padding: layout.monthCalendar.crossOverPadding,
+                      child: const CrossOver(
                         color: AbiliaColors.transparentBlack30,
                       ),
-                  ],
-                )
-              : null,
-        ),
+                    ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -399,7 +485,7 @@ class WeekNumber extends StatelessWidget {
     return Tts.data(
       data: '$weekTranslation ${weekNumber ?? ''}',
       child: SizedBox(
-        width: layout.monthCalendarLayout.weekNumberWidth,
+        width: layout.monthCalendar.weekNumberWidth,
         child: Text(
           weekNumber?.toString() ?? weekTranslation[0],
           textAlign: TextAlign.center,

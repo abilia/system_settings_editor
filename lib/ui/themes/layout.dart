@@ -22,7 +22,7 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
-  final MonthCalendarLayout monthCalendarLayout;
+  final MonthCalendarLayout monthCalendar;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -33,7 +33,7 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
-    this.monthCalendarLayout = const MonthCalendarLayout(),
+    this.monthCalendar = const MonthCalendarLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -169,27 +169,52 @@ class FormPaddingLayout {
 }
 
 class MonthCalendarLayout {
+  //TODO: bryt ut allt som har med dagarna att göra till en egen klass?
   final int monthContentFlex, monthListPreviewFlex;
-  final double weekRowVerticalPadding,
-      monthHeadingHeight,
-      monthDayRadius,
+
+  final double monthHeadingHeight,
+      dayRadius,
+      dayRadiusHighlighted,
+      dayBorderWidth,
+      dayBorderWidthHighlighted,
+      dayHeaderHeight,
+      dayHeaderHeightHighlighted,
+      dayHeadingFontSize,
       weekNumberWidth,
-      hasActivitiesDotDiameter,
-      currentBorderWidth;
-  final EdgeInsets weekNumberPadding;
+      hasActivitiesDotDiameter;
+
+  final EdgeInsets dayViewPadding,
+      dayViewPaddingHighlighted,
+      dayViewMargin,
+      dayViewMarginHighlighted,
+      dayHeaderPadding,
+      dayHeaderPaddingHighlighted,
+      crossOverPadding,
+      hasActivitiesDotPadding;
 
   final MonthPreviewLayout monthPreview;
 
   const MonthCalendarLayout({
     this.monthContentFlex = 242,
     this.monthListPreviewFlex = 229,
-    this.weekRowVerticalPadding = 2,
     this.monthHeadingHeight = 32,
-    this.monthDayRadius = 8,
+    this.dayRadius = 8,
+    this.dayRadiusHighlighted = 10,
+    this.dayBorderWidth = 1,
+    this.dayBorderWidthHighlighted = 4,
+    this.dayHeaderHeight = 0,
+    this.dayHeaderHeightHighlighted = 0,
+    this.dayHeadingFontSize = 0,
     this.weekNumberWidth = 24,
     this.hasActivitiesDotDiameter = 6,
-    this.currentBorderWidth = 4,
-    this.weekNumberPadding = const EdgeInsets.symmetric(horizontal: 2),
+    this.dayViewPadding = const EdgeInsets.all(4),
+    this.dayViewPaddingHighlighted = const EdgeInsets.all(6),
+    this.dayViewMargin = const EdgeInsets.all(2),
+    this.dayViewMarginHighlighted = const EdgeInsets.all(0),
+    this.dayHeaderPadding = const EdgeInsets.all(0),
+    this.dayHeaderPaddingHighlighted = const EdgeInsets.all(0),
+    this.crossOverPadding = const EdgeInsets.all(3),
+    this.hasActivitiesDotPadding = const EdgeInsets.all(0),
     this.monthPreview = const MonthPreviewLayout(),
   });
 }
@@ -201,10 +226,7 @@ class MonthPreviewLayout {
       headingHeight,
       headingFullDayActivityHeight,
       headingFullDayActivityWidth;
-  final EdgeInsets monthListPreviewPadding,
-      headingPadding,
-      dayViewCompactPadding,
-      compactCrossOverPadding;
+  final EdgeInsets monthListPreviewPadding, headingPadding;
 
   const MonthPreviewLayout({
     this.monthPreviewBorderWidth = 1,
@@ -216,7 +238,5 @@ class MonthPreviewLayout {
     this.monthListPreviewPadding =
         const EdgeInsets.only(left: 8, top: 14, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
-    this.dayViewCompactPadding = const EdgeInsets.all(4),
-    this.compactCrossOverPadding = const EdgeInsets.all(3),
   });
 }
