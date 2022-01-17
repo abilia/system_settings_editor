@@ -83,7 +83,7 @@ class _MediumLayout extends Layout {
             dotSize: 16,
             hourPadding: 1.5,
             dotPadding: 4.5,
-            dotDistance: 20,
+            dotDistance: 20.5,
             timePillarPadding: 8,
             defaultTimePillarWidth: 80,
           ),

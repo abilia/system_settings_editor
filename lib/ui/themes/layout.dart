@@ -215,12 +215,10 @@ class TimepillarLayout {
     this.width = 72,
     this.padding = 12,
     this.minHeight = 84,
-// Dots
     this.dotSize = 10,
     this.hourPadding = 1,
     this.dotPadding = 3, // hourPadding * 3
-    this.dotDistance = 30, // dotPadding * dotSize
-// Timepillar
+    this.dotDistance = 13, // dotPadding + dotSize
     this.timePillarPadding = 4,
     this.defaultTimePillarWidth = 42,
   });
