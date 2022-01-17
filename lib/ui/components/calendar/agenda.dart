@@ -55,7 +55,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth = (boxConstraints.maxWidth -
-                layout.timePillarLayout.defaultTimePillarWidth.s) /
+                layout.timePillar.defaultTimePillarWidth.s) /
             2;
         return RefreshIndicator(
           onRefresh: refresh,
@@ -157,8 +157,8 @@ class ActivityList extends StatelessWidget {
           ? 0.0
           : pastActivities.first.activity.category ==
                   notPastActivities.first.activity.category
-              ? ActivityCard.cardMarginSmall
-              : ActivityCard.cardMarginLarge;
+              ? layout.activityCard.marginSmall
+              : layout.activityCard.marginLarge;
 }
 
 class SliverNoActivities extends StatelessWidget {
@@ -215,7 +215,7 @@ class SliverActivityList extends StatelessWidget {
                   activityOccasion: activities[index],
                   bottomPadding: setting.showCategories
                       ? _padding(index)
-                      : ActivityCard.cardMarginSmall,
+                      : layout.activityCard.marginSmall,
                   showCategories: setting.showCategories,
                   showCategoryColor: setting.showCategoryColor,
                 );
@@ -232,6 +232,6 @@ class SliverActivityList extends StatelessWidget {
       ? lastMargin
       : activities[index].activity.category ==
               activities[index + 1].activity.category
-          ? ActivityCard.cardMarginSmall
-          : ActivityCard.cardMarginLarge;
+          ? layout.activityCard.marginSmall
+          : layout.activityCard.marginLarge;
 }

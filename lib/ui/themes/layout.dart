@@ -23,7 +23,8 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
-  final TimepillarLayout timePillarLayout;
+  final ActivityCardLayout activityCard;
+  final TimepillarLayout timePillar;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -35,7 +36,8 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
-    this.timePillarLayout = const TimepillarLayout(),
+    this.activityCard = const ActivityCardLayout(),
+    this.timePillar = const TimepillarLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -193,6 +195,30 @@ class FormPaddingLayout {
     this.right = 16,
     this.top = 20,
     this.verticalItemDistance = 8,
+  });
+}
+
+class ActivityCardLayout {
+  final double height,
+      padding,
+      paddingBottom,
+      marginSmall,
+      marginLarge,
+      imageSize,
+      categorySideOffset,
+      iconSize,
+      titleImagePadding;
+
+  const ActivityCardLayout({
+    this.height = 56,
+    this.padding = 4,
+    this.paddingBottom = 0,
+    this.marginSmall = 6,
+    this.marginLarge = 10,
+    this.imageSize = 48,
+    this.categorySideOffset = 56,
+    this.iconSize = 18,
+    this.titleImagePadding = 10,
   });
 }
 
