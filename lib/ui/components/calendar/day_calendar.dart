@@ -118,7 +118,6 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                       FullDayContainer(
                         fullDayActivities: eventState.fullDayActivities,
                         day: eventState.day,
-                        dayOccasion: eventState.occasion,
                       ),
                     Expanded(
                       child: BlocBuilder<MemoplannerSettingBloc,
@@ -129,12 +128,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                           children: [
                             if (memoState.dayCalendarType ==
                                 DayCalendarType.list)
-                              BlocBuilder<ClockBloc, DateTime>(
-                                builder: (context, now) => Agenda(
-                                  eventState: eventState,
-                                  now: now,
-                                ),
-                              )
+                              Agenda(eventState: eventState)
                             else
                               TimepillarCalendar(
                                 eventState: eventState,

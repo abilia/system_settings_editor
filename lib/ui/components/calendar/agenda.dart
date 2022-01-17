@@ -6,12 +6,10 @@ class Agenda extends StatefulWidget {
   static final topPadding = 60.0.s, bottomPadding = 125.0.s;
 
   final EventsLoaded eventState;
-  final DateTime now;
 
   const Agenda({
     Key? key,
     required this.eventState,
-    required this.now,
   }) : super(key: key);
 
   @override
@@ -135,7 +133,6 @@ class ActivityList extends StatelessWidget {
                     padding: EdgeInsets.only(top: topPadding),
                     sliver: SliverActivityList(
                       state.pastEvents(now),
-                      state.occasion,
                       reversed: state.isToday,
                       lastMargin: _lastPastPadding(
                         pastEvents,
@@ -149,10 +146,7 @@ class ActivityList extends StatelessWidget {
                     top: isTodayAndNoPast ? topPadding : 0.0,
                     bottom: bottomPadding,
                   ),
-                  sliver: SliverActivityList(
-                    notPastEvents,
-                    state.occasion,
-                  ),
+                  sliver: SliverActivityList(notPastEvents),
                 ),
               ],
             ],
@@ -198,15 +192,14 @@ class SliverNoActivities extends StatelessWidget {
 
 class SliverActivityList extends StatelessWidget {
   final List<EventOccasion> events;
-  final Occasion dayOccasion;
+
   // Reversed because slivers before center are called in reverse order
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
 
   const SliverActivityList(
-    this.events,
-    this.dayOccasion, {
+    this.events, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key? key,

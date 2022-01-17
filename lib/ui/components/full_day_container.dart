@@ -7,12 +7,10 @@ class FullDayContainer extends StatelessWidget {
   const FullDayContainer({
     Key? key,
     required this.fullDayActivities,
-    required this.dayOccasion,
     required this.day,
   }) : super(key: key);
 
   final List<ActivityOccasion> fullDayActivities;
-  final Occasion dayOccasion;
   final DateTime day;
 
   @override

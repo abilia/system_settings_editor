@@ -96,22 +96,17 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
                       child: BlocBuilder<NightActivitiesCubit, EventsLoaded>(
-                        builder: (context, nightState) =>
-                            BlocBuilder<ClockBloc, DateTime>(
-                          builder: (context, now) {
-                            return OneTimepillarCalendar(
-                              eventState: nightState,
-                              timepillarState: nightTimepillarState,
-                              dayParts: dayParts,
-                              displayTimeline: displayTimeline,
-                              showCategories: showCategories,
-                              showCategoryLabels: false,
-                              scrollToTimeOffset: false,
-                              displayHourLines: displayHourLines,
-                              topMargin: verticalMargin,
-                              bottomMargin: verticalMargin,
-                            );
-                          },
+                        builder: (context, nightState) => OneTimepillarCalendar(
+                          eventState: nightState,
+                          timepillarState: nightTimepillarState,
+                          dayParts: dayParts,
+                          displayTimeline: displayTimeline,
+                          showCategories: showCategories,
+                          showCategoryLabels: false,
+                          scrollToTimeOffset: false,
+                          displayHourLines: displayHourLines,
+                          topMargin: verticalMargin,
+                          bottomMargin: verticalMargin,
                         ),
                       ),
                     ),
