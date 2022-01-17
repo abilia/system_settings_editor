@@ -164,8 +164,8 @@ class ActivityList extends StatelessWidget {
           ? 0.0
           : pastActivities.first.event.category ==
                   notPastActivities.first.event.category
-              ? ActivityCard.cardMarginSmall
-              : ActivityCard.cardMarginLarge;
+              ? layout.activityCard.marginSmall
+              : layout.activityCard.marginLarge;
 }
 
 class SliverNoActivities extends StatelessWidget {
@@ -222,7 +222,7 @@ class SliverActivityList extends StatelessWidget {
                 final eventDay = events[index];
                 final padding = setting.showCategories
                     ? _padding(index)
-                    : EdgeInsets.only(bottom: ActivityCard.cardMarginSmall);
+                    : EdgeInsets.only(bottom: layout.activityCard.marginSmall);
                 if (eventDay is ActivityOccasion) {
                   return Padding(
                     padding: padding,
@@ -249,13 +249,17 @@ class SliverActivityList extends StatelessWidget {
   EdgeInsets _padding(int index) {
     final category = events[index].event.category;
     return EdgeInsets.only(
-      left: category != Category.right ? 0 : ActivityCard.categorySideOffset,
-      right: category == Category.right ? 0 : ActivityCard.categorySideOffset,
+      left: category != Category.right
+          ? 0
+          : layout.activityCard.categorySideOffset,
+      right: category == Category.right
+          ? 0
+          : layout.activityCard.categorySideOffset,
       bottom: index >= _maxIndex
           ? lastMargin
           : category == events[index + 1].event.category
-              ? ActivityCard.cardMarginSmall
-              : ActivityCard.cardMarginLarge,
+              ? layout.activityCard.marginSmall
+              : layout.activityCard.marginLarge,
     );
   }
 }

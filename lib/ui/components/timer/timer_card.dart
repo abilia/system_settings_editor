@@ -28,7 +28,7 @@ class TimerCard extends StatelessWidget {
       data: themeData,
       child: Builder(
         builder: (context) => Container(
-          height: ActivityCard.cardHeight,
+          height: layout.activityCard.height,
           decoration: getCategoryBoxDecoration(
             current: isCurrent,
             inactive: isPast,
@@ -41,7 +41,7 @@ class TimerCard extends StatelessWidget {
               borderRadius: borderRadius - BorderRadius.circular(1.0),
               onTap: () {},
               child: Padding(
-                padding: EdgeInsets.all(ActivityCard.cardPadding),
+                padding: layout.activityCard.titlePadding,
                 child: Text(
                   timerOccasion.event.title,
                   style: Theme.of(context).textTheme.subtitle1,

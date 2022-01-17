@@ -1,7 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
@@ -9,14 +9,7 @@ class ActivityCard extends StatelessWidget {
   final bool preview;
   final bool showCategoryColor;
 
-  static final double cardHeight = 56.0.s,
-      cardPadding = 4.0.s,
-      cardMarginSmall = 6.0.s,
-      cardMarginLarge = 10.0.s,
-      imageSize = 48.0.s,
-      categorySideOffset = 56.0.s;
-
-  static const duration = Duration(seconds: 1);
+  static const Duration duration = Duration(seconds: 1);
 
   const ActivityCard({
     Key? key,
@@ -33,6 +26,7 @@ class ActivityCard extends StatelessWidget {
     final current = activityOccasion.isCurrent && !preview;
     final past = activityOccasion.isPast && !preview;
     final inactive = past || signedOff;
+    final hasSideContent = activity.hasImage || signedOff || past;
     final themeData = inactive
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
@@ -50,7 +44,7 @@ class ActivityCard extends StatelessWidget {
           activity.semanticsProperties(context),
           child: AnimatedContainer(
             duration: ActivityCard.duration,
-            height: ActivityCard.cardHeight,
+            height: layout.activityCard.height,
             decoration: getCategoryBoxDecoration(
               current: current,
               inactive: inactive,
@@ -79,54 +73,57 @@ class ActivityCard extends StatelessWidget {
                           ),
                         );
                       },
-                child: Padding(
-                  padding: EdgeInsets.all(ActivityCard.cardPadding),
-                  child: Stack(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          if (activity.hasImage || signedOff || past)
-                            SizedBox(
-                              width: 48.s,
+                child: Stack(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        if (hasSideContent)
+                          Padding(
+                            padding: layout.activityCard.imagePadding,
+                            child: SizedBox(
+                              width: layout.activityCard.imageSize,
                               child: ActivityImage.fromActivityOccasion(
                                 activityOccasion: activityOccasion,
                                 fit: BoxFit.cover,
+                                crossPadding: layout.activityCard.crossPadding,
                               ),
                             ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: ActivityCard.cardPadding),
-                              child: Stack(children: <Widget>[
-                                if (activity.hasTitle)
-                                  Text(
-                                    activity.title,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    activity.subtitle(context),
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ]),
-                            ),
                           ),
-                        ],
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
+                        Expanded(
+                          child: Padding(
+                            padding: layout.activityCard.titlePadding,
+                            child: Stack(children: <Widget>[
+                              if (activity.hasTitle)
+                                Text(
+                                  activity.title,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              Align(
+                                alignment: activity.hasTitle
+                                    ? Alignment.bottomLeft
+                                    : Alignment.centerLeft,
+                                child: Text(
+                                  activity.subtitle(context),
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Padding(
+                        padding: layout.activityCard.statusesPadding,
                         child: buildInfoIcons(activity, inactive),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -153,7 +150,7 @@ class ActivityCard extends StatelessWidget {
 class CardIcon extends StatelessWidget {
   final IconData icon;
   static final EdgeInsets padding = EdgeInsets.only(right: 4.0.s);
-  static final double iconSize = 18.0.s;
+
   const CardIcon(
     this.icon, {
     Key? key,
@@ -163,13 +160,14 @@ class CardIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: Icon(icon, size: iconSize),
+      child: Icon(icon, size: layout.activityCard.iconSize),
     );
   }
 }
 
 class PrivateIcon extends StatelessWidget {
   final bool inactive;
+
   const PrivateIcon(
     this.inactive, {
     Key? key,
@@ -188,7 +186,7 @@ class PrivateIcon extends StatelessWidget {
       ),
       child: Icon(
         AbiliaIcons.passwordProtection,
-        size: CardIcon.iconSize,
+        size: layout.activityCard.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),
     );

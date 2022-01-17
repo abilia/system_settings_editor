@@ -296,7 +296,7 @@ void main() {
       expect(
           cardPaddingList.any((padding) =>
               padding.padding.collapsedSize.width <
-              ActivityCard.categorySideOffset),
+              layout.activityCard.categorySideOffset),
           isTrue);
     });
 

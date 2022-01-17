@@ -372,7 +372,7 @@ void main() {
           .resolve(TextDirection.ltr);
       expect(
         padding.left,
-        greaterThanOrEqualTo(ActivityCard.categorySideOffset),
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
       );
     });
 
@@ -399,7 +399,7 @@ void main() {
           .resolve(TextDirection.ltr);
       expect(
         padding.right,
-        greaterThanOrEqualTo(ActivityCard.categorySideOffset),
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
       );
     });
   });
