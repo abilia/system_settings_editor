@@ -11,7 +11,7 @@ import '../../../fakes/fakes_blocs.dart';
 import '../../../mocks/mocks.dart';
 
 void main() {
-  late WeekCalendarBloc weekCalendarBloc;
+  late WeekCalendarCubit weekCalendarBloc;
   late ActivitiesBloc activitiesBloc;
   late MockActivityRepository mockActivityRepository;
   late ClockBloc clockBloc;
@@ -32,7 +32,7 @@ void main() {
         syncBloc: FakeSyncBloc(),
         pushBloc: FakePushBloc(),
       );
-      weekCalendarBloc = WeekCalendarBloc(
+      weekCalendarBloc = WeekCalendarCubit(
         activitiesBloc: activitiesBloc,
         clockBloc: clockBloc,
       );
@@ -66,17 +66,14 @@ void main() {
       );
     });
 
-    test('week changes with NextWeek and PreviousWeek events', () {
+    test('week changes with NextWeek and PreviousWeek events', () async {
       // Arrange
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value(const Iterable.empty()));
       // Act
-      activitiesBloc.add(LoadActivities());
-      weekCalendarBloc.add(NextWeek());
-      weekCalendarBloc.add(PreviousWeek());
-      weekCalendarBloc.add(PreviousWeek());
+
       // Assert
-      expectLater(
+      final expected = expectLater(
         weekCalendarBloc.stream,
         emitsInOrder(
           [
@@ -95,27 +92,24 @@ void main() {
           ],
         ),
       );
+
+      activitiesBloc.add(LoadActivities());
+      weekCalendarBloc.nextWeek();
+      weekCalendarBloc.previousWeek();
+      weekCalendarBloc.previousWeek();
+
+      await expected;
     });
 
-    test('Activities updates when changing week', () {
+    test('Activities updates when changing week', () async {
       final fridayActivity = FakeActivity.starts(initialMinutes);
       // Arrange
       when(() => mockActivityRepository.load())
           .thenAnswer((_) => Future.value([fridayActivity]));
-      // Act
-      activitiesBloc.add(LoadActivities());
-      weekCalendarBloc.add(NextWeek());
-      weekCalendarBloc.add(PreviousWeek());
-      weekCalendarBloc.add(PreviousWeek());
-      // Assert
-      expectLater(
+      final expected = expectLater(
         weekCalendarBloc.stream,
         emitsInOrder(
           [
-            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
-              initialMinutes.firstInWeek().nextWeek(),
-              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
-            )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek(),
               {
@@ -132,6 +126,39 @@ void main() {
                 6: const []
               },
             )),
+          ],
+        ),
+      );
+
+      // Act
+      activitiesBloc.add(LoadActivities());
+
+      await expected;
+
+      final expected2 = expectLater(
+        weekCalendarBloc.stream,
+        emitsInOrder(
+          [
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
+              initialMinutes.firstInWeek().nextWeek(),
+              const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
+            )),
+            _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
+              initialMinutes.firstInWeek(),
+              {
+                0: [],
+                1: [],
+                2: [],
+                3: [],
+                4: [
+                  ActivityDay(
+                          fridayActivity, fridayActivity.startTime.onlyDays())
+                      .toOccasion(initialMinutes)
+                ],
+                5: [],
+                6: []
+              },
+            )),
             _WeekCalendarLoadedMatcher(WeekCalendarLoaded(
               initialMinutes.firstInWeek().previousWeek(),
               const {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []},
@@ -139,6 +166,14 @@ void main() {
           ],
         ),
       );
+
+      weekCalendarBloc.nextWeek();
+      weekCalendarBloc.previousWeek();
+      weekCalendarBloc.previousWeek();
+
+      await expected2;
+
+      // Assert
     });
 
     test('SGC-845: Week calendar should respect remove after', () {

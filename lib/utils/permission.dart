@@ -26,7 +26,7 @@ extension PermissionExtension on Permission {
     if (this == Permission.photos) return AbiliaIcons.upload;
     if (this == Permission.microphone) return AbiliaIcons.dictaphone;
     if (this == Permission.location) return AbiliaIcons.gewaRadio;
-    return AbiliaIcons.empty1;
+    return AbiliaIcons.quickSettings;
   }
 }
 

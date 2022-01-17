@@ -259,6 +259,12 @@ abstract class Translated {
 
   final String enterNameForTimer = 'Enter name for timer';
 
+  final String fromBasicTimer = 'From Basic Timer';
+
+  final String noBasicTimers = 'You have no basic timers';
+
+  final String selectBaseTimer = 'Select Basic Timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1161,6 +1167,15 @@ class SV extends Translated {
 
   @override
   final String enterNameForTimer = 'Ange namn för timer';
+
+  @override
+  final String fromBasicTimer = 'Från bastimers';
+
+  @override
+  final String noBasicTimers = 'Du har inga bastimers';
+
+  @override
+  final String selectBaseTimer = 'Välj bastimer';
 
   @override
   final String menu = 'Meny';
@@ -2321,6 +2336,15 @@ class DA extends Translated {
   final String startTimer = 'Start timeren';
 
   @override
+  final String fromBasicTimer = 'Fra standardtimer';
+
+  @override
+  final String noBasicTimers = 'Du har ingen standardtimer';
+
+  @override
+  final String selectBaseTimer = 'Vælg bastimer';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3477,6 +3501,15 @@ class NL extends Translated {
 
   @override
   final String startTimer = 'Start timer';
+
+  @override
+  final String fromBasicTimer = 'Uit standaardtimers';
+
+  @override
+  final String noBasicTimers = 'Je hebt geen standaardtimers';
+
+  @override
+  final String selectBaseTimer = 'Standaardtimers selecteren';
 
   @override
   final String menu = 'Menu';
@@ -4637,6 +4670,15 @@ class FI extends Translated {
 
   @override
   final String startTimer = 'Käynnistysajastin';
+
+  @override
+  final String fromBasicTimer = 'Perusajastimesta';
+
+  @override
+  final String noBasicTimers = 'Sinulla ei ole perusajastimia';
+
+  @override
+  final String selectBaseTimer = 'Valitse perusajastin';
 
   @override
   final String menu = 'Valikko';
@@ -5801,6 +5843,15 @@ class DE extends Translated {
   final String startTimer = 'Timer starten';
 
   @override
+  final String fromBasicTimer = 'Von Standardtimer';
+
+  @override
+  final String noBasicTimers = 'Sie haben keine Standardtimer';
+
+  @override
+  final String selectBaseTimer = 'Standardtimer auswählen';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -6961,6 +7012,15 @@ class NB extends Translated {
 
   @override
   final String startTimer = 'Start timer';
+
+  @override
+  final String fromBasicTimer = 'Fra standardtimere';
+
+  @override
+  final String noBasicTimers = 'Du har ingen standardtimere';
+
+  @override
+  final String selectBaseTimer = 'Velg standardtimere';
 
   @override
   final String menu = 'Meny';

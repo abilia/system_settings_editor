@@ -46,7 +46,7 @@ class DbSortable extends DbModel<Sortable> {
       case SortableType.note:
         return Sortable<NoteData>._(
           id: id,
-          type: SortableType.note,
+          type: type,
           data: NoteData.fromJson(data),
           groupId: groupId,
           sortOrder: sortOrder,
@@ -67,11 +67,35 @@ class DbSortable extends DbModel<Sortable> {
           visible: visible,
           fixed: fixed,
         );
-      case SortableType.basicactivity:
+      case SortableType.basicTimer:
+        return isGroup
+            ? Sortable<BasicTimerDataFolder>._(
+                id: id,
+                type: type,
+                data: BasicTimerDataFolder.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+                fixed: fixed,
+              )
+            : Sortable<BasicTimerDataItem>._(
+                id: id,
+                type: type,
+                data: BasicTimerDataItem.fromJson(data),
+                groupId: groupId,
+                sortOrder: sortOrder,
+                deleted: deleted,
+                isGroup: isGroup,
+                visible: visible,
+                fixed: fixed,
+              );
+      case SortableType.basicActivity:
         return isGroup
             ? Sortable<BasicActivityDataFolder>._(
                 id: id,
-                type: SortableType.basicactivity,
+                type: type,
                 data: BasicActivityDataFolder.fromJson(data),
                 groupId: groupId,
                 sortOrder: sortOrder,
@@ -82,7 +106,7 @@ class DbSortable extends DbModel<Sortable> {
               )
             : Sortable<BasicActivityDataItem>._(
                 id: id,
-                type: SortableType.basicactivity,
+                type: type,
                 data: BasicActivityDataItem.fromJson(data),
                 groupId: groupId,
                 sortOrder: sortOrder,

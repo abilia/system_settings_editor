@@ -16,6 +16,7 @@ final Layout layout = Device.screenSize.longestSide > 1500
 class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
+  final MenuPageLayout menuPage;
   final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
@@ -26,6 +27,7 @@ class Layout {
   const Layout({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
+    this.menuPage = const MenuPageLayout(),
     this.toolbar = const ToolbarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
@@ -59,11 +61,37 @@ class ActionButtonLayout {
   });
 }
 
+class MenuPageLayout {
+  final EdgeInsets padding;
+  final double crossAxisSpacing, mainAxisSpacing;
+  final int crossAxisCount;
+
+  final MenuItemButtonLayout menuItemButton;
+
+  const MenuPageLayout({
+    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+    this.crossAxisSpacing = 7.5,
+    this.mainAxisSpacing = 7,
+    this.crossAxisCount = 3,
+    this.menuItemButton = const MenuItemButtonLayout(),
+  });
+}
+
+class MenuItemButtonLayout {
+  final double size, borderRadius, orangeDotInset;
+
+  const MenuItemButtonLayout({
+    this.size = 48,
+    this.borderRadius = 12,
+    this.orangeDotInset = 4,
+  });
+}
+
 class ToolbarLayout {
-  final double heigth, horizontalPadding, bottomPadding;
+  final double height, horizontalPadding, bottomPadding;
 
   const ToolbarLayout({
-    this.heigth = 64,
+    this.height = 64,
     this.horizontalPadding = 16,
     this.bottomPadding = 0,
   });
@@ -71,11 +99,11 @@ class ToolbarLayout {
 
 class TabBarLayout {
   final TabItemLayout item;
-  final double heigth, bottomPadding;
+  final double height, bottomPadding;
 
   const TabBarLayout({
     this.item = const TabItemLayout(),
-    this.heigth = 64,
+    this.height = 64,
     this.bottomPadding = 0,
   });
 }

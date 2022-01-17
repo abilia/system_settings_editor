@@ -24,7 +24,7 @@ export 'generic/memoplannersetting/memoplanner_setting_bloc.dart';
 export 'license/license_bloc.dart';
 export 'permission/permission_bloc.dart';
 export 'calendar/timepillar/timepillar_cubit.dart';
-export 'activities/week_calendar/week_calendar_bloc.dart';
+export 'activities/week_calendar/week_calendar_cubit.dart';
 export 'activities/month_calendar/month_calendar_cubit.dart';
 export 'slide_show/slide_show_cubit.dart';
 export 'sound/alarm_sound_cubit.dart';
