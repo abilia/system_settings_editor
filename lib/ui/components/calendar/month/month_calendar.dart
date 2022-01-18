@@ -34,7 +34,7 @@ class MonthCalendar extends StatelessWidget {
           previous.monthCalendarType != current.monthCalendarType,
       builder: (context, memoSettingsState) => MonthBody(
         calendarDayColor: memoSettingsState.calendarDayColor,
-        monthCalendarType: memoSettingsState.monthCalendarType, //TODO: ta bort
+        monthCalendarType: memoSettingsState.monthCalendarType, //TODO: ta bort?
       ),
     );
   }
@@ -48,7 +48,7 @@ class MonthBody extends StatelessWidget {
   }) : super(key: key);
 
   final DayColor calendarDayColor;
-  final MonthCalendarType monthCalendarType;
+  final MonthCalendarType monthCalendarType; //TODO: ta bort?
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,10 @@ class MonthBody extends StatelessWidget {
         weekday: d + 1,
       ),
     );
-    final dayBuilder = Config.isMP
-        ? (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme)
-        : (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme);
+    final dayBuilder =
+        monthCalendarType == MonthCalendarType.preview && Config.isMPGO
+            ? (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme)
+            : (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme);
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
@@ -73,11 +74,11 @@ class MonthBody extends StatelessWidget {
             dayBuilder: dayBuilder,
           ),
         ),
-        //if (monthCalendarType == MonthCalendarType.preview) //TODO: ta bort
-        Expanded(
-          flex: layout.monthCalendar.monthListPreviewFlex,
-          child: MonthListPreview(dayThemes: dayThemes),
-        ),
+        if (monthCalendarType == MonthCalendarType.preview)
+          Expanded(
+            flex: layout.monthCalendar.monthListPreviewFlex,
+            child: MonthListPreview(dayThemes: dayThemes),
+          ),
       ],
     );
   }
@@ -267,9 +268,9 @@ class MonthDayView extends StatelessWidget {
                   margin: highlighted
                       ? layout.monthCalendar.dayViewMarginHighlighted
                       : layout.monthCalendar.dayViewMargin,
-                  padding: highlighted
-                      ? layout.monthCalendar.dayViewPaddingHighlighted
-                      : layout.monthCalendar.dayViewPadding,
+                  padding: EdgeInsets.all(highlighted
+                      ? layout.monthCalendar.dayBorderWidthHighlighted / 2
+                      : 0),
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: borderRadius,
