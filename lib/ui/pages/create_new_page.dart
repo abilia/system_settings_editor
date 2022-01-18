@@ -64,7 +64,7 @@ class CreateNewPage extends StatelessWidget {
               text: Text(t.newTimer),
               onTap: () async {
                 final timerStarted = await Navigator.of(context).push(
-                  _createRoute(
+                  _createRoute<AbiliaTimer>(
                     MultiBlocProvider(
                       providers: authProviders,
                       child: BlocProvider(
@@ -77,13 +77,16 @@ class CreateNewPage extends StatelessWidget {
                     ),
                   ),
                 );
-                if (timerStarted == true) {
-                  Navigator.pop(context);
-                  AbiliaTimer timer =
-                      context.read<TimerCubit>().state.timers.last;
-                  showViewDialog(
-                    context: context,
-                    builder: (context) => ViewTimerPage(timer: timer),
+                if (timerStarted != null) {
+                  Navigator.of(context).pop();
+                  final providers = copiedAuthProviders(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MultiBlocProvider(
+                        providers: providers,
+                        child: ViewTimerPage(timer: timerStarted),
+                      ),
+                    ),
                   );
                 }
               },
@@ -101,7 +104,7 @@ class CreateNewPage extends StatelessWidget {
       BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
     final activityCreated = await Navigator.of(context).push<bool>(
-      _createRoute(
+      _createRoute<bool>(
         MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -131,7 +134,7 @@ class CreateNewPage extends StatelessWidget {
     if (activityCreated == true) Navigator.pop(context);
   }
 
-  Route<bool> _createRoute(Widget page) => PageRouteBuilder<bool>(
+  Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(

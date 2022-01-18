@@ -30,15 +30,16 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
 
   void next() {
     if (state.isLastStep) {
-      timerCubit.addTimer(
-        AbiliaTimer(
-          id: const Uuid().v4(),
-          title: state.name,
-          fileId: state.image.id,
-          duration: state.duration,
-          startTime: DateTime.now(),
-        ),
+      final timer = AbiliaTimer(
+        id: const Uuid().v4(),
+        title: state.name,
+        fileId: state.image.id,
+        duration: state.duration,
+        startTime: DateTime.now(),
       );
+      timerCubit.addTimer(timer);
+      emit(SavedTimerWizardState(state, timer));
+      return;
     }
     emit(state.copyWith(
       step: (state.step + 1),

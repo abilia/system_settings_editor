@@ -10,7 +10,6 @@ class ViewTimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = timer.hasImage;
     return Scaffold(
       appBar: DayAppBar(
         day: timer.startTime.onlyDays(),
@@ -29,22 +28,24 @@ class ViewTimerPage extends StatelessWidget {
           constraints: const BoxConstraints.expand(),
           child: Column(
             children: <Widget>[
-              Flexible(
+              Expanded(
                 flex: 126,
                 child: Padding(
-                  padding: EdgeInsets.all(ActivityInfo.margin).subtract(
-                    EdgeInsets.only(
-                      bottom: hasImage ? 0 : ActivityInfo.margin,
-                    ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ActivityInfo.margin,
+                    vertical: 12.s,
                   ),
                   child: _TopInfo(timer: timer),
                 ),
               ),
-              const Divider(),
-              Flexible(
-                flex: 298,
+              Divider(
+                endIndent: 0,
+                indent: ActivityInfo.margin,
+              ),
+              Expanded(
+                flex: 351,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(30.s, 28.s, 29.s, 28.s),
+                  padding: EdgeInsets.all(32.s),
                   child: TimerWheel.nonInteractive(
                     activeSeconds: timer.duration.inSeconds,
                     timerLengthInMinutes: timer.duration.inMinutes,
@@ -77,30 +78,19 @@ class _TopInfo extends StatelessWidget {
       children: <Widget>[
         if (timer.hasImage)
           Padding(
-            padding: EdgeInsets.only(
-                left: ActivityInfo.margin, right: ActivityInfo.margin),
+            padding: EdgeInsets.only(right: ActivityInfo.margin),
             child: FadeInCalendarImage(
               imageFileId: timer.fileId,
-              imageFilePath: '',
             ),
           ),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0.s),
-                child: Tts(
-                  child: Text(
-                    timer.title,
-                    style: themeData.textTheme.headline5,
-                    overflow: TextOverflow.visible,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+          child: Tts(
+            child: Text(
+              timer.title,
+              style: themeData.textTheme.headline5,
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ],
@@ -121,24 +111,23 @@ class _TimerBottomBar extends StatelessWidget {
     return BottomAppBar(
       child: SizedBox(
         height: layout.toolbar.heigth,
-        child: Padding(
-          padding: EdgeInsets.only(left: 78.s, right: 69.s),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconActionButtonLight(
-                onPressed: () {}, // TODO: add pause/play functionality
-                child: const Icon(AbiliaIcons.pause),
-              ),
-              IconActionButtonLight(
-                onPressed: () {
-                  context.read<TimerCubit>().deleteTimer(timer);
-                  Navigator.pop(context);
-                },
-                child: const Icon(AbiliaIcons.deleteAllClear),
-              ),
-            ],
-          ),
+        child: Row(
+          children: <Widget>[
+            IconActionButtonLight(
+              onPressed: () {}, // TODO: add pause/play functionality
+              child: const Icon(AbiliaIcons.pause),
+            ),
+            IconActionButtonLight(
+              onPressed: () {
+                context.read<TimerCubit>().deleteTimer(timer);
+                Navigator.pop(context);
+              },
+              child: const Icon(AbiliaIcons.deleteAllClear),
+            ),
+          ]
+              .map((b) => [const Spacer(), b, const Spacer()])
+              .expand((w) => w)
+              .toList(),
         ),
       ),
     );

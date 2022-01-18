@@ -13,30 +13,16 @@ class TimerDb {
   static const _getAll = 'SELECT * FROM ${DatabaseRepository.timerTableName}';
   final _log = Logger((TimerDb).toString());
 
-  Future<void> insert(Iterable<AbiliaTimer> timers) async {
-    final batch = db.batch();
+  Future<void> insert(AbiliaTimer timer) => db.insert(
+        DatabaseRepository.timerTableName,
+        timer.toMapForDb(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
 
-    timers
-        .exceptionSafeMap(
-          (timer) => timer.toMapForDb(),
-          onException: _log.logAndReturnNull,
-        )
-        .whereNotNull()
-        .forEach(
-          (value) => batch.insert(
-            DatabaseRepository.timerTableName,
-            value,
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          ),
-        );
-
-    batch.commit();
-  }
-
-  Future<int> delete(AbiliaTimer timer) async {
-    return db.delete(DatabaseRepository.timerTableName,
-        where: 'id = "${timer.id}"');
-  }
+  Future<int> delete(AbiliaTimer timer) => db.delete(
+        DatabaseRepository.timerTableName,
+        where: 'id = "${timer.id}"',
+      );
 
   Future<List<AbiliaTimer>> getAllTimers() async {
     final result = await db.rawQuery(_getAll);
