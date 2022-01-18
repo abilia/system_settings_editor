@@ -95,14 +95,12 @@ final circleRadius = BorderRadius.all(Radius.circular(24.s));
 // Borders
 
 final Border selectedActivityBorder = Border.fromBorderSide(
-  //TODO: Denna border behöver inte vara här, lägg den lokalt i MonthCalendar
   BorderSide(
     color: AbiliaColors.black,
     width: layout.monthCalendar.dayBorderWidthHighlighted,
   ),
 );
 final Border currentBorder = Border.fromBorderSide(
-  //TODO: Denna border behöver inte vara här, lägg den lokalt i MonthCalendar
   BorderSide(
     color: AbiliaColors.red,
     width: layout.monthCalendar.dayBorderWidthHighlighted,
@@ -111,7 +109,6 @@ final Border currentBorder = Border.fromBorderSide(
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.s),
 );
-//TODO: Denna border behöver inte vara här, lägg den lokalt i MonthCalendar
 final Border transparentBlackBorder = Border.fromBorderSide(
   BorderSide(
       color: AbiliaColors.transparentBlack30,

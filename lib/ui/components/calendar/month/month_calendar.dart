@@ -262,6 +262,7 @@ class MonthDayView extends StatelessWidget {
                         : dayTheme.secondaryColor;
 
                 return Container(
+                  key: TestKey.monthCalendarDayBackgroundColor,
                   margin: highlighted
                       ? layout.monthCalendar.dayViewMarginHighlighted
                       : layout.monthCalendar.dayViewMargin,
@@ -339,18 +340,12 @@ class MonthDayView extends StatelessWidget {
 }
 
 class MonthDayContainer extends StatelessWidget {
-  static final bottomRadius = BorderRadius.vertical(
-    bottom: Radius.circular(layout.monthCalendar.dayRadius),
-  );
-
   const MonthDayContainer({
     Key? key,
-    this.color = Colors.lime, //TODO: Ta bort!
     this.day,
     this.highlighted = false,
   }) : super(key: key);
 
-  final Color color; //TODO: Ta bort!
   final MonthDay? day;
   final bool highlighted;
 
@@ -528,8 +523,7 @@ class MonthActivityContent extends StatelessWidget {
                 width: double.infinity,
               )
             : Padding(
-                padding: EdgeInsets.all(3.0
-                    .s), //TODO: denna widget ska kanske bort eller bli del av MP Medium och large bara
+                padding: layout.monthCalendar.activityTextContentPadding,
                 child: Tts(
                   child: Text(
                     activityDay.activity.title,

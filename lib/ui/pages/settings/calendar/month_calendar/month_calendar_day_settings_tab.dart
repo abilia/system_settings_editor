@@ -94,6 +94,7 @@ class _MonthDayView extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.color != current.color,
                 builder: (context, state) => Container(
+                  key: TestKey.monthDisplaySettingsDayView,
                   decoration: BoxDecoration(
                     color: state.color == WeekColor.columns
                         ? dayTheme.secondaryColor

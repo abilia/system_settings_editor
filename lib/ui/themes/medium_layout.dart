@@ -98,6 +98,7 @@ class _MediumLayout extends Layout {
               dayContainerPadding:
                   EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
               hasActivitiesDotPadding: EdgeInsets.only(top: 2),
+              activityTextContentPadding: EdgeInsets.all(4),
               monthPreview: MonthPreviewLayout(
                 monthPreviewBorderWidth: 2,
                 activityListTopPadding: 32,

@@ -75,6 +75,8 @@ class TestKey {
       showTimelineZoomSwitch = Key('showTimelineZoomSwitch'),
       showDurationSelectionSwitch = Key('showDurationSelectionSwitch'),
       monthColorSwith = Key('monthColorSwith'),
+      monthDisplaySettingsDayView = Key('monthDisplaySettingsDayView'),
+      monthCalendarDayBackgroundColor = Key('monthCalendarDayBackgroundColor'),
       addSettingsTab = Key('addSettingsTab'),
       createAccountPassword = Key('createAccountPassword'),
       createAccountPasswordConfirm = Key('createAccountPasswordConfirm'),
