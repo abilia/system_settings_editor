@@ -83,16 +83,16 @@ class _MediumLayout extends Layout {
               dayBorderWidth: 2,
               dayBorderWidthHighlighted: 6,
               dayHeaderHeight: 28,
+              dayHeadingFontSize: 20,
               weekNumberWidth: 36,
               hasActivitiesDotDiameter: 10,
-              dayHeadingFontSize: 20,
               dayViewMargin: EdgeInsets.all(4),
               dayViewMarginHighlighted: EdgeInsets.all(1),
               dayViewPadding: EdgeInsets.all(0),
               dayViewPaddingHighlighted: EdgeInsets.all(3),
+              dayHeaderPadding: EdgeInsets.only(left: 6, right: 6, top: 6),
               dayContainerPadding:
                   EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 6),
-              dayHeaderPadding: EdgeInsets.only(left: 6, right: 6, top: 6),
               hasActivitiesDotPadding: EdgeInsets.only(top: 2),
               monthPreview: MonthPreviewLayout(
                 monthPreviewBorderWidth: 2,
@@ -101,6 +101,7 @@ class _MediumLayout extends Layout {
                 headingHeight: 72,
                 headingFullDayActivityHeight: 54,
                 headingFullDayActivityWidth: 57,
+                headingButtonIconSize: 36,
                 monthListPreviewPadding: EdgeInsets.only(
                     left: 12,
                     top: 32,
@@ -118,6 +119,7 @@ class _MediumLayout extends Layout {
             categorySideOffset: 120,
             iconSize: 24.0,
             titleImagePadding: 12,
+            crossOverStrokeWidth: 2,
           ),
         );
 }

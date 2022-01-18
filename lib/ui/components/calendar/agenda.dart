@@ -217,6 +217,9 @@ class SliverActivityList extends StatelessWidget {
                       : layout.activityCard.marginSmall,
                   showCategories: setting.showCategories,
                   showCategoryColor: setting.showCategoryColor,
+                  crossOverColor: AbiliaColors.transparentBlack30,
+                  crossOverStrokeWidth:
+                      layout.activityCard.crossOverStrokeWidth,
                 );
               },
               childCount: activities.length,

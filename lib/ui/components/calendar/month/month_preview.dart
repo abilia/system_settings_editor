@@ -130,7 +130,11 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   style: isLight
                       ? secondaryActionButtonStyleLight
                       : secondaryActionButtonStyleDark,
-                  child: const Icon(AbiliaIcons.navigationNext),
+                  child: Icon(
+                    AbiliaIcons.navigationNext,
+                    size:
+                        layout.monthCalendar.monthPreview.headingButtonIconSize,
+                  ),
                 ),
               ],
             );

@@ -9,6 +9,8 @@ class ActivityCard extends StatelessWidget {
   final bool preview;
   final bool showCategories;
   final bool showCategoryColor;
+  final double? crossOverStrokeWidth;
+  final Color? crossOverColor;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -19,6 +21,8 @@ class ActivityCard extends StatelessWidget {
     this.preview = false,
     this.showCategories = true,
     this.showCategoryColor = false,
+    this.crossOverStrokeWidth,
+    this.crossOverColor,
   }) : super(key: key);
 
   @override
@@ -97,6 +101,8 @@ class ActivityCard extends StatelessWidget {
                                 child: ActivityImage.fromActivityOccasion(
                                   activityOccasion: activityOccasion,
                                   fit: BoxFit.cover,
+                                  crossOverColor: crossOverColor,
+                                  crossOverStrokeWidth: crossOverStrokeWidth,
                                 ),
                               ),
                             Expanded(

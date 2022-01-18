@@ -252,7 +252,9 @@ class MonthPreviewLayout {
       activityListBottomPadding,
       headingHeight,
       headingFullDayActivityHeight,
-      headingFullDayActivityWidth;
+      headingFullDayActivityWidth,
+      headingButtonIconSize;
+
   final EdgeInsets monthListPreviewPadding, headingPadding;
 
   const MonthPreviewLayout({
@@ -262,6 +264,7 @@ class MonthPreviewLayout {
     this.headingHeight = 48,
     this.headingFullDayActivityHeight = 40,
     this.headingFullDayActivityWidth = 40,
+    this.headingButtonIconSize = 24,
     this.monthListPreviewPadding =
         const EdgeInsets.only(left: 8, top: 14, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
@@ -277,7 +280,8 @@ class ActivityCardLayout {
       imageSize,
       categorySideOffset,
       iconSize,
-      titleImagePadding;
+      titleImagePadding,
+      crossOverStrokeWidth;
 
   const ActivityCardLayout({
     this.height = 56,
@@ -289,5 +293,6 @@ class ActivityCardLayout {
     this.categorySideOffset = 56,
     this.iconSize = 18,
     this.titleImagePadding = 10,
+    this.crossOverStrokeWidth = 2,
   });
 }
