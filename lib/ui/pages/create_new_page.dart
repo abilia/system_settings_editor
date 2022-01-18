@@ -121,14 +121,25 @@ class CreateNewPage extends StatelessWidget {
         ),
       ),
     );
-    if (timerStarted == true) Navigator.pop(buildContext);
+    if (timerStarted != null) {
+      Navigator.of(buildContext).pop();
+      final providers = copiedAuthProviders(buildContext);
+      Navigator.of(buildContext).push(
+        MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: providers,
+            child: ViewTimerPage(timer: timerStarted),
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> navigateToActivityWizard(
       BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
     final activityCreated = await Navigator.of(context).push<bool>(
-      _createRoute(
+      _createRoute<bool>(
         MultiBlocProvider(
           providers: [
             ...authProviders,
@@ -158,7 +169,7 @@ class CreateNewPage extends StatelessWidget {
     if (activityCreated == true) Navigator.pop(context);
   }
 
-  Route<bool> _createRoute(Widget page) => PageRouteBuilder<bool>(
+  Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(

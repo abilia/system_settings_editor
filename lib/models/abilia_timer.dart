@@ -28,6 +28,8 @@ class AbiliaTimer extends Equatable implements Event {
   @override
   final int category = Category.right;
 
+  bool get hasImage => fileId.isNotEmpty;
+
   Map<String, dynamic> toMapForDb() => {
         'id': id,
         'title': title,
