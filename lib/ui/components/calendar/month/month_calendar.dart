@@ -224,9 +224,6 @@ class MonthDayView extends StatelessWidget {
     Key? key,
     required this.dayTheme,
   }) : super(key: key);
-  //TODO: ta bort detta:
-  static final monthDayRadius = Radius.circular(layout.monthCalendar.dayRadius);
-  static final monthDayborderRadius = BorderRadius.all(monthDayRadius);
 
   @override
   Widget build(BuildContext context) {
@@ -342,8 +339,9 @@ class MonthDayView extends StatelessWidget {
 }
 
 class MonthDayContainer extends StatelessWidget {
-  static final bottomRadius =
-      BorderRadius.vertical(bottom: MonthDayView.monthDayRadius);
+  static final bottomRadius = BorderRadius.vertical(
+    bottom: Radius.circular(layout.monthCalendar.dayRadius),
+  );
 
   const MonthDayContainer({
     Key? key,
@@ -513,11 +511,11 @@ class MonthActivityContent extends StatelessWidget {
       height: height,
       clipBehavior: Clip.hardEdge,
       foregroundDecoration: BoxDecoration(
-        borderRadius: MonthDayView.monthDayborderRadius,
+        borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
         border: border,
       ),
       decoration: BoxDecoration(
-        borderRadius: MonthDayView.monthDayborderRadius,
+        borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
         color: AbiliaColors.white,
       ),
       child: Center(

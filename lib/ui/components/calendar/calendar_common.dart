@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:seagull/ui/components/calendar/month/month_calendar.dart';
 import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/scale_util.dart';
 
@@ -19,7 +18,7 @@ class FullDayStack extends StatelessWidget {
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       color: AbiliaColors.white,
-      borderRadius: MonthDayView.monthDayborderRadius,
+      borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
       border: border,
     );
     return Stack(
