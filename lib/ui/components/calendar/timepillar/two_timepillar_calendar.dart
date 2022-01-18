@@ -79,8 +79,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         create: (_) =>
                             TimepillarCubit.fixed(state: nightTimepillarState),
                       ),
-                      BlocProvider<NightActivitiesCubit>(
-                        create: (context) => NightActivitiesCubit(
+                      BlocProvider<NightEventsCubit>(
+                        create: (context) => NightEventsCubit(
                           activitiesBloc: context.read<ActivitiesBloc>(),
                           clockBloc: context.read<ClockBloc>(),
                           dayPickerBloc: context.read<DayPickerBloc>(),
@@ -95,7 +95,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
-                      child: BlocBuilder<NightActivitiesCubit, EventsLoaded>(
+                      child: BlocBuilder<NightEventsCubit, EventsLoaded>(
                         builder: (context, nightState) => OneTimepillarCalendar(
                           eventState: nightState,
                           timepillarState: nightTimepillarState,

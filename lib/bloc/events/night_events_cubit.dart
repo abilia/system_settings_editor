@@ -5,7 +5,7 @@ import 'package:seagull/bloc/events/helper.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NightActivitiesCubit extends Cubit<EventsLoaded> {
+class NightEventsCubit extends Cubit<EventsLoaded> {
   final MemoplannerSettingBloc memoplannerSettingBloc;
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
@@ -17,7 +17,7 @@ class NightActivitiesCubit extends Cubit<EventsLoaded> {
   late final StreamSubscription _memoplannerSettingsSubscription;
   DayParts? _dayParts;
 
-  NightActivitiesCubit({
+  NightEventsCubit({
     required this.activitiesBloc,
     required this.memoplannerSettingBloc,
     required this.clockBloc,
