@@ -8,7 +8,6 @@ class TimerWizardState extends Equatable {
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step == steps.length - 1;
-  bool get isPastLastStep => step >= steps.length;
   bool get isBeforeFirstStep => step < 0;
 
   TimerWizardStep get currentStep => steps[step];
@@ -39,4 +38,19 @@ class TimerWizardState extends Equatable {
 
   @override
   List<Object?> get props => [steps, duration, name, image, step];
+}
+
+class SavedTimerWizardState extends TimerWizardState {
+  final AbiliaTimer savedTimer;
+  SavedTimerWizardState(TimerWizardState state, this.savedTimer)
+      : super(
+          steps: state.steps,
+          duration: state.duration,
+          name: state.name,
+          image: state.image,
+          step: state.step,
+        );
+
+  @override
+  List<Object?> get props => [savedTimer];
 }

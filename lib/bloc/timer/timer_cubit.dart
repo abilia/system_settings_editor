@@ -12,7 +12,7 @@ class TimerCubit extends Cubit<TimerState> {
   }) : super(const TimerState(timers: []));
 
   Future<void> addTimer(AbiliaTimer timer) async {
-    await timerDb.insert([timer]);
+    await timerDb.insert(timer);
     emit(state.copyWith(timers: [...state.timers, timer]));
   }
 
@@ -23,7 +23,7 @@ class TimerCubit extends Cubit<TimerState> {
     }
   }
 
-  void loadTimers() async {
+  Future<void> loadTimers() async {
     final timers = await timerDb.getAllTimers();
     emit(TimerState(timers: timers));
   }
