@@ -6,14 +6,14 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../../mocks/mock_bloc.dart';
-import '../../../test_helpers/register_fallback_values.dart';
+import '../../mocks/mock_bloc.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   late ClockBloc clockBloc;
   late DayPickerBloc dayPickerBloc;
 
-  late NightActivitiesCubit nightActivitiesCubit;
+  late NightEventsCubit nightEventsCubit;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
   late StreamController<MemoplannerSettingsState> mockSettingStream;
   late StreamController<ActivitiesState> activityBlocStreamController;
@@ -45,7 +45,7 @@ void main() {
     clockBloc = ClockBloc(const Stream.empty(), initialTime: initialMinutes);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
-    nightActivitiesCubit = NightActivitiesCubit(
+    nightEventsCubit = NightEventsCubit(
       clockBloc: clockBloc,
       dayPickerBloc: dayPickerBloc,
       activitiesBloc: mockActivitiesBloc,
@@ -56,9 +56,10 @@ void main() {
   group('occasion', () {
     test('initial state morning before', () {
       expect(
-        nightActivitiesCubit.state,
-        ActivitiesOccasionLoaded(
+        nightEventsCubit.state,
+        EventsLoaded(
           activities: const [],
+          timers: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),
@@ -68,10 +69,11 @@ void main() {
     test('when change to previus day change state', () {
       dayPickerBloc.add(PreviousDay());
       expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: const [],
+            timers: const [],
             day: previusDay,
             occasion: Occasion.past,
           ),
@@ -82,10 +84,11 @@ void main() {
     test('when change to next day change state', () {
       dayPickerBloc.add(NextDay());
       expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: const [],
+            timers: const [],
             day: nextDay,
             occasion: Occasion.future,
           ),
@@ -97,10 +100,11 @@ void main() {
       final dayParts = mockMemoplannerSettingBloc.state.dayParts;
       clockBloc.add(initialDay.add(dayParts.night));
       expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: const [],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.current,
           ),
@@ -111,10 +115,11 @@ void main() {
     test('when time changes from 00:00 to 00:01', () async {
       clockBloc.add(initialDay.add(1.minutes()));
       await expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: const [],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),
@@ -122,10 +127,11 @@ void main() {
       );
       dayPickerBloc.add(PreviousDay());
       await expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: const [],
+            timers: const [],
             day: previusDay,
             occasion: Occasion.current,
           ),
@@ -142,10 +148,11 @@ void main() {
             MemoplannerSettings(nightIntervalStart: DayParts.nightLimit.max)));
 
         expectLater(
-          nightActivitiesCubit.stream,
+          nightEventsCubit.stream,
           emits(
-            ActivitiesOccasionLoaded(
+            EventsLoaded(
               activities: const [],
+              timers: const [],
               day: initialDay,
               occasion: Occasion.future,
             ),
@@ -158,9 +165,10 @@ void main() {
   group('activities', () {
     test('no activity starting off night', () {
       expect(
-        nightActivitiesCubit.state,
-        ActivitiesOccasionLoaded(
+        nightEventsCubit.state,
+        EventsLoaded(
           activities: const [],
+          timers: const [],
           day: initialDay,
           occasion: Occasion.future,
         ),
@@ -174,12 +182,16 @@ void main() {
       activityBlocStreamController.add(ActivitiesLoaded([activity]));
 
       expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: [
-              ActivityOccasion.forTest(activity, occasion: Occasion.future)
+              ActivityDay(
+                activity,
+                activity.startTime.onlyDays(),
+              )
             ],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),
@@ -195,12 +207,16 @@ void main() {
       activityBlocStreamController.add(ActivitiesLoaded([activity]));
 
       expectLater(
-        nightActivitiesCubit.stream,
+        nightEventsCubit.stream,
         emits(
-          ActivitiesOccasionLoaded(
+          EventsLoaded(
             activities: [
-              ActivityOccasion.forTest(activity, occasion: Occasion.future)
+              ActivityDay(
+                activity,
+                activity.startTime.onlyDays(),
+              )
             ],
+            timers: const [],
             day: initialDay,
             occasion: Occasion.future,
           ),

@@ -198,24 +198,28 @@ class FormPaddingLayout {
 
 class ActivityCardLayout {
   final double height,
-      padding,
-      paddingBottom,
       marginSmall,
       marginLarge,
       imageSize,
       categorySideOffset,
-      iconSize,
-      titleImagePadding;
+      iconSize;
+
+  final EdgeInsets imagePadding;
+  final EdgeInsets crossPadding;
+  final EdgeInsets titlePadding;
+  final EdgeInsets statusesPadding;
 
   const ActivityCardLayout({
     this.height = 56,
-    this.padding = 4,
-    this.paddingBottom = 0,
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
     this.categorySideOffset = 56,
     this.iconSize = 18,
-    this.titleImagePadding = 10,
+    this.crossPadding = const EdgeInsets.all(4),
+    this.imagePadding = const EdgeInsets.only(left: 4),
+    this.titlePadding =
+        const EdgeInsets.only(left: 8, top: 6, right: 8, bottom: 2),
+    this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
   });
 }

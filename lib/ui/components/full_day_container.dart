@@ -29,27 +29,29 @@ class FullDayContainer extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.all(12.s),
-              child: Row(
-                children: fullDayActivities
-                    .take(2)
-                    .map<Widget>(
-                      (fd) => Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: layout.activityCard.marginSmall,
+              child: SafeArea(
+                child: Row(
+                  children: fullDayActivities
+                      .take(2)
+                      .map<Widget>(
+                        (fd) => Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: layout.activityCard.marginSmall,
+                            ),
+                            child: ActivityCard(activityOccasion: fd),
                           ),
-                          child: ActivityCard(activityOccasion: fd),
                         ),
-                      ),
-                    )
-                    .followedBy([
-                  if (fullDayActivities.length >= 3)
-                    ShowAllFullDayActivitiesButton(
-                      fullDayActivities: fullDayActivities,
-                      day: day,
-                    )
-                ]).toList(),
+                      )
+                      .followedBy([
+                    if (fullDayActivities.length >= 3)
+                      ShowAllFullDayActivitiesButton(
+                        fullDayActivities: fullDayActivities,
+                        day: day,
+                      )
+                  ]).toList(),
+                ),
               ),
             ),
           ),
@@ -66,7 +68,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
     required this.day,
   }) : super(key: key);
 
-  final List<ActivityOccasion> fullDayActivities;
+  final List<ActivityDay> fullDayActivities;
   final DateTime day;
 
   @override

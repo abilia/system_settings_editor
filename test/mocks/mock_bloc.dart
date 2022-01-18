@@ -6,8 +6,8 @@ export 'package:mocktail/mocktail.dart';
 class MockActivitiesBloc extends MockBloc<ActivitiesEvent, ActivitiesState>
     implements ActivitiesBloc {}
 
-class MockActivitiesOccasionCubit extends MockCubit<ActivitiesOccasionState>
-    implements ActivitiesOccasionCubit {}
+class MockDayEventsCubit extends MockCubit<EventsState>
+    implements DayEventsCubit {}
 
 class MockSyncBloc extends MockBloc<SyncEvent, dynamic> implements SyncBloc {}
 
