@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/duration.dart';
 
 class TimerStartWiz extends StatelessWidget {
   const TimerStartWiz({Key? key}) : super(key: key);
@@ -20,14 +19,20 @@ class TimerStartWiz extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 20.s),
                 child: const TimerNameAndPictureWidget()),
             const Divider(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 12.s, 16.s, 12.s),
-              child: SizedBox(
-                width: 119.s,
-                child: Tts(
-                  child: Text(state.duration.toHMS(),
-                      textAlign: TextAlign.center,
-                      style: abiliaTextTheme.headline6),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(12.s, 12.s, 16.s, 12.s),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AbiliaColors.white,
+                    borderRadius: borderRadius,
+                    border: Border.all(color: AbiliaColors.white140),
+                  ),
+                  constraints: const BoxConstraints.expand(),
+                  child: TimerWheel.nonInteractive(
+                    activeSeconds: state.duration.inSeconds,
+                    timerLengthInMinutes: state.duration.inMinutes,
+                  ),
                 ),
               ),
             ),
