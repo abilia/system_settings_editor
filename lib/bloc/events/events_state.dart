@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
@@ -13,11 +15,10 @@ class EventsLoading extends EventsState {
 }
 
 class EventsLoaded extends EventsState {
-  final List<EventDay> events;
-  final List<TimerDay> timers;
-  final List<ActivityDay> activities;
-
-  final List<ActivityOccasion> fullDayActivities;
+  final UnmodifiableListView<EventDay> events;
+  final UnmodifiableListView<TimerDay> timers;
+  final UnmodifiableListView<ActivityDay> activities;
+  final UnmodifiableListView<ActivityOccasion> fullDayActivities;
 
   final Occasion occasion;
   final DateTime day;
@@ -25,12 +26,17 @@ class EventsLoaded extends EventsState {
   bool get isToday => occasion == Occasion.current;
 
   EventsLoaded({
-    required this.activities,
-    required this.timers,
-    this.fullDayActivities = const [],
+    required List<ActivityDay> activities,
+    required List<TimerDay> timers,
+    List<ActivityOccasion> fullDayActivities = const [],
     required this.day,
     required this.occasion,
-  })  : events = [...activities, ...timers]..sort(), // TODO Unecessary to sort?
+  })  : activities = UnmodifiableListView(activities),
+        timers = UnmodifiableListView(timers),
+        fullDayActivities = UnmodifiableListView(fullDayActivities),
+        events = UnmodifiableListView(
+          [...activities, ...timers]..sort(), // TODO Unecessary to sort?
+        ),
         super();
 
   List<EventOccasion> pastEvents(DateTime now) => events
