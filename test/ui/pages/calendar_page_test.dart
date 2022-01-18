@@ -749,11 +749,14 @@ void main() {
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
+        expect(find.byType(ViewTimerPage), findsOneWidget);
+        await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+        await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
 
         final captured =
             verify(() => mockTimerDb.insert(captureAny())).captured;
-        final savedTimer = captured.single.single as AbiliaTimer;
+        final savedTimer = captured.single as AbiliaTimer;
         expect(savedTimer.duration, 20.minutes());
         expect(
             savedTimer.title,
