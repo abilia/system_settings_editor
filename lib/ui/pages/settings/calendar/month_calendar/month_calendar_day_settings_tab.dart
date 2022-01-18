@@ -74,14 +74,17 @@ class _MonthDayView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.s),
+        margin: EdgeInsets.symmetric(horizontal: 4.s),
+        foregroundDecoration: BoxDecoration(
+          border: transparentBlackBorder,
+          borderRadius: borderRadius,
+        ),
         child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
                 color: dayTheme.color,
-                borderRadius:
-                    BorderRadius.vertical(top: MonthDayView.monthDayRadius),
+                borderRadius: BorderRadius.vertical(top: borderRadius.topRight),
               ),
               height: 32.s,
             ),
@@ -90,10 +93,14 @@ class _MonthDayView extends StatelessWidget {
                   MonthCalendarSettingsState>(
                 buildWhen: (previous, current) =>
                     previous.color != current.color,
-                builder: (context, state) => MonthDayContainer(
-                  color: state.color == WeekColor.columns
-                      ? dayTheme.secondaryColor
-                      : AbiliaColors.white110,
+                builder: (context, state) => Container(
+                  decoration: BoxDecoration(
+                    color: state.color == WeekColor.columns
+                        ? dayTheme.secondaryColor
+                        : AbiliaColors.white110,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: borderRadius.topRight),
+                  ),
                 ),
               ),
             ),
