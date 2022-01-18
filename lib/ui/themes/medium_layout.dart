@@ -74,6 +74,10 @@ class _MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
           ),
+          weekCalendar: const WeekCalendarLayout(
+            activityBorderWidth: 2.25,
+            currentActivityBorderWidth: 4.5,
+          ),
           monthCalendar: const MonthCalendarLayout(
               monthContentFlex: 620,
               monthListPreviewFlex: 344,
@@ -102,11 +106,8 @@ class _MediumLayout extends Layout {
                 headingFullDayActivityHeight: 54,
                 headingFullDayActivityWidth: 57,
                 headingButtonIconSize: 36,
-                monthListPreviewPadding: EdgeInsets.only(
-                    left: 12,
-                    top: 32,
-                    right:
-                        12), //TODO: sannolikt skall denna ändras, kolla mot designen
+                monthListPreviewPadding:
+                    EdgeInsets.only(left: 12, top: 32, right: 12),
                 headingPadding: EdgeInsets.only(left: 18, right: 16),
               )),
           activityCard: const ActivityCardLayout(
@@ -116,10 +117,12 @@ class _MediumLayout extends Layout {
             marginSmall: 8,
             marginLarge: 16,
             imageSize: 88,
-            categorySideOffset: 120,
+            categorySideOffset: 76,
             iconSize: 24.0,
             titleImagePadding: 12,
             crossOverStrokeWidth: 2,
+            borderWidth: 4,
+            currentBorderWidth: 6,
           ),
         );
 }

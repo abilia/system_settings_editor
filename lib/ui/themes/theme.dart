@@ -220,10 +220,15 @@ Border getCategoryBorder({
   required bool current,
   required bool showCategoryColor,
   required int category,
+  double? borderWidth,
+  double? currentBorderWidth,
 }) =>
     current
         ? Border.fromBorderSide(
-            BorderSide(color: AbiliaColors.red, width: 3.s),
+            BorderSide(
+                color: AbiliaColors.red,
+                width: currentBorderWidth ??
+                    layout.activityCard.currentBorderWidth),
           )
         : Border.fromBorderSide(
             BorderSide(
@@ -232,7 +237,7 @@ Border getCategoryBorder({
                 inactive: inactive,
                 showCategoryColor: showCategoryColor,
               ),
-              width: 1.5.s,
+              width: borderWidth ?? layout.activityCard.borderWidth,
             ),
           );
 

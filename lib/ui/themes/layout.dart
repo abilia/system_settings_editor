@@ -23,6 +23,7 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
+  final WeekCalendarLayout weekCalendar;
   final MonthCalendarLayout monthCalendar;
   final ActivityCardLayout activityCard;
 
@@ -36,6 +37,7 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
+    this.weekCalendar = const WeekCalendarLayout(),
     this.monthCalendar = const MonthCalendarLayout(),
     this.activityCard = const ActivityCardLayout(),
   });
@@ -198,6 +200,15 @@ class FormPaddingLayout {
   });
 }
 
+class WeekCalendarLayout {
+  final double activityBorderWidth, currentActivityBorderWidth;
+
+  const WeekCalendarLayout({
+    this.activityBorderWidth = 1.5,
+    this.currentActivityBorderWidth = 3,
+  });
+}
+
 class MonthCalendarLayout {
   final int monthContentFlex, monthListPreviewFlex;
 
@@ -281,7 +292,9 @@ class ActivityCardLayout {
       categorySideOffset,
       iconSize,
       titleImagePadding,
-      crossOverStrokeWidth;
+      crossOverStrokeWidth,
+      borderWidth,
+      currentBorderWidth;
 
   const ActivityCardLayout({
     this.height = 56,
@@ -290,9 +303,11 @@ class ActivityCardLayout {
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
-    this.categorySideOffset = 56,
+    this.categorySideOffset = 43,
     this.iconSize = 18,
     this.titleImagePadding = 10,
     this.crossOverStrokeWidth = 2,
+    this.borderWidth = 1.5,
+    this.currentBorderWidth = 3,
   });
 }
