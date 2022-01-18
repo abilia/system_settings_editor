@@ -79,7 +79,7 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
         final t = Translator.of(context).translate;
         return BottomAppBar(
           child: SizedBox(
-            height: layout.toolbar.heigth,
+            height: layout.toolbar.height,
             child: Row(
               children: <Widget>[
                 if (displayUncheckButton)
@@ -136,8 +136,8 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
           providers: authProviders,
-          child: BlocProvider<EditActivityBloc>(
-            create: (_) => EditActivityBloc.edit(activityDay),
+          child: BlocProvider<EditActivityCubit>(
+            create: (_) => EditActivityCubit.edit(activityDay),
             child: SelectAlarmPage(activity: activity),
           ),
         ),
@@ -235,13 +235,13 @@ class EditActivityButton extends StatelessWidget {
               providers: authProviders,
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider<EditActivityBloc>(
-                    create: (_) => EditActivityBloc.edit(activityDay),
+                  BlocProvider<EditActivityCubit>(
+                    create: (_) => EditActivityCubit.edit(activityDay),
                   ),
                   BlocProvider(
                     create: (context) => ActivityWizardCubit.edit(
                       activitiesBloc: context.read<ActivitiesBloc>(),
-                      editActivityBloc: context.read<EditActivityBloc>(),
+                      editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
                       settings: context.read<MemoplannerSettingBloc>().state,
                     ),

@@ -63,34 +63,37 @@ class CreateNewPage extends StatelessWidget {
               leading: const Icon(AbiliaIcons.stopWatch),
               text: Text(t.newTimer),
               onTap: () async {
-                final timerStarted = await Navigator.of(context).push(
-                  _createRoute<AbiliaTimer>(
-                    MultiBlocProvider(
+                navigateToTimerWizard(context, authProviders);
+              },
+            ).pad(topPadding),
+            PickField(
+              key: TestKey.basicTimerChoice,
+              leading: const Icon(AbiliaIcons.folder),
+              text: Text(t.selectBaseTimer),
+              onTap: () async {
+                final basicTimerData =
+                    await Navigator.of(context).push<BasicTimerData>(
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
                       providers: authProviders,
-                      child: BlocProvider(
-                        create: (context) => TimerWizardCubit(
-                          timerCubit: context.read<TimerCubit>(),
-                          translate: t,
+                      child: BlocProvider<SortableArchiveBloc<BasicTimerData>>(
+                        create: (_) => SortableArchiveBloc<BasicTimerData>(
+                          sortableBloc: BlocProvider.of<SortableBloc>(context),
                         ),
-                        child: const TimerWizardPage(),
+                        child: const BasicTimerPickerPage(),
                       ),
                     ),
                   ),
                 );
-                if (timerStarted != null) {
-                  Navigator.of(context).pop();
-                  final providers = copiedAuthProviders(context);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => MultiBlocProvider(
-                        providers: providers,
-                        child: ViewTimerPage(timer: timerStarted),
-                      ),
-                    ),
+                if (basicTimerData is BasicTimerDataItem) {
+                  await navigateToTimerWizard(
+                    context,
+                    authProviders,
+                    basicTimerData,
                   );
                 }
               },
-            ).pad(topPadding),
+            ).pad(formItemPadding),
           ],
         ),
         bottomNavigationBar: const BottomNavigation(
@@ -100,7 +103,39 @@ class CreateNewPage extends StatelessWidget {
     );
   }
 
-  Future navigateToActivityWizard(
+  Future<void> navigateToTimerWizard(
+      BuildContext buildContext, List<BlocProvider> authProviders,
+      [BasicTimerDataItem? basicTimer]) async {
+    final timerStarted = await Navigator.of(buildContext).push(
+      _createRoute(
+        MultiBlocProvider(
+          providers: authProviders,
+          child: BlocProvider(
+            create: (context) => TimerWizardCubit(
+              timerCubit: context.read<TimerCubit>(),
+              translate: Translator.of(buildContext).translate,
+              basicTimer: basicTimer,
+            ),
+            child: const TimerWizardPage(),
+          ),
+        ),
+      ),
+    );
+    if (timerStarted != null) {
+      Navigator.of(buildContext).pop();
+      final providers = copiedAuthProviders(buildContext);
+      Navigator.of(buildContext).push(
+        MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: providers,
+            child: ViewTimerPage(timer: timerStarted),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> navigateToActivityWizard(
       BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
     final activityCreated = await Navigator.of(context).push<bool>(
@@ -108,8 +143,8 @@ class CreateNewPage extends StatelessWidget {
         MultiBlocProvider(
           providers: [
             ...authProviders,
-            BlocProvider<EditActivityBloc>(
-              create: (context) => EditActivityBloc.newActivity(
+            BlocProvider<EditActivityCubit>(
+              create: (_) => EditActivityCubit.newActivity(
                 day: context.read<DayPickerBloc>().state.day,
                 defaultAlarmTypeSetting: context
                     .read<MemoplannerSettingBloc>()
@@ -121,7 +156,7 @@ class CreateNewPage extends StatelessWidget {
             BlocProvider(
               create: (context) => ActivityWizardCubit.newActivity(
                 activitiesBloc: context.read<ActivitiesBloc>(),
-                editActivityBloc: context.read<EditActivityBloc>(),
+                editActivityCubit: context.read<EditActivityCubit>(),
                 clockBloc: context.read<ClockBloc>(),
                 settings: context.read<MemoplannerSettingBloc>().state,
               ),

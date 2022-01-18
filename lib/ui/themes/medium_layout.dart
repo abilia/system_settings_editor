@@ -13,8 +13,19 @@ class _MediumLayout extends Layout {
             padding: EdgeInsets.all(12),
             withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
           ),
+          menuPage: const MenuPageLayout(
+            padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
+            crossAxisSpacing: 24,
+            mainAxisSpacing: 24,
+            crossAxisCount: 3,
+            menuItemButton: MenuItemButtonLayout(
+              size: 96,
+              borderRadius: 20,
+              orangeDotInset: 6,
+            ),
+          ),
           toolbar: const ToolbarLayout(
-            heigth: 120,
+            height: 120,
             bottomPadding: 8,
           ),
           tabBar: const TabBarLayout(
@@ -22,7 +33,7 @@ class _MediumLayout extends Layout {
               width: 118,
               border: 2,
             ),
-            heigth: 104,
+            height: 104,
             bottomPadding: 8,
           ),
           fontSize: const FontSize(
@@ -62,6 +73,17 @@ class _MediumLayout extends Layout {
             right: 24,
             top: 36,
             verticalItemDistance: 12,
+          ),
+          activityCard: const ActivityCardLayout(
+            height: 104,
+            padding: 8,
+            paddingBottom: 8,
+            marginSmall: 8,
+            marginLarge: 16,
+            imageSize: 88,
+            categorySideOffset: 120,
+            iconSize: 24.0,
+            titleImagePadding: 12,
           ),
         );
 }

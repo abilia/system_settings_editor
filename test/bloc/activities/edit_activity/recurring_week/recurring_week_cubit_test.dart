@@ -12,7 +12,7 @@ void main() {
   blocTest(
     'Initial state',
     build: () => RecurringWeekCubit(
-      EditActivityBloc.edit(
+      EditActivityCubit.edit(
         ActivityDay(
           Activity.createNew(
               title: 'title',
@@ -41,7 +41,7 @@ void main() {
 
   blocTest('Adding and removing days',
       build: () => RecurringWeekCubit(
-            EditActivityBloc.edit(
+            EditActivityCubit.edit(
               ActivityDay(
                 Activity.createNew(
                     title: 'null',
@@ -94,8 +94,8 @@ void main() {
   );
 
   blocTest('Adding and removing days on EditActivityBloc',
-      build: () => EditActivityBloc.edit(ad),
-      act: (EditActivityBloc bloc) {
+      build: () => EditActivityCubit.edit(ad),
+      act: (EditActivityCubit bloc) {
         final cubit = RecurringWeekCubit(bloc);
         cubit.addOrRemoveWeekday(DateTime.monday);
         cubit.addOrRemoveWeekday(DateTime.wednesday);
@@ -144,7 +144,7 @@ void main() {
 
   blocTest('Changing to every other week',
       build: () => RecurringWeekCubit(
-            EditActivityBloc.edit(
+            EditActivityCubit.edit(
               ActivityDay(
                 Activity.createNew(
                     title: 'null',
@@ -180,8 +180,8 @@ void main() {
           ]);
 
   blocTest('Changing to every other week on EditActivityBloc',
-      build: () => EditActivityBloc.edit(ad),
-      act: (EditActivityBloc bloc) {
+      build: () => EditActivityCubit.edit(ad),
+      act: (EditActivityCubit bloc) {
         final recurringWeekBloc = RecurringWeekCubit(bloc);
 
         // Act
@@ -219,7 +219,7 @@ void main() {
       });
 
   {
-    final editActivityBloc = EditActivityBloc.edit(
+    final editActivityBloc = EditActivityCubit.edit(
       ActivityDay(
         Activity.createNew(
             title: 'null',
@@ -240,7 +240,7 @@ void main() {
         // Act
         cubit.addOrRemoveWeekday(DateTime.monday);
         cubit.changeEveryOtherWeek(true);
-        editActivityBloc.add(ChangeDate(newStartDate));
+        editActivityBloc.changeDate(newStartDate);
       },
       expect: () => [
         RecurringWeekState(
@@ -307,13 +307,14 @@ void main() {
 
     blocTest(
       'Changing to every other week on even week on EditActivityBloc',
-      build: () => EditActivityBloc.edit(ActivityDay(activity, day)),
-      act: (EditActivityBloc bloc) async {
-        RecurringWeekCubit(bloc)
-          ..addOrRemoveWeekday(DateTime.monday)
-          ..changeEveryOtherWeek(true);
+      build: () => EditActivityCubit.edit(ActivityDay(activity, day)),
+      act: (EditActivityCubit bloc) async {
+        final rwc = RecurringWeekCubit(bloc)
+          ..addOrRemoveWeekday(DateTime.monday);
         await bloc.stream.any((element) => true);
-        bloc.add(ChangeDate(newStartDay));
+        rwc.changeEveryOtherWeek(true);
+        await bloc.stream.any((element) => true);
+        bloc.changeDate(newStartDay);
       },
       expect: () => [
         initialState.copyWith(activity2),

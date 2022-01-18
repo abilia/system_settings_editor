@@ -18,6 +18,7 @@ class AuthenticatedListener extends StatefulWidget {
   }) : super(key: key);
 
   final Widget child;
+
   @override
   _AuthenticatedListenerState createState() => _AuthenticatedListenerState();
 }
@@ -121,8 +122,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
                 current is InactivityThresholdReachedState &&
                 previous is ActivityDetectedState,
             listener: (context, state) {
-              context.read<MonthCalendarBloc>().add(GoToCurrentMonth());
-              context.read<WeekCalendarBloc>().add(GoToCurrentWeek());
+              context.read<MonthCalendarCubit>().goToCurrentMonth();
+              context.read<WeekCalendarCubit>().goToCurrentWeek();
               context.read<DayPickerBloc>().add(CurrentDay());
             },
           ),

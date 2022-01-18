@@ -84,8 +84,8 @@ void main() {
                 value: mockMemoplannerSettingsBloc,
               ),
               BlocProvider<ActivitiesBloc>(create: (_) => FakeActivitiesBloc()),
-              BlocProvider<EditActivityBloc>(
-                create: (context) => EditActivityBloc.newActivity(
+              BlocProvider<EditActivityCubit>(
+                create: (context) => EditActivityCubit.newActivity(
                   day: today,
                   defaultAlarmTypeSetting:
                       mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
@@ -96,7 +96,7 @@ void main() {
                 create: (context) => ActivityWizardCubit.newActivity(
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
-                  editActivityBloc: context.read<EditActivityBloc>(),
+                  editActivityCubit: context.read<EditActivityCubit>(),
                   settings: context.read<MemoplannerSettingBloc>().state,
                 ),
               ),

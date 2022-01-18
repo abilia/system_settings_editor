@@ -49,15 +49,15 @@ class AlarmSettings extends Equatable {
         ),
         checkableActivity: settings.parse(
           checkableActivityAlarmKey,
-          Sound.Default.name(),
+          Sound.Default.name,
         ),
         nonCheckableActivity: settings.parse(
           nonCheckableActivityAlarmKey,
-          Sound.Default.name(),
+          Sound.Default.name,
         ),
         reminder: settings.parse(
           reminderAlarmKey,
-          Sound.Default.name(),
+          Sound.Default.name,
         ),
         vibrateAtReminder: settings.getBool(
           vibrateAtReminderKey,

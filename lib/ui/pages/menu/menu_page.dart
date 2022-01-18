@@ -20,15 +20,15 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.s, horizontal: 12.s),
+        padding: layout.menuPage.padding,
         child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
             MenuSettings>(
           selector: (state) => state.settings.menu,
           builder: (context, menu) {
             return GridView.count(
-              crossAxisSpacing: 7.5.s,
-              mainAxisSpacing: 7.s,
-              crossAxisCount: 3,
+              crossAxisSpacing: layout.menuPage.crossAxisSpacing,
+              mainAxisSpacing: layout.menuPage.mainAxisSpacing,
+              crossAxisCount: layout.menuPage.crossAxisCount,
               children: [
                 if (menu.showCamera) const CameraButton(),
                 if (menu.showPhotos) const MyPhotosButton(),
@@ -40,9 +40,6 @@ class MenuPage extends StatelessWidget {
             );
           },
         ),
-      ),
-      bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: CloseButton(),
       ),
     );
   }
@@ -140,7 +137,7 @@ class PhotoCalendarButton extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
 
     return MenuItemButton(
-      icon: AbiliaIcons.day,
+      icon: AbiliaIcons.photoCalendar,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -177,7 +174,7 @@ class QuickSettingsButton extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
 
     return MenuItemButton(
-      icon: AbiliaIcons.menuSetup,
+      icon: AbiliaIcons.quickSettings,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -205,7 +202,7 @@ class SettingsButton extends StatelessWidget {
         return Stack(
           children: [
             MenuItemButton(
-              style: actionButtonStyleBlack,
+              style: blackButtonStyle,
               text: Translator.of(context).translate.settings,
               icon: AbiliaIcons.settings,
               onPressed: () => Navigator.of(context).push(
@@ -220,8 +217,8 @@ class SettingsButton extends StatelessWidget {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: 4.s,
-                right: 4.s,
+                top: layout.menuPage.menuItemButton.orangeDotInset,
+                right: layout.menuPage.menuItemButton.orangeDotInset,
                 child: const OrangeDot(),
               ),
           ],
@@ -271,7 +268,7 @@ class MenuItemButton extends StatelessWidget {
               const Spacer(),
               Icon(
                 icon,
-                size: 48.s,
+                size: layout.menuPage.menuItemButton.size,
               ),
               const Spacer(),
             ],

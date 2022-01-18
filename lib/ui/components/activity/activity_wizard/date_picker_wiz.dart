@@ -7,12 +7,12 @@ class DatePickerWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityBloc, EditActivityState>(
+    return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, editActivityState) {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => MonthCalendarBloc(
+              create: (context) => MonthCalendarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
               ),
@@ -38,10 +38,8 @@ class DatePickerWiz extends StatelessWidget {
             ),
             bottomNavigationBar: Builder(
               builder: (context) => WizardBottomNavigation(beforeOnNext: () {
-                context.read<EditActivityBloc>().add(
-                      ChangeDate(
-                        context.read<DayPickerBloc>().state.day,
-                      ),
+                context.read<EditActivityCubit>().changeDate(
+                      context.read<DayPickerBloc>().state.day,
                     );
               }),
             ),

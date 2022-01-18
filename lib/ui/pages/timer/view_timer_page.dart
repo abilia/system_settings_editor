@@ -110,7 +110,7 @@ class _TimerBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       child: SizedBox(
-        height: layout.toolbar.heigth,
+        height: layout.toolbar.height,
         child: Row(
           children: <Widget>[
             IconActionButtonLight(

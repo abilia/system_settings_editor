@@ -160,7 +160,8 @@ void main() {
       sha1: sha1.convert(processedFile1).toString(),
       md5: md5.convert(processedFile1).toString(),
       path: 'seagull/$fileId',
-      contentType: 'image/jpeg', // File is converted to jpeg
+      contentType: 'image/jpeg',
+      // File is converted to jpeg
       fileSize: processedFile1.length,
       deleted: false,
       fileLoaded: true,

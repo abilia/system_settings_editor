@@ -53,7 +53,7 @@ class ErrorPopupListener extends StatelessWidget {
   ) async {
     final translate = Translator.of(context).translate;
     SaveRecurring? saveEvent;
-    final state = context.read<EditActivityBloc>().state;
+    final state = context.read<EditActivityCubit>().state;
 
     if (errors.contains(SaveError.storedRecurring)) {
       if (state is StoredActivityState) {

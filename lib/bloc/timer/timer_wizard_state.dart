@@ -8,9 +8,19 @@ class TimerWizardState extends Equatable {
   final UnmodifiableListView<TimerWizardStep> steps;
 
   bool get isLastStep => step == steps.length - 1;
+
+  bool get isPastLastStep => step >= steps.length;
+
   bool get isBeforeFirstStep => step < 0;
 
   TimerWizardStep get currentStep => steps[step];
+
+  static final _defaultSteps = UnmodifiableListView(
+    [
+      TimerWizardStep.duration,
+      TimerWizardStep.start,
+    ],
+  );
 
   const TimerWizardState({
     required this.steps,
@@ -19,6 +29,22 @@ class TimerWizardState extends Equatable {
     this.image = AbiliaFile.empty,
     this.step = 0,
   });
+
+  factory TimerWizardState.initial() {
+    return TimerWizardState(steps: _defaultSteps);
+  }
+
+  factory TimerWizardState.withBasicTimer(BasicTimerDataItem basicTimer) {
+    return TimerWizardState(
+      steps: _defaultSteps,
+      duration: basicTimer.duration.milliseconds(),
+      name: basicTimer.basicTimerTitle,
+      image: basicTimer.hasImage()
+          ? AbiliaFile.from(id: basicTimer.fileId, path: basicTimer.icon)
+          : AbiliaFile.empty,
+      step: 1,
+    );
+  }
 
   TimerWizardState copyWith({
     Duration? duration,

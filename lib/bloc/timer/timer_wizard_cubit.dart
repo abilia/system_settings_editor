@@ -17,16 +17,10 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
   TimerWizardCubit({
     required this.timerCubit,
     required this.translate,
-  }) : super(
-          TimerWizardState(
-            steps: UnmodifiableListView(
-              [
-                TimerWizardStep.duration,
-                TimerWizardStep.start,
-              ],
-            ),
-          ),
-        );
+    BasicTimerDataItem? basicTimer,
+  }) : super(basicTimer == null
+            ? TimerWizardState.initial()
+            : TimerWizardState.withBasicTimer(basicTimer));
 
   void next() {
     if (state.isLastStep) {

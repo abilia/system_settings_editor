@@ -4,9 +4,10 @@ import 'package:seagull/ui/all.dart';
 class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime? day;
-  final Function(Question)? onTap;
+  final Function(Question)? onTap, onTapEdit, onTapDelete;
+  final Function(Question, ChecklistReorderDirection)? onTapReorder;
   final EdgeInsetsGeometry padding;
-  final bool preview;
+  final bool preview, hasToolbar;
 
   const ChecklistView(
     this.checklist, {
@@ -15,7 +16,26 @@ class ChecklistView extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.preview = false,
     Key? key,
-  }) : super(key: key);
+  })  : hasToolbar = false,
+        onTapEdit = null,
+        onTapDelete = null,
+        onTapReorder = null,
+        super(key: key);
+
+  const ChecklistView.withToolbar(
+    this.checklist, {
+    this.day,
+    required this.onTapEdit,
+    required this.onTapDelete,
+    required this.onTapReorder,
+    this.padding = EdgeInsets.zero,
+    this.preview = false,
+    Key? key,
+  })  : hasToolbar = true,
+        onTap = null,
+        assert(onTapEdit != null && onTapDelete != null && onTapReorder != null,
+            'All callbacks must be non null'),
+        super(key: key);
 
   @override
   _ChecklistViewState createState() => _ChecklistViewState();
@@ -23,6 +43,8 @@ class ChecklistView extends StatefulWidget {
 
 class _ChecklistViewState extends State<ChecklistView> {
   late final ScrollController _controller;
+  int? selectedQuestion;
+
   @override
   void initState() {
     super.initState();
@@ -40,18 +62,63 @@ class _ChecklistViewState extends State<ChecklistView> {
         itemBuilder: (context, i) {
           final question = widget.checklist.questions[i];
           final day = widget.day;
-          return QuestionView(
-            question,
-            inactive: widget.preview,
-            signedOff:
-                day != null && widget.checklist.isSignedOff(question, day),
-            onTap: widget.onTap != null
-                ? () => widget.onTap?.call(question)
-                : null,
+          return Stack(
+            children: [
+              QuestionView(
+                question,
+                inactive: widget.preview,
+                signedOff:
+                    day != null && widget.checklist.isSignedOff(question, day),
+                onTap: widget.onTap != null
+                    ? () => widget.onTap?.call(question)
+                    : widget.hasToolbar
+                        ? () => setState(() {
+                              selectedQuestion =
+                                  selectedQuestion == i ? null : i;
+                            })
+                        : null,
+              ),
+              if (widget.hasToolbar && selectedQuestion == i)
+                Positioned.fill(
+                  child: ChecklistToolbar(
+                    disableUp: i == 0,
+                    disableDown: i == widget.checklist.questions.length - 1,
+                    onTapEdit: () {
+                      _deselectQuestion();
+                      widget.onTapEdit?.call(question);
+                    },
+                    onTapDelete: () {
+                      _deselectQuestion();
+                      widget.onTapDelete?.call(question);
+                    },
+                    onTapReorder: (direction) {
+                      widget.onTapReorder?.call(question, direction);
+                      final selectedIndex = selectedQuestion;
+
+                      if (widget.onTapReorder != null &&
+                          selectedIndex != null) {
+                        final newSelectedIndex =
+                            direction == ChecklistReorderDirection.up
+                                ? selectedIndex - 1
+                                : selectedIndex + 1;
+                        if (newSelectedIndex >= 0 &&
+                            newSelectedIndex <
+                                widget.checklist.questions.length) {
+                          selectedQuestion = newSelectedIndex;
+                        }
+                      }
+                    },
+                  ),
+                ),
+            ],
           );
         },
       ),
     );
+  }
+
+  void _deselectQuestion() {
+    setState(() => selectedQuestion = null);
   }
 }
 

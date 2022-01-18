@@ -42,25 +42,32 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
     this.iconData, {
     Key? key,
     this.onPressed,
+    this.selected = false,
   }) : super(key: key);
 
   final String text;
   final IconData iconData;
   final VoidCallback? onPressed;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: layout.go
-            ? IconActionButtonLight(
+            ? IconActionButton(
                 onPressed: onPressed,
                 child: Icon(iconData),
+                style: selected
+                    ? actionButtonStyleLightSelected
+                    : actionButtonStyleLight,
               )
             : _TextAndIconActionButton(
                 text,
                 iconData,
                 onPressed: onPressed,
-                style: textActionButtonStyleLight,
+                style: selected
+                    ? textActionButtonStyleLightSelected
+                    : textActionButtonStyleLight,
               ),
       );
 }

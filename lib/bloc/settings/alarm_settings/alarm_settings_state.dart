@@ -16,24 +16,24 @@ extension AlarmSettingsState on AlarmSettings {
   }) =>
       AlarmSettings(
         durationMs: alarmDuration?.milliseconds() ?? durationMs,
-        nonCheckableActivity: nonCheckableSound?.name() ?? nonCheckableActivity,
-        checkableActivity: checkableSound?.name() ?? checkableActivity,
-        reminder: reminderSound?.name() ?? reminder,
+        nonCheckableActivity: nonCheckableSound?.name ?? nonCheckableActivity,
+        checkableActivity: checkableSound?.name ?? checkableActivity,
+        reminder: reminderSound?.name ?? reminder,
         vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
         showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: nonCheckableSound.name(),
+          data: nonCheckableSound.name,
           identifier: AlarmSettings.nonCheckableActivityAlarmKey,
         ),
         MemoplannerSettingData.fromData(
-          data: checkableSound.name(),
+          data: checkableSound.name,
           identifier: AlarmSettings.checkableActivityAlarmKey,
         ),
         MemoplannerSettingData.fromData(
-          data: reminderSound.name(),
+          data: reminderSound.name,
           identifier: AlarmSettings.reminderAlarmKey,
         ),
         MemoplannerSettingData.fromData(
