@@ -7,9 +7,11 @@ abstract class SortableData extends Equatable {
 
   String title(Translated t);
 
-  String folderFileId();
+  String dataFileId();
 
-  String folderFilePath();
+  String dataFilePath();
+
+  bool hasImage();
 }
 
 class RawSortableData extends SortableData {
@@ -29,10 +31,13 @@ class RawSortableData extends SortableData {
   String title(t) => '';
 
   @override
-  String folderFileId() => '';
+  String dataFileId() => '';
 
   @override
-  String folderFilePath() => '';
+  String dataFilePath() => '';
+
+  @override
+  bool hasImage() => false;
 }
 
 class ImageArchiveData extends SortableData {
@@ -81,10 +86,13 @@ class ImageArchiveData extends SortableData {
           : name;
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 class NoteData extends SortableData {
@@ -122,10 +130,13 @@ class NoteData extends SortableData {
   String title(t) => name;
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 class ChecklistData extends SortableData {
@@ -166,10 +177,99 @@ class ChecklistData extends SortableData {
   String title(t) => checklist.name;
 
   @override
-  String folderFileId() => checklist.fileId;
+  String dataFileId() => checklist.fileId;
 
   @override
-  String folderFilePath() => checklist.icon;
+  String dataFilePath() => checklist.icon;
+
+  @override
+  bool hasImage() => checklist.fileId.isNotEmpty || checklist.icon.isNotEmpty;
+}
+
+abstract class BasicTimerData extends SortableData {}
+
+class BasicTimerDataItem extends BasicTimerData {
+  final String fileId, icon, basicTimerTitle;
+  final int duration;
+
+  BasicTimerDataItem._({
+    required this.basicTimerTitle,
+    required this.icon,
+    required this.fileId,
+    this.duration = 0,
+  });
+
+  factory BasicTimerDataItem.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicTimerDataItem._(
+      basicTimerTitle: sortableData['title'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+      duration: sortableData['duration'] ?? 0,
+    );
+  }
+
+  @override
+  String dataFileId() => fileId;
+
+  @override
+  String dataFilePath() => icon;
+
+  @override
+  List<Object> get props => [title, icon, fileId];
+
+  @override
+  String title(t) => basicTimerTitle;
+
+  @override
+  String toRaw() => json.encode({
+        'name': basicTimerTitle,
+        'icon': icon,
+        'fileId': fileId,
+      });
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
+}
+
+class BasicTimerDataFolder extends BasicTimerData {
+  final String name, icon, fileId;
+  BasicTimerDataFolder._({
+    required this.name,
+    required this.icon,
+    required this.fileId,
+  });
+
+  factory BasicTimerDataFolder.fromJson(String data) {
+    final sortableData = json.decode(data);
+    return BasicTimerDataFolder._(
+      name: sortableData['name'] ?? '',
+      icon: sortableData['icon'] ?? '',
+      fileId: sortableData['fileId'] ?? '',
+    );
+  }
+
+  @override
+  String dataFileId() => fileId;
+
+  @override
+  String dataFilePath() => icon;
+
+  @override
+  List<Object> get props => [name, icon, fileId];
+
+  @override
+  String title(t) => name;
+
+  @override
+  String toRaw() => json.encode({
+        'name': name,
+        'icon': icon,
+        'fileId': fileId,
+      });
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 }
 
 abstract class BasicActivityData extends SortableData {}
@@ -228,18 +328,19 @@ class BasicActivityDataItem extends BasicActivityData {
         duration: duration.inMilliseconds,
       );
 
-  bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
-
   TimeOfDay? get startTimeOfDay =>
       startTime == 0 && duration <= 0 ? null : startTime.toTimeOfDay();
   TimeOfDay? get endTimeOfDay =>
       duration == 0 ? null : (startTime + duration).toTimeOfDay();
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
   @override
   List<Object> get props => [
@@ -340,10 +441,13 @@ class BasicActivityDataFolder extends BasicActivityData {
       );
 
   @override
-  String folderFileId() => fileId;
+  String dataFileId() => fileId;
 
   @override
-  String folderFilePath() => icon;
+  String dataFilePath() => icon;
+
+  @override
+  bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
   @override
   List<Object> get props => [name, icon, fileId];

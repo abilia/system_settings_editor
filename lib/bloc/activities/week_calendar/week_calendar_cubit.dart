@@ -4,15 +4,14 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'week_calendar_event.dart';
 part 'week_calendar_state.dart';
 
-class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
+class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   final ActivitiesBloc activitiesBloc;
   final ClockBloc clockBloc;
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _clockSubscription;
-  WeekCalendarBloc({
+  WeekCalendarCubit({
     required this.activitiesBloc,
     required this.clockBloc,
   }) : super(activitiesBloc.state is ActivitiesLoaded
@@ -24,39 +23,37 @@ class WeekCalendarBloc extends Bloc<WeekCalendarEvent, WeekCalendarState> {
     _activitiesSubscription = activitiesBloc.stream.listen((state) {
       final activityState = state;
       if (activityState is ActivitiesLoaded) {
-        add(UpdateWeekActivites(activityState.activities));
+        _updateWeekActivities(activityState.activities);
       }
     });
     _clockSubscription = clockBloc.stream.listen((_) {
       final activityState = activitiesBloc.state;
       if (activityState is ActivitiesLoaded) {
-        add(UpdateWeekActivites(activityState.activities));
+        _updateWeekActivities(activityState.activities);
       }
     });
   }
 
-  @override
-  Stream<WeekCalendarState> mapEventToState(
-    WeekCalendarEvent event,
-  ) async* {
-    final activityState = activitiesBloc.state;
-    final activities = activityState is ActivitiesLoaded
-        ? activityState.activities
-        : <Activity>[];
-    if (event is NextWeek) {
-      yield _mapToState(
-          state.currentWeekStart.nextWeek(), activities, clockBloc.state);
-    } else if (event is PreviousWeek) {
-      yield _mapToState(
-          state.currentWeekStart.previousWeek(), activities, clockBloc.state);
-    } else if (event is GoToCurrentWeek) {
-      yield _mapToState(
-          clockBloc.state.firstInWeek(), activities, clockBloc.state);
-    } else if (event is UpdateWeekActivites) {
-      yield _mapToState(
-          state.currentWeekStart, event.activities, clockBloc.state);
-    }
-  }
+  void nextWeek() => emit(_mapToState(
+      state.currentWeekStart.nextWeek(), _activities, clockBloc.state));
+
+  void previousWeek() => emit(_mapToState(
+      state.currentWeekStart.previousWeek(), _activities, clockBloc.state));
+
+  void goToCurrentWeek() => emit(
+      _mapToState(clockBloc.state.firstInWeek(), _activities, clockBloc.state));
+
+  get _activities => activitiesBloc.state is ActivitiesLoaded
+      ? activitiesBloc.state.activities
+      : <Activity>[];
+
+  void _updateWeekActivities(List<Activity> activities) => emit(
+        _mapToState(
+          state.currentWeekStart,
+          activities,
+          clockBloc.state,
+        ),
+      );
 
   static WeekCalendarState _mapToState(
     DateTime weekStart,

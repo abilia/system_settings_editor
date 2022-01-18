@@ -1,11 +1,11 @@
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+part 'go_layout.dart';
+
 part 'large_layout.dart';
 
 part 'medium_layout.dart';
-
-part 'go_layout.dart';
 
 final Layout layout = Device.screenSize.longestSide > 1500
     ? const _LargeLayout()
@@ -16,6 +16,7 @@ final Layout layout = Device.screenSize.longestSide > 1500
 class Layout {
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
+  final MenuPageLayout menuPage;
   final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
   final FontSize fontSize;
@@ -23,10 +24,12 @@ class Layout {
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
   final MonthCalendarLayout monthCalendar;
+  final ActivityCardLayout activityCard;
 
   const Layout({
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
+    this.menuPage = const MenuPageLayout(),
     this.toolbar = const ToolbarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
@@ -34,6 +37,7 @@ class Layout {
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
     this.monthCalendar = const MonthCalendarLayout(),
+    this.activityCard = const ActivityCardLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -61,11 +65,37 @@ class ActionButtonLayout {
   });
 }
 
+class MenuPageLayout {
+  final EdgeInsets padding;
+  final double crossAxisSpacing, mainAxisSpacing;
+  final int crossAxisCount;
+
+  final MenuItemButtonLayout menuItemButton;
+
+  const MenuPageLayout({
+    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+    this.crossAxisSpacing = 7.5,
+    this.mainAxisSpacing = 7,
+    this.crossAxisCount = 3,
+    this.menuItemButton = const MenuItemButtonLayout(),
+  });
+}
+
+class MenuItemButtonLayout {
+  final double size, borderRadius, orangeDotInset;
+
+  const MenuItemButtonLayout({
+    this.size = 48,
+    this.borderRadius = 12,
+    this.orangeDotInset = 4,
+  });
+}
+
 class ToolbarLayout {
-  final double heigth, horizontalPadding, bottomPadding;
+  final double height, horizontalPadding, bottomPadding;
 
   const ToolbarLayout({
-    this.heigth = 64,
+    this.height = 64,
     this.horizontalPadding = 16,
     this.bottomPadding = 0,
   });
@@ -73,11 +103,11 @@ class ToolbarLayout {
 
 class TabBarLayout {
   final TabItemLayout item;
-  final double heigth, bottomPadding;
+  final double height, bottomPadding;
 
   const TabBarLayout({
     this.item = const TabItemLayout(),
-    this.heigth = 64,
+    this.height = 64,
     this.bottomPadding = 0,
   });
 }
@@ -235,5 +265,29 @@ class MonthPreviewLayout {
     this.monthListPreviewPadding =
         const EdgeInsets.only(left: 8, top: 14, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
+  });
+}
+
+class ActivityCardLayout {
+  final double height,
+      padding,
+      paddingBottom,
+      marginSmall,
+      marginLarge,
+      imageSize,
+      categorySideOffset,
+      iconSize,
+      titleImagePadding;
+
+  const ActivityCardLayout({
+    this.height = 56,
+    this.padding = 4,
+    this.paddingBottom = 0,
+    this.marginSmall = 6,
+    this.marginLarge = 10,
+    this.imageSize = 48,
+    this.categorySideOffset = 56,
+    this.iconSize = 18,
+    this.titleImagePadding = 10,
   });
 }

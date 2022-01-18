@@ -37,7 +37,7 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
   bool Function(int) get isCollapsed => collapsedCondition ?? (_) => false;
 
   @override
-  Size get preferredSize => Size.fromHeight(layout.tabBar.heigth);
+  Size get preferredSize => Size.fromHeight(layout.tabBar.height);
 
   @override
   Widget build(BuildContext context) => Padding(

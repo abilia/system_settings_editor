@@ -29,7 +29,7 @@ class CalendarBottomBar extends StatelessWidget {
 
         return BottomAppBar(
           child: Container(
-            height: layout.toolbar.heigth,
+            height: layout.toolbar.height,
             padding: EdgeInsets.only(
               left: layout.toolbar.horizontalPadding,
               right: layout.toolbar.horizontalPadding,
@@ -53,8 +53,8 @@ class CalendarBottomBar extends StatelessWidget {
                         case 1:
                           if (settingsState.displayWeekCalendar) {
                             return context
-                                .read<WeekCalendarBloc>()
-                                .add(GoToCurrentWeek());
+                                .read<WeekCalendarCubit>()
+                                .goToCurrentWeek();
                           }
                           break;
                       }

@@ -30,8 +30,8 @@ class WeekCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(
-        initialPage: context.read<WeekCalendarBloc>().state.index);
-    return BlocListener<WeekCalendarBloc, WeekCalendarState>(
+        initialPage: context.read<WeekCalendarCubit>().state.index);
+    return BlocListener<WeekCalendarCubit, WeekCalendarState>(
       listener: (context, state) {
         pageController.animateToPage(state.index,
             duration: const Duration(milliseconds: 500),
@@ -41,7 +41,7 @@ class WeekCalendar extends StatelessWidget {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, item) =>
-            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
           buildWhen: (oldState, newState) => newState.index == item,
           builder: (context, state) {
             if (state.index != item) return Container();
@@ -71,7 +71,7 @@ class WeekCalendarTop extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.weekDisplayDays != current.weekDisplayDays,
         builder: (context, memosettings) =>
-            BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
           buildWhen: (previous, current) =>
               previous.currentWeekStart != current.currentWeekStart,
           builder: (context, weekState) => Row(
@@ -249,7 +249,7 @@ class FullDayActivies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+    return BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
       buildWhen: (previous, current) =>
           previous.currentWeekActivities[weekdayIndex] !=
           current.currentWeekActivities[weekdayIndex],
@@ -290,7 +290,7 @@ class WeekCalendarBody extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.weekDisplayDays != current.weekDisplayDays,
                 builder: (context, memosettings) =>
-                    BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+                    BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
                   buildWhen: (previous, current) =>
                       previous.currentWeekStart != current.currentWeekStart,
                   builder: (context, weekState) => Row(
@@ -377,7 +377,8 @@ class WeekDayColumn extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 6.s, horizontal: 2.s),
-                        child: BlocBuilder<WeekCalendarBloc, WeekCalendarState>(
+                        child:
+                            BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
                           buildWhen: (previous, current) =>
                               previous.currentWeekActivities[day.weekday - 1] !=
                               current.currentWeekActivities[day.weekday - 1],

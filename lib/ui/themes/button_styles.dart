@@ -340,7 +340,7 @@ final ButtonStyle blueButtonStyle = _ButtonDef(
     pressed: AbiliaColors.white,
   ),
   shapeBorders: _ShapeBorders(
-    def: darkShapeBorder,
+    def: menuButtonBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
@@ -357,7 +357,7 @@ final ButtonStyle pinkButtonStyle = _ButtonDef(
     pressed: AbiliaColors.white,
   ),
   shapeBorders: _ShapeBorders(
-    def: darkShapeBorder,
+    def: menuButtonBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
@@ -374,10 +374,20 @@ final ButtonStyle yellowButtonStyle = _ButtonDef(
     pressed: AbiliaColors.black,
   ),
   shapeBorders: _ShapeBorders(
-    def: darkShapeBorder,
+    def: menuButtonBorder,
     pressedOrDisabled: noBorderShape,
   ),
 ).toStyle();
+
+final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) {
+      return noBorderShape;
+    }
+    return menuButtonBorder;
+  }),
+);
 
 class _ButtonDef {
   final _StateColors foreGround;

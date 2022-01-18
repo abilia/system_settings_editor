@@ -323,8 +323,8 @@ class LibraryFolder extends StatelessWidget {
                         left: 10.s, right: 10.s, bottom: 16.s, top: 28.s),
                     child: Center(
                       child: FadeInAbiliaImage(
-                        imageFileId: sortableData.folderFileId(),
-                        imageFilePath: sortableData.folderFilePath(),
+                        imageFileId: sortableData.dataFileId(),
+                        imageFilePath: sortableData.dataFilePath(),
                         fit: BoxFit.contain,
                         borderRadius: BorderRadius.circular(4.s),
                       ),
