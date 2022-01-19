@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:collection';
 
 import 'package:seagull/bloc/all.dart';
@@ -164,10 +163,7 @@ class ActivityPagePreview extends StatelessWidget {
                 width: 450.0.s,
                 height: 800.0.s,
                 child: BlocProvider(
-                  create: (context) => ClockBloc(
-                    StreamController<DateTime>().stream,
-                    initialTime: time,
-                  ),
+                  create: (context) => ClockBloc.fixed(time),
                   child: ActivityPage(
                     activityDay: ActivityDay(
                       Activity.createNew(

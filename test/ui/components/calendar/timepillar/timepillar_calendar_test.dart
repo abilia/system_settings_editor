@@ -65,7 +65,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
       ..sortableDb = FakeSortableDb()
-      ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
+      ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: activityResponse,
@@ -774,7 +774,7 @@ void main() {
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
       mockTicker.add(DateTime(2020, 12, 01, 08,
-          00)); // Morning starts at 6. Activity should be visible here.
+          01)); // Morning starts at 6. Activity should be visible here.
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
@@ -791,6 +791,7 @@ void main() {
             Activity.createNew(
               title: 'title',
               startTime: activityStartTime,
+              alarmType: noAlarm,
             )
           ];
 
@@ -842,6 +843,7 @@ void main() {
             Activity.createNew(
               title: 'title',
               startTime: activityStartTime,
+              alarmType: noAlarm,
             )
           ];
 
@@ -860,7 +862,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 07, 00));
+      mockTicker.add(DateTime(2020, 12, 01, 07, 01));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 

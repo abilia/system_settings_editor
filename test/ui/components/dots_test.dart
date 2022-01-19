@@ -30,10 +30,7 @@ void main() {
         home: MultiBlocProvider(
           providers: [
             BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc(
-                StreamController<DateTime>().stream,
-                initialTime: startTime,
-              ),
+              create: (context) => ClockBloc.fixed(startTime),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,

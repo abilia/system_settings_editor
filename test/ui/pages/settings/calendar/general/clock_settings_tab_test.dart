@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'dart:async';
-
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
@@ -43,10 +41,7 @@ void main() {
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
+      ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(genericResponse: () => generics)
       ..database = FakeDatabase()
       ..genericDb = genericDb

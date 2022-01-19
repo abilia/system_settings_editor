@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -13,33 +11,25 @@ import '../../mocks/mocks.dart';
 void main() {
   late DayEventsCubit dayEventsCubit;
   late DayPickerBloc dayPickerBloc;
-  late ClockBloc clockBloc;
   late ActivitiesBloc activitiesBloc;
-  late TimerCubit timerCubit;
   late MockActivityRepository mockActivityRepository;
-  late MockTimerDb mockTimerDb;
-  late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
   final initialDay = initialMinutes.onlyDays();
   final nextDay = initialDay.nextDay();
   final previusDay = initialDay.previousDay();
 
   setUp(() {
-    mockedTicker = StreamController<DateTime>();
-    clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
     mockActivityRepository = MockActivityRepository();
-    mockTimerDb = MockTimerDb();
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
       pushBloc: FakePushBloc(),
     );
-    timerCubit = TimerCubit(timerDb: mockTimerDb);
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
       activitiesBloc: activitiesBloc,
-      timerCubit: timerCubit,
+      timerCubit: TimerCubit(timerDb: MockTimerDb()),
     );
   });
   group('dayEventsCubit', () {
@@ -756,8 +746,7 @@ void main() {
   group('Test from old DayActivitiesBloc', () {
     setUp(() {
       dayPickerBloc = DayPickerBloc(
-        clockBloc:
-            ClockBloc(const Stream<DateTime>.empty(), initialTime: today),
+        clockBloc: ClockBloc.fixed(today),
       );
       mockActivityRepository = MockActivityRepository();
 
@@ -1052,9 +1041,7 @@ void main() {
     group('Recurring tests activity', () {
       final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
       setUp(() {
-        const stream = Stream<DateTime>.empty();
-        dayPickerBloc =
-            DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
+        dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(firstDay));
         mockActivityRepository = MockActivityRepository();
         activitiesBloc = ActivitiesBloc(
           activityRepository: mockActivityRepository,
@@ -1347,8 +1334,5 @@ void main() {
     dayPickerBloc.close();
     activitiesBloc.close();
     dayEventsCubit.close();
-    dayEventsCubit.close();
-    clockBloc.close();
-    mockedTicker.close();
   });
 }

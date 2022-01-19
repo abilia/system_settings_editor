@@ -4,55 +4,30 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class ClockBloc extends Bloc<DateTime, DateTime> with Finest {
-  StreamSubscription<DateTime>? _tickerSubscription;
+class ClockBloc extends Cubit<DateTime> with Finest {
+  StreamSubscription<DateTime>? _secondSubscription;
+  Stream<DateTime> ticker;
 
-  ClockBloc(Stream<DateTime> ticker, {DateTime? initialTime})
-      : super((initialTime ?? DateTime.now()).onlyMinutes()) {
-    _tickerSubscription = ticker.listen((tick) => add(tick));
+  ClockBloc(this.ticker, {required DateTime initialTime})
+      : super(initialTime.onlyMinutes()) {
+    _secondSubscription = ticker
+        .where((now) => state.minute != now.minute)
+        .map((d) => d.onlyMinutes())
+        .listen(emit);
   }
 
   ClockBloc.withTicker(Ticker ticker)
-      : this(ticker.stream, initialTime: ticker.initialTime);
+      : this(ticker.stream, initialTime: ticker.time);
 
-  @override
-  Stream<DateTime> mapEventToState(DateTime event) async* {
-    yield event;
-  }
+  ClockBloc.fixed(DateTime initialTime)
+      : this(const Stream.empty(), initialTime: initialTime);
+
+  Future<void> setTime([DateTime? time]) async =>
+      emit((time ?? await ticker.first).onlyMinutes());
 
   @override
   Future<void> close() async {
-    await _tickerSubscription?.cancel();
+    await _secondSubscription?.cancel();
     return super.close();
-  }
-
-  double? minPerMin;
-  void setFakeTicker({DateTime? initTime, double? ticksPerMin}) async {
-    minPerMin = ticksPerMin ?? minPerMin ?? 1.0;
-    await _tickerSubscription?.cancel();
-    _tickerSubscription = _fake(
-      initTime ?? state,
-      minDuration: (1 / minPerMin! * 60000).toInt().milliseconds(),
-    ).listen((tick) => add(tick));
-  }
-
-  Stream<DateTime> _fake(
-    DateTime initTime, {
-    Duration minDuration = const Duration(minutes: 1),
-  }) async* {
-    yield initTime;
-    yield* Stream.periodic(
-      minDuration,
-      (t) => initTime.add(
-        Duration(minutes: t),
-      ),
-    );
-  }
-
-  void resetTicker(Ticker ticker) async {
-    minPerMin = null;
-    await _tickerSubscription?.cancel();
-    _tickerSubscription = ticker.stream.listen((tick) => add(tick));
-    add(DateTime.now().onlyMinutes());
   }
 }

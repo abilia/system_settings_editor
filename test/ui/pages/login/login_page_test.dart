@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -35,10 +33,7 @@ void main() {
           await FakeSharedPreferences.getInstance(loggedIn: false)
       ..activityDb = FakeActivityDb()
       ..fireBasePushService = FakeFirebasePushService()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: time,
-      )
+      ..ticker = Ticker.fake(initialTime: time)
       ..client = Fakes.client(
         activityResponse: () => [],
         licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),

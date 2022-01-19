@@ -1,4 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -15,7 +17,7 @@ class LongPressInfoDialog extends StatelessWidget {
         children: <Widget>[
           const Spacer(flex: 128),
           Stack(children: [
-            buildPreviewActivityCard(translate),
+            const _Preview(),
             Align(
               alignment: Alignment.bottomCenter,
               child: Icon(
@@ -50,15 +52,20 @@ class LongPressInfoDialog extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget buildPreviewActivityCard(Translated translate) {
-    final time = DateTime.now();
+class _Preview extends StatelessWidget {
+  const _Preview({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final time = GetIt.I<Ticker>().time;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.0.s),
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
           Activity.createNew(
-            title: translate.lunch,
+            title: Translator.of(context).translate.lunch,
             startTime: time.withTime(const TimeOfDay(hour: 12, minute: 0)),
           ),
           time.onlyDays(),

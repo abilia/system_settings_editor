@@ -35,8 +35,7 @@ void main() {
             create: (context) => FakeActivitiesBloc(),
           ),
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: day),
+            create: (context) => ClockBloc.fixed(day),
           ),
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),

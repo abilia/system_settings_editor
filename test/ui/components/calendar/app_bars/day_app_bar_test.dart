@@ -16,8 +16,7 @@ import '../../../../test_helpers/tts.dart';
 
 void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
-  final defaultClockBloc =
-      ClockBloc(StreamController<DateTime>().stream, initialTime: day);
+  final defaultClockBloc = ClockBloc.fixed(day);
   late MockMemoplannerSettingBloc memoplannerSettingsBlocMock;
 
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
@@ -169,8 +168,7 @@ void main() {
   testWidgets('Evening starts at 18.00 as default',
       (WidgetTester tester) async {
     final evening = DateTime(2020, 10, 05, 18, 00);
-    final clockBloc =
-        ClockBloc(StreamController<DateTime>().stream, initialTime: evening);
+    final clockBloc = ClockBloc.fixed(evening);
     _expectSettings(const MemoplannerSettings());
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -183,8 +181,7 @@ void main() {
   testWidgets('Evening starts at 19.00 if setting says so',
       (WidgetTester tester) async {
     final noEvening = DateTime(2020, 10, 05, 18, 00);
-    final clockBloc =
-        ClockBloc(StreamController<DateTime>().stream, initialTime: noEvening);
+    final clockBloc = ClockBloc.fixed(noEvening);
     _expectSettings(const MemoplannerSettings(
         eveningIntervalStart: 19 * 60 * 60 * 1000)); // 19.00 in milliseconds
     await tester
@@ -197,8 +194,7 @@ void main() {
 
   testWidgets('Forenoon at 11.59', (WidgetTester tester) async {
     final forenoon = DateTime(2020, 10, 05, 11, 59);
-    final clockBloc =
-        ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+    final clockBloc = ClockBloc.fixed(forenoon);
     _expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -210,8 +206,7 @@ void main() {
 
   testWidgets('afternoon at 12.00', (WidgetTester tester) async {
     final forenoon = DateTime(2020, 10, 05, 12);
-    final clockBloc =
-        ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+    final clockBloc = ClockBloc.fixed(forenoon);
     _expectSettings(const MemoplannerSettings()); //
     await tester
         .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -232,8 +227,7 @@ void main() {
 
     testWidgets('clock tts test afternoon', (WidgetTester tester) async {
       final forenoon = DateTime(2020, 10, 05, 12, 5);
-      final clockBloc =
-          ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+      final clockBloc = ClockBloc.fixed(forenoon);
       _expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));
@@ -244,8 +238,7 @@ void main() {
 
     testWidgets('clock tts test forenoon', (WidgetTester tester) async {
       final forenoon = DateTime(2020, 10, 05, 10, 25);
-      final clockBloc =
-          ClockBloc(StreamController<DateTime>().stream, initialTime: forenoon);
+      final clockBloc = ClockBloc.fixed(forenoon);
       _expectSettings(const MemoplannerSettings());
       await tester
           .pumpWidget(wrapWithMaterialApp(DayAppBar(day: day), clockBloc));

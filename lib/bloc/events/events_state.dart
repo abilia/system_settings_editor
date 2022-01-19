@@ -60,7 +60,7 @@ class EventsLoaded extends EventsState {
       ];
 
   @override
-  String toString() => 'EventsOccasionLoaded '
+  String toString() => 'EventsLoaded '
       '$fullDayActivities fullDayActivities, '
       '$activities activities, '
       '$timers timers, '

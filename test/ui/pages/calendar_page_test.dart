@@ -148,8 +148,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          stream: StreamController<DateTime>().stream, initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
         activityResponse: activityResponse,

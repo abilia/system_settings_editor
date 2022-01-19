@@ -6,10 +6,11 @@ import '../../mocks/mocks.dart';
 
 void main() {
   final defaultTimer = AbiliaTimer(
-      id: 'fake-id',
-      title: 'test timer',
-      duration: const Duration(minutes: 5),
-      startTime: DateTime.now());
+    id: 'fake-id',
+    title: 'test timer',
+    duration: const Duration(minutes: 5),
+    startTime: DateTime(100),
+  );
 
   final defaultState = TimerState(timers: [defaultTimer]);
   late TimerCubit timerCubit;
@@ -44,10 +45,11 @@ void main() {
   test('addTimer returns two timers', () {
     timerCubit.loadTimers();
     final newTimer = AbiliaTimer(
-        id: 'fake-id2',
-        title: 'test timer 2',
-        duration: const Duration(minutes: 15),
-        startTime: DateTime.now());
+      id: 'fake-id2',
+      title: 'test timer 2',
+      duration: const Duration(minutes: 15),
+      startTime: DateTime(100),
+    );
     timerCubit.addTimer(newTimer);
     expectLater(
         timerCubit.stream,

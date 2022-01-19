@@ -442,7 +442,7 @@ void main() {
       expect(day20.occasion, Occasion.future);
 
       // Act
-      clock.add(initial.nextDay());
+      clock.add(initial.nextDay().add(1.minutes()));
       final nextState = await monthCalendarCubit.stream.first;
 
       week11 = nextState.weeks[2];
@@ -459,9 +459,8 @@ void main() {
     test('january 2021', () {
       // Arrange
       final january15 = DateTime(2021, 01, 15, 15, 15);
-      final newClock = StreamController<DateTime>();
 
-      clockBloc = ClockBloc(newClock.stream, initialTime: january15);
+      clockBloc = ClockBloc.fixed(january15);
       monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 
@@ -569,9 +568,8 @@ void main() {
     test('may 2021', () {
       // Arrange
       final mayThe4 = DateTime(2021, 05, 04, 13, 37);
-      final newClock = StreamController<DateTime>();
 
-      clockBloc = ClockBloc(newClock.stream, initialTime: mayThe4);
+      clockBloc = ClockBloc.fixed(mayThe4);
       monthCalendarCubit = MonthCalendarCubit(
           activitiesBloc: activitiesBloc, clockBloc: clockBloc);
 

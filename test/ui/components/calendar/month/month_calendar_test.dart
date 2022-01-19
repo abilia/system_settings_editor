@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -48,12 +47,10 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          stream: StreamController<DateTime>().stream, initialTime: initialDay)
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
-      ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialDay)
       ..battery = FakeBattery()
       ..init();
   });

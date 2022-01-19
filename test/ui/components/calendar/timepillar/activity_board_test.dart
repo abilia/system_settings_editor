@@ -67,11 +67,11 @@ void main() {
     final mocktimepillarCubit = MocktimepillarCubit();
     final ts = TimepillarState(interval, 1);
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
+        TimepillarInterval(start: startTime, end: startTime), 1));
     when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
         Stream.fromIterable([
           TimepillarState(
-              TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
+              TimepillarInterval(start: startTime, end: startTime), 1)
         ]));
     return MaterialApp(
       home: Directionality(
@@ -79,9 +79,7 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: initialTime ?? startTime),
+              create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
@@ -249,7 +247,7 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       for (final y in activityYPos) {
         final activityDotMidPos = y + ts.dotSize / 2;
         expect(
@@ -318,7 +316,7 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
@@ -354,7 +352,7 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
