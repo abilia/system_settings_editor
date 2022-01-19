@@ -198,6 +198,8 @@ abstract class Translated {
 
   final String timerInvalidDuration = 'Duration can not be zero.';
 
+  final String timerCancel = 'Do you want to cancel the countdown?';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1074,6 +1076,9 @@ class SV extends Translated {
 
   @override
   final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
+
+  @override
+  final String timerCancel = 'Vill du stoppa nedräkningen?';
 
   @override
   final String reminders = 'Påminnelser';
@@ -2246,6 +2251,9 @@ class DA extends Translated {
   final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
 
   @override
+  final String timerCancel = 'Ønsker du at stoppe nedtællingen';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -3415,6 +3423,9 @@ class NL extends Translated {
   final String timerInvalidDuration = 'De duur kan niet nul zijn.';
 
   @override
+  final String timerCancel = 'Wilt u het aftellen annuleren?';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -4581,6 +4592,9 @@ class FI extends Translated {
 
   @override
   final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
+
+  @override
+  final String timerCancel = 'Haluatko peruuttaa aikalaskurin?';
 
   @override
   final String reminders = 'Muistutukset';
@@ -5754,6 +5768,9 @@ class DE extends Translated {
   final String timerInvalidDuration = 'Dauer kann nicht Null sein';
 
   @override
+  final String timerCancel = 'Countdown abbrechen?';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -6923,6 +6940,9 @@ class NB extends Translated {
 
   @override
   final String timerInvalidDuration = 'Varigheten kan ikke være null.';
+
+  @override
+  final String timerCancel = 'Ønsker du å stoppe nedtellingen?';
 
   @override
   final String reminders = 'Påminnelser';

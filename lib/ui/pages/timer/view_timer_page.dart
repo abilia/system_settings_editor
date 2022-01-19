@@ -121,9 +121,17 @@ class _TimerBottomBar extends StatelessWidget {
               child: const Icon(AbiliaIcons.pause),
             ),
             IconActionButtonLight(
-              onPressed: () {
-                context.read<TimerCubit>().deleteTimer(timer);
-                Navigator.pop(context);
+              onPressed: () async {
+                final confirmDeletion = await showViewDialog(
+                  context: context,
+                  builder: (context) => ConfirmWarningDialog(
+                    text: Translator.of(context).translate.timerCancel,
+                  ),
+                );
+                if (confirmDeletion) {
+                  context.read<TimerCubit>().deleteTimer(timer);
+                  Navigator.pop(context);
+                }
               },
               child: const Icon(AbiliaIcons.deleteAllClear),
             ),

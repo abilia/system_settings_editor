@@ -90,6 +90,7 @@ timeAfternoonTts	%s in the afternoon	%s på eftermiddagen	%s om eftermiddagen	%s
 timeEveningTts	%s in the evening	%s på kvällen	%s om aftenen	%s 's avonds	%s illalla	%s nachmittags	%s på kvelden
 timeNightTts	%s at night	%s på natten	%s om natten	%s 's nachts	%s yöllä	%s abends	%s på natten
 timerInvalidDuration	Duration can not be zero.	Tidslängden kan inte vara noll.	Varigheden kan ikke være nul.	De duur kan niet nul zijn.	Kesto ei voi olla nolla.	Dauer kann nicht Null sein	Varigheten kan ikke være null.
+timerCancel	Do you want to cancel the countdown?	Vill du stoppa nedräkningen?	Ønsker du at stoppe nedtællingen	Wilt u het aftellen annuleren?	Haluatko peruuttaa aikalaskurin?	Countdown abbrechen?	Ønsker du å stoppe nedtellingen?
 							
 ### Activity related							
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
