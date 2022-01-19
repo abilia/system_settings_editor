@@ -77,6 +77,8 @@ class TestKey {
       monthColorSwith = Key('monthColorSwith'),
       monthDisplaySettingsDayView = Key('monthDisplaySettingsDayView'),
       monthCalendarDayBackgroundColor = Key('monthCalendarDayBackgroundColor'),
+      monthPreviewHeaderActivity = Key('monthPreviewHeaderActivity'),
+      monthPreviewHeaderFullDayStack = Key('monthPreviewHeaderFullDayStack'),
       addSettingsTab = Key('addSettingsTab'),
       createAccountPassword = Key('createAccountPassword'),
       createAccountPasswordConfirm = Key('createAccountPasswordConfirm'),

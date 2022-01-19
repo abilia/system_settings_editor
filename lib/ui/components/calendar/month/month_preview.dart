@@ -108,6 +108,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
               children: [
                 if (fullDayActivies > 1)
                   FullDayStack(
+                    key: TestKey.monthPreviewHeaderFullDayStack,
                     numberOfActivities: fullDayActivies,
                     width: layout
                         .monthCalendar.monthPreview.headingFullDayActivityWidth,
@@ -116,6 +117,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   )
                 else if (fullDayActivies > 0)
                   MonthActivityContent(
+                    key: TestKey.monthPreviewHeaderActivity,
                     activityDay: activityState.fullDayActivities.first,
                     width: layout
                         .monthCalendar.monthPreview.headingFullDayActivityWidth,

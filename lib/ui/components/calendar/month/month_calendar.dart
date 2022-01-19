@@ -63,7 +63,11 @@ class MonthBody extends StatelessWidget {
     final dayBuilder =
         monthCalendarType == MonthCalendarType.preview && Config.isMPGO
             ? (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme)
-            : (day, dayTheme) => MonthDayView(day, dayTheme: dayTheme);
+            : (day, dayTheme) => MonthDayView(
+                  day,
+                  dayTheme: dayTheme,
+                  monthCalendarType: monthCalendarType,
+                );
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
@@ -218,11 +222,13 @@ class MonthHeading extends StatelessWidget {
 class MonthDayView extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
+  final MonthCalendarType monthCalendarType;
 
   const MonthDayView(
     this.day, {
     Key? key,
     required this.dayTheme,
+    required this.monthCalendarType,
   }) : super(key: key);
 
   @override
@@ -241,7 +247,9 @@ class MonthDayView extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-          //DefaultTabController.of(context)?.animateTo(0); //TODO: ta bort? Ska det vara någon annanstans?
+          if (monthCalendarType == MonthCalendarType.grid) {
+            DefaultTabController.of(context)?.animateTo(0);
+          } //TODO: ta bort? Ska man kunna trycka någon annanstans?
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
             builder: (context, dayPickerState) {

@@ -190,7 +190,8 @@ void main() {
       expect(w.groupValue, WeekColor.columns);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect(dayContainer.color, isNot(AbiliaColors.white110));
+      expect((dayContainer.decoration as BoxDecoration).color,
+          isNot(AbiliaColors.white110));
     });
 
     testWidgets('memosettings respected', (tester) async {
@@ -208,21 +209,24 @@ void main() {
       expect(w.groupValue, WeekColor.captions);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect(dayContainer.color, AbiliaColors.white110);
+      expect((dayContainer.decoration as BoxDecoration).color,
+          AbiliaColors.white110);
     });
 
     testWidgets('color saved', (tester) async {
       await tester.goToDisplayTab();
       final dayContainer1 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect(dayContainer1.color, isNot(AbiliaColors.white110));
+      expect((dayContainer1.decoration as BoxDecoration).color,
+          isNot(AbiliaColors.white110));
 
       await tester.tap(find.text(translate.headings));
       await tester.pumpAndSettle();
       final dayContainer2 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
 
-      expect(dayContainer2.color, AbiliaColors.white110);
+      expect((dayContainer2.decoration as BoxDecoration).color,
+          AbiliaColors.white110);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 

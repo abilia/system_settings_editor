@@ -329,8 +329,12 @@ void main() {
 
       expect(find.byType(MonthPreview), findsOneWidget);
       expect(find.byType(FullDayStack), findsNothing);
-      expect(find.byType(MonthActivityContent), findsOneWidget);
-      expect(find.text('one'), findsOneWidget);
+      expect(find.byKey(TestKey.monthPreviewHeaderActivity), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(TestKey.monthPreviewHeaderActivity),
+              matching: find.text('one')),
+          findsOneWidget);
     });
 
     testWidgets('Preview header shows many activities',
@@ -349,9 +353,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(MonthPreview), findsOneWidget);
-      expect(find.byType(FullDayStack), findsOneWidget);
+      expect(
+          find.byKey(TestKey.monthPreviewHeaderFullDayStack), findsOneWidget);
       expect(find.byType(MonthActivityContent), findsNothing);
-      expect(find.text('+2'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(TestKey.monthPreviewHeaderFullDayStack),
+              matching: find.text('+2')),
+          findsOneWidget);
     });
 
     testWidgets(
