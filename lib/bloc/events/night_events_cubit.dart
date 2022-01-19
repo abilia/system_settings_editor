@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/events/helper.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class NightActivitiesCubit extends Cubit<ActivitiesOccasionLoaded> {
+class NightEventsCubit extends Cubit<EventsLoaded> {
   final MemoplannerSettingBloc memoplannerSettingBloc;
   final ActivitiesBloc activitiesBloc;
   final DayPickerBloc dayPickerBloc;
@@ -16,7 +17,7 @@ class NightActivitiesCubit extends Cubit<ActivitiesOccasionLoaded> {
   late final StreamSubscription _memoplannerSettingsSubscription;
   DayParts? _dayParts;
 
-  NightActivitiesCubit({
+  NightEventsCubit({
     required this.activitiesBloc,
     required this.memoplannerSettingBloc,
     required this.clockBloc,
@@ -65,7 +66,7 @@ class NightActivitiesCubit extends Cubit<ActivitiesOccasionLoaded> {
         ),
       );
 
-  static ActivitiesOccasionLoaded _stateFromActivities(
+  static EventsLoaded _stateFromActivities(
     List<Activity> activities,
     DateTime day,
     DateTime now,
@@ -85,16 +86,16 @@ class NightActivitiesCubit extends Cubit<ActivitiesOccasionLoaded> {
         dayParts,
       );
 
-  static ActivitiesOccasionLoaded _stateFromActivityDays(
+  static EventsLoaded _stateFromActivityDays(
     List<ActivityDay> dayActivities,
     DateTime day,
     DateTime now,
     DayParts dayParts,
   ) =>
-      mapActivitiesToActivityOccasionsState(
+      mapToEventsState(
         dayActivities: dayActivities,
+        dayTimers: [], // TODO add timers to night cubit
         day: day,
-        now: now,
         occasion: isThisNight(
           dayParts,
           now,

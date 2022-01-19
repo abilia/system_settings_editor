@@ -50,15 +50,14 @@ class MonthPreview extends StatelessWidget {
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
-        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
-          builder: (context, activityState) =>
-              activityState is ActivitiesOccasionLoaded
-                  ? ActivityList(
-                      state: activityState,
-                      topPadding: 12.s,
-                      bottomPadding: 64.s,
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+        child: BlocBuilder<DayEventsCubit, EventsState>(
+          builder: (context, activityState) => activityState is EventsLoaded
+              ? ActivityList(
+                  state: activityState,
+                  topPadding: 12.s,
+                  bottomPadding: 64.s,
+                )
+              : const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -90,16 +89,15 @@ class MonthDayPreviewHeading extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: radius),
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        child: BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
+        child: BlocBuilder<DayEventsCubit, EventsState>(
           buildWhen: (oldState, newState) =>
-              (oldState is ActivitiesOccasionLoaded &&
-                  newState is ActivitiesOccasionLoaded &&
+              (oldState is EventsLoaded &&
+                  newState is EventsLoaded &&
                   oldState.day != newState.day) ||
               oldState.runtimeType != newState.runtimeType,
           builder: (context, activityState) {
-            final fullDayActivies = (activityState as ActivitiesOccasionLoaded)
-                .fullDayActivities
-                .length;
+            final fullDayActivies =
+                (activityState as EventsLoaded).fullDayActivities.length;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

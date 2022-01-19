@@ -6,14 +6,14 @@ import 'package:seagull/utils/all.dart';
 class TwoTimepillarCalendar extends StatelessWidget {
   TwoTimepillarCalendar({
     Key? key,
-    required this.activityState,
+    required this.eventState,
     required this.showCategories,
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
   }) : super(key: key);
 
-  final ActivitiesOccasionLoaded activityState;
+  final EventsLoaded eventState;
 
   final bool showCategories, displayHourLines, displayTimeline;
 
@@ -23,7 +23,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final day = activityState.day;
+    final day = eventState.day;
     final nightInterval = TimepillarInterval(
       start: day.add(dayParts.night),
       end: day.nextDay().add(dayParts.morningStart.milliseconds()),
@@ -57,7 +57,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     create: (_) =>
                         TimepillarCubit.fixed(state: dayTimepillarState),
                     child: OneTimepillarCalendar(
-                      activityState: activityState,
+                      eventState: eventState,
                       timepillarState: dayTimepillarState,
                       dayParts: dayParts,
                       displayTimeline: displayTimeline,
@@ -79,8 +79,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         create: (_) =>
                             TimepillarCubit.fixed(state: nightTimepillarState),
                       ),
-                      BlocProvider<NightActivitiesCubit>(
-                        create: (context) => NightActivitiesCubit(
+                      BlocProvider<NightEventsCubit>(
+                        create: (context) => NightEventsCubit(
                           activitiesBloc: context.read<ActivitiesBloc>(),
                           clockBloc: context.read<ClockBloc>(),
                           dayPickerBloc: context.read<DayPickerBloc>(),
@@ -95,10 +95,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(9.s)),
                       ),
-                      child: BlocBuilder<NightActivitiesCubit,
-                          ActivitiesOccasionLoaded>(
+                      child: BlocBuilder<NightEventsCubit, EventsLoaded>(
                         builder: (context, nightState) => OneTimepillarCalendar(
-                          activityState: nightState,
+                          eventState: nightState,
                           timepillarState: nightTimepillarState,
                           dayParts: dayParts,
                           displayTimeline: displayTimeline,

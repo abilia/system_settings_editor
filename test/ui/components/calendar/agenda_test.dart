@@ -348,6 +348,62 @@ void main() {
     expect(rightRight.dx, greaterThan(leftRight.dx));
   });
 
+  group('category offset', () {
+    testWidgets('category right has category offset',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'right title',
+              startTime: now,
+              category: Category.right,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final padding = tester
+          .widget<Padding>(
+            find.ancestor(
+              of: find.byType(ActivityCard),
+              matching: find.byType(Padding),
+            ),
+          )
+          .padding
+          .resolve(TextDirection.ltr);
+      expect(
+        padding.left,
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+      );
+    });
+
+    testWidgets('category left has category offset',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'left title',
+              startTime: now,
+              category: Category.left,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final padding = tester
+          .widget<Padding>(
+            find.ancestor(
+              of: find.byType(ActivityCard),
+              matching: find.byType(Padding),
+            ),
+          )
+          .padding
+          .resolve(TextDirection.ltr);
+      expect(
+        padding.right,
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+      );
+    });
+  });
+
   testWidgets('CrossOver for past activities', (WidgetTester tester) async {
     activityResponse = () => [
           Activity.createNew(
