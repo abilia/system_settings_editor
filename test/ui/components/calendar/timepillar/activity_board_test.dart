@@ -234,7 +234,8 @@ void main() {
 
       final timelineYPostion =
           tester.getTopLeft(find.byType(Timeline).first).dy;
-      final timelineMidPos = timelineYPostion + (Timeline.timelineHeight / 2);
+      final timelineMidPos =
+          timelineYPostion + (layout.timePillar.timeLineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );

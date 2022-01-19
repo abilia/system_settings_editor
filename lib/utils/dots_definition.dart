@@ -4,10 +4,10 @@ const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
     minutePerSubDot = minutesPerDot ~/ 5,
     roundingMinute = minutesPerDot ~/ 2;
-final bigDotSize = 28.0.s,
-    miniDotSize = 4.0.s,
-    hourPadding = 1.0.s,
-    bigDotPadding = 6.0.s;
+final bigDotSize = 28.0,
+    miniDotSize = 4.0,
+    hourPadding = 1.0,
+    bigDotPadding = 6.0;
 
 double timeToMidDotPixelDistance({
   required DateTime now,

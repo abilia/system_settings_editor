@@ -233,7 +233,12 @@ class TimepillarLayout {
       dotPadding,
       dotDistance,
       timePillarPadding,
-      defaultTimePillarWidth;
+      defaultTimePillarWidth,
+      fontSize,
+      topMargin,
+      bottomMargin,
+      timeLineHeight;
+  final FontWeight fontWeight;
 
   const TimepillarLayout({
     this.imageHeightMin = 56,
@@ -243,9 +248,14 @@ class TimepillarLayout {
     this.minHeight = 84,
     this.dotSize = 10,
     this.hourPadding = 1,
-    this.dotPadding = 3, // hourPadding * 3
-    this.dotDistance = 13, // dotPadding + dotSize
+    this.dotPadding = 3,
+    this.dotDistance = 13,
     this.timePillarPadding = 4,
     this.defaultTimePillarWidth = 42,
+    this.fontSize = 20,
+    this.fontWeight = FontWeight.w500,
+    this.topMargin = 96,
+    this.bottomMargin = 64,
+    this.timeLineHeight = 2,
   });
 }

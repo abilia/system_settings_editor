@@ -97,6 +97,8 @@ class _MediumLayout extends Layout {
             dotDistance: 20.5,
             timePillarPadding: 8,
             defaultTimePillarWidth: 80,
+            fontSize: 40, // no matching font size. defined in separate ticket
+            fontWeight: FontWeight.w900, // needs to be high to match design
           ),
         );
 }
