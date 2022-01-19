@@ -1,10 +1,9 @@
-import 'package:seagull/utils/scale_util.dart';
 
 const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
     minutePerSubDot = minutesPerDot ~/ 5,
     roundingMinute = minutesPerDot ~/ 2;
-final bigDotSize = 28.0,
+const bigDotSize = 28.0,
     miniDotSize = 4.0,
     hourPadding = 1.0,
     bigDotPadding = 6.0;
