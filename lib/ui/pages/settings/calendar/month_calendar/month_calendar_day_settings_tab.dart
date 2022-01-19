@@ -77,14 +77,16 @@ class _MonthDayView extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 4.s),
         foregroundDecoration: BoxDecoration(
           border: transparentBlackBorder,
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
         ),
         child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
                 color: dayTheme.color,
-                borderRadius: BorderRadius.vertical(top: borderRadius.topRight),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(layout.monthCalendar.dayRadius),
+                ),
               ),
               height: 32.s,
             ),
@@ -99,8 +101,9 @@ class _MonthDayView extends StatelessWidget {
                     color: state.color == WeekColor.columns
                         ? dayTheme.secondaryColor
                         : AbiliaColors.white110,
-                    borderRadius:
-                        BorderRadius.vertical(bottom: borderRadius.topRight),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(layout.monthCalendar.dayRadius),
+                    ),
                   ),
                 ),
               ),
