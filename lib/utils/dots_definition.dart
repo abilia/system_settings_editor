@@ -1,4 +1,3 @@
-
 const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
     minutePerSubDot = minutesPerDot ~/ 5,

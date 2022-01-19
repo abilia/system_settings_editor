@@ -330,7 +330,8 @@ class BigDots extends StatelessWidget {
           .reversed
           .map(
             (dot) => Padding(
-                padding: const EdgeInsets.only(bottom: bigDotPadding), child: dot),
+                padding: const EdgeInsets.only(bottom: bigDotPadding),
+                child: dot),
           )
           .toList(),
     );
