@@ -59,8 +59,11 @@ void main() {
                 ],
                 child: Material(
                   child: ActivityCard(
-                    activityOccasion: ActivityOccasion.forTest(activity,
-                        occasion: occasion ?? Occasion.current),
+                    activityOccasion: ActivityOccasion(
+                      activity,
+                      activity.startTime.onlyDays(),
+                      occasion ?? Occasion.current,
+                    ),
                   ),
                 ),
               ),
@@ -211,51 +214,6 @@ void main() {
     );
     expect(find.byType(PrivateIcon), findsOneWidget);
     expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
-  });
-
-  testWidgets('full day that ha category has no category offset',
-      (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        fullDay: true,
-        category: Category.right,
-      ),
-    );
-    final animatedcontainer =
-        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
-    expect(animatedcontainer.margin, EdgeInsets.zero);
-  });
-
-  testWidgets('category right has category offset',
-      (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        category: Category.right,
-      ),
-    );
-    final animatedcontainer =
-        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
-    expect(animatedcontainer.margin?.horizontal, greaterThan(0.0));
-  });
-
-  testWidgets('category left has category offset', (WidgetTester tester) async {
-    await pumpActivityCard(
-      tester,
-      Activity.createNew(
-        title: 'title',
-        startTime: startTime,
-        category: Category.left,
-      ),
-    );
-    final animatedcontainer =
-        tester.widget<AnimatedContainer>(find.byType(AnimatedContainer));
-    expect(animatedcontainer.margin?.horizontal, greaterThan(0.0));
   });
 
   testWidgets('current activity is not crossed over',

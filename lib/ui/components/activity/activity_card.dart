@@ -5,9 +5,8 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
-  final double bottomPadding;
+
   final bool preview;
-  final bool showCategories;
   final bool showCategoryColor;
   final double? crossOverStrokeWidth;
   final Color? crossOverColor;
@@ -17,9 +16,7 @@ class ActivityCard extends StatelessWidget {
   const ActivityCard({
     Key? key,
     required this.activityOccasion,
-    this.bottomPadding = 0.0,
     this.preview = false,
-    this.showCategories = true,
     this.showCategoryColor = false,
     this.crossOverStrokeWidth,
     this.crossOverColor,
@@ -27,13 +24,11 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final textTheme = abiliaTheme.textTheme;
-    final occasion = activityOccasion.occasion;
     final activity = activityOccasion.activity;
     final signedOff = activityOccasion.isSignedOff && !preview;
-    final current = occasion == Occasion.current && !preview;
-    final past = occasion == Occasion.past && !preview;
+    final current = activityOccasion.isCurrent && !preview;
+    final past = activityOccasion.isPast && !preview;
     final inactive = past || signedOff;
     final hasSideContent = activity.hasImage || signedOff || past;
     final themeData = inactive
@@ -46,102 +41,95 @@ class ActivityCard extends StatelessWidget {
                 abiliaTheme.iconTheme.copyWith(color: AbiliaColors.white140))
         : abiliaTheme;
     return AnimatedTheme(
-      duration: duration,
+      duration: ActivityCard.duration,
       data: themeData,
       child: Builder(
-        builder: (context) => Padding(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: Tts.fromSemantics(
-            activity.semanticsProperties(context),
-            child: AnimatedContainer(
-              duration: duration,
-              height: layout.activityCard.height,
-              decoration: getCategoryBoxDecoration(
-                current: current,
-                inactive: inactive,
-                category: activity.category,
-                showCategoryColor: showCategoryColor,
-              ),
-              margin: preview || activity.fullDay || !showCategories
-                  ? EdgeInsets.zero
-                  : activity.category == Category.right
-                      ? EdgeInsets.only(
-                          left: layout.activityCard.categorySideOffset)
-                      : EdgeInsets.only(
-                          right: layout.activityCard.categorySideOffset),
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  borderRadius: borderRadius - BorderRadius.circular(1.0),
-                  onTap: preview
-                      ? null
-                      : () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MultiBlocProvider(
-                                providers: authProviders,
-                                child: ActivityPage(
-                                  activityDay: activityOccasion,
-                                ),
+        builder: (context) => Tts.fromSemantics(
+          activity.semanticsProperties(context),
+          child: AnimatedContainer(
+            duration: ActivityCard.duration,
+            height: layout.activityCard.height,
+            decoration: getCategoryBoxDecoration(
+              current: current,
+              inactive: inactive,
+              category: activity.category,
+              showCategoryColor: showCategoryColor,
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                borderRadius: borderRadius - BorderRadius.circular(1.0),
+                onTap: preview
+                    ? null
+                    : () async {
+                        final authProviders = copiedAuthProviders(context);
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MultiBlocProvider(
+                              providers: authProviders,
+                              child: ActivityPage(
+                                activityDay: activityOccasion,
                               ),
-                              settings: RouteSettings(
-                                  name: 'ActivityPage $activityOccasion'),
+                            ),
+                            settings: RouteSettings(
+                                name: 'ActivityPage $activityOccasion'),
+                          ),
+                        );
+                      },
+                child: Stack(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        if (hasSideContent)
+                          Padding(
+                            padding: layout.activityCard.imagePadding,
+                            child: SizedBox(
+                              width: layout.activityCard.imageSize,
+                              child: ActivityImage.fromActivityOccasion(
+                                activityOccasion: activityOccasion,
+                                fit: BoxFit.cover,
+                                crossPadding: layout.activityCard.crossPadding,
+                                crossOverStrokeWidth: crossOverStrokeWidth,
+                                crossOverColor: crossOverColor,
+                              ),
                             ),
                           ),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(layout.activityCard.padding),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            if (hasSideContent)
-                              SizedBox(
-                                width: layout.activityCard.imageSize,
-                                child: ActivityImage.fromActivityOccasion(
-                                  activityOccasion: activityOccasion,
-                                  fit: BoxFit.cover,
-                                  crossOverColor: crossOverColor,
-                                  crossOverStrokeWidth: crossOverStrokeWidth,
+                        Expanded(
+                          child: Padding(
+                            padding: layout.activityCard.titlePadding,
+                            child: Stack(children: <Widget>[
+                              if (activity.hasTitle)
+                                Text(
+                                  activity.title,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              Align(
+                                alignment: activity.hasTitle
+                                    ? Alignment.bottomLeft
+                                    : Alignment.centerLeft,
+                                child: Text(
+                                  activity.subtitle(context),
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: layout.activityCard.titleImagePadding,
-                                    bottom: layout.activityCard.paddingBottom),
-                                child: Stack(children: <Widget>[
-                                  if (activity.hasTitle)
-                                    Text(
-                                      activity.title,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  Align(
-                                    alignment: activity.hasTitle
-                                        ? Alignment.bottomLeft
-                                        : Alignment.centerLeft,
-                                    child: Text(
-                                      activity.subtitle(context),
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                            ),
-                          ],
+                            ]),
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        right: layout.activityCard.padding,
-                        bottom: layout.activityCard.padding,
+                      ],
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Padding(
+                        padding: layout.activityCard.statusesPadding,
                         child: buildInfoIcons(activity, inactive),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

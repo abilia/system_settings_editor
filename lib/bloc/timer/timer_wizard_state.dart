@@ -22,7 +22,7 @@ class TimerWizardState extends Equatable {
     ],
   );
 
-  const TimerWizardState._({
+  const TimerWizardState({
     required this.steps,
     this.duration = Duration.zero,
     this.name = '',
@@ -31,11 +31,11 @@ class TimerWizardState extends Equatable {
   });
 
   factory TimerWizardState.initial() {
-    return TimerWizardState._(steps: _defaultSteps);
+    return TimerWizardState(steps: _defaultSteps);
   }
 
   factory TimerWizardState.withBasicTimer(BasicTimerDataItem basicTimer) {
-    return TimerWizardState._(
+    return TimerWizardState(
       steps: _defaultSteps,
       duration: basicTimer.duration.milliseconds(),
       name: basicTimer.basicTimerTitle,
@@ -53,7 +53,7 @@ class TimerWizardState extends Equatable {
     int? step,
     DateTime? startTime,
   }) {
-    return TimerWizardState._(
+    return TimerWizardState(
       steps: steps,
       duration: duration ?? this.duration,
       name: name ?? this.name,
@@ -64,4 +64,19 @@ class TimerWizardState extends Equatable {
 
   @override
   List<Object?> get props => [steps, duration, name, image, step];
+}
+
+class SavedTimerWizardState extends TimerWizardState {
+  final AbiliaTimer savedTimer;
+  SavedTimerWizardState(TimerWizardState state, this.savedTimer)
+      : super(
+          steps: state.steps,
+          duration: state.duration,
+          name: state.name,
+          image: state.image,
+          step: state.step,
+        );
+
+  @override
+  List<Object?> get props => [savedTimer];
 }

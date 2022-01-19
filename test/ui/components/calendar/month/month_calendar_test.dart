@@ -290,11 +290,14 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      final activityCardList =
-          tester.widgetList<ActivityCard>(find.byType(ActivityCard));
+      final cardPaddingList = tester.widgetList<Padding>(find.ancestor(
+          of: find.byType(ActivityCard), matching: find.byType(Padding)));
+
       expect(
-          activityCardList.any((activityCard) => activityCard.showCategories),
-          isFalse);
+          cardPaddingList.any((padding) =>
+              padding.padding.collapsedSize.width <
+              layout.activityCard.categorySideOffset),
+          isTrue);
     });
 
     final monthPreviewSetting = Generic.createNew<MemoplannerSettingData>(

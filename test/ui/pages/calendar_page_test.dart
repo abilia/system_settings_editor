@@ -27,8 +27,11 @@ import '../../test_helpers/tap_link.dart';
 import '../../test_helpers/verify_generic.dart';
 
 void main() {
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage),
-      previousDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
+  final previousDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
+  final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
+  final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
+  final saveEditActivityButtonFinder = find.byType(NextWizardStepButton);
 
   final translate = Locales.language.values.first;
 
@@ -724,6 +727,35 @@ void main() {
       });
     });
 
+    testWidgets('Can edit activity', (WidgetTester tester) async {
+      const title1 = 'Titel uno';
+      const newTitle = 'A brand new title!';
+
+      final d = initialDay.add(12.hours());
+      final aFinder = find.text(title1);
+
+      final activities = [Activity.createNew(title: title1, startTime: d)];
+      activityResponse = () => activities;
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value(activities));
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(aFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(editActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.ourEnterText(editTitleFieldFinder, newTitle);
+      await tester.tap(saveEditActivityButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.activityBackButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ActivityCard), findsOneWidget);
+      expect(find.text(newTitle), findsOneWidget);
+      expect(aFinder, findsNothing);
+    });
+
     group('add timer', () {
       testWidgets('from scratch is possible', (WidgetTester tester) async {
         await tester.pumpWidget(App());
@@ -750,11 +782,14 @@ void main() {
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
+        expect(find.byType(ViewTimerPage), findsOneWidget);
+        await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+        await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
 
         final captured =
             verify(() => mockTimerDb.insert(captureAny())).captured;
-        final savedTimer = captured.single.single as AbiliaTimer;
+        final savedTimer = captured.single as AbiliaTimer;
         expect(savedTimer.duration, 20.minutes());
         expect(
             savedTimer.title,
@@ -1268,9 +1303,6 @@ void main() {
     final cardFinder = find.byType(ActivityCard);
     final showAllFullDayButtonFinder =
         find.byType(ShowAllFullDayActivitiesButton);
-    final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
-    final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
-    final saveEditActivityButtonFinder = find.byType(NextWizardStepButton);
     final editPictureFinder = find.byKey(TestKey.addPicture);
 
     setUp(() {

@@ -113,8 +113,6 @@ class _MediumLayout extends Layout {
               )),
           activityCard: const ActivityCardLayout(
             height: 104,
-            padding: 8,
-            paddingBottom: 8,
             marginSmall: 8,
             marginLarge: 16,
             imageSize: 88,
@@ -124,6 +122,11 @@ class _MediumLayout extends Layout {
             crossOverStrokeWidth: 2,
             borderWidth: 4,
             currentBorderWidth: 6,
+            imagePadding: EdgeInsets.only(left: 8),
+            crossPadding: EdgeInsets.all(8),
+            titlePadding:
+                EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
+            statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
           ),
         );
 }

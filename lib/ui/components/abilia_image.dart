@@ -290,7 +290,7 @@ class FadeInCalendarImage extends StatelessWidget {
   const FadeInCalendarImage({
     Key? key,
     required this.imageFileId,
-    required this.imageFilePath,
+    this.imageFilePath = '',
     this.width,
     this.height,
     this.imageSize = ImageSize.thumb,
