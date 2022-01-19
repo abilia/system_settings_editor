@@ -24,6 +24,7 @@ class Layout {
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
   final ActivityCardLayout activityCard;
+  final TimerPage timerPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -36,6 +37,7 @@ class Layout {
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
     this.activityCard = const ActivityCardLayout(),
+    this.timerPage = const TimerPage(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -198,24 +200,41 @@ class FormPaddingLayout {
 
 class ActivityCardLayout {
   final double height,
-      padding,
-      paddingBottom,
       marginSmall,
       marginLarge,
       imageSize,
       categorySideOffset,
-      iconSize,
-      titleImagePadding;
+      iconSize;
+
+  final EdgeInsets imagePadding;
+  final EdgeInsets crossPadding;
+  final EdgeInsets titlePadding;
+  final EdgeInsets statusesPadding;
 
   const ActivityCardLayout({
     this.height = 56,
-    this.padding = 4,
-    this.paddingBottom = 0,
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
     this.categorySideOffset = 56,
     this.iconSize = 18,
-    this.titleImagePadding = 10,
+    this.crossPadding = const EdgeInsets.all(4),
+    this.imagePadding = const EdgeInsets.only(left: 4),
+    this.titlePadding =
+        const EdgeInsets.only(left: 8, top: 6, right: 8, bottom: 2),
+    this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
+  });
+}
+
+class TimerPage {
+  final double imageSize, topRowPadding, mainContentPadding;
+  final int topRowFlex, mainContentFlex;
+
+  const TimerPage({
+    this.imageSize = 96,
+    this.topRowFlex = 126,
+    this.mainContentFlex = 351,
+    this.topRowPadding = 12,
+    this.mainContentPadding = 32,
   });
 }

@@ -29,11 +29,11 @@ class ViewTimerPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Expanded(
-                flex: 126,
+                flex: layout.timerPage.topRowFlex,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: ActivityInfo.margin,
-                    vertical: 12.s,
+                    vertical: layout.timerPage.topRowPadding,
                   ),
                   child: _TopInfo(timer: timer),
                 ),
@@ -43,9 +43,9 @@ class ViewTimerPage extends StatelessWidget {
                 indent: ActivityInfo.margin,
               ),
               Expanded(
-                flex: 351,
+                flex: layout.timerPage.mainContentFlex,
                 child: Padding(
-                  padding: EdgeInsets.all(32.s),
+                  padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
                   child: TimerWheel.nonInteractive(
                     activeSeconds: timer.duration.inSeconds,
                     timerLengthInMinutes: timer.duration.inMinutes,
@@ -80,6 +80,9 @@ class _TopInfo extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: ActivityInfo.margin),
             child: FadeInCalendarImage(
+              width: layout.timerPage.imageSize,
+              height: layout.timerPage.imageSize,
+              fit: BoxFit.cover,
               imageFileId: timer.fileId,
             ),
           ),
