@@ -9,10 +9,10 @@ class TimerDurationWiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return Scaffold(
-      appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
-      body: BlocBuilder<TimerWizardCubit, TimerWizardState>(
-        builder: (context, state) => Column(
+    return BlocBuilder<TimerWizardCubit, TimerWizardState>(
+      builder: (context, state) => Scaffold(
+        appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -60,13 +60,23 @@ class TimerDurationWiz extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: PreviousButton(
-          onPressed: context.read<TimerWizardCubit>().previous,
-        ),
-        forwardNavigationWidget: NextButton(
-          onPressed: context.read<TimerWizardCubit>().next,
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget: PreviousButton(
+            onPressed: context.read<TimerWizardCubit>().previous,
+          ),
+          forwardNavigationWidget: NextButton(
+            onPressed: state.duration.inMinutes > 0
+                ? context.read<TimerWizardCubit>().next
+                : () => showViewDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                        text: Translator.of(context)
+                            .translate
+                            .timerInvalidDuration,
+                      ),
+                    ),
+            // onPressed: () => onNext(context, state.duration),
+          ),
         ),
       ),
     );
