@@ -106,8 +106,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   TimepillarZoom get timepillarZoom =>
       TimepillarZoom.values[settings.viewOptionsZoom];
   ClockType get clockType => ClockType.values[settings.settingClockType];
-  MonthCalendarType get monthCalendarType =>
-      MonthCalendarType.values[settings.viewOptionsMonthCalendar];
 
   AlarmSettings get alarm => settings.alarm;
 

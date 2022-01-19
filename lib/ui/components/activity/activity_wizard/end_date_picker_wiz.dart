@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EndDatePickerWiz extends StatelessWidget {
@@ -43,7 +42,7 @@ class EndDatePickerWiz extends StatelessWidget {
                     previous.calendarDayColor != current.calendarDayColor,
                 builder: (context, memoSettingsState) => MonthBody(
                   calendarDayColor: memoSettingsState.calendarDayColor,
-                  monthCalendarType: MonthCalendarType.grid,
+                  showPreview: false,
                 ),
               ),
             ),

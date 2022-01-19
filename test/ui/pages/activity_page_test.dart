@@ -243,8 +243,11 @@ void main() {
     Future _changeDate(WidgetTester tester, int day) async {
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.tap(
+        find.ancestor(
+            of: find.text('$day'),
+            matching: find.byKey(TestKey.monthCalendarDay)),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();

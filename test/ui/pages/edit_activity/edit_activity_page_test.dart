@@ -1288,7 +1288,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1307,14 +1307,14 @@ text''';
 
       expect(find.text('February'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(29));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(29));
 
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
 
       expect(find.text('January'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(31));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(31));
 
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
@@ -1325,7 +1325,7 @@ text''';
 
       expect(find.text('April'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(30));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(30));
 
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
@@ -1342,7 +1342,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1380,7 +1380,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1411,7 +1411,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
         of: find.text('3'),
-        matching: find.byType(MonthDayView),
+        matching: find.byKey(TestKey.monthCalendarDay),
       ));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));

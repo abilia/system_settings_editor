@@ -30,11 +30,9 @@ class MonthCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
-          previous.calendarDayColor != current.calendarDayColor ||
-          previous.monthCalendarType != current.monthCalendarType,
+          previous.calendarDayColor != current.calendarDayColor,
       builder: (context, memoSettingsState) => MonthBody(
         calendarDayColor: memoSettingsState.calendarDayColor,
-        monthCalendarType: memoSettingsState.monthCalendarType, //TODO: ta bort?
       ),
     );
   }
@@ -44,11 +42,11 @@ class MonthBody extends StatelessWidget {
   const MonthBody({
     Key? key,
     required this.calendarDayColor,
-    required this.monthCalendarType,
+    this.showPreview = true,
   }) : super(key: key);
 
   final DayColor calendarDayColor;
-  final MonthCalendarType monthCalendarType; //TODO: ta bort?
+  final bool showPreview;
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +58,17 @@ class MonthBody extends StatelessWidget {
         weekday: d + 1,
       ),
     );
-    final dayBuilder =
-        monthCalendarType == MonthCalendarType.preview && Config.isMPGO
-            ? (day, dayTheme) => MonthDayViewCompact(day, dayTheme: dayTheme)
-            : (day, dayTheme) => MonthDayView(
-                  day,
-                  dayTheme: dayTheme,
-                  monthCalendarType: monthCalendarType,
-                );
+    final dayBuilder = Config.isMPGO
+        ? (day, dayTheme) => MonthDayViewCompact(
+              day,
+              dayTheme: dayTheme,
+              key: TestKey.monthCalendarDay,
+            )
+        : (day, dayTheme) => MonthDayView(
+              day,
+              dayTheme: dayTheme,
+              key: TestKey.monthCalendarDay,
+            );
     return Column(
       children: [
         MonthHeading(dayThemes: dayThemes),
@@ -78,7 +79,7 @@ class MonthBody extends StatelessWidget {
             dayBuilder: dayBuilder,
           ),
         ),
-        if (monthCalendarType == MonthCalendarType.preview)
+        if (showPreview)
           Expanded(
             flex: layout.monthCalendar.monthListPreviewFlex,
             child: MonthListPreview(dayThemes: dayThemes),
@@ -222,13 +223,11 @@ class MonthHeading extends StatelessWidget {
 class MonthDayView extends StatelessWidget {
   final MonthDay day;
   final DayTheme dayTheme;
-  final MonthCalendarType monthCalendarType;
 
   const MonthDayView(
     this.day, {
     Key? key,
     required this.dayTheme,
-    required this.monthCalendarType,
   }) : super(key: key);
 
   @override
@@ -247,9 +246,6 @@ class MonthDayView extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
-          if (monthCalendarType == MonthCalendarType.grid) {
-            DefaultTabController.of(context)?.animateTo(0);
-          } //TODO: ta bort? Ska man kunna trycka någon annanstans?
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
             builder: (context, dayPickerState) {
@@ -368,6 +364,7 @@ class MonthDayContainer extends StatelessWidget {
               children: [
                 if (d.fullDayActivityCount > 1)
                   FullDayStack(
+                    key: TestKey.monthCalendarFullDayStack,
                     numberOfActivities: d.fullDayActivityCount,
                   )
                 else if (d.fullDayActivity != null)
