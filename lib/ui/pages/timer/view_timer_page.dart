@@ -28,7 +28,7 @@ class ViewTimerPage extends StatelessWidget {
           constraints: const BoxConstraints.expand(),
           child: Column(
             children: <Widget>[
-              Expanded(
+              Flexible(
                 flex: layout.timerPage.topRowFlex,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -42,7 +42,7 @@ class ViewTimerPage extends StatelessWidget {
                 endIndent: 0,
                 indent: ActivityInfo.margin,
               ),
-              Expanded(
+              Flexible(
                 flex: layout.timerPage.mainContentFlex,
                 child: Padding(
                   padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
@@ -125,7 +125,7 @@ class _TimerBottomBar extends StatelessWidget {
                 final confirmDeletion = await showViewDialog(
                   context: context,
                   builder: (context) => ConfirmWarningDialog(
-                    text: Translator.of(context).translate.timerCancel,
+                    text: Translator.of(context).translate.timerDelete,
                   ),
                 );
                 if (confirmDeletion) {

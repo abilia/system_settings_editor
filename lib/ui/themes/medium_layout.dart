@@ -87,5 +87,6 @@ class _MediumLayout extends Layout {
                 EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
             statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
           ),
+          timerPage: const TimerPage(imageSize: 200, topRowFlex: 232),
         );
 }
