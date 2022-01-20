@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -223,39 +224,56 @@ class ActivityCardLayout {
 }
 
 class TimepillarLayout {
-  final double imageHeightMin,
-      cardPadding,
-      width,
-      padding,
-      minHeight,
-      dotSize,
+  final TextStyle style;
+  final TimepillarDotLayout dot;
+  final TimepillarCardLayout card;
+  final TimepillarCalendarLayout calendar;
+
+  const TimepillarLayout({
+    this.style = const TextStyle(
+        color: AbiliaColors.black, fontWeight: FontWeight.w500, fontSize: 20),
+    this.dot = const TimepillarDotLayout(),
+    this.card = const TimepillarCardLayout(),
+    this.calendar = const TimepillarCalendarLayout(),
+  });
+
+  get textStyle => GoogleFonts.roboto(textStyle: style);
+}
+
+class TimepillarDotLayout {
+  final double size, padding, distance;
+
+  const TimepillarDotLayout(
+      {this.size = 10, this.padding = 3, this.distance = 13});
+}
+
+class TimepillarCardLayout {
+  final double width, minHeight, cardPadding, imageHeightMin;
+
+  const TimepillarCardLayout(
+      {this.width = 72,
+      this.minHeight = 84,
+      this.cardPadding = 4,
+      this.imageHeightMin = 56});
+}
+
+class TimepillarCalendarLayout {
+  final double padding,
       hourPadding,
-      dotPadding,
-      dotDistance,
       timePillarPadding,
       defaultTimePillarWidth,
-      fontSize,
       topMargin,
       bottomMargin,
       timeLineHeight;
-  final FontWeight fontWeight;
 
-  const TimepillarLayout({
-    this.imageHeightMin = 56,
-    this.cardPadding = 4,
-    this.width = 72,
-    this.padding = 12,
-    this.minHeight = 84,
-    this.dotSize = 10,
-    this.hourPadding = 1,
-    this.dotPadding = 3,
-    this.dotDistance = 13,
-    this.timePillarPadding = 4,
-    this.defaultTimePillarWidth = 42,
-    this.fontSize = 20,
-    this.fontWeight = FontWeight.w500,
-    this.topMargin = 96,
-    this.bottomMargin = 64,
-    this.timeLineHeight = 2,
-  });
+  const TimepillarCalendarLayout(
+      {this.hourPadding = 1,
+      this.timePillarPadding = 4,
+      this.defaultTimePillarWidth = 42,
+      this.padding = 12,
+      this.topMargin = 96,
+      this.bottomMargin = 64,
+      this.timeLineHeight = 2});
 }
+
+class TimepillarFontStyle {}

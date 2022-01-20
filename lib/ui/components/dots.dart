@@ -330,8 +330,7 @@ class BigDots extends StatelessWidget {
           .reversed
           .map(
             (dot) => Padding(
-                padding: const EdgeInsets.only(bottom: bigDotPadding),
-                child: dot),
+                padding: EdgeInsets.only(bottom: bigDotPadding), child: dot),
           )
           .toList(),
     );
@@ -344,7 +343,7 @@ class SubQuarerDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => minutes > minutesPerDot
-      ? const AnimatedDot(decoration: futureDotShape, size: bigDotSize)
+      ? AnimatedDot(decoration: futureDotShape, size: bigDotSize)
       : AnimatedDot(
           size: bigDotSize,
           decoration: pastDotShape,

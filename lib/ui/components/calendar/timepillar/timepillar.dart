@@ -137,15 +137,12 @@ class Hour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontStyle = Theme.of(context).textTheme.headline4 ?? headline4;
-    final fontSize = layout.timePillar.fontSize;
     final ts = timepillarState;
 
     return DefaultTextStyle(
-      style: fontStyle.copyWith(
+      style: layout.timePillar.textStyle.copyWith(
         color: isNight ? AbiliaColors.white : AbiliaColors.black,
-        fontSize: fontSize * ts.zoom,
-        fontWeight: layout.timePillar.fontWeight,
+        fontSize: layout.timePillar.textStyle.fontSize * ts.zoom,
       ),
       child: Container(
         height: ts.hourHeight,

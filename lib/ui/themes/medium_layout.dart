@@ -86,19 +86,18 @@ class _MediumLayout extends Layout {
             titleImagePadding: 12,
           ),
           timePillar: const TimepillarLayout(
-            imageHeightMin: 96,
-            cardPadding: 8,
-            width: 110,
-            padding: 17,
-            minHeight: 112,
-            dotSize: 16,
-            hourPadding: 1.5,
-            dotPadding: 4.5,
-            dotDistance: 20.5,
-            timePillarPadding: 8,
-            defaultTimePillarWidth: 80,
-            fontSize: 40, // no matching font size. defined in separate ticket
-            fontWeight: FontWeight.w900, // needs to be high to match design
+            dot: TimepillarDotLayout(size: 16, padding: 4.5, distance: 20.5),
+            card: TimepillarCardLayout(
+                imageHeightMin: 96, cardPadding: 8, minHeight: 112, width: 110),
+            calendar: TimepillarCalendarLayout(
+                hourPadding: 1.5,
+                padding: 17,
+                timePillarPadding: 8,
+                defaultTimePillarWidth: 80),
+            style: TextStyle(
+                color: AbiliaColors.black,
+                fontSize: 40,
+                fontWeight: FontWeight.w500),
           ),
         );
 }

@@ -4,7 +4,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TwoTimepillarCalendar extends StatelessWidget {
-  TwoTimepillarCalendar({
+  const TwoTimepillarCalendar({
     Key? key,
     required this.activityState,
     required this.showCategories,
@@ -19,7 +19,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
 
   final DayParts dayParts;
 
-  final verticalMargin = 24.s;
+  final verticalMargin = 24.0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
         final nightTimepillarState = TimepillarState(nightInterval, zoom);
         final dayTimepillarState = TimepillarState(dayInterval, zoom);
         final categoryLabelWidth = (boxConstraints.maxWidth -
-                layout.timePillar.defaultTimePillarWidth.s) /
+                layout.timePillar.calendar.defaultTimePillarWidth.s) /
             2;
         final nightTimepillarHeight =
             timePillarHeight(nightTimepillarState) + verticalMargin * 2;
@@ -71,7 +71,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 4.s),
+                const SizedBox(width: 4),
                 Flexible(
                   flex: 135,
                   child: MultiBlocProvider(
@@ -93,8 +93,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       height: nightTimepillarHeight,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(9.s)),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(9)),
                       ),
                       child: BlocBuilder<NightActivitiesCubit,
                           ActivitiesOccasionLoaded>(

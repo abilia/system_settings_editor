@@ -3,36 +3,39 @@ part of 'timepillar_cubit.dart';
 class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;
   final double zoom;
+  final TimepillarLayout timePillarLayout = layout.timePillar;
 
-  const TimepillarState(this.timepillarInterval, this.zoom);
+  TimepillarState(this.timepillarInterval, this.zoom);
 
   // ActivityTimepillarCard
-  double get minImageHeight => layout.timePillar.imageHeightMin * zoom;
-  double get cardPadding => layout.timePillar.cardPadding * zoom;
-  double get width => layout.timePillar.width * zoom;
-  double get padding => layout.timePillar.padding * zoom;
-  double get minHeight => layout.timePillar.minHeight * zoom;
+  double get minImageHeight => timePillarLayout.card.imageHeightMin * zoom;
+  double get cardPadding => timePillarLayout.card.cardPadding * zoom;
+  double get width => timePillarLayout.card.width * zoom;
+  double get padding => timePillarLayout.calendar.padding * zoom;
+  double get minHeight => timePillarLayout.card.minHeight * zoom;
   double get totalWidth =>
-      (layout.timePillar.dotSize +
-          layout.timePillar.width +
-          layout.timePillar.padding) *
+      (timePillarLayout.dot.size +
+          timePillarLayout.card.width +
+          timePillarLayout.calendar.padding) *
       zoom;
   double get textWidth => width - cardPadding * 2;
 
   // Dots
-  double get dotSize => layout.timePillar.dotSize * zoom;
+  double get dotSize => timePillarLayout.dot.size * zoom;
   double get dotDistance =>
-      (layout.timePillar.dotSize + layout.timePillar.dotPadding) * zoom;
-  double get hourHeight => layout.timePillar.dotDistance * dotsPerHour * zoom;
-  double get hourPadding => layout.timePillar.hourPadding * zoom;
-  double get dotPadding => layout.timePillar.dotPadding * zoom;
+      (timePillarLayout.dot.size + timePillarLayout.dot.padding) * zoom;
+  double get hourHeight => timePillarLayout.dot.distance * dotsPerHour * zoom;
+  double get hourPadding => timePillarLayout.calendar.hourPadding * zoom;
+  double get dotPadding => timePillarLayout.dot.padding * zoom;
 
   // Timepillar
-  double get timePillarPadding => layout.timePillar.timePillarPadding * zoom;
-  double get timePillarWidth => layout.timePillar.defaultTimePillarWidth * zoom;
+  double get timePillarPadding =>
+      timePillarLayout.calendar.timePillarPadding * zoom;
+  double get timePillarWidth =>
+      timePillarLayout.calendar.defaultTimePillarWidth * zoom;
   double get timePillarTotalWidth =>
-      (layout.timePillar.defaultTimePillarWidth +
-          layout.timePillar.timePillarPadding * 2) *
+      (timePillarLayout.calendar.defaultTimePillarWidth +
+          timePillarLayout.calendar.timePillarPadding * 2) *
       zoom;
   double get topPadding => 2 * hourPadding;
   bool get intervalSpansMidnight =>
