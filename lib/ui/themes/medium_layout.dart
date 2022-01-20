@@ -88,7 +88,7 @@ class _MediumLayout extends Layout {
           timePillar: const TimepillarLayout(
             dot: TimepillarDotLayout(size: 16, padding: 4.5, distance: 20.5),
             card: TimepillarCardLayout(
-                imageHeightMin: 96, cardPadding: 8, minHeight: 112, width: 110),
+                imageHeightMin: 96, padding: 8, minHeight: 112, width: 110),
             calendar: TimepillarCalendarLayout(
                 hourPadding: 1.5,
                 padding: 17,

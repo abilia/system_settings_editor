@@ -9,7 +9,7 @@ class TimepillarState extends Equatable {
 
   // ActivityTimepillarCard
   double get minImageHeight => timePillarLayout.card.imageHeightMin * zoom;
-  double get cardPadding => timePillarLayout.card.cardPadding * zoom;
+  double get cardPadding => timePillarLayout.card.padding * zoom;
   double get width => timePillarLayout.card.width * zoom;
   double get padding => timePillarLayout.calendar.padding * zoom;
   double get minHeight => timePillarLayout.card.minHeight * zoom;

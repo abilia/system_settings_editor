@@ -248,12 +248,12 @@ class TimepillarDotLayout {
 }
 
 class TimepillarCardLayout {
-  final double width, minHeight, cardPadding, imageHeightMin;
+  final double width, minHeight, padding, imageHeightMin;
 
   const TimepillarCardLayout(
       {this.width = 72,
       this.minHeight = 84,
-      this.cardPadding = 4,
+      this.padding = 4,
       this.imageHeightMin = 56});
 }
 
@@ -275,5 +275,3 @@ class TimepillarCalendarLayout {
       this.bottomMargin = 64,
       this.timeLineHeight = 2});
 }
-
-class TimepillarFontStyle {}
