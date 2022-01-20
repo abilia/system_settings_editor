@@ -800,11 +800,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 09, 59));
+      mockTicker.add(DateTime(2020, 12, 01, 09, 00));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 10, 00, 01));
+      mockTicker.add(DateTime(2020, 12, 01, 10, 00));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });

@@ -5,29 +5,25 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ClockBloc extends Cubit<DateTime> with Finest {
-  StreamSubscription<DateTime>? _secondSubscription;
-  Stream<DateTime> ticker;
+  StreamSubscription<DateTime>? _tickerSubscription;
+  Stream<DateTime> minuteStream;
 
-  ClockBloc(this.ticker, {required DateTime initialTime})
+  ClockBloc(this.minuteStream, {required DateTime initialTime})
       : super(initialTime.onlyMinutes()) {
-    _secondSubscription = ticker
-        .where((now) => state.minute != now.minute)
-        .map((d) => d.onlyMinutes())
-        .listen(emit);
+    _tickerSubscription = minuteStream.listen(emit);
   }
 
   ClockBloc.withTicker(Ticker ticker)
-      : this(ticker.stream, initialTime: ticker.time);
+      : this(ticker.minutes, initialTime: ticker.time);
 
   ClockBloc.fixed(DateTime initialTime)
       : this(const Stream.empty(), initialTime: initialTime);
 
-  Future<void> setTime([DateTime? time]) async =>
-      emit((time ?? await ticker.first).onlyMinutes());
+  Future<void> setTime(DateTime time) async => emit(time.onlyMinutes());
 
   @override
   Future<void> close() async {
-    await _secondSubscription?.cancel();
+    await _tickerSubscription?.cancel();
     return super.close();
   }
 }

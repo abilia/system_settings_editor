@@ -77,8 +77,8 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
   @override
   TimepillarState get state => TimepillarState(
         TimepillarInterval(
-          start: DateTime.now(),
-          end: DateTime.now(),
+          start: DateTime(1066, 10, 14, 09, 00),
+          end: DateTime(1066, 10, 14, 17, 54),
         ),
         1,
       );

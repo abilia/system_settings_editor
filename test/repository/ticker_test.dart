@@ -6,6 +6,6 @@ void main() {
   test(
       'real ticker ticks',
       () => expectLater(
-          Ticker(initialTime: DateTime(2022, 01, 20, 11, 03)).stream,
+          Ticker(initialTime: DateTime(2022, 01, 20, 11, 03)).seconds,
           emits(isA<DateTime>())));
 }

@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:seagull/utils/datetime.dart';
 
 class Ticker {
   final _streamController = StreamController<DateTime>();
   late Stream<DateTime> _stream = _streamController.stream.asBroadcastStream();
-  Stream<DateTime> get stream => _stream;
+  Stream<DateTime> get seconds => _stream;
+  Stream<DateTime> get minutes =>
+      _stream.where((t) => t.second == 0).map((d) => d.onlyMinutes());
 
   DateTime _time;
   DateTime get time => _time;
