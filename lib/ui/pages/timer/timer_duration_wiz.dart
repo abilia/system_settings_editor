@@ -75,7 +75,6 @@ class TimerDurationWiz extends StatelessWidget {
                             .timerInvalidDuration,
                       ),
                     ),
-            // onPressed: () => onNext(context, state.duration),
           ),
         ),
       ),
