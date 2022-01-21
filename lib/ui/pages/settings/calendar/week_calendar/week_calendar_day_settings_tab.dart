@@ -57,7 +57,7 @@ class WeekCalendarDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekStart = DateTime.now().firstInWeek();
+    final weekStart = context.read<ClockBloc>().state.firstInWeek();
     return Container(
       height: 148.s,
       decoration: BoxDecoration(

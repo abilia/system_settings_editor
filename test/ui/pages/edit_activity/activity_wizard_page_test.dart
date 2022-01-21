@@ -76,9 +76,7 @@ void main() {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc(
-                    StreamController<DateTime>().stream,
-                    initialTime: startTime),
+                create: (context) => ClockBloc.fixed(startTime),
               ),
               BlocProvider<MemoplannerSettingBloc>.value(
                 value: mockMemoplannerSettingsBloc,

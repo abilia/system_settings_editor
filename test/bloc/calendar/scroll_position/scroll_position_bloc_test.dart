@@ -261,19 +261,21 @@ void main() {
       when(() => mockScrollController.initialScrollOffset).thenReturn(0);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
 
-      // Act
-      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
-          createdTime: initialTime));
-      ticker.add(initialTime.add(1.hours()));
-
-      // Assert
-      await expectLater(
+      final expeted = expectLater(
         scrollPositionBloc.stream,
         emitsInOrder([
           InView(mockScrollController, initialTime),
           OutOfView(mockScrollController, initialTime),
         ]),
       );
+      // Act
+      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime));
+      await scrollPositionBloc.stream.any((element) => true);
+      ticker.add(initialTime.add(1.hours()).add(5.minutes()));
+
+      // Assert
+      await expeted;
     });
 
     test('Scrolls to correct offset', () async {
@@ -284,7 +286,7 @@ void main() {
       when(() => mockScrollController.offset).thenReturn(initialOffset);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
       final ts = TimepillarState(
-          TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1);
+          TimepillarInterval(start: initialTime, end: initialTime), 1);
       final timePixelOffset = timeToPixels(
         1,
         30,

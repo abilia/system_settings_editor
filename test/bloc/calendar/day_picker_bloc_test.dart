@@ -98,8 +98,7 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 03, 29);
     final daysAfterDST = DateTime(2020, 03, 30);
 
-    clockBloc = ClockBloc(StreamController<DateTime>().stream,
-        initialTime: daybeforeDST);
+    clockBloc = ClockBloc.fixed(daybeforeDST);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
@@ -127,8 +126,7 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 03, 29);
     final daysAfterDST = DateTime(2020, 03, 30);
     final twoDaysAfterDST = DateTime(2020, 03, 31);
-    clockBloc = ClockBloc(StreamController<DateTime>().stream,
-        initialTime: twoDaysAfterDST);
+    clockBloc = ClockBloc.fixed(twoDaysAfterDST);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
@@ -157,8 +155,7 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 10, 25);
     final daysAfterDST = DateTime(2020, 10, 26);
 
-    clockBloc = ClockBloc(StreamController<DateTime>().stream,
-        initialTime: daybeforeDST);
+    clockBloc = ClockBloc.fixed(daybeforeDST);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act
@@ -186,8 +183,7 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 10, 25);
     final daysAfterDST = DateTime(2020, 10, 26);
     final twoDaysAfterDST = DateTime(2020, 10, 27);
-    clockBloc = ClockBloc(StreamController<DateTime>().stream,
-        initialTime: twoDaysAfterDST);
+    clockBloc = ClockBloc.fixed(twoDaysAfterDST);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     // Act

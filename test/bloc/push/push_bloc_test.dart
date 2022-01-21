@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/background/all.dart';
@@ -46,8 +44,7 @@ void main() {
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
         ..userFileDb = FakeUserFileDb()
-        ..ticker = Ticker(
-            stream: StreamController<DateTime>().stream, initialTime: time)
+        ..ticker = Ticker.fake(initialTime: time)
         ..database = FakeDatabase()
         ..init();
     });

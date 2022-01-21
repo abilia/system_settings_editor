@@ -26,6 +26,7 @@ class Layout {
   final FormPaddingLayout formPadding;
   final ActivityCardLayout activityCard;
   final TimepillarLayout timePillar;
+  final TimerPageLayout timerPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -39,6 +40,7 @@ class Layout {
     this.formPadding = const FormPaddingLayout(),
     this.activityCard = const ActivityCardLayout(),
     this.timePillar = const TimepillarLayout(),
+    this.timerPage = const TimerPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -201,25 +203,47 @@ class FormPaddingLayout {
 
 class ActivityCardLayout {
   final double height,
-      padding,
-      paddingBottom,
       marginSmall,
       marginLarge,
       imageSize,
       categorySideOffset,
-      iconSize,
-      titleImagePadding;
+      iconSize;
+
+  final EdgeInsets imagePadding;
+  final EdgeInsets crossPadding;
+  final EdgeInsets titlePadding;
+  final EdgeInsets statusesPadding;
 
   const ActivityCardLayout({
     this.height = 56,
-    this.padding = 4,
-    this.paddingBottom = 0,
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
     this.categorySideOffset = 56,
     this.iconSize = 18,
-    this.titleImagePadding = 10,
+    this.crossPadding = const EdgeInsets.all(4),
+    this.imagePadding = const EdgeInsets.only(left: 4),
+    this.titlePadding =
+        const EdgeInsets.only(left: 8, top: 6, right: 8, bottom: 2),
+    this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
+  });
+}
+
+class TimerPageLayout {
+  final double topInfoHeight,
+      topVerticalPadding,
+      topHorizontalPadding,
+      imageSize,
+      imagePadding,
+      mainContentPadding;
+
+  const TimerPageLayout({
+    this.topInfoHeight = 126,
+    this.topVerticalPadding = 15,
+    this.topHorizontalPadding = 12,
+    this.imageSize = 96,
+    this.mainContentPadding = 32,
+    this.imagePadding = 8,
   });
 }
 

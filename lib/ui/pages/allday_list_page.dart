@@ -8,9 +8,9 @@ class AllDayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivitiesOccasionCubit, ActivitiesOccasionState>(
+    return BlocBuilder<DayEventsCubit, EventsState>(
       builder: (context, state) {
-        if (state is ActivitiesOccasionLoaded) {
+        if (state is EventsLoaded) {
           return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             builder: (context, memoSettingsState) => Theme(
               data: weekdayTheme(
@@ -27,9 +27,13 @@ class AllDayList extends StatelessWidget {
                           layout.activityCard.marginSmall,
                       padding: EdgeInsets.all(12.s),
                       itemCount: state.fullDayActivities.length,
-                      itemBuilder: (context, index) => ActivityCard(
-                        activityOccasion: state.fullDayActivities[index],
-                        bottomPadding: layout.activityCard.marginSmall,
+                      itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: layout.activityCard.marginSmall,
+                        ),
+                        child: ActivityCard(
+                          activityOccasion: state.fullDayActivities[index],
+                        ),
                       ),
                     ),
                   ),

@@ -76,14 +76,23 @@ class _MediumLayout extends Layout {
           ),
           activityCard: const ActivityCardLayout(
             height: 104,
-            padding: 8,
-            paddingBottom: 8,
             marginSmall: 8,
             marginLarge: 16,
             imageSize: 88,
             categorySideOffset: 120,
             iconSize: 24.0,
-            titleImagePadding: 12,
+            imagePadding: EdgeInsets.only(left: 8),
+            crossPadding: EdgeInsets.all(8),
+            titlePadding:
+                EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
+            statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
+          ),
+          timerPage: const TimerPageLayout(
+            topInfoHeight: 232,
+            topVerticalPadding: 16,
+            topHorizontalPadding: 16,
+            imageSize: 200,
+            imagePadding: 16,
           ),
           timePillar: const TimepillarLayout(
             fontSize: 40,

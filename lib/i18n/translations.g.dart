@@ -198,6 +198,8 @@ abstract class Translated {
 
   final String timerInvalidDuration = 'Duration can not be zero.';
 
+  final String timerDelete = 'Do you want to delete the timer?';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1074,6 +1076,9 @@ class SV extends Translated {
 
   @override
   final String timerInvalidDuration = 'Tidslängden kan inte vara noll.';
+
+  @override
+  final String timerDelete = 'Vill du ta bort timern?';
 
   @override
   final String reminders = 'Påminnelser';

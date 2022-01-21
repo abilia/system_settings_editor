@@ -77,8 +77,8 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
   @override
   TimepillarState get state => TimepillarState(
         TimepillarInterval(
-          start: DateTime.now(),
-          end: DateTime.now(),
+          start: DateTime(1066, 10, 14, 09, 00),
+          end: DateTime(1066, 10, 14, 17, 54),
         ),
         1,
       );
@@ -106,17 +106,9 @@ class FakeDayPickerBloc extends Fake implements DayPickerBloc {
   Future<void> close() async {}
 }
 
-class FakeDayActivitiesCubit extends Fake implements DayActivitiesCubit {
+class FakeDayEventsCubit extends Fake implements DayEventsCubit {
   @override
-  Stream<DayActivitiesState> get stream => const Stream.empty();
-  @override
-  Future<void> close() async {}
-}
-
-class FakeActivitiesOccasionCubit extends Fake
-    implements ActivitiesOccasionCubit {
-  @override
-  Stream<ActivitiesOccasionState> get stream => const Stream.empty();
+  Stream<EventsState> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }

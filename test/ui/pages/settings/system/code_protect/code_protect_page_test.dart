@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -34,8 +32,7 @@ void main() {
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
+      ..ticker = Ticker.fake(
         initialTime: DateTime(2021, 10, 29, 09, 20),
       )
       ..client = Fakes.client(genericResponse: () => generics)

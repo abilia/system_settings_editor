@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -30,8 +29,7 @@ void main() {
     when(() => mockActivitiesBloc.state)
         .thenAnswer((_) => ActivitiesNotLoaded());
 
-    clockBloc =
-        ClockBloc(StreamController<DateTime>().stream, initialTime: nowTime);
+    clockBloc = ClockBloc.fixed(nowTime);
   });
 
   test('Initial edit state is', () {
@@ -804,8 +802,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.add(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -891,8 +888,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc:
-              ClockBloc(StreamController<DateTime>().stream, initialTime: time),
+          clockBloc: ClockBloc.fixed(time),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -975,8 +971,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.add(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -1070,8 +1065,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesBloc: FakeActivitiesBloc(),
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(const Stream.empty(),
-              initialTime: aTime.add(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: true),
           ),
@@ -1162,8 +1156,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.subtract(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -1247,8 +1240,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.add(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -1329,8 +1321,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.subtract(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: false),
           ),
@@ -1393,8 +1384,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime),
+          clockBloc: ClockBloc.fixed(aTime),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -1454,8 +1444,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.subtract(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
               MemoplannerSettings(advancedActivityTemplate: false)),
         );
@@ -1528,8 +1517,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc(StreamController<DateTime>().stream,
-              initialTime: aTime.subtract(1.hours())),
+          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
             MemoplannerSettings(activityTimeBeforeCurrent: false),
           ),

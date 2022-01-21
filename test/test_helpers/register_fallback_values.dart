@@ -33,8 +33,16 @@ void registerFallbackValues() {
   registerFallbackValue(const ImageThumb(id: ''));
   registerFallbackValue(Uri());
   registerFallbackValue(Uint8List(1));
-  registerFallbackValue(const ActivitiesOccasionLoading());
+  registerFallbackValue(const EventsLoading());
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
   registerFallbackValue(const TimerState(timers: []));
+  registerFallbackValue(
+    AbiliaTimer(
+      id: '',
+      title: '',
+      startTime: DateTime(2),
+      duration: Duration.zero,
+    ),
+  );
 }

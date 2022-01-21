@@ -244,10 +244,15 @@ void main() {
               2: const [],
               3: const [], // No activity this day since remove after is true
               4: [
-                ActivityOccasion.forTest(initalMinActivity),
-                ActivityOccasion.forTest(
+                ActivityOccasion(
+                  initalMinActivity,
+                  initialMinutes.onlyDays(),
+                  Occasion.current,
+                ),
+                ActivityOccasion(
                   nextMinActivity,
-                  occasion: Occasion.future,
+                  initialMinutes.onlyDays(),
+                  Occasion.future,
                 ),
               ],
               5: const [],
@@ -271,11 +276,16 @@ void main() {
               2: const [],
               3: const [], // No activity this day since remove after is true
               4: [
-                ActivityOccasion.forTest(
+                ActivityOccasion(
                   initalMinActivity,
-                  occasion: Occasion.past,
+                  initialMinutes.onlyDays(),
+                  Occasion.past,
                 ),
-                ActivityOccasion.forTest(nextMinActivity),
+                ActivityOccasion(
+                  nextMinActivity,
+                  initialMinutes.onlyDays(),
+                  Occasion.current,
+                ),
               ],
               5: const [],
               6: const []

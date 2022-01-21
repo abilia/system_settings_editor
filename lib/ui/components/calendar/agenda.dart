@@ -5,11 +5,11 @@ import 'package:seagull/models/all.dart';
 class Agenda extends StatefulWidget {
   static final topPadding = 60.0.s, bottomPadding = 125.0.s;
 
-  final ActivitiesOccasionLoaded activityState;
+  final EventsLoaded eventState;
 
   const Agenda({
     Key? key,
-    required this.activityState,
+    required this.eventState,
   }) : super(key: key);
 
   @override
@@ -24,14 +24,17 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 
   @override
   void initState() {
-    if (widget.activityState.isToday) {
-      if (widget.activityState.pastActivities.isNotEmpty) {
+    if (widget.eventState.isToday) {
+      if (widget.eventState
+          .pastEvents(context.read<ClockBloc>().state)
+          .isNotEmpty) {
         scrollController = ScrollController(
           initialScrollOffset: -Agenda.topPadding,
           keepScrollOffset: false,
         );
       }
     }
+
     _addScrollViewRenderCompleteCallback();
     super.initState();
   }
@@ -51,7 +54,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final state = widget.activityState;
+    final state = widget.eventState;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
@@ -99,7 +102,7 @@ class ActivityList extends StatelessWidget {
     required this.topPadding,
   }) : super(key: key);
 
-  final ActivitiesOccasionLoaded state;
+  final EventsLoaded state;
 
   final ScrollController? scrollController;
 
@@ -112,50 +115,55 @@ class ActivityList extends StatelessWidget {
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
       controller: sc,
-      child: CustomScrollView(
-        center: state.isToday ? center : null,
-        controller: sc,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          if (state.activities.isEmpty && state.fullDayActivities.isEmpty)
-            SliverNoActivities(key: center)
-          else ...[
-            if (!state.isTodayAndNoPast)
-              SliverPadding(
-                padding: EdgeInsets.only(top: topPadding),
-                sliver: SliverActivityList(
-                  state.pastActivities,
-                  reversed: state.isToday,
-                  lastMargin: _lastPastPadding(
-                    state.pastActivities,
-                    state.notPastActivities,
+      child: BlocBuilder<ClockBloc, DateTime>(
+        builder: (context, now) {
+          final pastEvents = state.pastEvents(now);
+          final notPastEvents = state.notPastEvents(now);
+          final isTodayAndNoPast = state.isToday && pastEvents.isEmpty;
+          return CustomScrollView(
+            center: state.isToday ? center : null,
+            controller: sc,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              if (state.events.isEmpty && state.fullDayActivities.isEmpty)
+                SliverNoActivities(key: center)
+              else ...[
+                if (!isTodayAndNoPast)
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: topPadding),
+                    sliver: SliverActivityList(
+                      state.pastEvents(now),
+                      reversed: state.isToday,
+                      lastMargin: _lastPastPadding(
+                        pastEvents,
+                        notPastEvents,
+                      ),
+                    ),
                   ),
+                SliverPadding(
+                  key: center,
+                  padding: EdgeInsets.only(
+                    top: isTodayAndNoPast ? topPadding : 0.0,
+                    bottom: bottomPadding,
+                  ),
+                  sliver: SliverActivityList(notPastEvents),
                 ),
-              ),
-            SliverPadding(
-              key: center,
-              padding: EdgeInsets.only(
-                top: state.isTodayAndNoPast ? topPadding : 0.0,
-                bottom: bottomPadding,
-              ),
-              sliver: SliverActivityList(
-                state.notPastActivities,
-              ),
-            ),
-          ],
-        ],
+              ],
+            ],
+          );
+        },
       ),
     );
   }
 
   double _lastPastPadding(
-    List<ActivityOccasion> notPastActivities,
-    List<ActivityOccasion> pastActivities,
+    List<EventDay> notPastActivities,
+    List<EventDay> pastActivities,
   ) =>
       pastActivities.isEmpty || notPastActivities.isEmpty
           ? 0.0
-          : pastActivities.first.activity.category ==
-                  notPastActivities.first.activity.category
+          : pastActivities.first.event.category ==
+                  notPastActivities.first.event.category
               ? layout.activityCard.marginSmall
               : layout.activityCard.marginLarge;
 }
@@ -183,18 +191,19 @@ class SliverNoActivities extends StatelessWidget {
 }
 
 class SliverActivityList extends StatelessWidget {
-  final List<ActivityOccasion> activities;
+  final List<EventOccasion> events;
+
   // Reversed because slivers before center are called in reverse order
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
 
   const SliverActivityList(
-    this.activities, {
+    this.events, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key? key,
-  })  : _maxIndex = activities.length - 1,
+  })  : _maxIndex = events.length - 1,
         super(key: key);
 
   @override
@@ -210,16 +219,26 @@ class SliverActivityList extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 if (reversed) index = _maxIndex - index;
-                return ActivityCard(
-                  activityOccasion: activities[index],
-                  bottomPadding: setting.showCategories
-                      ? _padding(index)
-                      : layout.activityCard.marginSmall,
-                  showCategories: setting.showCategories,
-                  showCategoryColor: setting.showCategoryColor,
-                );
+                final eventDay = events[index];
+                final padding = setting.showCategories
+                    ? _padding(index)
+                    : EdgeInsets.only(bottom: layout.activityCard.marginSmall);
+                if (eventDay is ActivityOccasion) {
+                  return Padding(
+                    padding: padding,
+                    child: ActivityCard(
+                      activityOccasion: eventDay,
+                      showCategoryColor: setting.showCategoryColor,
+                    ),
+                  );
+                } else if (eventDay is TimerOccasion) {
+                  return Padding(
+                    padding: padding,
+                    child: TimerCard(timerOccasion: eventDay),
+                  );
+                }
               },
-              childCount: activities.length,
+              childCount: events.length,
             ),
           );
         },
@@ -227,10 +246,20 @@ class SliverActivityList extends StatelessWidget {
     );
   }
 
-  double _padding(int index) => index >= _maxIndex
-      ? lastMargin
-      : activities[index].activity.category ==
-              activities[index + 1].activity.category
-          ? layout.activityCard.marginSmall
-          : layout.activityCard.marginLarge;
+  EdgeInsets _padding(int index) {
+    final category = events[index].event.category;
+    return EdgeInsets.only(
+      left: category != Category.right
+          ? 0
+          : layout.activityCard.categorySideOffset,
+      right: category == Category.right
+          ? 0
+          : layout.activityCard.categorySideOffset,
+      bottom: index >= _maxIndex
+          ? lastMargin
+          : category == events[index + 1].event.category
+              ? layout.activityCard.marginSmall
+              : layout.activityCard.marginLarge,
+    );
+  }
 }

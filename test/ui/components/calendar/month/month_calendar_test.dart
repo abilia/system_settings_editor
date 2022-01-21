@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -48,12 +47,10 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          stream: StreamController<DateTime>().stream, initialTime: initialDay)
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
-      ..ticker = Ticker(stream: const Stream.empty(), initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialDay)
       ..battery = FakeBattery()
       ..init();
   });
@@ -290,11 +287,14 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      final activityCardList =
-          tester.widgetList<ActivityCard>(find.byType(ActivityCard));
+      final cardPaddingList = tester.widgetList<Padding>(find.ancestor(
+          of: find.byType(ActivityCard), matching: find.byType(Padding)));
+
       expect(
-          activityCardList.any((activityCard) => activityCard.showCategories),
-          isFalse);
+          cardPaddingList.any((padding) =>
+              padding.padding.collapsedSize.width <
+              layout.activityCard.categorySideOffset),
+          isTrue);
     });
 
     final monthPreviewSetting = Generic.createNew<MemoplannerSettingData>(

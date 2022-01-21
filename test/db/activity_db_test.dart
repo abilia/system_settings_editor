@@ -18,7 +18,7 @@ void main() {
     final all = await activityDb.getAll();
     expect(all.length, 0);
 
-    final a = Activity.createNew(title: 'Hey', startTime: DateTime.now());
+    final a = Activity.createNew(title: 'Hey', startTime: DateTime(100));
     await activityDb.insert([a.wrapWithDbModel()]);
 
     final all2 = await activityDb.getAll();

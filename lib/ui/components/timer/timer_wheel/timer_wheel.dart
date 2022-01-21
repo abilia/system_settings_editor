@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:seagull/ui/components/timer_wheel/timer_wheel_config.dart';
-import 'package:seagull/ui/components/timer_wheel/timer_wheel_painters.dart';
-import 'package:seagull/ui/components/timer_wheel/timer_wheel_styles.dart';
+import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart';
+import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_painters.dart';
+import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart';
 
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({

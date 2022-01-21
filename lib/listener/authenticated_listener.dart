@@ -50,7 +50,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       await GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
-        ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
+        ..read<ClockBloc>().setTime(DateTime.now())
         ..read<PushBloc>().add(const PushEvent('app-resumed'))
         ..read<PermissionBloc>().checkAll();
       if (Config.isMP) {

@@ -112,7 +112,7 @@ void main() {
     final alarm = StartAlarm(a, day);
     final activtyDayAlarm = StartAlarm.from(ActivityDay(a, day));
     final activityOccasionoAlarm = StartAlarm.from(
-      ActivityOccasion.forTest(a, day: day),
+      ActivityOccasion(a, day, Occasion.current),
     );
 
     expect(alarm, activtyDayAlarm);

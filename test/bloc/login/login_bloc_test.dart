@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -9,6 +7,7 @@ import 'package:seagull/models/all.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
+  final time = DateTime(2033, 12, 11, 11);
   group('LoginBloc event order', () {
     late LoginBloc loginBloc;
     late AuthenticationBloc authenticationBloc;
@@ -30,7 +29,7 @@ void main() {
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc(StreamController<DateTime>().stream),
+        clockBloc: ClockBloc.fixed(time),
       );
     });
 
@@ -63,7 +62,7 @@ void main() {
       when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           License(
-            endTime: DateTime.now().add(const Duration(hours: 24)),
+            endTime: time.add(const Duration(hours: 24)),
             id: 1,
             product: memoplannerLicenseName,
           ),
@@ -173,7 +172,7 @@ void main() {
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc(StreamController<DateTime>().stream),
+        clockBloc: ClockBloc.fixed(time),
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
@@ -182,7 +181,7 @@ void main() {
       when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
-                    endTime: DateTime.now().add(const Duration(hours: 24)),
+                    endTime: time.add(const Duration(hours: 24)),
                     id: 1,
                     product: memoplannerLicenseName)
               ]));

@@ -257,8 +257,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
               !activityDay.isSignedOff) {
             final checked = await checkConfirmation(
               context,
-              ActivityDay(updatedActivity, activityDay.day)
-                  .toOccasion(DateTime.now()),
+              ActivityDay(updatedActivity, activityDay.day),
               message: translate.checklistDoneInfo,
             );
             final a = alarm;

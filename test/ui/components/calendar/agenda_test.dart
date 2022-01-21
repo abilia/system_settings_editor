@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -55,8 +53,7 @@ void main() {
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
-      ..ticker =
-          Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
+      ..ticker = Ticker.fake(initialTime: now)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client()
       ..fileStorage = FakeFileStorage()
@@ -346,6 +343,62 @@ void main() {
     final leftRight = tester.getTopRight(leftFinder);
     final rightRight = tester.getTopRight(rightFinder);
     expect(rightRight.dx, greaterThan(leftRight.dx));
+  });
+
+  group('category offset', () {
+    testWidgets('category right has category offset',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'right title',
+              startTime: now,
+              category: Category.right,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final padding = tester
+          .widget<Padding>(
+            find.ancestor(
+              of: find.byType(ActivityCard),
+              matching: find.byType(Padding),
+            ),
+          )
+          .padding
+          .resolve(TextDirection.ltr);
+      expect(
+        padding.left,
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+      );
+    });
+
+    testWidgets('category left has category offset',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'left title',
+              startTime: now,
+              category: Category.left,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+
+      final padding = tester
+          .widget<Padding>(
+            find.ancestor(
+              of: find.byType(ActivityCard),
+              matching: find.byType(Padding),
+            ),
+          )
+          .padding
+          .resolve(TextDirection.ltr);
+      expect(
+        padding.right,
+        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+      );
+    });
   });
 
   testWidgets('CrossOver for past activities', (WidgetTester tester) async {

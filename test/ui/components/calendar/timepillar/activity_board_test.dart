@@ -67,11 +67,11 @@ void main() {
     final mocktimepillarCubit = MocktimepillarCubit();
     final ts = TimepillarState(interval, 1);
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
+        TimepillarInterval(start: startTime, end: startTime), 1));
     when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
         Stream.fromIterable([
           TimepillarState(
-              TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
+              TimepillarInterval(start: startTime, end: startTime), 1)
         ]));
     return MaterialApp(
       home: Directionality(
@@ -79,9 +79,7 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: initialTime ?? startTime),
+              create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
             BlocProvider<SettingsBloc>(
               create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
@@ -129,11 +127,13 @@ void main() {
   testWidgets('shows title', (WidgetTester tester) async {
     await tester.pumpWidget(
       wrap(
-        ActivityOccasion.forTest(
+        ActivityOccasion(
           Activity.createNew(
             title: title,
             startTime: startTime,
           ),
+          startTime.onlyDays(),
+          Occasion.current,
         ),
       ),
     );
@@ -148,11 +148,13 @@ void main() {
         'DDDDDDDDDD';
     await tester.pumpWidget(
       wrap(
-        ActivityOccasion.forTest(
+        ActivityOccasion(
           Activity.createNew(
             title: title,
             startTime: startTime,
           ),
+          startTime.onlyDays(),
+          Occasion.current,
         ),
       ),
     );
@@ -166,12 +168,14 @@ void main() {
     final dateFormat = hourAndMinuteFromUse24(false, 'en');
     await tester.pumpWidget(
       wrap(
-        ActivityOccasion.forTest(
+        ActivityOccasion(
           Activity.createNew(
             title: title,
             startTime: startTime,
             duration: duration,
           ),
+          startTime.onlyDays(),
+          Occasion.current,
         ),
       ),
     );
@@ -189,11 +193,13 @@ void main() {
         time.add(7.minutes()),
       ]
           .map(
-            (st) => ActivityOccasion.forTest(
+            (st) => ActivityOccasion(
               Activity.createNew(
                 title: st.toString(),
                 startTime: st,
               ),
+              st.onlyDays(),
+              Occasion.current,
             ),
           )
           .toList();
@@ -220,11 +226,13 @@ void main() {
         time.add(8.minutes()),
       ]
           .map(
-            (st) => ActivityOccasion.forTest(
+            (st) => ActivityOccasion(
               Activity.createNew(
                 title: st.toString(),
                 startTime: st,
               ),
+              st.onlyDays(),
+              Occasion.current,
             ),
           )
           .toList();
@@ -240,7 +248,7 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       for (final y in activityYPos) {
         final activityDotMidPos = y + ts.dotSize / 2;
         expect(
@@ -251,17 +259,21 @@ void main() {
         'two activities with sufficient time distance has same horizonal position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
-      final activityA = ActivityOccasion.forTest(
+      final activityA = ActivityOccasion(
         Activity.createNew(
           title: 'a',
           startTime: time,
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
-      final activityB = ActivityOccasion.forTest(
+      final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
           startTime: time.add(2.hours()),
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
 
       await tester
@@ -279,17 +291,21 @@ void main() {
         'two activities to small time distance does not has same horizontal position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
-      final activityA = ActivityOccasion.forTest(
+      final activityA = ActivityOccasion(
         Activity.createNew(
           title: 'a',
           startTime: time,
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
-      final activityB = ActivityOccasion.forTest(
+      final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
           startTime: time.add(1.hours()),
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
 
       await tester
@@ -301,7 +317,7 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
@@ -309,18 +325,22 @@ void main() {
         'two activities to sufficient time distance but the first with a long title does not has same vertical position',
         (WidgetTester tester) async {
       final time = DateTime(2020, 04, 21, 07, 30);
-      final activityA = ActivityOccasion.forTest(
+      final activityA = ActivityOccasion(
         Activity.createNew(
           title:
               'aaAAaaaAaaaAaaAAAAAAAAAAAaaaaaaaaaaaaaaaaaaAaAaaaAAAaaaAaaAAAaAaaaAaAAAAaAaAaaAaaaaaaaaa',
           startTime: time,
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
-      final activityB = ActivityOccasion.forTest(
+      final activityB = ActivityOccasion(
         Activity.createNew(
           title: 'b',
           startTime: time.add(2.hours()),
         ),
+        time.onlyDays(),
+        Occasion.current,
       );
 
       await tester
@@ -333,7 +353,7 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
@@ -342,12 +362,14 @@ void main() {
         (WidgetTester tester) async {
       final activities = List.generate(
         10,
-        (i) => ActivityOccasion.forTest(
+        (i) => ActivityOccasion(
           Activity.createNew(
             title: 'activity $i',
             startTime: startTime,
             duration: ((i * 10) % 60).minutes(),
           ),
+          startTime.onlyDays(),
+          Occasion.current,
         ),
       );
 
@@ -368,11 +390,13 @@ void main() {
       );
       final activities = List.generate(
         12 * 60,
-        (i) => ActivityOccasion.forTest(
+        (i) => ActivityOccasion(
           Activity.createNew(
             title: 'activity $i',
             startTime: time.add(i.minutes()),
           ),
+          startTime.onlyDays(),
+          Occasion.current,
         ),
       );
       final boardData = ActivityBoard.positionTimepillarCards(
@@ -395,11 +419,13 @@ void main() {
     testWidgets('only start does not show dots', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -408,12 +434,14 @@ void main() {
     testWidgets('7 minutes does not show dots', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
               duration: 7.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -422,12 +450,14 @@ void main() {
     testWidgets('8 minutes shows one dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
               duration: 8.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -436,12 +466,14 @@ void main() {
     testWidgets('22 minutes shows one dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
               duration: 22.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -450,12 +482,14 @@ void main() {
     testWidgets('23 minutes shows two dot', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
               duration: 23.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -465,12 +499,14 @@ void main() {
       final start = DateTime(1987, 05, 22, 12, 04);
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: start.subtract(30.minutes()),
               duration: 60.minutes(),
             ),
+            start.onlyDays(),
+            Occasion.current,
           ),
           initialTime: start,
         ),
@@ -496,12 +532,14 @@ void main() {
     testWidgets('All different dots (night)', (WidgetTester tester) async {
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime.subtract(30.minutes()),
               duration: 60.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );
@@ -532,12 +570,14 @@ void main() {
 
       await tester.pumpWidget(
         wrap(
-          ActivityOccasion.forTest(
+          ActivityOccasion(
             Activity.createNew(
               title: title,
               startTime: startTime,
               duration: 60.minutes(),
             ),
+            startTime.onlyDays(),
+            Occasion.current,
           ),
         ),
       );

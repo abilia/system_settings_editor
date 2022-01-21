@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -128,10 +126,7 @@ class _CategoriesPreview extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8.s),
         decoration: boxDecoration,
         child: BlocProvider(
-          create: (context) => ClockBloc(
-            StreamController<DateTime>().stream,
-            initialTime: DateTime(2021, 1, 1, 8, 30),
-          ),
+          create: (context) => ClockBloc.fixed(DateTime(2021, 1, 1, 8, 30)),
           child: BlocBuilder<TimepillarCubit, TimepillarState>(
             builder: (context, ts) => LayoutBuilder(
               builder: (context, boxConstraints) {
