@@ -5,15 +5,16 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final pastDotShape =
-        ShapeDecoration(shape: CircleBorder(side: BorderSide(width: 1.0.s))),
+final pastSideDotShape = ShapeDecoration(
+  shape: CircleBorder(side: BorderSide(color: AbiliaColors.black, width: 1.s)),
+);
+const pastDotShape = ShapeDecoration(
+      shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)),
+    ),
     pastNightDotShape = ShapeDecoration(
-        shape: CircleBorder(
-            side: BorderSide(color: AbiliaColors.blue, width: 1.0.s))),
-    pastSideDotShape = ShapeDecoration(
-        shape: CircleBorder(
-            side: BorderSide(color: AbiliaColors.black, width: 1.0.s)));
-const futureDotShape =
+      shape: CircleBorder(side: BorderSide(color: AbiliaColors.blue)),
+    ),
+    futureDotShape =
         ShapeDecoration(color: AbiliaColors.black, shape: CircleBorder()),
     transparantDotShape =
         ShapeDecoration(color: Colors.transparent, shape: CircleBorder()),
@@ -32,8 +33,8 @@ class PastDots extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) => isNight
-      ? Dots(decoration: pastNightDotShape)
-      : Dots(decoration: pastDotShape);
+      ? const Dots(decoration: pastNightDotShape)
+      : const Dots(decoration: pastDotShape);
 }
 
 class CurrentDots extends StatelessWidget {
@@ -66,13 +67,13 @@ class CurrentDots extends StatelessWidget {
                 return const AnimatedDot(decoration: currentDotShape);
               }
               return const AnimatedDot(decoration: futureDotShape);
-            } else if (now.isBefore(dotTime.add(minutesPerDot.minutes()))) {
+            } else if (now.isBefore(dotTime.add(minutesPerDotDuration))) {
               return const AnimatedDot(decoration: currentDotShape);
             }
             if (isNight) {
-              return AnimatedDot(decoration: pastNightDotShape);
+              return const AnimatedDot(decoration: pastNightDotShape);
             }
-            return AnimatedDot(decoration: pastDotShape);
+            return const AnimatedDot(decoration: pastDotShape);
           },
         ),
       ),
@@ -176,7 +177,7 @@ class SideDots extends StatelessWidget {
                 return const AnimatedDot(decoration: currentDotShape);
               }
               if (dotStartTime.isNight(dayParts)) {
-                return AnimatedDot(decoration: pastNightDotShape);
+                return const AnimatedDot(decoration: pastNightDotShape);
               }
               return AnimatedDot(decoration: pastSideDotShape);
             },

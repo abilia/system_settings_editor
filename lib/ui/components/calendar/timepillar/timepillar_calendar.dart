@@ -75,8 +75,8 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? bottomMargin,
     bool? showCategoryLabels,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        topMargin = topMargin ?? layout.timePillar.calendar.topMargin,
-        bottomMargin = bottomMargin ?? layout.timePillar.calendar.bottomMargin,
+        topMargin = topMargin ?? layout.timePillar.topMargin,
+        bottomMargin = bottomMargin ?? layout.timePillar.bottomMargin,
         super(key: key);
 
   @override
@@ -179,7 +179,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             (ts.timePillarTotalWidth / 2) / maxWidth;
         final horizontalAnchor =
             widget.showCategories ? 0.5 - timePillarPercentOfTotalScreen : 0.0;
-        final tsHeight = timePillarHeight(ts) + topMargin + bottomMargin;
+        final tsHeight = ts.timePillarHeight + topMargin + bottomMargin;
         final calendarHeight =
             max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
         final height = max(calendarHeight, boxConstraints.maxHeight);

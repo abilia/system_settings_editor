@@ -4,11 +4,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-double timePillarHeight(TimepillarState ts) =>
-    (ts.timepillarInterval.lengthInHours +
-        1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
-    ts.hourHeight;
-
 class TimePillar extends StatelessWidget {
   final TimepillarInterval interval;
   final Occasion dayOccasion;
@@ -45,21 +40,6 @@ class TimePillar extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: <Widget>[
-        ...nightParts.map(
-          (p) {
-            return Positioned(
-              top: p.start,
-              child: SizedBox(
-                width: timePillarState.timePillarTotalWidth,
-                height: p.length,
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(
-                      color: TimepillarCalendar.nightBackgroundColor),
-                ),
-              ),
-            );
-          },
-        ),
         Padding(
           padding: EdgeInsets.fromLTRB(
             timePillarState.timePillarPadding,
@@ -140,18 +120,15 @@ class Hour extends StatelessWidget {
     final ts = timepillarState;
 
     return DefaultTextStyle(
-      style: layout.timePillar.textStyle.copyWith(
-        color: isNight ? AbiliaColors.white : AbiliaColors.black,
-        fontSize: layout.timePillar.textStyle.fontSize * ts.zoom,
-      ),
+      style: layout.timePillar.textStyle(isNight, ts.zoom),
       child: Container(
         height: ts.hourHeight,
         padding: EdgeInsets.symmetric(vertical: ts.hourPadding),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: isNight ? AbiliaColors.white140 : AbiliaColors.black,
-              width: ts.hourPadding,
+              color: isNight ? AbiliaColors.white140 : AbiliaColors.white140,
+              width: ts.hourLineWidth,
             ),
           ),
         ),

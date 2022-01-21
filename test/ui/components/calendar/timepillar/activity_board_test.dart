@@ -98,7 +98,7 @@ void main() {
               Timeline(
                 now: initialTime ?? startTime,
                 width: 40,
-                offset: -layout.timePillar.calendar.topMargin,
+                offset: -layout.timePillar.topMargin,
                 timepillarState: ts,
               ),
               ActivityBoard(
@@ -110,8 +110,8 @@ void main() {
                       .dayParts,
                   TimepillarSide.right,
                   ts,
-                  layout.timePillar.calendar.topMargin,
-                  layout.timePillar.calendar.bottomMargin,
+                  layout.timePillar.topMargin,
+                  layout.timePillar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: ts.totalWidth,
@@ -235,7 +235,7 @@ void main() {
       final timelineYPostion =
           tester.getTopLeft(find.byType(Timeline).first).dy;
       final timelineMidPos =
-          timelineYPostion + (layout.timePillar.calendar.timeLineHeight / 2);
+          timelineYPostion + (layout.timePillar.timeLineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
@@ -382,8 +382,8 @@ void main() {
         DayParts.standard(),
         TimepillarSide.right,
         TimepillarState(interval, 1),
-        layout.timePillar.calendar.topMargin,
-        layout.timePillar.calendar.bottomMargin,
+        layout.timePillar.topMargin,
+        layout.timePillar.bottomMargin,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

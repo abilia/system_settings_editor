@@ -224,54 +224,66 @@ class ActivityCardLayout {
 }
 
 class TimepillarLayout {
-  final TextStyle style;
+  final double fontSize,
+      width,
+      padding,
+      hourPadding,
+      hourLineWidth,
+      topMargin,
+      bottomMargin,
+      timeLineHeight;
+
   final TimepillarDotLayout dot;
   final TimepillarCardLayout card;
-  final TimepillarCalendarLayout calendar;
+  final TwoTimepillarLayout twoTimePillar;
 
   const TimepillarLayout({
-    this.style = const TextStyle(
-        color: AbiliaColors.black, fontWeight: FontWeight.w500, fontSize: 20),
+    this.fontSize = 20,
+    this.width = 42,
+    this.padding = 10,
+    this.hourPadding = 1,
+    this.hourLineWidth = 1,
+    this.topMargin = 96,
+    this.bottomMargin = 64,
+    this.timeLineHeight = 2,
     this.dot = const TimepillarDotLayout(),
     this.card = const TimepillarCardLayout(),
-    this.calendar = const TimepillarCalendarLayout(),
+    this.twoTimePillar = const TwoTimepillarLayout(),
   });
 
-  get textStyle => GoogleFonts.roboto(textStyle: style);
+  TextStyle textStyle(bool isNight, double zoom) => GoogleFonts.roboto(
+        fontSize: fontSize * zoom,
+        color: isNight ? AbiliaColors.white : AbiliaColors.black,
+        fontWeight: FontWeight.w500,
+      );
 }
 
 class TimepillarDotLayout {
   final double size, padding, distance;
 
-  const TimepillarDotLayout(
-      {this.size = 10, this.padding = 3, this.distance = 13});
+  const TimepillarDotLayout({
+    this.size = 10,
+    this.padding = 3,
+  }) : distance = size + padding;
 }
 
 class TimepillarCardLayout {
-  final double width, minHeight, padding, imageHeightMin;
+  final double padding, width, minHeight, margin, imageHeightMin;
 
-  const TimepillarCardLayout(
-      {this.width = 72,
-      this.minHeight = 84,
-      this.padding = 4,
-      this.imageHeightMin = 56});
+  const TimepillarCardLayout({
+    this.width = 72,
+    this.minHeight = 84,
+    this.margin = 4,
+    this.padding = 12,
+    this.imageHeightMin = 56,
+  });
 }
 
-class TimepillarCalendarLayout {
-  final double padding,
-      hourPadding,
-      timePillarPadding,
-      defaultTimePillarWidth,
-      topMargin,
-      bottomMargin,
-      timeLineHeight;
+class TwoTimepillarLayout {
+  final double verticalMargin, radius;
 
-  const TimepillarCalendarLayout(
-      {this.hourPadding = 1,
-      this.timePillarPadding = 4,
-      this.defaultTimePillarWidth = 42,
-      this.padding = 12,
-      this.topMargin = 96,
-      this.bottomMargin = 64,
-      this.timeLineHeight = 2});
+  const TwoTimepillarLayout({
+    this.verticalMargin = 24,
+    this.radius = 9,
+  });
 }
