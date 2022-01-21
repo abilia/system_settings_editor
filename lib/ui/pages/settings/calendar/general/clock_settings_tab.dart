@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -113,15 +111,8 @@ class PreviewTimePillar extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => TimepillarCubit.fixed(state: ts),
-        ),
-        BlocProvider(
-          create: (context) => ClockBloc(
-            StreamController<DateTime>().stream,
-            initialTime: _time,
-          ),
-        ),
+        BlocProvider(create: (context) => TimepillarCubit.fixed(state: ts)),
+        BlocProvider(create: (context) => ClockBloc.fixed(_time)),
       ],
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),

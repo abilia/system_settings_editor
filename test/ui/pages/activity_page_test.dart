@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -72,8 +71,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          initialTime: startTime, stream: StreamController<DateTime>().stream)
+      ..ticker = Ticker.fake(initialTime: startTime)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: () => [],

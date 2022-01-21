@@ -41,7 +41,7 @@ class GetItInitializer {
   LicenseDb? _licenseDb;
   set licenseDb(LicenseDb licenseDb) => _licenseDb = licenseDb;
 
-  late Ticker _ticker = Ticker();
+  late Ticker _ticker = Ticker(initialTime: DateTime.now());
   set ticker(Ticker ticker) => _ticker = ticker;
 
   BaseUrlDb? _baseUrlDb;

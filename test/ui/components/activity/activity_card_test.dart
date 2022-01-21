@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -47,9 +45,7 @@ void main() {
                     ),
                   ),
                   BlocProvider<ClockBloc>(
-                    create: (context) => ClockBloc(
-                        StreamController<DateTime>().stream,
-                        initialTime: startTime),
+                    create: (context) => ClockBloc.fixed(startTime),
                   ),
                   BlocProvider<SettingsBloc>(
                     create: (context) => SettingsBloc(

@@ -15,16 +15,15 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  final startTime = DateTime(2021, 12, 22, 08, 10);
   final defaultTimer = AbiliaTimer(
       id: 'fake-id',
       title: 'test timer',
       duration: const Duration(minutes: 5),
-      startTime: DateTime.now());
+      startTime: startTime);
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
-
-  final startTime = DateTime(2021, 12, 22, 08, 10);
 
   setUpAll(() {
     registerFallbackValues();
@@ -55,8 +54,7 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: startTime),
+            create: (context) => ClockBloc.fixed(startTime),
           ),
           BlocProvider<TimerCubit>(
             create: (context) => TimerCubit(timerDb: mockTimerDb),

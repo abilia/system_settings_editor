@@ -42,7 +42,7 @@ void main() {
     mockSettingStream = StreamController<MemoplannerSettingsState>();
     when(() => mockMemoplannerSettingBloc.stream)
         .thenAnswer((realInvocation) => mockSettingStream.stream);
-    clockBloc = ClockBloc(const Stream.empty(), initialTime: initialMinutes);
+    clockBloc = ClockBloc.fixed(initialMinutes);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     nightEventsCubit = NightEventsCubit(
@@ -98,7 +98,7 @@ void main() {
 
     test('when time change to next day change state', () {
       final dayParts = mockMemoplannerSettingBloc.state.dayParts;
-      clockBloc.add(initialDay.add(dayParts.night));
+      clockBloc.setTime(initialDay.add(dayParts.night));
       expectLater(
         nightEventsCubit.stream,
         emits(
@@ -113,7 +113,7 @@ void main() {
     });
 
     test('when time changes from 00:00 to 00:01', () async {
-      clockBloc.add(initialDay.add(1.minutes()));
+      clockBloc.setTime(initialDay.add(1.minutes()));
       await expectLater(
         nightEventsCubit.stream,
         emits(
@@ -140,14 +140,14 @@ void main() {
     });
 
     group('dayParts', () {
-      test('change time interval changes occasion', () {
+      test('change time interval changes occasion', () async {
         final dayParts = mockMemoplannerSettingBloc.state.dayParts;
 
-        clockBloc.add(initialDay.add(dayParts.night));
+        await clockBloc.setTime(initialDay.add(dayParts.night));
         mockSettingStream.add(MemoplannerSettingsLoaded(
             MemoplannerSettings(nightIntervalStart: DayParts.nightLimit.max)));
 
-        expectLater(
+        await expectLater(
           nightEventsCubit.stream,
           emits(
             EventsLoaded(

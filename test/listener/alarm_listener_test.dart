@@ -64,7 +64,10 @@ void main() {
     getItInitializer
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(stream: mockTicker.stream, initialTime: initialTime)
+      ..ticker = Ticker.fake(
+        stream: mockTicker.stream,
+        initialTime: initialTime,
+      )
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(activityResponse: () => response)
       ..fileStorage = MockFileStorage()

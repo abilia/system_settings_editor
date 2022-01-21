@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,10 +14,12 @@ part 'timer_wizard_state.dart';
 class TimerWizardCubit extends Cubit<TimerWizardState> {
   final TimerCubit timerCubit;
   final Translated translate;
+  final Ticker ticker;
 
   TimerWizardCubit({
     required this.timerCubit,
     required this.translate,
+    required this.ticker,
     BasicTimerDataItem? basicTimer,
   }) : super(basicTimer == null
             ? TimerWizardState.initial()
@@ -29,7 +32,7 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
         title: state.name,
         fileId: state.image.id,
         duration: state.duration,
-        startTime: DateTime.now(),
+        startTime: ticker.time,
       );
       timerCubit.addTimer(timer);
       emit(SavedTimerWizardState(state, timer));

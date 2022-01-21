@@ -1,5 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -114,6 +116,7 @@ class CreateNewPage extends StatelessWidget {
             create: (context) => TimerWizardCubit(
               timerCubit: context.read<TimerCubit>(),
               translate: Translator.of(buildContext).translate,
+              ticker: GetIt.I<Ticker>(),
               basicTimer: basicTimer,
             ),
             child: const TimerWizardPage(),
