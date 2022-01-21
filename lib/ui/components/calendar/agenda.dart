@@ -58,7 +58,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
-            (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
+            (boxConstraints.maxWidth - layout.timePillar.width) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(

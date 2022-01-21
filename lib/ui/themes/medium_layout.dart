@@ -94,5 +94,27 @@ class _MediumLayout extends Layout {
             imageSize: 200,
             imagePadding: 16,
           ),
+          timePillar: const TimepillarLayout(
+            fontSize: 40,
+            width: 80,
+            padding: 8,
+            hourPadding: 1.5,
+            dot: TimepillarDotLayout(
+              size: 16,
+              padding: 4,
+            ),
+            card: TimepillarCardLayout(
+              width: 120,
+              minHeight: 140,
+              imageHeightMin: 96,
+              margin: 8,
+              padding: 17,
+            ),
+            twoTimePillar: TwoTimepillarLayout(
+              verticalMargin: 36,
+              nightMargin: 6,
+              radius: 18,
+            ),
+          ),
         );
 }

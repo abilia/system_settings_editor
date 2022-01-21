@@ -8,8 +8,6 @@ import 'package:seagull/utils/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
-  static final topMargin = 96.0.s;
-  static final bottomMargin = 64.0.s;
   static const nightBackgroundColor = AbiliaColors.black90;
   final EventsLoaded eventState;
   final DayCalendarType type;
@@ -77,8 +75,8 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? bottomMargin,
     bool? showCategoryLabels,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        topMargin = topMargin ?? TimepillarCalendar.topMargin,
-        bottomMargin = bottomMargin ?? TimepillarCalendar.bottomMargin,
+        topMargin = topMargin ?? layout.timePillar.topMargin,
+        bottomMargin = bottomMargin ?? layout.timePillar.bottomMargin,
         super(key: key);
 
   @override
@@ -185,7 +183,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
             final horizontalAnchor = widget.showCategories
                 ? 0.5 - timePillarPercentOfTotalScreen
                 : 0.0;
-            final tsHeight = timePillarHeight(ts) + topMargin + bottomMargin;
+            final tsHeight = ts.timePillarHeight + topMargin + bottomMargin;
             final calendarHeight =
                 max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
             final height = max(calendarHeight, boxConstraints.maxHeight);

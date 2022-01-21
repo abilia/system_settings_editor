@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -24,6 +25,7 @@ class Layout {
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
   final ActivityCardLayout activityCard;
+  final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
 
   const Layout({
@@ -37,6 +39,7 @@ class Layout {
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
     this.activityCard = const ActivityCardLayout(),
+    this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
   });
 
@@ -241,5 +244,71 @@ class TimerPageLayout {
     this.imageSize = 96,
     this.mainContentPadding = 32,
     this.imagePadding = 8,
+  });
+}
+
+class TimepillarLayout {
+  final double fontSize,
+      width,
+      padding,
+      hourPadding,
+      hourLineWidth,
+      topMargin,
+      bottomMargin,
+      timeLineHeight;
+
+  final TimepillarDotLayout dot;
+  final TimepillarCardLayout card;
+  final TwoTimepillarLayout twoTimePillar;
+
+  const TimepillarLayout({
+    this.fontSize = 20,
+    this.width = 42,
+    this.padding = 10,
+    this.hourPadding = 1,
+    this.hourLineWidth = 1,
+    this.topMargin = 96,
+    this.bottomMargin = 64,
+    this.timeLineHeight = 2,
+    this.dot = const TimepillarDotLayout(),
+    this.card = const TimepillarCardLayout(),
+    this.twoTimePillar = const TwoTimepillarLayout(),
+  });
+
+  TextStyle textStyle(bool isNight, double zoom) => GoogleFonts.roboto(
+        fontSize: fontSize * zoom,
+        color: isNight ? AbiliaColors.white : AbiliaColors.black,
+        fontWeight: FontWeight.w500,
+      );
+}
+
+class TimepillarDotLayout {
+  final double size, padding, distance;
+
+  const TimepillarDotLayout({
+    this.size = 10,
+    this.padding = 3,
+  }) : distance = size + padding;
+}
+
+class TimepillarCardLayout {
+  final double padding, width, minHeight, margin, imageHeightMin;
+
+  const TimepillarCardLayout({
+    this.width = 72,
+    this.minHeight = 84,
+    this.margin = 4,
+    this.padding = 12,
+    this.imageHeightMin = 56,
+  });
+}
+
+class TwoTimepillarLayout {
+  final double verticalMargin, nightMargin, radius;
+
+  const TwoTimepillarLayout({
+    this.verticalMargin = 24,
+    this.radius = 9,
+    this.nightMargin = 4,
   });
 }
