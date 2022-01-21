@@ -19,8 +19,6 @@ class TwoTimepillarCalendar extends StatelessWidget {
 
   final DayParts dayParts;
 
-  final verticalMargin = 24.0;
-
   @override
   Widget build(BuildContext context) {
     final day = activityState.day;
@@ -36,18 +34,17 @@ class TwoTimepillarCalendar extends StatelessWidget {
     final maxInterval = dayInterval.lengthInHours > nightInterval.lengthInHours
         ? dayInterval
         : nightInterval;
-    final tpHeight = timePillarHeight(TimepillarState(maxInterval, 1.0)) +
-        verticalMargin * 2;
+    final tpHeight = TimepillarState(maxInterval, 1.0).timePillarHeight +
+        layout.timePillar.twoTimePillar.verticalMargin * 2;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final zoom = boxConstraints.maxHeight / tpHeight;
         final nightTimepillarState = TimepillarState(nightInterval, zoom);
         final dayTimepillarState = TimepillarState(dayInterval, zoom);
-        final categoryLabelWidth = (boxConstraints.maxWidth -
-                layout.timePillar.calendar.defaultTimePillarWidth.s) /
-            2;
-        final nightTimepillarHeight =
-            timePillarHeight(nightTimepillarState) + verticalMargin * 2;
+        final categoryLabelWidth =
+            (boxConstraints.maxWidth - layout.timePillar.width) / 2;
+        final nightTimepillarHeight = nightTimepillarState.timePillarHeight +
+            layout.timePillar.twoTimePillar.verticalMargin * 2;
         return Stack(
           children: [
             Row(
@@ -66,8 +63,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       showCategoryLabels: false,
                       scrollToTimeOffset: false,
                       displayHourLines: displayHourLines,
-                      topMargin: verticalMargin,
-                      bottomMargin: verticalMargin,
+                      topMargin: layout.timePillar.twoTimePillar.verticalMargin,
+                      bottomMargin:
+                          layout.timePillar.twoTimePillar.verticalMargin,
                     ),
                   ),
                 ),
@@ -93,8 +91,12 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       height: nightTimepillarHeight,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(9)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            layout.timePillar.twoTimePillar.radius,
+                          ),
+                        ),
                       ),
                       child: BlocBuilder<NightActivitiesCubit,
                           ActivitiesOccasionLoaded>(
@@ -107,8 +109,10 @@ class TwoTimepillarCalendar extends StatelessWidget {
                           showCategoryLabels: false,
                           scrollToTimeOffset: false,
                           displayHourLines: displayHourLines,
-                          topMargin: verticalMargin,
-                          bottomMargin: verticalMargin,
+                          topMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
+                          bottomMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
                         ),
                       ),
                     ),

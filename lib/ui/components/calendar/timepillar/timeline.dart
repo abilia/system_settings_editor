@@ -25,10 +25,10 @@ class Timeline extends StatelessWidget {
             ) -
             offset +
             timepillarState.topPadding -
-            layout.timePillar.calendar.timeLineHeight / 2,
+            layout.timePillar.timeLineHeight / 2,
         child: Container(
           width: width,
-          height: layout.timePillar.calendar.timeLineHeight,
+          height: layout.timePillar.timeLineHeight,
           decoration: const BoxDecoration(color: AbiliaColors.red),
         ),
       );

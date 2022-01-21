@@ -8,37 +8,37 @@ class TimepillarState extends Equatable {
   TimepillarState(this.timepillarInterval, this.zoom);
 
   // ActivityTimepillarCard
-  double get minImageHeight => timePillarLayout.card.imageHeightMin * zoom;
-  double get cardPadding => timePillarLayout.card.padding * zoom;
-  double get width => timePillarLayout.card.width * zoom;
-  double get padding => timePillarLayout.calendar.padding * zoom;
-  double get minHeight => timePillarLayout.card.minHeight * zoom;
-  double get totalWidth =>
-      (timePillarLayout.dot.size +
+  late final double minImageHeight =
+      timePillarLayout.card.imageHeightMin * zoom;
+  late final double cardPadding = timePillarLayout.card.margin * zoom;
+  late final double width = timePillarLayout.card.width * zoom;
+  late final double padding = timePillarLayout.card.padding * zoom;
+  late final double minHeight = timePillarLayout.card.minHeight * zoom;
+  late final double totalWidth = (timePillarLayout.dot.size +
           timePillarLayout.card.width +
-          timePillarLayout.calendar.padding) *
+          timePillarLayout.card.padding) *
       zoom;
-  double get textWidth => width - cardPadding * 2;
+  late final double textWidth = width - cardPadding * 2;
 
   // Dots
-  double get dotSize => timePillarLayout.dot.size * zoom;
-  double get dotDistance =>
-      (timePillarLayout.dot.size + timePillarLayout.dot.padding) * zoom;
-  double get hourHeight => timePillarLayout.dot.distance * dotsPerHour * zoom;
-  double get hourPadding => timePillarLayout.calendar.hourPadding * zoom;
-  double get dotPadding => timePillarLayout.dot.padding * zoom;
+  late final double dotSize = timePillarLayout.dot.size * zoom;
+  late final double dotDistance = timePillarLayout.dot.distance * zoom;
+  late final double hourHeight =
+      timePillarLayout.dot.distance * dotsPerHour * zoom;
+  late final double hourPadding = timePillarLayout.hourPadding * zoom;
+  late final double dotPadding = timePillarLayout.dot.padding * zoom;
 
   // Timepillar
-  double get timePillarPadding =>
-      timePillarLayout.calendar.timePillarPadding * zoom;
-  double get timePillarWidth =>
-      timePillarLayout.calendar.defaultTimePillarWidth * zoom;
-  double get timePillarTotalWidth =>
-      (timePillarLayout.calendar.defaultTimePillarWidth +
-          timePillarLayout.calendar.timePillarPadding * 2) *
-      zoom;
-  double get topPadding => 2 * hourPadding;
-  bool get intervalSpansMidnight =>
+  late final double timePillarPadding = timePillarLayout.padding * zoom;
+  late final double timePillarWidth = timePillarLayout.width * zoom;
+  late final double timePillarTotalWidth =
+      (timePillarLayout.width + timePillarLayout.padding * 2) * zoom;
+  late final double timePillarHeight = (timepillarInterval.lengthInHours +
+          1) * // include one extra hour for the last digit after the timepillar (could only be the font size of the text)
+      hourHeight;
+  late final double topPadding = 2 * hourPadding;
+  late final double hourLineWidth = timePillarLayout.hourLineWidth * zoom;
+  late final bool intervalSpansMidnight =
       timepillarInterval.endTime.isDayAfter(timepillarInterval.startTime);
 
   double topOffset(DateTime hour) {
