@@ -153,7 +153,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                child: const RecordSoundPage(),
+                                child: RecordSoundPage(title: label),
                               ),
                             ),
                             settings:
@@ -336,23 +336,25 @@ class _TimeDisplay extends StatelessWidget {
       child: BlocBuilder<SoundCubit, SoundState>(
         buildWhen: (prev, curr) =>
             prev.runtimeType != curr.runtimeType ||
-            prev is SoundPlaying &&
+            (prev is SoundPlaying &&
                 curr is SoundPlaying &&
-                curr.position.inSeconds != prev.position.inSeconds,
+                curr.position.inSeconds != prev.position.inSeconds),
         builder: (context, soundState) =>
             BlocBuilder<RecordSoundCubit, RecordSoundState>(
           buildWhen: (prev, curr) =>
               prev.runtimeType != curr.runtimeType ||
-              prev is RecordingSoundState &&
+              (prev is RecordingSoundState &&
                   curr is RecordingSoundState &&
-                  prev.duration.inSeconds != curr.duration.inSeconds,
+                  prev.duration.inSeconds != curr.duration.inSeconds),
           builder: (context, recordState) => Text(
             _formatTime(
               recordState is RecordingSoundState
                   ? recordState.duration
                   : soundState is SoundPlaying
                       ? soundState.position
-                      : Duration.zero,
+                      : recordState is RecordedSoundState
+                          ? recordState.duration
+                          : Duration.zero,
             ),
             style: Theme.of(context).textTheme.headline4,
           ),

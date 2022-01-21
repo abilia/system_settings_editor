@@ -4,14 +4,15 @@ import 'package:seagull/models/abilia_file.dart';
 import 'package:seagull/ui/all.dart';
 
 class RecordSoundPage extends StatelessWidget {
-  const RecordSoundPage({Key? key}) : super(key: key);
+  final String title;
+  const RecordSoundPage({Key? key, this.title = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.speech,
-        iconData: AbiliaIcons.speakText,
+        title: title,
+        iconData: AbiliaIcons.dictaphone,
       ),
       body: const RecordingWidget(),
       bottomNavigationBar: BottomNavigation(
