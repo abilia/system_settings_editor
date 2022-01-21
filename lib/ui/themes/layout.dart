@@ -304,10 +304,11 @@ class TimepillarCardLayout {
 }
 
 class TwoTimepillarLayout {
-  final double verticalMargin, radius;
+  final double verticalMargin, nightMargin, radius;
 
   const TwoTimepillarLayout({
     this.verticalMargin = 24,
     this.radius = 9,
+    this.nightMargin = 4,
   });
 }

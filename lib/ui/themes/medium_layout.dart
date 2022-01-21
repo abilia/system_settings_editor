@@ -110,6 +110,11 @@ class _MediumLayout extends Layout {
               margin: 8,
               padding: 17,
             ),
+            twoTimePillar: TwoTimepillarLayout(
+              verticalMargin: 36,
+              nightMargin: 6,
+              radius: 18,
+            ),
           ),
         );
 }

@@ -69,7 +69,6 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   flex: 135,
                   child: MultiBlocProvider(
@@ -91,6 +90,9 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       height: nightTimepillarHeight,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: layout.timePillar.twoTimePillar.nightMargin,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(
