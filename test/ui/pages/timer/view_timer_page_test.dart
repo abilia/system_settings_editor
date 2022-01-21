@@ -68,12 +68,12 @@ void main() {
               settingsDb: FakeSettingsDb(),
             ),
           ),
-        ], child: ViewTimerPage(timer: timer)),
+        ], child: TimerPage(timer: timer, day: timer.startTime)),
       );
 
   testWidgets('Page visible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
     await tester.pumpAndSettle();
-    expect(find.byType(ViewTimerPage), findsOneWidget);
+    expect(find.byType(TimerPage), findsOneWidget);
   });
 }

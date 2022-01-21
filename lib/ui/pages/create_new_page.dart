@@ -109,7 +109,7 @@ class CreateNewPage extends StatelessWidget {
       BuildContext buildContext, List<BlocProvider> authProviders,
       [BasicTimerDataItem? basicTimer]) async {
     final timerStarted = await Navigator.of(buildContext).push(
-      _createRoute(
+      _createRoute<AbiliaTimer>(
         MultiBlocProvider(
           providers: authProviders,
           child: BlocProvider(
@@ -131,7 +131,10 @@ class CreateNewPage extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: providers,
-            child: ViewTimerPage(timer: timerStarted),
+            child: TimerPage(
+              timer: timerStarted,
+              day: timerStarted.startTime.onlyDays(),
+            ),
           ),
         ),
       );

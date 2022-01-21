@@ -781,7 +781,7 @@ void main() {
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
-        expect(find.byType(ViewTimerPage), findsOneWidget);
+        expect(find.byType(TimerPage), findsOneWidget);
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
