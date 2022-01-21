@@ -1,23 +1,22 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/abilia_timer.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/datetime.dart';
 
-class ViewTimerPage extends StatelessWidget {
+class TimerPage extends StatelessWidget {
   final AbiliaTimer timer;
+  final DateTime day;
 
-  const ViewTimerPage({Key? key, required this.timer}) : super(key: key);
+  const TimerPage({
+    Key? key,
+    required this.timer,
+    required this.day,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DayAppBar(
-        day: timer.startTime.onlyDays(),
-        leftAction: IconActionButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-          child: const Icon(AbiliaIcons.navigationPrevious),
-        ),
-      ),
+      appBar: DayAppBar(day: day),
       body: Padding(
         padding: EdgeInsets.all(ActivityInfo.margin),
         child: Container(
@@ -28,22 +27,12 @@ class ViewTimerPage extends StatelessWidget {
           constraints: const BoxConstraints.expand(),
           child: Column(
             children: <Widget>[
-              Flexible(
-                flex: layout.timerPage.topRowFlex,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ActivityInfo.margin,
-                    vertical: layout.timerPage.topRowPadding,
-                  ),
-                  child: _TopInfo(timer: timer),
-                ),
-              ),
+              _TopInfo(timer: timer),
               Divider(
                 endIndent: 0,
-                indent: ActivityInfo.margin,
+                indent: layout.timerPage.topVerticalPadding,
               ),
-              Flexible(
-                flex: layout.timerPage.mainContentFlex,
+              Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
                   child: TimerWheel.nonInteractive(
@@ -73,30 +62,38 @@ class _TopInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        if (timer.hasImage)
-          Padding(
-            padding: EdgeInsets.only(right: ActivityInfo.margin),
-            child: FadeInCalendarImage(
-              width: layout.timerPage.imageSize,
-              height: layout.timerPage.imageSize,
-              fit: BoxFit.cover,
-              imageFileId: timer.fileId,
-            ),
-          ),
-        Expanded(
-          child: Tts(
-            child: Text(
-              timer.title,
-              style: themeData.textTheme.headline5,
-              overflow: TextOverflow.visible,
-              textAlign: TextAlign.center,
-            ),
-          ),
+    return SizedBox(
+      height: layout.timerPage.topInfoHeight,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: layout.timerPage.topVerticalPadding,
+          horizontal: layout.timerPage.topHorizontalPadding,
         ),
-      ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            if (timer.hasImage)
+              Padding(
+                padding: EdgeInsets.only(right: layout.timerPage.imagePadding),
+                child: FadeInCalendarImage(
+                  width: layout.timerPage.imageSize,
+                  fit: BoxFit.cover,
+                  imageFileId: timer.fileId,
+                ),
+              ),
+            Expanded(
+              child: Tts(
+                child: Text(
+                  timer.title,
+                  style: themeData.textTheme.headline5,
+                  overflow: TextOverflow.visible,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -135,6 +132,10 @@ class _TimerBottomBar extends StatelessWidget {
               },
               child: const Icon(AbiliaIcons.deleteAllClear),
             ),
+            IconActionButtonLight(
+              onPressed: () => Navigator.of(context).maybePop(),
+              child: const Icon(AbiliaIcons.navigationPrevious),
+            )
           ]
               .map((b) => [const Spacer(), b, const Spacer()])
               .expand((w) => w)
