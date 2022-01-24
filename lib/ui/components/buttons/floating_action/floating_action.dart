@@ -78,12 +78,6 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 8.s),
                   child: const EyeButtonDay(),
-                )
-              else if (state.displayMonthCalendar &&
-                  tabController.index == state.monthCalendarTabIndex)
-                Padding(
-                  padding: EdgeInsets.only(top: 8.s),
-                  child: const EyeButtonMonth(),
                 ),
           ],
         );

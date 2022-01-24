@@ -129,27 +129,13 @@ void main() {
     });
   });
 
-  group('Grid', () {
+  group('Calendar body', () {
     testWidgets('day tts', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
       await tester.verifyTts(find.text('30'), contains: 'Sunday, August 30');
-    });
-
-    testWidgets('tapping day goes back to that day calendar',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('30'));
-      await tester.pumpAndSettle();
-      expect(find.byType(DayAppBar), findsOneWidget);
-      expect(find.byType(DayCalendar), findsOneWidget);
-      expect(find.text('Sunday'), findsOneWidget);
-      expect(find.text('30 August 2020'), findsOneWidget);
     });
 
     group('shows activities', () {
@@ -185,14 +171,14 @@ void main() {
         // Assert
         expect(find.text(fridayTitle), findsOneWidget);
         expect(find.text(nextMonthTitle), findsNothing);
-        expect(find.byType(FullDayStack), findsOneWidget);
+        expect(find.byKey(TestKey.monthCalendarFullDayStack), findsOneWidget);
 
         await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();
 
         expect(find.text(fridayTitle), findsNothing);
         expect(find.text(nextMonthTitle), findsOneWidget);
-      });
+      }, skip: Config.isMPGO);
 
       testWidgets('shows activity as dot ', (WidgetTester tester) async {
         // Act
@@ -209,7 +195,7 @@ void main() {
     });
   });
 
-  group('With preview', () {
+  group('Day preview', () {
     final time = initialDay.withTime(const TimeOfDay(hour: 16, minute: 16));
     const title1 = 'i1', title2 = 't2', fridayTitle = 'ft1';
     final friday = time.addDays(2);
@@ -221,32 +207,60 @@ void main() {
           ];
     });
 
-    testWidgets('can switch to month list preview',
+    testWidgets(
+        'Day preview hides when navigation to non-current month and shows when navigating to current month',
+        (WidgetTester tester) async {
+      final translate = Locales.language.values.first;
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsNothing);
+      expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
+
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsNothing);
+      expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+    });
+
+    testWidgets(
+        'tapping button in preview header goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(EyeButtonMonth));
+      await tester.tap(find.text('30'));
       await tester.pumpAndSettle();
-      expect(find.byType(EyeButtonMonthDialog), findsOneWidget);
-      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
+      await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(MonthListPreview), findsOneWidget);
+      expect(find.byType(DayAppBar), findsOneWidget);
+      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.text('Sunday'), findsOneWidget);
+      expect(find.text('30 August 2020'), findsOneWidget);
     });
 
     testWidgets('Shows activity in the preview', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(EyeButtonMonth));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNWidgets(2));
       expect(find.text(title2), findsOneWidget);
@@ -281,12 +295,6 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(EyeButtonMonth));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.calendarList));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
       final cardPaddingList = tester.widgetList<Padding>(find.ancestor(
           of: find.byType(ActivityCard), matching: find.byType(Padding)));
 
@@ -297,20 +305,13 @@ void main() {
           isTrue);
     });
 
-    final monthPreviewSetting = Generic.createNew<MemoplannerSettingData>(
-      data: MemoplannerSettingData.fromData(
-        data: MonthCalendarType.preview.index,
-        identifier: MemoplannerSettings.viewOptionsMonthCalendarKey,
-      ),
-    );
-
     testWidgets('Can navigate to month calendar', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();
       expect(find.byType(MonthCalendar), findsOneWidget);
-      expect(find.byType(MonthPreview), findsNothing);
+      expect(find.byType(MonthPreview), findsOneWidget);
     });
 
     testWidgets('Preview header shows one activity',
@@ -319,8 +320,6 @@ void main() {
         FakeActivity.starts(initialDay, title: 'one').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-          .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -329,8 +328,12 @@ void main() {
 
       expect(find.byType(MonthPreview), findsOneWidget);
       expect(find.byType(FullDayStack), findsNothing);
-      expect(find.byType(MonthActivityContent), findsOneWidget);
-      expect(find.text('one'), findsOneWidget);
+      expect(find.byKey(TestKey.monthPreviewHeaderActivity), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(TestKey.monthPreviewHeaderActivity),
+              matching: find.text('one')),
+          findsOneWidget);
     });
 
     testWidgets('Preview header shows many activities',
@@ -340,8 +343,6 @@ void main() {
         FakeActivity.starts(initialDay, title: 'two').copyWith(fullDay: true),
       ];
       activityResponse = () => activities;
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-          .thenAnswer((_) => Future.value([monthPreviewSetting]));
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -349,17 +350,19 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(MonthPreview), findsOneWidget);
-      expect(find.byType(FullDayStack), findsOneWidget);
+      expect(
+          find.byKey(TestKey.monthPreviewHeaderFullDayStack), findsOneWidget);
       expect(find.byType(MonthActivityContent), findsNothing);
-      expect(find.text('+2'), findsOneWidget);
+      expect(
+          find.descendant(
+              of: find.byKey(TestKey.monthPreviewHeaderFullDayStack),
+              matching: find.text('+2')),
+          findsOneWidget);
     });
 
     testWidgets(
         'SGC-1062 Split month view: List not updated when editing activity',
         (WidgetTester tester) async {
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-          .thenAnswer((_) => Future.value([monthPreviewSetting]));
-
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.month));

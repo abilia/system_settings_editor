@@ -13,12 +13,14 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   /// ActivitiesBloc is null when this bloc is used for date picking
   final ActivitiesBloc? activitiesBloc;
   final ClockBloc clockBloc;
+  final DayPickerBloc dayPickerBloc;
   late final StreamSubscription? _activitiesSubscription;
   late final StreamSubscription _clockSubscription;
 
   MonthCalendarCubit({
     this.activitiesBloc,
     required this.clockBloc,
+    required this.dayPickerBloc,
     DateTime? initialDay,
   }) : super(
           _mapToState(
@@ -40,29 +42,45 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(_updateMonth);
   }
 
-  void goToNextMonth() => emit(
-        _mapToState(
-          state.firstDay.nextMonth(),
-          activitiesBloc?.state.activities,
-          clockBloc.state,
-        ),
-      );
+  void goToNextMonth() {
+    _maybeGoToCurrentDay(state.firstDay.nextMonth());
+    emit(
+      _mapToState(
+        state.firstDay.nextMonth(),
+        activitiesBloc?.state.activities,
+        clockBloc.state,
+      ),
+    );
+  }
 
-  void goToPreviousMonth() => emit(
-        _mapToState(
-          state.firstDay.previousMonth(),
-          activitiesBloc?.state.activities,
-          clockBloc.state,
-        ),
-      );
+  void goToPreviousMonth() {
+    _maybeGoToCurrentDay(state.firstDay.previousMonth());
+    emit(
+      _mapToState(
+        state.firstDay.previousMonth(),
+        activitiesBloc?.state.activities,
+        clockBloc.state,
+      ),
+    );
+  }
 
-  void goToCurrentMonth() => emit(
-        _mapToState(
-          clockBloc.state.firstDayOfMonth(),
-          activitiesBloc?.state.activities,
-          clockBloc.state,
-        ),
-      );
+  void goToCurrentMonth() {
+    dayPickerBloc.add(GoTo(day: clockBloc.state));
+    emit(
+      _mapToState(
+        clockBloc.state.firstDayOfMonth(),
+        activitiesBloc?.state.activities,
+        clockBloc.state,
+      ),
+    );
+  }
+
+  void _maybeGoToCurrentDay(DateTime newFirstDay) {
+    if (newFirstDay.month == clockBloc.state.month &&
+        newFirstDay.year == clockBloc.state.year) {
+      dayPickerBloc.add(GoTo(day: clockBloc.state));
+    }
+  }
 
   void _updateMonth([_]) => emit(
         _mapToState(

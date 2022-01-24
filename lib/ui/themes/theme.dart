@@ -95,15 +95,22 @@ final circleRadius = BorderRadius.all(Radius.circular(24.s));
 // Borders
 
 final Border selectedActivityBorder = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.black, width: 2.s),
+  BorderSide(
+      color: AbiliaColors.black,
+      width: layout.monthCalendar.dayBorderWidthHighlighted),
 );
-final Border currentBorder =
-    Border.fromBorderSide(BorderSide(color: AbiliaColors.red, width: 2.0.s));
+final Border currentBorder = Border.fromBorderSide(
+  BorderSide(
+      color: AbiliaColors.red,
+      width: layout.monthCalendar.dayBorderWidthHighlighted),
+);
 final Border errorBorder = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.red, width: 1.s),
 );
 final Border transparentBlackBorder = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.transparentBlack30, width: 1.s),
+  BorderSide(
+      color: AbiliaColors.transparentBlack30,
+      width: layout.monthCalendar.dayBorderWidth),
 );
 
 final borderOrange = Border.fromBorderSide(
@@ -208,10 +215,15 @@ Border getCategoryBorder({
   required bool current,
   required bool showCategoryColor,
   required int category,
+  double? borderWidth,
+  double? currentBorderWidth,
 }) =>
     current
         ? Border.fromBorderSide(
-            BorderSide(color: AbiliaColors.red, width: 3.s),
+            BorderSide(
+                color: AbiliaColors.red,
+                width: currentBorderWidth ??
+                    layout.activityCard.currentBorderWidth),
           )
         : Border.fromBorderSide(
             BorderSide(
@@ -220,7 +232,7 @@ Border getCategoryBorder({
                 inactive: inactive,
                 showCategoryColor: showCategoryColor,
               ),
-              width: 1.5.s,
+              width: borderWidth ?? layout.activityCard.borderWidth,
             ),
           );
 

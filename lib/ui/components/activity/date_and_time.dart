@@ -114,15 +114,16 @@ class DatePicker extends StatelessWidget {
                     builder: (_) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
-                          create: (context) => MonthCalendarCubit(
+                          create: (context) => DayPickerBloc(
                             clockBloc: context.read<ClockBloc>(),
                             initialDay: date,
                           ),
                         ),
                         BlocProvider(
-                          create: (context) => DayPickerBloc(
+                          create: (context) => MonthCalendarCubit(
                             clockBloc: context.read<ClockBloc>(),
                             initialDay: date,
+                            dayPickerBloc: context.read<DayPickerBloc>(),
                           ),
                         ),
                         BlocProvider.value(

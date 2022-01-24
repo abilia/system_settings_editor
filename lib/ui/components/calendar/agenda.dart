@@ -229,6 +229,9 @@ class SliverActivityList extends StatelessWidget {
                     child: ActivityCard(
                       activityOccasion: eventDay,
                       showCategoryColor: setting.showCategoryColor,
+                      crossOverColor: AbiliaColors.transparentBlack30,
+                      crossOverStrokeWidth:
+                          layout.activityCard.crossOverStrokeWidth,
                     ),
                   );
                 } else if (eventDay is TimerOccasion) {

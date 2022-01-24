@@ -24,6 +24,8 @@ class Layout {
   final IconSize iconSize;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
+  final WeekCalendarLayout weekCalendar;
+  final MonthCalendarLayout monthCalendar;
   final ActivityCardLayout activityCard;
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
@@ -38,6 +40,8 @@ class Layout {
     this.iconSize = const IconSize(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
+    this.weekCalendar = const WeekCalendarLayout(),
+    this.monthCalendar = const MonthCalendarLayout(),
     this.activityCard = const ActivityCardLayout(),
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
@@ -201,13 +205,107 @@ class FormPaddingLayout {
   });
 }
 
+class WeekCalendarLayout {
+  final double activityBorderWidth, currentActivityBorderWidth;
+
+  const WeekCalendarLayout({
+    this.activityBorderWidth = 1.5,
+    this.currentActivityBorderWidth = 3,
+  });
+}
+
+class MonthCalendarLayout {
+  final int monthContentFlex, monthListPreviewFlex;
+
+  final double monthHeadingHeight,
+      dayRadius,
+      dayRadiusHighlighted,
+      dayBorderWidth,
+      dayBorderWidthHighlighted,
+      dayHeaderHeight,
+      dayHeadingFontSize,
+      fullDayActivityFontSize,
+      weekNumberWidth,
+      hasActivitiesDotDiameter;
+
+  final EdgeInsets dayViewPadding,
+      dayViewPaddingHighlighted,
+      dayViewMargin,
+      dayViewMarginHighlighted,
+      dayHeaderPadding,
+      dayContainerPadding,
+      crossOverPadding,
+      hasActivitiesDotPadding,
+      activityTextContentPadding;
+
+  final MonthPreviewLayout monthPreview;
+
+  const MonthCalendarLayout({
+    this.monthContentFlex = 242,
+    this.monthListPreviewFlex = 229,
+    this.monthHeadingHeight = 32,
+    this.dayRadius = 8,
+    this.dayRadiusHighlighted = 10,
+    this.dayBorderWidth = 1,
+    this.dayBorderWidthHighlighted = 4,
+    this.dayHeaderHeight = 24,
+    this.dayHeadingFontSize = 14,
+    this.fullDayActivityFontSize = 12,
+    this.weekNumberWidth = 24,
+    this.hasActivitiesDotDiameter = 6,
+    this.dayViewPadding = const EdgeInsets.all(4),
+    this.dayViewPaddingHighlighted = const EdgeInsets.all(6),
+    this.dayViewMargin = const EdgeInsets.all(2),
+    this.dayViewMarginHighlighted = const EdgeInsets.all(0),
+    this.dayHeaderPadding = const EdgeInsets.only(left: 4, top: 7, right: 4),
+    this.dayContainerPadding =
+        const EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 5),
+    this.crossOverPadding = const EdgeInsets.all(3),
+    this.hasActivitiesDotPadding = const EdgeInsets.all(0),
+    this.activityTextContentPadding = const EdgeInsets.all(3),
+    this.monthPreview = const MonthPreviewLayout(),
+  });
+}
+
+class MonthPreviewLayout {
+  final double monthPreviewBorderWidth,
+      activityListTopPadding,
+      activityListBottomPadding,
+      headingHeight,
+      headingFullDayActivityHeight,
+      headingFullDayActivityWidth,
+      headingButtonIconSize;
+
+  final EdgeInsets monthListPreviewPadding,
+      headingPadding,
+      noSelectedDayPadding;
+
+  const MonthPreviewLayout({
+    this.monthPreviewBorderWidth = 1,
+    this.activityListTopPadding = 12,
+    this.activityListBottomPadding = 64,
+    this.headingHeight = 48,
+    this.headingFullDayActivityHeight = 40,
+    this.headingFullDayActivityWidth = 40,
+    this.headingButtonIconSize = 24,
+    this.monthListPreviewPadding =
+        const EdgeInsets.only(left: 8, top: 14, right: 8),
+    this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
+    this.noSelectedDayPadding = const EdgeInsets.only(top: 32),
+  });
+}
+
 class ActivityCardLayout {
   final double height,
       marginSmall,
       marginLarge,
       imageSize,
       categorySideOffset,
-      iconSize;
+      iconSize,
+      titleImagePadding,
+      crossOverStrokeWidth,
+      borderWidth,
+      currentBorderWidth;
 
   final EdgeInsets imagePadding;
   final EdgeInsets crossPadding;
@@ -219,8 +317,12 @@ class ActivityCardLayout {
     this.marginSmall = 6,
     this.marginLarge = 10,
     this.imageSize = 48,
-    this.categorySideOffset = 56,
+    this.categorySideOffset = 43,
     this.iconSize = 18,
+    this.titleImagePadding = 10,
+    this.crossOverStrokeWidth = 2,
+    this.borderWidth = 1.5,
+    this.currentBorderWidth = 3,
     this.crossPadding = const EdgeInsets.all(4),
     this.imagePadding = const EdgeInsets.only(left: 4),
     this.titlePadding =

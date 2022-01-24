@@ -461,6 +461,9 @@ class WeekActivityContent extends StatelessWidget {
                   showCategoryColor: settings.showCategoryColor &&
                       !activityOccasion.activity.fullDay,
                   category: activityOccasion.activity.category,
+                  borderWidth: layout.weekCalendar.activityBorderWidth,
+                  currentBorderWidth:
+                      layout.weekCalendar.currentActivityBorderWidth,
                 ),
                 borderRadius: borderRadius,
               ),
