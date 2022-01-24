@@ -498,15 +498,17 @@ class MonthActivityContent extends StatelessWidget {
     required this.activityDay,
     this.width,
     this.height,
+    this.goToActivityOnTap = false,
   }) : super(key: key);
 
   final ActivityDay activityDay;
   final double? width;
   final double? height;
+  final bool goToActivityOnTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final body = Container(
       width: width,
       height: height,
       clipBehavior: Clip.hardEdge,
@@ -526,6 +528,7 @@ class MonthActivityContent extends StatelessWidget {
                 borderRadius: BorderRadius.zero,
                 height: double.infinity,
                 width: double.infinity,
+                fit: BoxFit.contain,
               )
             : Padding(
                 padding: layout.monthCalendar.activityTextContentPadding,
@@ -534,10 +537,36 @@ class MonthActivityContent extends StatelessWidget {
                     activityDay.activity.title,
                     overflow: TextOverflow.fade,
                     softWrap: false,
+                    style: abiliaTextTheme.caption?.copyWith(
+                      fontSize: layout.monthCalendar.fullDayActivityFontSize,
+                    ),
                   ),
                 ),
               ),
       ),
     );
+
+    if (goToActivityOnTap) {
+      return GestureDetector(
+        onTap: () async {
+          final authProviders = copiedAuthProviders(context);
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: ActivityPage(
+                  activityDay: activityDay,
+                ),
+              ),
+              settings: RouteSettings(name: 'ActivityPage $activityDay'),
+            ),
+          );
+        },
+        child: body,
+      );
+    } else {
+      return body;
+    }
   }
 }

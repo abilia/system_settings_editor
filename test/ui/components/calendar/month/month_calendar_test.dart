@@ -211,6 +211,39 @@ void main() {
     });
 
     testWidgets(
+        'Day preview hides when navigation to non-current month and shows when navigating to current month',
+        (WidgetTester tester) async {
+      final translate = Locales.language.values.first;
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsNothing);
+      expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
+
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsNothing);
+      expect(find.text(translate.selectADayToViewDetails), findsOneWidget);
+
+      await tester.tap(find.byType(GoToCurrentActionButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(MonthDayPreviewHeading), findsOneWidget);
+      expect(find.text(translate.selectADayToViewDetails), findsNothing);
+    });
+
+    testWidgets(
         'tapping button in preview header goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());

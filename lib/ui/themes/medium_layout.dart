@@ -110,6 +110,7 @@ class _MediumLayout extends Layout {
                 monthListPreviewPadding:
                     EdgeInsets.only(left: 12, top: 32, right: 12),
                 headingPadding: EdgeInsets.only(left: 18, right: 16),
+                noSelectedDayPadding: EdgeInsets.only(top: 64),
               )),
           activityCard: const ActivityCardLayout(
             height: 104,

@@ -11,15 +11,16 @@ class EndDatePickerWiz extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => MonthCalendarCubit(
+              create: (context) => DayPickerBloc(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
               ),
             ),
             BlocProvider(
-              create: (context) => DayPickerBloc(
+              create: (context) => MonthCalendarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
+                dayPickerBloc: context.read<DayPickerBloc>(),
               ),
             ),
           ],

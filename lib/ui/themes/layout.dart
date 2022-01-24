@@ -219,6 +219,7 @@ class MonthCalendarLayout {
       dayBorderWidthHighlighted,
       dayHeaderHeight,
       dayHeadingFontSize,
+      fullDayActivityFontSize,
       weekNumberWidth,
       hasActivitiesDotDiameter;
 
@@ -244,6 +245,7 @@ class MonthCalendarLayout {
     this.dayBorderWidthHighlighted = 4,
     this.dayHeaderHeight = 24,
     this.dayHeadingFontSize = 14,
+    this.fullDayActivityFontSize = 12,
     this.weekNumberWidth = 24,
     this.hasActivitiesDotDiameter = 6,
     this.dayViewPadding = const EdgeInsets.all(4),
@@ -269,7 +271,9 @@ class MonthPreviewLayout {
       headingFullDayActivityWidth,
       headingButtonIconSize;
 
-  final EdgeInsets monthListPreviewPadding, headingPadding;
+  final EdgeInsets monthListPreviewPadding,
+      headingPadding,
+      noSelectedDayPadding;
 
   const MonthPreviewLayout({
     this.monthPreviewBorderWidth = 1,
@@ -282,6 +286,7 @@ class MonthPreviewLayout {
     this.monthListPreviewPadding =
         const EdgeInsets.only(left: 8, top: 14, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
+    this.noSelectedDayPadding = const EdgeInsets.only(top: 32),
   });
 }
 

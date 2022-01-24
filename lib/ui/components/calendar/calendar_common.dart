@@ -1,6 +1,6 @@
-import 'package:flutter/widgets.dart';
-import 'package:seagull/ui/themes/all.dart';
-import 'package:seagull/utils/scale_util.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class FullDayStack extends StatelessWidget {
   const FullDayStack({
@@ -8,11 +8,17 @@ class FullDayStack extends StatelessWidget {
     required this.numberOfActivities,
     this.width,
     this.height,
-  }) : super(key: key);
+    this.goToActivitiesListOnTap = false,
+    this.day,
+  })  : assert(!(goToActivitiesListOnTap && day == null),
+            'When goToActivitiesListOnTap is true, day must not be null'),
+        super(key: key);
 
   final int numberOfActivities;
   final double? width;
   final double? height;
+  final bool goToActivitiesListOnTap;
+  final DateTime? day;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,8 @@ class FullDayStack extends StatelessWidget {
       borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
       border: border,
     );
-    return Stack(
+
+    final body = Stack(
       children: [
         Container(
           margin: EdgeInsets.only(top: 4.s, left: 4.s),
@@ -40,5 +47,31 @@ class FullDayStack extends StatelessWidget {
         ),
       ],
     );
+
+    return goToActivitiesListOnTap
+        ? GestureDetector(
+            onTap: () {
+              final authProviders = copiedAuthProviders(context);
+
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (_, animation, secondaryAnimation) =>
+                      MultiBlocProvider(
+                    providers: authProviders,
+                    child: FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      ),
+                      child: const AllDayList(),
+                    ),
+                  ),
+                  settings: RouteSettings(name: 'AllDayList $day'),
+                ),
+              );
+            },
+            child: body,
+          )
+        : body;
   }
 }

@@ -13,27 +13,47 @@ class MonthListPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: layout.monthCalendar.monthPreview.monthListPreviewPadding,
-      child: Column(
-        children: [
-          BlocBuilder<DayPickerBloc, DayPickerState>(
-            builder: (context, state) {
-              final dayTheme = dayThemes[state.day.weekday - 1];
+    return BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, dayPickerState) {
+      return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
+          buildWhen: (previous, current) =>
+              previous.firstDay != current.firstDay ||
+              previous.occasion != current.occasion,
+          builder: (context, monthCalendarState) {
+            final showPreview =
+                monthCalendarState.firstDay.month == dayPickerState.day.month &&
+                    monthCalendarState.firstDay.year == dayPickerState.day.year;
 
-              return AnimatedTheme(
-                data: dayTheme.theme,
-                child: MonthDayPreviewHeading(
-                  day: state.day,
-                  isLight: dayTheme.isLight,
+            if (!showPreview) {
+              return Padding(
+                padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
+                child: Text(
+                  Translator.of(context).translate.selectADayToViewDetails,
+                  style: abiliaTextTheme.bodyText1,
                 ),
               );
-            },
-          ),
-          const Expanded(child: MonthPreview()),
-        ],
-      ),
-    );
+            } else {
+              final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+
+              return Padding(
+                padding:
+                    layout.monthCalendar.monthPreview.monthListPreviewPadding,
+                child: Column(
+                  children: [
+                    AnimatedTheme(
+                      data: dayTheme.theme,
+                      child: MonthDayPreviewHeading(
+                        day: dayPickerState.day,
+                        isLight: dayTheme.isLight,
+                      ),
+                    ),
+                    const Expanded(child: MonthPreview()),
+                  ],
+                ),
+              );
+            }
+          });
+    });
   }
 }
 
@@ -112,6 +132,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
                         .monthCalendar.monthPreview.headingFullDayActivityWidth,
                     height: layout.monthCalendar.monthPreview
                         .headingFullDayActivityHeight,
+                    goToActivitiesListOnTap: true,
+                    day: activityState.day,
                   )
                 else if (fullDayActivies > 0)
                   MonthActivityContent(
@@ -121,6 +143,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                         .monthCalendar.monthPreview.headingFullDayActivityWidth,
                     height: layout.monthCalendar.monthPreview
                         .headingFullDayActivityHeight,
+                    goToActivityOnTap: true,
                   ),
                 Text(text, style: Theme.of(context).textTheme.subtitle1),
                 SecondaryActionButton(
