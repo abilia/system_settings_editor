@@ -3,7 +3,7 @@ class Config {
   static const beta = alpha || String.fromEnvironment('release') == 'beta';
   static const release = !beta;
 
-  static const isMP = true; //String.fromEnvironment('flavor') == 'mp';
+  static const isMP = String.fromEnvironment('flavor') == 'mp';
   static const isMPGO = !isMP;
   static const flavor = isMP ? Flavor.mp : Flavor.mpgo;
 }
