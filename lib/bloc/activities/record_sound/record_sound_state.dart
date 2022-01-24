@@ -1,20 +1,21 @@
 part of 'record_sound_cubit.dart';
 
 abstract class RecordSoundState extends Equatable {
-  const RecordSoundState();
+  final Duration duration;
+
+  const RecordSoundState([this.duration = Duration.zero]);
+
+  @override
+  List<Object?> get props => [duration];
 }
 
 class EmptyRecordSoundState extends RecordSoundState {
-  const EmptyRecordSoundState();
-
-  @override
-  List<Object?> get props => [];
+  const EmptyRecordSoundState() : super();
 }
 
 abstract class RecordedSoundState extends RecordSoundState {
-  final Duration duration;
   final AbiliaFile recordedFile;
-  const RecordedSoundState(this.recordedFile, this.duration) : super();
+  const RecordedSoundState(this.recordedFile, duration) : super(duration);
 
   @override
   List<Object?> get props => [recordedFile, duration];
@@ -25,14 +26,13 @@ class UnchangedRecordingSoundState extends RecordedSoundState {
       : super(recordedFile, duration);
 }
 
-class RecordingSoundState extends EmptyRecordSoundState {
-  final Duration duration;
+class RecordingSoundState extends RecordSoundState {
   double get progress =>
       duration.inMilliseconds /
       RecordSoundCubit.maxRecordingTime.inMilliseconds;
-  const RecordingSoundState(this.duration) : super();
+  const RecordingSoundState(duration) : super(duration);
   @override
-  List<Object?> get props => [progress];
+  List<Object?> get props => [progress, duration];
 }
 
 class NewRecordedSoundState extends RecordedSoundState {
