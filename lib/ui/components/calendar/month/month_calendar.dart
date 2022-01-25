@@ -373,7 +373,7 @@ class MonthDayContainer extends StatelessWidget {
                   ),
                 if (d.isPast)
                   CrossOver(
-                    strokeWidth: layout.activityCard.crossOverStrokeWidth,
+                    strokeWidth: layout.eventCard.crossOverStrokeWidth,
                     color: AbiliaColors.transparentBlack30,
                   ),
               ],

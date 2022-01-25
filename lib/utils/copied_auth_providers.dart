@@ -22,6 +22,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<PermissionBloc>(blocContext),
       _tryGetBloc<TimepillarCubit>(blocContext),
       _tryGetBloc<TimerCubit>(blocContext),
+      _tryGetBloc<TimerAlarmBloc>(blocContext),
       if (Config.isMP) _tryGetBloc<WakeLockCubit>(blocContext),
     ].whereNotNull().toList();
 

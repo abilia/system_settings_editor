@@ -36,7 +36,7 @@ void registerFallbackValues() {
   registerFallbackValue(const EventsLoading());
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
-  registerFallbackValue(const TimerState(timers: []));
+  registerFallbackValue(TimerState(timers: const []));
   registerFallbackValue(
     AbiliaTimer(
       id: '',

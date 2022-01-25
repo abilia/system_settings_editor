@@ -112,7 +112,7 @@ class _MediumLayout extends Layout {
                 headingPadding: EdgeInsets.only(left: 18, right: 16),
                 noSelectedDayPadding: EdgeInsets.only(top: 64),
               )),
-          activityCard: const ActivityCardLayout(
+          eventCard: const EventCardLayout(
             height: 104,
             marginSmall: 8,
             marginLarge: 16,

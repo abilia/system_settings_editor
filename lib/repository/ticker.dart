@@ -16,7 +16,7 @@ class Ticker {
   Timer _realTimer() => Timer.periodic(
         const Duration(seconds: 1),
         (_) {
-          _time = DateTime.now();
+          _time = DateTime.now().onlySeconds();
           _streamController.add(_time);
         },
       );
@@ -32,7 +32,9 @@ class Ticker {
     required DateTime initialTime,
     Stream<DateTime> stream = const Stream.empty(),
   })  : _time = initialTime,
-        _stream = stream.asBroadcastStream();
+        _stream = stream.asBroadcastStream() {
+    _stream.listen((tick) => _time = tick);
+  }
 
   double? ticksPerSecond;
   DateTime? _initialFakeTime;
@@ -45,10 +47,12 @@ class Ticker {
   }
 
   void setFakeTicker(double speedUp) {
+    assert(speedUp >= 0);
     _initialFakeTime ??= _time;
     ticksPerSecond = speedUp;
-    final period = Duration(milliseconds: (1 / ticksPerSecond! * 1000).toInt());
     _timer.cancel();
+    if (ticksPerSecond == 0) return;
+    final period = Duration(milliseconds: (1 / ticksPerSecond! * 1000).toInt());
     _timer = Timer.periodic(period, (t) {
       _time = _initialFakeTime!.add(Duration(seconds: t.tick));
       _streamController.add(_time);
