@@ -13,6 +13,7 @@ class TimerWheel extends StatefulWidget {
         style = TimerWheelStyle.interactive,
         lengthInMinutes = null,
         paused = false,
+        isPast = false,
         super(key: key);
 
   const TimerWheel.nonInteractive({
@@ -20,7 +21,10 @@ class TimerWheel extends StatefulWidget {
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
-  })  : activeSeconds = secondsLeft,
+    this.isPast = false,
+  })  : assert(!(isPast && secondsLeft != 0),
+            'If isPast is true, secondsLeft must be zero'),
+        activeSeconds = secondsLeft,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -30,7 +34,10 @@ class TimerWheel extends StatefulWidget {
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
-  })  : activeSeconds = secondsLeft,
+    this.isPast = false,
+  })  : assert(!(isPast && secondsLeft != 0),
+            'If isPast is true, secondsLeft must be zero'),
+        activeSeconds = secondsLeft,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -40,6 +47,7 @@ class TimerWheel extends StatefulWidget {
   final Function(int minutesSelected)? onMinutesSelectedChanged;
   final int? lengthInMinutes;
   final bool paused;
+  final bool isPast;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -56,6 +64,7 @@ class _TimerWheelState extends State<TimerWheel> {
         canvasSize: constraints.biggest,
         style: widget.style,
         paused: widget.paused,
+        isPast: widget.isPast,
       );
 
       final Widget timerWheel = Stack(

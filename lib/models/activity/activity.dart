@@ -14,12 +14,10 @@ part 'recurs.dart';
 part 'db_activity.dart';
 part 'activity_extras.dart';
 
-class Activity extends DataModel implements Event {
-  @override
+class Activity extends DataModel {
   DateTime endClock(DateTime day) => fullDay
       ? day.nextDay().millisecondBefore()
       : startClock(day).add(duration);
-  @override
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
   bool get hasEndTime => duration.inMinutes > 0;
@@ -41,9 +39,7 @@ class Activity extends DataModel implements Event {
   final DateTime startTime;
   final DateTime noneRecurringEnd;
   final Duration duration;
-  @override
-  final int category;
-  final int alarmType;
+  final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableListView<String> signedOffDates;

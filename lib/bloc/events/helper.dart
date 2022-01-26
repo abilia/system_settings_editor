@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 
 EventsLoaded mapToEventsState({
   required List<ActivityDay> dayActivities,
-  required List<TimerDay> dayTimers,
+  required List<TimerOccasion> dayTimers,
   required Occasion occasion,
   required DateTime day,
   bool includeFullday = true,
@@ -33,7 +33,7 @@ EventsLoaded mapToEventsState({
 
 EventsLoaded _createState({
   required Iterable<ActivityDay> activities,
-  required List<TimerDay> timers,
+  required List<TimerOccasion> timers,
   required DateTime day,
   required Occasion dayOccasion,
   bool fulldays = true,

@@ -95,6 +95,12 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 timerDb: GetIt.I<TimerDb>(),
               )..loadTimers(),
             ),
+            BlocProvider(
+              create: (context) => TimerAlarmBloc(
+                ticker: GetIt.I<Ticker>(),
+                timerCubit: context.read<TimerCubit>(),
+              ),
+            ),
             BlocProvider<WeekCalendarCubit>(
               create: (context) => WeekCalendarCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
@@ -150,7 +156,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => DayEventsCubit(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
-                timerCubit: context.read<TimerCubit>(),
+                timerAlarmBloc: context.read<TimerAlarmBloc>(),
               ),
             ),
             BlocProvider<AlarmCubit>(

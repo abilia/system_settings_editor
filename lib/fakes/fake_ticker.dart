@@ -63,13 +63,12 @@ class _FakeTickerState extends State<FakeTicker> {
                       ),
                       Slider(
                         value: ticker.ticksPerSecond ?? 1,
-                        divisions: 299,
+                        divisions: 300,
                         onChanged: (v) {
                           ticker.setFakeTicker(v);
                           setState(() {});
                         },
                         max: 300,
-                        min: 1,
                       ),
                     ],
                   );

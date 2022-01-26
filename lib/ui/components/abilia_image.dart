@@ -55,7 +55,7 @@ class ActivityImage extends StatelessWidget {
           : ActivityImage(
               key: key,
               activityDay: activityOccasion,
-              past: activityOccasion.occasion == Occasion.past,
+              past: activityOccasion.isPast,
               imageSize: imageSize,
               fit: fit,
               crossPadding: crossPadding,
@@ -84,6 +84,7 @@ class ActivityImage extends StatelessWidget {
                   context,
                   activity.fileId,
                   activity.icon,
+                  imageSize,
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
               ),
@@ -106,7 +107,12 @@ class ActivityImage extends StatelessWidget {
     );
   }
 
-  Image getImage(BuildContext context, String fileId, String filePath) {
+  static Image getImage(
+    BuildContext context,
+    String fileId, [
+    String filePath = '',
+    ImageSize imageSize = ImageSize.thumb,
+  ]) {
     final userFileState = context.watch<UserFileCubit>().state;
     final file = userFileState.getLoadedByIdOrPath(
       fileId,

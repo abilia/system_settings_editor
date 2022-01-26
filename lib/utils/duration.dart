@@ -25,11 +25,16 @@ extension DurationExtensions on Duration {
     return '$inMinutes ${translator.minutes}';
   }
 
+  String _twoDigits(int n) => n.toString().padLeft(2, '0');
   String toHMS() {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(inSeconds.remainder(60));
-    return '${twoDigits(inHours)}:$twoDigitMinutes:$twoDigitSeconds';
+    String twoDigitMinutes = _twoDigits(inMinutes.remainder(60));
+    String twoDigitSeconds = _twoDigits(inSeconds.remainder(60));
+    return '${_twoDigits(inHours)}:$twoDigitMinutes:$twoDigitSeconds';
+  }
+
+  String toHMSorMS() {
+    if (inHours > 0) return toHMS();
+    return '${_twoDigits(inMinutes)}:${_twoDigits(inSeconds.remainder(60))}';
   }
 
   String toUntilString(Translated translater) {

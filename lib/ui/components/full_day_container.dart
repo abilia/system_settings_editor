@@ -38,7 +38,7 @@ class FullDayContainer extends StatelessWidget {
                           flex: 2,
                           child: Padding(
                             padding: EdgeInsets.only(
-                              right: layout.activityCard.marginSmall,
+                              right: layout.eventCard.marginSmall,
                             ),
                             child: ActivityCard(activityOccasion: fd),
                           ),

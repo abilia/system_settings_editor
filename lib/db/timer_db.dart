@@ -24,14 +24,13 @@ class TimerDb {
         where: 'id = "${timer.id}"',
       );
 
-  Future<List<AbiliaTimer>> getAllTimers() async {
+  Future<Iterable<AbiliaTimer>> getAllTimers() async {
     final result = await db.rawQuery(_getAll);
     return result
         .exceptionSafeMap(
           AbiliaTimer.fromDbMap,
           onException: _log.logAndReturnNull,
         )
-        .whereNotNull()
-        .toList();
+        .whereNotNull();
   }
 }

@@ -782,9 +782,12 @@ void main() {
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
         expect(find.byType(TimerPage), findsOneWidget);
+        expect(find.text('20 minutes'), findsOneWidget);
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text('20 minutes'), findsOneWidget);
 
         final captured =
             verify(() => mockTimerDb.insert(captureAny())).captured;
