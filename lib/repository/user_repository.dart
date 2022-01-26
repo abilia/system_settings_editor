@@ -147,7 +147,7 @@ class UserRepository extends Repository {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');
-    await loginDb.delete();
+    await loginDb.deleteToken();
     await loginDb.deleteLoginInfo();
     _log.fine('deleting user');
     await userDb.deleteUser();

@@ -112,7 +112,7 @@ void main() {
   test('logout deletes token', () async {
     // Arrange
     const token = Fakes.token;
-    when(() => mockLoginDb.delete()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
     when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
@@ -125,7 +125,7 @@ void main() {
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
-    verify(() => mockLoginDb.delete());
+    verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
   });
@@ -135,7 +135,7 @@ void main() {
     const token = Fakes.token;
     when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token))).thenThrow(Exception());
-    when(() => mockLoginDb.delete()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
 
@@ -145,7 +145,7 @@ void main() {
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
-    verify(() => mockLoginDb.delete());
+    verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
   });

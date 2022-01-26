@@ -17,7 +17,7 @@ class LoginDb {
 
   Future<void> persistToken(String token) => prefs.setString(tokenKey, token);
   String? getToken() => prefs.getString(tokenKey);
-  Future<void> delete() => prefs.remove(tokenKey);
+  Future<void> deleteToken() => prefs.remove(tokenKey);
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>
       prefs.setString(loginInfoKey, jsonEncode(loginInfo.toJson()));
