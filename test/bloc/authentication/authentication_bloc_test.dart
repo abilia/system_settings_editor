@@ -19,7 +19,7 @@ void main() {
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       userRepository = UserRepository(
         client: Fakes.client(),
-        tokenDb: LoginDb(prefs),
+        loginDb: LoginDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
         baseUrl: 'fake',

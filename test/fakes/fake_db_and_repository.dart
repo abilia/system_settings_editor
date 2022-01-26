@@ -29,7 +29,7 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
 }
 
-class FakeTokenDb extends Fake implements LoginDb {
+class FakeLoginDb extends Fake implements LoginDb {
   @override
   String? getToken() => Fakes.token;
 }

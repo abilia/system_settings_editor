@@ -15,14 +15,14 @@ import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
-  final LoginDb tokenDb;
+  final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
 
   const UserRepository({
     required String baseUrl,
     required BaseClient client,
-    required this.tokenDb,
+    required this.loginDb,
     required this.userDb,
     required this.licenseDb,
   }) : super(client, baseUrl);
@@ -34,7 +34,7 @@ class UserRepository extends Repository {
       UserRepository(
         baseUrl: baseUrl ?? this.baseUrl,
         client: client ?? this.client,
-        tokenDb: tokenDb,
+        loginDb: loginDb,
         userDb: userDb,
         licenseDb: licenseDb,
       );
@@ -147,17 +147,18 @@ class UserRepository extends Repository {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');
-    await tokenDb.delete();
+    await loginDb.delete();
+    await loginDb.deleteLoginInfo();
     _log.fine('deleting user');
     await userDb.deleteUser();
   }
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) async {
-    tokenDb.persistToken(loginInfo.token);
-    tokenDb.persistLoginInfo(loginInfo);
+    loginDb.persistToken(loginInfo.token);
+    loginDb.persistLoginInfo(loginInfo);
   }
 
-  String? getToken() => tokenDb.getToken();
+  String? getToken() => loginDb.getToken();
 
   Future<bool> _unregisterClient([String? token]) async {
     try {
@@ -211,5 +212,5 @@ class UserRepository extends Repository {
 
   @override
   String toString() =>
-      'UserRepository: { secureStorage: $tokenDb ${super.toString()} }';
+      'UserRepository: { secureStorage: $loginDb ${super.toString()} }';
 }

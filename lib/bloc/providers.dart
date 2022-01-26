@@ -220,7 +220,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
       create: (context) => UserRepository(
         baseUrl: baseUrl,
         client: GetIt.I<BaseClient>(),
-        tokenDb: GetIt.I<LoginDb>(),
+        loginDb: GetIt.I<LoginDb>(),
         userDb: GetIt.I<UserDb>(),
         licenseDb: GetIt.I<LicenseDb>(),
       ),
