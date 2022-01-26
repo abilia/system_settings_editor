@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/calendar_type.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -26,7 +25,7 @@ class DatePickerPage extends StatelessWidget {
             previous.calendarDayColor != current.calendarDayColor,
         builder: (context, memoSettingsState) => MonthBody(
           calendarDayColor: memoSettingsState.calendarDayColor,
-          monthCalendarType: MonthCalendarType.grid,
+          showPreview: false,
         ),
       ),
       bottomNavigationBar: BottomNavigation(

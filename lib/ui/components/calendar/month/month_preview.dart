@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
@@ -14,27 +13,47 @@ class MonthListPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8.s, top: 12.s, right: 8.s),
-      child: Column(
-        children: [
-          BlocBuilder<DayPickerBloc, DayPickerState>(
-            builder: (context, state) {
-              final dayTheme = dayThemes[state.day.weekday - 1];
+    return BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, dayPickerState) {
+      return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
+          buildWhen: (previous, current) =>
+              previous.firstDay != current.firstDay ||
+              previous.occasion != current.occasion,
+          builder: (context, monthCalendarState) {
+            final showPreview =
+                monthCalendarState.firstDay.month == dayPickerState.day.month &&
+                    monthCalendarState.firstDay.year == dayPickerState.day.year;
 
-              return AnimatedTheme(
-                data: dayTheme.theme,
-                child: MonthDayPreviewHeading(
-                  day: state.day,
-                  isLight: dayTheme.isLight,
+            if (!showPreview) {
+              return Padding(
+                padding: layout.monthCalendar.monthPreview.noSelectedDayPadding,
+                child: Text(
+                  Translator.of(context).translate.selectADayToViewDetails,
+                  style: abiliaTextTheme.bodyText1,
                 ),
               );
-            },
-          ),
-          const Expanded(child: MonthPreview()),
-        ],
-      ),
-    );
+            } else {
+              final dayTheme = dayThemes[dayPickerState.day.weekday - 1];
+
+              return Padding(
+                padding:
+                    layout.monthCalendar.monthPreview.monthListPreviewPadding,
+                child: Column(
+                  children: [
+                    AnimatedTheme(
+                      data: dayTheme.theme,
+                      child: MonthDayPreviewHeading(
+                        day: dayPickerState.day,
+                        isLight: dayTheme.isLight,
+                      ),
+                    ),
+                    const Expanded(child: MonthPreview()),
+                  ],
+                ),
+              );
+            }
+          });
+    });
   }
 }
 
@@ -46,7 +65,9 @@ class MonthPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 1.s, right: 1.s),
+      padding: EdgeInsets.symmetric(
+        horizontal: layout.monthCalendar.monthPreview.monthPreviewBorderWidth,
+      ),
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
         decoration: const BoxDecoration(color: AbiliaColors.white110),
@@ -54,8 +75,10 @@ class MonthPreview extends StatelessWidget {
           builder: (context, activityState) => activityState is EventsLoaded
               ? ActivityList(
                   state: activityState,
-                  topPadding: 12.s,
-                  bottomPadding: 64.s,
+                  topPadding:
+                      layout.monthCalendar.monthPreview.activityListTopPadding,
+                  bottomPadding: layout
+                      .monthCalendar.monthPreview.activityListBottomPadding,
                 )
               : const Center(child: CircularProgressIndicator()),
         ),
@@ -82,8 +105,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
     return Tts.data(
       data: text,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.s),
-        height: 48.s,
+        padding: layout.monthCalendar.monthPreview.headingPadding,
+        height: layout.monthCalendar.monthPreview.headingHeight,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: radius),
@@ -103,15 +126,24 @@ class MonthDayPreviewHeading extends StatelessWidget {
               children: [
                 if (fullDayActivies > 1)
                   FullDayStack(
+                    key: TestKey.monthPreviewHeaderFullDayStack,
                     numberOfActivities: fullDayActivies,
-                    width: 34.s,
-                    height: 32.s,
+                    width: layout
+                        .monthCalendar.monthPreview.headingFullDayActivityWidth,
+                    height: layout.monthCalendar.monthPreview
+                        .headingFullDayActivityHeight,
+                    goToActivitiesListOnTap: true,
+                    day: activityState.day,
                   )
                 else if (fullDayActivies > 0)
                   MonthActivityContent(
+                    key: TestKey.monthPreviewHeaderActivity,
                     activityDay: activityState.fullDayActivities.first,
-                    width: 38.s,
-                    height: 36.s,
+                    width: layout
+                        .monthCalendar.monthPreview.headingFullDayActivityWidth,
+                    height: layout.monthCalendar.monthPreview
+                        .headingFullDayActivityHeight,
+                    goToActivityOnTap: true,
                   ),
                 Text(text, style: Theme.of(context).textTheme.subtitle1),
                 SecondaryActionButton(
@@ -120,86 +152,15 @@ class MonthDayPreviewHeading extends StatelessWidget {
                   style: isLight
                       ? secondaryActionButtonStyleLight
                       : secondaryActionButtonStyleDark,
-                  child: const Icon(AbiliaIcons.navigationNext),
+                  child: Icon(
+                    AbiliaIcons.navigationNext,
+                    size:
+                        layout.monthCalendar.monthPreview.headingButtonIconSize,
+                  ),
                 ),
               ],
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class MonthDayViewCompact extends StatelessWidget {
-  final MonthDay day;
-  final DayTheme dayTheme;
-
-  const MonthDayViewCompact(
-    this.day, {
-    Key? key,
-    required this.dayTheme,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyle = dayTheme.theme.textTheme.subtitle1 ?? subtitle1;
-    final textWithCorrectColor = day.isPast
-        ? textStyle.copyWith(color: AbiliaColors.black)
-        : textStyle.copyWith(
-            color: dayTheme.monthSurfaceColor,
-          );
-    return Tts.data(
-      data:
-          DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
-              .format(day.day),
-      child: GestureDetector(
-        onTap: () =>
-            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day)),
-        child: BlocBuilder<DayPickerBloc, DayPickerState>(
-          builder: (context, dayPickerState) => Container(
-            foregroundDecoration: day.isCurrent
-                ? BoxDecoration(
-                    border: currentBorder,
-                    borderRadius: MonthDayView.monthDayborderRadius,
-                  )
-                : dayPickerState.day.isAtSameDay(day.day)
-                    ? BoxDecoration(
-                        border: selectedActivityBorder,
-                        borderRadius: MonthDayView.monthDayborderRadius,
-                      )
-                    : BoxDecoration(
-                        border: transparentBlackBorder,
-                        borderRadius: MonthDayView.monthDayborderRadius,
-                      ),
-            decoration: BoxDecoration(
-              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
-              borderRadius: MonthDayView.monthDayborderRadius,
-            ),
-            padding: EdgeInsets.all(4.s),
-            child: DefaultTextStyle(
-              style: textWithCorrectColor,
-              child: Stack(
-                children: [
-                  Center(child: Text('${day.day.day}')),
-                  if (day.hasActivities)
-                    const Align(
-                      alignment: Alignment.topRight,
-                      child: ColorDot(
-                        color: AbiliaColors.black,
-                      ),
-                    ),
-                  if (day.isPast)
-                    Padding(
-                      padding: EdgeInsets.all(4.s),
-                      child: const CrossOver(
-                        color: AbiliaColors.transparentBlack30,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
         ),
       ),
     );

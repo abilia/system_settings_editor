@@ -13,10 +13,7 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.menu,
-        iconData: AbiliaIcons.appMenu,
-      ),
+      appBar: const MenuAppBar(),
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(

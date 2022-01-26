@@ -1068,7 +1068,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
           of: find.text('${initialDay.subtract(1.days()).day}'),
-          matching: find.byType(MonthDayView)));
+          matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
