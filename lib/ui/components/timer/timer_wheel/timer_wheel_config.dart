@@ -46,10 +46,13 @@ class TimerWheelConfiguration {
   TimerWheelConfiguration({
     required this.canvasSize,
     required this.style,
-  });
+    required this.paused,
+  }) : assert(!(paused && style == TimerWheelStyle.interactive),
+            'An interactive timer wheel cannot be paused');
 
   final Size canvasSize;
   final TimerWheelStyle style;
+  final bool paused;
 
   late final centerPoint = Offset(canvasSize.width / 2, canvasSize.height / 2);
 
@@ -80,12 +83,12 @@ class TimerWheelConfiguration {
 
   late final timeLeftFill = Paint()
     ..style = PaintingStyle.fill
-    ..color = AbiliaColors.red100;
+    ..color = paused ? AbiliaColors.red40 : AbiliaColors.red100;
 
   late final timeLeftStroke = Paint()
     ..style = PaintingStyle.stroke
     ..strokeWidth = strokeWidth
-    ..color = AbiliaColors.red100;
+    ..color = paused ? AbiliaColors.red40 : AbiliaColors.red100;
 
   late final inactiveSectionFill = Paint()
     ..style = PaintingStyle.fill
