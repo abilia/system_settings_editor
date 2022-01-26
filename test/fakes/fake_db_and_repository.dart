@@ -11,7 +11,7 @@ class FakeUserRepository extends Fake implements UserRepository {
   @override
   String get baseUrl => 'fake.url';
   @override
-  Future<void> persistToken(String token) => Future.value();
+  Future<void> persistLoginInfo(LoginInfo token) => Future.value();
 }
 
 class FakeSettingsDb extends Fake implements SettingsDb {
@@ -29,7 +29,7 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
 }
 
-class FakeTokenDb extends Fake implements TokenDb {
+class FakeTokenDb extends Fake implements LoginDb {
   @override
   String? getToken() => Fakes.token;
 }

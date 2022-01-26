@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/models/login_error.dart';
+import 'package:seagull/repository/json_response.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
@@ -14,7 +15,7 @@ import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
-  final TokenDb tokenDb;
+  final LoginDb tokenDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
 
@@ -38,12 +39,13 @@ class UserRepository extends Repository {
         licenseDb: licenseDb,
       );
 
-  Future<String> authenticate({
+  Future<LoginInfo> authenticate({
     required String username,
     required String password,
     required String pushToken,
     required DateTime time,
   }) async {
+    final clientId = const Uuid().v4();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -53,7 +55,7 @@ class UserRepository extends Repository {
       },
       body: json.encode(
         {
-          'clientId': const Uuid().v4(),
+          'clientId': clientId,
           'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,
@@ -63,8 +65,8 @@ class UserRepository extends Repository {
     );
     switch (response.statusCode) {
       case 200:
-        var login = Login.fromJson(json.decode(response.body));
-        return login.token;
+        final loginResponse = LoginInfo.fromJson(response.json());
+        return loginResponse.copyWithClientId(clientId);
       case 401:
         throw UnauthorizedException();
       case 403:
@@ -150,7 +152,10 @@ class UserRepository extends Repository {
     await userDb.deleteUser();
   }
 
-  Future<void> persistToken(String token) => tokenDb.persistToken(token);
+  Future<void> persistLoginInfo(LoginInfo loginInfo) async {
+    tokenDb.persistToken(loginInfo.token);
+    tokenDb.persistLoginInfo(loginInfo);
+  }
 
   String? getToken() => tokenDb.getToken();
 

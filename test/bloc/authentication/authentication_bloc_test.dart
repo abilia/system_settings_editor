@@ -4,21 +4,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/fakes/all.dart';
-import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/models/user.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/user_repository.dart';
 
 import '../../mocks/mocks.dart';
 import '../../fakes/all.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   group('AuthenticationBloc event order', () {
     late UserRepository userRepository;
     setUp(() async {
+      registerFallbackValues();
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       userRepository = UserRepository(
         client: Fakes.client(),
-        tokenDb: TokenDb(prefs),
+        tokenDb: LoginDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
         baseUrl: 'fake',
@@ -45,7 +46,15 @@ void main() {
       build: () => AuthenticationBloc(userRepository, onLogout: () {}),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
-        ..add(const LoggedIn(token: Fakes.token)),
+        ..add(
+          const LoggedIn(
+            loginInfo: LoginInfo(
+              token: Fakes.token,
+              endDate: 1111,
+              renewToken: 'renew',
+            ),
+          ),
+        ),
       expect: () => [
         Unauthenticated(userRepository),
         Authenticated(
@@ -62,7 +71,15 @@ void main() {
       build: () => AuthenticationBloc(userRepository, onLogout: () {}),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
-        ..add(const LoggedIn(token: Fakes.token))
+        ..add(
+          const LoggedIn(
+            loginInfo: LoginInfo(
+              token: Fakes.token,
+              endDate: 1111,
+              renewToken: 'renewToken',
+            ),
+          ),
+        )
         ..add(const LoggedOut()),
       expect: () => [
         Unauthenticated(userRepository),
@@ -86,7 +103,7 @@ void main() {
 
       when(() => mockedUserRepository.logout(any()))
           .thenAnswer((_) => Future.value());
-      when(() => mockedUserRepository.persistToken(any()))
+      when(() => mockedUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       notificationMock = MockNotification();
@@ -106,10 +123,24 @@ void main() {
       ),
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
-        ..add(const LoggedIn(token: Fakes.token)),
-      verify: (bloc) =>
-          verify(() => mockedUserRepository.persistToken(Fakes.token))
-              .called(1),
+        ..add(
+          const LoggedIn(
+            loginInfo: LoginInfo(
+              token: Fakes.token,
+              endDate: 1111,
+              renewToken: 'renewToken',
+            ),
+          ),
+        ),
+      verify: (bloc) => verify(
+        () => mockedUserRepository.persistLoginInfo(
+          const LoginInfo(
+            token: Fakes.token,
+            endDate: 1111,
+            renewToken: 'renewToken',
+          ),
+        ),
+      ).called(1),
     );
 
     blocTest(

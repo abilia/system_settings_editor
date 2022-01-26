@@ -21,12 +21,12 @@ class ChangeRepository extends AuthenticationEvent {
 class CheckAuthentication extends AuthenticationEvent {}
 
 class LoggedIn extends AuthenticationEvent {
-  final String token;
+  final LoginInfo loginInfo;
 
-  const LoggedIn({required this.token});
+  const LoggedIn({required this.loginInfo});
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [loginInfo];
 }
 
 enum LoggedOutReason {
