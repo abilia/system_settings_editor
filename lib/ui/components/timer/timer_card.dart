@@ -37,7 +37,7 @@ class TimerCard extends StatelessWidget {
             current: timerOccasion.isOngoing,
             inactive: isPast,
             category: timerOccasion.category,
-            showCategoryColor: true,
+            showCategoryColor: false,
           ),
           child: Material(
             type: MaterialType.transparency,
@@ -108,20 +108,15 @@ class TimeLeft extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (timerOccasion.isOngoing) {
-      return TimerTickerBuilder(
-        timerOccasion.timer,
-        builder: (context, left) => Text(
-          left.toHMSorMS(),
-          style: Theme.of(context).textTheme.subtitle1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-    }
-    return Text(
-      timerOccasion.timer.pausedAt.toHMSorMS(),
-      style: Theme.of(context).textTheme.subtitle1,
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
       overflow: TextOverflow.ellipsis,
+      child: timerOccasion.isOngoing
+          ? TimerTickerBuilder(
+              timerOccasion.timer,
+              builder: (context, left) => Text(left.toHMSorMS()),
+            )
+          : Text(timerOccasion.timer.pausedAt.toHMSorMS()),
     );
   }
 }

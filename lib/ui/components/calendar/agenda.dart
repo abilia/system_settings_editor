@@ -70,7 +70,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                   onNotification: state.isToday ? onScrollNotification : null,
                   child: AbiliaScrollBar(
                     controller: scrollController,
-                    child: ActivityList(
+                    child: EventList(
                       state: state,
                       scrollController: scrollController,
                       bottomPadding: Agenda.bottomPadding,
@@ -91,10 +91,10 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
   }
 }
 
-class ActivityList extends StatelessWidget {
+class EventList extends StatelessWidget {
   final center = GlobalKey();
 
-  ActivityList({
+  EventList({
     Key? key,
     required this.state,
     this.scrollController,
@@ -131,7 +131,7 @@ class ActivityList extends StatelessWidget {
                 if (!isTodayAndNoPast)
                   SliverPadding(
                     padding: EdgeInsets.only(top: topPadding),
-                    sliver: SliverActivityList(
+                    sliver: SliverEventList(
                       state.pastEvents(now),
                       state.day,
                       reversed: state.isToday,
@@ -147,7 +147,7 @@ class ActivityList extends StatelessWidget {
                     top: isTodayAndNoPast ? topPadding : 0.0,
                     bottom: bottomPadding,
                   ),
-                  sliver: SliverActivityList(notPastEvents, state.day),
+                  sliver: SliverEventList(notPastEvents, state.day),
                 ),
               ],
             ],
@@ -190,7 +190,7 @@ class SliverNoActivities extends StatelessWidget {
   }
 }
 
-class SliverActivityList extends StatelessWidget {
+class SliverEventList extends StatelessWidget {
   final List<EventOccasion> events;
 
   // Reversed because slivers before center are called in reverse order
@@ -199,7 +199,7 @@ class SliverActivityList extends StatelessWidget {
   final int _maxIndex;
   final DateTime day;
 
-  const SliverActivityList(
+  const SliverEventList(
     this.events,
     this.day, {
     this.reversed = false,
