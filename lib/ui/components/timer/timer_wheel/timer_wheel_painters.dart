@@ -7,19 +7,19 @@ import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart'
 class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({
     required this.config,
-    required this.timerLengthInMinutes,
-  }) : assert(!timerLengthInMinutes.isNegative,
-            'timerLengthInMinutes cannot be negative') {
-    _totalTimeSweepRadians = timerLengthInMinutes >= Duration.minutesPerHour
+    required this.lengthInMinutes,
+  }) : assert(
+            !lengthInMinutes.isNegative, 'lengthInMinutes cannot be negative') {
+    _totalTimeSweepRadians = lengthInMinutes >= Duration.minutesPerHour
         ? 0
         : pi *
             2 *
-            (Duration.minutesPerHour - timerLengthInMinutes) /
+            (Duration.minutesPerHour - lengthInMinutes) /
             Duration.minutesPerHour;
   }
 
   final TimerWheelConfiguration config;
-  final int timerLengthInMinutes;
+  final int lengthInMinutes;
   late final double _totalTimeSweepRadians;
 
   @override
@@ -68,7 +68,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
     // If timer is not simplified, also paint section numbers and time left as text
     if (config.style != TimerWheelStyle.simplified) {
       for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
-        if (timerLengthInMinutes >=
+        if (lengthInMinutes >=
             i * TimerWheelConfiguration.minutesInEachSection) {
           final numberPointerAngle =
               pi * 2 / TimerWheelConfiguration.nrOfWheelSections * i + pi;

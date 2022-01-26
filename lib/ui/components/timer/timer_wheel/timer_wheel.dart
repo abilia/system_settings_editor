@@ -7,32 +7,39 @@ import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_styles.dart'
 class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({
     Key? key,
-    required this.activeSeconds,
+    required int lengthInSeconds,
     this.onMinutesSelectedChanged,
-  })  : style = TimerWheelStyle.interactive,
-        timerLengthInMinutes = null,
+  })  : activeSeconds = lengthInSeconds,
+        style = TimerWheelStyle.interactive,
+        lengthInMinutes = null,
+        paused = false,
         super(key: key);
 
   const TimerWheel.nonInteractive({
     Key? key,
-    required this.activeSeconds,
-    this.timerLengthInMinutes,
-  })  : style = TimerWheelStyle.nonInteractive,
+    required int secondsLeft,
+    this.lengthInMinutes,
+    this.paused = false,
+  })  : activeSeconds = secondsLeft,
+        style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
 
   const TimerWheel.simplified({
     Key? key,
-    required this.activeSeconds,
-    this.timerLengthInMinutes,
-  })  : style = TimerWheelStyle.simplified,
+    required int secondsLeft,
+    this.lengthInMinutes,
+    this.paused = false,
+  })  : activeSeconds = secondsLeft,
+        style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
         super(key: key);
 
   final TimerWheelStyle style;
   final int activeSeconds;
   final Function(int minutesSelected)? onMinutesSelectedChanged;
-  final int? timerLengthInMinutes;
+  final int? lengthInMinutes;
+  final bool paused;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -48,6 +55,7 @@ class _TimerWheelState extends State<TimerWheel> {
       final config = TimerWheelConfiguration(
         canvasSize: constraints.biggest,
         style: widget.style,
+        paused: widget.paused,
       );
 
       final Widget timerWheel = Stack(
@@ -57,8 +65,8 @@ class _TimerWheelState extends State<TimerWheel> {
               size: constraints.biggest,
               painter: TimerWheelBackgroundPainter(
                 config: config,
-                timerLengthInMinutes:
-                    widget.timerLengthInMinutes ?? Duration.minutesPerHour,
+                lengthInMinutes:
+                    widget.lengthInMinutes ?? Duration.minutesPerHour,
               ),
             ),
           ),
