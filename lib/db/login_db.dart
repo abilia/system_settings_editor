@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Handles storage of auth token used when accessing backend.
+// Handles storage of auth token and other login info used when accessing backend.
 // NOTE: there was a problem when accessing secure storage when app in background.
 // Therefore shared preferences is used instead.
 class LoginDb {
