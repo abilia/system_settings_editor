@@ -169,16 +169,16 @@ class TimerCardWheel extends StatelessWidget {
         timerOccasion.timer,
         stream: GetIt.I<Ticker>().minutes,
         builder: (context, left) => TimerWheel.simplified(
-          activeSeconds: left.inSeconds,
-          timerLengthInMinutes: timerOccasion.timer.duration.inMinutes,
+          secondsLeft: left.inSeconds,
+          lengthInMinutes: timerOccasion.timer.duration.inMinutes,
         ),
       );
     }
     return TimerWheel.simplified(
-      activeSeconds: timerOccasion.timer.paused
+      secondsLeft: timerOccasion.timer.paused
           ? timerOccasion.timer.pausedAt.inSeconds
           : 0,
-      timerLengthInMinutes: timerOccasion.timer.duration.inMinutes,
+      lengthInMinutes: timerOccasion.timer.duration.inMinutes,
     );
   }
 }
