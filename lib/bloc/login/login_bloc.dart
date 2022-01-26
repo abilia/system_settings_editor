@@ -68,7 +68,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      final licenses = await authState.userRepository.getLicensesFromApi(loginInfo.token);
+      final licenses =
+          await authState.userRepository.getLicensesFromApi(loginInfo.token);
       if (licenses.anyValidLicense(clockBloc.state)) {
         authenticationBloc.add(LoggedIn(loginInfo: loginInfo));
         yield const LoginSucceeded();

@@ -73,7 +73,8 @@ class AuthenticationBloc
   Future _loggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {
     final repo = state.userRepository;
     await repo.persistLoginInfo(event.loginInfo);
-    final nextState = await _tryGetUser(repo, event.loginInfo.token, newlyLoggedIn: true);
+    final nextState =
+        await _tryGetUser(repo, event.loginInfo.token, newlyLoggedIn: true);
     emit(nextState);
   }
 
