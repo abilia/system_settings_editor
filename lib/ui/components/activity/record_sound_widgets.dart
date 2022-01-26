@@ -153,7 +153,10 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                child: RecordSoundPage(title: label),
+                                child: RecordSoundPage(
+                                  title: label,
+                                  recordedAudio: recordedAudio,
+                                ),
                               ),
                             ),
                             settings:
@@ -348,19 +351,25 @@ class _TimeDisplay extends StatelessWidget {
                   prev.duration.inSeconds != curr.duration.inSeconds),
           builder: (context, recordState) => Text(
             _formatTime(
-              recordState is RecordingSoundState
-                  ? recordState.duration
-                  : soundState is SoundPlaying
-                      ? soundState.position
-                      : recordState is RecordedSoundState
-                          ? recordState.duration
-                          : Duration.zero,
+              _resolveDuration(recordState, soundState),
             ),
             style: Theme.of(context).textTheme.headline4,
           ),
         ),
       ),
     );
+  }
+
+  Duration _resolveDuration(
+      RecordSoundState recordState, SoundState soundState) {
+    return recordState is RecordingSoundState
+        ? recordState.duration
+        : soundState is SoundPlaying
+            ? soundState.position
+            : recordState is NewRecordedSoundState ||
+                    recordState is EmptyRecordSoundState
+                ? recordState.duration
+                : soundState.duration;
   }
 
   String _formatTime(Duration d) {

@@ -33,20 +33,21 @@ class SoundCubit extends Cubit<SoundState> {
   SoundCubit({
     required this.storage,
     required this.userFileCubit,
-  }) : super(const NoSoundPlaying()) {
+  }) : super(const NoSoundPlaying(Duration.zero)) {
     onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
-      emit(const NoSoundPlaying());
+      emit(NoSoundPlaying(state.duration));
     });
     onPlayerError = audioPlayer.onPlayerError.listen((event) {
       log.warning(event);
-      emit(const NoSoundPlaying());
+      emit(NoSoundPlaying(state.duration));
     });
     audioPositionChanged = audioPlayer.onAudioPositionChanged.listen(
       (position) async {
         final s = state;
         if (s is SoundPlaying) {
-          final duration =
-              s.duration == 0 ? await audioPlayer.getDuration() : s.duration;
+          final duration = s.duration == Duration.zero
+              ? Duration(milliseconds: await audioPlayer.getDuration())
+              : s.duration;
           emit(
             SoundPlaying(
               s.currentSound,
@@ -57,6 +58,12 @@ class SoundCubit extends Cubit<SoundState> {
         }
       },
     );
+    audioPlayer.onDurationChanged.listen((Duration duration) async {
+      log.fine('emitting sound duration ' + duration.toString());
+      if (state is! SoundPlaying) {
+        emit(SoundDuration(duration));
+      }
+    });
   }
 
   Future<void> play(AbiliaFile abiliaFile) async {
@@ -65,7 +72,16 @@ class SoundCubit extends Cubit<SoundState> {
     if (file != null) {
       log.fine('playing: $file');
       await audioPlayer.play(file.path, isLocal: true);
-      emit(SoundPlaying(abiliaFile));
+      emit(SoundPlaying(abiliaFile, duration: Duration.zero));
+    } else {
+      log.warning('could not resolve $abiliaFile from user files');
+    }
+  }
+
+  Future<void> set(AbiliaFile abiliaFile) async {
+    final file = _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
+    if (file != null) {
+      await audioPlayer.setUrl(file.path);
     } else {
       log.warning('could not resolve $abiliaFile from user files');
     }
@@ -113,7 +129,7 @@ class SoundCubit extends Cubit<SoundState> {
 
   Future<void> stopSound() async {
     await audioPlayer.stop();
-    emit(const NoSoundPlaying());
+    emit(NoSoundPlaying(state.duration));
   }
 
   @override

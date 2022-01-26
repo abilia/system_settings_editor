@@ -3,14 +3,14 @@ part of 'record_sound_cubit.dart';
 abstract class RecordSoundState extends Equatable {
   final Duration duration;
 
-  const RecordSoundState([this.duration = Duration.zero]);
+  const RecordSoundState(this.duration);
 
   @override
   List<Object?> get props => [duration];
 }
 
 class EmptyRecordSoundState extends RecordSoundState {
-  const EmptyRecordSoundState() : super();
+  const EmptyRecordSoundState() : super(Duration.zero);
 }
 
 abstract class RecordedSoundState extends RecordSoundState {

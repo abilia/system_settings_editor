@@ -25,12 +25,16 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   StreamSubscription<Duration>? _tickerSubscription;
   final AudioTicker _ticker = const AudioTicker(50);
 
-  RecordSoundCubit({required AbiliaFile originalSoundFile, Record? record})
+  RecordSoundCubit(
+      {required AbiliaFile originalSoundFile,
+      Record? record,
+      Duration? initialDuration})
       : _recorder = record ?? Record(),
         super(
           originalSoundFile.isEmpty
               ? const EmptyRecordSoundState()
-              : UnchangedRecordingSoundState(originalSoundFile, Duration.zero),
+              : UnchangedRecordingSoundState(
+                  originalSoundFile, initialDuration ?? Duration.zero),
         );
 
   Future<void> startRecording() async {
