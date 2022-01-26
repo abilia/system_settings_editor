@@ -18,7 +18,7 @@ class RecordSoundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) {
         final permission = permissionState.status[Permission.microphone];
         return BlocProvider<SoundCubit>(
@@ -131,9 +131,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                 ? null
                 : permissionStatus == PermissionStatus.denied
                     ? () async {
-                        context.read<PermissionBloc>().add(
-                              const RequestPermissions([Permission.microphone]),
-                            );
+                        context
+                            .read<PermissionCubit>()
+                            .requestPermissions([Permission.microphone]);
                       }
                     : () async {
                         final authProviders = copiedAuthProviders(context);

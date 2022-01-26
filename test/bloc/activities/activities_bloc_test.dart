@@ -17,16 +17,16 @@ void main() {
 
   late ActivitiesBloc activitiesBloc;
   late MockActivityRepository mockActivityRepository;
-  late PushBloc mockPushBloc;
+  late PushCubit mockPushCubit;
   late SyncBloc mockSyncBloc;
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
     mockActivityRepository = MockActivityRepository();
-    mockPushBloc = MockPushBloc();
+    mockPushCubit = MockPushCubit();
     mockSyncBloc = MockSyncBloc();
-    when(() => mockPushBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(() => mockPushCubit.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockActivityRepository.load())
         .thenAnswer((_) => Future.value(<Activity>[]));
     when(() => mockActivityRepository.save(any()))
@@ -34,7 +34,7 @@ void main() {
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
-      pushBloc: mockPushBloc,
+      pushCubit: mockPushCubit,
       syncBloc: mockSyncBloc,
     );
   });
@@ -44,7 +44,7 @@ void main() {
       'initial state is ActivitiesNotLoaded',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       verify: (ActivitiesBloc bloc) => expect(
@@ -52,11 +52,12 @@ void main() {
         ActivitiesNotLoaded(),
       ),
     );
+
     blocTest(
       'load activities calls load activities on mockActivityRepostitory',
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
@@ -70,7 +71,7 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[])),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
@@ -96,7 +97,7 @@ void main() {
           .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc.add(LoadActivities()),
@@ -110,7 +111,7 @@ void main() {
             .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushBloc: mockPushBloc,
+              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
             ),
         act: (ActivitiesBloc bloc) => bloc
@@ -133,7 +134,7 @@ void main() {
             .thenAnswer((_) => Future.value(<Activity>[activity1])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushBloc: mockPushBloc,
+              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
             ),
         act: (ActivitiesBloc bloc) => bloc
@@ -157,7 +158,7 @@ void main() {
             .thenAnswer((_) => Future.value(<Activity>[storedActivity])),
         build: () => ActivitiesBloc(
               activityRepository: mockActivityRepository,
-              pushBloc: mockPushBloc,
+              pushCubit: mockPushCubit,
               syncBloc: mockSyncBloc,
             ),
         act: (ActivitiesBloc bloc) => bloc
@@ -183,7 +184,7 @@ void main() {
           .thenAnswer((_) => Future.value(fullActivityList)),
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc
@@ -212,7 +213,7 @@ void main() {
       },
       build: () => ActivitiesBloc(
         activityRepository: mockActivityRepository,
-        pushBloc: mockPushBloc,
+        pushCubit: mockPushCubit,
         syncBloc: mockSyncBloc,
       ),
       act: (ActivitiesBloc bloc) => bloc
@@ -1129,6 +1130,6 @@ void main() {
 
   tearDown(() {
     activitiesBloc.close();
-    mockPushBloc.close();
+    mockPushCubit.close();
   });
 }

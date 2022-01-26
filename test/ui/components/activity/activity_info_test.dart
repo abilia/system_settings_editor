@@ -31,7 +31,7 @@ void main() {
             BlocProvider<UserFileCubit>(
               create: (context) => UserFileCubit(
                 fileStorage: FakeFileStorage(),
-                pushBloc: FakePushBloc(),
+                pushCubit: FakePushCubit(),
                 syncBloc: FakeSyncBloc(),
                 userFileRepository: FakeUserFileRepository(),
               ),
@@ -39,8 +39,8 @@ void main() {
             BlocProvider<ClockBloc>(
               create: (context) => ClockBloc.fixed(startTime),
             ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(
                 settingsDb: FakeSettingsDb(),
               ),
             ),

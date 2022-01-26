@@ -4,7 +4,7 @@ import 'package:seagull/main.dart';
 import 'package:seagull/ui/all.dart';
 
 extension IncreaseSizeOnMp on WidgetTester {
-  Future<void> pumpApp({bool use24 = false, PushBloc? pushBloc}) async {
+  Future<void> pumpApp({bool use24 = false, PushCubit? pushCubit}) async {
     if (Config.isMP) {
       binding.window.physicalSizeTestValue = const Size(800, 1280);
       binding.window.devicePixelRatioTestValue = 1;
@@ -17,7 +17,7 @@ extension IncreaseSizeOnMp on WidgetTester {
       binding.window.alwaysUse24HourFormatTestValue = use24;
       addTearDown(binding.window.clearAlwaysUse24HourTestValue);
     }
-    await pumpWidget(App(pushBloc: pushBloc));
+    await pumpWidget(App(pushCubit: pushCubit));
     await pumpAndSettle();
   }
 }

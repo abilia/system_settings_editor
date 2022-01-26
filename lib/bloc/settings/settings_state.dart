@@ -1,4 +1,4 @@
-part of 'settings_bloc.dart';
+part of 'settings_cubit.dart';
 
 class SettingsState extends Equatable {
   final bool textToSpeech;

@@ -58,8 +58,8 @@ void main() {
             providers: [
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(settingsDb: mockSettingsDb),
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(settingsDb: mockSettingsDb),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),

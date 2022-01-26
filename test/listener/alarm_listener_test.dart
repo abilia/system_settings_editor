@@ -567,8 +567,8 @@ void main() {
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
-      final pushBloc = PushBloc();
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
       final alarmScreenFinder = find.byType(PopAwareAlarmPage);
 
@@ -597,7 +597,7 @@ void main() {
           Future.value([
             activity1.copyWith(startTime: activity1StartTime.add(1.minutes()))
           ]));
-      pushBloc.add(const PushEvent('calendar'));
+      pushCubit.update('calendar');
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm

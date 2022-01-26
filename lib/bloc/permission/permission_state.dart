@@ -1,4 +1,4 @@
-part of 'permission_bloc.dart';
+part of 'permission_cubit.dart';
 
 class PermissionState extends Equatable {
   const PermissionState(this.status);

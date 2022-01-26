@@ -50,16 +50,16 @@ void main() {
     });
 
     testWidgets('Push loads activities', (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
 
-      pushBloc.add(const PushEvent('calendar'));
+      pushCubit.update('calendar');
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);

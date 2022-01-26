@@ -19,7 +19,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<NotificationCubit>(blocContext),
       _tryGetBloc<CalendarViewCubit>(blocContext),
       _tryGetBloc<LicenseBloc>(blocContext),
-      _tryGetBloc<PermissionBloc>(blocContext),
+      _tryGetBloc<PermissionCubit>(blocContext),
       _tryGetBloc<TimepillarCubit>(blocContext),
       _tryGetBloc<TimerCubit>(blocContext),
       if (Config.isMP) _tryGetBloc<WakeLockCubit>(blocContext),

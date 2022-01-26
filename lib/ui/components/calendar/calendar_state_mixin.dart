@@ -3,9 +3,8 @@ import 'package:seagull/bloc/all.dart';
 
 mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
   Future<void> refresh() {
-    final pushBloc = context.read<PushBloc>();
-    pushBloc.add(const PushEvent('refresh'));
-    return pushBloc.stream.firstWhere((s) => s is PushReceived);
+    context.read<PushCubit>().update('refresh');
+    return Future.delayed(const Duration(milliseconds: 500));
   }
 
   bool onScrollNotification(_) {

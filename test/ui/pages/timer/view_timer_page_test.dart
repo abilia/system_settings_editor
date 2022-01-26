@@ -63,8 +63,8 @@ void main() {
             value: mockMemoplannerSettingsBloc,
           ),
           BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: FakeSettingsDb(),
             ),
           ),

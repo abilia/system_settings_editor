@@ -118,8 +118,8 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
         text: Translator.of(context).translate.allow,
         onPressed: () async {
           context
-              .read<PermissionBloc>()
-              .add(const RequestPermissions([Permission.systemAlertWindow]));
+              .read<PermissionCubit>()
+              .requestPermissions([Permission.systemAlertWindow]);
           await Navigator.of(context).maybePop();
         },
       );
