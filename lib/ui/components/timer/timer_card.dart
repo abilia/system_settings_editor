@@ -175,6 +175,7 @@ class TimerCardWheel extends StatelessWidget {
       );
     }
     return TimerWheel.simplified(
+      isPast: timerOccasion.isPast,
       secondsLeft: timerOccasion.timer.paused
           ? timerOccasion.timer.pausedAt.inSeconds
           : 0,
