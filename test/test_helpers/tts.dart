@@ -16,9 +16,19 @@ void setupFakeTts() {
 }
 
 extension VerifyTts on WidgetTester {
-  Future verifyTts(Finder finder,
-      {String? contains, String? exact, bool warnIfMissed = true}) async {
-    await longPress(finder, warnIfMissed: warnIfMissed);
+  Future verifyTts(
+    Finder finder, {
+    String? contains,
+    String? exact,
+    bool warnIfMissed = true,
+    useTap = false,
+  }) async {
+    if (useTap) {
+      await tap(finder, warnIfMissed: warnIfMissed);
+    } else {
+      await longPress(finder, warnIfMissed: warnIfMissed);
+    }
+
     final arg = _spoken;
     if (arg == null) throw 'tts not called';
     if (contains != null) {

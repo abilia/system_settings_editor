@@ -1,7 +1,10 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get_it/get_it.dart';
 
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class AbiliaTextInput extends StatelessWidget {
@@ -167,21 +170,29 @@ class _DefaultInputPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SubHeading(widget.heading),
-                  TextField(
-                    key: TestKey.input,
-                    controller: controller,
-                    keyboardType: widget.keyboardType,
-                    inputFormatters: widget.inputFormatters,
-                    textCapitalization: widget.textCapitalization,
-                    style: Theme.of(context).textTheme.bodyText1,
-                    autofocus: true,
-                    focusNode: focusNode,
-                    onEditingComplete: _validInput ? _returnNewText : () {},
-                    maxLines: widget.maxLines,
-                    minLines: 1,
-                    smartDashesType: SmartDashesType.disabled,
-                    smartQuotesType: SmartQuotesType.disabled,
-                    autocorrect: widget.autocorrect,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          key: TestKey.input,
+                          controller: controller,
+                          keyboardType: widget.keyboardType,
+                          inputFormatters: widget.inputFormatters,
+                          textCapitalization: widget.textCapitalization,
+                          style: Theme.of(context).textTheme.bodyText1,
+                          autofocus: true,
+                          focusNode: focusNode,
+                          onEditingComplete:
+                              _validInput ? _returnNewText : () {},
+                          maxLines: widget.maxLines,
+                          minLines: 1,
+                          smartDashesType: SmartDashesType.disabled,
+                          smartQuotesType: SmartQuotesType.disabled,
+                          autocorrect: widget.autocorrect,
+                        ),
+                      ),
+                      _TtsPlayButton(controller: controller),
+                    ],
                   ),
                 ],
               ),
@@ -202,6 +213,73 @@ class _DefaultInputPageState
 
   void _returnNewText() {
     Navigator.of(context).maybePop(controller.text);
+  }
+}
+
+class _TtsPlayButton extends StatefulWidget {
+  const _TtsPlayButton({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+
+  @override
+  State<_TtsPlayButton> createState() => _TtsPlayButtonState();
+}
+
+class _TtsPlayButtonState extends State<_TtsPlayButton> {
+  bool ttsIsActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(() => setState(() {}));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      buildWhen: (previous, current) =>
+          previous.textToSpeech != current.textToSpeech,
+      builder: (context, settingsState) => CollapsableWidget(
+        collapsed:
+            !(settingsState.textToSpeech && widget.controller.text.isNotEmpty),
+        axis: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              width: layout.defaultTextInputPage.textFieldActionButtonSpacing,
+            ),
+            IconActionButton(
+              key: TestKey.ttsPlayButton,
+              onPressed: () async {
+                if (ttsIsActive) {
+                  GetIt.I<FlutterTts>().stop().whenComplete(() {
+                    if (mounted) {
+                      setState(() => ttsIsActive = false);
+                    }
+                  });
+                } else {
+                  setState(() => ttsIsActive = true);
+                  GetIt.I<FlutterTts>()
+                      .speak(widget.controller.text)
+                      .whenComplete(() {
+                    if (mounted) {
+                      setState(() => ttsIsActive = false);
+                    }
+                  });
+                }
+              },
+              child: Icon(
+                ttsIsActive ? AbiliaIcons.stop : AbiliaIcons.playSound,
+              ),
+              style: actionButtonStyleDark,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

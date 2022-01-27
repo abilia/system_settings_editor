@@ -158,5 +158,7 @@ class _MediumLayout extends Layout {
               radius: 18,
             ),
           ),
+          defaultTextInputPage: const DefaultTextInputPageLayout(
+              textFieldActionButtonSpacing: 18),
         );
 }

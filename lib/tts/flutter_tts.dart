@@ -17,6 +17,8 @@ Future<FlutterTts> flutterTts() async {
     ]);
   }
 
+  await tts.awaitSpeakCompletion(true);
+
   tts.setStartHandler(() {
     _ttsLog.finest('start');
   });

@@ -29,6 +29,7 @@ class Layout {
   final EventCardLayout eventCard;
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
+  final DefaultTextInputPageLayout defaultTextInputPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -45,6 +46,7 @@ class Layout {
     this.eventCard = const EventCardLayout(),
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
+    this.defaultTextInputPage = const DefaultTextInputPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -416,5 +418,13 @@ class TwoTimepillarLayout {
     this.verticalMargin = 24,
     this.radius = 9,
     this.nightMargin = 4,
+  });
+}
+
+class DefaultTextInputPageLayout {
+  final double textFieldActionButtonSpacing;
+
+  const DefaultTextInputPageLayout({
+    this.textFieldActionButtonSpacing = 12,
   });
 }
