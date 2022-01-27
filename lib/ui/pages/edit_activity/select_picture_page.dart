@@ -155,6 +155,7 @@ class SelectPictureBody extends StatelessWidget {
                   ],
                   if (Config.isMPGO && state.displayLocalImages) ...[
                     ImageSourceWidget(
+                      key: TestKey.localImagesPickField,
                       text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,
                       permission: Permission.photos,
@@ -164,6 +165,7 @@ class SelectPictureBody extends StatelessWidget {
                   ],
                   if (state.displayCamera)
                     ImageSourceWidget(
+                      key: TestKey.cameraPickField,
                       text: translate.takeNewPhoto,
                       imageSource: ImageSource.camera,
                       permission: Permission.camera,

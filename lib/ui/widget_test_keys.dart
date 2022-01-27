@@ -92,5 +92,6 @@ class TestKey {
       activityViewRemoveSwitch = Key('activityViewRemoveSwitch'),
       activityViewEditSwitch = Key('activityViewEditSwitch'),
       hours = Key('hours'),
-      minutes = Key('minutes');
+      minutes = Key('minutes'),
+      localImagesPickField = Key('localImages');
 }
