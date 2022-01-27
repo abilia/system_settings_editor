@@ -248,10 +248,10 @@ void main() {
 
     testWidgets('hides timeline after push update',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
@@ -265,7 +265,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -326,8 +326,8 @@ void main() {
     });
 
     testWidgets('hourTimeline shows on push', (WidgetTester tester) async {
-      final pushBloc = PushBloc();
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
 
@@ -340,7 +340,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -377,10 +377,10 @@ void main() {
 
     testWidgets(' memoplanner settings - show category push update ',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
       await tester.pumpAndSettle();
 
@@ -397,7 +397,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 

@@ -678,6 +678,8 @@ abstract class Translated {
   final String menuRemovalWarning =
       'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.';
 
+  final String selectADayToViewDetails = 'Select a day to view more details';
+
   final String topField = 'Top Field';
 
   final String showBrowseButtons = 'Show browse buttons';

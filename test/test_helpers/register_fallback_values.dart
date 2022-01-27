@@ -19,7 +19,6 @@ void registerFallbackValues() {
   registerFallbackValue(File(''));
   registerFallbackValue(TZDateTime.utc(2021));
   registerFallbackValue(const NotificationDetails());
-  registerFallbackValue(const PushEvent(''));
   registerFallbackValue(PushReady());
   registerFallbackValue(const ActivitySaved());
   registerFallbackValue('');
@@ -36,7 +35,7 @@ void registerFallbackValues() {
   registerFallbackValue(const EventsLoading());
   registerFallbackValue(SortablesNotLoaded());
   registerFallbackValue(const LoadSortables());
-  registerFallbackValue(const TimerState(timers: []));
+  registerFallbackValue(TimerState(timers: const []));
   registerFallbackValue(
     AbiliaTimer(
       id: '',

@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/abilia_timer.dart';
-import 'package:seagull/models/settings/memoplanner_settings.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -63,8 +62,8 @@ void main() {
             value: mockMemoplannerSettingsBloc,
           ),
           BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: FakeSettingsDb(),
             ),
           ),

@@ -7,27 +7,30 @@ import 'package:seagull/ui/components/timer/timer_wheel/timer_wheel_config.dart'
 class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({
     required this.config,
-    required this.timerLengthInMinutes,
-  }) : assert(!timerLengthInMinutes.isNegative,
-            'timerLengthInMinutes cannot be negative') {
-    _totalTimeSweepRadians = timerLengthInMinutes >= Duration.minutesPerHour
+    required this.lengthInMinutes,
+  }) : assert(
+            !lengthInMinutes.isNegative, 'lengthInMinutes cannot be negative') {
+    _totalTimeSweepRadians = lengthInMinutes >= Duration.minutesPerHour
         ? 0
         : pi *
             2 *
-            (Duration.minutesPerHour - timerLengthInMinutes) /
+            (Duration.minutesPerHour - lengthInMinutes) /
             Duration.minutesPerHour;
   }
 
   final TimerWheelConfiguration config;
-  final int timerLengthInMinutes;
+  final int lengthInMinutes;
   late final double _totalTimeSweepRadians;
 
   @override
   void paint(Canvas canvas, Size size) {
-    var wheelShape = _getWheelShape(Size(
-      config.outerCircleDiameter,
-      config.outerCircleDiameter,
-    ));
+    var wheelShape = _getWheelShape(
+      Size(
+        config.outerCircleDiameter,
+        config.outerCircleDiameter,
+      ),
+      config.style,
+    );
     wheelShape = wheelShape.shift(Offset(
       (size.width - config.outerCircleDiameter) / 2,
       (size.height - config.outerCircleDiameter) / 2,
@@ -68,7 +71,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
     // If timer is not simplified, also paint section numbers and time left as text
     if (config.style != TimerWheelStyle.simplified) {
       for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
-        if (timerLengthInMinutes >=
+        if (lengthInMinutes >=
             i * TimerWheelConfiguration.minutesInEachSection) {
           final numberPointerAngle =
               pi * 2 / TimerWheelConfiguration.nrOfWheelSections * i + pi;
@@ -150,10 +153,13 @@ class TimerWheelForegroundPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var wheelShape = _getWheelShape(Size(
-      config.outerCircleDiameter,
-      config.outerCircleDiameter,
-    ));
+    var wheelShape = _getWheelShape(
+      Size(
+        config.outerCircleDiameter,
+        config.outerCircleDiameter,
+      ),
+      config.style,
+    );
     wheelShape = wheelShape.shift(Offset(
       (size.width - config.outerCircleDiameter) / 2,
       (size.height - config.outerCircleDiameter) / 2,
@@ -289,69 +295,144 @@ class TimerWheelForegroundPainter extends CustomPainter {
   }
 }
 
-Path _getWheelShape(Size size) {
-  //scaleFactor
-  final sf = size.shortestSide / 212.0;
+Path _getWheelShape(Size size, TimerWheelStyle timerWheelStyle) {
+  Path getLargeWheelShape(Size size) {
+    //scaleFactor
+    final sf = size.shortestSide / 212.0;
 
-  final pointA = Offset(100.99 * sf, 0.75 * sf);
-  final controlA1 = Offset(85.44 * sf, 1.48 * sf);
-  final controlA2 = Offset(102.77 * sf, 0.67 * sf);
+    final pointA = Offset(100.99 * sf, 0.75 * sf);
+    final controlA1 = Offset(85.44 * sf, 1.48 * sf);
+    final controlA2 = Offset(102.77 * sf, 0.67 * sf);
 
-  final pointB = Offset(104.25 * sf, 3.93 * sf);
-  final controlB1 = Offset(104.25 * sf, 2.12 * sf);
+    final pointB = Offset(104.25 * sf, 3.93 * sf);
+    final controlB1 = Offset(104.25 * sf, 2.12 * sf);
 
-  final pointC = Offset(pointB.dx, 49.02 * sf);
-  final controlC1 = Offset(pointC.dx, 50.78 * sf);
+    final pointC = Offset(pointB.dx, 49.02 * sf);
+    final controlC1 = Offset(pointC.dx, 50.78 * sf);
 
-  final pointD = Offset(101.01 * sf, 52.54 * sf);
-  final controlD1 = Offset(102.83 * sf, 52.25 * sf);
-  final controlD2 = Offset(94.82 * sf, 52.99 * sf);
+    final pointD = Offset(101.01 * sf, 52.54 * sf);
+    final controlD1 = Offset(102.83 * sf, 52.25 * sf);
+    final controlD2 = Offset(94.82 * sf, 52.99 * sf);
 
-  final pointE = Offset(83.53 * sf, 57.09 * sf);
-  final controlE1 = Offset(88.94 * sf, 54.61 * sf);
-  final controlE2 = Offset(81.87 * sf, 57.86 * sf);
+    final pointE = Offset(83.53 * sf, 57.09 * sf);
+    final controlE1 = Offset(88.94 * sf, 54.61 * sf);
+    final controlE2 = Offset(81.87 * sf, 57.86 * sf);
 
-  final pointF = Offset(79.02 * sf, 55.77 * sf);
-  final controlF1 = Offset(79.9 * sf, 57.29 * sf);
+    final pointF = Offset(79.02 * sf, 55.77 * sf);
+    final controlF1 = Offset(79.9 * sf, 57.29 * sf);
 
-  final pointG = Offset(56.47 * sf, 16.71 * sf);
-  final controlG1 = Offset(55.56 * sf, 15.14 * sf);
+    final pointG = Offset(56.47 * sf, 16.71 * sf);
+    final controlG1 = Offset(55.56 * sf, 15.14 * sf);
 
-  final pointH = Offset(57.7 * sf, 12.33 * sf);
-  final controlH1 = Offset(56.12 * sf, 13.15 * sf);
-  final controlH2 = Offset(70.77 * sf, 5.58 * sf);
+    final pointH = Offset(57.7 * sf, 12.33 * sf);
+    final controlH1 = Offset(56.12 * sf, 13.15 * sf);
+    final controlH2 = Offset(70.77 * sf, 5.58 * sf);
 
-  final sectionShape = Path()
-    ..moveTo(pointA.dx, pointA.dy)
-    ..cubicTo(controlA2.dx, controlA2.dy, controlB1.dx, controlB1.dy, pointB.dx,
-        pointB.dy)
-    ..lineTo(pointC.dx, pointC.dy) // ok
-    ..cubicTo(controlC1.dx, controlC1.dy, controlD1.dx, controlD1.dy, pointD.dx,
-        pointD.dy)
-    ..cubicTo(controlD2.dx, controlD2.dy, controlE1.dx, controlE1.dy, pointE.dx,
-        pointE.dy)
-    ..cubicTo(controlE2.dx, controlE2.dy, controlF1.dx, controlF1.dy, pointF.dx,
-        pointF.dy)
-    ..lineTo(pointG.dx, pointG.dy) // ok
-    ..cubicTo(controlG1.dx, controlG1.dy, controlH1.dx, controlH1.dy, pointH.dx,
-        pointH.dy)
-    ..cubicTo(controlH2.dx, controlH2.dy, controlA1.dx, controlA1.dy, pointA.dx,
-        pointA.dy)
-    ..close();
+    final sectionShape = Path()
+      ..moveTo(pointA.dx, pointA.dy)
+      ..cubicTo(controlA2.dx, controlA2.dy, controlB1.dx, controlB1.dy,
+          pointB.dx, pointB.dy)
+      ..lineTo(pointC.dx, pointC.dy) // ok
+      ..cubicTo(controlC1.dx, controlC1.dy, controlD1.dx, controlD1.dy,
+          pointD.dx, pointD.dy)
+      ..cubicTo(controlD2.dx, controlD2.dy, controlE1.dx, controlE1.dy,
+          pointE.dx, pointE.dy)
+      ..cubicTo(controlE2.dx, controlE2.dy, controlF1.dx, controlF1.dy,
+          pointF.dx, pointF.dy)
+      ..lineTo(pointG.dx, pointG.dy) // ok
+      ..cubicTo(controlG1.dx, controlG1.dy, controlH1.dx, controlH1.dy,
+          pointH.dx, pointH.dy)
+      ..cubicTo(controlH2.dx, controlH2.dy, controlA1.dx, controlA1.dy,
+          pointA.dx, pointA.dy)
+      ..close();
 
-  final timerWheelShape = Path();
+    final timerWheelShape = Path();
 
-  for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
-    timerWheelShape.addPath(
-        sectionShape.transform(Matrix4Transform()
-            .rotate(
-              (pi / 6) * i,
-              origin: Offset(size.width / 2, size.height / 2),
-            )
-            .matrix4
-            .storage),
-        const Offset(0, 0));
+    for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
+      timerWheelShape.addPath(
+          sectionShape.transform(Matrix4Transform()
+              .rotate(
+                (pi / 6) * i,
+                origin: Offset(size.width / 2, size.height / 2),
+              )
+              .matrix4
+              .storage),
+          const Offset(0, 0));
+    }
+
+    return timerWheelShape;
   }
 
-  return timerWheelShape;
+  Path getSmallWheelShape(Size size) {
+    //scaleFactor
+    final sf = size.shortestSide / 43.9;
+
+    final pointA = Offset(20.45 * sf, 0.25 * sf);
+    final controlA1 = Offset(17.58 * sf, 0.45 * sf);
+    final controlA2 = Offset(20.85 * sf, 0.22 * sf);
+
+    final pointB = Offset(21.2 * sf, 0.98 * sf);
+    final controlB1 = Offset(21.2 * sf, 0.55 * sf);
+
+    final pointC = Offset(pointB.dx, 10.01 * sf);
+    final controlC1 = Offset(pointC.dx, 10.4 * sf);
+
+    final pointD = Offset(20.47 * sf, 10.8 * sf);
+    final controlD1 = Offset(20.88 * sf, 10.74 * sf);
+    final controlD2 = Offset(19.48 * sf, 10.93 * sf);
+
+    final pointE = Offset(17.66 * sf, 11.55 * sf);
+    final controlE1 = Offset(18.54 * sf, 11.18 * sf);
+    final controlE2 = Offset(17.27 * sf, 11.71 * sf);
+
+    final pointF = Offset(16.63 * sf, 11.23 * sf);
+    final controlF1 = Offset(16.82 * sf, 11.57 * sf);
+
+    final pointG = Offset(12.11 * sf, 3.41 * sf);
+    final controlG1 = Offset(11.9 * sf, 3.04 * sf);
+
+    final pointH = Offset(12.4 * sf, 2.4 * sf);
+    final controlH1 = Offset(12.03 * sf, 2.58 * sf);
+    final controlH2 = Offset(14.86 * sf, 1.2 * sf);
+
+    final sectionShape = Path()
+      ..moveTo(pointA.dx, pointA.dy)
+      ..cubicTo(controlA2.dx, controlA2.dy, controlB1.dx, controlB1.dy,
+          pointB.dx, pointB.dy)
+      ..lineTo(pointC.dx, pointC.dy) // ok
+      ..cubicTo(controlC1.dx, controlC1.dy, controlD1.dx, controlD1.dy,
+          pointD.dx, pointD.dy)
+      ..cubicTo(controlD2.dx, controlD2.dy, controlE1.dx, controlE1.dy,
+          pointE.dx, pointE.dy)
+      ..cubicTo(controlE2.dx, controlE2.dy, controlF1.dx, controlF1.dy,
+          pointF.dx, pointF.dy)
+      ..lineTo(pointG.dx, pointG.dy) // ok
+      ..cubicTo(controlG1.dx, controlG1.dy, controlH1.dx, controlH1.dy,
+          pointH.dx, pointH.dy)
+      ..cubicTo(controlH2.dx, controlH2.dy, controlA1.dx, controlA1.dy,
+          pointA.dx, pointA.dy)
+      ..close();
+
+    final timerWheelShape = Path();
+
+    for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
+      timerWheelShape.addPath(
+          sectionShape.transform(Matrix4Transform()
+              .rotate(
+                (pi / 6) * i,
+                origin: Offset(size.width / 2, size.height / 2),
+              )
+              .matrix4
+              .storage),
+          const Offset(0, 0));
+    }
+
+    return timerWheelShape;
+  }
+
+  if (timerWheelStyle == TimerWheelStyle.simplified) {
+    return getSmallWheelShape(size);
+  } else {
+    return getLargeWheelShape(size);
+  }
 }

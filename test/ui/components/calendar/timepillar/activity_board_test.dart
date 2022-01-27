@@ -81,8 +81,8 @@ void main() {
             BlocProvider(
               create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,

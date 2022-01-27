@@ -48,7 +48,7 @@ class TimerDurationWiz extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 26.s),
                 child: TimerWheel.interactive(
-                  activeSeconds: state.duration.inSeconds,
+                  lengthInSeconds: state.duration.inSeconds,
                   onMinutesSelectedChanged: (minutesSelected) {
                     HapticFeedback.selectionClick();
                     context.read<TimerWizardCubit>().updateDuration(

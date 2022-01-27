@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/abilia_timer.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -36,8 +35,8 @@ class TimerPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
                   child: TimerWheel.nonInteractive(
-                    activeSeconds: timer.duration.inSeconds,
-                    timerLengthInMinutes: timer.duration.inMinutes,
+                    secondsLeft: timer.duration.inSeconds,
+                    lengthInMinutes: timer.duration.inMinutes,
                   ),
                 ),
               ),

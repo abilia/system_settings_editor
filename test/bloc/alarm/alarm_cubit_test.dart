@@ -35,7 +35,7 @@ void main() {
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
     );
     alarmCubit = AlarmCubit(
       clockBloc: clockBloc,

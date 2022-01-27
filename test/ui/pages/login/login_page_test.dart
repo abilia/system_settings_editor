@@ -282,8 +282,8 @@ void main() {
 
   testWidgets('Can login when valid license, but gets logged out when invalid',
       (WidgetTester tester) async {
-    final pushBloc = PushBloc();
-    await tester.pumpApp(pushBloc: pushBloc);
+    final pushCubit = PushCubit();
+    await tester.pumpApp(pushCubit: pushCubit);
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
     await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
@@ -294,7 +294,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushBloc.add(const PushEvent('license'));
+    pushCubit.update('license');
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);

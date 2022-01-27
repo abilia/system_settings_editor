@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DatePickerWiz extends StatelessWidget {
@@ -12,15 +11,16 @@ class DatePickerWiz extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => MonthCalendarCubit(
+              create: (context) => DayPickerBloc(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
               ),
             ),
             BlocProvider(
-              create: (context) => DayPickerBloc(
+              create: (context) => MonthCalendarCubit(
                 clockBloc: context.read<ClockBloc>(),
                 initialDay: editActivityState.timeInterval.startDate,
+                dayPickerBloc: context.read<DayPickerBloc>(),
               ),
             ),
           ],
@@ -33,7 +33,7 @@ class DatePickerWiz extends StatelessWidget {
                   previous.calendarDayColor != current.calendarDayColor,
               builder: (context, memoSettingsState) => MonthBody(
                 calendarDayColor: memoSettingsState.calendarDayColor,
-                monthCalendarType: MonthCalendarType.grid,
+                showPreview: false,
               ),
             ),
             bottomNavigationBar: Builder(

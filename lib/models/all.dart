@@ -26,4 +26,3 @@ export 'image_and_name.dart';
 export 'bad_request.dart';
 export 'sync_delays.dart';
 export 'abilia_timer.dart';
-export 'event.dart';

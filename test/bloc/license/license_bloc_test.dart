@@ -19,7 +19,7 @@ void main() {
     licenseBloc = LicenseBloc(
       userRepository: userRepository,
       clockBloc: ClockBloc.fixed(time),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(userRepository),
     );
   });

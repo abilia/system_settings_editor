@@ -198,7 +198,7 @@ class ImageSourceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) {
         return Row(
           children: [

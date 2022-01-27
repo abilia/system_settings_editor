@@ -14,7 +14,7 @@ void main() {
     mockSortableRepository = MockSortableRepository();
     sortableBloc = SortableBloc(
       sortableRepository: mockSortableRepository,
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
       syncBloc: FakeSyncBloc(),
     );
   });

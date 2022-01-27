@@ -18,10 +18,10 @@ class GenericBloc extends Bloc<GenericEvent, GenericState> {
 
   GenericBloc({
     required this.genericRepository,
-    required PushBloc pushBloc,
+    required PushCubit pushCubit,
     required this.syncBloc,
   }) : super(GenericsNotLoaded()) {
-    pushSubscription = pushBloc.stream.listen((state) {
+    pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadGenerics());
       }

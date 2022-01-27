@@ -20,16 +20,18 @@ void main() {
   late ClockBloc clockBloc;
   late StreamController<DateTime> clock;
   final initial = DateTime(2021, 03, 19, 09, 45);
+  late DayPickerBloc dayPickerBloc;
 
   setUp(() {
     clock = StreamController<DateTime>();
     clockBloc = ClockBloc(clock.stream, initialTime: initial);
+    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     mockActivityRepository = MockActivityRepository();
 
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
     );
   });
 
@@ -41,7 +43,10 @@ void main() {
     test('initial state basics', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
       // Assert
       expect(
         monthCalendarCubit.state.firstDay,
@@ -54,7 +59,10 @@ void main() {
     test('initial state', () {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Asserts
       expect(
@@ -156,7 +164,10 @@ void main() {
     test('next month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Act
       monthCalendarCubit.goToNextMonth();
@@ -174,7 +185,10 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'next month',
       build: () => MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc),
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      ),
       act: (bloc) => bloc.goToNextMonth(),
       expect: () => [
         _MonthCalendarStateMatcher(
@@ -293,7 +307,10 @@ void main() {
     test('previous month, basic', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Act
       monthCalendarCubit.goToPreviousMonth();
@@ -311,7 +328,10 @@ void main() {
     blocTest<MonthCalendarCubit, MonthCalendarState>(
       'previous month',
       build: () => MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc),
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      ),
       act: (cubit) => cubit.goToPreviousMonth(),
       expect: () => [
         _MonthCalendarStateMatcher(
@@ -428,7 +448,10 @@ void main() {
     test('when new day day is updated', () async {
       // Arrange
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       var week11 = monthCalendarCubit.state.weeks[2];
       var day18 = week11.days[3] as MonthDay,
@@ -462,7 +485,10 @@ void main() {
 
       clockBloc = ClockBloc.fixed(january15);
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Asserts
       expect(
@@ -571,7 +597,10 @@ void main() {
 
       clockBloc = ClockBloc.fixed(mayThe4);
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       final weeks = [
         MonthWeek(
@@ -676,7 +705,10 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -813,7 +845,10 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Act
       activitiesBloc.add(LoadActivities());
@@ -972,7 +1007,10 @@ void main() {
       );
 
       monthCalendarCubit = MonthCalendarCubit(
-          activitiesBloc: activitiesBloc, clockBloc: clockBloc);
+        activitiesBloc: activitiesBloc,
+        clockBloc: clockBloc,
+        dayPickerBloc: dayPickerBloc,
+      );
 
       // Act
       activitiesBloc.add(LoadActivities());

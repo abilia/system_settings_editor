@@ -35,8 +35,8 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
             ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(
                 settingsDb: FakeSettingsDb(),
               ),
             ),

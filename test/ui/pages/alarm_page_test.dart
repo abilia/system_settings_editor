@@ -77,8 +77,8 @@ void main() {
             BlocProvider<ClockBloc>(
               create: (context) => ClockBloc.fixed(day),
             ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(
                 settingsDb: FakeSettingsDb(),
               ),
             ),

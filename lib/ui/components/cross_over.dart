@@ -3,13 +3,13 @@ import 'package:seagull/ui/all.dart';
 class CrossOver extends StatelessWidget {
   const CrossOver({
     Key? key,
-    this.color = const Color(0xFF000000),
+    this.color,
     this.strokeWidth,
     this.fallbackWidth,
     this.fallbackHeight,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
   final double? strokeWidth;
   final double? fallbackWidth;
   final double? fallbackHeight;
@@ -25,7 +25,7 @@ class CrossOver extends StatelessWidget {
       child: CustomPaint(
         size: Size.infinite,
         foregroundPainter: _CrossOverPainter(
-          color: color,
+          color: color ?? const Color(0xFF000000),
           strokeWidth: strokeWidth ?? defaultStrokeWidth,
         ),
       ),
