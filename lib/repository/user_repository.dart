@@ -154,8 +154,8 @@ class UserRepository extends Repository {
   }
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) async {
-    loginDb.persistToken(loginInfo.token);
-    loginDb.persistLoginInfo(loginInfo);
+    await loginDb.persistToken(loginInfo.token);
+    await loginDb.persistLoginInfo(loginInfo);
   }
 
   String? getToken() => loginDb.getToken();
