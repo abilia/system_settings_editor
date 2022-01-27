@@ -35,8 +35,8 @@ class GetItInitializer {
   UserDb? _userDb;
   set userDb(UserDb userDb) => _userDb = userDb;
 
-  TokenDb? _tokenDb;
-  set tokenDb(TokenDb tokenDb) => _tokenDb = tokenDb;
+  LoginDb? _loginDb;
+  set loginDb(LoginDb loginDb) => _loginDb = loginDb;
 
   LicenseDb? _licenseDb;
   set licenseDb(LicenseDb licenseDb) => _licenseDb = licenseDb;
@@ -103,7 +103,7 @@ class GetItInitializer {
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
         _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
-    ..registerSingleton<TokenDb>(_tokenDb ?? TokenDb(_sharedPreferences))
+    ..registerSingleton<LoginDb>(_loginDb ?? LoginDb(_sharedPreferences))
     ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
     ..registerSingleton<FirebasePushService>(_firebasePushService)
     ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
