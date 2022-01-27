@@ -5,14 +5,15 @@ import 'package:seagull/ui/all.dart';
 
 class RecordSoundPage extends StatelessWidget {
   final String title;
-  final AbiliaFile? recordedAudio;
-  const RecordSoundPage({Key? key, required this.title, this.recordedAudio})
+  final AbiliaFile recordedAudio;
+  const RecordSoundPage(
+      {Key? key, required this.title, this.recordedAudio = AbiliaFile.empty})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (recordedAudio!.isNotEmpty) {
-      context.read<SoundCubit>().set(recordedAudio!);
+    if (recordedAudio.isNotEmpty) {
+      context.read<SoundCubit>().set(recordedAudio);
     }
     return Scaffold(
       appBar: AbiliaAppBar(
