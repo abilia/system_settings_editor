@@ -27,6 +27,7 @@ class Layout {
   final ActivityCardLayout activityCard;
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
+  final SettingsBasePageLayout settingsBasePage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -41,6 +42,7 @@ class Layout {
     this.activityCard = const ActivityCardLayout(),
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
+    this.settingsBasePage = const SettingsBasePageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -310,5 +312,16 @@ class TwoTimepillarLayout {
     this.verticalMargin = 24,
     this.radius = 9,
     this.nightMargin = 4,
+  });
+}
+
+class SettingsBasePageLayout {
+  final double listPadding;
+  final EdgeInsets itemPadding, dividerExtraPadding;
+
+  const SettingsBasePageLayout({
+    this.itemPadding = const EdgeInsets.fromLTRB(12, 8, 16, 0),
+    this.dividerExtraPadding = const EdgeInsets.only(top: 16, bottom: 4),
+    this.listPadding = 16,
   });
 }

@@ -11,14 +11,15 @@ class ImagePickerSettingsPage extends StatefulWidget {
 }
 
 class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
-  late bool displayPhotos, displayCamera;
+  late bool displayLocalImages, displayMyPhotos, displayCamera;
 
   @override
   void initState() {
     super.initState();
     final memosettingsState = context.read<MemoplannerSettingBloc>().state;
     displayCamera = memosettingsState.displayCamera;
-    displayPhotos = memosettingsState.displayPhotos;
+    displayMyPhotos = memosettingsState.displayMyPhotos;
+    displayLocalImages = memosettingsState.displayLocalImages;
   }
 
   @override
@@ -37,12 +38,17 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
                 GenericUpdated(
                   [
                     MemoplannerSettingData.fromData(
+                      data: displayMyPhotos,
+                      identifier:
+                          MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+                    ),
+                    MemoplannerSettingData.fromData(
                       data: displayCamera,
                       identifier:
                           MemoplannerSettings.imageMenuDisplayCameraItemKey,
                     ),
                     MemoplannerSettingData.fromData(
-                      data: displayPhotos,
+                      data: displayLocalImages,
                       identifier:
                           MemoplannerSettings.imageMenuDisplayPhotoItemKey,
                     ),
@@ -62,8 +68,8 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.myPhotos),
-          value: displayPhotos,
-          onChanged: (v) => setState(() => displayPhotos = v),
+          value: displayMyPhotos,
+          onChanged: (v) => setState(() => displayMyPhotos = v),
           child: Text(t.myPhotos),
         ),
         SwitchField(
@@ -72,6 +78,14 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
           onChanged: (v) => setState(() => displayCamera = v),
           child: Text(t.takeNewPhoto),
         ),
+        if (Config.isMP) const Divider(height: 2),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.phone),
+          value: displayLocalImages,
+          onChanged: (v) => setState(() => displayLocalImages = v),
+          child: Text(t.devicesLocalImages),
+        ),
+        if (Config.isMP) Text(t.onlyAppliesToGo),
       ],
     );
   }

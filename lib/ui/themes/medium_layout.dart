@@ -116,5 +116,10 @@ class _MediumLayout extends Layout {
               radius: 18,
             ),
           ),
+          settingsBasePage: const SettingsBasePageLayout(
+            itemPadding: EdgeInsets.fromLTRB(18, 12, 24, 0),
+            listPadding: 30,
+            dividerExtraPadding: EdgeInsets.only(top: 16, bottom: 12),
+          ),
         );
 }

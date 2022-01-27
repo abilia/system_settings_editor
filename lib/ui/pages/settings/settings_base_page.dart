@@ -20,12 +20,18 @@ class SettingsBasePage extends StatelessWidget {
         iconData: icon,
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 16.s),
+        padding:
+            EdgeInsets.symmetric(vertical: layout.settingsBasePage.listPadding),
         itemBuilder: (context, i) {
           final w = widgets[i];
-          if (w is Divider) return w;
+          if (w is Divider) {
+            return Padding(
+              padding: layout.settingsBasePage.dividerExtraPadding,
+              child: w,
+            );
+          }
           return Padding(
-            padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
+            padding: layout.settingsBasePage.itemPadding,
             child: w,
           );
         },
@@ -61,7 +67,7 @@ class SettingsTab extends StatelessWidget {
                     child: w,
                   )
                 : Padding(
-                    padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
+                    padding: layout.settingsBasePage.itemPadding,
                     child: w,
                   ),
           )

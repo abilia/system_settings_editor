@@ -2,6 +2,7 @@ part of 'memoplanner_setting_bloc.dart';
 
 abstract class MemoplannerSettingsState extends Equatable {
   final MemoplannerSettings settings;
+
   const MemoplannerSettingsState(this.settings);
   bool get displayAlarmButton => settings.displayAlarmButton;
   bool get displayDeleteButton => settings.displayDeleteButton;
@@ -50,8 +51,9 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayMenu =>
       settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
   bool get useScreensaver => settings.useScreensaver;
-  bool get displayPhotos => settings.imageMenuDisplayPhotoItem;
+  bool get displayLocalImages => settings.imageMenuDisplayPhotoItem;
   bool get displayCamera => settings.imageMenuDisplayCameraItem;
+  bool get displayMyPhotos => settings.imageMenuDisplayMyPhotosItem;
 
   bool get settingsInaccessible => !displayMenu || !settings.menu.showSettings;
 

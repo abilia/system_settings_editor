@@ -337,6 +337,7 @@ selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse mu
 selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
 add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
 defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
+onlyAppliesToGo	Only applies to MEMOplanner Go						
 							
 ## Functions Settings							
 toolbar	Toolbar	Knapprad	Værktøjslinje	Werkbalk	Työkalurivi	Symbolleiste	Knapperad

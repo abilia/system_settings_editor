@@ -655,6 +655,8 @@ abstract class Translated {
 
   final String defaults = 'Defaults';
 
+  final String onlyAppliesToGo = 'Only applies to MEMOplanner Go';
+
   final String toolbar = 'Toolbar';
 
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
