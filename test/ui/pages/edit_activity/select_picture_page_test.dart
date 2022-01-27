@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/i18n/app_localizations.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
-import '../../../fakes/fake_db_and_repository.dart';
 import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
