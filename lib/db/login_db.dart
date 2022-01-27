@@ -15,8 +15,11 @@ class LoginDb {
 
   const LoginDb(this.prefs);
 
-  Future<void> persistToken(String token) => prefs.setString(tokenKey, token);
-  String? getToken() => prefs.getString(tokenKey);
+  // Token was moved to LoginInfo at 2022-01-27 (MPGO version 1.4)
+  // and getToken() and deleteToken() can be deleted when most users
+  // have logged in using MPGO 1.4 or above. When removing getting token by tokenKey
+  // users that have no LoginInfo will have to login again.
+  String? getToken() => getLoginInfo()?.token ?? prefs.getString(tokenKey);
   Future<void> deleteToken() => prefs.remove(tokenKey);
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>

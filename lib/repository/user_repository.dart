@@ -153,10 +153,8 @@ class UserRepository extends Repository {
     await userDb.deleteUser();
   }
 
-  Future<void> persistLoginInfo(LoginInfo loginInfo) async {
-    await loginDb.persistToken(loginInfo.token);
-    await loginDb.persistLoginInfo(loginInfo);
-  }
+  Future<void> persistLoginInfo(LoginInfo loginInfo) =>
+      loginDb.persistLoginInfo(loginInfo);
 
   String? getToken() => loginDb.getToken();
 
