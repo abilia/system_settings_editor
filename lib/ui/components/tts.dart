@@ -61,7 +61,7 @@ class _Tts extends StatelessWidget {
         super(key: key);
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<SettingsBloc, SettingsState>(
+      BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) => GestureDetector(
           behavior: HitTestBehavior.translucent,
           excludeFromSemantics: true,

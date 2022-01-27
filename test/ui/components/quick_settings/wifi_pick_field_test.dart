@@ -25,8 +25,8 @@ void main() {
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),
           ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: FakeSettingsDb(),
             ),
           ),

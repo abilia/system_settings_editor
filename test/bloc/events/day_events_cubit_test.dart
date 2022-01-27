@@ -25,7 +25,7 @@ void main() {
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
     );
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
@@ -759,7 +759,7 @@ void main() {
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushBloc: FakePushBloc(),
+        pushCubit: FakePushCubit(),
       );
 
       dayEventsCubit = DayEventsCubit(
@@ -1057,7 +1057,7 @@ void main() {
         activitiesBloc = ActivitiesBloc(
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
-          pushBloc: FakePushBloc(),
+          pushCubit: FakePushCubit(),
         );
         dayEventsCubit = DayEventsCubit(
           dayPickerBloc: dayPickerBloc,

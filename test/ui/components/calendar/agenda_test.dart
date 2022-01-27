@@ -590,9 +590,9 @@ void main() {
         (WidgetTester tester) async {
       const leftCategoryName = 'Something unique',
           rightCategoryName = 'Another not seen before string';
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
 
       expect(find.text(leftCategoryName), findsNothing);
@@ -614,7 +614,7 @@ void main() {
               ),
             )
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 
@@ -626,8 +626,8 @@ void main() {
 
     testWidgets(' memoplanner settings - show category push update ',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
 
       expect(leftFinder, findsOneWidget);
@@ -644,7 +644,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 

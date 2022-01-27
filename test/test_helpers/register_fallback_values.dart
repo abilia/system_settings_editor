@@ -19,7 +19,6 @@ void registerFallbackValues() {
   registerFallbackValue(File(''));
   registerFallbackValue(TZDateTime.utc(2021));
   registerFallbackValue(const NotificationDetails());
-  registerFallbackValue(const PushEvent(''));
   registerFallbackValue(PushReady());
   registerFallbackValue(const ActivitySaved());
   registerFallbackValue('');

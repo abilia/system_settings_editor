@@ -76,14 +76,13 @@ class TextToSpeechSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
+    return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, settingsState) => Row(children: [
         Expanded(
           child: SwitchField(
             value: settingsState.textToSpeech,
             leading: const Icon(AbiliaIcons.speakText),
-            onChanged: (v) =>
-                context.read<SettingsBloc>().add(TextToSpeechUpdated(v)),
+            onChanged: (v) => context.read<SettingsCubit>().setTextToSpeech(v),
             child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),
@@ -107,7 +106,7 @@ class PermissionPickField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, state) => Stack(
         children: [
           PickField(
@@ -115,7 +114,7 @@ class PermissionPickField extends StatelessWidget {
             text: Text(Translator.of(context).translate.permissions),
             onTap: () async {
               final authProviders = copiedAuthProviders(context);
-              context.read<PermissionBloc>().checkAll();
+              context.read<PermissionCubit>().checkAll();
               await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(

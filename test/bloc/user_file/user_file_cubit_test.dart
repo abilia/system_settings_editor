@@ -52,7 +52,7 @@ void main() {
         .thenAnswer((_) => Future.value());
     userFileCubit = UserFileCubit(
       userFileRepository: mockUserFileRepository,
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
       fileStorage: mockedFileStorage,
       syncBloc: FakeSyncBloc(),
     );

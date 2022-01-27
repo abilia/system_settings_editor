@@ -21,17 +21,17 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState>
   ActivitiesBloc({
     required this.activityRepository,
     required this.syncBloc,
-    required PushBloc pushBloc,
+    required PushCubit pushCubit,
   }) : super(ActivitiesNotLoaded()) {
-    pushSubscription = pushBloc.stream.listen((state) {
+    pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
         add(LoadActivities());
       }
     });
-    on<ActivitiesEvent>(_mapEventToState, transformer: sequential());
+    on<ActivitiesEvent>(_onEvent, transformer: sequential());
   }
 
-  Future _mapEventToState(
+  Future _onEvent(
     ActivitiesEvent event,
     Emitter<ActivitiesState> emit,
   ) async {

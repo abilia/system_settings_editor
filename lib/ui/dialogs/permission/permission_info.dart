@@ -14,7 +14,7 @@ class PermissionInfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocListener<PermissionBloc, PermissionState>(
+    return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) =>
           current.status[permission]?.isGranted ?? true,
       listener: (context, state) => Navigator.of(context).maybePop(),

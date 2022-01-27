@@ -56,8 +56,9 @@ void main() {
             providers: [
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
+              BlocProvider<SettingsCubit>(
+                create: (context) =>
+                    SettingsCubit(settingsDb: FakeSettingsDb()),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),
@@ -133,7 +134,7 @@ void main() {
     testWidgets('Permission has switches all denied',
         (WidgetTester tester) async {
       setupPermissions({
-        for (var key in PermissionBloc.allPermissions)
+        for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.denied
       });
       await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
@@ -143,7 +144,7 @@ void main() {
 
       // Assert - all Permission present
       expect(permissionSwitchFinder,
-          findsNWidgets(PermissionBloc.allPermissions.length));
+          findsNWidgets(PermissionCubit.allPermissions.length));
       final permissionSwitches =
           tester.widgetList<SwitchField>(find.byType(SwitchField));
       // Assert - Switches is off
@@ -155,7 +156,7 @@ void main() {
     testWidgets('Permission has switches all granted',
         (WidgetTester tester) async {
       setupPermissions({
-        for (var key in PermissionBloc.allPermissions)
+        for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.granted
       });
       await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
@@ -176,7 +177,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      for (final permission in PermissionBloc.allPermissions) {
+      for (final permission in PermissionCubit.allPermissions) {
         // Asssert - All has tts
         await tester.verifyTts(find.byKey(ObjectKey(permission)),
             exact: permission.translate(translate));
@@ -191,7 +192,7 @@ void main() {
     testWidgets(
         'Permission has switches denied tapped calls for request permission',
         (WidgetTester tester) async {
-      final allPermissions = PermissionBloc.allPermissions.toSet()
+      final allPermissions = PermissionCubit.allPermissions.toSet()
         ..remove(Permission.systemAlertWindow)
         ..remove(Permission.notification);
 
@@ -213,7 +214,7 @@ void main() {
     testWidgets('Permission perma denied tapped opens settings',
         (WidgetTester tester) async {
       setupPermissions({
-        for (var key in PermissionBloc.allPermissions)
+        for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.permanentlyDenied
       });
       await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
@@ -221,7 +222,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      final perms = PermissionBloc.allPermissions;
+      final perms = PermissionCubit.allPermissions;
 
       for (final permission in perms) {
         await tester.scrollTo(find.byKey(ObjectKey(permission)));
@@ -235,7 +236,7 @@ void main() {
     testWidgets('Permission granted, except notifcation, tapped calls settings',
         (WidgetTester tester) async {
       setupPermissions({
-        for (var key in PermissionBloc.allPermissions)
+        for (var key in PermissionCubit.allPermissions)
           key: PermissionStatus.granted
       });
       await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
@@ -243,7 +244,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      final allExceptNotifcation = PermissionBloc.allPermissions.toSet()
+      final allExceptNotifcation = PermissionCubit.allPermissions.toSet()
         ..remove(Permission.notification)
         ..remove(Permission.systemAlertWindow);
 

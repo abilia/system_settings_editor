@@ -105,13 +105,13 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
               ),
-              BlocProvider<PermissionBloc>(
-                create: (context) => PermissionBloc()..checkAll(),
+              BlocProvider<PermissionCubit>(
+                create: (context) => PermissionCubit()..checkAll(),
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => TimepillarCubit(

@@ -1,4 +1,4 @@
-part of 'push_bloc.dart';
+part of 'push_cubit.dart';
 
 abstract class PushState {
   const PushState();

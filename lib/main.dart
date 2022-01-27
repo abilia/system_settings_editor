@@ -98,7 +98,7 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
 }
 
 class App extends StatelessWidget {
-  final PushBloc? pushBloc;
+  final PushCubit? pushCubit;
   final String baseUrl;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
@@ -107,12 +107,12 @@ class App extends StatelessWidget {
     Key? key,
     this.baseUrl = 'mock',
     this.payload,
-    this.pushBloc,
+    this.pushCubit,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
         baseUrl: baseUrl,
         child: TopLevelListener(
           navigatorKey: _navigatorKey,

@@ -83,13 +83,13 @@ void main() {
               BlocProvider<UserFileCubit>(
                 create: (context) => UserFileCubit(
                   fileStorage: FakeFileStorage(),
-                  pushBloc: FakePushBloc(),
+                  pushCubit: FakePushCubit(),
                   syncBloc: FakeSyncBloc(),
                   userFileRepository: FakeUserFileRepository(),
                 ),
               ),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
               ),
