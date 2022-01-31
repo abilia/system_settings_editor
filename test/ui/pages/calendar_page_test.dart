@@ -46,7 +46,7 @@ void main() {
 
   final userRepository = UserRepository(
     client: Fakes.client(),
-    tokenDb: FakeTokenDb(),
+    loginDb: FakeLoginDb(),
     userDb: FakeUserDb(),
     licenseDb: FakeLicenseDb(),
     baseUrl: 'fake',
@@ -148,8 +148,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          stream: StreamController<DateTime>().stream, initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialDay)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
         activityResponse: activityResponse,
@@ -782,10 +781,13 @@ void main() {
 
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
-        expect(find.byType(ViewTimerPage), findsOneWidget);
+        expect(find.byType(TimerPage), findsOneWidget);
+        expect(find.text('20 minutes'), findsOneWidget);
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text('20 minutes'), findsOneWidget);
 
         final captured =
             verify(() => mockTimerDb.insert(captureAny())).captured;
@@ -1069,7 +1071,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
           of: find.text('${initialDay.subtract(1.days()).day}'),
-          matching: find.byType(MonthDayView)));
+          matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();

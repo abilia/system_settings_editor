@@ -7,7 +7,6 @@ class Timeline extends StatelessWidget {
   final double offset;
   final TimepillarState timepillarState;
   final DateTime now;
-  static final double timelineHeight = 2.s;
   const Timeline({
     Key? key,
     required this.now,
@@ -26,10 +25,10 @@ class Timeline extends StatelessWidget {
             ) -
             offset +
             timepillarState.topPadding -
-            timelineHeight / 2,
+            layout.timePillar.timeLineHeight / 2,
         child: Container(
           width: width,
-          height: timelineHeight,
+          height: layout.timePillar.timeLineHeight,
           decoration: const BoxDecoration(color: AbiliaColors.red),
         ),
       );

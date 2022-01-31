@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -33,14 +31,13 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: DateTime(1919)),
+            create: (context) => ClockBloc.fixed(DateTime(1919)),
           ),
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),
           ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: FakeSettingsDb(),
             ),
           ),

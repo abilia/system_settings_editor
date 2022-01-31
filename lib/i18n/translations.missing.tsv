@@ -1,2 +1,4 @@
 _id_	en	sv	da	nl	fi	de	nb
+timerDelete	Do you want to delete the timer?	Vill du ta bort timern?					
 enterNameForTimer	Enter name for timer	Ange namn för timer					
+selectADayToViewDetails	Select a day to view more details

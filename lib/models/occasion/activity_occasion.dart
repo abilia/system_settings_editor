@@ -1,7 +1,7 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class ActivityOccasion extends ActivityDay implements EventOccasion<Activity> {
+class ActivityOccasion extends ActivityDay implements EventOccasion {
   bool get isPast => occasion == Occasion.past;
   bool get isCurrent => occasion == Occasion.current && !activity.fullDay;
 
@@ -17,25 +17,34 @@ class ActivityOccasion extends ActivityDay implements EventOccasion<Activity> {
   List<Object> get props => [occasion, ...super.props];
 
   @override
-  String toString() =>
-      'ActivityOccasion { ${activity.id} ${activity.title} ${yMd(day)} $occasion }';
+  String toString() => 'ActivityOccasion { ${super.toString()} $occasion }';
+
+  @override
+  int compareTo(other) => compare(other);
 }
 
-class ActivityDay extends EventDay<Activity> {
-  Activity get activity => event;
+class ActivityDay extends Event {
+  final DateTime day;
+  final Activity activity;
   bool get isSignedOff =>
       activity.checkable &&
       activity.signedOffDates.contains(whaleDateFormat(day));
 
-  const ActivityDay(Activity activity, DateTime day) : super(activity, day);
+  const ActivityDay(this.activity, this.day) : super();
 
-  ActivityDay.copy(ActivityDay ad) : this(ad.activity, ad.day);
   @override
   ActivityOccasion toOccasion(DateTime now) => ActivityOccasion(
         activity,
         day,
         _occasion(now),
       );
+
+  @override
+  DateTime get start => activity.startClock(day);
+  @override
+  DateTime get end => activity.endClock(day);
+  @override
+  int get category => activity.category;
 
   Occasion _occasion(DateTime now) {
     if (activity.fullDay) {
@@ -49,5 +58,9 @@ class ActivityDay extends EventDay<Activity> {
   }
 
   @override
-  String toString() => 'ActivityDay { $activity ${yMd(day)} }';
+  String toString() =>
+      'ActivityDay { ${activity.id} ${activity.title} ${yMd(day)} }';
+
+  @override
+  List<Object> get props => [activity, day];
 }

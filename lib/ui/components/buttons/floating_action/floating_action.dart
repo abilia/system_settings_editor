@@ -7,7 +7,7 @@ class FloatingActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = DefaultTabController.of(context);
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
       builder: (context, permission) {
@@ -78,12 +78,6 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 8.s),
                   child: const EyeButtonDay(),
-                )
-              else if (state.displayMonthCalendar &&
-                  tabController.index == state.monthCalendarTabIndex)
-                Padding(
-                  padding: EdgeInsets.only(top: 8.s),
-                  child: const EyeButtonMonth(),
                 ),
           ],
         );

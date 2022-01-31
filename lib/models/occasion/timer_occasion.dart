@@ -1,22 +1,21 @@
 import 'package:seagull/models/all.dart';
 
-class TimerOccasion extends TimerDay implements EventOccasion<AbiliaTimer> {
-  const TimerOccasion(AbiliaTimer timer, DateTime day, this.occasion)
-      : super(timer, day);
+class TimerOccasion extends EventOccasion {
+  const TimerOccasion(this.timer, Occasion occasion) : super(occasion);
+  final AbiliaTimer timer;
+  bool get isOngoing => !timer.paused && occasion == Occasion.current;
+  bool get isPast => occasion == Occasion.past;
+  TimerOccasion toPast() => TimerOccasion(timer, Occasion.past);
   @override
-  final Occasion occasion;
-}
-
-class TimerDay extends EventDay<AbiliaTimer> {
-  const TimerDay(AbiliaTimer timer, DateTime day) : super(timer, day);
-
+  EventOccasion toOccasion(DateTime now) => this;
   @override
-  TimerOccasion toOccasion(DateTime now) => TimerOccasion(
-      event,
-      day,
-      end.isBefore(now)
-          ? Occasion.past
-          : start.isAfter(now)
-              ? Occasion.future
-              : Occasion.current);
+  DateTime get end => timer.endTime;
+  @override
+  DateTime get start => timer.startTime;
+  @override
+  int get category => Category.right;
+  @override
+  List<Object?> get props => [timer, occasion];
+  @override
+  int compareTo(other) => compare(other);
 }

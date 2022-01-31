@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -37,10 +35,7 @@ void main() {
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: initialTime,
-      )
+      ..ticker = Ticker.fake(initialTime: initialTime)
       ..client = Fakes.client(genericResponse: () => generics)
       ..database = FakeDatabase()
       ..genericDb = genericDb
@@ -188,9 +183,10 @@ void main() {
       final w = tester.widget<AbiliaRadio>(
           find.byKey(const ObjectKey(TestKey.monthColorSwith)));
       expect(w.groupValue, WeekColor.columns);
-      final dayContainer =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-      expect(dayContainer.color, isNot(AbiliaColors.white110));
+      final dayContainer = tester.firstWidget<Container>(
+          find.byKey(TestKey.monthDisplaySettingsDayView));
+      expect((dayContainer.decoration as BoxDecoration).color,
+          isNot(AbiliaColors.white110));
     });
 
     testWidgets('memosettings respected', (tester) async {
@@ -206,23 +202,26 @@ void main() {
       final w = tester.widget<AbiliaRadio>(
           find.byKey(const ObjectKey(TestKey.monthColorSwith)));
       expect(w.groupValue, WeekColor.captions);
-      final dayContainer =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-      expect(dayContainer.color, AbiliaColors.white110);
+      final dayContainer = tester.firstWidget<Container>(
+          find.byKey(TestKey.monthDisplaySettingsDayView));
+      expect((dayContainer.decoration as BoxDecoration).color,
+          AbiliaColors.white110);
     });
 
     testWidgets('color saved', (tester) async {
       await tester.goToDisplayTab();
-      final dayContainer1 =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-      expect(dayContainer1.color, isNot(AbiliaColors.white110));
+      final dayContainer1 = tester.firstWidget<Container>(
+          find.byKey(TestKey.monthDisplaySettingsDayView));
+      expect((dayContainer1.decoration as BoxDecoration).color,
+          isNot(AbiliaColors.white110));
 
       await tester.tap(find.text(translate.headings));
       await tester.pumpAndSettle();
-      final dayContainer2 =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
+      final dayContainer2 = tester.firstWidget<Container>(
+          find.byKey(TestKey.monthDisplaySettingsDayView));
 
-      expect(dayContainer2.color, AbiliaColors.white110);
+      expect((dayContainer2.decoration as BoxDecoration).color,
+          AbiliaColors.white110);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
@@ -236,28 +235,44 @@ void main() {
   }, skip: !Config.isMP);
 
   group('respected in month calendar', () {
-    testWidgets('defaults', (tester) async {
-      await tester.goToMonthCalendar();
-      final dayContainer = tester.firstWidget<MonthDayContainer>(
-          find.byWidgetPredicate((widget) =>
-              widget is MonthDayContainer && widget.day?.isPast == false));
-      expect(dayContainer.color, isNot(AbiliaColors.white110));
-    });
-
-    testWidgets('color respected', (tester) async {
-      generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
-            data: WeekColor.captions.index,
+    testWidgets(
+      'defaults',
+      (tester) async {
+        await tester.goToMonthCalendar();
+        final dayContainer = tester.firstWidget<Container>(
+          find.descendant(
+            of: find.byWidgetPredicate((widget) =>
+                widget is MonthDayView && widget.day.isPast == false),
+            matching: find.byKey(TestKey.monthCalendarDayBackgroundColor),
           ),
-        ),
-      ];
-      await tester.goToMonthCalendar();
-      final dayContainer =
-          tester.firstWidget<MonthDayContainer>(find.byType(MonthDayContainer));
-      expect(dayContainer.color, AbiliaColors.white110);
-    });
+        );
+
+        expect((dayContainer.decoration as BoxDecoration).color,
+            isNot(AbiliaColors.white110));
+      },
+      skip: Config.isMPGO,
+    );
+
+    testWidgets(
+      'color respected',
+      (tester) async {
+        generics = [
+          Generic.createNew<MemoplannerSettingData>(
+            data: MemoplannerSettingData.fromData(
+              identifier: MemoplannerSettings.calendarMonthViewShowColorsKey,
+              data: WeekColor.captions.index,
+            ),
+          ),
+        ];
+        await tester.goToMonthCalendar();
+        final dayContainer = tester.firstWidget<Container>(
+          find.byKey(TestKey.monthCalendarDayBackgroundColor),
+        );
+        expect((dayContainer.decoration as BoxDecoration).color,
+            AbiliaColors.white110);
+      },
+      skip: Config.isMPGO,
+    );
   });
 }
 

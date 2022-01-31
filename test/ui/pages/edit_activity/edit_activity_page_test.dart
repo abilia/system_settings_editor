@@ -81,9 +81,7 @@ void main() {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc(
-                    StreamController<DateTime>().stream,
-                    initialTime: startTime),
+                create: (context) => ClockBloc.fixed(startTime),
               ),
               BlocProvider<MemoplannerSettingBloc>.value(
                 value: mockMemoplannerSettingsBloc,
@@ -122,13 +120,13 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
               ),
-              BlocProvider<PermissionBloc>(
-                create: (context) => PermissionBloc()..checkAll(),
+              BlocProvider<PermissionCubit>(
+                create: (context) => PermissionCubit()..checkAll(),
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => TimepillarCubit(
@@ -1288,7 +1286,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1307,14 +1305,14 @@ text''';
 
       expect(find.text('February'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(29));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(29));
 
       await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
       await tester.pumpAndSettle();
 
       expect(find.text('January'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(31));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(31));
 
       await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
       await tester.pumpAndSettle();
@@ -1325,7 +1323,7 @@ text''';
 
       expect(find.text('April'), findsOneWidget);
       expect(find.text('2020'), findsOneWidget);
-      expect(find.byType(MonthDayView), findsNWidgets(30));
+      expect(find.byKey(TestKey.monthCalendarDay), findsNWidgets(30));
 
       await tester.tap(find.byType(GoToCurrentActionButton));
       await tester.pumpAndSettle();
@@ -1342,7 +1340,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1380,7 +1378,7 @@ text''';
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('14'), matching: find.byType(MonthDayView)));
+          of: find.text('14'), matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -1411,7 +1409,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
         of: find.text('3'),
-        matching: find.byType(MonthDayView),
+        matching: find.byKey(TestKey.monthCalendarDay),
       ));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));

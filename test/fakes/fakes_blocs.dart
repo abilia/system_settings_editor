@@ -4,7 +4,7 @@ import 'package:seagull/models/all.dart';
 
 import 'fake_db_and_repository.dart';
 
-class FakePushBloc extends Fake implements PushBloc {
+class FakePushCubit extends Fake implements PushCubit {
   @override
   Stream<PushState> get stream => const Stream.empty();
   @override
@@ -77,8 +77,8 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
   @override
   TimepillarState get state => TimepillarState(
         TimepillarInterval(
-          start: DateTime.now(),
-          end: DateTime.now(),
+          start: DateTime(1066, 10, 14, 09, 00),
+          end: DateTime(1066, 10, 14, 17, 54),
         ),
         1,
       );
@@ -86,7 +86,7 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
   Future<void> close() async {}
 }
 
-class FakeSettingsBloc extends Fake implements SettingsBloc {
+class FakeSettingsBloc extends Fake implements SettingsCubit {
   @override
   Stream<SettingsState> get stream => const Stream.empty();
 }

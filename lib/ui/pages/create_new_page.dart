@@ -1,5 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -107,13 +109,14 @@ class CreateNewPage extends StatelessWidget {
       BuildContext buildContext, List<BlocProvider> authProviders,
       [BasicTimerDataItem? basicTimer]) async {
     final timerStarted = await Navigator.of(buildContext).push(
-      _createRoute(
+      _createRoute<AbiliaTimer>(
         MultiBlocProvider(
           providers: authProviders,
           child: BlocProvider(
             create: (context) => TimerWizardCubit(
               timerCubit: context.read<TimerCubit>(),
               translate: Translator.of(buildContext).translate,
+              ticker: GetIt.I<Ticker>(),
               basicTimer: basicTimer,
             ),
             child: const TimerWizardPage(),
@@ -128,7 +131,10 @@ class CreateNewPage extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: providers,
-            child: ViewTimerPage(timer: timerStarted),
+            child: TimerPage(
+              timer: timerStarted,
+              day: timerStarted.startTime.onlyDays(),
+            ),
           ),
         ),
       );

@@ -9,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 
 class DayEventsCubit extends Cubit<EventsState> {
   final ActivitiesBloc activitiesBloc;
-  final TimerCubit timerCubit;
+  final TimerAlarmBloc timerAlarmBloc;
   final DayPickerBloc dayPickerBloc;
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timerSubscription;
@@ -18,11 +18,11 @@ class DayEventsCubit extends Cubit<EventsState> {
   DayEventsCubit({
     required this.activitiesBloc,
     required this.dayPickerBloc,
-    required this.timerCubit,
+    required this.timerAlarmBloc,
   }) : super(activitiesBloc.state is ActivitiesLoaded
             ? _mapToState(
                 (activitiesBloc.state as ActivitiesLoaded).activities,
-                timerCubit.state.timers,
+                timerAlarmBloc.state.timers,
                 dayPickerBloc.state.day,
                 dayPickerBloc.state.occasion,
               )
@@ -31,7 +31,7 @@ class DayEventsCubit extends Cubit<EventsState> {
         .whereType<ActivitiesLoaded>()
         .listen(_activitiesUpdated);
     _dayPickerSubscription = dayPickerBloc.stream.listen(_dayUpdated);
-    _timerSubscription = timerCubit.stream.listen(_updateState);
+    _timerSubscription = timerAlarmBloc.stream.listen(_updateState);
   }
 
   void _activitiesUpdated(final ActivitiesLoaded activityState) =>
@@ -46,7 +46,7 @@ class DayEventsCubit extends Cubit<EventsState> {
   void _updateGivenActivities(final List<Activity> activities) => emit(
         _mapToState(
           activities,
-          timerCubit.state.timers,
+          timerAlarmBloc.state.timers,
           dayPickerBloc.state.day,
           dayPickerBloc.state.occasion,
         ),
@@ -58,7 +58,7 @@ class DayEventsCubit extends Cubit<EventsState> {
       emit(
         _mapToState(
           activityState.activities,
-          timerCubit.state.timers,
+          timerAlarmBloc.state.timers,
           state.day,
           state.occasion,
         ),
@@ -68,7 +68,7 @@ class DayEventsCubit extends Cubit<EventsState> {
 
   static EventsState _mapToState(
     final Iterable<Activity> activities,
-    final Iterable<AbiliaTimer> timers,
+    final Iterable<TimerOccasion> timers,
     final DateTime day,
     final Occasion occasion,
   ) =>
@@ -78,9 +78,7 @@ class DayEventsCubit extends Cubit<EventsState> {
             .toList(),
         dayTimers: timers
             .where((timer) =>
-                timer.startTime.isAtSameDay(day) ||
-                timer.endTime.isAtSameDay(day))
-            .map((timer) => TimerDay(timer, day))
+                timer.start.isAtSameDay(day) || timer.end.isAtSameDay(day))
             .toList(),
         occasion: occasion,
         day: day,

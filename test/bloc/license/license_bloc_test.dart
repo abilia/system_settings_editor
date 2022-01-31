@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -14,13 +12,14 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late LicenseBloc licenseBloc;
   late UserRepository userRepository;
+  final time = DateTime(2000);
 
   setUp(() {
     userRepository = MockUserRepository();
     licenseBloc = LicenseBloc(
       userRepository: userRepository,
-      clockBloc: ClockBloc(StreamController<DateTime>().stream),
-      pushBloc: FakePushBloc(),
+      clockBloc: ClockBloc.fixed(time),
+      pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(userRepository),
     );
   });
@@ -33,9 +32,10 @@ void main() {
     when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
-            id: 1,
-            endTime: DateTime.now().add(24.hours()),
-            product: 'memoplanner3'),
+          id: 1,
+          endTime: time.add(24.hours()),
+          product: 'memoplanner3',
+        ),
       ]),
     );
     licenseBloc.add(ReloadLicenses());
@@ -49,9 +49,10 @@ void main() {
     when(() => userRepository.getLicenses()).thenAnswer(
       (_) => Future.value([
         License(
-            id: 1,
-            endTime: DateTime.now().subtract(24.hours()),
-            product: 'memoplanner3'),
+          id: 1,
+          endTime: time.subtract(24.hours()),
+          product: 'memoplanner3',
+        ),
       ]),
     );
     licenseBloc.add(ReloadLicenses());

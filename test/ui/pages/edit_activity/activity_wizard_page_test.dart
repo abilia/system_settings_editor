@@ -76,9 +76,7 @@ void main() {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc(
-                    StreamController<DateTime>().stream,
-                    initialTime: startTime),
+                create: (context) => ClockBloc.fixed(startTime),
               ),
               BlocProvider<MemoplannerSettingBloc>.value(
                 value: mockMemoplannerSettingsBloc,
@@ -107,13 +105,13 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                 ),
               ),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
               ),
-              BlocProvider<PermissionBloc>(
-                create: (context) => PermissionBloc()..checkAll(),
+              BlocProvider<PermissionCubit>(
+                create: (context) => PermissionCubit()..checkAll(),
               ),
               BlocProvider<TimepillarCubit>(
                 create: (context) => TimepillarCubit(

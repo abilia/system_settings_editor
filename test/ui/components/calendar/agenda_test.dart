@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -21,6 +22,7 @@ void main() {
   final now = DateTime(2020, 06, 04, 11, 24);
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
+  Iterable<AbiliaTimer> Function() timerResponse = () => [];
 
   final translate = Locales.language.values.first;
 
@@ -37,11 +39,14 @@ void main() {
       forthFullDay =
           FakeActivity.fullday(now).copyWith(title: forthFullDayTitle);
 
+  late StreamController<DateTime> timeTicker;
   setUp(() async {
     setupPermissions();
     setupFakeTts();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+
+    timeTicker = StreamController<DateTime>();
 
     final mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllNonDeleted())
@@ -51,12 +56,16 @@ void main() {
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
+    final mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
-      ..ticker =
-          Ticker(stream: StreamController<DateTime>().stream, initialTime: now)
+      ..timerDb = mockTimerDb
+      ..ticker = Ticker.fake(initialTime: now, stream: timeTicker.stream)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client()
       ..fileStorage = FakeFileStorage()
@@ -69,6 +78,8 @@ void main() {
   tearDown(() async {
     activityResponse = () => [];
     genericResponse = () => [];
+    timerResponse = () => [];
+    timeTicker.close();
     await GetIt.I.reset();
   });
 
@@ -372,7 +383,7 @@ void main() {
           .resolve(TextDirection.ltr);
       expect(
         padding.left,
-        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+        greaterThanOrEqualTo(layout.eventCard.categorySideOffset),
       );
     });
 
@@ -399,7 +410,7 @@ void main() {
           .resolve(TextDirection.ltr);
       expect(
         padding.right,
-        greaterThanOrEqualTo(layout.activityCard.categorySideOffset),
+        greaterThanOrEqualTo(layout.eventCard.categorySideOffset),
       );
     });
   });
@@ -579,9 +590,9 @@ void main() {
         (WidgetTester tester) async {
       const leftCategoryName = 'Something unique',
           rightCategoryName = 'Another not seen before string';
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
 
       expect(find.text(leftCategoryName), findsNothing);
@@ -603,7 +614,7 @@ void main() {
               ),
             )
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 
@@ -615,8 +626,8 @@ void main() {
 
     testWidgets(' memoplanner settings - show category push update ',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
 
       expect(leftFinder, findsOneWidget);
@@ -633,7 +644,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 
@@ -834,6 +845,190 @@ void main() {
       expectCorrectColor(a2.title, noCategoryColor);
       expectCorrectColor(a3.title, noCategoryColor);
       expectCorrectColor(a4.title, noCategoryColor);
+    });
+
+    group('timers', () {
+      testWidgets('Timer visible', (WidgetTester tester) async {
+        final timer = AbiliaTimer(
+          id: 'id',
+          title: 'title',
+          startTime: now,
+          duration: 5.minutes(),
+        );
+        timerResponse = () => [timer];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text(timer.title), findsOneWidget);
+      });
+
+      testWidgets('Past Timer visible', (WidgetTester tester) async {
+        final timer = AbiliaTimer(
+          id: 'id',
+          title: 'title',
+          startTime: now.subtract(10.minutes()),
+          duration: 5.minutes(),
+        );
+        timerResponse = () => [timer];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text(timer.title), findsOneWidget);
+      });
+
+      testWidgets('Starting after but ending before is shown before',
+          (WidgetTester tester) async {
+        final timerPast = AbiliaTimer(
+              id: 'id',
+              title: 'timerPast',
+              startTime: now.subtract(10.minutes()),
+              duration: 5.minutes(),
+            ),
+            timerongoing = AbiliaTimer(
+              id: 'id',
+              title: 'timerongoing',
+              startTime: now.subtract(20.minutes()),
+              duration: 30.minutes(),
+            );
+        timerResponse = () => [timerPast, timerongoing];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsNWidgets(2));
+
+        final ongoingPostition = tester.getBottomLeft(
+          find.ancestor(
+            of: find.text(timerongoing.title),
+            matching: find.byType(TimerCard),
+          ),
+        );
+
+        final pastPostition = tester.getBottomLeft(
+          find.ancestor(
+            of: find.text(timerPast.title),
+            matching: find.byType(TimerCard),
+          ),
+        );
+
+        expect(ongoingPostition.dy, greaterThan(pastPostition.dy));
+      });
+
+      testWidgets('Timer when time ticks to past visible',
+          (WidgetTester tester) async {
+        final timer = AbiliaTimer(
+          id: 'id',
+          title: 'title',
+          startTime: now,
+          duration: 1.minutes(),
+        );
+        timerResponse = () => [timer];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text(timer.title), findsOneWidget);
+
+        final timercardBefore =
+            tester.widget<TimerCard>(find.byType(TimerCard));
+
+        expect(timercardBefore.timerOccasion.occasion, Occasion.current);
+
+        timeTicker.add(now.add(1.minutes() + 1.seconds()));
+        await tester.pumpAndSettle();
+        final timercardAfter = tester.widget<TimerCard>(find.byType(TimerCard));
+
+        expect(timercardAfter.timerOccasion.occasion, Occasion.past);
+      });
+
+      testWidgets('Timer shows correct time left', (WidgetTester tester) async {
+        final timer = AbiliaTimer(
+          id: 'id',
+          title: 'title',
+          startTime: now,
+          duration: 10.minutes(),
+        );
+        timerResponse = () => [timer];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        expect(
+          find.descendant(
+              of: find.byType(TimerCard), matching: find.text('10:00')),
+          findsOneWidget,
+        );
+
+        timeTicker.add(now.add(30.seconds()));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.descendant(
+              of: find.byType(TimerCard), matching: find.text('09:30')),
+          findsOneWidget,
+        );
+        timeTicker.add(now.add(10.minutes()));
+
+        await tester.pumpAndSettle();
+        expect(
+          find.descendant(
+              of: find.byType(TimerCard), matching: find.text('00:00')),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('Timer when time ticks every second',
+          (WidgetTester tester) async {
+        const duration = Duration(seconds: 30);
+        final timer = AbiliaTimer(
+          id: 'id',
+          title: 'title',
+          startTime: now,
+          duration: duration,
+        );
+        timerResponse = () => [timer];
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        for (var i = 1; i <= duration.inSeconds + 5; i++) {
+          timeTicker.add(now.add(i.seconds()));
+          await tester.pumpAndSettle();
+          final sLeft = '${max(0, duration.inSeconds - i)}'.padLeft(2, '0');
+
+          expect(find.text('00:$sLeft'), findsOneWidget);
+        }
+      });
+
+      testWidgets(
+          'yesterdays timers shows on yesterday and today, disappear after 24h',
+          (WidgetTester tester) async {
+        final timer1 = AbiliaTimer(
+          id: 'id',
+          title: 'old timer',
+          startTime: now.subtract(23.hours()),
+          duration: 22.hours(),
+        );
+        timerResponse = () => [timer1];
+
+        find.byIcon(AbiliaIcons.returnToPreviousPage);
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        expect(find.byType(TimerCard), findsOneWidget);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.returnToPreviousPage));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsOneWidget);
+        timeTicker.add(now.add(1.hours() + 1.minutes()));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsNothing);
+        await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerCard), findsNothing);
+      });
     });
   });
 }

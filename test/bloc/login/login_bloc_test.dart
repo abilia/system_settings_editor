@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -7,8 +5,10 @@ import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 
 import '../../mocks/mocks.dart';
+import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  final time = DateTime(2033, 12, 11, 11);
   group('LoginBloc event order', () {
     late LoginBloc loginBloc;
     late AuthenticationBloc authenticationBloc;
@@ -17,12 +17,13 @@ void main() {
     const pushToken = 'pushToken';
 
     setUp(() {
+      registerFallbackValues();
       final mockFirebasePushService = MockFirebasePushService();
       mockUserRepository = MockUserRepository();
       when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(pushToken));
 
-      when(() => mockUserRepository.persistToken(any()))
+      when(() => mockUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
       when(() => mockUserRepository.baseUrl).thenReturn('url');
 
@@ -30,7 +31,7 @@ void main() {
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc(StreamController<DateTime>().stream),
+        clockBloc: ClockBloc.fixed(time),
       );
     });
 
@@ -40,7 +41,8 @@ void main() {
 
     test('LoginState and AuthenticationState in correct order', () async {
       // Arrange
-      const loginToken = 'loginToken';
+      const loginInfo =
+          LoginInfo(token: 'loginToken', endDate: 1111, renewToken: 'renew');
       const loggedInUserId = 1;
       const username = 'username', password = 'password';
       when(() => mockUserRepository.authenticate(
@@ -48,10 +50,10 @@ void main() {
             password: any(named: password),
             pushToken: any(named: 'pushToken'),
             time: any(named: 'time'),
-          )).thenAnswer((_) => Future.value(loginToken));
+          )).thenAnswer((_) => Future.value(loginInfo));
       when(() => mockUserRepository.getToken()).thenReturn('token');
 
-      when(() => mockUserRepository.me(loginToken))
+      when(() => mockUserRepository.me(loginInfo.token))
           .thenAnswer((_) => Future.value(
                 const User(
                   id: loggedInUserId,
@@ -63,7 +65,7 @@ void main() {
       when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
         (_) => Future.value([
           License(
-            endTime: DateTime.now().add(const Duration(hours: 24)),
+            endTime: time.add(const Duration(hours: 24)),
             id: 1,
             product: memoplannerLicenseName,
           ),
@@ -103,7 +105,7 @@ void main() {
       expect(
         authenticationBloc.state,
         Authenticated(
-          token: loginToken,
+          token: loginInfo.token,
           userId: loggedInUserId,
           userRepository: mockUserRepository,
           newlyLoggedIn: true,
@@ -165,7 +167,7 @@ void main() {
 
     setUp(() {
       mockedUserRepository = MockUserRepository();
-      when(() => mockedUserRepository.persistToken(any()))
+      when(() => mockedUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
       final authenticationBloc = AuthenticationBloc(mockedUserRepository)
         ..add(CheckAuthentication());
@@ -173,7 +175,7 @@ void main() {
       loginBloc = LoginBloc(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc(StreamController<DateTime>().stream),
+        clockBloc: ClockBloc.fixed(time),
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
@@ -182,7 +184,7 @@ void main() {
       when(() => mockedUserRepository.getLicensesFromApi(any()))
           .thenAnswer((_) => Future.value([
                 License(
-                    endTime: DateTime.now().add(const Duration(hours: 24)),
+                    endTime: time.add(const Duration(hours: 24)),
                     id: 1,
                     product: memoplannerLicenseName)
               ]));
@@ -193,7 +195,8 @@ void main() {
       const username = 'username',
           password = 'password',
           fakePushToken = 'pushToken';
-      const loginToken = 'loginToken';
+      const loginInfo =
+          LoginInfo(token: 'loginToken', endDate: 1111, renewToken: 'renew');
       when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value(fakePushToken));
       when(() => mockedUserRepository.authenticate(
@@ -201,7 +204,7 @@ void main() {
             password: any(named: 'password'),
             pushToken: any(named: 'pushToken'),
             time: any(named: 'time'),
-          )).thenAnswer((_) => Future.value(loginToken));
+          )).thenAnswer((_) => Future.value(loginInfo));
 
       // Act
       loginBloc.add(const UsernameChanged(username));
@@ -215,7 +218,7 @@ void main() {
             time: any(named: 'time'),
           ));
       await untilCalled(() => mockedUserRepository.me(any()));
-      await untilCalled(() => mockedUserRepository.persistToken(any()));
+      await untilCalled(() => mockedUserRepository.persistLoginInfo(any()));
     });
   });
 }

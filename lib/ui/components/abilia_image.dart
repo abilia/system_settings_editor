@@ -14,6 +14,8 @@ class ActivityImage extends StatelessWidget {
   final BoxFit fit;
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
+  final double? crossOverStrokeWidth;
+  final Color? crossOverColor;
 
   static const duration = Duration(milliseconds: 400);
   static final fallbackCrossPadding = EdgeInsets.all(4.s);
@@ -26,6 +28,8 @@ class ActivityImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
+    this.crossOverStrokeWidth,
+    this.crossOverColor,
     Key? key,
   }) : super(key: key);
 
@@ -37,6 +41,8 @@ class ActivityImage extends StatelessWidget {
     bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
+    double? crossOverStrokeWidth,
+    Color? crossOverColor,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -49,11 +55,13 @@ class ActivityImage extends StatelessWidget {
           : ActivityImage(
               key: key,
               activityDay: activityOccasion,
-              past: activityOccasion.occasion == Occasion.past,
+              past: activityOccasion.isPast,
               imageSize: imageSize,
               fit: fit,
               crossPadding: crossPadding,
               checkPadding: crossPadding,
+              crossOverStrokeWidth: crossOverStrokeWidth,
+              crossOverColor: crossOverColor,
             );
 
   @override
@@ -76,6 +84,7 @@ class ActivityImage extends StatelessWidget {
                   context,
                   activity.fileId,
                   activity.icon,
+                  imageSize,
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
               ),
@@ -89,13 +98,21 @@ class ActivityImage extends StatelessWidget {
         else if (past)
           Padding(
             padding: crossPadding ?? fallbackCrossPadding,
-            child: const CrossOver(),
+            child: CrossOver(
+              strokeWidth: crossOverStrokeWidth,
+              color: crossOverColor,
+            ),
           )
       ],
     );
   }
 
-  Image getImage(BuildContext context, String fileId, String filePath) {
+  static Image getImage(
+    BuildContext context,
+    String fileId, [
+    String filePath = '',
+    ImageSize imageSize = ImageSize.thumb,
+  ]) {
     final userFileState = context.watch<UserFileCubit>().state;
     final file = userFileState.getLoadedByIdOrPath(
       fileId,

@@ -50,9 +50,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       await GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
-        ..read<ClockBloc>().add(DateTime.now().onlyMinutes())
-        ..read<PushBloc>().add(const PushEvent('app-resumed'))
-        ..read<PermissionBloc>().checkAll();
+        ..read<ClockBloc>().setTime(DateTime.now())
+        ..read<PushCubit>().update('app-resumed')
+        ..read<PermissionCubit>().checkAll();
       if (Config.isMP) {
         context
             .read<WakeLockCubit>()
@@ -109,7 +109,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             }
           },
         ),
-        BlocListener<PermissionBloc, PermissionState>(
+        BlocListener<PermissionCubit, PermissionState>(
           listenWhen: _notificationsDenied,
           listener: (context, state) => showViewDialog(
             context: context,
@@ -135,9 +135,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     );
   }
 
-  BlocListener<PermissionBloc, PermissionState>
+  BlocListener<PermissionCubit, PermissionState>
       fullscreenAlarmPremissionListener(BuildContext context) {
-    return BlocListener<PermissionBloc, PermissionState>(
+    return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
             current.status.containsKey(Permission.systemAlertWindow) &&

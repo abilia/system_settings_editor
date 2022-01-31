@@ -8,6 +8,8 @@ class ActivityCard extends StatelessWidget {
 
   final bool preview;
   final bool showCategoryColor;
+  final double? crossOverStrokeWidth;
+  final Color? crossOverColor;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -16,6 +18,8 @@ class ActivityCard extends StatelessWidget {
     required this.activityOccasion,
     this.preview = false,
     this.showCategoryColor = false,
+    this.crossOverStrokeWidth,
+    this.crossOverColor,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,7 @@ class ActivityCard extends StatelessWidget {
           activity.semanticsProperties(context),
           child: AnimatedContainer(
             duration: ActivityCard.duration,
-            height: layout.activityCard.height,
+            height: layout.eventCard.height,
             decoration: getCategoryBoxDecoration(
               current: current,
               inactive: inactive,
@@ -80,19 +84,21 @@ class ActivityCard extends StatelessWidget {
                       children: <Widget>[
                         if (hasSideContent)
                           Padding(
-                            padding: layout.activityCard.imagePadding,
+                            padding: layout.eventCard.imagePadding,
                             child: SizedBox(
-                              width: layout.activityCard.imageSize,
+                              width: layout.eventCard.imageSize,
                               child: ActivityImage.fromActivityOccasion(
                                 activityOccasion: activityOccasion,
                                 fit: BoxFit.cover,
-                                crossPadding: layout.activityCard.crossPadding,
+                                crossPadding: layout.eventCard.crossPadding,
+                                crossOverStrokeWidth: crossOverStrokeWidth,
+                                crossOverColor: crossOverColor,
                               ),
                             ),
                           ),
                         Expanded(
                           child: Padding(
-                            padding: layout.activityCard.titlePadding,
+                            padding: layout.eventCard.titlePadding,
                             child: Stack(children: <Widget>[
                               if (activity.hasTitle)
                                 Text(
@@ -119,7 +125,7 @@ class ActivityCard extends StatelessWidget {
                       right: 0,
                       bottom: 0,
                       child: Padding(
-                        padding: layout.activityCard.statusesPadding,
+                        padding: layout.eventCard.statusesPadding,
                         child: buildInfoIcons(activity, inactive),
                       ),
                     ),
@@ -160,7 +166,7 @@ class CardIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: Icon(icon, size: layout.activityCard.iconSize),
+      child: Icon(icon, size: layout.eventCard.iconSize),
     );
   }
 }
@@ -186,7 +192,7 @@ class PrivateIcon extends StatelessWidget {
       ),
       child: Icon(
         AbiliaIcons.passwordProtection,
-        size: layout.activityCard.iconSize,
+        size: layout.eventCard.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),
     );

@@ -15,8 +15,8 @@ class EventsLoading extends EventsState {
 }
 
 class EventsLoaded extends EventsState {
-  final UnmodifiableListView<EventDay> events;
-  final UnmodifiableListView<TimerDay> timers;
+  final UnmodifiableListView<Event> events;
+  final UnmodifiableListView<TimerOccasion> timers;
   final UnmodifiableListView<ActivityDay> activities;
   final UnmodifiableListView<ActivityOccasion> fullDayActivities;
 
@@ -27,16 +27,14 @@ class EventsLoaded extends EventsState {
 
   EventsLoaded({
     required List<ActivityDay> activities,
-    required List<TimerDay> timers,
+    required List<TimerOccasion> timers,
     List<ActivityOccasion> fullDayActivities = const [],
     required this.day,
     required this.occasion,
   })  : activities = UnmodifiableListView(activities),
         timers = UnmodifiableListView(timers),
         fullDayActivities = UnmodifiableListView(fullDayActivities),
-        events = UnmodifiableListView(
-          [...activities, ...timers]..sort(), // TODO Unecessary to sort?
-        ),
+        events = UnmodifiableListView([...activities, ...timers]),
         super();
 
   List<EventOccasion> pastEvents(DateTime now) => events
@@ -60,7 +58,7 @@ class EventsLoaded extends EventsState {
       ];
 
   @override
-  String toString() => 'EventsOccasionLoaded '
+  String toString() => 'EventsLoaded '
       '$fullDayActivities fullDayActivities, '
       '$activities activities, '
       '$timers timers, '

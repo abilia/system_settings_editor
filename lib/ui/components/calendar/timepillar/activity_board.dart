@@ -36,7 +36,7 @@ class ActivityBoard extends StatelessWidget {
     double topMargin,
     double bottomMargin,
   ) {
-    final maxEndPos = timePillarHeight(ts) +
+    final maxEndPos = ts.timePillarHeight +
         topMargin +
         bottomMargin +
         ts.dotDistance +

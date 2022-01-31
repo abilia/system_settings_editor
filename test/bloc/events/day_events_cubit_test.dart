@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import '../../fakes/fakes_blocs.dart';
@@ -13,33 +12,30 @@ import '../../mocks/mocks.dart';
 void main() {
   late DayEventsCubit dayEventsCubit;
   late DayPickerBloc dayPickerBloc;
-  late ClockBloc clockBloc;
   late ActivitiesBloc activitiesBloc;
-  late TimerCubit timerCubit;
   late MockActivityRepository mockActivityRepository;
-  late MockTimerDb mockTimerDb;
-  late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2006, 06, 06, 06, 06);
   final initialDay = initialMinutes.onlyDays();
   final nextDay = initialDay.nextDay();
   final previusDay = initialDay.previousDay();
 
   setUp(() {
-    mockedTicker = StreamController<DateTime>();
-    clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
     mockActivityRepository = MockActivityRepository();
-    mockTimerDb = MockTimerDb();
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
     );
-    timerCubit = TimerCubit(timerDb: mockTimerDb);
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
       activitiesBloc: activitiesBloc,
-      timerCubit: timerCubit,
+      timerAlarmBloc: TimerAlarmBloc(
+        timerCubit: TimerCubit(
+          timerDb: MockTimerDb(),
+        ),
+        ticker: Ticker.fake(initialTime: initialMinutes),
+      ),
     );
   });
   group('dayEventsCubit', () {
@@ -59,7 +55,7 @@ void main() {
         dayEventsCubit.stream,
         emits(
           EventsLoaded(
-            timers: const <TimerDay>[],
+            timers: const [],
             activities: const [],
             fullDayActivities: const [],
             day: initialDay,
@@ -90,8 +86,8 @@ void main() {
         emits(
           EventsLoaded(
             activities: [
-              ActivityDay(pastActivity, initialDay),
               ActivityDay(nowActivity, initialDay),
+              ActivityDay(pastActivity, initialDay),
               ActivityDay(futureActivity, initialDay),
             ],
             timers: const [],
@@ -165,8 +161,8 @@ void main() {
         emits(
           EventsLoaded(
             activities: [
-              ActivityDay(pastActivity, initialDay),
               ActivityDay(nowActivity, initialDay),
+              ActivityDay(pastActivity, initialDay),
               ActivityDay(futureActivity, initialDay),
             ],
             timers: const [],
@@ -271,8 +267,8 @@ void main() {
         emits(
           EventsLoaded(
             activities: [
-              ActivityDay(pastActivity, nextDay),
               ActivityDay(nowActivity, nextDay),
+              ActivityDay(pastActivity, nextDay),
               ActivityDay(futureActivity, nextDay),
             ],
             timers: const [],
@@ -306,8 +302,8 @@ void main() {
         emits(
           EventsLoaded(
             activities: [
-              ActivityDay(pastActivity, previusDay),
               ActivityDay(nowActivity, previusDay),
+              ActivityDay(pastActivity, previusDay),
               ActivityDay(futureActivity, previusDay),
             ],
             timers: const [],
@@ -393,8 +389,8 @@ void main() {
           EventsLoaded(
             activities: [
               ActivityDay(nowActivity, initialDay),
-              ActivityDay(endsSoonActivity, initialDay),
               ActivityDay(startSoonActivity, initialDay),
+              ActivityDay(endsSoonActivity, initialDay),
             ],
             timers: const [],
             fullDayActivities: const [],
@@ -663,9 +659,9 @@ void main() {
           // Tuesday
           EventsLoaded(
             activities: [
-              ActivityDay(everyDayRecurring, dayBeforeyesterday),
-              ActivityDay(everyDayRecurring, yesterday),
               ActivityDay(everyDayRecurring, initialDay),
+              ActivityDay(everyDayRecurring, yesterday),
+              ActivityDay(everyDayRecurring, dayBeforeyesterday),
             ],
             timers: const [],
             fullDayActivities: const [],
@@ -685,9 +681,9 @@ void main() {
           // Monday
           EventsLoaded(
             activities: [
-              ActivityDay(everyDayRecurring, yesterday),
-              ActivityDay(everyDayRecurring, initialDay),
               ActivityDay(everyDayRecurring, tomorrow),
+              ActivityDay(everyDayRecurring, initialDay),
+              ActivityDay(everyDayRecurring, yesterday),
             ],
             timers: const [],
             fullDayActivities: const [],
@@ -737,8 +733,8 @@ void main() {
             // Tuesday
             EventsLoaded(
               activities: [
-                ActivityDay(earlyActivity, initialDay),
                 ActivityDay(mondayRecurring, monday),
+                ActivityDay(earlyActivity, initialDay),
                 ActivityDay(earlyCurrent, initialDay),
               ],
               timers: const [],
@@ -756,21 +752,25 @@ void main() {
   group('Test from old DayActivitiesBloc', () {
     setUp(() {
       dayPickerBloc = DayPickerBloc(
-        clockBloc:
-            ClockBloc(const Stream<DateTime>.empty(), initialTime: today),
+        clockBloc: ClockBloc.fixed(today),
       );
       mockActivityRepository = MockActivityRepository();
 
       activitiesBloc = ActivitiesBloc(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
-        pushBloc: FakePushBloc(),
+        pushCubit: FakePushCubit(),
       );
 
       dayEventsCubit = DayEventsCubit(
         dayPickerBloc: dayPickerBloc,
         activitiesBloc: activitiesBloc,
-        timerCubit: TimerCubit(timerDb: MockTimerDb()),
+        timerAlarmBloc: TimerAlarmBloc(
+          timerCubit: TimerCubit(
+            timerDb: MockTimerDb(),
+          ),
+          ticker: Ticker.fake(initialTime: initialMinutes),
+        ),
       );
     });
 
@@ -1052,19 +1052,20 @@ void main() {
     group('Recurring tests activity', () {
       final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a thursday
       setUp(() {
-        const stream = Stream<DateTime>.empty();
-        dayPickerBloc =
-            DayPickerBloc(clockBloc: ClockBloc(stream, initialTime: firstDay));
+        dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(firstDay));
         mockActivityRepository = MockActivityRepository();
         activitiesBloc = ActivitiesBloc(
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
-          pushBloc: FakePushBloc(),
+          pushCubit: FakePushCubit(),
         );
         dayEventsCubit = DayEventsCubit(
           dayPickerBloc: dayPickerBloc,
           activitiesBloc: activitiesBloc,
-          timerCubit: TimerCubit(timerDb: MockTimerDb()),
+          timerAlarmBloc: TimerAlarmBloc(
+            timerCubit: TimerCubit(timerDb: MockTimerDb()),
+            ticker: Ticker.fake(initialTime: today),
+          ),
         );
       });
 
@@ -1347,8 +1348,5 @@ void main() {
     dayPickerBloc.close();
     activitiesBloc.close();
     dayEventsCubit.close();
-    dayEventsCubit.close();
-    clockBloc.close();
-    mockedTicker.close();
   });
 }

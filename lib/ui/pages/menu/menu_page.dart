@@ -13,10 +13,7 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.menu,
-        iconData: AbiliaIcons.appMenu,
-      ),
+      appBar: const MenuAppBar(),
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
@@ -50,7 +47,7 @@ class CameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => MenuItemButton(
           icon: AbiliaIcons.cameraPhoto,
@@ -196,7 +193,7 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
 
-    return BlocSelector<PermissionBloc, PermissionState, bool>(
+    return BlocSelector<PermissionCubit, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
         return Stack(

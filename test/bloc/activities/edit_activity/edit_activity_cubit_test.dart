@@ -197,7 +197,7 @@ void main() {
     final wizCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
-      clockBloc: ClockBloc(const Stream.empty(), initialTime: nowTime),
+      clockBloc: ClockBloc.fixed(nowTime),
       settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(advancedActivityTemplate: false)),
     );

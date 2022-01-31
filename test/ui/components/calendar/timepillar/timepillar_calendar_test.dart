@@ -65,7 +65,7 @@ void main() {
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
       ..sortableDb = FakeSortableDb()
-      ..ticker = Ticker(stream: mockTicker.stream, initialTime: time)
+      ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: activityResponse,
@@ -248,10 +248,10 @@ void main() {
 
     testWidgets('hides timeline after push update',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsWidgets);
@@ -265,7 +265,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
       await tester.pumpAndSettle();
       expect(find.byType(Timeline), findsNothing);
     });
@@ -326,8 +326,8 @@ void main() {
     });
 
     testWidgets('hourTimeline shows on push', (WidgetTester tester) async {
-      final pushBloc = PushBloc();
-      await tester.pumpWidget(App(pushBloc: pushBloc));
+      final pushCubit = PushCubit();
+      await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsNothing);
 
@@ -340,7 +340,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
       await tester.pumpAndSettle();
       expect(find.byType(HourLines), findsOneWidget);
     });
@@ -377,10 +377,10 @@ void main() {
 
     testWidgets(' memoplanner settings - show category push update ',
         (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
       await tester.pumpAndSettle();
 
@@ -397,7 +397,7 @@ void main() {
               ),
             ),
           ];
-      pushBloc.add(const PushEvent('collapse_key'));
+      pushCubit.update('collapse_key');
 
       await tester.pumpAndSettle();
 
@@ -774,7 +774,7 @@ void main() {
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
       mockTicker.add(DateTime(2020, 12, 01, 08,
-          00)); // Morning starts at 6. Activity should be visible here.
+          01)); // Morning starts at 6. Activity should be visible here.
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
@@ -791,6 +791,7 @@ void main() {
             Activity.createNew(
               title: 'title',
               startTime: activityStartTime,
+              alarmType: noAlarm,
             )
           ];
 
@@ -799,11 +800,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 09, 59));
+      mockTicker.add(DateTime(2020, 12, 01, 09, 00));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 10, 00, 01));
+      mockTicker.add(DateTime(2020, 12, 01, 10, 00));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
     });
@@ -842,6 +843,7 @@ void main() {
             Activity.createNew(
               title: 'title',
               startTime: activityStartTime,
+              alarmType: noAlarm,
             )
           ];
 
@@ -860,7 +862,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 07, 00));
+      mockTicker.add(DateTime(2020, 12, 01, 07, 01));
       await tester.pumpAndSettle();
       expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 

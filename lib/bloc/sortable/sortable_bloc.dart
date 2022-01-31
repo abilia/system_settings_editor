@@ -21,18 +21,18 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
 
   SortableBloc({
     required this.sortableRepository,
-    required PushBloc pushBloc,
+    required PushCubit pushCubit,
     required this.syncBloc,
   }) : super(SortablesNotLoaded()) {
-    pushSubscription = pushBloc.stream.listen((state) {
+    pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
         add(const LoadSortables());
       }
     });
-    on<SortableEvent>(_mapEventToState, transformer: sequential());
+    on<SortableEvent>(_onEvent, transformer: sequential());
   }
 
-  Future<void> _mapEventToState(
+  Future<void> _onEvent(
     SortableEvent event,
     Emitter<SortableState> emit,
   ) async {

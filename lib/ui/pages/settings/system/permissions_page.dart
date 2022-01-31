@@ -12,11 +12,11 @@ class PermissionsPage extends StatelessWidget {
         title: translate.permissions,
         iconData: AbiliaIcons.menuSetup,
       ),
-      body: BlocBuilder<PermissionBloc, PermissionState>(
+      body: BlocBuilder<PermissionCubit, PermissionState>(
         builder: (context, state) => ListView(
           padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 0),
           children: state.status.entries
-              .where((p) => PermissionBloc.allPermissions.contains(p.key))
+              .where((p) => PermissionCubit.allPermissions.contains(p.key))
               .map((e) => PermissionSetting(e))
               .expand((e) => [e, SizedBox(height: 8.0.s)])
               .toList(),
@@ -69,7 +69,7 @@ class PermissionSwitch extends StatelessWidget {
           await openAppSettings();
           return;
         }
-        context.read<PermissionBloc>().add(RequestPermissions([permission]));
+        context.read<PermissionCubit>().requestPermissions([permission]);
       },
       child: Text(permission.translate(Translator.of(context).translate)),
     );
@@ -112,8 +112,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
                   );
                 } else {
                   context
-                      .read<PermissionBloc>()
-                      .add(RequestPermissions([permission]));
+                      .read<PermissionCubit>()
+                      .requestPermissions([permission]);
                 }
               },
               child: Text(permission.translate(translate)),
@@ -187,11 +187,9 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                           ),
                         );
                       } else {
-                        context.read<PermissionBloc>().add(
-                              const RequestPermissions(
-                                [Permission.systemAlertWindow],
-                              ),
-                            );
+                        context
+                            .read<PermissionCubit>()
+                            .requestPermissions([Permission.systemAlertWindow]);
                       }
                     },
                     child: Text(permission.translate(translate)),

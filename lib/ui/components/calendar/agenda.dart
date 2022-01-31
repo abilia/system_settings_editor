@@ -58,7 +58,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final categoryLabelWidth =
-            (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
+            (boxConstraints.maxWidth - layout.timePillar.width) / 2;
         return RefreshIndicator(
           onRefresh: refresh,
           child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -70,7 +70,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                   onNotification: state.isToday ? onScrollNotification : null,
                   child: AbiliaScrollBar(
                     controller: scrollController,
-                    child: ActivityList(
+                    child: EventList(
                       state: state,
                       scrollController: scrollController,
                       bottomPadding: Agenda.bottomPadding,
@@ -91,10 +91,10 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
   }
 }
 
-class ActivityList extends StatelessWidget {
+class EventList extends StatelessWidget {
   final center = GlobalKey();
 
-  ActivityList({
+  EventList({
     Key? key,
     required this.state,
     this.scrollController,
@@ -131,8 +131,9 @@ class ActivityList extends StatelessWidget {
                 if (!isTodayAndNoPast)
                   SliverPadding(
                     padding: EdgeInsets.only(top: topPadding),
-                    sliver: SliverActivityList(
+                    sliver: SliverEventList(
                       state.pastEvents(now),
+                      state.day,
                       reversed: state.isToday,
                       lastMargin: _lastPastPadding(
                         pastEvents,
@@ -146,7 +147,7 @@ class ActivityList extends StatelessWidget {
                     top: isTodayAndNoPast ? topPadding : 0.0,
                     bottom: bottomPadding,
                   ),
-                  sliver: SliverActivityList(notPastEvents),
+                  sliver: SliverEventList(notPastEvents, state.day),
                 ),
               ],
             ],
@@ -157,15 +158,14 @@ class ActivityList extends StatelessWidget {
   }
 
   double _lastPastPadding(
-    List<EventDay> notPastActivities,
-    List<EventDay> pastActivities,
+    List<Event> notPastActivities,
+    List<Event> pastActivities,
   ) =>
       pastActivities.isEmpty || notPastActivities.isEmpty
           ? 0.0
-          : pastActivities.first.event.category ==
-                  notPastActivities.first.event.category
-              ? layout.activityCard.marginSmall
-              : layout.activityCard.marginLarge;
+          : pastActivities.first.category == notPastActivities.first.category
+              ? layout.eventCard.marginSmall
+              : layout.eventCard.marginLarge;
 }
 
 class SliverNoActivities extends StatelessWidget {
@@ -190,16 +190,18 @@ class SliverNoActivities extends StatelessWidget {
   }
 }
 
-class SliverActivityList extends StatelessWidget {
+class SliverEventList extends StatelessWidget {
   final List<EventOccasion> events;
 
   // Reversed because slivers before center are called in reverse order
   final bool reversed;
   final double lastMargin;
   final int _maxIndex;
+  final DateTime day;
 
-  const SliverActivityList(
-    this.events, {
+  const SliverEventList(
+    this.events,
+    this.day, {
     this.reversed = false,
     this.lastMargin = 0.0,
     Key? key,
@@ -219,22 +221,28 @@ class SliverActivityList extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 if (reversed) index = _maxIndex - index;
-                final eventDay = events[index];
+                final event = events[index];
                 final padding = setting.showCategories
                     ? _padding(index)
-                    : EdgeInsets.only(bottom: layout.activityCard.marginSmall);
-                if (eventDay is ActivityOccasion) {
+                    : EdgeInsets.only(bottom: layout.eventCard.marginSmall);
+                if (event is ActivityOccasion) {
                   return Padding(
                     padding: padding,
                     child: ActivityCard(
-                      activityOccasion: eventDay,
+                      activityOccasion: event,
                       showCategoryColor: setting.showCategoryColor,
+                      crossOverColor: AbiliaColors.transparentBlack30,
+                      crossOverStrokeWidth:
+                          layout.eventCard.crossOverStrokeWidth,
                     ),
                   );
-                } else if (eventDay is TimerOccasion) {
+                } else if (event is TimerOccasion) {
                   return Padding(
                     padding: padding,
-                    child: TimerCard(timerOccasion: eventDay),
+                    child: TimerCard(
+                      timerOccasion: event,
+                      day: day,
+                    ),
                   );
                 }
               },
@@ -247,19 +255,17 @@ class SliverActivityList extends StatelessWidget {
   }
 
   EdgeInsets _padding(int index) {
-    final category = events[index].event.category;
+    final category = events[index].category;
     return EdgeInsets.only(
-      left: category != Category.right
-          ? 0
-          : layout.activityCard.categorySideOffset,
-      right: category == Category.right
-          ? 0
-          : layout.activityCard.categorySideOffset,
+      left:
+          category != Category.right ? 0 : layout.eventCard.categorySideOffset,
+      right:
+          category == Category.right ? 0 : layout.eventCard.categorySideOffset,
       bottom: index >= _maxIndex
           ? lastMargin
-          : category == events[index + 1].event.category
-              ? layout.activityCard.marginSmall
-              : layout.activityCard.marginLarge,
+          : category == events[index + 1].category
+              ? layout.eventCard.marginSmall
+              : layout.eventCard.marginLarge,
     );
   }
 }

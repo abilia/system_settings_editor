@@ -7,8 +7,8 @@ final hm = DateFormat.Hm().format;
 
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
-
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
+  DateTime onlySeconds() => DateTime(year, month, day, hour, minute, second);
 
   DateTime nextDay() => copyWith(day: day + 1);
   DateTime addDays(int days) => copyWith(day: day + days);

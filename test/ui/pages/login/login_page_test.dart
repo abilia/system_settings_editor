@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -35,10 +33,7 @@ void main() {
           await FakeSharedPreferences.getInstance(loggedIn: false)
       ..activityDb = FakeActivityDb()
       ..fireBasePushService = FakeFirebasePushService()
-      ..ticker = Ticker(
-        stream: StreamController<DateTime>().stream,
-        initialTime: time,
-      )
+      ..ticker = Ticker.fake(initialTime: time)
       ..client = Fakes.client(
         activityResponse: () => [],
         licenseResponse: () => Fakes.licenseResponseExpires(licensExpireTime),
@@ -287,8 +282,8 @@ void main() {
 
   testWidgets('Can login when valid license, but gets logged out when invalid',
       (WidgetTester tester) async {
-    final pushBloc = PushBloc();
-    await tester.pumpApp(pushBloc: pushBloc);
+    final pushCubit = PushCubit();
+    await tester.pumpApp(pushCubit: pushCubit);
     await tester.pumpAndSettle();
     await tester.ourEnterText(find.byType(PasswordInput), secretPassword);
     await tester.ourEnterText(find.byType(UsernameInput), Fakes.username);
@@ -299,7 +294,7 @@ void main() {
 
     licensExpireTime = time.subtract(10.days());
 
-    pushBloc.add(const PushEvent('license'));
+    pushCubit.update('license');
     await tester.pumpAndSettle();
     expect(find.byType(LicenseErrorDialog), findsOneWidget);
     expect(find.byType(LoginPage), findsOneWidget);

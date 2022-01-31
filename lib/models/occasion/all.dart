@@ -1,4 +1,4 @@
-export 'occasion.dart';
-export 'event_day.dart';
+export 'event.dart';
+export 'event_occasion.dart';
 export 'activity_occasion.dart';
 export 'timer_occasion.dart';

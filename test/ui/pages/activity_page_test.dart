@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -72,8 +71,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker(
-          initialTime: startTime, stream: StreamController<DateTime>().stream)
+      ..ticker = Ticker.fake(initialTime: startTime)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(
         activityResponse: () => [],
@@ -243,8 +241,11 @@ void main() {
     Future _changeDate(WidgetTester tester, int day) async {
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
-      await tester.tap(find.ancestor(
-          of: find.text('$day'), matching: find.byType(MonthDayView)));
+      await tester.tap(
+        find.ancestor(
+            of: find.text('$day'),
+            matching: find.byKey(TestKey.monthCalendarDay)),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();

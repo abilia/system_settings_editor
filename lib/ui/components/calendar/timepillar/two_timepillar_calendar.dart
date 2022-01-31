@@ -4,7 +4,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TwoTimepillarCalendar extends StatelessWidget {
-  TwoTimepillarCalendar({
+  const TwoTimepillarCalendar({
     Key? key,
     required this.eventState,
     required this.showCategories,
@@ -18,8 +18,6 @@ class TwoTimepillarCalendar extends StatelessWidget {
   final bool showCategories, displayHourLines, displayTimeline;
 
   final DayParts dayParts;
-
-  final verticalMargin = 24.s;
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +34,17 @@ class TwoTimepillarCalendar extends StatelessWidget {
     final maxInterval = dayInterval.lengthInHours > nightInterval.lengthInHours
         ? dayInterval
         : nightInterval;
-    final tpHeight = timePillarHeight(TimepillarState(maxInterval, 1.0)) +
-        verticalMargin * 2;
+    final tpHeight = TimepillarState(maxInterval, 1.0).timePillarHeight +
+        layout.timePillar.twoTimePillar.verticalMargin * 2;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final zoom = boxConstraints.maxHeight / tpHeight;
         final nightTimepillarState = TimepillarState(nightInterval, zoom);
         final dayTimepillarState = TimepillarState(dayInterval, zoom);
         final categoryLabelWidth =
-            (boxConstraints.maxWidth - defaultTimePillarWidth) / 2;
-        final nightTimepillarHeight =
-            timePillarHeight(nightTimepillarState) + verticalMargin * 2;
+            (boxConstraints.maxWidth - layout.timePillar.width) / 2;
+        final nightTimepillarHeight = nightTimepillarState.timePillarHeight +
+            layout.timePillar.twoTimePillar.verticalMargin * 2;
         return Stack(
           children: [
             Row(
@@ -65,12 +63,12 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       showCategoryLabels: false,
                       scrollToTimeOffset: false,
                       displayHourLines: displayHourLines,
-                      topMargin: verticalMargin,
-                      bottomMargin: verticalMargin,
+                      topMargin: layout.timePillar.twoTimePillar.verticalMargin,
+                      bottomMargin:
+                          layout.timePillar.twoTimePillar.verticalMargin,
                     ),
                   ),
                 ),
-                SizedBox(width: 4.s),
                 Flexible(
                   flex: 135,
                   child: MultiBlocProvider(
@@ -92,8 +90,15 @@ class TwoTimepillarCalendar extends StatelessWidget {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       height: nightTimepillarHeight,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: layout.timePillar.twoTimePillar.nightMargin,
+                      ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(9.s)),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            layout.timePillar.twoTimePillar.radius,
+                          ),
+                        ),
                       ),
                       child: BlocBuilder<NightEventsCubit, EventsLoaded>(
                         builder: (context, nightState) => OneTimepillarCalendar(
@@ -105,8 +110,10 @@ class TwoTimepillarCalendar extends StatelessWidget {
                           showCategoryLabels: false,
                           scrollToTimeOffset: false,
                           displayHourLines: displayHourLines,
-                          topMargin: verticalMargin,
-                          bottomMargin: verticalMargin,
+                          topMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
+                          bottomMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
                         ),
                       ),
                     ),

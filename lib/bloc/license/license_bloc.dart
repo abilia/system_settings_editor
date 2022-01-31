@@ -16,10 +16,10 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
   LicenseBloc({
     required this.userRepository,
     required this.clockBloc,
-    required PushBloc pushBloc,
+    required PushCubit pushCubit,
     required AuthenticationBloc authenticationBloc,
   }) : super(LicensesNotLoaded()) {
-    pushSubscription = pushBloc.stream.listen((state) {
+    pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
         add(ReloadLicenses());
       }

@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/abilia_timer.dart';
-import 'package:seagull/models/settings/memoplanner_settings.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -15,16 +14,15 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  final startTime = DateTime(2021, 12, 22, 08, 10);
   final defaultTimer = AbiliaTimer(
       id: 'fake-id',
       title: 'test timer',
       duration: const Duration(minutes: 5),
-      startTime: DateTime.now());
+      startTime: startTime);
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
-
-  final startTime = DateTime(2021, 12, 22, 08, 10);
 
   setUpAll(() {
     registerFallbackValues();
@@ -55,8 +53,7 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
           BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc(StreamController<DateTime>().stream,
-                initialTime: startTime),
+            create: (context) => ClockBloc.fixed(startTime),
           ),
           BlocProvider<TimerCubit>(
             create: (context) => TimerCubit(timerDb: mockTimerDb),
@@ -65,17 +62,17 @@ void main() {
             value: mockMemoplannerSettingsBloc,
           ),
           BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: FakeSettingsDb(),
             ),
           ),
-        ], child: ViewTimerPage(timer: timer)),
+        ], child: TimerPage(timer: timer, day: timer.startTime)),
       );
 
   testWidgets('Page visible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
     await tester.pumpAndSettle();
-    expect(find.byType(ViewTimerPage), findsOneWidget);
+    expect(find.byType(TimerPage), findsOneWidget);
   });
 }

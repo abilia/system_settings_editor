@@ -125,7 +125,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
         padding: EdgeInsets.only(right: 12.s),
         child: Separated(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(16.s, 12.s, 0.0, 4.s),
+            padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
                 IconActionButtonDark(
@@ -136,7 +136,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                 Expanded(
                   child: Text(
                     heading,
-                    style: abiliaTheme.textTheme.headline6,
+                    style: layout.libraryPage.headerStyle(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -209,10 +209,10 @@ class _SortableLibraryState<T extends SortableData>
               left: leftPadding,
               right: rightPadding,
             ),
-            mainAxisSpacing: 8.0.s,
-            crossAxisSpacing: 8.0.s,
-            crossAxisCount: 3,
-            childAspectRatio: 0.92,
+            mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
+            crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
+            crossAxisCount: layout.libraryPage.crossAxisCount,
+            childAspectRatio: layout.libraryPage.childAspectRatio,
             children: currentFolderContent
                 .map(
                   (sortable) => sortable.isGroup
@@ -291,7 +291,6 @@ class LibraryFolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final folderIconSize = 86.s;
     final title = sortableData.title(Translator.of(context).translate);
     return Tts.fromSemantics(
       SemanticsProperties(
@@ -304,7 +303,7 @@ class LibraryFolder extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: abiliaTextTheme.caption,
+              style: abiliaTextTheme.caption?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 2.s),
@@ -312,15 +311,14 @@ class LibraryFolder extends StatelessWidget {
               children: [
                 Icon(
                   AbiliaIcons.folder,
-                  size: folderIconSize,
+                  size: layout.libraryPage.folderIconSize,
                   color: AbiliaColors.orange,
                 ),
                 SizedBox(
-                  height: folderIconSize,
-                  width: folderIconSize,
+                  height: layout.libraryPage.folderIconSize,
+                  width: layout.libraryPage.folderIconSize,
                   child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 10.s, right: 10.s, bottom: 16.s, top: 28.s),
+                    padding: layout.libraryPage.folderImagePadding,
                     child: Center(
                       child: FadeInAbiliaImage(
                         imageFileId: sortableData.dataFileId(),

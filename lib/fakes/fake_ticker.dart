@@ -12,13 +12,8 @@ class FakeTicker extends StatefulWidget {
 }
 
 class _FakeTickerState extends State<FakeTicker> {
-  double? minPerMin;
-  bool get useMockTime => minPerMin != null;
-  @override
-  void initState() {
-    minPerMin = context.read<ClockBloc>().minPerMin;
-    super.initState();
-  }
+  late final Ticker ticker = GetIt.I<Ticker>();
+  bool get useMockTime => ticker.ticksPerSecond != null;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +24,12 @@ class _FakeTickerState extends State<FakeTicker> {
           SwitchField(
             value: useMockTime,
             onChanged: (v) {
-              setState(() => minPerMin = v ? 1 : null);
-              final cb = context.read<ClockBloc>();
               if (!v) {
-                cb.resetTicker(GetIt.I<Ticker>());
+                ticker.reset();
+              } else {
+                ticker.setFakeTicker(1);
               }
+              setState(() => {});
             },
             child: const Text('Fake time'),
           ),
@@ -49,14 +45,11 @@ class _FakeTickerState extends State<FakeTicker> {
                       DatePicker(
                         state,
                         onChange: (newDate) async {
-                          context.read<ClockBloc>().setFakeTicker(
-                                initTime: newDate
-                                    .withTime(TimeOfDay.fromDateTime(state)),
-                              );
+                          ticker.setFakeTime(newDate.withTime(time));
                         },
                       ),
                       TimePicker(
-                        '${minPerMin?.toInt() ?? 1} min/min',
+                        '${ticker.ticksPerSecond?.toInt() ?? 1} min/min',
                         TimeInput(time, null),
                         onTap: () async {
                           final newTime = await showTimePicker(
@@ -64,23 +57,18 @@ class _FakeTickerState extends State<FakeTicker> {
                             initialTime: time,
                           );
                           if (newTime != null) {
-                            context.read<ClockBloc>().setFakeTicker(
-                                  initTime: state.withTime(newTime),
-                                );
+                            ticker.setFakeTime(state.withTime(newTime));
                           }
                         },
                       ),
                       Slider(
-                        value: minPerMin ?? 1,
-                        divisions: 599,
+                        value: ticker.ticksPerSecond ?? 1,
+                        divisions: 300,
                         onChanged: (v) {
-                          setState(() => minPerMin = v);
-                          context
-                              .read<ClockBloc>()
-                              .setFakeTicker(ticksPerMin: v);
+                          ticker.setFakeTicker(v);
+                          setState(() {});
                         },
-                        max: 600,
-                        min: 1,
+                        max: 300,
                       ),
                     ],
                   );

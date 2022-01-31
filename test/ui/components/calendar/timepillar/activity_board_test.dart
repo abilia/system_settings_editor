@@ -67,11 +67,11 @@ void main() {
     final mocktimepillarCubit = MocktimepillarCubit();
     final ts = TimepillarState(interval, 1);
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1));
+        TimepillarInterval(start: startTime, end: startTime), 1));
     when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
         Stream.fromIterable([
           TimepillarState(
-              TimepillarInterval(start: DateTime.now(), end: DateTime.now()), 1)
+              TimepillarInterval(start: startTime, end: startTime), 1)
         ]));
     return MaterialApp(
       home: Directionality(
@@ -79,12 +79,10 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ClockBloc(
-                  StreamController<DateTime>().stream,
-                  initialTime: initialTime ?? startTime),
+              create: (context) => ClockBloc.fixed(initialTime ?? startTime),
             ),
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(settingsDb: FakeSettingsDb()),
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingsBloc,
@@ -98,7 +96,7 @@ void main() {
               Timeline(
                 now: initialTime ?? startTime,
                 width: 40,
-                offset: -TimepillarCalendar.topMargin,
+                offset: -layout.timePillar.topMargin,
                 timepillarState: ts,
               ),
               ActivityBoard(
@@ -110,8 +108,8 @@ void main() {
                       .dayParts,
                   TimepillarSide.right,
                   ts,
-                  TimepillarCalendar.topMargin,
-                  TimepillarCalendar.bottomMargin,
+                  layout.timePillar.topMargin,
+                  layout.timePillar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
                 timepillarWidth: ts.totalWidth,
@@ -244,12 +242,13 @@ void main() {
 
       final timelineYPostion =
           tester.getTopLeft(find.byType(Timeline).first).dy;
-      final timelineMidPos = timelineYPostion + (Timeline.timelineHeight / 2);
+      final timelineMidPos =
+          timelineYPostion + (layout.timePillar.timeLineHeight / 2);
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       for (final y in activityYPos) {
         final activityDotMidPos = y + ts.dotSize / 2;
         expect(
@@ -318,7 +317,7 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
@@ -354,7 +353,7 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
       final ts = TimepillarState(
-          TimepillarInterval(end: DateTime.now(), start: DateTime.now()), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.totalWidth));
     });
@@ -407,8 +406,8 @@ void main() {
         DayParts.standard(),
         TimepillarSide.right,
         TimepillarState(interval, 1),
-        TimepillarCalendar.topMargin,
-        TimepillarCalendar.bottomMargin,
+        layout.timePillar.topMargin,
+        layout.timePillar.bottomMargin,
       );
       final uniques = boardData.cards.map((f) => {f.top, f.column});
 

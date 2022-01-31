@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/models/login_error.dart';
+import 'package:seagull/repository/json_response.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
@@ -14,14 +15,14 @@ import 'package:seagull/utils/all.dart';
 
 class UserRepository extends Repository {
   static final _log = Logger((UserRepository).toString());
-  final TokenDb tokenDb;
+  final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
 
   const UserRepository({
     required String baseUrl,
     required BaseClient client,
-    required this.tokenDb,
+    required this.loginDb,
     required this.userDb,
     required this.licenseDb,
   }) : super(client, baseUrl);
@@ -33,17 +34,18 @@ class UserRepository extends Repository {
       UserRepository(
         baseUrl: baseUrl ?? this.baseUrl,
         client: client ?? this.client,
-        tokenDb: tokenDb,
+        loginDb: loginDb,
         userDb: userDb,
         licenseDb: licenseDb,
       );
 
-  Future<String> authenticate({
+  Future<LoginInfo> authenticate({
     required String username,
     required String password,
     required String pushToken,
     required DateTime time,
   }) async {
+    final clientId = const Uuid().v4();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -53,7 +55,7 @@ class UserRepository extends Repository {
       },
       body: json.encode(
         {
-          'clientId': const Uuid().v4(),
+          'clientId': clientId,
           'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,
@@ -63,8 +65,8 @@ class UserRepository extends Repository {
     );
     switch (response.statusCode) {
       case 200:
-        var login = Login.fromJson(json.decode(response.body));
-        return login.token;
+        final loginResponse = LoginInfo.fromJson(response.json());
+        return loginResponse.copyWithClientId(clientId);
       case 401:
         throw UnauthorizedException();
       case 403:
@@ -145,14 +147,16 @@ class UserRepository extends Repository {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');
-    await tokenDb.delete();
+    await loginDb.deleteToken();
+    await loginDb.deleteLoginInfo();
     _log.fine('deleting user');
     await userDb.deleteUser();
   }
 
-  Future<void> persistToken(String token) => tokenDb.persistToken(token);
+  Future<void> persistLoginInfo(LoginInfo loginInfo) =>
+      loginDb.persistLoginInfo(loginInfo);
 
-  String? getToken() => tokenDb.getToken();
+  String? getToken() => loginDb.getToken();
 
   Future<bool> _unregisterClient([String? token]) async {
     try {
@@ -206,5 +210,5 @@ class UserRepository extends Repository {
 
   @override
   String toString() =>
-      'UserRepository: { secureStorage: $tokenDb ${super.toString()} }';
+      'UserRepository: { secureStorage: $loginDb ${super.toString()} }';
 }

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -87,9 +85,7 @@ class ActivityAlarmPreview extends StatelessWidget {
               width: 450.0.s,
               height: 800.0.s,
               child: BlocProvider(
-                create: (context) => ClockBloc(
-                    StreamController<DateTime>().stream,
-                    initialTime: startTime),
+                create: (context) => ClockBloc.fixed(startTime),
                 child: AlarmPage(
                   previewImage: const Image(
                     image: AssetImage('assets/graphics/cake.gif'),
@@ -122,8 +118,8 @@ class RequestFullscreenNotificationButton extends StatelessWidget {
         text: Translator.of(context).translate.allow,
         onPressed: () async {
           context
-              .read<PermissionBloc>()
-              .add(const RequestPermissions([Permission.systemAlertWindow]));
+              .read<PermissionCubit>()
+              .requestPermissions([Permission.systemAlertWindow]);
           await Navigator.of(context).maybePop();
         },
       );

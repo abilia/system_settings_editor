@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:seagull/background/all.dart';
@@ -46,23 +44,22 @@ void main() {
             activityResponse: () => serverActivityAnswers.removeAt(0))
         ..fireBasePushService = MockFirebasePushService()
         ..userFileDb = FakeUserFileDb()
-        ..ticker = Ticker(
-            stream: StreamController<DateTime>().stream, initialTime: time)
+        ..ticker = Ticker.fake(initialTime: time)
         ..database = FakeDatabase()
         ..init();
     });
 
     testWidgets('Push loads activities', (WidgetTester tester) async {
-      final pushBloc = PushBloc();
+      final pushCubit = PushCubit();
 
       await tester.pumpWidget(App(
-        pushBloc: pushBloc,
+        pushCubit: pushCubit,
       ));
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsNothing);
 
-      pushBloc.add(const PushEvent('calendar'));
+      pushCubit.update('calendar');
 
       await tester.pumpAndSettle();
       expect(find.byType(ActivityCard), findsOneWidget);
