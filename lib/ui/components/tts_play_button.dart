@@ -39,7 +39,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
+    return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: (previous, current) =>
           previous.textToSpeech != current.textToSpeech,
       builder: (context, settingsState) => SizedBox(
