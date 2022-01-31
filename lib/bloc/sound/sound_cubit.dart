@@ -33,21 +33,20 @@ class SoundCubit extends Cubit<SoundState> {
   SoundCubit({
     required this.storage,
     required this.userFileCubit,
-  }) : super(const NoSoundPlaying(Duration.zero)) {
+  }) : super(const NoSoundPlaying()) {
     onPlayerCompletion = audioPlayer.onPlayerCompletion.listen((_) {
-      emit(NoSoundPlaying(state.duration));
+      emit(const NoSoundPlaying());
     });
     onPlayerError = audioPlayer.onPlayerError.listen((event) {
       log.warning(event);
-      emit(NoSoundPlaying(state.duration));
+      emit(const NoSoundPlaying());
     });
     audioPositionChanged = audioPlayer.onAudioPositionChanged.listen(
       (position) async {
         final s = state;
         if (s is SoundPlaying) {
-          final duration = s.duration == Duration.zero
-              ? Duration(milliseconds: await audioPlayer.getDuration())
-              : s.duration;
+          final duration =
+              s.duration == 0 ? await audioPlayer.getDuration() : s.duration;
           emit(
             SoundPlaying(
               s.currentSound,
@@ -58,34 +57,22 @@ class SoundCubit extends Cubit<SoundState> {
         }
       },
     );
-    audioPlayer.onDurationChanged.listen((Duration duration) async {
-      log.fine('emitting sound duration ' + duration.toString());
-      if (state is! SoundPlaying) {
-        emit(SoundDuration(duration));
-      }
-    });
   }
 
   Future<void> play(AbiliaFile abiliaFile) async {
     log.fine('trying to play: $abiliaFile');
-    final file = _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
+    final file = await resolveFile(abiliaFile);
     if (file != null) {
       log.fine('playing: $file');
       await audioPlayer.play(file.path, isLocal: true);
-      emit(SoundPlaying(abiliaFile, duration: Duration.zero));
+      emit(SoundPlaying(abiliaFile));
     } else {
       log.warning('could not resolve $abiliaFile from user files');
     }
   }
 
-  Future<void> set(AbiliaFile abiliaFile) async {
-    final file = _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
-    if (file != null) {
-      await audioPlayer.setUrl(file.path);
-    } else {
-      log.warning('could not resolve $abiliaFile from user files');
-    }
-  }
+  Future<File?> resolveFile(AbiliaFile abiliaFile) async =>
+      _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
 
   Future<File?> _resolveFile(AbiliaFile abiliaFile) async {
     if (abiliaFile is UnstoredAbiliaFile) {
@@ -129,7 +116,7 @@ class SoundCubit extends Cubit<SoundState> {
 
   Future<void> stopSound() async {
     await audioPlayer.stop();
-    emit(NoSoundPlaying(state.duration));
+    emit(const NoSoundPlaying());
   }
 
   @override

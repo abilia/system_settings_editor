@@ -219,7 +219,7 @@ void main() {
         const EmptyRecordSoundState(),
       );
       when(() => mockSoundCubit.state).thenReturn(
-        const NoSoundPlaying(Duration(seconds: 10)),
+        const NoSoundPlaying(),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -237,7 +237,7 @@ void main() {
         NewRecordedSoundState(_dummyFile, const Duration(seconds: 5)),
       );
       when(() => mockSoundCubit.state).thenReturn(
-        const NoSoundPlaying(Duration(seconds: 10)),
+        const NoSoundPlaying(),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -255,9 +255,7 @@ void main() {
         const EmptyRecordSoundState(),
       );
       when(() => mockSoundCubit.state).thenReturn(
-        SoundPlaying(_dummyFile,
-            position: const Duration(seconds: 1),
-            duration: const Duration(seconds: 10)),
+        SoundPlaying(_dummyFile, position: const Duration(seconds: 1)),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -275,7 +273,7 @@ void main() {
         const RecordingSoundState(Duration(seconds: 3)),
       );
       when(() => mockSoundCubit.state).thenReturn(
-        const NoSoundPlaying(Duration.zero),
+        const NoSoundPlaying(),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(
@@ -293,9 +291,10 @@ void main() {
         const RecordingSoundState(Duration(seconds: 3)),
       );
       when(() => mockSoundCubit.state).thenReturn(
-        SoundPlaying(_dummyFile,
-            position: const Duration(seconds: 1),
-            duration: const Duration(seconds: 10)),
+        SoundPlaying(
+          _dummyFile,
+          position: const Duration(seconds: 1),
+        ),
       );
       await tester.pumpWidget(
         wrapWithMaterialApp(

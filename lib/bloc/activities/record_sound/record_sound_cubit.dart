@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:record/record.dart';
@@ -23,19 +24,30 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   static const maxRecordingTime = Duration(seconds: 30);
   final Record _recorder;
   StreamSubscription<Duration>? _tickerSubscription;
+  StreamSubscription<Duration>? onDurationChanged;
   final AudioTicker _ticker = const AudioTicker(50);
 
-  RecordSoundCubit(
-      {required AbiliaFile originalSoundFile,
-      Record? record,
-      Duration? initialDuration})
-      : _recorder = record ?? Record(),
+  RecordSoundCubit({
+    required AbiliaFile originalSoundFile,
+    Record? record,
+    File? file,
+  })  : _recorder = record ?? Record(),
         super(
           originalSoundFile.isEmpty
               ? const EmptyRecordSoundState()
-              : UnchangedRecordingSoundState(
-                  originalSoundFile, initialDuration ?? Duration.zero),
-        );
+              : UnchangedRecordingSoundState(originalSoundFile, Duration.zero),
+        ) {
+    if (file != null) {
+      final audioPlayer = AudioPlayer();
+      onDurationChanged = audioPlayer.onDurationChanged.listen((event) {
+        final s = state;
+        if (s is UnchangedRecordingSoundState) {
+          emit(UnchangedRecordingSoundState(s.recordedFile, event));
+        }
+      });
+      audioPlayer.setUrl(file.path);
+    }
+  }
 
   Future<void> startRecording() async {
     await _recorder.start();
@@ -81,5 +93,6 @@ class RecordSoundCubit extends Cubit<RecordSoundState> {
   Future<void> close() async {
     await super.close();
     await _tickerSubscription?.cancel();
+    await onDurationChanged?.cancel();
   }
 }

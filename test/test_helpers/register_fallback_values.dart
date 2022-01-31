@@ -46,5 +46,5 @@ void registerFallbackValues() {
     ),
   );
   registerFallbackValue(const EmptyRecordSoundState());
-  registerFallbackValue(const NoSoundPlaying(Duration.zero));
+  registerFallbackValue(const NoSoundPlaying());
 }
