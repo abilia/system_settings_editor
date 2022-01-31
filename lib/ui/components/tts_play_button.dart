@@ -1,6 +1,5 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -62,20 +61,9 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
               key: TestKey.ttsPlayButton,
               onPressed: () async {
                 if (ttsIsPlaying) {
-                  GetIt.I<FlutterTts>().stop().whenComplete(() {
-                    if (mounted) {
-                      setState(() => ttsIsPlaying = false);
-                    }
-                  });
+                  _stop();
                 } else {
-                  setState(() => ttsIsPlaying = true);
-                  GetIt.I<FlutterTts>()
-                      .speak(widget.controller.text)
-                      .whenComplete(() {
-                    if (mounted) {
-                      setState(() => ttsIsPlaying = false);
-                    }
-                  });
+                  _play();
                 }
               },
               child: Icon(
@@ -87,5 +75,22 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
         ),
       ),
     );
+  }
+
+  _play() {
+    setState(() => ttsIsPlaying = true);
+    GetIt.I<FlutterTts>().speak(widget.controller.text).whenComplete(() {
+      if (mounted) {
+        setState(() => ttsIsPlaying = false);
+      }
+    });
+  }
+
+  _stop() {
+    GetIt.I<FlutterTts>().stop().whenComplete(() {
+      if (mounted) {
+        setState(() => ttsIsPlaying = false);
+      }
+    });
   }
 }
