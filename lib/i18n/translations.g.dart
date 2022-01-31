@@ -655,6 +655,9 @@ abstract class Translated {
 
   final String defaults = 'Defaults';
 
+  final String showOngoingActivityInFullScreen =
+      'Show ongoing activity in full screen';
+
   final String toolbar = 'Toolbar';
 
   final String toolbarSettingsHint = 'Views displayed in the Toolbar';
@@ -1761,6 +1764,10 @@ class SV extends Translated {
 
   @override
   final String defaults = 'Förval';
+
+  @override
+  final String showOngoingActivityInFullScreen =
+      'Visa pågående aktivitet i helskärm';
 
   @override
   final String toolbar = 'Knapprad';
@@ -2931,6 +2938,10 @@ class DA extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String showOngoingActivityInFullScreen =
+      'Vis nuværende aktivitet i fuld skærm';
+
+  @override
   final String toolbar = 'Værktøjslinje';
 
   @override
@@ -4097,6 +4108,10 @@ class NL extends Translated {
 
   @override
   final String defaults = 'Voorselectie';
+
+  @override
+  final String showOngoingActivityInFullScreen =
+      'Lopende activiteit in volledig scherm tonen';
 
   @override
   final String toolbar = 'Werkbalk';
@@ -5266,6 +5281,10 @@ class FI extends Translated {
 
   @override
   final String defaults = 'Esivalinta';
+
+  @override
+  final String showOngoingActivityInFullScreen =
+      'Näytä käynnissä oleva aktiviteetti koko näytössä';
 
   @override
   final String toolbar = 'Työkalurivi';
@@ -6441,6 +6460,10 @@ class DE extends Translated {
   final String defaults = 'Vorauswahl';
 
   @override
+  final String showOngoingActivityInFullScreen =
+      'Laufende Aktivität im Vollbild zeigen';
+
+  @override
   final String toolbar = 'Symbolleiste';
 
   @override
@@ -7606,6 +7629,10 @@ class NB extends Translated {
 
   @override
   final String defaults = 'Forvalg';
+
+  @override
+  final String showOngoingActivityInFullScreen =
+      'Vis gjeldende aktivitet i full skjerm';
 
   @override
   final String toolbar = 'Knapperad';
