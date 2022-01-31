@@ -216,105 +216,103 @@ void main() {
           home: widget,
         );
 
-    group('common states', () {
-      testWidgets(
-          'RecordSoundState emits EmptyRecordSoundState. SoundState emits NoSoundPlaying. EmptyRecordSoundState takes precedence',
-          (WidgetTester tester) async {
-        when(() => mockRecordSoundCubit.state).thenReturn(
-          const EmptyRecordSoundState(),
-        );
-        when(() => mockSoundCubit.state).thenReturn(
-          const NoSoundPlaying(Duration(seconds: 10)),
-        );
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const RecordSoundPage(title: ''),
-            originalSoundFile: AbiliaFile.empty,
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('00:00'), findsOneWidget);
-      });
+    testWidgets(
+        'RecordSoundState emits EmptyRecordSoundState. SoundState emits NoSoundPlaying. EmptyRecordSoundState takes precedence',
+        (WidgetTester tester) async {
+      when(() => mockRecordSoundCubit.state).thenReturn(
+        const EmptyRecordSoundState(),
+      );
+      when(() => mockSoundCubit.state).thenReturn(
+        const NoSoundPlaying(Duration(seconds: 10)),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: ''),
+          originalSoundFile: AbiliaFile.empty,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('00:00'), findsOneWidget);
+    });
 
-      testWidgets(
-          'RecordSoundState emits NewRecordSoundState. SoundState emits NoSoundPlaying. NewRecordSoundState takes precedence',
-          (WidgetTester tester) async {
-        when(() => mockRecordSoundCubit.state).thenReturn(
-          NewRecordedSoundState(_dummyFile, const Duration(seconds: 5)),
-        );
-        when(() => mockSoundCubit.state).thenReturn(
-          const NoSoundPlaying(Duration(seconds: 10)),
-        );
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const RecordSoundPage(title: ''),
-            originalSoundFile: AbiliaFile.empty,
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('00:05'), findsOneWidget);
-      });
+    testWidgets(
+        'RecordSoundState emits NewRecordSoundState. SoundState emits NoSoundPlaying. NewRecordSoundState takes precedence',
+        (WidgetTester tester) async {
+      when(() => mockRecordSoundCubit.state).thenReturn(
+        NewRecordedSoundState(_dummyFile, const Duration(seconds: 5)),
+      );
+      when(() => mockSoundCubit.state).thenReturn(
+        const NoSoundPlaying(Duration(seconds: 10)),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: ''),
+          originalSoundFile: AbiliaFile.empty,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('00:05'), findsOneWidget);
+    });
 
-      testWidgets(
-          'RecordSoundState emits EmptyRecordSoundState. SoundState emits SoundPlaying. SoundPlaying takes precedence',
-          (WidgetTester tester) async {
-        when(() => mockRecordSoundCubit.state).thenReturn(
-          const EmptyRecordSoundState(),
-        );
-        when(() => mockSoundCubit.state).thenReturn(
-          SoundPlaying(_dummyFile,
-              position: const Duration(seconds: 1),
-              duration: const Duration(seconds: 10)),
-        );
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const RecordSoundPage(title: ''),
-            originalSoundFile: AbiliaFile.empty,
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('00:01'), findsOneWidget);
-      });
+    testWidgets(
+        'RecordSoundState emits EmptyRecordSoundState. SoundState emits SoundPlaying. SoundPlaying takes precedence',
+        (WidgetTester tester) async {
+      when(() => mockRecordSoundCubit.state).thenReturn(
+        const EmptyRecordSoundState(),
+      );
+      when(() => mockSoundCubit.state).thenReturn(
+        SoundPlaying(_dummyFile,
+            position: const Duration(seconds: 1),
+            duration: const Duration(seconds: 10)),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: ''),
+          originalSoundFile: AbiliaFile.empty,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('00:01'), findsOneWidget);
+    });
 
-      testWidgets(
-          'RecordSoundState emits RecordingSoundState. SoundState emits NoSoundPlaying. RecordingSoundState takes precedence',
-          (WidgetTester tester) async {
-        when(() => mockRecordSoundCubit.state).thenReturn(
-          const RecordingSoundState(Duration(seconds: 3)),
-        );
-        when(() => mockSoundCubit.state).thenReturn(
-          const NoSoundPlaying(Duration.zero),
-        );
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const RecordSoundPage(title: ''),
-            originalSoundFile: AbiliaFile.empty,
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('00:03'), findsOneWidget);
-      });
+    testWidgets(
+        'RecordSoundState emits RecordingSoundState. SoundState emits NoSoundPlaying. RecordingSoundState takes precedence',
+        (WidgetTester tester) async {
+      when(() => mockRecordSoundCubit.state).thenReturn(
+        const RecordingSoundState(Duration(seconds: 3)),
+      );
+      when(() => mockSoundCubit.state).thenReturn(
+        const NoSoundPlaying(Duration.zero),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: ''),
+          originalSoundFile: AbiliaFile.empty,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('00:03'), findsOneWidget);
+    });
 
-      testWidgets(
-          'RecordSoundState emits RecordingSoundState. SoundState emits SoundPlaying. Should never happen? RecordingSoundState takes precedence.',
-          (WidgetTester tester) async {
-        when(() => mockRecordSoundCubit.state).thenReturn(
-          const RecordingSoundState(Duration(seconds: 3)),
-        );
-        when(() => mockSoundCubit.state).thenReturn(
-          SoundPlaying(_dummyFile,
-              position: const Duration(seconds: 1),
-              duration: const Duration(seconds: 10)),
-        );
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const RecordSoundPage(title: ''),
-            originalSoundFile: AbiliaFile.empty,
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('00:03'), findsOneWidget);
-      });
+    testWidgets(
+        'RecordSoundState emits RecordingSoundState. SoundState emits SoundPlaying. Should never happen? RecordingSoundState takes precedence.',
+        (WidgetTester tester) async {
+      when(() => mockRecordSoundCubit.state).thenReturn(
+        const RecordingSoundState(Duration(seconds: 3)),
+      );
+      when(() => mockSoundCubit.state).thenReturn(
+        SoundPlaying(_dummyFile,
+            position: const Duration(seconds: 1),
+            duration: const Duration(seconds: 10)),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          const RecordSoundPage(title: ''),
+          originalSoundFile: AbiliaFile.empty,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('00:03'), findsOneWidget);
     });
   });
 }
