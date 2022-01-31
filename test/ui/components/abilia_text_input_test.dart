@@ -20,8 +20,8 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(
           providers: [
-            BlocProvider<SettingsBloc>(
-              create: (context) => SettingsBloc(
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(
                 settingsDb: FakeSettingsDb(),
               ),
             ),

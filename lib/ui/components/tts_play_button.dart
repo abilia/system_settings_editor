@@ -20,6 +20,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
   @override
   void initState() {
     super.initState();
+    textIsEmpty = widget.controller.text.isEmpty;
     widget.controller.addListener(_visibilityListener);
   }
 
@@ -30,12 +31,17 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
   }
 
   void _visibilityListener() {
-    if (mounted) {
-      setState(() {});
+    if (widget.controller.text.isEmpty != textIsEmpty) {
+      if (mounted) {
+        setState(() {
+          textIsEmpty = widget.controller.text.isEmpty;
+        });
+      }
     }
   }
 
-  bool ttsIsActive = false;
+  bool ttsIsPlaying = false;
+  late bool textIsEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -56,25 +62,25 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
               IconActionButton(
                 key: TestKey.ttsPlayButton,
                 onPressed: () async {
-                  if (ttsIsActive) {
+                  if (ttsIsPlaying) {
                     GetIt.I<FlutterTts>().stop().whenComplete(() {
                       if (mounted) {
-                        setState(() => ttsIsActive = false);
+                        setState(() => ttsIsPlaying = false);
                       }
                     });
                   } else {
-                    setState(() => ttsIsActive = true);
+                    setState(() => ttsIsPlaying = true);
                     GetIt.I<FlutterTts>()
                         .speak(widget.controller.text)
                         .whenComplete(() {
                       if (mounted) {
-                        setState(() => ttsIsActive = false);
+                        setState(() => ttsIsPlaying = false);
                       }
                     });
                   }
                 },
                 child: Icon(
-                  ttsIsActive ? AbiliaIcons.stop : AbiliaIcons.playSound,
+                  ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
                 ),
                 style: actionButtonStyleDark,
               ),
