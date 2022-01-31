@@ -29,6 +29,7 @@ class Layout {
   final EventCardLayout eventCard;
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
+  final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
 
@@ -47,6 +48,7 @@ class Layout {
     this.eventCard = const EventCardLayout(),
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
+    this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
   });
@@ -420,6 +422,14 @@ class TwoTimepillarLayout {
     this.verticalMargin = 24,
     this.radius = 9,
     this.nightMargin = 4,
+  });
+}
+
+class DefaultTextInputPageLayout {
+  final double textFieldActionButtonSpacing;
+
+  const DefaultTextInputPageLayout({
+    this.textFieldActionButtonSpacing = 12,
   });
 }
 
