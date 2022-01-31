@@ -46,7 +46,7 @@ class AddPhotoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, time) => IconActionButtonLight(
           onPressed: () async {

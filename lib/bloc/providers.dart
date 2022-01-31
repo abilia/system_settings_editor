@@ -87,7 +87,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => ActivitiesBloc(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-                pushBloc: context.read<PushBloc>(),
+                pushCubit: context.read<PushCubit>(),
               )..add(LoadActivities()),
             ),
             BlocProvider<TimerCubit>(
@@ -112,7 +112,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
-                pushBloc: context.read<PushBloc>(),
+                pushCubit: context.read<PushCubit>(),
               )..loadUserFiles(),
               lazy: false,
             ),
@@ -121,7 +121,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   SortableBloc(
                     sortableRepository: context.read<SortableRepository>(),
                     syncBloc: context.read<SyncBloc>(),
-                    pushBloc: context.read<PushBloc>(),
+                    pushCubit: context.read<PushCubit>(),
                   )
                 ..add(const LoadSortables(initDefaults: true)),
               lazy: false,
@@ -130,7 +130,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => GenericBloc(
                 genericRepository: context.read<GenericRepository>(),
                 syncBloc: context.read<SyncBloc>(),
-                pushBloc: context.read<PushBloc>(),
+                pushCubit: context.read<PushCubit>(),
               )..add(LoadGenerics()),
             ),
             BlocProvider<MemoplannerSettingBloc>(
@@ -178,14 +178,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<LicenseBloc>(
               create: (context) => LicenseBloc(
                 clockBloc: context.read<ClockBloc>(),
-                pushBloc: context.read<PushBloc>(),
+                pushCubit: context.read<PushCubit>(),
                 userRepository: authenticatedState.userRepository,
                 authenticationBloc: context.read<AuthenticationBloc>(),
               )..add(ReloadLicenses()),
             ),
-            BlocProvider<PermissionBloc>(
-              create: (context) => PermissionBloc()
-                ..add(const RequestPermissions([Permission.notification]))
+            BlocProvider<PermissionCubit>(
+              create: (context) => PermissionCubit()
+                ..requestPermissions([Permission.notification])
                 ..checkAll(),
             ),
             BlocProvider<TimepillarCubit>(
@@ -211,14 +211,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 
 class TopLevelBlocsProvider extends StatelessWidget {
   final Widget child;
-  final PushBloc? pushBloc;
+  final PushCubit? pushCubit;
   final String baseUrl;
 
   const TopLevelBlocsProvider({
     Key? key,
     required this.child,
     required this.baseUrl,
-    this.pushBloc,
+    this.pushCubit,
   }) : super(key: key);
 
   @override
@@ -227,7 +227,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
       create: (context) => UserRepository(
         baseUrl: baseUrl,
         client: GetIt.I<BaseClient>(),
-        tokenDb: GetIt.I<TokenDb>(),
+        loginDb: GetIt.I<LoginDb>(),
         userDb: GetIt.I<UserDb>(),
         licenseDb: GetIt.I<LicenseDb>(),
       ),
@@ -247,14 +247,14 @@ class TopLevelBlocsProvider extends StatelessWidget {
               ),
             )..add(CheckAuthentication()),
           ),
-          BlocProvider<PushBloc>(
-            create: (context) => pushBloc ?? PushBloc(),
+          BlocProvider<PushCubit>(
+            create: (context) => pushCubit ?? PushCubit(),
           ),
           BlocProvider<ClockBloc>(
             create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
           ),
-          BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+          BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
               settingsDb: GetIt.I<SettingsDb>(),
             ),
           ),

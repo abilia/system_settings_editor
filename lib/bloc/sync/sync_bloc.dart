@@ -24,13 +24,13 @@ class SyncBloc extends Bloc<SyncEvent, dynamic> {
     required this.syncDelay,
     required this.genericRepository,
   }) : super(null) {
-    on<ActivitySaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
-    on<FileSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
-    on<SortableSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
-    on<GenericSaved>(_mapEventToState, transformer: bufferTimer(syncDelay));
+    on<ActivitySaved>(_trySync, transformer: bufferTimer(syncDelay));
+    on<FileSaved>(_trySync, transformer: bufferTimer(syncDelay));
+    on<SortableSaved>(_trySync, transformer: bufferTimer(syncDelay));
+    on<GenericSaved>(_trySync, transformer: bufferTimer(syncDelay));
   }
 
-  Future _mapEventToState(
+  Future _trySync(
     SyncEvent event,
     Emitter emit,
   ) async {

@@ -7,7 +7,7 @@ class FloatingActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabController = DefaultTabController.of(context);
-    return BlocBuilder<PermissionBloc, PermissionState>(
+    return BlocBuilder<PermissionCubit, PermissionState>(
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
       builder: (context, permission) {

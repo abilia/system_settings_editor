@@ -19,10 +19,10 @@ void registerFallbackValues() {
   registerFallbackValue(File(''));
   registerFallbackValue(TZDateTime.utc(2021));
   registerFallbackValue(const NotificationDetails());
-  registerFallbackValue(const PushEvent(''));
   registerFallbackValue(PushReady());
   registerFallbackValue(const ActivitySaved());
   registerFallbackValue('');
+  registerFallbackValue(const LoginInfo(token: '', endDate: 1, renewToken: ''));
   registerFallbackValue(ActivitiesNotLoaded());
   registerFallbackValue(LoadActivities());
   registerFallbackValue(const UserFilesNotLoaded());

@@ -13,11 +13,11 @@ void main() {
   const url = 'oneUrl';
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
-  final mockTokenDb = MockTokenDb();
+  final mockLoginDb = MockLoginDb();
   final userRepo = UserRepository(
     baseUrl: url,
     client: mockClient,
-    tokenDb: mockTokenDb,
+    loginDb: mockLoginDb,
     userDb: mockUserDb,
     licenseDb: FakeLicenseDb(),
   );
@@ -33,7 +33,7 @@ void main() {
     expect(newUserRepo.baseUrl, newUrl);
     expect(newUserRepo.client, isNot(userRepo.client));
     expect(newUserRepo.client, newClient);
-    expect(newUserRepo.tokenDb, userRepo.tokenDb);
+    expect(newUserRepo.loginDb, userRepo.loginDb);
     expect(newUserRepo.userDb, userRepo.userDb);
   });
 
@@ -43,7 +43,7 @@ void main() {
     // Assert
     expect(newUserRepo.baseUrl, userRepo.baseUrl);
     expect(newUserRepo.client, userRepo.client);
-    expect(newUserRepo.tokenDb, userRepo.tokenDb);
+    expect(newUserRepo.loginDb, userRepo.loginDb);
     expect(newUserRepo.userDb, userRepo.userDb);
   });
 
@@ -112,7 +112,8 @@ void main() {
   test('logout deletes token', () async {
     // Arrange
     const token = Fakes.token;
-    when(() => mockTokenDb.delete()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
     when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
@@ -124,7 +125,8 @@ void main() {
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
-    verify(() => mockTokenDb.delete());
+    verify(() => mockLoginDb.deleteToken());
+    verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
   });
 
@@ -133,7 +135,8 @@ void main() {
     const token = Fakes.token;
     when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token))).thenThrow(Exception());
-    when(() => mockTokenDb.delete()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
+    when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
 
     // Act
@@ -142,7 +145,8 @@ void main() {
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
         headers: authHeader(token)));
-    verify(() => mockTokenDb.delete());
+    verify(() => mockLoginDb.deleteToken());
+    verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
   });
 }

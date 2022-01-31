@@ -16,8 +16,8 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: BlocProvider<SettingsBloc>(
-            create: (context) => SettingsBloc(
+        home: BlocProvider<SettingsCubit>(
+            create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
             child: EditTimerByTypingPage(

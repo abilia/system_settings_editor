@@ -31,7 +31,7 @@ void main() {
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
-      pushBloc: FakePushBloc(),
+      pushCubit: FakePushCubit(),
     );
   });
 

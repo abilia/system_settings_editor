@@ -12,26 +12,27 @@ import 'package:seagull/utils/all.dart';
 
 export 'package:permission_handler/permission_handler.dart';
 
-part 'permission_event.dart';
 part 'permission_state.dart';
 
-class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
-  PermissionBloc() : super(PermissionState.empty());
+class PermissionCubit extends Cubit<PermissionState> with Info {
+  PermissionCubit() : super(PermissionState.empty());
 
-  @override
-  Stream<PermissionState> mapEventToState(
-    PermissionEvent event,
-  ) async* {
-    if (event is RequestPermissions) {
-      yield state.update(
-        await event.permissions.request(),
-      );
-    }
-    if (event is CheckStatusForPermissions) {
-      yield state.update(
-        {for (final p in event.permissions) p: await p.status},
-      );
-    }
+  Future<void> requestPermissions(
+    final List<Permission> permissions,
+  ) async {
+    emit(
+      state.update(await permissions.request()),
+    );
+  }
+
+  Future<void> checkStatusForPermissions(
+    final Iterable<Permission> permissions,
+  ) async {
+    emit(
+      state.update(
+        {for (final p in permissions) p: await p.status},
+      ),
+    );
   }
 
   static final allPermissions = UnmodifiableSetView(
@@ -48,5 +49,5 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> with Info {
     },
   );
 
-  void checkAll() => add(CheckStatusForPermissions(allPermissions.toList()));
+  void checkAll() => checkStatusForPermissions(allPermissions);
 }

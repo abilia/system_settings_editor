@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/bloc/permission/permission_bloc.dart';
+import 'package:seagull/bloc/permission/permission_cubit.dart';
 
 import '../../fakes/permission.dart';
 
@@ -12,24 +12,24 @@ void main() {
   });
 
   test('permission bloc initial state', () {
-    final permissionBloc = PermissionBloc();
-    expect(permissionBloc.state, PermissionState.empty());
-    expect(permissionBloc.state.props, [{}]);
+    final permissionCubit = PermissionCubit();
+    expect(permissionCubit.state, PermissionState.empty());
+    expect(permissionCubit.state.props, [{}]);
   });
 
   test('creating permission bloc does not call any permissions', () {
     setupPermissions();
-    PermissionBloc();
+    PermissionCubit();
     expect(checkedPermissions, isEmpty);
     expect(requestedPermissions, isEmpty);
   });
 
   test('requesting a permission requests the permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionBloc = PermissionBloc();
-    permissionBloc.add(const RequestPermissions([Permission.camera]));
+    final permissionCubit = PermissionCubit();
+    permissionCubit.requestPermissions([Permission.camera]);
     await expectLater(
-      permissionBloc.stream,
+      permissionCubit.stream,
       emits(PermissionState.empty()
           .update({Permission.camera: PermissionStatus.granted})),
     );
@@ -39,15 +39,15 @@ void main() {
 
   test('requesting multiple permission requests the permissions', () async {
     final permissonSet = {
-      for (var key in PermissionBloc.allPermissions)
+      for (var key in PermissionCubit.allPermissions)
         key: PermissionStatus.granted
     };
 
     setupPermissions(permissonSet);
-    final permissionBloc = PermissionBloc();
-    permissionBloc.add(RequestPermissions(permissonSet.keys.toList()));
+    final permissionCubit = PermissionCubit();
+    permissionCubit.requestPermissions(permissonSet.keys.toList());
     await expectLater(
-      permissionBloc.stream,
+      permissionCubit.stream,
       emits(PermissionState.empty().update(permissonSet)),
     );
     expect(requestedPermissions, containsAll(permissonSet.keys));
@@ -56,10 +56,10 @@ void main() {
 
   test('checking a permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionBloc = PermissionBloc();
-    permissionBloc.add(const CheckStatusForPermissions([Permission.camera]));
+    final permissionCubit = PermissionCubit();
+    permissionCubit.checkStatusForPermissions([Permission.camera]);
     await expectLater(
-      permissionBloc.stream,
+      permissionCubit.stream,
       emits(PermissionState.empty()
           .update({Permission.camera: PermissionStatus.granted})),
     );
@@ -69,14 +69,14 @@ void main() {
 
   test('check multiple permissions', () async {
     final permissonSet = {
-      for (var key in PermissionBloc.allPermissions)
+      for (var key in PermissionCubit.allPermissions)
         key: PermissionStatus.granted
     };
     setupPermissions(permissonSet);
-    final permissionBloc = PermissionBloc();
-    permissionBloc.add(CheckStatusForPermissions(permissonSet.keys.toList()));
+    final permissionCubit = PermissionCubit();
+    permissionCubit.checkStatusForPermissions(permissonSet.keys.toList());
     await expectLater(
-      permissionBloc.stream,
+      permissionCubit.stream,
       emits(PermissionState.empty().update(permissonSet)),
     );
     expect(checkedPermissions, containsAll(permissonSet.keys));
