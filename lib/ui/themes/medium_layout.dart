@@ -118,7 +118,7 @@ class _MediumLayout extends Layout {
           ),
           imageArchive: const ImageArchiveLayout(
               imageWidth: 142,
-              imageHeight: 142,
+              imageHeight: 129,
               imagePadding: 6,
               imageNameBottomPadding: 3,
               fullscreenImagePadding: 18),
@@ -130,6 +130,6 @@ class _MediumLayout extends Layout {
               folderImagePadding: EdgeInsets.fromLTRB(15, 42, 15, 24),
               folderIconSize: 129,
               headerFontSize: 32,
-              childAspectRatio: 1.07),
+              childAspectRatio: 181 / 168),
         );
 }

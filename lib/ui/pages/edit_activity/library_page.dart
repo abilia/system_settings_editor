@@ -303,7 +303,7 @@ class LibraryFolder extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: abiliaTextTheme.caption,
+              style: abiliaTextTheme.caption?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 2.s),

@@ -326,7 +326,7 @@ class ImageArchiveLayout {
 
   const ImageArchiveLayout({
     this.imageWidth = 84,
-    this.imageHeight = 84,
+    this.imageHeight = 86,
     this.imagePadding = 4,
     this.fullscreenImagePadding = 12,
     this.imageNameBottomPadding = 2,
@@ -350,7 +350,7 @@ class LibraryPageLayout {
     this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
-    this.childAspectRatio = 0.92,
+    this.childAspectRatio = 110 / 112,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(
