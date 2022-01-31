@@ -173,11 +173,7 @@ void main() {
       registerFallbackValues();
     });
 
-    Widget wrapWithMaterialApp(
-      Widget widget, {
-      AbiliaFile originalSoundFile = AbiliaFile.empty,
-    }) =>
-        MaterialApp(
+    Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
           supportedLocales: Translator.supportedLocals,
           localizationsDelegates: const [Translator.delegate],
           localeResolutionCallback: (locale, supportedLocales) =>
@@ -192,18 +188,18 @@ void main() {
               BlocProvider<UserFileCubit>(
                 create: (context) => UserFileCubit(
                   fileStorage: FakeFileStorage(),
-                  pushBloc: FakePushBloc(),
+                  pushCubit: FakePushCubit(),
                   syncBloc: FakeSyncBloc(),
                   userFileRepository: FakeUserFileRepository(),
                 ),
               ),
-              BlocProvider<SettingsBloc>(
-                create: (context) => SettingsBloc(
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
               ),
-              BlocProvider<PermissionBloc>(
-                create: (context) => PermissionBloc(),
+              BlocProvider<PermissionCubit>(
+                create: (context) => PermissionCubit(),
               ),
               BlocProvider<RecordSoundCubit>(
                 create: (context) => mockRecordSoundCubit,
@@ -228,7 +224,6 @@ void main() {
       await tester.pumpWidget(
         wrapWithMaterialApp(
           const RecordSoundPage(title: ''),
-          originalSoundFile: AbiliaFile.empty,
         ),
       );
       await tester.pumpAndSettle();
@@ -247,7 +242,6 @@ void main() {
       await tester.pumpWidget(
         wrapWithMaterialApp(
           const RecordSoundPage(title: ''),
-          originalSoundFile: AbiliaFile.empty,
         ),
       );
       await tester.pumpAndSettle();
@@ -268,7 +262,6 @@ void main() {
       await tester.pumpWidget(
         wrapWithMaterialApp(
           const RecordSoundPage(title: ''),
-          originalSoundFile: AbiliaFile.empty,
         ),
       );
       await tester.pumpAndSettle();
@@ -287,7 +280,6 @@ void main() {
       await tester.pumpWidget(
         wrapWithMaterialApp(
           const RecordSoundPage(title: ''),
-          originalSoundFile: AbiliaFile.empty,
         ),
       );
       await tester.pumpAndSettle();
@@ -308,7 +300,6 @@ void main() {
       await tester.pumpWidget(
         wrapWithMaterialApp(
           const RecordSoundPage(title: ''),
-          originalSoundFile: AbiliaFile.empty,
         ),
       );
       await tester.pumpAndSettle();
