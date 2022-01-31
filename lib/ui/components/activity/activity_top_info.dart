@@ -120,7 +120,7 @@ class _ActivityTopInfo extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: minPadding),
                     child: SizedBox(
-                      height: middleDashWidth,
+                      width: middleDashWidth,
                       child: Text(
                         '-',
                         style: Theme.of(context).textTheme.headline5,
