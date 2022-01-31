@@ -2,7 +2,7 @@ part of 'sound_cubit.dart';
 
 abstract class SoundState extends Equatable {
   final Duration duration;
-  const SoundState([this.duration = Duration.zero]);
+  const SoundState(this.duration);
 }
 
 class NoSoundPlaying extends SoundState {

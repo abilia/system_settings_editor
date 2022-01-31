@@ -362,14 +362,17 @@ class _TimeDisplay extends StatelessWidget {
 
   Duration _resolveDuration(
       RecordSoundState recordState, SoundState soundState) {
-    return recordState is RecordingSoundState
-        ? recordState.duration
-        : soundState is SoundPlaying
-            ? soundState.position
-            : recordState is NewRecordedSoundState ||
-                    recordState is EmptyRecordSoundState
-                ? recordState.duration
-                : soundState.duration;
+    if (recordState is RecordingSoundState) {
+      return recordState.duration;
+    }
+    if (soundState is SoundPlaying) {
+      return soundState.position;
+    }
+    if (recordState is NewRecordedSoundState ||
+        recordState is EmptyRecordSoundState) {
+      return recordState.duration;
+    }
+    return soundState.duration;
   }
 
   String _formatTime(Duration d) {
