@@ -28,11 +28,6 @@ class ActivityPage extends StatelessWidget {
         return Scaffold(
           appBar: DayAppBar(
             day: ad.day,
-            leftAction: IconActionButton(
-              key: TestKey.activityBackButton,
-              onPressed: () => Navigator.of(context).maybePop(),
-              child: const Icon(AbiliaIcons.navigationPrevious),
-            ),
           ),
           body: Padding(
             padding: EdgeInsets.all(ActivityInfo.margin)
@@ -115,6 +110,12 @@ class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
                   ),
                 if (displayEditButton)
                   EditActivityButton(activityDay: activityDay),
+                TextAndOrIconActionButtonLight(
+                  Translator.of(context).translate.close,
+                  AbiliaIcons.navigationPrevious,
+                  key: TestKey.activityBackButton,
+                  onPressed: () => Navigator.of(context).maybePop(),
+                ),
               ]
                   .map((b) => [const Spacer(), b, const Spacer()])
                   .expand((w) => w)
