@@ -188,7 +188,13 @@ class _DefaultInputPageState
                           autocorrect: widget.autocorrect,
                         ),
                       ),
-                      TtsPlayButton(controller: controller),
+                      TtsPlayButton(
+                        controller: controller,
+                        padding: EdgeInsets.only(
+                          left: layout.defaultTextInputPage
+                              .textFieldActionButtonSpacing,
+                        ),
+                      ),
                     ],
                   ),
                 ],

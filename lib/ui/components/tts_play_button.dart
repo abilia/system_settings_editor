@@ -8,9 +8,11 @@ class TtsPlayButton extends StatefulWidget {
   const TtsPlayButton({
     Key? key,
     required this.controller,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   final TextEditingController controller;
+  final EdgeInsets padding;
 
   @override
   State<TtsPlayButton> createState() => _TtsPlayButtonState();
@@ -54,37 +56,33 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
           collapsed: !(settingsState.textToSpeech &&
               widget.controller.text.isNotEmpty),
           axis: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(
-                width: layout.defaultTextInputPage.textFieldActionButtonSpacing,
+          child: Padding(
+            padding: widget.padding,
+            child: IconActionButton(
+              key: TestKey.ttsPlayButton,
+              onPressed: () async {
+                if (ttsIsPlaying) {
+                  GetIt.I<FlutterTts>().stop().whenComplete(() {
+                    if (mounted) {
+                      setState(() => ttsIsPlaying = false);
+                    }
+                  });
+                } else {
+                  setState(() => ttsIsPlaying = true);
+                  GetIt.I<FlutterTts>()
+                      .speak(widget.controller.text)
+                      .whenComplete(() {
+                    if (mounted) {
+                      setState(() => ttsIsPlaying = false);
+                    }
+                  });
+                }
+              },
+              child: Icon(
+                ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
               ),
-              IconActionButton(
-                key: TestKey.ttsPlayButton,
-                onPressed: () async {
-                  if (ttsIsPlaying) {
-                    GetIt.I<FlutterTts>().stop().whenComplete(() {
-                      if (mounted) {
-                        setState(() => ttsIsPlaying = false);
-                      }
-                    });
-                  } else {
-                    setState(() => ttsIsPlaying = true);
-                    GetIt.I<FlutterTts>()
-                        .speak(widget.controller.text)
-                        .whenComplete(() {
-                      if (mounted) {
-                        setState(() => ttsIsPlaying = false);
-                      }
-                    });
-                  }
-                },
-                child: Icon(
-                  ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-                ),
-                style: actionButtonStyleDark,
-              ),
-            ],
+              style: actionButtonStyleDark,
+            ),
           ),
         ),
       ),
