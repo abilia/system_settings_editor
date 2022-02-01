@@ -79,6 +79,16 @@ class AlarmSettingsPage extends StatelessWidget {
                             state.copyWith(showAlarmOnOffSwitch: v)),
                     child: Text(t.showDisableAlarms),
                   ).pad(defaultPadding),
+                  const Divider().pad(EdgeInsets.only(top: 16.s)),
+                  SwitchField(
+                    key: TestKey.showOngoingActivityInFullScreen,
+                    value: state.showOngoingActivityInFullScreen,
+                    onChanged: (v) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(showOngoingActivityInFullScreen: v)),
+                    child: Text(t.showOngoingActivityInFullScreen),
+                  ).pad(defaultPadding),
                 ],
               ),
               bottomNavigationBar: BottomNavigation(

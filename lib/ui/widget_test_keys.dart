@@ -100,5 +100,6 @@ class TestKey {
       hours = Key('hours'),
       minutes = Key('minutes'),
       localImagesPickField = Key('localImages'),
-      ttsPlayButton = Key('ttsPlayButton');
+      ttsPlayButton = Key('ttsPlayButton'),
+      showOngoingActivityInFullScreen = Key('showActivityInFullScreen');
 }
