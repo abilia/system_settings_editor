@@ -137,6 +137,14 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                       }
                     : () async {
                         final authProviders = copiedAuthProviders(context);
+                        final soundCubit = context.read<SoundCubit>();
+                        final audio = recordedAudio;
+                        final file = audio is UnstoredAbiliaFile
+                            ? audio.file
+                            : recordedAudio.isNotEmpty
+                                ? await soundCubit.resolveFile(recordedAudio)
+                                : null;
+
                         final result =
                             await Navigator.of(context).push<AbiliaFile>(
                           MaterialPageRoute(
@@ -144,16 +152,15 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                               providers: authProviders,
                               child: MultiBlocProvider(
                                 providers: [
-                                  BlocProvider.value(
-                                    value: context.read<SoundCubit>(),
-                                  ),
+                                  BlocProvider.value(value: soundCubit),
                                   BlocProvider(
                                     create: (_) => RecordSoundCubit(
                                       originalSoundFile: recordedAudio,
+                                      file: file,
                                     ),
                                   ),
                                 ],
-                                child: const RecordSoundPage(),
+                                child: RecordSoundPage(title: label),
                               ),
                             ),
                             settings:
@@ -334,31 +341,28 @@ class _TimeDisplay extends StatelessWidget {
       alignment: Alignment.center,
       decoration: disabledBoxDecoration,
       child: BlocBuilder<SoundCubit, SoundState>(
-        buildWhen: (prev, curr) =>
-            prev.runtimeType != curr.runtimeType ||
-            prev is SoundPlaying &&
-                curr is SoundPlaying &&
-                curr.position.inSeconds != prev.position.inSeconds,
         builder: (context, soundState) =>
             BlocBuilder<RecordSoundCubit, RecordSoundState>(
-          buildWhen: (prev, curr) =>
-              prev.runtimeType != curr.runtimeType ||
-              prev is RecordingSoundState &&
-                  curr is RecordingSoundState &&
-                  prev.duration.inSeconds != curr.duration.inSeconds,
           builder: (context, recordState) => Text(
             _formatTime(
-              recordState is RecordingSoundState
-                  ? recordState.duration
-                  : soundState is SoundPlaying
-                      ? soundState.position
-                      : Duration.zero,
+              _resolveDuration(recordState, soundState),
             ),
             style: Theme.of(context).textTheme.headline4,
           ),
         ),
       ),
     );
+  }
+
+  Duration _resolveDuration(
+      RecordSoundState recordState, SoundState soundState) {
+    if (recordState is RecordingSoundState) {
+      return recordState.duration;
+    }
+    if (soundState is SoundPlaying) {
+      return soundState.position;
+    }
+    return recordState.duration;
   }
 
   String _formatTime(Duration d) {
