@@ -167,7 +167,6 @@ class TimerCardWheel extends StatelessWidget {
     if (timerOccasion.isOngoing) {
       return TimerTickerBuilder(
         timerOccasion.timer,
-        stream: GetIt.I<Ticker>().minutes,
         builder: (context, left) => TimerWheel.simplified(
           secondsLeft: left.inSeconds,
           lengthInMinutes: timerOccasion.timer.duration.inMinutes,
@@ -187,21 +186,22 @@ class TimerCardWheel extends StatelessWidget {
 
 class TimerTickerBuilder extends StatelessWidget {
   final AbiliaTimer timer;
-  final Stream<DateTime>? stream;
   final Widget Function(BuildContext context, Duration timeLeft) builder;
+
   const TimerTickerBuilder(
     this.timer, {
-    this.stream,
     required this.builder,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ticker = GetIt.I<Ticker>();
+    final initialTime =
+        timer.duration - ticker.time.difference(timer.startTime);
     return StreamBuilder<Duration>(
-      initialData: timer.duration,
-      stream: (stream ?? GetIt.I<Ticker>().seconds)
-          .map((now) => timer.endTime.difference(now)),
+      initialData: initialTime.isNegative ? Duration.zero : initialTime,
+      stream: ticker.seconds.map((now) => timer.endTime.difference(now)),
       builder: (context, snapshot) {
         final data = snapshot.data;
         if (data == null) return const SizedBox.shrink();
