@@ -99,5 +99,6 @@ class TestKey {
       activityViewEditSwitch = Key('activityViewEditSwitch'),
       hours = Key('hours'),
       minutes = Key('minutes'),
+      ttsPlayButton = Key('ttsPlayButton'),
       showOngoingActivityInFullScreen = Key('showActivityInFullScreen');
 }

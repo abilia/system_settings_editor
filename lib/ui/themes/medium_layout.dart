@@ -158,6 +158,8 @@ class _MediumLayout extends Layout {
               radius: 18,
             ),
           ),
+          defaultTextInputPage: const DefaultTextInputPageLayout(
+              textFieldActionButtonSpacing: 18),
           imageArchive: const ImageArchiveLayout(
               imageWidth: 142,
               imageHeight: 129,
