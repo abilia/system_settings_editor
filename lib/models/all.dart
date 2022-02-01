@@ -5,7 +5,7 @@ export 'occasion/all.dart';
 export 'data_update_response.dart';
 export 'alarm.dart';
 export 'category.dart';
-export 'login.dart';
+export 'login_info.dart';
 export 'user.dart';
 export 'exceptions.dart';
 export 'notification/all.dart';

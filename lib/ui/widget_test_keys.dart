@@ -99,5 +99,6 @@ class TestKey {
       activityViewEditSwitch = Key('activityViewEditSwitch'),
       hours = Key('hours'),
       minutes = Key('minutes'),
-      localImagesPickField = Key('localImages');
+      localImagesPickField = Key('localImages'),
+      ttsPlayButton = Key('ttsPlayButton');
 }

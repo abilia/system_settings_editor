@@ -163,5 +163,22 @@ class _MediumLayout extends Layout {
             listPadding: 30,
             dividerExtraPadding: EdgeInsets.only(top: 16, bottom: 12),
           ),
+          defaultTextInputPage: const DefaultTextInputPageLayout(
+              textFieldActionButtonSpacing: 18),
+          imageArchive: const ImageArchiveLayout(
+              imageWidth: 142,
+              imageHeight: 129,
+              imagePadding: 6,
+              imageNameBottomPadding: 3,
+              fullscreenImagePadding: 18),
+          libraryPage: const LibraryPageLayout(
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              crossAxisCount: 4,
+              headerPadding: EdgeInsets.fromLTRB(24, 12, 0, 3),
+              folderImagePadding: EdgeInsets.fromLTRB(15, 42, 15, 24),
+              folderIconSize: 129,
+              headerFontSize: 32,
+              childAspectRatio: 181 / 168),
         );
 }

@@ -31,7 +31,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
         await PackageInfo.fromPlatform().then((value) => value.version);
     final client = ClientWithDefaultHeaders(version);
     final user = UserDb(preferences).getUser();
-    final token = TokenDb(preferences).getToken();
+    final token = LoginDb(preferences).getToken();
     if (user == null || token == null) {
       log.severe('No user or token: {token $token} {user $user}');
       return;

@@ -30,6 +30,9 @@ class Layout {
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
   final SettingsBasePageLayout settingsBasePage;
+  final DefaultTextInputPageLayout defaultTextInputPage;
+  final ImageArchiveLayout imageArchive;
+  final LibraryPageLayout libraryPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -47,6 +50,9 @@ class Layout {
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
     this.settingsBasePage = const SettingsBasePageLayout(),
+    this.defaultTextInputPage = const DefaultTextInputPageLayout(),
+    this.imageArchive = const ImageArchiveLayout(),
+    this.libraryPage = const LibraryPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -430,4 +436,55 @@ class SettingsBasePageLayout {
     this.dividerExtraPadding = const EdgeInsets.only(top: 16, bottom: 4),
     this.listPadding = 16,
   });
+}
+
+class DefaultTextInputPageLayout {
+  final double textFieldActionButtonSpacing;
+
+  const DefaultTextInputPageLayout({
+    this.textFieldActionButtonSpacing = 12,
+  });
+}
+
+class ImageArchiveLayout {
+  final double imageWidth,
+      imageHeight,
+      imagePadding,
+      fullscreenImagePadding,
+      imageNameBottomPadding;
+
+  const ImageArchiveLayout({
+    this.imageWidth = 84,
+    this.imageHeight = 86,
+    this.imagePadding = 4,
+    this.fullscreenImagePadding = 12,
+    this.imageNameBottomPadding = 2,
+  });
+}
+
+class LibraryPageLayout {
+  final double mainAxisSpacing,
+      crossAxisSpacing,
+      folderIconSize,
+      headerFontSize,
+      childAspectRatio;
+  final int crossAxisCount;
+  final EdgeInsets headerPadding, folderImagePadding;
+
+  const LibraryPageLayout({
+    this.mainAxisSpacing = 8,
+    this.crossAxisSpacing = 8,
+    this.crossAxisCount = 3,
+    this.headerPadding = const EdgeInsets.fromLTRB(16, 12, 0, 3),
+    this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),
+    this.folderIconSize = 86,
+    this.headerFontSize = 20,
+    this.childAspectRatio = 110 / 112,
+  });
+
+  TextStyle headerStyle() => GoogleFonts.roboto(
+        fontSize: headerFontSize,
+        color: AbiliaColors.black,
+        fontWeight: FontWeight.w500,
+      );
 }

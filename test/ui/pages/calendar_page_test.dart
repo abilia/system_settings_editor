@@ -46,7 +46,7 @@ void main() {
 
   final userRepository = UserRepository(
     client: Fakes.client(),
-    tokenDb: FakeTokenDb(),
+    loginDb: FakeLoginDb(),
     userDb: FakeUserDb(),
     licenseDb: FakeLicenseDb(),
     baseUrl: 'fake',
