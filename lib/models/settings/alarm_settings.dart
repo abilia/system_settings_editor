@@ -10,7 +10,7 @@ class AlarmSettings extends Equatable {
       alarmsDisabledUntilKey = 'alarms_disabled_until',
       showAlarmOnOffSwitchKey = 'show_alarms_button',
       showOngoingActivityInFullScreenKey =
-          'show_ongoing_activity_in_fullscreen';
+          'setting_show_activity_in_full_screen';
 
   static const keys = [
     nonCheckableActivityAlarmKey,
