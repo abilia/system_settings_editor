@@ -78,14 +78,14 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
           onChanged: (v) => setState(() => displayCamera = v),
           child: Text(t.takeNewPhoto),
         ),
-        if (Config.isMP) const Divider(height: 2),
+        const Divider(),
         SwitchField(
           leading: const Icon(AbiliaIcons.phone),
           value: displayLocalImages,
           onChanged: (v) => setState(() => displayLocalImages = v),
           child: Text(t.devicesLocalImages),
         ),
-        if (Config.isMP) Text(t.onlyAppliesToGo),
+        Tts(child: Text(t.onlyAppliesToGo)),
       ],
     );
   }
