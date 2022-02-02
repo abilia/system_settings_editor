@@ -19,23 +19,20 @@ class SettingsBasePage extends StatelessWidget {
         title: title,
         iconData: icon,
       ),
-      body: ListView.builder(
-        padding:
-            EdgeInsets.symmetric(vertical: layout.settingsBasePage.listPadding),
-        itemBuilder: (context, i) {
-          final w = widgets[i];
-          if (w is Divider) {
+      body: DividerTheme(
+        data: layout.settingsBasePage.dividerThemeData,
+        child: ListView.builder(
+          padding: layout.settingsBasePage.listPadding,
+          itemBuilder: (context, i) {
+            final w = widgets[i];
+            if (w is Divider) return w;
             return Padding(
-              padding: layout.settingsBasePage.dividerExtraPadding,
+              padding: layout.settingsBasePage.itemPadding,
               child: w,
             );
-          }
-          return Padding(
-            padding: layout.settingsBasePage.itemPadding,
-            child: w,
-          );
-        },
-        itemCount: widgets.length,
+          },
+          itemCount: widgets.length,
+        ),
       ),
       bottomNavigationBar: bottomNavigationBar ??
           const BottomNavigation(backNavigationWidget: PreviousButton()),

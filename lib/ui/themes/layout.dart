@@ -428,13 +428,17 @@ class TwoTimepillarLayout {
 }
 
 class SettingsBasePageLayout {
-  final double listPadding;
-  final EdgeInsets itemPadding, dividerExtraPadding;
+  final EdgeInsets itemPadding, listPadding;
+  final DividerThemeData dividerThemeData;
 
   const SettingsBasePageLayout({
     this.itemPadding = const EdgeInsets.fromLTRB(12, 8, 16, 0),
-    this.dividerExtraPadding = const EdgeInsets.only(top: 16, bottom: 4),
-    this.listPadding = 16,
+    this.listPadding = const EdgeInsets.symmetric(vertical: 16),
+    this.dividerThemeData = const DividerThemeData(
+      space: 32,
+      thickness: 1,
+      endIndent: 12,
+    ),
   });
 }
 
