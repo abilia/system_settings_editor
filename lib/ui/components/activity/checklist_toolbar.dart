@@ -22,7 +22,7 @@ class ChecklistToolbar extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        margin: QuestionView.padding,
+        margin: layout.checkList.questionViewPadding,
         decoration: boxDecoration.copyWith(
           color: AbiliaColors.black80,
           border: Border.all(style: BorderStyle.none),

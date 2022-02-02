@@ -1,6 +1,7 @@
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
+//TODO: Det är något konstigt på medium med streck mitt i...
 class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime? day;
@@ -137,7 +138,6 @@ class QuestionView extends StatelessWidget {
   }) : super(key: key);
 
   static const duration = Duration(milliseconds: 200);
-  static final padding = EdgeInsets.only(bottom: 6.0.s);
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class QuestionView extends StatelessWidget {
         duration: duration,
         child: Builder(
           builder: (context) => Padding(
-            padding: padding,
+            padding: layout.checkList.questionViewPadding,
             child: Material(
               type: MaterialType.transparency,
               borderRadius: borderRadius,
@@ -170,15 +170,17 @@ class QuestionView extends StatelessWidget {
                 borderRadius: borderRadius,
                 onTap: onTap,
                 child: AnimatedContainer(
+                  height: layout.checkList.questionViewHeight,
                   duration: duration,
                   decoration: signedOff
                       ? boxDecoration.copyWith(
-                          border: Border.all(style: BorderStyle.none))
+                          border: Border.all(style: BorderStyle.none),
+                        )
                       : boxDecoration,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     textBaseline: TextBaseline.ideographic,
-                    children: <Widget>[
+                    children: [
                       if (question.hasImage)
                         InkWell(
                           borderRadius: borderRadius,
@@ -188,8 +190,7 @@ class QuestionView extends StatelessWidget {
                             context,
                           ),
                           child: Padding(
-                            padding:
-                                EdgeInsets.fromLTRB(6.0.s, 4.0.s, 0.0, 4.0.s),
+                            padding: layout.checkList.questionImagePadding,
                             child: AnimatedOpacity(
                               duration: duration,
                               opacity: signedOff ? 0.5 : 1.0,
@@ -197,8 +198,8 @@ class QuestionView extends StatelessWidget {
                                 key: TestKey.checklistQuestionImageKey,
                                 imageFileId: question.fileId,
                                 imageFilePath: question.image,
-                                width: 40.s,
-                                height: 40.s,
+                                width: layout.checkList.questionImageSize,
+                                height: layout.checkList.questionImageSize,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -207,8 +208,7 @@ class QuestionView extends StatelessWidget {
                       if (question.hasTitle)
                         Expanded(
                           child: Padding(
-                            padding:
-                                EdgeInsets.fromLTRB(8.0.s, 10.0.s, 0.0, 10.0.s),
+                            padding: layout.checkList.questionTitlePadding,
                             child: Text(
                               question.name,
                               overflow: TextOverflow.fade,
@@ -224,8 +224,7 @@ class QuestionView extends StatelessWidget {
                             .iconTheme
                             .copyWith(size: layout.iconSize.small),
                         child: Padding(
-                          padding:
-                              EdgeInsets.fromLTRB(0.0, 12.0.s, 12.0.s, 12.0.s),
+                          padding: layout.checkList.questionIconPadding,
                           child: AnimatedCrossFade(
                             firstChild: Icon(
                               AbiliaIcons.checkboxSelected,

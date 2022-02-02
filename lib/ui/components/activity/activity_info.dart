@@ -19,12 +19,15 @@ class ActivityInfoWithDots extends StatelessWidget {
       BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
         selector: (state) => state.displayQuarterHour,
         builder: (context, displayQuarter) => Row(
-          children: <Widget>[
+          children: [
             if (displayQuarter) ActivityInfoSideDots(activityDay),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
-                    left: displayQuarter ? 0 : ActivityInfo.margin),
+                padding: layout.activityPage.horizontalInfoPadding.copyWith(
+                  left: displayQuarter
+                      ? 0
+                      : layout.activityPage.horizontalInfoPadding.left,
+                ),
                 child: ActivityInfo(
                   activityDay,
                   previewImage: previewImage,
@@ -37,7 +40,6 @@ class ActivityInfoWithDots extends StatelessWidget {
 }
 
 class ActivityInfo extends StatefulWidget {
-  static final margin = 12.0.s;
   final ActivityDay activityDay;
   final Widget? previewImage;
   final NotificationAlarm? alarm;
@@ -70,8 +72,16 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
       final occasion = widget.activityDay.toOccasion(now);
+      final showCheckButton =
+          widget.alarm == null && activity.checkable && !occasion.isSignedOff;
+      final verticalPadding = showCheckButton
+          ? layout.activityPage.verticalInfoPaddingCheckable
+          : layout.activityPage.verticalInfoPaddingNonCheckable;
+
       return Column(
-        children: <Widget>[
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: verticalPadding.top),
           ActivityTopInfo(
             widget.activityDay,
             alarm: widget.alarm,
@@ -86,11 +96,10 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
               ),
             ),
           ),
-          if (widget.alarm == null &&
-              activity.checkable &&
-              !occasion.isSignedOff)
+          SizedBox(height: verticalPadding.bottom),
+          if (showCheckButton)
             Padding(
-              padding: EdgeInsets.only(top: 7.0.s),
+              padding: layout.activityPage.checkButtonPadding,
               child: CheckButton(
                 onPressed: () async {
                   await checkConfirmation(
@@ -154,9 +163,7 @@ class ActivityContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final hasImage = activity.hasImage || previewImage != null;
     final hasAttachment = activity.hasAttachment;
-    final hasTopInfo = !(hasImage && !hasAttachment && !activity.hasTitle);
     return Container(
       decoration: BoxDecoration(
         color: activityDay.isSignedOff
@@ -166,28 +173,21 @@ class ActivityContainer extends StatelessWidget {
       ),
       constraints: const BoxConstraints.expand(),
       child: Column(
-        children: <Widget>[
-          if (hasTopInfo)
-            Flexible(
-              flex: 126,
-              child: Padding(
-                padding: EdgeInsets.all(ActivityInfo.margin).subtract(
-                  EdgeInsets.only(
-                    bottom: hasAttachment || hasImage ? 0 : ActivityInfo.margin,
-                  ),
-                ),
-                child: TopInfo(activityDay: activityDay),
-              ),
+        children: [
+          if (true)
+            TitleAndOrImage(
+              activityDay: activityDay,
+              previewImage: previewImage,
             ),
           if (hasAttachment)
-            Flexible(
+            Expanded(
               key: TestKey.attachment,
-              flex: activity.checkable ? 236 : 298,
               child: Column(
-                children: <Widget>[
-                  const Divider(
-                    height: 1,
-                    endIndent: 0.0,
+                children: [
+                  Divider(
+                    height: layout.activityPage.dividerHeight,
+                    endIndent: 0,
+                    indent: layout.activityPage.dividerIndentation,
                   ),
                   Expanded(
                     child: Attachment(
@@ -198,19 +198,6 @@ class ActivityContainer extends StatelessWidget {
                 ],
               ),
             ),
-          if ((hasImage || activityDay.isSignedOff) && !hasAttachment)
-            Flexible(
-              flex: activity.checkable ? 236 : 298,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(12.s, 0, 12.s, 12.s),
-                  child: previewImage ??
-                      CheckedImageWithImagePopup(
-                        activityDay: activityDay,
-                      ),
-                ),
-              ),
-            )
         ],
       ),
     );
@@ -218,7 +205,6 @@ class ActivityContainer extends StatelessWidget {
 }
 
 class Attachment extends StatelessWidget with ActivityMixin {
-  static final padding = EdgeInsets.fromLTRB(18.0.s, 10.0.s, 14.0.s, 24.0.s);
   final ActivityDay activityDay;
   final NotificationAlarm? alarm;
 
@@ -242,7 +228,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
       return ChecklistView(
         item,
         day: activityDay.day,
-        padding: Attachment.padding.subtract(QuestionView.padding),
+        padding: layout.activityPage.checklistPadding,
         onTap: (question) async {
           final signedOff = item.signOff(question, activityDay.day);
           final updatedActivity = activity.copyWith(
@@ -289,13 +275,22 @@ class CheckButton extends StatelessWidget {
         child: TextButton.icon(
           onPressed: onPressed,
           style: ButtonStyle(
-            textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
-            minimumSize: MaterialStateProperty.all(Size(0.0, 48.0.s)),
+            textStyle: MaterialStateProperty.all(
+                abiliaTextTheme.bodyText1!.copyWith(height: 1)),
+            minimumSize: MaterialStateProperty.all(
+              Size(0.0, layout.activityPage.checkButtonHeight),
+            ),
             padding: MaterialStateProperty.all(
-              EdgeInsets.fromLTRB(10.0.s, 10.0.s, 20.0.s, 10.0.s),
+              layout.activityPage.checkButtonContentPadding,
             ),
             backgroundColor: buttonBackgroundGreen,
             foregroundColor: foregroundLight,
+            shape: MaterialStateProperty.all(
+              ligthShapeBorder.copyWith(
+                side: ligthShapeBorder.side
+                    .copyWith(color: AbiliaColors.green140),
+              ),
+            ),
           ),
           icon: const Icon(AbiliaIcons.handiCheck),
           label: Text(text),
@@ -305,13 +300,15 @@ class CheckButton extends StatelessWidget {
   }
 }
 
-class TopInfo extends StatelessWidget {
-  const TopInfo({
+class TitleAndOrImage extends StatelessWidget {
+  const TitleAndOrImage({
     Key? key,
     required this.activityDay,
+    this.previewImage,
   }) : super(key: key);
 
   final ActivityDay activityDay;
+  final Widget? previewImage;
 
   @override
   Widget build(BuildContext context) {
@@ -319,45 +316,66 @@ class TopInfo extends StatelessWidget {
     final hasImage = activity.hasImage;
     final hasTitle = activity.hasTitle;
     final hasAttachment = activity.hasAttachment;
-    final imageBelow = hasImage && hasAttachment && !hasTitle;
-    final signedOff = activityDay.isSignedOff;
-    final themeData = Theme.of(context);
-    final imageToTheLeft = (hasImage || signedOff) && hasAttachment && hasTitle;
 
     final checkableImage = CheckedImageWithImagePopup(activityDay: activityDay);
 
-    return Row(
-      mainAxisAlignment:
-          imageToTheLeft ? MainAxisAlignment.start : MainAxisAlignment.center,
-      children: <Widget>[
-        if (imageToTheLeft)
-          Padding(
-            padding: EdgeInsets.only(right: ActivityInfo.margin),
-            child: checkableImage,
-          ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment:
-                imageBelow ? MainAxisAlignment.end : MainAxisAlignment.center,
-            children: <Widget>[
-              if (hasTitle)
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8.0.s),
-                  child: Tts(
-                    child: Text(
-                      activity.title,
-                      style: themeData.textTheme.headline5,
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+    final title = hasTitle
+        ? Tts(
+            child: Text(
+              activity.title,
+              style: layout.activityPage.titleStyle(),
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.center,
+            ),
+          )
+        : const SizedBox.shrink();
+
+    final image = previewImage ?? checkableImage;
+
+    if (hasAttachment) {
+      return SizedBox(
+        height: layout.activityPage.topInfoHeight,
+        child: Padding(
+          padding: layout.activityPage.topInfoPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (hasImage) image,
+              if (hasImage && hasTitle)
+                SizedBox(
+                  width: layout.activityPage.titleImageHorizontalSpacing,
                 ),
-              if (imageBelow) checkableImage,
+              if (hasTitle)
+                Expanded(
+                  child: title,
+                ),
             ],
           ),
         ),
-      ],
-    );
+      );
+    } else {
+      return Expanded(
+        child: Column(
+          children: [
+            if (hasTitle)
+              SizedBox(
+                height: layout.activityPage.topInfoHeight,
+                child: Center(
+                  child: title,
+                ),
+              ),
+            if (hasImage || activityDay.isSignedOff)
+              Expanded(
+                child: Padding(
+                  padding: layout.activityPage.imagePadding,
+                  child: Center(
+                    child: image,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      );
+    }
   }
 }

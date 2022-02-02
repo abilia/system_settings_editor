@@ -29,13 +29,9 @@ class ActivityPage extends StatelessWidget {
           appBar: DayAppBar(
             day: ad.day,
           ),
-          body: Padding(
-            padding: EdgeInsets.all(ActivityInfo.margin)
-                .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
-            child: ActivityInfoWithDots(
-              ad,
-              previewImage: previewImage,
-            ),
+          body: ActivityInfoWithDots(
+            ad,
+            previewImage: previewImage,
           ),
           bottomNavigationBar: ActivityBottomAppBar(activityDay: ad),
         );

@@ -31,6 +31,9 @@ class Layout {
   final TimerPageLayout timerPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
+  final ActivityPageLayout activityPage;
+  final CheckListLayout checkList;
+  final NoteLayout note;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -49,6 +52,9 @@ class Layout {
     this.timerPage = const TimerPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
+    this.activityPage = const ActivityPageLayout(),
+    this.checkList = const CheckListLayout(),
+    this.note = const NoteLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -340,20 +346,17 @@ class EventCardLayout {
 }
 
 class TimerPageLayout {
-  final double topInfoHeight,
-      topVerticalPadding,
-      topHorizontalPadding,
-      imageSize,
-      imagePadding,
-      mainContentPadding;
+  final double topInfoHeight, imageSize, imagePadding, mainContentPadding;
+
+  final EdgeInsets bodyPadding, topPadding;
 
   const TimerPageLayout({
     this.topInfoHeight = 126,
-    this.topVerticalPadding = 15,
-    this.topHorizontalPadding = 12,
     this.imageSize = 96,
     this.mainContentPadding = 32,
     this.imagePadding = 8,
+    this.bodyPadding = const EdgeInsets.all(12),
+    this.topPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
   });
 }
 
@@ -464,4 +467,104 @@ class LibraryPageLayout {
         color: AbiliaColors.black,
         fontWeight: FontWeight.w500,
       );
+}
+
+class ActivityPageLayout {
+  final double titleFontSize,
+      titleLineHeight,
+      titleImageHorizontalSpacing,
+      topInfoHeight,
+      checkButtonHeight,
+      dividerHeight,
+      dividerIndentation,
+      dashWidth,
+      dashSpacing,
+      minTimeBoxWidth;
+
+  final Size timeBoxSize, timeCrossOverSize;
+
+  final EdgeInsets timeRowPadding,
+      timeBoxPadding,
+      topInfoPadding,
+      imagePadding,
+      verticalInfoPaddingCheckable,
+      verticalInfoPaddingNonCheckable,
+      horizontalInfoPadding,
+      checkButtonPadding,
+      checkButtonContentPadding,
+      checklistPadding;
+
+  TextStyle titleStyle() => GoogleFonts.roboto(
+      fontSize: titleFontSize,
+      fontWeight: FontWeight.w400,
+      height: titleLineHeight / titleFontSize);
+
+  const ActivityPageLayout({
+    this.timeCrossOverSize = const Size(64, 38),
+    this.timeBoxSize = const Size(92, 52),
+    this.topInfoHeight = 126,
+    this.timeRowPadding = const EdgeInsets.only(bottom: 8),
+    this.timeBoxPadding = const EdgeInsets.all(8),
+    this.topInfoPadding =
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+    this.titleImageHorizontalSpacing = 8,
+    this.imagePadding = const EdgeInsets.fromLTRB(12, 0, 12, 12),
+    this.verticalInfoPaddingCheckable =
+        const EdgeInsets.only(top: 16, bottom: 10),
+    this.verticalInfoPaddingNonCheckable =
+        const EdgeInsets.only(top: 16, bottom: 12),
+    this.horizontalInfoPadding = const EdgeInsets.symmetric(horizontal: 12),
+    this.checkButtonPadding = const EdgeInsets.only(bottom: 16),
+    this.checkButtonContentPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
+    this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 0),
+    this.titleFontSize = 24,
+    this.titleLineHeight = 28.13,
+    this.checkButtonHeight = 48,
+    this.dividerHeight = 1,
+    this.dividerIndentation = 12,
+    this.dashWidth = 7,
+    this.dashSpacing = 8,
+    this.minTimeBoxWidth = 72,
+  });
+}
+
+class CheckListLayout {
+  final EdgeInsets questionViewPadding,
+      questionImagePadding,
+      questionTitlePadding,
+      questionIconPadding,
+      addNewQButtonPadding,
+      addNewQIconPadding,
+      questionListPadding;
+
+  final double questionImageSize,
+      questionViewHeight,
+      dividerHeight,
+      dividerIndentation;
+
+  final Color addNewQButtonFillColor, addNewQButtonTextColor;
+
+  const CheckListLayout({
+    this.questionViewPadding = const EdgeInsets.only(bottom: 6),
+    this.questionImagePadding = const EdgeInsets.only(left: 6),
+    this.questionTitlePadding = const EdgeInsets.only(left: 8, right: 14),
+    this.questionIconPadding = const EdgeInsets.only(right: 12),
+    this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
+    this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
+    this.questionListPadding = const EdgeInsets.fromLTRB(12, 12, 12, 0),
+    this.questionImageSize = 40,
+    this.questionViewHeight = 48,
+    this.addNewQButtonFillColor = AbiliaColors.green,
+    this.addNewQButtonTextColor = AbiliaColors.white,
+    this.dividerHeight = 1,
+    this.dividerIndentation = 12,
+  });
+}
+
+class NoteLayout {
+  final EdgeInsets notePadding;
+
+  const NoteLayout({
+    this.notePadding = const EdgeInsets.fromLTRB(18, 10, 16, 24),
+  });
 }
