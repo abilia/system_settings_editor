@@ -1,6 +1,5 @@
-import 'package:vector_math/vector_math_64.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 class ScrollArrows extends StatelessWidget {
   final Widget child;
@@ -10,7 +9,7 @@ class ScrollArrows extends StatelessWidget {
       leftCollapseMargin,
       rightCollapseMargin;
   final bool verticalScrollBar;
-  final bool verticalScrollbarAlwaysShown;
+  final bool verticalScrollBarAlwaysShown;
   final ScrollController? verticalController, horizontalController;
   late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
 
@@ -26,7 +25,7 @@ class ScrollArrows extends StatelessWidget {
     this.leftCollapseMargin,
     this.rightCollapseMargin,
     required this.verticalScrollBar,
-    this.verticalScrollbarAlwaysShown = false,
+    this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
   }) : super(key: key);
@@ -41,7 +40,7 @@ class ScrollArrows extends StatelessWidget {
     ScrollController? controller,
   })  : verticalScrollBar = hasScrollBar,
         verticalController = controller,
-        verticalScrollbarAlwaysShown = scrollbarAlwaysShown,
+        verticalScrollBarAlwaysShown = scrollbarAlwaysShown,
         upArrow = true,
         downArrow = true,
         leftArrow = false,
@@ -59,13 +58,33 @@ class ScrollArrows extends StatelessWidget {
     this.leftCollapseMargin,
     this.rightCollapseMargin,
     this.verticalScrollBar = false,
-    this.verticalScrollbarAlwaysShown = false,
+    this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
   })  : upArrow = true,
         downArrow = true,
         leftArrow = true,
         rightArrow = true,
+        super(key: key);
+
+  ScrollArrows.horizontal({
+    Key? key,
+    required this.child,
+    this.leftCollapseMargin,
+    this.rightCollapseMargin,
+    bool hasScrollBar = true,
+    bool scrollbarAlwaysShown = false,
+    ScrollController? controller,
+    this.verticalScrollBar = false,
+    this.verticalScrollBarAlwaysShown = false,
+    this.verticalController,
+  })  : upArrow = false,
+        downArrow = false,
+        leftArrow = true,
+        rightArrow = true,
+        upCollapseMargin = null,
+        downCollapseMargin = null,
+        horizontalController = controller,
         super(key: key);
 
   @override
@@ -90,7 +109,7 @@ class ScrollArrows extends StatelessWidget {
               if (child != null)
                 if (verticalScrollBar)
                   AbiliaScrollBar(
-                    isAlwaysShown: verticalScrollbarAlwaysShown,
+                    isAlwaysShown: verticalScrollBarAlwaysShown,
                     controller: verticalController,
                     child: child,
                   )
@@ -218,6 +237,7 @@ abstract class _ArrowBase extends StatelessWidget {
   final ScrollController? controller;
   final double? collapseMargin;
   static final double defaultCollapseMargin = 2.0.s;
+
   double get getCollapseMargin => collapseMargin ?? defaultCollapseMargin;
 
   const _ArrowBase({
@@ -239,6 +259,7 @@ class _Arrow extends StatefulWidget {
   final Matrix4 hiddenTranslation;
   final ScrollController? controller;
   final bool Function(ScrollController) conditionFunction;
+
   _Arrow({
     required this.icon,
     required this.borderRadius,
@@ -249,12 +270,14 @@ class _Arrow extends StatefulWidget {
     required this.conditionFunction,
   })  : translation = Matrix4.identity(),
         hiddenTranslation = Matrix4.translation(vectorTranslation);
+
   @override
   _ArrowState createState() => _ArrowState();
 }
 
 class _ArrowState extends State<_Arrow> {
   bool condition = false;
+
   ScrollController? get controller =>
       widget.controller ?? PrimaryScrollController.of(context);
 

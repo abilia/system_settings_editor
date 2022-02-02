@@ -42,15 +42,15 @@ class ActivityPage extends StatelessWidget {
               previewImage: previewImage,
             ),
           ),
-          bottomNavigationBar: ActivityBottomAppBar(activityDay: ad),
+          bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
         );
       },
     );
   }
 }
 
-class ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
-  const ActivityBottomAppBar({
+class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
+  const _ActivityBottomAppBar({
     Key? key,
     required this.activityDay,
   }) : super(key: key);

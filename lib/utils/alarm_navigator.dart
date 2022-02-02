@@ -3,11 +3,13 @@ import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/pages/ongoing_fullscreen_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmNavigator {
   final _alarmRoutesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
+  static const _ongoingFullscreenActivityId = 'fullscreenActivity';
 
   Route getFullscreenAlarmRoute({
     required NotificationAlarm alarm,
@@ -17,7 +19,7 @@ class AlarmNavigator {
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListener(child: _alarmPage(alarm)),
+        child: AlarmListener(child: _alarmPage(alarm, true)),
       ),
     );
     _alarmRoutesOnStack[alarm.activity.id] = route;
@@ -27,18 +29,20 @@ class AlarmNavigator {
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
+    bool fullScreenActivity,
   ) async {
     final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
     final route = MaterialPageRoute(
       builder: (_) => MultiBlocProvider(
         providers: authProviders,
-        child: _alarmPage(alarm),
+        child: _alarmPage(alarm, fullScreenActivity),
       ),
       fullscreenDialog: true,
     );
-
-    final id = alarm.activity.id;
+    final id = fullScreenActivity && alarm is NewAlarm
+        ? _ongoingFullscreenActivityId
+        : alarm.activity.id;
     final routeOnStack = _alarmRoutesOnStack[id];
     final navigator = Navigator.of(context);
     if (routeOnStack != null) {
@@ -55,11 +59,14 @@ class AlarmNavigator {
     return navigator.push(route);
   }
 
-  Widget _alarmPage(NotificationAlarm alarm) => PopAwareAlarmPage(
+  Widget _alarmPage(NotificationAlarm alarm, bool fullscreenActivity) =>
+      PopAwareAlarmPage(
         alarm: alarm,
         alarmNavigator: this,
         child: (alarm is NewAlarm)
-            ? AlarmPage(alarm: alarm)
+            ? fullscreenActivity
+                ? OngoingFullscreenActivityPage(activityDay: alarm.activityDay)
+                : AlarmPage(alarm: alarm)
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)
                 : throw UnsupportedError('$alarm not supported'),

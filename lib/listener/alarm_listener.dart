@@ -14,25 +14,31 @@ class AlarmListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<NotificationCubit, NotificationAlarm?>(
-          listener: (context, state) async {
-            if (state != null) {
-              await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
-            }
-          },
-        ),
-        if (!Platform.isAndroid)
-          BlocListener<AlarmCubit, NotificationAlarm?>(
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (settingsState) =>
+          settingsState.alarm.showOngoingActivityInFullScreen,
+      builder: (context, fullScreenActivity) => MultiBlocListener(
+        listeners: [
+          BlocListener<NotificationCubit, NotificationAlarm?>(
             listener: (context, state) async {
               if (state != null) {
-                await GetIt.I<AlarmNavigator>().pushAlarm(context, state);
+                await GetIt.I<AlarmNavigator>()
+                    .pushAlarm(context, state, fullScreenActivity);
               }
             },
           ),
-      ],
-      child: child,
+          if (!Platform.isAndroid)
+            BlocListener<AlarmCubit, NotificationAlarm?>(
+              listener: (context, state) async {
+                if (state != null) {
+                  await GetIt.I<AlarmNavigator>()
+                      .pushAlarm(context, state, fullScreenActivity);
+                }
+              },
+            ),
+        ],
+        child: child,
+      ),
     );
   }
 }
