@@ -211,20 +211,20 @@ class _TimeBox extends StatelessWidget {
   }
 
   BoxDecoration get _decoration => current
-      ? currentBoxDecoration
+      ? _currentBoxDecoration
       : past
-          ? pastDecoration
+          ? _pastDecoration
           : boxDecoration;
 }
 
-final pastDecoration = BoxDecoration(
+final _pastDecoration = BoxDecoration(
   borderRadius: borderRadius,
   border: const Border.fromBorderSide(
     BorderSide(style: BorderStyle.none),
   ),
 );
 
-final currentBoxDecoration = BoxDecoration(
+final _currentBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: Border.fromBorderSide(

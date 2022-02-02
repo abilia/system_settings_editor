@@ -174,11 +174,10 @@ class ActivityContainer extends StatelessWidget {
       constraints: const BoxConstraints.expand(),
       child: Column(
         children: [
-          if (true)
-            TitleAndOrImage(
-              activityDay: activityDay,
-              previewImage: previewImage,
-            ),
+          TitleAndOrImage(
+            activityDay: activityDay,
+            previewImage: previewImage,
+          ),
           if (hasAttachment)
             Expanded(
               key: TestKey.attachment,
@@ -276,9 +275,9 @@ class CheckButton extends StatelessWidget {
           onPressed: onPressed,
           style: ButtonStyle(
             textStyle: MaterialStateProperty.all(
-                abiliaTextTheme.bodyText1!.copyWith(height: 1)),
+                abiliaTextTheme.bodyText1?.copyWith(height: 1)),
             minimumSize: MaterialStateProperty.all(
-              Size(0.0, layout.activityPage.checkButtonHeight),
+              Size(0, layout.activityPage.checkButtonHeight),
             ),
             padding: MaterialStateProperty.all(
               layout.activityPage.checkButtonContentPadding,
@@ -313,7 +312,7 @@ class TitleAndOrImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final hasImage = activity.hasImage;
+    final hasImage = activity.hasImage || previewImage != null;
     final hasTitle = activity.hasTitle;
     final hasAttachment = activity.hasAttachment;
 
@@ -356,6 +355,7 @@ class TitleAndOrImage extends StatelessWidget {
     } else {
       return Expanded(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (hasTitle)
               SizedBox(

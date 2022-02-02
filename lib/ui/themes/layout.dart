@@ -542,8 +542,6 @@ class CheckListLayout {
       dividerHeight,
       dividerIndentation;
 
-  final Color addNewQButtonFillColor, addNewQButtonTextColor;
-
   const CheckListLayout({
     this.questionViewPadding = const EdgeInsets.only(bottom: 6),
     this.questionImagePadding = const EdgeInsets.only(left: 6),
@@ -554,8 +552,6 @@ class CheckListLayout {
     this.questionListPadding = const EdgeInsets.fromLTRB(12, 12, 12, 0),
     this.questionImageSize = 40,
     this.questionViewHeight = 48,
-    this.addNewQButtonFillColor = AbiliaColors.green,
-    this.addNewQButtonTextColor = AbiliaColors.white,
     this.dividerHeight = 1,
     this.dividerIndentation = 12,
   });

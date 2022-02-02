@@ -155,7 +155,7 @@ class EditChecklistWidget extends StatelessWidget {
                           side: const BorderSide(color: AbiliaColors.green140),
                           borderRadius: borderRadius,
                         ),
-                        fillColor: layout.checkList.addNewQButtonFillColor,
+                        fillColor: AbiliaColors.green,
                         elevation: 0,
                         disabledElevation: 0,
                         focusElevation: 0,
@@ -169,7 +169,7 @@ class EditChecklistWidget extends StatelessWidget {
                               child: Icon(
                                 AbiliaIcons.newIcon,
                                 size: layout.iconSize.small,
-                                color: layout.checkList.addNewQButtonTextColor,
+                                color: AbiliaColors.white,
                               ),
                             ),
                             Text(
@@ -179,8 +179,7 @@ class EditChecklistWidget extends StatelessWidget {
                                   .bodyText1
                                   ?.copyWith(
                                     height: 1,
-                                    color:
-                                        layout.checkList.addNewQButtonTextColor,
+                                    color: AbiliaColors.white,
                                   ),
                             ),
                           ],

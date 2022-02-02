@@ -1,7 +1,6 @@
 import 'package:seagull/models/info_item.dart';
 import 'package:seagull/ui/all.dart';
 
-//TODO: Det är något konstigt på medium med streck mitt i...
 class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime? day;
@@ -174,8 +173,7 @@ class QuestionView extends StatelessWidget {
                   duration: duration,
                   decoration: signedOff
                       ? boxDecoration.copyWith(
-                          border: Border.all(style: BorderStyle.none),
-                        )
+                          border: Border.all(style: BorderStyle.none))
                       : boxDecoration,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
