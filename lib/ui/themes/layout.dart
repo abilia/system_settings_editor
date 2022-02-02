@@ -29,6 +29,7 @@ class Layout {
   final EventCardLayout eventCard;
   final TimepillarLayout timePillar;
   final TimerPageLayout timerPage;
+  final SettingsBasePageLayout settingsBasePage;
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
@@ -48,6 +49,7 @@ class Layout {
     this.eventCard = const EventCardLayout(),
     this.timePillar = const TimepillarLayout(),
     this.timerPage = const TimerPageLayout(),
+    this.settingsBasePage = const SettingsBasePageLayout(),
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
@@ -422,6 +424,21 @@ class TwoTimepillarLayout {
     this.verticalMargin = 24,
     this.radius = 9,
     this.nightMargin = 4,
+  });
+}
+
+class SettingsBasePageLayout {
+  final EdgeInsets itemPadding, listPadding;
+  final DividerThemeData dividerThemeData;
+
+  const SettingsBasePageLayout({
+    this.itemPadding = const EdgeInsets.fromLTRB(12, 8, 16, 0),
+    this.listPadding = const EdgeInsets.symmetric(vertical: 16),
+    this.dividerThemeData = const DividerThemeData(
+      space: 32,
+      thickness: 1,
+      endIndent: 12,
+    ),
   });
 }
 

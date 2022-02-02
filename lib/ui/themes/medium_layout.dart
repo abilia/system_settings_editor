@@ -158,6 +158,15 @@ class _MediumLayout extends Layout {
               radius: 18,
             ),
           ),
+          settingsBasePage: const SettingsBasePageLayout(
+            itemPadding: EdgeInsets.fromLTRB(18, 12, 24, 0),
+            listPadding: EdgeInsets.symmetric(vertical: 16),
+            dividerThemeData: DividerThemeData(
+              space: 48,
+              thickness: 2,
+              endIndent: 18,
+            ),
+          ),
           defaultTextInputPage: const DefaultTextInputPageLayout(
               textFieldActionButtonSpacing: 18),
           imageArchive: const ImageArchiveLayout(
