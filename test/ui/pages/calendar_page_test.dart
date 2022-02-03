@@ -1100,7 +1100,7 @@ void main() {
       const noDayColor = AbiliaColors.black80,
           mondayColor = AbiliaColors.green,
           tuesdayColor = AbiliaColors.blue,
-          wednesdayColor = AbiliaColors.white,
+          wednesdayColor = AbiliaColors.white110,
           thursdayColor = AbiliaColors.thursdayBrown,
           fridayColor = AbiliaColors.yellow,
           saturdayColor = AbiliaColors.pink,
