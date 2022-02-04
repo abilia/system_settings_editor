@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/listener/all.dart';
@@ -30,10 +32,12 @@ final _log = Logger('main');
 void main() async {
   final baseUrl = await initServices();
   final payload = await getOrAddPayloadToStream();
+  final runStartGuide = shouldRunStartGuide();
   runApp(
     App(
       baseUrl: baseUrl,
       payload: payload,
+      runStartGuide: runStartGuide,
     ),
   );
 }
@@ -97,29 +101,54 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
+bool shouldRunStartGuide() {
+  if (!Config.isMP) {
+    return false;
+  }
+  final serialId = GetIt.I<SerialIdDb>().getSerialId();
+  return serialId?.isEmpty ?? true;
+}
+
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final String baseUrl;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
+  final bool runStartGuide;
 
   App({
     Key? key,
     this.baseUrl = 'mock',
     this.payload,
     this.pushCubit,
+    this.runStartGuide = false,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => TopLevelBlocsProvider(
-        pushCubit: pushCubit,
-        baseUrl: baseUrl,
-        child: TopLevelListener(
-          navigatorKey: _navigatorKey,
-          payload: payload,
-          child: SeagullApp(
-            navigatorKey: _navigatorKey,
-          ),
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => StartGuideCubit(
+            serialIdRepository: SerialIdRepository(
+              baseUrl: baseUrl,
+              client: GetIt.I<BaseClient>(),
+              serialIdDb: GetIt.I<SerialIdDb>(),
+            ),
+            initialState:
+                runStartGuide ? StartGuideInitial() : StartGuideDone()),
+        child: BlocBuilder<StartGuideCubit, StartGuideState>(
+          builder: (context, startGuideState) =>
+              startGuideState is StartGuideDone
+                  ? TopLevelBlocsProvider(
+                      pushCubit: pushCubit,
+                      baseUrl: baseUrl,
+                      child: TopLevelListener(
+                        navigatorKey: _navigatorKey,
+                        payload: payload,
+                        child: SeagullApp(
+                          navigatorKey: _navigatorKey,
+                        ),
+                      ),
+                    )
+                  : const StartGuidePage(),
         ),
       );
 }

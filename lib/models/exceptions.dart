@@ -36,3 +36,9 @@ class CreateAccountException implements Exception {
 
   CreateAccountException({required this.badRequest});
 }
+
+class VerifyDeviceException implements Exception {
+  final BadRequest badRequest;
+
+  VerifyDeviceException({required this.badRequest});
+}
