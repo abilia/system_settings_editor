@@ -154,13 +154,6 @@ final disabledBoxDecoration = BoxDecoration(
   borderRadius: borderRadius,
   color: AbiliaColors.transparentWhite40,
 );
-final currentBoxDecoration = BoxDecoration(
-  color: AbiliaColors.white,
-  borderRadius: borderRadius,
-  border: Border.fromBorderSide(
-    BorderSide(color: AbiliaColors.red, width: 3.s),
-  ),
-);
 final whiteBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
