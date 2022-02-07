@@ -174,15 +174,15 @@ class PhotoPage extends StatelessWidget {
   const PhotoPage({
     Key? key,
     required this.sortable,
+    required this.isInPhotoCalendar,
   }) : super(key: key);
 
   final Sortable<ImageArchiveData> sortable;
+  final bool isInPhotoCalendar;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    //TODO: Replace when we have a way to determine if photo is in photo calendar
-    final bool isInPhotoCalendar = true;
 
     return Scaffold(
       appBar: AbiliaAppBar(
@@ -312,7 +312,11 @@ class ThumbnailPhoto extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
               providers: authProviders,
-              child: PhotoPage(sortable: sortable),
+              child: PhotoPage(
+                sortable: sortable,
+                //TODO: Replace when we have a way to determine if photo is in photo calendar
+                isInPhotoCalendar: true,
+              ),
             ),
           ),
         );
