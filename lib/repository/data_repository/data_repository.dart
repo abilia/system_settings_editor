@@ -18,7 +18,7 @@ typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
 abstract class DataRepository<M extends DataModel> extends Repository {
   const DataRepository({
     required BaseClient client,
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required this.path,
     required this.authToken,
     required this.userId,
@@ -28,7 +28,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     this.postApiVersion = 1,
     String? postPath,
   })  : postPath = postPath ?? path,
-        super(client, baseUrl);
+        super(client, baseUrlDb);
 
   final DataDb<M> db;
   final String authToken;

@@ -7,14 +7,14 @@ import 'package:seagull/repository/all.dart';
 
 class ActivityRepository extends DataRepository<Activity> {
   ActivityRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required String authToken,
     required int userId,
     required ActivityDb activityDb,
   }) : super(
           client: client,
-          baseUrl: baseUrl,
+          baseUrlDb: baseUrlDb,
           path: 'activities',
           postApiVersion: 2,
           authToken: authToken,

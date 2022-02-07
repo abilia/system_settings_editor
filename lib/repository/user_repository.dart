@@ -20,24 +20,12 @@ class UserRepository extends Repository {
   final LicenseDb licenseDb;
 
   const UserRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required this.loginDb,
     required this.userDb,
     required this.licenseDb,
-  }) : super(client, baseUrl);
-
-  UserRepository copyWith({
-    String? baseUrl,
-    BaseClient? client,
-  }) =>
-      UserRepository(
-        baseUrl: baseUrl ?? this.baseUrl,
-        client: client ?? this.client,
-        loginDb: loginDb,
-        userDb: userDb,
-        licenseDb: licenseDb,
-      );
+  }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
     required String username,

@@ -44,7 +44,7 @@ void main() {
     activities = dbActivities.map((a) => a.activity);
 
     activityRepo = ActivityRepository(
-      baseUrl: baseUrl,
+      baseUrlDb: MockBaseUrlDb(),
       client: mockClient,
       activityDb: mockActivityDb,
       userId: userId,

@@ -26,7 +26,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   try {
     log.info('Handling background message...');
     await configureLocalTimeZone();
-    final baseUrl = BaseUrlDb(preferences).getBaseUrl();
+    final baseUrlDb = BaseUrlDb(preferences);
     final version =
         await PackageInfo.fromPlatform().then((value) => value.version);
     final client = ClientWithDefaultHeaders(version);
@@ -39,7 +39,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final database = await DatabaseRepository.createSqfliteDb();
 
     final activities = await ActivityRepository(
-      baseUrl: baseUrl,
+      baseUrlDb: baseUrlDb,
       client: client,
       activityDb: ActivityDb(database),
       userId: user.id,
@@ -49,7 +49,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final fileStorage = FileStorage(documentDirectory.path);
 
     await UserFileRepository(
-      baseUrl: baseUrl,
+      baseUrlDb: baseUrlDb,
       client: client,
       userFileDb: UserFileDb(database),
       fileStorage: fileStorage,
@@ -62,7 +62,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     final generics = await GenericRepository(
       authToken: token,
-      baseUrl: baseUrl,
+      baseUrlDb: baseUrlDb,
       client: client,
       genericDb: GenericDb(database),
       userId: user.id,
@@ -83,7 +83,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     );
 
     await SortableRepository(
-      baseUrl: baseUrl,
+      baseUrlDb: baseUrlDb,
       client: client,
       sortableDb: SortableDb(database),
       userId: user.id,

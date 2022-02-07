@@ -16,11 +16,7 @@ class StartGuidePage extends StatelessWidget {
             children: [
               const _FancyHeader(text: 'Welcome to the start guide!'),
               const SizedBox(height: 50),
-              if (!Config.release)
-                ElevatedButton(
-                    onPressed: () =>
-                        context.read<StartGuideCubit>().skipStartGuide(),
-                    child: const Text('Skip start guide')),
+              if (!Config.release) const DebugRow(),
               const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -64,6 +60,37 @@ class StartGuidePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DebugRow extends StatelessWidget {
+  const DebugRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BaseUrlCubit, String>(
+      builder: (context, baseUrl) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+                  onPressed: () =>
+                      context.read<StartGuideCubit>().skipStartGuide(),
+                  child: const Text('Skip start guide'))
+              .pad(const EdgeInsets.only(right: 20)),
+          ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => const BackendSwitchesDialog(),
+              );
+            },
+            child: Text('Switch backend $baseUrl'),
+          )
+        ],
       ),
     );
   }

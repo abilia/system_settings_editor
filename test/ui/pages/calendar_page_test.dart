@@ -49,7 +49,7 @@ void main() {
     loginDb: FakeLoginDb(),
     userDb: FakeUserDb(),
     licenseDb: FakeLicenseDb(),
-    baseUrl: 'fake',
+    baseUrlDb: MockBaseUrlDb(),
   );
 
   Widget wrapWithMaterialApp(
@@ -58,7 +58,7 @@ void main() {
     SortableBloc? sortableBloc,
   }) =>
       TopLevelBlocsProvider(
-        baseUrl: 'test',
+        runStartGuide: false,
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,

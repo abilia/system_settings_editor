@@ -18,7 +18,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required String authToken,
     required int userId,
@@ -27,7 +27,7 @@ class UserFileRepository extends DataRepository<UserFile> {
     required this.multipartRequestBuilder,
   }) : super(
           client: client,
-          baseUrl: baseUrl,
+          baseUrlDb: baseUrlDb,
           path: 'storage/items',
           authToken: authToken,
           userId: userId,

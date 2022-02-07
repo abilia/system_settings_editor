@@ -27,7 +27,7 @@ void main() {
     mockClient = MockBaseClient();
     sortableRepository = SortableRepository(
       authToken: Fakes.token,
-      baseUrl: baseUrl,
+      baseUrlDb: MockBaseUrlDb(),
       client: mockClient,
       sortableDb: SortableDb(db),
       userId: userId,

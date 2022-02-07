@@ -16,6 +16,7 @@ import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final mockUserFileDb = MockUserFileDb();
+  final mockBaseUrlDb = MockBaseUrlDb();
   const baseUrl = 'http://url.com';
   final mockFileStorage = MockFileStorage();
   final mockClient = MockBaseClient();
@@ -23,7 +24,7 @@ void main() {
   const userId = 1;
   final userFileRepository = UserFileRepository(
     authToken: Fakes.token,
-    baseUrl: baseUrl,
+    baseUrlDb: MockBaseUrlDb(),
     fileStorage: mockFileStorage,
     client: mockClient,
     userFileDb: mockUserFileDb,
@@ -33,6 +34,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
+    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(baseUrl);
   });
 
   tearDown(() {

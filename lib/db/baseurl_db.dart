@@ -13,7 +13,7 @@ class BaseUrlDb {
 
   Future deleteBaseUrl() => prefs.remove(_baseUrlRecord);
 
-  Future<String> initialize() async => prefs.containsKey(_baseUrlRecord)
+  Future<void> initialize() async => prefs.containsKey(_baseUrlRecord)
       ? getBaseUrl()
       : await setBaseUrl(prod).then((_) => prod);
 }

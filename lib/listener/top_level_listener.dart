@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/all.dart';
 import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/notification/all.dart';
@@ -25,14 +24,6 @@ class TopLevelListener extends StatelessWidget {
           BlocListener<ClockBloc, DateTime>(
             listener: (context, state) =>
                 GetIt.I<SeagullLogger>().maybeUploadLogs(),
-          ),
-          BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (last, current) =>
-                GetIt.I<BaseUrlDb>().getBaseUrl() !=
-                current.userRepository.baseUrl,
-            listener: (context, state) => GetIt.I<BaseUrlDb>().setBaseUrl(
-              state.userRepository.baseUrl,
-            ),
           ),
           BlocListener<AuthenticationBloc, AuthenticationState>(
             listenWhen: (previous, current) =>

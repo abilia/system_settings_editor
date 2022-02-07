@@ -8,15 +8,14 @@ import 'package:seagull/utils/strings.dart';
 class SerialIdRepository extends Repository {
   SerialIdRepository({
     required BaseClient client,
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required this.serialIdDb,
-  }) : super(client, baseUrl);
+  }) : super(client, baseUrlDb);
 
   final SerialIdDb serialIdDb;
 
   Future<bool> verifyDevice(String serialId) async {
-    final url =
-        'http://192.168.1.75:9103/open/v1/enrollment/verify-device/$serialId';
+    final url = '$baseUrl/open/v1/enrollment/verify-device/$serialId';
     final response = await client.get(
       url.toUri(),
     );

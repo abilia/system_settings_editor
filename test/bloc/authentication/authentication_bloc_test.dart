@@ -22,7 +22,7 @@ void main() {
         loginDb: LoginDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
-        baseUrl: 'fake',
+        baseUrlDb: BaseUrlDb(prefs),
       );
     });
 
