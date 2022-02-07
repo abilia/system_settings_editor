@@ -72,6 +72,7 @@ class MemoplannerSettings extends Equatable {
       functionMenuStartViewKey = 'function_menu_start_view',
       imageMenuDisplayPhotoItemKey = 'image_menu_display_photo_item',
       imageMenuDisplayCameraItemKey = 'image_menu_display_camera_item',
+      imageMenuDisplayMyPhotosItemKey = 'image_menu_display_my_photos_item',
       settingClockTypeKey = 'setting_clock_type',
       settingTimePillarTimelineKey = 'setting_time_pillar_timeline',
       settingViewOptionsTimeViewKey = 'setting_view_options_time_view',
@@ -119,6 +120,7 @@ class MemoplannerSettings extends Equatable {
       useScreensaver,
       imageMenuDisplayPhotoItem,
       imageMenuDisplayCameraItem,
+      imageMenuDisplayMyPhotosItem,
       settingTimePillarTimeline,
       settingViewOptionsTimeView,
       settingViewOptionsTimeInterval,
@@ -187,6 +189,7 @@ class MemoplannerSettings extends Equatable {
     this.dotsInTimepillar = true,
     this.imageMenuDisplayPhotoItem = true,
     this.imageMenuDisplayCameraItem = true,
+    this.imageMenuDisplayMyPhotosItem = true,
     this.setting12hTimeFormatTimeline = false,
     this.settingDisplayHourLines = false,
     this.settingDisplayTimeline = true,
@@ -363,6 +366,9 @@ class MemoplannerSettings extends Equatable {
       imageMenuDisplayCameraItem: settings.getBool(
         imageMenuDisplayCameraItemKey,
       ),
+      imageMenuDisplayMyPhotosItem: settings.getBool(
+        imageMenuDisplayMyPhotosItemKey,
+      ),
       settingTimePillarTimeline: settings.getBool(
         settingTimePillarTimelineKey,
         defaultValue: false,
@@ -513,6 +519,7 @@ class MemoplannerSettings extends Equatable {
         functionMenuStartView,
         imageMenuDisplayPhotoItem,
         imageMenuDisplayCameraItem,
+        imageMenuDisplayMyPhotosItem,
         settingClockType,
         settingTimePillarTimeline,
         settingViewOptionsTimeView,

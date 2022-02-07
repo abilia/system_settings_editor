@@ -167,6 +167,21 @@ void main() {
       );
     });
 
+    testWidgets('Switch for ongoing activity in full screen', (tester) async {
+      await tester.goToAlarmSettingsPage();
+      await tester.scrollDown();
+      await tester.tap(find.byKey(TestKey.showOngoingActivityInFullScreen));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifyUnsyncGeneric(
+        tester,
+        genericDb,
+        key: AlarmSettings.showOngoingActivityInFullScreenKey,
+        matcher: true,
+      );
+    });
+
     testWidgets('Changes to alarm triggers an alarm schedualing',
         (tester) async {
       await tester.goToAlarmSettingsPage();

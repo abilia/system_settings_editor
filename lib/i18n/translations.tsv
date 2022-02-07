@@ -337,7 +337,9 @@ selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse mu
 selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
 add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
 defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
-							
+onlyAppliesToGo	Only applies to MEMOplanner Go
+showOngoingActivityInFullScreen	Show ongoing activity in full screen	Visa pågående aktivitet i helskärm	Vis nuværende aktivitet i fuld skærm	Lopende activiteit in volledig scherm tonen	Näytä käynnissä oleva aktiviteetti koko näytössä	Laufende Aktivität im Vollbild zeigen	Vis gjeldende aktivitet i full skjerm
+
 ## Functions Settings							
 toolbar	Toolbar	Knapprad	Værktøjslinje	Werkbalk	Työkalurivi	Symbolleiste	Knapperad
 toolbarSettingsHint	Views displayed in the Toolbar	Visningar visas i verktygsfältet	Visninger vises i værktøjslinjen	Weergaven weergegeven in de werkbalk	Näkymät näkyvät työkalupalkissa	In der Symbolleiste angezeigte Ansichten	Visninger som vises på verktøylinjen

@@ -61,7 +61,7 @@ class SoundCubit extends Cubit<SoundState> {
 
   Future<void> play(AbiliaFile abiliaFile) async {
     log.fine('trying to play: $abiliaFile');
-    final file = _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
+    final file = await resolveFile(abiliaFile);
     if (file != null) {
       log.fine('playing: $file');
       await audioPlayer.play(file.path, isLocal: true);
@@ -70,6 +70,9 @@ class SoundCubit extends Cubit<SoundState> {
       log.warning('could not resolve $abiliaFile from user files');
     }
   }
+
+  Future<File?> resolveFile(AbiliaFile abiliaFile) async =>
+      _fileMap[abiliaFile] ?? await _resolveFile(abiliaFile);
 
   Future<File?> _resolveFile(AbiliaFile abiliaFile) async {
     if (abiliaFile is UnstoredAbiliaFile) {

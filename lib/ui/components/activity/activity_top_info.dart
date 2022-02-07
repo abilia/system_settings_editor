@@ -75,17 +75,16 @@ class _ActivityTopInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    final minPadding = 8.s;
-    final middleDashWidth = 7.s;
-    final totalWidth =
-        layout.actionButton.size * 2 - minPadding * 4 + middleDashWidth;
+    final totalWidth = layout.actionButton.size * 2 -
+        layout.activityPage.dashSpacing * 4 +
+        layout.activityPage.dashWidth;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       final timeBoxMaxWidth = (constraints.maxWidth - totalWidth) / 2;
       return BlocBuilder<ClockBloc, DateTime>(
         builder: (context, now) {
           return Padding(
-            padding: EdgeInsets.only(top: 4.s, bottom: 8.s),
+            padding: layout.activityPage.timeRowPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -118,9 +117,11 @@ class _ActivityTopInfo extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: minPadding),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: layout.activityPage.dashSpacing,
+                    ),
                     child: SizedBox(
-                      height: middleDashWidth,
+                      width: layout.activityPage.dashWidth,
                       child: Text(
                         '-',
                         style: Theme.of(context).textTheme.headline5,
@@ -171,7 +172,7 @@ class _TimeBox extends StatelessWidget {
         .headline6
         ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
     final boxDecoration = _decoration;
-    final maxMaxWidth = 92.s;
+    final maxMaxWidth = layout.activityPage.timeBoxSize.width;
     return Tts.data(
       data: text,
       child: Stack(
@@ -179,12 +180,12 @@ class _TimeBox extends StatelessWidget {
         children: <Widget>[
           AnimatedContainer(
             duration: ActivityInfo.animationDuration,
-            padding: EdgeInsets.all(8.s),
+            padding: layout.activityPage.timeBoxPadding,
             constraints: BoxConstraints(
-              minWidth: 72.0.s,
-              minHeight: 52.0.s,
+              minWidth: layout.activityPage.minTimeBoxWidth,
+              minHeight: layout.activityPage.timeBoxSize.height,
               maxWidth: min(maxWidth ?? maxMaxWidth, maxMaxWidth),
-              maxHeight: 52.0.s,
+              maxHeight: layout.activityPage.timeBoxSize.height,
             ),
             decoration: boxDecoration,
             child: Center(
@@ -197,24 +198,39 @@ class _TimeBox extends StatelessWidget {
             ),
           ),
           AnimatedOpacity(
-              opacity: past ? 1.0 : 0.0,
-              duration: ActivityInfo.animationDuration,
-              child: CrossOver(fallbackHeight: 38.s, fallbackWidth: 64.s)),
+            opacity: past ? 1.0 : 0.0,
+            duration: ActivityInfo.animationDuration,
+            child: CrossOver(
+              fallbackHeight: layout.activityPage.timeCrossOverSize.height,
+              fallbackWidth: layout.activityPage.timeCrossOverSize.width,
+            ),
+          ),
         ],
       ),
     );
   }
 
   BoxDecoration get _decoration => current
-      ? currentBoxDecoration
+      ? _currentBoxDecoration
       : past
-          ? pastDecration
+          ? _pastDecoration
           : boxDecoration;
 }
 
-final pastDecration = BoxDecoration(
+final _pastDecoration = BoxDecoration(
+  borderRadius: borderRadius,
+  border: const Border.fromBorderSide(
+    BorderSide(style: BorderStyle.none),
+  ),
+);
+
+final _currentBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: Border.fromBorderSide(
-    BorderSide(style: BorderStyle.none, width: 2.0.s),
+    BorderSide(
+      color: AbiliaColors.red,
+      width: border.top.width,
+    ),
   ),
 );
