@@ -16,6 +16,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.appBar,
     this.bottomNavigationBar,
     this.rootHeading,
+    this.showAppBar = true,
+    this.showBottomNavigationBar = true,
+    this.gridCrossAxisCount,
+    this.gridChildAspectRatio,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
@@ -33,6 +37,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.bottomNavigationBar,
     this.rootHeading,
     this.initialFolder = '',
+    this.showAppBar = true,
+    this.showBottomNavigationBar = true,
+    this.gridCrossAxisCount,
+    this.gridChildAspectRatio,
   })  : selectableItems = true,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
@@ -50,6 +58,10 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
   final String emptyLibraryMessage;
   final String? rootHeading;
   final String initialFolder;
+  final bool showAppBar;
+  final bool showBottomNavigationBar;
+  final int? gridCrossAxisCount;
+  final double? gridChildAspectRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +76,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
           final selected = selectableItems ? state.selected : null;
           final selectedGenerator = selectedItemGenerator;
           return Scaffold(
-            appBar: appBar ??
-                AbiliaAppBar(
-                  iconData: AbiliaIcons.documents,
-                  title: Translator.of(context).translate.selectFromLibrary,
-                ),
+            appBar: !showAppBar
+                ? null
+                : appBar ??
+                    AbiliaAppBar(
+                      iconData: AbiliaIcons.documents,
+                      title: Translator.of(context).translate.selectFromLibrary,
+                    ),
             body: Column(
               children: [
                 if (!state.isAtRootAndNoSelection || rootHeading != null)
@@ -83,19 +97,23 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                           libraryItemGenerator,
                           emptyLibraryMessage,
                           selectableItems: selectableItems,
+                          crossAxisCount: gridCrossAxisCount,
+                          childAspectRatio: gridChildAspectRatio,
                         ),
                 ),
               ],
             ),
-            bottomNavigationBar: bottomNavigationBar ??
-                BottomNavigation(
-                  backNavigationWidget: CancelButton(onPressed: onCancel),
-                  forwardNavigationWidget: selected != null
-                      ? OkButton(
-                          onPressed: () => onOk?.call(selected),
-                        )
-                      : null,
-                ),
+            bottomNavigationBar: !showBottomNavigationBar
+                ? null
+                : bottomNavigationBar ??
+                    BottomNavigation(
+                      backNavigationWidget: CancelButton(onPressed: onCancel),
+                      forwardNavigationWidget: selected != null
+                          ? OkButton(
+                              onPressed: () => onOk?.call(selected),
+                            )
+                          : null,
+                    ),
           );
         },
       ),
@@ -165,11 +183,15 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final bool selectableItems;
+  final int? crossAxisCount;
+  final double? childAspectRatio;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.selectableItems = true,
+    this.crossAxisCount,
+    this.childAspectRatio,
     Key? key,
   }) : super(key: key);
 
@@ -211,8 +233,10 @@ class _SortableLibraryState<T extends SortableData>
             ),
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
             crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
-            crossAxisCount: layout.libraryPage.crossAxisCount,
-            childAspectRatio: layout.libraryPage.childAspectRatio,
+            crossAxisCount:
+                widget.crossAxisCount ?? layout.libraryPage.crossAxisCount,
+            childAspectRatio:
+                widget.childAspectRatio ?? layout.libraryPage.childAspectRatio,
             children: currentFolderContent
                 .map(
                   (sortable) => sortable.isGroup

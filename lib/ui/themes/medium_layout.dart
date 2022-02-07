@@ -24,6 +24,12 @@ class _MediumLayout extends Layout {
               orangeDotInset: 6,
             ),
           ),
+          myPhotos: const MyPhotosLayout(
+            crossAxisCount: 3,
+            fullScreenImageBorderRadius: 20,
+            childAspectRatio: 240 / 168,
+            fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
+          ),
           toolbar: const ToolbarLayout(
             height: 120,
             bottomPadding: 8,
@@ -184,5 +190,15 @@ class _MediumLayout extends Layout {
               folderIconSize: 129,
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
+          dataItem: const DataItemLayout(
+            borderRadius: 20,
+            picture: _DataItemPictureLayout(
+              stickerIconSize: 24,
+              stickerSize: Size(48, 48),
+              imagePadding: EdgeInsets.only(left: 11, right: 11, bottom: 7),
+              titlePadding:
+                  EdgeInsets.only(left: 7, right: 7, bottom: 4, top: 7),
+            ),
+          ),
         );
 }

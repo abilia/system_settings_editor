@@ -39,7 +39,7 @@ class EditQuestionPage extends StatelessWidget {
                     color: AbiliaColors.white,
                     size: 24.s,
                   ),
-                  text: t.remove,
+                  text: t.delete,
                 ),
               )
             : null,

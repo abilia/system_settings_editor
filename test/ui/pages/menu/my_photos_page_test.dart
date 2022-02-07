@@ -99,10 +99,10 @@ void main() {
         await tester.goToMyPhotos();
         expect(find.byType(MyPhotosPage), findsOneWidget);
         expect(find.byType(LibraryFolder), findsOneWidget);
-        expect(find.byType(FullscreenViewablePhoto), findsOneWidget);
-        await tester.tap(find.byType(FullscreenViewablePhoto));
+        expect(find.byType(ThumbnailPhoto), findsOneWidget);
+        await tester.tap(find.byType(ThumbnailPhoto));
         await tester.pumpAndSettle();
-        expect(find.byType(FullscreenImageDialog), findsOneWidget);
+        expect(find.byType(PhotoPage), findsOneWidget);
         expect(find.byType(FullScreenImage), findsOneWidget);
       });
     });

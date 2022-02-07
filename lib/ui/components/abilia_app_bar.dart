@@ -32,32 +32,33 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       label: label ?? '',
       iconData: iconData,
     );
-    if (bottom != null) {
+    if (trailing != null || bottom != null) {
       content = Column(
         children: [
-          Expanded(child: content),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0.s),
-            child: bottom,
+          Expanded(
+            child: Stack(
+              children: [
+                Align(alignment: Alignment.center, child: content),
+                if (trailing != null)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 16.s),
+                      child: trailing,
+                    ),
+                  ),
+              ],
+            ),
           ),
+          if (bottom != null)
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0.s),
+              child: bottom,
+            ),
         ],
       );
     } else {
       content = Center(child: content);
-    }
-    if (trailing != null) {
-      content = Stack(
-        children: [
-          content,
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: EdgeInsets.only(right: 16.s),
-              child: trailing,
-            ),
-          )
-        ],
-      );
     }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(

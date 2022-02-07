@@ -33,6 +33,8 @@ class Layout {
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
+  final DataItemLayout dataItem;
+  final MyPhotosLayout myPhotos;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -53,6 +55,8 @@ class Layout {
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
+    this.dataItem = const DataItemLayout(),
+    this.myPhotos = const MyPhotosLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -103,6 +107,20 @@ class MenuItemButtonLayout {
     this.size = 48,
     this.borderRadius = 12,
     this.orangeDotInset = 4,
+  });
+}
+
+class MyPhotosLayout {
+  final double? childAspectRatio;
+  final double fullScreenImageBorderRadius;
+  final int crossAxisCount;
+  final EdgeInsets fullScreenImagePadding;
+
+  const MyPhotosLayout({
+    this.childAspectRatio,
+    this.fullScreenImageBorderRadius = 12,
+    this.crossAxisCount = 3,
+    this.fullScreenImagePadding = const EdgeInsets.all(12),
   });
 }
 
@@ -491,4 +509,28 @@ class LibraryPageLayout {
         color: AbiliaColors.black,
         fontWeight: FontWeight.w500,
       );
+}
+
+class DataItemLayout {
+  final double borderRadius;
+  final _DataItemPictureLayout picture;
+
+  const DataItemLayout({
+    this.borderRadius = 12,
+    this.picture = const _DataItemPictureLayout(),
+  });
+}
+
+class _DataItemPictureLayout {
+  final double stickerIconSize;
+  final Size stickerSize;
+  final EdgeInsets imagePadding, titlePadding;
+
+  const _DataItemPictureLayout({
+    this.stickerIconSize = 16,
+    this.stickerSize = const Size(32, 32),
+    this.imagePadding = const EdgeInsets.only(left: 12, right: 12, bottom: 3),
+    this.titlePadding =
+        const EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 2),
+  });
 }
