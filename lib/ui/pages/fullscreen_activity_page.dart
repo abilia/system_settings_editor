@@ -1,44 +1,34 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/activities_bloc.dart';
-import 'package:seagull/bloc/clock/clock_bloc.dart';
-import 'package:seagull/bloc/events/day_events_cubit.dart';
-import 'package:seagull/bloc/events/events_state.dart';
-import 'package:seagull/bloc/generic/memoplannersetting/memoplanner_setting_bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/activities_state_extensions.dart';
 import 'package:seagull/utils/activity_extension.dart';
 import 'package:seagull/utils/copied_auth_providers.dart';
 import 'package:seagull/utils/datetime.dart';
 
-class OngoingFullscreenActivityPage extends StatelessWidget {
+class FullScreenActivityPage extends StatelessWidget {
   final ActivityDay activityDay;
 
-  const OngoingFullscreenActivityPage({
+  const FullScreenActivityPage({
     Key? key,
     required this.activityDay,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-      selector: (activitiesState) {
-        final a =
-            activitiesState.newActivityFromLoadedOrGiven(activityDay.activity);
-        return ActivityDay(
-          a,
-          a.isRecurring ? activityDay.day : a.startTime,
-        );
-      },
-      builder: (context, ad) {
-        return const _FullscreenActivityInfo();
-      },
-    );
+    return BlocProvider<FullScreenActivityCubit>(
+        create: (context) => FullScreenActivityCubit(
+            dayEventsCubit: context.read<DayEventsCubit>(),
+            clockBloc: context.read<ClockBloc>()),
+        child: _FullScreenActivityInfo(
+          activityDay: activityDay,
+        ));
   }
 }
 
-class _FullscreenActivityInfo extends StatefulWidget {
-  const _FullscreenActivityInfo({Key? key}) : super(key: key);
+class _FullScreenActivityInfo extends StatefulWidget {
+  const _FullScreenActivityInfo({Key? key, required this.activityDay})
+      : super(key: key);
+  final ActivityDay activityDay;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +36,7 @@ class _FullscreenActivityInfo extends StatefulWidget {
   }
 }
 
-class _FullScreenActivityInfoState extends State<_FullscreenActivityInfo> {
+class _FullScreenActivityInfoState extends State<_FullScreenActivityInfo> {
   _FullScreenActivityInfoState();
 
   late DateTime time;
@@ -59,50 +49,36 @@ class _FullScreenActivityInfoState extends State<_FullscreenActivityInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ClockBloc, DateTime>(
-      listener: (context, state) async {
-        setState(() => {time = state});
+    return BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
+        ActivityDay>(
+      selector: (state) {
+        if (state is NoActivityState) {
+          Navigator.of(context).maybePop();
+        }
+        return state.activityDay ?? widget.activityDay;
       },
-      child: BlocSelector<DayEventsCubit, EventsState, ActivityDay>(
-        selector: (eventsState) {
-          ActivityDay? ad;
-          if (eventsState is EventsLoaded) {
-            eventsState.activities.toSet().forEach((activityDay) {
-              ActivityOccasion oc = activityDay.toOccasion(time);
-              if (oc.isCurrent) {
-                ad = activityDay;
-                return;
-              }
-            });
-          }
-          if (ad == null) {
-            Navigator.of(context).maybePop();
-          }
-          return ad!;
-        },
-        builder: (context, ad) {
-          return Scaffold(
-            appBar: DayAppBar(
-              day: ad.day,
-              leftAction: IconActionButton(
-                key: TestKey.activityBackButton,
-                onPressed: () => Navigator.of(context).maybePop(),
-                child: const Icon(AbiliaIcons.navigationPrevious),
-              ),
+      builder: (context, ad) {
+        return Scaffold(
+          appBar: DayAppBar(
+            day: ad.day,
+            leftAction: IconActionButton(
+              key: TestKey.activityBackButton,
+              onPressed: () => Navigator.of(context).maybePop(),
+              child: const Icon(AbiliaIcons.navigationPrevious),
             ),
-            body: Padding(
-              padding: EdgeInsets.all(ActivityInfo.margin)
-                  .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
-              child: ActivityInfoWithDots(
-                ad,
-              ),
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(ActivityInfo.margin)
+                .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
+            child: ActivityInfoWithDots(
+              ad,
             ),
-            bottomNavigationBar: _FullScreenActivityBottomBar(
-              selectedActivity: ad.activity,
-            ),
-          );
-        },
-      ),
+          ),
+          bottomNavigationBar: _FullScreenActivityBottomBar(
+            selectedActivity: ad.activity,
+          ),
+        );
+      },
     );
   }
 }
@@ -161,7 +137,7 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                 child: Padding(
                   padding: layout.ongoingFullscreenPage.toolBar.buttonPadding,
                   child: IconAndTextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => Navigator.of(context).maybePop(),
                     icon: AbiliaIcons.closeProgram,
                     text: t.close,
                     style: iconTextButtonStyleLight,
@@ -215,7 +191,7 @@ class _OngoingActivityContent extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
-                        child: OngoingFullscreenActivityPage(
+                        child: FullScreenActivityPage(
                             activityDay: activityOccasion),
                       ),
                       settings: RouteSettings(

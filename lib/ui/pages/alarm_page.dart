@@ -1,6 +1,7 @@
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/pages/fullscreen_activity_page.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -116,7 +117,9 @@ class PopAwareAlarmPage extends StatelessWidget {
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
           AlarmNavigator.log.fine('onWillPop $alarm');
-          alarmNavigator.removedFromRoutes(alarm);
+          child is FullScreenActivityPage
+              ? alarmNavigator.removeFullScreenActivity()
+              : alarmNavigator.removedFromRoutes(alarm);
           await notificationPlugin.cancel(alarm.hashCode);
           return true;
         },

@@ -3,7 +3,7 @@ import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/ongoing_fullscreen_page.dart';
+import 'package:seagull/ui/pages/fullscreen_activity_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmNavigator {
@@ -40,7 +40,7 @@ class AlarmNavigator {
       ),
       fullscreenDialog: true,
     );
-    final id = fullScreenActivity && alarm is NewAlarm
+    final id = fullScreenActivity && alarm is StartAlarm
         ? _ongoingFullscreenActivityId
         : alarm.activity.id;
     final routeOnStack = _alarmRoutesOnStack[id];
@@ -65,7 +65,7 @@ class AlarmNavigator {
         alarmNavigator: this,
         child: (alarm is NewAlarm)
             ? fullscreenActivity
-                ? OngoingFullscreenActivityPage(activityDay: alarm.activityDay)
+                ? FullScreenActivityPage(activityDay: alarm.activityDay)
                 : AlarmPage(alarm: alarm)
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)
@@ -75,5 +75,10 @@ class AlarmNavigator {
   MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
     log.info('removedFromRoutes: $alarm');
     return _alarmRoutesOnStack.remove(alarm.activity.id);
+  }
+
+  MaterialPageRoute? removeFullScreenActivity() {
+    log.info('removedFromRoutes: fullscreen');
+    return _alarmRoutesOnStack.remove(_ongoingFullscreenActivityId);
   }
 }
