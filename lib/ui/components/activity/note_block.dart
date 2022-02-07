@@ -39,7 +39,7 @@ class _NoteBlockState extends State<NoteBlock> {
           final textRenderingSize = widget.text.calulcateTextRenderSize(
             constraints: constraints,
             textStyle: textStyle,
-            padding: Attachment.padding,
+            padding: layout.note.notePadding,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
           );
           return DefaultTextStyle(
@@ -47,7 +47,7 @@ class _NoteBlockState extends State<NoteBlock> {
             child: ScrollArrows.vertical(
               controller: controller,
               child: SingleChildScrollView(
-                padding: Attachment.padding,
+                padding: layout.note.notePadding,
                 controller: controller,
                 child: Stack(
                   children: [
@@ -80,7 +80,7 @@ class Lines extends StatelessWidget {
   Widget build(BuildContext context) {
     final line = Padding(
       padding: EdgeInsets.only(top: lineHeight),
-      child: const Divider(),
+      child: const Divider(endIndent: 0),
     );
 
     return Column(
