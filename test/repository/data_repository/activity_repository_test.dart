@@ -31,20 +31,23 @@ void main() {
   late Iterable<Activity> activities;
   late MockActivityDb mockActivityDb;
   late MockBaseClient mockClient;
+  late MockBaseUrlDb mockBaseUrlDb;
 
   setUpAll(() {
     registerFallbackValues();
   });
 
   setUp(() {
+    mockBaseUrlDb = MockBaseUrlDb();
     mockClient = MockBaseClient();
     mockActivityDb = MockActivityDb();
+    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(baseUrl);
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     activities = dbActivities.map((a) => a.activity);
 
     activityRepo = ActivityRepository(
-      baseUrlDb: MockBaseUrlDb(),
+      baseUrlDb: mockBaseUrlDb,
       client: mockClient,
       activityDb: mockActivityDb,
       userId: userId,

@@ -23,6 +23,10 @@ void main() {
     licenseDb: FakeLicenseDb(),
   );
 
+  setUp(() {
+    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(url);
+  });
+
   test('if response 401, getUserFromApi throws UnauthorizedException',
       () async {
     // Arrange

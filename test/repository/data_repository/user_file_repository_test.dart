@@ -24,7 +24,7 @@ void main() {
   const userId = 1;
   final userFileRepository = UserFileRepository(
     authToken: Fakes.token,
-    baseUrlDb: MockBaseUrlDb(),
+    baseUrlDb: mockBaseUrlDb,
     fileStorage: mockFileStorage,
     client: mockClient,
     userFileDb: mockUserFileDb,
