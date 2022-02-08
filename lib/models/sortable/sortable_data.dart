@@ -99,6 +99,25 @@ class ImageArchiveData extends SortableData {
   bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
   bool isInPhotoCalendar() => tags.contains('photoCalendar');
+
+  ImageArchiveData copyWith({
+    String? name,
+    String? fileId,
+    String? icon,
+    String? file,
+    bool? upload,
+    bool? myPhotos,
+    List<String>? tags,
+  }) =>
+      ImageArchiveData(
+        name: name ?? this.name,
+        fileId: fileId ?? this.fileId,
+        icon: icon ?? this.icon,
+        file: file ?? this.file,
+        upload: upload ?? this.upload,
+        myPhotos: myPhotos ?? this.myPhotos,
+        tags: tags ?? this.tags,
+      );
 }
 
 class NoteData extends SortableData {

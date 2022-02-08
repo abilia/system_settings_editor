@@ -92,6 +92,7 @@ class _PhotoCalendar extends StatelessWidget {
       gridChildAspectRatio: layout.myPhotos.childAspectRatio,
       initialFolder: myPhotoFolderId,
       emptyLibraryMessage: translate.noImages,
+      visibilityFilter: (imageArchive) => imageArchive.data.isInPhotoCalendar(),
       libraryItemGenerator: (imageArchive) =>
           ThumbnailPhoto(sortable: imageArchive),
     );
@@ -207,12 +208,13 @@ class PhotoPage extends StatelessWidget {
                 ),
               ),
               //TODO: Only show sticker if photo is in photo calendar
-              const Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: PhotoCalendarSticker(),
+              if (sortable.data.isInPhotoCalendar())
+                const Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: PhotoCalendarSticker(),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -232,6 +234,7 @@ class PhotoPage extends StatelessWidget {
                   addOrRemovePhotoFromPhotoCalendar(
                     context,
                     remove: isInPhotoCalendar,
+                    sortable: sortable,
                   );
                 },
               ),
@@ -257,6 +260,7 @@ class PhotoPage extends StatelessWidget {
   void addOrRemovePhotoFromPhotoCalendar(
     BuildContext context, {
     required bool remove,
+    required Sortable<ImageArchiveData> sortable,
   }) async {
     final translate = Translator.of(context).translate;
 
@@ -283,7 +287,11 @@ class PhotoPage extends StatelessWidget {
       ),
     );
     if (result == true) {
-      //TODO: Add or remove photo to/from photo calendar
+      if (remove) {
+        //TODO: remove photo from photo calendar
+      } else {
+        //TODO: Add photo to photo calendar
+      }
     }
   }
 }
@@ -356,10 +364,11 @@ class ThumbnailPhoto extends StatelessWidget {
               ),
             ),
             //TODO: Only show sticker if photo is in photo calendar
-            const Align(
-              alignment: Alignment.bottomLeft,
-              child: PhotoCalendarSticker(),
-            ),
+            if (sortable.data.isInPhotoCalendar())
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: PhotoCalendarSticker(),
+              ),
           ],
         ),
       ),
