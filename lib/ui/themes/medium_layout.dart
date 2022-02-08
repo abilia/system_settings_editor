@@ -131,10 +131,10 @@ class _MediumLayout extends Layout {
           ),
           timerPage: const TimerPageLayout(
             topInfoHeight: 232,
-            topVerticalPadding: 16,
-            topHorizontalPadding: 16,
             imageSize: 200,
             imagePadding: 16,
+            bodyPadding: EdgeInsets.all(18),
+            topPadding: EdgeInsets.all(16),
           ),
           timePillar: const TimepillarLayout(
             fontSize: 40,
@@ -156,6 +156,15 @@ class _MediumLayout extends Layout {
               verticalMargin: 36,
               nightMargin: 6,
               radius: 18,
+            ),
+          ),
+          settingsBasePage: const SettingsBasePageLayout(
+            itemPadding: EdgeInsets.fromLTRB(18, 12, 24, 0),
+            listPadding: EdgeInsets.symmetric(vertical: 16),
+            dividerThemeData: DividerThemeData(
+              space: 48,
+              thickness: 2,
+              endIndent: 18,
             ),
           ),
           defaultTextInputPage: const DefaultTextInputPageLayout(
@@ -187,6 +196,48 @@ class _MediumLayout extends Layout {
                 arrowSize: Size(48, 21),
                 padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
                 selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6)),
+          ),
+          activityPage: const ActivityPageLayout(
+            topInfoHeight: 232,
+            timeRowPadding: EdgeInsets.only(bottom: 16),
+            timeBoxPadding: EdgeInsets.all(16),
+            topInfoPadding: EdgeInsets.all(16),
+            titleImageHorizontalSpacing: 16,
+            imagePadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+            verticalInfoPaddingCheckable: EdgeInsets.only(top: 24, bottom: 16),
+            verticalInfoPaddingNonCheckable:
+                EdgeInsets.only(top: 24, bottom: 14),
+            horizontalInfoPadding: EdgeInsets.symmetric(horizontal: 16),
+            checkButtonPadding: EdgeInsets.only(bottom: 22),
+            checklistPadding: EdgeInsets.fromLTRB(27, 15, 28, 0),
+            titleFontSize: 48,
+            titleLineHeight: 56.25,
+            checkButtonHeight: 72,
+            checkButtonContentPadding:
+                EdgeInsets.fromLTRB(14.25, 15, 31.75, 15),
+            dividerHeight: 2,
+            dividerIndentation: 16,
+            dashWidth: 12,
+            dashSpacing: 12,
+            minTimeBoxWidth: 108,
+            timeBoxSize: Size(144, 80),
+            timeCrossOverSize: Size(112, 56),
+          ),
+          checkList: const CheckListLayout(
+            questionViewPadding: EdgeInsets.only(bottom: 12),
+            questionIconPadding: EdgeInsets.only(right: 22),
+            questionImagePadding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+            questionTitlePadding: EdgeInsets.only(left: 12, right: 16),
+            addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
+            addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
+            questionListPadding: EdgeInsets.fromLTRB(18, 18, 18, 0),
+            questionViewHeight: 80,
+            questionImageSize: 60,
+            dividerHeight: 2,
+            dividerIndentation: 16,
+          ),
+          note: const NoteLayout(
+            notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
           ),
         );
 }

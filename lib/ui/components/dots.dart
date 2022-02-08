@@ -204,7 +204,9 @@ class ActivityInfoSideDots extends StatelessWidget {
     final endTime = activityDay.end;
     final startTime = activityDay.start;
     return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: ActivityInfo.margin),
+      constraints: BoxConstraints(
+        minWidth: layout.activityPage.horizontalInfoPadding.left,
+      ),
       child: BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
         final onSameDay = day.isAtSameDay(now),
             notStarted = startTime.isAfter(now),
@@ -266,7 +268,7 @@ class SideDotsLarge extends StatelessWidget {
           children: <Widget>[
             const Spacer(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: ActivityInfo.margin),
+              padding: layout.activityPage.horizontalInfoPadding,
               child: BigDots(
                 dots: max(dots, 1),
                 startTime: startTime,

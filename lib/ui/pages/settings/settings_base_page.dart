@@ -19,17 +19,20 @@ class SettingsBasePage extends StatelessWidget {
         title: title,
         iconData: icon,
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: 16.s),
-        itemBuilder: (context, i) {
-          final w = widgets[i];
-          if (w is Divider) return w;
-          return Padding(
-            padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
-            child: w,
-          );
-        },
-        itemCount: widgets.length,
+      body: DividerTheme(
+        data: layout.settingsBasePage.dividerThemeData,
+        child: ListView.builder(
+          padding: layout.settingsBasePage.listPadding,
+          itemBuilder: (context, i) {
+            final w = widgets[i];
+            if (w is Divider) return w;
+            return Padding(
+              padding: layout.settingsBasePage.itemPadding,
+              child: w,
+            );
+          },
+          itemCount: widgets.length,
+        ),
       ),
       bottomNavigationBar: bottomNavigationBar ??
           const BottomNavigation(backNavigationWidget: PreviousButton()),
@@ -61,7 +64,7 @@ class SettingsTab extends StatelessWidget {
                     child: w,
                   )
                 : Padding(
-                    padding: EdgeInsets.fromLTRB(12.s, 8.s, 16.s, 0),
+                    padding: layout.settingsBasePage.itemPadding,
                     child: w,
                   ),
           )

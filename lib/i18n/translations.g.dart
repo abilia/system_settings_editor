@@ -655,6 +655,8 @@ abstract class Translated {
 
   final String defaults = 'Defaults';
 
+  final String onlyAppliesToGo = 'Only applies to MEMOplanner Go';
+
   final String showOngoingActivityInFullScreen =
       'Show ongoing activity in full screen';
 

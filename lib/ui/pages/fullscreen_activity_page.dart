@@ -61,18 +61,9 @@ class _FullScreenActivityInfoState extends State<_FullScreenActivityInfo> {
         return Scaffold(
           appBar: DayAppBar(
             day: ad.day,
-            leftAction: IconActionButton(
-              key: TestKey.activityBackButton,
-              onPressed: () => Navigator.of(context).maybePop(),
-              child: const Icon(AbiliaIcons.navigationPrevious),
-            ),
           ),
-          body: Padding(
-            padding: EdgeInsets.all(ActivityInfo.margin)
-                .subtract(EdgeInsets.only(left: ActivityInfo.margin)),
-            child: ActivityInfoWithDots(
-              ad,
-            ),
+          body: ActivityInfoWithDots(
+            ad,
           ),
           bottomNavigationBar: _FullScreenActivityBottomBar(
             selectedActivity: ad.activity,

@@ -125,58 +125,62 @@ class EditChecklistWidget extends StatelessWidget {
           child: GestureDetector(
             child: Container(
               decoration: whiteBoxDecoration,
-              padding: EdgeInsets.fromLTRB(12.0.s, 0, 0, 12.0.s),
               child: Column(
                 children: <Widget>[
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 8.0.s),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: AbiliaColors.white120),
-                        ),
-                      ),
-                      child: ChecklistView.withToolbar(
-                        checklist,
-                        padding:
-                            EdgeInsets.fromLTRB(0.0, 12.0.s, 16.0.s, 25.0.s),
-                        onTapEdit: (r) => _handleEditQuestionResult(r, context),
-                        onTapDelete: (q) => _handleDeleteQuestion(q, context),
-                        onTapReorder: (q, d) =>
-                            _handleReorderQuestion(q, d, context),
-                        preview: true,
-                      ),
+                    child: ChecklistView.withToolbar(
+                      checklist,
+                      padding: layout.checkList.questionListPadding,
+                      onTapEdit: (r) => _handleEditQuestionResult(r, context),
+                      onTapDelete: (q) => _handleDeleteQuestion(q, context),
+                      onTapReorder: (q, d) =>
+                          _handleReorderQuestion(q, d, context),
+                      preview: true,
                     ),
                   ),
+                  Divider(
+                    height: layout.checkList.dividerHeight,
+                    endIndent: 0,
+                    indent: layout.checkList.dividerIndentation,
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(right: 16.0.s),
+                    padding: layout.checkList.addNewQButtonPadding,
                     child: Tts.data(
                       data: Translator.of(context).translate.addNew,
                       child: RawMaterialButton(
-                        constraints: BoxConstraints(minHeight: 48.0.s),
+                        constraints: BoxConstraints(
+                          minHeight: layout.checkList.questionViewHeight,
+                        ),
                         shape: RoundedRectangleBorder(
                           side: const BorderSide(color: AbiliaColors.green140),
                           borderRadius: borderRadius,
                         ),
                         fillColor: AbiliaColors.green,
-                        elevation: 0.0,
-                        disabledElevation: 0.0,
-                        focusElevation: 0.0,
-                        highlightElevation: 0.0,
-                        hoverElevation: 0.0,
+                        elevation: 0,
+                        disabledElevation: 0,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        hoverElevation: 0,
                         onPressed: () => _handleNewQuestion(context),
                         child: Row(
                           children: [
-                            SizedBox(width: 12.0.s),
-                            Icon(AbiliaIcons.newIcon,
-                                size: layout.iconSize.small),
-                            SizedBox(width: 12.0.s),
+                            Padding(
+                              padding: layout.checkList.addNewQIconPadding,
+                              child: Icon(
+                                AbiliaIcons.newIcon,
+                                size: layout.iconSize.small,
+                                color: AbiliaColors.white,
+                              ),
+                            ),
                             Text(
                               Translator.of(context).translate.addNew,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
-                                  ?.copyWith(height: 1),
+                                  ?.copyWith(
+                                    height: 1,
+                                    color: AbiliaColors.white,
+                                  ),
                             ),
                           ],
                         ),

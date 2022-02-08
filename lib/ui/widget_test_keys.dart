@@ -99,6 +99,7 @@ class TestKey {
       activityViewEditSwitch = Key('activityViewEditSwitch'),
       hours = Key('hours'),
       minutes = Key('minutes'),
+      localImagesPickField = Key('localImages'),
       ttsPlayButton = Key('ttsPlayButton'),
       showOngoingActivityInFullScreen = Key('showActivityInFullScreen');
 }

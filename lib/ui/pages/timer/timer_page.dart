@@ -17,7 +17,7 @@ class TimerPage extends StatelessWidget {
     return Scaffold(
       appBar: DayAppBar(day: day),
       body: Padding(
-        padding: EdgeInsets.all(ActivityInfo.margin),
+        padding: layout.timerPage.bodyPadding,
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
@@ -28,8 +28,9 @@ class TimerPage extends StatelessWidget {
             children: <Widget>[
               _TopInfo(timer: timer),
               Divider(
+                height: layout.activityPage.dividerHeight,
                 endIndent: 0,
-                indent: layout.timerPage.topVerticalPadding,
+                indent: layout.activityPage.dividerIndentation,
               ),
               Expanded(
                 child: Padding(
@@ -64,10 +65,7 @@ class _TopInfo extends StatelessWidget {
     return SizedBox(
       height: layout.timerPage.topInfoHeight,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: layout.timerPage.topVerticalPadding,
-          horizontal: layout.timerPage.topHorizontalPadding,
-        ),
+        padding: layout.timerPage.topPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[

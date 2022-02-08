@@ -51,7 +51,7 @@ class _ImportPictureBody extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
               child: Column(
                 children: [
-                  if (state.displayPhotos) ...[
+                  if (state.displayLocalImages) ...[
                     ImageSourceWidget(
                       text: translate.devicesLocalImages,
                       imageSource: ImageSource.gallery,

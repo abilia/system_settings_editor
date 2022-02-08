@@ -82,6 +82,19 @@ void main() {
       verifySyncGeneric(
         tester,
         genericDb,
+        key: MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+        matcher: isFalse,
+      );
+    });
+
+    testWidgets('change display local images is stored', (tester) async {
+      await tester.goToFunctionImagePickerSettingPage();
+      await tester.tap(find.text(translate.devicesLocalImages));
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifySyncGeneric(
+        tester,
+        genericDb,
         key: MemoplannerSettings.imageMenuDisplayPhotoItemKey,
         matcher: isFalse,
       );

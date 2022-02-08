@@ -302,7 +302,7 @@ class _ArrowState extends State<_Arrow> {
         width: widget.width != null
             ? condition
                 ? widget.width
-                : 1
+                : 0
             : null,
         height: widget.heigth != null
             ? condition

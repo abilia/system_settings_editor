@@ -28,7 +28,7 @@ class AlarmPage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(ActivityInfo.margin),
+        padding: EdgeInsets.all(12.s),
         child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
           selector: (activitiesState) => ActivityDay(
             activitiesState
