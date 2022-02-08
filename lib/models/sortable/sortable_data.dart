@@ -43,6 +43,7 @@ class RawSortableData extends SortableData {
 class ImageArchiveData extends SortableData {
   final String name, fileId, icon, file;
   final bool upload, myPhotos;
+  final List<String> tags;
 
   const ImageArchiveData({
     this.name = '',
@@ -51,6 +52,7 @@ class ImageArchiveData extends SortableData {
     this.icon = '',
     this.upload = false,
     this.myPhotos = false,
+    this.tags = const [],
   }) : super();
 
   @override
@@ -61,6 +63,7 @@ class ImageArchiveData extends SortableData {
         if (file.isNotEmpty) 'file': file,
         if (upload) 'upload': upload,
         if (myPhotos) 'myPhotos': myPhotos,
+        if (tags.isNotEmpty) 'tags': tags,
       });
 
   @override
@@ -75,6 +78,7 @@ class ImageArchiveData extends SortableData {
       file: sortableData['file'] ?? '',
       upload: sortableData['upload'] ?? false,
       myPhotos: sortableData['myPhotos'] ?? false,
+      tags: sortableData['tags'] ?? [],
     );
   }
 
@@ -93,6 +97,8 @@ class ImageArchiveData extends SortableData {
 
   @override
   bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
+
+  bool isInPhotoCalendar() => tags.contains('photoCalendar');
 }
 
 class NoteData extends SortableData {
