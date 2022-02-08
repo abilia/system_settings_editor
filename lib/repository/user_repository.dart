@@ -18,6 +18,7 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
+  final SerialIdDb serialIdDb;
 
   const UserRepository({
     required BaseUrlDb baseUrlDb,
@@ -25,6 +26,7 @@ class UserRepository extends Repository {
     required this.loginDb,
     required this.userDb,
     required this.licenseDb,
+    required this.serialIdDb,
   }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
@@ -33,7 +35,7 @@ class UserRepository extends Repository {
     required String pushToken,
     required DateTime time,
   }) async {
-    final clientId = const Uuid().v4();
+    final clientId = await getOrInitClientId();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -47,14 +49,14 @@ class UserRepository extends Repository {
           'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,
-          'address': pushToken
+          'address': pushToken,
+          'serialNumber': serialIdDb.getSerialId(),
         },
       ),
     );
     switch (response.statusCode) {
       case 200:
-        final loginResponse = LoginInfo.fromJson(response.json());
-        return loginResponse.copyWithClientId(clientId);
+        return LoginInfo.fromJson(response.json());
       case 401:
         throw UnauthorizedException();
       case 403:
@@ -67,6 +69,17 @@ class UserRepository extends Repository {
       defaultException:
       default:
         throw Exception(response.body);
+    }
+  }
+
+  Future<String> getOrInitClientId() async {
+    final clientId = serialIdDb.getClientId();
+    if (clientId != null) {
+      return clientId;
+    } else {
+      final newClientId = const Uuid().v4();
+      await serialIdDb.setClientId(newClientId);
+      return newClientId;
     }
   }
 

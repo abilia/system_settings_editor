@@ -23,6 +23,7 @@ void main() {
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
         baseUrlDb: BaseUrlDb(prefs),
+        serialIdDb: SerialIdDb(prefs),
       );
     });
 

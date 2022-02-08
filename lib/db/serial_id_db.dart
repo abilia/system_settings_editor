@@ -2,14 +2,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SerialIdDb {
   static const String _serialIdRecord = 'serialIdRecord';
+  static const String _clientIdRecord = 'clientIdRecord';
   final SharedPreferences prefs;
 
   const SerialIdDb(this.prefs);
 
-  Future setSerialId(String serialId) =>
+  Future<void> setSerialId(String serialId) =>
       prefs.setString(_serialIdRecord, serialId);
 
   String? getSerialId() => prefs.getString(_serialIdRecord);
 
-  Future deleteSerialId() => prefs.remove(_serialIdRecord);
+  Future<void> setClientId(String clientId) =>
+      prefs.setString(_clientIdRecord, clientId);
+
+  String? getClientId() => prefs.getString(_clientIdRecord);
 }

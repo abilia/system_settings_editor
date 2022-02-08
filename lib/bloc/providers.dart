@@ -230,6 +230,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
         loginDb: GetIt.I<LoginDb>(),
         userDb: GetIt.I<UserDb>(),
         licenseDb: GetIt.I<LicenseDb>(),
+        serialIdDb: GetIt.I<SerialIdDb>(),
       ),
       child: MultiBlocProvider(
         providers: [

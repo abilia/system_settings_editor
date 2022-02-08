@@ -40,6 +40,8 @@ class MockSettingsDb extends Mock implements SettingsDb {}
 
 class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
+class MockSerialIdDb extends Mock implements SerialIdDb {}
+
 class MockGenericDb extends Mock implements GenericDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}

@@ -35,7 +35,7 @@ void main() async {
   runApp(
     App(
       payload: payload,
-      runStartGuide: runStartGuide,
+      runStartGuide: true,
     ),
   );
 }

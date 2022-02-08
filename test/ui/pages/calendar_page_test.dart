@@ -50,6 +50,7 @@ void main() {
     userDb: FakeUserDb(),
     licenseDb: FakeLicenseDb(),
     baseUrlDb: MockBaseUrlDb(),
+    serialIdDb: MockSerialIdDb(),
   );
 
   Widget wrapWithMaterialApp(
