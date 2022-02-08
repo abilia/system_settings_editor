@@ -86,7 +86,6 @@ class Sortable<T extends SortableData> extends DataModel {
       DbSortable._(sortable: this, revision: revision, dirty: dirty);
 
   Sortable copyWith({
-    String? id,
     String? type,
     T? data,
     String? groupId,
@@ -97,7 +96,7 @@ class Sortable<T extends SortableData> extends DataModel {
     bool? fixed,
   }) =>
       Sortable._(
-        id: id ?? this.id,
+        id: id,
         type: type ?? this.type,
         data: data ?? this.data,
         groupId: groupId ?? this.groupId,

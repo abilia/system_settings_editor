@@ -175,84 +175,100 @@ class PhotoPage extends StatelessWidget {
   const PhotoPage({
     Key? key,
     required this.sortable,
-    required this.isInPhotoCalendar,
   }) : super(key: key);
 
   final Sortable<ImageArchiveData> sortable;
-  final bool isInPhotoCalendar;
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
 
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: sortable.data.name,
-        label: translate.myPhotos,
-        iconData: AbiliaIcons.myPhotos,
+    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+        sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
-      body: Padding(
-        padding: layout.myPhotos.fullScreenImagePadding,
-        child: Center(
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  layout.myPhotos.fullScreenImageBorderRadius,
+      child: BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
+          SortableArchiveState<ImageArchiveData>>(
+        builder: (context, archiveState) {
+          final allById = archiveState.allById;
+          final photoSortable = allById[sortable.id];
+          assert(photoSortable != null, 'Sortable with the same ID not found');
+          final bool isInPhotoCalendar =
+              photoSortable?.data.isInPhotoCalendar() ??
+                  sortable.data.isInPhotoCalendar();
+
+          return Scaffold(
+            appBar: AbiliaAppBar(
+              title: photoSortable?.data.name ?? sortable.data.name,
+              label: translate.myPhotos,
+              iconData: AbiliaIcons.myPhotos,
+            ),
+            body: Padding(
+              padding: layout.myPhotos.fullScreenImagePadding,
+              child: Center(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        layout.myPhotos.fullScreenImageBorderRadius,
+                      ),
+                      child: FullScreenImage(
+                        backgroundDecoration: const BoxDecoration(),
+                        fileId:
+                            photoSortable?.data.fileId ?? sortable.data.fileId,
+                        filePath:
+                            photoSortable?.data.file ?? sortable.data.file,
+                        tightMode: true,
+                      ),
+                    ),
+                    if (isInPhotoCalendar)
+                      const Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: PhotoCalendarSticker(),
+                        ),
+                      ),
+                  ],
                 ),
-                child: FullScreenImage(
-                  backgroundDecoration: const BoxDecoration(),
-                  fileId: sortable.data.fileId,
-                  filePath: sortable.data.file,
-                  tightMode: true,
+              ),
+            ),
+            bottomNavigationBar: BottomAppBar(
+              child: SizedBox(
+                height: layout.toolbar.height,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextAndOrIconActionButtonLight(
+                      isInPhotoCalendar ? translate.remove : translate.add,
+                      isInPhotoCalendar
+                          ? AbiliaIcons.noPhotoCalendar
+                          : AbiliaIcons.photoCalendar,
+                      onPressed: () {
+                        addOrRemovePhotoFromPhotoCalendar(
+                          context,
+                          remove: isInPhotoCalendar,
+                          sortable: photoSortable ?? sortable,
+                        );
+                      },
+                    ),
+                    TextAndOrIconActionButtonLight(
+                      translate.delete,
+                      AbiliaIcons.deleteAllClear,
+                      onPressed: () {
+                        //TODO: Show dialog for deleting photo from myPhotos when there is a design for it
+                      },
+                    ),
+                    TextAndOrIconActionButtonLight(
+                      translate.close,
+                      AbiliaIcons.navigationPrevious,
+                      onPressed: () => Navigator.of(context).maybePop(),
+                    ),
+                  ],
                 ),
               ),
-              //TODO: Only show sticker if photo is in photo calendar
-              if (sortable.data.isInPhotoCalendar())
-                const Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: PhotoCalendarSticker(),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-          height: layout.toolbar.height,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextAndOrIconActionButtonLight(
-                isInPhotoCalendar ? translate.remove : translate.add,
-                isInPhotoCalendar
-                    ? AbiliaIcons.noPhotoCalendar
-                    : AbiliaIcons.photoCalendar,
-                onPressed: () {
-                  addOrRemovePhotoFromPhotoCalendar(
-                    context,
-                    remove: isInPhotoCalendar,
-                    sortable: sortable,
-                  );
-                },
-              ),
-              TextAndOrIconActionButtonLight(
-                translate.delete,
-                AbiliaIcons.deleteAllClear,
-                onPressed: () {
-                  //TODO: Show dialog for deleting photo from myPhotos when there is a design for it
-                },
-              ),
-              TextAndOrIconActionButtonLight(
-                translate.close,
-                AbiliaIcons.navigationPrevious,
-                onPressed: () => Navigator.of(context).maybePop(),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -287,11 +303,20 @@ class PhotoPage extends StatelessWidget {
       ),
     );
     if (result == true) {
+      Set<String> updatedTags = {};
       if (remove) {
-        //TODO: remove photo from photo calendar
+        updatedTags
+          ..addAll([...sortable.data.tags])
+          ..remove(ImageArchiveData.photoCalendarTag);
       } else {
-        //TODO: Add photo to photo calendar
+        updatedTags.addAll(
+          [...sortable.data.tags, ImageArchiveData.photoCalendarTag],
+        );
       }
+      final updatedSortable = sortable.copyWith(
+          data: sortable.data.copyWith(tags: updatedTags.toList()));
+      BlocProvider.of<SortableBloc>(context)
+          .add(SortableUpdated(updatedSortable));
     }
   }
 }
@@ -321,8 +346,6 @@ class ThumbnailPhoto extends StatelessWidget {
               providers: authProviders,
               child: PhotoPage(
                 sortable: sortable,
-                //TODO: Replace when we have a way to determine if photo is in photo calendar
-                isInPhotoCalendar: true,
               ),
             ),
           ),
@@ -363,7 +386,6 @@ class ThumbnailPhoto extends StatelessWidget {
                 ],
               ),
             ),
-            //TODO: Only show sticker if photo is in photo calendar
             if (sortable.data.isInPhotoCalendar())
               const Align(
                 alignment: Alignment.bottomLeft,

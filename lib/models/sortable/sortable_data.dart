@@ -41,6 +41,7 @@ class RawSortableData extends SortableData {
 }
 
 class ImageArchiveData extends SortableData {
+  static String photoCalendarTag = 'photoCalendar';
   final String name, fileId, icon, file;
   final bool upload, myPhotos;
   final List<String> tags;
@@ -67,7 +68,7 @@ class ImageArchiveData extends SortableData {
       });
 
   @override
-  List<Object?> get props => [name, fileId, icon, file];
+  List<Object?> get props => [name, fileId, icon, file, tags];
 
   factory ImageArchiveData.fromJson(String data) {
     final sortableData = json.decode(data);
@@ -78,7 +79,9 @@ class ImageArchiveData extends SortableData {
       file: sortableData['file'] ?? '',
       upload: sortableData['upload'] ?? false,
       myPhotos: sortableData['myPhotos'] ?? false,
-      tags: sortableData['tags'] ?? [],
+      tags: sortableData['tags'] is List<dynamic>
+          ? List<String>.from(sortableData['tags'])
+          : [],
     );
   }
 
@@ -98,7 +101,7 @@ class ImageArchiveData extends SortableData {
   @override
   bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
 
-  bool isInPhotoCalendar() => tags.contains('photoCalendar');
+  bool isInPhotoCalendar() => tags.contains(photoCalendarTag);
 
   ImageArchiveData copyWith({
     String? name,
