@@ -111,10 +111,12 @@ void main() {
 
 extension on WidgetTester {
   Future<void> goToMyPhotos() async {
-    await pumpApp();
-    await tap(find.byType(MenuButton));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.myPhotos));
-    await pumpAndSettle();
+    await mockNetworkImages(() async {
+      await pumpApp();
+      await tap(find.byType(MenuButton));
+      await pumpAndSettle();
+      await tap(find.byIcon(AbiliaIcons.myPhotos));
+      await pumpAndSettle();
+    });
   }
 }
