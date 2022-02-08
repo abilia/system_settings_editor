@@ -228,8 +228,8 @@ class PhotoPage extends StatelessWidget {
                 isInPhotoCalendar
                     ? AbiliaIcons.noPhotoCalendar
                     : AbiliaIcons.photoCalendar,
-                onPressed: () async {
-                  await addOrRemovePhotoFromPhotoCalendar(
+                onPressed: () {
+                  addOrRemovePhotoFromPhotoCalendar(
                     context,
                     remove: isInPhotoCalendar,
                   );
@@ -254,13 +254,13 @@ class PhotoPage extends StatelessWidget {
     );
   }
 
-  Future<bool?> addOrRemovePhotoFromPhotoCalendar(
+  void addOrRemovePhotoFromPhotoCalendar(
     BuildContext context, {
     required bool remove,
   }) async {
     final translate = Translator.of(context).translate;
 
-    final check = await showViewDialog<bool>(
+    final result = await showViewDialog<bool>(
       context: context,
       builder: (_) => ViewDialog(
         heading: AppBarHeading(
@@ -282,10 +282,9 @@ class PhotoPage extends StatelessWidget {
         ),
       ),
     );
-    if (check == true) {
+    if (result == true) {
       //TODO: Add or remove photo to/from photo calendar
     }
-    return check;
   }
 }
 
