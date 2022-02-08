@@ -84,4 +84,26 @@ class Sortable<T extends SortableData> extends DataModel {
   @override
   DbModel<DataModel> wrapWithDbModel({int revision = 0, int dirty = 0}) =>
       DbSortable._(sortable: this, revision: revision, dirty: dirty);
+
+  Sortable copyWith({
+    String? type,
+    T? data,
+    String? groupId,
+    String? sortOrder,
+    bool? deleted,
+    bool? isGroup,
+    bool? visible,
+    bool? fixed,
+  }) =>
+      Sortable._(
+        id: id,
+        type: type ?? this.type,
+        data: data ?? this.data,
+        groupId: groupId ?? this.groupId,
+        sortOrder: sortOrder ?? this.sortOrder,
+        deleted: deleted ?? this.deleted,
+        isGroup: isGroup ?? this.isGroup,
+        visible: visible ?? this.visible,
+        fixed: fixed ?? this.fixed,
+      );
 }
