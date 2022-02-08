@@ -8,6 +8,7 @@ import 'package:seagull/utils/all.dart';
 class NightEventsCubit extends Cubit<EventsLoaded> {
   final MemoplannerSettingBloc memoplannerSettingBloc;
   final ActivitiesBloc activitiesBloc;
+  final TimerAlarmBloc timerAlarmBloc;
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
 
@@ -19,12 +20,14 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
 
   NightEventsCubit({
     required this.activitiesBloc,
+    required this.timerAlarmBloc,
     required this.memoplannerSettingBloc,
     required this.clockBloc,
     required this.dayPickerBloc,
   }) : super(
-          _stateFromActivities(
+          _stateCopyWith(
             activitiesBloc.state.activities,
+            timerAlarmBloc.state.timers,
             dayPickerBloc.state.day,
             clockBloc.state,
             memoplannerSettingBloc.state.dayParts,
@@ -45,12 +48,14 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
 
   void _newState({
     List<Activity>? activities,
+    List<TimerOccasion>? timers,
     DateTime? day,
     DayParts? dayParts,
   }) =>
       emit(
-        _stateFromActivities(
+        _stateCopyWith(
           activities ?? activitiesBloc.state.activities,
+          timers ?? timerAlarmBloc.state.timers,
           day ?? dayPickerBloc.state.day,
           clockBloc.state,
           dayParts ?? memoplannerSettingBloc.state.dayParts,
@@ -58,43 +63,61 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
       );
 
   void _nowChange(DateTime now) => emit(
-        _stateFromActivityDays(
+        _stateFrom(
           state.activities,
+          state.timers,
           dayPickerBloc.state.day,
           now,
           memoplannerSettingBloc.state.dayParts,
         ),
       );
 
-  static EventsLoaded _stateFromActivities(
+  static EventsLoaded _stateCopyWith(
     List<Activity> activities,
+    List<TimerOccasion> timers,
     DateTime day,
     DateTime now,
     DayParts dayParts,
-  ) =>
-      _stateFromActivityDays(
-        activities
-            .expand(
-              (activity) => activity.nightActivitiesForDay(
-                day,
-                dayParts,
-              ),
-            )
-            .toList(),
-        day,
-        now,
-        dayParts,
-      );
+  ) {
+    final nightEnd = day.nextDay().add(dayParts.morning);
+    final nightStart = day.add(dayParts.night);
+    return _stateFrom(
+      activities
+          .expand(
+            (activity) => activity.nightActivitiesForNight(
+              day,
+              nightStart,
+              nightEnd,
+            ),
+          )
+          .toList(),
+      timers
+          .where((timer) =>
+              timer.start.inRangeWithInclusiveStart(
+                startDate: nightStart,
+                endDate: nightEnd,
+              ) ||
+              nightStart.inExclusiveRange(
+                startDate: timer.start,
+                endDate: timer.end,
+              ))
+          .toList(),
+      day,
+      now,
+      dayParts,
+    );
+  }
 
-  static EventsLoaded _stateFromActivityDays(
+  static EventsLoaded _stateFrom(
     List<ActivityDay> dayActivities,
+    List<TimerOccasion> timerOccasions,
     DateTime day,
     DateTime now,
     DayParts dayParts,
   ) =>
       mapToEventsState(
         dayActivities: dayActivities,
-        dayTimers: [], // TODO add timers to night cubit
+        timerOccasions: timerOccasions,
         day: day,
         occasion: isThisNight(
           dayParts,

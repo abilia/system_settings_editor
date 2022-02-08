@@ -75,7 +75,7 @@ class _TopInfo extends StatelessWidget {
                 child: FadeInCalendarImage(
                   width: layout.timerPage.imageSize,
                   fit: BoxFit.cover,
-                  imageFileId: timer.fileId,
+                  imageFile: timer.imageFile,
                 ),
               ),
             Expanded(

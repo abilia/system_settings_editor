@@ -25,9 +25,7 @@ void main() {
   final nextDay = initialDay.nextDay();
   final previusDay = initialDay.previousDay();
 
-  setUpAll(() {
-    registerFallbackValues();
-  });
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     mockActivitiesBloc = MockActivitiesBloc();
@@ -35,6 +33,14 @@ void main() {
     activityBlocStreamController = StreamController<ActivitiesState>();
     when(() => mockActivitiesBloc.stream)
         .thenAnswer((realInvocation) => activityBlocStreamController.stream);
+
+    final mockTimerAlarmBloc = MockTimerAlarmBloc();
+    when(() => mockTimerAlarmBloc.state).thenReturn(TimerAlarmState(
+      timers: const [],
+      queue: const [],
+    ));
+    when(() => mockTimerAlarmBloc.stream)
+        .thenAnswer((realInvocation) => const Stream.empty());
 
     mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingBloc.state)
@@ -46,10 +52,11 @@ void main() {
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
 
     nightEventsCubit = NightEventsCubit(
+      activitiesBloc: mockActivitiesBloc,
+      timerAlarmBloc: mockTimerAlarmBloc,
+      memoplannerSettingBloc: mockMemoplannerSettingBloc,
       clockBloc: clockBloc,
       dayPickerBloc: dayPickerBloc,
-      activitiesBloc: mockActivitiesBloc,
-      memoplannerSettingBloc: mockMemoplannerSettingBloc,
     );
   });
 

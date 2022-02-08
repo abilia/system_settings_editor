@@ -76,7 +76,7 @@ class DayEventsCubit extends Cubit<EventsState> {
         dayActivities: activities
             .expand((activity) => activity.dayActivitiesForDay(day))
             .toList(),
-        dayTimers: timers
+        timerOccasions: timers
             .where((timer) =>
                 timer.start.isAtSameDay(day) || timer.end.isAtSameDay(day))
             .toList(),

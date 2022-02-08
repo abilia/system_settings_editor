@@ -37,55 +37,49 @@ class TimePillar extends StatelessWidget {
             : _futureDots;
 
     final formatHour = onlyHourFormat(context, use12h: use12h);
-    return Stack(
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            timePillarState.timePillarPadding,
-            topMargin,
-            timePillarState.timePillarPadding,
-            0,
-          ),
-          child: SizedBox(
-            width: timePillarState.timePillarWidth,
-            child: Column(
-              children: [
-                ...List.generate(
-                  interval.lengthInHours,
-                  (index) {
-                    final hourIndex = index + interval.startTime.hour;
-                    final hour =
-                        interval.startTime.onlyDays().copyWith(hour: hourIndex);
-                    final isNight = hour.isNight(dayParts);
-                    return Hour(
-                      hour: formatHour(hour),
-                      dots: dots(
-                        hour,
-                        isNight,
-                        columnOfDots,
-                      ),
-                      isNight: isNight,
-                      timepillarState: timePillarState,
-                    );
-                  },
-                ),
-                if (!preview)
-                  Hour(
-                    hour: formatHour(interval.endTime),
-                    dots: SizedBox(
-                      width: timePillarState.dotSize,
-                      height: timePillarState.dotSize,
-                    ),
-                    isNight:
-                        interval.endTime.subtract(1.hours()).isNight(dayParts),
-                    timepillarState: timePillarState,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        timePillarState.timePillarPadding,
+        topMargin,
+        timePillarState.timePillarPadding,
+        0,
+      ),
+      child: SizedBox(
+        width: timePillarState.timePillarWidth,
+        child: Column(
+          children: [
+            ...List.generate(
+              interval.lengthInHours,
+              (index) {
+                final hourIndex = index + interval.startTime.hour;
+                final hour =
+                    interval.startTime.onlyDays().copyWith(hour: hourIndex);
+                final isNight = hour.isNight(dayParts);
+                return Hour(
+                  hour: formatHour(hour),
+                  dots: dots(
+                    hour,
+                    isNight,
+                    columnOfDots,
                   ),
-              ],
+                  isNight: isNight,
+                  timepillarState: timePillarState,
+                );
+              },
             ),
-          ),
+            if (!preview)
+              Hour(
+                hour: formatHour(interval.endTime),
+                dots: SizedBox(
+                  width: timePillarState.dotSize,
+                  height: timePillarState.dotSize,
+                ),
+                isNight: interval.endTime.subtract(1.hours()).isNight(dayParts),
+                timepillarState: timePillarState,
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -121,6 +115,9 @@ class Hour extends StatelessWidget {
 
     return DefaultTextStyle(
       style: layout.timePillar.textStyle(isNight, ts.zoom),
+      softWrap: false,
+      overflow: TextOverflow.visible,
+      textAlign: TextAlign.end,
       child: Container(
         height: ts.hourHeight,
         padding: EdgeInsets.symmetric(vertical: ts.hourPadding),
@@ -136,14 +133,7 @@ class Hour extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Tts(
-              child: Text(
-                hour,
-                softWrap: false,
-                overflow: TextOverflow.visible,
-                textAlign: TextAlign.end,
-              ),
-            ),
+            Tts(child: Text(hour)),
             dots,
           ],
         ),

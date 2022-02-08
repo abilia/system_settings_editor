@@ -147,10 +147,10 @@ class _MediumLayout extends Layout {
             ),
             card: TimepillarCardLayout(
               width: 120,
-              minHeight: 140,
-              imageHeightMin: 96,
-              margin: 8,
-              padding: 17,
+              activityMinHeight: 140,
+              imageMinHeight: 96,
+              padding: EdgeInsets.all(8),
+              distance: 8,
             ),
             twoTimePillar: TwoTimepillarLayout(
               verticalMargin: 36,

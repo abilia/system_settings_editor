@@ -16,8 +16,8 @@ class TimepillarInterval extends Equatable {
   int get lengthInHours =>
       (endTime.difference(startTime).inMinutes / 60).ceil();
 
-  List<ActivityDay> getForInterval(List<ActivityDay> activities) {
-    return activities
+  List<Event> getForInterval(List<Event> events) {
+    return events
         .where((a) =>
             a.start.inRangeWithInclusiveStart(
                 startDate: startTime, endDate: endTime) ||

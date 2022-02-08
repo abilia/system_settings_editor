@@ -5,6 +5,7 @@ enum Occasion { past, current, future }
 abstract class EventOccasion extends Event implements Comparable {
   const EventOccasion(this.occasion);
   final Occasion occasion;
+  bool get isPast => occasion == Occasion.past;
 }
 
 extension Comparer on EventOccasion {
