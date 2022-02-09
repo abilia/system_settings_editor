@@ -106,6 +106,32 @@ void main() {
         expect(find.byType(FullScreenImage), findsOneWidget);
       });
     });
+
+    testWidgets('Photo-calendar tab shows, is clickable', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byKey(TestKey.allPhotosTabButton), findsOneWidget);
+        expect(find.byKey(TestKey.photoCalendarTabButton), findsOneWidget);
+        expect(find.byKey(TestKey.allPhotosTab), findsOneWidget);
+        expect(find.byKey(TestKey.photoCalendarTab), findsNothing);
+
+        await tester.tap(find.byKey(TestKey.photoCalendarTabButton));
+        await tester.pumpAndSettle();
+        expect(find.byKey(TestKey.allPhotosTab), findsNothing);
+        expect(find.byKey(TestKey.photoCalendarTab), findsOneWidget);
+      });
+    });
+
+    testWidgets('Photo-calendar tab only shows tagged photos', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byType(ThumbnailPhoto), findsOneWidget);
+
+        await tester.tap(find.byKey(TestKey.photoCalendarTabButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ThumbnailPhoto), findsNothing);
+      });
+    });
   });
 }
 

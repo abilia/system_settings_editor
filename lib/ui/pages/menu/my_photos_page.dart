@@ -27,19 +27,33 @@ class MyPhotosPage extends StatelessWidget {
           iconData: AbiliaIcons.myPhotos,
           trailing: Padding(
             padding: layout.myPhotos.addPhotoButtonPadding,
-            child: const AddPhotoButton(),
+            child: AddPhotoButton(myPhotoFolderId: myPhotoFolderId),
           ),
           bottom: AbiliaTabBar(
             tabs: [
-              TabItem(translate.allPhotos, AbiliaIcons.myPhotos),
-              TabItem(translate.photoCalendar, AbiliaIcons.photoCalendar),
+              TabItem(
+                translate.allPhotos,
+                AbiliaIcons.myPhotos,
+                key: TestKey.allPhotosTabButton,
+              ),
+              TabItem(
+                translate.photoCalendar,
+                AbiliaIcons.photoCalendar,
+                key: TestKey.photoCalendarTabButton,
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            _AllPhotos(myPhotoFolderId: myPhotoFolderId),
-            _PhotoCalendar(myPhotoFolderId: myPhotoFolderId),
+            _AllPhotos(
+              key: TestKey.allPhotosTab,
+              myPhotoFolderId: myPhotoFolderId,
+            ),
+            _PhotoCalendar(
+              key: TestKey.photoCalendarTab,
+              myPhotoFolderId: myPhotoFolderId,
+            ),
           ],
         ),
         bottomNavigationBar: const BottomNavigation(
@@ -105,50 +119,65 @@ class _PhotoCalendar extends StatelessWidget {
 class AddPhotoButton extends StatelessWidget {
   const AddPhotoButton({
     Key? key,
+    required this.myPhotoFolderId,
   }) : super(key: key);
+
+  final String myPhotoFolderId;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionCubit, PermissionState>(
-      builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => IconActionButtonLight(
-          onPressed: () async {
-            if (Config.isMP) {
-              if (permissionState
-                      .status[Permission.camera]?.isPermanentlyDenied ==
-                  true) {
-                await showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) => const PermissionInfoDialog(
-                        permission: Permission.camera));
-              } else {
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  final selectedImage =
-                      UnstoredAbiliaFile.newFile(File(image.path));
-                  _addImage(context, selectedImage, time);
-                }
-              }
-            } else {
-              final authProviders = copiedAuthProviders(context);
-              final selectedImage =
-                  await Navigator.of(context).push<UnstoredAbiliaFile>(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const ImportPicturePage(),
-                  ),
-                ),
-              );
-              if (selectedImage != null) {
-                _addImage(context, selectedImage, time);
-              }
-            }
-          },
-          child: const Icon(AbiliaIcons.plus),
-        ),
+    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+        initialFolderId: myPhotoFolderId,
+        sortableBloc: BlocProvider.of<SortableBloc>(context),
+      ),
+      child: BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
+          SortableArchiveState<ImageArchiveData>>(
+        builder: (context, state) {
+          return BlocBuilder<PermissionCubit, PermissionState>(
+            builder: (context, permissionState) =>
+                BlocBuilder<ClockBloc, DateTime>(
+              builder: (context, time) => IconActionButtonLight(
+                onPressed: () async {
+                  if (Config.isMP) {
+                    if (permissionState
+                            .status[Permission.camera]?.isPermanentlyDenied ==
+                        true) {
+                      await showViewDialog(
+                          useSafeArea: false,
+                          context: context,
+                          builder: (context) => const PermissionInfoDialog(
+                              permission: Permission.camera));
+                    } else {
+                      final image = await ImagePicker()
+                          .pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        final selectedImage =
+                            UnstoredAbiliaFile.newFile(File(image.path));
+                        _addImage(context, selectedImage, time);
+                      }
+                    }
+                  } else {
+                    final authProviders = copiedAuthProviders(context);
+                    final selectedImage =
+                        await Navigator.of(context).push<UnstoredAbiliaFile>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
+                          child: const ImportPicturePage(),
+                        ),
+                      ),
+                    );
+                    if (selectedImage != null) {
+                      _addImage(context, selectedImage, time);
+                    }
+                  }
+                },
+                child: const Icon(AbiliaIcons.plus),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -195,7 +224,6 @@ class PhotoPage extends StatelessWidget {
         builder: (context, archiveState) {
           final allById = archiveState.allById;
           final photoSortable = allById[sortable.id];
-          assert(photoSortable != null, 'Sortable with the same ID not found');
           final bool isInPhotoCalendar =
               photoSortable?.data.isInPhotoCalendar() ??
                   sortable.data.isInPhotoCalendar();
