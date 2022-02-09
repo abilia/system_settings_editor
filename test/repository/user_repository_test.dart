@@ -21,7 +21,7 @@ void main() {
     loginDb: mockLoginDb,
     userDb: mockUserDb,
     licenseDb: FakeLicenseDb(),
-    serialIdDb: MockSerialIdDb(),
+    deviceDb: MockDeviceDb(),
   );
 
   setUp(() {

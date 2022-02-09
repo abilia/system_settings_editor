@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SerialIdDb {
+class DeviceDb {
   static const String _serialIdRecord = 'serialIdRecord';
   static const String _clientIdRecord = 'clientIdRecord';
   final SharedPreferences prefs;
 
-  const SerialIdDb(this.prefs);
+  const DeviceDb(this.prefs);
 
   Future<void> setSerialId(String serialId) =>
       prefs.setString(_serialIdRecord, serialId);

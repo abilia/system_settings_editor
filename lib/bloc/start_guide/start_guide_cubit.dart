@@ -5,18 +5,20 @@ import 'package:uuid/uuid.dart';
 
 class StartGuideCubit extends Cubit<StartGuideState> {
   StartGuideCubit({
-    required this.serialIdRepository,
+    required this.deviceRepository,
     required StartGuideState initialState,
   }) : super(initialState);
 
-  final SerialIdRepository serialIdRepository;
+  final DeviceRepository deviceRepository;
 
   void verifySerialId(String serialId) async {
     try {
-      await serialIdRepository.setClientId(const Uuid().v4());
-      final ok = await serialIdRepository.verifyDevice(serialId);
-      if (ok) {
-        serialIdRepository.setSerialId(serialId);
+      final clientId = const Uuid().v4();
+      final verifiedOk =
+          await deviceRepository.verifyDevice(serialId, clientId);
+      if (verifiedOk) {
+        await deviceRepository.setSerialId(serialId);
+        await deviceRepository.setClientId(clientId);
         emit(StartGuideDone());
       } else {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
@@ -28,7 +30,8 @@ class StartGuideCubit extends Cubit<StartGuideState> {
   }
 
   void skipStartGuide() {
-    serialIdRepository.setSerialId('debugSerialId');
+    deviceRepository.setSerialId('debugSerialId');
+    deviceRepository.setClientId(const Uuid().v4());
     emit(StartGuideDone());
   }
 }

@@ -8,23 +8,26 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/repository/json_response.dart';
 import 'package:seagull/utils/strings.dart';
 
-class SerialIdRepository extends Repository {
-  SerialIdRepository({
+class DeviceRepository extends Repository {
+  DeviceRepository({
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
-    required this.serialIdDb,
+    required this.deviceDb,
   }) : super(client, baseUrlDb);
 
-  final SerialIdDb serialIdDb;
+  final DeviceDb deviceDb;
 
-  Future<bool> verifyDevice(String serialId) async {
+  Future<bool> verifyDevice(String serialId, String clientId) async {
     final url = '$baseUrl/open/v1/enrollment/verify-device/$serialId';
     final response = await client.post(
       url.toUri(),
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'api-key': 'huyf72P00mf8Hy53k',
+      },
       body: json.encode(
         {
-          'clientId': serialIdDb.getClientId(),
+          'clientId': clientId,
         },
       ),
     );
@@ -41,9 +44,9 @@ class SerialIdRepository extends Repository {
     }
   }
 
-  Future<void> setSerialId(String serialId) => serialIdDb.setSerialId(serialId);
-  String? getSerialId() => serialIdDb.getSerialId();
+  Future<void> setSerialId(String serialId) => deviceDb.setSerialId(serialId);
+  String? getSerialId() => deviceDb.getSerialId();
 
-  Future<void> setClientId(String clientId) => serialIdDb.setClientId(clientId);
-  String? getClientId() => serialIdDb.getClientId();
+  Future<void> setClientId(String clientId) => deviceDb.setClientId(clientId);
+  String? getClientId() => deviceDb.getClientId();
 }

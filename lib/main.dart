@@ -35,7 +35,7 @@ void main() async {
   runApp(
     App(
       payload: payload,
-      runStartGuide: true,
+      runStartGuide: runStartGuide,
     ),
   );
 }
@@ -103,7 +103,7 @@ bool shouldRunStartGuide() {
   if (!Config.isMP) {
     return false;
   }
-  final serialId = GetIt.I<SerialIdDb>().getSerialId();
+  final serialId = GetIt.I<DeviceDb>().getSerialId();
   return serialId?.isEmpty ?? true;
 }
 

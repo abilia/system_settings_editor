@@ -18,7 +18,7 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
-  final SerialIdDb serialIdDb;
+  final DeviceDb deviceDb;
 
   const UserRepository({
     required BaseUrlDb baseUrlDb,
@@ -26,7 +26,7 @@ class UserRepository extends Repository {
     required this.loginDb,
     required this.userDb,
     required this.licenseDb,
-    required this.serialIdDb,
+    required this.deviceDb,
   }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
@@ -35,7 +35,7 @@ class UserRepository extends Repository {
     required String pushToken,
     required DateTime time,
   }) async {
-    final clientId = await getOrInitClientId();
+    final clientId = await _getOrInitClientId();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -50,7 +50,6 @@ class UserRepository extends Repository {
           'app': Config.flavor.id,
           'name': Config.flavor.id,
           'address': pushToken,
-          'serialNumber': serialIdDb.getSerialId(),
         },
       ),
     );
@@ -72,13 +71,13 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<String> getOrInitClientId() async {
-    final clientId = serialIdDb.getClientId();
+  Future<String> _getOrInitClientId() async {
+    final clientId = deviceDb.getClientId();
     if (clientId != null) {
       return clientId;
     } else {
       final newClientId = const Uuid().v4();
-      await serialIdDb.setClientId(newClientId);
+      await deviceDb.setClientId(newClientId);
       return newClientId;
     }
   }

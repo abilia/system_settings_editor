@@ -230,7 +230,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
         loginDb: GetIt.I<LoginDb>(),
         userDb: GetIt.I<UserDb>(),
         licenseDb: GetIt.I<LicenseDb>(),
-        serialIdDb: GetIt.I<SerialIdDb>(),
+        deviceDb: GetIt.I<DeviceDb>(),
       ),
       child: MultiBlocProvider(
         providers: [
@@ -261,10 +261,10 @@ class TopLevelBlocsProvider extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => StartGuideCubit(
-                serialIdRepository: SerialIdRepository(
+                deviceRepository: DeviceRepository(
                   baseUrlDb: GetIt.I<BaseUrlDb>(),
                   client: GetIt.I<BaseClient>(),
-                  serialIdDb: GetIt.I<SerialIdDb>(),
+                  deviceDb: GetIt.I<DeviceDb>(),
                 ),
                 initialState:
                     runStartGuide ? StartGuideInitial() : StartGuideDone()),
