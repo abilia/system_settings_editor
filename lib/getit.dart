@@ -115,8 +115,7 @@ class GetItInitializer {
     ..registerSingleton<Database>(_database)
     ..registerSingleton<SeagullLogger>(_seagullLogger)
     ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
-    ..registerSingleton<DeviceDb>(
-        _deviceDb ?? DeviceDb(_sharedPreferences))
+    ..registerSingleton<DeviceDb>(_deviceDb ?? DeviceDb(_sharedPreferences))
     ..registerSingleton<Ticker>(_ticker)
     ..registerSingleton<AlarmNavigator>(_alarmNavigator)
     ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
