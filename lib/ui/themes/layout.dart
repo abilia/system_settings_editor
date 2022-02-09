@@ -38,6 +38,7 @@ class Layout {
   final ActivityPageLayout activityPage;
   final CheckListLayout checkList;
   final NoteLayout note;
+  final AlarmPageLayout alarmPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -63,17 +64,19 @@ class Layout {
     this.activityPage = const ActivityPageLayout(),
     this.checkList = const CheckListLayout(),
     this.note = const NoteLayout(),
+    this.alarmPage = const AlarmPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
-  final double horizontalPadding, height;
+  final double horizontalPadding, largeAppBarHeight, height;
 
   const AppBarLayout({
     this.horizontalPadding = 16,
-    this.height = 80,
+    this.largeAppBarHeight = 80,
+    this.height = 68,
   });
 }
 
@@ -120,14 +123,14 @@ class MyPhotosLayout {
   final double? childAspectRatio;
   final double fullScreenImageBorderRadius;
   final int crossAxisCount;
-  final EdgeInsets fullScreenImagePadding;
+  final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
 
-  const MyPhotosLayout({
-    this.childAspectRatio,
-    this.fullScreenImageBorderRadius = 12,
-    this.crossAxisCount = 3,
-    this.fullScreenImagePadding = const EdgeInsets.all(12),
-  });
+  const MyPhotosLayout(
+      {this.childAspectRatio,
+      this.fullScreenImageBorderRadius = 12,
+      this.crossAxisCount = 3,
+      this.fullScreenImagePadding = const EdgeInsets.all(12),
+      this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16)});
 }
 
 class ToolbarLayout {
@@ -631,5 +634,14 @@ class NoteLayout {
 
   const NoteLayout({
     this.notePadding = const EdgeInsets.fromLTRB(18, 10, 16, 24),
+  });
+}
+
+class AlarmPageLayout {
+  final EdgeInsets alarmClockPadding;
+
+  const AlarmPageLayout({
+    this.alarmClockPadding =
+        const EdgeInsets.only(top: 4, bottom: 4, right: 16),
   });
 }

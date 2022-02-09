@@ -4,7 +4,8 @@ class _MediumLayout extends Layout {
   const _MediumLayout()
       : super(
           appBar: const AppBarLayout(
-            height: 148,
+            largeAppBarHeight: 148,
+            height: 104,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -29,6 +30,8 @@ class _MediumLayout extends Layout {
             fullScreenImageBorderRadius: 20,
             childAspectRatio: 240 / 168,
             fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
+            addPhotoButtonPadding:
+                EdgeInsets.only(top: 8, bottom: 8, right: 16),
           ),
           toolbar: const ToolbarLayout(
             height: 120,
@@ -241,6 +244,9 @@ class _MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+          ),
+          alarmPage: const AlarmPageLayout(
+            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
         );
 }

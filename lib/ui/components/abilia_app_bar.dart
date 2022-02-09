@@ -23,7 +23,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   static final Size size = Size.fromHeight(height);
-  static final double height = 68.s;
+  static final double height = layout.appBar.height;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +42,13 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
                 if (trailing != null)
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 16.s),
-                      child: trailing,
-                    ),
+                    child: trailing,
                   ),
               ],
             ),
           ),
           if (bottom != null)
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0.s),
-              child: bottom,
-            ),
+            Expanded(child: bottom ?? const SizedBox.shrink()),
         ],
       );
     } else {

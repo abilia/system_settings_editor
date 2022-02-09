@@ -25,7 +25,10 @@ class MyPhotosPage extends StatelessWidget {
         appBar: AbiliaAppBar(
           title: translate.myPhotos,
           iconData: AbiliaIcons.myPhotos,
-          trailing: const AddPhotoButton(),
+          trailing: Padding(
+            padding: layout.myPhotos.addPhotoButtonPadding,
+            child: const AddPhotoButton(),
+          ),
           bottom: AbiliaTabBar(
             tabs: [
               TabItem(translate.allPhotos, AbiliaIcons.myPhotos),
@@ -72,7 +75,6 @@ class _AllPhotos extends StatelessWidget {
   }
 }
 
-//TODO: This should only show photos in photo calendar (and no folders?)
 class _PhotoCalendar extends StatelessWidget {
   final String myPhotoFolderId;
 
@@ -86,6 +88,7 @@ class _PhotoCalendar extends StatelessWidget {
     final translate = Translator.of(context).translate;
 
     return LibraryPage<ImageArchiveData>.nonSelectable(
+      showFolders: false,
       showAppBar: false,
       showBottomNavigationBar: false,
       gridCrossAxisCount: layout.myPhotos.crossAxisCount,
@@ -254,9 +257,7 @@ class PhotoPage extends StatelessWidget {
                     TextAndOrIconActionButtonLight(
                       translate.delete,
                       AbiliaIcons.deleteAllClear,
-                      onPressed: () {
-                        //TODO: Show dialog for deleting photo from myPhotos when there is a design for it
-                      },
+                      onPressed: () {},
                     ),
                     TextAndOrIconActionButtonLight(
                       translate.close,
