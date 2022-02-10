@@ -22,10 +22,10 @@ class TimerTimepillardCard extends TimerpillarCard {
       inactive: timerOccasion.isPast,
       showCategoryColor: false,
       category: timerOccasion.category,
+      zoom: ts.zoom,
     );
     final padding = ts.cardPadding
-        .subtract(decoration.border?.dimensions ?? EdgeInsets.zero)
-        .clamp(EdgeInsets.zero, ts.cardPadding);
+        .subtract(decoration.border?.dimensions ?? EdgeInsets.zero);
     return Positioned(
       left: column * ts.cardTotalWidth,
       top: cardPosition.top,

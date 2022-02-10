@@ -13,6 +13,7 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
   final ClockBloc clockBloc;
 
   late final StreamSubscription _activitiesSubscription;
+  late final StreamSubscription _timerSubscription;
   late final StreamSubscription _clockSubscription;
   late final StreamSubscription _daypickerSubscription;
   late final StreamSubscription _memoplannerSettingsSubscription;
@@ -36,6 +37,8 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
     _clockSubscription = clockBloc.stream.listen((now) => _nowChange(now));
     _activitiesSubscription = activitiesBloc.stream
         .listen((s) => _newState(activities: s.activities));
+    _timerSubscription =
+        timerAlarmBloc.stream.listen((s) => _newState(timers: s.timers));
     _daypickerSubscription =
         dayPickerBloc.stream.listen((s) => _newState(day: s.day));
     _memoplannerSettingsSubscription = memoplannerSettingBloc.stream
@@ -140,6 +143,7 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
   Future<void> close() async {
     await super.close();
     await _activitiesSubscription.cancel();
+    await _timerSubscription.cancel();
     await _clockSubscription.cancel();
     await _daypickerSubscription.cancel();
     await _memoplannerSettingsSubscription.cancel();

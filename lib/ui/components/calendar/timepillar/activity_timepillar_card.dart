@@ -48,6 +48,7 @@ class ActivityTimepillarCard extends TimerpillarCard {
           inactive: inactive,
           showCategoryColor: settings.showCategoryColor,
           category: activity.category,
+          zoom: ts.zoom,
         );
         return Positioned(
           right: right ? null : column * ts.cardTotalWidth,

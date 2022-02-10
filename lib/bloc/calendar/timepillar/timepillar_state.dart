@@ -14,10 +14,11 @@ class TimepillarState extends Equatable {
   late final double cardDistance = _layout.card.distance * zoom;
   late final double cardTotalWidth =
       (_layout.dot.size + _layout.card.width + _layout.card.distance) * zoom;
-  late final double cardTextWidth = cardWidth - cardPadding.vertical * 2;
+  late final double cardTextWidth = cardWidth - cardPadding.vertical;
 
   // ActivityTimepillarCard
-  late final double activityCardMinHeight = _layout.card.activityMinHeight * zoom;
+  late final double activityCardMinHeight =
+      _layout.card.activityMinHeight * zoom;
 
   // TimerTimepillarCard
   late final Size timerWheelSize = _layout.card.timer.wheelSize * zoom;
