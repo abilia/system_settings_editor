@@ -2,7 +2,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/activity_extension.dart';
-import 'package:seagull/utils/copied_auth_providers.dart';
 import 'package:seagull/utils/datetime.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
@@ -25,27 +24,10 @@ class FullScreenActivityPage extends StatelessWidget {
   }
 }
 
-class _FullScreenActivityInfo extends StatefulWidget {
+class _FullScreenActivityInfo extends StatelessWidget {
   const _FullScreenActivityInfo({Key? key, required this.activityDay})
       : super(key: key);
   final ActivityDay activityDay;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _FullScreenActivityInfoState();
-  }
-}
-
-class _FullScreenActivityInfoState extends State<_FullScreenActivityInfo> {
-  _FullScreenActivityInfoState();
-
-  late DateTime time;
-
-  @override
-  void initState() {
-    super.initState();
-    time = DateTime.now();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +37,7 @@ class _FullScreenActivityInfoState extends State<_FullScreenActivityInfo> {
         if (state is NoActivityState) {
           Navigator.of(context).maybePop();
         }
-        return state.activityDay ?? widget.activityDay;
+        return state.activityDay ?? activityDay;
       },
       builder: (context, ad) {
         return Scaffold(
@@ -105,19 +87,16 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                     clipBehavior: Clip.none,
                     children: eventState is EventsLoaded
                         ? <Widget>[
-                            ...eventState.activities
-                                .where((activity) =>
-                                    activity
-                                        .toOccasion(DateTime.now())
-                                        .isCurrent ||
-                                    activity.end.isAfter(DateTime.now()
-                                        .subtract(const Duration(minutes: 1))))
+                            ...context
+                                .read<FullScreenActivityCubit>()
+                                .eventsList
                                 .map(
                                   (ao) => FullScreenActivityBottomContent(
                                     activityOccasion:
                                         ao.toOccasion(DateTime.now()),
                                     selected:
                                         ao.activity.id == selectedActivity.id,
+                                    minutes: DateTime.now().onlyMinutes(),
                                   ),
                                 ),
                           ]
@@ -151,19 +130,19 @@ class FullScreenActivityBottomContent extends StatelessWidget {
     Key? key,
     required this.activityOccasion,
     required this.selected,
+    required this.minutes,
   }) : super(key: key);
 
   final ActivityOccasion activityOccasion;
   final double scaleFactor = 2 / 3;
   final bool selected;
+  final DateTime minutes;
 
   @override
   Widget build(BuildContext context) {
     final size = selected
         ? layout.ongoingFullscreenPage.activityIcon.selectedSize
         : layout.ongoingFullscreenPage.activityIcon.size;
-
-    final authProviders = copiedAuthProviders(context);
     return Padding(
       padding: selected
           ? layout.ongoingFullscreenPage.activityIcon.selectedPadding
@@ -179,20 +158,9 @@ class FullScreenActivityBottomContent extends StatelessWidget {
               activityOccasion.activity.semanticsProperties(context),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: FullScreenActivityPage(
-                            activityDay: activityOccasion),
-                      ),
-                      settings: RouteSettings(
-                        name: 'ActivityPage $activityOccasion',
-                      ),
-                    ),
-                  );
+                  context
+                      .read<FullScreenActivityCubit>()
+                      .setCurrentActivity(activityOccasion);
                 },
                 child: Stack(
                   children: [
@@ -206,10 +174,9 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                       foregroundDecoration: BoxDecoration(
                         border: getCategoryBorder(
                           inactive: false,
-                          current: activityOccasion.start.isAtSameMomentAs(
-                                  DateTime.now().onlyMinutes()) ||
-                              activityOccasion.end.isAtSameMomentAs(
-                                  DateTime.now().onlyMinutes()),
+                          current: activityOccasion.start
+                                  .isAtSameMomentAs(minutes) ||
+                              activityOccasion.end.isAtSameMomentAs(minutes),
                           showCategoryColor: false,
                           category: activityOccasion.activity.category,
                           borderWidth:

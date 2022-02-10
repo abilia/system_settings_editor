@@ -26,8 +26,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         if (oc.isCurrent ||
             oc.isPast &&
                 !oc.activity.hasEndTime &&
-                oc.start.isAfter(
-                    DateTime.now().subtract(const Duration(minutes: 1)))) {
+                oc.start.isAfter(time.subtract(const Duration(minutes: 1)))) {
           ad = activityDay;
         }
       });
@@ -36,6 +35,19 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         ? FullScreenActivityState(
             activityDay: ad, eventsState: eventsState, time: time)
         : NoActivityState(time: time));
+  }
+
+  get eventsList => state.eventsState is EventsLoaded
+      ? (state.eventsState as EventsLoaded).activities.where((activity) =>
+          activity.toOccasion(state.time).isCurrent ||
+          activity.end.isAfter(state.time.subtract(const Duration(minutes: 1))))
+      : [];
+
+  void setCurrentActivity(ActivityDay activityDay) {
+    emit(FullScreenActivityState(
+        activityDay: activityDay,
+        eventsState: state.eventsState,
+        time: state.time));
   }
 
   @override
