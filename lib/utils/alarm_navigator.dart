@@ -14,12 +14,13 @@ class AlarmNavigator {
   Route getFullscreenAlarmRoute({
     required NotificationAlarm alarm,
     required Authenticated authenticatedState,
+    bool fullScreenActivity = false,
   }) {
     log.fine('pushFullscreenAlarm: $alarm');
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListener(child: _alarmPage(alarm, true)),
+        child: AlarmListener(child: _alarmPage(alarm, fullScreenActivity)),
       ),
     );
     _alarmRoutesOnStack[alarm.activity.id] = route;

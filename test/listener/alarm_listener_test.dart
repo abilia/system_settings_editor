@@ -823,15 +823,14 @@ void main() {
         );
 
         // Arrange
-        selectNotificationSubject.add(alarm1);
         selectNotificationSubject.add(alarm2);
         selectNotificationSubject.add(alarm3);
         selectNotificationSubject.add(alarm4);
 
         await tester.pumpWidget(
           App(
-              // payload: alarm1,
-              ),
+            payload: alarm1,
+          ),
         );
         await tester.pumpAndSettle();
 
