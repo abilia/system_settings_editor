@@ -196,11 +196,12 @@ class _MediumLayout extends Layout {
                 currentBorder: 3,
                 border: 2.25,
                 arrowSize: Size(40, 21),
-                arrowOffset: 2,
                 padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
                 selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
                 dotSize: 12,
                 dotOffset: 10,
+                arrowPreOffset: Offset(16, 1),
+                arrowPostOffset: Offset(0, 2),
               )),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,

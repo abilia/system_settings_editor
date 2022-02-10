@@ -4,8 +4,11 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
+  final ActivityDay activityDay;
+
   const FullScreenActivityPage({
     Key? key,
+    required this.activityDay,
   }) : super(key: key);
 
   @override
@@ -14,22 +17,26 @@ class FullScreenActivityPage extends StatelessWidget {
         create: (context) => FullScreenActivityCubit(
             dayEventsCubit: context.read<DayEventsCubit>(),
             clockBloc: context.read<ClockBloc>()),
-        child: const _FullScreenActivityInfo());
+        child: _FullScreenActivityInfo(
+          activityDay: activityDay,
+        ));
   }
 }
 
 class _FullScreenActivityInfo extends StatelessWidget {
-  const _FullScreenActivityInfo({Key? key}) : super(key: key);
+  const _FullScreenActivityInfo({Key? key, required this.activityDay})
+      : super(key: key);
+  final ActivityDay activityDay;
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
         ActivityDay>(
       selector: (state) {
-        if (state is NoActivityState || state.activityDay == null) {
+        if (state is NoActivityState) {
           Navigator.of(context).maybePop();
         }
-        return state.activityDay!;
+        return state.activityDay ?? activityDay;
       },
       builder: (context, ad) {
         return Scaffold(
@@ -61,8 +68,8 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     Translated t = Translator.of(context).translate;
-    return BlocBuilder<DayEventsCubit, EventsState>(
-      builder: (context, eventState) {
+    return BlocBuilder<FullScreenActivityCubit, FullScreenActivityState>(
+      builder: (context, state) {
         return BottomAppBar(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -78,22 +85,15 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                     controller: scrollController,
                     scrollDirection: Axis.horizontal,
                     clipBehavior: Clip.none,
-                    children: eventState is EventsLoaded
-                        ? <Widget>[
-                            ...context
-                                .read<FullScreenActivityCubit>()
-                                .eventsList
-                                .map(
-                                  (ao) => FullScreenActivityBottomContent(
-                                    activityOccasion:
-                                        ao.toOccasion(DateTime.now()),
-                                    selected:
-                                        ao.activity.id == selectedActivity.id,
-                                    minutes: DateTime.now().onlyMinutes(),
-                                  ),
-                                ),
-                          ]
-                        : [],
+                    children: <Widget>[
+                      ...state.eventsList.map(
+                        (ao) => FullScreenActivityBottomContent(
+                          activityOccasion: ao.toOccasion(DateTime.now()),
+                          selected: ao.activity.id == selectedActivity.id,
+                          minutes: DateTime.now().onlyMinutes(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -192,8 +192,7 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                     if (selected)
                       CustomPaint(
                         size: iconLayout.arrowSize,
-                        painter: _ActivityArrowPainter(
-                            iconLayout.arrowStartX, current),
+                        painter: _ActivityArrowPainter(current),
                       ),
                     if (settings.showCategories)
                       CustomPaint(
@@ -261,9 +260,8 @@ class _ActivityWithText extends StatelessWidget {
 class _ActivityArrowPainter extends CustomPainter {
   late Paint _arrowPaint;
   late Paint _fillPaint;
-  final double startX;
 
-  _ActivityArrowPainter(this.startX, bool current) {
+  _ActivityArrowPainter(bool current) {
     _arrowPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = current
@@ -283,10 +281,11 @@ class _ActivityArrowPainter extends CustomPainter {
           radius: const Radius.circular(4))
       ..lineTo(size.width, 0);
     arrow.close();
-    arrow = arrow.shift(Offset(startX, 1));
+    arrow =
+        arrow.shift(layout.ongoingFullscreenPage.activityIcon.arrowPreOffset);
     canvas.drawPath(arrow, _arrowPaint);
-    arrow = arrow.shift(
-        Offset(0, layout.ongoingFullscreenPage.activityIcon.arrowOffset));
+    arrow =
+        arrow.shift(layout.ongoingFullscreenPage.activityIcon.arrowPostOffset);
     canvas.drawPath(arrow, _fillPaint);
   }
 

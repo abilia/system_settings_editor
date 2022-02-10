@@ -37,12 +37,6 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         : NoActivityState(time: time));
   }
 
-  get eventsList => state.eventsState is EventsLoaded
-      ? (state.eventsState as EventsLoaded).activities.where((activity) =>
-          activity.toOccasion(state.time).isCurrent ||
-          activity.end.isAfter(state.time.subtract(const Duration(minutes: 1))))
-      : [];
-
   void setCurrentActivity(ActivityDay activityDay) {
     emit(FullScreenActivityState(
         activityDay: activityDay,
@@ -65,6 +59,12 @@ class FullScreenActivityState extends Equatable {
 
   const FullScreenActivityState(
       {required this.eventsState, required this.time, this.activityDay});
+
+  get eventsList => eventsState is EventsLoaded
+      ? (eventsState as EventsLoaded).activities.where((activity) =>
+          activity.toOccasion(time).isCurrent ||
+          activity.end.isAfter(time.subtract(const Duration(minutes: 1))))
+      : [];
 
   @override
   List<Object?> get props => [activityDay, eventsState, time];
