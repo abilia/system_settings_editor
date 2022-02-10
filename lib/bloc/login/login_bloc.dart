@@ -58,18 +58,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield state.failure(cause: LoginFailureCause.noPassword);
       return;
     }
-    final authState = authenticationBloc.state;
     try {
       final pushToken = await pushService.initPushToken();
       if (pushToken == null) throw 'push token null';
-      final loginInfo = await authState.userRepository.authenticate(
+      final loginInfo = await authenticationBloc.userRepository.authenticate(
         username: state.username.trim(),
         password: state.password.trim(),
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      final licenses =
-          await authState.userRepository.getLicensesFromApi(loginInfo.token);
+      final licenses = await authenticationBloc.userRepository
+          .getLicensesFromApi(loginInfo.token);
       if (licenses.anyValidLicense(clockBloc.state)) {
         authenticationBloc.add(LoggedIn(loginInfo: loginInfo));
         yield const LoginSucceeded();

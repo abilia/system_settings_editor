@@ -47,9 +47,8 @@ class _ProfilePictureNameAndEmailState
   void initState() {
     super.initState();
     user = GetIt.I<UserDb>().getUser();
-    baseUrl = GetIt.I<BaseUrlDb>().getBaseUrl();
-    environment =
-        backEndEnvironments.map((k, v) => MapEntry(v, k))[baseUrl] ?? prod;
+    baseUrl = GetIt.I<BaseUrlDb>().baseUrl;
+    environment = backendEnvironments[baseUrl] ?? 'Prod';
   }
 
   @override

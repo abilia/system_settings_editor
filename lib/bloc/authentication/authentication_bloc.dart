@@ -15,11 +15,12 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final FutureOr<void> Function()? onLogout;
+  final UserRepository userRepository;
 
   AuthenticationBloc(
-    UserRepository userRepository, {
+    this.userRepository, {
     this.onLogout,
-  }) : super(AuthenticationLoading(userRepository)) {
+  }) : super(const AuthenticationLoading()) {
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());
   }
 
@@ -29,8 +30,6 @@ class AuthenticationBloc
   ) async {
     if (event is NotReady) {
       await _notReady(event, emit);
-    } else if (event is ChangeRepository) {
-      _changeRepository(event, emit);
     } else if (event is CheckAuthentication) {
       await _checkAuthentication(event, emit);
     } else if (event is LoggedIn) {
@@ -45,73 +44,57 @@ class AuthenticationBloc
     emit(state._forceNew());
   }
 
-  void _changeRepository(
-    ChangeRepository event,
-    Emitter<AuthenticationState> emit,
-  ) =>
-      emit(
-        Unauthenticated(
-          event.repository,
-          forcedNewState: state.forcedNewState,
-        ),
-      );
-
   Future _checkAuthentication(
     CheckAuthentication event,
     Emitter<AuthenticationState> emit,
   ) async {
-    final repo = state.userRepository;
-    final token = state.userRepository.getToken();
+    final token = userRepository.getToken();
     if (token != null) {
-      final nextState = await _tryGetUser(repo, token);
+      final nextState = await _tryGetUser(token);
       emit(nextState);
     } else {
-      emit(Unauthenticated(repo));
+      emit(const Unauthenticated());
     }
   }
 
   Future _loggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {
-    final repo = state.userRepository;
-    await repo.persistLoginInfo(event.loginInfo);
+    await userRepository.persistLoginInfo(event.loginInfo);
     final nextState =
-        await _tryGetUser(repo, event.loginInfo.token, newlyLoggedIn: true);
+        await _tryGetUser(event.loginInfo.token, newlyLoggedIn: true);
     emit(nextState);
   }
 
   Future _loggedOut(LoggedOut event, Emitter<AuthenticationState> emit) async {
-    final repo = state.userRepository;
-    emit(Unauthenticated(repo, loggedOutReason: event.loggedOutReason));
-    await _logout(repo);
+    emit(Unauthenticated(loggedOutReason: event.loggedOutReason));
+    await _logout();
   }
 
   Future<AuthenticationState> _tryGetUser(
-    UserRepository repo,
     String token, {
     bool newlyLoggedIn = false,
   }) async {
     try {
-      final user = await repo.me(token);
+      final user = await userRepository.me(token);
       return Authenticated(
         token: token,
         userId: user.id,
-        userRepository: repo,
         newlyLoggedIn: newlyLoggedIn,
       );
     } on UnauthorizedException {
-      await _logout(repo, token: token);
-      return Unauthenticated(repo);
+      await _logout(token: token);
+      return const Unauthenticated();
     } catch (_) {
-      return Unauthenticated(repo);
+      return const Unauthenticated();
       // Do nothing
     }
   }
 
-  Future _logout(UserRepository repo, {String? token}) async {
+  Future _logout({String? token}) async {
     try {
       await onLogout?.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }
-    await repo.logout(token);
+    await userRepository.logout(token);
   }
 }

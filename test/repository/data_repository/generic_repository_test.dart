@@ -18,7 +18,7 @@ void main() {
   late GenericRepository genericRepository;
   late GenericDb genericDb;
   setUpAll(() {
-    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn('aUrl');
+    when(() => mockBaseUrlDb.baseUrl).thenReturn('aUrl');
     registerFallbackValues();
   });
 
@@ -183,7 +183,7 @@ void main() {
 
     setUp(() {
       final mockBaseUrlDb = MockBaseUrlDb();
-      when(() => mockBaseUrlDb.getBaseUrl()).thenReturn('baseUrl');
+      when(() => mockBaseUrlDb.baseUrl).thenReturn('baseUrl');
       genericRepository = GenericRepository(
         authToken: Fakes.token,
         baseUrlDb: mockBaseUrlDb,

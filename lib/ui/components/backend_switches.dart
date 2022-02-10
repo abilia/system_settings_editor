@@ -17,10 +17,10 @@ class BackendSwitchesDialog extends StatelessWidget {
             builder: (context, baseUrl) => Wrap(
               spacing: 8.s,
               children: [
-                ...backEndEnvironments.entries.map(
-                  (kvp) => BackEndButton(
-                    kvp.key,
-                    backendUrl: kvp.value,
+                ...backendEnvironments.entries.map(
+                  (kvp) => BackendButton(
+                    kvp.value,
+                    backendUrl: kvp.key,
                     currentBaseUrl: baseUrl,
                   ),
                 )
@@ -36,8 +36,8 @@ class BackendSwitchesDialog extends StatelessWidget {
   }
 }
 
-class BackEndButton extends StatelessWidget {
-  const BackEndButton(
+class BackendButton extends StatelessWidget {
+  const BackendButton(
     this.text, {
     required this.backendUrl,
     required this.currentBaseUrl,

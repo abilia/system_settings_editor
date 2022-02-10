@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/models/login_error.dart';
 import 'package:seagull/repository/json_response.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
@@ -35,7 +34,7 @@ class UserRepository extends Repository {
     required String pushToken,
     required DateTime time,
   }) async {
-    final clientId = await _getOrInitClientId();
+    final clientId = await deviceDb.getClientId();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -68,17 +67,6 @@ class UserRepository extends Repository {
       defaultException:
       default:
         throw Exception(response.body);
-    }
-  }
-
-  Future<String> _getOrInitClientId() async {
-    final clientId = deviceDb.getClientId();
-    if (clientId != null) {
-      return clientId;
-    } else {
-      final newClientId = const Uuid().v4();
-      await deviceDb.setClientId(newClientId);
-      return newClientId;
     }
   }
 

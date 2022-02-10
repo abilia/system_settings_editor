@@ -78,9 +78,7 @@ void main() {
       // Assert
       await expectLater(
         authenticationBloc.stream,
-        emits(
-          Unauthenticated(mockUserRepository),
-        ),
+        emits(const Unauthenticated()),
       );
 
       // Act
@@ -107,7 +105,6 @@ void main() {
         Authenticated(
           token: loginInfo.token,
           userId: loggedInUserId,
-          userRepository: mockUserRepository,
           newlyLoggedIn: true,
         ),
       );

@@ -41,7 +41,7 @@ void main() {
     mockBaseUrlDb = MockBaseUrlDb();
     mockClient = MockBaseClient();
     mockActivityDb = MockActivityDb();
-    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(baseUrl);
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
     activities = dbActivities.map((a) => a.activity);

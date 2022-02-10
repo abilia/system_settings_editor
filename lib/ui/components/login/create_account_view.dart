@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -51,8 +52,7 @@ class GoToCreateAccountButton extends StatelessWidget {
           final username = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => CreateAccountPage(
-                userRepository:
-                    context.read<AuthenticationBloc>().state.userRepository,
+                userRepository: context.read<UserRepository>(),
               ),
             ),
           );

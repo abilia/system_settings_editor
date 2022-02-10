@@ -44,15 +44,6 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  final userRepository = UserRepository(
-    client: Fakes.client(),
-    loginDb: FakeLoginDb(),
-    userDb: FakeUserDb(),
-    licenseDb: FakeLicenseDb(),
-    baseUrlDb: MockBaseUrlDb(),
-    deviceDb: MockDeviceDb(),
-  );
-
   Widget wrapWithMaterialApp(
     Widget widget, {
     MemoplannerSettingBloc? memoplannerSettingBloc,
@@ -63,11 +54,7 @@ void main() {
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,
-          authenticatedState: Authenticated(
-            token: '',
-            userId: 1,
-            userRepository: userRepository,
-          ),
+          authenticatedState: const Authenticated(token: '', userId: 1),
           child: MaterialApp(
             theme: abiliaTheme,
             supportedLocales: Translator.supportedLocals,

@@ -31,11 +31,10 @@ final _log = Logger('main');
 void main() async {
   await initServices();
   final payload = await getOrAddPayloadToStream();
-  final runStartGuide = shouldRunStartGuide();
   runApp(
     App(
       payload: payload,
-      runStartGuide: runStartGuide,
+      runStartGuide: shouldRunStartGuide,
     ),
   );
 }
@@ -60,6 +59,7 @@ Future<void> initServices() async {
     await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   }
   final baseUrlDb = BaseUrlDb(preferences);
+  await baseUrlDb.initialize();
   GetItInitializer()
     ..documentsDirectory = documentDirectory
     ..sharedPreferences = preferences
@@ -71,8 +71,6 @@ Future<void> initServices() async {
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();
-
-  await baseUrlDb.initialize();
 }
 
 Future<NotificationAlarm?> getOrAddPayloadToStream() async {
@@ -99,13 +97,8 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
-bool shouldRunStartGuide() {
-  if (!Config.isMP) {
-    return false;
-  }
-  final serialId = GetIt.I<DeviceDb>().getSerialId();
-  return serialId?.isEmpty ?? true;
-}
+bool get shouldRunStartGuide =>
+    Config.isMP && GetIt.I<DeviceDb>().serialId.isEmpty;
 
 class App extends StatelessWidget {
   final PushCubit? pushCubit;

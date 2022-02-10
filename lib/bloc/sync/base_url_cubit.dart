@@ -2,7 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 
 class BaseUrlCubit extends Cubit<String> {
-  BaseUrlCubit({required this.baseUrlDb}) : super(baseUrlDb.getBaseUrl());
+  BaseUrlCubit({required this.baseUrlDb}) : super(baseUrlDb.baseUrl);
 
   final BaseUrlDb baseUrlDb;
 
