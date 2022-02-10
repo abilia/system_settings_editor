@@ -525,7 +525,8 @@ class OngoingFullscreenActivityIconLayout {
       toolBarHeight,
       arrowStartX,
       dotSize,
-      dotOffset;
+      dotOffset,
+      arrowOffset;
   final Size size, selectedSize, arrowSize;
   final EdgeInsets padding, selectedPadding, textPadding;
 
@@ -542,6 +543,7 @@ class OngoingFullscreenActivityIconLayout {
     this.textPadding = const EdgeInsets.all(3),
     this.dotSize = 8,
     this.dotOffset = 8,
+    this.arrowOffset = 1.5,
   });
 }
 

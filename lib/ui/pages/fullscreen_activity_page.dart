@@ -285,7 +285,8 @@ class _ActivityArrowPainter extends CustomPainter {
     arrow.close();
     arrow = arrow.shift(Offset(startX, 1));
     canvas.drawPath(arrow, _arrowPaint);
-    arrow = arrow.shift(const Offset(0, 1.5));
+    arrow = arrow.shift(
+        Offset(0, layout.ongoingFullscreenPage.activityIcon.arrowOffset));
     canvas.drawPath(arrow, _fillPaint);
   }
 
