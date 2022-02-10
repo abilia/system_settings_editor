@@ -830,8 +830,8 @@ void main() {
 
         await tester.pumpWidget(
           App(
-            // payload: alarm1,
-          ),
+              // payload: alarm1,
+              ),
         );
         await tester.pumpAndSettle();
 
