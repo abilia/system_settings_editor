@@ -66,7 +66,7 @@ class AlarmNavigator {
         alarmNavigator: this,
         child: (alarm is NewAlarm)
             ? fullscreenActivity
-                ? FullScreenActivityPage(activityDay: alarm.activityDay)
+                ? const FullScreenActivityPage()
                 : AlarmPage(alarm: alarm)
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)

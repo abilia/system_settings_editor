@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -18,6 +20,7 @@ import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  late StreamController<DateTime> mockTicker;
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
@@ -33,8 +36,10 @@ void main() {
   late ClockBloc clockBloc;
 
   final List<Activity> fakeActivities = [
-    FakeActivity.starts(startTimeOne, duration: const Duration(minutes: 5)),
-    FakeActivity.starts(startTimeTwo, duration: const Duration(minutes: 1))
+    FakeActivity.starts(startTimeOne,
+        duration: const Duration(minutes: 5), title: 'Test1'),
+    FakeActivity.starts(startTimeTwo,
+        duration: const Duration(minutes: 1), title: 'Test2')
   ];
   final List<ActivityDay> dayActivities = [
     ActivityDay(fakeActivities[0], fakeActivities[0].startTime.onlyDays()),
@@ -72,6 +77,7 @@ void main() {
     fakeDayEventsCubit = MockDayEventsCubit();
     fakeActivitiesBloc = FakeActivitiesBloc();
     clockBloc = ClockBloc.fixed(initialMinutes);
+    mockTicker = StreamController<DateTime>();
 
     final expected = EventsLoaded(
       activities: dayActivities,
@@ -87,7 +93,10 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker.fake(initialTime: initialMinutes)
+      ..ticker = Ticker.fake(
+        stream: mockTicker.stream,
+        initialTime: initialMinutes,
+      )
       ..genericDb = mockGenericDb
       ..database = FakeDatabase()
       ..fireBasePushService = FakeFirebasePushService()
@@ -139,45 +148,88 @@ void main() {
         ),
       );
 
-  group('Activity page', () {
+  group('FullscreenActivityPage', () {
     // when(() => mockMemoplannerSettingBloc.state.alarm.showOngoingActivityInFullScreen)
     //     .thenAnswer((_) => true);
 
-    testWidgets('Fullpage activity shows, two activities in bottom bar',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: FullScreenActivityPage(
-              activityDay: ActivityDay(fakeActivities.first, initialMinutes),
+    group('Static timer', () {
+      testWidgets('Fullpage activity shows, two activities in bottom bar',
+          (WidgetTester tester) async {
+        clockBloc.emit(fakeActivities[0].startTime);
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: const FullScreenActivityPage(),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(fullScreenActivityPageFinder, findsOneWidget);
-      expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+        );
+        await tester.pumpAndSettle();
+        expect(fullScreenActivityPageFinder, findsOneWidget);
+        expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+      });
+
+      testWidgets('Show activity two', (WidgetTester tester) async {
+        clockBloc.emit(fakeActivities[1].startTime);
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: const FullScreenActivityPage(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(fullScreenActivityPageFinder, findsOneWidget);
+        expect(find.text(fakeActivities[1].title), findsNWidgets(2));
+        expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+      });
+
+      testWidgets('Tapping activity in bottom bar selects it',
+          (WidgetTester tester) async {
+        clockBloc.emit(fakeActivities[1].startTime);
+        await tester.pumpWidget(
+          wrapWithMaterialApp(
+            PopAwareAlarmPage(
+              alarm: startAlarm,
+              alarmNavigator: _alarmNavigator,
+              child: const FullScreenActivityPage(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text(fakeActivities[1].title), findsNWidgets(2));
+        await tester.tap(find.byType(FullScreenActivityBottomContent).first);
+        await tester.pumpAndSettle();
+        expect(find.text(fakeActivities[0].title), findsNWidgets(2));
+      });
     });
 
-    testWidgets('Switches to activity two when clock ticks',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          PopAwareAlarmPage(
-            alarm: startAlarm,
-            alarmNavigator: _alarmNavigator,
-            child: FullScreenActivityPage(
-              activityDay: ActivityDay(fakeActivities.first, initialMinutes),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      // await clockBloc.
-      expect(fullScreenActivityPageFinder, findsOneWidget);
-      expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
-    });
+    // group('Ticking timer', (){
+    //   testWidgets('Switches to activity two when clock ticks',
+    //       (WidgetTester tester) async {
+    //         clockBloc.emit(fakeActivities[0].startTime);
+    //
+    //         await tester.pumpWidget(
+    //       wrapWithMaterialApp(
+    //         PopAwareAlarmPage(
+    //           alarm: startAlarm,
+    //           alarmNavigator: _alarmNavigator,
+    //           child: const FullScreenActivityPage(),
+    //         ),
+    //       ),
+    //     );
+    //     await tester.pumpAndSettle();
+    //     expect(find.text(fakeActivities[0].title), findsNWidgets(2));
+    //
+    //     mockTicker.add(fakeActivities[1].startTime.add(Duration(minutes: 1)));
+    //     await tester.pumpAndSettle();
+    //     expect(fullScreenActivityPageFinder, findsOneWidget);
+    //     expect(find.text(fakeActivities[1].title), findsNWidgets(2));
+    //     expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+    //   });
+    // });
   });
 }

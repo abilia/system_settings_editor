@@ -185,19 +185,22 @@ class _MediumLayout extends Layout {
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
           ongoingFullscreenPage: const OngoingFullscreenActivityPageLayout(
-            toolBar: OngoingFullscreenActivityToolBarLayout(
-                height: 128,
-                buttonHeight: 96,
-                buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
-            activityIcon: OngoingFullscreenActivityIconLayout(
+              toolBar: OngoingFullscreenActivityToolBarLayout(
+                  height: 128,
+                  buttonHeight: 96,
+                  buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
+              activityIcon: OngoingFullscreenActivityIconLayout(
                 size: Size(72, 72),
                 selectedSize: Size(192, 192),
+                toolBarHeight: 96,
                 currentBorder: 3,
                 border: 2.25,
                 arrowSize: Size(48, 21),
                 padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
-                selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6)),
-          ),
+                selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
+                dotSize: 12,
+                dotOffset: 10,
+              )),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),

@@ -1,15 +1,11 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/activity_extension.dart';
-import 'package:seagull/utils/datetime.dart';
+import 'package:seagull/utils/all.dart';
 
 class FullScreenActivityPage extends StatelessWidget {
-  final ActivityDay activityDay;
-
   const FullScreenActivityPage({
     Key? key,
-    required this.activityDay,
   }) : super(key: key);
 
   @override
@@ -18,26 +14,22 @@ class FullScreenActivityPage extends StatelessWidget {
         create: (context) => FullScreenActivityCubit(
             dayEventsCubit: context.read<DayEventsCubit>(),
             clockBloc: context.read<ClockBloc>()),
-        child: _FullScreenActivityInfo(
-          activityDay: activityDay,
-        ));
+        child: const _FullScreenActivityInfo());
   }
 }
 
 class _FullScreenActivityInfo extends StatelessWidget {
-  const _FullScreenActivityInfo({Key? key, required this.activityDay})
-      : super(key: key);
-  final ActivityDay activityDay;
+  const _FullScreenActivityInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
         ActivityDay>(
       selector: (state) {
-        if (state is NoActivityState) {
+        if (state is NoActivityState || state.activityDay == null) {
           Navigator.of(context).maybePop();
         }
-        return state.activityDay ?? activityDay;
+        return state.activityDay!;
       },
       builder: (context, ad) {
         return Scaffold(
@@ -207,7 +199,10 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                       CustomPaint(
                         size: size,
                         painter: _CategoryCirclePainter(
-                            categoryColor(category: activityOccasion.category)),
+                            size: iconLayout.dotSize,
+                            offset: iconLayout.dotOffset,
+                            color: categoryColor(
+                                category: activityOccasion.category)),
                       ),
                   ],
                 ),
@@ -303,8 +298,14 @@ class _ActivityArrowPainter extends CustomPainter {
 class _CategoryCirclePainter extends CustomPainter {
   late Paint _circlePaint;
   late Paint _whitePaint;
+  final double size;
+  final double offset;
 
-  _CategoryCirclePainter(Color color) {
+  _CategoryCirclePainter({
+    required this.size,
+    required this.offset,
+    required color,
+  }) {
     _circlePaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
