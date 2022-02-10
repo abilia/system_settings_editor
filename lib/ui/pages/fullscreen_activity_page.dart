@@ -62,6 +62,9 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
   _FullScreenActivityBottomBar({Key? key, required this.selectedActivity})
       : super(key: key);
 
+  final OngoingFullscreenActivityToolBarLayout toolBarLayout =
+      layout.ongoingFullscreenPage.toolBar;
+
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
@@ -77,10 +80,8 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                 color: AbiliaColors.white110,
                 child: ScrollArrows.horizontal(
                   controller: scrollController,
-                  leftCollapseMargin:
-                      layout.ongoingFullscreenPage.toolBar.collapseMargin,
-                  rightCollapseMargin:
-                      layout.ongoingFullscreenPage.toolBar.collapseMargin,
+                  leftCollapseMargin: toolBarLayout.collapseMargin,
+                  rightCollapseMargin: toolBarLayout.collapseMargin,
                   child: ListView(
                     controller: scrollController,
                     scrollDirection: Axis.horizontal,
@@ -105,9 +106,9 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                 ),
               ),
               SizedBox(
-                height: layout.ongoingFullscreenPage.toolBar.height,
+                height: toolBarLayout.height,
                 child: Padding(
-                  padding: layout.ongoingFullscreenPage.toolBar.buttonPadding,
+                  padding: toolBarLayout.buttonPadding,
                   child: IconAndTextButton(
                     onPressed: () => Navigator.of(context).maybePop(),
                     icon: AbiliaIcons.closeProgram,
@@ -126,7 +127,7 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
 
 @visibleForTesting
 class FullScreenActivityBottomContent extends StatelessWidget {
-  const FullScreenActivityBottomContent({
+  FullScreenActivityBottomContent({
     Key? key,
     required this.activityOccasion,
     required this.selected,
@@ -137,16 +138,16 @@ class FullScreenActivityBottomContent extends StatelessWidget {
   final double scaleFactor = 2 / 3;
   final bool selected;
   final DateTime minutes;
+  final OngoingFullscreenActivityIconLayout iconLayout =
+      layout.ongoingFullscreenPage.activityIcon;
 
   @override
   Widget build(BuildContext context) {
-    final size = selected
-        ? layout.ongoingFullscreenPage.activityIcon.selectedSize
-        : layout.ongoingFullscreenPage.activityIcon.size;
+    bool current = activityOccasion.start.isAtSameMomentAs(minutes) ||
+        activityOccasion.end.isAtSameMomentAs(minutes);
+    final size = selected ? iconLayout.selectedSize : iconLayout.size;
     return Padding(
-      padding: selected
-          ? layout.ongoingFullscreenPage.activityIcon.selectedPadding
-          : layout.ongoingFullscreenPage.activityIcon.padding,
+      padding: selected ? iconLayout.selectedPadding : iconLayout.padding,
       child: AspectRatio(
         aspectRatio: 1,
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -167,22 +168,16 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                     Container(
                       clipBehavior: selected ? Clip.none : Clip.hardEdge,
                       height: selected
-                          ? layout.ongoingFullscreenPage.activityIcon
-                              .selectedSize.height
-                          : layout
-                              .ongoingFullscreenPage.activityIcon.size.height,
+                          ? iconLayout.selectedSize.height
+                          : iconLayout.size.height,
                       foregroundDecoration: BoxDecoration(
                         border: getCategoryBorder(
                           inactive: false,
-                          current: activityOccasion.start
-                                  .isAtSameMomentAs(minutes) ||
-                              activityOccasion.end.isAtSameMomentAs(minutes),
+                          current: current,
                           showCategoryColor: false,
                           category: activityOccasion.activity.category,
-                          borderWidth:
-                              layout.ongoingFullscreenPage.activityIcon.border,
-                          currentBorderWidth:
-                              layout.ongoingFullscreenPage.activityIcon.border,
+                          borderWidth: iconLayout.border,
+                          currentBorderWidth: iconLayout.currentBorder,
                         ),
                         borderRadius: borderRadius,
                       ),
@@ -204,10 +199,9 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                     ),
                     if (selected)
                       CustomPaint(
-                        size:
-                            layout.ongoingFullscreenPage.activityIcon.arrowSize,
-                        painter: _ActivityArrowPainter(layout
-                            .ongoingFullscreenPage.activityIcon.arrowStartX),
+                        size: iconLayout.arrowSize,
+                        painter: _ActivityArrowPainter(
+                            iconLayout.arrowStartX, current),
                       ),
                     if (settings.showCategories)
                       CustomPaint(
@@ -274,11 +268,13 @@ class _ActivityArrowPainter extends CustomPainter {
   late Paint _fillPaint;
   final double startX;
 
-  _ActivityArrowPainter(this.startX) {
+  _ActivityArrowPainter(this.startX, bool current) {
     _arrowPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = AbiliaColors.red100;
+      ..strokeWidth = current
+          ? layout.ongoingFullscreenPage.activityIcon.currentBorder
+          : layout.ongoingFullscreenPage.activityIcon.border
+      ..color = current ? AbiliaColors.red100 : AbiliaColors.white140;
     _fillPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = AbiliaColors.white;

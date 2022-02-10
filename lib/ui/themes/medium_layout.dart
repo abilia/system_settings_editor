@@ -192,7 +192,8 @@ class _MediumLayout extends Layout {
             activityIcon: OngoingFullscreenActivityIconLayout(
                 size: Size(72, 72),
                 selectedSize: Size(192, 192),
-                border: 3,
+                currentBorder: 3,
+                border: 2.25,
                 arrowSize: Size(48, 21),
                 padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
                 selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6)),
