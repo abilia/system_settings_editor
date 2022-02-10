@@ -316,8 +316,10 @@ class _CategoryCirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(Offset(size.width - 8, 8), 5, _whitePaint);
-    canvas.drawCircle(Offset(size.width - 8, 8), 4, _circlePaint);
+    canvas.drawCircle(
+        Offset(size.width - offset, offset), offset / 2 + 1, _whitePaint);
+    canvas.drawCircle(
+        Offset(size.width - offset, offset), offset / 2, _circlePaint);
   }
 
   @override

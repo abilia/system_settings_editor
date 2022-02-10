@@ -191,7 +191,7 @@ class _MediumLayout extends Layout {
                   buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
               activityIcon: OngoingFullscreenActivityIconLayout(
                 size: Size(72, 72),
-                selectedSize: Size(192, 192),
+                selectedSize: Size(84, 84),
                 toolBarHeight: 96,
                 currentBorder: 3,
                 border: 2.25,
