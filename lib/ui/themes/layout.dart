@@ -511,23 +511,26 @@ class OngoingFullscreenActivityToolBarLayout {
   final double height, collapseMargin, buttonHeight;
   final EdgeInsets buttonPadding;
 
-  const OngoingFullscreenActivityToolBarLayout(
-      {this.height = 84,
-      this.collapseMargin = 8,
-      this.buttonHeight = 64,
-      this.buttonPadding = const EdgeInsets.only(top: 8, bottom: 12)});
+  const OngoingFullscreenActivityToolBarLayout({
+    this.height = 84,
+    this.collapseMargin = 8,
+    this.buttonHeight = 64,
+    this.buttonPadding = const EdgeInsets.only(top: 8, bottom: 12),
+  });
 }
 
 class OngoingFullscreenActivityIconLayout {
-  final double border;
+  final double border, toolBarHeight, arrowStartX;
   final Size size, selectedSize, arrowSize;
   final EdgeInsets padding, selectedPadding, textPadding;
 
   const OngoingFullscreenActivityIconLayout({
     this.size = const Size(48, 48),
-    this.selectedSize = const Size(60, 60),
+    this.selectedSize = const Size(56, 56),
+    this.toolBarHeight = 64,
     this.border = 2,
-    this.arrowSize = const Size(28, 14),
+    this.arrowStartX = 16,
+    this.arrowSize = const Size(24, 14),
     this.padding = const EdgeInsets.fromLTRB(12, 8, 0, 8),
     this.selectedPadding = const EdgeInsets.fromLTRB(8, 4, 0, 4),
     this.textPadding = const EdgeInsets.all(3),

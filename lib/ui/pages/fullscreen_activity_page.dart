@@ -91,7 +91,7 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: layout.ongoingFullscreenPage.toolBar.height,
+                height: layout.ongoingFullscreenPage.activityIcon.toolBarHeight,
                 color: AbiliaColors.white110,
                 child: ScrollArrows.horizontal(
                   controller: scrollController,
@@ -105,15 +105,17 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                     clipBehavior: Clip.none,
                     children: eventState is EventsLoaded
                         ? <Widget>[
-                            ...eventState
-                                .notPastEvents(DateTime.now())
-                                .where((ao) =>
-                                    ao.start.isBefore(DateTime.now()) &&
-                                    ao.end
-                                        .isAtSameMomentOrAfter(DateTime.now()))
+                            ...eventState.activities
+                                .where((activity) =>
+                                    activity
+                                        .toOccasion(DateTime.now())
+                                        .isCurrent ||
+                                    activity.end.isAfter(DateTime.now()
+                                        .subtract(const Duration(minutes: 1))))
                                 .map(
-                                  (ao) => _OngoingActivityContent(
-                                    activityOccasion: ao as ActivityOccasion,
+                                  (ao) => FullScreenActivityBottomContent(
+                                    activityOccasion:
+                                        ao.toOccasion(DateTime.now()),
                                     selected:
                                         ao.activity.id == selectedActivity.id,
                                   ),
@@ -124,7 +126,7 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                 ),
               ),
               SizedBox(
-                height: layout.ongoingFullscreenPage.toolBar.buttonHeight,
+                height: layout.ongoingFullscreenPage.toolBar.height,
                 child: Padding(
                   padding: layout.ongoingFullscreenPage.toolBar.buttonPadding,
                   child: IconAndTextButton(
@@ -143,8 +145,9 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
   }
 }
 
-class _OngoingActivityContent extends StatelessWidget {
-  const _OngoingActivityContent({
+@visibleForTesting
+class FullScreenActivityBottomContent extends StatelessWidget {
+  const FullScreenActivityBottomContent({
     Key? key,
     required this.activityOccasion,
     required this.selected,
@@ -195,11 +198,18 @@ class _OngoingActivityContent extends StatelessWidget {
                   children: [
                     Container(
                       clipBehavior: selected ? Clip.none : Clip.hardEdge,
-                      height: size.height,
+                      height: selected
+                          ? layout.ongoingFullscreenPage.activityIcon
+                              .selectedSize.height
+                          : layout
+                              .ongoingFullscreenPage.activityIcon.size.height,
                       foregroundDecoration: BoxDecoration(
                         border: getCategoryBorder(
-                          inactive: activityOccasion.isSignedOff,
-                          current: activityOccasion.isCurrent,
+                          inactive: false,
+                          current: activityOccasion.start.isAtSameMomentAs(
+                                  DateTime.now().onlyMinutes()) ||
+                              activityOccasion.end.isAtSameMomentAs(
+                                  DateTime.now().onlyMinutes()),
                           showCategoryColor: false,
                           category: activityOccasion.activity.category,
                           borderWidth:
@@ -230,10 +240,7 @@ class _OngoingActivityContent extends StatelessWidget {
                         size:
                             layout.ongoingFullscreenPage.activityIcon.arrowSize,
                         painter: _ActivityArrowPainter(layout
-                            .ongoingFullscreenPage
-                            .activityIcon
-                            .arrowSize
-                            .width),
+                            .ongoingFullscreenPage.activityIcon.arrowStartX),
                       ),
                     if (settings.showCategories)
                       CustomPaint(
@@ -303,7 +310,7 @@ class _ActivityArrowPainter extends CustomPainter {
   _ActivityArrowPainter(this.startX) {
     _arrowPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.s
+      ..strokeWidth = 2
       ..color = AbiliaColors.red100;
     _fillPaint = Paint()
       ..style = PaintingStyle.fill

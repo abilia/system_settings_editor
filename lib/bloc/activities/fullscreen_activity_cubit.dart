@@ -12,6 +12,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
         .listen((eventsState) => _emit(eventsState, state.time));
     _clockBlocSubscription =
         clockBloc.stream.listen((time) => _emit(state.eventsState, time));
+    _emit(dayEventsCubit.state, clockBloc.state);
   }
 
   late final StreamSubscription _dayEventsSubscription;
