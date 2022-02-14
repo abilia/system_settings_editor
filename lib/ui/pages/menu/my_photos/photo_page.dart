@@ -73,7 +73,7 @@ class PhotoPage extends StatelessWidget {
                         translate.remove,
                         AbiliaIcons.noPhotoCalendar,
                         onPressed: () {
-                          addOrRemovePhotoFromPhotoCalendar(
+                          _addOrRemovePhotoFromPhotoCalendar(
                             context,
                             remove: isInPhotoCalendar,
                             sortable: photoSortable ?? sortable,
@@ -87,7 +87,7 @@ class PhotoPage extends StatelessWidget {
                             ? AbiliaIcons.noPhotoCalendar
                             : AbiliaIcons.photoCalendar,
                         onPressed: () {
-                          addOrRemovePhotoFromPhotoCalendar(
+                          _addOrRemovePhotoFromPhotoCalendar(
                             context,
                             remove: isInPhotoCalendar,
                             sortable: photoSortable ?? sortable,
@@ -114,7 +114,7 @@ class PhotoPage extends StatelessWidget {
     );
   }
 
-  void addOrRemovePhotoFromPhotoCalendar(
+  void _addOrRemovePhotoFromPhotoCalendar(
     BuildContext context, {
     required bool remove,
     required Sortable<ImageArchiveData> sortable,
