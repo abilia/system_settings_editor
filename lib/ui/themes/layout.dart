@@ -524,6 +524,7 @@ class OngoingFullscreenActivityIconLayout {
   final Size size, selectedSize, arrowSize;
   final EdgeInsets padding, selectedPadding, textPadding;
   final Offset arrowPreOffset, arrowPostOffset;
+  final Radius arrowPointRadius;
 
   const OngoingFullscreenActivityIconLayout({
     this.size = const Size(48, 48),
@@ -539,6 +540,7 @@ class OngoingFullscreenActivityIconLayout {
     this.dotOffset = 8,
     this.arrowPreOffset = const Offset(16, 1),
     this.arrowPostOffset = const Offset(0, 1.5),
+    this.arrowPointRadius = const Radius.circular(4),
   });
 }
 

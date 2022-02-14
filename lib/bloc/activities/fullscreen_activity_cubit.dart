@@ -2,26 +2,29 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/models/occasion/activity_occasion.dart';
+import 'package:seagull/utils/datetime.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit(
-      {required DayEventsCubit dayEventsCubit, required ClockBloc clockBloc})
+      {required ActivitiesBloc dayEventsCubit, required ClockBloc clockBloc})
       : super(LoadingState(time: DateTime.now())) {
     _dayEventsSubscription = dayEventsCubit.stream
         .listen((eventsState) => _emit(eventsState, state.time));
     _clockBlocSubscription =
-        clockBloc.stream.listen((time) => _emit(state.eventsState, time));
+        clockBloc.stream.listen((time) => _emit(state.activitiesState, time));
     _emit(dayEventsCubit.state, clockBloc.state);
   }
 
   late final StreamSubscription _dayEventsSubscription;
   late final StreamSubscription _clockBlocSubscription;
 
-  _emit(EventsState? eventsState, DateTime time) {
+  _emit(ActivitiesState? activitiesState, DateTime time) {
     ActivityDay? ad;
-    if (eventsState is EventsLoaded) {
-      eventsState.activities.toSet().forEach((activityDay) {
+    if (activitiesState is ActivitiesLoaded) {
+      activitiesState.activities.toSet().forEach((activity) {
+        ActivityDay activityDay = ActivityDay(activity, time.onlyDays());
         ActivityOccasion oc = activityDay.toOccasion(time);
         if (oc.isCurrent ||
             oc.isPast &&
@@ -33,14 +36,14 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
     }
     emit(ad != null
         ? FullScreenActivityState(
-            activityDay: ad, eventsState: eventsState, time: time)
+            activityDay: ad, activitiesState: activitiesState, time: time)
         : NoActivityState(time: time));
   }
 
   void setCurrentActivity(ActivityDay activityDay) {
     emit(FullScreenActivityState(
         activityDay: activityDay,
-        eventsState: state.eventsState,
+        activitiesState: state.activitiesState,
         time: state.time));
   }
 
@@ -53,27 +56,40 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
 }
 
 class FullScreenActivityState extends Equatable {
-  final EventsState? eventsState;
+  final ActivitiesState? activitiesState;
   final DateTime time;
   final ActivityDay? activityDay;
 
   const FullScreenActivityState(
-      {required this.eventsState, required this.time, this.activityDay});
+      {required this.activitiesState, required this.time, this.activityDay});
 
-  get eventsList => eventsState is EventsLoaded
-      ? (eventsState as EventsLoaded).activities.where((activity) =>
-          activity.toOccasion(time).isCurrent ||
-          activity.end.isAfter(time.subtract(const Duration(minutes: 1))))
-      : [];
+  get eventsList {
+    var activityOccasions = [];
+    if (activitiesState is ActivitiesLoaded) {
+      (activitiesState as ActivitiesLoaded)
+          .activities
+          .toSet()
+          .forEach((activity) {
+        ActivityDay ad = ActivityDay(activity, activity.startTime.onlyDays());
+        ActivityOccasion ao = ad.toOccasion(time);
+        bool res = ad.toOccasion(time).isCurrent ||
+            ad.end.isAfter(time.subtract(const Duration(minutes: 1)));
+        if (res) activityOccasions.add(ao);
+      });
+    }
+    return activityOccasions;
+  }
 
   @override
-  List<Object?> get props => [activityDay, eventsState, time];
+  List<Object?> get props => [activityDay, activitiesState, time];
 }
 
 class NoActivityState extends FullScreenActivityState {
-  const NoActivityState({required time}) : super(eventsState: null, time: time);
+  const NoActivityState({required time})
+      : super(activitiesState: null, time: time);
 }
 
 class LoadingState extends FullScreenActivityState {
-  const LoadingState({required time}) : super(eventsState: null, time: time);
+  const LoadingState({required time})
+      : super(activitiesState: null, time: time);
 }

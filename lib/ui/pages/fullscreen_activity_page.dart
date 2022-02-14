@@ -15,7 +15,7 @@ class FullScreenActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<FullScreenActivityCubit>(
         create: (context) => FullScreenActivityCubit(
-            dayEventsCubit: context.read<DayEventsCubit>(),
+            dayEventsCubit: context.read<ActivitiesBloc>(),
             clockBloc: context.read<ClockBloc>()),
         child: _FullScreenActivityInfo(
           activityDay: activityDay,
@@ -88,7 +88,7 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                     children: <Widget>[
                       ...state.eventsList.map(
                         (ao) => FullScreenActivityBottomContent(
-                          activityOccasion: ao.toOccasion(DateTime.now()),
+                          activityOccasion: ao,
                           selected: ao.activity.id == selectedActivity.id,
                           minutes: DateTime.now().onlyMinutes(),
                         ),
@@ -278,7 +278,7 @@ class _ActivityArrowPainter extends CustomPainter {
     Path arrow = Path()
       ..lineTo(size.width / 2 - 2, -size.height + 2)
       ..arcToPoint(Offset(size.width / 2 + 2, -size.height + 2),
-          radius: const Radius.circular(4))
+          radius: layout.ongoingFullscreenPage.activityIcon.arrowPointRadius)
       ..lineTo(size.width, 0);
     arrow.close();
     arrow =

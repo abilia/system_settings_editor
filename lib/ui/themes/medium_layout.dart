@@ -202,6 +202,7 @@ class _MediumLayout extends Layout {
                 dotOffset: 10,
                 arrowPreOffset: Offset(16, 1),
                 arrowPostOffset: Offset(0, 2),
+                arrowPointRadius: Radius.circular(6),
               )),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
