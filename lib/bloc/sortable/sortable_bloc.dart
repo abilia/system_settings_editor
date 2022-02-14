@@ -135,6 +135,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           name: event.name,
           file: '${FileStorage.folder}/${event.imageId}',
           fileId: event.imageId,
+          tags: event.tags,
         );
         final folderContent = currentState.sortables
             .where((s) => s.groupId == event.folderId)

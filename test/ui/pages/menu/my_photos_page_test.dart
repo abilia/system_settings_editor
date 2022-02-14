@@ -41,7 +41,7 @@ void main() {
           ),
           Sortable.createNew(
             groupId: myPhotosFolder.id,
-            data: ImageArchiveData(
+            data: const ImageArchiveData(
               name: 'image in photo-calendar',
               fileId: 'fileId',
               tags: [ImageArchiveData.photoCalendarTag],

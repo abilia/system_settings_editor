@@ -41,7 +41,7 @@ class RawSortableData extends SortableData {
 }
 
 class ImageArchiveData extends SortableData {
-  static String photoCalendarTag = 'photoCalendar';
+  static const photoCalendarTag = 'photoCalendar';
   final String name, fileId, icon, file;
   final bool upload, myPhotos;
   final List<String> tags;
@@ -105,21 +105,16 @@ class ImageArchiveData extends SortableData {
 
   ImageArchiveData copyWith({
     String? name,
-    String? fileId,
-    String? icon,
-    String? file,
-    bool? upload,
-    bool? myPhotos,
     List<String>? tags,
   }) =>
       ImageArchiveData(
         name: name ?? this.name,
-        fileId: fileId ?? this.fileId,
-        icon: icon ?? this.icon,
-        file: file ?? this.file,
-        upload: upload ?? this.upload,
-        myPhotos: myPhotos ?? this.myPhotos,
         tags: tags ?? this.tags,
+        fileId: fileId,
+        icon: icon,
+        file: file,
+        upload: upload,
+        myPhotos: myPhotos,
       );
 }
 

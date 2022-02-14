@@ -1,18 +1,29 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/bloc/all.dart';
 
 class ChecklistLibraryPage extends StatelessWidget {
   const ChecklistLibraryPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => LibraryPage<ChecklistData>.selectable(
-        libraryItemGenerator: (checklist) =>
-            LibraryChecklist(checklist: checklist.data.checklist),
-        selectedItemGenerator: (checklist) =>
-            FullScreenChecklist(checklist: checklist.data.checklist),
-        emptyLibraryMessage: Translator.of(context).translate.noChecklists,
-        onOk: (selected) =>
-            Navigator.of(context).pop<Checklist>(selected.data.checklist),
+  Widget build(BuildContext context) =>
+      BlocProvider<SortableArchiveBloc<ChecklistData>>(
+        create: (_) => SortableArchiveBloc<ChecklistData>(
+          sortableBloc: BlocProvider.of<SortableBloc>(context),
+        ),
+        child: LibraryPage<ChecklistData>.selectable(
+          appBar: AbiliaAppBar(
+            iconData: AbiliaIcons.documents,
+            title: Translator.of(context).translate.selectFromLibrary,
+          ),
+          libraryItemGenerator: (checklist) =>
+              LibraryChecklist(checklist: checklist.data.checklist),
+          selectedItemGenerator: (checklist) =>
+              FullScreenChecklist(checklist: checklist.data.checklist),
+          emptyLibraryMessage: Translator.of(context).translate.noChecklists,
+          onOk: (selected) =>
+              Navigator.of(context).pop<Checklist>(selected.data.checklist),
+        ),
       );
 }
 

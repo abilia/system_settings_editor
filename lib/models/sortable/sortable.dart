@@ -86,24 +86,20 @@ class Sortable<T extends SortableData> extends DataModel {
       DbSortable._(sortable: this, revision: revision, dirty: dirty);
 
   Sortable copyWith({
-    String? type,
     T? data,
     String? groupId,
     String? sortOrder,
     bool? deleted,
-    bool? isGroup,
-    bool? visible,
-    bool? fixed,
   }) =>
       Sortable._(
         id: id,
-        type: type ?? this.type,
+        type: type,
         data: data ?? this.data,
         groupId: groupId ?? this.groupId,
         sortOrder: sortOrder ?? this.sortOrder,
         deleted: deleted ?? this.deleted,
-        isGroup: isGroup ?? this.isGroup,
-        visible: visible ?? this.visible,
-        fixed: fixed ?? this.fixed,
+        isGroup: isGroup,
+        visible: visible,
+        fixed: fixed,
       );
 }

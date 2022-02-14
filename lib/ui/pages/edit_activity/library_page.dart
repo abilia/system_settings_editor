@@ -10,13 +10,9 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     Key? key,
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
-    required this.initialFolder,
-    this.visibilityFilter,
     this.onCancel,
     this.appBar,
-    this.bottomNavigationBar,
     this.rootHeading,
-    this.showAppBar = true,
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
@@ -32,13 +28,9 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     required this.onOk,
-    this.visibilityFilter,
     this.onCancel,
     this.appBar,
-    this.bottomNavigationBar,
     this.rootHeading,
-    this.initialFolder = '',
-    this.showAppBar = true,
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
@@ -49,74 +41,58 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
         assert(selectedItemGenerator != null,
             'selectedItemGenerator should not be null in LibraryPage.selectable'),
         super(key: key);
-  final bool selectableItems, showAppBar, showBottomNavigationBar, showFolders;
+  final bool selectableItems, showBottomNavigationBar, showFolders;
   final PreferredSizeWidget? appBar;
-  final Widget? bottomNavigationBar;
   final Function(Sortable<T>)? onOk;
   final VoidCallback? onCancel;
   final LibraryItemGenerator<T>? selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final bool Function(Sortable<T>)? visibilityFilter;
-  final String emptyLibraryMessage, initialFolder;
+  final String emptyLibraryMessage;
   final String? rootHeading;
   final int? gridCrossAxisCount;
   final double? gridChildAspectRatio;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SortableArchiveBloc<T>>(
-      create: (_) => SortableArchiveBloc<T>(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
-        initialFolderId: initialFolder,
-        visibilityFilter: visibilityFilter,
-      ),
-      child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
-        builder: (context, state) {
-          final selected = selectableItems ? state.selected : null;
-          final selectedGenerator = selectedItemGenerator;
-          return Scaffold(
-            appBar: !showAppBar
-                ? null
-                : appBar ??
-                    AbiliaAppBar(
-                      iconData: AbiliaIcons.documents,
-                      title: Translator.of(context).translate.selectFromLibrary,
-                    ),
-            body: Column(
-              children: [
-                if (!state.isAtRootAndNoSelection || rootHeading != null)
-                  LibraryHeading<T>(
-                    sortableArchiveState: state,
-                    rootHeading: rootHeading ?? '',
-                  ),
-                Expanded(
-                  child: selected != null && selectedGenerator != null
-                      ? selectedGenerator(selected)
-                      : SortableLibrary<T>(
-                          libraryItemGenerator,
-                          emptyLibraryMessage,
-                          selectableItems: selectableItems,
-                          crossAxisCount: gridCrossAxisCount,
-                          childAspectRatio: gridChildAspectRatio,
-                          showFolders: showFolders,
-                        ),
+    return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+      builder: (context, state) {
+        final selected = selectableItems ? state.selected : null;
+        final selectedGenerator = selectedItemGenerator;
+        return Scaffold(
+          appBar: appBar,
+          body: Column(
+            children: [
+              if (!state.isAtRootAndNoSelection || rootHeading != null)
+                LibraryHeading<T>(
+                  sortableArchiveState: state,
+                  rootHeading: rootHeading ?? '',
                 ),
-              ],
-            ),
-            bottomNavigationBar: !showBottomNavigationBar
-                ? null
-                : bottomNavigationBar ??
-                    BottomNavigation(
-                      backNavigationWidget: CancelButton(onPressed: onCancel),
-                      forwardNavigationWidget: selected != null
-                          ? OkButton(
-                              onPressed: () => onOk?.call(selected),
-                            )
-                          : null,
-                    ),
-          );
-        },
-      ),
+              Expanded(
+                child: selected != null && selectedGenerator != null
+                    ? selectedGenerator(selected)
+                    : SortableLibrary<T>(
+                        libraryItemGenerator,
+                        emptyLibraryMessage,
+                        selectableItems: selectableItems,
+                        crossAxisCount: gridCrossAxisCount,
+                        childAspectRatio: gridChildAspectRatio,
+                        showFolders: showFolders,
+                      ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: showBottomNavigationBar
+              ? BottomNavigation(
+                  backNavigationWidget: CancelButton(onPressed: onCancel),
+                  forwardNavigationWidget: selected != null
+                      ? OkButton(
+                          onPressed: () => onOk?.call(selected),
+                        )
+                      : null,
+                )
+              : null,
+        );
+      },
     );
   }
 }
