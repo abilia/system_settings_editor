@@ -24,8 +24,7 @@ void main() {
   late MockActivityDb mockActivityDb;
   late MockGenericDb mockGenericDb;
   late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
-  late FakeActivitiesBloc fakeActivitiesBloc;
-  late MockDayEventsCubit fakeDayEventsCubit;
+  late MockActivitiesBloc mockActivitiesBloc;
   final startTimeOne = DateTime(2122, 06, 06, 06, 00);
   final startTimeTwo = DateTime(2122, 06, 06, 06, 02);
   final initialMinutes = DateTime(2122, 06, 06, 06, 10);
@@ -74,21 +73,14 @@ void main() {
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value([]));
 
-    fakeDayEventsCubit = MockDayEventsCubit();
-    fakeActivitiesBloc = FakeActivitiesBloc();
+    mockActivitiesBloc = MockActivitiesBloc();
     clockBloc = ClockBloc.fixed(initialMinutes);
     mockTicker = StreamController<DateTime>();
 
-    final expected = EventsLoaded(
-      activities: dayActivities,
-      timers: const [],
-      fullDayActivities: const [],
-      day: dayActivities.first.start.onlyDays(),
-      occasion: Occasion.current,
-    );
+    final expected = ActivitiesLoaded(fakeActivities);
 
-    when(() => fakeDayEventsCubit.state).thenReturn(expected);
-    when(() => fakeDayEventsCubit.stream)
+    when(() => mockActivitiesBloc.state).thenReturn(expected);
+    when(() => mockActivitiesBloc.stream)
         .thenAnswer((_) => Stream.fromIterable([expected]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -117,7 +109,7 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<ActivitiesBloc>(
-              create: (context) => fakeActivitiesBloc,
+              create: (context) => mockActivitiesBloc,
             ),
             BlocProvider<ClockBloc>(
               create: (context) => clockBloc,
@@ -132,9 +124,6 @@ void main() {
             ),
             BlocProvider<TimepillarCubit>(
                 create: (context) => FaketimepillarCubit()),
-            BlocProvider<DayEventsCubit>(
-              create: (context) => fakeDayEventsCubit,
-            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

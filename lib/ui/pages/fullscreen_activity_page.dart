@@ -15,7 +15,7 @@ class FullScreenActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<FullScreenActivityCubit>(
         create: (context) => FullScreenActivityCubit(
-            dayEventsCubit: context.read<ActivitiesBloc>(),
+            activitiesBloc: context.read<ActivitiesBloc>(),
             clockBloc: context.read<ClockBloc>()),
         child: _FullScreenActivityInfo(
           activityDay: activityDay,

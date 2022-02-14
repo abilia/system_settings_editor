@@ -8,13 +8,13 @@ import 'package:seagull/utils/datetime.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit(
-      {required ActivitiesBloc dayEventsCubit, required ClockBloc clockBloc})
+      {required ActivitiesBloc activitiesBloc, required ClockBloc clockBloc})
       : super(LoadingState(time: DateTime.now())) {
-    _dayEventsSubscription = dayEventsCubit.stream
-        .listen((eventsState) => _emit(eventsState, state.time));
+    _dayEventsSubscription = activitiesBloc.stream
+        .listen((activitiesState) => _emit(activitiesState, state.time));
     _clockBlocSubscription =
         clockBloc.stream.listen((time) => _emit(state.activitiesState, time));
-    _emit(dayEventsCubit.state, clockBloc.state);
+    _emit(activitiesBloc.state, clockBloc.state);
   }
 
   late final StreamSubscription _dayEventsSubscription;
