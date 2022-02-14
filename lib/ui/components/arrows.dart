@@ -307,7 +307,7 @@ class _ArrowState extends State<_Arrow> {
         height: widget.heigth != null
             ? condition
                 ? widget.heigth
-                : 1
+                : 0
             : null,
         decoration: BoxDecoration(
           borderRadius: widget.borderRadius,
