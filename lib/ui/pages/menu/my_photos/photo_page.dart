@@ -22,14 +22,14 @@ class PhotoPage extends StatelessWidget {
           SortableArchiveState<ImageArchiveData>>(
         builder: (context, archiveState) {
           final allById = archiveState.allById;
-          final photoSortable = allById[sortable.id];
+          final updatedSortable = allById[sortable.id];
           final bool isInPhotoCalendar =
-              photoSortable?.data.isInPhotoCalendar() ??
+              updatedSortable?.data.isInPhotoCalendar() ??
                   sortable.data.isInPhotoCalendar();
 
           return Scaffold(
             appBar: AbiliaAppBar(
-              title: photoSortable?.data.name ?? sortable.data.name,
+              title: updatedSortable?.data.name ?? sortable.data.name,
               label: translate.myPhotos,
               iconData: AbiliaIcons.myPhotos,
             ),
@@ -44,10 +44,10 @@ class PhotoPage extends StatelessWidget {
                       ),
                       child: FullScreenImage(
                         backgroundDecoration: const BoxDecoration(),
-                        fileId:
-                            photoSortable?.data.fileId ?? sortable.data.fileId,
+                        fileId: updatedSortable?.data.fileId ??
+                            sortable.data.fileId,
                         filePath:
-                            photoSortable?.data.file ?? sortable.data.file,
+                            updatedSortable?.data.file ?? sortable.data.file,
                         tightMode: true,
                       ),
                     ),
@@ -76,7 +76,7 @@ class PhotoPage extends StatelessWidget {
                           _addOrRemovePhotoFromPhotoCalendar(
                             context,
                             remove: isInPhotoCalendar,
-                            sortable: photoSortable ?? sortable,
+                            sortable: updatedSortable ?? sortable,
                           );
                         },
                       ),
@@ -90,7 +90,7 @@ class PhotoPage extends StatelessWidget {
                           _addOrRemovePhotoFromPhotoCalendar(
                             context,
                             remove: isInPhotoCalendar,
-                            sortable: photoSortable ?? sortable,
+                            sortable: updatedSortable ?? sortable,
                           );
                         },
                       ),
