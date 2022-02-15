@@ -14,19 +14,17 @@ class FullScreenActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FullScreenActivityCubit>(
-        create: (context) => FullScreenActivityCubit(
-            activitiesBloc: context.read<ActivitiesBloc>(),
-            clockBloc: context.read<ClockBloc>()),
-        child: _FullScreenActivityInfo(
-          activityDay: activityDay,
-        ));
+      create: (context) => FullScreenActivityCubit(
+          activitiesBloc: context.read<ActivitiesBloc>(),
+          clockBloc: context.read<ClockBloc>(),
+          startingActivity: activityDay),
+      child: const _FullScreenActivityInfo(),
+    );
   }
 }
 
 class _FullScreenActivityInfo extends StatelessWidget {
-  const _FullScreenActivityInfo({Key? key, required this.activityDay})
-      : super(key: key);
-  final ActivityDay activityDay;
+  const _FullScreenActivityInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class _FullScreenActivityInfo extends StatelessWidget {
         if (state is NoActivityState) {
           Navigator.of(context).maybePop();
         }
-        return state.activityDay ?? activityDay;
+        return state.activityDay;
       },
       builder: (context, ad) {
         return Scaffold(
@@ -163,13 +161,14 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                           ? iconLayout.selectedSize.height
                           : iconLayout.size.height,
                       foregroundDecoration: BoxDecoration(
-                        border: getCategoryBorder(
-                          inactive: false,
-                          current: current,
-                          showCategoryColor: false,
-                          category: activityOccasion.activity.category,
-                          borderWidth: iconLayout.border,
-                          currentBorderWidth: iconLayout.currentBorder,
+                        border: Border.fromBorderSide(
+                          BorderSide(
+                              color: current
+                                  ? AbiliaColors.red
+                                  : AbiliaColors.white110,
+                              width: current
+                                  ? iconLayout.currentBorder
+                                  : iconLayout.border),
                         ),
                         borderRadius: borderRadius,
                       ),

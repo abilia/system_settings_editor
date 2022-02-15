@@ -8,48 +8,66 @@ import 'package:seagull/utils/datetime.dart';
 
 class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit(
-      {required ActivitiesBloc activitiesBloc, required ClockBloc clockBloc})
-      : super(LoadingState(time: DateTime.now())) {
-    _dayEventsSubscription = activitiesBloc.stream
-        .listen((activitiesState) => _emit(activitiesState, state.time));
-    _clockBlocSubscription =
-        clockBloc.stream.listen((time) => _emit(state.activitiesState, time));
+      {required ActivitiesBloc activitiesBloc,
+      required ClockBloc clockBloc,
+      required ActivityDay startingActivity})
+      : super(
+          LoadingState(
+            activityDay: startingActivity,
+            time: startingActivity.start,
+          ),
+        ) {
+    _activityBlocSubscription = activitiesBloc.stream.listen(
+      (activitiesState) => _emit(activitiesState, state.time),
+    );
+    _clockBlocSubscription = clockBloc.stream.listen(
+      (time) => _emit(state.activitiesState, time),
+    );
     _emit(activitiesBloc.state, clockBloc.state);
   }
 
-  late final StreamSubscription _dayEventsSubscription;
+  late final StreamSubscription _activityBlocSubscription;
   late final StreamSubscription _clockBlocSubscription;
 
   _emit(ActivitiesState? activitiesState, DateTime time) {
     ActivityDay? ad;
     if (activitiesState is ActivitiesLoaded) {
-      activitiesState.activities.toSet().forEach((activity) {
-        ActivityDay activityDay = ActivityDay(activity, time.onlyDays());
-        ActivityOccasion oc = activityDay.toOccasion(time);
-        if (oc.isCurrent ||
-            oc.isPast &&
-                !oc.activity.hasEndTime &&
-                oc.start.isAfter(time.subtract(const Duration(minutes: 1)))) {
-          ad = activityDay;
-        }
-      });
+      activitiesState.activities.toSet().forEach(
+        (activity) {
+          ActivityDay activityDay = ActivityDay(
+            activity,
+            activity.startTime.onlyDays(),
+          );
+          ActivityOccasion oc = activityDay.toOccasion(time);
+          if (oc.isCurrent ||
+              !oc.activity.hasEndTime && oc.start.isAtSameMomentAs(time)) {
+            ad = activityDay;
+          }
+        },
+      );
     }
-    emit(ad != null
-        ? FullScreenActivityState(
-            activityDay: ad, activitiesState: activitiesState, time: time)
-        : NoActivityState(time: time));
+    emit(
+      ad != null
+          ? FullScreenActivityState(
+              activityDay: ad ?? state.activityDay,
+              activitiesState: activitiesState,
+              time: time)
+          : NoActivityState(activityDay: state.activityDay, time: time),
+    );
   }
 
   void setCurrentActivity(ActivityDay activityDay) {
-    emit(FullScreenActivityState(
-        activityDay: activityDay,
-        activitiesState: state.activitiesState,
-        time: state.time));
+    emit(
+      FullScreenActivityState(
+          activityDay: activityDay,
+          activitiesState: state.activitiesState,
+          time: state.time),
+    );
   }
 
   @override
   Future<void> close() async {
-    await _dayEventsSubscription.cancel();
+    await _activityBlocSubscription.cancel();
     await _clockBlocSubscription.cancel();
     return super.close();
   }
@@ -58,24 +76,22 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
 class FullScreenActivityState extends Equatable {
   final ActivitiesState? activitiesState;
   final DateTime time;
-  final ActivityDay? activityDay;
+  final ActivityDay activityDay;
 
   const FullScreenActivityState(
-      {required this.activitiesState, required this.time, this.activityDay});
+      {this.activitiesState, required this.time, required this.activityDay});
 
   get eventsList {
     var activityOccasions = [];
     if (activitiesState is ActivitiesLoaded) {
-      (activitiesState as ActivitiesLoaded)
-          .activities
-          .toSet()
-          .forEach((activity) {
-        ActivityDay ad = ActivityDay(activity, activity.startTime.onlyDays());
-        ActivityOccasion ao = ad.toOccasion(time);
-        bool res = ad.toOccasion(time).isCurrent ||
-            ad.end.isAfter(time.subtract(const Duration(minutes: 1)));
-        if (res) activityOccasions.add(ao);
-      });
+      (activitiesState as ActivitiesLoaded).activities.toSet().forEach(
+        (activity) {
+          ActivityOccasion ao =
+              ActivityDay(activity, activity.startTime.onlyDays())
+                  .toOccasion(time);
+          if (ao.isCurrent) activityOccasions.add(ao);
+        },
+      );
     }
     return activityOccasions;
   }
@@ -85,11 +101,12 @@ class FullScreenActivityState extends Equatable {
 }
 
 class NoActivityState extends FullScreenActivityState {
-  const NoActivityState({required time})
-      : super(activitiesState: null, time: time);
+  const NoActivityState(
+      {required DateTime time, required ActivityDay activityDay})
+      : super(time: time, activityDay: activityDay);
 }
 
 class LoadingState extends FullScreenActivityState {
-  const LoadingState({required time})
-      : super(activitiesState: null, time: time);
+  const LoadingState({required DateTime time, required ActivityDay activityDay})
+      : super(time: time, activityDay: activityDay);
 }
