@@ -83,13 +83,11 @@ class _AllPhotosTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-
     return LibraryPage<ImageArchiveData>.nonSelectable(
       showBottomNavigationBar: false,
       gridCrossAxisCount: layout.myPhotos.crossAxisCount,
       gridChildAspectRatio: layout.myPhotos.childAspectRatio,
-      emptyLibraryMessage: translate.noImages,
+      emptyLibraryMessage: Translator.of(context).translate.noImages,
       libraryItemGenerator: (imageArchive) =>
           ThumbnailPhoto(sortable: imageArchive),
     );
@@ -106,21 +104,19 @@ class _PhotoCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-
     return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
       create: (_) => SortableArchiveBloc<ImageArchiveData>(
         initialFolderId: myPhotoFolderId,
         sortableBloc: BlocProvider.of<SortableBloc>(context),
         visibilityFilter: (imageArchive) =>
             imageArchive.data.isInPhotoCalendar(),
+        showFolders: false,
       ),
       child: LibraryPage<ImageArchiveData>.nonSelectable(
-        showFolders: false,
         showBottomNavigationBar: false,
         gridCrossAxisCount: layout.myPhotos.crossAxisCount,
         gridChildAspectRatio: layout.myPhotos.childAspectRatio,
-        emptyLibraryMessage: translate.noImages,
+        emptyLibraryMessage: Translator.of(context).translate.noImages,
         libraryItemGenerator: (imageArchive) =>
             ThumbnailPhoto(sortable: imageArchive),
       ),
@@ -128,7 +124,7 @@ class _PhotoCalendarTab extends StatelessWidget {
   }
 }
 
-class _AddPhotoButton extends StatefulWidget {
+class _AddPhotoButton extends StatelessWidget {
   const _AddPhotoButton({
     Key? key,
     required this.myPhotoFolderId,
@@ -139,95 +135,64 @@ class _AddPhotoButton extends StatefulWidget {
   final int photoCalendarTabIndex;
 
   @override
-  State<_AddPhotoButton> createState() => _AddPhotoButtonState();
-}
-
-class _AddPhotoButtonState extends State<_AddPhotoButton> {
-  TabController? _controller;
-  bool includeInPhotoCalendar = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateTabController();
-  }
-
-  @override
-  void dispose() {
-    _controller?.removeListener(_updateOnTabChange);
-    super.dispose();
-  }
-
-  void _updateTabController() {
-    final TabController? newController = DefaultTabController.of(context);
-    if (newController != _controller) {
-      _controller?.removeListener(_updateOnTabChange);
-      _controller = newController;
-      _controller?.addListener(_updateOnTabChange);
-    }
-  }
-
-  void _updateOnTabChange() {
-    if (mounted) {
-      setState(() {
-        includeInPhotoCalendar =
-            _controller?.index == widget.photoCalendarTabIndex;
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final tabController = DefaultTabController.of(context)!;
     return BlocBuilder<PermissionCubit, PermissionState>(
       builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => IconActionButtonLight(
-          onPressed: () async {
-            if (Config.isMP) {
-              if (permissionState
-                      .status[Permission.camera]?.isPermanentlyDenied ==
-                  true) {
-                await showViewDialog(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (context) => const PermissionInfoDialog(
-                        permission: Permission.camera));
-              } else {
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  final selectedImage =
-                      UnstoredAbiliaFile.newFile(File(image.path));
-                  _addImage(
-                    context,
-                    selectedImage,
-                    time,
-                    includeInPhotoCalendar,
-                  );
-                }
-              }
-            } else {
-              final authProviders = copiedAuthProviders(context);
-              final selectedImage =
-                  await Navigator.of(context).push<UnstoredAbiliaFile>(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const ImportPicturePage(),
-                  ),
-                ),
+        builder: (context, time) => AnimatedBuilder(
+            animation: tabController,
+            builder: (context, _) {
+              final includeInPhotoCalendar =
+                  tabController.index == photoCalendarTabIndex;
+              return IconActionButtonLight(
+                onPressed: () async {
+                  if (Config.isMP) {
+                    if (permissionState
+                            .status[Permission.camera]?.isPermanentlyDenied ==
+                        true) {
+                      await showViewDialog(
+                          useSafeArea: false,
+                          context: context,
+                          builder: (context) => const PermissionInfoDialog(
+                              permission: Permission.camera));
+                    } else {
+                      final image = await ImagePicker()
+                          .pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        final selectedImage =
+                            UnstoredAbiliaFile.newFile(File(image.path));
+                        _addImage(
+                          context,
+                          selectedImage,
+                          time,
+                          includeInPhotoCalendar,
+                        );
+                      }
+                    }
+                  } else {
+                    final authProviders = copiedAuthProviders(context);
+                    final selectedImage =
+                        await Navigator.of(context).push<UnstoredAbiliaFile>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
+                          child: const ImportPicturePage(),
+                        ),
+                      ),
+                    );
+                    if (selectedImage != null) {
+                      _addImage(
+                        context,
+                        selectedImage,
+                        time,
+                        includeInPhotoCalendar,
+                      );
+                    }
+                  }
+                },
+                child: const Icon(AbiliaIcons.plus),
               );
-              if (selectedImage != null) {
-                _addImage(
-                  context,
-                  selectedImage,
-                  time,
-                  includeInPhotoCalendar,
-                );
-              }
-            }
-          },
-          child: const Icon(AbiliaIcons.plus),
-        ),
+            }),
       ),
     );
   }
@@ -250,14 +215,14 @@ class _AddPhotoButtonState extends State<_AddPhotoButton> {
               Localizations.localeOf(context).toLanguageTag(),
             ).format(time),
             includeInPhotoCalendar
-                ? widget.myPhotoFolderId
+                ? myPhotoFolderId
                 : context
                     .read<SortableArchiveBloc<ImageArchiveData>>()
                     .state
                     .currentFolderId,
-            tags: includeInPhotoCalendar
-                ? [ImageArchiveData.photoCalendarTag]
-                : [],
+            tags: {
+              if (includeInPhotoCalendar) ImageArchiveData.photoCalendarTag
+            },
           ),
         );
   }
@@ -274,14 +239,10 @@ class ThumbnailPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageArchiveData = sortable.data;
-    final name = imageArchiveData.name;
-    final imageId = imageArchiveData.fileId;
-    final iconPath = imageArchiveData.file;
-    final authProviders = copiedAuthProviders(context);
-
     return InkWell(
       borderRadius: boxDecoration.borderRadius?.resolve(null),
       onTap: () {
+        final authProviders = copiedAuthProviders(context);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => MultiBlocProvider(
@@ -309,7 +270,7 @@ class ThumbnailPhoto extends StatelessWidget {
                   Padding(
                     padding: layout.dataItem.picture.titlePadding,
                     child: Text(
-                      name,
+                      imageArchiveData.name,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),
@@ -320,8 +281,8 @@ class ThumbnailPhoto extends StatelessWidget {
                       child: FadeInAbiliaImage(
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        imageFileId: imageId,
-                        imageFilePath: iconPath,
+                        imageFileId: imageArchiveData.fileId,
+                        imageFilePath: imageArchiveData.file,
                       ),
                     ),
                   ),

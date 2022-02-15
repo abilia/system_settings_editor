@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:collection/collection.dart';
 
 class PhotoPage extends StatelessWidget {
   const PhotoPage({
@@ -14,103 +15,98 @@ class PhotoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
 
-    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-      create: (_) => SortableArchiveBloc<ImageArchiveData>(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
-      ),
-      child: BlocBuilder<SortableArchiveBloc<ImageArchiveData>,
-          SortableArchiveState<ImageArchiveData>>(
-        builder: (context, archiveState) {
-          final allById = archiveState.allById;
-          final updatedSortable = allById[sortable.id];
-          final bool isInPhotoCalendar =
-              updatedSortable?.data.isInPhotoCalendar() ??
-                  sortable.data.isInPhotoCalendar();
+    return BlocBuilder<SortableBloc, SortableState>(
+      builder: (context, state) {
+        final updatedSortable = (state is SortablesLoaded
+                ? state.sortables
+                    .whereType<Sortable<ImageArchiveData>>()
+                    .firstWhereOrNull((element) => element.id == sortable.id)
+                : null) ??
+            sortable;
 
-          return Scaffold(
-            appBar: AbiliaAppBar(
-              title: updatedSortable?.data.name ?? sortable.data.name,
-              label: translate.myPhotos,
-              iconData: AbiliaIcons.myPhotos,
-            ),
-            body: Padding(
-              padding: layout.myPhotos.fullScreenImagePadding,
-              child: Center(
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                        layout.myPhotos.fullScreenImageBorderRadius,
-                      ),
-                      child: FullScreenImage(
-                        backgroundDecoration: const BoxDecoration(),
-                        fileId: updatedSortable?.data.fileId ??
-                            sortable.data.fileId,
-                        filePath:
-                            updatedSortable?.data.file ?? sortable.data.file,
-                        tightMode: true,
+        final bool isInPhotoCalendar = updatedSortable.data.isInPhotoCalendar();
+
+        return Scaffold(
+          appBar: AbiliaAppBar(
+            title: updatedSortable.data.name,
+            label: translate.myPhotos,
+            iconData: AbiliaIcons.myPhotos,
+          ),
+          body: Padding(
+            padding: layout.myPhotos.fullScreenImagePadding,
+            child: Center(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      layout.myPhotos.fullScreenImageBorderRadius,
+                    ),
+                    child: FullScreenImage(
+                      backgroundDecoration: const BoxDecoration(),
+                      fileId: updatedSortable.data.fileId,
+                      filePath: updatedSortable.data.file,
+                      tightMode: true,
+                    ),
+                  ),
+                  if (isInPhotoCalendar)
+                    const Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: PhotoCalendarSticker(),
                       ),
                     ),
-                    if (isInPhotoCalendar)
-                      const Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: PhotoCalendarSticker(),
-                        ),
-                      ),
-                  ],
-                ),
+                ],
               ),
             ),
-            bottomNavigationBar: BottomAppBar(
-              child: SizedBox(
-                height: layout.toolbar.height,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    if (isInPhotoCalendar)
-                      TextAndOrIconActionButtonLight(
-                        translate.remove,
-                        AbiliaIcons.noPhotoCalendar,
-                        onPressed: () {
-                          _addOrRemovePhotoFromPhotoCalendar(
-                            context,
-                            remove: isInPhotoCalendar,
-                            sortable: updatedSortable ?? sortable,
-                          );
-                        },
-                      ),
-                    if (!isInPhotoCalendar)
-                      TextAndOrIconActionButtonLight(
-                        isInPhotoCalendar ? translate.remove : translate.add,
-                        isInPhotoCalendar
-                            ? AbiliaIcons.noPhotoCalendar
-                            : AbiliaIcons.photoCalendar,
-                        onPressed: () {
-                          _addOrRemovePhotoFromPhotoCalendar(
-                            context,
-                            remove: isInPhotoCalendar,
-                            sortable: updatedSortable ?? sortable,
-                          );
-                        },
-                      ),
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: SizedBox(
+              height: layout.toolbar.height,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  if (isInPhotoCalendar)
                     TextAndOrIconActionButtonLight(
-                      translate.delete,
-                      AbiliaIcons.deleteAllClear,
-                      onPressed: () {},
+                      translate.remove,
+                      AbiliaIcons.noPhotoCalendar,
+                      onPressed: () {
+                        _addOrRemovePhotoFromPhotoCalendar(
+                          context,
+                          remove: isInPhotoCalendar,
+                          sortable: updatedSortable,
+                        );
+                      },
                     ),
+                  if (!isInPhotoCalendar)
                     TextAndOrIconActionButtonLight(
-                      translate.close,
-                      AbiliaIcons.navigationPrevious,
-                      onPressed: () => Navigator.of(context).maybePop(),
+                      isInPhotoCalendar ? translate.remove : translate.add,
+                      isInPhotoCalendar
+                          ? AbiliaIcons.noPhotoCalendar
+                          : AbiliaIcons.photoCalendar,
+                      onPressed: () {
+                        _addOrRemovePhotoFromPhotoCalendar(
+                          context,
+                          remove: isInPhotoCalendar,
+                          sortable: updatedSortable,
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  TextAndOrIconActionButtonLight(
+                    translate.delete,
+                    AbiliaIcons.deleteAllClear,
+                    onPressed: () {},
+                  ),
+                  TextAndOrIconActionButtonLight(
+                    translate.close,
+                    AbiliaIcons.navigationPrevious,
+                    onPressed: () => Navigator.of(context).maybePop(),
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -143,21 +139,19 @@ class PhotoPage extends StatelessWidget {
         ),
       ),
     );
+
     if (result == true) {
-      Set<String> updatedTags = {};
-      if (remove) {
-        updatedTags
-          ..addAll([...sortable.data.tags])
-          ..remove(ImageArchiveData.photoCalendarTag);
-      } else {
-        updatedTags.addAll(
-          [...sortable.data.tags, ImageArchiveData.photoCalendarTag],
-        );
+      final tags = sortable.data.tags.toSet();
+      if (tags.add(ImageArchiveData.photoCalendarTag) ||
+          tags.remove(ImageArchiveData.photoCalendarTag)) {
+        context.read<SortableBloc>().add(
+              SortableUpdated(
+                sortable.copyWith(
+                  data: sortable.data.copyWith(tags: tags),
+                ),
+              ),
+            );
       }
-      final updatedSortable = sortable.copyWith(
-          data: sortable.data.copyWith(tags: updatedTags.toList()));
-      BlocProvider.of<SortableBloc>(context)
-          .add(SortableUpdated(updatedSortable));
     }
   }
 }

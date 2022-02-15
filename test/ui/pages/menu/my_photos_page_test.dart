@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -41,10 +42,10 @@ void main() {
           ),
           Sortable.createNew(
             groupId: myPhotosFolder.id,
-            data: const ImageArchiveData(
+            data: ImageArchiveData(
               name: 'image in photo-calendar',
               fileId: 'fileId',
-              tags: [ImageArchiveData.photoCalendarTag],
+              tags: UnmodifiableSetView({ImageArchiveData.photoCalendarTag}),
             ),
           ),
           Sortable.createNew(
