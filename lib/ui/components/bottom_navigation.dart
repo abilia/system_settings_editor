@@ -18,12 +18,13 @@ class BottomNavigation extends StatelessWidget {
     return _BottomNavigation(
       useSafeArea: useSafeArea,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: forwardNavigationWidget != null
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.center,
         children: [
           if (forwardNavigationWidget != null) ...[
-            Expanded(child: backNavigationWidget),
-            SizedBox(width: 8.s),
-            Expanded(child: forwardNavigationWidget),
+            Center(child: backNavigationWidget),
+            Center(child: forwardNavigationWidget),
           ] else
             Center(child: backNavigationWidget),
         ],

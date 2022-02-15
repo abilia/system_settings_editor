@@ -36,6 +36,8 @@ class Layout {
   final ActivityPageLayout activityPage;
   final CheckListLayout checkList;
   final NoteLayout note;
+  final IconTextButtonStyle iconTextButton;
+  final IconTextButtonStyle nextButton;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -59,6 +61,9 @@ class Layout {
     this.activityPage = const ActivityPageLayout(),
     this.checkList = const CheckListLayout(),
     this.note = const NoteLayout(),
+    this.iconTextButton = const IconTextButtonStyle(),
+    this.nextButton = const IconTextButtonStyle(
+        minimumSize: Size(150, 64), maximumSize: Size(150, 64)),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -589,5 +594,17 @@ class NoteLayout {
 
   const NoteLayout({
     this.notePadding = const EdgeInsets.fromLTRB(18, 10, 16, 24),
+  });
+}
+
+class IconTextButtonStyle {
+  final EdgeInsets innerPadding;
+  final Size minimumSize;
+  final Size maximumSize;
+
+  const IconTextButtonStyle({
+    this.innerPadding = const EdgeInsets.only(right: 8),
+    this.minimumSize = const Size(172, 64),
+    this.maximumSize = const Size(double.infinity, 64),
   });
 }

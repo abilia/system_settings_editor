@@ -82,10 +82,9 @@ final textButtonStyleDarkGrey = textButtonStyle.copyWith(
 );
 
 final iconTextButtonStyle = baseButtonStyle.copyWith(
-  padding: MaterialStateProperty.all(
-    EdgeInsets.fromLTRB(0.0, 20.s, 8.0.s, 20.0.s),
-  ),
-  minimumSize: MaterialStateProperty.all(Size(172.0.s, 64.0.s)),
+  padding: MaterialStateProperty.all(layout.iconTextButton.innerPadding),
+  minimumSize: MaterialStateProperty.all(layout.iconTextButton.minimumSize),
+  maximumSize: MaterialStateProperty.all(layout.iconTextButton.maximumSize),
 );
 
 final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
@@ -101,6 +100,11 @@ final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
 final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
   shape: noBorder,
+);
+
+final iconTextButtonStyleNext = iconTextButtonStyleGreen.copyWith(
+  minimumSize: MaterialStateProperty.all(layout.nextButton.minimumSize),
+  maximumSize: MaterialStateProperty.all(layout.nextButton.maximumSize),
 );
 
 final actionIconTextButtonStyleRed = ButtonStyle(
