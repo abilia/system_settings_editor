@@ -41,8 +41,10 @@ class RawSortableData extends SortableData {
 }
 
 class ImageArchiveData extends SortableData {
+  static const photoCalendarTag = 'photoCalendar';
   final String name, fileId, icon, file;
   final bool upload, myPhotos;
+  final UnmodifiableSetView<String> tags;
 
   const ImageArchiveData({
     this.name = '',
@@ -51,6 +53,7 @@ class ImageArchiveData extends SortableData {
     this.icon = '',
     this.upload = false,
     this.myPhotos = false,
+    this.tags = const UnmodifiableSetView.empty(),
   }) : super();
 
   @override
@@ -61,10 +64,11 @@ class ImageArchiveData extends SortableData {
         if (file.isNotEmpty) 'file': file,
         if (upload) 'upload': upload,
         if (myPhotos) 'myPhotos': myPhotos,
+        if (tags.isNotEmpty) 'tags': tags.toList(),
       });
 
   @override
-  List<Object?> get props => [name, fileId, icon, file];
+  List<Object?> get props => [name, fileId, icon, file, tags];
 
   factory ImageArchiveData.fromJson(String data) {
     final sortableData = json.decode(data);
@@ -75,6 +79,9 @@ class ImageArchiveData extends SortableData {
       file: sortableData['file'] ?? '',
       upload: sortableData['upload'] ?? false,
       myPhotos: sortableData['myPhotos'] ?? false,
+      tags: sortableData['tags'] is List<dynamic>
+          ? UnmodifiableSetView((Set<String>.from(sortableData['tags'])))
+          : const UnmodifiableSetView.empty(),
     );
   }
 
@@ -93,6 +100,22 @@ class ImageArchiveData extends SortableData {
 
   @override
   bool hasImage() => fileId.isNotEmpty || icon.isNotEmpty;
+
+  bool isInPhotoCalendar() => tags.contains(photoCalendarTag);
+
+  ImageArchiveData copyWith({
+    String? name,
+    Iterable<String>? tags,
+  }) =>
+      ImageArchiveData(
+        name: name ?? this.name,
+        tags: tags != null ? UnmodifiableSetView(tags.toSet()) : this.tags,
+        fileId: fileId,
+        icon: icon,
+        file: file,
+        upload: upload,
+        myPhotos: myPhotos,
+      );
 }
 
 class NoteData extends SortableData {

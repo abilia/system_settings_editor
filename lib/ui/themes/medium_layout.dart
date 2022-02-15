@@ -4,7 +4,8 @@ class _MediumLayout extends Layout {
   const _MediumLayout()
       : super(
           appBar: const AppBarLayout(
-            height: 148,
+            largeAppBarHeight: 148,
+            height: 104,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -23,6 +24,14 @@ class _MediumLayout extends Layout {
               borderRadius: 20,
               orangeDotInset: 6,
             ),
+          ),
+          myPhotos: const MyPhotosLayout(
+            crossAxisCount: 3,
+            fullScreenImageBorderRadius: 20,
+            childAspectRatio: 240 / 168,
+            fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
+            addPhotoButtonPadding:
+                EdgeInsets.only(top: 8, bottom: 8, right: 16),
           ),
           toolbar: const ToolbarLayout(
             height: 120,
@@ -185,25 +194,36 @@ class _MediumLayout extends Layout {
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
           ongoingFullscreenPage: const OngoingFullscreenActivityPageLayout(
-              toolBar: OngoingFullscreenActivityToolBarLayout(
-                  height: 128,
-                  buttonHeight: 96,
-                  buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
-              activityIcon: OngoingFullscreenActivityIconLayout(
-                size: Size(72, 72),
-                selectedSize: Size(84, 84),
-                toolBarHeight: 96,
-                currentBorder: 3,
-                border: 2.25,
-                arrowSize: Size(40, 21),
-                padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
-                selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
-                dotSize: 12,
-                dotOffset: 10,
-                arrowPreOffset: Offset(16, 1),
-                arrowPostOffset: Offset(0, 2),
-                arrowPointRadius: Radius.circular(6),
-              )),
+            toolBar: OngoingFullscreenActivityToolBarLayout(
+                height: 128,
+                buttonHeight: 96,
+                buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
+            activityIcon: OngoingFullscreenActivityIconLayout(
+              size: Size(72, 72),
+              selectedSize: Size(84, 84),
+              toolBarHeight: 96,
+              currentBorder: 3,
+              border: 2.25,
+              arrowSize: Size(40, 21),
+              padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
+              selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
+              dotSize: 12,
+              dotOffset: 10,
+              arrowPreOffset: Offset(16, 1),
+              arrowPostOffset: Offset(0, 2),
+              arrowPointRadius: Radius.circular(6),
+            ),
+          ),
+          dataItem: const DataItemLayout(
+            borderRadius: 20,
+            picture: _DataItemPictureLayout(
+              stickerIconSize: 24,
+              stickerSize: Size(48, 48),
+              imagePadding: EdgeInsets.only(left: 11, right: 11, bottom: 7),
+              titlePadding:
+                  EdgeInsets.only(left: 7, right: 7, bottom: 4, top: 7),
+            ),
+          ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),
@@ -245,6 +265,9 @@ class _MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+          ),
+          alarmPage: const AlarmPageLayout(
+            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
         );
 }

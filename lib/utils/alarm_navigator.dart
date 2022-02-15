@@ -3,7 +3,6 @@ import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/fullscreen_activity_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmNavigator {

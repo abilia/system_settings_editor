@@ -177,7 +177,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     final shouldDelete = await showViewDialog<bool>(
       context: context,
       builder: (_) => YesNoDialog(
-        heading: Translator.of(context).translate.remove,
+        heading: Translator.of(context).translate.delete,
         headingIcon: AbiliaIcons.deleteAllClear,
         text: Translator.of(context).translate.deleteActivity,
       ),

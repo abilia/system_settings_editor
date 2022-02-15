@@ -101,5 +101,9 @@ class TestKey {
       minutes = Key('minutes'),
       localImagesPickField = Key('localImages'),
       ttsPlayButton = Key('ttsPlayButton'),
-      showOngoingActivityInFullScreen = Key('showActivityInFullScreen');
+      showOngoingActivityInFullScreen = Key('showActivityInFullScreen'),
+      photoCalendarTabButton = Key('photoCalendarTabButton'),
+      photoCalendarTab = Key('photoCalendarTab'),
+      allPhotosTabButton = Key('allPhotosTabButton'),
+      allPhotosTab = Key('allPhotosTab');
 }

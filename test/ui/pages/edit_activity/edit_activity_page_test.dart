@@ -1029,30 +1029,6 @@ Internal improvements to tests and examples.''';
         expect(find.text(questionName), findsOneWidget);
       });
 
-      testWidgets('Can remove questions from edit question page',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(
-            createEditActivityPage(givenActivity: activityWithChecklist));
-        await tester.pumpAndSettle();
-        await tester.goToInfoItemTab();
-
-        expect(find.text(questions[0]!), findsOneWidget);
-        expect(find.text(questions[1]!), findsOneWidget);
-        expect(find.text(questions[2]!), findsOneWidget);
-        expect(find.text(questions[3]!, skipOffstage: false), findsOneWidget);
-        await tester.tap(find.text(questions[0]!));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.byType(RemoveButton));
-        await tester.pumpAndSettle();
-        expect(find.text(questions[0]!), findsNothing);
-        expect(find.text(questions[1]!), findsOneWidget);
-        expect(find.text(questions[2]!), findsOneWidget);
-        expect(find.text(questions[3]!), findsOneWidget);
-      });
-
       testWidgets('Can remove questions from toolbar',
           (WidgetTester tester) async {
         await tester.pumpWidget(

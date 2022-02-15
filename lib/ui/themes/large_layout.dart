@@ -4,7 +4,7 @@ class _LargeLayout extends Layout {
   const _LargeLayout()
       : super(
           appBar: const AppBarLayout(
-            height: 225,
+            largeAppBarHeight: 225,
           ),
           actionButton: const ActionButtonLayout(
             size: 100,
