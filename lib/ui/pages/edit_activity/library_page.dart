@@ -16,7 +16,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
-    this.showFolders = true,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
@@ -34,14 +33,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
-    this.showFolders = true,
   })  : selectableItems = true,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
         assert(selectedItemGenerator != null,
             'selectedItemGenerator should not be null in LibraryPage.selectable'),
         super(key: key);
-  final bool selectableItems, showBottomNavigationBar, showFolders;
+  final bool selectableItems, showBottomNavigationBar;
   final PreferredSizeWidget? appBar;
   final Function(Sortable<T>)? onOk;
   final VoidCallback? onCancel;
@@ -76,7 +74,6 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                         selectableItems: selectableItems,
                         crossAxisCount: gridCrossAxisCount,
                         childAspectRatio: gridChildAspectRatio,
-                        showFolders: showFolders,
                       ),
               ),
             ],
@@ -158,7 +155,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
-  final bool selectableItems, showFolders;
+  final bool selectableItems;
   final int? crossAxisCount;
   final double? childAspectRatio;
 
@@ -168,7 +165,6 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
     this.selectableItems = true,
     this.crossAxisCount,
     this.childAspectRatio,
-    this.showFolders = true,
     Key? key,
   }) : super(key: key);
 
@@ -190,15 +186,9 @@ class _SortableLibraryState<T extends SortableData>
   Widget build(BuildContext context) {
     return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        List<Sortable<T>> content = [];
-
-        if (widget.showFolders) {
-          content =
-              archiveState.allByFolder[archiveState.currentFolderId] ?? [];
-          content.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        } else {
-          content = archiveState.allById.values.toList();
-        }
+        List<Sortable<T>> content =
+            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
+              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
         if (content.isEmpty) {
           return EmptyLibraryMessage(
@@ -206,32 +196,6 @@ class _SortableLibraryState<T extends SortableData>
             rootFolder: archiveState.isAtRoot,
           );
         }
-
-        List<Widget> items = [];
-
-        if (widget.showFolders) {
-          items = content
-              .map((sortable) => sortable.isGroup
-                  ? Folder(sortable: sortable)
-                  : widget.selectableItems
-                      ? SelectableItem(
-                          sortable: sortable,
-                          libraryItemGenerator: widget.libraryItemGenerator,
-                        )
-                      : widget.libraryItemGenerator(sortable))
-              .toList();
-        } else {
-          items = content
-              .where((sortable) => !sortable.isGroup)
-              .map((sortable) => widget.selectableItems
-                  ? SelectableItem(
-                      sortable: sortable,
-                      libraryItemGenerator: widget.libraryItemGenerator,
-                    )
-                  : widget.libraryItemGenerator(sortable))
-              .toList();
-        }
-
         return ScrollArrows.vertical(
           controller: _controller,
           child: GridView.count(
@@ -247,7 +211,16 @@ class _SortableLibraryState<T extends SortableData>
                 widget.crossAxisCount ?? layout.libraryPage.crossAxisCount,
             childAspectRatio:
                 widget.childAspectRatio ?? layout.libraryPage.childAspectRatio,
-            children: items,
+            children: content
+                .map((sortable) => sortable.isGroup
+                    ? Folder(sortable: sortable)
+                    : widget.selectableItems
+                        ? SelectableItem(
+                            sortable: sortable,
+                            libraryItemGenerator: widget.libraryItemGenerator,
+                          )
+                        : widget.libraryItemGenerator(sortable))
+                .toList(),
           ),
         );
       },

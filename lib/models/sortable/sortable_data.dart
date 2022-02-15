@@ -44,7 +44,7 @@ class ImageArchiveData extends SortableData {
   static const photoCalendarTag = 'photoCalendar';
   final String name, fileId, icon, file;
   final bool upload, myPhotos;
-  final List<String> tags;
+  final UnmodifiableSetView<String> tags;
 
   const ImageArchiveData({
     this.name = '',
@@ -53,7 +53,7 @@ class ImageArchiveData extends SortableData {
     this.icon = '',
     this.upload = false,
     this.myPhotos = false,
-    this.tags = const [],
+    this.tags = const UnmodifiableSetView.empty(),
   }) : super();
 
   @override
@@ -64,7 +64,7 @@ class ImageArchiveData extends SortableData {
         if (file.isNotEmpty) 'file': file,
         if (upload) 'upload': upload,
         if (myPhotos) 'myPhotos': myPhotos,
-        if (tags.isNotEmpty) 'tags': tags,
+        if (tags.isNotEmpty) 'tags': tags.toList(),
       });
 
   @override
@@ -80,8 +80,8 @@ class ImageArchiveData extends SortableData {
       upload: sortableData['upload'] ?? false,
       myPhotos: sortableData['myPhotos'] ?? false,
       tags: sortableData['tags'] is List<dynamic>
-          ? List<String>.from(sortableData['tags'])
-          : [],
+          ? UnmodifiableSetView((Set<String>.from(sortableData['tags'])))
+          : const UnmodifiableSetView.empty(),
     );
   }
 
@@ -105,11 +105,11 @@ class ImageArchiveData extends SortableData {
 
   ImageArchiveData copyWith({
     String? name,
-    List<String>? tags,
+    Iterable<String>? tags,
   }) =>
       ImageArchiveData(
         name: name ?? this.name,
-        tags: tags ?? this.tags,
+        tags: tags != null ? UnmodifiableSetView(tags.toSet()) : this.tags,
         fileId: fileId,
         icon: icon,
         file: file,

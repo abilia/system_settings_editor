@@ -32,14 +32,14 @@ class PhotoAdded extends SortableEvent {
   final String imagePath;
   final String name;
   final String folderId;
-  final List<String> tags;
+  final Set<String> tags;
 
   const PhotoAdded(
     this.imageId,
     this.imagePath,
     this.name,
     this.folderId, {
-    this.tags = const [],
+    this.tags = const {},
   });
 
   @override
