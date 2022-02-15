@@ -239,6 +239,7 @@ class FullScreenImage extends StatelessWidget {
   final String filePath;
   final BoxDecoration? backgroundDecoration;
   final GestureTapCallback? onTap;
+  final bool tightMode;
 
   const FullScreenImage({
     Key? key,
@@ -246,6 +247,7 @@ class FullScreenImage extends StatelessWidget {
     required this.filePath,
     this.backgroundDecoration,
     this.onTap,
+    this.tightMode = false,
   }) : super(key: key);
 
   @override
@@ -281,6 +283,7 @@ class FullScreenImage extends StatelessWidget {
           return PhotoView(
             backgroundDecoration: backgroundDecoration,
             imageProvider: getProvider(),
+            tightMode: tightMode,
           );
         });
       }),

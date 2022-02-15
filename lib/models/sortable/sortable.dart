@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull/i18n/all.dart';
@@ -84,4 +85,22 @@ class Sortable<T extends SortableData> extends DataModel {
   @override
   DbModel<DataModel> wrapWithDbModel({int revision = 0, int dirty = 0}) =>
       DbSortable._(sortable: this, revision: revision, dirty: dirty);
+
+  Sortable copyWith({
+    T? data,
+    String? groupId,
+    String? sortOrder,
+    bool? deleted,
+  }) =>
+      Sortable._(
+        id: id,
+        type: type,
+        data: data ?? this.data,
+        groupId: groupId ?? this.groupId,
+        sortOrder: sortOrder ?? this.sortOrder,
+        deleted: deleted ?? this.deleted,
+        isGroup: isGroup,
+        visible: visible,
+        fixed: fixed,
+      );
 }

@@ -28,21 +28,6 @@ class EditQuestionPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
         title: t.task,
-        trailing: question != null
-            ? Padding(
-                padding: EdgeInsets.only(right: 12.0.s),
-                child: RemoveButton(
-                  onTap: () =>
-                      Navigator.of(context).maybePop(ImageAndName.empty),
-                  icon: Icon(
-                    AbiliaIcons.deleteAllClear,
-                    color: AbiliaColors.white,
-                    size: 24.s,
-                  ),
-                  text: t.remove,
-                ),
-              )
-            : null,
       ),
     );
   }

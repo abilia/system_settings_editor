@@ -471,8 +471,6 @@ abstract class Translated {
 
   final String task = 'Task';
 
-  final String remove = 'Delete';
-
   final String screenBrightness = 'Screen brightness';
 
   final String battery = 'Battery';
@@ -812,11 +810,20 @@ abstract class Translated {
 
   final String camera = 'Camera';
 
-  final String photoCalendar = 'Photo calendar';
+  final String photoCalendar = 'Photo-calendar';
 
   final String countdown = 'Countdown';
 
   final String quickSettingsMenu = 'Quick settings';
+
+  final String allPhotos = 'All photos';
+
+  final String addToPhotoCalendarQuestion = 'Add this photo to Photo-calendar?';
+
+  final String removeFromPhotoCalendarQuestion =
+      'Remove this photo from Photo-calendar?';
+
+  final String remove = 'Remove';
 }
 
 class EN extends Translated {
@@ -1491,9 +1498,6 @@ class SV extends Translated {
 
   @override
   final String task = 'Uppgift';
-
-  @override
-  final String remove = 'Ta bort';
 
   @override
   final String screenBrightness = 'Skärmens ljusstyrka';
@@ -2662,9 +2666,6 @@ class DA extends Translated {
 
   @override
   final String task = 'Opgave';
-
-  @override
-  final String remove = 'Slet';
 
   @override
   final String screenBrightness = 'Skærmens lysstyrke';
@@ -3836,9 +3837,6 @@ class NL extends Translated {
   final String task = 'Taak';
 
   @override
-  final String remove = 'Verwijderen';
-
-  @override
   final String screenBrightness = 'Schermhelderheid';
 
   @override
@@ -5007,9 +5005,6 @@ class FI extends Translated {
 
   @override
   final String task = 'Tehtävä';
-
-  @override
-  final String remove = 'Poista';
 
   @override
   final String screenBrightness = 'Näytön kirkkaus';
@@ -6185,9 +6180,6 @@ class DE extends Translated {
   final String task = 'Aufgabe';
 
   @override
-  final String remove = 'Löschen';
-
-  @override
   final String screenBrightness = 'Bildschirmhelligkeit';
 
   @override
@@ -7356,9 +7348,6 @@ class NB extends Translated {
 
   @override
   final String task = 'Oppgave';
-
-  @override
-  final String remove = 'Slett';
 
   @override
   final String screenBrightness = 'Skjermens lysstyrke';

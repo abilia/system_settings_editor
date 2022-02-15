@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 
@@ -135,6 +136,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           name: event.name,
           file: '${FileStorage.folder}/${event.imageId}',
           fileId: event.imageId,
+          tags: UnmodifiableSetView(event.tags),
         );
         final folderContent = currentState.sortables
             .where((s) => s.groupId == event.folderId)
