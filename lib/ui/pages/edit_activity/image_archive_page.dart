@@ -1,5 +1,6 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/bloc/all.dart';
 
 class ImageArchivePage extends StatelessWidget {
   final VoidCallback? onCancel;
@@ -16,24 +17,29 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return LibraryPage<ImageArchiveData>.selectable(
-      appBar: AbiliaAppBar(
-        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
-        title: translate.selectImage,
+    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
+      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+        sortableBloc: BlocProvider.of<SortableBloc>(context),
+        initialFolderId: initialFolder,
+        visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
       ),
-      initialFolder: initialFolder,
-      rootHeading: header ?? translate.imageArchive,
-      libraryItemGenerator: (imageArchive) =>
-          ArchiveImage(sortable: imageArchive),
-      visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,
-      selectedItemGenerator: (imageArchive) =>
-          FullScreenArchiveImage(selected: imageArchive.data),
-      emptyLibraryMessage: translate.noImages,
-      onCancel: onCancel,
-      onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
-        AbiliaFile.from(
-          id: selected.data.fileId,
-          path: selected.data.file,
+      child: LibraryPage<ImageArchiveData>.selectable(
+        appBar: AbiliaAppBar(
+          iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+          title: translate.selectImage,
+        ),
+        rootHeading: header ?? translate.imageArchive,
+        libraryItemGenerator: (imageArchive) =>
+            ArchiveImage(sortable: imageArchive),
+        selectedItemGenerator: (imageArchive) =>
+            FullScreenArchiveImage(selected: imageArchive.data),
+        emptyLibraryMessage: translate.noImages,
+        onCancel: onCancel,
+        onOk: (selected) => Navigator.of(context).pop<AbiliaFile>(
+          AbiliaFile.from(
+            id: selected.data.fileId,
+            path: selected.data.file,
+          ),
         ),
       ),
     );

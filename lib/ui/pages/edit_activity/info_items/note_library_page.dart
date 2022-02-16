@@ -1,17 +1,28 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:seagull/bloc/all.dart';
 
 class NoteLibraryPage extends StatelessWidget {
   const NoteLibraryPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => LibraryPage<NoteData>.selectable(
-        libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
-        selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
-        emptyLibraryMessage: Translator.of(context).translate.noNotes,
-        onOk: (selected) =>
-            Navigator.of(context).pop<String>(selected.data.text),
+  Widget build(BuildContext context) =>
+      BlocProvider<SortableArchiveBloc<NoteData>>(
+        create: (_) => SortableArchiveBloc<NoteData>(
+          sortableBloc: BlocProvider.of<SortableBloc>(context),
+        ),
+        child: LibraryPage<NoteData>.selectable(
+          appBar: AbiliaAppBar(
+            iconData: AbiliaIcons.documents,
+            title: Translator.of(context).translate.selectFromLibrary,
+          ),
+          libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
+          selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
+          emptyLibraryMessage: Translator.of(context).translate.noNotes,
+          onOk: (selected) =>
+              Navigator.of(context).pop<String>(selected.data.text),
+        ),
       );
 }
 

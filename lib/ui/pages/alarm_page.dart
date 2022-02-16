@@ -20,10 +20,13 @@ class AlarmPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
         iconData: AbiliaIcons.alarmBell,
-        trailing: AbiliaClock(
-          style: Theme.of(context).textTheme.caption?.copyWith(
-                color: AbiliaColors.white,
-              ),
+        trailing: Padding(
+          padding: layout.alarmPage.alarmClockPadding,
+          child: AbiliaClock(
+            style: Theme.of(context).textTheme.caption?.copyWith(
+                  color: AbiliaColors.white,
+                ),
+          ),
         ),
       ),
       body: Padding(

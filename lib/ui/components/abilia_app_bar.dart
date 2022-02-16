@@ -23,42 +23,15 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
         super(key: key);
 
   static final Size size = Size.fromHeight(height);
-  static final double height = 68.s;
+  static final double height = layout.appBar.height;
 
   @override
   Widget build(BuildContext context) {
-    Widget content = AppBarHeading(
+    final appBarHeading = AppBarHeading(
       text: title,
       label: label ?? '',
       iconData: iconData,
     );
-    if (bottom != null) {
-      content = Column(
-        children: [
-          Expanded(child: content),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0.s),
-            child: bottom,
-          ),
-        ],
-      );
-    } else {
-      content = Center(child: content);
-    }
-    if (trailing != null) {
-      content = Stack(
-        children: [
-          content,
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: EdgeInsets.only(right: 16.s),
-              child: trailing,
-            ),
-          )
-        ],
-      );
-    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -67,7 +40,31 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Theme.of(context).appBarTheme.backgroundColor,
         ),
         child: SafeArea(
-          child: content,
+          child: (trailing != null || bottom != null)
+              ? Column(
+                  children: [
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: appBarHeading,
+                          ),
+                          if (trailing != null)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: trailing,
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (bottom != null)
+                      Expanded(
+                        child: bottom ?? const SizedBox.shrink(),
+                      ),
+                  ],
+                )
+              : Center(child: appBarHeading),
         ),
       ),
     );

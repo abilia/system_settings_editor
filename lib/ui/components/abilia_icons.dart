@@ -495,6 +495,7 @@ class AbiliaIcons {
       handiUncheck = IconData(0xEB28, fontFamily: fontFamily),
       calendarList = IconData(0xEB29, fontFamily: fontFamily),
       notification = IconData(0xEB31, fontFamily: fontFamily),
+      noPhotoCalendar = IconData(0xEB34, fontFamily: fontFamily),
       sun = IconData(0xEB2A, fontFamily: fontFamily),
       dayInterval = IconData(0xEB2B, fontFamily: fontFamily),
       dayNight = IconData(0xEB2C, fontFamily: fontFamily);

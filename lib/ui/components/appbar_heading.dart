@@ -28,23 +28,37 @@ class AppBarHeading extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Spacer(flex: 100),
-              if (iconData != null) ...[
-                Icon(iconData),
-                SizedBox(width: 8.s),
-              ],
-              if (label.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              const Spacer(flex: 15),
+              Expanded(
+                flex: 345,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(label, style: theme.textTheme.button),
-                    Text(text),
+                    if (iconData != null) ...[
+                      Icon(iconData),
+                      SizedBox(width: 8.s),
+                    ],
+                    if (label.isNotEmpty)
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(label, style: theme.textTheme.button),
+                            Text(
+                              text,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      Text(text),
                   ],
-                )
-              else
-                Text(text),
-              const Spacer(flex: 114),
+                ),
+              ),
+              const Spacer(flex: 30),
             ],
           ),
         ),

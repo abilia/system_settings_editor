@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -37,6 +38,14 @@ void main() {
             data: const ImageArchiveData(
               name: 'image',
               fileId: 'fileId',
+            ),
+          ),
+          Sortable.createNew(
+            groupId: myPhotosFolder.id,
+            data: ImageArchiveData(
+              name: 'image in photo-calendar',
+              fileId: 'fileId',
+              tags: UnmodifiableSetView({ImageArchiveData.photoCalendarTag}),
             ),
           ),
           Sortable.createNew(
@@ -99,11 +108,46 @@ void main() {
         await tester.goToMyPhotos();
         expect(find.byType(MyPhotosPage), findsOneWidget);
         expect(find.byType(LibraryFolder), findsOneWidget);
-        expect(find.byType(FullscreenViewablePhoto), findsOneWidget);
-        await tester.tap(find.byType(FullscreenViewablePhoto));
+        expect(find.byType(ThumbnailPhoto), findsNWidgets(2));
+        await tester.tap(find.byType(ThumbnailPhoto).first);
         await tester.pumpAndSettle();
-        expect(find.byType(FullscreenImageDialog), findsOneWidget);
+        expect(find.byType(PhotoPage), findsOneWidget);
         expect(find.byType(FullScreenImage), findsOneWidget);
+      });
+    });
+
+    testWidgets('Can switch between all photos and photo-calendar tabs',
+        (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byKey(TestKey.allPhotosTabButton), findsOneWidget);
+        expect(find.byKey(TestKey.photoCalendarTabButton), findsOneWidget);
+        expect(find.byKey(TestKey.allPhotosTab), findsOneWidget);
+        expect(find.byKey(TestKey.photoCalendarTab), findsNothing);
+        expect(find.byType(ThumbnailPhoto), findsNWidgets(2));
+
+        await tester.tap(find.byKey(TestKey.photoCalendarTabButton));
+        await tester.pumpAndSettle();
+        expect(find.byKey(TestKey.allPhotosTab), findsNothing);
+        expect(find.byKey(TestKey.photoCalendarTab), findsOneWidget);
+        expect(find.byType(ThumbnailPhoto), findsOneWidget);
+      });
+    });
+
+    testWidgets('Photo-calendar tagged photos have sticker', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byKey(TestKey.allPhotosTab), findsOneWidget);
+        expect(find.byKey(TestKey.photoCalendarTab), findsNothing);
+        expect(find.byType(ThumbnailPhoto), findsNWidgets(2));
+        expect(find.byType(PhotoCalendarSticker), findsOneWidget);
+
+        await tester.tap(find.byKey(TestKey.photoCalendarTabButton));
+        await tester.pumpAndSettle();
+        expect(find.byKey(TestKey.allPhotosTab), findsNothing);
+        expect(find.byKey(TestKey.photoCalendarTab), findsOneWidget);
+        expect(find.byType(ThumbnailPhoto), findsOneWidget);
+        expect(find.byType(PhotoCalendarSticker), findsOneWidget);
       });
     });
   });
@@ -111,10 +155,12 @@ void main() {
 
 extension on WidgetTester {
   Future<void> goToMyPhotos() async {
-    await pumpApp();
-    await tap(find.byType(MenuButton));
-    await pumpAndSettle();
-    await tap(find.byIcon(AbiliaIcons.myPhotos));
-    await pumpAndSettle();
+    await mockNetworkImages(() async {
+      await pumpApp();
+      await tap(find.byType(MenuButton));
+      await pumpAndSettle();
+      await tap(find.byIcon(AbiliaIcons.myPhotos));
+      await pumpAndSettle();
+    });
   }
 }

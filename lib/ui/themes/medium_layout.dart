@@ -4,7 +4,8 @@ class _MediumLayout extends Layout {
   const _MediumLayout()
       : super(
           appBar: const AppBarLayout(
-            height: 148,
+            largeAppBarHeight: 148,
+            height: 104,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -23,6 +24,14 @@ class _MediumLayout extends Layout {
               borderRadius: 20,
               orangeDotInset: 6,
             ),
+          ),
+          myPhotos: const MyPhotosLayout(
+            crossAxisCount: 3,
+            fullScreenImageBorderRadius: 20,
+            childAspectRatio: 240 / 168,
+            fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
+            addPhotoButtonPadding:
+                EdgeInsets.only(top: 8, bottom: 8, right: 16),
           ),
           toolbar: const ToolbarLayout(
             height: 120,
@@ -184,6 +193,16 @@ class _MediumLayout extends Layout {
               folderIconSize: 129,
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
+          dataItem: const DataItemLayout(
+            borderRadius: 20,
+            picture: _DataItemPictureLayout(
+              stickerIconSize: 24,
+              stickerSize: Size(48, 48),
+              imagePadding: EdgeInsets.only(left: 11, right: 11, bottom: 7),
+              titlePadding:
+                  EdgeInsets.only(left: 7, right: 7, bottom: 4, top: 7),
+            ),
+          ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),
@@ -235,6 +254,9 @@ class _MediumLayout extends Layout {
             innerPadding: EdgeInsets.only(right: 8),
             minimumSize: Size(346, 96),
             maximumSize: Size(346, 96),
+          ),
+          alarmPage: const AlarmPageLayout(
+            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
         );
 }

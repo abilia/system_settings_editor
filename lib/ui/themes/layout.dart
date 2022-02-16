@@ -33,11 +33,14 @@ class Layout {
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
+  final DataItemLayout dataItem;
+  final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
   final CheckListLayout checkList;
   final NoteLayout note;
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
+  final AlarmPageLayout alarmPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -58,23 +61,27 @@ class Layout {
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
+    this.dataItem = const DataItemLayout(),
+    this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
     this.checkList = const CheckListLayout(),
     this.note = const NoteLayout(),
     this.iconTextButton = const IconTextButtonStyle(),
     this.nextButton = const IconTextButtonStyle(
         minimumSize: Size(150, 64), maximumSize: Size(150, 64)),
+    this.alarmPage = const AlarmPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
-  final double horizontalPadding, height;
+  final double horizontalPadding, largeAppBarHeight, height;
 
   const AppBarLayout({
     this.horizontalPadding = 16,
-    this.height = 80,
+    this.largeAppBarHeight = 80,
+    this.height = 68,
   });
 }
 
@@ -115,6 +122,20 @@ class MenuItemButtonLayout {
     this.borderRadius = 12,
     this.orangeDotInset = 4,
   });
+}
+
+class MyPhotosLayout {
+  final double? childAspectRatio;
+  final double fullScreenImageBorderRadius;
+  final int crossAxisCount;
+  final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
+
+  const MyPhotosLayout(
+      {this.childAspectRatio,
+      this.fullScreenImageBorderRadius = 12,
+      this.crossAxisCount = 3,
+      this.fullScreenImagePadding = const EdgeInsets.all(12),
+      this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16)});
 }
 
 class ToolbarLayout {
@@ -501,6 +522,30 @@ class LibraryPageLayout {
       );
 }
 
+class DataItemLayout {
+  final double borderRadius;
+  final _DataItemPictureLayout picture;
+
+  const DataItemLayout({
+    this.borderRadius = 12,
+    this.picture = const _DataItemPictureLayout(),
+  });
+}
+
+class _DataItemPictureLayout {
+  final double stickerIconSize;
+  final Size stickerSize;
+  final EdgeInsets imagePadding, titlePadding;
+
+  const _DataItemPictureLayout({
+    this.stickerIconSize = 16,
+    this.stickerSize = const Size(32, 32),
+    this.imagePadding = const EdgeInsets.only(left: 12, right: 12, bottom: 3),
+    this.titlePadding =
+        const EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 2),
+  });
+}
+
 class ActivityPageLayout {
   final double titleFontSize,
       titleLineHeight,
@@ -606,5 +651,14 @@ class IconTextButtonStyle {
     this.innerPadding = const EdgeInsets.only(right: 8),
     this.minimumSize = const Size(172, 64),
     this.maximumSize = const Size(double.infinity, 64),
+  });
+}
+
+class AlarmPageLayout {
+  final EdgeInsets alarmClockPadding;
+
+  const AlarmPageLayout({
+    this.alarmClockPadding =
+        const EdgeInsets.only(top: 4, bottom: 4, right: 16),
   });
 }
