@@ -67,24 +67,25 @@ class TimerCard extends StatelessWidget {
                         child: TimerImage(timerOccasion),
                       ),
                     ),
-                  Padding(
-                    padding: layout.eventCard.titlePadding,
-                    child: Stack(
-                      alignment: Alignment.bottomLeft,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            timerOccasion.timer.title,
-                            style: Theme.of(context).textTheme.subtitle1,
-                            overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Padding(
+                      padding: layout.eventCard.titlePadding,
+                      child: Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              timerOccasion.timer.title,
+                              style: Theme.of(context).textTheme.subtitle1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        TimeLeft(timerOccasion),
-                      ],
+                          TimeLeft(timerOccasion),
+                        ],
+                      ),
                     ),
                   ),
-                  const Spacer(),
                   Padding(
                     padding: layout.eventCard.timerWheelPadding,
                     child: SizedBox(
