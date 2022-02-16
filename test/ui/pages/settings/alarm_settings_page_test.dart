@@ -53,6 +53,14 @@ void main() {
       expect(find.byType(AlarmSettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
+      if (Config.isMP) {
+        expect(find.byKey(TestKey.showOngoingActivityInFullScreen),
+            findsOneWidget);
+      }
+      if (Config.isMPGO) {
+        expect(
+            find.byKey(TestKey.showOngoingActivityInFullScreen), findsNothing);
+      }
     });
 
     testWidgets('Select non checkable alarm sound', (tester) async {
@@ -180,9 +188,9 @@ void main() {
         key: AlarmSettings.showOngoingActivityInFullScreenKey,
         matcher: true,
       );
-    });
+    }, skip: Config.isMPGO);
 
-    testWidgets('Changes to alarm triggers an alarm schedualing',
+    testWidgets('Changes to alarm triggers an alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
@@ -193,7 +201,7 @@ void main() {
       expect(alarmSchedualCalls, greaterThanOrEqualTo(preCalls + 1));
     });
 
-    testWidgets('No changes to alarm triggers no alarm schedualing',
+    testWidgets('No changes to alarm triggers no alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
       final preCalls = alarmSchedualCalls;
