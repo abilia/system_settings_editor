@@ -41,6 +41,7 @@ class DatePickerWiz extends StatelessWidget {
                 context.read<EditActivityCubit>().changeDate(
                       context.read<DayPickerBloc>().state.day,
                     );
+                return null;
               }),
             ),
           ),

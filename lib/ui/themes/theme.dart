@@ -25,7 +25,6 @@ final formTopSpacer = SizedBox(
     height: layout.formPadding.top - layout.formPadding.verticalItemDistance);
 
 final abiliaTheme = ThemeData(
-  primaryColorBrightness: Brightness.light,
   scaffoldBackgroundColor: AbiliaColors.white110,
   colorScheme: const ColorScheme.light(
     primary: AbiliaColors.black,

@@ -245,6 +245,7 @@ class SliverEventList extends StatelessWidget {
                     ),
                   );
                 }
+                return null;
               },
               childCount: events.length,
             ),
