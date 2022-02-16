@@ -206,7 +206,6 @@ class _MediumLayout extends Layout {
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),
-            timeBoxPadding: EdgeInsets.all(16),
             topInfoPadding: EdgeInsets.all(16),
             titleImageHorizontalSpacing: 16,
             imagePadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -225,9 +224,12 @@ class _MediumLayout extends Layout {
             dividerIndentation: 16,
             dashWidth: 12,
             dashSpacing: 12,
+            timeCrossOverSize: Size(112, 56),
             minTimeBoxWidth: 108,
             timeBoxSize: Size(144, 80),
-            timeCrossOverSize: Size(112, 56),
+            timeBoxPadding: EdgeInsets.all(16),
+            timeBoxCurrentBorderWidth: 3,
+            timeBoxFutureBorderWidth: 2,
           ),
           checkList: const CheckListLayout(
             questionViewPadding: EdgeInsets.only(bottom: 12),

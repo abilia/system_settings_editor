@@ -551,7 +551,9 @@ class ActivityPageLayout {
       dividerIndentation,
       dashWidth,
       dashSpacing,
-      minTimeBoxWidth;
+      minTimeBoxWidth,
+      timeBoxCurrentBorderWidth,
+      timeBoxFutureBorderWidth;
 
   final Size timeBoxSize, timeCrossOverSize;
 
@@ -572,11 +574,8 @@ class ActivityPageLayout {
       height: titleLineHeight / titleFontSize);
 
   const ActivityPageLayout({
-    this.timeCrossOverSize = const Size(64, 38),
-    this.timeBoxSize = const Size(92, 52),
     this.topInfoHeight = 126,
     this.timeRowPadding = const EdgeInsets.only(bottom: 8),
-    this.timeBoxPadding = const EdgeInsets.all(8),
     this.topInfoPadding =
         const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
     this.titleImageHorizontalSpacing = 8,
@@ -596,7 +595,12 @@ class ActivityPageLayout {
     this.dividerIndentation = 12,
     this.dashWidth = 7,
     this.dashSpacing = 8,
+    this.timeCrossOverSize = const Size(64, 38),
+    this.timeBoxPadding = const EdgeInsets.all(8),
+    this.timeBoxSize = const Size(92, 52),
     this.minTimeBoxWidth = 72,
+    this.timeBoxCurrentBorderWidth = 2,
+    this.timeBoxFutureBorderWidth = 1,
   });
 }
 
