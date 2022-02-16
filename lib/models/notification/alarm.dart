@@ -6,12 +6,18 @@ import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
   final ActivityDay activityDay;
+  final bool fullScreenActivity;
   DateTime get day => activityDay.day;
   Activity get activity => activityDay.activity;
+  String get stackId =>
+      fullScreenActivity ? 'fullScreenActivity' : activityDay.activity.id;
   bool hasSound(AlarmSettings settings);
   bool vibrate(AlarmSettings settings);
   Sound sound(AlarmSettings settings);
-  const NotificationAlarm(this.activityDay);
+  const NotificationAlarm(
+    this.activityDay, {
+    this.fullScreenActivity = false,
+  });
   DateTime get notificationTime;
   String get type;
 
@@ -41,6 +47,8 @@ abstract class NotificationAlarm extends Equatable {
     }
   }
 
+  NotificationAlarm setFullScreenActivity(bool fullScreenActivity) => this;
+
   String encode() => json.encode(toJson());
 
   factory NotificationAlarm.decode(String data) =>
@@ -55,7 +63,10 @@ abstract class NotificationAlarm extends Equatable {
 }
 
 abstract class NewAlarm extends NotificationAlarm {
-  const NewAlarm(ActivityDay activityDay) : super(activityDay);
+  const NewAlarm(
+    ActivityDay activityDay, {
+    bool fullScreenActivity = false,
+  }) : super(activityDay, fullScreenActivity: fullScreenActivity);
 
   @override
   bool hasSound(settings) => activity.alarm.sound;
@@ -74,12 +85,21 @@ abstract class NewAlarm extends NotificationAlarm {
 class StartAlarm extends NewAlarm {
   StartAlarm(Activity activity, DateTime day)
       : super(ActivityDay(activity, day));
-  const StartAlarm.from(ActivityDay activityDay) : super(activityDay);
+
+  const StartAlarm.from(
+    ActivityDay activityDay, {
+    bool fullScreenActivity = false,
+  }) : super(activityDay, fullScreenActivity: fullScreenActivity);
+
   @override
   DateTime get notificationTime => activityDay.start;
 
   @override
   AbiliaFile get speech => activity.extras.startTimeExtraAlarm;
+
+  @override
+  StartAlarm setFullScreenActivity(bool fullScreenActivity) =>
+      StartAlarm.from(activityDay, fullScreenActivity: fullScreenActivity);
 
   @override
   String get type => typeName;
@@ -88,7 +108,12 @@ class StartAlarm extends NewAlarm {
 
 class EndAlarm extends NewAlarm {
   EndAlarm(Activity activity, DateTime day) : super(ActivityDay(activity, day));
-  const EndAlarm.from(ActivityDay activityDay) : super(activityDay);
+
+  const EndAlarm.from(
+    ActivityDay activityDay, {
+    bool fullScreenActivity = false,
+  }) : super(activityDay, fullScreenActivity: fullScreenActivity);
+
   @override
   DateTime get notificationTime => activityDay.end;
 
@@ -97,6 +122,11 @@ class EndAlarm extends NewAlarm {
 
   @override
   String get type => typeName;
+
+  @override
+  EndAlarm setFullScreenActivity(bool fullScreenActivity) =>
+      EndAlarm.from(activityDay, fullScreenActivity: fullScreenActivity);
+
   static const String typeName = 'EndAlarm';
 }
 

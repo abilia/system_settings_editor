@@ -16,6 +16,9 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (alarm.fullScreenActivity) {
+      return FullScreenActivityPage(activityDay: alarm.activityDay);
+    }
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
@@ -119,9 +122,7 @@ class PopAwareAlarmPage extends StatelessWidget {
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
           AlarmNavigator.log.fine('onWillPop $alarm');
-          child is FullScreenActivityPage
-              ? alarmNavigator.removeFullScreenActivity()
-              : alarmNavigator.removedFromRoutes(alarm);
+          alarmNavigator.removedFromRoutes(alarm);
           await notificationPlugin.cancel(alarm.hashCode);
           return true;
         },

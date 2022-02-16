@@ -21,20 +21,22 @@ class AlarmListener extends StatelessWidget {
         listeners: [
           BlocListener<NotificationCubit, NotificationAlarm?>(
             listener: (context, state) async {
-              if (state != null &&
-                  (!fullScreenActivity || state is StartAlarm)) {
-                await GetIt.I<AlarmNavigator>()
-                    .pushAlarm(context, state, fullScreenActivity);
+              if (state != null) {
+                await GetIt.I<AlarmNavigator>().pushAlarm(
+                  context,
+                  state.setFullScreenActivity(fullScreenActivity),
+                );
               }
             },
           ),
           if (!Platform.isAndroid)
             BlocListener<AlarmCubit, NotificationAlarm?>(
               listener: (context, state) async {
-                if (state != null &&
-                    (!fullScreenActivity || state is StartAlarm)) {
-                  await GetIt.I<AlarmNavigator>()
-                      .pushAlarm(context, state, fullScreenActivity);
+                if (state != null) {
+                  await GetIt.I<AlarmNavigator>().pushAlarm(
+                    context,
+                    state.setFullScreenActivity(fullScreenActivity),
+                  );
                 }
               },
             ),
