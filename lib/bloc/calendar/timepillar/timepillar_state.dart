@@ -41,7 +41,7 @@ class TimepillarState extends Equatable {
       (_layout.width + _layout.padding * 2) * zoom;
   late final double timePillarHeight = (timepillarInterval.lengthInHours +
           // include one extra hour for the last digit after the timepillar
-          // (could only be the font size of the text)
+          // (alternatively, adding the font height of the text would also work)
           1) *
       hourHeight;
   late final double topPadding = 2 * hourPadding;
