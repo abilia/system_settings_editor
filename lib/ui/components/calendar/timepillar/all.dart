@@ -4,7 +4,6 @@ export 'two_timepillar_calendar.dart';
 export 'timeline.dart';
 export 'hour_lines.dart';
 export 'sliver_timepillar.dart';
-export 'activity_timepillar_card.dart';
 export 'overlay/all.dart';
 export 'timepillar_board.dart';
 export 'card/all.dart';
