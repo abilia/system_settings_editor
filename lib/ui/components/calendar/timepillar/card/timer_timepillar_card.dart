@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class TimerTimepillardCard extends TimerpillarCard {
+class TimerTimepillardCard extends TimepillarCard {
   final TimepillarState ts;
   final TimerOccasion timerOccasion;
   const TimerTimepillardCard({

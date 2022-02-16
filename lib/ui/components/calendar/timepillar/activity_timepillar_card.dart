@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class ActivityTimepillarCard extends TimerpillarCard {
+class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
   final double textHeight;
   final DayParts dayParts;

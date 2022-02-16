@@ -26,7 +26,7 @@ class TimepillarBoard extends StatelessWidget {
       style: textStyle,
       overflow: TextOverflow.visible,
       textAlign: TextAlign.center,
-      maxLines: TimerpillarCard.maxTitleLines,
+      maxLines: TimepillarCard.maxTitleLines,
       child: SizedBox(
         width: max(categoryMinWidth, boardData.columns * timepillarWidth),
         child: Stack(children: boardData.cards),
@@ -47,7 +47,7 @@ class TimepillarBoard extends StatelessWidget {
     final maxCardHeight = timepillarState.cardPadding.vertical +
         timepillarState.cardMinImageHeight +
         timepillarState.cardPadding.top +
-        textStyle.fontSize! * textStyle.height! * TimerpillarCard.maxTitleLines;
+        textStyle.fontSize! * textStyle.height! * TimepillarCard.maxTitleLines;
     final maxEndPos = topMargin +
         timepillarState.timePillarHeight +
         bottomMargin +
@@ -55,7 +55,7 @@ class TimepillarBoard extends StatelessWidget {
         maxCardHeight;
 
     eventOccasions.sort((a1, a2) => a1.start.compareTo(a2.start));
-    final scheduled = <List<TimerpillarCard>>[];
+    final scheduled = <List<TimepillarCard>>[];
     ActivityLoop:
     for (final eo in eventOccasions) {
       final cardGenerator = eo is ActivityOccasion
@@ -99,7 +99,7 @@ class TimepillarBoard extends StatelessWidget {
   }
 }
 
-typedef BoardCardBuilder = TimerpillarCard Function(int col);
+typedef BoardCardBuilder = TimepillarCard Function(int col);
 
 class BoardCardGenerator {
   const BoardCardGenerator({required this.top, required this.builder});
@@ -242,7 +242,7 @@ class CardPosition {
 }
 
 class TimePillarBoardData {
-  final UnmodifiableListView<TimerpillarCard> cards;
+  final UnmodifiableListView<TimepillarCard> cards;
   final double heigth;
   final int columns;
 
