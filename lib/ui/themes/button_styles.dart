@@ -82,7 +82,6 @@ final textButtonStyleDarkGrey = textButtonStyle.copyWith(
 );
 
 final iconTextButtonStyle = baseButtonStyle.copyWith(
-  padding: MaterialStateProperty.all(layout.iconTextButton.innerPadding),
   minimumSize: MaterialStateProperty.all(layout.iconTextButton.minimumSize),
   maximumSize: MaterialStateProperty.all(layout.iconTextButton.maximumSize),
 );

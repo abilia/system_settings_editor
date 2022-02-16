@@ -246,12 +246,10 @@ class _MediumLayout extends Layout {
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
           ),
           iconTextButton: const IconTextButtonStyle(
-            innerPadding: EdgeInsets.only(right: 8),
             minimumSize: Size(376, 96),
             maximumSize: Size(double.infinity, 96),
           ),
           nextButton: const IconTextButtonStyle(
-            innerPadding: EdgeInsets.only(right: 8),
             minimumSize: Size(346, 96),
             maximumSize: Size(346, 96),
           ),
