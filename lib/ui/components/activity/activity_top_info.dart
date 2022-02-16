@@ -171,7 +171,6 @@ class _TimeBox extends StatelessWidget {
         .textTheme
         .headline6
         ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
-    final boxDecoration = _decoration;
     final maxMaxWidth = layout.activityPage.timeBoxSize.width;
     return Tts.data(
       data: text,
@@ -187,7 +186,11 @@ class _TimeBox extends StatelessWidget {
               maxWidth: min(maxWidth ?? maxMaxWidth, maxMaxWidth),
               maxHeight: layout.activityPage.timeBoxSize.height,
             ),
-            decoration: boxDecoration,
+            decoration: current
+                ? _currentBoxDecoration
+                : past
+                    ? null
+                    : _futureBoxDecoration,
             child: Center(
               child: AutoSizeText(
                 text,
@@ -210,27 +213,20 @@ class _TimeBox extends StatelessWidget {
     );
   }
 
-  BoxDecoration get _decoration => current
-      ? _currentBoxDecoration
-      : past
-          ? _pastDecoration
-          : boxDecoration;
+  BoxDecoration? get _currentBoxDecoration => BoxDecoration(
+        color: AbiliaColors.white,
+        borderRadius: borderRadius,
+        border: Border.all(
+          color: AbiliaColors.red,
+          width: layout.activityPage.timeBoxCurrentBorderWidth,
+        ),
+      );
+
+  BoxDecoration? get _futureBoxDecoration => BoxDecoration(
+        borderRadius: borderRadius,
+        border: Border.all(
+          color: AbiliaColors.white140,
+          width: layout.activityPage.timeBoxFutureBorderWidth,
+        ),
+      );
 }
-
-final _pastDecoration = BoxDecoration(
-  borderRadius: borderRadius,
-  border: const Border.fromBorderSide(
-    BorderSide(style: BorderStyle.none),
-  ),
-);
-
-final _currentBoxDecoration = BoxDecoration(
-  color: AbiliaColors.white,
-  borderRadius: borderRadius,
-  border: Border.fromBorderSide(
-    BorderSide(
-      color: AbiliaColors.red,
-      width: border.top.width,
-    ),
-  ),
-);
