@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
+import 'package:uuid/uuid.dart';
 
 class AbiliaTimer extends Equatable {
   final String id;
@@ -12,7 +13,7 @@ class AbiliaTimer extends Equatable {
 
   const AbiliaTimer({
     required this.id,
-    required this.title,
+    this.title = '',
     this.fileId = '',
     this.paused = false,
     required this.startTime,
@@ -20,9 +21,25 @@ class AbiliaTimer extends Equatable {
     this.pausedAt = Duration.zero,
   });
 
+  factory AbiliaTimer.createNew({
+    String? title = '',
+    String? fileId = '',
+    required DateTime startTime,
+    required Duration duration,
+  }) =>
+      AbiliaTimer(
+        id: const Uuid().v4(),
+        title: title ?? '',
+        fileId: fileId ?? '',
+        startTime: startTime,
+        duration: duration,
+      );
+
   DateTime get endTime => startTime.add(duration);
 
   bool get hasImage => fileId.isNotEmpty;
+  bool get hasTitle => title.isNotEmpty;
+  AbiliaFile get imageFile => AbiliaFile.from(id: fileId);
 
   Map<String, dynamic> toMapForDb() => {
         'id': id,

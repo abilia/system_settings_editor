@@ -3,14 +3,9 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class ActivityTimepillarCard extends StatelessWidget {
-  static const int maxTitleLines = 5;
-
+class ActivityTimepillarCard extends TimepillarCard {
   final ActivityOccasion activityOccasion;
-  final TextStyle textStyle;
-  final int dots, column;
-  final double top, endPos, height, textHeight;
-  final TimepillarInterval timepillarInterval;
+  final double textHeight;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
   final TimepillarState timepillarState;
@@ -18,36 +13,31 @@ class ActivityTimepillarCard extends StatelessWidget {
   const ActivityTimepillarCard({
     Key? key,
     required this.activityOccasion,
-    required this.dots,
-    required this.top,
-    required this.column,
-    required this.height,
+    required CardPosition cardPosition,
+    required int column,
     required this.textHeight,
-    required this.textStyle,
-    required this.timepillarInterval,
     required this.dayParts,
     required this.timepillarSide,
     required this.timepillarState,
-  })  : endPos = top + height,
-        super(key: key);
+  }) : super(column, cardPosition, key: key);
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
     final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
         current = activityOccasion.occasion == Occasion.current,
-        past = activityOccasion.occasion == Occasion.past,
+        past = activityOccasion.isPast,
         inactive = past || signedOff;
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
-    final dotHeight = dots * ts.dotDistance;
+    final dotHeight = cardPosition.dots * ts.dotDistance;
 
     final right = TimepillarSide.right == timepillarSide;
+    final timepillarInterval = ts.timepillarInterval;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.dotsInTimepillar != current.dotsInTimepillar ||
@@ -58,11 +48,12 @@ class ActivityTimepillarCard extends StatelessWidget {
           inactive: inactive,
           showCategoryColor: settings.showCategoryColor,
           category: activity.category,
+          zoom: ts.zoom,
         );
         return Positioned(
-          right: right ? null : column * ts.totalWidth,
-          left: right ? column * ts.totalWidth : null,
-          top: top,
+          right: right ? null : column * ts.cardTotalWidth,
+          left: right ? column * ts.cardTotalWidth : null,
+          top: cardPosition.top,
           child: Tts.fromSemantics(
             activity.semanticsProperties(context),
             child: Stack(
@@ -76,7 +67,7 @@ class ActivityTimepillarCard extends StatelessWidget {
                     endTime: endTime.isAfter(timepillarInterval.endTime)
                         ? timepillarInterval.endTime
                         : endTime,
-                    dots: dots,
+                    dots: cardPosition.dots,
                     dayParts: dayParts,
                   )
                 else
@@ -86,12 +77,13 @@ class ActivityTimepillarCard extends StatelessWidget {
                         (dotHeight > 0
                             ? (decoration.border?.dimensions.vertical ?? 0)
                             : 0),
-                    width: ts.width,
+                    width: ts.cardWidth,
                     category: activity.category,
                     showCategoryColor: settings.showCategoryColor,
                   ),
                 GestureDetector(
                   onTap: () {
+                    final authProviders = copiedAuthProviders(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -109,42 +101,36 @@ class ActivityTimepillarCard extends StatelessWidget {
                     margin: right
                         ? EdgeInsets.only(left: ts.dotSize + ts.hourPadding)
                         : EdgeInsets.only(right: ts.dotSize + ts.hourPadding),
+                    width: ts.cardWidth,
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: ts.width,
-                        minWidth: ts.width,
-                        minHeight: ts.minHeight,
-                        maxHeight: height,
+                        minHeight: ts.activityCardMinHeight,
+                        maxHeight: cardPosition.height,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(ts.cardPadding),
+                        padding: ts.cardPadding,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             if (hasTitle)
                               SizedBox(
                                 height: textHeight,
-                                child: Text(
-                                  activity.title,
-                                  overflow: TextOverflow.visible,
-                                  textAlign: TextAlign.center,
-                                  maxLines: maxTitleLines,
-                                  style: textStyle,
-                                ),
+                                child: Text(activity.title),
                               ),
                             if (hasImage || signedOff || past)
                               Padding(
-                                padding: EdgeInsets.only(top: ts.cardPadding),
+                                padding:
+                                    EdgeInsets.only(top: ts.cardPadding.top),
                                 child: SizedBox(
-                                  height:
-                                      height - textHeight - ts.cardPadding * 3,
-                                  child: ActivityImage.fromActivityOccasion(
-                                    activityOccasion: activityOccasion,
-                                    crossPadding:
-                                        EdgeInsets.all(ts.cardPadding),
-                                    checkPadding:
-                                        EdgeInsets.all(ts.cardPadding * 2),
+                                  height: cardPosition.height -
+                                      textHeight -
+                                      ts.cardPadding.vertical -
+                                      ts.cardPadding.top,
+                                  child: EventImage.fromEventOccasion(
+                                    eventOccasion: activityOccasion,
+                                    crossPadding: ts.cardPadding,
+                                    checkPadding: ts.cardPadding * 2,
                                   ),
                                 ),
                               )

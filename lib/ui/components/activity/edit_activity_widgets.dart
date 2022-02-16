@@ -185,8 +185,7 @@ class SelectedImageWidget extends StatelessWidget {
             ? FadeInCalendarImage(
                 height: innerSize,
                 width: innerSize,
-                imageFileId: selectedImage.id,
-                imageFilePath: selectedImage.path,
+                imageFile: selectedImage,
               )
             : Container(
                 decoration: whiteNoBorderBoxDecoration,

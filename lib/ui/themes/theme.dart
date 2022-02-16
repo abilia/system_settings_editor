@@ -191,6 +191,7 @@ BoxDecoration getCategoryBoxDecoration({
   required bool current,
   required bool showCategoryColor,
   required int category,
+  double zoom = 1.0,
 }) =>
     BoxDecoration(
       color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
@@ -200,6 +201,7 @@ BoxDecoration getCategoryBoxDecoration({
         current: current,
         showCategoryColor: showCategoryColor,
         category: category,
+        zoom: zoom,
       ),
     );
 
@@ -210,13 +212,16 @@ Border getCategoryBorder({
   required int category,
   double? borderWidth,
   double? currentBorderWidth,
+  double zoom = 1.0,
 }) =>
     current
         ? Border.fromBorderSide(
             BorderSide(
-                color: AbiliaColors.red,
-                width:
-                    currentBorderWidth ?? layout.eventCard.currentBorderWidth),
+              color: AbiliaColors.red,
+              width:
+                  (currentBorderWidth ?? layout.eventCard.currentBorderWidth) *
+                      zoom,
+            ),
           )
         : Border.fromBorderSide(
             BorderSide(
@@ -225,7 +230,7 @@ Border getCategoryBorder({
                 inactive: inactive,
                 showCategoryColor: showCategoryColor,
               ),
-              width: borderWidth ?? layout.eventCard.borderWidth,
+              width: (borderWidth ?? layout.eventCard.borderWidth) * zoom,
             ),
           );
 

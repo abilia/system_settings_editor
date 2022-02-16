@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/abilia_timer.dart';
 import 'package:seagull/models/occasion/event_occasion.dart';
@@ -21,14 +22,16 @@ void main() {
 
   Widget wrap(final TimerCard timerCard) => Directionality(
         textDirection: TextDirection.ltr,
-        child: timerCard,
+        child: BlocProvider(
+          create: (context) => SettingsCubit(settingsDb: FakeSettingsDb()),
+          child: timerCard,
+        ),
       );
 
   testWidgets('timer card duration before tick is correct', (tester) async {
     const timerTitle = 'timer title';
     final timerOccasion = TimerOccasion(
-      AbiliaTimer(
-        id: 'id',
+      AbiliaTimer.createNew(
         title: timerTitle,
         startTime: nowTime.subtract(const Duration(minutes: 30)),
         duration: const Duration(hours: 1),

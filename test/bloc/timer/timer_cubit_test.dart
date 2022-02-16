@@ -8,8 +8,7 @@ import '../../mocks/mocks.dart';
 
 void main() {
   final now = DateTime(2033, 01, 27, 11, 55);
-  final defaultTimer = AbiliaTimer(
-    id: 'fake-id',
+  final defaultTimer = AbiliaTimer.createNew(
     title: 'test timer',
     duration: const Duration(minutes: 5),
     startTime: now,
@@ -47,8 +46,7 @@ void main() {
     expect: () => [defaultState, TimerState(timers: const [])],
   );
 
-  final newTimer = AbiliaTimer(
-    id: 'fake-id2',
+  final newTimer = AbiliaTimer.createNew(
     title: 'test timer 2',
     duration: const Duration(minutes: 15),
     startTime: now,

@@ -99,20 +99,20 @@ void main() {
                 offset: -layout.timePillar.topMargin,
                 timepillarState: ts,
               ),
-              ActivityBoard(
-                ActivityBoard.positionTimepillarCards(
-                  activityOccasions,
-                  caption,
-                  1.0,
-                  const MemoplannerSettingsLoaded(MemoplannerSettings())
-                      .dayParts,
-                  TimepillarSide.right,
-                  ts,
-                  layout.timePillar.topMargin,
-                  layout.timePillar.bottomMargin,
+              TimepillarBoard(
+                TimepillarBoard.positionTimepillarCards(
+                  eventOccasions: activityOccasions,
+                  textStyle: caption,
+                  textScaleFactor: 1.0,
+                  dayParts: DayParts.standard(),
+                  timepillarSide: TimepillarSide.right,
+                  timepillarState: ts,
+                  topMargin: layout.timePillar.topMargin,
+                  bottomMargin: layout.timePillar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
-                timepillarWidth: ts.totalWidth,
+                timepillarWidth: ts.cardTotalWidth,
+                textStyle: caption,
               ),
             ],
           ),
@@ -319,7 +319,7 @@ void main() {
       final ts = TimepillarState(
           TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ts.totalWidth));
+          greaterThanOrEqualTo(ts.cardTotalWidth));
     });
     testWidgets(
         'two activities to sufficient time distance but the first with a long title does not has same vertical position',
@@ -355,7 +355,7 @@ void main() {
       final ts = TimepillarState(
           TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ts.totalWidth));
+          greaterThanOrEqualTo(ts.cardTotalWidth));
     });
 
     testWidgets('Is not placed at same horizontal position',
@@ -399,17 +399,18 @@ void main() {
           Occasion.current,
         ),
       );
-      final boardData = ActivityBoard.positionTimepillarCards(
-        activities,
-        caption,
-        1.0,
-        DayParts.standard(),
-        TimepillarSide.right,
-        TimepillarState(interval, 1),
-        layout.timePillar.topMargin,
-        layout.timePillar.bottomMargin,
+      final boardData = TimepillarBoard.positionTimepillarCards(
+        eventOccasions: activities,
+        textStyle: caption,
+        textScaleFactor: 1.0,
+        dayParts: DayParts.standard(),
+        timepillarSide: TimepillarSide.right,
+        timepillarState: TimepillarState(interval, 1),
+        topMargin: layout.timePillar.topMargin,
+        bottomMargin: layout.timePillar.bottomMargin,
       );
-      final uniques = boardData.cards.map((f) => {f.top, f.column});
+      final uniques =
+          boardData.cards.map((f) => {f.cardPosition.top, f.column});
 
       expect(uniques.toSet().length, uniques.length);
     });

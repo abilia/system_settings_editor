@@ -15,8 +15,7 @@ import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final startTime = DateTime(2021, 12, 22, 08, 10);
-  final defaultTimer = AbiliaTimer(
-      id: 'fake-id',
+  final defaultTimer = AbiliaTimer.createNew(
       title: 'test timer',
       duration: const Duration(minutes: 5),
       startTime: startTime);
