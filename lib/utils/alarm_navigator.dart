@@ -40,6 +40,7 @@ class AlarmNavigator {
     final routeOnStack = _alarmRoutesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);
     if (routeOnStack != null) {
+      if (alarm.fullScreenActivity) return;
       log.fine('pushed alarm exists on stack');
       if (navigator.canPop()) {
         log.finer('alarm is not root, removes');

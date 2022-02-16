@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
@@ -7,7 +6,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmCubit extends Cubit<NotificationAlarm?> {
-  late final StreamSubscription? _clockSubscription;
+  late final StreamSubscription _clockSubscription;
   late final StreamSubscription _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
 
@@ -18,9 +17,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
-    if (!Platform.isAndroid) {
-      _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
-    }
+    _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
   }
 
   void _newMinute(DateTime now) {
@@ -35,7 +32,7 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
 
   @override
   Future<void> close() async {
-    await _clockSubscription?.cancel();
+    await _clockSubscription.cancel();
     await _selectedNotificationSubscription.cancel();
     return super.close();
   }
