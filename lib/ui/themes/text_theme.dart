@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/themes/all.dart';
-import 'package:seagull/utils/all.dart';
 
 final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
@@ -95,7 +94,6 @@ final headline1 = TextStyle(
       height: 16.0 / 10.0,
     );
 
-final headline6FontSize = layout.fontSize.headline6, catptionFontSize = 12.s;
 const FontWeight light = FontWeight.w300;
 const FontWeight regular = FontWeight.w400;
 const FontWeight medium = FontWeight.w500;

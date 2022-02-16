@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:seagull/utils/datetime.dart';
 
 enum DayPart { morning, day, evening, night }
 
@@ -63,6 +64,9 @@ class DayParts extends Equatable {
         return nightStart;
     }
   }
+
+  DateTime nightEnd(DateTime day) => day.nextDay().add(morning);
+  DateTime nightBegins(DateTime day) => day.add(night);
 
   @override
   List<Object> get props => [

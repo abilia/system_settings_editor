@@ -96,7 +96,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   double get topMargin => widget.topMargin;
   double get bottomMargin => widget.topMargin;
 
-  List<ActivityDay> get activities => widget.eventState.activities;
   TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
 
   @override
@@ -131,49 +130,49 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     final mediaData = MediaQuery.of(context);
 
     final textTheme = Theme.of(context).textTheme.caption ?? caption;
-    final fontSize = textTheme.fontSize ?? catptionFontSize;
+    final fontSize = textTheme.fontSize!;
     final textStyle = textTheme.copyWith(fontSize: fontSize * ts.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
-    final timepillarActivities = interval.getForInterval(activities);
+    final events = interval.getForInterval(widget.eventState.events);
     final np = interval.intervalPart == IntervalPart.dayAndNight
         ? nightParts(widget.dayParts, ts, topMargin)
         : <NightPart>[];
 
     return BlocBuilder<ClockBloc, DateTime>(
       builder: (context, now) {
-        final leftBoardData = ActivityBoard.positionTimepillarCards(
-          widget.showCategories
-              ? timepillarActivities
-                  .where((ao) => ao.activity.category != Category.right)
+        final leftBoardData = TimepillarBoard.positionTimepillarCards(
+          eventOccasions: widget.showCategories
+              ? events
+                  .where((ao) => ao.category != Category.right)
                   .map((e) => e.toOccasion(now))
                   .toList()
               : <ActivityOccasion>[],
-          textStyle,
-          textScaleFactor,
-          widget.dayParts,
-          TimepillarSide.left,
-          ts,
-          topMargin,
-          bottomMargin,
+          textStyle: textStyle,
+          textScaleFactor: textScaleFactor,
+          dayParts: widget.dayParts,
+          timepillarSide: TimepillarSide.left,
+          timepillarState: ts,
+          topMargin: topMargin,
+          bottomMargin: bottomMargin,
         );
-        final rightBoardData = ActivityBoard.positionTimepillarCards(
-          (widget.showCategories
-                  ? timepillarActivities
-                      .where((ao) => ao.activity.category == Category.right)
-                  : timepillarActivities)
+        final rightBoardData = TimepillarBoard.positionTimepillarCards(
+          eventOccasions: (widget.showCategories
+                  ? events.where((ao) => ao.category == Category.right)
+                  : events)
               .map((e) => e.toOccasion(now))
               .toList(),
-          textStyle,
-          textScaleFactor,
-          widget.dayParts,
-          TimepillarSide.right,
-          ts,
-          topMargin,
-          bottomMargin,
+          textStyle: textStyle,
+          textScaleFactor: textScaleFactor,
+          dayParts: widget.dayParts,
+          timepillarSide: TimepillarSide.right,
+          timepillarState: ts,
+          topMargin: topMargin,
+          bottomMargin: bottomMargin,
         );
 
         // Anchor is the starting point of the central sliver (timepillar).
-        // horizontalAnchor is where the left side of the timepillar needs to be in parts of the screen to make it centralized.
+        // horizontalAnchor is where the left side of the timepillar needs to be
+        // in parts of the screen to make it centralized.
         return LayoutBuilder(
           builder: (context, boxConstraints) {
             final maxWidth = boxConstraints.maxWidth;
@@ -199,8 +198,6 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                 child: ScrollArrows.all(
                   upCollapseMargin: topMargin,
                   downCollapseMargin: bottomMargin,
-                  leftCollapseMargin: ts.padding,
-                  rightCollapseMargin: ts.padding,
                   horizontalController: horizontalScrollController,
                   verticalController: verticalScrollController,
                   child: NotificationListener<ScrollNotification>(
@@ -269,10 +266,11 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                           : null,
                                       height: boxConstraints.maxHeight,
                                       sliver: SliverToBoxAdapter(
-                                        child: ActivityBoard(
+                                        child: TimepillarBoard(
                                           leftBoardData,
                                           categoryMinWidth: categoryMinWidth,
-                                          timepillarWidth: ts.totalWidth,
+                                          timepillarWidth: ts.cardTotalWidth,
+                                          textStyle: textStyle,
                                         ),
                                       ),
                                     ),
@@ -305,10 +303,11 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                         : null,
                                     height: boxConstraints.maxHeight,
                                     sliver: SliverToBoxAdapter(
-                                      child: ActivityBoard(
+                                      child: TimepillarBoard(
                                         rightBoardData,
                                         categoryMinWidth: categoryMinWidth,
-                                        timepillarWidth: ts.totalWidth,
+                                        timepillarWidth: ts.cardTotalWidth,
+                                        textStyle: textStyle,
                                       ),
                                     ),
                                   ),

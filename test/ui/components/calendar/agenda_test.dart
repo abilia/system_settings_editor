@@ -22,7 +22,7 @@ void main() {
   final now = DateTime(2020, 06, 04, 11, 24);
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
-  Iterable<AbiliaTimer> Function() timerResponse = () => [];
+  TimerResponse timerResponse = () => [];
 
   final translate = Locales.language.values.first;
 
@@ -849,8 +849,7 @@ void main() {
 
     group('timers', () {
       testWidgets('Timer visible', (WidgetTester tester) async {
-        final timer = AbiliaTimer(
-          id: 'id',
+        final timer = AbiliaTimer.createNew(
           title: 'title',
           startTime: now,
           duration: 5.minutes(),
@@ -864,8 +863,7 @@ void main() {
       });
 
       testWidgets('Past Timer visible', (WidgetTester tester) async {
-        final timer = AbiliaTimer(
-          id: 'id',
+        final timer = AbiliaTimer.createNew(
           title: 'title',
           startTime: now.subtract(10.minutes()),
           duration: 5.minutes(),
@@ -880,14 +878,12 @@ void main() {
 
       testWidgets('Starting after but ending before is shown before',
           (WidgetTester tester) async {
-        final timerPast = AbiliaTimer(
-              id: 'id',
+        final timerPast = AbiliaTimer.createNew(
               title: 'timerPast',
               startTime: now.subtract(10.minutes()),
               duration: 5.minutes(),
             ),
-            timerongoing = AbiliaTimer(
-              id: 'id',
+            timerongoing = AbiliaTimer.createNew(
               title: 'timerongoing',
               startTime: now.subtract(20.minutes()),
               duration: 30.minutes(),
@@ -917,8 +913,7 @@ void main() {
 
       testWidgets('Timer when time ticks to past visible',
           (WidgetTester tester) async {
-        final timer = AbiliaTimer(
-          id: 'id',
+        final timer = AbiliaTimer.createNew(
           title: 'title',
           startTime: now,
           duration: 1.minutes(),
@@ -943,8 +938,7 @@ void main() {
       });
 
       testWidgets('Timer shows correct time left', (WidgetTester tester) async {
-        final timer = AbiliaTimer(
-          id: 'id',
+        final timer = AbiliaTimer.createNew(
           title: 'title',
           startTime: now,
           duration: 10.minutes(),
@@ -981,8 +975,7 @@ void main() {
       testWidgets('Timer when time ticks every second',
           (WidgetTester tester) async {
         const duration = Duration(seconds: 30);
-        final timer = AbiliaTimer(
-          id: 'id',
+        final timer = AbiliaTimer.createNew(
           title: 'title',
           startTime: now,
           duration: duration,
@@ -1004,8 +997,7 @@ void main() {
       testWidgets(
           'yesterdays timers shows on yesterday and today, disappear after 24h',
           (WidgetTester tester) async {
-        final timer1 = AbiliaTimer(
-          id: 'id',
+        final timer1 = AbiliaTimer.createNew(
           title: 'old timer',
           startTime: now.subtract(23.hours()),
           duration: 22.hours(),

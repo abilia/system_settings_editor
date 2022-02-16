@@ -2,6 +2,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class ActivityOccasion extends ActivityDay implements EventOccasion {
+  @override
   bool get isPast => occasion == Occasion.past;
   bool get isCurrent => occasion == Occasion.current && !activity.fullDay;
 
@@ -29,6 +30,10 @@ class ActivityDay extends Event {
   bool get isSignedOff =>
       activity.checkable &&
       activity.signedOffDates.contains(whaleDateFormat(day));
+
+  @override
+  AbiliaFile get image =>
+      AbiliaFile.from(id: activity.fileId, path: activity.icon);
 
   const ActivityDay(this.activity, this.day) : super();
 

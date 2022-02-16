@@ -34,6 +34,9 @@ class MockWakeLockCubit extends MockCubit<WakeLockState>
 
 class MockTimerCubit extends MockCubit<TimerState> implements TimerCubit {}
 
+class MockTimerAlarmBloc extends MockBloc<TimerAlarmEvent, TimerAlarmState>
+    implements TimerAlarmBloc {}
+
 class MockRecordSoundCubit extends MockCubit<RecordSoundState>
     implements RecordSoundCubit {}
 

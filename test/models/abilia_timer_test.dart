@@ -4,8 +4,7 @@ import 'package:seagull/utils/duration.dart';
 
 main() {
   test('Timer to dbMap and back', () {
-    final timer = AbiliaTimer(
-      id: 'myId',
+    final timer = AbiliaTimer.createNew(
       title: 'myTitle',
       fileId: 'myFileId',
       startTime: DateTime(11, 11, 11),

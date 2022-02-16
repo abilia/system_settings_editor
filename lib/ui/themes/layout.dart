@@ -430,14 +430,29 @@ class TimepillarDotLayout {
 }
 
 class TimepillarCardLayout {
-  final double padding, width, minHeight, margin, imageHeightMin;
+  final TimerCardLayout timer;
+  final double distance, width, activityMinHeight, imageMinHeight;
+  final EdgeInsets padding;
 
   const TimepillarCardLayout({
+    this.timer = const TimerCardLayout(),
     this.width = 72,
-    this.minHeight = 84,
-    this.margin = 4,
-    this.padding = 12,
-    this.imageHeightMin = 56,
+    this.activityMinHeight = 84,
+    this.padding = const EdgeInsets.all(4),
+    this.distance = 12,
+    this.imageMinHeight = 56,
+  });
+}
+
+class TimerCardLayout {
+  final double minHeigth;
+  final Size wheelSize;
+  final EdgeInsets wheelPadding;
+
+  const TimerCardLayout({
+    this.minHeigth = 76,
+    this.wheelSize = const Size.square(44),
+    this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
   });
 }
 

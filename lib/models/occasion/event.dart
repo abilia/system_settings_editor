@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:seagull/models/occasion/all.dart';
+import 'package:seagull/models/all.dart';
 
 abstract class Event extends Equatable {
   const Event();
@@ -7,4 +7,6 @@ abstract class Event extends Equatable {
   DateTime get end;
   int get category;
   EventOccasion toOccasion(DateTime now);
+  AbiliaFile get image;
+  bool get hasImage => image.isNotEmpty;
 }

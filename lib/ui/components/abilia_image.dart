@@ -7,8 +7,8 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class ActivityImage extends StatelessWidget {
-  final ActivityDay activityDay;
+class EventImage extends StatelessWidget {
+  final Event event;
   final bool past;
   final ImageSize imageSize;
   final BoxFit fit;
@@ -21,8 +21,8 @@ class ActivityImage extends StatelessWidget {
   static final fallbackCrossPadding = EdgeInsets.all(4.s);
   static final fallbackCheckPadding = EdgeInsets.all(8.s);
 
-  const ActivityImage({
-    required this.activityDay,
+  const EventImage({
+    required this.event,
     this.past = false,
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
@@ -33,9 +33,9 @@ class ActivityImage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static Widget fromActivityOccasion({
+  static Widget fromEventOccasion({
     Key? key,
-    required ActivityOccasion activityOccasion,
+    required EventOccasion eventOccasion,
     ImageSize imageSize = ImageSize.thumb,
     BoxFit fit = BoxFit.cover,
     bool preview = false,
@@ -47,15 +47,14 @@ class ActivityImage extends StatelessWidget {
       preview
           ? FadeInCalendarImage(
               key: key,
-              imageFileId: activityOccasion.activity.fileId,
-              imageFilePath: activityOccasion.activity.icon,
+              imageFile: eventOccasion.image,
               imageSize: imageSize,
               fit: fit,
             )
-          : ActivityImage(
+          : EventImage(
               key: key,
-              activityDay: activityOccasion,
-              past: activityOccasion.isPast,
+              event: eventOccasion,
+              past: eventOccasion.isPast,
               imageSize: imageSize,
               fit: fit,
               crossPadding: crossPadding,
@@ -66,13 +65,13 @@ class ActivityImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activity = activityDay.activity;
-    final signedOff = activityDay.isSignedOff;
+    final event = this.event;
+    final signedOff = event is ActivityDay && event.isSignedOff;
     final inactive = past || signedOff;
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (activity.hasImage)
+        if (event.hasImage)
           AnimatedOpacity(
             duration: duration,
             opacity: inactive ? 0.5 : 1.0,
@@ -82,8 +81,7 @@ class ActivityImage extends StatelessWidget {
                 fit: fit,
                 image: getImage(
                   context,
-                  activity.fileId,
-                  activity.icon,
+                  event.image,
                   imageSize,
                 ).image,
                 placeholder: MemoryImage(kTransparentImage),
@@ -109,14 +107,13 @@ class ActivityImage extends StatelessWidget {
 
   static Image getImage(
     BuildContext context,
-    String fileId, [
-    String filePath = '',
+    AbiliaFile imageFile, [
     ImageSize imageSize = ImageSize.thumb,
   ]) {
     final userFileState = context.watch<UserFileCubit>().state;
     final file = userFileState.getLoadedByIdOrPath(
-      fileId,
-      filePath,
+      imageFile.id,
+      imageFile.path,
       GetIt.I<FileStorage>(),
       imageSize: imageSize,
     );
@@ -129,8 +126,8 @@ class ActivityImage extends StatelessWidget {
         imageThumbUrl(
           baseUrl: authenicatedState.userRepository.baseUrl,
           userId: authenicatedState.userId,
-          imageFileId: fileId,
-          imagePath: filePath,
+          imageFileId: imageFile.id,
+          imagePath: imageFile.path,
           size: ImageThumb.thumbSize,
         ),
         headers: authHeader(authenicatedState.token),
@@ -159,8 +156,8 @@ class CheckedImageWithImagePopup extends StatelessWidget {
               context,
             )
           : null,
-      child: ActivityImage(
-        activityDay: activityDay,
+      child: EventImage(
+        event: activityDay,
         imageSize: ImageSize.original,
         fit: BoxFit.contain,
       ),
@@ -292,14 +289,13 @@ class FullScreenImage extends StatelessWidget {
 }
 
 class FadeInCalendarImage extends StatelessWidget {
-  final String imageFileId, imageFilePath;
+  final AbiliaFile imageFile;
   final double? width, height;
   final ImageSize imageSize;
   final BoxFit fit;
   const FadeInCalendarImage({
     Key? key,
-    required this.imageFileId,
-    this.imageFilePath = '',
+    required this.imageFile,
     this.width,
     this.height,
     this.imageSize = ImageSize.thumb,
@@ -312,15 +308,15 @@ class FadeInCalendarImage extends StatelessWidget {
       width: width,
     );
 
-    if (imageFileId.isEmpty && imageFilePath.isEmpty) {
+    if (imageFile.isEmpty) {
       return emptyImage;
     }
 
     return BlocBuilder<UserFileCubit, UserFileState>(
         builder: (context, userFileState) {
       final file = userFileState.getLoadedByIdOrPath(
-        imageFileId,
-        imageFilePath,
+        imageFile.id,
+        imageFile.path,
         GetIt.I<FileStorage>(),
         imageSize: imageSize,
       );
@@ -336,8 +332,8 @@ class FadeInCalendarImage extends StatelessWidget {
                   placeholder: MemoryImage(kTransparentImage),
                 )
               : FadeInNetworkImage(
-                  imageFileId: imageFileId,
-                  imageFilePath: imageFilePath,
+                  imageFileId: imageFile.id,
+                  imageFilePath: imageFile.path,
                   fit: fit,
                 ),
         ),

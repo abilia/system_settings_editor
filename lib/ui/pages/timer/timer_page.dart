@@ -75,7 +75,7 @@ class _TopInfo extends StatelessWidget {
                 child: FadeInCalendarImage(
                   width: layout.timerPage.imageSize,
                   fit: BoxFit.cover,
-                  imageFileId: timer.fileId,
+                  imageFile: timer.imageFile,
                 ),
               ),
             Expanded(
@@ -123,7 +123,7 @@ class _TimerBottomBar extends StatelessWidget {
                   ),
                 );
                 if (confirmDeletion) {
-                  context.read<TimerCubit>().deleteTimer(timer);
+                  await context.read<TimerCubit>().deleteTimer(timer);
                   Navigator.pop(context);
                 }
               },

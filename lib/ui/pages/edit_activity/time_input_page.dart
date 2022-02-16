@@ -187,6 +187,7 @@ class _TimeInputContentState extends State<TimeInputContent>
         return TimeOfDay(hour: in24HourClock(hour, period), minute: minute);
       }
     }
+    return null;
   }
 
   TimeInput get newTimeInput => TimeInput(

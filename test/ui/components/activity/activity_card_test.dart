@@ -92,7 +92,7 @@ void main() {
     // Asert title but no image
     expect(find.byType(ActivityCard), findsOneWidget);
     expect(find.text(title), findsOneWidget);
-    expect(find.byType(ActivityImage), findsNothing);
+    expect(find.byType(EventImage), findsNothing);
   });
 
   testWidgets('has image ', (WidgetTester tester) async {
@@ -108,7 +108,7 @@ void main() {
 
       // Assert image
       expect(find.byType(ActivityCard), findsOneWidget);
-      expect(find.byType(ActivityImage), findsOneWidget);
+      expect(find.byType(EventImage), findsOneWidget);
     });
   });
 
@@ -127,7 +127,7 @@ void main() {
       // Assert title and image
       expect(find.byType(ActivityCard), findsOneWidget);
       expect(find.text(title), findsOneWidget);
-      expect(find.byType(ActivityImage), findsOneWidget);
+      expect(find.byType(EventImage), findsOneWidget);
     });
   });
 

@@ -11,6 +11,7 @@ import 'fake_activities.dart';
 typedef ActivityResponse = Iterable<Activity> Function();
 typedef SortableResponse = Iterable<Sortable> Function();
 typedef GenericResponse = Iterable<Generic> Function();
+typedef TimerResponse = Iterable<AbiliaTimer> Function();
 
 class Fakes {
   Fakes._();

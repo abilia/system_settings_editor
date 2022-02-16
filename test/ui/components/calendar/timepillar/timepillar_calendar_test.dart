@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:intl/intl.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -27,6 +28,7 @@ void main() {
 
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
+  TimerResponse timerResponse = () => [];
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
   final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
@@ -54,16 +56,26 @@ void main() {
         .thenAnswer((_) => Future.value(true));
 
     final mockGenericDb = MockGenericDb();
+    registerFallbackValue(
+      AbiliaTimer.createNew(startTime: time, duration: Duration.zero),
+    );
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
+    final mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
+    when(() => mockTimerDb.delete(any())).thenAnswer((_) => Future.value(1));
+
     genericResponse = () => [timepillarGeneric];
     activityResponse = () => [];
+    timerResponse = () => [];
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
+      ..timerDb = mockTimerDb
       ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
@@ -612,8 +624,6 @@ void main() {
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(SideTime), findsNWidgets(2));
     });
@@ -624,8 +634,6 @@ void main() {
       activityResponse =
           () => [Activity.createNew(title: 'title', startTime: time)];
       await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      // Act
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsNothing);
@@ -638,8 +646,6 @@ void main() {
                 title: 'title', startTime: time.subtract(10.minutes()))
           ];
       await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      // Act
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsWidgets);
@@ -657,8 +663,6 @@ void main() {
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsWidgets);
     });
@@ -674,8 +678,6 @@ void main() {
             )
           ];
       await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      // Act
       await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsWidgets);
@@ -694,8 +696,6 @@ void main() {
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsWidgets);
     });
@@ -712,10 +712,132 @@ void main() {
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsNothing);
+    });
+
+    group('Timers', () {
+      Finder timerFinder(AbiliaTimer timer) =>
+          find.byType(TimerTimepillardCard);
+
+      final t1 = AbiliaTimer.createNew(
+            title: '22 minutes',
+            startTime: time,
+            duration: 22.minutes(),
+          ),
+          currentTimerWithImage = AbiliaTimer.createNew(
+            title: '1 min ago',
+            fileId: 'fileId',
+            startTime: time.subtract(1.minutes()),
+            duration: 10.minutes(),
+          ),
+          pastTimerWithImage = AbiliaTimer.createNew(
+            title: '10 min ago',
+            fileId: 'fileId',
+            startTime: time.subtract(20.minutes()),
+            duration: 10.minutes(),
+          );
+
+      setUp(() => timerResponse = () => [t1]);
+
+      testWidgets('Shows timers right of timeline',
+          (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        final timelineXPostion =
+            tester.getCenter(find.byType(Timeline).first).dx;
+        final poistion = tester.getCenter(timerFinder(t1)).dx;
+
+        // Assert
+        expect(timerFinder(t1), findsOneWidget);
+        expect(poistion, greaterThan(timelineXPostion));
+      });
+
+      testWidgets('tts', (WidgetTester tester) async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Assert
+        await tester.verifyTts(timerFinder(t1), contains: t1.title);
+      });
+
+      testWidgets('tapping timer shows timer info',
+          (WidgetTester tester) async {
+        // Arrange
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Act
+        await tester.tap(timerFinder(t1));
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(TimerPage), findsOneWidget);
+        expect(find.byType(TimerWheel), findsOneWidget);
+        expect(find.text(t1.title), findsOneWidget);
+      });
+
+      testWidgets('deleting timer does not shows in timepillar ',
+          (WidgetTester tester) async {
+        // Arrange
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Act
+        await tester.tap(timerFinder(t1));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        // Assert
+        expect(find.byType(TimerPage), findsNothing);
+        expect(timerFinder(t1), findsNothing);
+      });
+
+      testWidgets('current timer with image shows no CrossOver',
+          (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          // Arrange
+          timerResponse = () => [currentTimerWithImage];
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          // Assert
+          expect(find.byType(EventImage), findsWidgets);
+          expect(find.byType(CrossOver), findsNothing);
+        });
+      });
+
+      testWidgets('past timer with image shows CrossOver and no title',
+          (WidgetTester tester) async {
+        await mockNetworkImages(() async {
+          // Arrange
+          timerResponse = () => [pastTimerWithImage];
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          // Assert
+          expect(find.byType(EventImage), findsWidgets);
+          expect(find.byType(CrossOver), findsWidgets);
+          expect(find.text(pastTimerWithImage.title), findsNothing);
+        });
+      });
+
+      testWidgets('past timer with long title', (WidgetTester tester) async {
+        // Arrange
+        final pastTimerLongTitle = AbiliaTimer.createNew(
+          title: 'title title title title title title title '
+              'title title title title title title title title '
+              'title title title title title title title title ',
+          startTime: time.subtract(2.hours()).subtract(30.minutes()),
+          duration: 2.hours(),
+        );
+        timerResponse = () => [pastTimerLongTitle];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Assert
+
+        expect(timerFinder(pastTimerLongTitle), findsWidgets);
+        expect(find.text(pastTimerLongTitle.title), findsWidgets);
+      });
     });
   });
 
@@ -731,144 +853,267 @@ void main() {
             ),
           ];
     });
-    testWidgets('Activity outside interval is not visible',
-        (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.copyWith(hour: 8, minute: 0),
-            )
-          ];
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
-    });
+    group('Activities', () {
+      testWidgets('Activity outside interval is not visible',
+          (WidgetTester tester) async {
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: time.copyWith(hour: 8, minute: 0),
+              )
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
+      });
 
-    testWidgets('Activity inside interval is visible',
-        (WidgetTester tester) async {
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time,
-            )
-          ];
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
-    });
+      testWidgets('Activity inside interval is visible',
+          (WidgetTester tester) async {
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: time,
+              )
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+      });
 
-    testWidgets('Activity spanning two intervals', (WidgetTester tester) async {
-      final activityTime = DateTime(2020, 12, 01, 01, 00);
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: activityTime,
-              duration: 6.hours(),
-            )
-          ];
+      testWidgets('Activity spanning two intervals',
+          (WidgetTester tester) async {
+        final activityTime = DateTime(2020, 12, 01, 01, 00);
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: activityTime,
+                duration: 6.hours(),
+              )
+            ];
 
-      mockTicker.add(
-          activityTime); // Shows night interval. Activity should be visible here.
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+        mockTicker.add(
+            activityTime); // Shows night interval. Activity should be visible here.
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
-      mockTicker.add(DateTime(2020, 12, 01, 08,
-          01)); // Morning starts at 6. Activity should be visible here.
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+        mockTicker.add(DateTime(2020, 12, 01, 08,
+            01)); // Morning starts at 6. Activity should be visible here.
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
 
-      mockTicker.add(DateTime(2020, 12, 01, 10,
-          00)); // Forenoon interval starts at 10. Acitivity should not be visible here
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
-    });
+        mockTicker.add(DateTime(2020, 12, 01, 10,
+            00)); // Forenoon interval starts at 10. Acitivity should not be visible here
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
+      });
 
-    testWidgets('Activity without duration starts on interval',
-        (WidgetTester tester) async {
-      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: activityStartTime,
-              alarmType: noAlarm,
-            )
-          ];
+      testWidgets('Activity without duration starts on interval',
+          (WidgetTester tester) async {
+        final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: activityStartTime,
+                alarmType: noAlarm,
+              )
+            ];
 
-      mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
+        mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 09, 00));
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
+        mockTicker.add(DateTime(2020, 12, 01, 09, 00));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
 
-      mockTicker.add(DateTime(2020, 12, 01, 10, 00));
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
-    });
+        mockTicker.add(DateTime(2020, 12, 01, 10, 00));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+      });
 
-    testWidgets('Activity is shown when interval is whole day',
-        (WidgetTester tester) async {
-      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: activityStartTime,
-            )
-          ];
+      testWidgets('Activity is shown when interval is whole day',
+          (WidgetTester tester) async {
+        final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: activityStartTime,
+              )
+            ];
 
-      genericResponse = () => [
-            timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: TimepillarIntervalType.dayAndNight.index,
-                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.dayAndNight.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                ),
               ),
-            ),
-          ];
+            ];
 
-      mockTicker.add(DateTime(2020, 12, 01, 01, 01));
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+        mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+      });
+
+      testWidgets(
+          'Day activity is only shown in day interval when interval is DAY',
+          (WidgetTester tester) async {
+        final activityStartTime = DateTime(2020, 12, 01, 10, 00);
+        activityResponse = () => [
+              Activity.createNew(
+                title: 'title',
+                startTime: activityStartTime,
+                alarmType: noAlarm,
+              )
+            ];
+
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.day.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                ),
+              ),
+            ];
+
+        mockTicker.add(DateTime(2020, 12, 01, 01, 00));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
+
+        mockTicker.add(DateTime(2020, 12, 01, 07, 01));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+
+        mockTicker.add(DateTime(2020, 12, 01, 23, 30));
+        await tester.pumpAndSettle();
+        expect(find.byType(ActivityTimepillarCard), findsNothing);
+      });
     });
 
-    testWidgets(
-        'Day activity is only shown in day interval when interval is DAY',
-        (WidgetTester tester) async {
-      final activityStartTime = DateTime(2020, 12, 01, 10, 00);
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: activityStartTime,
-              alarmType: noAlarm,
-            )
-          ];
+    group('Timers', () {
+      testWidgets('Timers outside interval is not visible',
+          (WidgetTester tester) async {
+        timerResponse = () => [
+              AbiliaTimer.createNew(
+                title: 'title',
+                startTime: time.copyWith(hour: 8, minute: 0),
+                duration: 10.minutes(),
+              )
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsNothing);
+      });
 
-      genericResponse = () => [
-            timepillarGeneric,
-            Generic.createNew<MemoplannerSettingData>(
-              data: MemoplannerSettingData.fromData(
-                data: TimepillarIntervalType.day.index,
-                identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+      testWidgets('Timer inside interval is visible',
+          (WidgetTester tester) async {
+        timerResponse = () => [
+              AbiliaTimer.createNew(
+                title: 'title',
+                startTime: time,
+                duration: 10.minutes(),
+              )
+            ];
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      });
+
+      testWidgets('timer spanning two intervals', (WidgetTester tester) async {
+        final timerTime = DateTime(2020, 12, 01, 01, 00);
+        timerResponse = () => [
+              AbiliaTimer.createNew(
+                title: 'title',
+                startTime: timerTime,
+                duration: 6.hours(),
+              )
+            ];
+
+        // Shows night interval. Activity should be visible here.
+        mockTicker.add(timerTime);
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+
+        // Morning starts at 6. Activity should be visible here.
+        mockTicker.add(DateTime(2020, 12, 01, 08, 01));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+
+        // Forenoon interval starts at 10. Acitivity should not be visible here
+        mockTicker.add(DateTime(2020, 12, 01, 10, 00));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsNothing);
+      });
+
+      testWidgets('Timer is shown when interval is whole day',
+          (WidgetTester tester) async {
+        final timerStartTime = DateTime(2020, 12, 01, 10, 00);
+        timerResponse = () => [
+              AbiliaTimer.createNew(
+                title: 'title',
+                startTime: timerStartTime,
+                duration: 5.minutes(),
+              )
+            ];
+
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.dayAndNight.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                ),
               ),
-            ),
-          ];
+            ];
 
-      mockTicker.add(DateTime(2020, 12, 01, 01, 00));
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
+        mockTicker.add(DateTime(2020, 12, 01, 01, 01));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      });
 
-      mockTicker.add(DateTime(2020, 12, 01, 07, 01));
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsOneWidget);
+      testWidgets(
+          'Day timer is only shown in day interval when interval is DAY',
+          (WidgetTester tester) async {
+        final timerStartTime = DateTime(2020, 12, 01, 10, 00);
+        timerResponse = () => [
+              AbiliaTimer.createNew(
+                title: 'title',
+                startTime: timerStartTime,
+                duration: 4.minutes(),
+              )
+            ];
 
-      mockTicker.add(DateTime(2020, 12, 01, 23, 30));
-      await tester.pumpAndSettle();
-      expect(find.byType(ActivityTimepillarCard), findsNothing);
+        genericResponse = () => [
+              timepillarGeneric,
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: TimepillarIntervalType.day.index,
+                  identifier: MemoplannerSettings.viewOptionsTimeIntervalKey,
+                ),
+              ),
+            ];
+
+        mockTicker.add(DateTime(2020, 12, 01, 01, 00));
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsNothing);
+
+        mockTicker.add(DateTime(2020, 12, 01, 07, 01));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+
+        mockTicker.add(DateTime(2020, 12, 01, 23, 30));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerTimepillardCard), findsNothing);
+      });
     });
   });
 }
