@@ -238,5 +238,6 @@ extension SaveErrorExtension on EditActivityState {
         break;
       default:
     }
+    return null;
   }
 }

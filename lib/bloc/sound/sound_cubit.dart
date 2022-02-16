@@ -88,6 +88,7 @@ class SoundCubit extends Cubit<SoundState> {
       final f = await _resoveFromUserFile(userFile);
       return f != null ? _fileMap[abiliaFile] = f : null;
     }
+    return null;
   }
 
   Future<File?> _resoveFromUserFile(UserFile userFile) async {
