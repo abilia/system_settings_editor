@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:collection/collection.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -11,29 +10,28 @@ part 'slide_show_state.dart';
 
 class SlideShowCubit extends Cubit<SlideShowState> {
   final SortableBloc sortableBloc;
-  late final StreamSubscription sortableSubscription;
-  late final Timer timer;
+  late final StreamSubscription _sortableSubscription;
+  late Timer _timer;
   final Duration slideDuration;
 
   SlideShowCubit({
     required this.sortableBloc,
     this.slideDuration = const Duration(minutes: 5),
   }) : super(sortableStateToState(sortableBloc.state)) {
-    sortableSubscription = sortableBloc.stream.listen((sortableState) {
+    _sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         sortablesUpdated(sortableState.sortables);
       }
     });
-    timer = Timer(slideDuration, () => next());
+    _timer = Timer(slideDuration, () => next());
   }
 
   void sortablesUpdated(Iterable<Sortable> sortables) {
-    final state = sortablesToState(sortables);
-    emit(state);
+    emit(sortablesToState(sortables));
   }
 
   void next() {
-    timer.cancel();
+    _timer.cancel();
     if (state.slideShowFolderContent.isEmpty) {
       emit(SlideShowState.empty());
     } else {
@@ -44,7 +42,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
         slideShowFolderContent: state.slideShowFolderContent,
       ));
     }
-    timer = Timer(slideDuration, () => next());
+    _timer = Timer(slideDuration, () => next());
   }
 
   static SlideShowState sortableStateToState(SortableState state) {
@@ -60,24 +58,22 @@ class SlideShowCubit extends Cubit<SlideShowState> {
     if (myPhotosFolder == null) {
       return SlideShowState.empty();
     }
-    final imageArchiveSortables =
-        sortables.whereType<Sortable<ImageArchiveData>>();
-    final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-        imageArchiveSortables, (s) => s.groupId);
-    final myPhotoFolder = allByFolder[myPhotosFolder.id];
-    final allInMyPhotosRoot = [
-      if (myPhotoFolder != null) ...myPhotoFolder.where((e) => !e.isGroup)
+
+    final allPhotoCalendarPhotos = [
+      ...sortables
+          .whereType<Sortable<ImageArchiveData>>()
+          .where((e) => e.data.isInPhotoCalendar())
     ];
     return SlideShowState(
       currentIndex: 0,
-      slideShowFolderContent: allInMyPhotosRoot..shuffle(),
+      slideShowFolderContent: allPhotoCalendarPhotos..shuffle(),
     );
   }
 
   @override
   Future<void> close() async {
-    timer.cancel();
-    await sortableSubscription.cancel();
+    _timer.cancel();
+    await _sortableSubscription.cancel();
     return super.close();
   }
 }
