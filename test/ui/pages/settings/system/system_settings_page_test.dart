@@ -133,6 +133,14 @@ void main() {
     await tester.tap(find.byIcon(AbiliaIcons.information));
     await tester.pumpAndSettle();
     expect(find.byType(AboutPage), findsOneWidget);
+    expect(
+      find.byType(SearchForUpdateButton),
+      Config.isMP ? findsOneWidget : findsNothing,
+    );
+    expect(
+      find.text(translate.searchForUpdate),
+      Config.isMP ? findsOneWidget : findsNothing,
+    );
     final textWidgets = find
         .byType(Text)
         .evaluate()

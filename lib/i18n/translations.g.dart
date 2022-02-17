@@ -808,6 +808,8 @@ abstract class Translated {
 
   final String producer = 'Producer';
 
+  final String searchForUpdate = 'Search for update';
+
   final String camera = 'Camera';
 
   final String photoCalendar = 'Photo-calendar';
@@ -1991,6 +1993,9 @@ class SV extends Translated {
   final String producer = 'Producent';
 
   @override
+  final String searchForUpdate = 'Sök uppdatering';
+
+  @override
   final String camera = 'Kamera';
 
   @override
@@ -3159,6 +3164,9 @@ class DA extends Translated {
 
   @override
   final String producer = 'Producent';
+
+  @override
+  final String searchForUpdate = 'Søg opdatering';
 
   @override
   final String camera = 'Kamera';
@@ -4331,6 +4339,9 @@ class NL extends Translated {
   final String producer = 'Producent';
 
   @override
+  final String searchForUpdate = 'Zoeken naar update';
+
+  @override
   final String camera = 'Camera';
 
   @override
@@ -5497,6 +5508,9 @@ class FI extends Translated {
 
   @override
   final String producer = 'Valmistaja';
+
+  @override
+  final String searchForUpdate = 'Etsi päivitystä';
 
   @override
   final String camera = 'Kamera';
@@ -6675,6 +6689,9 @@ class DE extends Translated {
   final String producer = 'Hersteller';
 
   @override
+  final String searchForUpdate = 'Nach neuerer Version suchen';
+
+  @override
   final String camera = 'Kamera';
 
   @override
@@ -7840,6 +7857,9 @@ class NB extends Translated {
 
   @override
   final String producer = 'Produsent';
+
+  @override
+  final String searchForUpdate = 'Søk oppdatering';
 
   @override
   final String camera = 'Kamera';
