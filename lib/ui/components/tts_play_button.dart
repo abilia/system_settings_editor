@@ -28,31 +28,32 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
       builder: (context, settingsState) => SizedBox(
         height: layout.actionButton.size,
         child: AnimatedBuilder(
-            animation: widget.controller,
-            builder: (context, child) {
-              return CollapsableWidget(
-                collapsed: !(settingsState.textToSpeech &&
-                    widget.controller.text.isNotEmpty),
-                axis: Axis.horizontal,
-                child: Padding(
-                  padding: widget.padding,
-                  child: IconActionButton(
-                    key: TestKey.ttsPlayButton,
-                    style: actionButtonStyleDark,
-                    onPressed: () async {
-                      if (ttsIsPlaying) {
-                        _stop();
-                      } else {
-                        _play();
-                      }
-                    },
-                    child: Icon(
-                      ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-                    ),
+          animation: widget.controller,
+          builder: (context, child) {
+            return CollapsableWidget(
+              collapsed: !(settingsState.textToSpeech &&
+                  widget.controller.text.isNotEmpty),
+              axis: Axis.horizontal,
+              child: Padding(
+                padding: widget.padding,
+                child: IconActionButton(
+                  key: TestKey.ttsPlayButton,
+                  style: actionButtonStyleDark,
+                  onPressed: () async {
+                    if (ttsIsPlaying) {
+                      _stop();
+                    } else {
+                      _play();
+                    }
+                  },
+                  child: Icon(
+                    ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
                   ),
                 ),
-              );
-            }),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
