@@ -208,7 +208,7 @@ class _MediumLayout extends Layout {
               padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
               selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
               dotSize: 12,
-              dotOffset: 10,
+              dotOffset: 11,
               arrowPreOffset: Offset(22, 1),
               arrowPostOffset: Offset(0, 2.5),
               arrowPointRadius: Radius.circular(6),

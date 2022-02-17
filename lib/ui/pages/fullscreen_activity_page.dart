@@ -165,7 +165,7 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                           BorderSide(
                               color: current
                                   ? AbiliaColors.red
-                                  : AbiliaColors.white110,
+                                  : AbiliaColors.white140,
                               width: current
                                   ? iconLayout.currentBorder
                                   : iconLayout.border),
