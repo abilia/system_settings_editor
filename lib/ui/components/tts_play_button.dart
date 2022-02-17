@@ -18,31 +18,7 @@ class TtsPlayButton extends StatefulWidget {
 }
 
 class _TtsPlayButtonState extends State<TtsPlayButton> {
-  @override
-  void initState() {
-    super.initState();
-    textIsEmpty = widget.controller.text.isEmpty;
-    widget.controller.addListener(_visibilityListener);
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_visibilityListener);
-    super.dispose();
-  }
-
-  void _visibilityListener() {
-    if (widget.controller.text.isEmpty != textIsEmpty) {
-      if (mounted) {
-        setState(() {
-          textIsEmpty = widget.controller.text.isEmpty;
-        });
-      }
-    }
-  }
-
   bool ttsIsPlaying = false;
-  late bool textIsEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +27,32 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
           previous.textToSpeech != current.textToSpeech,
       builder: (context, settingsState) => SizedBox(
         height: layout.actionButton.size,
-        child: CollapsableWidget(
-          collapsed: !(settingsState.textToSpeech &&
-              widget.controller.text.isNotEmpty),
-          axis: Axis.horizontal,
-          child: Padding(
-            padding: widget.padding,
-            child: IconActionButton(
-              key: TestKey.ttsPlayButton,
-              onPressed: () async {
-                if (ttsIsPlaying) {
-                  _stop();
-                } else {
-                  _play();
-                }
-              },
-              child: Icon(
-                ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-              ),
-              style: actionButtonStyleDark,
-            ),
-          ),
-        ),
+        child: AnimatedBuilder(
+            animation: widget.controller,
+            builder: (context, child) {
+              return CollapsableWidget(
+                collapsed: !(settingsState.textToSpeech &&
+                    widget.controller.text.isNotEmpty),
+                axis: Axis.horizontal,
+                child: Padding(
+                  padding: widget.padding,
+                  child: IconActionButton(
+                    key: TestKey.ttsPlayButton,
+                    style: actionButtonStyleDark,
+                    onPressed: () async {
+                      if (ttsIsPlaying) {
+                        _stop();
+                      } else {
+                        _play();
+                      }
+                    },
+                    child: Icon(
+                      ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
+                    ),
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }
