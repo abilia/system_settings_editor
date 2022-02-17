@@ -12,7 +12,7 @@ part 'slide_show_state.dart';
 class SlideShowCubit extends Cubit<SlideShowState> {
   final SortableBloc sortableBloc;
   late final StreamSubscription sortableSubscription;
-  late final Timer timer;
+  late Timer timer;
   final Duration slideDuration;
 
   SlideShowCubit({
@@ -28,8 +28,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
   }
 
   void sortablesUpdated(Iterable<Sortable> sortables) {
-    final state = sortablesToState(sortables);
-    emit(state);
+    emit(sortablesToState(sortables));
   }
 
   void next() {
@@ -62,15 +61,16 @@ class SlideShowCubit extends Cubit<SlideShowState> {
     }
     final imageArchiveSortables =
         sortables.whereType<Sortable<ImageArchiveData>>();
-    final allByFolder = groupBy<Sortable<ImageArchiveData>, String>(
-        imageArchiveSortables, (s) => s.groupId);
-    final myPhotoFolder = allByFolder[myPhotosFolder.id];
-    final allInMyPhotosRoot = [
-      if (myPhotoFolder != null) ...myPhotoFolder.where((e) => !e.isGroup)
+    final allPhotoCalendarPhotos = [
+      ...imageArchiveSortables.where(
+        (e) => e.data.tags.contains(
+          ImageArchiveData.photoCalendarTag,
+        ),
+      )
     ];
     return SlideShowState(
       currentIndex: 0,
-      slideShowFolderContent: allInMyPhotosRoot..shuffle(),
+      slideShowFolderContent: allPhotoCalendarPhotos..shuffle(),
     );
   }
 
