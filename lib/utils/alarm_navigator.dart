@@ -8,44 +8,39 @@ import 'package:seagull/utils/all.dart';
 class AlarmNavigator {
   final _alarmRoutesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
-  static const _ongoingFullscreenActivityId = 'fullscreenActivity';
 
   Route getFullscreenAlarmRoute({
     required NotificationAlarm alarm,
     required Authenticated authenticatedState,
-    bool fullScreenActivity = false,
   }) {
     log.fine('pushFullscreenAlarm: $alarm');
     final route = MaterialPageRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
-        child: AlarmListener(child: _alarmPage(alarm, fullScreenActivity)),
+        child: AlarmListener(child: _alarmPage(alarm)),
       ),
     );
-    _alarmRoutesOnStack[alarm.activity.id] = route;
+    _alarmRoutesOnStack[alarm.stackId] = route;
     return route;
   }
 
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
-    bool fullScreenActivity,
   ) async {
     final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
     final route = MaterialPageRoute(
       builder: (_) => MultiBlocProvider(
         providers: authProviders,
-        child: _alarmPage(alarm, fullScreenActivity),
+        child: _alarmPage(alarm),
       ),
       fullscreenDialog: true,
     );
-    final id = fullScreenActivity && alarm is StartAlarm
-        ? _ongoingFullscreenActivityId
-        : alarm.activity.id;
-    final routeOnStack = _alarmRoutesOnStack[id];
+    final routeOnStack = _alarmRoutesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);
     if (routeOnStack != null) {
+      if (alarm.fullScreenActivity) return;
       log.fine('pushed alarm exists on stack');
       if (navigator.canPop()) {
         log.finer('alarm is not root, removes');
@@ -55,18 +50,15 @@ class AlarmNavigator {
         return navigator.pushAndRemoveUntil(route, (_) => false);
       }
     }
-    _alarmRoutesOnStack[id] = route;
+    _alarmRoutesOnStack[alarm.stackId] = route;
     return navigator.push(route);
   }
 
-  Widget _alarmPage(NotificationAlarm alarm, bool fullscreenActivity) =>
-      PopAwareAlarmPage(
+  Widget _alarmPage(NotificationAlarm alarm) => PopAwareAlarmPage(
         alarm: alarm,
         alarmNavigator: this,
         child: (alarm is NewAlarm)
-            ? fullscreenActivity
-                ? FullScreenActivityPage(activityDay: alarm.activityDay)
-                : AlarmPage(alarm: alarm)
+            ? AlarmPage(alarm: alarm)
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)
                 : throw UnsupportedError('$alarm not supported'),
@@ -74,11 +66,6 @@ class AlarmNavigator {
 
   MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
     log.info('removedFromRoutes: $alarm');
-    return _alarmRoutesOnStack.remove(alarm.activity.id);
-  }
-
-  MaterialPageRoute? removeFullScreenActivity() {
-    log.info('removedFromRoutes: fullscreen');
-    return _alarmRoutesOnStack.remove(_ongoingFullscreenActivityId);
+    return _alarmRoutesOnStack.remove(alarm.stackId);
   }
 }

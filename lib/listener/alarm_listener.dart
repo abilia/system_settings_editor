@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,28 +15,16 @@ class AlarmListener extends StatelessWidget {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
       selector: (settingsState) =>
           settingsState.alarm.showOngoingActivityInFullScreen,
-      builder: (context, fullScreenActivity) => MultiBlocListener(
-        listeners: [
-          BlocListener<NotificationCubit, NotificationAlarm?>(
-            listener: (context, state) async {
-              if (state != null &&
-                  (!fullScreenActivity || state is StartAlarm)) {
-                await GetIt.I<AlarmNavigator>()
-                    .pushAlarm(context, state, fullScreenActivity);
-              }
-            },
-          ),
-          if (!Platform.isAndroid)
-            BlocListener<AlarmCubit, NotificationAlarm?>(
-              listener: (context, state) async {
-                if (state != null &&
-                    (!fullScreenActivity || state is StartAlarm)) {
-                  await GetIt.I<AlarmNavigator>()
-                      .pushAlarm(context, state, fullScreenActivity);
-                }
-              },
-            ),
-        ],
+      builder: (context, fullScreenActivity) =>
+          BlocListener<AlarmCubit, NotificationAlarm?>(
+        listener: (context, state) async {
+          if (state != null) {
+            await GetIt.I<AlarmNavigator>().pushAlarm(
+              context,
+              state.setFullScreenActivity(fullScreenActivity),
+            );
+          }
+        },
         child: child,
       ),
     );
