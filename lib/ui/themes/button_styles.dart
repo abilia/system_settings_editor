@@ -62,7 +62,9 @@ final noBorder = MaterialStateProperty.all(noBorderShape);
 
 final baseButtonStyle = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
+  textStyle: MaterialStateProperty.all(
+    abiliaTextTheme.subtitle1?.copyWith(height: 1),
+  ),
   minimumSize: MaterialStateProperty.all(Size.fromHeight(64.0.s)),
 );
 
