@@ -57,7 +57,7 @@ class GoToCreateAccountButton extends StatelessWidget {
             ),
           );
           if (username != null) {
-            context.read<LoginBloc>().add(UsernameChanged(username));
+            context.read<LoginCubit>().usernameChanged(username);
           }
         },
         child: Text(translate.createAccount),

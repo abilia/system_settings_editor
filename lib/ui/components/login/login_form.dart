@@ -11,7 +11,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     final theme = Theme.of(context);
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return Form(
           child: Padding(
@@ -41,18 +41,16 @@ class LoginForm extends StatelessWidget {
                 UsernameInput(
                   initialValue: state.username,
                   errorState: state.usernameError,
-                  onChanged: (newUsername) => context.read<LoginBloc>().add(
-                        UsernameChanged(newUsername),
-                      ),
+                  onChanged: (newUsername) =>
+                      context.read<LoginCubit>().usernameChanged(newUsername),
                 ),
                 SizedBox(height: 16.s),
                 PasswordInput(
                   errorState: state.passwordError,
                   password: state.password,
-                  onPasswordChange: (newPassword) => context
-                      .read<LoginBloc>()
-                      .add(PasswordChanged(newPassword)),
-                  validator: LoginBloc.passwordValid,
+                  onPasswordChange: (newPassword) =>
+                      context.read<LoginCubit>().passwordChanged(newPassword),
+                  validator: LoginCubit.passwordValid,
                 ),
                 SizedBox(height: 32.s),
                 Padding(
@@ -98,7 +96,7 @@ class UsernameInput extends StatelessWidget {
       inputHeading: translate.username,
       errorState: errorState,
       autoCorrect: false,
-      inputValid: inputValid ?? LoginBloc.usernameValid,
+      inputValid: inputValid ?? LoginCubit.usernameValid,
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       onChanged: onChanged,
     );
@@ -110,7 +108,7 @@ class MEMOplannerLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) => SizedBox(
         width: 64.s,
         height: 64.s,
@@ -121,7 +119,7 @@ class MEMOplannerLogo extends StatelessWidget {
               )
             : GestureDetector(
                 onLongPress: () {
-                  context.read<LoginBloc>().add(ClearFailure());
+                  context.read<LoginCubit>().clearFailure();
                   showDialog(
                     context: context,
                     builder: (context) => const BackendSwitchesDialog(),
@@ -155,13 +153,12 @@ class LoginButton extends StatelessWidget {
           if (endPoint == prod) return '';
           return ' (${RegExp(r'//(\w+)').firstMatch(endPoint)?.group(1) ?? ''})';
         },
-        builder: (context, end) => BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, end) => BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => TextButton(
             style: textButtonStyleGreen,
             onPressed: state is! LoginLoading
                 ? () {
-                    BlocProvider.of<LoginBloc>(context)
-                        .add(LoginButtonPressed());
+                    BlocProvider.of<LoginCubit>(context).loginButtonPressed();
                     FocusScope.of(context).requestFocus(FocusNode());
                   }
                 : null,
