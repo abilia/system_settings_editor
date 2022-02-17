@@ -70,6 +70,7 @@ class Layout {
     this.nextButton = const IconTextButtonStyle(
       minimumSize: Size(150, 64),
       maximumSize: Size(150, 64),
+      padding: EdgeInsets.only(left: 8),
     ),
     this.alarmPage = const AlarmPageLayout(),
   });
@@ -645,12 +646,15 @@ class NoteLayout {
 }
 
 class IconTextButtonStyle {
-  final Size minimumSize;
-  final Size maximumSize;
+  final Size minimumSize, maximumSize;
+  final EdgeInsets padding;
+  final double iconTextSpacing;
 
   const IconTextButtonStyle({
     this.minimumSize = const Size(172, 64),
     this.maximumSize = const Size(double.infinity, 64),
+    this.iconTextSpacing = 8,
+    this.padding = const EdgeInsets.only(right: 8),
   });
 }
 
