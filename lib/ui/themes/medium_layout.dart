@@ -62,7 +62,7 @@ class _MediumLayout extends Layout {
           ),
           iconSize: const IconSize(
             small: 48,
-            button: 56,
+            button: 42,
             normal: 64,
             large: 96,
             huge: 192,
@@ -246,6 +246,14 @@ class _MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+          ),
+          iconTextButton: const IconTextButtonStyle(
+            minimumSize: Size(376, 96),
+            maximumSize: Size(double.infinity, 96),
+          ),
+          nextButton: const IconTextButtonStyle(
+            minimumSize: Size(346, 96),
+            maximumSize: Size(346, 96),
           ),
           alarmPage: const AlarmPageLayout(
             alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),

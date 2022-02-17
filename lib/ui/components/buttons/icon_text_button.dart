@@ -18,13 +18,22 @@ class IconAndTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tts.data(
       data: text,
-      child: IconTheme(
-        data: lightIconThemeData,
-        child: TextButton.icon(
-          style: style,
-          onPressed: onPressed,
-          icon: Icon(icon),
-          label: Text(text),
+      child: TextButton(
+        style: style,
+        onPressed: onPressed,
+        child: Padding(
+          padding: layout.iconTextButton.padding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconTheme(
+                data: lightIconThemeData,
+                child: Icon(icon),
+              ),
+              SizedBox(width: layout.iconTextButton.iconTextSpacing),
+              Text(text),
+            ],
+          ),
         ),
       ),
     );
@@ -103,18 +112,20 @@ class NextButton extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: Translator.of(context).translate.next,
         child: TextButton(
-          style: iconTextButtonStyleGreen,
+          style: iconTextButtonStyleNext,
           onPressed: onPressed,
-          child: Row(
-            children: [
-              const Spacer(flex: 63),
-              Text(Translator.of(context).translate.next),
-              Icon(
-                AbiliaIcons.navigationNext,
-                size: layout.iconSize.button,
-              ),
-              const Spacer(flex: 47),
-            ],
+          child: Padding(
+            padding: layout.nextButton.padding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(Translator.of(context).translate.next),
+                IconTheme(
+                  data: lightIconThemeData,
+                  child: const Icon(AbiliaIcons.navigationNext),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -122,6 +133,7 @@ class NextButton extends StatelessWidget {
 
 class OkButton extends StatelessWidget {
   final VoidCallback? onPressed;
+
   const OkButton({
     Key? key,
     this.onPressed,
@@ -181,6 +193,7 @@ class CloseButton extends StatelessWidget {
 
 class YesButton extends StatelessWidget {
   const YesButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GreenButton(
@@ -193,6 +206,7 @@ class YesButton extends StatelessWidget {
 
 class NoButton extends StatelessWidget {
   const NoButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return LightButton(
@@ -205,6 +219,7 @@ class NoButton extends StatelessWidget {
 
 class SaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
+
   const SaveButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
@@ -219,6 +234,7 @@ class SaveButton extends StatelessWidget {
 
 class StartButton extends StatelessWidget {
   final VoidCallback? onPressed;
+
   const StartButton({this.onPressed, Key? key}) : super(key: key);
 
   @override
