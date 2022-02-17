@@ -180,9 +180,9 @@ void main() {
         key: AlarmSettings.showOngoingActivityInFullScreenKey,
         matcher: true,
       );
-    });
+    }, skip: Config.isMPGO);
 
-    testWidgets('Changes to alarm triggers an alarm schedualing',
+    testWidgets('Changes to alarm triggers an alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
@@ -193,13 +193,28 @@ void main() {
       expect(alarmSchedualCalls, greaterThanOrEqualTo(preCalls + 1));
     });
 
-    testWidgets('No changes to alarm triggers no alarm schedualing',
+    testWidgets('No changes to alarm triggers no alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
       final preCalls = alarmSchedualCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       expect(alarmSchedualCalls, preCalls);
+    });
+
+    testWidgets(
+        'SGC-1347 Fullscreen activity setting should only be visible on MP',
+        (tester) async {
+      await tester.goToAlarmSettingsPage();
+      expect(find.byType(AlarmSettingsPage), findsOneWidget);
+      if (Config.isMP) {
+        expect(find.byKey(TestKey.showOngoingActivityInFullScreen),
+            findsOneWidget);
+      }
+      if (Config.isMPGO) {
+        expect(
+            find.byKey(TestKey.showOngoingActivityInFullScreen), findsNothing);
+      }
     });
   });
 }
