@@ -53,14 +53,6 @@ void main() {
       expect(find.byType(AlarmSettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
-      if (Config.isMP) {
-        expect(find.byKey(TestKey.showOngoingActivityInFullScreen),
-            findsOneWidget);
-      }
-      if (Config.isMPGO) {
-        expect(
-            find.byKey(TestKey.showOngoingActivityInFullScreen), findsNothing);
-      }
     });
 
     testWidgets('Select non checkable alarm sound', (tester) async {
@@ -208,6 +200,21 @@ void main() {
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       expect(alarmSchedualCalls, preCalls);
+    });
+
+    testWidgets(
+        'SGC-1347 Fullscreen activity setting should only be visible on MP',
+        (tester) async {
+      await tester.goToAlarmSettingsPage();
+      expect(find.byType(AlarmSettingsPage), findsOneWidget);
+      if (Config.isMP) {
+        expect(find.byKey(TestKey.showOngoingActivityInFullScreen),
+            findsOneWidget);
+      }
+      if (Config.isMPGO) {
+        expect(
+            find.byKey(TestKey.showOngoingActivityInFullScreen), findsNothing);
+      }
     });
   });
 }
