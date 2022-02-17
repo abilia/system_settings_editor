@@ -1,11 +1,11 @@
-part of 'login_bloc.dart';
+part of 'login_cubit.dart';
 
 class LoginState extends Equatable {
   final String username;
   final String password;
 
-  bool get isUsernameValid => LoginBloc.usernameValid(username);
-  bool get isPasswordValid => LoginBloc.passwordValid(password);
+  bool get isUsernameValid => LoginCubit.usernameValid(username);
+  bool get isPasswordValid => LoginCubit.passwordValid(password);
   bool get isFormValid => isUsernameValid && isPasswordValid;
 
   bool get credentialError => false;

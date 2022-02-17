@@ -49,11 +49,11 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
   Stream<CreateAccountState> _mapCreateAccountEventToState() async* {
     if (state.username.isEmpty) {
       yield state.failed(CreateAccountFailure.noUsername);
-    } else if (!LoginBloc.usernameValid(state.username)) {
+    } else if (!LoginCubit.usernameValid(state.username)) {
       yield state.failed(CreateAccountFailure.usernameToShort);
     } else if (state.firstPassword.isEmpty) {
       yield state.failed(CreateAccountFailure.noPassword);
-    } else if (!LoginBloc.passwordValid(state.firstPassword)) {
+    } else if (!LoginCubit.passwordValid(state.firstPassword)) {
       yield state.failed(CreateAccountFailure.passwordToShort);
     } else if (state.secondPassword.isEmpty) {
       yield state.failed(CreateAccountFailure.noConfirmPassword);
