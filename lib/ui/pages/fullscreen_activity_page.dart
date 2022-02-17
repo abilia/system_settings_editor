@@ -198,7 +198,9 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                         size: size,
                         painter: _CategoryCirclePainter(
                             size: iconLayout.dotSize,
-                            offset: iconLayout.dotOffset,
+                            offset: selected
+                                ? iconLayout.dotOffsetSelected
+                                : iconLayout.dotOffset,
                             color: categoryColor(
                                 category: activityOccasion.category)),
                       ),
