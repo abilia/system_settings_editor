@@ -10,20 +10,20 @@ part 'slide_show_state.dart';
 
 class SlideShowCubit extends Cubit<SlideShowState> {
   final SortableBloc sortableBloc;
-  late final StreamSubscription sortableSubscription;
-  late Timer timer;
+  late final StreamSubscription _sortableSubscription;
+  late Timer _timer;
   final Duration slideDuration;
 
   SlideShowCubit({
     required this.sortableBloc,
     this.slideDuration = const Duration(minutes: 5),
   }) : super(sortableStateToState(sortableBloc.state)) {
-    sortableSubscription = sortableBloc.stream.listen((sortableState) {
+    _sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         sortablesUpdated(sortableState.sortables);
       }
     });
-    timer = Timer(slideDuration, () => next());
+    _timer = Timer(slideDuration, () => next());
   }
 
   void sortablesUpdated(Iterable<Sortable> sortables) {
@@ -31,7 +31,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
   }
 
   void next() {
-    timer.cancel();
+    _timer.cancel();
     if (state.slideShowFolderContent.isEmpty) {
       emit(SlideShowState.empty());
     } else {
@@ -42,7 +42,7 @@ class SlideShowCubit extends Cubit<SlideShowState> {
         slideShowFolderContent: state.slideShowFolderContent,
       ));
     }
-    timer = Timer(slideDuration, () => next());
+    _timer = Timer(slideDuration, () => next());
   }
 
   static SlideShowState sortableStateToState(SortableState state) {
@@ -58,14 +58,11 @@ class SlideShowCubit extends Cubit<SlideShowState> {
     if (myPhotosFolder == null) {
       return SlideShowState.empty();
     }
-    final imageArchiveSortables =
-        sortables.whereType<Sortable<ImageArchiveData>>();
+
     final allPhotoCalendarPhotos = [
-      ...imageArchiveSortables.where(
-        (e) => e.data.tags.contains(
-          ImageArchiveData.photoCalendarTag,
-        ),
-      )
+      ...sortables
+          .whereType<Sortable<ImageArchiveData>>()
+          .where((e) => e.data.isInPhotoCalendar())
     ];
     return SlideShowState(
       currentIndex: 0,
@@ -75,8 +72,8 @@ class SlideShowCubit extends Cubit<SlideShowState> {
 
   @override
   Future<void> close() async {
-    timer.cancel();
-    await sortableSubscription.cancel();
+    _timer.cancel();
+    await _sortableSubscription.cancel();
     return super.close();
   }
 }

@@ -117,27 +117,29 @@ void main() {
         await tester.goToPhotoCalendarPage(pump: true);
         expect(find.byType(PhotoCalendarPage), findsOneWidget);
         expect(find.byType(PhotoCalendarImage), findsOneWidget);
-        var image = find.byType(PhotoCalendarImage).evaluate().first.widget
+        final image1 = find.byType(PhotoCalendarImage).evaluate().first.widget
             as PhotoCalendarImage;
-        expect(image.fileId == file3 || image.fileId == file4, isTrue);
+        expect(image1.fileId, isIn([file3, file4]));
 
         await tester.tap(find.byType(PhotoCalendarImage));
         await tester.pump(kDoubleTapMinTime);
         await tester.tap(find.byType(PhotoCalendarImage));
         await tester.pumpAndSettle();
 
-        image = find.byType(PhotoCalendarImage).evaluate().first.widget
+        final image2 = find.byType(PhotoCalendarImage).evaluate().first.widget
             as PhotoCalendarImage;
-        expect(image.fileId == file3 || image.fileId == file4, isTrue);
+        expect(image2.fileId, isIn([file3, file4]));
+        expect(image2.fileId, isNot(image1.fileId));
 
         await tester.tap(find.byType(PhotoCalendarImage));
         await tester.pump(kDoubleTapMinTime);
         await tester.tap(find.byType(PhotoCalendarImage));
         await tester.pumpAndSettle();
 
-        image = find.byType(PhotoCalendarImage).evaluate().first.widget
+        final image3 = find.byType(PhotoCalendarImage).evaluate().first.widget
             as PhotoCalendarImage;
-        expect(image.fileId == file3 || image.fileId == file4, isTrue);
+        expect(image3.fileId, isIn([file3, file4]));
+        expect(image3.fileId, isNot(image2.fileId));
       });
     },
     skip: !Config.isMP,
