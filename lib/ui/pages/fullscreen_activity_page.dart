@@ -15,10 +15,16 @@ class FullScreenActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<FullScreenActivityCubit>(
       create: (context) => FullScreenActivityCubit(
-          activitiesBloc: context.read<ActivitiesBloc>(),
-          clockBloc: context.read<ClockBloc>(),
-          startingActivity: activityDay),
-      child: const _FullScreenActivityInfo(),
+        activitiesBloc: context.read<ActivitiesBloc>(),
+        clockBloc: context.read<ClockBloc>(),
+        alarmCubit: context.read<AlarmCubit>(),
+        startingActivity: activityDay,
+      ),
+      child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
+        listenWhen: (previous, current) => current.eventsList.isEmpty,
+        listener: (context, state) => Navigator.of(context).maybePop(),
+        child: const _FullScreenActivityInfo(),
+      ),
     );
   }
 }
@@ -30,12 +36,7 @@ class _FullScreenActivityInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
         ActivityDay>(
-      selector: (state) {
-        if (state is NoActivityState) {
-          Navigator.of(context).maybePop();
-        }
-        return state.activityDay;
-      },
+      selector: (state) => state.selected,
       builder: (context, ad) {
         return Scaffold(
           appBar: DayAppBar(
