@@ -197,7 +197,7 @@ class FullScreenActivityBottomContent extends StatelessWidget {
                       CustomPaint(
                         size: size,
                         painter: _CategoryCirclePainter(
-                            size: iconLayout.dotSize,
+                            radius: iconLayout.dotRadius,
                             offset: selected
                                 ? iconLayout.dotOffsetSelected
                                 : iconLayout.dotOffset,
@@ -299,11 +299,11 @@ class _ActivityArrowPainter extends CustomPainter {
 class _CategoryCirclePainter extends CustomPainter {
   late Paint _circlePaint;
   late Paint _whitePaint;
-  final double size;
+  final double radius;
   final double offset;
 
   _CategoryCirclePainter({
-    required this.size,
+    required this.radius,
     required this.offset,
     required color,
   }) {
@@ -318,9 +318,9 @@ class _CategoryCirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawCircle(
-        Offset(size.width - offset, offset), offset / 2 + 1, _whitePaint);
+        Offset(size.width - offset, offset), this.radius + 1, _whitePaint);
     canvas.drawCircle(
-        Offset(size.width - offset, offset), offset / 2, _circlePaint);
+        Offset(size.width - offset, offset), this.radius, _circlePaint);
   }
 
   @override
