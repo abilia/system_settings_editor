@@ -114,6 +114,22 @@ void main() {
         contains: activity.title);
   });
 
+  testWidgets('BUG SGC-1427 GoToNowButton should not expand in width',
+      (WidgetTester tester) async {
+    const screenWidth = 400.0;
+    await tester.binding.setSurfaceSize(const Size(screenWidth, 800));
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
+    await tester.pumpAndSettle();
+    expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+
+    final nowButton = find.byKey(TestKey.goToNowButton).evaluate().first;
+    //Doesn't actually test that the width is exactly correct,
+    //just that it won't expand to fill as much space as it can.
+    expect(nowButton.size!.width, lessThan(screenWidth));
+  });
+
   group('timepillar', () {
     testWidgets('timepillar shows', (WidgetTester tester) async {
       await tester.pumpWidget(App());
@@ -163,6 +179,21 @@ void main() {
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+    });
+
+    testWidgets('BUG SGC-1427 GoToNowButton has correct width',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsNothing);
+
+      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
+
+      final nowButton = find.byKey(TestKey.goToNowButton).evaluate().first;
+
+      print(nowButton.size);
     });
 
     testWidgets('SGC-967 go to now button works more than once',

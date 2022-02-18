@@ -25,6 +25,7 @@ class IconAndTextButton extends StatelessWidget {
           padding: layout.iconTextButton.padding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconTheme(
                 data: lightIconThemeData,
