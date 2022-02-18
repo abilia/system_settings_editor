@@ -181,21 +181,6 @@ void main() {
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
 
-    testWidgets('BUG SGC-1427 GoToNowButton has correct width',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsNothing);
-
-      await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);
-      await tester.pumpAndSettle();
-      expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
-
-      final nowButton = find.byKey(TestKey.goToNowButton).evaluate().first;
-
-      print(nowButton.size);
-    });
-
     testWidgets('SGC-967 go to now button works more than once',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
