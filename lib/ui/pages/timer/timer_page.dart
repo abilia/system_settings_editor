@@ -116,10 +116,13 @@ class _TimerBottomBar extends StatelessWidget {
             ),
             IconActionButtonLight(
               onPressed: () async {
+                final t = Translator.of(context).translate;
                 final confirmDeletion = await showViewDialog(
                   context: context,
-                  builder: (context) => ConfirmWarningDialog(
-                    text: Translator.of(context).translate.timerDelete,
+                  builder: (context) => YesNoDialog(
+                    headingIcon: AbiliaIcons.deleteAllClear,
+                    heading: t.delete,
+                    text: t.timerDelete,
                   ),
                 );
                 if (confirmDeletion) {

@@ -786,7 +786,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(OkButton));
+        await tester.tap(find.byType(YesButton));
         await tester.pumpAndSettle();
 
         // Assert
