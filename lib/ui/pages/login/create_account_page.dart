@@ -5,22 +5,25 @@ import 'package:seagull/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
   final UserRepository userRepository;
+  static const _bottomBottomNavigationHeight = 84.0;
 
   const CreateAccountPage({Key? key, required this.userRepository})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
     final t = translator.translate;
     final textTheme = Theme.of(context).textTheme;
+    final ScrollController _scrollController = ScrollController();
     return BlocProvider(
-      create: (context) => CreateAccountBloc(
+      create: (context) => CreateAccountCubit(
         languageTag: translator.locale.toLanguageTag(),
         repository: userRepository,
       ),
       child: MultiBlocListener(
         listeners: [
-          BlocListener<CreateAccountBloc, CreateAccountState>(
+          BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is AccountCreated,
             listener: (context, state) async {
               await showViewDialog(
@@ -39,7 +42,7 @@ class CreateAccountPage extends StatelessWidget {
               Navigator.of(context).pop(state.username);
             },
           ),
-          BlocListener<CreateAccountBloc, CreateAccountState>(
+          BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is CreateAccountFailed,
             listener: (context, state) async {
               if (state is CreateAccountFailed) {
@@ -56,80 +59,90 @@ class CreateAccountPage extends StatelessWidget {
             },
           ),
         ],
-        child: BlocBuilder<CreateAccountBloc, CreateAccountState>(
+        child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
           builder: (context, state) => Scaffold(
             body: Padding(
               padding: EdgeInsets.only(left: 16.s, top: 24.0, right: 16.s),
-              child: Column(
-                children: [
-                  SizedBox(height: 48.s),
-                  const MyAbiliaLogo(),
-                  SizedBox(height: 32.s),
-                  Tts(
-                    child: Text(
-                      t.createAaccountHeading,
-                      style: textTheme.headline6,
-                    ),
+              child: ScrollArrows.vertical(
+                controller: _scrollController,
+                downCollapseMargin: _bottomBottomNavigationHeight,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 48.s),
+                      const MyAbiliaLogo(),
+                      SizedBox(height: 32.s),
+                      Tts(
+                        child: Text(
+                          t.createAaccountHeading,
+                          style: textTheme.headline6,
+                        ),
+                      ),
+                      SizedBox(height: 8.s),
+                      Tts(
+                        child: Text(
+                          t.createAaccountSubheading,
+                          style: textTheme.bodyText2,
+                        ),
+                      ),
+                      SizedBox(height: 32.s),
+                      UsernameInput(
+                        initialValue: state.username,
+                        errorState: state.usernameFailure,
+                        inputValid: (s) => s.isNotEmpty,
+                        onChanged: (newUsername) => context
+                            .read<CreateAccountCubit>()
+                            .usernameEmailChanged(newUsername),
+                      ),
+                      SizedBox(height: 16.s),
+                      PasswordInput(
+                        key: TestKey.createAccountPassword,
+                        inputHeading: t.passwordHint,
+                        password: state.firstPassword,
+                        onPasswordChange: (password) => context
+                            .read<CreateAccountCubit>()
+                            .firstPasswordChanged(password),
+                        errorState: state.passwordFailure,
+                        validator: (p) => p.isNotEmpty,
+                      ),
+                      SizedBox(height: 16.s),
+                      PasswordInput(
+                        key: TestKey.createAccountPasswordConfirm,
+                        inputHeading: t.confirmPassword,
+                        password: state.secondPassword,
+                        onPasswordChange: (password) => context
+                            .read<CreateAccountCubit>()
+                            .secondPasswordChanged(password),
+                        errorState: state.conformPasswordFailure,
+                        validator: (p) => p.isNotEmpty,
+                      ),
+                      SizedBox(height: 48.s),
+                      AcceptTermsSwitch(
+                        key: TestKey.acceptTermsOfUse,
+                        linkText: t.termsOfUse,
+                        value: state.termsOfUse,
+                        url: t.termsOfUseUrl,
+                        errorState: state.termsOfUseFailure,
+                        onChanged: (v) => context
+                            .read<CreateAccountCubit>()
+                            .termsOfUseAccepted(v),
+                      ),
+                      SizedBox(height: 4.s),
+                      AcceptTermsSwitch(
+                        key: TestKey.acceptPrivacyPolicy,
+                        linkText: t.privacyPolicy,
+                        value: state.privacyPolicy,
+                        url: t.privacyPolicyUrl,
+                        errorState: state.privacyPolicyFailure,
+                        onChanged: (v) => context
+                            .read<CreateAccountCubit>()
+                            .privacyPolicyAccepted(v),
+                      ),
+                      SizedBox(height: 16.s),
+                    ],
                   ),
-                  SizedBox(height: 8.s),
-                  Tts(
-                    child: Text(
-                      t.createAaccountSubheading,
-                      style: textTheme.bodyText2,
-                    ),
-                  ),
-                  SizedBox(height: 32.s),
-                  UsernameInput(
-                    initialValue: state.username,
-                    errorState: state.usernameFailure,
-                    inputValid: (s) => s.isNotEmpty,
-                    onChanged: (newUsername) => context
-                        .read<CreateAccountBloc>()
-                        .add(UsernameEmailChanged(newUsername)),
-                  ),
-                  SizedBox(height: 16.s),
-                  PasswordInput(
-                    key: TestKey.createAccountPassword,
-                    inputHeading: t.passwordHint,
-                    password: state.firstPassword,
-                    onPasswordChange: (password) => context
-                        .read<CreateAccountBloc>()
-                        .add(FirstPasswordChanged(password)),
-                    errorState: state.passwordFailure,
-                    validator: (p) => p.isNotEmpty,
-                  ),
-                  SizedBox(height: 16.s),
-                  PasswordInput(
-                    key: TestKey.createAccountPasswordConfirm,
-                    inputHeading: t.confirmPassword,
-                    password: state.secondPassword,
-                    onPasswordChange: (password) => context
-                        .read<CreateAccountBloc>()
-                        .add(SecondPasswordChanged(password)),
-                    errorState: state.conformPasswordFailure,
-                    validator: (p) => p.isNotEmpty,
-                  ),
-                  SizedBox(height: 48.s),
-                  AcceptTermsSwitch(
-                    key: TestKey.acceptTermsOfUse,
-                    linkText: t.termsOfUse,
-                    value: state.termsOfUse,
-                    url: t.termsOfUseUrl,
-                    errorState: state.termsOfUseFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountBloc>().add(TermsOfUse(v)),
-                  ),
-                  SizedBox(height: 4.s),
-                  AcceptTermsSwitch(
-                    key: TestKey.acceptPrivacyPolicy,
-                    linkText: t.privacyPolicy,
-                    value: state.privacyPolicy,
-                    url: t.privacyPolicyUrl,
-                    errorState: state.privacyPolicyFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountBloc>().add(PrivacyPolicy(v)),
-                  ),
-                ],
+                ),
               ),
             ),
             bottomNavigationBar: const BottomNavigation(
@@ -198,7 +211,7 @@ class MyAbiliaLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAccountBloc, CreateAccountState>(
+    return BlocBuilder<CreateAccountCubit, CreateAccountState>(
       builder: (context, state) {
         if (state is CreateAccountLoading) {
           return SizedBox(
@@ -241,15 +254,15 @@ class CreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAccountBloc, CreateAccountState>(
+    return BlocBuilder<CreateAccountCubit, CreateAccountState>(
       builder: (context, state) {
         return GreenButton(
           icon: AbiliaIcons.ok,
           text: Translator.of(context).translate.createAccount,
           onPressed: state is! CreateAccountLoading
               ? () => context
-                  .read<CreateAccountBloc>()
-                  .add(CreateAccountButtonPressed())
+                  .read<CreateAccountCubit>()
+                  .createAccountButtonPressed()
               : null,
         );
       },

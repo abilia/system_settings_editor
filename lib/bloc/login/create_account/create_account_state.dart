@@ -1,4 +1,4 @@
-part of 'create_account_bloc.dart';
+part of 'create_account_cubit.dart';
 
 class CreateAccountState extends Equatable {
   final String username, firstPassword, secondPassword;
