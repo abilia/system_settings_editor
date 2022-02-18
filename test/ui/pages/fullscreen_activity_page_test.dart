@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -121,6 +122,13 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingBloc,
             ),
+            BlocProvider<AlarmCubit>(
+              create: (context) => AlarmCubit(
+                selectedNotificationSubject: ReplaySubject<NotificationAlarm>(),
+                activitiesBloc: mockActivitiesBloc,
+                clockBloc: clockBloc,
+              ),
+            ),
             BlocProvider<TimepillarCubit>(
                 create: (context) => FaketimepillarCubit()),
           ],
@@ -156,7 +164,7 @@ void main() {
       });
 
       testWidgets('Show activity two', (WidgetTester tester) async {
-        clockBloc.emit(fakeActivities[1].startTime);
+        clockBloc.emit(fakeActivities[0].startTime);
         await tester.pumpWidget(
           wrapWithMaterialApp(
             PopAwareAlarmPage(
@@ -166,6 +174,8 @@ void main() {
             ),
           ),
         );
+        await tester.pumpAndSettle();
+        clockBloc.emit(fakeActivities[1].startTime);
         await tester.pumpAndSettle();
         expect(fullScreenActivityPageFinder, findsOneWidget);
         expect(find.text(fakeActivities[1].title), findsNWidgets(2));
