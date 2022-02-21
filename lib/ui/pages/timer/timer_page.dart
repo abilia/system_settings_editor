@@ -17,34 +17,51 @@ class TimerPage extends StatelessWidget {
     return Scaffold(
       appBar: DayAppBar(day: day),
       body: Padding(
-        padding: layout.timerPage.bodyPadding,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: borderRadius,
-          ),
-          constraints: const BoxConstraints.expand(),
-          child: Column(
-            children: <Widget>[
-              _TopInfo(timer: timer),
-              Divider(
-                height: layout.activityPage.dividerHeight,
-                endIndent: 0,
-                indent: layout.activityPage.dividerIndentation,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
-                  child: TimerWheel.nonInteractive(
-                    secondsLeft: timer.duration.inSeconds,
-                    lengthInMinutes: timer.duration.inMinutes,
+          padding: layout.timerPage.bodyPadding,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: borderRadius,
+            ),
+            constraints: const BoxConstraints.expand(),
+            child: Column(
+              children: <Widget>[
+                _TopInfo(timer: timer),
+                Divider(
+                  height: layout.activityPage.dividerHeight,
+                  endIndent: 0,
+                  indent: layout.activityPage.dividerIndentation,
+                ),
+                Expanded(
+                  child: BlocSelector<TimerAlarmBloc, TimerAlarmState,
+                      TimerOccasion>(
+                    selector: (timerState) => timerState.timers.firstWhere(
+                        (timerOccasion) => timerOccasion.timer.id == timer.id),
+                    builder: (context, timerOccasion) {
+                      return Padding(
+                        padding:
+                            EdgeInsets.all(layout.timerPage.mainContentPadding),
+                        child: timerOccasion.isOngoing
+                            ? TimerTickerBuilder(
+                                timerOccasion.timer,
+                                builder: (context, left) =>
+                                    TimerWheel.nonInteractive(
+                                  secondsLeft: left.inSeconds,
+                                  lengthInMinutes:
+                                      timerOccasion.timer.duration.inMinutes,
+                                ),
+                              )
+                            : TimerWheel.nonInteractive(
+                                secondsLeft: 0,
+                                lengthInMinutes: timer.duration.inMinutes,
+                              ),
+                      );
+                    },
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              ],
+            ),
+          )),
       bottomNavigationBar: _TimerBottomBar(timer: timer),
     );
   }
