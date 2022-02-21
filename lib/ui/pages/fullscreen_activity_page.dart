@@ -69,48 +69,55 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
     Translated t = Translator.of(context).translate;
     return BlocBuilder<FullScreenActivityCubit, FullScreenActivityState>(
       builder: (context, state) {
-        return BottomAppBar(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: layout.ongoingFullscreenPage.activityIcon.toolBarHeight,
-                color: AbiliaColors.white110,
-                child: ScrollArrows.horizontal(
-                  controller: scrollController,
-                  leftCollapseMargin: toolBarLayout.collapseMargin,
-                  rightCollapseMargin: toolBarLayout.collapseMargin,
-                  child: ListView(
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    clipBehavior: Clip.none,
-                    children: <Widget>[
-                      ...state.eventsList.map(
-                        (ao) => FullScreenActivityBottomContent(
-                          activityOccasion: ao,
-                          selected: ao.activity.id == selectedActivity.id,
-                          minutes:
-                              context.read<ClockBloc>().state.onlyMinutes(),
-                        ),
+        return BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, timeState) {
+            return BottomAppBar(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height:
+                        layout.ongoingFullscreenPage.activityIcon.toolBarHeight,
+                    color: AbiliaColors.white110,
+                    child: ScrollArrows.horizontal(
+                      controller: scrollController,
+                      leftCollapseMargin: toolBarLayout.collapseMargin,
+                      rightCollapseMargin: toolBarLayout.collapseMargin,
+                      child: ListView(
+                        controller: scrollController,
+                        scrollDirection: Axis.horizontal,
+                        clipBehavior: Clip.none,
+                        children: <Widget>[
+                          ...state.eventsList.map(
+                            (ao) => BlocBuilder<ClockBloc, DateTime>(
+                                builder: (context, timeState) {
+                              return FullScreenActivityBottomContent(
+                                activityOccasion: ao,
+                                selected: ao.activity.id == selectedActivity.id,
+                                minutes: timeState.onlyMinutes(),
+                              );
+                            }),
+                          )
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: toolBarLayout.height,
-                child: Padding(
-                  padding: toolBarLayout.buttonPadding,
-                  child: IconAndTextButton(
-                    onPressed: () => Navigator.of(context).maybePop(),
-                    icon: AbiliaIcons.closeProgram,
-                    text: t.close,
-                    style: iconTextButtonStyleLight,
+                  SizedBox(
+                    height: toolBarLayout.height,
+                    child: Padding(
+                      padding: toolBarLayout.buttonPadding,
+                      child: IconAndTextButton(
+                        onPressed: () => Navigator.of(context).maybePop(),
+                        icon: AbiliaIcons.closeProgram,
+                        text: t.close,
+                        style: iconTextButtonStyleLight,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
