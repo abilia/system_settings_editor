@@ -89,7 +89,8 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                         (ao) => FullScreenActivityBottomContent(
                           activityOccasion: ao,
                           selected: ao.activity.id == selectedActivity.id,
-                          minutes: DateTime.now().onlyMinutes(),
+                          minutes:
+                              context.read<ClockBloc>().state.onlyMinutes(),
                         ),
                       ),
                     ],
