@@ -34,6 +34,7 @@ class LoginPage extends StatelessWidget {
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         pushService: GetIt.I<FirebasePushService>(),
         clockBloc: BlocProvider.of<ClockBloc>(context),
+        userRepository: context.read<UserRepository>(),
       ),
       child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, state) => state is LoginFailure,

@@ -31,6 +31,7 @@ void main() {
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
+        userRepository: mockUserRepository,
       );
     });
 
@@ -181,6 +182,7 @@ void main() {
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
+        userRepository: mockedUserRepository,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
