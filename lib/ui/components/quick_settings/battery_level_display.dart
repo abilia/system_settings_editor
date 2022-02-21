@@ -64,5 +64,6 @@ class BatteryLevel extends StatelessWidget {
     if (batteryLevel >= 0) {
       return AbiliaIcons.batteryLevelCritical;
     }
+    return null;
   }
 }

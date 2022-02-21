@@ -1404,8 +1404,8 @@ Asien sweet and SourBowl vegetarian – marinerad tofu, plocksallad, picklade mo
       await navigateToActivityPage(tester);
       await tester.tap(deleteButtonFinder);
       await tester.pumpAndSettle();
-      await tester.verifyTts(find.text(translate.remove),
-          exact: translate.remove);
+      await tester.verifyTts(find.text(translate.delete),
+          exact: translate.delete);
       await tester.verifyTts(find.text(translate.deleteActivity),
           exact: translate.deleteActivity);
     });

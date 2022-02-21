@@ -79,6 +79,9 @@ class FakeSortableDb extends Fake implements SortableDb {
   @override
   Future<Iterable<DbModel<Sortable>>> getAllDirty() =>
       Future.value(<DbModel<Sortable>>[]);
+
+  @override
+  Future<int> getLastRevision() => Future.value(0);
 }
 
 class FakeGenericDb extends Fake implements GenericDb {
@@ -92,6 +95,8 @@ class FakeGenericDb extends Fake implements GenericDb {
   @override
   Future<Iterable<DbModel<Generic<GenericData>>>> getAllDirty() =>
       Future.value(const Iterable.empty());
+  @override
+  Future<int> getLastRevision() => Future.value(0);
 }
 
 class FakeActivityDb extends Fake implements ActivityDb {

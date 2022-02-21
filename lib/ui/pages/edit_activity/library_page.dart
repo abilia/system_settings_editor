@@ -10,12 +10,12 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     Key? key,
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
-    required this.initialFolder,
-    this.visibilityFilter,
     this.onCancel,
     this.appBar,
-    this.bottomNavigationBar,
     this.rootHeading,
+    this.showBottomNavigationBar = true,
+    this.gridCrossAxisCount,
+    this.gridChildAspectRatio,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
@@ -27,78 +27,69 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     required this.emptyLibraryMessage,
     required this.onOk,
-    this.visibilityFilter,
     this.onCancel,
     this.appBar,
-    this.bottomNavigationBar,
     this.rootHeading,
-    this.initialFolder = '',
+    this.showBottomNavigationBar = true,
+    this.gridCrossAxisCount,
+    this.gridChildAspectRatio,
   })  : selectableItems = true,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
         assert(selectedItemGenerator != null,
             'selectedItemGenerator should not be null in LibraryPage.selectable'),
         super(key: key);
-  final bool selectableItems;
+  final bool selectableItems, showBottomNavigationBar;
   final PreferredSizeWidget? appBar;
-  final Widget? bottomNavigationBar;
   final Function(Sortable<T>)? onOk;
   final VoidCallback? onCancel;
   final LibraryItemGenerator<T>? selectedItemGenerator;
   final LibraryItemGenerator<T> libraryItemGenerator;
-  final bool Function(Sortable<T>)? visibilityFilter;
   final String emptyLibraryMessage;
   final String? rootHeading;
-  final String initialFolder;
+  final int? gridCrossAxisCount;
+  final double? gridChildAspectRatio;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SortableArchiveBloc<T>>(
-      create: (_) => SortableArchiveBloc<T>(
-        sortableBloc: BlocProvider.of<SortableBloc>(context),
-        initialFolderId: initialFolder,
-        visibilityFilter: visibilityFilter,
-      ),
-      child: BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
-        builder: (context, state) {
-          final selected = selectableItems ? state.selected : null;
-          final selectedGenerator = selectedItemGenerator;
-          return Scaffold(
-            appBar: appBar ??
-                AbiliaAppBar(
-                  iconData: AbiliaIcons.documents,
-                  title: Translator.of(context).translate.selectFromLibrary,
+    return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+      builder: (context, state) {
+        final selected = selectableItems ? state.selected : null;
+        final selectedGenerator = selectedItemGenerator;
+        return Scaffold(
+          appBar: appBar,
+          body: Column(
+            children: [
+              if (!state.isAtRootAndNoSelection || rootHeading != null)
+                LibraryHeading<T>(
+                  sortableArchiveState: state,
+                  rootHeading: rootHeading ?? '',
                 ),
-            body: Column(
-              children: [
-                if (!state.isAtRootAndNoSelection || rootHeading != null)
-                  LibraryHeading<T>(
-                    sortableArchiveState: state,
-                    rootHeading: rootHeading ?? '',
-                  ),
-                Expanded(
-                  child: selected != null && selectedGenerator != null
-                      ? selectedGenerator(selected)
-                      : SortableLibrary<T>(
-                          libraryItemGenerator,
-                          emptyLibraryMessage,
-                          selectableItems: selectableItems,
-                        ),
-                ),
-              ],
-            ),
-            bottomNavigationBar: bottomNavigationBar ??
-                BottomNavigation(
+              Expanded(
+                child: selected != null && selectedGenerator != null
+                    ? selectedGenerator(selected)
+                    : SortableLibrary<T>(
+                        libraryItemGenerator,
+                        emptyLibraryMessage,
+                        selectableItems: selectableItems,
+                        crossAxisCount: gridCrossAxisCount,
+                        childAspectRatio: gridChildAspectRatio,
+                      ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: showBottomNavigationBar
+              ? BottomNavigation(
                   backNavigationWidget: CancelButton(onPressed: onCancel),
                   forwardNavigationWidget: selected != null
                       ? OkButton(
                           onPressed: () => onOk?.call(selected),
                         )
                       : null,
-                ),
-          );
-        },
-      ),
+                )
+              : null,
+        );
+      },
     );
   }
 }
@@ -165,11 +156,15 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
   final LibraryItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final bool selectableItems;
+  final int? crossAxisCount;
+  final double? childAspectRatio;
 
   const SortableLibrary(
     this.libraryItemGenerator,
     this.emptyLibraryMessage, {
     this.selectableItems = true,
+    this.crossAxisCount,
+    this.childAspectRatio,
     Key? key,
   }) : super(key: key);
 
@@ -191,10 +186,11 @@ class _SortableLibraryState<T extends SortableData>
   Widget build(BuildContext context) {
     return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final currentFolderContent =
-            archiveState.allByFolder[archiveState.currentFolderId] ?? [];
-        currentFolderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        if (currentFolderContent.isEmpty) {
+        List<Sortable<T>> content =
+            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
+              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+        if (content.isEmpty) {
           return EmptyLibraryMessage(
             emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
@@ -211,40 +207,71 @@ class _SortableLibraryState<T extends SortableData>
             ),
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
             crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
-            crossAxisCount: layout.libraryPage.crossAxisCount,
-            childAspectRatio: layout.libraryPage.childAspectRatio,
-            children: currentFolderContent
-                .map(
-                  (sortable) => sortable.isGroup
-                      ? Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: borderRadius,
-                            onTap: () {
-                              BlocProvider.of<SortableArchiveBloc<T>>(context)
-                                  .add(FolderChanged(sortable.id));
-                            },
-                            child: LibraryFolder(sortableData: sortable.data),
-                          ),
-                        )
-                      : widget.selectableItems
-                          ? Material(
-                              type: MaterialType.transparency,
-                              child: InkWell(
-                                onTap: () =>
-                                    BlocProvider.of<SortableArchiveBloc<T>>(
-                                            context)
-                                        .add(SortableSelected(sortable)),
-                                borderRadius: borderRadius,
-                                child: widget.libraryItemGenerator(sortable),
-                              ),
-                            )
-                          : widget.libraryItemGenerator(sortable),
-                )
+            crossAxisCount:
+                widget.crossAxisCount ?? layout.libraryPage.crossAxisCount,
+            childAspectRatio:
+                widget.childAspectRatio ?? layout.libraryPage.childAspectRatio,
+            children: content
+                .map((sortable) => sortable.isGroup
+                    ? Folder(sortable: sortable)
+                    : widget.selectableItems
+                        ? SelectableItem(
+                            sortable: sortable,
+                            libraryItemGenerator: widget.libraryItemGenerator,
+                          )
+                        : widget.libraryItemGenerator(sortable))
                 .toList(),
           ),
         );
       },
+    );
+  }
+}
+
+class Folder<T extends SortableData> extends StatelessWidget {
+  const Folder({
+    Key? key,
+    required this.sortable,
+  }) : super(key: key);
+
+  final Sortable<T> sortable;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: borderRadius,
+        onTap: () {
+          BlocProvider.of<SortableArchiveBloc<T>>(context)
+              .add(FolderChanged(sortable.id));
+        },
+        child: LibraryFolder(sortableData: sortable.data),
+      ),
+    );
+  }
+}
+
+class SelectableItem<T extends SortableData> extends StatelessWidget {
+  const SelectableItem({
+    Key? key,
+    required this.sortable,
+    required this.libraryItemGenerator,
+  }) : super(key: key);
+
+  final Sortable<T> sortable;
+  final LibraryItemGenerator<T> libraryItemGenerator;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: () => BlocProvider.of<SortableArchiveBloc<T>>(context)
+            .add(SortableSelected(sortable)),
+        borderRadius: borderRadius,
+        child: libraryItemGenerator(sortable),
+      ),
     );
   }
 }

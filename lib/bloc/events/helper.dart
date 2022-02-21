@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 
 EventsLoaded mapToEventsState({
   required List<ActivityDay> dayActivities,
-  required List<TimerOccasion> dayTimers,
+  required List<TimerOccasion> timerOccasions,
   required Occasion occasion,
   required DateTime day,
   bool includeFullday = true,
@@ -15,7 +15,7 @@ EventsLoaded mapToEventsState({
           (activity) =>
               !activity.activity.removeAfter || occasion != Occasion.past,
         ),
-        timers: dayTimers,
+        timers: timerOccasions,
         day: day,
         dayOccasion: occasion,
       );
@@ -24,7 +24,7 @@ EventsLoaded mapToEventsState({
     default:
       return _createState(
         activities: dayActivities,
-        timers: dayTimers,
+        timers: timerOccasions,
         day: day,
         dayOccasion: occasion,
       );

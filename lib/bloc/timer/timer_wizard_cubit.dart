@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -27,8 +26,7 @@ class TimerWizardCubit extends Cubit<TimerWizardState> {
 
   void next() {
     if (state.isLastStep) {
-      final timer = AbiliaTimer(
-        id: const Uuid().v4(),
+      final timer = AbiliaTimer.createNew(
         title: state.name,
         fileId: state.image.id,
         duration: state.duration,

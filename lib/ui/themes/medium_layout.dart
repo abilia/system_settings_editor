@@ -4,7 +4,8 @@ class _MediumLayout extends Layout {
   const _MediumLayout()
       : super(
           appBar: const AppBarLayout(
-            height: 148,
+            largeAppBarHeight: 148,
+            height: 104,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -23,6 +24,14 @@ class _MediumLayout extends Layout {
               borderRadius: 20,
               orangeDotInset: 6,
             ),
+          ),
+          myPhotos: const MyPhotosLayout(
+            crossAxisCount: 3,
+            fullScreenImageBorderRadius: 20,
+            childAspectRatio: 240 / 168,
+            fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
+            addPhotoButtonPadding:
+                EdgeInsets.only(top: 8, bottom: 8, right: 16),
           ),
           toolbar: const ToolbarLayout(
             height: 120,
@@ -53,7 +62,7 @@ class _MediumLayout extends Layout {
           ),
           iconSize: const IconSize(
             small: 48,
-            button: 56,
+            button: 42,
             normal: 64,
             large: 96,
             huge: 192,
@@ -147,10 +156,10 @@ class _MediumLayout extends Layout {
             ),
             card: TimepillarCardLayout(
               width: 120,
-              minHeight: 140,
-              imageHeightMin: 96,
-              margin: 8,
-              padding: 17,
+              activityMinHeight: 140,
+              imageMinHeight: 96,
+              padding: EdgeInsets.all(8),
+              distance: 8,
             ),
             twoTimePillar: TwoTimepillarLayout(
               verticalMargin: 36,
@@ -184,10 +193,41 @@ class _MediumLayout extends Layout {
               folderIconSize: 129,
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
+          ongoingFullscreenPage: const OngoingFullscreenActivityPageLayout(
+            toolBar: OngoingFullscreenActivityToolBarLayout(
+                height: 128,
+                buttonHeight: 96,
+                buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
+            activityIcon: OngoingFullscreenActivityIconLayout(
+              size: Size(72, 72),
+              selectedSize: Size(84, 84),
+              toolBarHeight: 96,
+              currentBorder: 3,
+              border: 2.25,
+              arrowSize: Size(40, 21),
+              padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
+              selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
+              dotRadius: 6,
+              dotOffset: 11,
+              dotOffsetSelected: 15,
+              arrowPreOffset: Offset(22, 1),
+              arrowPostOffset: Offset(0, 2.5),
+              arrowPointRadius: Radius.circular(6),
+            ),
+          ),
+          dataItem: const DataItemLayout(
+            borderRadius: 20,
+            picture: _DataItemPictureLayout(
+              stickerIconSize: 24,
+              stickerSize: Size(48, 48),
+              imagePadding: EdgeInsets.only(left: 11, right: 11, bottom: 7),
+              titlePadding:
+                  EdgeInsets.only(left: 7, right: 7, bottom: 4, top: 7),
+            ),
+          ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),
-            timeBoxPadding: EdgeInsets.all(16),
             topInfoPadding: EdgeInsets.all(16),
             titleImageHorizontalSpacing: 16,
             imagePadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -206,9 +246,12 @@ class _MediumLayout extends Layout {
             dividerIndentation: 16,
             dashWidth: 12,
             dashSpacing: 12,
+            timeCrossOverSize: Size(112, 56),
             minTimeBoxWidth: 108,
             timeBoxSize: Size(144, 80),
-            timeCrossOverSize: Size(112, 56),
+            timeBoxPadding: EdgeInsets.all(16),
+            timeBoxCurrentBorderWidth: 3,
+            timeBoxFutureBorderWidth: 2,
           ),
           checkList: const CheckListLayout(
             questionViewPadding: EdgeInsets.only(bottom: 12),
@@ -225,6 +268,17 @@ class _MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+          ),
+          iconTextButton: const IconTextButtonStyle(
+            minimumSize: Size(376, 96),
+            maximumSize: Size(double.infinity, 96),
+          ),
+          nextButton: const IconTextButtonStyle(
+            minimumSize: Size(346, 96),
+            maximumSize: Size(346, 96),
+          ),
+          alarmPage: const AlarmPageLayout(
+            alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
         );
 }

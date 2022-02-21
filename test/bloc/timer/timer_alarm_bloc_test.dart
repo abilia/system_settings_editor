@@ -25,14 +25,12 @@ void main() {
     when(() => mockTimerCubit.state).thenReturn(TimerState());
   });
 
-  final pastTimer = AbiliaTimer(
-        id: 'past timer',
+  final pastTimer = AbiliaTimer.createNew(
         title: 'past timer',
         startTime: initialTime.subtract(1.hours()),
         duration: 30.minutes(),
       ),
-      ongoingTimer = AbiliaTimer(
-        id: 'ongoing timer',
+      ongoingTimer = AbiliaTimer.createNew(
         title: 'ongoing timer',
         startTime: initialTime.subtract(5.minutes()),
         duration: 10.minutes(),
@@ -145,32 +143,28 @@ void main() {
   );
 
   final t1 = TimerOccasion(
-          AbiliaTimer(
-            id: 'timer 1',
+          AbiliaTimer.createNew(
             title: 't1',
             startTime: initialTime,
             duration: 10.minutes(),
           ),
           Occasion.current),
       t2 = TimerOccasion(
-          AbiliaTimer(
-            id: 'timer 2',
+          AbiliaTimer.createNew(
             title: 't2',
             startTime: initialTime,
             duration: 10.minutes() + 1.seconds(),
           ),
           Occasion.current),
       t3 = TimerOccasion(
-          AbiliaTimer(
-            id: 'timer 3',
+          AbiliaTimer.createNew(
             title: 't3',
             startTime: initialTime,
             duration: 10.minutes() - 1.seconds(),
           ),
           Occasion.current),
       t4 = TimerOccasion(
-          AbiliaTimer(
-            id: 'timer 4',
+          AbiliaTimer.createNew(
             title: 't4',
             startTime: initialTime.subtract(1.seconds()),
             duration: 10.minutes(),
@@ -206,16 +200,14 @@ void main() {
     ],
   );
 
-  final oldTimer = AbiliaTimer(
-        id: '2',
+  final oldTimer = AbiliaTimer.createNew(
         title: 'old timer',
         startTime: initialTime.subtract(
           24.hours() + 1.minutes(),
         ),
         duration: 1.hours(),
       ),
-      notSoOldTimer = AbiliaTimer(
-        id: '2',
+      notSoOldTimer = AbiliaTimer.createNew(
         title: 'old timer',
         startTime: initialTime.subtract(
           23.hours() + 59.minutes(),

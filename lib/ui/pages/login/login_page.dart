@@ -29,19 +29,19 @@ class LoginPage extends StatelessWidget {
         ),
       );
     }
-    return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(
+    return BlocProvider<LoginCubit>(
+      create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         pushService: GetIt.I<FirebasePushService>(),
         clockBloc: BlocProvider.of<ClockBloc>(context),
       ),
-      child: BlocListener<LoginBloc, LoginState>(
+      child: BlocListener<LoginCubit, LoginState>(
         listenWhen: (_, state) => state is LoginFailure,
         listener: (context, state) async {
           if (state is LoginFailure) {
             final cause = state.cause;
             if (state.licenseError) {
-              context.read<LoginBloc>().add(ClearFailure());
+              context.read<LoginCubit>().clearFailure();
               await showViewDialog(
                 context: context,
                 builder: (_) => LicenseErrorDialog(

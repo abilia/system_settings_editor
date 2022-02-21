@@ -242,7 +242,6 @@ clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
 selectFromLibrary	Select from library	Välj från bibliotek	Vælg fra bibliotek	Selecteren uit bibliotheek	Valitse kirjastosa	Aus Bibliothek wählen	Velg fra bibliotek
 addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
 task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
-remove	Delete	Ta bort	Slet	Verwijderen	Poista	Löschen	Slett
 							
 ### Quick settings							
 screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke
@@ -423,9 +422,15 @@ allowAccessMicrophoneBody	Allow access to microphone to be able to record speech
 about	About	Information	Information	Informatie	Tiedot	Information	Informasjon
 version	Version	Version	Version	Versie	Versio	Version	Versjon
 producer	Producer	Producent	Producent	Producent	Valmistaja	Hersteller	Produsent
+searchForUpdate	Search for update	Sök uppdatering	Søg opdatering	Zoeken naar update	Etsi päivitystä	Nach neuerer Version suchen	Søk oppdatering
 							
 ### Menu page							
 camera	Camera	Kamera	Kamera	Camera	Kamera	Kamera	Kamera
-photoCalendar	Photo calendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	Kuva-\nkalenteri	Foto-\nkalender	Bilde-\nkalender
+photoCalendar	Photo-calendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	Kuva-\nkalenteri	Foto-\nkalender	Bilde-\nkalender
 countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
 quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger
+### Photo calendar
+allPhotos	All photos
+addToPhotoCalendarQuestion	Add this photo to Photo-calendar?
+removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?
+remove	Remove

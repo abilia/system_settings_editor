@@ -7,19 +7,21 @@ class Ticker {
   final _streamController = StreamController<DateTime>();
   late Stream<DateTime> _stream = _streamController.stream.asBroadcastStream();
   Stream<DateTime> get seconds => _stream;
-  Stream<DateTime> get minutes =>
-      _stream.where((t) => t.second == 0).map((d) => d.onlyMinutes());
+  Stream<DateTime> get minutes => _stream.where((t) => t.second == 0);
 
   DateTime _time;
   DateTime get time => _time;
 
-  Timer _realTimer() => Timer.periodic(
-        const Duration(seconds: 1),
-        (_) {
-          _time = DateTime.now().onlySeconds();
-          _streamController.add(_time);
-        },
-      );
+  Timer _realTimer() {
+    _streamController.add(DateTime.now().onlyMinutes());
+    return Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        _time = DateTime.now().onlySeconds();
+        _streamController.add(_time);
+      },
+    );
+  }
 
   late Timer _timer = _realTimer();
 

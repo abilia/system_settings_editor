@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:intl/intl.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
@@ -21,12 +22,13 @@ import '../../../../test_helpers/tts.dart';
 
 void main() {
   late StreamController<DateTime> mockTicker;
-  final time = DateTime(2021, 09, 01, 12, 47);
+  final time = DateTime(2021, 09, 02, 12, 47);
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
   ActivityResponse activityResponse = () => [];
   GenericResponse genericResponse = () => [];
+  TimerResponse timerResponse = () => [];
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
   final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
@@ -57,13 +59,19 @@ void main() {
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
         .thenAnswer((_) => Future.value(genericResponse()));
 
+    final mockTimerDb = MockTimerDb();
+    when(() => mockTimerDb.getAllTimers())
+        .thenAnswer((_) => Future.value(timerResponse()));
+
     genericResponse = () => [twoTimepillarGeneric];
     activityResponse = () => [];
+    timerResponse = () => [];
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
       ..genericDb = mockGenericDb
+      ..timerDb = mockTimerDb
       ..sortableDb = FakeSortableDb()
       ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: time)
       ..fireBasePushService = FakeFirebasePushService()
@@ -460,6 +468,112 @@ void main() {
         expectCorrectColor(tester, a3.title, noCategoryColor);
         expectCorrectColor(tester, a4.title, noCategoryColor);
       });
+    });
+  });
+
+  group('Timers', () {
+    find.byType(TimerTimepillardCard);
+
+    final t1 = AbiliaTimer.createNew(
+          title: '22 minutes',
+          startTime: time,
+          duration: 22.minutes(),
+        ),
+        t2 = AbiliaTimer.createNew(
+          title: '22 minutes',
+          fileId: 'fileid',
+          startTime: time,
+          duration: 22.minutes(),
+        );
+    setUp(() => timerResponse = () => [t1]);
+
+    testWidgets('Shows timers title', (WidgetTester tester) async {
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.text(t1.title), findsOneWidget);
+    });
+
+    testWidgets('Shows timers with image', (WidgetTester tester) async {
+      // Arrange
+      timerResponse = () => [t2];
+
+      await mockNetworkImages(() async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Assert
+        expect(find.byType(TimerTimepillardCard), findsOneWidget);
+        expect(find.text(t2.title), findsNothing);
+        expect(find.byType(EventImage), findsOneWidget);
+      });
+    });
+
+    testWidgets('tts', (WidgetTester tester) async {
+      // Arrange
+      timerResponse = () => [t1, t2];
+      await mockNetworkImages(() async {
+        // Act
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        // Assert
+        await tester.verifyTts(find.text(t1.title), contains: t1.title);
+        await tester.verifyTts(find.byType(EventImage), contains: t2.title);
+      });
+    });
+
+    testWidgets('timer at night', (WidgetTester tester) async {
+      // Arrange
+      final nightTime = DateTime(time.year, time.month, time.day + 1, 02, 00);
+      final nightTimer = AbiliaTimer.createNew(
+        title: 'timer in the middle of the night',
+        startTime: nightTime,
+        duration: 30.minutes(),
+      );
+      timerResponse = () => [nightTimer];
+
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.text(nightTimer.title), findsOneWidget);
+    });
+
+    testWidgets('timer spanning into night', (WidgetTester tester) async {
+      // Arrange
+      final nightTimer = AbiliaTimer.createNew(
+        title: 'timer in the middle of the night',
+        startTime: DateTime(time.year, time.month, time.day, 23, 00),
+        duration: 4.hours(),
+      );
+      timerResponse = () => [nightTimer];
+
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.text(nightTimer.title), findsOneWidget);
+    });
+
+    testWidgets('starting night before', (WidgetTester tester) async {
+      // Arrange
+      final nightTimer = AbiliaTimer.createNew(
+        title: 'timer in the middle of the night',
+        startTime: DateTime(time.year, time.month, time.day, 04, 00),
+        duration: 8.hours(),
+      );
+      timerResponse = () => [nightTimer];
+
+      // Act
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      // Assert
+      expect(find.byType(TimerTimepillardCard), findsOneWidget);
+      expect(find.text(nightTimer.title), findsOneWidget);
     });
   });
 

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,7 +9,7 @@ import '../../test_helpers/register_fallback_values.dart';
 void main() {
   final time = DateTime(2033, 12, 11, 11);
   group('LoginBloc event order', () {
-    late LoginBloc loginBloc;
+    late LoginCubit loginCubit;
     late AuthenticationBloc authenticationBloc;
     late MockUserRepository mockUserRepository;
 
@@ -28,7 +27,7 @@ void main() {
       when(() => mockUserRepository.baseUrl).thenReturn('url');
 
       authenticationBloc = AuthenticationBloc(mockUserRepository);
-      loginBloc = LoginBloc(
+      loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
@@ -36,7 +35,7 @@ void main() {
     });
 
     test('initial state is LoginInitial', () {
-      expect(loginBloc.state, LoginState.initial());
+      expect(loginCubit.state, LoginState.initial());
     });
 
     test('LoginState and AuthenticationState in correct order', () async {
@@ -81,18 +80,11 @@ void main() {
         emits(const Unauthenticated()),
       );
 
-      // Act
-      loginBloc.add(const UsernameChanged(username));
-      loginBloc.add(const PasswordChanged(password));
-
-      loginBloc.add(LoginButtonPressed());
-
       final s1 = LoginState.initial().copyWith(username: username);
       final s2 = s1.copyWith(password: password);
 
-      // Assert
-      await expectLater(
-        loginBloc.stream,
+      final expected = expectLater(
+        loginCubit.stream,
         emitsInOrder([
           s1,
           s2,
@@ -100,6 +92,16 @@ void main() {
           const LoginSucceeded(),
         ]),
       );
+
+      // Act
+      loginCubit.usernameChanged(username);
+      loginCubit.passwordChanged(password);
+
+      loginCubit.loginButtonPressed();
+
+      // Assert
+      await expected;
+
       expect(
         authenticationBloc.state,
         Authenticated(
@@ -112,14 +114,11 @@ void main() {
 
     test('LoginButtonPressed twice still yeilds LoginFailure twice on username',
         () async {
-      loginBloc.add(LoginButtonPressed());
-      loginBloc.add(LoginButtonPressed());
-
       final l1 = LoginState.initial().loading();
       final e1 = l1.failure(cause: LoginFailureCause.noUsername);
 
-      await expectLater(
-        loginBloc.stream,
+      final expected = expectLater(
+        loginCubit.stream,
         emitsInOrder([
           l1,
           e1,
@@ -127,20 +126,23 @@ void main() {
           e1,
         ]),
       );
+
+      loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
+
+      await expected;
     });
 
     test('LoginButtonPressed twice still yeilds LoginFailure twice on password',
         () async {
       const username = 'username';
-      loginBloc.add(const UsernameChanged(username));
-      loginBloc.add(LoginButtonPressed());
-      loginBloc.add(LoginButtonPressed());
+
       const s1 = LoginState(username: username, password: '');
       final l1 = s1.loading();
       final e1 = s1.failure(cause: LoginFailureCause.noPassword);
 
-      await expectLater(
-        loginBloc.stream,
+      final expected = expectLater(
+        loginCubit.stream,
         emitsInOrder([
           s1,
           l1,
@@ -149,16 +151,22 @@ void main() {
           e1,
         ]),
       );
+
+      loginCubit.usernameChanged(username);
+      loginCubit.loginButtonPressed();
+      loginCubit.loginButtonPressed();
+
+      await expected;
     });
 
     tearDown(() {
-      loginBloc.close();
+      loginCubit.close();
       authenticationBloc.close();
     });
   });
 
-  group('LoginBloc side effect', () {
-    late LoginBloc loginBloc;
+  group('LoginCubit side effect', () {
+    late LoginCubit loginCubit;
     late MockUserRepository mockedUserRepository;
     late MockFirebasePushService mockFirebasePushService;
 
@@ -169,7 +177,7 @@ void main() {
       final authenticationBloc = AuthenticationBloc(mockedUserRepository)
         ..add(CheckAuthentication());
       mockFirebasePushService = MockFirebasePushService();
-      loginBloc = LoginBloc(
+      loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
@@ -204,9 +212,9 @@ void main() {
           )).thenAnswer((_) => Future.value(loginInfo));
 
       // Act
-      loginBloc.add(const UsernameChanged(username));
-      loginBloc.add(const PasswordChanged(password));
-      loginBloc.add(LoginButtonPressed());
+      loginCubit.usernameChanged(username);
+      loginCubit.passwordChanged(password);
+      loginCubit.loginButtonPressed();
       // Assert
       await untilCalled(() => mockedUserRepository.authenticate(
             username: any(named: 'username'),

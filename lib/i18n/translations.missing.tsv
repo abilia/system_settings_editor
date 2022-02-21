@@ -3,3 +3,7 @@ timerDelete	Do you want to delete the timer?	Vill du ta bort timern?
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 onlyAppliesToGo	Only applies to MEMOplanner Go
 selectADayToViewDetails	Select a day to view more details
+allPhotos	All photos
+addToPhotoCalendarQuestion	Add this photo to Photo-calendar?
+removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?
+remove	Remove

@@ -1,4 +1,4 @@
-import 'package:seagull/models/info_item.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class ChecklistView extends StatefulWidget {
@@ -194,8 +194,10 @@ class QuestionView extends StatelessWidget {
                               opacity: signedOff ? 0.5 : 1.0,
                               child: FadeInCalendarImage(
                                 key: TestKey.checklistQuestionImageKey,
-                                imageFileId: question.fileId,
-                                imageFilePath: question.image,
+                                imageFile: AbiliaFile.from(
+                                  id: question.fileId,
+                                  path: question.image,
+                                ),
                                 width: layout.checkList.questionImageSize,
                                 height: layout.checkList.questionImageSize,
                                 fit: BoxFit.contain,

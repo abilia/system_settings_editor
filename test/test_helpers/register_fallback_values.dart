@@ -47,4 +47,8 @@ void registerFallbackValues() {
   );
   registerFallbackValue(const EmptyRecordSoundState());
   registerFallbackValue(const NoSoundPlaying());
+  registerFallbackValue(TimerAlarmState(timers: const [], queue: const []));
+  registerFallbackValue(_TimerAlarmEvent());
 }
+
+class _TimerAlarmEvent extends TimerAlarmEvent {}

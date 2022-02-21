@@ -33,9 +33,15 @@ class Layout {
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
+  final OngoingFullscreenActivityPageLayout ongoingFullscreenPage;
+  final DataItemLayout dataItem;
+  final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
   final CheckListLayout checkList;
   final NoteLayout note;
+  final IconTextButtonStyle iconTextButton;
+  final IconTextButtonStyle nextButton;
+  final AlarmPageLayout alarmPage;
 
   const Layout({
     this.appBar = const AppBarLayout(),
@@ -56,20 +62,31 @@ class Layout {
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
+    this.ongoingFullscreenPage = const OngoingFullscreenActivityPageLayout(),
+    this.dataItem = const DataItemLayout(),
+    this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
     this.checkList = const CheckListLayout(),
     this.note = const NoteLayout(),
+    this.iconTextButton = const IconTextButtonStyle(),
+    this.nextButton = const IconTextButtonStyle(
+      minimumSize: Size(150, 64),
+      maximumSize: Size(150, 64),
+      padding: EdgeInsets.only(left: 8),
+    ),
+    this.alarmPage = const AlarmPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
-  final double horizontalPadding, height;
+  final double horizontalPadding, largeAppBarHeight, height;
 
   const AppBarLayout({
     this.horizontalPadding = 16,
-    this.height = 80,
+    this.largeAppBarHeight = 80,
+    this.height = 68,
   });
 }
 
@@ -110,6 +127,20 @@ class MenuItemButtonLayout {
     this.borderRadius = 12,
     this.orangeDotInset = 4,
   });
+}
+
+class MyPhotosLayout {
+  final double? childAspectRatio;
+  final double fullScreenImageBorderRadius;
+  final int crossAxisCount;
+  final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
+
+  const MyPhotosLayout(
+      {this.childAspectRatio,
+      this.fullScreenImageBorderRadius = 12,
+      this.crossAxisCount = 3,
+      this.fullScreenImagePadding = const EdgeInsets.all(12),
+      this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16)});
 }
 
 class ToolbarLayout {
@@ -409,14 +440,29 @@ class TimepillarDotLayout {
 }
 
 class TimepillarCardLayout {
-  final double padding, width, minHeight, margin, imageHeightMin;
+  final TimerCardLayout timer;
+  final double distance, width, activityMinHeight, imageMinHeight;
+  final EdgeInsets padding;
 
   const TimepillarCardLayout({
+    this.timer = const TimerCardLayout(),
     this.width = 72,
-    this.minHeight = 84,
-    this.margin = 4,
-    this.padding = 12,
-    this.imageHeightMin = 56,
+    this.activityMinHeight = 84,
+    this.padding = const EdgeInsets.all(4),
+    this.distance = 12,
+    this.imageMinHeight = 56,
+  });
+}
+
+class TimerCardLayout {
+  final double minHeigth;
+  final Size wheelSize;
+  final EdgeInsets wheelPadding;
+
+  const TimerCardLayout({
+    this.minHeigth = 76,
+    this.wheelSize = const Size.square(44),
+    this.wheelPadding = const EdgeInsets.symmetric(vertical: 4),
   });
 }
 
@@ -496,6 +542,82 @@ class LibraryPageLayout {
       );
 }
 
+class OngoingFullscreenActivityPageLayout {
+  final OngoingFullscreenActivityToolBarLayout toolBar;
+  final OngoingFullscreenActivityIconLayout activityIcon;
+
+  const OngoingFullscreenActivityPageLayout(
+      {this.toolBar = const OngoingFullscreenActivityToolBarLayout(),
+      this.activityIcon = const OngoingFullscreenActivityIconLayout()});
+}
+
+class OngoingFullscreenActivityToolBarLayout {
+  final double height, collapseMargin, buttonHeight;
+  final EdgeInsets buttonPadding;
+
+  const OngoingFullscreenActivityToolBarLayout({
+    this.height = 84,
+    this.collapseMargin = 8,
+    this.buttonHeight = 64,
+    this.buttonPadding = const EdgeInsets.only(top: 8, bottom: 12),
+  });
+}
+
+class OngoingFullscreenActivityIconLayout {
+  final double border,
+      currentBorder,
+      toolBarHeight,
+      dotRadius,
+      dotOffset,
+      dotOffsetSelected;
+  final Size size, selectedSize, arrowSize;
+  final EdgeInsets padding, selectedPadding, textPadding;
+  final Offset arrowPreOffset, arrowPostOffset;
+  final Radius arrowPointRadius;
+
+  const OngoingFullscreenActivityIconLayout({
+    this.size = const Size(48, 48),
+    this.selectedSize = const Size(56, 56),
+    this.toolBarHeight = 64,
+    this.currentBorder = 2,
+    this.border = 1.5,
+    this.arrowSize = const Size(24, 14),
+    this.padding = const EdgeInsets.fromLTRB(12, 8, 0, 8),
+    this.selectedPadding = const EdgeInsets.fromLTRB(8, 4, 0, 4),
+    this.textPadding = const EdgeInsets.all(3),
+    this.dotRadius = 4,
+    this.dotOffset = 8,
+    this.dotOffsetSelected = 10.5,
+    this.arrowPreOffset = const Offset(16, 1),
+    this.arrowPostOffset = const Offset(0, 1.5),
+    this.arrowPointRadius = const Radius.circular(4),
+  });
+}
+
+class DataItemLayout {
+  final double borderRadius;
+  final _DataItemPictureLayout picture;
+
+  const DataItemLayout({
+    this.borderRadius = 12,
+    this.picture = const _DataItemPictureLayout(),
+  });
+}
+
+class _DataItemPictureLayout {
+  final double stickerIconSize;
+  final Size stickerSize;
+  final EdgeInsets imagePadding, titlePadding;
+
+  const _DataItemPictureLayout({
+    this.stickerIconSize = 16,
+    this.stickerSize = const Size(32, 32),
+    this.imagePadding = const EdgeInsets.only(left: 12, right: 12, bottom: 3),
+    this.titlePadding =
+        const EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 2),
+  });
+}
+
 class ActivityPageLayout {
   final double titleFontSize,
       titleLineHeight,
@@ -506,7 +628,9 @@ class ActivityPageLayout {
       dividerIndentation,
       dashWidth,
       dashSpacing,
-      minTimeBoxWidth;
+      minTimeBoxWidth,
+      timeBoxCurrentBorderWidth,
+      timeBoxFutureBorderWidth;
 
   final Size timeBoxSize, timeCrossOverSize;
 
@@ -527,11 +651,8 @@ class ActivityPageLayout {
       height: titleLineHeight / titleFontSize);
 
   const ActivityPageLayout({
-    this.timeCrossOverSize = const Size(64, 38),
-    this.timeBoxSize = const Size(92, 52),
     this.topInfoHeight = 126,
     this.timeRowPadding = const EdgeInsets.only(bottom: 8),
-    this.timeBoxPadding = const EdgeInsets.all(8),
     this.topInfoPadding =
         const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
     this.titleImageHorizontalSpacing = 8,
@@ -551,7 +672,12 @@ class ActivityPageLayout {
     this.dividerIndentation = 12,
     this.dashWidth = 7,
     this.dashSpacing = 8,
+    this.timeCrossOverSize = const Size(64, 38),
+    this.timeBoxPadding = const EdgeInsets.all(8),
+    this.timeBoxSize = const Size(92, 52),
     this.minTimeBoxWidth = 72,
+    this.timeBoxCurrentBorderWidth = 2,
+    this.timeBoxFutureBorderWidth = 1,
   });
 }
 
@@ -589,5 +715,27 @@ class NoteLayout {
 
   const NoteLayout({
     this.notePadding = const EdgeInsets.fromLTRB(18, 10, 16, 24),
+  });
+}
+
+class IconTextButtonStyle {
+  final Size minimumSize, maximumSize;
+  final EdgeInsets padding;
+  final double iconTextSpacing;
+
+  const IconTextButtonStyle({
+    this.minimumSize = const Size(172, 64),
+    this.maximumSize = const Size(double.infinity, 64),
+    this.iconTextSpacing = 8,
+    this.padding = const EdgeInsets.only(right: 8),
+  });
+}
+
+class AlarmPageLayout {
+  final EdgeInsets alarmClockPadding;
+
+  const AlarmPageLayout({
+    this.alarmClockPadding =
+        const EdgeInsets.only(top: 4, bottom: 4, right: 16),
   });
 }

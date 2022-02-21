@@ -154,9 +154,6 @@ class SeagullApp extends StatelessWidget {
             : const SplashPage(),
         title: Config.flavor.name,
         theme: abiliaTheme,
-        darkTheme: abiliaTheme.copyWith(
-          primaryColorBrightness: Brightness.dark,
-        ),
         navigatorObservers: [
           AnalyticsService.observer,
           RouteLoggingObserver(),

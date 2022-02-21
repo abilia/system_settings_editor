@@ -15,7 +15,7 @@ class AndroidIntents {
         action: AndroidIntentAction.settings,
         flags: [
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
-          Flag.FLAG_ACTIVITY_NO_HISTORY
+          Flag.FLAG_ACTIVITY_NO_HISTORY,
         ],
       ).launch();
 
@@ -25,7 +25,7 @@ class AndroidIntents {
             .toString(),
         flags: [
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
-          Flag.FLAG_ACTIVITY_NO_HISTORY
+          Flag.FLAG_ACTIVITY_NO_HISTORY,
         ],
       ).launch();
 
@@ -41,7 +41,14 @@ class AndroidIntents {
         action: AndroidIntentAction.deviceInfo,
         flags: [
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
-          Flag.FLAG_ACTIVITY_NO_HISTORY
+          Flag.FLAG_ACTIVITY_NO_HISTORY,
         ],
+      ).launch();
+
+  static Future<void> openPlayStore() => AndroidIntent(
+        action: 'action_view',
+        data: Uri.encodeFull(
+          'market://details?id=${GetIt.I<PackageInfo>().packageName}',
+        ),
       ).launch();
 }

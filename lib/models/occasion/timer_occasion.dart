@@ -4,7 +4,6 @@ class TimerOccasion extends EventOccasion {
   const TimerOccasion(this.timer, Occasion occasion) : super(occasion);
   final AbiliaTimer timer;
   bool get isOngoing => !timer.paused && occasion == Occasion.current;
-  bool get isPast => occasion == Occasion.past;
   TimerOccasion toPast() => TimerOccasion(timer, Occasion.past);
   @override
   EventOccasion toOccasion(DateTime now) => this;
@@ -14,6 +13,8 @@ class TimerOccasion extends EventOccasion {
   DateTime get start => timer.startTime;
   @override
   int get category => Category.right;
+  @override
+  AbiliaFile get image => timer.imageFile;
   @override
   List<Object?> get props => [timer, occasion];
   @override

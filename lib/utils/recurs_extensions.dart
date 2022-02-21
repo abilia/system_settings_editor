@@ -77,14 +77,22 @@ extension RecurringActivityExtension on Activity {
     ];
   }
 
-  List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) {
+  List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) =>
+      nightActivitiesForNight(
+        day,
+        dayParts.nightBegins(day),
+        dayParts.nightEnd(day),
+      );
+
+  List<ActivityDay> nightActivitiesForNight(
+    DateTime day,
+    DateTime nightStart,
+    DateTime nightEnd,
+  ) {
     // Don't care about full days on night
     if (fullDay) {
       return const [];
     }
-
-    final nightEnd = day.nextDay().add(dayParts.morning);
-    final nightStart = day.add(dayParts.night);
 
     if (!isRecurring) {
       return [

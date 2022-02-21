@@ -21,3 +21,14 @@ extension ActivityExtensions on Activity {
         label: !hasTitle ? subtitle(context) : '$title, ${subtitle(context)}',
       );
 }
+
+extension TimerExtensions on AbiliaTimer {
+  SemanticsProperties semanticsProperties(BuildContext context) =>
+      SemanticsProperties(
+        button: true,
+        image: hasImage,
+        label: !hasTitle
+            ? duration.toUntilString(Translator.of(context).translate)
+            : title,
+      );
+}

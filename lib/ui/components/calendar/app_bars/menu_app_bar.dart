@@ -5,7 +5,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MenuAppBar({Key? key}) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(layout.appBar.height);
+  Size get preferredSize => Size.fromHeight(layout.appBar.largeAppBarHeight);
 
   @override
   Widget build(BuildContext context) {

@@ -16,14 +16,20 @@ class AlarmPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (alarm.fullScreenActivity) {
+      return FullScreenActivityPage(activityDay: alarm.activityDay);
+    }
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
         iconData: AbiliaIcons.alarmBell,
-        trailing: AbiliaClock(
-          style: Theme.of(context).textTheme.caption?.copyWith(
-                color: AbiliaColors.white,
-              ),
+        trailing: Padding(
+          padding: layout.alarmPage.alarmClockPadding,
+          child: AbiliaClock(
+            style: Theme.of(context).textTheme.caption?.copyWith(
+                  color: AbiliaColors.white,
+                ),
+          ),
         ),
       ),
       body: Padding(

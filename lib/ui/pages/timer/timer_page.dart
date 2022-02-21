@@ -75,7 +75,7 @@ class _TopInfo extends StatelessWidget {
                 child: FadeInCalendarImage(
                   width: layout.timerPage.imageSize,
                   fit: BoxFit.cover,
-                  imageFileId: timer.fileId,
+                  imageFile: timer.imageFile,
                 ),
               ),
             Expanded(
@@ -116,14 +116,17 @@ class _TimerBottomBar extends StatelessWidget {
             ),
             IconActionButtonLight(
               onPressed: () async {
+                final t = Translator.of(context).translate;
                 final confirmDeletion = await showViewDialog(
                   context: context,
-                  builder: (context) => ConfirmWarningDialog(
-                    text: Translator.of(context).translate.timerDelete,
+                  builder: (context) => YesNoDialog(
+                    headingIcon: AbiliaIcons.deleteAllClear,
+                    heading: t.delete,
+                    text: t.timerDelete,
                   ),
                 );
                 if (confirmDeletion) {
-                  context.read<TimerCubit>().deleteTimer(timer);
+                  await context.read<TimerCubit>().deleteTimer(timer);
                   Navigator.pop(context);
                 }
               },

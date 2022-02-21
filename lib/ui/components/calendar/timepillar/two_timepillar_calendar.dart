@@ -80,6 +80,7 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       BlocProvider<NightEventsCubit>(
                         create: (context) => NightEventsCubit(
                           activitiesBloc: context.read<ActivitiesBloc>(),
+                          timerAlarmBloc: context.read<TimerAlarmBloc>(),
                           clockBloc: context.read<ClockBloc>(),
                           dayPickerBloc: context.read<DayPickerBloc>(),
                           memoplannerSettingBloc:

@@ -62,7 +62,9 @@ final noBorder = MaterialStateProperty.all(noBorderShape);
 
 final baseButtonStyle = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
+  textStyle: MaterialStateProperty.all(
+    abiliaTextTheme.subtitle1?.copyWith(height: 1),
+  ),
   minimumSize: MaterialStateProperty.all(Size.fromHeight(64.0.s)),
 );
 
@@ -82,10 +84,8 @@ final textButtonStyleDarkGrey = textButtonStyle.copyWith(
 );
 
 final iconTextButtonStyle = baseButtonStyle.copyWith(
-  padding: MaterialStateProperty.all(
-    EdgeInsets.fromLTRB(0.0, 20.s, 8.0.s, 20.0.s),
-  ),
-  minimumSize: MaterialStateProperty.all(Size(172.0.s, 64.0.s)),
+  minimumSize: MaterialStateProperty.all(layout.iconTextButton.minimumSize),
+  maximumSize: MaterialStateProperty.all(layout.iconTextButton.maximumSize),
 );
 
 final iconTextButtonStyleLight = iconTextButtonStyle.copyWith(
@@ -101,6 +101,11 @@ final iconTextButtonStyleGreen = iconTextButtonStyle.copyWith(
 final iconTextButtonStyleRed = iconTextButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
   shape: noBorder,
+);
+
+final iconTextButtonStyleNext = iconTextButtonStyleGreen.copyWith(
+  minimumSize: MaterialStateProperty.all(layout.nextButton.minimumSize),
+  maximumSize: MaterialStateProperty.all(layout.nextButton.maximumSize),
 );
 
 final actionIconTextButtonStyleRed = ButtonStyle(
