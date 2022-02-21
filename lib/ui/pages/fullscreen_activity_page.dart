@@ -83,23 +83,23 @@ class _FullScreenActivityBottomBar extends StatelessWidget with ActivityMixin {
                       controller: scrollController,
                       leftCollapseMargin: toolBarLayout.collapseMargin,
                       rightCollapseMargin: toolBarLayout.collapseMargin,
-                      child: ListView(
-                        controller: scrollController,
-                        scrollDirection: Axis.horizontal,
-                        clipBehavior: Clip.none,
-                        children: <Widget>[
-                          ...state.eventsList.map(
-                            (ao) => BlocBuilder<ClockBloc, DateTime>(
-                                builder: (context, timeState) {
-                              return FullScreenActivityBottomContent(
+                      child: BlocBuilder<ClockBloc, DateTime>(
+                          builder: (context, timeState) {
+                        return ListView(
+                          controller: scrollController,
+                          scrollDirection: Axis.horizontal,
+                          clipBehavior: Clip.none,
+                          children: <Widget>[
+                            ...state.eventsList.map(
+                              (ao) => FullScreenActivityBottomContent(
                                 activityOccasion: ao,
                                 selected: ao.activity.id == selectedActivity.id,
                                 minutes: timeState.onlyMinutes(),
-                              );
-                            }),
-                          )
-                        ],
-                      ),
+                              ),
+                            )
+                          ],
+                        );
+                      }),
                     ),
                   ),
                   SizedBox(
