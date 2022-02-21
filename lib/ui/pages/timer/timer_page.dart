@@ -35,10 +35,18 @@ class TimerPage extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(layout.timerPage.mainContentPadding),
-                  child: TimerWheel.nonInteractive(
-                    secondsLeft: timer.duration.inSeconds,
-                    lengthInMinutes: timer.duration.inMinutes,
-                  ),
+                  child: !timer.paused
+                      ? TimerTickerBuilder(
+                          timer,
+                          builder: (context, left) => TimerWheel.nonInteractive(
+                            secondsLeft: left.inSeconds,
+                            lengthInMinutes: timer.duration.inMinutes,
+                          ),
+                        )
+                      : TimerWheel.nonInteractive(
+                          secondsLeft: timer.duration.inSeconds,
+                          lengthInMinutes: timer.duration.inMinutes,
+                        ),
                 ),
               ),
             ],

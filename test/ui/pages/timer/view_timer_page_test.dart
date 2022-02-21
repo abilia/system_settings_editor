@@ -1,14 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/ticker.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../fakes/fake_db_and_repository.dart';
+import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
@@ -42,6 +45,18 @@ void main() {
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
+
+    GetItInitializer()
+      ..ticker = Ticker.fake(initialTime: startTime)
+      ..sharedPreferences =
+          await FakeSharedPreferences.getInstance(loggedIn: false)
+      ..database = FakeDatabase()
+      ..init();
+  });
+
+  tearDown(() async {
+    setupPermissions();
+    await GetIt.I.reset();
   });
 
   Widget wrapWithMaterialApp({required AbiliaTimer timer}) => MaterialApp(
@@ -73,5 +88,25 @@ void main() {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
     await tester.pumpAndSettle();
     expect(find.byType(TimerPage), findsOneWidget);
+  });
+
+  testWidgets('Running timer has TimerTickerBuilder',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
+    await tester.pumpAndSettle();
+    expect(find.byType(TimerTickerBuilder), findsOneWidget);
+  });
+
+  testWidgets('Paused timer has no TimerTickerBuilder',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(
+        timer: AbiliaTimer(
+            title: 'test timer',
+            duration: const Duration(minutes: 5),
+            paused: true,
+            startTime: startTime,
+            id: 'asdofu')));
+    await tester.pumpAndSettle();
+    expect(find.byType(TimerTickerBuilder), findsNothing);
   });
 }
