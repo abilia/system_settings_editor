@@ -13,3 +13,4 @@ export 'timer/all.dart';
 export 'menu/import_picture_page.dart';
 export 'timer/edit_timer_typing_page.dart';
 export 'create_new_page.dart';
+export 'fullscreen_activity_page.dart';

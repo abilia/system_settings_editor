@@ -567,6 +567,12 @@ void main() {
       // Arrange
       when(() => mockActivityDb.getAllNonDeleted())
           .thenAnswer((_) => Future.value([activity1]));
+      final activity1Updated =
+          activity1.copyWith(startTime: activity1StartTime.add(1.minutes()));
+      final activity1UpdatedNotificationPayload = StartAlarm(
+        activity1Updated,
+        day,
+      );
       final pushCubit = PushCubit();
       await tester.pumpWidget(App(pushCubit: pushCubit));
       await tester.pumpAndSettle();
@@ -593,15 +599,15 @@ void main() {
       expect(alarmScreenFinder, findsNothing);
 
       // Activity change forward one minute from backend and is pushed
-      when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
-          Future.value([
-            activity1.copyWith(startTime: activity1StartTime.add(1.minutes()))
-          ]));
+      when(() => mockActivityDb.getAllNonDeleted())
+          .thenAnswer((_) => Future.value([activity1Updated]));
       pushCubit.update('calendar');
       await tester.pumpAndSettle();
 
       // Act - the user taps notification of start time alarm
-      selectNotificationSubject.add(startTimeActivity1NotificationPayload);
+      selectNotificationSubject.add(
+        activity1UpdatedNotificationPayload,
+      );
       await tester.pumpAndSettle();
 
       // Expect - the alarm should be the start time alarm for activity 1

@@ -33,6 +33,7 @@ class Layout {
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
+  final OngoingFullscreenActivityPageLayout ongoingFullscreenPage;
   final DataItemLayout dataItem;
   final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
@@ -61,6 +62,7 @@ class Layout {
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
+    this.ongoingFullscreenPage = const OngoingFullscreenActivityPageLayout(),
     this.dataItem = const DataItemLayout(),
     this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
@@ -538,6 +540,58 @@ class LibraryPageLayout {
         color: AbiliaColors.black,
         fontWeight: FontWeight.w500,
       );
+}
+
+class OngoingFullscreenActivityPageLayout {
+  final OngoingFullscreenActivityToolBarLayout toolBar;
+  final OngoingFullscreenActivityIconLayout activityIcon;
+
+  const OngoingFullscreenActivityPageLayout(
+      {this.toolBar = const OngoingFullscreenActivityToolBarLayout(),
+      this.activityIcon = const OngoingFullscreenActivityIconLayout()});
+}
+
+class OngoingFullscreenActivityToolBarLayout {
+  final double height, collapseMargin, buttonHeight;
+  final EdgeInsets buttonPadding;
+
+  const OngoingFullscreenActivityToolBarLayout({
+    this.height = 84,
+    this.collapseMargin = 8,
+    this.buttonHeight = 64,
+    this.buttonPadding = const EdgeInsets.only(top: 8, bottom: 12),
+  });
+}
+
+class OngoingFullscreenActivityIconLayout {
+  final double border,
+      currentBorder,
+      toolBarHeight,
+      dotRadius,
+      dotOffset,
+      dotOffsetSelected;
+  final Size size, selectedSize, arrowSize;
+  final EdgeInsets padding, selectedPadding, textPadding;
+  final Offset arrowPreOffset, arrowPostOffset;
+  final Radius arrowPointRadius;
+
+  const OngoingFullscreenActivityIconLayout({
+    this.size = const Size(48, 48),
+    this.selectedSize = const Size(56, 56),
+    this.toolBarHeight = 64,
+    this.currentBorder = 2,
+    this.border = 1.5,
+    this.arrowSize = const Size(24, 14),
+    this.padding = const EdgeInsets.fromLTRB(12, 8, 0, 8),
+    this.selectedPadding = const EdgeInsets.fromLTRB(8, 4, 0, 4),
+    this.textPadding = const EdgeInsets.all(3),
+    this.dotRadius = 4,
+    this.dotOffset = 8,
+    this.dotOffsetSelected = 10.5,
+    this.arrowPreOffset = const Offset(16, 1),
+    this.arrowPostOffset = const Offset(0, 1.5),
+    this.arrowPointRadius = const Radius.circular(4),
+  });
 }
 
 class DataItemLayout {

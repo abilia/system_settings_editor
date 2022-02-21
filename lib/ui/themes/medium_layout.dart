@@ -193,6 +193,28 @@ class _MediumLayout extends Layout {
               folderIconSize: 129,
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
+          ongoingFullscreenPage: const OngoingFullscreenActivityPageLayout(
+            toolBar: OngoingFullscreenActivityToolBarLayout(
+                height: 128,
+                buttonHeight: 96,
+                buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
+            activityIcon: OngoingFullscreenActivityIconLayout(
+              size: Size(72, 72),
+              selectedSize: Size(84, 84),
+              toolBarHeight: 96,
+              currentBorder: 3,
+              border: 2.25,
+              arrowSize: Size(40, 21),
+              padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
+              selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
+              dotRadius: 6,
+              dotOffset: 11,
+              dotOffsetSelected: 15,
+              arrowPreOffset: Offset(22, 1),
+              arrowPostOffset: Offset(0, 2.5),
+              arrowPointRadius: Radius.circular(6),
+            ),
+          ),
           dataItem: const DataItemLayout(
             borderRadius: 20,
             picture: _DataItemPictureLayout(

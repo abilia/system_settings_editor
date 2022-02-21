@@ -120,13 +120,6 @@ class FakeAlarmCubit extends Fake implements AlarmCubit {
   Future<void> close() async {}
 }
 
-class FakeNotificationBloc extends Fake implements NotificationCubit {
-  @override
-  Stream<NotificationAlarm?> get stream => const Stream.empty();
-  @override
-  Future<void> close() async {}
-}
-
 class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
   @override
   Stream<CalendarViewState> get stream => const Stream.empty();
