@@ -152,7 +152,6 @@ class LoginButton extends StatelessWidget {
             ? ''
             : ' (${backendEnvironments[baseUrl] ?? baseUrl})';
         return BlocBuilder<LoginCubit, LoginState>(
-        builder: (context, end) => BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => TextButton(
             style: textButtonStyleGreen,
             onPressed: state is! LoginLoading
