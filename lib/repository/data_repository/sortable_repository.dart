@@ -12,14 +12,14 @@ class SortableRepository extends DataRepository<Sortable> {
   static const mobileUploadPath = 'mobile-uploads-folder',
       myPhotosPath = 'my-photos-folder';
   SortableRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required String authToken,
     required int userId,
     required SortableDb sortableDb,
   }) : super(
           client: client,
-          baseUrl: baseUrl,
+          baseUrlDb: baseUrlDb,
           path: 'sortableitems',
           authToken: authToken,
           userId: userId,

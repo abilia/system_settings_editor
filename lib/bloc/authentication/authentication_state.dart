@@ -1,24 +1,21 @@
 part of 'authentication_bloc.dart';
 
 abstract class AuthenticationState extends Equatable {
-  final UserRepository userRepository;
   final bool forcedNewState;
-  const AuthenticationState(this.userRepository, this.forcedNewState);
+  const AuthenticationState(this.forcedNewState);
   @override
-  List<Object> get props => [userRepository.baseUrl, forcedNewState];
+  List<Object> get props => [forcedNewState];
   @override
   bool get stringify => true;
   AuthenticationState _forceNew();
 }
 
 class AuthenticationLoading extends AuthenticationState {
-  const AuthenticationLoading(UserRepository userRepository,
-      [bool forcedNewState = false])
-      : super(userRepository, forcedNewState);
+  const AuthenticationLoading([bool forcedNewState = false])
+      : super(forcedNewState);
 
   @override
-  AuthenticationLoading _forceNew() =>
-      AuthenticationLoading(userRepository, !forcedNewState);
+  AuthenticationLoading _forceNew() => AuthenticationLoading(!forcedNewState);
 }
 
 class Authenticated extends AuthenticationState {
@@ -29,9 +26,8 @@ class Authenticated extends AuthenticationState {
     required this.token,
     required this.userId,
     this.newlyLoggedIn = false,
-    required UserRepository userRepository,
     bool forcedNewState = false,
-  }) : super(userRepository, forcedNewState);
+  }) : super(forcedNewState);
   @override
   List<Object> get props => [token, userId, newlyLoggedIn, ...super.props];
 
@@ -40,25 +36,22 @@ class Authenticated extends AuthenticationState {
         token: token,
         userId: userId,
         newlyLoggedIn: newlyLoggedIn,
-        userRepository: userRepository,
         forcedNewState: !forcedNewState,
       );
 }
 
 class Unauthenticated extends AuthenticationState {
   final LoggedOutReason loggedOutReason;
-  const Unauthenticated(
-    UserRepository userRepository, {
+  const Unauthenticated({
     this.loggedOutReason = LoggedOutReason.logOut,
     bool forcedNewState = false,
-  }) : super(userRepository, forcedNewState);
+  }) : super(forcedNewState);
 
   @override
   List<Object> get props => [loggedOutReason, ...super.props];
 
   @override
   Unauthenticated _forceNew() => Unauthenticated(
-        userRepository,
         loggedOutReason: loggedOutReason,
         forcedNewState: !forcedNewState,
       );

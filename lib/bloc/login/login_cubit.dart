@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/repository/push.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/licenses.dart';
 
 part 'login_state.dart';
@@ -12,6 +12,7 @@ class LoginCubit extends Cubit<LoginState> {
     required this.authenticationBloc,
     required this.pushService,
     required this.clockBloc,
+    required this.userRepository,
   }) : super(LoginState.initial());
 
   static final _log = Logger((LoginCubit).toString());
@@ -19,6 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthenticationBloc authenticationBloc;
   final FirebasePushService pushService;
   final ClockBloc clockBloc;
+  final UserRepository userRepository;
 
   void usernameChanged(String username) {
     emit(state.copyWith(
@@ -46,18 +48,16 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.failure(cause: LoginFailureCause.noPassword));
       return;
     }
-    final authState = authenticationBloc.state;
     try {
       final pushToken = await pushService.initPushToken();
       if (pushToken == null) throw 'push token null';
-      final loginInfo = await authState.userRepository.authenticate(
+      final loginInfo = await userRepository.authenticate(
         username: state.username.trim(),
         password: state.password.trim(),
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      final licenses =
-          await authState.userRepository.getLicensesFromApi(loginInfo.token);
+      final licenses = await userRepository.getLicensesFromApi(loginInfo.token);
       if (licenses.anyValidLicense(clockBloc.state)) {
         authenticationBloc.add(LoggedIn(loginInfo: loginInfo));
         emit(const LoginSucceeded());

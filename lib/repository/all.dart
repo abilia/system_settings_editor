@@ -7,3 +7,4 @@ export 'multipart_request.dart';
 export 'default_http_client.dart';
 export 'timezone.dart';
 export 'data_repository/all.dart';
+export 'device_repository.dart';

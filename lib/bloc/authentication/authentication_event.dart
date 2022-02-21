@@ -10,14 +10,6 @@ abstract class AuthenticationEvent extends Equatable {
   bool get stringify => true;
 }
 
-class ChangeRepository extends AuthenticationEvent {
-  final UserRepository repository;
-  const ChangeRepository(this.repository);
-
-  @override
-  List<Object> get props => [repository];
-}
-
 class CheckAuthentication extends AuthenticationEvent {}
 
 class LoggedIn extends AuthenticationEvent {

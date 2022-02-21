@@ -22,7 +22,8 @@ void main() {
         loginDb: LoginDb(prefs),
         userDb: UserDb(prefs),
         licenseDb: LicenseDb(prefs),
-        baseUrl: 'fake',
+        baseUrlDb: BaseUrlDb(prefs),
+        deviceDb: DeviceDb(prefs),
       );
     });
 
@@ -31,14 +32,14 @@ void main() {
       build: () => AuthenticationBloc(userRepository, onLogout: () {}),
       verify: (AuthenticationBloc bloc) => expect(
         bloc.state,
-        AuthenticationLoading(userRepository),
+        const AuthenticationLoading(),
       ),
     );
 
     blocTest('state change to Unauthenticated when app starts',
         build: () => AuthenticationBloc(userRepository, onLogout: () {}),
         act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
-        expect: () => [Unauthenticated(userRepository)]);
+        expect: () => [const Unauthenticated()]);
 
     blocTest(
       'state change to AuthenticationAuthenticated when token provided',
@@ -56,11 +57,10 @@ void main() {
           ),
         ),
       expect: () => [
-        Unauthenticated(userRepository),
+        const Unauthenticated(),
         Authenticated(
           token: Fakes.token,
           userId: Fakes.userId,
-          userRepository: userRepository,
           newlyLoggedIn: true,
         ),
       ],
@@ -82,14 +82,13 @@ void main() {
         )
         ..add(const LoggedOut()),
       expect: () => [
-        Unauthenticated(userRepository),
+        const Unauthenticated(),
         Authenticated(
           token: Fakes.token,
           userId: Fakes.userId,
-          userRepository: userRepository,
           newlyLoggedIn: true,
         ),
-        Unauthenticated(userRepository),
+        const Unauthenticated(),
       ],
     );
   });
@@ -178,7 +177,7 @@ void main() {
           .thenAnswer((_) => Future.error(UnauthorizedException())),
       build: () => AuthenticationBloc(mockedUserRepository, onLogout: () {}),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
-      expect: () => [Unauthenticated(mockedUserRepository)],
+      expect: () => [const Unauthenticated()],
       verify: (bloc) => verify(
         () => mockedUserRepository.logout(any()),
       ).called(1),

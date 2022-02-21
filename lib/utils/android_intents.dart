@@ -6,6 +6,7 @@ import 'package:package_info/package_info.dart';
 class AndroidIntentAction {
   static const settings = 'android.settings.SETTINGS',
       manageOverlay = 'android.settings.action.MANAGE_OVERLAY_PERMISSION',
+      deviceInfo = 'android.settings.DEVICE_INFO_SETTINGS',
       wifi = 'android.settings.WIFI_SETTINGS';
 }
 
@@ -30,6 +31,14 @@ class AndroidIntents {
 
   static Future<void> openWifiSettings() => const AndroidIntent(
         action: AndroidIntentAction.wifi,
+        flags: [
+          Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
+          Flag.FLAG_ACTIVITY_NO_HISTORY
+        ],
+      ).launch();
+
+  static Future<void> openDeviceInfoSettings() => const AndroidIntent(
+        action: AndroidIntentAction.deviceInfo,
         flags: [
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
           Flag.FLAG_ACTIVITY_NO_HISTORY,

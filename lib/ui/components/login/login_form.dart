@@ -147,13 +147,11 @@ class LoginButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Tts.data(
       data: translate.login,
-      child: BlocSelector<AuthenticationBloc, AuthenticationState, String>(
-        selector: (state) {
-          final endPoint = state.userRepository.baseUrl;
-          if (endPoint == prod) return '';
-          return ' (${RegExp(r'//(\w+)').firstMatch(endPoint)?.group(1) ?? ''})';
-        },
-        builder: (context, end) => BlocBuilder<LoginCubit, LoginState>(
+      child: BlocBuilder<BaseUrlCubit, String>(builder: (context, baseUrl) {
+        final end = baseUrl == prod
+            ? ''
+            : ' (${backendEnvironments[baseUrl] ?? baseUrl})';
+        return BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => TextButton(
             style: textButtonStyleGreen,
             onPressed: state is! LoginLoading
@@ -164,8 +162,8 @@ class LoginButton extends StatelessWidget {
                 : null,
             child: Text('${translate.login}$end'),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

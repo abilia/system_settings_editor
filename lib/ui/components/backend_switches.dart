@@ -1,5 +1,3 @@
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -15,16 +13,15 @@ class BackendSwitchesDialog extends StatelessWidget {
       ),
       body: Column(
         children: [
-          BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) => Wrap(
+          BlocBuilder<BaseUrlCubit, String>(
+            builder: (context, baseUrl) => Wrap(
               spacing: 8.s,
               children: [
-                ...backEndEnvironments.entries.map(
-                  (kvp) => BackEndButton(
-                    kvp.key,
-                    userRepository: state.userRepository,
-                    client: GetIt.I<BaseClient>(),
-                    backEndUrl: kvp.value,
+                ...backendEnvironments.entries.map(
+                  (kvp) => BackendButton(
+                    kvp.value,
+                    backendUrl: kvp.key,
+                    currentBaseUrl: baseUrl,
                   ),
                 )
               ],
@@ -39,31 +36,22 @@ class BackendSwitchesDialog extends StatelessWidget {
   }
 }
 
-class BackEndButton extends StatelessWidget {
-  final UserRepository userRepository;
-  final BaseClient client;
-
-  final String backEndUrl;
-  final String text;
-
-  const BackEndButton(
+class BackendButton extends StatelessWidget {
+  const BackendButton(
     this.text, {
-    required this.userRepository,
-    required this.backEndUrl,
-    required this.client,
+    required this.backendUrl,
+    required this.currentBaseUrl,
     Key? key,
   }) : super(key: key);
 
+  final String backendUrl;
+  final String text;
+  final String currentBaseUrl;
+
   @override
   Widget build(BuildContext context) {
-    onTap() => context.read<AuthenticationBloc>().add(
-          ChangeRepository(
-            userRepository.copyWith(
-              client: client,
-              baseUrl: backEndUrl,
-            ),
-          ),
-        );
+    onTap() => context.read<BaseUrlCubit>().updateBaseUrl(backendUrl);
+
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -73,8 +61,8 @@ class BackEndButton extends StatelessWidget {
             height: 24.s,
             child: FittedBox(
               child: Radio(
-                groupValue: userRepository.baseUrl,
-                value: backEndUrl,
+                groupValue: currentBaseUrl,
+                value: backendUrl,
                 onChanged: (url) => onTap(),
               ),
             ),

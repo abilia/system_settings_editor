@@ -11,40 +11,21 @@ import '../mocks/mocks.dart';
 
 void main() {
   const url = 'oneUrl';
+  final mockBaseUrlDb = MockBaseUrlDb();
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockLoginDb = MockLoginDb();
   final userRepo = UserRepository(
-    baseUrl: url,
+    baseUrlDb: mockBaseUrlDb,
     client: mockClient,
     loginDb: mockLoginDb,
     userDb: mockUserDb,
     licenseDb: FakeLicenseDb(),
+    deviceDb: MockDeviceDb(),
   );
 
-  test('copyWith with new', () {
-    // Arrange
-    final newClient = Fakes.client();
-    const newUrl = 'newrl';
-    // Act
-    final newUserRepo = userRepo.copyWith(baseUrl: newUrl, client: newClient);
-    // Assert
-    expect(newUserRepo.baseUrl, isNot(userRepo.baseUrl));
-    expect(newUserRepo.baseUrl, newUrl);
-    expect(newUserRepo.client, isNot(userRepo.client));
-    expect(newUserRepo.client, newClient);
-    expect(newUserRepo.loginDb, userRepo.loginDb);
-    expect(newUserRepo.userDb, userRepo.userDb);
-  });
-
-  test('copyWith with old', () {
-    // Act
-    final newUserRepo = userRepo.copyWith();
-    // Assert
-    expect(newUserRepo.baseUrl, userRepo.baseUrl);
-    expect(newUserRepo.client, userRepo.client);
-    expect(newUserRepo.loginDb, userRepo.loginDb);
-    expect(newUserRepo.userDb, userRepo.userDb);
+  setUp(() {
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(url);
   });
 
   test('if response 401, getUserFromApi throws UnauthorizedException',

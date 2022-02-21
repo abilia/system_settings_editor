@@ -245,7 +245,7 @@ class SeagullLogger {
       if (prefs != null) {
         final user = UserDb(prefs).getUser();
         final bytes = await file.readAsBytes();
-        final baseUrl = BaseUrlDb(prefs).getBaseUrl();
+        final baseUrl = BaseUrlDb(prefs).baseUrl;
 
         final uri = '$baseUrl/open/v1/logs/'.toUri();
         final request = MultipartRequest('POST', uri)

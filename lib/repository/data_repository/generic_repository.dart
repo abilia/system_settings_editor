@@ -12,14 +12,14 @@ class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;
 
   GenericRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required String authToken,
     required int userId,
     required this.genericDb,
   }) : super(
           client: client,
-          baseUrl: baseUrl,
+          baseUrlDb: baseUrlDb,
           path: 'generics',
           postPath: 'generics',
           authToken: authToken,

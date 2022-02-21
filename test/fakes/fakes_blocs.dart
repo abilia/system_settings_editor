@@ -2,8 +2,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-import 'fake_db_and_repository.dart';
-
 class FakePushCubit extends Fake implements PushCubit {
   @override
   Stream<PushState> get stream => const Stream.empty();
@@ -24,8 +22,7 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
-  AuthenticationState get state =>
-      Authenticated(token: '', userId: 1, userRepository: FakeUserRepository());
+  AuthenticationState get state => const Authenticated(token: '', userId: 1);
   @override
   Future<void> close() async {}
 }

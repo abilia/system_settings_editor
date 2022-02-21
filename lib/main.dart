@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:devicelocale/devicelocale.dart';
+import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/listener/all.dart';
@@ -28,17 +29,17 @@ import 'package:seagull/models/all.dart';
 final _log = Logger('main');
 
 void main() async {
-  final baseUrl = await initServices();
+  await initServices();
   final payload = await getOrAddPayloadToStream();
   runApp(
     App(
-      baseUrl: baseUrl,
       payload: payload,
+      runStartGuide: shouldRunStartGuide,
     ),
   );
 }
 
-Future<String> initServices() async {
+Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Config.isMP) {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -58,6 +59,7 @@ Future<String> initServices() async {
     await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   }
   final baseUrlDb = BaseUrlDb(preferences);
+  await baseUrlDb.initialize();
   GetItInitializer()
     ..documentsDirectory = documentDirectory
     ..sharedPreferences = preferences
@@ -69,8 +71,6 @@ Future<String> initServices() async {
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();
-
-  return await baseUrlDb.initialize();
 }
 
 Future<NotificationAlarm?> getOrAddPayloadToStream() async {
@@ -97,29 +97,37 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
+bool get shouldRunStartGuide =>
+    Config.isMP && GetIt.I<DeviceDb>().serialId.isEmpty;
+
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
-  final String baseUrl;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
+  final bool runStartGuide;
 
   App({
     Key? key,
-    this.baseUrl = 'mock',
     this.payload,
     this.pushCubit,
+    this.runStartGuide = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
+        runStartGuide: runStartGuide,
         pushCubit: pushCubit,
-        baseUrl: baseUrl,
-        child: TopLevelListener(
-          navigatorKey: _navigatorKey,
-          payload: payload,
-          child: SeagullApp(
-            navigatorKey: _navigatorKey,
-          ),
+        child: BlocBuilder<StartGuideCubit, StartGuideState>(
+          builder: (context, startGuideState) =>
+              startGuideState is StartGuideDone
+                  ? TopLevelListener(
+                      navigatorKey: _navigatorKey,
+                      payload: payload,
+                      child: SeagullApp(
+                        navigatorKey: _navigatorKey,
+                      ),
+                    )
+                  : const StartGuidePage(),
         ),
       );
 }

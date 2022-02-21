@@ -35,4 +35,6 @@ export 'events/day_events_cubit.dart';
 export 'events/night_events_cubit.dart';
 export 'calendar/inactivity_cubit.dart';
 export 'timer/all.dart';
+export 'start_guide/start_guide_cubit.dart';
 export 'activities/fullscreen_activity_cubit.dart';
+export 'sync/base_url_cubit.dart';

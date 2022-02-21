@@ -11,3 +11,4 @@ export 'settings_db.dart';
 export 'generic_db.dart';
 export 'license_db.dart';
 export 'timer_db.dart';
+export 'device_db.dart';

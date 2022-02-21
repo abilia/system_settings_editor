@@ -14,6 +14,7 @@ import '../../test_helpers/register_fallback_values.dart';
 void main() {
   const baseUrl = 'url';
   late MockBaseClient mockClient;
+  late MockBaseUrlDb mockBaseUrlDb;
   const userId = 1;
   late SortableRepository sortableRepository;
   late Database db;
@@ -24,10 +25,12 @@ void main() {
   });
 
   setUp(() async {
+    mockBaseUrlDb = MockBaseUrlDb();
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     mockClient = MockBaseClient();
     sortableRepository = SortableRepository(
       authToken: Fakes.token,
-      baseUrl: baseUrl,
+      baseUrlDb: mockBaseUrlDb,
       client: mockClient,
       sortableDb: SortableDb(db),
       userId: userId,

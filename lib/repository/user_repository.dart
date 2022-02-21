@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/models/login_error.dart';
 import 'package:seagull/repository/json_response.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
@@ -18,26 +17,16 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
+  final DeviceDb deviceDb;
 
   const UserRepository({
-    required String baseUrl,
+    required BaseUrlDb baseUrlDb,
     required BaseClient client,
     required this.loginDb,
     required this.userDb,
     required this.licenseDb,
-  }) : super(client, baseUrl);
-
-  UserRepository copyWith({
-    String? baseUrl,
-    BaseClient? client,
-  }) =>
-      UserRepository(
-        baseUrl: baseUrl ?? this.baseUrl,
-        client: client ?? this.client,
-        loginDb: loginDb,
-        userDb: userDb,
-        licenseDb: licenseDb,
-      );
+    required this.deviceDb,
+  }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
     required String username,
@@ -45,7 +34,7 @@ class UserRepository extends Repository {
     required String pushToken,
     required DateTime time,
   }) async {
-    final clientId = const Uuid().v4();
+    final clientId = await deviceDb.getClientId();
     final response = await client.post(
       '$baseUrl/api/v1/auth/client/me'.toUri(),
       headers: {
@@ -59,14 +48,13 @@ class UserRepository extends Repository {
           'type': 'flutter',
           'app': Config.flavor.id,
           'name': Config.flavor.id,
-          'address': pushToken
+          'address': pushToken,
         },
       ),
     );
     switch (response.statusCode) {
       case 200:
-        final loginResponse = LoginInfo.fromJson(response.json());
-        return loginResponse.copyWithClientId(clientId);
+        return LoginInfo.fromJson(response.json());
       case 401:
         throw UnauthorizedException();
       case 403:

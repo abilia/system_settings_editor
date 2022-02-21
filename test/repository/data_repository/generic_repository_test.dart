@@ -14,9 +14,11 @@ import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
   final mockClient = MockBaseClient();
+  final mockBaseUrlDb = MockBaseUrlDb();
   late GenericRepository genericRepository;
   late GenericDb genericDb;
   setUpAll(() {
+    when(() => mockBaseUrlDb.baseUrl).thenReturn('aUrl');
     registerFallbackValues();
   });
 
@@ -25,7 +27,7 @@ void main() {
     genericDb = GenericDb(db);
     genericRepository = GenericRepository(
       authToken: Fakes.token,
-      baseUrl: 'url',
+      baseUrlDb: mockBaseUrlDb,
       client: mockClient,
       genericDb: genericDb,
       userId: 1,
@@ -180,9 +182,11 @@ void main() {
     final repsonseAll = [...allUnsynced, synced];
 
     setUp(() {
+      final mockBaseUrlDb = MockBaseUrlDb();
+      when(() => mockBaseUrlDb.baseUrl).thenReturn('baseUrl');
       genericRepository = GenericRepository(
         authToken: Fakes.token,
-        baseUrl: 'url',
+        baseUrlDb: mockBaseUrlDb,
         client: Fakes.client(genericResponse: () => repsonseAll),
         genericDb: genericDb,
         userId: 1,

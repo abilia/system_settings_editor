@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:photo_view/photo_view.dart';
 
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
@@ -124,7 +125,7 @@ class EventImage extends StatelessWidget {
     if (authenicatedState is Authenticated) {
       return Image.network(
         imageThumbUrl(
-          baseUrl: authenicatedState.userRepository.baseUrl,
+          baseUrl: GetIt.I<BaseUrlDb>().baseUrl,
           userId: authenicatedState.userId,
           imageFileId: imageFile.id,
           imagePath: imageFile.path,
@@ -216,7 +217,7 @@ class PhotoCalendarImage extends StatelessWidget {
             : (state is Authenticated)
                 ? Image.network(
                     imageThumbUrl(
-                      baseUrl: state.userRepository.baseUrl,
+                      baseUrl: GetIt.I<BaseUrlDb>().baseUrl,
                       userId: state.userId,
                       imageFileId: fileId,
                       imagePath: filePath,
@@ -266,7 +267,7 @@ class FullScreenImage extends StatelessWidget {
             if (state is Authenticated) {
               return NetworkImage(
                 imageThumbUrl(
-                  baseUrl: state.userRepository.baseUrl,
+                  baseUrl: GetIt.I<BaseUrlDb>().baseUrl,
                   userId: state.userId,
                   imageFileId: fileId,
                   imagePath: filePath,
@@ -431,7 +432,7 @@ class FadeInNetworkImage extends StatelessWidget {
               ),
               image: NetworkImage(
                 imageThumbUrl(
-                  baseUrl: state.userRepository.baseUrl,
+                  baseUrl: GetIt.I<BaseUrlDb>().baseUrl,
                   userId: state.userId,
                   imagePath: imageFilePath,
                   imageFileId: imageFileId,

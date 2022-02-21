@@ -31,6 +31,7 @@ void main() {
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
+        userRepository: mockUserRepository,
       );
     });
 
@@ -77,9 +78,7 @@ void main() {
       // Assert
       await expectLater(
         authenticationBloc.stream,
-        emits(
-          Unauthenticated(mockUserRepository),
-        ),
+        emits(const Unauthenticated()),
       );
 
       final s1 = LoginState.initial().copyWith(username: username);
@@ -109,7 +108,6 @@ void main() {
         Authenticated(
           token: loginInfo.token,
           userId: loggedInUserId,
-          userRepository: mockUserRepository,
           newlyLoggedIn: true,
         ),
       );
@@ -184,6 +182,7 @@ void main() {
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
         clockBloc: ClockBloc.fixed(time),
+        userRepository: mockedUserRepository,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
       when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);

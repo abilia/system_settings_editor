@@ -1,10 +1,14 @@
 import 'package:http/http.dart';
+import 'package:seagull/db/all.dart';
 
 abstract class Repository {
-  final String baseUrl;
+  final BaseUrlDb baseUrlDb;
   final BaseClient client;
-  const Repository(this.client, this.baseUrl);
+  const Repository(this.client, this.baseUrlDb);
+
+  String get baseUrl => baseUrlDb.baseUrl;
 
   @override
-  String toString() => 'Repository: {baseUrl : $baseUrl, client: $client}';
+  String toString() =>
+      'Repository: {baseUrl : ${baseUrlDb.baseUrl}, client: $client}';
 }

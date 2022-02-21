@@ -47,6 +47,9 @@ class GetItInitializer {
   BaseUrlDb? _baseUrlDb;
   set baseUrlDb(BaseUrlDb baseUrlDb) => _baseUrlDb = baseUrlDb;
 
+  DeviceDb? _deviceDb;
+  set deviceDb(DeviceDb deviceDb) => _deviceDb = deviceDb;
+
   BaseClient? _baseClient;
   set client(BaseClient baseClient) => _baseClient = baseClient;
 
@@ -112,6 +115,7 @@ class GetItInitializer {
     ..registerSingleton<Database>(_database)
     ..registerSingleton<SeagullLogger>(_seagullLogger)
     ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+    ..registerSingleton<DeviceDb>(_deviceDb ?? DeviceDb(_sharedPreferences))
     ..registerSingleton<Ticker>(_ticker)
     ..registerSingleton<AlarmNavigator>(_alarmNavigator)
     ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
