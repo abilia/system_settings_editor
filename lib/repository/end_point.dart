@@ -4,11 +4,11 @@ const prod = 'https://myabilia.com',
     whale = 'https://whale.abilia-gbg.se',
     t1 = 'https://t1.abilia-gbg.se',
     debug = 'https://debug.abilia-gbg.se';
-const Map<String, String> backEndEnvironments = {
-  'Prod': prod,
-  'Whale': whale,
-  'T1': t1,
-  'Debug': debug,
+const Map<String, String> backendEnvironments = {
+  prod: 'Prod',
+  whale: 'Whale',
+  t1: 'T1',
+  debug: 'Debug',
 };
 
 String fileIdUrl(String baseUrl, int userId, String imageFileId) =>

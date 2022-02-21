@@ -152,7 +152,7 @@ class LoginButton extends StatelessWidget {
       child: BlocBuilder<BaseUrlCubit, String>(builder: (context, baseUrl) {
         final end = baseUrl == prod
             ? ''
-            : ' (${RegExp(r'//(\w+)').firstMatch(baseUrl)?.group(1) ?? ''})';
+            : ' (${backendEnvironments[baseUrl] ?? baseUrl})';
         return BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) => TextButton(
             style: textButtonStyleGreen,

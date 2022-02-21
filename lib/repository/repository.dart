@@ -6,8 +6,9 @@ abstract class Repository {
   final BaseClient client;
   const Repository(this.client, this.baseUrlDb);
 
-  String get baseUrl => baseUrlDb.getBaseUrl();
+  String get baseUrl => baseUrlDb.baseUrl;
 
   @override
-  String toString() => 'Repository: {baseUrl : $baseUrlDb, client: $client}';
+  String toString() =>
+      'Repository: {baseUrl : ${baseUrlDb.baseUrl}, client: $client}';
 }

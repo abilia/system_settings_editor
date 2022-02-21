@@ -35,7 +35,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         providers: [
           RepositoryProvider<ActivityRepository>(
             create: (context) => ActivityRepository(
-              client: authenticatedState.userRepository.client,
+              client: GetIt.I<BaseClient>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               activityDb: GetIt.I<ActivityDb>(),
               userId: authenticatedState.userId,
@@ -44,7 +44,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           RepositoryProvider<UserFileRepository>(
             create: (context) => UserFileRepository(
-              client: authenticatedState.userRepository.client,
+              client: GetIt.I<BaseClient>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               userFileDb: GetIt.I<UserFileDb>(),
               fileStorage: GetIt.I<FileStorage>(),
@@ -56,7 +56,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           RepositoryProvider<SortableRepository>(
             create: (context) => SortableRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: authenticatedState.userRepository.client,
+              client: GetIt.I<BaseClient>(),
               sortableDb: GetIt.I<SortableDb>(),
               userId: authenticatedState.userId,
               authToken: authenticatedState.token,
@@ -65,7 +65,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           RepositoryProvider<GenericRepository>(
             create: (context) => GenericRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: authenticatedState.userRepository.client,
+              client: GetIt.I<BaseClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
               authToken: authenticatedState.token,
@@ -179,7 +179,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => LicenseBloc(
                 clockBloc: context.read<ClockBloc>(),
                 pushCubit: context.read<PushCubit>(),
-                userRepository: authenticatedState.userRepository,
+                userRepository: context.read<UserRepository>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
               )..add(ReloadLicenses()),
             ),
@@ -223,15 +223,26 @@ class TopLevelBlocsProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepository>(
-      create: (context) => UserRepository(
-        baseUrlDb: GetIt.I<BaseUrlDb>(),
-        client: GetIt.I<BaseClient>(),
-        loginDb: GetIt.I<LoginDb>(),
-        userDb: GetIt.I<UserDb>(),
-        licenseDb: GetIt.I<LicenseDb>(),
-        deviceDb: GetIt.I<DeviceDb>(),
-      ),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<UserRepository>(
+          create: (context) => UserRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            client: GetIt.I<BaseClient>(),
+            loginDb: GetIt.I<LoginDb>(),
+            userDb: GetIt.I<UserDb>(),
+            licenseDb: GetIt.I<LicenseDb>(),
+            deviceDb: GetIt.I<DeviceDb>(),
+          ),
+        ),
+        RepositoryProvider<DeviceRepository>(
+          create: (context) => DeviceRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            client: GetIt.I<BaseClient>(),
+            deviceDb: GetIt.I<DeviceDb>(),
+          ),
+        ),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>(
@@ -261,13 +272,9 @@ class TopLevelBlocsProvider extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => StartGuideCubit(
-                deviceRepository: DeviceRepository(
-                  baseUrlDb: GetIt.I<BaseUrlDb>(),
-                  client: GetIt.I<BaseClient>(),
-                  deviceDb: GetIt.I<DeviceDb>(),
-                ),
-                initialState:
-                    runStartGuide ? StartGuideInitial() : StartGuideDone()),
+              deviceRepository: context.read<DeviceRepository>(),
+              runStartGuide: runStartGuide,
+            ),
           ),
           BlocProvider(
             create: (context) => BaseUrlCubit(

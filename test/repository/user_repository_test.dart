@@ -25,7 +25,7 @@ void main() {
   );
 
   setUp(() {
-    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(url);
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(url);
   });
 
   test('if response 401, getUserFromApi throws UnauthorizedException',

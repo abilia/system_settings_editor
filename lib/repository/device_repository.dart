@@ -25,11 +25,7 @@ class DeviceRepository extends Repository {
         HttpHeaders.contentTypeHeader: 'application/json',
         'api-key': 'huyf72P00mf8Hy53k',
       },
-      body: json.encode(
-        {
-          'clientId': clientId,
-        },
-      ),
+      body: json.encode({'clientId': clientId}),
     );
 
     if (response.statusCode == 200) {
@@ -45,8 +41,4 @@ class DeviceRepository extends Repository {
   }
 
   Future<void> setSerialId(String serialId) => deviceDb.setSerialId(serialId);
-  String? getSerialId() => deviceDb.getSerialId();
-
-  Future<void> setClientId(String clientId) => deviceDb.setClientId(clientId);
-  String? getClientId() => deviceDb.getClientId();
 }

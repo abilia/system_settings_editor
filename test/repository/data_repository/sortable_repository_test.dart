@@ -26,7 +26,7 @@ void main() {
 
   setUp(() async {
     mockBaseUrlDb = MockBaseUrlDb();
-    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(baseUrl);
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     mockClient = MockBaseClient();
     sortableRepository = SortableRepository(
       authToken: Fakes.token,

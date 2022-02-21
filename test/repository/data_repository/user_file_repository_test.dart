@@ -34,7 +34,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
-    when(() => mockBaseUrlDb.getBaseUrl()).thenReturn(baseUrl);
+    when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
   });
 
   tearDown(() {

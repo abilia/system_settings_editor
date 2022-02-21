@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:seagull/bloc/all.dart';
@@ -32,33 +33,36 @@ void main() {
                   supportedLocales.firstWhere(
                       (l) => l.languageCode == locale?.languageCode,
                       orElse: () => supportedLocales.first),
-              home: MultiBlocProvider(
-                providers: [
-                  BlocProvider<AuthenticationBloc>(
-                      create: (context) => FakeAuthenticationBloc()),
-                  BlocProvider<UserFileCubit>(
-                    create: (context) => UserFileCubit(
-                      fileStorage: FakeFileStorage(),
-                      pushCubit: FakePushCubit(),
-                      syncBloc: FakeSyncBloc(),
-                      userFileRepository: FakeUserFileRepository(),
+              home: RepositoryProvider<UserRepository>(
+                create: (context) => FakeUserRepository(),
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider<AuthenticationBloc>(
+                        create: (context) => FakeAuthenticationBloc()),
+                    BlocProvider<UserFileCubit>(
+                      create: (context) => UserFileCubit(
+                        fileStorage: FakeFileStorage(),
+                        pushCubit: FakePushCubit(),
+                        syncBloc: FakeSyncBloc(),
+                        userFileRepository: FakeUserFileRepository(),
+                      ),
                     ),
-                  ),
-                  BlocProvider<ClockBloc>(
-                    create: (context) => ClockBloc.fixed(startTime),
-                  ),
-                  BlocProvider<SettingsCubit>(
-                    create: (context) => SettingsCubit(
-                      settingsDb: FakeSettingsDb(),
+                    BlocProvider<ClockBloc>(
+                      create: (context) => ClockBloc.fixed(startTime),
                     ),
-                  ),
-                ],
-                child: Material(
-                  child: ActivityCard(
-                    activityOccasion: ActivityOccasion(
-                      activity,
-                      activity.startTime.onlyDays(),
-                      occasion ?? Occasion.current,
+                    BlocProvider<SettingsCubit>(
+                      create: (context) => SettingsCubit(
+                        settingsDb: FakeSettingsDb(),
+                      ),
+                    ),
+                  ],
+                  child: Material(
+                    child: ActivityCard(
+                      activityOccasion: ActivityOccasion(
+                        activity,
+                        activity.startTime.onlyDays(),
+                        occasion ?? Occasion.current,
+                      ),
                     ),
                   ),
                 ),
