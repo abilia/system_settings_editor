@@ -11,15 +11,17 @@ part 'medium_layout.dart';
 final Layout layout = Device.screenSize.longestSide > 1500
     ? const _LargeLayout()
     : Device.screenSize.longestSide > 1000
-        ? const _MediumLayout()
+        ? const MediumLayout()
         : const _GoLayout();
 
 class Layout {
+  final double radius;
   final AppBarLayout appBar;
   final ActionButtonLayout actionButton;
   final MenuPageLayout menuPage;
   final TabBarLayout tabBar;
   final ToolbarLayout toolbar;
+  final NavigationBarLayout navigationBar;
   final FontSize fontSize;
   final IconSize iconSize;
   final ClockLayout clock;
@@ -33,7 +35,7 @@ class Layout {
   final DefaultTextInputPageLayout defaultTextInputPage;
   final ImageArchiveLayout imageArchive;
   final LibraryPageLayout libraryPage;
-  final OngoingFullscreenActivityPageLayout ongoingFullscreenPage;
+  final OngoingTabLayout ongoingFullscreen;
   final DataItemLayout dataItem;
   final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
@@ -44,10 +46,12 @@ class Layout {
   final AlarmPageLayout alarmPage;
 
   const Layout({
+    this.radius = 12,
     this.appBar = const AppBarLayout(),
     this.actionButton = const ActionButtonLayout(),
     this.menuPage = const MenuPageLayout(),
     this.toolbar = const ToolbarLayout(),
+    this.navigationBar = const NavigationBarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
     this.iconSize = const IconSize(),
@@ -62,7 +66,7 @@ class Layout {
     this.defaultTextInputPage = const DefaultTextInputPageLayout(),
     this.imageArchive = const ImageArchiveLayout(),
     this.libraryPage = const LibraryPageLayout(),
-    this.ongoingFullscreenPage = const OngoingFullscreenActivityPageLayout(),
+    this.ongoingFullscreen = const OngoingTabLayout(),
     this.dataItem = const DataItemLayout(),
     this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
@@ -150,6 +154,22 @@ class ToolbarLayout {
     this.height = 64,
     this.horizontalPadding = 16,
     this.bottomPadding = 0,
+  });
+}
+
+class NavigationBarLayout {
+  final double height, spaceBetweeen;
+  final EdgeInsets padding;
+
+  const NavigationBarLayout({
+    this.height = 84,
+    this.spaceBetweeen = 8,
+    this.padding = const EdgeInsets.only(
+      left: 12,
+      top: 8,
+      right: 12,
+      bottom: 12,
+    ),
   });
 }
 
@@ -271,7 +291,7 @@ class MonthCalendarLayout {
       dayHeadingFontSize,
       fullDayActivityFontSize,
       weekNumberWidth,
-      hasActivitiesDotDiameter;
+      hasActivitiesDotRadius;
 
   final EdgeInsets dayViewPadding,
       dayViewPaddingHighlighted,
@@ -297,7 +317,7 @@ class MonthCalendarLayout {
     this.dayHeadingFontSize = 14,
     this.fullDayActivityFontSize = 12,
     this.weekNumberWidth = 24,
-    this.hasActivitiesDotDiameter = 6,
+    this.hasActivitiesDotRadius = 3,
     this.dayViewPadding = const EdgeInsets.all(4),
     this.dayViewPaddingHighlighted = const EdgeInsets.all(6),
     this.dayViewMargin = const EdgeInsets.all(2),
@@ -542,55 +562,45 @@ class LibraryPageLayout {
       );
 }
 
-class OngoingFullscreenActivityPageLayout {
-  final OngoingFullscreenActivityToolBarLayout toolBar;
-  final OngoingFullscreenActivityIconLayout activityIcon;
+class OngoingTabLayout {
+  final OngoingActivityLayout activity;
+  final double height;
+  final EdgeInsets padding;
 
-  const OngoingFullscreenActivityPageLayout(
-      {this.toolBar = const OngoingFullscreenActivityToolBarLayout(),
-      this.activityIcon = const OngoingFullscreenActivityIconLayout()});
-}
-
-class OngoingFullscreenActivityToolBarLayout {
-  final double height, collapseMargin, buttonHeight;
-  final EdgeInsets buttonPadding;
-
-  const OngoingFullscreenActivityToolBarLayout({
-    this.height = 84,
-    this.collapseMargin = 8,
-    this.buttonHeight = 64,
-    this.buttonPadding = const EdgeInsets.only(top: 8, bottom: 12),
+  const OngoingTabLayout({
+    this.height = 64,
+    this.padding = const EdgeInsets.symmetric(horizontal: 6),
+    this.activity = const OngoingActivityLayout(),
   });
 }
 
-class OngoingFullscreenActivityIconLayout {
-  final double border,
-      currentBorder,
-      toolBarHeight,
-      dotRadius,
-      dotOffset,
-      dotOffsetSelected;
-  final Size size, selectedSize, arrowSize;
-  final EdgeInsets padding, selectedPadding, textPadding;
-  final Offset arrowPreOffset, arrowPostOffset;
-  final Radius arrowPointRadius;
+class OngoingActivityLayout {
+  final double border, activeBorder;
+  final Size arrowSize;
+  final EdgeInsets padding, selectedPadding;
 
-  const OngoingFullscreenActivityIconLayout({
-    this.size = const Size(48, 48),
-    this.selectedSize = const Size(56, 56),
-    this.toolBarHeight = 64,
-    this.currentBorder = 2,
+  final Radius arrowPointRadius;
+  final OngoingCategoryDotLayout dot;
+
+  const OngoingActivityLayout({
+    this.activeBorder = 2,
     this.border = 1.5,
-    this.arrowSize = const Size(24, 14),
-    this.padding = const EdgeInsets.fromLTRB(12, 8, 0, 8),
-    this.selectedPadding = const EdgeInsets.fromLTRB(8, 4, 0, 4),
-    this.textPadding = const EdgeInsets.all(3),
-    this.dotRadius = 4,
-    this.dotOffset = 8,
-    this.dotOffsetSelected = 10.5,
-    this.arrowPreOffset = const Offset(16, 1),
-    this.arrowPostOffset = const Offset(0, 1.5),
+    this.padding = const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+    this.selectedPadding = const EdgeInsets.symmetric(vertical: 2),
+    this.dot = const OngoingCategoryDotLayout(),
+    this.arrowSize = const Size(32, 14),
     this.arrowPointRadius = const Radius.circular(4),
+  });
+}
+
+class OngoingCategoryDotLayout {
+  final double innerRadius, outerRadius, offset, selectedOffset;
+
+  const OngoingCategoryDotLayout({
+    this.innerRadius = 4,
+    this.outerRadius = 5,
+    this.offset = 3,
+    this.selectedOffset = 5,
   });
 }
 

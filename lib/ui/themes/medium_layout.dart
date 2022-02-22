@@ -1,8 +1,9 @@
 part of 'layout.dart';
 
-class _MediumLayout extends Layout {
-  const _MediumLayout()
+class MediumLayout extends Layout {
+  const MediumLayout()
       : super(
+          radius: 18,
           appBar: const AppBarLayout(
             largeAppBarHeight: 148,
             height: 104,
@@ -35,7 +36,11 @@ class _MediumLayout extends Layout {
           ),
           toolbar: const ToolbarLayout(
             height: 120,
-            bottomPadding: 8,
+          ),
+          navigationBar: const NavigationBarLayout(
+            height: 128,
+            spaceBetweeen: 12,
+            padding: EdgeInsets.only(left: 18, top: 12, right: 18, bottom: 20),
           ),
           tabBar: const TabBarLayout(
             item: TabItemLayout(
@@ -98,7 +103,7 @@ class _MediumLayout extends Layout {
               dayHeaderHeight: 28,
               dayHeadingFontSize: 20,
               weekNumberWidth: 36,
-              hasActivitiesDotDiameter: 10,
+              hasActivitiesDotRadius: 5,
               dayViewMargin: EdgeInsets.all(4),
               dayViewMarginHighlighted: EdgeInsets.all(1),
               dayViewPadding: EdgeInsets.all(0),
@@ -193,26 +198,22 @@ class _MediumLayout extends Layout {
               folderIconSize: 129,
               headerFontSize: 32,
               childAspectRatio: 181 / 168),
-          ongoingFullscreenPage: const OngoingFullscreenActivityPageLayout(
-            toolBar: OngoingFullscreenActivityToolBarLayout(
-                height: 128,
-                buttonHeight: 96,
-                buttonPadding: EdgeInsets.only(top: 12, bottom: 20)),
-            activityIcon: OngoingFullscreenActivityIconLayout(
-              size: Size(72, 72),
-              selectedSize: Size(84, 84),
-              toolBarHeight: 96,
-              currentBorder: 3,
-              border: 2.25,
-              arrowSize: Size(40, 21),
-              padding: EdgeInsets.fromLTRB(18, 12, 0, 12),
-              selectedPadding: EdgeInsets.fromLTRB(12, 6, 0, 6),
-              dotRadius: 6,
-              dotOffset: 11,
-              dotOffsetSelected: 15,
-              arrowPreOffset: Offset(22, 1),
-              arrowPostOffset: Offset(0, 2.5),
+          ongoingFullscreen: const OngoingTabLayout(
+            height: 96,
+            padding: EdgeInsets.symmetric(horizontal: 9),
+            activity: OngoingActivityLayout(
+              arrowSize: Size(48, 24),
               arrowPointRadius: Radius.circular(6),
+              activeBorder: 4,
+              border: 2,
+              padding: EdgeInsets.symmetric(horizontal: 9, vertical: 12),
+              selectedPadding: EdgeInsets.symmetric(vertical: 3),
+              dot: OngoingCategoryDotLayout(
+                innerRadius: 6,
+                outerRadius: 7,
+                offset: 7,
+                selectedOffset: 7,
+              ),
             ),
           ),
           dataItem: const DataItemLayout(

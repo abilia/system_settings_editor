@@ -47,7 +47,7 @@ class AlarmPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: AlarmBottomAppBar(alarm: alarm),
+      bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
     );
   }
 }
@@ -101,7 +101,7 @@ class ReminderPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: AlarmBottomAppBar(alarm: reminder),
+      bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
     );
   }
 }
@@ -130,8 +130,8 @@ class PopAwareAlarmPage extends StatelessWidget {
       );
 }
 
-class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
-  const AlarmBottomAppBar({
+class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
+  const AlarmBottomNavigationBar({
     Key? key,
     required this.alarm,
   }) : super(key: key);
@@ -146,41 +146,37 @@ class AlarmBottomAppBar extends StatelessWidget with ActivityMixin {
         activityDay.activity.checkable && !activityDay.isSignedOff;
     final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
     return BottomAppBar(
-      elevation: 0.0,
-      child: Container(
-        color: AbiliaColors.black80,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
-          child: Row(
-            mainAxisAlignment: displayCheckButton
-                ? MainAxisAlignment.spaceBetween
-                : MainAxisAlignment.center,
-            children: [
-              if (!displayCheckButton)
-                closeButton
-              else ...[
-                Expanded(child: closeButton),
-                SizedBox(width: 8.s),
-                Expanded(
-                  child: GreenButton(
-                    key: TestKey.activityCheckButton,
-                    text: translate.check,
-                    icon: AbiliaIcons.handiCheck,
-                    onPressed: () async {
-                      final checked =
-                          await checkConfirmation(context, activityDay);
-                      if (checked == true) {
-                        await cancelNotifications(
-                          uncheckedReminders(activityDay),
-                        );
-                        await popAlarm(context, alarm);
-                      }
-                    },
-                  ),
+      child: Padding(
+        padding: layout.navigationBar.padding,
+        child: Row(
+          mainAxisAlignment: displayCheckButton
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
+          children: [
+            if (!displayCheckButton)
+              closeButton
+            else ...[
+              Expanded(child: closeButton),
+              SizedBox(width: layout.navigationBar.spaceBetweeen),
+              Expanded(
+                child: GreenButton(
+                  key: TestKey.activityCheckButton,
+                  text: translate.check,
+                  icon: AbiliaIcons.handiCheck,
+                  onPressed: () async {
+                    final checked =
+                        await checkConfirmation(context, activityDay);
+                    if (checked == true) {
+                      await cancelNotifications(
+                        uncheckedReminders(activityDay),
+                      );
+                      await popAlarm(context, alarm);
+                    }
+                  },
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );
