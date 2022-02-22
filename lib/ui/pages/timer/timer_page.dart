@@ -34,14 +34,16 @@ class TimerPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: BlocSelector<TimerAlarmBloc, TimerAlarmState,
-                      TimerOccasion>(
-                    selector: (timerState) => timerState.timers.firstWhere(
-                        (timerOccasion) => timerOccasion.timer.id == timer.id),
+                      TimerOccasion?>(
+                    selector: (timerState) => timerState.timers.isNotEmpty
+                        ? timerState.timers.firstWhere((timerOccasion) =>
+                            timerOccasion.timer.id == timer.id)
+                        : null,
                     builder: (context, timerOccasion) {
                       return Padding(
                         padding:
                             EdgeInsets.all(layout.timerPage.mainContentPadding),
-                        child: timerOccasion.isOngoing
+                        child: timerOccasion != null && timerOccasion.isOngoing
                             ? TimerTickerBuilder(
                                 timerOccasion.timer,
                                 builder: (context, left) =>
