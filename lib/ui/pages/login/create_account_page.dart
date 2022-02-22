@@ -5,17 +5,14 @@ import 'package:seagull/ui/all.dart';
 
 class CreateAccountPage extends StatelessWidget {
   final UserRepository userRepository;
-  static const _bottomBottomNavigationHeight = 84.0;
 
   const CreateAccountPage({Key? key, required this.userRepository})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context);
     final t = translator.translate;
     final textTheme = Theme.of(context).textTheme;
-    final ScrollController _scrollController = ScrollController();
     return BlocProvider(
       create: (context) => CreateAccountCubit(
         languageTag: translator.locale.toLanguageTag(),
@@ -28,7 +25,6 @@ class CreateAccountPage extends StatelessWidget {
             listener: (context, state) async {
               await showViewDialog(
                 context: context,
-                wrapWithAuthProviders: false,
                 builder: (context) => ViewDialog(
                   heading: AppBarHeading(
                     text: t.accountCreatedHeading,
@@ -63,86 +59,78 @@ class CreateAccountPage extends StatelessWidget {
           builder: (context, state) => Scaffold(
             body: Padding(
               padding: EdgeInsets.only(left: 16.s, top: 24.0, right: 16.s),
-              child: ScrollArrows.vertical(
-                controller: _scrollController,
-                downCollapseMargin: _bottomBottomNavigationHeight,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 48.s),
-                      const MyAbiliaLogo(),
-                      SizedBox(height: 32.s),
-                      Tts(
-                        child: Text(
-                          t.createAaccountHeading,
-                          style: textTheme.headline6,
-                        ),
-                      ),
-                      SizedBox(height: 8.s),
-                      Tts(
-                        child: Text(
-                          t.createAaccountSubheading,
-                          style: textTheme.bodyText2,
-                        ),
-                      ),
-                      SizedBox(height: 32.s),
-                      UsernameInput(
-                        initialValue: state.username,
-                        errorState: state.usernameFailure,
-                        inputValid: (s) => s.isNotEmpty,
-                        onChanged: (newUsername) => context
-                            .read<CreateAccountCubit>()
-                            .usernameEmailChanged(newUsername),
-                      ),
-                      SizedBox(height: 16.s),
-                      PasswordInput(
-                        key: TestKey.createAccountPassword,
-                        inputHeading: t.passwordHint,
-                        password: state.firstPassword,
-                        onPasswordChange: (password) => context
-                            .read<CreateAccountCubit>()
-                            .firstPasswordChanged(password),
-                        errorState: state.passwordFailure,
-                        validator: (p) => p.isNotEmpty,
-                      ),
-                      SizedBox(height: 16.s),
-                      PasswordInput(
-                        key: TestKey.createAccountPasswordConfirm,
-                        inputHeading: t.confirmPassword,
-                        password: state.secondPassword,
-                        onPasswordChange: (password) => context
-                            .read<CreateAccountCubit>()
-                            .secondPasswordChanged(password),
-                        errorState: state.conformPasswordFailure,
-                        validator: (p) => p.isNotEmpty,
-                      ),
-                      SizedBox(height: 48.s),
-                      AcceptTermsSwitch(
-                        key: TestKey.acceptTermsOfUse,
-                        linkText: t.termsOfUse,
-                        value: state.termsOfUse,
-                        url: t.termsOfUseUrl,
-                        errorState: state.termsOfUseFailure,
-                        onChanged: (v) => context
-                            .read<CreateAccountCubit>()
-                            .termsOfUseAccepted(v),
-                      ),
-                      SizedBox(height: 4.s),
-                      AcceptTermsSwitch(
-                        key: TestKey.acceptPrivacyPolicy,
-                        linkText: t.privacyPolicy,
-                        value: state.privacyPolicy,
-                        url: t.privacyPolicyUrl,
-                        errorState: state.privacyPolicyFailure,
-                        onChanged: (v) => context
-                            .read<CreateAccountCubit>()
-                            .privacyPolicyAccepted(v),
-                      ),
-                      SizedBox(height: 16.s),
-                    ],
+              child: Column(
+                children: [
+                  SizedBox(height: 48.s),
+                  const MyAbiliaLogo(),
+                  SizedBox(height: 32.s),
+                  Tts(
+                    child: Text(
+                      t.createAaccountHeading,
+                      style: textTheme.headline6,
+                    ),
                   ),
-                ),
+                  SizedBox(height: 8.s),
+                  Tts(
+                    child: Text(
+                      t.createAaccountSubheading,
+                      style: textTheme.bodyText2,
+                    ),
+                  ),
+                  SizedBox(height: 32.s),
+                  UsernameInput(
+                    initialValue: state.username,
+                    errorState: state.usernameFailure,
+                    inputValid: (s) => s.isNotEmpty,
+                    onChanged: (newUsername) => context
+                        .read<CreateAccountCubit>()
+                        .usernameEmailChanged(newUsername),
+                  ),
+                  SizedBox(height: 16.s),
+                  PasswordInput(
+                    key: TestKey.createAccountPassword,
+                    inputHeading: t.passwordHint,
+                    password: state.firstPassword,
+                    onPasswordChange: (password) => context
+                        .read<CreateAccountCubit>()
+                        .firstPasswordChanged(password),
+                    errorState: state.passwordFailure,
+                    validator: (p) => p.isNotEmpty,
+                  ),
+                  SizedBox(height: 16.s),
+                  PasswordInput(
+                    key: TestKey.createAccountPasswordConfirm,
+                    inputHeading: t.confirmPassword,
+                    password: state.secondPassword,
+                    onPasswordChange: (password) => context
+                        .read<CreateAccountCubit>()
+                        .secondPasswordChanged(password),
+                    errorState: state.conformPasswordFailure,
+                    validator: (p) => p.isNotEmpty,
+                  ),
+                  SizedBox(height: 48.s),
+                  AcceptTermsSwitch(
+                    key: TestKey.acceptTermsOfUse,
+                    linkText: t.termsOfUse,
+                    value: state.termsOfUse,
+                    url: t.termsOfUseUrl,
+                    errorState: state.termsOfUseFailure,
+                    onChanged: (v) =>
+                        context.read<CreateAccountCubit>()
+                            .termsOfUseAccepted(v),
+                  ),
+                  SizedBox(height: 4.s),
+                  AcceptTermsSwitch(
+                    key: TestKey.acceptPrivacyPolicy,
+                    linkText: t.privacyPolicy,
+                    value: state.privacyPolicy,
+                    url: t.privacyPolicyUrl,
+                    errorState: state.privacyPolicyFailure,
+                    onChanged: (v) =>
+                        context.read<CreateAccountCubit>()
+                            .privacyPolicyAccepted(v),
+                  ),
+                ],
               ),
             ),
             bottomNavigationBar: const BottomNavigation(
