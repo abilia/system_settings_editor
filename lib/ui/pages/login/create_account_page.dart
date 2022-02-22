@@ -14,13 +14,13 @@ class CreateAccountPage extends StatelessWidget {
     final t = translator.translate;
     final textTheme = Theme.of(context).textTheme;
     return BlocProvider(
-      create: (context) => CreateAccountBloc(
+      create: (context) => CreateAccountCubit(
         languageTag: translator.locale.toLanguageTag(),
         repository: userRepository,
       ),
       child: MultiBlocListener(
         listeners: [
-          BlocListener<CreateAccountBloc, CreateAccountState>(
+          BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is AccountCreated,
             listener: (context, state) async {
               await showViewDialog(
@@ -39,7 +39,7 @@ class CreateAccountPage extends StatelessWidget {
               Navigator.of(context).pop(state.username);
             },
           ),
-          BlocListener<CreateAccountBloc, CreateAccountState>(
+          BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is CreateAccountFailed,
             listener: (context, state) async {
               if (state is CreateAccountFailed) {
@@ -56,7 +56,7 @@ class CreateAccountPage extends StatelessWidget {
             },
           ),
         ],
-        child: BlocBuilder<CreateAccountBloc, CreateAccountState>(
+        child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
           builder: (context, state) => Scaffold(
             body: Padding(
               padding: EdgeInsets.only(left: 16.s, top: 24.0, right: 16.s),
@@ -84,8 +84,8 @@ class CreateAccountPage extends StatelessWidget {
                     errorState: state.usernameFailure,
                     inputValid: (s) => s.isNotEmpty,
                     onChanged: (newUsername) => context
-                        .read<CreateAccountBloc>()
-                        .add(UsernameEmailChanged(newUsername)),
+                        .read<CreateAccountCubit>()
+                        .usernameEmailChanged(newUsername),
                   ),
                   SizedBox(height: 16.s),
                   PasswordInput(
@@ -93,8 +93,8 @@ class CreateAccountPage extends StatelessWidget {
                     inputHeading: t.passwordHint,
                     password: state.firstPassword,
                     onPasswordChange: (password) => context
-                        .read<CreateAccountBloc>()
-                        .add(FirstPasswordChanged(password)),
+                        .read<CreateAccountCubit>()
+                        .firstPasswordChanged(password),
                     errorState: state.passwordFailure,
                     validator: (p) => p.isNotEmpty,
                   ),
@@ -104,8 +104,8 @@ class CreateAccountPage extends StatelessWidget {
                     inputHeading: t.confirmPassword,
                     password: state.secondPassword,
                     onPasswordChange: (password) => context
-                        .read<CreateAccountBloc>()
-                        .add(SecondPasswordChanged(password)),
+                        .read<CreateAccountCubit>()
+                        .secondPasswordChanged(password),
                     errorState: state.conformPasswordFailure,
                     validator: (p) => p.isNotEmpty,
                   ),
@@ -116,8 +116,9 @@ class CreateAccountPage extends StatelessWidget {
                     value: state.termsOfUse,
                     url: t.termsOfUseUrl,
                     errorState: state.termsOfUseFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountBloc>().add(TermsOfUse(v)),
+                    onChanged: (v) => context
+                        .read<CreateAccountCubit>()
+                        .termsOfUseAccepted(v),
                   ),
                   SizedBox(height: 4.s),
                   AcceptTermsSwitch(
@@ -126,8 +127,9 @@ class CreateAccountPage extends StatelessWidget {
                     value: state.privacyPolicy,
                     url: t.privacyPolicyUrl,
                     errorState: state.privacyPolicyFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountBloc>().add(PrivacyPolicy(v)),
+                    onChanged: (v) => context
+                        .read<CreateAccountCubit>()
+                        .privacyPolicyAccepted(v),
                   ),
                 ],
               ),
@@ -198,7 +200,7 @@ class MyAbiliaLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAccountBloc, CreateAccountState>(
+    return BlocBuilder<CreateAccountCubit, CreateAccountState>(
       builder: (context, state) {
         if (state is CreateAccountLoading) {
           return SizedBox(
@@ -241,15 +243,15 @@ class CreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAccountBloc, CreateAccountState>(
+    return BlocBuilder<CreateAccountCubit, CreateAccountState>(
       builder: (context, state) {
         return GreenButton(
           icon: AbiliaIcons.ok,
           text: Translator.of(context).translate.createAccount,
           onPressed: state is! CreateAccountLoading
               ? () => context
-                  .read<CreateAccountBloc>()
-                  .add(CreateAccountButtonPressed())
+                  .read<CreateAccountCubit>()
+                  .createAccountButtonPressed()
               : null,
         );
       },
