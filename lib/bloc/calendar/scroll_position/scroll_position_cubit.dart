@@ -9,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 
 part 'scroll_position_state.dart';
 
-class ScrollPositionBloc extends Cubit<ScrollPositionState> {
+class ScrollPositionCubit extends Cubit<ScrollPositionState> {
   final double nowMarginTop;
   final double nowMarginBottom;
 
@@ -19,7 +19,7 @@ class ScrollPositionBloc extends Cubit<ScrollPositionState> {
   late final StreamSubscription dayPickerBlocSubscription;
   late final StreamSubscription clockBlocSubscription;
 
-  ScrollPositionBloc({
+  ScrollPositionCubit({
     required this.dayPickerBloc,
     required this.clockBloc,
     required this.timepillarCubit,

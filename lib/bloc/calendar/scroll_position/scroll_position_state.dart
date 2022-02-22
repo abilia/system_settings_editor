@@ -1,4 +1,4 @@
-part of 'scroll_position_bloc.dart';
+part of 'scroll_position_cubit.dart';
 
 abstract class ScrollPositionState extends Equatable with Finest {
   @override

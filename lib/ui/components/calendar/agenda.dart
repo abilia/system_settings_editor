@@ -47,7 +47,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
 
   void _addScrollViewRenderCompleteCallback() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      BlocProvider.of<ScrollPositionBloc>(context)
+      BlocProvider.of<ScrollPositionCubit>(context)
           .scrollViewRenderComplete(scrollController);
     });
   }

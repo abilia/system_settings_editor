@@ -5,7 +5,7 @@ class GoToNowButton extends StatelessWidget {
   const GoToNowButton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<ScrollPositionBloc, ScrollPositionState>(
+      BlocBuilder<ScrollPositionCubit, ScrollPositionState>(
         buildWhen: (previous, current) =>
             previous.runtimeType != current.runtimeType,
         builder: (context, scrollState) => AnimatedSwitcher(
@@ -23,7 +23,7 @@ class GoToNowButton extends StatelessWidget {
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
                     onPressed: () =>
-                        context.read<ScrollPositionBloc>().goToNow(),
+                        context.read<ScrollPositionCubit>().goToNow(),
                     style: actionIconTextButtonStyleRed,
                   ),
                 )

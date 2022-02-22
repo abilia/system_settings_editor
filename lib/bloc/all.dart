@@ -6,7 +6,7 @@ export 'activities/edit_activity/recurring_week/recurring_week_cubit.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/all.dart';
 export 'calendar/day_picker_bloc.dart';
-export 'calendar/scroll_position/scroll_position_bloc.dart';
+export 'calendar/scroll_position/scroll_position_cubit.dart';
 export 'clock/clock_bloc.dart';
 export 'alarm/alarm_cubit.dart';
 export 'alarm/alarm_speech/alarm_speech_cubit.dart';

@@ -11,7 +11,7 @@ import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late ScrollPositionBloc scrollPositionBloc;
+  late ScrollPositionCubit scrollPositionCubit;
   late MockScrollController mockScrollController;
   late MockScrollPosition mockScrollPosition;
   late StreamController<DateTime> ticker;
@@ -28,7 +28,7 @@ void main() {
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
 
-    scrollPositionBloc = ScrollPositionBloc(
+    scrollPositionCubit = ScrollPositionCubit(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
       timepillarCubit: FaketimepillarCubit(),
@@ -42,7 +42,7 @@ void main() {
 
   test('initial state is Unready', () {
     // Assert
-    expect(scrollPositionBloc.state, Unready());
+    expect(scrollPositionCubit.state, Unready());
   });
 
   test(
@@ -50,9 +50,9 @@ void main() {
       () async {
     // Arrange
     when(() => mockScrollController.hasClients).thenReturn(false);
-    final expect = expectLater(scrollPositionBloc.stream, emits(Unready()));
+    final expect = expectLater(scrollPositionCubit.stream, emits(Unready()));
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -64,12 +64,12 @@ void main() {
     when(() => mockScrollController.initialScrollOffset).thenReturn(0);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(InView(mockScrollController)),
     );
 
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -81,12 +81,12 @@ void main() {
     when(() => mockScrollController.initialScrollOffset).thenReturn(200);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(OutOfView(mockScrollController)),
     );
 
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -96,15 +96,15 @@ void main() {
     // Arrange
     const init = 200.0;
     when(() => mockScrollController.offset)
-        .thenReturn(init - scrollPositionBloc.nowMarginBottom);
+        .thenReturn(init - scrollPositionCubit.nowMarginBottom);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(InView(mockScrollController)),
     );
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -114,15 +114,15 @@ void main() {
     // Arrange
     const init = 200.0;
     when(() => mockScrollController.offset)
-        .thenReturn(init + scrollPositionBloc.nowMarginTop);
+        .thenReturn(init + scrollPositionCubit.nowMarginTop);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(InView(mockScrollController)),
     );
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -132,15 +132,15 @@ void main() {
     // Arrange
     const init = 200.0;
     when(() => mockScrollController.offset)
-        .thenReturn(init - scrollPositionBloc.nowMarginBottom - 1);
+        .thenReturn(init - scrollPositionCubit.nowMarginBottom - 1);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(OutOfView(mockScrollController)),
     );
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -150,15 +150,15 @@ void main() {
     // Arrange
     const init = 200.0;
     when(() => mockScrollController.offset)
-        .thenReturn(init + scrollPositionBloc.nowMarginTop + 1);
+        .thenReturn(init + scrollPositionCubit.nowMarginTop + 1);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(OutOfView(mockScrollController)),
     );
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
@@ -175,23 +175,23 @@ void main() {
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
       final expect = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emits(InView(mockScrollController)),
       );
       // Act
-      scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+      scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
       // Assert
       await expect;
 
       final expect2 = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emits(OutOfView(mockScrollController)),
       );
       // Act
       for (var i = activityAt; i < max; i++) {
         when(() => mockScrollController.offset).thenReturn(i);
-        scrollPositionBloc.scrollPositionUpdated();
+        scrollPositionCubit.scrollPositionUpdated();
       }
 
       // Assert
@@ -207,23 +207,23 @@ void main() {
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
     final expect = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(InView(mockScrollController)),
     );
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
 
     // Assert
     await expect;
 
     final expect2 = expectLater(
-      scrollPositionBloc.stream,
+      scrollPositionCubit.stream,
       emits(OutOfView(mockScrollController)),
     );
     // Act
     for (var i = activityAt; i > 0; i--) {
       when(() => mockScrollController.offset).thenReturn(i);
-      scrollPositionBloc.scrollPositionUpdated();
+      scrollPositionCubit.scrollPositionUpdated();
     }
 
     // Assert
@@ -243,8 +243,8 @@ void main() {
         curve: any(named: 'curve')));
 
     // Act
-    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
-    scrollPositionBloc.goToNow();
+    scrollPositionCubit.scrollViewRenderComplete(mockScrollController);
+    scrollPositionCubit.goToNow();
 
     // Assert
     await expect;
@@ -257,12 +257,12 @@ void main() {
       when(() => mockScrollController.initialScrollOffset).thenReturn(0);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
       final expect = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emits(InView(mockScrollController, initialTime)),
       );
 
       // Act
-      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+      scrollPositionCubit.scrollViewRenderComplete(mockScrollController,
           createdTime: initialTime);
 
       // Assert
@@ -276,7 +276,7 @@ void main() {
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
 
       final expeted = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emitsInOrder([
           InView(mockScrollController, initialTime),
           OutOfView(mockScrollController, initialTime),
@@ -284,7 +284,7 @@ void main() {
       );
 
       // Act
-      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+      scrollPositionCubit.scrollViewRenderComplete(mockScrollController,
           createdTime: initialTime);
 
       ticker.add(initialTime.add(1.hours()).add(5.minutes()));
@@ -309,18 +309,18 @@ void main() {
       );
       final nowPos = initialOffset + timePixelOffset;
       final expect1 = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emits(InView(mockScrollController, initialTime)),
       );
 
       // Act
-      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+      scrollPositionCubit.scrollViewRenderComplete(mockScrollController,
           createdTime: initialTime);
       // Assert
       await expect1;
 
       final expect2 = expectLater(
-        scrollPositionBloc.stream,
+        scrollPositionCubit.stream,
         emits(OutOfView(mockScrollController, initialTime)),
       );
       // Act
@@ -331,7 +331,7 @@ void main() {
       final expect3 = untilCalled(() => mockScrollController.animateTo(nowPos,
           duration: any(named: 'duration'), curve: any(named: 'curve')));
       // Act
-      scrollPositionBloc.goToNow();
+      scrollPositionCubit.goToNow();
       // Assert
       await expect3;
     });
