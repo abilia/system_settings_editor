@@ -23,7 +23,7 @@ class GoToNowButton extends StatelessWidget {
                     text: Translator.of(context).translate.now,
                     icon: AbiliaIcons.reset,
                     onPressed: () =>
-                        context.read<ScrollPositionBloc>().add(const GoToNow()),
+                        context.read<ScrollPositionBloc>().goToNow(),
                     style: actionIconTextButtonStyleRed,
                   ),
                 )

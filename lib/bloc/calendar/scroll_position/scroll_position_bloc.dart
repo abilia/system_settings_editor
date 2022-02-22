@@ -7,11 +7,9 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'scroll_position_event.dart';
 part 'scroll_position_state.dart';
 
-class ScrollPositionBloc
-    extends Bloc<ScrollPositionEvent, ScrollPositionState> {
+class ScrollPositionBloc extends Cubit<ScrollPositionState> {
   final double nowMarginTop;
   final double nowMarginBottom;
 
@@ -30,47 +28,64 @@ class ScrollPositionBloc
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
     dayPickerBlocSubscription = dayPickerBloc.stream
         .where((state) => !state.isToday)
-        .listen((_) => add(const WrongDaySelected()));
+        .listen((_) => wrongDaySelected());
     clockBlocSubscription =
-        clockBloc.stream.listen((now) => add(const ScrollPositionUpdated()));
+        clockBloc.stream.listen((now) => scrollPositionUpdated());
   }
 
-  @override
-  Stream<ScrollPositionState> mapEventToState(
-    ScrollPositionEvent event,
-  ) async* {
+  Future<void> goToNow() async {
     final s = state;
-    if (event is GoToNow && s is OutOfView) {
-      await _jumpToActivity(s);
-      yield* _isActivityInView(
-        s.scrollController,
-        s.scrollControllerCreatedTime,
+    await _jumpToActivity(s);
+    if (s is OutOfView) {
+      emit(
+        _isActivityInView(
+          s.scrollController,
+          s.scrollControllerCreatedTime,
+        ),
       );
-    } else if (event is GoToNow) {
-      await _jumpToActivity(s);
-      yield Unready();
-    } else if (!dayPickerBloc.state.isToday) {
-      yield WrongDay();
-    } else if (event is ScrollViewRenderComplete) {
-      yield* _isActivityInView(
-        event.scrollController,
-        event.createdTime,
-      );
-    } else if (event is ScrollPositionUpdated &&
-        s is ScrollPositionReadyState) {
-      yield* _isActivityInView(
-        s.scrollController,
-        s.scrollControllerCreatedTime,
+    } else {
+      emit(Unready());
+    }
+  }
+
+  bool wrongDaySelected() {
+    if (!dayPickerBloc.state.isToday) {
+      emit(WrongDay());
+      return true;
+    }
+    return false;
+  }
+
+  void scrollViewRenderComplete(
+    final ScrollController scrollController, {
+    final DateTime? createdTime,
+  }) {
+    if (!wrongDaySelected()) {
+      emit(
+        _isActivityInView(
+          scrollController,
+          createdTime,
+        ),
       );
     }
   }
 
-  Stream<ScrollPositionState> _isActivityInView(
-      ScrollController scrollController,
-      DateTime? scrollControllerCreatedTime) async* {
+  void scrollPositionUpdated() {
+    final s = state;
+    if (!wrongDaySelected() && s is ScrollPositionReadyState) {
+      emit(
+        _isActivityInView(
+          s.scrollController,
+          s.scrollControllerCreatedTime,
+        ),
+      );
+    }
+  }
+
+  ScrollPositionState _isActivityInView(ScrollController scrollController,
+      DateTime? scrollControllerCreatedTime) {
     if (!scrollController.hasClients) {
-      yield Unready();
-      return;
+      return Unready();
     }
     final scrollPosition = scrollController.offset;
     final maxScrollExtent = scrollController.position.maxScrollExtent;
@@ -82,7 +97,7 @@ class ScrollPositionBloc
       maxScrollExtent: maxScrollExtent,
       nowPosition: nowPosition,
     )) {
-      yield InView(
+      return InView(
         scrollController,
         scrollControllerCreatedTime,
       );
@@ -90,12 +105,12 @@ class ScrollPositionBloc
       scrollPosition: scrollPosition,
       nowPosition: nowPosition,
     )) {
-      yield InView(
+      return InView(
         scrollController,
         scrollControllerCreatedTime,
       );
     } else {
-      yield OutOfView(
+      return OutOfView(
         scrollController,
         scrollControllerCreatedTime,
       );

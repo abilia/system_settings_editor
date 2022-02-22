@@ -50,11 +50,12 @@ void main() {
       () async {
     // Arrange
     when(() => mockScrollController.hasClients).thenReturn(false);
+    final expect = expectLater(scrollPositionBloc.stream, emits(Unready()));
     // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
 
     // Assert
-    await expectLater(scrollPositionBloc.stream, emits(Unready()));
+    await expect;
   });
 
   test('InView', () async {
@@ -62,15 +63,16 @@ void main() {
     when(() => mockScrollController.offset).thenReturn(0);
     when(() => mockScrollController.initialScrollOffset).thenReturn(0);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
-
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
+
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test('OutOfView', () async {
@@ -78,15 +80,16 @@ void main() {
     when(() => mockScrollController.offset).thenReturn(600);
     when(() => mockScrollController.initialScrollOffset).thenReturn(200);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(800);
-
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
+
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test('Just InView top', () async {
@@ -96,14 +99,15 @@ void main() {
         .thenReturn(init - scrollPositionBloc.nowMarginBottom);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test('Just InView bottom', () async {
@@ -113,14 +117,15 @@ void main() {
         .thenReturn(init + scrollPositionBloc.nowMarginTop);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test('Just OutView top', () async {
@@ -130,14 +135,15 @@ void main() {
         .thenReturn(init - scrollPositionBloc.nowMarginBottom - 1);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test('Just OutOfView bottom', () async {
@@ -147,14 +153,15 @@ void main() {
         .thenReturn(init + scrollPositionBloc.nowMarginTop + 1);
     when(() => mockScrollController.initialScrollOffset).thenReturn(init);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(init * 4);
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
+    // Act
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+
+    // Assert
+    await expect;
   });
 
   test(
@@ -167,26 +174,28 @@ void main() {
           .thenReturn(activityAt);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
-      // Act
-      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-      // Assert
-      await expectLater(
+      final expect = expectLater(
         scrollPositionBloc.stream,
         emits(InView(mockScrollController)),
       );
-
       // Act
-      for (var i = activityAt; i < max; i++) {
-        when(() => mockScrollController.offset).thenReturn(i);
-        scrollPositionBloc.add(const ScrollPositionUpdated());
-      }
+      scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
 
       // Assert
-      await expectLater(
+      await expect;
+
+      final expect2 = expectLater(
         scrollPositionBloc.stream,
         emits(OutOfView(mockScrollController)),
       );
+      // Act
+      for (var i = activityAt; i < max; i++) {
+        when(() => mockScrollController.offset).thenReturn(i);
+        scrollPositionBloc.scrollPositionUpdated();
+      }
+
+      // Assert
+      await expect2;
     },
   );
 
@@ -197,26 +206,28 @@ void main() {
     when(() => mockScrollController.initialScrollOffset).thenReturn(activityAt);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(max);
 
-    // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-
-    // Assert
-    await expectLater(
+    final expect = expectLater(
       scrollPositionBloc.stream,
       emits(InView(mockScrollController)),
     );
-
     // Act
-    for (var i = activityAt; i > 0; i--) {
-      when(() => mockScrollController.offset).thenReturn(i);
-      scrollPositionBloc.add(const ScrollPositionUpdated());
-    }
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
 
     // Assert
-    await expectLater(
+    await expect;
+
+    final expect2 = expectLater(
       scrollPositionBloc.stream,
       emits(OutOfView(mockScrollController)),
     );
+    // Act
+    for (var i = activityAt; i > 0; i--) {
+      when(() => mockScrollController.offset).thenReturn(i);
+      scrollPositionBloc.scrollPositionUpdated();
+    }
+
+    // Assert
+    await expect2;
   });
 
   test('Scrolls back', () async {
@@ -226,14 +237,17 @@ void main() {
         .thenReturn(initialOffset);
     when(() => mockScrollController.offset).thenReturn(200);
     when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
+    final expect = untilCalled(() => mockScrollController.animateTo(
+        initialOffset,
+        duration: any(named: 'duration'),
+        curve: any(named: 'curve')));
 
     // Act
-    scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController));
-    scrollPositionBloc.add(const GoToNow());
+    scrollPositionBloc.scrollViewRenderComplete(mockScrollController);
+    scrollPositionBloc.goToNow();
 
     // Assert
-    await untilCalled(() => mockScrollController.animateTo(initialOffset,
-        duration: any(named: 'duration'), curve: any(named: 'curve')));
+    await expect;
   });
 
   group('go to now follows now', () {
@@ -242,17 +256,17 @@ void main() {
       when(() => mockScrollController.offset).thenReturn(0);
       when(() => mockScrollController.initialScrollOffset).thenReturn(0);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
-
-      // Act
-      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
-          createdTime: initialTime));
-      // ticker.add(createdTime.add(1.minutes()));
-
-      // Assert
-      await expectLater(
+      final expect = expectLater(
         scrollPositionBloc.stream,
         emits(InView(mockScrollController, initialTime)),
       );
+
+      // Act
+      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime);
+
+      // Assert
+      await expect;
     });
 
     test('after one hour', () async {
@@ -268,10 +282,11 @@ void main() {
           OutOfView(mockScrollController, initialTime),
         ]),
       );
+
       // Act
-      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
-          createdTime: initialTime));
-      await scrollPositionBloc.stream.any((element) => true);
+      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime);
+
       ticker.add(initialTime.add(1.hours()).add(5.minutes()));
 
       // Assert
@@ -293,29 +308,32 @@ void main() {
         ts.dotDistance,
       );
       final nowPos = initialOffset + timePixelOffset;
-
-      // Act
-      scrollPositionBloc.add(ScrollViewRenderComplete(mockScrollController,
-          createdTime: initialTime));
-      // Assert
-      await expectLater(
+      final expect1 = expectLater(
         scrollPositionBloc.stream,
         emits(InView(mockScrollController, initialTime)),
       );
 
       // Act
-      ticker.add(initialTime.add(1.hours() + 30.minutes()));
+      scrollPositionBloc.scrollViewRenderComplete(mockScrollController,
+          createdTime: initialTime);
       // Assert
-      await expectLater(
+      await expect1;
+
+      final expect2 = expectLater(
         scrollPositionBloc.stream,
         emits(OutOfView(mockScrollController, initialTime)),
       );
-
       // Act
-      scrollPositionBloc.add(const GoToNow());
+      ticker.add(initialTime.add(1.hours() + 30.minutes()));
       // Assert
-      await untilCalled(() => mockScrollController.animateTo(nowPos,
+      await expect2;
+
+      final expect3 = untilCalled(() => mockScrollController.animateTo(nowPos,
           duration: any(named: 'duration'), curve: any(named: 'curve')));
+      // Act
+      scrollPositionBloc.goToNow();
+      // Assert
+      await expect3;
     });
   });
 }

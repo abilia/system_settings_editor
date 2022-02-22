@@ -8,7 +8,7 @@ mixin CalendarStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   bool onScrollNotification(_) {
-    context.read<ScrollPositionBloc>().add(const ScrollPositionUpdated());
+    context.read<ScrollPositionBloc>().scrollPositionUpdated();
     return false;
   }
 }
