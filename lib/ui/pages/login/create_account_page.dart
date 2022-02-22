@@ -25,6 +25,7 @@ class CreateAccountPage extends StatelessWidget {
             listener: (context, state) async {
               await showViewDialog(
                 context: context,
+                wrapWithAuthProviders: false,
                 builder: (context) => ViewDialog(
                   heading: AppBarHeading(
                     text: t.accountCreatedHeading,
