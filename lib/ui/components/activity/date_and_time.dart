@@ -243,7 +243,7 @@ class TimePicker extends StatelessWidget {
         PickField(
           semanticsLabel: text,
           onTap: onTap,
-          heigth: 56.s,
+          height: 56.s,
           errorState: errorState,
           leading: const Icon(AbiliaIcons.clock),
           text: Text(time),

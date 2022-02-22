@@ -75,13 +75,13 @@ class PickField extends StatelessWidget {
   final GestureTapCallback? onTap;
   final Widget? leading, trailing;
   final Text text;
-  final double? heigth;
+  final double? height;
   final EdgeInsets? padding;
   final bool errorState;
   final String? semanticsLabel;
   final Text? secondaryText;
   final TextStyle? secondaryStyle;
-  static final defaultHeigth = 56.s;
+  static final defaultHeight = 56.s;
 
   const PickField({
     required this.text,
@@ -89,7 +89,7 @@ class PickField extends StatelessWidget {
     this.leading,
     this.trailing,
     this.onTap,
-    this.heigth,
+    this.height,
     this.errorState = false,
     this.semanticsLabel,
     this.padding,
@@ -111,13 +111,13 @@ class PickField extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Ink(
-            height: heigth ?? defaultHeigth,
+            height: height ?? defaultHeight,
             decoration: errorState
                 ? whiteErrorBoxDecoration
                 : onTap == null
                     ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: padding ?? EdgeInsets.all(12.s),
+            padding: padding ?? EdgeInsets.only(left: 12.s, right: 12.s),
             child: Row(
               children: <Widget>[
                 if (l != null)
