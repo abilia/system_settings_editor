@@ -2077,6 +2077,37 @@ text''';
       // Assert at Recurrence Tab
       expect(find.byType(RecurrenceTab), findsOneWidget);
     });
+
+    testWidgets('"only this day" when changing end time (Bug SGC-1423)',
+        (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        createEditActivityPage(
+          givenActivity: Activity.createNew(
+              title: 'null',
+              startTime: startTime,
+              duration: const Duration(minutes: 15),
+              recurs: Recurs.weeklyOnDay(1),
+              alarmType: alarmSoundOnlyOnStart),
+          use24H: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Act -- Change end time
+      await tester.tap(find.byType(TimeIntervallPicker));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(TestKey.endTimeInput), '1700');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SaveButton));
+      await tester.pumpAndSettle();
+
+      // Assert correct options
+      expect(find.byKey(TestKey.thisDayAndForward), findsOneWidget);
+      expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
+    });
   });
 
   group('Memoplanner settings', () {
