@@ -115,9 +115,9 @@ class CreateAccountPage extends StatelessWidget {
                     value: state.termsOfUse,
                     url: t.termsOfUseUrl,
                     errorState: state.termsOfUseFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountCubit>()
-                            .termsOfUseAccepted(v),
+                    onChanged: (v) => context
+                        .read<CreateAccountCubit>()
+                        .termsOfUseAccepted(v),
                   ),
                   SizedBox(height: 4.s),
                   AcceptTermsSwitch(
@@ -126,9 +126,9 @@ class CreateAccountPage extends StatelessWidget {
                     value: state.privacyPolicy,
                     url: t.privacyPolicyUrl,
                     errorState: state.privacyPolicyFailure,
-                    onChanged: (v) =>
-                        context.read<CreateAccountCubit>()
-                            .privacyPolicyAccepted(v),
+                    onChanged: (v) => context
+                        .read<CreateAccountCubit>()
+                        .privacyPolicyAccepted(v),
                   ),
                 ],
               ),
