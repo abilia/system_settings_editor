@@ -71,11 +71,12 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             final settingsState = context.read<MemoplannerSettingBloc>().state;
             if (settingsState is! MemoplannerSettingsNotLoaded) {
               await scheduleAlarmNotificationsIsolated(
-                activitiesState.activities,
-                Localizations.localeOf(context).toLanguageTag(),
-                MediaQuery.of(context).alwaysUse24HourFormat,
-                settingsState.alarm,
-                GetIt.I<FileStorage>(),
+                activities: activitiesState.activities,
+                timers: [],
+                language: Localizations.localeOf(context).toLanguageTag(),
+                alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+                settings: settingsState.alarm,
+                fileStorage: GetIt.I<FileStorage>(),
               );
             }
           },
@@ -89,11 +90,12 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             final activitiesState = context.read<ActivitiesBloc>().state;
             if (activitiesState is ActivitiesLoaded) {
               await scheduleAlarmNotificationsIsolated(
-                activitiesState.activities,
-                Localizations.localeOf(context).toLanguageTag(),
-                MediaQuery.of(context).alwaysUse24HourFormat,
-                state.alarm,
-                GetIt.I<FileStorage>(),
+                activities:activitiesState.activities,
+                timers:[],
+                language:Localizations.localeOf(context).toLanguageTag(),
+                alwaysUse24HourFormat:MediaQuery.of(context).alwaysUse24HourFormat,
+                settings:state.alarm,
+                fileStorage:GetIt.I<FileStorage>(),
               );
             }
           },

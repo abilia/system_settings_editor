@@ -93,11 +93,12 @@ void main() {
 
   test('scheduleAlarmNotificationsIsolated', () async {
     await scheduleAlarmNotificationsIsolated(
-      allActivities,
-      'en',
-      true,
-      const AlarmSettings(),
-      mockedFileStorage,
+      activities: allActivities,
+      timers: [],
+      language: 'en',
+      alwaysUse24HourFormat: true,
+      settings: const AlarmSettings(),
+      fileStorage: mockedFileStorage,
       now: () => now,
     );
     verify(() => mockedNotificationsPlugin.cancelAll());
@@ -112,6 +113,7 @@ void main() {
   test('scheduleAlarmNotifications', () async {
     await scheduleAlarmNotifications(
       allActivities,
+      [], // TODO timers
       'en',
       true,
       const AlarmSettings(),
@@ -130,6 +132,7 @@ void main() {
   test('scheduleAlarmNotifications disabled until tomorrow', () async {
     await scheduleAlarmNotifications(
       allActivities,
+      [], // TODO timers
       'en',
       true,
       AlarmSettings(
@@ -151,6 +154,7 @@ void main() {
   test('scheduleAlarmNotifications with image', () async {
     await scheduleAlarmNotifications(
       allActivities.take(2),
+      [], // TODO timers
       'en',
       true,
       const AlarmSettings(),

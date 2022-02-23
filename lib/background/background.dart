@@ -76,6 +76,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     await scheduleAlarmNotifications(
       activities,
+      [], // TODO add timers
       settingsDb.language,
       settingsDb.alwaysUse24HourFormat,
       settings.alarm,

@@ -43,7 +43,8 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
 }
 
 Future scheduleAlarmNotifications(
-  Iterable<Activity> allActivities,
+  Iterable<Activity> activities,
+  Iterable<AbiliaTimer> timers,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
@@ -54,7 +55,11 @@ Future scheduleAlarmNotifications(
   final from = settings.disabledUntilDate.isAfter(now())
       ? settings.disabledUntilDate
       : now().nextMinute();
-  final shouldBeScheduledNotifications = allActivities.alarmsFrom(from);
+  final shouldBeScheduledNotifications = activities.alarmsFrom(
+    from,
+    take: 50,
+    maxDays: 60,
+  );
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
@@ -74,12 +79,13 @@ Future cancelNotifications(
 }
 
 // ignore: prefer_function_declarations_over_variables
-late AlarmScheduler scheduleAlarmNotificationsIsolated = (
-  Iterable<Activity> allActivities,
-  String language,
-  bool alwaysUse24HourFormat,
-  AlarmSettings settings,
-  FileStorage fileStorage, {
+late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
+  required Iterable<Activity> activities,
+  required Iterable<AbiliaTimer> timers,
+  required String language,
+  required bool alwaysUse24HourFormat,
+  required AlarmSettings settings,
+  required FileStorage fileStorage,
   DateTime Function()? now,
 }) async {
   now ??= () => DateTime.now();
@@ -87,7 +93,7 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = (
       ? settings.disabledUntilDate
       : now().nextMinute();
   final serialized =
-      allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
+      activities.map((e) => e.wrapWithDbModel().toJson()).toList();
   final shouldBeScheduledNotificationsSerialized =
       await compute(alarmsFromIsolate, [serialized, from]);
   final shouldBeScheduledNotifications =
@@ -105,9 +111,10 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = (
 
 @visibleForTesting
 List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
-  final serialized = args[0];
-  final List<Activity> allActivities =
-      serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
+  final activitiesSerialized = args[0];
+  final List<Activity> allActivities = activitiesSerialized
+      .map<Activity>((e) => DbActivity.fromJson(e).activity)
+      .toList();
   final now = args[1] as DateTime;
   final notificationAlarms = allActivities.alarmsFrom(now);
   return notificationAlarms.map((e) => e.toJson()).toList();
