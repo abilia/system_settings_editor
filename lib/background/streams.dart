@@ -8,16 +8,16 @@ final _log = Logger('streams');
 
 // Stream is created so that app can respond to notification-selected events
 // since the plugin is initialised in the main function
-ReplaySubject<NotificationAlarm> get selectNotificationSubject =>
+ReplaySubject<ActivityAlarm> get selectNotificationSubject =>
     _selectNotificationSubject;
-ReplaySubject<NotificationAlarm> _selectNotificationSubject =
-    ReplaySubject<NotificationAlarm>();
+ReplaySubject<ActivityAlarm> _selectNotificationSubject =
+    ReplaySubject<ActivityAlarm>();
 
 void onNotification(String? payload) async {
   if (payload != null) {
     _log.fine('notification payload: ' + payload);
     try {
-      selectNotificationSubject.add(NotificationAlarm.decode(payload));
+      selectNotificationSubject.add(ActivityAlarm.decode(payload));
     } catch (e) {
       _log.severe('Failed to parse selected notification payload: $payload', e);
     }
@@ -26,5 +26,5 @@ void onNotification(String? payload) async {
 
 Future<void> clearNotificationSubject() async {
   await _selectNotificationSubject.close();
-  _selectNotificationSubject = ReplaySubject<NotificationAlarm>();
+  _selectNotificationSubject = ReplaySubject<ActivityAlarm>();
 }

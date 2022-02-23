@@ -124,7 +124,7 @@ void main() {
             ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
-                selectedNotificationSubject: ReplaySubject<NotificationAlarm>(),
+                selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
                 activitiesBloc: mockActivitiesBloc,
                 clockBloc: clockBloc,
               ),

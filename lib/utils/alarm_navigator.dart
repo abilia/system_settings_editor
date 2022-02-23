@@ -10,7 +10,7 @@ class AlarmNavigator {
   static final log = Logger((AlarmNavigator).toString());
 
   Route getFullscreenAlarmRoute({
-    required NotificationAlarm alarm,
+    required ActivityAlarm alarm,
     required Authenticated authenticatedState,
   }) {
     log.fine('pushFullscreenAlarm: $alarm');
@@ -26,7 +26,7 @@ class AlarmNavigator {
 
   Future pushAlarm(
     BuildContext context,
-    NotificationAlarm alarm,
+    ActivityAlarm alarm,
   ) async {
     final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
@@ -54,7 +54,7 @@ class AlarmNavigator {
     return navigator.push(route);
   }
 
-  Widget _alarmPage(NotificationAlarm alarm) => PopAwareAlarmPage(
+  Widget _alarmPage(ActivityAlarm alarm) => PopAwareAlarmPage(
         alarm: alarm,
         alarmNavigator: this,
         child: (alarm is NewAlarm)
@@ -64,7 +64,7 @@ class AlarmNavigator {
                 : throw UnsupportedError('$alarm not supported'),
       );
 
-  MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {
+  MaterialPageRoute? removedFromRoutes(ActivityAlarm alarm) {
     log.info('removedFromRoutes: $alarm');
     return _alarmRoutesOnStack.remove(alarm.stackId);
   }

@@ -71,7 +71,7 @@ Future scheduleAlarmNotifications(
 }
 
 Future cancelNotifications(
-    Iterable<NotificationAlarm> notificationAlarms) async {
+    Iterable<ActivityAlarm> notificationAlarms) async {
   for (final notification in notificationAlarms) {
     _log.fine('canceling ${notification.hashCode} $notification');
     await notificationPlugin.cancel(notification.hashCode);
@@ -98,7 +98,7 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
       await compute(alarmsFromIsolate, [serialized, from]);
   final shouldBeScheduledNotifications =
       shouldBeScheduledNotificationsSerialized
-          .map((e) => NotificationAlarm.fromJson(e));
+          .map((e) => ActivityAlarm.fromJson(e));
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
@@ -123,7 +123,7 @@ List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
 final _lock = Lock();
 
 Future _scheduleAllAlarmNotifications(
-  Iterable<NotificationAlarm> notifications,
+  Iterable<ActivityAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
@@ -157,7 +157,7 @@ Future _scheduleAllAlarmNotifications(
     );
 
 Future<bool> _scheduleNotification(
-  NotificationAlarm notificationAlarm,
+  ActivityAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
@@ -221,7 +221,7 @@ Future<bool> _scheduleNotification(
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(
-  NotificationAlarm notificationAlarm,
+  ActivityAlarm notificationAlarm,
   FileStorage fileStorage,
   Duration alarmDuration,
   AlarmSettings settings,
@@ -247,7 +247,7 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
 }
 
 Future<AndroidNotificationDetails> _androidNotificationDetails(
-  NotificationAlarm notificationAlarm,
+  ActivityAlarm notificationAlarm,
   FileStorage fileStorage,
   String title,
   String subtitle,
@@ -280,9 +280,9 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     timeoutAfter: settings.durationMs,
     startActivityClassName:
         'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
-    largeIcon: await _androidLargeIcon(activity, fileStorage),
+    largeIcon: await _androidLargeIcon(activity.fileId, fileStorage),
     styleInformation: await _androidStyleInformation(
-      activity,
+      activity.fileId,
       fileStorage,
       title,
       subtitle,
@@ -309,7 +309,7 @@ class NotificationChannel {
 }
 
 String _subtitle(
-  NotificationAlarm notificationAlarm,
+  ActivityAlarm notificationAlarm,
   String language,
   bool alwaysUse24HourFormat,
 ) {
@@ -326,7 +326,7 @@ String _subtitle(
   return tf(ad.start) + endTime + extra;
 }
 
-String _extra(NotificationAlarm notificationAlarm, Translated translater) {
+String _extra(ActivityAlarm notificationAlarm, Translated translater) {
   if (notificationAlarm is StartAlarm) return translater.startsNow;
   if (notificationAlarm is EndAlarm) return translater.endsNow;
   if (notificationAlarm is NewReminder) {
@@ -355,13 +355,13 @@ Future<List<IOSNotificationAttachment>> _iOSNotificationAttachment(
 }
 
 Future<StyleInformation?> _androidStyleInformation(
-  Activity activity,
+  String fileId,
   FileStorage fileStorage,
   String title,
   String subtitle,
 ) async {
-  if (activity.hasImage) {
-    final bigPicture = fileStorage.getFile(activity.fileId);
+  if (fileId.isNotEmpty) {
+    final bigPicture = fileStorage.getFile(fileId);
     if (await fileStorage.exists(bigPicture)) {
       return BigPictureStyleInformation(
         FilePathAndroidBitmap(bigPicture.path),
@@ -374,12 +374,11 @@ Future<StyleInformation?> _androidStyleInformation(
 }
 
 Future<AndroidBitmap<Object>?> _androidLargeIcon(
-  Activity activity,
+  String fileId,
   FileStorage fileStorage,
 ) async {
-  if (activity.hasImage) {
-    final largeIcon =
-        fileStorage.getImageThumb(ImageThumb(id: activity.fileId));
+  if (fileId.isNotEmpty) {
+    final largeIcon = fileStorage.getImageThumb(ImageThumb(id: fileId));
     if (await fileStorage.exists(largeIcon)) {
       return FilePathAndroidBitmap(largeIcon.path);
     }

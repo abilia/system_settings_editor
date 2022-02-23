@@ -9,7 +9,7 @@ import 'package:seagull/utils/all.dart';
 class TopLevelListener extends StatelessWidget {
   final Widget child;
   final GlobalKey<NavigatorState> navigatorKey;
-  final NotificationAlarm? payload;
+  final ActivityAlarm? payload;
 
   const TopLevelListener({
     Key? key,

@@ -109,7 +109,7 @@ class ReminderPage extends StatelessWidget {
 class PopAwareAlarmPage extends StatelessWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
-  final NotificationAlarm alarm;
+  final ActivityAlarm alarm;
 
   const PopAwareAlarmPage({
     required this.alarm,
@@ -136,7 +136,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
     required this.alarm,
   }) : super(key: key);
 
-  final NotificationAlarm alarm;
+  final ActivityAlarm alarm;
 
   @override
   Widget build(BuildContext context) {

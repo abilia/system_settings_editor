@@ -112,7 +112,7 @@ class FakeDayEventsCubit extends Fake implements DayEventsCubit {
 
 class FakeAlarmCubit extends Fake implements AlarmCubit {
   @override
-  Stream<NotificationAlarm?> get stream => const Stream.empty();
+  Stream<ActivityAlarm?> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }

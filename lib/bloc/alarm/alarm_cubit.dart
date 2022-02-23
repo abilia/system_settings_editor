@@ -5,13 +5,13 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class AlarmCubit extends Cubit<NotificationAlarm?> {
+class AlarmCubit extends Cubit<ActivityAlarm?> {
   late final StreamSubscription _clockSubscription;
   late final StreamSubscription _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
 
   AlarmCubit({
-    required ReplaySubject<NotificationAlarm> selectedNotificationSubject,
+    required ReplaySubject<ActivityAlarm> selectedNotificationSubject,
     required this.activitiesBloc,
     required ClockBloc clockBloc,
   }) : super(null) {

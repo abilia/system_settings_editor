@@ -87,7 +87,7 @@ void main() {
         await compute(alarmsFromIsolate, [serialized, now]);
     final shouldBeScheduledNotifications =
         shouldBeScheduledNotificationsSerialized
-            .map((e) => NotificationAlarm.fromJson(e));
+            .map((e) => ActivityAlarm.fromJson(e));
     expect(shouldBeScheduledNotifications, hasLength(11));
   });
 

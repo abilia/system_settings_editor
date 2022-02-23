@@ -18,7 +18,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   final NewAlarm alarm;
   final SoundCubit soundCubit;
 
-  late final StreamSubscription<NotificationAlarm?> _notificationSubscription;
+  late final StreamSubscription<ActivityAlarm?> _notificationSubscription;
   late final StreamSubscription<SoundState> _speechSubscription;
   late final StreamSubscription _delayedSubscription;
 
@@ -26,7 +26,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required this.alarm,
     required this.soundCubit,
     required AlarmSettings alarmSettings,
-    required Stream<NotificationAlarm> selectedNotificationStream,
+    required Stream<ActivityAlarm> selectedNotificationStream,
   }) : super(const AlarmSpeechUnplayed()) {
     _log.fine('$alarm');
     final speechDelay = _alarmDuration(alarmSettings);
@@ -50,7 +50,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     _log.fine('maybePlay $parameter');
     if (state is AlarmSpeechUnplayed) {
       final playNow =
-          parameter is! NotificationAlarm || !await _notificationActive();
+          parameter is! ActivityAlarm || !await _notificationActive();
       if (playNow) {
         _log.fine('playing AlarmSpeech');
         emit(const AlarmSpeechPlayed());

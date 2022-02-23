@@ -43,7 +43,7 @@ void main() {
       alarmCubit = AlarmCubit(
         clockBloc: clockBloc,
         activitiesBloc: activitiesBloc,
-        selectedNotificationSubject: ReplaySubject<NotificationAlarm>(),
+        selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
       );
     });
 
@@ -318,13 +318,13 @@ void main() {
   group('when notification arrives', () {
     final aTime = DateTime(1999, 12, 20, 20, 12);
     final aDay = aTime.onlyDays();
-    late ReplaySubject<NotificationAlarm> notificationSelected;
+    late ReplaySubject<ActivityAlarm> notificationSelected;
     late AlarmCubit notificationBloc;
     const localTimezoneName = 'aTimeZone';
 
     setUp(() {
       setLocalLocation(Location(localTimezoneName, [], [], []));
-      notificationSelected = ReplaySubject<NotificationAlarm>();
+      notificationSelected = ReplaySubject<ActivityAlarm>();
 
       notificationBloc = AlarmCubit(
         activitiesBloc: ActivitiesBloc(

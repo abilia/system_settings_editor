@@ -16,7 +16,7 @@ void main() {
         ),
         day);
     final asJson = original.toJson();
-    final back = NotificationAlarm.fromJson(asJson);
+    final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('EndAlarm toJson and back', () {
@@ -24,7 +24,7 @@ void main() {
         Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
         day);
     final asJson = original.toJson();
-    final back = NotificationAlarm.fromJson(asJson);
+    final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('ReminderBefore toJson and back', () {
@@ -33,7 +33,7 @@ void main() {
         day,
         reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
-    final back = NotificationAlarm.fromJson(asJson);
+    final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('ReminderUnchecked toJson and back', () {
@@ -42,7 +42,7 @@ void main() {
         day,
         reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
-    final back = NotificationAlarm.fromJson(asJson);
+    final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
 
@@ -57,27 +57,27 @@ void main() {
       final alarm = StartAlarm(activity, day);
       final asJson = alarm.encode();
 
-      final alarmAgain = NotificationAlarm.decode(asJson);
+      final alarmAgain = ActivityAlarm.decode(asJson);
       expect(alarmAgain, alarm);
     });
     test('EndAlarm toPayload and back', () {
       final alarm = EndAlarm(activity, day);
       final asJson = alarm.encode();
 
-      final alarmAgain = NotificationAlarm.decode(asJson);
+      final alarmAgain = ActivityAlarm.decode(asJson);
       expect(alarmAgain, alarm);
     });
     test('ReminderBefore toPayload and back', () {
       final alarm = ReminderBefore(activity, day, reminder: 15.minutes());
       final asJson = alarm.encode();
 
-      final reminderAgain = NotificationAlarm.decode(asJson);
+      final reminderAgain = ActivityAlarm.decode(asJson);
       expect(reminderAgain, alarm);
     });
     test('ReminderUnchecked toPayload and back', () {
       final alarm = ReminderUnchecked(activity, day, reminder: 15.minutes());
       final asJson = alarm.encode();
-      final reminderAgain = NotificationAlarm.decode(asJson);
+      final reminderAgain = ActivityAlarm.decode(asJson);
       expect(reminderAgain, alarm);
     });
   });

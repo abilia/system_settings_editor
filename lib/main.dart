@@ -73,7 +73,7 @@ Future<void> initServices() async {
     ..init();
 }
 
-Future<NotificationAlarm?> getOrAddPayloadToStream() async {
+Future<ActivityAlarm?> getOrAddPayloadToStream() async {
   final notificationAppLaunchDetails =
       await notificationPlugin.getNotificationAppLaunchDetails();
   try {
@@ -83,7 +83,7 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
       if (payload != null) {
         if (Platform.isAndroid) {
           _log.info('on android, parsing payload for fullscreen alarm');
-          return NotificationAlarm.decode(payload);
+          return ActivityAlarm.decode(payload);
         } else {
           _log.info('on ios, adding payload to selectNotificationSubject');
           onNotification(payload);
@@ -102,7 +102,7 @@ bool get shouldRunStartGuide =>
 
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
-  final NotificationAlarm? payload;
+  final ActivityAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
   final bool runStartGuide;
 
