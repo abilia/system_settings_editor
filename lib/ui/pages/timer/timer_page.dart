@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -14,33 +15,30 @@ class TimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DayAppBar(day: day),
-      body: Padding(
-          padding: layout.timerPage.bodyPadding,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: borderRadius,
-            ),
-            constraints: const BoxConstraints.expand(),
-            child: Column(
-              children: <Widget>[
-                _TopInfo(timer: timer),
-                Divider(
-                  height: layout.activityPage.dividerHeight,
-                  endIndent: 0,
-                  indent: layout.activityPage.dividerIndentation,
+    return BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion?>(
+      selector: (timerState) => timerState.timers.firstWhereOrNull(
+          (timerOccasion) => timerOccasion.timer.id == timer.id),
+      builder: (context, timerOccasion) {
+        return Scaffold(
+          appBar: DayAppBar(day: day),
+          body: Padding(
+              padding: layout.timerPage.bodyPadding,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: borderRadius,
                 ),
-                Expanded(
-                  child: BlocSelector<TimerAlarmBloc, TimerAlarmState,
-                      TimerOccasion?>(
-                    selector: (timerState) => timerState.timers.isNotEmpty
-                        ? timerState.timers.firstWhere((timerOccasion) =>
-                            timerOccasion.timer.id == timer.id)
-                        : null,
-                    builder: (context, timerOccasion) {
-                      return Padding(
+                constraints: const BoxConstraints.expand(),
+                child: Column(
+                  children: <Widget>[
+                    _TopInfo(timer: timer),
+                    Divider(
+                      height: layout.activityPage.dividerHeight,
+                      endIndent: 0,
+                      indent: layout.activityPage.dividerIndentation,
+                    ),
+                    Expanded(
+                      child: Padding(
                         padding:
                             EdgeInsets.all(layout.timerPage.mainContentPadding),
                         child: timerOccasion != null && timerOccasion.isOngoing
@@ -54,17 +52,20 @@ class TimerPage extends StatelessWidget {
                                 ),
                               )
                             : TimerWheel.nonInteractive(
-                                secondsLeft: 0,
+                                secondsLeft: timerOccasion != null
+                                    ? timerOccasion.timer.pausedAt.inSeconds
+                                    : 0,
                                 lengthInMinutes: timer.duration.inMinutes,
                               ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
-      bottomNavigationBar: _TimerBottomBar(timer: timer),
+              )),
+          bottomNavigationBar:
+              _TimerBottomBar(timer: timerOccasion?.timer ?? timer),
+        );
+      },
     );
   }
 }
@@ -130,8 +131,17 @@ class _TimerBottomBar extends StatelessWidget {
         child: Row(
           children: <Widget>[
             IconActionButtonLight(
-              onPressed: () {}, // TODO: add pause/play functionality
-              child: const Icon(AbiliaIcons.pause),
+              onPressed: () async {
+                timer.paused
+                    ? await context
+                        .read<TimerCubit>()
+                        .startTimer(timer, DateTime.now())
+                    : await context
+                        .read<TimerCubit>()
+                        .pauseTimer(timer, DateTime.now());
+              },
+              child: Icon(
+                  timer.paused ? AbiliaIcons.playSound : AbiliaIcons.pause),
             ),
             IconActionButtonLight(
               onPressed: () async {

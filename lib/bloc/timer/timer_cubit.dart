@@ -10,6 +10,7 @@ part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   final TimerDb timerDb;
+
   TimerCubit({required this.timerDb}) : super(TimerState());
 
   Future<void> addTimer(AbiliaTimer timer) async {
@@ -27,5 +28,19 @@ class TimerCubit extends Cubit<TimerState> {
   Future<void> loadTimers() async {
     final timers = await timerDb.getAllTimers();
     emit(TimerState(timers: timers));
+  }
+
+  Future<void> pauseTimer(AbiliaTimer timer, DateTime time) async {
+    AbiliaTimer newTimer =
+        timer.copyWith(paused: true, pausedAt: timer.endTime.difference(time));
+    if (await timerDb.update(newTimer) > 0) loadTimers();
+  }
+
+  Future<void> startTimer(AbiliaTimer timer, DateTime time) async {
+    AbiliaTimer newTimer = timer.copyWith(
+        startTime: time,
+        duration: Duration(milliseconds: timer.pausedAt.inMilliseconds),
+        paused: false);
+    if (await timerDb.update(newTimer) > 0) loadTimers();
   }
 }

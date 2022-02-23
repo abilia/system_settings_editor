@@ -24,6 +24,10 @@ class TimerDb {
         where: 'id = "${timer.id}"',
       );
 
+  Future<int> update(AbiliaTimer timer) =>
+      db.update(DatabaseRepository.timerTableName, timer.toMapForDb(),
+          where: 'id = "${timer.id}"');
+
   Future<Iterable<AbiliaTimer>> getAllTimers() async {
     final result = await db.rawQuery(_getAll);
     return result

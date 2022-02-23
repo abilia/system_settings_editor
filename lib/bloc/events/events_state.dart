@@ -38,13 +38,17 @@ class EventsLoaded extends EventsState {
         super();
 
   List<EventOccasion> pastEvents(DateTime now) => events
-      .where((event) => event.end.isBefore(now))
+      .where((event) =>
+          event.end.isBefore(now) ||
+          (event is AbiliaTimer && !(event as AbiliaTimer).paused))
       .map((e) => e.toOccasion(now))
       .toList()
     ..sort();
 
   List<EventOccasion> notPastEvents(DateTime now) => events
-      .where((event) => event.end.isAtSameMomentOrAfter(now))
+      .where((event) =>
+          event.end.isAtSameMomentOrAfter(now) ||
+          (event is AbiliaTimer && (event as AbiliaTimer).paused))
       .map((e) => e.toOccasion(now))
       .toList()
     ..sort();
