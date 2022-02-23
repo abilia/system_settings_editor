@@ -29,7 +29,6 @@ class FullScreenActivityPage extends StatelessWidget {
             ActivityDay>(
           selector: (state) => state.selected,
           builder: (context, selected) => Scaffold(
-            backgroundColor: Colors.amber,
             appBar: DayAppBar(day: selected.day),
             body: Column(
               children: [
@@ -102,7 +101,8 @@ class FullScreenActivityTabItem extends StatelessWidget {
 
   final ActivityOccasion activityOccasion;
 
-  static const _animationDuration = ActivityInfo.animationDuration;
+  static const _animationDuration = Duration(milliseconds: 200);
+
   @override
   Widget build(BuildContext context) {
     final _layout = layout.ongoingFullscreen.activity;
