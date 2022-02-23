@@ -54,23 +54,28 @@ class AbiliaTimer extends Equatable {
       };
 
   TimerOccasion toOccasion(DateTime now) {
-    if (now.isAfter(endTime) && !paused) {
-      return TimerOccasion(this, Occasion.past);
-    }
+    if (now.isAfter(endTime)) return TimerOccasion(this, Occasion.past);
     return TimerOccasion(this, Occasion.current);
   }
 
-  AbiliaTimer copyWith(
-      {DateTime? startTime,
-      Duration? duration,
-      bool? paused,
-      Duration? pausedAt}) {
+  AbiliaTimer pause(DateTime pauseTime) => AbiliaTimer(
+        id: id,
+        startTime: startTime,
+        duration: duration,
+        paused: true,
+        pausedAt: endTime.difference(pauseTime),
+        title: title,
+        fileId: fileId,
+      );
+
+  AbiliaTimer resume(DateTime resumeTime) {
+    if (!paused) return this;
     return AbiliaTimer(
       id: id,
-      startTime: startTime ?? this.startTime,
-      duration: duration ?? this.duration,
-      paused: paused ?? this.paused,
-      pausedAt: pausedAt ?? this.pausedAt,
+      startTime: resumeTime.subtract(duration - pausedAt),
+      duration: duration,
+      paused: false,
+      pausedAt: Duration.zero,
       title: title,
       fileId: fileId,
     );

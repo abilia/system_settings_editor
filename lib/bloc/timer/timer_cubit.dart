@@ -5,13 +5,18 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 
 part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   final TimerDb timerDb;
+  final Ticker ticker;
 
-  TimerCubit({required this.timerDb}) : super(TimerState());
+  TimerCubit({
+    required this.timerDb,
+    required this.ticker,
+  }) : super(TimerState());
 
   Future<void> addTimer(AbiliaTimer timer) async {
     await timerDb.insert(timer);
@@ -30,17 +35,21 @@ class TimerCubit extends Cubit<TimerState> {
     emit(TimerState(timers: timers));
   }
 
-  Future<void> pauseTimer(AbiliaTimer timer, DateTime time) async {
-    AbiliaTimer newTimer =
-        timer.copyWith(paused: true, pausedAt: timer.endTime.difference(time));
-    if (await timerDb.update(newTimer) > 0) loadTimers();
-  }
+  Future<void> pauseTimer(AbiliaTimer timer) =>
+      _update(timer.pause(ticker.time));
 
-  Future<void> startTimer(AbiliaTimer timer, DateTime time) async {
-    AbiliaTimer newTimer = timer.copyWith(
-        startTime: time,
-        duration: Duration(milliseconds: timer.pausedAt.inMilliseconds),
-        paused: false);
-    if (await timerDb.update(newTimer) > 0) loadTimers();
+  Future<void> startTimer(AbiliaTimer timer) =>
+      _update(timer.resume(ticker.time));
+
+  Future<void> _update(AbiliaTimer timer) async {
+    if (await timerDb.update(timer) > 0) {
+      emit(
+        TimerState(
+          timers: List.of(state.timers)
+            ..removeWhere((t) => t.id == timer.id)
+            ..add(timer),
+        ),
+      );
+    }
   }
 }

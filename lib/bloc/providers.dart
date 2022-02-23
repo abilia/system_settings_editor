@@ -93,6 +93,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<TimerCubit>(
               create: (context) => TimerCubit(
                 timerDb: GetIt.I<TimerDb>(),
+                ticker: GetIt.I<Ticker>(),
               )..loadTimers(),
             ),
             BlocProvider(

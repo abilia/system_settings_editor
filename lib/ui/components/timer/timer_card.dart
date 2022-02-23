@@ -52,7 +52,7 @@ class TimerCard extends StatelessWidget {
                       builder: (context) => MultiBlocProvider(
                         providers: authProviders,
                         child: TimerPage(
-                          timer: timerOccasion.timer,
+                          timerOccasion: timerOccasion,
                           day: day,
                         ),
                       ),
