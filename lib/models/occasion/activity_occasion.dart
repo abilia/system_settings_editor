@@ -31,10 +31,6 @@ class ActivityDay extends Event {
       activity.checkable &&
       activity.signedOffDates.contains(whaleDateFormat(day));
 
-  @override
-  AbiliaFile get image =>
-      AbiliaFile.from(id: activity.fileId, path: activity.icon);
-
   const ActivityDay(this.activity, this.day) : super();
 
   @override
@@ -50,6 +46,11 @@ class ActivityDay extends Event {
   DateTime get end => activity.endClock(day);
   @override
   int get category => activity.category;
+  @override
+  String get id => activity.id;
+  @override
+  AbiliaFile get image =>
+      AbiliaFile.from(id: activity.fileId, path: activity.icon);
 
   Occasion _occasion(DateTime now) {
     if (activity.fullDay) {

@@ -1,15 +1,16 @@
 import 'package:get_it/get_it.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/notification/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TopLevelListener extends StatelessWidget {
   final Widget child;
   final GlobalKey<NavigatorState> navigatorKey;
-  final ActivityAlarm? payload;
+  final NotificationAlarm? payload;
 
   const TopLevelListener({
     Key? key,

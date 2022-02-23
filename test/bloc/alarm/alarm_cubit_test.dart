@@ -59,7 +59,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        emits(StartAlarm(nowActivity, day)),
+        emits(StartAlarm(ActivityDay(nowActivity, day))),
       );
     });
 
@@ -79,7 +79,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        neverEmits(StartAlarm(nowActivity, day)),
+        neverEmits(StartAlarm(ActivityDay(nowActivity, day))),
       );
     });
 
@@ -97,7 +97,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        neverEmits(StartAlarm(soonActivity, day)),
+        neverEmits(StartAlarm(ActivityDay(soonActivity, day))),
       );
     });
 
@@ -113,7 +113,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        neverEmits(StartAlarm(soonActivity, day)),
+        neverEmits(StartAlarm(ActivityDay(soonActivity, day))),
       );
     });
 
@@ -129,7 +129,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        emits(StartAlarm(soonActivity, day)),
+        emits(StartAlarm(ActivityDay(soonActivity, day))),
       );
     });
 
@@ -146,8 +146,8 @@ void main() {
       final futureExpect = expectLater(
         alarmCubit.stream,
         emitsInAnyOrder([
-          StartAlarm(soonActivity, day),
-          StartAlarm(soonActivity2, day),
+          StartAlarm(ActivityDay(soonActivity, day)),
+          StartAlarm(ActivityDay(soonActivity2, day)),
         ]),
       );
       await _tick();
@@ -170,7 +170,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        emits(StartAlarm(nextMinActivity, day)),
+        emits(StartAlarm(ActivityDay(nextMinActivity, day))),
       );
 
       // Act
@@ -178,7 +178,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        emits(StartAlarm(inTwoMinActivity, day)),
+        emits(StartAlarm(ActivityDay(inTwoMinActivity, day))),
       );
     });
 
@@ -197,8 +197,8 @@ void main() {
       _tick();
 
       // Assert
-      await expectLater(
-          alarmCubit.stream, emits(StartAlarm(inTwoMinutesActivity, day)));
+      await expectLater(alarmCubit.stream,
+          emits(StartAlarm(ActivityDay(inTwoMinutesActivity, day))));
     });
 
     test('Recurring weekly alarms shows', () async {
@@ -211,8 +211,8 @@ void main() {
       await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       _tick();
       // Assert
-      await expectLater(
-          alarmCubit.stream, emits(StartAlarm(recursThursday, day)));
+      await expectLater(alarmCubit.stream,
+          emits(StartAlarm(ActivityDay(recursThursday, day))));
     });
 
     test('Recurring monthly alarms shows', () async {
@@ -228,8 +228,8 @@ void main() {
       await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       _tick();
       // Assert
-      await expectLater(
-          alarmCubit.stream, emits(StartAlarm(recursTheThisDayOfMonth, day)));
+      await expectLater(alarmCubit.stream,
+          emits(StartAlarm(ActivityDay(recursTheThisDayOfMonth, day))));
     });
 
     test('Recurring yearly alarms shows', () async {
@@ -242,8 +242,8 @@ void main() {
       await activitiesBloc.stream.any((s) => s is ActivitiesLoaded);
       _tick();
       // Assert
-      await expectLater(
-          alarmCubit.stream, emits(StartAlarm(recursTheThisDayOfYear, day)));
+      await expectLater(alarmCubit.stream,
+          emits(StartAlarm(ActivityDay(recursTheThisDayOfYear, day))));
     });
 
     test('Alarm on EndTime shows', () async {
@@ -258,7 +258,7 @@ void main() {
       // Assert
       await expectLater(
         alarmCubit.stream,
-        emits(EndAlarm(activityEnding, day)),
+        emits(EndAlarm(ActivityDay(activityEnding, day))),
       );
     });
 
@@ -278,12 +278,13 @@ void main() {
       _tick();
 
       // Assert
-      await expectLater(alarmCubit.stream, emits(StartAlarm(nextAlarm, day)));
+      await expectLater(
+          alarmCubit.stream, emits(StartAlarm(ActivityDay(nextAlarm, day))));
 
       // Act
       _tick();
-      await expectLater(
-          alarmCubit.stream, emits(StartAlarm(afterThatAlarm, day)));
+      await expectLater(alarmCubit.stream,
+          emits(StartAlarm(ActivityDay(afterThatAlarm, day))));
     });
 
     test('Reminders shows', () async {
@@ -302,7 +303,8 @@ void main() {
       await expectLater(
         alarmCubit.stream,
         emits(
-          ReminderBefore(remind1HourBefore, day, reminder: reminderTime),
+          ReminderBefore(ActivityDay(remind1HourBefore, day),
+              reminder: reminderTime),
         ),
       );
     });
@@ -345,14 +347,14 @@ void main() {
       // Arrange
       final nowActivity =
           FakeActivity.starts(aTime).copyWith(timezone: localTimezoneName);
-      final payload = StartAlarm(nowActivity, aDay);
+      final payload = StartAlarm(ActivityDay(nowActivity, aDay));
 
       // Act
       notificationSelected.add(payload);
 
       // Assert
-      await expectLater(
-          notificationBloc.stream, emits(StartAlarm(nowActivity, aDay)));
+      await expectLater(notificationBloc.stream,
+          emits(StartAlarm(ActivityDay(nowActivity, aDay))));
     });
 
     test('Notification selected emits new reminder state', () async {
@@ -363,8 +365,7 @@ void main() {
           reminderBefore: [reminderTime.inMilliseconds]);
 
       final payload = ReminderBefore(
-        nowActivity,
-        aDay,
+        ActivityDay(nowActivity, aDay),
         reminder: reminderTime,
       );
       notificationSelected.add(payload);
@@ -373,8 +374,7 @@ void main() {
       await expectLater(
         notificationBloc.stream,
         emits(ReminderBefore(
-          nowActivity,
-          aDay,
+          ActivityDay(nowActivity, aDay),
           reminder: reminderTime,
         )),
       );

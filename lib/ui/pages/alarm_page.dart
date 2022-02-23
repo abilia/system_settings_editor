@@ -109,7 +109,7 @@ class ReminderPage extends StatelessWidget {
 class PopAwareAlarmPage extends StatelessWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
-  final ActivityAlarm alarm;
+  final NotificationAlarm alarm;
 
   const PopAwareAlarmPage({
     required this.alarm,

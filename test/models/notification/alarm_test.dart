@@ -9,28 +9,44 @@ void main() {
 
   test('StartAlarm toJson and back', () {
     final original = StartAlarm(
+      ActivityDay(
         Activity.createNew(
           title: 'null',
           startTime: time,
           timezone: timeZone,
         ),
-        day);
+        day,
+      ),
+    );
     final asJson = original.toJson();
     final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('EndAlarm toJson and back', () {
     final original = EndAlarm(
-        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
-        day);
+      ActivityDay(
+        Activity.createNew(
+          title: 'null',
+          startTime: time,
+          timezone: timeZone,
+        ),
+        day,
+      ),
+    );
     final asJson = original.toJson();
     final back = ActivityAlarm.fromJson(asJson);
     expect(back, original);
   });
   test('ReminderBefore toJson and back', () {
     final original = ReminderBefore(
-        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
-        day,
+        ActivityDay(
+          Activity.createNew(
+            title: 'null',
+            startTime: time,
+            timezone: timeZone,
+          ),
+          day,
+        ),
         reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
     final back = ActivityAlarm.fromJson(asJson);
@@ -38,8 +54,14 @@ void main() {
   });
   test('ReminderUnchecked toJson and back', () {
     final original = ReminderUnchecked(
-        Activity.createNew(title: 'null', startTime: time, timezone: timeZone),
-        day,
+        ActivityDay(
+          Activity.createNew(
+            title: 'null',
+            startTime: time,
+            timezone: timeZone,
+          ),
+          day,
+        ),
         reminder: const Duration(minutes: 5));
     final asJson = original.toJson();
     final back = ActivityAlarm.fromJson(asJson);
@@ -54,48 +76,55 @@ void main() {
         timezone: timeZone);
 
     test('StartAlarm toPayload and back', () {
-      final alarm = StartAlarm(activity, day);
+      final alarm = StartAlarm(ActivityDay(activity, day));
       final asJson = alarm.encode();
 
-      final alarmAgain = ActivityAlarm.decode(asJson);
+      final alarmAgain = NotificationAlarm.decode(asJson);
       expect(alarmAgain, alarm);
     });
     test('EndAlarm toPayload and back', () {
-      final alarm = EndAlarm(activity, day);
+      final alarm = EndAlarm(ActivityDay(activity, day));
       final asJson = alarm.encode();
 
-      final alarmAgain = ActivityAlarm.decode(asJson);
+      final alarmAgain = NotificationAlarm.decode(asJson);
       expect(alarmAgain, alarm);
     });
     test('ReminderBefore toPayload and back', () {
-      final alarm = ReminderBefore(activity, day, reminder: 15.minutes());
+      final alarm =
+          ReminderBefore(ActivityDay(activity, day), reminder: 15.minutes());
       final asJson = alarm.encode();
 
-      final reminderAgain = ActivityAlarm.decode(asJson);
+      final reminderAgain = NotificationAlarm.decode(asJson);
       expect(reminderAgain, alarm);
     });
     test('ReminderUnchecked toPayload and back', () {
-      final alarm = ReminderUnchecked(activity, day, reminder: 15.minutes());
+      final alarm =
+          ReminderUnchecked(ActivityDay(activity, day), reminder: 15.minutes());
       final asJson = alarm.encode();
-      final reminderAgain = ActivityAlarm.decode(asJson);
+      final reminderAgain = NotificationAlarm.decode(asJson);
       expect(reminderAgain, alarm);
     });
   });
 
   test('null default sound does return default', () {
     final nonCheckableAlarm = StartAlarm(
+      ActivityDay(
         Activity.createNew(
           title: 'not checkable',
           startTime: DateTime(2021, 05, 12, 10, 27),
         ),
-        day);
+        day,
+      ),
+    );
     final checkableActivityAlarm = StartAlarm(
-        Activity.createNew(
-          title: 'checkable',
-          startTime: DateTime(2021, 05, 12, 10, 27),
-          checkable: true,
-        ),
-        day);
+      ActivityDay(
+          Activity.createNew(
+            title: 'checkable',
+            startTime: DateTime(2021, 05, 12, 10, 27),
+            checkable: true,
+          ),
+          day),
+    );
     const settings = AlarmSettings(
       checkableActivity: '',
       nonCheckableActivity: '',
@@ -104,18 +133,17 @@ void main() {
     expect(checkableActivityAlarm.sound(settings), Sound.Default);
   });
 
-  test('Alarms.from same as Alarms constuctor ', () {
+  test(' Alarms from activityOccasion is same as from ActivityDay', () {
     final a = Activity.createNew(
       title: 'test',
       startTime: DateTime(2021, 11, 10, 13, 37),
     );
-    final alarm = StartAlarm(a, day);
-    final activtyDayAlarm = StartAlarm.from(ActivityDay(a, day));
-    final activityOccasionoAlarm = StartAlarm.from(
+    final alarm = StartAlarm(ActivityDay(a, day));
+
+    final activityOccasionoAlarm = StartAlarm(
       ActivityOccasion(a, day, Occasion.current),
     );
 
-    expect(alarm, activtyDayAlarm);
     expect(alarm, activityOccasionoAlarm);
   });
 }

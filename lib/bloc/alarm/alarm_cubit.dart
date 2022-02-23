@@ -1,22 +1,24 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmCubit extends Cubit<ActivityAlarm?> {
-  late final StreamSubscription _clockSubscription;
-  late final StreamSubscription _selectedNotificationSubscription;
+  late final StreamSubscription<DateTime> _clockSubscription;
+  late final StreamSubscription<ActivityAlarm>
+      _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
 
   AlarmCubit({
-    required ReplaySubject<ActivityAlarm> selectedNotificationSubject,
+    required Stream<NotificationAlarm> selectedNotificationSubject,
     required this.activitiesBloc,
     required ClockBloc clockBloc,
   }) : super(null) {
-    _selectedNotificationSubscription =
-        selectedNotificationSubject.listen((payload) => emit(payload));
+    _selectedNotificationSubscription = selectedNotificationSubject
+        .where((event) => event is ActivityAlarm)
+        .cast<ActivityAlarm>()
+        .listen((payload) => emit(payload));
     _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
   }
 

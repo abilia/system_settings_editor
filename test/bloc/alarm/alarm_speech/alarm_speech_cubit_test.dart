@@ -51,8 +51,8 @@ void main() {
       alarmType: noAlarm,
     );
 
-    final startAlarm = StartAlarm(activity, day);
-    final startAlarmNoSound = StartAlarm(activityNoSound, day);
+    final startAlarm = StartAlarm(ActivityDay(activity, day));
+    final startAlarmNoSound = StartAlarm(ActivityDay(activityNoSound, day));
     const MethodChannel localNotificationChannel =
         MethodChannel('dexterous.com/flutter/local_notifications');
     const MethodChannel audioPlayerChannel =

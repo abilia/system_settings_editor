@@ -14,7 +14,7 @@ const List<Duration> unsignedOffActivityReminders = [
 
 Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
-        .map((r) => ReminderUnchecked.from(activityDay, reminder: r));
+        .map((r) => ReminderUnchecked(activityDay, reminder: r));
 
 extension IterableActivity on Iterable<Activity> {
   List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
@@ -37,18 +37,17 @@ extension IterableActivity on Iterable<Activity> {
 
     final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map<ActivityAlarm>((ad) => StartAlarm.from(ad));
+        .map<ActivityAlarm>((ad) => StartAlarm(ad));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.activity.hasEndTime)
         .where((a) => a.activity.alarm.atEnd)
         .where(endTimeTest)
-        .map<ActivityAlarm>((a) => EndAlarm(a.activity, a.day));
+        .map<ActivityAlarm>(EndAlarm.new);
 
     final reminders = activitiesThisDay.expand(
       (ad) => [
-        ...ad.activity.reminders
-            .map((r) => ReminderBefore.from(ad, reminder: r)),
+        ...ad.activity.reminders.map((r) => ReminderBefore(ad, reminder: r)),
         if (!ad.isSignedOff && ad.activity.checkable) ...uncheckedReminders(ad),
       ].where(reminderTest),
     );
@@ -108,8 +107,7 @@ extension IterableActivity on Iterable<Activity> {
     ];
   }
 
-  Iterable<ActivityAlarm> _sortAndTake(
-          List<ActivityAlarm> alarms, int take) =>
+  Iterable<ActivityAlarm> _sortAndTake(List<ActivityAlarm> alarms, int take) =>
       (alarms..sort((a, b) => a.notificationTime.compareTo(b.notificationTime)))
           .take(take);
 }

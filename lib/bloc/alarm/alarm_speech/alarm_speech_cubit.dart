@@ -26,7 +26,7 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required this.alarm,
     required this.soundCubit,
     required AlarmSettings alarmSettings,
-    required Stream<ActivityAlarm> selectedNotificationStream,
+    required Stream<NotificationAlarm> selectedNotificationStream,
   }) : super(const AlarmSpeechUnplayed()) {
     _log.fine('$alarm');
     final speechDelay = _alarmDuration(alarmSettings);
@@ -37,6 +37,8 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
         Stream.fromFuture(Future.delayed(speechDelay)).listen(_maybePlay);
 
     _notificationSubscription = selectedNotificationStream
+        .where((event) => event is ActivityAlarm)
+        .cast<ActivityAlarm>()
         .where((notificationAlarm) => notificationAlarm == alarm)
         .listen(_maybePlay);
 

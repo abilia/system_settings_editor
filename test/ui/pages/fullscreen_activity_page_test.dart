@@ -50,7 +50,7 @@ void main() {
   );
 
   final StartAlarm startAlarm =
-      StartAlarm(testActivity, startTimeOne.onlyDays());
+      StartAlarm(ActivityDay(testActivity, startTimeOne.onlyDays()));
 
   setUpAll(() {
     registerFallbackValues();

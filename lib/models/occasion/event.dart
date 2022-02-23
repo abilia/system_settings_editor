@@ -6,6 +6,7 @@ abstract class Event extends Equatable {
   DateTime get start;
   DateTime get end;
   int get category;
+  String get id;
   EventOccasion toOccasion(DateTime now);
   AbiliaFile get image;
   bool get hasImage => image.isNotEmpty;

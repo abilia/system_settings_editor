@@ -8,6 +8,8 @@ class TimerOccasion extends EventOccasion {
   @override
   EventOccasion toOccasion(DateTime now) => this;
   @override
+  String get id => timer.id;
+  @override
   DateTime get end => timer.endTime;
   @override
   DateTime get start => timer.startTime;

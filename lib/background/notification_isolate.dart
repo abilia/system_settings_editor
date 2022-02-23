@@ -55,11 +55,7 @@ Future scheduleAlarmNotifications(
   final from = settings.disabledUntilDate.isAfter(now())
       ? settings.disabledUntilDate
       : now().nextMinute();
-  final shouldBeScheduledNotifications = activities.alarmsFrom(
-    from,
-    take: 50,
-    maxDays: 60,
-  );
+  final shouldBeScheduledNotifications = activities.alarmsFrom(from);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
@@ -70,8 +66,7 @@ Future scheduleAlarmNotifications(
   );
 }
 
-Future cancelNotifications(
-    Iterable<ActivityAlarm> notificationAlarms) async {
+Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
   for (final notification in notificationAlarms) {
     _log.fine('canceling ${notification.hashCode} $notification');
     await notificationPlugin.cancel(notification.hashCode);
@@ -97,8 +92,7 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
   final shouldBeScheduledNotificationsSerialized =
       await compute(alarmsFromIsolate, [serialized, from]);
   final shouldBeScheduledNotifications =
-      shouldBeScheduledNotificationsSerialized
-          .map((e) => ActivityAlarm.fromJson(e));
+      shouldBeScheduledNotificationsSerialized.map(ActivityAlarm.fromJson);
   return _scheduleAllAlarmNotifications(
     shouldBeScheduledNotifications,
     language,
@@ -111,10 +105,9 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
 
 @visibleForTesting
 List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
-  final activitiesSerialized = args[0];
-  final List<Activity> allActivities = activitiesSerialized
-      .map<Activity>((e) => DbActivity.fromJson(e).activity)
-      .toList();
+  final List serialized = args[0];
+  final allActivities =
+      serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
   final now = args[1] as DateTime;
   final notificationAlarms = allActivities.alarmsFrom(now);
   return notificationAlarms.map((e) => e.toJson()).toList();
@@ -201,7 +194,9 @@ Future<bool> _scheduleNotification(
       notificationTime, tryGetLocation(activity.timezone, log: _log));
   try {
     _log.finest(
-        'scheduling ($hash): $title - $subtitle at $time ${activity.hasImage ? ' with image' : ''}');
+      'scheduling ($hash): $title - $subtitle at '
+      '$time ${activity.hasImage ? ' with image' : ''}',
+    );
     await notificationPlugin.zonedSchedule(
       hash,
       title,
