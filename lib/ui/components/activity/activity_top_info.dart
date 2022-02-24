@@ -189,7 +189,7 @@ class _TimeBox extends StatelessWidget {
             decoration: current
                 ? _currentBoxDecoration
                 : past
-                    ? null
+                    ? const BoxDecoration()
                     : _futureBoxDecoration,
             child: Center(
               child: AutoSizeText(

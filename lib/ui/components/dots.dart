@@ -385,32 +385,28 @@ class OrangeDot extends StatelessWidget {
   const OrangeDot({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 12.s,
-      height: 12.s,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6.s)),
-        color: AbiliaColors.orange40,
-      ),
+    return ColorDot(
+      radius: 6.s,
+      color: AbiliaColors.orange40,
     );
   }
 }
 
 class ColorDot extends StatelessWidget {
   final Color color;
-  final double diameter;
+  final double radius;
   const ColorDot({
     Key? key,
     this.color = AbiliaColors.white,
-    required this.diameter,
+    required this.radius,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: diameter,
-      height: diameter,
+      width: radius * 2,
+      height: radius * 2,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(4.s)),
+        borderRadius: BorderRadius.all(Radius.circular(radius)),
         color: color,
       ),
     );

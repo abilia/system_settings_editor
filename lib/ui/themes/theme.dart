@@ -71,7 +71,7 @@ final inputDecorationTheme = InputDecorationTheme(
     errorStyle: const TextStyle(height: 0),
     fillColor: AbiliaColors.white);
 
-final outerRadius = 12.s;
+final outerRadius = layout.radius;
 Radius innerRadiusFromBorderSize(double borderSize) =>
     Radius.circular(outerRadius - borderSize);
 final radius = Radius.circular(outerRadius);

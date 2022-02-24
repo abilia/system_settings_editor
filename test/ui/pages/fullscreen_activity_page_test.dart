@@ -160,7 +160,7 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(fullScreenActivityPageFinder, findsOneWidget);
-        expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+        expect(find.byType(FullScreenActivityTabItem), findsNWidgets(2));
       });
 
       testWidgets('Show activity two', (WidgetTester tester) async {
@@ -179,7 +179,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(fullScreenActivityPageFinder, findsOneWidget);
         expect(find.text(fakeActivities[1].title), findsNWidgets(2));
-        expect(find.byType(FullScreenActivityBottomContent), findsNWidgets(2));
+        expect(find.byType(FullScreenActivityTabItem), findsNWidgets(2));
       });
 
       testWidgets('Tapping activity in bottom bar selects it',
@@ -196,7 +196,7 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(find.text(fakeActivities[1].title), findsNWidgets(2));
-        await tester.tap(find.byType(FullScreenActivityBottomContent).first);
+        await tester.tap(find.byType(FullScreenActivityTabItem).first);
         await tester.pumpAndSettle();
         expect(find.text(fakeActivities[0].title), findsNWidgets(2));
       });

@@ -316,8 +316,8 @@ class MonthDayView extends StatelessWidget {
                                   padding: layout
                                       .monthCalendar.hasActivitiesDotPadding,
                                   child: ColorDot(
-                                    diameter: layout
-                                        .monthCalendar.hasActivitiesDotDiameter,
+                                    radius: layout
+                                        .monthCalendar.hasActivitiesDotRadius,
                                     color: day.isPast
                                         ? AbiliaColors.black
                                         : dayTheme.theme.colorScheme.onSurface,
@@ -450,7 +450,7 @@ class MonthDayViewCompact extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: ColorDot(
-                        diameter: layout.monthCalendar.hasActivitiesDotDiameter,
+                        radius: layout.monthCalendar.hasActivitiesDotRadius,
                         color: AbiliaColors.black,
                       ),
                     ),
