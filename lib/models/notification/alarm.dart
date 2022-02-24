@@ -11,14 +11,52 @@ abstract class NotificationAlarm extends Equatable {
   bool vibrate(AlarmSettings settings);
   Sound sound(AlarmSettings settings);
   DateTime get notificationTime;
-  String get type;
   String get stackId;
-
+  String encode() => json.encode(toJson());
   factory NotificationAlarm.decode(String data) =>
-      ActivityAlarm.fromJson(json.decode(data));
+      NotificationAlarm.fromJson(json.decode(data));
+  factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
+    switch (json['type']) {
+      case 'timer':
+        final timer = AbiliaTimer.fromDbMap(json['timer']);
+        return TimerAlarm(timer);
+      default:
+        return ActivityAlarm.fromJson(json);
+    }
+  }
+  Map<String, dynamic> toJson();
   @override
   String toString() =>
-      '$type {notificationTime: $notificationTime, ${event.id} }';
+      '$runtimeType {notificationTime: $notificationTime, ${event.id} }';
+}
+
+class TimerAlarm extends NotificationAlarm {
+  final AbiliaTimer timer;
+  const TimerAlarm(this.timer) : super(timer);
+  final String type = 'timer';
+
+  @override
+  DateTime get notificationTime => timer.end;
+
+  @override
+  List<Object?> get props => [timer];
+
+  @override
+  String get stackId => timer.id;
+
+  // TODO implement settings
+  @override
+  bool hasSound(AlarmSettings settings) => true;
+  @override
+  Sound sound(AlarmSettings settings) => Sound.Trumpet;
+  @override
+  bool vibrate(AlarmSettings settings) => true;
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'timer': timer.toMapForDb(),
+        'type': type,
+      };
 }
 
 abstract class ActivityAlarm extends NotificationAlarm {
@@ -35,6 +73,9 @@ abstract class ActivityAlarm extends NotificationAlarm {
     this.fullScreenActivity = false,
   }) : super(activityDay);
 
+  String get type;
+
+  @override
   Map<String, dynamic> toJson() => {
         'day': day.millisecondsSinceEpoch,
         'activity': activity.wrapWithDbModel().toJson(),
@@ -42,7 +83,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
         if (this is NewReminder)
           'reminder': (this as NewReminder).reminder.inMilliseconds,
       };
-
   factory ActivityAlarm.fromJson(Map<String, dynamic> json) {
     final activity = DbActivity.fromJson(json['activity']).activity;
     final day = DateTime.fromMillisecondsSinceEpoch(json['day']);
@@ -64,8 +104,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
   }
 
   ActivityAlarm setFullScreenActivity(bool fullScreenActivity) => this;
-
-  String encode() => json.encode(toJson());
 
   @override
   List<Object?> get props => [activityDay.activity, activityDay.day];
@@ -167,7 +205,6 @@ class ReminderBefore extends NewReminder {
 class ReminderUnchecked extends NewReminder {
   const ReminderUnchecked(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
-
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);
 

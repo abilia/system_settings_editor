@@ -5,9 +5,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AlarmCubit extends Cubit<ActivityAlarm?> {
-  late final StreamSubscription<DateTime> _clockSubscription;
-  late final StreamSubscription<ActivityAlarm>
-      _selectedNotificationSubscription;
+  late final StreamSubscription _clockSubscription;
+  late final StreamSubscription _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
 
   AlarmCubit({

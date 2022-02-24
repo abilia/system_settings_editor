@@ -13,7 +13,7 @@ class TimerDb {
   static const _getAll = 'SELECT * FROM ${DatabaseRepository.timerTableName}';
   final _log = Logger((TimerDb).toString());
 
-  Future<void> insert(AbiliaTimer timer) => db.insert(
+  Future<int> insert(AbiliaTimer timer) => db.insert(
         DatabaseRepository.timerTableName,
         timer.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -36,5 +36,25 @@ class TimerDb {
           onException: _log.logAndReturnNull,
         )
         .whereNotNull();
+  }
+
+  Future<Iterable<TimerAlarm>> getTimerAlarmsFrom(DateTime from) async {
+    final result = await db.query(
+      DatabaseRepository.timerTableName,
+      columns: [
+        '*',
+        'start_time + duration AS end_time',
+      ],
+      where: 'paused == 0 AND end_time > ?',
+      whereArgs: [from.millisecondsSinceEpoch],
+    );
+
+    return result
+        .exceptionSafeMap(
+          AbiliaTimer.fromDbMap,
+          onException: _log.logAndReturnNull,
+        )
+        .whereNotNull()
+        .map(TimerAlarm.new);
   }
 }

@@ -17,7 +17,7 @@ void onNotification(String? payload) async {
   if (payload != null) {
     _log.fine('notification payload: ' + payload);
     try {
-      _selectNotificationSubject.add(NotificationAlarm.decode(payload));
+      selectNotificationSubject.add(NotificationAlarm.decode(payload));
     } catch (e) {
       _log.severe('Failed to parse selected notification payload: $payload', e);
     }
@@ -26,5 +26,5 @@ void onNotification(String? payload) async {
 
 Future<void> clearNotificationSubject() async {
   await _selectNotificationSubject.close();
-  _selectNotificationSubject = ReplaySubject<ActivityAlarm>();
+  _selectNotificationSubject = ReplaySubject<NotificationAlarm>();
 }

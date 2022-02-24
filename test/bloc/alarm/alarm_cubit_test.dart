@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart';
@@ -320,7 +321,7 @@ void main() {
   group('when notification arrives', () {
     final aTime = DateTime(1999, 12, 20, 20, 12);
     final aDay = aTime.onlyDays();
-    late ReplaySubject<ActivityAlarm> notificationSelected;
+    late ReplaySubject<NotificationAlarm> notificationSelected;
     late AlarmCubit notificationBloc;
     const localTimezoneName = 'aTimeZone';
 
@@ -379,5 +380,24 @@ void main() {
         )),
       );
     });
+
+    blocTest<AlarmCubit, ActivityAlarm?>(
+      'Notification selected ignore timers',
+      build: () => AlarmCubit(
+        activitiesBloc: ActivitiesBloc(
+          activityRepository: MockActivityRepository(),
+          syncBloc: FakeSyncBloc(),
+          pushCubit: FakePushCubit(),
+        ),
+        clockBloc: ClockBloc.fixed(aTime),
+        selectedNotificationSubject: notificationSelected,
+      ),
+      act: (cubit) => notificationSelected.add(TimerAlarm(AbiliaTimer.createNew(
+        title: 'title',
+        startTime: aTime.subtract(3.minutes()),
+        duration: 3.minutes(),
+      ))),
+      expect: () => [],
+    );
   });
 }

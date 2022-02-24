@@ -217,6 +217,7 @@ void main() {
         expect(audioLog.single.method, 'play');
       },
     );
+
     blocTest(
       'emits AlarmPlayed bloc played',
       build: () => AlarmSpeechCubit(

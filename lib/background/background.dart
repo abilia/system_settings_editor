@@ -74,9 +74,12 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 
     log.fine('finding alarms from ${activities.length} activities');
 
+    final timers = await TimerDb(database).getTimerAlarmsFrom(DateTime.now());
+    log.fine('active timers: ${timers.length}');
+
     await scheduleAlarmNotifications(
       activities,
-      [], // TODO add timers
+      timers,
       settingsDb.language,
       settingsDb.alwaysUse24HourFormat,
       settings.alarm,

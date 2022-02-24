@@ -44,7 +44,7 @@ FlutterLocalNotificationsPlugin ensureNotificationPluginInitialized() {
 
 Future scheduleAlarmNotifications(
   Iterable<Activity> activities,
-  Iterable<AbiliaTimer> timers,
+  Iterable<TimerAlarm> timers,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
@@ -55,9 +55,15 @@ Future scheduleAlarmNotifications(
   final from = settings.disabledUntilDate.isAfter(now())
       ? settings.disabledUntilDate
       : now().nextMinute();
-  final shouldBeScheduledNotifications = activities.alarmsFrom(from);
+  final activityNotifications = activities.alarmsFrom(
+    from,
+    take: maxNotifications - timers.length,
+  );
   return _scheduleAllAlarmNotifications(
-    shouldBeScheduledNotifications,
+    [
+      ...timers,
+      ...activityNotifications,
+    ],
     language,
     alwaysUse24HourFormat,
     settings,
@@ -76,7 +82,7 @@ Future cancelNotifications(Iterable<ActivityAlarm> notificationAlarms) async {
 // ignore: prefer_function_declarations_over_variables
 late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
   required Iterable<Activity> activities,
-  required Iterable<AbiliaTimer> timers,
+  required Iterable<TimerAlarm> timers,
   required String language,
   required bool alwaysUse24HourFormat,
   required AlarmSettings settings,
@@ -89,12 +95,21 @@ late AlarmScheduler scheduleAlarmNotificationsIsolated = ({
       : now().nextMinute();
   final serialized =
       activities.map((e) => e.wrapWithDbModel().toJson()).toList();
-  final shouldBeScheduledNotificationsSerialized =
-      await compute(alarmsFromIsolate, [serialized, from]);
-  final shouldBeScheduledNotifications =
-      shouldBeScheduledNotificationsSerialized.map(ActivityAlarm.fromJson);
+  final shouldBeScheduledNotificationsSerialized = await compute(
+    alarmsFromIsolate,
+    [
+      serialized,
+      from,
+      maxNotifications - timers.length,
+    ],
+  );
+  final activityNotifications =
+      shouldBeScheduledNotificationsSerialized.map(NotificationAlarm.fromJson);
   return _scheduleAllAlarmNotifications(
-    shouldBeScheduledNotifications,
+    [
+      ...timers,
+      ...activityNotifications,
+    ],
     language,
     alwaysUse24HourFormat,
     settings,
@@ -109,14 +124,15 @@ List<Map<String, dynamic>> alarmsFromIsolate(List<dynamic> args) {
   final allActivities =
       serialized.map<Activity>((e) => DbActivity.fromJson(e).activity).toList();
   final now = args[1] as DateTime;
-  final notificationAlarms = allActivities.alarmsFrom(now);
+  final take = args[2] as int;
+  final notificationAlarms = allActivities.alarmsFrom(now, take: take);
   return notificationAlarms.map((e) => e.toJson()).toList();
 }
 
 final _lock = Lock();
 
 Future _scheduleAllAlarmNotifications(
-  Iterable<ActivityAlarm> notifications,
+  Iterable<NotificationAlarm> notifications,
   String language,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
@@ -130,13 +146,15 @@ Future _scheduleAllAlarmNotifications(
     _lock.synchronized(
       () async {
         await notificationPlugin.cancelAll();
+        final locale = Locale(language);
+        await initializeDateFormatting(locale.languageCode);
         _log.fine('scheduling ${notifications.length} notifications...');
         final notificationTimes = <DateTime>{};
         var scheduled = 0;
         for (final newNotification in notifications) {
           if (await _scheduleNotification(
             newNotification,
-            language,
+            locale,
             alwaysUse24HourFormat,
             settings,
             fileStorage,
@@ -150,25 +168,20 @@ Future _scheduleAllAlarmNotifications(
     );
 
 Future<bool> _scheduleNotification(
-  ActivityAlarm notificationAlarm,
-  String language,
+  NotificationAlarm notificationAlarm,
+  Locale locale,
   bool alwaysUse24HourFormat,
   AlarmSettings settings,
   FileStorage fileStorage,
   DateTime Function() now, [
   int secondsOffset = 0,
 ]) async {
-  final activity = notificationAlarm.activity;
-  final title = activity.title;
-  final notificationTime =
-      notificationAlarm.notificationTime.add(secondsOffset.seconds());
+  final title = notificationAlarm.event.title;
   final subtitle = _subtitle(
     notificationAlarm,
-    language,
+    locale,
     alwaysUse24HourFormat,
   );
-  final hash = notificationAlarm.hashCode;
-  final payload = notificationAlarm.encode();
 
   final and = Platform.isIOS
       ? null
@@ -189,13 +202,19 @@ Future<bool> _scheduleNotification(
           settings,
         );
 
+  final hash = notificationAlarm.hashCode;
+  final payload = notificationAlarm.encode();
+  final notificationTime =
+      notificationAlarm.notificationTime.add(secondsOffset.seconds());
+  final tz = notificationAlarm is ActivityAlarm
+      ? tryGetLocation(notificationAlarm.activity.timezone, log: _log)
+      : local;
   if (notificationTime.isBefore(now())) return false;
-  final time = TZDateTime.from(
-      notificationTime, tryGetLocation(activity.timezone, log: _log));
+  final time = TZDateTime.from(notificationTime, tz);
   try {
     _log.finest(
       'scheduling ($hash): $title - $subtitle at '
-      '$time ${activity.hasImage ? ' with image' : ''}',
+      '$time ${notificationAlarm.event.hasImage ? ' with image' : ''}',
     );
     await notificationPlugin.zonedSchedule(
       hash,
@@ -216,7 +235,7 @@ Future<bool> _scheduleNotification(
 }
 
 Future<IOSNotificationDetails> _iosNotificationDetails(
-  ActivityAlarm notificationAlarm,
+  NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
   Duration alarmDuration,
   AlarmSettings settings,
@@ -224,8 +243,6 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
   final hasVibration = notificationAlarm.vibrate(settings);
-  final activity = notificationAlarm.activity;
-  final alarm = activity.alarm;
   final seconds = alarmDuration.inSeconds;
   final soundFile = !hasVibration && !hasSound
       ? null
@@ -235,20 +252,25 @@ Future<IOSNotificationDetails> _iosNotificationDetails(
   return IOSNotificationDetails(
     presentAlert: true,
     presentBadge: true,
-    presentSound: alarm.sound || alarm.vibrate,
+    presentSound: hasSound || hasVibration,
     sound: soundFile,
-    attachments: await _iOSNotificationAttachment(activity, fileStorage),
+    attachments: await _iOSNotificationAttachment(
+      notificationAlarm.event.image.id,
+      fileStorage,
+    ),
   );
 }
 
 Future<AndroidNotificationDetails> _androidNotificationDetails(
-  ActivityAlarm notificationAlarm,
+  NotificationAlarm notificationAlarm,
   FileStorage fileStorage,
   String title,
-  String subtitle,
+  String? subtitle,
   AlarmSettings settings,
 ) async {
-  final activity = notificationAlarm.activity;
+  final groupKey = notificationAlarm is ActivityAlarm
+      ? notificationAlarm.activity.seriesId
+      : null;
   final sound = notificationAlarm.sound(settings);
   final hasSound = notificationAlarm.hasSound(settings);
   final vibrate = notificationAlarm.vibrate(settings);
@@ -260,7 +282,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     notificationChannel.id,
     notificationChannel.name,
     channelDescription: notificationChannel.description,
-    groupKey: activity.seriesId,
+    groupKey: groupKey,
     playSound: hasSound,
     sound: sound == Sound.NoSound || !hasSound
         ? null
@@ -275,9 +297,12 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     timeoutAfter: settings.durationMs,
     startActivityClassName:
         'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
-    largeIcon: await _androidLargeIcon(activity.fileId, fileStorage),
+    largeIcon: await _androidLargeIcon(
+      notificationAlarm.event.image.id,
+      fileStorage,
+    ),
     styleInformation: await _androidStyleInformation(
-      activity.fileId,
+      notificationAlarm.event.image.id,
       fileStorage,
       title,
       subtitle,
@@ -303,21 +328,35 @@ class NotificationChannel {
   NotificationChannel(this.id, this.name, this.description);
 }
 
-String _subtitle(
-  ActivityAlarm notificationAlarm,
-  String language,
+String? _subtitle(
+  NotificationAlarm notificationAlarm,
+  Locale givenLocale,
   bool alwaysUse24HourFormat,
 ) {
-  final givenLocale = Locale(language);
   final locale = Locales.language.containsKey(givenLocale)
       ? givenLocale
       : Locales.language.keys.first;
-  initializeDateFormatting(locale.languageCode);
-  final tf = hourAndMinuteFromUse24(alwaysUse24HourFormat, language);
+  final tf =
+      hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
   final translater = Locales.language[locale];
-  final ad = notificationAlarm.activityDay;
+  if (notificationAlarm is ActivityAlarm) {
+    return _activitySubtitle(notificationAlarm, tf, translater);
+  } else if (notificationAlarm is TimerAlarm) {
+    // TODO
+    return 'Times up!';
+  }
+  return null;
+}
+
+String _activitySubtitle(
+  ActivityAlarm activeNotification,
+  TimeFormat tf,
+  Translated? translater,
+) {
+  final ad = activeNotification.activityDay;
   final endTime = ad.activity.hasEndTime ? ' - ${tf(ad.end)} ' : ' ';
-  final extra = translater != null ? _extra(notificationAlarm, translater) : '';
+  final extra =
+      translater != null ? _extra(activeNotification, translater) : '';
   return tf(ad.start) + endTime + extra;
 }
 
@@ -332,16 +371,17 @@ String _extra(ActivityAlarm notificationAlarm, Translated translater) {
 }
 
 Future<List<IOSNotificationAttachment>> _iOSNotificationAttachment(
-    Activity activity, FileStorage fileStorage) async {
+  String fileId,
+  FileStorage fileStorage,
+) async {
   final iOSAttachment = <IOSNotificationAttachment>[];
-  if (activity.hasImage) {
-    final thumbCopy =
-        await fileStorage.copyImageThumbForNotification(activity.fileId);
+  if (fileId.isNotEmpty) {
+    final thumbCopy = await fileStorage.copyImageThumbForNotification(fileId);
     if (thumbCopy != null) {
       iOSAttachment.add(
         IOSNotificationAttachment(
           thumbCopy.path,
-          identifier: activity.fileId,
+          identifier: fileId,
         ),
       );
     }
@@ -353,7 +393,7 @@ Future<StyleInformation?> _androidStyleInformation(
   String fileId,
   FileStorage fileStorage,
   String title,
-  String subtitle,
+  String? subtitle,
 ) async {
   if (fileId.isNotEmpty) {
     final bigPicture = fileStorage.getFile(fileId);

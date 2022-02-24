@@ -1,6 +1,8 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+const maxNotifications = 50;
+
 const List<Duration> unsignedOffActivityReminders = [
   Duration(minutes: 15),
   Duration(minutes: 30),
@@ -57,7 +59,7 @@ extension IterableActivity on Iterable<Activity> {
 
   Iterable<ActivityAlarm> alarmsFrom(
     DateTime time, {
-    int take = 50,
+    int take = maxNotifications,
     int maxDays = 60,
   }) {
     final nextDay = time.nextDay().onlyDays();

@@ -41,6 +41,8 @@ class ActivityDay extends Event {
       );
 
   @override
+  String get title => activity.title;
+  @override
   DateTime get start => activity.startClock(day);
   @override
   DateTime get end => activity.endClock(day);

@@ -5,7 +5,7 @@ import 'package:seagull/storage/file_storage.dart';
 
 typedef AlarmScheduler = Future Function({
   required Iterable<Activity> activities,
-  required Iterable<AbiliaTimer> timers,
+  required Iterable<TimerAlarm> timers,
   required String language,
   required bool alwaysUse24HourFormat,
   required AlarmSettings settings,

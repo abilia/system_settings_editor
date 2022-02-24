@@ -8,15 +8,17 @@ class TimerOccasion extends EventOccasion {
   @override
   EventOccasion toOccasion(DateTime now) => this;
   @override
+  String get title => timer.title;
+  @override
   String get id => timer.id;
   @override
-  DateTime get end => timer.endTime;
+  DateTime get end => timer.end;
   @override
   DateTime get start => timer.startTime;
   @override
   int get category => Category.right;
   @override
-  AbiliaFile get image => timer.imageFile;
+  AbiliaFile get image => timer.image;
   @override
   List<Object?> get props => [timer, occasion];
   @override

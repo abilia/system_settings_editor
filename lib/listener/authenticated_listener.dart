@@ -67,38 +67,23 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
           listenWhen: (_, current) => current is ActivitiesLoaded,
-          listener: (context, activitiesState) async {
-            final settingsState = context.read<MemoplannerSettingBloc>().state;
-            if (settingsState is! MemoplannerSettingsNotLoaded) {
-              await scheduleAlarmNotificationsIsolated(
-                activities: activitiesState.activities,
-                timers: [],
-                language: Localizations.localeOf(context).toLanguageTag(),
-                alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-                settings: settingsState.alarm,
-                fileStorage: GetIt.I<FileStorage>(),
-              );
-            }
-          },
+          listener: (context, activitiesState) => _schedualNotifications(
+            context,
+            activitiesState: activitiesState,
+          ),
         ),
         BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
           listenWhen: (previous, current) =>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
               previous.alarm != current.alarm,
-          listener: (context, state) async {
-            final activitiesState = context.read<ActivitiesBloc>().state;
-            if (activitiesState is ActivitiesLoaded) {
-              await scheduleAlarmNotificationsIsolated(
-                activities:activitiesState.activities,
-                timers:[],
-                language:Localizations.localeOf(context).toLanguageTag(),
-                alwaysUse24HourFormat:MediaQuery.of(context).alwaysUse24HourFormat,
-                settings:state.alarm,
-                fileStorage:GetIt.I<FileStorage>(),
-              );
-            }
-          },
+          listener: (context, state) => _schedualNotifications(
+            context,
+            settingsState: state,
+          ),
+        ),
+        BlocListener<TimerCubit, TimerState>(
+          listener: (context, s) => _schedualNotifications(context),
         ),
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
@@ -131,14 +116,14 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
           KeepScreenAwakeListener(),
         ],
-        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
+        if (!Platform.isIOS) _fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
   }
 
   BlocListener<PermissionCubit, PermissionState>
-      fullscreenAlarmPremissionListener(BuildContext context) {
+      _fullscreenAlarmPremissionListener(BuildContext context) {
     return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -167,4 +152,27 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           false) &&
       !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
           false);
+
+  Future _schedualNotifications(
+    BuildContext context, {
+    ActivitiesState? activitiesState,
+    MemoplannerSettingsState? settingsState,
+  }) async {
+    activitiesState ??= context.read<ActivitiesBloc>().state;
+    settingsState ??= context.read<MemoplannerSettingBloc>().state;
+    if (settingsState is! MemoplannerSettingsNotLoaded &&
+        activitiesState is ActivitiesLoaded) {
+      final timers = await GetIt.I<TimerDb>()
+          .getTimerAlarmsFrom(DateTime.now()); // TODO not now?
+
+      await scheduleAlarmNotificationsIsolated(
+        activities: activitiesState.activities,
+        timers: timers,
+        language: Localizations.localeOf(context).toLanguageTag(),
+        alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+        settings: settingsState.settings.alarm,
+        fileStorage: GetIt.I<FileStorage>(),
+      );
+    }
+  }
 }
