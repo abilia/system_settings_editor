@@ -22,9 +22,7 @@ class TimerWheel extends StatefulWidget {
     this.lengthInMinutes,
     this.paused = false,
     this.isPast = false,
-  })  : assert(!(isPast && secondsLeft != 0),
-            'If isPast is true, secondsLeft must be zero'),
-        activeSeconds = secondsLeft,
+  })  : activeSeconds = secondsLeft,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -35,9 +33,7 @@ class TimerWheel extends StatefulWidget {
     this.lengthInMinutes,
     this.paused = false,
     this.isPast = false,
-  })  : assert(!(isPast && secondsLeft != 0),
-            'If isPast is true, secondsLeft must be zero'),
-        activeSeconds = secondsLeft,
+  })  : activeSeconds = secondsLeft,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
         super(key: key);

@@ -54,9 +54,7 @@ class AbiliaTimer extends Equatable {
       };
 
   TimerOccasion toOccasion(DateTime now) {
-    if (now.isAfter(endTime) && !paused) {
-      return TimerOccasion(this, Occasion.past);
-    }
+    if (now.isAfter(endTime)) return TimerOccasion(this, Occasion.past);
     return TimerOccasion(this, Occasion.current);
   }
 
