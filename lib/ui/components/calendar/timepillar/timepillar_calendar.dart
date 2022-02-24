@@ -106,11 +106,9 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         : ScrollController();
     horizontalScrollController = SnapToCenterScrollController();
     WidgetsBinding.instance?.addPostFrameCallback(
-      (_) => context.read<ScrollPositionBloc>().add(
-            ScrollViewRenderComplete(
-              verticalScrollController,
-              createdTime: context.read<ClockBloc>().state,
-            ),
+      (_) => context.read<ScrollPositionCubit>().scrollViewRenderComplete(
+            verticalScrollController,
+            createdTime: context.read<ClockBloc>().state,
           ),
     );
   }

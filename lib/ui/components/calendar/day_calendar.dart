@@ -8,8 +8,8 @@ class DayCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ScrollPositionBloc>(
-      create: (context) => ScrollPositionBloc(
+    return BlocProvider<ScrollPositionCubit>(
+      create: (context) => ScrollPositionCubit(
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
         clockBloc: context.read<ClockBloc>(),
         timepillarCubit: context.read<TimepillarCubit>(),
@@ -20,8 +20,7 @@ class DayCalendar extends StatelessWidget {
                   current is InactivityThresholdReachedState &&
                   previous is ActivityDetectedState,
               listener: (context, state) =>
-                  BlocProvider.of<ScrollPositionBloc>(context)
-                      .add(const GoToNow()),
+                  BlocProvider.of<ScrollPositionCubit>(context).goToNow(),
               child: const CalendarScaffold())
           : const CalendarScaffold(),
     );
@@ -86,7 +85,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      context.read<ScrollPositionBloc>().add(const GoToNow());
+      context.read<ScrollPositionCubit>().goToNow();
     }
   }
 
