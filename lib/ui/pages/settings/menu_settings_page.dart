@@ -54,8 +54,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                 );
                 if (answer != true) return;
               }
-              context.read<GenericBloc>().add(
-                    GenericUpdated(
+              context.read<GenericCubit>().genericUpdated(
                       [
                         MemoplannerSettingData.fromData(
                           data: camera,
@@ -82,7 +81,6 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                           identifier: MenuSettings.showSettingsKey,
                         ),
                       ],
-                    ),
                   );
               Navigator.of(context).pop();
             },

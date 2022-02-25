@@ -6,13 +6,13 @@ import 'package:seagull/models/all.dart';
 part 'activity_view_settings_state.dart';
 
 class ActivityViewSettingsCubit extends Cubit<ActivityViewSettingsState> {
-  final GenericBloc genericBloc;
+  final GenericCubit genericCubit;
 
   ActivityViewSettingsCubit({
     required MemoplannerSettingsState settingsState,
-    required this.genericBloc,
+    required this.genericCubit,
   }) : super(ActivityViewSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeSettings(ActivityViewSettingsState newState) => emit(newState);
-  void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
+  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

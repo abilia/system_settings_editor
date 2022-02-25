@@ -16,7 +16,7 @@ void main() {
     const settingsState = MemoplannerSettingsNotLoaded();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: settingsState,
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     expect(
@@ -52,7 +52,7 @@ void main() {
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     functionSettingsCubit.changeFunctionSettings(
@@ -98,7 +98,7 @@ void main() {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     // Act -- Change to week calendar
@@ -206,7 +206,7 @@ void main() {
     final genericBloc = MockGenericBloc();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: genericBloc,
+      genericCubit: genericBloc,
     );
 
     functionSettingsCubit.changeFunctionSettings(

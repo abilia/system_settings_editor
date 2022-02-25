@@ -32,8 +32,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
             ),
           );
           if (timeout != null) {
-            context.read<GenericBloc>().add(
-                  GenericUpdated(
+            context.read<GenericCubit>().genericUpdated(
                     [
                       MemoplannerSettingData.fromData(
                         data: timeout == Duration.zero,
@@ -41,7 +40,6 @@ class ScreenTimeoutPickField extends StatelessWidget {
                             KeepScreenAwakeSettings.keepScreenOnAlwaysKey,
                       ),
                     ],
-                  ),
                 );
             context.read<WakeLockCubit>().setScreenTimeout(timeout);
           }
@@ -138,8 +136,7 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
       builder: (context, keepScreenOnWhileCharging) => SwitchField(
         value: keepScreenOnWhileCharging,
         onChanged: (switchOn) {
-          context.read<GenericBloc>().add(
-                GenericUpdated(
+          context.read<GenericCubit>().genericUpdated(
                   [
                     MemoplannerSettingData.fromData(
                       data: switchOn,
@@ -147,7 +144,6 @@ class KeepOnWhileChargingSwitch extends StatelessWidget {
                           KeepScreenAwakeSettings.keepScreenOnWhileChargingKey,
                     ),
                   ],
-                ),
               );
         },
         child:

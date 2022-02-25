@@ -9,7 +9,7 @@ class MonthCalendarSettingsPage extends StatelessWidget {
     return BlocProvider<MonthCalendarSettingsCubit>(
       create: (context) => MonthCalendarSettingsCubit(
         settingsState: context.read<MemoplannerSettingBloc>().state,
-        genericBloc: context.read<GenericBloc>(),
+        genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(
         length: 2,

@@ -126,18 +126,18 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ..add(const LoadSortables(initDefaults: true)),
               lazy: false,
             ),
-            BlocProvider<GenericBloc>(
-              create: (context) => GenericBloc(
+            BlocProvider<GenericCubit>(
+              create: (context) => GenericCubit(
                 genericRepository: context.read<GenericRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 pushCubit: context.read<PushCubit>(),
-              )..add(LoadGenerics()),
+              )..loadGenerics(),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) =>
                   memoplannerSettingBloc ??
                   MemoplannerSettingBloc(
-                    genericBloc: context.read<GenericBloc>(),
+                    genericCubit: context.read<GenericCubit>(),
                   ),
             ),
             BlocProvider<DayPickerBloc>(

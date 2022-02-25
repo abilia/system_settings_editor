@@ -12,7 +12,7 @@ class AlarmSettingsPage extends StatelessWidget {
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
         alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
-        genericBloc: context.read<GenericBloc>(),
+        genericCubit: context.read<GenericCubit>(),
       ),
       child: BlocProvider<AlarmSoundCubit>(
         create: (_) => AlarmSoundCubit(),
