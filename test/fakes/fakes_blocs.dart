@@ -40,8 +40,6 @@ class FakeGenericCubit extends Fake implements GenericCubit {
   @override
   Stream<GenericState> get stream => const Stream.empty();
   @override
-  void add(GenericEvent event) {}
-  @override
   Future<void> close() async {}
 }
 

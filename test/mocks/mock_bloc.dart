@@ -13,8 +13,8 @@ class MockSyncBloc extends MockBloc<SyncEvent, dynamic> implements SyncBloc {}
 
 class MockPushCubit extends MockCubit<PushState> implements PushCubit {}
 
-class MockGenericBloc extends MockBloc<GenericEvent, GenericState>
-    implements GenericCubit {}
+class MockGenericCubit extends MockCubit<GenericState> implements GenericCubit {
+}
 
 class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
     implements SortableBloc {}

@@ -1,4 +1,4 @@
-part of 'generic_bloc.dart';
+part of 'generic_cubit.dart';
 
 abstract class GenericState extends Equatable {
   const GenericState();

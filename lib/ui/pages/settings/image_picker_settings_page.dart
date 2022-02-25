@@ -34,23 +34,23 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
           builder: (context) => OkButton(
             onPressed: () {
               context.read<GenericCubit>().genericUpdated(
-                  [
-                    MemoplannerSettingData.fromData(
-                      data: displayMyPhotos,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
-                    ),
-                    MemoplannerSettingData.fromData(
-                      data: displayCamera,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayCameraItemKey,
-                    ),
-                    MemoplannerSettingData.fromData(
-                      data: displayLocalImages,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayPhotoItemKey,
-                    ),
-                  ],
+                [
+                  MemoplannerSettingData.fromData(
+                    data: displayMyPhotos,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: displayCamera,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayCameraItemKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: displayLocalImages,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayPhotoItemKey,
+                  ),
+                ],
               );
               Navigator.of(context).pop();
             },

@@ -7,8 +7,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'generic_event.dart';
-
 part 'generic_state.dart';
 
 class GenericCubit extends Cubit<GenericState> {
@@ -28,7 +26,7 @@ class GenericCubit extends Cubit<GenericState> {
     });
   }
 
-  void loadGenerics(){
+  void loadGenerics() {
     _mapLoadGenericsToState();
   }
 
