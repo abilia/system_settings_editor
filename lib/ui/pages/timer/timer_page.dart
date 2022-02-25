@@ -58,6 +58,16 @@ class TimerPage extends StatelessWidget {
                             ),
                     ),
                   ),
+                  if (timer.paused)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 12.s),
+                      child: Tts(
+                        child: Text(
+                          Translator.of(context).translate.timerPaused,
+                          style: headline4.copyWith(color: AbiliaColors.red),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -172,7 +182,8 @@ class PlayTimerButton extends StatelessWidget {
   final AbiliaTimer timer;
 
   @override
-  Widget build(BuildContext context) => IconActionButtonLight(
+  Widget build(BuildContext context) => IconActionButton(
+        style: actionButtonStyleLightSelected,
         onPressed: () async {
           final t = Translator.of(context).translate;
           final confirmPause = await showViewDialog<bool>(
