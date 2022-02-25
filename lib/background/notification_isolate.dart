@@ -333,17 +333,11 @@ String? _subtitle(
   Locale givenLocale,
   bool alwaysUse24HourFormat,
 ) {
-  final locale = Locales.language.containsKey(givenLocale)
-      ? givenLocale
-      : Locales.language.keys.first;
   final tf =
       hourAndMinuteFromUse24(alwaysUse24HourFormat, givenLocale.languageCode);
-  final translater = Locales.language[locale];
+  final translater = Locales.language[givenLocale] ?? const EN();
   if (notificationAlarm is ActivityAlarm) {
     return _activitySubtitle(notificationAlarm, tf, translater);
-  } else if (notificationAlarm is TimerAlarm) {
-    // TODO
-    return 'Times up!';
   }
   return null;
 }

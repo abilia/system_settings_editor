@@ -162,9 +162,9 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     settingsState ??= context.read<MemoplannerSettingBloc>().state;
     if (settingsState is! MemoplannerSettingsNotLoaded &&
         activitiesState is ActivitiesLoaded) {
-      final timers = await GetIt.I<TimerDb>()
-          .getTimerAlarmsFrom(DateTime.now()); // TODO not now?
-
+      final timers = await GetIt.I<TimerDb>().getTimerAlarmsFrom(
+        DateTime.now(),
+      );
       await scheduleAlarmNotificationsIsolated(
         activities: activitiesState.activities,
         timers: timers,
