@@ -22,6 +22,7 @@ void main() {
   setUp(() {
     dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
     mockActivityRepository = MockActivityRepository();
+    final ticker = Ticker.fake(initialTime: initialMinutes);
     activitiesBloc = ActivitiesBloc(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
@@ -33,8 +34,9 @@ void main() {
       timerAlarmBloc: TimerAlarmBloc(
         timerCubit: TimerCubit(
           timerDb: MockTimerDb(),
+          ticker: ticker,
         ),
-        ticker: Ticker.fake(initialTime: initialMinutes),
+        ticker: ticker,
       ),
     );
   });
@@ -761,6 +763,7 @@ void main() {
         syncBloc: FakeSyncBloc(),
         pushCubit: FakePushCubit(),
       );
+      final ticker = Ticker.fake(initialTime: initialMinutes);
 
       dayEventsCubit = DayEventsCubit(
         dayPickerBloc: dayPickerBloc,
@@ -768,8 +771,9 @@ void main() {
         timerAlarmBloc: TimerAlarmBloc(
           timerCubit: TimerCubit(
             timerDb: MockTimerDb(),
+            ticker: ticker,
           ),
-          ticker: Ticker.fake(initialTime: initialMinutes),
+          ticker: ticker,
         ),
       );
     });
@@ -1059,12 +1063,16 @@ void main() {
           syncBloc: FakeSyncBloc(),
           pushCubit: FakePushCubit(),
         );
+        final ticker = Ticker.fake(initialTime: today);
         dayEventsCubit = DayEventsCubit(
           dayPickerBloc: dayPickerBloc,
           activitiesBloc: activitiesBloc,
           timerAlarmBloc: TimerAlarmBloc(
-            timerCubit: TimerCubit(timerDb: MockTimerDb()),
-            ticker: Ticker.fake(initialTime: today),
+            timerCubit: TimerCubit(
+              timerDb: MockTimerDb(),
+              ticker: ticker,
+            ),
+            ticker: ticker,
           ),
         );
       });

@@ -1,69 +1,68 @@
-import 'package:collection/collection.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimerPage extends StatelessWidget {
-  final AbiliaTimer timer;
+  final TimerOccasion timerOccasion;
   final DateTime day;
 
   const TimerPage({
     Key? key,
-    required this.timer,
+    required this.timerOccasion,
     required this.day,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion?>(
-      selector: (timerState) => timerState.timers.firstWhereOrNull(
-          (timerOccasion) => timerOccasion.timer.id == timer.id),
+    return BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion>(
+      selector: (timerState) => timerState.timers.firstWhere(
+          (to) => to.timer.id == timerOccasion.timer.id,
+          orElse: () => timerOccasion),
       builder: (context, timerOccasion) {
+        final timer = timerOccasion.timer;
         return Scaffold(
           appBar: DayAppBar(day: day),
           body: Padding(
-              padding: layout.timerPage.bodyPadding,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: borderRadius,
-                ),
-                constraints: const BoxConstraints.expand(),
-                child: Column(
-                  children: <Widget>[
-                    _TopInfo(timer: timer),
-                    Divider(
-                      height: layout.activityPage.dividerHeight,
-                      endIndent: 0,
-                      indent: layout.activityPage.dividerIndentation,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.all(layout.timerPage.mainContentPadding),
-                        child: timerOccasion != null && timerOccasion.isOngoing
-                            ? TimerTickerBuilder(
-                                timerOccasion.timer,
-                                builder: (context, left) =>
-                                    TimerWheel.nonInteractive(
-                                  secondsLeft: left.inSeconds,
-                                  lengthInMinutes:
-                                      timerOccasion.timer.duration.inMinutes,
-                                ),
-                              )
-                            : TimerWheel.nonInteractive(
-                                secondsLeft: timerOccasion != null
-                                    ? timerOccasion.timer.pausedAt.inSeconds
-                                    : 0,
+            padding: layout.timerPage.bodyPadding,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: borderRadius,
+              ),
+              constraints: const BoxConstraints.expand(),
+              child: Column(
+                children: <Widget>[
+                  _TopInfo(timer: timer),
+                  Divider(
+                    height: layout.activityPage.dividerHeight,
+                    endIndent: 0,
+                    indent: layout.activityPage.dividerIndentation,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.all(layout.timerPage.mainContentPadding),
+                      child: timer.paused || !timerOccasion.isOngoing
+                          ? TimerWheel.nonInteractive(
+                              secondsLeft: timer.pausedAt.inSeconds,
+                              lengthInMinutes: timer.duration.inMinutes,
+                              paused: timer.paused,
+                            )
+                          : TimerTickerBuilder(
+                              timer,
+                              builder: (context, left) =>
+                                  TimerWheel.nonInteractive(
+                                secondsLeft: left.inSeconds,
                                 lengthInMinutes: timer.duration.inMinutes,
                               ),
-                      ),
+                            ),
                     ),
-                  ],
-                ),
-              )),
-          bottomNavigationBar:
-              _TimerBottomBar(timer: timerOccasion?.timer ?? timer),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: _TimerBottomBar(timer: timer),
         );
       },
     );
@@ -133,12 +132,8 @@ class _TimerBottomBar extends StatelessWidget {
             IconActionButtonLight(
               onPressed: () async {
                 timer.paused
-                    ? await context
-                        .read<TimerCubit>()
-                        .startTimer(timer, DateTime.now())
-                    : await context
-                        .read<TimerCubit>()
-                        .pauseTimer(timer, DateTime.now());
+                    ? await context.read<TimerCubit>().startTimer(timer)
+                    : await context.read<TimerCubit>().pauseTimer(timer);
               },
               child: Icon(
                   timer.paused ? AbiliaIcons.playSound : AbiliaIcons.pause),

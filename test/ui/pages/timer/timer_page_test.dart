@@ -79,24 +79,33 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(providers: [
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.fixed(startTime),
-          ),
-          BlocProvider<TimerCubit>(
-            create: (context) => TimerCubit(timerDb: mockTimerDb),
-          ),
-          BlocProvider<MemoplannerSettingBloc>.value(
-            value: mockMemoplannerSettingsBloc,
-          ),
-          BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
-          BlocProvider<TimerAlarmBloc>.value(value: mockTimerAlarmBloc),
-          BlocProvider<SettingsCubit>(
-            create: (context) => SettingsCubit(
-              settingsDb: FakeSettingsDb(),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<ClockBloc>(
+              create: (context) => ClockBloc.fixed(startTime),
             ),
+            BlocProvider<TimerCubit>(
+              create: (context) => TimerCubit(
+                timerDb: mockTimerDb,
+                ticker: Ticker.fake(initialTime: startTime),
+              ),
+            ),
+            BlocProvider<MemoplannerSettingBloc>.value(
+              value: mockMemoplannerSettingsBloc,
+            ),
+            BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
+            BlocProvider<TimerAlarmBloc>.value(value: mockTimerAlarmBloc),
+            BlocProvider<SettingsCubit>(
+              create: (context) => SettingsCubit(
+                settingsDb: FakeSettingsDb(),
+              ),
+            ),
+          ],
+          child: TimerPage(
+            timerOccasion: TimerOccasion(timer, Occasion.current),
+            day: timer.startTime,
           ),
-        ], child: TimerPage(timer: timer, day: timer.startTime)),
+        ),
       );
 
   testWidgets('Page visible', (WidgetTester tester) async {

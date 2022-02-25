@@ -132,7 +132,7 @@ class CreateNewPage extends StatelessWidget {
           builder: (context) => MultiBlocProvider(
             providers: providers,
             child: TimerPage(
-              timer: timerStarted,
+              timerOccasion: TimerOccasion(timerStarted, Occasion.current),
               day: timerStarted.startTime.onlyDays(),
             ),
           ),
