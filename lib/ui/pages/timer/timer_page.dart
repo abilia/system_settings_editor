@@ -131,9 +131,27 @@ class _TimerBottomBar extends StatelessWidget {
           children: <Widget>[
             IconActionButtonLight(
               onPressed: () async {
-                timer.paused
-                    ? await context.read<TimerCubit>().startTimer(timer)
-                    : await context.read<TimerCubit>().pauseTimer(timer);
+                final paused = timer.paused;
+                final t = Translator.of(context).translate;
+                final confirmPause = await showViewDialog(
+                  context: context,
+                  builder: (context) => paused
+                      ? YesNoDialog(
+                          headingIcon: AbiliaIcons.playSound,
+                          heading: t.resume,
+                          text: t.timerResume,
+                        )
+                      : YesNoDialog(
+                          headingIcon: AbiliaIcons.pause,
+                          heading: t.pause,
+                          text: t.timerPause,
+                        ),
+                );
+                if (confirmPause) {
+                  paused
+                      ? await context.read<TimerCubit>().startTimer(timer)
+                      : await context.read<TimerCubit>().pauseTimer(timer);
+                }
               },
               child: Icon(
                   timer.paused ? AbiliaIcons.playSound : AbiliaIcons.pause),

@@ -148,10 +148,11 @@ class TimerCardWheel extends StatelessWidget {
       );
     }
     return TimerWheel.simplified(
-      isPast: timerOccasion.isPast && !timer.paused,
-      paused: timer.paused,
-      secondsLeft: timer.paused ? timer.pausedAt.inSeconds : 0,
-      lengthInMinutes: timer.duration.inMinutes,
+      paused: timerOccasion.timer.paused,
+      secondsLeft: timerOccasion.timer.paused
+          ? timerOccasion.timer.pausedAt.inSeconds
+          : 0,
+      lengthInMinutes: timerOccasion.timer.duration.inMinutes,
     );
   }
 }
