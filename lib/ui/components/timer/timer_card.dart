@@ -137,12 +137,13 @@ class TimerCardWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (timerOccasion.isOngoing) {
+    final timer = timerOccasion.timer;
+    if (timerOccasion.isOngoing && !timer.paused) {
       return TimerTickerBuilder(
-        timerOccasion.timer,
+        timer,
         builder: (context, left) => TimerWheel.simplified(
           secondsLeft: left.inSeconds,
-          lengthInMinutes: timerOccasion.timer.duration.inMinutes,
+          lengthInMinutes: timer.duration.inMinutes,
         ),
       );
     }
