@@ -157,6 +157,16 @@ void main() {
     await expect;
   });
 
+  testWidgets('Pausing timer, cancel pause', (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.pause));
+    await tester.pumpAndSettle();
+    await tester.tapAt(Offset.zero);
+    await tester.pumpAndSettle();
+    expect(find.byType(TimerTickerBuilder), findsOneWidget);
+  });
+
   testWidgets('Resuming timer, TimerCubit emits "default"(non-paused) timer',
       (WidgetTester tester) async {
     when(() => mockTimerAlarmBloc.state).thenReturn(TimerAlarmState(

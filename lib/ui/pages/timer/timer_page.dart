@@ -128,34 +128,12 @@ class _TimerBottomBar extends StatelessWidget {
       child: SizedBox(
         height: layout.toolbar.height,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            IconActionButtonLight(
-              onPressed: () async {
-                final paused = timer.paused;
-                final t = Translator.of(context).translate;
-                final confirmPause = await showViewDialog(
-                  context: context,
-                  builder: (context) => paused
-                      ? YesNoDialog(
-                          headingIcon: AbiliaIcons.playSound,
-                          heading: t.resume,
-                          text: t.timerResume,
-                        )
-                      : YesNoDialog(
-                          headingIcon: AbiliaIcons.pause,
-                          heading: t.pause,
-                          text: t.timerPause,
-                        ),
-                );
-                if (confirmPause) {
-                  paused
-                      ? await context.read<TimerCubit>().startTimer(timer)
-                      : await context.read<TimerCubit>().pauseTimer(timer);
-                }
-              },
-              child: Icon(
-                  timer.paused ? AbiliaIcons.playSound : AbiliaIcons.pause),
-            ),
+            if (timer.paused)
+              PlayTimerButton(timer: timer)
+            else
+              PauseTimerButton(timer: timer),
             IconActionButtonLight(
               onPressed: () async {
                 final t = Translator.of(context).translate;
@@ -178,12 +156,65 @@ class _TimerBottomBar extends StatelessWidget {
               onPressed: () => Navigator.of(context).maybePop(),
               child: const Icon(AbiliaIcons.navigationPrevious),
             )
-          ]
-              .map((b) => [const Spacer(), b, const Spacer()])
-              .expand((w) => w)
-              .toList(),
+          ],
         ),
       ),
     );
   }
+}
+
+class PlayTimerButton extends StatelessWidget {
+  const PlayTimerButton({
+    Key? key,
+    required this.timer,
+  }) : super(key: key);
+
+  final AbiliaTimer timer;
+
+  @override
+  Widget build(BuildContext context) => IconActionButtonLight(
+        onPressed: () async {
+          final t = Translator.of(context).translate;
+          final confirmPause = await showViewDialog<bool>(
+            context: context,
+            builder: (context) => YesNoDialog(
+              headingIcon: AbiliaIcons.playSound,
+              heading: t.resume,
+              text: t.timerResume,
+            ),
+          );
+          if (confirmPause == true) {
+            await context.read<TimerCubit>().startTimer(timer);
+          }
+        },
+        child: const Icon(AbiliaIcons.playSound),
+      );
+}
+
+class PauseTimerButton extends StatelessWidget {
+  const PauseTimerButton({
+    Key? key,
+    required this.timer,
+  }) : super(key: key);
+
+  final AbiliaTimer timer;
+
+  @override
+  Widget build(BuildContext context) => IconActionButtonLight(
+        onPressed: () async {
+          final t = Translator.of(context).translate;
+          final confirmPause = await showViewDialog<bool>(
+            context: context,
+            builder: (context) => YesNoDialog(
+              headingIcon: AbiliaIcons.pause,
+              heading: t.pause,
+              text: t.timerPause,
+            ),
+          );
+          if (confirmPause == true) {
+            await context.read<TimerCubit>().pauseTimer(timer);
+          }
+        },
+        child: const Icon(AbiliaIcons.pause),
+      );
 }
