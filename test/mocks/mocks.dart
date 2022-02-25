@@ -7,7 +7,6 @@ import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:seagull/db/all.dart';
-import 'package:seagull/models/abilia_timer.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 
@@ -43,13 +42,7 @@ class MockGenericDb extends Mock implements GenericDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
 
-class MockTimerDb extends Mock implements TimerDb {
-  @override
-  Future<int> update(AbiliaTimer timer) => Future(() => 1);
-
-  @override
-  Future<int> delete(AbiliaTimer timer) => Future(() => 1);
-}
+class MockTimerDb extends Mock implements TimerDb {}
 
 class MockScrollController extends Mock implements ScrollController {}
 

@@ -54,6 +54,8 @@ void main() {
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
+    when(() => mockTimerDb.update(any())).thenAnswer((_) => Future.value(1));
+    when(() => mockTimerDb.delete(any())).thenAnswer((_) => Future.value(1));
     mockTimerAlarmBloc = MockTimerAlarmBloc();
     when(() => mockTimerAlarmBloc.state).thenReturn(TimerAlarmState(
       timers: [
