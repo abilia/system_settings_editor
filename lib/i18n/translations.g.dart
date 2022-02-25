@@ -200,6 +200,16 @@ abstract class Translated {
 
   final String timerDelete = 'Do you want to delete the timer?';
 
+  final String timerPause = 'Do you want to pause the timer?';
+
+  final String timerResume = 'Do you want to continue the timer?';
+
+  final String timerPaused = 'Paused';
+
+  final String pause = 'Pause';
+
+  final String resume = 'Continue';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1093,6 +1103,21 @@ class SV extends Translated {
 
   @override
   final String timerDelete = 'Vill du ta bort timern?';
+
+  @override
+  final String timerPause = 'Vill du pausa timern?';
+
+  @override
+  final String timerResume = 'Vill du fortsätta timern?';
+
+  @override
+  final String timerPaused = 'Pausad';
+
+  @override
+  final String pause = 'Pausa';
+
+  @override
+  final String resume = 'Fortsätt';
 
   @override
   final String reminders = 'Påminnelser';
