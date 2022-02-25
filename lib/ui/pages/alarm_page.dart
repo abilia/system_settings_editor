@@ -22,7 +22,7 @@ class AlarmPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
-        iconData: AbiliaIcons.alarmBell,
+        iconData: AbiliaIcons.handiAlarmVibration,
         trailing: Padding(
           padding: layout.alarmPage.alarmClockPadding,
           child: AbiliaClock(
