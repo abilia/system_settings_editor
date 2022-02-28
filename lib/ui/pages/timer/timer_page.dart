@@ -42,20 +42,41 @@ class TimerPage extends StatelessWidget {
                     child: Padding(
                       padding:
                           EdgeInsets.all(layout.timerPage.mainContentPadding),
-                      child: timer.paused || !timerOccasion.isOngoing
-                          ? TimerWheel.nonInteractive(
-                              secondsLeft: timer.pausedAt.inSeconds,
-                              lengthInMinutes: timer.duration.inMinutes,
-                              paused: timer.paused,
-                            )
-                          : TimerTickerBuilder(
-                              timer,
-                              builder: (context, left) =>
-                                  TimerWheel.nonInteractive(
-                                secondsLeft: left.inSeconds,
+                      child: Column(
+                        children: [
+                          if (timer.paused || !timerOccasion.isOngoing)
+                            Expanded(
+                              child: TimerWheel.nonInteractive(
+                                secondsLeft: timer.pausedAt.inSeconds,
                                 lengthInMinutes: timer.duration.inMinutes,
+                                paused: timer.paused,
+                              ),
+                            )
+                          else
+                            Expanded(
+                              child: TimerTickerBuilder(
+                                timer,
+                                builder: (context, left) =>
+                                    TimerWheel.nonInteractive(
+                                  secondsLeft: left.inSeconds,
+                                  lengthInMinutes: timer.duration.inMinutes,
+                                ),
                               ),
                             ),
+                          if (timer.paused)
+                            Padding(
+                              padding: layout.timerPage.pauseTextPadding,
+                              child: Tts(
+                                child: Text(
+                                  Translator.of(context).translate.timerPaused,
+                                  style: headline4.copyWith(
+                                    color: AbiliaColors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -172,7 +193,8 @@ class PlayTimerButton extends StatelessWidget {
   final AbiliaTimer timer;
 
   @override
-  Widget build(BuildContext context) => IconActionButtonLight(
+  Widget build(BuildContext context) => IconActionButton(
+        style: actionButtonStyleLightSelected,
         onPressed: () async {
           final t = Translator.of(context).translate;
           final confirmPause = await showViewDialog<bool>(
