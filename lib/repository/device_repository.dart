@@ -41,4 +41,5 @@ class DeviceRepository extends Repository {
   }
 
   Future<void> setSerialId(String serialId) => deviceDb.setSerialId(serialId);
+  Future<String> getClientId() => deviceDb.getClientId();
 }
