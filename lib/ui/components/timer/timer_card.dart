@@ -52,7 +52,7 @@ class TimerCard extends StatelessWidget {
                       builder: (context) => MultiBlocProvider(
                         providers: authProviders,
                         child: TimerPage(
-                          timer: timerOccasion.timer,
+                          timerOccasion: timerOccasion,
                           day: day,
                         ),
                       ),
@@ -137,17 +137,17 @@ class TimerCardWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (timerOccasion.isOngoing) {
+    final timer = timerOccasion.timer;
+    if (timerOccasion.isOngoing && !timer.paused) {
       return TimerTickerBuilder(
-        timerOccasion.timer,
+        timer,
         builder: (context, left) => TimerWheel.simplified(
           secondsLeft: left.inSeconds,
-          lengthInMinutes: timerOccasion.timer.duration.inMinutes,
+          lengthInMinutes: timer.duration.inMinutes,
         ),
       );
     }
     return TimerWheel.simplified(
-      isPast: timerOccasion.isPast,
       paused: timerOccasion.timer.paused,
       secondsLeft: timerOccasion.timer.paused
           ? timerOccasion.timer.pausedAt.inSeconds

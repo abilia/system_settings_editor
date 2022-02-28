@@ -38,7 +38,9 @@ class AbiliaTimer extends Equatable {
   DateTime get endTime => startTime.add(duration);
 
   bool get hasImage => fileId.isNotEmpty;
+
   bool get hasTitle => title.isNotEmpty;
+
   AbiliaFile get imageFile => AbiliaFile.from(id: fileId);
 
   Map<String, dynamic> toMapForDb() => {
@@ -56,11 +58,34 @@ class AbiliaTimer extends Equatable {
     return TimerOccasion(this, Occasion.current);
   }
 
+  AbiliaTimer pause(DateTime pauseTime) => AbiliaTimer(
+        id: id,
+        startTime: startTime,
+        duration: duration,
+        paused: true,
+        pausedAt: endTime.difference(pauseTime),
+        title: title,
+        fileId: fileId,
+      );
+
+  AbiliaTimer resume(DateTime resumeTime) {
+    if (!paused) return this;
+    return AbiliaTimer(
+      id: id,
+      startTime: resumeTime.subtract(duration - pausedAt),
+      duration: duration,
+      paused: false,
+      pausedAt: Duration.zero,
+      title: title,
+      fileId: fileId,
+    );
+  }
+
   static AbiliaTimer fromDbMap(Map<String, dynamic> dbRow) => AbiliaTimer(
         id: dbRow['id'],
         title: dbRow['title'],
         fileId: dbRow['file_id'],
-        paused: dbRow['full_day'] == 1,
+        paused: dbRow['paused'] == 1,
         startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
         duration: Duration(milliseconds: dbRow['duration'] ?? 0),
         pausedAt: Duration(milliseconds: dbRow['paused_at'] ?? 0),

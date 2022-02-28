@@ -1,9 +1,14 @@
 _id_	en	sv	da	nl	fi	de	nb
 timerDelete	Do you want to delete the timer?	Vill du ta bort timern?					
+timerPause	Do you want to pause the timer?	Vill du pausa timern?					
+timerResume	Do you want to continue the timer?	Vill du fortsätta timern?					
+timerPaused	Paused	Pausad					
+pause	Pause	Pausa					
+resume	Continue	Fortsätt					
 enterNameForTimer	Enter name for timer	Ange namn för timer					
-onlyAppliesToGo	Only applies to MEMOplanner Go
-selectADayToViewDetails	Select a day to view more details
-allPhotos	All photos
-addToPhotoCalendarQuestion	Add this photo to Photo-calendar?
-removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?
-remove	Remove
+onlyAppliesToGo	Only applies to MEMOplanner Go						
+selectADayToViewDetails	Select a day to view more details						
+allPhotos	All photos						
+addToPhotoCalendarQuestion	Add this photo to Photo-calendar?						
+removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?						
+remove	Remove						

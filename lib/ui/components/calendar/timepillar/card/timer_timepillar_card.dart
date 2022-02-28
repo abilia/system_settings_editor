@@ -40,7 +40,7 @@ class TimerTimepillardCard extends TimepillarCard {
                 builder: (_) => MultiBlocProvider(
                   providers: authProviders,
                   child: TimerPage(
-                    timer: timerOccasion.timer,
+                    timerOccasion: timerOccasion,
                     day: context.read<DayPickerBloc>().state.day,
                   ),
                 ),
