@@ -42,32 +42,43 @@ class TimerPage extends StatelessWidget {
                     child: Padding(
                       padding:
                           EdgeInsets.all(layout.timerPage.mainContentPadding),
-                      child: timer.paused || !timerOccasion.isOngoing
-                          ? TimerWheel.nonInteractive(
-                              secondsLeft: timer.pausedAt.inSeconds,
-                              lengthInMinutes: timer.duration.inMinutes,
-                              paused: timer.paused,
-                            )
-                          : TimerTickerBuilder(
-                              timer,
-                              builder: (context, left) =>
-                                  TimerWheel.nonInteractive(
-                                secondsLeft: left.inSeconds,
+                      child: Column(
+                        children: [
+                          if (timer.paused || !timerOccasion.isOngoing)
+                            Expanded(
+                              child: TimerWheel.nonInteractive(
+                                secondsLeft: timer.pausedAt.inSeconds,
                                 lengthInMinutes: timer.duration.inMinutes,
+                                paused: timer.paused,
+                              ),
+                            )
+                          else
+                            Expanded(
+                              child: TimerTickerBuilder(
+                                timer,
+                                builder: (context, left) =>
+                                    TimerWheel.nonInteractive(
+                                  secondsLeft: left.inSeconds,
+                                  lengthInMinutes: timer.duration.inMinutes,
+                                ),
                               ),
                             ),
-                    ),
-                  ),
-                  if (timer.paused)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 12.s),
-                      child: Tts(
-                        child: Text(
-                          Translator.of(context).translate.timerPaused,
-                          style: headline4.copyWith(color: AbiliaColors.red),
-                        ),
+                          if (timer.paused)
+                            Padding(
+                              padding: layout.timerPage.pauseTextPadding,
+                              child: Tts(
+                                child: Text(
+                                  Translator.of(context).translate.timerPaused,
+                                  style: headline4.copyWith(
+                                    color: AbiliaColors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

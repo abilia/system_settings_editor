@@ -381,7 +381,7 @@ class EventCardLayout {
 class TimerPageLayout {
   final double topInfoHeight, imageSize, imagePadding, mainContentPadding;
 
-  final EdgeInsets bodyPadding, topPadding;
+  final EdgeInsets bodyPadding, topPadding, pauseTextPadding;
 
   const TimerPageLayout({
     this.topInfoHeight = 126,
@@ -390,6 +390,7 @@ class TimerPageLayout {
     this.imagePadding = 8,
     this.bodyPadding = const EdgeInsets.all(12),
     this.topPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+    this.pauseTextPadding = const EdgeInsets.only(top: 16),
   });
 }
 
