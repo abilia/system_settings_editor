@@ -34,16 +34,14 @@ class ToggleAlarmButtonActive extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconActionButton(
       style: actionButtonStyleRed,
-      onPressed: () => context.read<GenericBloc>().add(
-            GenericUpdated(
-              [
-                MemoplannerSettingData.fromData(
-                  data: 0,
-                  identifier: AlarmSettings.alarmsDisabledUntilKey,
-                ),
-              ],
-            ),
+      onPressed: () => context.read<GenericCubit>().genericUpdated(
+        [
+          MemoplannerSettingData.fromData(
+            data: 0,
+            identifier: AlarmSettings.alarmsDisabledUntilKey,
           ),
+        ],
+      ),
       child: const Icon(AbiliaIcons.handiNoAlarmVibration),
     );
   }
@@ -64,16 +62,14 @@ class ToggleAlarmButtonInactive extends StatelessWidget {
             text: Translator.of(context).translate.alertAlarmsDisabled,
           ),
         );
-        context.read<GenericBloc>().add(
-              GenericUpdated(
-                [
-                  MemoplannerSettingData.fromData(
-                    data: now.onlyDays().nextDay().millisecondsSinceEpoch,
-                    identifier: AlarmSettings.alarmsDisabledUntilKey,
-                  ),
-                ],
-              ),
-            );
+        context.read<GenericCubit>().genericUpdated(
+          [
+            MemoplannerSettingData.fromData(
+              data: now.onlyDays().nextDay().millisecondsSinceEpoch,
+              identifier: AlarmSettings.alarmsDisabledUntilKey,
+            ),
+          ],
+        );
       },
       child: const Icon(AbiliaIcons.handiAlarmVibration),
     );

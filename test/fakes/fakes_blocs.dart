@@ -36,11 +36,9 @@ class FakeSortableBloc extends Fake implements SortableBloc {
   Future<void> close() async {}
 }
 
-class FakeGenericBloc extends Fake implements GenericBloc {
+class FakeGenericCubit extends Fake implements GenericCubit {
   @override
   Stream<GenericState> get stream => const Stream.empty();
-  @override
-  void add(GenericEvent event) {}
   @override
   Future<void> close() async {}
 }

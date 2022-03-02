@@ -6,14 +6,14 @@ import 'package:seagull/models/all.dart';
 part 'month_calendar_settings_state.dart';
 
 class MonthCalendarSettingsCubit extends Cubit<MonthCalendarSettingsState> {
-  final GenericBloc genericBloc;
+  final GenericCubit genericCubit;
 
   MonthCalendarSettingsCubit({
     required MemoplannerSettingsState settingsState,
-    required this.genericBloc,
+    required this.genericCubit,
   }) : super(MonthCalendarSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeMonthCalendarSettings(MonthCalendarSettingsState newState) =>
       emit(newState);
-  void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
+  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

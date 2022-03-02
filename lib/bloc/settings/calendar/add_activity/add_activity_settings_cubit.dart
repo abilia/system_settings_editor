@@ -5,14 +5,14 @@ import 'package:seagull/models/all.dart';
 part 'add_activity_settings_state.dart';
 
 class AddActivitySettingsCubit extends Cubit<AddActivitySettingsState> {
-  final GenericBloc genericBloc;
+  final GenericCubit genericCubit;
 
   AddActivitySettingsCubit({
     required MemoplannerSettingsState settingsState,
-    required this.genericBloc,
+    required this.genericCubit,
   }) : super(AddActivitySettingsState.fromMemoplannerSettings(settingsState));
 
   void changeAddActivitySettings(AddActivitySettingsState newState) =>
       emit(newState);
-  void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
+  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

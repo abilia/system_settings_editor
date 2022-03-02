@@ -54,36 +54,34 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                 );
                 if (answer != true) return;
               }
-              context.read<GenericBloc>().add(
-                    GenericUpdated(
-                      [
-                        MemoplannerSettingData.fromData(
-                          data: camera,
-                          identifier: MenuSettings.showCameraKey,
-                        ),
-                        MemoplannerSettingData.fromData(
-                          data: myPhotos,
-                          identifier: MenuSettings.showPhotosKey,
-                        ),
-                        MemoplannerSettingData.fromData(
-                          data: photoCalendar,
-                          identifier: MenuSettings.showPhotoCalendarKey,
-                        ),
-                        MemoplannerSettingData.fromData(
-                          data: countdown,
-                          identifier: MenuSettings.showTimersKey,
-                        ),
-                        MemoplannerSettingData.fromData(
-                          data: quickSettings,
-                          identifier: MenuSettings.showQuickSettingsKey,
-                        ),
-                        MemoplannerSettingData.fromData(
-                          data: settings,
-                          identifier: MenuSettings.showSettingsKey,
-                        ),
-                      ],
-                    ),
-                  );
+              context.read<GenericCubit>().genericUpdated(
+                [
+                  MemoplannerSettingData.fromData(
+                    data: camera,
+                    identifier: MenuSettings.showCameraKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: myPhotos,
+                    identifier: MenuSettings.showPhotosKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: photoCalendar,
+                    identifier: MenuSettings.showPhotoCalendarKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: countdown,
+                    identifier: MenuSettings.showTimersKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: quickSettings,
+                    identifier: MenuSettings.showQuickSettingsKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: settings,
+                    identifier: MenuSettings.showSettingsKey,
+                  ),
+                ],
+              );
               Navigator.of(context).pop();
             },
           ),

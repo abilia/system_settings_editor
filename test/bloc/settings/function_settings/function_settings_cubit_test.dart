@@ -16,7 +16,7 @@ void main() {
     const settingsState = MemoplannerSettingsNotLoaded();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: settingsState,
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     expect(
@@ -52,7 +52,7 @@ void main() {
   test('state after all change', () {
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     functionSettingsCubit.changeFunctionSettings(
@@ -98,7 +98,7 @@ void main() {
     // Arrange
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: FakeGenericBloc(),
+      genericCubit: FakeGenericCubit(),
     );
 
     // Act -- Change to week calendar
@@ -202,11 +202,11 @@ void main() {
     );
   });
 
-  test('saving', () {
-    final genericBloc = MockGenericBloc();
+  test('saving', () async {
+    final genericCubit = MockGenericCubit();
     final functionSettingsCubit = FunctionSettingsCubit(
       settingsState: const MemoplannerSettingsNotLoaded(),
-      genericBloc: genericBloc,
+      genericCubit: genericCubit,
     );
 
     functionSettingsCubit.changeFunctionSettings(
@@ -259,12 +259,15 @@ void main() {
     // Act -- save
     functionSettingsCubit.save();
 
-    // Assert -- calls genericBloc
-    final captured = verify(() => genericBloc.add(captureAny())).captured;
+    // Assert -- calls genericCubit
+
+    final captured =
+        verify(() => genericCubit.genericUpdated(captureAny())).captured;
     expect(captured, hasLength(1));
-    expect(captured.single.runtimeType, GenericUpdated);
+
+    expect(captured.single.runtimeType, List<MemoplannerSettingData<dynamic>>);
     expect(
-      (captured.single as GenericUpdated).genericData,
+      (captured.single as List<MemoplannerSettingData<dynamic>>),
       expectedSettingsData,
     );
   });

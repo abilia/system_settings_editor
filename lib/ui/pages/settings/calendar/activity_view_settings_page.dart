@@ -13,7 +13,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ActivityViewSettingsCubit(
         settingsState: context.read<MemoplannerSettingBloc>().state,
-        genericBloc: context.read<GenericBloc>(),
+        genericCubit: context.read<GenericCubit>(),
       ),
       child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettingsState>(
         builder: (context, state) => SettingsBasePage(
@@ -98,7 +98,7 @@ class _FakeMemoplannerSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GenericBloc, GenericState>(
+    return BlocBuilder<GenericCubit, GenericState>(
       builder: (context, genericState) => BlocProvider(
         create: (context) => MemoplannerSettingBloc()
           ..add(
