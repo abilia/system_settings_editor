@@ -40,9 +40,9 @@ class TimerPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding:
-                          EdgeInsets.all(layout.timerPage.mainContentPadding),
+                      padding: layout.timerPage.mainContentPadding,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (timer.paused || !timerOccasion.isOngoing)
                             Expanded(
@@ -63,18 +63,24 @@ class TimerPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          if (timer.paused)
-                            Padding(
-                              padding: layout.timerPage.pauseTextPadding,
-                              child: Tts(
-                                child: Text(
-                                  Translator.of(context).translate.timerPaused,
-                                  style: headline4.copyWith(
-                                    color: AbiliaColors.red,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          SizedBox(
+                            height: layout.timerPage.pauseTextHeight,
+                            child: timer.paused
+                                ? Tts(
+                                    child: Text(
+                                      Translator.of(context)
+                                          .translate
+                                          .timerPaused,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4
+                                          ?.copyWith(
+                                            color: AbiliaColors.red,
+                                          ),
+                                    ),
+                                  )
+                                : null,
+                          )
                         ],
                       ),
                     ),
