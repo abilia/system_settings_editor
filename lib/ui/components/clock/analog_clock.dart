@@ -27,6 +27,34 @@ class AnalogClock extends StatelessWidget {
   }
 }
 
+class CustomizableAnalogClock extends StatelessWidget {
+  const CustomizableAnalogClock({
+    Key? key,
+    required this.style,
+  }) : super(key: key);
+  final AnalogClockStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return _AnalogClock(
+      borderWidth: style.borderWidth,
+      borderColor: style.borderColor,
+      dialPlateColor: style.backgroundColor,
+      hourHandColor: style.foregroundColor,
+      minuteHandColor: style.foregroundColor,
+      numberColor: style.foregroundColor,
+      centerPointColor: style.foregroundColor,
+      height: layout.actionButton.size,
+      width: layout.actionButton.size,
+      centerPointRadius: layout.clock.centerPointRadius,
+      hourNumberScale: layout.clock.hourNumberScale,
+      hourHandLength: layout.clock.hourHandLength,
+      minuteHandLength: layout.clock.minuteHandLength,
+      fontSize: layout.clock.fontSize,
+    );
+  }
+}
+
 // A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class _AnalogClock extends StatelessWidget {
   final VoidCallback? onPressed;

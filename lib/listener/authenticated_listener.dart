@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
-import 'package:seagull/listener/all.dart';
-import 'package:seagull/ui/all.dart';
-import 'package:system_settings_editor/system_settings_editor.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedListener extends StatefulWidget {
   const AuthenticatedListener({
@@ -117,16 +116,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
         ),
         if (Config.isMP) ...[
-          BlocListener<InactivityCubit, InactivityState>(
-            listenWhen: (previous, current) =>
-                current is InactivityThresholdReachedState &&
-                previous is ActivityDetectedState,
-            listener: (context, state) {
-              context.read<MonthCalendarCubit>().goToCurrentMonth();
-              context.read<WeekCalendarCubit>().goToCurrentWeek();
-              context.read<DayPickerBloc>().add(CurrentDay());
-            },
-          ),
+          CalendarInactivityListener(),
+          HomeScreenInactivityListener(),
           KeepScreenAwakeListener(),
         ],
         if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),

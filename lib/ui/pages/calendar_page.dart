@@ -2,7 +2,8 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class CalendarPage extends StatelessWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+  const CalendarPage({Key? key, this.initialIndex = 0}) : super(key: key);
+  final int initialIndex;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -15,7 +16,7 @@ class CalendarPage extends StatelessWidget {
             ? context.read<InactivityCubit>().activityDetected
             : null,
         child: DefaultTabController(
-          initialIndex: 0,
+          initialIndex: initialIndex,
           length: settingsState.calendarCount,
           child: Scaffold(
             bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&

@@ -199,6 +199,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                 ),
               ),
+            if (Config.isMP)
+              BlocProvider<InactivityCubit>(
+                create: (context) => InactivityCubit(
+                  const Duration(minutes: 6),
+                  context.read<ClockBloc>(),
+                  context.read<MemoplannerSettingBloc>(),
+                ),
+              ),
           ],
           child: child,
         ),
@@ -277,13 +285,6 @@ class TopLevelBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
           ),
-          if (Config.isMP)
-            BlocProvider<InactivityCubit>(
-              create: (context) => InactivityCubit(
-                const Duration(minutes: 6),
-                context.read<ClockBloc>(),
-              ),
-            ),
         ],
         child: child,
       ),
