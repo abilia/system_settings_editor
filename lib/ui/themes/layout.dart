@@ -44,7 +44,7 @@ class Layout {
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
   final AlarmPageLayout alarmPage;
-  final ScreenSaver screenSaver;
+  final ScreenSaverLayout screenSaver;
 
   const Layout({
     this.radius = 12,
@@ -80,7 +80,7 @@ class Layout {
       padding: EdgeInsets.only(left: 8),
     ),
     this.alarmPage = const AlarmPageLayout(),
-    this.screenSaver = const ScreenSaver(),
+    this.screenSaver = const ScreenSaverLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -752,7 +752,7 @@ class AlarmPageLayout {
   });
 }
 
-class ScreenSaver {
+class ScreenSaverLayout {
   final double clockHeight,
       clockSeparation,
       digitalClockTextSize,
@@ -763,7 +763,7 @@ class ScreenSaver {
   final Color dayColor, nightColor;
   final AnalogClockStyle dayClock, nightClock;
 
-  const ScreenSaver({
+  const ScreenSaverLayout({
     this.clockHeight = 288,
     this.clockSeparation = 48,
     this.digitalClockTextSize = 80,
