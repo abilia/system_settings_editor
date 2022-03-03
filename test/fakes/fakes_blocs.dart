@@ -122,7 +122,7 @@ class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
   Future<void> close() async {}
 }
 
-class FakeLicenseBloc extends Fake implements LicenseBloc {
+class FakeLicenseBloc extends Fake implements LicenseCubit {
   @override
   Stream<LicenseState> get stream => const Stream.empty();
   @override

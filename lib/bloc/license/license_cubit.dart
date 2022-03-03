@@ -6,14 +6,13 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'license_event.dart';
 part 'license_state.dart';
 
-class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
+class LicenseCubit extends Cubit<LicenseState> {
   final ClockBloc clockBloc;
   late final StreamSubscription pushSubscription;
   late final StreamSubscription authSubscription;
-  LicenseBloc({
+  LicenseCubit({
     required this.userRepository,
     required this.clockBloc,
     required PushCubit pushCubit,
@@ -21,30 +20,25 @@ class LicenseBloc extends Bloc<LicenseEvent, LicenseState> {
   }) : super(LicensesNotLoaded()) {
     pushSubscription = pushCubit.stream.listen((state) {
       if (state is PushReceived) {
-        add(ReloadLicenses());
+        reloadLicenses();
       }
     });
 
     authSubscription = authenticationBloc.stream.listen((state) {
       if (state is Authenticated) {
-        add(ReloadLicenses());
+        reloadLicenses();
       }
     });
   }
 
   final UserRepository userRepository;
 
-  @override
-  Stream<LicenseState> mapEventToState(
-    LicenseEvent event,
-  ) async* {
-    if (event is ReloadLicenses) {
-      final licenses = await userRepository.getLicenses();
-      if (licenses.anyValidLicense(clockBloc.state)) {
-        yield ValidLicense();
-      } else {
-        yield NoValidLicense();
-      }
+  void reloadLicenses() async {
+    final licenses = await userRepository.getLicenses();
+    if (licenses.anyValidLicense(clockBloc.state)) {
+      emit(ValidLicense());
+    } else {
+      emit(NoValidLicense());
     }
   }
 

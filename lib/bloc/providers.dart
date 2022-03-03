@@ -172,13 +172,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 GetIt.I<SettingsDb>(),
               ),
             ),
-            BlocProvider<LicenseBloc>(
-              create: (context) => LicenseBloc(
+            BlocProvider<LicenseCubit>(
+              create: (context) => LicenseCubit(
                 clockBloc: context.read<ClockBloc>(),
                 pushCubit: context.read<PushCubit>(),
                 userRepository: context.read<UserRepository>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
-              )..add(ReloadLicenses()),
+              )..reloadLicenses(),
             ),
             BlocProvider<PermissionCubit>(
               create: (context) => PermissionCubit()

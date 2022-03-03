@@ -1,4 +1,4 @@
-part of 'license_bloc.dart';
+part of 'license_cubit.dart';
 
 abstract class LicenseState extends Equatable {
   const LicenseState();

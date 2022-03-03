@@ -98,7 +98,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             }
           },
         ),
-        BlocListener<LicenseBloc, LicenseState>(
+        BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
