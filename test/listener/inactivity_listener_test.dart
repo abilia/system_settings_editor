@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/getit.dart';
@@ -47,7 +48,7 @@ void main() {
     GetIt.I.reset();
   });
 
-  Widget _wrapWithMaterialApp() => TopLevelBlocsProvider(
+  Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
         runStartGuide: false,
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: settingBloc,
@@ -59,7 +60,7 @@ void main() {
               home: MultiBlocListener(listeners: [
                 CalendarInactivityListener(),
                 HomeScreenInactivityListener(),
-              ], child: Container()),
+              ], child: child ?? Container()),
             ),
           ),
         ),
@@ -124,4 +125,36 @@ void main() {
       expect(find.byType(ScreenSaverPage), findsOneWidget);
     });
   }, skip: Config.isMPGO);
+
+  group('Calendar inactivity', () {
+    final local = Intl.getCurrentLocale();
+    testWidgets('When timeout is reached, day calendar switches to current day',
+        (tester) async {
+      await tester.pumpWidget(_wrapWithMaterialApp(child: const DayCalendar()));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+      await tester.pumpAndSettle();
+      expect(
+          find.text(DateFormat.EEEE(local).format(initialTime)), findsNothing);
+      inactivityCubit.emit(
+        const CalendarInactivityThresholdReachedState(),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.text(DateFormat.EEEE(local).format(initialTime)),
+          findsOneWidget);
+    });
+
+    testWidgets('When timeout is reached, if not in calendar, do nothing',
+        (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
+      await tester.pumpAndSettle();
+      inactivityCubit.emit(
+        const CalendarInactivityThresholdReachedState(),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsNothing);
+    });
+  });
 }
