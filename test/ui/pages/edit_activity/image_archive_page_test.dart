@@ -16,14 +16,14 @@ import '../../../test_helpers/tts.dart';
 void main() {
   group('Image archive test', () {
     final translate = Locales.language.values.first;
-    late MockSortableCubit mockSortableBloc;
+    late MockSortableBloc mockSortableBloc;
 
     setUpAll(() {
       registerFallbackValues();
     });
 
     setUp(() async {
-      mockSortableBloc = MockSortableCubit();
+      mockSortableBloc = MockSortableBloc();
       when(() => mockSortableBloc.stream)
           .thenAnswer((_) => const Stream.empty());
       setupFakeTts();

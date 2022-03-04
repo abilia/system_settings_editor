@@ -7,21 +7,20 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late SortableBloc mockSortableCubit;
+  late SortableBloc mockSortableBloc;
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    mockSortableCubit = MockSortableCubit();
-    when(() => mockSortableCubit.state).thenReturn(SortablesNotLoaded());
-    when(() => mockSortableCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
+    mockSortableBloc = MockSortableBloc();
+    when(() => mockSortableBloc.state).thenReturn(SortablesNotLoaded());
+    when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
   });
 
   blocTest(
     'initial folder is empty if no initial is specified',
     build: () =>
-        SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableCubit),
+        SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableBloc),
     verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>({}, {}),
@@ -31,7 +30,7 @@ void main() {
   blocTest(
     'initial and current folder is specified folder',
     build: () => SortableArchiveCubit<RawSortableData>(
-      sortableBloc: mockSortableCubit,
+      sortableBloc: mockSortableBloc,
       initialFolderId: 'someFolderId',
     ),
     verify: (SortableArchiveCubit bloc) => expect(
