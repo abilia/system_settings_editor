@@ -80,7 +80,7 @@ class CameraButton extends StatelessWidget {
                             Localizations.localeOf(context).toLanguageTag())
                         .format(time),
                     context
-                        .read<SortableArchiveBloc<ImageArchiveData>>()
+                        .read<SortableArchiveCubit<ImageArchiveData>>()
                         .state
                         .currentFolderId,
                   ),

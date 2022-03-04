@@ -10,7 +10,7 @@ class BasicActivityPickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<SortableArchiveBloc<BasicActivityData>,
+    return BlocBuilder<SortableArchiveCubit<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
       builder: (innerContext, state) {
         final selected = state.selected;
@@ -36,8 +36,8 @@ class BasicActivityPickerPage extends StatelessWidget {
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
                   : () => context
-                      .read<SortableArchiveBloc<BasicActivityData>>()
-                      .add(NavigateUp()),
+                      .read<SortableArchiveCubit<BasicActivityData>>()
+                      .navigateUp(),
             ),
             forwardNavigationWidget: NextButton(
               onPressed: selected != null

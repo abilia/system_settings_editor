@@ -19,8 +19,8 @@ class MyPhotosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+    return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+      create: (_) => SortableArchiveCubit<ImageArchiveData>(
         initialFolderId: myPhotoFolderId,
         sortableBloc: BlocProvider.of<SortableBloc>(context),
       ),
@@ -104,8 +104,8 @@ class _PhotoCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+    return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+      create: (_) => SortableArchiveCubit<ImageArchiveData>(
         initialFolderId: myPhotoFolderId,
         sortableBloc: BlocProvider.of<SortableBloc>(context),
         visibilityFilter: (imageArchive) =>
@@ -217,7 +217,7 @@ class _AddPhotoButton extends StatelessWidget {
             includeInPhotoCalendar
                 ? myPhotoFolderId
                 : context
-                    .read<SortableArchiveBloc<ImageArchiveData>>()
+                    .read<SortableArchiveCubit<ImageArchiveData>>()
                     .state
                     .currentFolderId,
             tags: {

@@ -7,16 +7,15 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/i18n/all.dart';
 import 'package:seagull/models/all.dart';
 
-part 'sortable_archive_event.dart';
 part 'sortable_archive_state.dart';
 
-class SortableArchiveBloc<T extends SortableData>
-    extends Bloc<SortableArchiveEvent, SortableArchiveState<T>> {
+class SortableArchiveCubit<T extends SortableData>
+    extends Cubit<SortableArchiveState<T>> {
   late final StreamSubscription sortableSubscription;
   final bool Function(Sortable<T>)? visibilityFilter;
   final bool showFolders;
 
-  SortableArchiveBloc({
+  SortableArchiveCubit({
     required SortableBloc sortableBloc,
     String initialFolderId = '',
     this.visibilityFilter,
@@ -29,9 +28,57 @@ class SortableArchiveBloc<T extends SortableData>
         )) {
     sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
-        add(SortablesUpdated(sortableState.sortables));
+        sortablesUpdated(sortableState.sortables);
       }
     });
+  }
+
+  void sortablesUpdated(Iterable<Sortable> sortables) {
+    emit(
+      _stateFromSortables<T>(
+        sortables: sortables,
+        initialFolderId: state.initialFolderId,
+        currentFolderId: state.currentFolderId,
+        visibilityFilter: visibilityFilter,
+        selected: state.selected,
+        showFolder: showFolders,
+      ),
+    );
+  }
+
+  void navigateUp() {
+    final currentFolder = state.allById[state.currentFolderId];
+    emit(
+      SortableArchiveState<T>(
+        state.allByFolder,
+        state.allById,
+        currentFolderId: currentFolder?.groupId ?? '',
+        initialFolderId: state.initialFolderId,
+      ),
+    );
+  }
+
+  void sortableSelected(Sortable<T> selected) {
+    emit(
+      SortableArchiveState<T>(
+        state.allByFolder,
+        state.allById,
+        currentFolderId: state.currentFolderId,
+        selected: selected,
+        initialFolderId: state.initialFolderId,
+      ),
+    );
+  }
+
+  void folderChanged(String folderId) {
+    emit(
+      SortableArchiveState<T>(
+        state.allByFolder,
+        state.allById,
+        currentFolderId: folderId,
+        initialFolderId: state.initialFolderId,
+      ),
+    );
   }
 
   static SortableArchiveState<T> _initialState<T extends SortableData>(
@@ -73,44 +120,5 @@ class SortableArchiveBloc<T extends SortableData>
       selected: selected,
       initialFolderId: initialFolderId,
     );
-  }
-
-  @override
-  Stream<SortableArchiveState<T>> mapEventToState(
-    SortableArchiveEvent event,
-  ) async* {
-    if (event is SortablesUpdated) {
-      yield _stateFromSortables<T>(
-        sortables: event.sortables,
-        initialFolderId: state.initialFolderId,
-        currentFolderId: state.currentFolderId,
-        visibilityFilter: visibilityFilter,
-        selected: state.selected,
-        showFolder: showFolders,
-      );
-    } else if (event is FolderChanged) {
-      yield SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
-        currentFolderId: event.folderId,
-        initialFolderId: state.initialFolderId,
-      );
-    } else if (event is NavigateUp) {
-      final currentFolder = state.allById[state.currentFolderId];
-      yield SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
-        currentFolderId: currentFolder?.groupId ?? '',
-        initialFolderId: state.initialFolderId,
-      );
-    } else if (event is SortableSelected<T>) {
-      yield SortableArchiveState<T>(
-        state.allByFolder,
-        state.allById,
-        currentFolderId: state.currentFolderId,
-        selected: event.selected,
-        initialFolderId: state.initialFolderId,
-      );
-    }
   }
 }
