@@ -427,7 +427,7 @@ void main() {
         testWidgets('New activity from basic activity gets correct title',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
           when(() => sortableBlocMock.state)
               .thenReturn(SortablesLoaded(sortables: [
@@ -465,7 +465,7 @@ void main() {
             'SGC-860 New activity from basic activity starting 00:00 has no start time',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
           when(() => sortableBlocMock.state)
               .thenReturn(SortablesLoaded(sortables: [
@@ -500,7 +500,7 @@ void main() {
         testWidgets('basic activity library navigation',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle', folderTitle = 'folderTitle';
 
           final folder = Sortable.createNew<BasicActivityDataFolder>(
@@ -586,7 +586,7 @@ void main() {
         testWidgets('basic activity library navigation SAVE from edit page',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
           when(() => sortableBlocMock.state)
               .thenReturn(SortablesLoaded(sortables: [
@@ -632,7 +632,7 @@ void main() {
         testWidgets('basic activity library navigation back from edit page',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
           when(() => sortableBlocMock.state)
               .thenReturn(SortablesLoaded(sortables: [
@@ -676,7 +676,7 @@ void main() {
             'Bug SGC-627 Previous button after selecting a Basic Activity',
             (WidgetTester tester) async {
           await initializeDateFormatting();
-          final sortableBlocMock = MockSortableCubit();
+          final sortableBlocMock = MockSortableBloc();
           const title = 'testtitle';
           when(() => sortableBlocMock.state)
               .thenReturn(SortablesLoaded(sortables: [
@@ -792,7 +792,7 @@ void main() {
       testWidgets('from basic timer gets correct title',
           (WidgetTester tester) async {
         await initializeDateFormatting();
-        final sortableBlocMock = MockSortableCubit();
+        final sortableBlocMock = MockSortableBloc();
         const title = 'Basictajmer';
         when(() => sortableBlocMock.state)
             .thenReturn(SortablesLoaded(sortables: [
