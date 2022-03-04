@@ -16,7 +16,7 @@ class MockPushCubit extends MockCubit<PushState> implements PushCubit {}
 class MockGenericCubit extends MockCubit<GenericState> implements GenericCubit {
 }
 
-class MockSortableBloc extends MockBloc<SortableEvent, SortableState>
+class MockSortableCubit extends MockBloc<SortableEvent, SortableState>
     implements SortableBloc {}
 
 class MockMemoplannerSettingBloc

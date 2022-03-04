@@ -19,7 +19,7 @@ void main() {
   final today = startTime.onlyDays();
   final translate = Locales.language.values.first;
 
-  late MockSortableBloc mockSortableBloc;
+  late MockSortableCubit mockSortableBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
@@ -31,7 +31,7 @@ void main() {
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
-    mockSortableBloc = MockSortableBloc();
+    mockSortableBloc = MockSortableCubit();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     when(() => mockSortableBloc.state).thenReturn(
       SortablesLoaded(

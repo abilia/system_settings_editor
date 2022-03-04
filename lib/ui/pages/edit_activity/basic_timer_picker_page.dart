@@ -10,7 +10,7 @@ class BasicTimerPickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<SortableArchiveBloc<BasicTimerData>,
+    return BlocBuilder<SortableArchiveCubit<BasicTimerData>,
         SortableArchiveState<BasicTimerData>>(
       builder: (innerContext, state) {
         final selected = state.selected;
@@ -35,8 +35,8 @@ class BasicTimerPickerPage extends StatelessWidget {
               onPressed: state.isAtRoot
                   ? Navigator.of(context).maybePop
                   : () => context
-                      .read<SortableArchiveBloc<BasicTimerData>>()
-                      .add(NavigateUp()),
+                      .read<SortableArchiveCubit<BasicTimerData>>()
+                      .navigateUp(),
             ),
             forwardNavigationWidget: NextButton(
               onPressed: selected != null

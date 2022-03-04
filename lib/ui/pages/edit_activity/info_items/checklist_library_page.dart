@@ -7,8 +7,8 @@ class ChecklistLibraryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocProvider<SortableArchiveBloc<ChecklistData>>(
-        create: (_) => SortableArchiveBloc<ChecklistData>(
+      BlocProvider<SortableArchiveCubit<ChecklistData>>(
+        create: (_) => SortableArchiveCubit<ChecklistData>(
           sortableBloc: BlocProvider.of<SortableBloc>(context),
         ),
         child: LibraryPage<ChecklistData>.selectable(

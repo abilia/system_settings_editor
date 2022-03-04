@@ -6,10 +6,10 @@ import 'package:seagull/models/all.dart';
 import '../../../fakes/fakes_blocs.dart';
 
 void main() {
-  late SortableArchiveBloc<ImageArchiveData> imageArchiveBloc;
+  late SortableArchiveCubit<ImageArchiveData> imageArchiveBloc;
 
   setUp(() {
-    imageArchiveBloc = SortableArchiveBloc<ImageArchiveData>(
+    imageArchiveBloc = SortableArchiveCubit<ImageArchiveData>(
       sortableBloc: FakeSortableBloc(),
     );
   });
@@ -21,12 +21,14 @@ void main() {
 
   test('FolderChanged will set the folder in the state', () async {
     const folderId = '123';
-    imageArchiveBloc.add(const FolderChanged(folderId));
-    await expectLater(
+    final expect = expectLater(
       imageArchiveBloc.stream,
       emits(const SortableArchiveState<ImageArchiveData>({}, {},
           currentFolderId: folderId)),
     );
+    imageArchiveBloc.folderChanged(folderId);
+
+    await expect;
   });
 
   test('SortablesUpdated will set the sortables in the state', () async {
@@ -34,12 +36,13 @@ void main() {
         Sortable.createNew<ImageArchiveData>(data: const ImageArchiveData());
     final checklistSortable =
         Sortable.createNew<RawSortableData>(data: const RawSortableData(''));
-    imageArchiveBloc
-        .add(SortablesUpdated([imageArchiveSortable, checklistSortable]));
-    await expectLater(
+    final expect = expectLater(
       imageArchiveBloc.stream,
       emits(stateFromSortables([imageArchiveSortable])),
     );
+    imageArchiveBloc
+        .sortablesUpdated([imageArchiveSortable, checklistSortable]);
+    await expect;
   });
 
   test('NavigateUp will set the parent of the current folder as current folder',
@@ -53,11 +56,7 @@ void main() {
       isGroup: true,
       groupId: imageArchiveFolder1.id,
     );
-    imageArchiveBloc
-        .add(SortablesUpdated([imageArchiveFolder1, imageArchiveFolder2]));
-    imageArchiveBloc.add(FolderChanged(imageArchiveFolder2.id));
-    imageArchiveBloc.add(NavigateUp());
-    await expectLater(
+    final expect = expectLater(
       imageArchiveBloc.stream,
       emitsInOrder([
         stateFromSortables([imageArchiveFolder1, imageArchiveFolder2]),
@@ -71,6 +70,11 @@ void main() {
         ),
       ]),
     );
+    imageArchiveBloc
+        .sortablesUpdated([imageArchiveFolder1, imageArchiveFolder2]);
+    imageArchiveBloc.folderChanged(imageArchiveFolder2.id);
+    imageArchiveBloc.navigateUp();
+    await expect;
   });
 }
 

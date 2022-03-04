@@ -13,7 +13,7 @@ export 'alarm/alarm_speech/alarm_speech_cubit.dart';
 export 'push/push_cubit.dart';
 export 'calendar/calendar_view/calendar_view_cubit.dart';
 export 'sortable/sortable_bloc.dart';
-export 'sortable/sortable_archive/sortable_archive_bloc.dart';
+export 'sortable/sortable_archive/sortable_archive_cubit.dart';
 export 'user_file/user_file_cubit.dart';
 export 'sync/sync_bloc.dart';
 export 'providers.dart';

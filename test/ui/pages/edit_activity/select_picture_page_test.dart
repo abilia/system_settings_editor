@@ -9,7 +9,7 @@ import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   group('SelectPicturePage test', () {
-    late MockSortableBloc mockSortableBloc;
+    late MockSortableCubit mockSortableBloc;
     late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
     setUpAll(() {
@@ -17,7 +17,7 @@ void main() {
     });
 
     setUp(() async {
-      mockSortableBloc = MockSortableBloc();
+      mockSortableBloc = MockSortableCubit();
       when(() => mockSortableBloc.stream)
           .thenAnswer((_) => const Stream.empty());
       mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();

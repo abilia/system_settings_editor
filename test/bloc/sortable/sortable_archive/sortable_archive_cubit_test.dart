@@ -7,21 +7,22 @@ import '../../../mocks/mock_bloc.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
-  late SortableBloc mockSortableBloc;
+  late SortableBloc mockSortableCubit;
 
   setUpAll(registerFallbackValues);
 
   setUp(() {
-    mockSortableBloc = MockSortableBloc();
-    when(() => mockSortableBloc.state).thenReturn(SortablesNotLoaded());
-    when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
+    mockSortableCubit = MockSortableCubit();
+    when(() => mockSortableCubit.state).thenReturn(SortablesNotLoaded());
+    when(() => mockSortableCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
   });
 
   blocTest(
     'initial folder is empty if no initial is specified',
     build: () =>
-        SortableArchiveBloc<RawSortableData>(sortableBloc: mockSortableBloc),
-    verify: (SortableArchiveBloc bloc) => expect(
+        SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableCubit),
+    verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>({}, {}),
     ),
@@ -29,11 +30,11 @@ void main() {
 
   blocTest(
     'initial and current folder is specified folder',
-    build: () => SortableArchiveBloc<RawSortableData>(
-      sortableBloc: mockSortableBloc,
+    build: () => SortableArchiveCubit<RawSortableData>(
+      sortableBloc: mockSortableCubit,
       initialFolderId: 'someFolderId',
     ),
-    verify: (SortableArchiveBloc bloc) => expect(
+    verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>(
         {},

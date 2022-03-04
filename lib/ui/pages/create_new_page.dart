@@ -40,8 +40,9 @@ class CreateNewPage extends StatelessWidget {
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,
                         child: BlocProvider<
-                            SortableArchiveBloc<BasicActivityData>>(
-                          create: (_) => SortableArchiveBloc<BasicActivityData>(
+                            SortableArchiveCubit<BasicActivityData>>(
+                          create: (_) =>
+                              SortableArchiveCubit<BasicActivityData>(
                             sortableBloc:
                                 BlocProvider.of<SortableBloc>(context),
                           ),
@@ -78,8 +79,8 @@ class CreateNewPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,
-                      child: BlocProvider<SortableArchiveBloc<BasicTimerData>>(
-                        create: (_) => SortableArchiveBloc<BasicTimerData>(
+                      child: BlocProvider<SortableArchiveCubit<BasicTimerData>>(
+                        create: (_) => SortableArchiveCubit<BasicTimerData>(
                           sortableBloc: BlocProvider.of<SortableBloc>(context),
                         ),
                         child: const BasicTimerPickerPage(),

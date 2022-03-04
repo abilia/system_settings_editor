@@ -35,7 +35,7 @@ void main() {
   final okButtonFinder = find.byType(OkButton);
   final cancelButtonFinder = find.byType(CancelButton);
 
-  late MockSortableBloc mockSortableBloc;
+  late MockSortableCubit mockSortableBloc;
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
@@ -47,7 +47,7 @@ void main() {
   setUp(() async {
     tz.initializeTimeZones();
     await initializeDateFormatting();
-    mockSortableBloc = MockSortableBloc();
+    mockSortableBloc = MockSortableCubit();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();
     when(() => mockUserFileCubit.stream)
