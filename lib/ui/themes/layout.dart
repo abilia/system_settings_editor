@@ -44,6 +44,9 @@ class Layout {
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
   final AlarmPageLayout alarmPage;
+  final AlarmSettingsPageLayout alarmSettingsPage;
+  final ComponentsLayout components;
+  final PickFieldLayout pickField;
 
   const Layout({
     this.radius = 12,
@@ -79,6 +82,9 @@ class Layout {
       padding: EdgeInsets.only(left: 8),
     ),
     this.alarmPage = const AlarmPageLayout(),
+    this.alarmSettingsPage = const AlarmSettingsPageLayout(),
+    this.components = const ComponentsLayout(),
+    this.pickField = const PickFieldLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -752,5 +758,36 @@ class AlarmPageLayout {
   const AlarmPageLayout({
     this.alarmClockPadding =
         const EdgeInsets.only(top: 4, bottom: 4, right: 16),
+  });
+}
+
+class AlarmSettingsPageLayout {
+  final double playButtonSeparation;
+  final EdgeInsets defaultPadding, topPadding, bottomPadding, dividerPadding;
+
+  const AlarmSettingsPageLayout({
+    this.playButtonSeparation = 12,
+    this.defaultPadding = const EdgeInsets.fromLTRB(12, 16, 20, 0),
+    this.topPadding = const EdgeInsets.fromLTRB(12, 24, 20, 0),
+    this.bottomPadding = const EdgeInsets.fromLTRB(12, 16, 20, 64),
+    this.dividerPadding = const EdgeInsets.only(top: 16, bottom: 8),
+  });
+}
+
+class ComponentsLayout {
+  final EdgeInsets subHeadingPadding;
+
+  const ComponentsLayout(
+      {this.subHeadingPadding = const EdgeInsets.only(bottom: 8)});
+}
+
+class PickFieldLayout {
+  final double height, iconSeparation;
+  final EdgeInsets innerPadding;
+
+  const PickFieldLayout({
+    this.height = 56,
+    this.iconSeparation = 12,
+    this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
   });
 }

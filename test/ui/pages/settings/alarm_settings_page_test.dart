@@ -57,7 +57,7 @@ void main() {
 
     testWidgets('Select non checkable alarm sound', (tester) async {
       await tester.goToAlarmSettingsPage();
-      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(3));
+      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(4));
       expect(find.text(Sound.AfloatSynth.displayName(translate)), findsNothing);
       await tester.tap(find.byKey(TestKey.nonCheckableAlarmSelector));
       await tester.pumpAndSettle();
@@ -66,7 +66,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(2));
+      expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(3));
       expect(
           find.text(Sound.AfloatSynth.displayName(translate)), findsOneWidget);
       await tester.tap(find.byType(OkButton));
@@ -115,8 +115,27 @@ void main() {
       );
     });
 
+    testWidgets('Select timer alarm sound', (tester) async {
+      await tester.goToAlarmSettingsPage();
+      await tester.tap(find.byKey(TestKey.timerAlarmSelector));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(Sound.DoorBell.displayName(translate)));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifyUnsyncGeneric(
+        tester,
+        genericDb,
+        key: AlarmSettings.timerAlarmKey,
+        matcher: Sound.DoorBell.name,
+      );
+    });
+
     testWidgets('Select alarm duration', (tester) async {
       await tester.goToAlarmSettingsPage();
+      await tester.scrollDown();
       await tester.tap(find.byKey(TestKey.alarmDurationSelector));
       await tester.pumpAndSettle();
       expect(find.byType(SelectAlarmDurationPage), findsOneWidget);

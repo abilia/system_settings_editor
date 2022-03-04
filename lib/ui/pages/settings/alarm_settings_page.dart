@@ -7,8 +7,10 @@ class AlarmSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    final defaultPadding = EdgeInsets.fromLTRB(12.s, 16.s, 20.s, 0);
-    final topPadding = EdgeInsets.fromLTRB(12.s, 24.s, 20.s, 0);
+    final defaultPadding = layout.alarmSettingsPage.defaultPadding;
+    final topPadding = layout.alarmSettingsPage.topPadding;
+    final bottomPadding = layout.alarmSettingsPage.bottomPadding;
+    final dividerPadding = layout.alarmSettingsPage.dividerPadding;
     return BlocProvider<AlarmSettingsCubit>(
       create: (context) => AlarmSettingsCubit(
         alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
@@ -59,38 +61,50 @@ class AlarmSettingsPage extends StatelessWidget {
                   SwitchField(
                     key: TestKey.vibrateAtReminderSelector,
                     value: state.vibrateAtReminder,
+                    leading: const Icon(AbiliaIcons.handiVibration),
                     onChanged: (v) => context
                         .read<AlarmSettingsCubit>()
                         .changeAlarmSettings(
                             state.copyWith(vibrateAtReminder: v)),
                     child: Text(t.vibrationOnReminder),
                   ).pad(defaultPadding),
+                  AlarmSelector(
+                    key: TestKey.timerAlarmSelector,
+                    heading: t.timer,
+                    icon: AbiliaIcons.stopWatch,
+                    sound: state.timerSound,
+                    noSoundOption: true,
+                    onChanged: (sound) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(state.copyWith(timerSound: sound)),
+                  ).pad(defaultPadding),
                   AlarmDurationSelector(
                     key: TestKey.alarmDurationSelector,
                     duration: state.alarmDuration,
                   ).pad(defaultPadding),
-                  const Divider().pad(EdgeInsets.only(top: 16.s)),
-                  SwitchField(
-                    key: TestKey.showAlarmOnOffSwitch,
-                    value: state.showAlarmOnOffSwitch,
-                    onChanged: (v) => context
-                        .read<AlarmSettingsCubit>()
-                        .changeAlarmSettings(
-                            state.copyWith(showAlarmOnOffSwitch: v)),
-                    child: Text(t.showDisableAlarms),
-                  ).pad(defaultPadding),
-                  if (Config.isMP)
-                    const Divider().pad(EdgeInsets.only(top: 16.s)),
+                  if (Config.isMP) const Divider().pad(dividerPadding),
                   if (Config.isMP)
                     SwitchField(
                       key: TestKey.showOngoingActivityInFullScreen,
                       value: state.showOngoingActivityInFullScreen,
+                      leading: const Icon(AbiliaIcons.resizeHigher),
                       onChanged: (v) => context
                           .read<AlarmSettingsCubit>()
                           .changeAlarmSettings(state.copyWith(
                               showOngoingActivityInFullScreen: v)),
                       child: Text(t.showOngoingActivityInFullScreen),
                     ).pad(defaultPadding),
+                  const Divider().pad(dividerPadding),
+                  SwitchField(
+                    key: TestKey.showAlarmOnOffSwitch,
+                    value: state.showAlarmOnOffSwitch,
+                    leading: const Icon(AbiliaIcons.handiNoAlarmVibration),
+                    onChanged: (v) => context
+                        .read<AlarmSettingsCubit>()
+                        .changeAlarmSettings(
+                            state.copyWith(showAlarmOnOffSwitch: v)),
+                    child: Text(t.showDisableAlarms),
+                  ).pad(bottomPadding),
                 ],
               ),
               bottomNavigationBar: BottomNavigation(
@@ -160,7 +174,7 @@ class AlarmSelector extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 12.s,
+              width: layout.alarmSettingsPage.playButtonSeparation,
             ),
             PlayAlarmSoundButton(sound: sound),
           ],
