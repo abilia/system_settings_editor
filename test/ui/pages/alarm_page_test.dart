@@ -55,10 +55,15 @@ void main() {
     ),
   );
 
-  final StartAlarm startAlarm = StartAlarm(activityWithStartSpeech, day);
-  final EndAlarm endAlarmWithNoSpeech = EndAlarm(activityWithStartSpeech, day);
-  final EndAlarm endAlarmWithSpeech =
-      EndAlarm(activityWithStartAndEndSpeech, day);
+  final StartAlarm startAlarm = StartAlarm(
+    ActivityDay(activityWithStartSpeech, day),
+  );
+  final EndAlarm endAlarmWithNoSpeech = EndAlarm(
+    ActivityDay(activityWithStartSpeech, day),
+  );
+  final EndAlarm endAlarmWithSpeech = EndAlarm(
+    ActivityDay(activityWithStartAndEndSpeech, day),
+  );
   AlarmNavigator _alarmNavigator = AlarmNavigator();
   late MockMemoplannerSettingBloc mockMPSettingsBloc;
   late MockUserFileCubit mockUserFileCubit;
@@ -216,7 +221,7 @@ void main() {
     });
   });
   group('alarm speech automatic playes', () {
-    final payload = StartAlarm(activityWithStartSpeech, day);
+    final payload = StartAlarm(ActivityDay(activityWithStartSpeech, day));
 
     testWidgets('speech plays when notification is tapped',
         (WidgetTester tester) async {

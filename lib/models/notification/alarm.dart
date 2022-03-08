@@ -5,22 +5,77 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
+  final Event event;
+  const NotificationAlarm(this.event);
+  bool hasSound(AlarmSettings settings);
+  bool vibrate(AlarmSettings settings);
+  Sound sound(AlarmSettings settings);
+  DateTime get notificationTime;
+  String get stackId;
+  String encode() => json.encode(toJson());
+  factory NotificationAlarm.decode(String data) =>
+      NotificationAlarm.fromJson(json.decode(data));
+  factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
+    switch (json['type']) {
+      case 'timer':
+        final timer = AbiliaTimer.fromDbMap(json['timer']);
+        return TimerAlarm(timer);
+      default:
+        return ActivityAlarm.fromJson(json);
+    }
+  }
+  Map<String, dynamic> toJson();
+  @override
+  String toString() =>
+      '$runtimeType {notificationTime: $notificationTime, ${event.id} }';
+}
+
+class TimerAlarm extends NotificationAlarm {
+  final AbiliaTimer timer;
+  const TimerAlarm(this.timer) : super(timer);
+  final String type = 'timer';
+
+  @override
+  DateTime get notificationTime => timer.end;
+
+  @override
+  List<Object?> get props => [timer];
+
+  @override
+  String get stackId => timer.id;
+
+  // TODO implement settings
+  @override
+  bool hasSound(AlarmSettings settings) => true;
+  @override
+  Sound sound(AlarmSettings settings) => Sound.Trumpet;
+  @override
+  bool vibrate(AlarmSettings settings) => true;
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'timer': timer.toMapForDb(),
+        'type': type,
+      };
+}
+
+abstract class ActivityAlarm extends NotificationAlarm {
   final ActivityDay activityDay;
   final bool fullScreenActivity;
   DateTime get day => activityDay.day;
   Activity get activity => activityDay.activity;
-  String get stackId =>
-      fullScreenActivity ? 'fullScreenActivity' : activityDay.activity.id;
-  bool hasSound(AlarmSettings settings);
-  bool vibrate(AlarmSettings settings);
-  Sound sound(AlarmSettings settings);
-  const NotificationAlarm(
+
+  @override
+  String get stackId => fullScreenActivity ? 'fullScreenActivity' : activity.id;
+
+  const ActivityAlarm(
     this.activityDay, {
     this.fullScreenActivity = false,
-  });
-  DateTime get notificationTime;
+  }) : super(activityDay);
+
   String get type;
 
+  @override
   Map<String, dynamic> toJson() => {
         'day': day.millisecondsSinceEpoch,
         'activity': activity.wrapWithDbModel().toJson(),
@@ -28,41 +83,33 @@ abstract class NotificationAlarm extends Equatable {
         if (this is NewReminder)
           'reminder': (this as NewReminder).reminder.inMilliseconds,
       };
-  factory NotificationAlarm.fromJson(Map<String, dynamic> json) {
+  factory ActivityAlarm.fromJson(Map<String, dynamic> json) {
     final activity = DbActivity.fromJson(json['activity']).activity;
     final day = DateTime.fromMillisecondsSinceEpoch(json['day']);
+    final activityDay = ActivityDay(activity, day);
     switch (json['type']) {
       case StartAlarm.typeName:
-        return StartAlarm(activity, day);
+        return StartAlarm(activityDay);
       case EndAlarm.typeName:
-        return EndAlarm(activity, day);
+        return EndAlarm(activityDay);
       case ReminderBefore.typeName:
-        return ReminderBefore(activity, day,
+        return ReminderBefore(activityDay,
             reminder: Duration(milliseconds: json['reminder']));
       case ReminderUnchecked.typeName:
-        return ReminderUnchecked(activity, day,
+        return ReminderUnchecked(activityDay,
             reminder: Duration(milliseconds: json['reminder']));
       default:
         throw 'unknown alarm type';
     }
   }
 
-  NotificationAlarm setFullScreenActivity(bool fullScreenActivity) => this;
-
-  String encode() => json.encode(toJson());
-
-  factory NotificationAlarm.decode(String data) =>
-      NotificationAlarm.fromJson(json.decode(data));
+  ActivityAlarm setFullScreenActivity(bool fullScreenActivity) => this;
 
   @override
-  List<Object> get props => [activityDay.activity, activityDay.day];
-
-  @override
-  String toString() =>
-      '$type {notificationTime: $notificationTime, ${activity.id} }';
+  List<Object?> get props => [activityDay.activity, activityDay.day];
 }
 
-abstract class NewAlarm extends NotificationAlarm {
+abstract class NewAlarm extends ActivityAlarm {
   const NewAlarm(
     ActivityDay activityDay, {
     bool fullScreenActivity = false,
@@ -83,10 +130,7 @@ abstract class NewAlarm extends NotificationAlarm {
 }
 
 class StartAlarm extends NewAlarm {
-  StartAlarm(Activity activity, DateTime day)
-      : super(ActivityDay(activity, day));
-
-  const StartAlarm.from(
+  const StartAlarm(
     ActivityDay activityDay, {
     bool fullScreenActivity = false,
   }) : super(activityDay, fullScreenActivity: fullScreenActivity);
@@ -99,7 +143,7 @@ class StartAlarm extends NewAlarm {
 
   @override
   StartAlarm setFullScreenActivity(bool fullScreenActivity) =>
-      StartAlarm.from(activityDay, fullScreenActivity: fullScreenActivity);
+      StartAlarm(activityDay, fullScreenActivity: fullScreenActivity);
 
   @override
   String get type => typeName;
@@ -107,9 +151,7 @@ class StartAlarm extends NewAlarm {
 }
 
 class EndAlarm extends NewAlarm {
-  EndAlarm(Activity activity, DateTime day) : super(ActivityDay(activity, day));
-
-  const EndAlarm.from(
+  const EndAlarm(
     ActivityDay activityDay, {
     bool fullScreenActivity = false,
   }) : super(activityDay, fullScreenActivity: fullScreenActivity);
@@ -125,12 +167,12 @@ class EndAlarm extends NewAlarm {
 
   @override
   EndAlarm setFullScreenActivity(bool fullScreenActivity) =>
-      EndAlarm.from(activityDay, fullScreenActivity: fullScreenActivity);
+      EndAlarm(activityDay, fullScreenActivity: fullScreenActivity);
 
   static const String typeName = 'EndAlarm';
 }
 
-abstract class NewReminder extends NotificationAlarm {
+abstract class NewReminder extends ActivityAlarm {
   final Duration reminder;
   const NewReminder(ActivityDay activityDay, this.reminder)
       : super(activityDay);
@@ -146,14 +188,11 @@ abstract class NewReminder extends NotificationAlarm {
   Sound sound(AlarmSettings settings) => settings.reminder.toSound();
 
   @override
-  List<Object> get props => [reminder, ...super.props];
+  List<Object?> get props => [reminder, ...super.props];
 }
 
 class ReminderBefore extends NewReminder {
-  ReminderBefore(Activity activity, DateTime day, {required Duration reminder})
-      : super(ActivityDay(activity, day), reminder);
-  const ReminderBefore.from(ActivityDay activityDay,
-      {required Duration reminder})
+  const ReminderBefore(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.start.subtract(reminder);
@@ -164,11 +203,7 @@ class ReminderBefore extends NewReminder {
 }
 
 class ReminderUnchecked extends NewReminder {
-  ReminderUnchecked(Activity activity, DateTime day,
-      {required Duration reminder})
-      : super(ActivityDay(activity, day), reminder);
-  const ReminderUnchecked.from(ActivityDay activityDay,
-      {required Duration reminder})
+  const ReminderUnchecked(ActivityDay activityDay, {required Duration reminder})
       : super(activityDay, reminder);
   @override
   DateTime get notificationTime => activityDay.end.add(reminder);

@@ -1,9 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
-class AbiliaTimer extends Equatable {
+class AbiliaTimer extends Event {
+  @override
   final String id;
+  @override
   final String title;
   final String fileId;
   final bool paused;
@@ -35,13 +36,18 @@ class AbiliaTimer extends Equatable {
         duration: duration,
       );
 
-  DateTime get endTime => startTime.add(duration);
-
+  @override
+  DateTime get start => startTime;
+  @override
+  DateTime get end => startTime.add(duration);
+  @override
   bool get hasImage => fileId.isNotEmpty;
 
   bool get hasTitle => title.isNotEmpty;
-
-  AbiliaFile get imageFile => AbiliaFile.from(id: fileId);
+  @override
+  AbiliaFile get image => AbiliaFile.from(id: fileId);
+  @override
+  int get category => Category.right;
 
   Map<String, dynamic> toMapForDb() => {
         'id': id,
@@ -53,8 +59,9 @@ class AbiliaTimer extends Equatable {
         'paused_at': pausedAt.inMilliseconds,
       };
 
+  @override
   TimerOccasion toOccasion(DateTime now) {
-    if (now.isAfter(endTime)) return TimerOccasion(this, Occasion.past);
+    if (now.isAfter(end)) return TimerOccasion(this, Occasion.past);
     return TimerOccasion(this, Occasion.current);
   }
 
@@ -63,7 +70,7 @@ class AbiliaTimer extends Equatable {
         startTime: startTime,
         duration: duration,
         paused: true,
-        pausedAt: endTime.difference(pauseTime),
+        pausedAt: end.difference(pauseTime),
         title: title,
         fileId: fileId,
       );

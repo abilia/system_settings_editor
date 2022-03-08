@@ -50,7 +50,7 @@ void main() {
   );
 
   final StartAlarm startAlarm =
-      StartAlarm(testActivity, startTimeOne.onlyDays());
+      StartAlarm(ActivityDay(testActivity, startTimeOne.onlyDays()));
 
   setUpAll(() {
     registerFallbackValues();
@@ -124,7 +124,7 @@ void main() {
             ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
-                selectedNotificationSubject: ReplaySubject<NotificationAlarm>(),
+                selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
                 activitiesBloc: mockActivitiesBloc,
                 clockBloc: clockBloc,
               ),

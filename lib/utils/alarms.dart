@@ -1,6 +1,8 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+const maxNotifications = 50;
+
 const List<Duration> unsignedOffActivityReminders = [
   Duration(minutes: 15),
   Duration(minutes: 30),
@@ -14,19 +16,19 @@ const List<Duration> unsignedOffActivityReminders = [
 
 Iterable<ReminderUnchecked> uncheckedReminders(ActivityDay activityDay) =>
     unsignedOffActivityReminders
-        .map((r) => ReminderUnchecked.from(activityDay, reminder: r));
+        .map((r) => ReminderUnchecked(activityDay, reminder: r));
 
 extension IterableActivity on Iterable<Activity> {
-  List<NotificationAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
+  List<ActivityAlarm> alarmsOnExactMinute(DateTime time) => _alarmsFor(time,
       startTimeTest: (a) => a.start.isAtSameMomentAs(time),
       endTimeTest: (a) => a.end.isAtSameMomentAs(time),
       reminderTest: (rs) => rs.notificationTime.isAtSameMomentAs(time));
 
-  List<NotificationAlarm> _alarmsFor(
+  List<ActivityAlarm> _alarmsFor(
     DateTime time, {
     required bool Function(ActivityDay) startTimeTest,
     required bool Function(ActivityDay) endTimeTest,
-    required bool Function(NotificationAlarm) reminderTest,
+    required bool Function(ActivityAlarm) reminderTest,
   }) {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
@@ -37,18 +39,17 @@ extension IterableActivity on Iterable<Activity> {
 
     final startTimeAlarms = activitiesWithAlarm
         .where(startTimeTest)
-        .map<NotificationAlarm>((ad) => StartAlarm.from(ad));
+        .map<ActivityAlarm>((ad) => StartAlarm(ad));
 
     final endTimeAlarms = activitiesWithAlarm
         .where((a) => a.activity.hasEndTime)
         .where((a) => a.activity.alarm.atEnd)
         .where(endTimeTest)
-        .map<NotificationAlarm>((a) => EndAlarm(a.activity, a.day));
+        .map<ActivityAlarm>(EndAlarm.new);
 
     final reminders = activitiesThisDay.expand(
       (ad) => [
-        ...ad.activity.reminders
-            .map((r) => ReminderBefore.from(ad, reminder: r)),
+        ...ad.activity.reminders.map((r) => ReminderBefore(ad, reminder: r)),
         if (!ad.isSignedOff && ad.activity.checkable) ...uncheckedReminders(ad),
       ].where(reminderTest),
     );
@@ -56,9 +57,9 @@ extension IterableActivity on Iterable<Activity> {
     return [...startTimeAlarms, ...endTimeAlarms, ...reminders];
   }
 
-  Iterable<NotificationAlarm> alarmsFrom(
+  Iterable<ActivityAlarm> alarmsFrom(
     DateTime time, {
-    int take = 50,
+    int take = maxNotifications,
     int maxDays = 60,
   }) {
     final nextDay = time.nextDay().onlyDays();
@@ -73,7 +74,7 @@ extension IterableActivity on Iterable<Activity> {
     return _sortAndTake([...alarmsToday, ...alarmsTomorrowAndForward], take);
   }
 
-  List<NotificationAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
+  List<ActivityAlarm> _alarmsForRestOfDay(DateTime start, DateTime end) =>
       _alarmsFor(start,
           startTimeTest: (a) =>
               a.start.inInclusiveRange(startDate: start, endDate: end),
@@ -82,13 +83,13 @@ extension IterableActivity on Iterable<Activity> {
           reminderTest: (rs) =>
               rs.notificationTime.isAtSameMomentOrAfter(start));
 
-  Iterable<NotificationAlarm> _alarmsForDay(
+  Iterable<ActivityAlarm> _alarmsForDay(
     DateTime day, {
     required DateTime notBefore,
     required int take,
     required int depth,
   }) {
-    if (depth < 0) return <NotificationAlarm>[];
+    if (depth < 0) return <ActivityAlarm>[];
 
     final alarms = _alarmsFor(
       day,
@@ -108,8 +109,7 @@ extension IterableActivity on Iterable<Activity> {
     ];
   }
 
-  Iterable<NotificationAlarm> _sortAndTake(
-          List<NotificationAlarm> alarms, int take) =>
+  Iterable<ActivityAlarm> _sortAndTake(List<ActivityAlarm> alarms, int take) =>
       (alarms..sort((a, b) => a.notificationTime.compareTo(b.notificationTime)))
           .take(take);
 }

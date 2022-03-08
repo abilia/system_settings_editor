@@ -174,7 +174,7 @@ class TimerTickerBuilder extends StatelessWidget {
         timer.duration - ticker.time.difference(timer.startTime);
     return StreamBuilder<Duration>(
       initialData: initialTime.isNegative ? Duration.zero : initialTime,
-      stream: ticker.seconds.map((now) => timer.endTime.difference(now)),
+      stream: ticker.seconds.map((now) => timer.end.difference(now)),
       builder: (context, snapshot) {
         final data = snapshot.data;
         if (data == null) return const SizedBox.shrink();

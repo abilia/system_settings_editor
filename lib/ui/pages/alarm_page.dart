@@ -136,7 +136,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
     required this.alarm,
   }) : super(key: key);
 
-  final NotificationAlarm alarm;
+  final ActivityAlarm alarm;
 
   @override
   Widget build(BuildContext context) {

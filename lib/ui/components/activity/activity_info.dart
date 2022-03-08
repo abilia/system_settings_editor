@@ -42,7 +42,7 @@ class ActivityInfoWithDots extends StatelessWidget {
 class ActivityInfo extends StatefulWidget {
   final ActivityDay activityDay;
   final Widget? previewImage;
-  final NotificationAlarm? alarm;
+  final ActivityAlarm? alarm;
 
   const ActivityInfo(
     this.activityDay, {
@@ -139,7 +139,7 @@ mixin ActivityMixin {
     return check;
   }
 
-  Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
+  Future popAlarm(BuildContext context, ActivityAlarm alarm) async {
     _log.fine('pop Alarm: $alarm');
     if (!await Navigator.of(context).maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
@@ -158,7 +158,7 @@ class ActivityContainer extends StatelessWidget {
 
   final ActivityDay activityDay;
   final Widget? previewImage;
-  final NotificationAlarm? alarm;
+  final ActivityAlarm? alarm;
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +205,7 @@ class ActivityContainer extends StatelessWidget {
 
 class Attachment extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
-  final NotificationAlarm? alarm;
+  final ActivityAlarm? alarm;
 
   const Attachment({
     Key? key,

@@ -28,7 +28,7 @@ void main() {
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
     when(() => mockTimerDb.delete(any())).thenAnswer((_) => Future(() => 1));
-    when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future(() => null));
+    when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future(() => 1));
   });
 
   blocTest<TimerCubit, TimerState>(
