@@ -1,4 +1,5 @@
 export 'alarm.dart';
+export 'converter.dart';
 
 import 'package:seagull/models/all.dart';
 import 'package:seagull/storage/file_storage.dart';

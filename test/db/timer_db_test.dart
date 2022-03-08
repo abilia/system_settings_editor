@@ -63,7 +63,7 @@ void main() {
     await timerDb.insert(t2);
     await timerDb.insert(t3);
 
-    final res = await timerDb.getTimerAlarmsFrom(now);
+    final res = (await timerDb.getRunningTimersFrom(now)).toAlarm();
 
     expect(res, hasLength(1));
     expect(res.first, TimerAlarm(t1));

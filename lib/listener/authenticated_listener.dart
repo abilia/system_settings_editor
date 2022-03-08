@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/notification/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -67,7 +68,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
           listenWhen: (_, current) => current is ActivitiesLoaded,
-          listener: (context, activitiesState) => _schedualNotifications(
+          listener: (context, activitiesState) => _scheduleNotifications(
             context,
             activitiesState: activitiesState,
           ),
@@ -77,13 +78,13 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
               previous.alarm != current.alarm,
-          listener: (context, state) => _schedualNotifications(
+          listener: (context, state) => _scheduleNotifications(
             context,
             settingsState: state,
           ),
         ),
         BlocListener<TimerCubit, TimerState>(
-          listener: (context, s) => _schedualNotifications(context),
+          listener: (context, s) => _scheduleNotifications(context),
         ),
         BlocListener<LicenseBloc, LicenseState>(
           listener: (context, state) async {
@@ -153,7 +154,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
           false);
 
-  Future _schedualNotifications(
+  Future _scheduleNotifications(
     BuildContext context, {
     ActivitiesState? activitiesState,
     MemoplannerSettingsState? settingsState,
@@ -162,12 +163,12 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     settingsState ??= context.read<MemoplannerSettingBloc>().state;
     if (settingsState is! MemoplannerSettingsNotLoaded &&
         activitiesState is ActivitiesLoaded) {
-      final timers = await GetIt.I<TimerDb>().getTimerAlarmsFrom(
+      final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
         DateTime.now(),
       );
       await scheduleAlarmNotificationsIsolated(
         activities: activitiesState.activities,
-        timers: timers,
+        timers: timers.toAlarm(),
         language: Localizations.localeOf(context).toLanguageTag(),
         alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
         settings: settingsState.settings.alarm,

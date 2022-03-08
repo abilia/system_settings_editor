@@ -187,19 +187,19 @@ void main() {
       await tester.goToAlarmSettingsPage();
       await tester.tap(find.byKey(TestKey.vibrateAtReminderSelector));
       await tester.pumpAndSettle();
-      final preCalls = alarmSchedualCalls;
+      final preCalls = alarmScheduleCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(alarmSchedualCalls, greaterThanOrEqualTo(preCalls + 1));
+      expect(alarmScheduleCalls, greaterThanOrEqualTo(preCalls + 1));
     });
 
     testWidgets('No changes to alarm triggers no alarm scheduling',
         (tester) async {
       await tester.goToAlarmSettingsPage();
-      final preCalls = alarmSchedualCalls;
+      final preCalls = alarmScheduleCalls;
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
-      expect(alarmSchedualCalls, preCalls);
+      expect(alarmScheduleCalls, preCalls);
     });
 
     testWidgets(

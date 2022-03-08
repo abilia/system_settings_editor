@@ -132,7 +132,7 @@ void main() {
     mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
     when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future.value(1));
-    when(() => mockTimerDb.getTimerAlarmsFrom(any()))
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value([]));
 
     GetItInitializer()

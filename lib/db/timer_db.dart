@@ -38,7 +38,7 @@ class TimerDb {
         .whereNotNull();
   }
 
-  Future<Iterable<TimerAlarm>> getTimerAlarmsFrom(DateTime from) async {
+  Future<Iterable<AbiliaTimer>> getRunningTimersFrom(DateTime from) async {
     final result = await db.query(
       DatabaseRepository.timerTableName,
       columns: [
@@ -54,7 +54,6 @@ class TimerDb {
           AbiliaTimer.fromDbMap,
           onException: _log.logAndReturnNull,
         )
-        .whereNotNull()
-        .map(TimerAlarm.new);
+        .whereNotNull();
   }
 }

@@ -84,12 +84,12 @@ void main() {
       );
 
   final now = DateTime(2022, 02, 25, 12, 12);
-  testWidgets('when activites update, we schedual alarms', (tester) async {
+  testWidgets('when activites update, we schedule alarms', (tester) async {
     // Arrange
     when(() => memoplannerSettingBloc.state)
         .thenReturn(const MemoplannerSettingsFailed());
     await tester.pumpWidget(_authListener());
-    expect(alarmSchedualCalls, 0);
+    expect(alarmScheduleCalls, 0);
 
     // Act
     activitiesStreamController.add(
@@ -100,26 +100,26 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmSchedualCalls, 1);
+    expect(alarmScheduleCalls, 1);
   });
 
-  testWidgets('when settings we schedual alarms', (tester) async {
+  testWidgets('when settings we schedule alarms', (tester) async {
     // Arrange
     when(() => activitiesBloc.state).thenReturn(
       ActivitiesLoaded([Activity.createNew(startTime: now)]),
     );
     await tester.pumpWidget(_authListener());
-    expect(alarmSchedualCalls, 0);
+    expect(alarmScheduleCalls, 0);
     // Act
     settingsStreamController
         .add(const MemoplannerSettingsLoaded(MemoplannerSettings()));
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmSchedualCalls, 1);
+    expect(alarmScheduleCalls, 1);
   });
 
-  testWidgets('when timers update, we schedual alarms', (tester) async {
+  testWidgets('when timers update, we schedule alarms', (tester) async {
     // Arrange
     when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded(
       [Activity.createNew(startTime: now)],
@@ -140,6 +140,6 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(alarmSchedualCalls, 1);
+    expect(alarmScheduleCalls, 1);
   });
 }
