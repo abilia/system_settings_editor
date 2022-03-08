@@ -56,6 +56,7 @@ void main() {
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
       ..client = Fakes.client()
+      ..battery = FakeBattery()
       ..init();
   });
 
