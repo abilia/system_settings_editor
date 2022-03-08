@@ -281,5 +281,19 @@ class MediumLayout extends Layout {
           alarmPage: const AlarmPageLayout(
             alarmClockPadding: EdgeInsets.only(top: 6, bottom: 4, right: 24),
           ),
+          alarmSettingsPage: const AlarmSettingsPageLayout(
+            playButtonSeparation: 16,
+            defaultPadding: EdgeInsets.fromLTRB(24, 16, 32, 0),
+            topPadding: EdgeInsets.fromLTRB(24, 36, 32, 0),
+            bottomPadding: EdgeInsets.fromLTRB(24, 24, 32, 96),
+            dividerPadding: EdgeInsets.only(top: 24, bottom: 16),
+          ),
+          components: const ComponentsLayout(
+            subHeadingPadding: EdgeInsets.only(bottom: 12),
+          ),
+          pickField: const PickFieldLayout(
+              height: 84,
+              iconSeparation: 18,
+              innerPadding: EdgeInsets.only(left: 18, right: 18)),
         );
 }

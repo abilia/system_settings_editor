@@ -277,6 +277,8 @@ abstract class Translated {
 
   final String selectBaseTimer = 'Select Basic Timer';
 
+  final String timer = 'Timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1222,6 +1224,9 @@ class SV extends Translated {
 
   @override
   final String selectBaseTimer = 'Välj bastimer';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Meny';
@@ -2395,6 +2400,9 @@ class DA extends Translated {
   final String selectBaseTimer = 'Vælg bastimer';
 
   @override
+  final String timer = 'Timer';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3564,6 +3572,9 @@ class NL extends Translated {
 
   @override
   final String selectBaseTimer = 'Standaardtimers selecteren';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Menu';
@@ -5914,6 +5925,9 @@ class DE extends Translated {
   final String selectBaseTimer = 'Standardtimer auswählen';
 
   @override
+  final String timer = 'Timer';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -7087,6 +7101,9 @@ class NB extends Translated {
 
   @override
   final String selectBaseTimer = 'Velg standardtimere';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Meny';
