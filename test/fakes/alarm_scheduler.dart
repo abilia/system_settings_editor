@@ -1,8 +1,8 @@
 import 'package:seagull/models/all.dart';
 
-int alarmSchedualCalls = 0;
+int alarmScheduleCalls = 0;
 AlarmScheduler get noAlarmScheduler {
-  alarmSchedualCalls = 0;
+  alarmScheduleCalls = 0;
   return (({
     required activities,
     required timers,
@@ -12,5 +12,5 @@ AlarmScheduler get noAlarmScheduler {
     required fileStorage,
     now,
   }) async =>
-      alarmSchedualCalls++);
+      alarmScheduleCalls++);
 }

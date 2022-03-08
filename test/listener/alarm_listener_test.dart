@@ -230,13 +230,13 @@ void main() {
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
     });
 
-    testWidgets('SGC-841 notications not reschedualed on app alarm start',
+    testWidgets('SGC-841 notications not rescheduled on app alarm start',
         (WidgetTester tester) async {
       // Act
       await tester.pumpWidget(App(payload: payload));
       await tester.pumpAndSettle();
       // Assert
-      expect(alarmSchedualCalls, 0);
+      expect(alarmScheduleCalls, 0);
     });
 
     testWidgets('SGC-843 Alarm page Close button cancels alarm',

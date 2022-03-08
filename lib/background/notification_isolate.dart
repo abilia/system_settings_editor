@@ -229,7 +229,7 @@ Future<bool> _scheduleNotification(
     );
     return true;
   } catch (e) {
-    _log.warning('could not schedual $payload', e);
+    _log.warning('could not schedule $payload', e);
     return false;
   }
 }
