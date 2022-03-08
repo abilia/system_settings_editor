@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -57,7 +58,7 @@ Future scheduleAlarmNotifications(
       : now().nextMinute();
   final activityNotifications = activities.alarmsFrom(
     from,
-    take: maxNotifications - timers.length,
+    take: max(maxNotifications - timers.length, 0),
   );
   return _scheduleAllAlarmNotifications(
     [
