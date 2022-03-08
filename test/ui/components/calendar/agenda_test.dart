@@ -59,8 +59,8 @@ void main() {
     final mockTimerDb = MockTimerDb();
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future.value(timerResponse()));
-    when(() => mockTimerDb.getTimerAlarmsFrom(any()))
-        .thenAnswer((_) => Future.value(timerResponse().map(TimerAlarm.new)));
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
+        .thenAnswer((_) => Future.value(timerResponse()));
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

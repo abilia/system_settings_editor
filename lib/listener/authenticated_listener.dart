@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/notification/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
@@ -162,12 +163,12 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     settingsState ??= context.read<MemoplannerSettingBloc>().state;
     if (settingsState is! MemoplannerSettingsNotLoaded &&
         activitiesState is ActivitiesLoaded) {
-      final timers = await GetIt.I<TimerDb>().getTimerAlarmsFrom(
+      final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
         DateTime.now(),
       );
       await scheduleAlarmNotificationsIsolated(
         activities: activitiesState.activities,
-        timers: timers,
+        timers: timers.toAlarm(),
         language: Localizations.localeOf(context).toLanguageTag(),
         alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
         settings: settingsState.settings.alarm,
