@@ -13,7 +13,7 @@ class InactivityCubit extends Cubit<InactivityState> {
   late StreamSubscription<MemoplannerSettingsState> _settingsStream;
   late StartView _homeScreenView;
 
-  final Logger _log = Logger('InactivityCubit');
+  final Logger _log = Logger((InactivityCubit).toString());
 
   late StreamSubscription<DateTime> _clockSubscription;
 
@@ -21,7 +21,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     this._calendarInactivityTime,
     this.clockBloc,
     MemoplannerSettingBloc settingsBloc,
-  ) : super(ActivityDetectedState(clockBloc.state)) {
+  ) : super(ActivityDetected(clockBloc.state)) {
     _settingsStream = settingsBloc.stream.listen((settings) {
       if (settings is MemoplannerSettingsLoaded) {
         _useScreenSaver = settings.useScreensaver;
@@ -37,20 +37,19 @@ class InactivityCubit extends Cubit<InactivityState> {
 
   void _ticking(DateTime time) async {
     final state = this.state;
-    if (state is ActivityDetectedState &&
+    if (state is ActivityDetected &&
         time.isAfter(state.timeStamp.add(_calendarInactivityTime))) {
-      emit(const CalendarInactivityThresholdReachedState());
+      emit(const CalendarInactivityThresholdReached());
     }
-    if (_useScreenSaver &&
-        state is ActivityDetectedState &&
+    if (state is ActivityDetected &&
         time.isAfter(state.timeStamp.add(_homeScreenInactivityTime))) {
-      emit(HomeScreenInactivityThresholdReachedState(
+      emit(HomeScreenInactivityThresholdReached(
           _homeScreenView, _useScreenSaver));
     }
   }
 
-  void activityDetected(_) async {
-    emit(ActivityDetectedState(clockBloc.state));
+  void activityDetected() async {
+    emit(ActivityDetected(clockBloc.state));
   }
 
   @override
@@ -65,15 +64,15 @@ abstract class InactivityState extends Equatable {
   const InactivityState();
 }
 
-class CalendarInactivityThresholdReachedState extends InactivityState {
-  const CalendarInactivityThresholdReachedState();
+class CalendarInactivityThresholdReached extends InactivityState {
+  const CalendarInactivityThresholdReached();
 
   @override
   List<Object> get props => [];
 }
 
-class HomeScreenInactivityThresholdReachedState extends InactivityState {
-  const HomeScreenInactivityThresholdReachedState(
+class HomeScreenInactivityThresholdReached extends InactivityState {
+  const HomeScreenInactivityThresholdReached(
       this.startView, this.showScreenSaver);
   final StartView startView;
   final bool showScreenSaver;
@@ -82,10 +81,10 @@ class HomeScreenInactivityThresholdReachedState extends InactivityState {
   List<Object?> get props => [startView, showScreenSaver];
 }
 
-class ActivityDetectedState extends InactivityState {
+class ActivityDetected extends InactivityState {
   final DateTime timeStamp;
 
-  const ActivityDetectedState(this.timeStamp);
+  const ActivityDetected(this.timeStamp);
 
   @override
   List<Object> get props => [timeStamp];

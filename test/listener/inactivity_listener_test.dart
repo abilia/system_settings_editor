@@ -70,9 +70,10 @@ void main() {
     testWidgets(
         'When timeout is reached, screen saver is false, app switches to WeekCalendar',
         (tester) async {
-      await tester.pumpWidget(_wrapWithMaterialApp());
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReachedState(
+        const HomeScreenInactivityThresholdReached(
             StartView.weekCalendar, false),
       );
       await tester.pumpAndSettle();
@@ -82,9 +83,10 @@ void main() {
     testWidgets(
         'When timeout is reached, screen saver is false, app switches to MonthCalendar',
         (tester) async {
-      await tester.pumpWidget(_wrapWithMaterialApp());
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReachedState(
+        const HomeScreenInactivityThresholdReached(
             StartView.monthCalendar, false),
       );
       await tester.pumpAndSettle();
@@ -94,9 +96,10 @@ void main() {
     testWidgets(
         'When timeout is reached, screen saver is false, app switches to Menu',
         (tester) async {
-      await tester.pumpWidget(_wrapWithMaterialApp());
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReachedState(StartView.menu, false),
+        const HomeScreenInactivityThresholdReached(StartView.menu, false),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
@@ -105,10 +108,10 @@ void main() {
     testWidgets(
         'When timeout is reached, screen saver is false, app switches to PhotoCalendar',
         (tester) async {
-      await tester.pumpWidget(_wrapWithMaterialApp());
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReachedState(
-            StartView.photoAlbum, false),
+        const HomeScreenInactivityThresholdReached(StartView.photoAlbum, false),
       );
       await tester.pumpAndSettle();
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -117,9 +120,10 @@ void main() {
     testWidgets(
         'When timeout is reached, screen saver is true, app switches to ScreenSaver',
         (tester) async {
-      await tester.pumpWidget(_wrapWithMaterialApp());
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReachedState(StartView.menu, true),
+        const HomeScreenInactivityThresholdReached(StartView.menu, true),
       );
       await tester.pumpAndSettle();
       expect(find.byType(ScreenSaverPage), findsOneWidget);
@@ -137,7 +141,7 @@ void main() {
       expect(
           find.text(DateFormat.EEEE(local).format(initialTime)), findsNothing);
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReachedState(),
+        const CalendarInactivityThresholdReached(),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsOneWidget);
@@ -151,7 +155,7 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
       await tester.pumpAndSettle();
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReachedState(),
+        const CalendarInactivityThresholdReached(),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);

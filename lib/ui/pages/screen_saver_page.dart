@@ -19,7 +19,7 @@ class ScreenSaverPage extends StatelessWidget {
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () async {
-              context.read<InactivityCubit>().activityDetected(null);
+              context.read<InactivityCubit>().activityDetected();
 
               Navigator.of(context).maybePop();
             },

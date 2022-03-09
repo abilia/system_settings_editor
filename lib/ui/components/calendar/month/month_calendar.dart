@@ -14,6 +14,7 @@ class MonthCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<CalendarViewCubit>().setCalendarTab(StartView.monthCalendar);
     return const Scaffold(
       appBar: MonthAppBar(),
       floatingActionButton: FloatingActions(),

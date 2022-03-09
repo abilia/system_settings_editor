@@ -22,4 +22,8 @@ class CalendarViewCubit extends Cubit<CalendarViewState> {
       await settingsDb.setLeftCategoryExpanded(state.expandLeftCategory);
     }
   }
+
+  setCalendarTab(StartView tab) {
+    emit(state.copyWith(calendarTab: tab));
+  }
 }

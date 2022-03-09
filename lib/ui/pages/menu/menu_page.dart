@@ -12,6 +12,7 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<CalendarViewCubit>().setCalendarTab(StartView.menu);
     return Scaffold(
       appBar: const MenuAppBar(),
       floatingActionButton: const FloatingActions(),
