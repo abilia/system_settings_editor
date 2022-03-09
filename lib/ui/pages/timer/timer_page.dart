@@ -14,84 +14,88 @@ class TimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion>(
-      selector: (timerState) => timerState.timers.firstWhere(
-          (to) => to.timer.id == timerOccasion.timer.id,
-          orElse: () => timerOccasion),
-      builder: (context, timerOccasion) {
-        final timer = timerOccasion.timer;
-        return Scaffold(
-          appBar: DayAppBar(day: day),
-          body: Padding(
-            padding: layout.timerPage.bodyPadding,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: borderRadius,
-              ),
-              constraints: const BoxConstraints.expand(),
-              child: Column(
-                children: <Widget>[
-                  _TopInfo(timer: timer),
-                  Divider(
-                    height: layout.activityPage.dividerHeight,
-                    endIndent: 0,
-                    indent: layout.activityPage.dividerIndentation,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: layout.timerPage.mainContentPadding,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          if (timer.paused || !timerOccasion.isOngoing)
-                            Expanded(
-                              child: TimerWheel.nonInteractive(
-                                secondsLeft: timer.pausedAt.inSeconds,
-                                lengthInMinutes: timer.duration.inMinutes,
-                                paused: timer.paused,
-                              ),
-                            )
-                          else
-                            Expanded(
-                              child: TimerTickerBuilder(
-                                timer,
-                                builder: (context, left) =>
-                                    TimerWheel.nonInteractive(
-                                  secondsLeft: left.inSeconds,
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: BlocSelector<TimerAlarmBloc, TimerAlarmState, TimerOccasion>(
+        selector: (timerState) => timerState.timers.firstWhere(
+            (to) => to.timer.id == timerOccasion.timer.id,
+            orElse: () => timerOccasion),
+        builder: (context, timerOccasion) {
+          final timer = timerOccasion.timer;
+          return Scaffold(
+            appBar: DayAppBar(day: day),
+            body: Padding(
+              padding: layout.timerPage.bodyPadding,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: borderRadius,
+                  border: border,
+                ),
+                constraints: const BoxConstraints.expand(),
+                child: Column(
+                  children: <Widget>[
+                    _TopInfo(timer: timer),
+                    Divider(
+                      height: layout.activityPage.dividerHeight,
+                      endIndent: 0,
+                      indent: layout.activityPage.dividerIndentation,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: layout.timerPage.mainContentPadding,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (timer.paused || !timerOccasion.isOngoing)
+                              Expanded(
+                                child: TimerWheel.nonInteractive(
+                                  secondsLeft: timer.pausedAt.inSeconds,
                                   lengthInMinutes: timer.duration.inMinutes,
+                                  paused: timer.paused,
+                                ),
+                              )
+                            else
+                              Expanded(
+                                child: TimerTickerBuilder(
+                                  timer,
+                                  builder: (context, left) =>
+                                      TimerWheel.nonInteractive(
+                                    secondsLeft: left.inSeconds,
+                                    lengthInMinutes: timer.duration.inMinutes,
+                                  ),
                                 ),
                               ),
-                            ),
-                          SizedBox(
-                            height: layout.timerPage.pauseTextHeight,
-                            child: timer.paused
-                                ? Tts(
-                                    child: Text(
-                                      Translator.of(context)
-                                          .translate
-                                          .timerPaused,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4
-                                          ?.copyWith(
-                                            color: AbiliaColors.red,
-                                          ),
-                                    ),
-                                  )
-                                : null,
-                          )
-                        ],
+                            SizedBox(
+                              height: layout.timerPage.pauseTextHeight,
+                              child: timer.paused
+                                  ? Tts(
+                                      child: Text(
+                                        Translator.of(context)
+                                            .translate
+                                            .timerPaused,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4
+                                            ?.copyWith(
+                                              color: AbiliaColors.red,
+                                            ),
+                                      ),
+                                    )
+                                  : null,
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          bottomNavigationBar: _TimerBottomBar(timer: timer),
-        );
-      },
+            bottomNavigationBar: _TimerBottomBar(timer: timer),
+          );
+        },
+      ),
     );
   }
 }
