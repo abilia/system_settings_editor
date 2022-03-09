@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -32,6 +32,7 @@ class MenuPage extends StatelessWidget {
                 if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
                 if (menu.timersEnabled) const CountdownButton(),
                 if (menu.quickSettingsEnabled) const QuickSettingsButton(),
+                const BasicTemplatesButton(),
                 if (menu.showSettings) const SettingsButton(),
               ],
             );
@@ -272,6 +273,48 @@ class MenuItemButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class BasicTemplatesButton extends StatelessWidget {
+  const BasicTemplatesButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+
+    return Stack(
+      children: [
+        MenuItemButton(
+          style: blackButtonStyle,
+          text: Translator.of(context).translate.basicTemplates,
+          icon: AbiliaIcons.favoritesShow,
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          SortableArchiveCubit<BasicActivityData>(
+                        sortableBloc: BlocProvider.of<SortableBloc>(context),
+                      ),
+                    ),
+                    BlocProvider(
+                      create: (context) => SortableArchiveCubit<BasicTimerData>(
+                        sortableBloc: BlocProvider.of<SortableBloc>(context),
+                      ),
+                    ),
+                  ],
+                  child: const BasicTemplatesPage(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

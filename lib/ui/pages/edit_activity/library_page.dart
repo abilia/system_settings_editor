@@ -228,13 +228,117 @@ class _SortableLibraryState<T extends SortableData>
   }
 }
 
+class ListLibrary<T extends SortableData> extends StatefulWidget {
+  final LibraryItemGenerator<T> libraryItemGenerator;
+  final String emptyLibraryMessage;
+  final bool selectableItems;
+  final double? childAspectRatio;
+
+  const ListLibrary(
+    this.libraryItemGenerator,
+    this.emptyLibraryMessage, {
+    this.selectableItems = true,
+    this.childAspectRatio,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _ListLibraryState<T> createState() => _ListLibraryState<T>();
+}
+
+class _ListLibraryState<T extends SortableData> extends State<ListLibrary<T>> {
+  late ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
+      builder: (context, archiveState) {
+        List<Sortable<T>> content =
+            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
+              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+        if (content.isEmpty) {
+          return EmptyLibraryMessage(
+            emptyLibraryMessage: widget.emptyLibraryMessage,
+            rootFolder: archiveState.isAtRoot,
+          );
+        }
+        return ScrollArrows.vertical(
+          controller: _controller,
+          child: ListView.separated(
+            controller: _controller,
+            padding: EdgeInsets.only(
+              top: verticalPadding,
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            itemCount: content.length,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                height: 8,
+              );
+            },
+            itemBuilder: (BuildContext context, int index) {
+              Sortable<T> sortable = content[index];
+              return sortable.isGroup
+                  ? ListFolder<T>(
+                      id: sortable.id,
+                      child: widget.libraryItemGenerator(sortable))
+                  : widget.selectableItems
+                      ? SelectableItem(
+                          sortable: sortable,
+                          libraryItemGenerator: widget.libraryItemGenerator,
+                        )
+                      : widget.libraryItemGenerator(sortable);
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ListFolder<T extends SortableData> extends StatelessWidget {
+  const ListFolder({
+    Key? key,
+    required this.id,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
+        builder: (innerContext, state) => InkWell(
+          borderRadius: borderRadius,
+          onTap: () => BlocProvider.of<SortableArchiveCubit<T>>(context)
+              .folderChanged(id),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 class Folder<T extends SortableData> extends StatelessWidget {
   const Folder({
     Key? key,
     required this.sortable,
+    this.showTitle = true,
   }) : super(key: key);
 
   final Sortable<T> sortable;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -242,11 +346,12 @@ class Folder<T extends SortableData> extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: borderRadius,
-        onTap: () {
-          BlocProvider.of<SortableArchiveCubit<T>>(context)
-              .folderChanged(sortable.id);
-        },
-        child: LibraryFolder(sortableData: sortable.data),
+        onTap: () => BlocProvider.of<SortableArchiveCubit<T>>(context)
+            .folderChanged(sortable.id),
+        child: LibraryFolder(
+          sortableData: sortable.data,
+          showTitle: showTitle,
+        ),
       ),
     );
   }
@@ -310,10 +415,12 @@ class EmptyLibraryMessage extends StatelessWidget {
 
 class LibraryFolder extends StatelessWidget {
   final SortableData sortableData;
+  final bool showTitle;
 
   const LibraryFolder({
     Key? key,
     required this.sortableData,
+    required this.showTitle,
   }) : super(key: key);
 
   @override
@@ -328,12 +435,13 @@ class LibraryFolder extends StatelessWidget {
         padding: EdgeInsets.all(4.0.s),
         child: Column(
           children: <Widget>[
-            Text(
-              title,
-              style: abiliaTextTheme.caption?.copyWith(height: 1),
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 2.s),
+            if (showTitle)
+              Text(
+                title,
+                style: abiliaTextTheme.caption?.copyWith(height: 1),
+                overflow: TextOverflow.ellipsis,
+              ),
+            if (showTitle) SizedBox(height: 2.s),
             Stack(
               children: [
                 Icon(

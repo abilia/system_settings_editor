@@ -234,7 +234,7 @@ abstract class Translated {
 
   final String createActivity = 'New activity';
 
-  final String basicActivities = 'Select Basic Activity';
+  final String selectBasicActivity = 'Select Basic Activity';
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
@@ -261,6 +261,10 @@ abstract class Translated {
   final String checklistDoneInfo =
       'All checklist tasks in your activity are completed. Do you want to complete the activity?';
 
+  final String basicTemplates = 'Basic templates';
+
+  final String basicActivities = 'Basic Activities';
+
   final String start = 'Start';
 
   final String newTimer = 'New timer';
@@ -278,6 +282,8 @@ abstract class Translated {
   final String selectBaseTimer = 'Select Basic Timer';
 
   final String timer = 'Timer';
+
+  final String basicTimers = 'Basic Timers';
 
   final String menu = 'Menu';
 
@@ -1160,7 +1166,7 @@ class SV extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String basicActivities = 'Välj basaktivitet';
+  final String selectBasicActivity = 'Välj basaktivitet';
 
   @override
   final String deleteActivity =
@@ -1202,6 +1208,9 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
+  final String basicActivities = 'Basic Activities';
+
+  @override
   final String start = 'Starta';
 
   @override
@@ -1227,6 +1236,9 @@ class SV extends Translated {
 
   @override
   final String timer = 'Timer';
+
+  @override
+  final String basicTimers = 'Bastimers';
 
   @override
   final String menu = 'Meny';
@@ -2337,7 +2349,7 @@ class DA extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String basicActivities = 'Vælg standardaktivitet';
+  final String selectBasicActivity = 'Vælg standardaktivitet';
 
   @override
   final String deleteActivity =
@@ -3513,7 +3525,7 @@ class NL extends Translated {
   final String createActivity = 'Nieuwe activiteit';
 
   @override
-  final String basicActivities = 'Standaardactiviteit selecteren';
+  final String selectBasicActivity = 'Standaardactiviteit selecteren';
 
   @override
   final String deleteActivity = 'Wilt u deze activiteit verwijderen?';
@@ -4688,7 +4700,7 @@ class FI extends Translated {
   final String createActivity = 'Uusi aktiviteetti';
 
   @override
-  final String basicActivities = 'Valitse perusaktiviteetti';
+  final String selectBasicActivity = 'Valitse perusaktiviteetti';
 
   @override
   final String deleteActivity = 'Haluatko poistaa tämän aktiviteetin?';
@@ -5863,7 +5875,7 @@ class DE extends Translated {
   final String createActivity = 'Neue Aktivität';
 
   @override
-  final String basicActivities = 'Standardaktivität auswählen';
+  final String selectBasicActivity = 'Standardaktivität auswählen';
 
   @override
   final String deleteActivity = 'Möchten Sie diese Aktivität löschen?';
@@ -7041,7 +7053,7 @@ class NB extends Translated {
   final String createActivity = 'Ny aktivitet';
 
   @override
-  final String basicActivities = 'Velg standardaktivitet';
+  final String selectBasicActivity = 'Velg standardaktivitet';
 
   @override
   final String deleteActivity = 'Er du sikker på at du vil slette aktiviteten?';

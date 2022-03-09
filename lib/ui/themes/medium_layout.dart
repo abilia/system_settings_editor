@@ -295,5 +295,10 @@ class MediumLayout extends Layout {
               height: 84,
               iconSeparation: 18,
               innerPadding: EdgeInsets.only(left: 18, right: 18)),
+          basicTemplatesPage: const BasicTemplatesPageLayout(
+              pickFieldHeight: 88,
+              pickFieldBorder: 2,
+              pickFieldPadding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+              basicActivityIconSize: 48),
         );
 }

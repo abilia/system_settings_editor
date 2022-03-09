@@ -47,6 +47,7 @@ class Layout {
   final AlarmSettingsPageLayout alarmSettingsPage;
   final ComponentsLayout components;
   final PickFieldLayout pickField;
+  final BasicTemplatesPageLayout basicTemplatesPage;
 
   const Layout({
     this.radius = 12,
@@ -85,6 +86,7 @@ class Layout {
     this.alarmSettingsPage = const AlarmSettingsPageLayout(),
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
+    this.basicTemplatesPage = const BasicTemplatesPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -789,5 +791,17 @@ class PickFieldLayout {
     this.height = 56,
     this.iconSeparation = 12,
     this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
+  });
+}
+
+class BasicTemplatesPageLayout {
+  final EdgeInsets pickFieldPadding;
+  final double pickFieldBorder, pickFieldHeight, basicActivityIconSize;
+
+  const BasicTemplatesPageLayout({
+    this.pickFieldPadding = const EdgeInsets.fromLTRB(12, 4, 12, 4),
+    this.pickFieldBorder = 1,
+    this.pickFieldHeight = 56,
+    this.basicActivityIconSize = 24,
   });
 }

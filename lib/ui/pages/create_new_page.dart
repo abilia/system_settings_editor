@@ -32,7 +32,7 @@ class CreateNewPage extends StatelessWidget {
               PickField(
                 key: TestKey.basicActivityChoice,
                 leading: const Icon(AbiliaIcons.folder),
-                text: Text(t.basicActivities),
+                text: Text(t.selectBasicActivity),
                 onTap: () async {
                   final basicActivityData =
                       await Navigator.of(context).push<BasicActivityData>(

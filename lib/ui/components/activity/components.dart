@@ -81,6 +81,8 @@ class PickField extends StatelessWidget {
   final String? semanticsLabel;
   final Text? secondaryText;
   final TextStyle? secondaryStyle;
+  final BoxDecoration? customDecoration;
+  final double? iconSize;
 
   const PickField({
     required this.text,
@@ -94,6 +96,8 @@ class PickField extends StatelessWidget {
     this.padding,
     this.secondaryText,
     this.secondaryStyle,
+    this.customDecoration,
+    this.iconSize,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -114,7 +118,7 @@ class PickField extends StatelessWidget {
             decoration: errorState
                 ? whiteErrorBoxDecoration
                 : onTap == null
-                    ? disabledBoxDecoration
+                    ? customDecoration ?? disabledBoxDecoration
                     : whiteBoxDecoration,
             padding: padding ?? layout.pickField.innerPadding,
             child: Row(
@@ -123,7 +127,7 @@ class PickField extends StatelessWidget {
                   IconTheme(
                     data: Theme.of(context)
                         .iconTheme
-                        .copyWith(size: layout.iconSize.small),
+                        .copyWith(size: iconSize ?? layout.iconSize.small),
                     child: l,
                   ),
                 if (l != null) SizedBox(width: layout.pickField.iconSeparation),
