@@ -91,13 +91,11 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get nightStart => settings.nightIntervalStart;
   int get activityTimeout => settings.activityTimeout;
 
-  int get calendarCount =>
-      1 +
-      (displayWeekCalendar ? 1 : 0) +
-      (displayMonthCalendar ? 1 : 0) +
-      (displayMenu ? 1 : 0);
+  int get weekCalendarTabIndex => (displayWeekCalendar ? 1 : 0);
   int get monthCalendarTabIndex =>
-      0 + (displayWeekCalendar ? 1 : 0) + (displayMonthCalendar ? 1 : 0);
+      weekCalendarTabIndex + (displayMonthCalendar ? 1 : 0);
+  int get menuTabIndex => monthCalendarTabIndex + (displayMenu ? 1 : 0);
+  int get calendarCount => menuTabIndex + 1;
 
   DayColor get calendarDayColor => DayColor.values[settings.calendarDayColor];
   TimepillarIntervalType get timepillarIntervalType =>
@@ -201,6 +199,28 @@ abstract class MemoplannerSettingsState extends Equatable {
           );
         }
     }
+  }
+
+  int startViewIndex(StartView startView) {
+    switch (startView) {
+      case StartView.weekCalendar:
+        if (displayWeekCalendar) {
+          return weekCalendarTabIndex;
+        }
+        break;
+      case StartView.monthCalendar:
+        if (displayMonthCalendar) {
+          return monthCalendarTabIndex;
+        }
+        break;
+      case StartView.menu:
+        if (displayMenu) {
+          return menuTabIndex;
+        }
+        break;
+      default:
+    }
+    return 0;
   }
 
   DayParts get dayParts => DayParts(

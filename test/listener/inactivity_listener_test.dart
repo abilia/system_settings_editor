@@ -39,6 +39,7 @@ void main() {
       ..client = Fakes.client(
         activityResponse: () => [],
       )
+      ..battery = FakeBattery()
       ..database = FakeDatabase()
       ..init();
   });
@@ -59,8 +60,8 @@ void main() {
               theme: abiliaTheme,
               home: MultiBlocListener(listeners: [
                 CalendarInactivityListener(),
-                HomeScreenInactivityListener(),
-              ], child: child ?? Container()),
+                ScreenSaverListener(),
+              ], child: child ?? const CalendarPage()),
             ),
           ),
         ),
@@ -74,7 +75,9 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
         const HomeScreenInactivityThresholdReached(
-            StartView.weekCalendar, false),
+          startView: StartView.weekCalendar,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
@@ -87,7 +90,9 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
         const HomeScreenInactivityThresholdReached(
-            StartView.monthCalendar, false),
+          startView: StartView.monthCalendar,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MonthCalendar), findsOneWidget);
@@ -99,7 +104,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.menu, false),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.menu,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
@@ -111,7 +119,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.photoAlbum, false),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.photoAlbum,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -123,7 +134,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.menu, true),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.menu,
+          showScreensaver: true,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(ScreenSaverPage), findsOneWidget);

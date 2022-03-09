@@ -8,33 +8,33 @@ class ScreenSaverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) {
-          final bool isNight =
-              time.dayPart(memoSettingsState.dayParts) == DayPart.night;
-          final AnalogClockStyle analogClock = isNight
-              ? layout.screenSaver.nightClock
-              : layout.screenSaver.dayClock;
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              context.read<InactivityCubit>().activityDetected();
-
-              Navigator.of(context).maybePop();
-            },
-            child: Scaffold(
-              backgroundColor: AbiliaColors.black,
-              body: Column(
-                children: [
-                  ScreenSaverAppBar(isNight: isNight, time: time),
-                  Padding(
-                    padding: layout.screenSaver.clockPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (memoSettingsState.clockType != ClockType.digital)
-                          Padding(
+    return BlocListener<InactivityCubit, InactivityState>(
+      listenWhen: (previous, current) =>
+          previous is! ActivityDetected && current is ActivityDetected,
+      listener: (context, state) => Navigator.of(context).maybePop(),
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) =>
+            BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, time) {
+            final bool isNight = time.isNight(memoSettingsState.dayParts);
+            final AnalogClockStyle analogClock = isNight
+                ? layout.screenSaver.nightClock
+                : layout.screenSaver.dayClock;
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: context.read<InactivityCubit>().activityDetected,
+              child: Scaffold(
+                backgroundColor: AbiliaColors.black,
+                body: Column(
+                  children: [
+                    ScreenSaverAppBar(isNight: isNight, time: time),
+                    Padding(
+                      padding: layout.screenSaver.clockPadding,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (memoSettingsState.clockType != ClockType.digital)
+                            Padding(
                               padding: EdgeInsets.only(
                                   right: layout.screenSaver.clockSeparation),
                               child: SizedBox(
@@ -44,20 +44,22 @@ class ScreenSaverPage extends StatelessWidget {
                                   child: CustomizableAnalogClock(
                                       style: analogClock),
                                 ),
-                              )),
-                        if (memoSettingsState.clockType != ClockType.analogue)
-                          DigitalClock(
-                            style: layout.screenSaver
-                                .digitalClockTextStyle(isNight),
-                          ),
-                      ],
+                              ),
+                            ),
+                          if (memoSettingsState.clockType != ClockType.analogue)
+                            DigitalClock(
+                              style: layout.screenSaver
+                                  .digitalClockTextStyle(isNight),
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -2,61 +2,51 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _calendarInactivityTime;
-  late Duration _homeScreenInactivityTime;
-  late bool _useScreenSaver = false;
   final ClockBloc clockBloc;
-  late StreamSubscription<MemoplannerSettingsState> _settingsStream;
-  late StartView _homeScreenView;
-
-  final Logger _log = Logger((InactivityCubit).toString());
+  final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.clockBloc,
-    MemoplannerSettingBloc settingsBloc,
+    this.settingsBloc,
   ) : super(ActivityDetected(clockBloc.state)) {
-    _settingsStream = settingsBloc.stream.listen((settings) {
-      if (settings is MemoplannerSettingsLoaded) {
-        _useScreenSaver = settings.useScreensaver;
-        _homeScreenInactivityTime =
-            Duration(milliseconds: settings.activityTimeout);
-        _homeScreenView = settings.startView;
-        _log.fine(
-            'ScreenSaver settings $_useScreenSaver $_homeScreenInactivityTime $_homeScreenView');
-      }
-    });
     _clockSubscription = clockBloc.stream.listen(_ticking);
   }
 
-  void _ticking(DateTime time) async {
+  void _ticking(DateTime time) {
     final state = this.state;
-    if (state is ActivityDetected &&
-        time.isAfter(state.timeStamp.add(_calendarInactivityTime))) {
+    if (state is! ActivityDetected) return;
+    final settings = settingsBloc.state;
+    final activityTimeout = Duration(milliseconds: settings.activityTimeout);
+    final calendarInactivityTime = _calendarInactivityTime > activityTimeout
+        ? activityTimeout
+        : _calendarInactivityTime;
+
+    if (time.isAfter(state.timeStamp.add(calendarInactivityTime))) {
       emit(const CalendarInactivityThresholdReached());
     }
-    if (state is ActivityDetected &&
-        time.isAfter(state.timeStamp.add(_homeScreenInactivityTime))) {
-      emit(HomeScreenInactivityThresholdReached(
-          _homeScreenView, _useScreenSaver));
+    if (time.isAfter(state.timeStamp.add(activityTimeout))) {
+      emit(
+        HomeScreenInactivityThresholdReached(
+          startView: settings.startView,
+          showScreensaver: settings.useScreensaver,
+        ),
+      );
     }
   }
 
-  void activityDetected() async {
-    emit(ActivityDetected(clockBloc.state));
-  }
+  void activityDetected([_]) => emit(ActivityDetected(clockBloc.state));
 
   @override
   Future<void> close() async {
     await super.close();
     await _clockSubscription.cancel();
-    await _settingsStream.cancel();
   }
 }
 
@@ -72,13 +62,18 @@ class CalendarInactivityThresholdReached extends InactivityState {
 }
 
 class HomeScreenInactivityThresholdReached extends InactivityState {
-  const HomeScreenInactivityThresholdReached(
-      this.startView, this.showScreenSaver);
+  const HomeScreenInactivityThresholdReached({
+    required this.startView,
+    required this.showScreensaver,
+  });
   final StartView startView;
-  final bool showScreenSaver;
+  final bool showScreensaver;
+
+  bool get screensaverOrPhotoAlbum =>
+      showScreensaver || startView == StartView.photoAlbum;
 
   @override
-  List<Object?> get props => [startView, showScreenSaver];
+  List<Object?> get props => [startView, showScreensaver];
 }
 
 class ActivityDetected extends InactivityState {

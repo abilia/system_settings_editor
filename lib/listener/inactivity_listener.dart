@@ -1,7 +1,8 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/settings/memoplanner_settings_enums.dart';
+
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/copied_auth_providers.dart';
+import 'package:seagull/utils/all.dart';
 
 class CalendarInactivityListener
     extends BlocListener<InactivityCubit, InactivityState> {
@@ -9,8 +10,7 @@ class CalendarInactivityListener
       : super(
           key: key,
           listenWhen: (previous, current) =>
-              current is CalendarInactivityThresholdReached &&
-              previous is ActivityDetected,
+              previous is ActivityDetected && current is! ActivityDetected,
           listener: (context, state) {
             context.read<MonthCalendarCubit>().goToCurrentMonth();
             context.read<WeekCalendarCubit>().goToCurrentWeek();
@@ -19,20 +19,62 @@ class CalendarInactivityListener
         );
 }
 
-class HomeScreenInactivityListener
+class HomeScreenInactivityListener extends StatelessWidget {
+  final Widget child;
+  final MemoplannerSettingsState settingsState;
+
+  const HomeScreenInactivityListener({
+    Key? key,
+    required this.settingsState,
+    required this.child,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    if (!Config.isMP) return child;
+
+    return BlocListener<InactivityCubit, InactivityState>(
+      listenWhen: (previous, current) =>
+          current is HomeScreenInactivityThresholdReached &&
+          previous is! HomeScreenInactivityThresholdReached &&
+          !current.screensaverOrPhotoAlbum,
+      listener: (context, state) async {
+        if (state is! HomeScreenInactivityThresholdReached) return;
+        DefaultTabController.of(context)
+            ?.animateTo(settingsState.startViewIndex(state.startView));
+      },
+      child: child,
+    );
+  }
+}
+
+class ScreenSaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  HomeScreenInactivityListener({Key? key})
+  ScreenSaverListener({Key? key})
       : super(
           key: key,
           listenWhen: (previous, current) =>
               current is HomeScreenInactivityThresholdReached &&
-              previous is ActivityDetected,
-          listener: (context, state) async {
-            final authProviders = copiedAuthProviders(context);
+              previous is! HomeScreenInactivityThresholdReached,
+          listener: (context, state) {
+            Navigator.of(context)
+                .popUntil((route) => route.isFirst || route is AlarmRoute);
+            if (state is! HomeScreenInactivityThresholdReached ||
+                !state.screensaverOrPhotoAlbum) return;
 
-            if ((state as HomeScreenInactivityThresholdReached)
-                .showScreenSaver) {
-              await Navigator.of(context).push(
+            final authProviders = copiedAuthProviders(context);
+            if (state.startView == StartView.photoAlbum) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: authProviders,
+                    child: const PhotoCalendarPage(),
+                  ),
+                ),
+              );
+            }
+
+            if (state.showScreensaver) {
+              Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => MultiBlocProvider(
                     providers: authProviders,
@@ -41,30 +83,6 @@ class HomeScreenInactivityListener
                 ),
               );
             }
-            switch (state.startView) {
-              case StartView.photoAlbum:
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child: const PhotoCalendarPage(),
-                    ),
-                  ),
-                );
-                return;
-              case StartView.dayCalendar:
-                context.read<DayPickerBloc>().add(CurrentDay());
-                break;
-              case StartView.monthCalendar:
-                context.read<MonthCalendarCubit>().goToCurrentMonth();
-                break;
-              case StartView.weekCalendar:
-                context.read<WeekCalendarCubit>().goToCurrentWeek();
-                break;
-              default:
-            }
-            context.read<CalendarViewCubit>().setCalendarTab(state.startView);
-            Navigator.of(context).popUntil((route) => route.isFirst);
           },
         );
 }

@@ -106,7 +106,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         ),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
-          HomeScreenInactivityListener(),
+          ScreenSaverListener(),
           KeepScreenAwakeListener(),
         ],
         if (!Platform.isIOS) _fullscreenAlarmPremissionListener(context),
