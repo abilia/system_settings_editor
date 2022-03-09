@@ -5,6 +5,7 @@ class AlarmSettings extends Equatable {
   static const nonCheckableActivityAlarmKey = 'activity_alarm_without_confirm',
       checkableActivityAlarmKey = 'activity_alarm_with_confirm',
       reminderAlarmKey = 'activity_reminder_alarm',
+      timerAlarmKey = 'activity_timer_alarm',
       vibrateAtReminderKey = 'setting_vibrate_at_reminder',
       alarmDurationKey = 'alarm_duration',
       alarmsDisabledUntilKey = 'alarms_disabled_until',
@@ -16,6 +17,7 @@ class AlarmSettings extends Equatable {
     nonCheckableActivityAlarmKey,
     checkableActivityAlarmKey,
     reminderAlarmKey,
+    timerAlarmKey,
     vibrateAtReminderKey,
     alarmDurationKey,
     alarmsDisabledUntilKey,
@@ -28,13 +30,15 @@ class AlarmSettings extends Equatable {
       showAlarmOnOffSwitch,
       showOngoingActivityInFullScreen;
 
-  final String checkableActivity, nonCheckableActivity, reminder;
+  final String checkableActivity, nonCheckableActivity, reminder, timer;
 
   Sound get nonCheckableAlarm => nonCheckableActivity.toSound();
 
   Sound get checkableAlarm => checkableActivity.toSound();
 
   Sound get reminderAlarm => reminder.toSound();
+
+  Sound get timerAlarm => timer.toSound();
 
   Duration get duration => Duration(milliseconds: durationMs);
 
@@ -47,6 +51,7 @@ class AlarmSettings extends Equatable {
     this.checkableActivity = SoundExtension.defaultName,
     this.nonCheckableActivity = SoundExtension.defaultName,
     this.reminder = SoundExtension.defaultName,
+    this.timer = SoundExtension.defaultName,
     this.disabledUntilEpoch = 0,
     this.showAlarmOnOffSwitch = false,
     this.showOngoingActivityInFullScreen = false,
@@ -69,6 +74,10 @@ class AlarmSettings extends Equatable {
         ),
         reminder: settings.parse(
           reminderAlarmKey,
+          Sound.Default.name,
+        ),
+        timer: settings.parse(
+          timerAlarmKey,
           Sound.Default.name,
         ),
         vibrateAtReminder: settings.getBool(

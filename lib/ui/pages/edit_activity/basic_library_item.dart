@@ -18,7 +18,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
     final name = basicLibraryData.title(Translator.of(context).translate);
     final iconPath = basicLibraryData.dataFilePath();
 
-    return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (innerContext, state) {
         final selected = state.selected;
         final isSelected = selected == sortable;
@@ -28,8 +28,8 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
             type: MaterialType.transparency,
             child: InkWell(
               onTap: () => context
-                  .read<SortableArchiveBloc<T>>()
-                  .add(SortableSelected(sortable)),
+                  .read<SortableArchiveCubit<T>>()
+                  .sortableSelected(sortable),
               borderRadius: borderRadius,
               child: Stack(
                 alignment: Alignment.center,
@@ -71,14 +71,14 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  PositionedRadio<Sortable>(
+                  PositionedRadio<Sortable<T>>(
                     value: sortable,
                     groupValue: state.selected,
                     onChanged: (v) {
                       if (v != null) {
                         context
-                            .read<SortableArchiveBloc<T>>()
-                            .add(SortableSelected(v));
+                            .read<SortableArchiveCubit<T>>()
+                            .sortableSelected(v);
                       }
                     },
                   ),

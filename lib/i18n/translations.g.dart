@@ -200,6 +200,16 @@ abstract class Translated {
 
   final String timerDelete = 'Do you want to delete the timer?';
 
+  final String timerPause = 'Do you want to pause the timer?';
+
+  final String timerResume = 'Do you want to continue the timer?';
+
+  final String timerPaused = 'Paused';
+
+  final String pause = 'Pause';
+
+  final String resume = 'Continue';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -266,6 +276,8 @@ abstract class Translated {
   final String noBasicTimers = 'You have no basic timers';
 
   final String selectBaseTimer = 'Select Basic Timer';
+
+  final String timer = 'Timer';
 
   final String menu = 'Menu';
 
@@ -1097,6 +1109,21 @@ class SV extends Translated {
   final String timerDelete = 'Vill du ta bort timern?';
 
   @override
+  final String timerPause = 'Vill du pausa timern?';
+
+  @override
+  final String timerResume = 'Vill du fortsätta timern?';
+
+  @override
+  final String timerPaused = 'Pausad';
+
+  @override
+  final String pause = 'Pausa';
+
+  @override
+  final String resume = 'Fortsätt';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -1197,6 +1224,9 @@ class SV extends Translated {
 
   @override
   final String selectBaseTimer = 'Välj bastimer';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Meny';
@@ -2370,6 +2400,9 @@ class DA extends Translated {
   final String selectBaseTimer = 'Vælg bastimer';
 
   @override
+  final String timer = 'Timer';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3539,6 +3572,9 @@ class NL extends Translated {
 
   @override
   final String selectBaseTimer = 'Standaardtimers selecteren';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Menu';
@@ -5889,6 +5925,9 @@ class DE extends Translated {
   final String selectBaseTimer = 'Standardtimer auswählen';
 
   @override
+  final String timer = 'Timer';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -7062,6 +7101,9 @@ class NB extends Translated {
 
   @override
   final String selectBaseTimer = 'Velg standardtimere';
+
+  @override
+  final String timer = 'Timer';
 
   @override
   final String menu = 'Meny';

@@ -45,6 +45,9 @@ class Layout {
   final IconTextButtonStyle nextButton;
   final AlarmPageLayout alarmPage;
   final ScreenSaverLayout screenSaver;
+  final AlarmSettingsPageLayout alarmSettingsPage;
+  final ComponentsLayout components;
+  final PickFieldLayout pickField;
 
   const Layout({
     this.radius = 12,
@@ -81,6 +84,9 @@ class Layout {
     ),
     this.alarmPage = const AlarmPageLayout(),
     this.screenSaver = const ScreenSaverLayout(),
+    this.alarmSettingsPage = const AlarmSettingsPageLayout(),
+    this.components = const ComponentsLayout(),
+    this.pickField = const PickFieldLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -403,17 +409,22 @@ class EventCardLayout {
 }
 
 class TimerPageLayout {
-  final double topInfoHeight, imageSize, imagePadding, mainContentPadding;
+  final double topInfoHeight, imageSize, imagePadding, pauseTextHeight;
 
-  final EdgeInsets bodyPadding, topPadding;
+  final EdgeInsets bodyPadding,
+      topPadding,
+      pauseTextPadding,
+      mainContentPadding;
 
   const TimerPageLayout({
     this.topInfoHeight = 126,
     this.imageSize = 96,
-    this.mainContentPadding = 32,
     this.imagePadding = 8,
+    this.pauseTextHeight = 40,
+    this.mainContentPadding = const EdgeInsets.fromLTRB(30, 20, 30, 0),
     this.bodyPadding = const EdgeInsets.all(12),
     this.topPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+    this.pauseTextPadding = const EdgeInsets.only(top: 16),
   });
 }
 
@@ -810,5 +821,36 @@ class AnalogClockStyle {
     this.borderColor = AbiliaColors.white,
     this.backgroundColor = AbiliaColors.white,
     this.foregroundColor = AbiliaColors.black,
+  });
+}
+
+class AlarmSettingsPageLayout {
+  final double playButtonSeparation;
+  final EdgeInsets defaultPadding, topPadding, bottomPadding, dividerPadding;
+
+  const AlarmSettingsPageLayout({
+    this.playButtonSeparation = 12,
+    this.defaultPadding = const EdgeInsets.fromLTRB(12, 16, 20, 0),
+    this.topPadding = const EdgeInsets.fromLTRB(12, 24, 20, 0),
+    this.bottomPadding = const EdgeInsets.fromLTRB(12, 16, 20, 64),
+    this.dividerPadding = const EdgeInsets.only(top: 16, bottom: 8),
+  });
+}
+
+class ComponentsLayout {
+  final EdgeInsets subHeadingPadding;
+
+  const ComponentsLayout(
+      {this.subHeadingPadding = const EdgeInsets.only(bottom: 8)});
+}
+
+class PickFieldLayout {
+  final double height, iconSeparation;
+  final EdgeInsets innerPadding;
+
+  const PickFieldLayout({
+    this.height = 56,
+    this.iconSeparation = 12,
+    this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
   });
 }

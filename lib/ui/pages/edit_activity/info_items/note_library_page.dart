@@ -8,8 +8,8 @@ class NoteLibraryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocProvider<SortableArchiveBloc<NoteData>>(
-        create: (_) => SortableArchiveBloc<NoteData>(
+      BlocProvider<SortableArchiveCubit<NoteData>>(
+        create: (_) => SortableArchiveCubit<NoteData>(
           sortableBloc: BlocProvider.of<SortableBloc>(context),
         ),
         child: LibraryPage<NoteData>.selectable(

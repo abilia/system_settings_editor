@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
+import 'package:seagull/listener/all.dart';
+import 'package:seagull/models/notification/all.dart';
+import 'package:seagull/ui/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/listener/all.dart';
 import 'package:seagull/storage/all.dart';
-import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedListener extends StatefulWidget {
   const AuthenticatedListener({
@@ -66,38 +68,25 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       listeners: [
         BlocListener<ActivitiesBloc, ActivitiesState>(
           listenWhen: (_, current) => current is ActivitiesLoaded,
-          listener: (context, activitiesState) async {
-            final settingsState = context.read<MemoplannerSettingBloc>().state;
-            if (settingsState is! MemoplannerSettingsNotLoaded) {
-              await scheduleAlarmNotificationsIsolated(
-                activitiesState.activities,
-                Localizations.localeOf(context).toLanguageTag(),
-                MediaQuery.of(context).alwaysUse24HourFormat,
-                settingsState.alarm,
-                GetIt.I<FileStorage>(),
-              );
-            }
-          },
+          listener: (context, activitiesState) => _scheduleNotifications(
+            context,
+            activitiesState: activitiesState,
+          ),
         ),
         BlocListener<MemoplannerSettingBloc, MemoplannerSettingsState>(
           listenWhen: (previous, current) =>
               (previous is MemoplannerSettingsNotLoaded &&
                   current is! MemoplannerSettingsNotLoaded) ||
               previous.alarm != current.alarm,
-          listener: (context, state) async {
-            final activitiesState = context.read<ActivitiesBloc>().state;
-            if (activitiesState is ActivitiesLoaded) {
-              await scheduleAlarmNotificationsIsolated(
-                activitiesState.activities,
-                Localizations.localeOf(context).toLanguageTag(),
-                MediaQuery.of(context).alwaysUse24HourFormat,
-                state.alarm,
-                GetIt.I<FileStorage>(),
-              );
-            }
-          },
+          listener: (context, state) => _scheduleNotifications(
+            context,
+            settingsState: state,
+          ),
         ),
-        BlocListener<LicenseBloc, LicenseState>(
+        BlocListener<TimerCubit, TimerState>(
+          listener: (context, s) => _scheduleNotifications(context),
+        ),
+        BlocListener<LicenseCubit, LicenseState>(
           listener: (context, state) async {
             if (state is NoValidLicense) {
               BlocProvider.of<AuthenticationBloc>(context).add(
@@ -120,14 +109,14 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           HomeScreenInactivityListener(),
           KeepScreenAwakeListener(),
         ],
-        if (!Platform.isIOS) fullscreenAlarmPremissionListener(context),
+        if (!Platform.isIOS) _fullscreenAlarmPremissionListener(context),
       ],
       child: widget.child,
     );
   }
 
   BlocListener<PermissionCubit, PermissionState>
-      fullscreenAlarmPremissionListener(BuildContext context) {
+      _fullscreenAlarmPremissionListener(BuildContext context) {
     return BlocListener<PermissionCubit, PermissionState>(
       listenWhen: (previous, current) {
         if (!previous.status.containsKey(Permission.systemAlertWindow) &&
@@ -156,4 +145,27 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           false) &&
       !(previous.status[Permission.notification]?.isDeniedOrPermenantlyDenied ??
           false);
+
+  Future _scheduleNotifications(
+    BuildContext context, {
+    ActivitiesState? activitiesState,
+    MemoplannerSettingsState? settingsState,
+  }) async {
+    activitiesState ??= context.read<ActivitiesBloc>().state;
+    settingsState ??= context.read<MemoplannerSettingBloc>().state;
+    if (settingsState is! MemoplannerSettingsNotLoaded &&
+        activitiesState is ActivitiesLoaded) {
+      final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
+        DateTime.now(),
+      );
+      await scheduleAlarmNotificationsIsolated(
+        activities: activitiesState.activities,
+        timers: timers.toAlarm(),
+        language: Localizations.localeOf(context).toLanguageTag(),
+        alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+        settings: settingsState.settings.alarm,
+        fileStorage: GetIt.I<FileStorage>(),
+      );
+    }
+  }
 }

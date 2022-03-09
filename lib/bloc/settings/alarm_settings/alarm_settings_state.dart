@@ -4,12 +4,14 @@ extension AlarmSettingsState on AlarmSettings {
   Sound get nonCheckableSound => nonCheckableActivity.toSound();
   Sound get checkableSound => checkableActivity.toSound();
   Sound get reminderSound => reminder.toSound();
+  Sound get timerSound => timer.toSound();
   AlarmDuration get alarmDuration => durationMs.toAlarmDuration();
 
   AlarmSettings copyWith({
     Sound? nonCheckableSound,
     Sound? checkableSound,
     Sound? reminderSound,
+    Sound? timerSound,
     bool? vibrateAtReminder,
     AlarmDuration? alarmDuration,
     bool? showAlarmOnOffSwitch,
@@ -21,6 +23,7 @@ extension AlarmSettingsState on AlarmSettings {
         checkableActivity: checkableSound?.name ?? checkableActivity,
         reminder: reminderSound?.name ?? reminder,
         vibrateAtReminder: vibrateAtReminder ?? this.vibrateAtReminder,
+        timer: timerSound?.name ?? timer,
         showAlarmOnOffSwitch: showAlarmOnOffSwitch ?? this.showAlarmOnOffSwitch,
         showOngoingActivityInFullScreen: showOngoingActivityInFullScreen ??
             this.showOngoingActivityInFullScreen,
@@ -38,6 +41,10 @@ extension AlarmSettingsState on AlarmSettings {
         MemoplannerSettingData.fromData(
           data: reminderSound.name,
           identifier: AlarmSettings.reminderAlarmKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: timerSound.name,
+          identifier: AlarmSettings.timerAlarmKey,
         ),
         MemoplannerSettingData.fromData(
           data: vibrateAtReminder,

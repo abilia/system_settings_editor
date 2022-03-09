@@ -66,6 +66,8 @@ void main() {
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future.value(timerResponse()));
     when(() => mockTimerDb.delete(any())).thenAnswer((_) => Future.value(1));
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
+        .thenAnswer((_) => Future.value(timerResponse()));
 
     genericResponse = () => [timepillarGeneric];
     activityResponse = () => [];

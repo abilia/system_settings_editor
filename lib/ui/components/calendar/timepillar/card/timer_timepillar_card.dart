@@ -34,14 +34,15 @@ class TimerTimepillardCard extends TimepillarCard {
         child: GestureDetector(
           onTap: () {
             final authProviders = copiedAuthProviders(context);
+            final day = context.read<DayPickerBloc>().state.day;
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => MultiBlocProvider(
                   providers: authProviders,
                   child: TimerPage(
-                    timer: timerOccasion.timer,
-                    day: context.read<DayPickerBloc>().state.day,
+                    timerOccasion: timerOccasion,
+                    day: day,
                   ),
                 ),
               ),

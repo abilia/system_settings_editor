@@ -52,7 +52,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, state) {
         final selected = selectableItems ? state.selected : null;
         final selectedGenerator = selectedItemGenerator;
@@ -142,10 +142,10 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
   Future back(BuildContext context, SortableArchiveState<T> state) async {
     if (state.isSelected) {
-      BlocProvider.of<SortableArchiveBloc<T>>(context)
-          .add(FolderChanged(state.currentFolderId));
+      BlocProvider.of<SortableArchiveCubit<T>>(context)
+          .folderChanged(state.currentFolderId);
     } else if (!state.isAtRoot) {
-      BlocProvider.of<SortableArchiveBloc<T>>(context).add(NavigateUp());
+      BlocProvider.of<SortableArchiveCubit<T>>(context).navigateUp();
     } else {
       await Navigator.of(context).maybePop();
     }
@@ -184,7 +184,7 @@ class _SortableLibraryState<T extends SortableData>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SortableArchiveBloc<T>, SortableArchiveState<T>>(
+    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         List<Sortable<T>> content =
             (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
@@ -243,8 +243,8 @@ class Folder<T extends SortableData> extends StatelessWidget {
       child: InkWell(
         borderRadius: borderRadius,
         onTap: () {
-          BlocProvider.of<SortableArchiveBloc<T>>(context)
-              .add(FolderChanged(sortable.id));
+          BlocProvider.of<SortableArchiveCubit<T>>(context)
+              .folderChanged(sortable.id);
         },
         child: LibraryFolder(sortableData: sortable.data),
       ),
@@ -267,8 +267,8 @@ class SelectableItem<T extends SortableData> extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: () => BlocProvider.of<SortableArchiveBloc<T>>(context)
-            .add(SortableSelected(sortable)),
+        onTap: () => BlocProvider.of<SortableArchiveCubit<T>>(context)
+            .sortableSelected(sortable),
         borderRadius: borderRadius,
         child: libraryItemGenerator(sortable),
       ),

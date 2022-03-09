@@ -14,7 +14,7 @@ class SubHeading extends StatelessWidget {
         header: true,
       ),
       child: Padding(
-        padding: EdgeInsets.only(bottom: 8.0.s),
+        padding: layout.components.subHeadingPadding,
         child: Text(
           data,
           style: Theme.of(context)
@@ -75,13 +75,12 @@ class PickField extends StatelessWidget {
   final GestureTapCallback? onTap;
   final Widget? leading, trailing;
   final Text text;
-  final double? heigth;
+  final double? height;
   final EdgeInsets? padding;
   final bool errorState;
   final String? semanticsLabel;
   final Text? secondaryText;
   final TextStyle? secondaryStyle;
-  static final defaultHeigth = 56.s;
 
   const PickField({
     required this.text,
@@ -89,7 +88,7 @@ class PickField extends StatelessWidget {
     this.leading,
     this.trailing,
     this.onTap,
-    this.heigth,
+    this.height,
     this.errorState = false,
     this.semanticsLabel,
     this.padding,
@@ -111,13 +110,13 @@ class PickField extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Ink(
-            height: heigth ?? defaultHeigth,
+            height: height ?? layout.pickField.height,
             decoration: errorState
                 ? whiteErrorBoxDecoration
                 : onTap == null
                     ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: padding ?? EdgeInsets.all(12.s),
+            padding: padding ?? layout.pickField.innerPadding,
             child: Row(
               children: <Widget>[
                 if (l != null)
@@ -127,7 +126,7 @@ class PickField extends StatelessWidget {
                         .copyWith(size: layout.iconSize.small),
                     child: l,
                   ),
-                SizedBox(width: 12.s),
+                if (l != null) SizedBox(width: layout.pickField.iconSeparation),
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,

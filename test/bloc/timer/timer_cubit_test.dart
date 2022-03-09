@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:test/test.dart';
 
 import 'package:seagull/bloc/timer/timer_cubit.dart';
@@ -27,19 +28,25 @@ void main() {
     when(() => mockTimerDb.getAllTimers())
         .thenAnswer((_) => Future(() => [defaultTimer]));
     when(() => mockTimerDb.delete(any())).thenAnswer((_) => Future(() => 1));
-    when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future(() => null));
+    when(() => mockTimerDb.insert(any())).thenAnswer((_) => Future(() => 1));
   });
 
   blocTest<TimerCubit, TimerState>(
     'loadTimers returns one timer',
-    build: () => TimerCubit(timerDb: mockTimerDb),
+    build: () => TimerCubit(
+      timerDb: mockTimerDb,
+      ticker: Ticker.fake(initialTime: now),
+    ),
     act: (timerBloc) => timerBloc.loadTimers(),
     expect: () => [defaultState],
   );
 
   blocTest<TimerCubit, TimerState>(
     'deleteTimer emits no timers',
-    build: () => TimerCubit(timerDb: mockTimerDb),
+    build: () => TimerCubit(
+      timerDb: mockTimerDb,
+      ticker: Ticker.fake(initialTime: now),
+    ),
     act: (timerBloc) => timerBloc
       ..loadTimers()
       ..deleteTimer(defaultTimer),
@@ -54,7 +61,10 @@ void main() {
 
   blocTest<TimerCubit, TimerState>(
     'addTimer returns two timers',
-    build: () => TimerCubit(timerDb: mockTimerDb),
+    build: () => TimerCubit(
+      timerDb: mockTimerDb,
+      ticker: Ticker.fake(initialTime: now),
+    ),
     act: (timerBloc) => timerBloc
       ..loadTimers()
       ..addTimer(newTimer),

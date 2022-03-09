@@ -11,7 +11,7 @@ class FunctionSettingsPage extends StatelessWidget {
     return BlocProvider<FunctionSettingsCubit>(
       create: (context) => FunctionSettingsCubit(
         settingsState: context.read<MemoplannerSettingBloc>().state,
-        genericBloc: context.read<GenericBloc>(),
+        genericCubit: context.read<GenericCubit>(),
       ),
       child: DefaultTabController(
         length: 3,

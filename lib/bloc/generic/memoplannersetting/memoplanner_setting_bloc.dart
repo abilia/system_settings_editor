@@ -13,20 +13,20 @@ part 'memoplanner_setting_event.dart';
 class MemoplannerSettingBloc
     extends Bloc<MemoplannerSettingsEvent, MemoplannerSettingsState> {
   /// GenericBloc are null when faked in settings
-  final GenericBloc? genericBloc;
+  final GenericCubit? genericCubit;
   late final StreamSubscription? _genericSubscription;
 
-  MemoplannerSettingBloc({this.genericBloc})
-      : super(genericBloc?.state is GenericsLoaded
+  MemoplannerSettingBloc({this.genericCubit})
+      : super(genericCubit?.state is GenericsLoaded
             ? MemoplannerSettingsLoaded(
                 MemoplannerSettings.fromSettingsMap(
-                  (genericBloc?.state as GenericsLoaded)
+                  (genericCubit?.state as GenericsLoaded)
                       .generics
                       .filterMemoplannerSettingsData(),
                 ),
               )
             : const MemoplannerSettingsNotLoaded()) {
-    _genericSubscription = genericBloc?.stream.listen((state) {
+    _genericSubscription = genericCubit?.stream.listen((state) {
       if (state is GenericsLoaded) {
         add(UpdateMemoplannerSettings(state.generics));
       } else if (state is GenericsLoadedFailed) {
@@ -49,7 +49,7 @@ class MemoplannerSettingBloc
       yield const MemoplannerSettingsFailed();
     }
     if (event is SettingsUpdateEvent) {
-      genericBloc?.add(GenericUpdated([event.settingData]));
+      genericCubit?.genericUpdated([event.settingData]);
     }
   }
 

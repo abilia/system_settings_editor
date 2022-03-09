@@ -36,8 +36,10 @@ void main() {
   );
 
   final payload = StartAlarm(
-    activity,
-    activityWithAlarmday,
+    ActivityDay(
+      activity,
+      activityWithAlarmday,
+    ),
   );
 
   setUp(() async {
@@ -228,13 +230,13 @@ void main() {
       expect(find.byType(PopAwareAlarmPage), findsOneWidget);
     });
 
-    testWidgets('SGC-841 notications not reschedualed on app alarm start',
+    testWidgets('SGC-841 notications not rescheduled on app alarm start',
         (WidgetTester tester) async {
       // Act
       await tester.pumpWidget(App(payload: payload));
       await tester.pumpAndSettle();
       // Assert
-      expect(alarmSchedualCalls, 0);
+      expect(alarmScheduleCalls, 0);
     });
 
     testWidgets('SGC-843 Alarm page Close button cancels alarm',
@@ -403,8 +405,10 @@ void main() {
         ),
       );
       final checkableActivityPayload = StartAlarm(
-        checkableActivityWithChecklist,
-        startDay,
+        ActivityDay(
+          checkableActivityWithChecklist,
+          startDay,
+        ),
       );
 
       selectNotificationSubject.add(checkableActivityPayload);
@@ -444,8 +448,10 @@ void main() {
     final activity1 = Activity.createNew(
         title: '111111', startTime: activity1StartTime, duration: 2.minutes());
     final startTimeActivity1NotificationPayload = StartAlarm(
-      activity1,
-      day,
+      ActivityDay(
+        activity1,
+        day,
+      ),
     );
 
     final activity2StartTime = activity1StartTime.add(1.minutes());
@@ -529,14 +535,12 @@ void main() {
 
       // Expect - the top/latest alarm should now be the start time alarm for activity1
       expect(alarmScreenFinder, findsOneWidget);
+      final alarm = tester.widget<PopAwareAlarmPage>(alarmScreenFinder).alarm;
+      expect(alarm, isA<ActivityAlarm>());
       expect(
-          tester
-              .widget<PopAwareAlarmPage>(alarmScreenFinder)
-              .alarm
-              .activityDay
-              .activity
-              .id,
-          equals(activity1.id));
+        (alarm as ActivityAlarm).activityDay.activity.id,
+        equals(activity1.id),
+      );
 
       // Act - tap the ok button of the alarm
       await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
@@ -544,15 +548,12 @@ void main() {
 
       // Expect - the top/latest alarm should be the end time alarm for activity 2
       expect(alarmScreenFinder, findsOneWidget);
-
+      final alarm2 = tester.widget<PopAwareAlarmPage>(alarmScreenFinder).alarm;
+      expect(alarm2, isA<ActivityAlarm>());
       expect(
-          tester
-              .widget<PopAwareAlarmPage>(alarmScreenFinder)
-              .alarm
-              .activityDay
-              .activity
-              .id,
-          equals(activity2.id));
+        (alarm2 as ActivityAlarm).activityDay.activity.id,
+        equals(activity2.id),
+      );
 
       // Act - tap the alarm ok button
       await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
@@ -570,8 +571,7 @@ void main() {
       final activity1Updated =
           activity1.copyWith(startTime: activity1StartTime.add(1.minutes()));
       final activity1UpdatedNotificationPayload = StartAlarm(
-        activity1Updated,
-        day,
+        ActivityDay(activity1Updated, day),
       );
       final pushCubit = PushCubit();
       await tester.pumpWidget(App(pushCubit: pushCubit));
@@ -584,13 +584,9 @@ void main() {
 
       // Expect - the alarm should now be the start time alarm for activity1
       expect(alarmScreenFinder, findsOneWidget);
-      expect(
-          tester
-              .widget<PopAwareAlarmPage>(alarmScreenFinder)
-              .alarm
-              .activityDay
-              .activity
-              .id,
+      final alarm = tester.widget<PopAwareAlarmPage>(alarmScreenFinder).alarm;
+      expect(alarm, isA<ActivityAlarm>());
+      expect((alarm as ActivityAlarm).activityDay.activity.id,
           equals(activity1.id));
 
       // Act - tap the ok button of the alarm, no more alarm
@@ -613,13 +609,12 @@ void main() {
       // Expect - the alarm should be the start time alarm for activity 1
       expect(alarmScreenFinder, findsOneWidget);
 
+      final alarm2 = tester.widget<PopAwareAlarmPage>(alarmScreenFinder).alarm;
+      expect(alarm2, isA<ActivityAlarm>());
       expect(
-          (tester.widget(alarmScreenFinder) as PopAwareAlarmPage)
-              .alarm
-              .activityDay
-              .activity
-              .id,
-          equals(activity1.id));
+        (alarm2 as ActivityAlarm).activityDay.activity.id,
+        equals(activity1.id),
+      );
 
       // Act - tap the alarm ok button
       await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
@@ -695,9 +690,11 @@ void main() {
       testWidgets('Full screen shows', (WidgetTester tester) async {
         // Arrange
         final reminder = ReminderBefore(
-            Activity.createNew(
-                title: 'one reminder title', startTime: activity1StartTime),
-            activity1StartTime.onlyDays(),
+            ActivityDay(
+              Activity.createNew(
+                  title: 'one reminder title', startTime: activity1StartTime),
+              activity1StartTime.onlyDays(),
+            ),
             reminder: 15.minutes());
 
         // Act
@@ -717,11 +714,13 @@ void main() {
       testWidgets('Fullscreen alarms ignores same alarm ',
           (WidgetTester tester) async {
         final payload = ReminderBefore(
-            Activity.createNew(
-              title: 'one reminder title',
-              startTime: activity1StartTime,
+            ActivityDay(
+              Activity.createNew(
+                title: 'one reminder title',
+                startTime: activity1StartTime,
+              ),
+              activity1StartTime.onlyDays(),
             ),
-            activity1StartTime.onlyDays(),
             reminder: 15.minutes());
 
         await tester.pumpWidget(
@@ -753,18 +752,22 @@ void main() {
       testWidgets('Fullscreen alarms stack ', (WidgetTester tester) async {
         // Arrange
         final reminder = ReminderBefore(
+            ActivityDay(
+              Activity.createNew(
+                title: 'one reminder title',
+                startTime: activity1StartTime,
+              ),
+              activity1StartTime.onlyDays(),
+            ),
+            reminder: 15.minutes());
+        final alarm = StartAlarm(
+          ActivityDay(
             Activity.createNew(
-              title: 'one reminder title',
+              title: 'one alarm title',
               startTime: activity1StartTime,
             ),
             activity1StartTime.onlyDays(),
-            reminder: 15.minutes());
-        final alarm = StartAlarm(
-          Activity.createNew(
-            title: 'one alarm title',
-            startTime: activity1StartTime,
           ),
-          activity1StartTime.onlyDays(),
         );
 
         // Act
@@ -800,32 +803,40 @@ void main() {
       testWidgets('multiple notifications at the same time ',
           (WidgetTester tester) async {
         final alarm1 = StartAlarm(
-          Activity.createNew(
-            title: 'one alarm title',
-            startTime: activity1StartTime,
+          ActivityDay(
+            Activity.createNew(
+              title: 'one alarm title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
           ),
-          activity1StartTime.onlyDays(),
         );
         final alarm2 = StartAlarm(
-          Activity.createNew(
-            title: 'two alarm title',
-            startTime: activity1StartTime,
+          ActivityDay(
+            Activity.createNew(
+              title: 'two alarm title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
           ),
-          activity1StartTime.onlyDays(),
         );
         final alarm3 = StartAlarm(
-          Activity.createNew(
-            title: 'three alarm title',
-            startTime: activity1StartTime,
+          ActivityDay(
+            Activity.createNew(
+              title: 'three alarm title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
           ),
-          activity1StartTime.onlyDays(),
         );
         final alarm4 = StartAlarm(
-          Activity.createNew(
-            title: 'four alarm title',
-            startTime: activity1StartTime,
+          ActivityDay(
+            Activity.createNew(
+              title: 'four alarm title',
+              startTime: activity1StartTime,
+            ),
+            activity1StartTime.onlyDays(),
           ),
-          activity1StartTime.onlyDays(),
         );
 
         // Arrange

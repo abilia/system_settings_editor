@@ -59,9 +59,7 @@ void main() {
     ),
   ];
 
-  setUpAll(() {
-    registerFallbackValues();
-  });
+  setUpAll(registerFallbackValues);
 
   setUp(() {
     tz.initializeTimeZones();
@@ -80,114 +78,351 @@ void main() {
         .thenAnswer((_) => Future.value(true));
   });
 
-  test('isolate', () async {
-    final serialized =
-        allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
-    final shouldBeScheduledNotificationsSerialized =
-        await compute(alarmsFromIsolate, [serialized, now]);
-    final shouldBeScheduledNotifications =
-        shouldBeScheduledNotificationsSerialized
-            .map((e) => NotificationAlarm.fromJson(e));
-    expect(shouldBeScheduledNotifications, hasLength(11));
+  group('only activities', () {
+    test('isolate', () async {
+      final serialized =
+          allActivities.map((e) => e.wrapWithDbModel().toJson()).toList();
+      final shouldBeScheduledNotificationsSerialized =
+          await compute(alarmsFromIsolate, [serialized, now, 50]);
+      final shouldBeScheduledNotifications =
+          shouldBeScheduledNotificationsSerialized
+              .map((e) => ActivityAlarm.fromJson(e));
+      expect(shouldBeScheduledNotifications, hasLength(11));
+    });
+
+    test('scheduleAlarmNotificationsIsolated', () async {
+      await scheduleAlarmNotificationsIsolated(
+        activities: allActivities,
+        timers: [],
+        language: 'en',
+        alwaysUse24HourFormat: true,
+        settings: const AlarmSettings(),
+        fileStorage: mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
+    });
+
+    test('scheduleAlarmNotifications', () async {
+      await scheduleAlarmNotifications(
+        allActivities,
+        [],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(11);
+    });
+
+    test('scheduleAlarmNotifications disabled until tomorrow', () async {
+      await scheduleAlarmNotifications(
+        allActivities,
+        [],
+        'en',
+        true,
+        AlarmSettings(
+          disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+        ),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(5);
+    });
+
+    test('scheduleAlarmNotifications with image', () async {
+      await scheduleAlarmNotifications(
+        allActivities.take(2),
+        [],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
+      verify(() => mockedFileStorage.getFile(fileId));
+      verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
+
+      final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
+              any(), any(), any(), any(), captureAny(),
+              payload: any(named: 'payload'),
+              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.wallClockTime))
+          .captured
+          .single as NotificationDetails;
+
+      // iOS
+      expect(details.iOS?.attachments?.length, 1);
+      final attachment = details.iOS?.attachments?.first;
+      expect(attachment?.filePath, fileId);
+      expect(attachment?.identifier, fileId);
+      // Android
+      expect(details.android?.styleInformation,
+          isInstanceOf<BigPictureStyleInformation>());
+      final bpd =
+          (details.android?.styleInformation as BigPictureStyleInformation)
+              .bigPicture as FilePathAndroidBitmap;
+      expect(bpd.data, fileId);
+
+      expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
+      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
+      expect(largeIcon.data, fileId);
+
+      expect(details.android?.fullScreenIntent, isTrue);
+    });
   });
 
-  test('scheduleAlarmNotificationsIsolated', () async {
-    await scheduleAlarmNotificationsIsolated(
-      allActivities,
-      'en',
-      true,
-      const AlarmSettings(),
-      mockedFileStorage,
-      now: () => now,
-    );
-    verify(() => mockedNotificationsPlugin.cancelAll());
-    verify(() => mockedNotificationsPlugin.zonedSchedule(
-        any(), any(), any(), any(), any(),
-        payload: any(named: 'payload'),
-        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.wallClockTime)).called(11);
-  });
-
-  test('scheduleAlarmNotifications', () async {
-    await scheduleAlarmNotifications(
-      allActivities,
-      'en',
-      true,
-      const AlarmSettings(),
-      mockedFileStorage,
-      now: () => now,
-    );
-    verify(() => mockedNotificationsPlugin.cancelAll());
-    verify(() => mockedNotificationsPlugin.zonedSchedule(
-        any(), any(), any(), any(), any(),
-        payload: any(named: 'payload'),
-        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.wallClockTime)).called(11);
-  });
-
-  test('scheduleAlarmNotifications disabled until tomorrow', () async {
-    await scheduleAlarmNotifications(
-      allActivities,
-      'en',
-      true,
-      AlarmSettings(
-        disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+  final timer1 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids',
+          title: 'title',
+          startTime: now,
+          duration: 22.minutes(),
+        ),
       ),
-      mockedFileStorage,
-      now: () => now,
-    );
-    verify(() => mockedNotificationsPlugin.cancelAll());
+      timer2 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids2',
+          title: 'title2',
+          startTime: now.subtract(23.hours()),
+          duration: 24.hours(),
+        ),
+      ),
+      timer3 = TimerAlarm(
+        AbiliaTimer(
+          id: 'ids3',
+          title: 'title3',
+          startTime: now.subtract(21.minutes()).subtract(55.seconds()),
+          duration: 22.minutes(),
+        ),
+      );
 
-    verify(() => mockedNotificationsPlugin.zonedSchedule(
-        any(), any(), any(), any(), any(),
-        payload: any(named: 'payload'),
-        androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.wallClockTime)).called(5);
-  });
+  final allTimers = [timer1, timer2, timer3];
+  group('only timers', () {
+    test('scheduleAlarmNotificationsIsolated one timer', () async {
+      await scheduleAlarmNotificationsIsolated(
+        activities: [],
+        timers: [timer1],
+        language: 'en',
+        alwaysUse24HourFormat: true,
+        settings: const AlarmSettings(),
+        fileStorage: mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            timer1.hashCode, timer1.timer.title, any(), any(), any(),
+            payload: timer1.encode(),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(1);
+    });
 
-  test('scheduleAlarmNotifications with image', () async {
-    await scheduleAlarmNotifications(
-      allActivities.take(2),
-      'en',
-      true,
-      const AlarmSettings(),
-      mockedFileStorage,
-      now: () => now,
-    );
-    verify(() => mockedNotificationsPlugin.cancelAll());
-    verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
-    verify(() => mockedFileStorage.getFile(fileId));
-    verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
-
-    final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
-            any(), any(), any(), any(), captureAny(),
+    test('scheduleAlarmNotificationsIsolated 3 timers', () async {
+      await scheduleAlarmNotificationsIsolated(
+        activities: [],
+        timers: allTimers,
+        language: 'en',
+        alwaysUse24HourFormat: true,
+        settings: const AlarmSettings(),
+        fileStorage: mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
             payload: any(named: 'payload'),
             androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
             uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.wallClockTime))
-        .captured
-        .single as NotificationDetails;
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(3);
+    });
 
-    // iOS
-    expect(details.iOS?.attachments?.length, 1);
-    final attachment = details.iOS?.attachments?.first;
-    expect(attachment?.filePath, fileId);
-    expect(attachment?.identifier, fileId);
-    // Android
-    expect(details.android?.styleInformation,
-        isInstanceOf<BigPictureStyleInformation>());
-    final bpd =
-        (details.android?.styleInformation as BigPictureStyleInformation)
-            .bigPicture as FilePathAndroidBitmap;
-    expect(bpd.data, fileId);
+    test('scheduleAlarmNotifications one timer', () async {
+      await scheduleAlarmNotifications(
+        [],
+        [timer1],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            timer1.hashCode, timer1.timer.title, any(), any(), any(),
+            payload: timer1.encode(),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(1);
+    });
 
-    expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
-    final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
-    expect(largeIcon.data, fileId);
+    test('scheduleAlarmNotifications 3 timers', () async {
+      await scheduleAlarmNotifications(
+        [],
+        allTimers,
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(3);
+    });
 
-    expect(details.android?.fullScreenIntent, isTrue);
+    test('scheduleAlarmNotifications with image', () async {
+      final timerWithImage = TimerAlarm(
+        AbiliaTimer(
+          id: 'id6',
+          fileId: fileId,
+          startTime: now,
+          duration: 14.minutes(),
+        ),
+      );
+      await scheduleAlarmNotifications(
+        [],
+        [timerWithImage],
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(() => mockedFileStorage.copyImageThumbForNotification(fileId));
+      verify(() => mockedFileStorage.getFile(fileId));
+      verify(() => mockedFileStorage.getImageThumb(ImageThumb(id: fileId)));
+
+      final details = verify(() => mockedNotificationsPlugin.zonedSchedule(
+              any(), any(), any(), any(), captureAny(),
+              payload: any(named: 'payload'),
+              androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+              uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.wallClockTime))
+          .captured
+          .single as NotificationDetails;
+
+      // iOS
+      expect(details.iOS?.attachments?.length, 1);
+      final attachment = details.iOS?.attachments?.first;
+      expect(attachment?.filePath, fileId);
+      expect(attachment?.identifier, fileId);
+      // Android
+      expect(details.android?.styleInformation,
+          isInstanceOf<BigPictureStyleInformation>());
+      final bpd =
+          (details.android?.styleInformation as BigPictureStyleInformation)
+              .bigPicture as FilePathAndroidBitmap;
+      expect(bpd.data, fileId);
+
+      expect(details.android?.largeIcon, isInstanceOf<FilePathAndroidBitmap>());
+      final largeIcon = details.android?.largeIcon as FilePathAndroidBitmap;
+      expect(largeIcon.data, fileId);
+
+      expect(details.android?.fullScreenIntent, isTrue);
+    });
+
+    test(
+        'scheduleAlarmNotifications disabled until tomorrow does not consider timers',
+        () async {
+      await scheduleAlarmNotifications(
+        [],
+        allTimers,
+        'en',
+        true,
+        AlarmSettings(
+          disabledUntilEpoch: now.onlyDays().nextDay().millisecondsSinceEpoch,
+        ),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+
+      verify(() => mockedNotificationsPlugin.zonedSchedule(
+          any(), any(), any(), any(), any(),
+          payload: any(named: 'payload'),
+          androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.wallClockTime)).called(3);
+    });
+  });
+
+  group('activities and  timers', () {
+    test('scheduleAlarmNotificationsIsolated', () async {
+      await scheduleAlarmNotificationsIsolated(
+        activities: allActivities,
+        timers: allTimers,
+        language: 'en',
+        alwaysUse24HourFormat: true,
+        settings: const AlarmSettings(),
+        fileStorage: mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(11 + 3);
+    });
+    test('scheduleAlarmNotifications 3 timers', () async {
+      await scheduleAlarmNotifications(
+        allActivities,
+        allTimers,
+        'en',
+        true,
+        const AlarmSettings(),
+        mockedFileStorage,
+        now: () => now,
+      );
+      verify(() => mockedNotificationsPlugin.cancelAll());
+      verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
+            payload: any(named: 'payload'),
+            androidAllowWhileIdle: any(named: 'androidAllowWhileIdle'),
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).called(11 + 3);
+    });
   });
 }

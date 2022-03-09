@@ -4,13 +4,13 @@ import 'package:seagull/models/all.dart';
 part 'alarm_settings_state.dart';
 
 class AlarmSettingsCubit extends Cubit<AlarmSettings> {
-  final GenericBloc genericBloc;
+  final GenericCubit genericCubit;
 
   AlarmSettingsCubit({
     required AlarmSettings alarmSettings,
-    required this.genericBloc,
+    required this.genericCubit,
   }) : super(alarmSettings);
 
   void changeAlarmSettings(AlarmSettings newState) => emit(newState);
-  void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
+  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

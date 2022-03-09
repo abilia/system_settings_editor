@@ -12,7 +12,7 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityTopInfo extends StatelessWidget {
   final ActivityDay activityDay;
-  final NotificationAlarm? alarm;
+  final ActivityAlarm? alarm;
 
   const ActivityTopInfo(
     this.activityDay, {

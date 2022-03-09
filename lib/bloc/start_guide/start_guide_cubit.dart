@@ -1,7 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:uuid/uuid.dart';
 
 class StartGuideCubit extends Cubit<StartGuideState> {
   StartGuideCubit({
@@ -13,7 +12,7 @@ class StartGuideCubit extends Cubit<StartGuideState> {
 
   void verifySerialId(String serialId) async {
     try {
-      final clientId = const Uuid().v4();
+      final clientId = await deviceRepository.getClientId();
       final verifiedOk =
           await deviceRepository.verifyDevice(serialId, clientId);
       if (verifiedOk) {

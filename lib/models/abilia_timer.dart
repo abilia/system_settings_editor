@@ -1,9 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 
-class AbiliaTimer extends Equatable {
+class AbiliaTimer extends Event {
+  @override
   final String id;
+  @override
   final String title;
   final String fileId;
   final bool paused;
@@ -35,11 +36,18 @@ class AbiliaTimer extends Equatable {
         duration: duration,
       );
 
-  DateTime get endTime => startTime.add(duration);
-
+  @override
+  DateTime get start => startTime;
+  @override
+  DateTime get end => startTime.add(duration);
+  @override
   bool get hasImage => fileId.isNotEmpty;
+
   bool get hasTitle => title.isNotEmpty;
-  AbiliaFile get imageFile => AbiliaFile.from(id: fileId);
+  @override
+  AbiliaFile get image => AbiliaFile.from(id: fileId);
+  @override
+  int get category => Category.right;
 
   Map<String, dynamic> toMapForDb() => {
         'id': id,
@@ -51,16 +59,40 @@ class AbiliaTimer extends Equatable {
         'paused_at': pausedAt.inMilliseconds,
       };
 
+  @override
   TimerOccasion toOccasion(DateTime now) {
-    if (now.isAfter(endTime)) return TimerOccasion(this, Occasion.past);
+    if (now.isAfter(end)) return TimerOccasion(this, Occasion.past);
     return TimerOccasion(this, Occasion.current);
+  }
+
+  AbiliaTimer pause(DateTime pauseTime) => AbiliaTimer(
+        id: id,
+        startTime: startTime,
+        duration: duration,
+        paused: true,
+        pausedAt: end.difference(pauseTime),
+        title: title,
+        fileId: fileId,
+      );
+
+  AbiliaTimer resume(DateTime resumeTime) {
+    if (!paused) return this;
+    return AbiliaTimer(
+      id: id,
+      startTime: resumeTime.subtract(duration - pausedAt),
+      duration: duration,
+      paused: false,
+      pausedAt: Duration.zero,
+      title: title,
+      fileId: fileId,
+    );
   }
 
   static AbiliaTimer fromDbMap(Map<String, dynamic> dbRow) => AbiliaTimer(
         id: dbRow['id'],
         title: dbRow['title'],
         fileId: dbRow['file_id'],
-        paused: dbRow['full_day'] == 1,
+        paused: dbRow['paused'] == 1,
         startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
         duration: Duration(milliseconds: dbRow['duration'] ?? 0),
         pausedAt: Duration(milliseconds: dbRow['paused_at'] ?? 0),

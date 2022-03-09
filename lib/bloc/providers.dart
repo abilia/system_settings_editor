@@ -93,6 +93,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<TimerCubit>(
               create: (context) => TimerCubit(
                 timerDb: GetIt.I<TimerDb>(),
+                ticker: GetIt.I<Ticker>(),
               )..loadTimers(),
             ),
             BlocProvider(
@@ -126,18 +127,18 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 ..add(const LoadSortables(initDefaults: true)),
               lazy: false,
             ),
-            BlocProvider<GenericBloc>(
-              create: (context) => GenericBloc(
+            BlocProvider<GenericCubit>(
+              create: (context) => GenericCubit(
                 genericRepository: context.read<GenericRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 pushCubit: context.read<PushCubit>(),
-              )..add(LoadGenerics()),
+              )..loadGenerics(),
             ),
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) =>
                   memoplannerSettingBloc ??
                   MemoplannerSettingBloc(
-                    genericBloc: context.read<GenericBloc>(),
+                    genericCubit: context.read<GenericCubit>(),
                   ),
             ),
             BlocProvider<DayPickerBloc>(
@@ -171,13 +172,13 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 GetIt.I<SettingsDb>(),
               ),
             ),
-            BlocProvider<LicenseBloc>(
-              create: (context) => LicenseBloc(
+            BlocProvider<LicenseCubit>(
+              create: (context) => LicenseCubit(
                 clockBloc: context.read<ClockBloc>(),
                 pushCubit: context.read<PushCubit>(),
                 userRepository: context.read<UserRepository>(),
                 authenticationBloc: context.read<AuthenticationBloc>(),
-              )..add(ReloadLicenses()),
+              )..reloadLicenses(),
             ),
             BlocProvider<PermissionCubit>(
               create: (context) => PermissionCubit()

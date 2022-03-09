@@ -5,13 +5,13 @@ import 'package:seagull/models/all.dart';
 part 'function_settings_state.dart';
 
 class FunctionSettingsCubit extends Cubit<FunctionSettingsState> {
-  final GenericBloc genericBloc;
+  final GenericCubit genericCubit;
 
   FunctionSettingsCubit({
     required MemoplannerSettingsState settingsState,
-    required this.genericBloc,
+    required this.genericCubit,
   }) : super(FunctionSettingsState.fromMemoplannerSettings(settingsState));
 
   void changeFunctionSettings(FunctionSettingsState newState) => emit(newState);
-  void save() => genericBloc.add(GenericUpdated(state.memoplannerSettingData));
+  void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

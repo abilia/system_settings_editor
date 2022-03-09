@@ -20,8 +20,8 @@ void main() {
   blocTest(
     'initial folder is empty if no initial is specified',
     build: () =>
-        SortableArchiveBloc<RawSortableData>(sortableBloc: mockSortableBloc),
-    verify: (SortableArchiveBloc bloc) => expect(
+        SortableArchiveCubit<RawSortableData>(sortableBloc: mockSortableBloc),
+    verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>({}, {}),
     ),
@@ -29,11 +29,11 @@ void main() {
 
   blocTest(
     'initial and current folder is specified folder',
-    build: () => SortableArchiveBloc<RawSortableData>(
+    build: () => SortableArchiveCubit<RawSortableData>(
       sortableBloc: mockSortableBloc,
       initialFolderId: 'someFolderId',
     ),
-    verify: (SortableArchiveBloc bloc) => expect(
+    verify: (SortableArchiveCubit bloc) => expect(
       bloc.state,
       const SortableArchiveState<RawSortableData>(
         {},

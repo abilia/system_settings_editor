@@ -36,11 +36,9 @@ class FakeSortableBloc extends Fake implements SortableBloc {
   Future<void> close() async {}
 }
 
-class FakeGenericBloc extends Fake implements GenericBloc {
+class FakeGenericCubit extends Fake implements GenericCubit {
   @override
   Stream<GenericState> get stream => const Stream.empty();
-  @override
-  void add(GenericEvent event) {}
   @override
   Future<void> close() async {}
 }
@@ -112,7 +110,7 @@ class FakeDayEventsCubit extends Fake implements DayEventsCubit {
 
 class FakeAlarmCubit extends Fake implements AlarmCubit {
   @override
-  Stream<NotificationAlarm?> get stream => const Stream.empty();
+  Stream<ActivityAlarm?> get stream => const Stream.empty();
   @override
   Future<void> close() async {}
 }
@@ -124,7 +122,7 @@ class FakeCalendarViewBloc extends Fake implements CalendarViewCubit {
   Future<void> close() async {}
 }
 
-class FakeLicenseBloc extends Fake implements LicenseBloc {
+class FakeLicenseCubit extends Fake implements LicenseCubit {
   @override
   Stream<LicenseState> get stream => const Stream.empty();
   @override

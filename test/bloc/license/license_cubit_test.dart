@@ -10,13 +10,13 @@ import '../../mocks/mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late LicenseBloc licenseBloc;
+  late LicenseCubit licenseCubit;
   late UserRepository userRepository;
   final time = DateTime(2000);
 
   setUp(() {
     userRepository = MockUserRepository();
-    licenseBloc = LicenseBloc(
+    licenseCubit = LicenseCubit(
       userRepository: userRepository,
       clockBloc: ClockBloc.fixed(time),
       pushCubit: FakePushCubit(),
@@ -25,7 +25,7 @@ void main() {
   });
 
   test('Test initial state', () {
-    expect(licenseBloc.state, LicensesNotLoaded());
+    expect(licenseCubit.state, LicensesNotLoaded());
   });
 
   test('License is valid', () async {
@@ -38,9 +38,9 @@ void main() {
         ),
       ]),
     );
-    licenseBloc.add(ReloadLicenses());
+    licenseCubit.reloadLicenses();
     await expectLater(
-      licenseBloc.stream,
+      licenseCubit.stream,
       emits(ValidLicense()),
     );
   });
@@ -55,9 +55,9 @@ void main() {
         ),
       ]),
     );
-    licenseBloc.add(ReloadLicenses());
+    licenseCubit.reloadLicenses();
     await expectLater(
-      licenseBloc.stream,
+      licenseCubit.stream,
       emits(NoValidLicense()),
     );
   });

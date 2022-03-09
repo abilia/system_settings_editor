@@ -12,7 +12,7 @@ class CodeProtectPage extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => CodeProtectCubit(
-        context.read<GenericBloc>(),
+        context.read<GenericCubit>(),
         context.read<MemoplannerSettingBloc>().state.settings.codeProtect,
       ),
       child: BlocBuilder<CodeProtectCubit, CodeProtectSettings>(

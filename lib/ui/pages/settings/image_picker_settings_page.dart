@@ -33,27 +33,24 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
         forwardNavigationWidget: Builder(
           builder: (context) => OkButton(
             onPressed: () {
-              final genericBloc = context.read<GenericBloc>();
-              genericBloc.add(
-                GenericUpdated(
-                  [
-                    MemoplannerSettingData.fromData(
-                      data: displayMyPhotos,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
-                    ),
-                    MemoplannerSettingData.fromData(
-                      data: displayCamera,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayCameraItemKey,
-                    ),
-                    MemoplannerSettingData.fromData(
-                      data: displayLocalImages,
-                      identifier:
-                          MemoplannerSettings.imageMenuDisplayPhotoItemKey,
-                    ),
-                  ],
-                ),
+              context.read<GenericCubit>().genericUpdated(
+                [
+                  MemoplannerSettingData.fromData(
+                    data: displayMyPhotos,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayMyPhotosItemKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: displayCamera,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayCameraItemKey,
+                  ),
+                  MemoplannerSettingData.fromData(
+                    data: displayLocalImages,
+                    identifier:
+                        MemoplannerSettings.imageMenuDisplayPhotoItemKey,
+                  ),
+                ],
               );
               Navigator.of(context).pop();
             },

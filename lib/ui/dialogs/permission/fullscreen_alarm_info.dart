@@ -92,13 +92,16 @@ class ActivityAlarmPreview extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                   alarm: StartAlarm(
-                    Activity.createNew(
-                      title:
-                          Translator.of(context).translate.previewActivityTitle,
-                      startTime: startTime,
-                      duration: 3.hours(),
+                    ActivityDay(
+                      Activity.createNew(
+                        title: Translator.of(context)
+                            .translate
+                            .previewActivityTitle,
+                        startTime: startTime,
+                        duration: 3.hours(),
+                      ),
+                      startTime.onlyDays(),
                     ),
-                    startTime.onlyDays(),
                   ),
                 ),
               ),

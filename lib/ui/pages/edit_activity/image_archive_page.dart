@@ -17,8 +17,8 @@ class ImageArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocProvider<SortableArchiveBloc<ImageArchiveData>>(
-      create: (_) => SortableArchiveBloc<ImageArchiveData>(
+    return BlocProvider<SortableArchiveCubit<ImageArchiveData>>(
+      create: (_) => SortableArchiveCubit<ImageArchiveData>(
         sortableBloc: BlocProvider.of<SortableBloc>(context),
         initialFolderId: initialFolder,
         visibilityFilter: (imageArchive) => !imageArchive.data.myPhotos,

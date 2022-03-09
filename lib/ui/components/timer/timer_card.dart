@@ -52,7 +52,7 @@ class TimerCard extends StatelessWidget {
                       builder: (context) => MultiBlocProvider(
                         providers: authProviders,
                         child: TimerPage(
-                          timer: timerOccasion.timer,
+                          timerOccasion: timerOccasion,
                           day: day,
                         ),
                       ),
@@ -137,17 +137,17 @@ class TimerCardWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (timerOccasion.isOngoing) {
+    final timer = timerOccasion.timer;
+    if (timerOccasion.isOngoing && !timer.paused) {
       return TimerTickerBuilder(
-        timerOccasion.timer,
+        timer,
         builder: (context, left) => TimerWheel.simplified(
           secondsLeft: left.inSeconds,
-          lengthInMinutes: timerOccasion.timer.duration.inMinutes,
+          lengthInMinutes: timer.duration.inMinutes,
         ),
       );
     }
     return TimerWheel.simplified(
-      isPast: timerOccasion.isPast,
       paused: timerOccasion.timer.paused,
       secondsLeft: timerOccasion.timer.paused
           ? timerOccasion.timer.pausedAt.inSeconds
@@ -174,7 +174,7 @@ class TimerTickerBuilder extends StatelessWidget {
         timer.duration - ticker.time.difference(timer.startTime);
     return StreamBuilder<Duration>(
       initialData: initialTime.isNegative ? Duration.zero : initialTime,
-      stream: ticker.seconds.map((now) => timer.endTime.difference(now)),
+      stream: ticker.seconds.map((now) => timer.end.difference(now)),
       builder: (context, snapshot) {
         final data = snapshot.data;
         if (data == null) return const SizedBox.shrink();

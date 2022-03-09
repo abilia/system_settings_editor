@@ -29,7 +29,6 @@ void registerFallbackValues() {
   registerFallbackValue(Duration.zero);
   registerFallbackValue(Curves.ease);
   registerFallbackValue(GenericsNotLoaded());
-  registerFallbackValue(LoadGenerics());
   registerFallbackValue(const ImageThumb(id: ''));
   registerFallbackValue(Uri());
   registerFallbackValue(Uint8List(1));

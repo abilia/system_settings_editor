@@ -22,7 +22,7 @@ class AlarmPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.alarm,
-        iconData: AbiliaIcons.alarmBell,
+        iconData: AbiliaIcons.handiAlarmVibration,
         trailing: Padding(
           padding: layout.alarmPage.alarmClockPadding,
           child: AbiliaClock(
@@ -136,7 +136,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
     required this.alarm,
   }) : super(key: key);
 
-  final NotificationAlarm alarm;
+  final ActivityAlarm alarm;
 
   @override
   Widget build(BuildContext context) {
