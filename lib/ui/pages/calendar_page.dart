@@ -6,7 +6,7 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white),
+      data: abiliaWhiteTheme,
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (old, fresh) =>
             old.runtimeType != fresh.runtimeType ||
