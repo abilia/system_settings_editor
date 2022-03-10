@@ -12,30 +12,24 @@ class CalendarPage extends StatelessWidget {
           old.runtimeType != fresh.runtimeType ||
           old.calendarCount != fresh.calendarCount ||
           old.displayBottomBar != fresh.displayBottomBar,
-      builder: (context, settingsState) => Listener(
-        onPointerDown: Config.isMP
-            ? (_) => context.read<InactivityCubit>().activityDetected()
-            : null,
-        child: DefaultTabController(
-          length: settingsState.calendarCount,
-          child: Scaffold(
-            bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
-                    settingsState.displayBottomBar
-                ? const CalendarBottomBar()
-                : null,
-            body: HomeScreenInactivityListener(
-              settingsState: settingsState,
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const DayCalendar(),
-                  if (settingsState.displayWeekCalendar)
-                    const WeekCalendarTab(),
-                  if (settingsState.displayMonthCalendar)
-                    const MonthCalendarTab(),
-                  if (settingsState.displayMenu) const MenuPage(),
-                ],
-              ),
+      builder: (context, settingsState) => DefaultTabController(
+        length: settingsState.calendarCount,
+        child: Scaffold(
+          bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
+                  settingsState.displayBottomBar
+              ? const CalendarBottomBar()
+              : null,
+          body: HomeScreenInactivityListener(
+            settingsState: settingsState,
+            child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                const DayCalendar(),
+                if (settingsState.displayWeekCalendar) const WeekCalendarTab(),
+                if (settingsState.displayMonthCalendar)
+                  const MonthCalendarTab(),
+                if (settingsState.displayMenu) const MenuPage(),
+              ],
             ),
           ),
         ),

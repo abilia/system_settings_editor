@@ -9,16 +9,22 @@ import 'package:seagull/utils/all.dart';
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _calendarInactivityTime;
   final Ticker ticker;
+  final ActivityDetectionCubit activityDetectionCubit;
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
+  late StreamSubscription<ActivityDetected> _activitySubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
-  ) : super(ActivityDetected(ticker.time)) {
+    this.activityDetectionCubit,
+  ) : super(ActivityUpdated(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
+    _activitySubscription = activityDetectionCubit.stream.listen(
+      (state) => emit(ActivityUpdated(state.timeStamp)),
+    );
   }
 
   void _ticking(DateTime time) {
@@ -44,12 +50,11 @@ class InactivityCubit extends Cubit<InactivityState> {
     }
   }
 
-  void activityDetected([_]) => emit(ActivityDetected(ticker.time));
-
   @override
   Future<void> close() async {
     await super.close();
     await _clockSubscription.cancel();
+    await _activitySubscription.cancel();
   }
 }
 
@@ -66,8 +71,8 @@ abstract class _NotFinalState extends InactivityState {
   List<Object> get props => [timeStamp];
 }
 
-class ActivityDetected extends _NotFinalState {
-  const ActivityDetected(DateTime timeStamp) : super(timeStamp);
+class ActivityUpdated extends _NotFinalState {
+  const ActivityUpdated(DateTime timeStamp) : super(timeStamp);
 }
 
 class CalendarInactivityThresholdReached extends _NotFinalState {
@@ -80,6 +85,7 @@ class HomeScreenInactivityThresholdReached extends InactivityState {
     required this.startView,
     required this.showScreensaver,
   });
+
   final StartView startView;
   final bool showScreensaver;
 

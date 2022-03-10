@@ -25,8 +25,8 @@ void main() {
 
   setUp(() async {
     setupPermissions();
-    inactivityCubit =
-        InactivityCubit(const Duration(minutes: 1), fakeTicker, settingBloc);
+    inactivityCubit = InactivityCubit(const Duration(minutes: 1), fakeTicker,
+        settingBloc, ActivityDetectionCubit(fakeTicker));
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -140,6 +140,25 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(ScreenSaverPage), findsOneWidget);
     });
+
+    testWidgets(
+        'When timeout is reached, screen saver is false, '
+        'app switches to DayCalendar from Menu', (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      inactivityCubit.emit(
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.dayCalendar,
+          showScreensaver: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+    });
   }, skip: Config.isMPGO);
 
   group('Calendar inactivity', () {
@@ -172,24 +191,5 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);
     });
-
-    testWidgets(
-        'When timeout is reached, screen saver is false, '
-        'app switches to DayCalendar from Menu', (tester) async {
-      await tester
-          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
-      await tester.tap(find.byType(MenuButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SettingsButton));
-      await tester.pumpAndSettle();
-      inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(
-          startView: StartView.dayCalendar,
-          showScreensaver: false,
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(DayCalendar), findsOneWidget);
-    }, skip: Config.isMPGO);
   });
 }

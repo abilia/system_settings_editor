@@ -15,6 +15,8 @@ void main() {
   late MemoplannerSettingBloc settingsBloc;
   final initialTime = DateTime(2000);
   late StreamController<DateTime> tickerController;
+  late Ticker fakeTicker;
+  late ActivityDetectionCubit activityDetectionCubit;
 
   setUpAll(registerFallbackValues);
   setUp(() {
@@ -24,18 +26,22 @@ void main() {
         .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings()));
     when(() => settingsBloc.stream)
         .thenAnswer((invocation) => const Stream.empty());
+    fakeTicker =
+        Ticker.fake(initialTime: initialTime, stream: tickerController.stream);
+    activityDetectionCubit = ActivityDetectionCubit(fakeTicker);
   });
 
   blocTest<InactivityCubit, InactivityState>(
     'initial state',
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      Ticker.fake(initialTime: initialTime),
+      fakeTicker,
       settingsBloc,
+      activityDetectionCubit,
     ),
     verify: (c) => expect(
       c.state,
-      ActivityDetected(initialTime),
+      ActivityUpdated(initialTime),
     ),
   );
 
@@ -50,11 +56,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      Ticker.fake(
-        initialTime: initialTime,
-        stream: tickerController.stream,
-      ),
+      fakeTicker,
       settingsBloc,
+      activityDetectionCubit,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -76,11 +80,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      Ticker.fake(
-        initialTime: initialTime,
-        stream: tickerController.stream,
-      ),
+      fakeTicker,
       settingsBloc,
+      activityDetectionCubit,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -107,11 +109,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      Ticker.fake(
-        initialTime: initialTime,
-        stream: tickerController.stream,
-      ),
+      fakeTicker,
       settingsBloc,
+      activityDetectionCubit,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -137,20 +137,18 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      Ticker.fake(
-        initialTime: initialTime,
-        stream: tickerController.stream,
-      ),
+      fakeTicker,
       settingsBloc,
+      activityDetectionCubit,
     ),
     act: (c) async {
       tickerController.add(initialTime.add(59.seconds()));
       await c.ticker.seconds.any((element) => true);
-      c.activityDetected();
+      activityDetectionCubit.activityDetected();
       tickerController.add(initialTime.add(1.minutes()));
     },
     expect: () => [
-      ActivityDetected(initialTime.add(59.seconds())),
+      ActivityUpdated(initialTime.add(59.seconds())),
     ],
   );
 }

@@ -22,7 +22,7 @@ class ScreenSaverPage extends StatelessWidget {
                 : layout.screenSaver.dayClock;
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: context.read<InactivityCubit>().activityDetected,
+              onTap: context.read<ActivityDetectionCubit>().activityDetected,
               child: Scaffold(
                 backgroundColor: AbiliaColors.black,
                 body: Column(
