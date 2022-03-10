@@ -3,21 +3,22 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _calendarInactivityTime;
-  final ClockBloc clockBloc;
+  final Ticker ticker;
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
-    this.clockBloc,
+    this.ticker,
     this.settingsBloc,
-  ) : super(ActivityDetected(clockBloc.state)) {
-    _clockSubscription = clockBloc.stream.listen(_ticking);
+  ) : super(ActivityDetected(ticker.time)) {
+    _clockSubscription = ticker.minutes.listen(_ticking);
   }
 
   void _ticking(DateTime time) {
@@ -43,7 +44,7 @@ class InactivityCubit extends Cubit<InactivityState> {
     }
   }
 
-  void activityDetected([_]) => emit(ActivityDetected(clockBloc.state));
+  void activityDetected([_]) => emit(ActivityDetected(ticker.time));
 
   @override
   Future<void> close() async {

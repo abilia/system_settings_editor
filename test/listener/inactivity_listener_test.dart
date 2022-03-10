@@ -17,8 +17,6 @@ void main() {
   final DateTime initialTime = DateTime(2122, 06, 06, 06, 00);
   final Ticker fakeTicker = Ticker.fake(initialTime: initialTime);
   final MemoplannerSettingBloc settingBloc = FakeMemoplannerSettingsBloc();
-  final ClockBloc clockBloc =
-      ClockBloc(fakeTicker.minutes, initialTime: initialTime);
   late InactivityCubit inactivityCubit;
 
   setUpAll(() {
@@ -28,7 +26,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     inactivityCubit =
-        InactivityCubit(const Duration(minutes: 1), clockBloc, settingBloc);
+        InactivityCubit(const Duration(minutes: 1), fakeTicker, settingBloc);
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -174,5 +172,24 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);
     });
+
+    testWidgets(
+        'When timeout is reached, screen saver is false, '
+        'app switches to DayCalendar from Menu', (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      inactivityCubit.emit(
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.dayCalendar,
+          showScreensaver: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+    }, skip: Config.isMPGO);
   });
 }

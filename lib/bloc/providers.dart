@@ -203,8 +203,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             if (Config.isMP)
               BlocProvider<InactivityCubit>(
                 create: (context) => InactivityCubit(
-                  const Duration(minutes: 6),
-                  context.read<ClockBloc>(),
+                  const Duration(minutes: 5),
+                  GetIt.I<Ticker>(),
                   context.read<MemoplannerSettingBloc>(),
                 ),
               ),

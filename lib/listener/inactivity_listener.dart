@@ -37,10 +37,10 @@ class HomeScreenInactivityListener extends StatelessWidget {
           current is HomeScreenInactivityThresholdReached &&
           previous is! HomeScreenInactivityThresholdReached &&
           !current.screensaverOrPhotoAlbum,
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is! HomeScreenInactivityThresholdReached) return;
-        DefaultTabController.of(context)
-            ?.animateTo(settingsState.startViewIndex(state.startView));
+        DefaultTabController.of(context)?.index =
+            settingsState.startViewIndex(state.startView);
       },
       child: child,
     );

@@ -30,7 +30,7 @@ void main() {
     'initial state',
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      ClockBloc.fixed(initialTime),
+      Ticker.fake(initialTime: initialTime),
       settingsBloc,
     ),
     verify: (c) => expect(
@@ -50,11 +50,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      ClockBloc.withTicker(
-        Ticker.fake(
-          initialTime: initialTime,
-          stream: tickerController.stream,
-        ),
+      Ticker.fake(
+        initialTime: initialTime,
+        stream: tickerController.stream,
       ),
       settingsBloc,
     ),
@@ -78,11 +76,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      ClockBloc.withTicker(
-        Ticker.fake(
-          initialTime: initialTime,
-          stream: tickerController.stream,
-        ),
+      Ticker.fake(
+        initialTime: initialTime,
+        stream: tickerController.stream,
       ),
       settingsBloc,
     ),
@@ -111,11 +107,9 @@ void main() {
     },
     build: () => InactivityCubit(
       const Duration(minutes: 6),
-      ClockBloc.withTicker(
-        Ticker.fake(
-          initialTime: initialTime,
-          stream: tickerController.stream,
-        ),
+      Ticker.fake(
+        initialTime: initialTime,
+        stream: tickerController.stream,
       ),
       settingsBloc,
     ),
@@ -129,6 +123,34 @@ void main() {
         startView: StartView.values.first,
         showScreensaver: false,
       ),
+    ],
+  );
+
+  blocTest<InactivityCubit, InactivityState>(
+    'activity one sec before flat min does not emit',
+    setUp: () {
+      when(() => settingsBloc.state).thenReturn(
+        MemoplannerSettingsLoaded(
+          MemoplannerSettings(activityTimeout: 1.minutes().inMilliseconds),
+        ),
+      );
+    },
+    build: () => InactivityCubit(
+      const Duration(minutes: 6),
+      Ticker.fake(
+        initialTime: initialTime,
+        stream: tickerController.stream,
+      ),
+      settingsBloc,
+    ),
+    act: (c) async {
+      tickerController.add(initialTime.add(59.seconds()));
+      await c.ticker.seconds.any((element) => true);
+      c.activityDetected();
+      tickerController.add(initialTime.add(1.minutes()));
+    },
+    expect: () => [
+      ActivityDetected(initialTime.add(59.seconds())),
     ],
   );
 }
