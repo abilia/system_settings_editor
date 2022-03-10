@@ -17,8 +17,6 @@ void main() {
   final DateTime initialTime = DateTime(2122, 06, 06, 06, 00);
   final Ticker fakeTicker = Ticker.fake(initialTime: initialTime);
   final MemoplannerSettingBloc settingBloc = FakeMemoplannerSettingsBloc();
-  final ClockBloc clockBloc =
-      ClockBloc(fakeTicker.minutes, initialTime: initialTime);
   late InactivityCubit inactivityCubit;
 
   setUpAll(() {
@@ -28,7 +26,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     inactivityCubit =
-        InactivityCubit(const Duration(minutes: 1), clockBloc, settingBloc);
+        InactivityCubit(const Duration(minutes: 1), fakeTicker, settingBloc);
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));
@@ -39,6 +37,7 @@ void main() {
       ..client = Fakes.client(
         activityResponse: () => [],
       )
+      ..battery = FakeBattery()
       ..database = FakeDatabase()
       ..init();
   });
@@ -59,8 +58,8 @@ void main() {
               theme: abiliaTheme,
               home: MultiBlocListener(listeners: [
                 CalendarInactivityListener(),
-                HomeScreenInactivityListener(),
-              ], child: child ?? Container()),
+                ScreenSaverListener(),
+              ], child: child ?? const CalendarPage()),
             ),
           ),
         ),
@@ -74,7 +73,9 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
         const HomeScreenInactivityThresholdReached(
-            StartView.weekCalendar, false),
+          startView: StartView.weekCalendar,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
@@ -87,7 +88,9 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
         const HomeScreenInactivityThresholdReached(
-            StartView.monthCalendar, false),
+          startView: StartView.monthCalendar,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MonthCalendar), findsOneWidget);
@@ -99,7 +102,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.menu, false),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.menu,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(MenuPage), findsOneWidget);
@@ -111,7 +117,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.photoAlbum, false),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.photoAlbum,
+          showScreensaver: false,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(PhotoCalendarPage), findsOneWidget);
@@ -123,7 +132,10 @@ void main() {
       await tester
           .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
       inactivityCubit.emit(
-        const HomeScreenInactivityThresholdReached(StartView.menu, true),
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.menu,
+          showScreensaver: true,
+        ),
       );
       await tester.pumpAndSettle();
       expect(find.byType(ScreenSaverPage), findsOneWidget);
@@ -141,7 +153,7 @@ void main() {
       expect(
           find.text(DateFormat.EEEE(local).format(initialTime)), findsNothing);
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReached(),
+        CalendarInactivityThresholdReached(initialTime),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsOneWidget);
@@ -155,10 +167,29 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
       await tester.pumpAndSettle();
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReached(),
+        CalendarInactivityThresholdReached(initialTime),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);
     });
+
+    testWidgets(
+        'When timeout is reached, screen saver is false, '
+        'app switches to DayCalendar from Menu', (tester) async {
+      await tester
+          .pumpWidget(_wrapWithMaterialApp(child: const CalendarPage()));
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SettingsButton));
+      await tester.pumpAndSettle();
+      inactivityCubit.emit(
+        const HomeScreenInactivityThresholdReached(
+          startView: StartView.dayCalendar,
+          showScreensaver: false,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(DayCalendar), findsOneWidget);
+    }, skip: Config.isMPGO);
   });
 }
