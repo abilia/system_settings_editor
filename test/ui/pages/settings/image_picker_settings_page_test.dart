@@ -44,7 +44,10 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    GetIt.I.reset();
+    generics = [];
+  });
 
   group('image picker settings page', () {
     testWidgets('shows', (tester) async {

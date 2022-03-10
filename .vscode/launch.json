@@ -13,7 +13,7 @@
         "--dart-define",
         "release=alpha",
         "--flavor",
-        "mpgo"
+        "mpgo",
       ],
     },
     {
@@ -27,7 +27,7 @@
         "--dart-define",
         "flavor=mp",
         "--flavor",
-        "mp"
+        "mp",
       ],
     },
     {
@@ -37,14 +37,18 @@
       "flutterMode": "profile",
       "args": [
         "--flavor",
-        "mpgo"
+        "mpgo",
       ],
     },
     {
       "name": "Test as MEMOplanner Go",
       "type": "dart",
       "request": "launch",
-      "program": "./test/"
+      "program": "./test/",
+      "args": [
+        "--flavor",
+        "mpgo",
+      ],
     },
     {
       "name": "Test as MEMOplanner",
@@ -54,6 +58,8 @@
       "args": [
         "--dart-define",
         "flavor=mp",
+        "--flavor",
+        "mp",
       ],
     },
   ]

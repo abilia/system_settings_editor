@@ -44,7 +44,7 @@ jobs:
         distribution: 'temurin'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.10.1'
+        flutter-version: '2.10.3'
 
     - id: set_build_number
       run: |
