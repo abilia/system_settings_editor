@@ -89,7 +89,8 @@ abstract class MemoplannerSettingsState extends Equatable {
   int get dayStart => settings.dayIntervalStart;
   int get eveningStart => settings.eveningIntervalStart;
   int get nightStart => settings.nightIntervalStart;
-  int get activityTimeout => settings.activityTimeout;
+  Duration get activityTimeout =>
+      Duration(milliseconds: settings.activityTimeout);
 
   int get weekCalendarTabIndex => (displayWeekCalendar ? 1 : 0);
   int get monthCalendarTabIndex =>

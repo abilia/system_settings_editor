@@ -155,7 +155,7 @@ void main() {
       expect(
           find.text(DateFormat.EEEE(local).format(initialTime)), findsNothing);
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReached(),
+        CalendarInactivityThresholdReached(initialTime),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsOneWidget);
@@ -169,7 +169,7 @@ void main() {
           .pumpWidget(_wrapWithMaterialApp(child: const SettingsPage()));
       await tester.pumpAndSettle();
       inactivityCubit.emit(
-        const CalendarInactivityThresholdReached(),
+        CalendarInactivityThresholdReached(initialTime),
       );
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _calendarInactivityTime;
@@ -21,17 +22,18 @@ class InactivityCubit extends Cubit<InactivityState> {
 
   void _ticking(DateTime time) {
     final state = this.state;
-    if (state is! ActivityDetected) return;
+    if (state is! _NotFinalState) return;
     final settings = settingsBloc.state;
-    final activityTimeout = Duration(milliseconds: settings.activityTimeout);
+    final activityTimeout = settings.activityTimeout;
     final calendarInactivityTime = _calendarInactivityTime > activityTimeout
         ? activityTimeout
         : _calendarInactivityTime;
 
-    if (time.isAfter(state.timeStamp.add(calendarInactivityTime))) {
-      emit(const CalendarInactivityThresholdReached());
+    if (time
+        .isAtSameMomentOrAfter(state.timeStamp.add(calendarInactivityTime))) {
+      emit(CalendarInactivityThresholdReached(state.timeStamp));
     }
-    if (time.isAfter(state.timeStamp.add(activityTimeout))) {
+    if (time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
       emit(
         HomeScreenInactivityThresholdReached(
           startView: settings.startView,
@@ -54,11 +56,22 @@ abstract class InactivityState extends Equatable {
   const InactivityState();
 }
 
-class CalendarInactivityThresholdReached extends InactivityState {
-  const CalendarInactivityThresholdReached();
+abstract class _NotFinalState extends InactivityState {
+  final DateTime timeStamp;
+
+  const _NotFinalState(this.timeStamp);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [timeStamp];
+}
+
+class ActivityDetected extends _NotFinalState {
+  const ActivityDetected(DateTime timeStamp) : super(timeStamp);
+}
+
+class CalendarInactivityThresholdReached extends _NotFinalState {
+  const CalendarInactivityThresholdReached(DateTime timeStamp)
+      : super(timeStamp);
 }
 
 class HomeScreenInactivityThresholdReached extends InactivityState {
@@ -74,13 +87,4 @@ class HomeScreenInactivityThresholdReached extends InactivityState {
 
   @override
   List<Object?> get props => [startView, showScreensaver];
-}
-
-class ActivityDetected extends InactivityState {
-  final DateTime timeStamp;
-
-  const ActivityDetected(this.timeStamp);
-
-  @override
-  List<Object> get props => [timeStamp];
 }

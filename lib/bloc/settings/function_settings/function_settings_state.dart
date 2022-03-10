@@ -57,7 +57,7 @@ class FunctionSettingsState extends Equatable {
         displayNewActivity: state.displayNewActivity,
         displayMenu: state.settings.functionMenuDisplayMenu,
         displayMenuInitial: state.settings.functionMenuDisplayMenu,
-        timeout: state.activityTimeout,
+        timeout: state.settings.activityTimeout,
         useScreensaver: state.useScreensaver,
         startView: state.startView,
       );
