@@ -12,6 +12,10 @@ void main() {
     timerDb = TimerDb(db);
   });
 
+  tearDown(() {
+    DatabaseRepository.clearAll(db);
+  });
+
   test('add timer and delete timer', () async {
     final time = DateTime(2022, 2, 22, 22, 22);
     final all = await timerDb.getAllTimers();
