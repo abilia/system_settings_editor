@@ -26,7 +26,7 @@ void main() {
   setUp(() async {
     setupPermissions();
     inactivityCubit = InactivityCubit(const Duration(minutes: 1), fakeTicker,
-        settingBloc, ActivityDetectionCubit(fakeTicker));
+        settingBloc, ActivityDetectionCubit().stream);
     final mockFirebasePushService = MockFirebasePushService();
     when(() => mockFirebasePushService.initPushToken())
         .thenAnswer((_) => Future.value('fakeToken'));

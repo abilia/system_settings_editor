@@ -17,6 +17,7 @@ void main() {
   late StreamController<DateTime> tickerController;
   late Ticker fakeTicker;
   late ActivityDetectionCubit activityDetectionCubit;
+  late Stream<ActivityDetected> activityDetectedStream;
 
   setUpAll(registerFallbackValues);
   setUp(() {
@@ -28,7 +29,8 @@ void main() {
         .thenAnswer((invocation) => const Stream.empty());
     fakeTicker =
         Ticker.fake(initialTime: initialTime, stream: tickerController.stream);
-    activityDetectionCubit = ActivityDetectionCubit(fakeTicker);
+    activityDetectionCubit = ActivityDetectionCubit();
+    activityDetectedStream = activityDetectionCubit.stream;
   });
 
   blocTest<InactivityCubit, InactivityState>(
@@ -37,7 +39,7 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectionCubit,
+      activityDetectedStream,
     ),
     verify: (c) => expect(
       c.state,
@@ -58,7 +60,7 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectionCubit,
+      activityDetectedStream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -82,7 +84,7 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectionCubit,
+      activityDetectedStream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -111,7 +113,7 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectionCubit,
+      activityDetectedStream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -139,7 +141,7 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectionCubit,
+      activityDetectedStream,
     ),
     act: (c) async {
       tickerController.add(initialTime.add(59.seconds()));

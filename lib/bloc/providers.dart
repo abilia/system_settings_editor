@@ -206,7 +206,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   const Duration(minutes: 5),
                   GetIt.I<Ticker>(),
                   context.read<MemoplannerSettingBloc>(),
-                  context.read<ActivityDetectionCubit>(),
+                  context.read<ActivityDetectionCubit>().stream,
                 ),
               ),
           ],
@@ -289,9 +289,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
           ),
           if (Config.isMP)
             BlocProvider(
-              create: (context) => ActivityDetectionCubit(
-                GetIt.I<Ticker>(),
-              ),
+              create: (context) => ActivityDetectionCubit(),
             ),
         ],
         child: child,

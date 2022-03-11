@@ -9,7 +9,6 @@ import 'package:seagull/utils/all.dart';
 class InactivityCubit extends Cubit<InactivityState> {
   final Duration _calendarInactivityTime;
   final Ticker ticker;
-  final ActivityDetectionCubit activityDetectionCubit;
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
@@ -19,11 +18,11 @@ class InactivityCubit extends Cubit<InactivityState> {
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
-    this.activityDetectionCubit,
+    Stream<ActivityDetected> activityDetectedStream,
   ) : super(ActivityUpdated(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
-    _activitySubscription = activityDetectionCubit.stream.listen(
-      (state) => emit(ActivityUpdated(state.timeStamp)),
+    _activitySubscription = activityDetectedStream.listen(
+      (state) => emit(ActivityUpdated(ticker.time)),
     );
   }
 

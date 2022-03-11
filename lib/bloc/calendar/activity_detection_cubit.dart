@@ -1,20 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/repository/ticker.dart';
 
 class ActivityDetectionCubit extends Cubit<ActivityDetected> {
-  ActivityDetectionCubit(this.ticker) : super(ActivityDetected(ticker.time));
+  ActivityDetectionCubit() : super(const ActivityDetected());
 
-  final Ticker ticker;
-
-  void activityDetected([_]) => emit(ActivityDetected(ticker.time));
+  void activityDetected([_]) => emit(const ActivityDetected());
 }
 
-class ActivityDetected extends Equatable {
-  final DateTime timeStamp;
-
-  const ActivityDetected(this.timeStamp);
-
-  @override
-  List<Object> get props => [timeStamp];
+class ActivityDetected {
+  const ActivityDetected();
 }
