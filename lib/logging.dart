@@ -63,7 +63,6 @@ class SeagullLogger {
     Level level = kDebugMode ? Level.ALL : Level.FINE,
   }) {
     if (loggingType.isNotEmpty) {
-      Bloc.observer = BlocLoggingObserver(analyticsLogging: analyticLogging);
       Logger.root.level = level;
       if (fileLogging) _initFileLogging();
       if (printLogging) _initPrintLogging();

@@ -41,8 +41,6 @@ void main() {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-    generics = [];
-    sortable = [];
 
     genericDb = MockGenericDb();
     when(() => genericDb.getAllNonDeletedMaxRevision())
@@ -72,7 +70,11 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    generics = [];
+    sortable = [];
+    GetIt.I.reset();
+  });
 
   testWidgets('shows', (tester) async {
     await tester.goToGeneralCalendarSettingsPageCategoriesTab();
@@ -256,81 +258,87 @@ void main() {
       );
     });
 
-    testWidgets('edit image right saved', (tester) async {
-      const fileId = 'imgfileId';
-      sortable = [
-        Sortable.createNew<ImageArchiveData>(
-          data: const ImageArchiveData(name: 'test image', fileId: fileId),
-        ),
-        Sortable.createNew<ImageArchiveData>(
-          isGroup: true,
-          data: const ImageArchiveData(upload: true),
-        ),
-        Sortable.createNew<ImageArchiveData>(
-          isGroup: true,
-          data: const ImageArchiveData(myPhotos: true),
-        ),
-      ];
-      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
-      await tester.tap(find.byKey(TestKey.editRigthCategory));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SelectPictureWidget));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.imageArchiveButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(ArchiveImage));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      verifySyncGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.calendarActivityTypeRightImageKey,
-        matcher: fileId,
-      );
-    });
+    group('edit image', () {
+      testWidgets('right saved', (tester) async {
+        await mockNetworkImages(() async {
+          const fileId = 'imgfileId';
+          sortable = [
+            Sortable.createNew<ImageArchiveData>(
+              data: const ImageArchiveData(name: 'test image', fileId: fileId),
+            ),
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(upload: true),
+            ),
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(myPhotos: true),
+            ),
+          ];
+          await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+          await tester.tap(find.byKey(TestKey.editRigthCategory));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(SelectPictureWidget));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(TestKey.imageArchiveButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(ArchiveImage));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          verifySyncGeneric(
+            tester,
+            genericDb,
+            key: MemoplannerSettings.calendarActivityTypeRightImageKey,
+            matcher: fileId,
+          );
+        });
+      });
 
-    testWidgets('edit image left saved', (tester) async {
-      const fileId = 'imgfileId';
-      sortable = [
-        Sortable.createNew<ImageArchiveData>(
-          data: const ImageArchiveData(name: 'test image', fileId: fileId),
-        ),
-        Sortable.createNew<ImageArchiveData>(
-          isGroup: true,
-          data: const ImageArchiveData(upload: true),
-        ),
-        Sortable.createNew<ImageArchiveData>(
-          isGroup: true,
-          data: const ImageArchiveData(myPhotos: true),
-        ),
-      ];
-      await tester.goToGeneralCalendarSettingsPageCategoriesTab();
+      testWidgets('left saved', (tester) async {
+        await mockNetworkImages(() async {
+          const fileId = 'imgfileIds';
+          sortable = [
+            Sortable.createNew<ImageArchiveData>(
+              data: const ImageArchiveData(name: 'test image', fileId: fileId),
+            ),
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(upload: true),
+            ),
+            Sortable.createNew<ImageArchiveData>(
+              isGroup: true,
+              data: const ImageArchiveData(myPhotos: true),
+            ),
+          ];
+          await tester.goToGeneralCalendarSettingsPageCategoriesTab();
 
-      await tester.tap(find.byKey(TestKey.editLeftCategory));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SelectPictureWidget));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.imageArchiveButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(ArchiveImage));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      verifySyncGeneric(
-        tester,
-        genericDb,
-        key: MemoplannerSettings.calendarActivityTypeLeftImageKey,
-        matcher: fileId,
-      );
+          await tester.tap(find.byKey(TestKey.editLeftCategory));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(SelectPictureWidget));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(TestKey.imageArchiveButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(ArchiveImage));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(OkButton));
+          await tester.pumpAndSettle();
+          verifySyncGeneric(
+            tester,
+            genericDb,
+            key: MemoplannerSettings.calendarActivityTypeLeftImageKey,
+            matcher: fileId,
+          );
+        });
+      });
     });
   }, skip: !Config.isMP);
 
@@ -623,27 +631,25 @@ void main() {
           ),
         ),
       ];
-      await mockNetworkImages(
-        () async {
-          // Act
-          await tester.pumpApp();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byKey(TestKey.newActivityChoice));
-          await tester.pumpAndSettle();
-          await tester.dragUntilVisible(
-            find.byType(CategoryWidget),
-            find.byType(EditActivityPage),
-            const Offset(0, -100),
-          );
-          await tester.pumpAndSettle();
+      await mockNetworkImages(() async {
+        // Act
+        await tester.pumpApp();
+        await tester.tap(find.byType(AddButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.newActivityChoice));
+        await tester.pumpAndSettle();
+        await tester.dragUntilVisible(
+          find.byType(CategoryWidget),
+          find.byType(EditActivityPage),
+          const Offset(0, -100),
+        );
+        await tester.pumpAndSettle();
 
-          // Assert
-          expect(find.text(nameLeft), findsOneWidget);
-          expect(find.text(nameRight), findsOneWidget);
-          expect(find.byType(CategoryImage), findsNWidgets(2));
-        },
-      );
+        // Assert
+        expect(find.text(nameLeft), findsOneWidget);
+        expect(find.text(nameRight), findsOneWidget);
+        expect(find.byType(CategoryImage), findsNWidgets(2));
+      });
     });
   });
 }
