@@ -82,6 +82,8 @@ void main() {
   });
 
   setUp(() async {
+    activityResponse = () => [];
+    sortableResponse = () => [];
     setupPermissions();
     setupFakeTts();
     tz.initializeTimeZones();
