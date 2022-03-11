@@ -12,13 +12,18 @@ class InactivityCubit extends Cubit<InactivityState> {
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
+  late StreamSubscription<PointerDown> _activitySubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
-  ) : super(ActivityDetected(ticker.time)) {
+    Stream<PointerDown> activityDetectedStream,
+  ) : super(UserTouch(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
+    _activitySubscription = activityDetectedStream.listen(
+      (state) => emit(UserTouch(ticker.time)),
+    );
   }
 
   void _ticking(DateTime time) {
@@ -44,12 +49,11 @@ class InactivityCubit extends Cubit<InactivityState> {
     }
   }
 
-  void activityDetected([_]) => emit(ActivityDetected(ticker.time));
-
   @override
   Future<void> close() async {
     await super.close();
     await _clockSubscription.cancel();
+    await _activitySubscription.cancel();
   }
 }
 
@@ -66,8 +70,8 @@ abstract class _NotFinalState extends InactivityState {
   List<Object> get props => [timeStamp];
 }
 
-class ActivityDetected extends _NotFinalState {
-  const ActivityDetected(DateTime timeStamp) : super(timeStamp);
+class UserTouch extends _NotFinalState {
+  const UserTouch(DateTime timeStamp) : super(timeStamp);
 }
 
 class CalendarInactivityThresholdReached extends _NotFinalState {
@@ -80,6 +84,7 @@ class HomeScreenInactivityThresholdReached extends InactivityState {
     required this.startView,
     required this.showScreensaver,
   });
+
   final StartView startView;
   final bool showScreensaver;
 
