@@ -61,7 +61,9 @@ class AlarmNavigator {
             ? AlarmPage(alarm: alarm)
             : (alarm is NewReminder)
                 ? ReminderPage(reminder: alarm)
-                : throw UnsupportedError('$alarm not supported'),
+                : (alarm is TimerAlarm)
+                    ? TimerAlarmPage(timerAlarm: alarm)
+                    : throw UnsupportedError('$alarm not supported'),
       );
 
   MaterialPageRoute? removedFromRoutes(NotificationAlarm alarm) {

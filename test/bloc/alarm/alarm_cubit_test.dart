@@ -381,7 +381,7 @@ void main() {
       );
     });
 
-    blocTest<AlarmCubit, ActivityAlarm?>(
+    blocTest<AlarmCubit, NotificationAlarm?>(
       'Notification selected ignore timers',
       build: () => AlarmCubit(
         activitiesBloc: ActivitiesBloc(

@@ -139,7 +139,7 @@ mixin ActivityMixin {
     return check;
   }
 
-  Future popAlarm(BuildContext context, ActivityAlarm alarm) async {
+  Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
     _log.fine('pop Alarm: $alarm');
     if (!await Navigator.of(context).maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');

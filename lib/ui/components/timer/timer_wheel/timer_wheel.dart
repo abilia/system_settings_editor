@@ -10,6 +10,7 @@ class TimerWheel extends StatefulWidget {
     required int lengthInSeconds,
     this.onMinutesSelectedChanged,
   })  : activeSeconds = lengthInSeconds,
+        numberSeconds = lengthInSeconds,
         style = TimerWheelStyle.interactive,
         lengthInMinutes = null,
         paused = false,
@@ -24,6 +25,7 @@ class TimerWheel extends StatefulWidget {
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
+        numberSeconds = secondsLeft,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -36,12 +38,27 @@ class TimerWheel extends StatefulWidget {
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
+        numberSeconds = secondsLeft,
         style = TimerWheelStyle.simplified,
+        onMinutesSelectedChanged = null,
+        super(key: key);
+
+  const TimerWheel.finished({
+    Key? key,
+    int length = 0,
+    bool withPaint = false,
+  })  : isPast = false,
+        paused = false,
+        activeSeconds = withPaint ? length * 60 : 0,
+        numberSeconds = 0,
+        lengthInMinutes = length,
+        style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
 
   final TimerWheelStyle style;
   final int activeSeconds;
+  final int numberSeconds;
   final Function(int minutesSelected)? onMinutesSelectedChanged;
   final int? lengthInMinutes;
   final bool paused;
@@ -82,6 +99,7 @@ class _TimerWheelState extends State<TimerWheel> {
             painter: TimerWheelForegroundPainter(
               config: config,
               activeSeconds: widget.activeSeconds,
+              numberSeconds: widget.numberSeconds,
             ),
           ),
         ],

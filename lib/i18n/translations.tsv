@@ -133,7 +133,8 @@ enterNameForTimer	Enter name for timer	Ange namn för timer
 fromBasicTimer	From Basic Timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
 noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
 selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
-timer	Timer	Timer	Timer	Timer		Timer	Timer
+timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
+timeIsUp	Time is up	Tiden är slut					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny

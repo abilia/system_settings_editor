@@ -279,6 +279,8 @@ abstract class Translated {
 
   final String timer = 'Timer';
 
+  final String timeIsUp = 'Time is up';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1227,6 +1229,9 @@ class SV extends Translated {
 
   @override
   final String timer = 'Timer';
+
+  @override
+  final String timeIsUp = 'Tiden är slut';
 
   @override
   final String menu = 'Meny';
@@ -3574,7 +3579,7 @@ class NL extends Translated {
   final String selectBaseTimer = 'Standaardtimers selecteren';
 
   @override
-  final String timer = 'Timer';
+  final String timer = 'Tijdopnemer';
 
   @override
   final String menu = 'Menu';
@@ -4748,6 +4753,9 @@ class FI extends Translated {
 
   @override
   final String selectBaseTimer = 'Valitse perusajastin';
+
+  @override
+  final String timer = 'Ajastin';
 
   @override
   final String menu = 'Valikko';
@@ -7103,7 +7111,7 @@ class NB extends Translated {
   final String selectBaseTimer = 'Velg standardtimere';
 
   @override
-  final String timer = 'Timer';
+  final String timer = 'Tidtaker';
 
   @override
   final String menu = 'Meny';
