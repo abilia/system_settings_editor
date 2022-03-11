@@ -16,8 +16,8 @@ void main() {
   final initialTime = DateTime(2000);
   late StreamController<DateTime> tickerController;
   late Ticker fakeTicker;
-  late ActivityDetectionCubit activityDetectionCubit;
-  late Stream<ActivityDetected> activityDetectedStream;
+  late TouchDetectionCubit activityDetectionCubit;
+  late Stream<PointerDown> activityDetectedStream;
 
   setUpAll(registerFallbackValues);
   setUp(() {
@@ -29,7 +29,7 @@ void main() {
         .thenAnswer((invocation) => const Stream.empty());
     fakeTicker =
         Ticker.fake(initialTime: initialTime, stream: tickerController.stream);
-    activityDetectionCubit = ActivityDetectionCubit();
+    activityDetectionCubit = TouchDetectionCubit();
     activityDetectedStream = activityDetectionCubit.stream;
   });
 
@@ -43,7 +43,7 @@ void main() {
     ),
     verify: (c) => expect(
       c.state,
-      ActivityUpdated(initialTime),
+      UserTouch(initialTime),
     ),
   );
 
@@ -146,11 +146,11 @@ void main() {
     act: (c) async {
       tickerController.add(initialTime.add(59.seconds()));
       await c.ticker.seconds.any((element) => true);
-      activityDetectionCubit.activityDetected();
+      activityDetectionCubit.onPointerDown();
       tickerController.add(initialTime.add(1.minutes()));
     },
     expect: () => [
-      ActivityUpdated(initialTime.add(59.seconds())),
+      UserTouch(initialTime.add(59.seconds())),
     ],
   );
 }

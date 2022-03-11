@@ -10,7 +10,7 @@ class CalendarInactivityListener
       : super(
           key: key,
           listenWhen: (previous, current) =>
-              previous is ActivityUpdated && current is! ActivityUpdated,
+              previous is UserTouch && current is! UserTouch,
           listener: (context, state) {
             context.read<MonthCalendarCubit>().goToCurrentMonth();
             context.read<WeekCalendarCubit>().goToCurrentWeek();

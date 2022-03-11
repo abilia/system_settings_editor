@@ -12,17 +12,17 @@ class InactivityCubit extends Cubit<InactivityState> {
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
-  late StreamSubscription<ActivityDetected> _activitySubscription;
+  late StreamSubscription<PointerDown> _activitySubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
-    Stream<ActivityDetected> activityDetectedStream,
-  ) : super(ActivityUpdated(ticker.time)) {
+    Stream<PointerDown> activityDetectedStream,
+  ) : super(UserTouch(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
     _activitySubscription = activityDetectedStream.listen(
-      (state) => emit(ActivityUpdated(ticker.time)),
+      (state) => emit(UserTouch(ticker.time)),
     );
   }
 
@@ -70,8 +70,8 @@ abstract class _NotFinalState extends InactivityState {
   List<Object> get props => [timeStamp];
 }
 
-class ActivityUpdated extends _NotFinalState {
-  const ActivityUpdated(DateTime timeStamp) : super(timeStamp);
+class UserTouch extends _NotFinalState {
+  const UserTouch(DateTime timeStamp) : super(timeStamp);
 }
 
 class CalendarInactivityThresholdReached extends _NotFinalState {

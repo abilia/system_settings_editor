@@ -10,7 +10,7 @@ class ScreenSaverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<InactivityCubit, InactivityState>(
       listenWhen: (previous, current) =>
-          previous is! ActivityDetected && current is ActivityDetected,
+          previous is! PointerDown && current is PointerDown,
       listener: (context, state) => Navigator.of(context).maybePop(),
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) =>
@@ -22,7 +22,7 @@ class ScreenSaverPage extends StatelessWidget {
                 : layout.screenSaver.dayClock;
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: context.read<ActivityDetectionCubit>().activityDetected,
+              onTap: context.read<TouchDetectionCubit>().onPointerDown,
               child: Scaffold(
                 backgroundColor: AbiliaColors.black,
                 body: Column(

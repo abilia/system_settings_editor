@@ -38,4 +38,4 @@ export 'timer/all.dart';
 export 'start_guide/start_guide_cubit.dart';
 export 'activities/fullscreen_activity_cubit.dart';
 export 'sync/base_url_cubit.dart';
-export 'calendar/activity_detection_cubit.dart';
+export 'calendar/touch_detection_cubit.dart';

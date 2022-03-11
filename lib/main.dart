@@ -141,7 +141,7 @@ class SeagullApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Listener(
         onPointerDown: Config.isMP
-            ? (_) => context.read<ActivityDetectionCubit>().activityDetected()
+            ? (_) => context.read<TouchDetectionCubit>().onPointerDown()
             : null,
         child: MaterialApp(
           navigatorKey: navigatorKey,
