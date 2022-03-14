@@ -200,9 +200,8 @@ class TimerWheelForegroundPainter extends CustomPainter {
     // If timer is not simplified, paint section numbers and time left as text
     if (config.style != TimerWheelStyle.simplified) {
       // Paint time left as text
-      final durationLeft = finished
-          ? const Duration(seconds: 0)
-          : Duration(seconds: activeSeconds);
+      final durationLeft =
+          finished ? Duration.zero : Duration(seconds: activeSeconds);
       final timeLeftString =
           durationLeft.toString().split('.').first.padLeft(8, '0');
 
