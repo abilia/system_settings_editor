@@ -15,34 +15,37 @@ class FullScreenActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<FullScreenActivityCubit>(
-      create: (context) => FullScreenActivityCubit(
-        activitiesBloc: context.read<ActivitiesBloc>(),
-        clockBloc: context.read<ClockBloc>(),
-        alarmCubit: context.read<AlarmCubit>(),
-        startingActivity: activityDay,
-      ),
-      child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
-        listenWhen: (previous, current) => current.eventsList.isEmpty,
-        listener: (context, s) => Navigator.of(context).maybePop(),
-        child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
-            ActivityDay>(
-          selector: (state) => state.selected,
-          builder: (context, selected) => Scaffold(
-            appBar: DayAppBar(day: selected.day),
-            body: Column(
-              children: [
-                Expanded(child: ActivityInfoWithDots(selected)),
-                _FullScreenActivityTabBar(selectedActivityDay: selected),
-              ],
-            ),
-            bottomNavigationBar: BottomAppBar(
-              child: SizedBox(
-                height: layout.navigationBar.height,
-                child: Padding(
-                  padding: layout.navigationBar.padding,
-                  child: const Align(
-                    child: CloseButton(),
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: BlocProvider<FullScreenActivityCubit>(
+        create: (context) => FullScreenActivityCubit(
+          activitiesBloc: context.read<ActivitiesBloc>(),
+          clockBloc: context.read<ClockBloc>(),
+          alarmCubit: context.read<AlarmCubit>(),
+          startingActivity: activityDay,
+        ),
+        child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
+          listenWhen: (previous, current) => current.eventsList.isEmpty,
+          listener: (context, s) => Navigator.of(context).maybePop(),
+          child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
+              ActivityDay>(
+            selector: (state) => state.selected,
+            builder: (context, selected) => Scaffold(
+              appBar: DayAppBar(day: selected.day),
+              body: Column(
+                children: [
+                  Expanded(child: ActivityInfoWithDots(selected)),
+                  _FullScreenActivityTabBar(selectedActivityDay: selected),
+                ],
+              ),
+              bottomNavigationBar: BottomAppBar(
+                child: SizedBox(
+                  height: layout.navigationBar.height,
+                  child: Padding(
+                    padding: layout.navigationBar.padding,
+                    child: const Align(
+                      child: CloseButton(),
+                    ),
                   ),
                 ),
               ),

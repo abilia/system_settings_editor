@@ -19,35 +19,38 @@ class AlarmPage extends StatelessWidget {
     if (alarm.fullScreenActivity) {
       return FullScreenActivityPage(activityDay: alarm.activityDay);
     }
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.alarm,
-        iconData: AbiliaIcons.handiAlarmVibration,
-        trailing: Padding(
-          padding: layout.alarmPage.alarmClockPadding,
-          child: AbiliaClock(
-            style: Theme.of(context).textTheme.caption?.copyWith(
-                  color: AbiliaColors.white,
-                ),
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: Translator.of(context).translate.alarm,
+          iconData: AbiliaIcons.handiAlarmVibration,
+          trailing: Padding(
+            padding: layout.alarmPage.alarmClockPadding,
+            child: AbiliaClock(
+              style: Theme.of(context).textTheme.caption?.copyWith(
+                    color: AbiliaColors.white,
+                  ),
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(12.s),
-        child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-          selector: (activitiesState) => ActivityDay(
-            activitiesState
-                .newActivityFromLoadedOrGiven(alarm.activityDay.activity),
-            alarm.activityDay.day,
-          ),
-          builder: (context, ad) => ActivityInfo(
-            ad,
-            previewImage: previewImage,
-            alarm: alarm,
+        body: Padding(
+          padding: EdgeInsets.all(12.s),
+          child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+            selector: (activitiesState) => ActivityDay(
+              activitiesState
+                  .newActivityFromLoadedOrGiven(alarm.activityDay.activity),
+              alarm.activityDay.day,
+            ),
+            builder: (context, ad) => ActivityInfo(
+              ad,
+              previewImage: previewImage,
+              alarm: alarm,
+            ),
           ),
         ),
+        bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
       ),
-      bottomNavigationBar: AlarmBottomNavigationBar(alarm: alarm),
     );
   }
 }
@@ -65,43 +68,47 @@ class ReminderPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     final text = reminder.reminder
         .toReminderHeading(translate, reminder is ReminderBefore);
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: translate.reminder,
-        iconData: AbiliaIcons.handiReminder,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 18, bottom: 30),
-                child: Tts(
-                  child: Text(
-                    text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4
-                        ?.copyWith(color: AbiliaColors.red),
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: translate.reminder,
+          iconData: AbiliaIcons.handiReminder,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 18, bottom: 30),
+                  child: Tts(
+                    child: Text(
+                      text,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(color: AbiliaColors.red),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-                selector: (activitiesState) => ActivityDay(
-                  activitiesState.newActivityFromLoadedOrGiven(
-                      reminder.activityDay.activity),
-                  reminder.activityDay.day,
+              Expanded(
+                child:
+                    BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+                  selector: (activitiesState) => ActivityDay(
+                    activitiesState.newActivityFromLoadedOrGiven(
+                        reminder.activityDay.activity),
+                    reminder.activityDay.day,
+                  ),
+                  builder: (context, ad) => ActivityInfo(ad, alarm: reminder),
                 ),
-                builder: (context, ad) => ActivityInfo(ad, alarm: reminder),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+        bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
       ),
-      bottomNavigationBar: AlarmBottomNavigationBar(alarm: reminder),
     );
   }
 }
