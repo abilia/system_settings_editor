@@ -10,7 +10,7 @@ class TimerWheel extends StatefulWidget {
     required int lengthInSeconds,
     this.onMinutesSelectedChanged,
   })  : activeSeconds = lengthInSeconds,
-        numberSeconds = lengthInSeconds,
+        finished = false,
         style = TimerWheelStyle.interactive,
         lengthInMinutes = null,
         paused = false,
@@ -25,7 +25,7 @@ class TimerWheel extends StatefulWidget {
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
-        numberSeconds = secondsLeft,
+        finished = false,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -38,7 +38,7 @@ class TimerWheel extends StatefulWidget {
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
-        numberSeconds = secondsLeft,
+        finished = false,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
         super(key: key);
@@ -50,7 +50,7 @@ class TimerWheel extends StatefulWidget {
   })  : isPast = false,
         paused = false,
         activeSeconds = withPaint ? length * 60 : 0,
-        numberSeconds = 0,
+        finished = true,
         lengthInMinutes = length,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
@@ -58,11 +58,11 @@ class TimerWheel extends StatefulWidget {
 
   final TimerWheelStyle style;
   final int activeSeconds;
-  final int numberSeconds;
   final Function(int minutesSelected)? onMinutesSelectedChanged;
   final int? lengthInMinutes;
   final bool paused;
   final bool isPast;
+  final bool finished;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -99,7 +99,7 @@ class _TimerWheelState extends State<TimerWheel> {
             painter: TimerWheelForegroundPainter(
               config: config,
               activeSeconds: widget.activeSeconds,
-              numberSeconds: widget.numberSeconds,
+              finished: widget.finished,
             ),
           ),
         ],

@@ -205,7 +205,7 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
     final translate = Translator.of(context).translate;
     final timer = timerAlarm.timer;
     return Theme(
-      data: abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white),
+      data: abiliaWhiteTheme,
       child: Scaffold(
         appBar: AbiliaAppBar(
           title: translate.timeIsUp,
