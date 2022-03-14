@@ -15,27 +15,30 @@ class ActivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
-      selector: (activitiesState) {
-        final a =
-            activitiesState.newActivityFromLoadedOrGiven(activityDay.activity);
-        return ActivityDay(
-          a,
-          a.isRecurring ? activityDay.day : a.startTime,
-        );
-      },
-      builder: (context, ad) {
-        return Scaffold(
-          appBar: DayAppBar(
-            day: ad.day,
-          ),
-          body: ActivityInfoWithDots(
-            ad,
-            previewImage: previewImage,
-          ),
-          bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
-        );
-      },
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: BlocSelector<ActivitiesBloc, ActivitiesState, ActivityDay>(
+        selector: (activitiesState) {
+          final a = activitiesState
+              .newActivityFromLoadedOrGiven(activityDay.activity);
+          return ActivityDay(
+            a,
+            a.isRecurring ? activityDay.day : a.startTime,
+          );
+        },
+        builder: (context, ad) {
+          return Scaffold(
+            appBar: DayAppBar(
+              day: ad.day,
+            ),
+            body: ActivityInfoWithDots(
+              ad,
+              previewImage: previewImage,
+            ),
+            bottomNavigationBar: _ActivityBottomAppBar(activityDay: ad),
+          );
+        },
+      ),
     );
   }
 }
