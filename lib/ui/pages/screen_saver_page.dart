@@ -9,8 +9,7 @@ class ScreenSaverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<InactivityCubit, InactivityState>(
-      listenWhen: (previous, current) =>
-          previous is! PointerDown && current is PointerDown,
+      listenWhen: (previous, current) => current is UserTouch,
       listener: (context, state) => Navigator.of(context).maybePop(),
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) =>

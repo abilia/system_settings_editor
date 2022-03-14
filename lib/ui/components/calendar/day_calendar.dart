@@ -8,7 +8,6 @@ class DayCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CalendarViewCubit>().setCalendarTab(StartView.dayCalendar);
     return BlocProvider<ScrollPositionCubit>(
       create: (context) => ScrollPositionCubit(
         dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
