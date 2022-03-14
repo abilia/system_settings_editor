@@ -11,7 +11,6 @@ class WeekCalendarTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CalendarViewCubit>().setCalendarTab(StartView.weekCalendar);
     return Scaffold(
       backgroundColor: AbiliaColors.white,
       appBar: const WeekAppBar(),
