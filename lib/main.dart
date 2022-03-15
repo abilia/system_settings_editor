@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
@@ -29,19 +28,20 @@ final _log = Logger('main');
 void main() async {
   await initServices();
   final payload = await getOrAddPayloadToStream();
-  runApp(
-    App(
-      payload: payload,
-      runStartGuide: shouldRunStartGuide,
+  BlocOverrides.runZoned(
+    () => runApp(
+      App(
+        payload: payload,
+        runStartGuide: shouldRunStartGuide,
+        analytics: Config.release,
+      ),
     ),
+    blocObserver: BlocLoggingObserver(analyticsLogging: Config.release),
   );
 }
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Config.isMP) {
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-  }
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();
   final preferences = await SharedPreferences.getInstance();
@@ -102,13 +102,14 @@ class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final bool runStartGuide;
+  final bool runStartGuide, analytics;
 
   App({
     Key? key,
     this.payload,
     this.pushCubit,
     this.runStartGuide = false,
+    this.analytics = false,
   }) : super(key: key);
 
   @override
@@ -123,6 +124,7 @@ class App extends StatelessWidget {
                       payload: payload,
                       child: SeagullApp(
                         navigatorKey: _navigatorKey,
+                        analytics: analytics,
                       ),
                     )
                   : const StartGuidePage(),
@@ -132,10 +134,12 @@ class App extends StatelessWidget {
 
 class SeagullApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
+  final bool analytics;
 
   const SeagullApp({
     Key? key,
     required this.navigatorKey,
+    this.analytics = false,
   }) : super(key: key);
 
   @override
@@ -157,7 +161,7 @@ class SeagullApp extends StatelessWidget {
           title: Config.flavor.name,
           theme: abiliaTheme,
           navigatorObservers: [
-            AnalyticsService.observer,
+            if (analytics) AnalyticsService.observer,
             RouteLoggingObserver(),
           ],
           supportedLocales: Translator.supportedLocals,

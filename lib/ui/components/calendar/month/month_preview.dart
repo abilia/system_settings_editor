@@ -70,7 +70,7 @@ class MonthPreview extends StatelessWidget {
       ),
       decoration: const BoxDecoration(color: AbiliaColors.transparentBlack30),
       child: Container(
-        decoration: const BoxDecoration(color: AbiliaColors.white110),
+        decoration: const BoxDecoration(color: AbiliaColors.white),
         child: BlocBuilder<DayEventsCubit, EventsState>(
           builder: (context, activityState) => activityState is EventsLoaded
               ? EventList(

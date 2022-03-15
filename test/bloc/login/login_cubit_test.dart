@@ -171,6 +171,8 @@ void main() {
     late MockUserRepository mockedUserRepository;
     late MockFirebasePushService mockFirebasePushService;
 
+    setUpAll(registerFallbackValues);
+
     setUp(() {
       mockedUserRepository = MockUserRepository();
       when(() => mockedUserRepository.persistLoginInfo(any()))

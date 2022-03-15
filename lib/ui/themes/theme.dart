@@ -60,6 +60,9 @@ final abiliaTheme = ThemeData(
   ),
 );
 
+final abiliaWhiteTheme =
+    abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white);
+
 final inputDecorationTheme = InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(vertical: 14.s, horizontal: 16.s),
     focusedBorder: inputBorder,

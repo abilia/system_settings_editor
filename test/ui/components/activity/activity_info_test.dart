@@ -503,22 +503,21 @@ void main() {
         infoItem: infoItemWithTestNote,
         fileId: const Uuid().v4(),
       );
-      await mockNetworkImages(() async {
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            ActivityInfo.from(
-              activity: activity,
-              day: day,
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
 
-        expect(find.byKey(TestKey.viewImage), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.viewImage));
-        await tester.pumpAndSettle();
-        expect(find.byType(PhotoView), findsOneWidget);
-      });
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          ActivityInfo.from(
+            activity: activity,
+            day: day,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(TestKey.viewImage), findsOneWidget);
+      await tester.tap(find.byKey(TestKey.viewImage));
+      await tester.pumpAndSettle();
+      expect(find.byType(PhotoView), findsOneWidget);
     });
   });
 

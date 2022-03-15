@@ -41,7 +41,10 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    generics = [];
+    GetIt.I.reset();
+  });
 
   group('settings page', () {
     testWidgets('shows', (tester) async {
