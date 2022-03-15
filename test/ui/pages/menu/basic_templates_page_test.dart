@@ -24,6 +24,10 @@ void main() {
           Sortable.createNew<BasicActivityDataItem>(
             data: BasicActivityDataItem.createNew(title: 'Basic Activity 2'),
           ),
+          Sortable.createNew<BasicActivityDataItem>(
+            isGroup: true,
+            data: BasicActivityDataItem.createNew(title: 'Folder'),
+          ),
           Sortable.createNew<BasicTimerDataItem>(
             data: BasicTimerDataItem.fromJson(
                 '{"duration":60000,"title":"Basic Timer"}'),
@@ -43,6 +47,7 @@ void main() {
       ..client = Fakes.client()
       ..database = FakeDatabase()
       ..sortableDb = mockSortableDb
+      ..battery = FakeBattery()
       ..init();
   });
 
@@ -57,9 +62,10 @@ void main() {
       expect(find.byType(CloseButton), findsOneWidget);
     });
 
-    testWidgets('Shows 2 items in activities', (tester) async {
+    testWidgets('Shows 3 items in activities', (tester) async {
       await tester.goToTemplates();
-      expect(find.byType(PickField), findsNWidgets(2));
+      expect(find.byType(PickField), findsNWidgets(3));
+      expect(find.byIcon(AbiliaIcons.navigationNext), findsOneWidget);
     });
 
     testWidgets('Shows 1 item in timers', (tester) async {
@@ -67,6 +73,14 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsOneWidget);
+    });
+
+    testWidgets('Tapping folder enters', (tester) async {
+      await tester.goToTemplates();
+      await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
+      await tester.pumpAndSettle();
+      expect(find.byType(PickField), findsNothing);
+      expect(find.byType(PreviousButton), findsOneWidget);
     });
   });
 }

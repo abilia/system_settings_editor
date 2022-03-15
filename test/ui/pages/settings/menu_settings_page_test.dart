@@ -177,7 +177,7 @@ void main() {
   group('menu visisbility settings', () {
     testWidgets('all menu items shows', (tester) async {
       await tester.goToMenuPage();
-      expect(find.byType(MenuItemButton), findsNWidgets(6));
+      expect(find.byType(MenuItemButton), findsNWidgets(7));
       expect(find.byType(CameraButton), findsOneWidget);
       expect(find.byType(MyPhotosButton), findsOneWidget);
       expect(find.byType(PhotoCalendarButton), findsOneWidget);
