@@ -59,7 +59,8 @@ extension AlarmSettingsState on AlarmSettings {
           identifier: AlarmSettings.showAlarmOnOffSwitchKey,
         ),
         MemoplannerSettingData.fromData(
-            data: showOngoingActivityInFullScreen,
-            identifier: AlarmSettings.showOngoingActivityInFullScreenKey)
+          data: showOngoingActivityInFullScreen,
+          identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
+        )
       ];
 }

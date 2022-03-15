@@ -24,6 +24,15 @@ class AlarmNavigator {
     return route;
   }
 
+  void popFullscreenRoute() {
+    final route = _alarmRoutesOnStack['fullScreenActivity'];
+    if (route != null) {
+      final navigator = route.navigator;
+      _alarmRoutesOnStack.remove('fullScreenActivity');
+      navigator?.removeRoute(route);
+    }
+  }
+
   Future pushAlarm(
     BuildContext context,
     NotificationAlarm alarm,
@@ -40,7 +49,12 @@ class AlarmNavigator {
     final routeOnStack = _alarmRoutesOnStack[alarm.stackId];
     final navigator = Navigator.of(context);
     if (routeOnStack != null) {
-      if (alarm is ActivityAlarm && alarm.fullScreenActivity) return;
+      if (alarm is ActivityAlarm && alarm.fullScreenActivity) {
+        navigator.removeRoute(routeOnStack);
+        _alarmRoutesOnStack[alarm.stackId] = route;
+        await navigator.push(route);
+        return;
+      }
       log.fine('pushed alarm exists on stack');
       if (navigator.canPop()) {
         log.finer('alarm is not root, removes');
