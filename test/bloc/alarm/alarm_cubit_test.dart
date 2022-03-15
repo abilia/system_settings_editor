@@ -327,7 +327,7 @@ void main() {
 
     setUp(() {
       setLocalLocation(Location(localTimezoneName, [], [], []));
-      notificationSelected = ReplaySubject<ActivityAlarm>();
+      notificationSelected = ReplaySubject<NotificationAlarm>();
 
       notificationBloc = AlarmCubit(
         activitiesBloc: ActivitiesBloc(

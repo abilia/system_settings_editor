@@ -141,11 +141,11 @@ class NightEventsCubit extends Cubit<EventsLoaded> {
 
   @override
   Future<void> close() async {
-    await super.close();
     await _activitiesSubscription.cancel();
     await _timerSubscription.cancel();
     await _clockSubscription.cancel();
     await _daypickerSubscription.cancel();
     await _memoplannerSettingsSubscription.cancel();
+    await super.close();
   }
 }

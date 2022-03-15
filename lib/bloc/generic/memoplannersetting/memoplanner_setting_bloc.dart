@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -33,24 +34,35 @@ class MemoplannerSettingBloc
         add(GenericsFailedEvent());
       }
     });
+    on<MemoplannerSettingsEvent>(_onEvent, transformer: sequential());
   }
-
-  @override
-  Stream<MemoplannerSettingsState> mapEventToState(
-      MemoplannerSettingsEvent event) async* {
+  Future _onEvent(
+    MemoplannerSettingsEvent event,
+    Emitter<MemoplannerSettingsState> emit,
+  ) async {
     if (event is UpdateMemoplannerSettings) {
-      yield MemoplannerSettingsLoaded(
-        MemoplannerSettings.fromSettingsMap(
-          event.generics.filterMemoplannerSettingsData(),
-        ),
-      );
+      await _mapUpdateMemoplannerSettings(event, emit);
     }
     if (event is GenericsLoadedFailed) {
-      yield const MemoplannerSettingsFailed();
+      await _mapMemoplannerSettingsFailed(emit);
     }
     if (event is SettingsUpdateEvent) {
       genericCubit?.genericUpdated([event.settingData]);
     }
+  }
+
+  Future _mapUpdateMemoplannerSettings(UpdateMemoplannerSettings event,
+      Emitter<MemoplannerSettingsState> emit) async {
+    emit(MemoplannerSettingsLoaded(
+      MemoplannerSettings.fromSettingsMap(
+        event.generics.filterMemoplannerSettingsData(),
+      ),
+    ));
+  }
+
+  Future _mapMemoplannerSettingsFailed(
+      Emitter<MemoplannerSettingsState> emit) async {
+    emit(const MemoplannerSettingsFailed());
   }
 
   @override

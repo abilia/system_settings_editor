@@ -12,10 +12,11 @@ import '../../fakes/all.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  setUpAll(registerFallbackValues);
+
   group('AuthenticationBloc event order', () {
     late UserRepository userRepository;
     setUp(() async {
-      registerFallbackValues();
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
       userRepository = UserRepository(
         client: Fakes.client(),

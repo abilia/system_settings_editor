@@ -31,7 +31,7 @@ void main() {
   late MockUserFileCubit mockUserFileCubit;
   late MockTimerDb mockTimerDb;
   late MockTimerAlarmBloc mockTimerAlarmBloc;
-  final navObserver = NavObserver();
+  late NavObserver navObserver;
   late TimerCubit timerCubit;
 
   setUpAll(() {
@@ -42,6 +42,7 @@ void main() {
     tz.initializeTimeZones();
     await initializeDateFormatting();
 
+    navObserver = NavObserver();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(

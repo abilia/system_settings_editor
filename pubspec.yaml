@@ -16,19 +16,19 @@ dependencies:
   audioplayers: ^0.20.1
   auto_size_text: ^3.0.0-nullsafety.0
   battery_plus: ^2.0.1
-  bloc_concurrency: ^0.1.0
+  bloc_concurrency: ^0.2.0
   collection: ^1.15.0
   connectivity_plus: ^2.1.0
   devicelocale: ^0.5.0
   dotted_border: ^2.0.0
   dotted_line: ^3.1.0
   equatable: ^2.0.3
-  firebase_analytics: ^8.3.4
+  firebase_analytics: ^9.1.2
   firebase_core: ^1.8.0
   firebase_crashlytics: ^2.2.4
   firebase_messaging: ^11.1.0
   flutter_archive: ^4.0.1
-  flutter_bloc: ^7.3.3
+  flutter_bloc: ^8.0.1
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
@@ -51,8 +51,8 @@ dependencies:
   mime: ^1.0.1
   package_info: ^2.0.2
   path_provider: ^2.0.5
-  permission_handler: ^8.2.5
-  photo_view: ^0.12.0
+  permission_handler: ^9.2.0
+  photo_view: ^0.13.0
   record: ^3.0.0
   rxdart: ^0.27.1
   shared_preferences: ^2.0.8
@@ -60,8 +60,8 @@ dependencies:
   synchronized: ^3.0.0
   transparent_image: ^2.0.0
   uuid: ^3.0.5
-  wakelock: ^0.5.6
-  webview_flutter: ^2.1.2
+  wakelock: ^0.6.1
+  webview_flutter: ^3.0.1
 
 dev_dependencies:
   test: any
@@ -70,11 +70,11 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   build_runner: ^2.1.4
-  bloc_test: ^8.5.0
+  bloc_test: ^9.0.3
   file: ^6.1.0
   flutter_launcher_icons: ^0.9.1
   flutter_lints: ^1.0.4
-  mocktail_image_network: ^0.2.0
+  mocktail_image_network: ^0.3.1
   sqflite_common_ffi: ^2.0.0+1
 
 flutter_icons:

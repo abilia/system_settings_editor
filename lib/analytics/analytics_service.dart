@@ -1,9 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:seagull/models/all.dart';
 
 class AnalyticsService {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static late FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
@@ -12,7 +11,7 @@ class AnalyticsService {
   }
 
   static Future<void> setUserId(int id) async {
-    await analytics.setUserId(id.toString());
+    await analytics.setUserId(id: id.toString());
   }
 
   static Future<void> sendActivityCreatedEvent(Activity activity) async {

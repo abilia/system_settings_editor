@@ -18,6 +18,7 @@ import 'package:seagull/ui/all.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/app_pumper.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
@@ -26,18 +27,18 @@ void main() {
   const leftTitle = 'LeftCategoryActivity',
       rightTitle = 'RigthCategoryActivity';
 
-  ActivityResponse activityResponse = () => [];
-  GenericResponse genericResponse = () => [];
-  TimerResponse timerResponse = () => [];
-
-  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
-  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
-
   final timepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
         data: DayCalendarType.oneTimepillar.index,
         identifier: MemoplannerSettings.viewOptionsTimeViewKey),
   );
+
+  ActivityResponse activityResponse = () => [];
+  GenericResponse genericResponse = () => [timepillarGeneric];
+  TimerResponse timerResponse = () => [];
+
+  final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
+  final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
 
   setUp(() async {
     setupPermissions();
@@ -69,10 +70,6 @@ void main() {
     when(() => mockTimerDb.getRunningTimersFrom(any()))
         .thenAnswer((_) => Future.value(timerResponse()));
 
-    genericResponse = () => [timepillarGeneric];
-    activityResponse = () => [];
-    timerResponse = () => [];
-
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
@@ -92,7 +89,12 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    genericResponse = () => [timepillarGeneric];
+    activityResponse = () => [];
+    timerResponse = () => [];
+    GetIt.I.reset();
+  });
 
   testWidgets('Shows when selected', (WidgetTester tester) async {
     await tester.pumpWidget(App());
@@ -124,9 +126,9 @@ void main() {
     });
 
     testWidgets('tts', (WidgetTester tester) async {
-      await tester.pumpWidget(App());
+      await tester.pumpApp(use24: true);
       await tester.pumpAndSettle();
-      final hour = DateFormat('h').format(time);
+      final hour = DateFormat('H').format(time);
       await tester.verifyTts(find.text(hour).at(0), contains: hour);
     });
 

@@ -91,28 +91,21 @@ void main() {
     }, skip: Config.isMP);
 
     testWidgets('The page shows', (tester) async {
-      await tester.goToMyPhotos();
-      expect(find.byType(MyPhotosPage), findsOneWidget);
-    });
-
-    testWidgets('Can navigate back to menu', (tester) async {
-      await tester.goToMyPhotos();
-      expect(find.byType(MyPhotosPage), findsOneWidget);
-      await tester.tap(find.byType(CloseButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(MenuPage), findsOneWidget);
-    });
-
-    testWidgets('Folders and photos shows, image is clickable', (tester) async {
       await mockNetworkImages(() async {
         await tester.goToMyPhotos();
         expect(find.byType(MyPhotosPage), findsOneWidget);
         expect(find.byType(LibraryFolder), findsOneWidget);
         expect(find.byType(ThumbnailPhoto), findsNWidgets(2));
-        await tester.tap(find.byType(ThumbnailPhoto).first);
+      });
+    });
+
+    testWidgets('Can navigate back to menu', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byType(MyPhotosPage), findsOneWidget);
+        await tester.tap(find.byType(CloseButton));
         await tester.pumpAndSettle();
-        expect(find.byType(PhotoPage), findsOneWidget);
-        expect(find.byType(FullScreenImage), findsOneWidget);
+        expect(find.byType(MenuPage), findsOneWidget);
       });
     });
 
@@ -155,12 +148,10 @@ void main() {
 
 extension on WidgetTester {
   Future<void> goToMyPhotos() async {
-    await mockNetworkImages(() async {
-      await pumpApp();
-      await tap(find.byType(MenuButton));
-      await pumpAndSettle();
-      await tap(find.byIcon(AbiliaIcons.myPhotos));
-      await pumpAndSettle();
-    });
+    await pumpApp();
+    await tap(find.byType(MenuButton));
+    await pumpAndSettle();
+    await tap(find.byIcon(AbiliaIcons.myPhotos));
+    await pumpAndSettle();
   }
 }

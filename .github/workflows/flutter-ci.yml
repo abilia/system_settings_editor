@@ -1,7 +1,10 @@
-name: Flutter CI
+name: CI
 
 on:
   pull_request:
+    branches:
+      - master
+      - release
 
 jobs:
   build:
@@ -9,15 +12,34 @@ jobs:
     timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
+    - uses: actions/setup-java@v2
       with:
-        java-version: '12.x'
+        java-version: '11'
+        distribution: 'temurin'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.10.1'
+        flutter-version: '2.10.3'
 
     - run: flutter pub get
     - run: flutter analyze .
     - run: flutter format --set-exit-if-changed .
-    - run: flutter test --reporter expanded
-    - run: flutter test --reporter expanded --dart-define flavor=mp
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    strategy:
+      matrix:
+        flavor: ['mp', 'mpgo']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '2.10.3'
+
+    - run: |
+        flutter test --reporter expanded --dart-define flavor=${{ matrix.flavor }} --flavor ${{ matrix.flavor }}
