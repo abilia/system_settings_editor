@@ -79,11 +79,10 @@ void main() {
 
   setUpAll(() {
     registerFallbackValues();
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
   });
 
   setUp(() async {
-    activityResponse = () => [];
-    sortableResponse = () => [];
     setupPermissions();
     setupFakeTts();
     tz.initializeTimeZones();
@@ -157,7 +156,11 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    activityResponse = () => [];
+    sortableResponse = () => [];
+    GetIt.I.reset();
+  });
 
   group('calendar page', () {
     group('create new activity', () {
