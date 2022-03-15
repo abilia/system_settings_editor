@@ -36,7 +36,7 @@ class HomeScreenInactivityListener extends StatelessWidget {
       listenWhen: (previous, current) =>
           current is HomeScreenInactivityThresholdReached &&
           previous is! HomeScreenInactivityThresholdReached &&
-          !current.screensaverOrPhotoAlbum,
+          current.startView != StartView.photoAlbum,
       listener: (context, state) {
         if (state is! HomeScreenInactivityThresholdReached) return;
         DefaultTabController.of(context)?.index =
@@ -69,6 +69,7 @@ class ScreenSaverListener
                     providers: authProviders,
                     child: const PhotoCalendarPage(),
                   ),
+                  settings: const RouteSettings(name: 'PhotoCalendarPage'),
                 ),
               );
             }
@@ -80,6 +81,7 @@ class ScreenSaverListener
                     providers: authProviders,
                     child: const ScreenSaverPage(),
                   ),
+                  settings: const RouteSettings(name: 'ScreenSaverPage'),
                 ),
               );
             }

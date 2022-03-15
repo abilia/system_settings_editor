@@ -10,7 +10,7 @@ class ScreenSaverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<InactivityCubit, InactivityState>(
       listenWhen: (previous, current) => current is UserTouch,
-      listener: (context, state) => Navigator.of(context).maybePop(),
+      listener: (context, state) => Navigator.of(context).pop(),
       child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         builder: (context, memoSettingsState) =>
             BlocBuilder<ClockBloc, DateTime>(
@@ -19,42 +19,38 @@ class ScreenSaverPage extends StatelessWidget {
             final AnalogClockStyle analogClock = isNight
                 ? layout.screenSaver.nightClock
                 : layout.screenSaver.dayClock;
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: context.read<TouchDetectionCubit>().onPointerDown,
-              child: Scaffold(
-                backgroundColor: AbiliaColors.black,
-                body: Column(
-                  children: [
-                    ScreenSaverAppBar(isNight: isNight, time: time),
-                    Padding(
-                      padding: layout.screenSaver.clockPadding,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (memoSettingsState.clockType != ClockType.digital)
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: layout.screenSaver.clockSeparation),
-                              child: SizedBox(
-                                height: layout.screenSaver.clockHeight,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: CustomizableAnalogClock(
-                                      style: analogClock),
-                                ),
+            return Scaffold(
+              backgroundColor: AbiliaColors.black,
+              body: Column(
+                children: [
+                  ScreenSaverAppBar(isNight: isNight, time: time),
+                  Padding(
+                    padding: layout.screenSaver.clockPadding,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (memoSettingsState.clockType != ClockType.digital)
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: layout.screenSaver.clockSeparation),
+                            child: SizedBox(
+                              height: layout.screenSaver.clockHeight,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child:
+                                    CustomizableAnalogClock(style: analogClock),
                               ),
                             ),
-                          if (memoSettingsState.clockType != ClockType.analogue)
-                            DigitalClock(
-                              style: layout.screenSaver
-                                  .digitalClockTextStyle(isNight),
-                            ),
-                        ],
-                      ),
+                          ),
+                        if (memoSettingsState.clockType != ClockType.analogue)
+                          DigitalClock(
+                            style: layout.screenSaver
+                                .digitalClockTextStyle(isNight),
+                          ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },
