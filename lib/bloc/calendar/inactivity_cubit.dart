@@ -51,9 +51,9 @@ class InactivityCubit extends Cubit<InactivityState> {
 
   @override
   Future<void> close() async {
-    await super.close();
     await _clockSubscription.cancel();
     await _activitySubscription.cancel();
+    await super.close();
   }
 }
 
