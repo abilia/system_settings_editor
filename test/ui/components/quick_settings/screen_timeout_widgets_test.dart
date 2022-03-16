@@ -15,11 +15,6 @@ void main() {
   );
 
   setUp(() {
-    registerFallbackValue(
-      const WakeLockState(
-        keepScreenAwakeSettings: KeepScreenAwakeSettings(),
-      ),
-    );
     mockWakeLockCubit = MockWakeLockCubit();
   });
 

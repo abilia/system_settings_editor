@@ -34,7 +34,7 @@ void main() {
   );
 
   ActivityResponse activityResponse = () => [];
-  GenericResponse genericResponse = () => [timepillarGeneric];
+  GenericResponse genericResponse = () => [];
   TimerResponse timerResponse = () => [];
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -56,6 +56,7 @@ void main() {
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
 
+    genericResponse = () => [timepillarGeneric];
     final mockGenericDb = MockGenericDb();
     registerFallbackValue(
       AbiliaTimer.createNew(startTime: time, duration: Duration.zero),
@@ -90,7 +91,7 @@ void main() {
   });
 
   tearDown(() {
-    genericResponse = () => [timepillarGeneric];
+    genericResponse = () => [];
     activityResponse = () => [];
     timerResponse = () => [];
     GetIt.I.reset();
