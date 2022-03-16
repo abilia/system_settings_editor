@@ -35,7 +35,7 @@ class TimerPage extends StatelessWidget {
                 constraints: const BoxConstraints.expand(),
                 child: Column(
                   children: <Widget>[
-                    _TopInfo(timer: timer),
+                    TimerTopInfo(timer: timer),
                     Divider(
                       height: layout.activityPage.dividerHeight,
                       endIndent: 0,
@@ -100,8 +100,8 @@ class TimerPage extends StatelessWidget {
   }
 }
 
-class _TopInfo extends StatelessWidget {
-  const _TopInfo({
+class TimerTopInfo extends StatelessWidget {
+  const TimerTopInfo({
     Key? key,
     required this.timer,
   }) : super(key: key);

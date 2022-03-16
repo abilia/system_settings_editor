@@ -22,6 +22,8 @@ import '../test_helpers/app_pumper.dart';
 void main() {
   late StreamController<DateTime> mockTicker;
   final mockActivityDb = MockActivityDb();
+  final mockGenericDb = MockGenericDb();
+  final mockTimerDb = MockTimerDb();
   final getItInitializer = GetItInitializer();
   final translater = Locales.language.values.first;
 
@@ -62,10 +64,19 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockActivityDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
+    when(() => mockTimerDb.getAllTimers()).thenAnswer((_) => Future.value([]));
+    when(() => mockTimerDb.getRunningTimersFrom(any()))
+        .thenAnswer((_) => Future.value([]));
+    when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+      (realInvocation) => Future.value(
+        [],
+      ),
+    );
 
     getItInitializer
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
+      ..timerDb = mockTimerDb
       ..ticker = Ticker.fake(
         stream: mockTicker.stream,
         initialTime: initialTime,
@@ -77,7 +88,7 @@ void main() {
       ..database = FakeDatabase()
       ..alarmNavigator = AlarmNavigator()
       ..sortableDb = FakeSortableDb()
-      ..genericDb = FakeGenericDb()
+      ..genericDb = mockGenericDb
       ..battery = FakeBattery()
       ..init();
   });
@@ -876,6 +887,101 @@ void main() {
           find.text(alarm4.activity.title, skipOffstage: false),
           findsOneWidget,
         );
+      });
+
+      testWidgets('fullscreen mixed with reminder and timer',
+          (WidgetTester tester) async {
+        final activity = Activity.createNew(
+          title: 'Activity 1',
+          startTime: activity1StartTime,
+          duration: 2.minutes(),
+        );
+        final activity2 = Activity.createNew(
+          startTime: activity1StartTime.add(5.minutes()).add(1.minutes()),
+          reminderBefore: [5.minutes().inMilliseconds],
+        );
+        when(() => mockActivityDb.getAllNonDeleted())
+            .thenAnswer((_) => Future.value([activity, activity2]));
+
+        when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
+          (_) => Future.value(
+            [
+              Generic.createNew<MemoplannerSettingData>(
+                data: MemoplannerSettingData.fromData(
+                  data: true,
+                  identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
+                ),
+              ),
+            ],
+          ),
+        );
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+
+        mockTicker.add(activity1StartTime);
+        await tester.pumpAndSettle();
+        expect(find.byType(FullScreenActivityPage), findsOneWidget);
+
+        mockTicker.add(activity1StartTime.add(1.minutes()));
+        await tester.pumpAndSettle();
+        expect(find.byType(ReminderPage), findsOneWidget);
+
+        mockTicker.add(activity1StartTime.add(2.minutes()));
+        await tester.pumpAndSettle();
+        expect(find.byType(FullScreenActivityPage), findsOneWidget);
+
+        selectNotificationSubject.add(TimerAlarm(AbiliaTimer.createNew(
+            startTime: DateTime(2011, 11, 11, 11, 11), duration: 1.minutes())));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+
+        mockTicker.add(activity1StartTime.add(3.minutes()));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+
+        await tester.tap(find.byType(CloseButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(ReminderPage), findsOneWidget);
+
+        await tester.tap(find.byType(CloseButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsOneWidget);
+      });
+    });
+
+    group('timer alarms', () {
+      final timerStart = DateTime(2011, 11, 11, 11, 11);
+      testWidgets('timer alarm is shown', (WidgetTester tester) async {
+        final t =
+            AbiliaTimer.createNew(startTime: timerStart, duration: 1.minutes());
+        when(() => mockTimerDb.getAllTimers())
+            .thenAnswer((_) => Future.value([t]));
+        when(() => mockTimerDb.getRunningTimersFrom(any()))
+            .thenAnswer((_) => Future.value([t]));
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        selectNotificationSubject.add(TimerAlarm(t));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+      });
+
+      testWidgets('timer alarm is shown', (WidgetTester tester) async {
+        final t =
+            AbiliaTimer.createNew(startTime: timerStart, duration: 1.minutes());
+        when(() => mockTimerDb.getAllTimers())
+            .thenAnswer((_) => Future.value([t]));
+        when(() => mockTimerDb.getRunningTimersFrom(any()))
+            .thenAnswer((_) => Future.value([t]));
+
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        selectNotificationSubject.add(TimerAlarm(t));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
       });
     });
   });
