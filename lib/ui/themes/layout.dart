@@ -767,61 +767,25 @@ class ScreenSaverLayout {
   final double clockHeight,
       clockSeparation,
       digitalClockTextSize,
-      titleBarTextSize,
-      titleBarLineHeight,
       digitalClockLineHeight;
   final EdgeInsets clockPadding, titleBarPadding;
-  final Color dayColor, nightColor;
-  final AnalogClockStyle dayClock, nightClock;
 
   const ScreenSaverLayout({
     this.clockHeight = 288,
     this.clockSeparation = 48,
     this.digitalClockTextSize = 80,
-    this.titleBarTextSize = 40,
-    this.titleBarLineHeight = 47,
-    this.digitalClockLineHeight = 97,
+    this.digitalClockLineHeight = 93.75,
     this.titleBarPadding = const EdgeInsets.only(top: 24),
-    this.clockPadding = const EdgeInsets.only(top: 156),
-    this.dayColor = AbiliaColors.white,
-    this.nightColor = AbiliaColors.transparentWhite30,
-    this.dayClock = const AnalogClockStyle(),
-    this.nightClock = const AnalogClockStyleNight(),
+    this.clockPadding = const EdgeInsets.only(top: 138),
   });
 
-  TextStyle titleBarTextStyle(bool nightTime) => GoogleFonts.roboto(
-      fontSize: titleBarTextSize,
-      fontWeight: FontWeight.w400,
-      color: nightTime ? nightColor : dayColor,
-      height: titleBarLineHeight / titleBarTextSize);
-
-  TextStyle digitalClockTextStyle(bool nightTime) => GoogleFonts.roboto(
-      fontSize: digitalClockTextSize,
-      fontStyle: FontStyle.normal,
-      fontWeight: FontWeight.w400,
-      color: nightTime ? nightColor : dayColor,
-      height: digitalClockLineHeight / digitalClockTextSize);
-}
-
-class AnalogClockStyleNight extends AnalogClockStyle {
-  const AnalogClockStyleNight()
-      : super(
-            borderWidth: 1,
-            borderColor: AbiliaColors.transparentWhite30,
-            foregroundColor: AbiliaColors.transparentWhite30,
-            backgroundColor: AbiliaColors.black);
-}
-
-class AnalogClockStyle {
-  final double borderWidth;
-  final Color borderColor, backgroundColor, foregroundColor;
-
-  const AnalogClockStyle({
-    this.borderWidth = 0,
-    this.borderColor = AbiliaColors.white,
-    this.backgroundColor = AbiliaColors.white,
-    this.foregroundColor = AbiliaColors.black,
-  });
+  TextStyle get digitalClockTextStyle => GoogleFonts.roboto(
+        fontSize: digitalClockTextSize,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        color: AbiliaColors.white,
+        height: digitalClockLineHeight / digitalClockTextSize,
+      );
 }
 
 class AlarmSettingsPageLayout {
