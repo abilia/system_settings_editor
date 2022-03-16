@@ -5,8 +5,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
+class AlarmRoute<T> extends MaterialPageRoute<T> {
+  AlarmRoute({
+    required WidgetBuilder builder,
+    bool fullscreenDialog = false,
+  }) : super(builder: builder, fullscreenDialog: fullscreenDialog);
+}
+
 class AlarmNavigator {
-  final _alarmRoutesOnStack = <String, MaterialPageRoute>{};
+  final _alarmRoutesOnStack = <String, AlarmRoute>{};
   static final log = Logger((AlarmNavigator).toString());
 
   Route getFullscreenAlarmRoute({
@@ -14,7 +21,7 @@ class AlarmNavigator {
     required Authenticated authenticatedState,
   }) {
     log.fine('pushFullscreenAlarm: $alarm');
-    final route = MaterialPageRoute(
+    final route = AlarmRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
         child: AlarmListener(child: _alarmPage(alarm)),
@@ -39,7 +46,7 @@ class AlarmNavigator {
   ) async {
     final authProviders = copiedAuthProviders(context);
     log.fine('pushAlarm: $alarm');
-    final route = MaterialPageRoute(
+    final route = AlarmRoute(
       builder: (_) => MultiBlocProvider(
         providers: authProviders,
         child: _alarmPage(alarm),

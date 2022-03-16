@@ -44,6 +44,7 @@ class Layout {
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
   final AlarmPageLayout alarmPage;
+  final ScreenSaverLayout screenSaver;
   final AlarmSettingsPageLayout alarmSettingsPage;
   final ComponentsLayout components;
   final PickFieldLayout pickField;
@@ -82,6 +83,7 @@ class Layout {
       padding: EdgeInsets.only(left: 8),
     ),
     this.alarmPage = const AlarmPageLayout(),
+    this.screenSaver = const ScreenSaverLayout(),
     this.alarmSettingsPage = const AlarmSettingsPageLayout(),
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
@@ -759,6 +761,31 @@ class AlarmPageLayout {
     this.alarmClockPadding =
         const EdgeInsets.only(top: 4, bottom: 4, right: 16),
   });
+}
+
+class ScreenSaverLayout {
+  final double clockHeight,
+      clockSeparation,
+      digitalClockTextSize,
+      digitalClockLineHeight;
+  final EdgeInsets clockPadding, titleBarPadding;
+
+  const ScreenSaverLayout({
+    this.clockHeight = 288,
+    this.clockSeparation = 48,
+    this.digitalClockTextSize = 80,
+    this.digitalClockLineHeight = 93.75,
+    this.titleBarPadding = const EdgeInsets.only(top: 24),
+    this.clockPadding = const EdgeInsets.only(top: 138),
+  });
+
+  TextStyle get digitalClockTextStyle => GoogleFonts.roboto(
+        fontSize: digitalClockTextSize,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        color: AbiliaColors.white,
+        height: digitalClockLineHeight / digitalClockTextSize,
+      );
 }
 
 class AlarmSettingsPageLayout {

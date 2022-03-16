@@ -17,8 +17,7 @@ class DayCalendar extends StatelessWidget {
       child: Config.isMP
           ? BlocListener<InactivityCubit, InactivityState>(
               listenWhen: (previous, current) =>
-                  current is InactivityThresholdReachedState &&
-                  previous is ActivityDetectedState,
+                  current is CalendarInactivityThresholdReached,
               listener: (context, state) =>
                   BlocProvider.of<ScrollPositionCubit>(context).goToNow(),
               child: const CalendarScaffold())

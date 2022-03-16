@@ -37,7 +37,7 @@ void main() {
     );
     expect(
       functionSettingsCubit.state.timeout,
-      settingsState.activityTimeout,
+      settingsState.activityTimeout.inMilliseconds,
     );
     expect(
       functionSettingsCubit.state.useScreensaver,

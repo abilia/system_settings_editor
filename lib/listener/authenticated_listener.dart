@@ -105,16 +105,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           ),
         ),
         if (Config.isMP) ...[
-          BlocListener<InactivityCubit, InactivityState>(
-            listenWhen: (previous, current) =>
-                current is InactivityThresholdReachedState &&
-                previous is ActivityDetectedState,
-            listener: (context, state) {
-              context.read<MonthCalendarCubit>().goToCurrentMonth();
-              context.read<WeekCalendarCubit>().goToCurrentWeek();
-              context.read<DayPickerBloc>().add(CurrentDay());
-            },
-          ),
+          CalendarInactivityListener(),
+          ScreenSaverListener(),
           KeepScreenAwakeListener(),
         ],
         if (!Platform.isIOS) _fullscreenAlarmPremissionListener(context),
