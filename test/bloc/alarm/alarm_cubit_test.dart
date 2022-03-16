@@ -324,6 +324,11 @@ void main() {
     late ReplaySubject<NotificationAlarm> notificationSelected;
     late AlarmCubit notificationBloc;
     const localTimezoneName = 'aTimeZone';
+    final aTimer = TimerAlarm(AbiliaTimer.createNew(
+      title: 'title',
+      startTime: aTime.subtract(3.minutes()),
+      duration: 3.minutes(),
+    ));
 
     setUp(() {
       setLocalLocation(Location(localTimezoneName, [], [], []));
@@ -381,8 +386,8 @@ void main() {
       );
     });
 
-    blocTest<AlarmCubit, ActivityAlarm?>(
-      'Notification selected ignore timers',
+    blocTest<AlarmCubit, NotificationAlarm?>(
+      'Timers are handled in the AlarmCubit',
       build: () => AlarmCubit(
         activitiesBloc: ActivitiesBloc(
           activityRepository: MockActivityRepository(),
@@ -392,12 +397,8 @@ void main() {
         clockBloc: ClockBloc.fixed(aTime),
         selectedNotificationSubject: notificationSelected,
       ),
-      act: (cubit) => notificationSelected.add(TimerAlarm(AbiliaTimer.createNew(
-        title: 'title',
-        startTime: aTime.subtract(3.minutes()),
-        duration: 3.minutes(),
-      ))),
-      expect: () => [],
+      act: (cubit) => notificationSelected.add(aTimer),
+      expect: () => [aTimer],
     );
   });
 }

@@ -66,8 +66,6 @@ void main() {
         .thenAnswer((_) => Future.value(timerResponse()));
 
     genericResponse = () => [twoTimepillarGeneric];
-    activityResponse = () => [];
-    timerResponse = () => [];
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -88,7 +86,12 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    genericResponse = () => [];
+    activityResponse = () => [];
+    timerResponse = () => [];
+    GetIt.I.reset();
+  });
 
   testWidgets('Shows', (WidgetTester tester) async {
     await tester.pumpWidget(App());

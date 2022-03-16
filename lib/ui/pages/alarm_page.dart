@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -187,5 +189,136 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
         ),
       ),
     );
+  }
+}
+
+class TimerAlarmPage extends StatelessWidget with ActivityMixin {
+  final TimerAlarm timerAlarm;
+
+  const TimerAlarmPage({
+    Key? key,
+    required this.timerAlarm,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final timer = timerAlarm.timer;
+    return Theme(
+      data: abiliaWhiteTheme,
+      child: Scaffold(
+        appBar: AbiliaAppBar(
+          title: translate.timeIsUp,
+          iconData: AbiliaIcons.stopWatch,
+        ),
+        body: Padding(
+          padding: layout.timerPage.bodyPadding,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              border: border,
+              borderRadius: borderRadius,
+            ),
+            constraints: const BoxConstraints.expand(),
+            child: Column(
+              children: <Widget>[
+                TimerTopInfo(timer: timerAlarm.timer),
+                Divider(
+                  height: layout.activityPage.dividerHeight,
+                  endIndent: 0,
+                  indent: layout.activityPage.dividerIndentation,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: layout.timerPage.mainContentPadding,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: FinishedTimerWheel(timer: timer),
+                        ),
+                        SizedBox(
+                          height: layout.timerPage.pauseTextHeight,
+                          child: timer.paused
+                              ? Tts(
+                                  child: Text(
+                                    Translator.of(context)
+                                        .translate
+                                        .timerPaused,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        ?.copyWith(
+                                          color: AbiliaColors.red,
+                                        ),
+                                  ),
+                                )
+                              : null,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget: CloseButton(
+            onPressed: () => popAlarm(context, timerAlarm),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FinishedTimerWheel extends StatefulWidget {
+  const FinishedTimerWheel({
+    Key? key,
+    required this.timer,
+  }) : super(key: key);
+
+  final AbiliaTimer timer;
+
+  @override
+  State<FinishedTimerWheel> createState() => _FinishedTimerWheelState();
+}
+
+class _FinishedTimerWheelState extends State<FinishedTimerWheel> {
+  bool showFirst = true;
+  Timer? _timer;
+  final Duration blink = const Duration(milliseconds: 500);
+  late Widget first;
+  late Widget second;
+
+  @override
+  void initState() {
+    first = TimerWheel.finished(
+      withPaint: true,
+      length: widget.timer.duration.inMinutes,
+    );
+    second = TimerWheel.finished(
+      length: widget.timer.duration.inMinutes,
+    );
+    super.initState();
+    _timer = Timer.periodic(blink, (timer) {
+      setState(() {
+        showFirst = !showFirst;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  _FinishedTimerWheelState();
+
+  @override
+  Widget build(BuildContext context) {
+    return showFirst ? first : second;
   }
 }

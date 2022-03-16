@@ -6,7 +6,8 @@ import 'package:seagull/models/all.dart';
 
 abstract class NotificationAlarm extends Equatable {
   final Event event;
-  const NotificationAlarm(this.event);
+  final bool fullScreenActivity;
+  const NotificationAlarm(this.event, {this.fullScreenActivity = false});
   bool hasSound(AlarmSettings settings);
   bool vibrate(AlarmSettings settings);
   Sound sound(AlarmSettings settings);
@@ -25,6 +26,7 @@ abstract class NotificationAlarm extends Equatable {
     }
   }
   Map<String, dynamic> toJson();
+  NotificationAlarm setFullScreenActivity(bool fullScreenActivity) => this;
   @override
   String toString() =>
       '$runtimeType {notificationTime: $notificationTime, ${event.id} }';
@@ -44,11 +46,13 @@ class TimerAlarm extends NotificationAlarm {
   @override
   String get stackId => timer.id;
 
-  // TODO implement settings
   @override
-  bool hasSound(AlarmSettings settings) => true;
+  bool hasSound(AlarmSettings settings) =>
+      settings.timer.toSound() != Sound.NoSound;
+
   @override
-  Sound sound(AlarmSettings settings) => Sound.Trumpet;
+  Sound sound(AlarmSettings settings) => settings.timer.toSound();
+
   @override
   bool vibrate(AlarmSettings settings) => true;
 
@@ -61,7 +65,6 @@ class TimerAlarm extends NotificationAlarm {
 
 abstract class ActivityAlarm extends NotificationAlarm {
   final ActivityDay activityDay;
-  final bool fullScreenActivity;
   DateTime get day => activityDay.day;
   Activity get activity => activityDay.activity;
 
@@ -70,8 +73,8 @@ abstract class ActivityAlarm extends NotificationAlarm {
 
   const ActivityAlarm(
     this.activityDay, {
-    this.fullScreenActivity = false,
-  }) : super(activityDay);
+    bool fullScreenActivity = false,
+  }) : super(activityDay, fullScreenActivity: fullScreenActivity);
 
   String get type;
 
@@ -102,8 +105,6 @@ abstract class ActivityAlarm extends NotificationAlarm {
         throw 'unknown alarm type';
     }
   }
-
-  ActivityAlarm setFullScreenActivity(bool fullScreenActivity) => this;
 
   @override
   List<Object?> get props => [activityDay.activity, activityDay.day];

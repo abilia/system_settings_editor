@@ -4,7 +4,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class AlarmCubit extends Cubit<ActivityAlarm?> {
+class AlarmCubit extends Cubit<NotificationAlarm?> {
   late final StreamSubscription _clockSubscription;
   late final StreamSubscription _selectedNotificationSubscription;
   final ActivitiesBloc activitiesBloc;
@@ -14,10 +14,8 @@ class AlarmCubit extends Cubit<ActivityAlarm?> {
     required this.activitiesBloc,
     required ClockBloc clockBloc,
   }) : super(null) {
-    _selectedNotificationSubscription = selectedNotificationSubject
-        .where((event) => event is ActivityAlarm)
-        .cast<ActivityAlarm>()
-        .listen((payload) => emit(payload));
+    _selectedNotificationSubscription =
+        selectedNotificationSubject.listen((payload) => emit(payload));
     _clockSubscription = clockBloc.stream.listen((now) => _newMinute(now));
   }
 

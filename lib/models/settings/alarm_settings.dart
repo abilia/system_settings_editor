@@ -103,6 +103,7 @@ class AlarmSettings extends Equatable {
         checkableActivity,
         nonCheckableActivity,
         reminder,
+        timer,
         disabledUntilEpoch,
         showAlarmOnOffSwitch,
         showOngoingActivityInFullScreen,

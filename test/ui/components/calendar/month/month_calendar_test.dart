@@ -9,27 +9,31 @@ import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';
+import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 import '../../../../test_helpers/enter_text.dart';
 
 void main() {
   late MockGenericDb mockGenericDb;
+  late SharedPreferences sharedPreferences;
 
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
-  setUpAll(() {
+  setUpAll(() async {
+    sharedPreferences = await FakeSharedPreferences.getInstance();
+    registerFallbackValues();
+    setupPermissions();
+    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
   });
 
-  setUp(() async {
-    setupPermissions();
+  setUp(() {
     setupFakeTts();
-
-    notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
 
     final mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllNonDeleted())
@@ -46,10 +50,10 @@ void main() {
         .thenAnswer((_) => Future.value([]));
     when(() => mockGenericDb.getById(any()))
         .thenAnswer((_) => Future.value(null));
-    when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
+    when(() => mockGenericDb.insert(any())).thenAnswer((_) => Future.value());
 
     GetItInitializer()
-      ..sharedPreferences = await FakeSharedPreferences.getInstance()
+      ..sharedPreferences = sharedPreferences
       ..activityDb = mockActivityDb
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
@@ -59,7 +63,10 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    activityResponse = () => [];
+    GetIt.I.reset();
+  });
 
   testWidgets('Can navigate to week calendar', (WidgetTester tester) async {
     await tester.pumpWidget(App());

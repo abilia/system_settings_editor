@@ -16,7 +16,7 @@ class AlarmListener extends StatelessWidget {
       selector: (settingsState) =>
           settingsState.alarm.showOngoingActivityInFullScreen,
       builder: (context, fullScreenActivity) =>
-          BlocListener<AlarmCubit, ActivityAlarm?>(
+          BlocListener<AlarmCubit, NotificationAlarm?>(
         listener: (context, state) async {
           if (state != null) {
             await GetIt.I<AlarmNavigator>().pushAlarm(

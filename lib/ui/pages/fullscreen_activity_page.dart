@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 import 'package:seagull/bloc/all.dart';
@@ -26,7 +27,8 @@ class FullScreenActivityPage extends StatelessWidget {
         ),
         child: BlocListener<FullScreenActivityCubit, FullScreenActivityState>(
           listenWhen: (previous, current) => current.eventsList.isEmpty,
-          listener: (context, s) => Navigator.of(context).maybePop(),
+          listener: (context, s) =>
+              GetIt.I<AlarmNavigator>().popFullscreenRoute(),
           child: BlocSelector<FullScreenActivityCubit, FullScreenActivityState,
               ActivityDay>(
             selector: (state) => state.selected,
