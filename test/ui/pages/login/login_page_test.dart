@@ -22,6 +22,10 @@ void main() {
   final time = DateTime(2020, 11, 11, 11, 11);
   DateTime licensExpireTime;
 
+  setUpAll(() {
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+  });
+
   setUp(() async {
     setupPermissions({Permission.systemAlertWindow: PermissionStatus.granted});
     setupFakeTts();
