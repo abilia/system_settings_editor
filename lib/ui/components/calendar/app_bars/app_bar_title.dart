@@ -80,7 +80,6 @@ class AppBarTitleRows {
             translator,
           )
         : '';
-    weekday;
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),

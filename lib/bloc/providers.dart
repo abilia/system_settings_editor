@@ -192,7 +192,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
               ),
             ),
-            if (Config.isMP)
+            if (Config.isMP) ...[
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: SystemSettingsEditor.screenOffTimeout,
@@ -200,7 +200,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                 ),
               ),
-            if (Config.isMP)
               BlocProvider<InactivityCubit>(
                 create: (context) => InactivityCubit(
                   const Duration(minutes: 5),
@@ -209,6 +208,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                 ),
               ),
+            ]
           ],
           child: child,
         ),
