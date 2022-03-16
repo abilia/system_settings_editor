@@ -8,10 +8,8 @@ class MenuSettings extends Equatable {
       !showPhotos &&
       !showSettings &&
       !photoCalendarEnabled &&
-      !timersEnabled &&
       !quickSettingsEnabled;
 
-  bool get timersEnabled => showTimers && Config.isMP;
   bool get quickSettingsEnabled => showQuickSettings && Config.isMP;
   bool get photoCalendarEnabled => showPhotoCalendar && Config.isMP;
 
@@ -26,14 +24,12 @@ class MenuSettings extends Equatable {
       showPhotos,
       showSettings,
       showPhotoCalendar,
-      showTimers,
       showQuickSettings;
 
   const MenuSettings({
     this.showCamera = true,
     this.showPhotos = true,
     this.showPhotoCalendar = true,
-    this.showTimers = true,
     this.showQuickSettings = true,
     this.showSettings = true,
   });
@@ -50,9 +46,6 @@ class MenuSettings extends Equatable {
         showPhotoCalendar: settings.getBool(
           showPhotoCalendarKey,
         ),
-        showTimers: settings.getBool(
-          showTimersKey,
-        ),
         showQuickSettings: settings.getBool(
           showQuickSettingsKey,
         ),
@@ -66,7 +59,6 @@ class MenuSettings extends Equatable {
         showCamera,
         showPhotos,
         showPhotoCalendar,
-        showTimers,
         showQuickSettings,
         showSettings
       ];

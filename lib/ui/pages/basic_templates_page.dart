@@ -88,24 +88,24 @@ class _BasicTemplatePickField extends StatelessWidget {
     return PickField(
       height: pageLayout.pickFieldHeight,
       text: Text(sortable.data.title(translate)),
-      leading: sortable.data.hasImage()
-          ? sortable.isGroup
-              ? FittedBox(
-                  child: LibraryFolder(
-                    sortableData: sortable.data,
-                    showTitle: false,
-                  ),
-                )
-              : FadeInAbiliaImage(
+      leading: sortable.isGroup
+          ? FittedBox(
+              child: LibraryFolder(
+                sortableData: sortable.data,
+                showTitle: false,
+              ),
+            )
+          : sortable.data.hasImage()
+              ? FadeInAbiliaImage(
                   imageFileId: sortable.data.dataFileId(),
                   imageFilePath: sortable.data.dataFilePath(),
                   fit: BoxFit.contain,
                 )
-          : Icon(
-              AbiliaIcons.basicActivity,
-              size: pageLayout.basicActivityIconSize,
-              color: AbiliaColors.white140,
-            ),
+              : Icon(
+                  AbiliaIcons.basicActivity,
+                  size: pageLayout.basicActivityIconSize,
+                  color: AbiliaColors.white140,
+                ),
       trailing: sortable.isGroup ? null : Container(),
       padding: pageLayout.pickFieldPadding,
       customDecoration: BoxDecoration(

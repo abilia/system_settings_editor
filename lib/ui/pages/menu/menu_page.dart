@@ -30,7 +30,6 @@ class MenuPage extends StatelessWidget {
                 if (menu.showCamera) const CameraButton(),
                 if (menu.showPhotos) const MyPhotosButton(),
                 if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
-                if (menu.timersEnabled) const CountdownButton(),
                 if (menu.quickSettingsEnabled) const QuickSettingsButton(),
                 const BasicTemplatesButton(),
                 if (menu.showSettings) const SettingsButton(),

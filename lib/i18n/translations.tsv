@@ -136,7 +136,7 @@ fromBasicTimer	From Basic Timer	Från bastimers	Fra standardtimer	Uit standaardt
 noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
 selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 timer	Timer	Timer	Timer	Timer		Timer	Timer
-basicTimers	Basic Timers	Bastimers					
+basicTimers	Basic Timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny

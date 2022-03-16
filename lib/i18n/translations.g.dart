@@ -2415,6 +2415,9 @@ class DA extends Translated {
   final String timer = 'Timer';
 
   @override
+  final String basicTimers = 'Standardtimers';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -3589,6 +3592,9 @@ class NL extends Translated {
   final String timer = 'Timer';
 
   @override
+  final String basicTimers = 'Standaard timers';
+
+  @override
   final String menu = 'Menu';
 
   @override
@@ -4760,6 +4766,9 @@ class FI extends Translated {
 
   @override
   final String selectBaseTimer = 'Valitse perusajastin';
+
+  @override
+  final String basicTimers = 'Perusajastimet';
 
   @override
   final String menu = 'Valikko';
@@ -5940,6 +5949,9 @@ class DE extends Translated {
   final String timer = 'Timer';
 
   @override
+  final String basicTimers = 'Standardtimer';
+
+  @override
   final String menu = 'Menü';
 
   @override
@@ -7116,6 +7128,9 @@ class NB extends Translated {
 
   @override
   final String timer = 'Timer';
+
+  @override
+  final String basicTimers = 'Standardtimere';
 
   @override
   final String menu = 'Meny';

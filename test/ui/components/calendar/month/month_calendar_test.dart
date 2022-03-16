@@ -21,6 +21,10 @@ void main() {
   ActivityResponse activityResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
+  setUpAll(() {
+    scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+  });
+
   setUp(() async {
     setupPermissions();
     setupFakeTts();
