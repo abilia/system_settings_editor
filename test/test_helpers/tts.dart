@@ -2,17 +2,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 String? _spoken;
+const _ttsChannelName = 'flutter_tts';
+// ignore: prefer_function_declarations_over_variables
+final _ttsHandler = (MethodCall methodCall) {
+  switch (methodCall.method) {
+    case 'speak':
+      _spoken = methodCall.arguments;
+      break;
+  }
+};
 void setupFakeTts() {
   _spoken = null;
-  const MethodChannel('flutter_tts').setMockMethodCallHandler(
-    (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'speak':
-          _spoken = methodCall.arguments;
-          break;
-      }
-    },
-  );
+  if (TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+          .checkMockMessageHandler(_ttsChannelName, _ttsHandler) ==
+      false) {
+    const MethodChannel(_ttsChannelName).setMockMethodCallHandler(_ttsHandler);
+  }
 }
 
 extension VerifyTts on WidgetTester {

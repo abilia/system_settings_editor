@@ -17,7 +17,6 @@ void main() {
   late StreamController<DateTime> streamController;
 
   setUp(() {
-    registerFallbackValue(TimerState());
     mockTimerCubit = MockTimerCubit();
     streamController = StreamController<DateTime>();
     when(() => mockTimerCubit.stream)
