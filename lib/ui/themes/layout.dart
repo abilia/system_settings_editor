@@ -48,6 +48,8 @@ class Layout {
   final AlarmSettingsPageLayout alarmSettingsPage;
   final ComponentsLayout components;
   final PickFieldLayout pickField;
+  final EventImageLayout eventImageLayout;
+  final PrivateIconLayout privateIconLayout;
 
   const Layout({
     this.radius = 12,
@@ -87,6 +89,8 @@ class Layout {
     this.alarmSettingsPage = const AlarmSettingsPageLayout(),
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
+    this.eventImageLayout = const EventImageLayout(),
+    this.privateIconLayout = const PrivateIconLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -817,4 +821,19 @@ class PickFieldLayout {
     this.iconSeparation = 12,
     this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
   });
+}
+
+class EventImageLayout {
+  final EdgeInsets fallbackCrossPadding, fallbackCheckPadding;
+
+  const EventImageLayout({
+    this.fallbackCrossPadding = const EdgeInsets.all(4),
+    this.fallbackCheckPadding = const EdgeInsets.all(8),
+  });
+}
+
+class PrivateIconLayout {
+  final double size;
+
+  const PrivateIconLayout({this.size = 24});
 }

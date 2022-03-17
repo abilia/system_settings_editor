@@ -7,6 +7,7 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/themes/all.dart' as theme;
 
 class EventImage extends StatelessWidget {
   final Event event;
@@ -19,8 +20,6 @@ class EventImage extends StatelessWidget {
   final Color? crossOverColor;
 
   static const duration = Duration(milliseconds: 400);
-  static final fallbackCrossPadding = EdgeInsets.all(4.s);
-  static final fallbackCheckPadding = EdgeInsets.all(8.s);
 
   const EventImage({
     required this.event,
@@ -91,12 +90,14 @@ class EventImage extends StatelessWidget {
           ),
         if (signedOff)
           Padding(
-            padding: checkPadding ?? fallbackCheckPadding,
+            padding:
+                checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
             child: const CheckMark(),
           )
         else if (past)
           Padding(
-            padding: crossPadding ?? fallbackCrossPadding,
+            padding:
+                crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
             child: CrossOver(
               strokeWidth: crossOverStrokeWidth,
               color: crossOverColor,
@@ -348,9 +349,8 @@ class FadeInAbiliaImage extends StatelessWidget {
   final double? width, height;
   final BoxFit fit;
   final BorderRadius? borderRadius;
-  final radius = BorderRadius.circular(12.s);
 
-  FadeInAbiliaImage({
+  const FadeInAbiliaImage({
     Key? key,
     required this.imageFileId,
     this.imageFilePath = '',
@@ -381,7 +381,7 @@ class FadeInAbiliaImage extends StatelessWidget {
       );
 
       return ClipRRect(
-        borderRadius: borderRadius ?? radius,
+        borderRadius: borderRadius ?? theme.borderRadius,
         child: file != null
             ? FadeInImage(
                 height: height,

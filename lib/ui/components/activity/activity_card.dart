@@ -184,8 +184,8 @@ class PrivateIcon extends StatelessWidget {
     return AnimatedContainer(
       margin: CardIcon.padding,
       duration: ActivityCard.duration,
-      width: 24.s,
-      height: 24.s,
+      width: layout.privateIconLayout.size,
+      height: layout.privateIconLayout.size,
       decoration: BoxDecoration(
         color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
         borderRadius: borderRadius,

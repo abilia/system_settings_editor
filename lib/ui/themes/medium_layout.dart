@@ -292,8 +292,14 @@ class MediumLayout extends Layout {
             subHeadingPadding: EdgeInsets.only(bottom: 12),
           ),
           pickField: const PickFieldLayout(
-              height: 84,
-              iconSeparation: 18,
-              innerPadding: EdgeInsets.only(left: 18, right: 18)),
+            height: 84,
+            iconSeparation: 18,
+            innerPadding: EdgeInsets.only(left: 18, right: 18),
+          ),
+          eventImageLayout: const EventImageLayout(
+            fallbackCrossPadding: EdgeInsets.all(6),
+            fallbackCheckPadding: EdgeInsets.all(12),
+          ),
+          privateIconLayout: const PrivateIconLayout(size: 36),
         );
 }
