@@ -2498,7 +2498,7 @@ class DA extends Translated {
   final String time = 'Tid';
 
   @override
-  final String save = 'Spare';
+  final String save = 'Gem';
 
   @override
   final String endBeforeStartError = 'Slutdato kan ikke være før startdato';
@@ -3672,7 +3672,7 @@ class NL extends Translated {
   final String time = 'Tijd';
 
   @override
-  final String save = 'Sparen';
+  final String save = 'Opslaan';
 
   @override
   final String endBeforeStartError =
@@ -4848,7 +4848,7 @@ class FI extends Translated {
   final String time = 'Aika';
 
   @override
-  final String save = 'Tallentaa';
+  final String save = 'Tallenna';
 
   @override
   final String endBeforeStartError =
@@ -6026,7 +6026,7 @@ class DE extends Translated {
   final String time = 'Zeit';
 
   @override
-  final String save = 'Sparen';
+  final String save = 'Speichern';
 
   @override
   final String endBeforeStartError =
@@ -7204,7 +7204,7 @@ class NB extends Translated {
   final String time = 'Tid';
 
   @override
-  final String save = 'Spare';
+  final String save = 'Lagre';
 
   @override
   final String endBeforeStartError = 'Sluttdato kan ikke være før startdato';
