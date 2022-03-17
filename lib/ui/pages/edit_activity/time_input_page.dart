@@ -24,10 +24,10 @@ class TimeInputPage extends StatelessWidget {
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
         onSave: (context, newTimInput) => onSave(context, newTimInput),
-        bottomNavigationBuilder: (context, newTimInput) => BottomNavigation(
+        bottomNavigationBuilder: (context, newTimeInput) => BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
-            onPressed: () => onSave(context, newTimInput),
+            onPressed: () => onSave(context, newTimeInput),
           ),
         ),
       ),
@@ -236,7 +236,11 @@ class _TimeInputContentState extends State<TimeInputContent>
                     onTimeChanged: (value) {
                       if (valid(startTimeController)) {
                         endTimeFocus.requestFocus();
-                        widget.onValidTimeInput?.call(newTimeInput);
+                        if (widget.onValidTimeInput != null) {
+                          widget.onValidTimeInput?.call(newTimeInput);
+                        } else {
+                          setState(() {});
+                        }
                       }
                     },
                     period: startTimePeriod,
