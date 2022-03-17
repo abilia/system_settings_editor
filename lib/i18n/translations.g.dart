@@ -4981,7 +4981,7 @@ class FI extends Translated {
   final String imageArchive = 'Kuva-arkisto';
 
   @override
-  final String devicesLocalImages = 'Laitteen kuvat ';
+  final String devicesLocalImages = 'Laitteen kuvat';
 
   @override
   final String myPhotos = 'Omat valokuvat';
@@ -7342,7 +7342,7 @@ class NB extends Translated {
   final String imageArchive = 'Bildearkiv';
 
   @override
-  final String devicesLocalImages = 'Enhetens bilder ';
+  final String devicesLocalImages = 'Enhetens bilder';
 
   @override
   final String myPhotos = 'Mine foto';
