@@ -142,6 +142,8 @@ class MediumLayout extends Layout {
             titlePadding:
                 EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
             statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
+            privateIconSize: 36,
+            cardIconPadding: EdgeInsets.only(right: 6),
           ),
           timerPage: const TimerPageLayout(
             topInfoHeight: 232,
@@ -300,6 +302,5 @@ class MediumLayout extends Layout {
             fallbackCrossPadding: EdgeInsets.all(6),
             fallbackCheckPadding: EdgeInsets.all(12),
           ),
-          privateIconLayout: const PrivateIconLayout(size: 36),
         );
 }

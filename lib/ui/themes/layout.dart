@@ -49,7 +49,6 @@ class Layout {
   final ComponentsLayout components;
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
-  final PrivateIconLayout privateIconLayout;
 
   const Layout({
     this.radius = 12,
@@ -90,7 +89,6 @@ class Layout {
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
-    this.privateIconLayout = const PrivateIconLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -383,13 +381,15 @@ class EventCardLayout {
       crossOverStrokeWidth,
       borderWidth,
       currentBorderWidth,
-      timerWheelSize;
+      timerWheelSize,
+      privateIconSize;
 
   final EdgeInsets imagePadding;
   final EdgeInsets crossPadding;
   final EdgeInsets titlePadding;
   final EdgeInsets statusesPadding;
   final EdgeInsets timerWheelPadding;
+  final EdgeInsets cardIconPadding;
 
   const EventCardLayout({
     this.height = 56,
@@ -409,6 +409,8 @@ class EventCardLayout {
         const EdgeInsets.only(left: 8, top: 6, right: 8, bottom: 2),
     this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
     this.timerWheelPadding = const EdgeInsets.only(right: 8),
+    this.cardIconPadding = const EdgeInsets.only(right: 4),
+    this.privateIconSize = 24,
   });
 }
 
@@ -830,10 +832,4 @@ class EventImageLayout {
     this.fallbackCrossPadding = const EdgeInsets.all(4),
     this.fallbackCheckPadding = const EdgeInsets.all(8),
   });
-}
-
-class PrivateIconLayout {
-  final double size;
-
-  const PrivateIconLayout({this.size = 24});
 }
