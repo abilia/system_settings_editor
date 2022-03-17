@@ -1,21 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
-
+import 'package:intl/intl.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:intl/intl.dart';
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
     Key? key,
     required this.rows,
+    this.style,
   }) : super(key: key);
 
   final AppBarTitleRows rows;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.headline6 ?? headline6;
+    final style =
+        this.style ?? Theme.of(context).textTheme.headline6 ?? headline6;
     final fontSize = style.fontSize;
     return DefaultTextStyle(
       style: style,
@@ -54,6 +56,7 @@ class AppBarTitleRows {
 
   static DateFormat longDate(String langCode) =>
       DateFormat('d MMMM y', langCode);
+
   static DateFormat shortDate(String langCode) =>
       DateFormat('d MMM yy', langCode);
 
@@ -61,6 +64,7 @@ class AppBarTitleRows {
     bool displayWeekDay = true,
     bool displayPartOfDay = true,
     bool displayDate = true,
+    bool compactDay = false,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
@@ -78,7 +82,8 @@ class AppBarTitleRows {
         : '';
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
-    return AppBarTitleRows._(weekday, daypart, date, dateShort);
+    return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),
+        compactDay ? '' : daypart, date, dateShort);
   }
 
   static String _getPartOfDay(

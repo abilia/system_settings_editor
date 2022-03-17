@@ -41,16 +41,14 @@ class TopLevelListener extends StatelessWidget {
                 if (_payload == null) {
                   await _navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
-                      builder: (_) {
-                        return AuthenticatedBlocsProvider(
-                          authenticatedState: state,
-                          child: const AlarmListener(
-                            child: AuthenticatedListener(
-                              child: CalendarPage(),
-                            ),
+                      builder: (_) => AuthenticatedBlocsProvider(
+                        authenticatedState: state,
+                        child: const AlarmListener(
+                          child: AuthenticatedListener(
+                            child: CalendarPage(),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                     (_) => false,
                   );

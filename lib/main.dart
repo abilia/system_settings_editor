@@ -1,29 +1,27 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:devicelocale/devicelocale.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:devicelocale/devicelocale.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
-
-import 'package:seagull/firebase_options.dart';
-import 'package:seagull/listener/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/analytics/all.dart';
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/firebase_options.dart';
 import 'package:seagull/getit.dart';
+import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/background/all.dart';
-import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _log = Logger('main');
 
@@ -145,35 +143,41 @@ class SeagullApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        navigatorKey: navigatorKey,
-        builder: (context, child) => child != null
-            ? MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  textScaleFactor: 1.0,
-                  devicePixelRatio: Device.devicePixelRatioCorrection,
-                ),
-                child: child,
-              )
-            : const SplashPage(),
-        title: Config.flavor.name,
-        theme: abiliaTheme,
-        navigatorObservers: [
-          if (analytics) AnalyticsService.observer,
-          RouteLoggingObserver(),
-        ],
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [
-          Translator.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-        ],
-        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-            .firstWhere((l) => l.languageCode == locale?.languageCode,
-                // English should be the first one and also the default.
-                orElse: () => supportedLocales.first),
-        home: const SplashPage(),
+  Widget build(BuildContext context) => Listener(
+        onPointerDown: Config.isMP
+            ? context.read<TouchDetectionCubit>().onPointerDown
+            : null,
+        child: MaterialApp(
+          navigatorKey: navigatorKey,
+          builder: (context, child) => child != null
+              ? MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    textScaleFactor: 1.0,
+                    devicePixelRatio: Device.devicePixelRatioCorrection,
+                  ),
+                  child: child,
+                )
+              : const SplashPage(),
+          title: Config.flavor.name,
+          theme: abiliaTheme,
+          navigatorObservers: [
+            if (analytics) AnalyticsService.observer,
+            RouteLoggingObserver(),
+          ],
+          supportedLocales: Translator.supportedLocals,
+          localizationsDelegates: const [
+            Translator.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportedLocales) =>
+              supportedLocales.firstWhere(
+                  (l) => l.languageCode == locale?.languageCode,
+                  // English should be the first one and also the default.
+                  orElse: () => supportedLocales.first),
+          home: const SplashPage(),
+        ),
       );
 }

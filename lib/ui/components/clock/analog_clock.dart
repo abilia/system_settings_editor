@@ -27,6 +27,39 @@ class AnalogClock extends StatelessWidget {
   }
 }
 
+class ScreensaverAnalogClock extends StatelessWidget {
+  const ScreensaverAnalogClock({Key? key, required this.isNight})
+      : super(key: key);
+  final bool isNight;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isNight ? AbiliaColors.white : AbiliaColors.black;
+    return SizedBox(
+      height: layout.screenSaver.clockHeight,
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: _AnalogClock(
+          borderWidth: 1,
+          borderColor: color,
+          dialPlateColor: isNight ? AbiliaColors.black : AbiliaColors.white,
+          hourHandColor: color,
+          minuteHandColor: color,
+          numberColor: color,
+          centerPointColor: color,
+          height: layout.actionButton.size,
+          width: layout.actionButton.size,
+          centerPointRadius: layout.clock.centerPointRadius,
+          hourNumberScale: layout.clock.hourNumberScale,
+          hourHandLength: layout.clock.hourHandLength,
+          minuteHandLength: layout.clock.minuteHandLength,
+          fontSize: layout.clock.fontSize,
+        ),
+      ),
+    );
+  }
+}
+
 // A modified copy of: https://github.com/conghaonet/flutter_analog_clock
 class _AnalogClock extends StatelessWidget {
   final VoidCallback? onPressed;
