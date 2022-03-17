@@ -153,4 +153,29 @@ void main() {
       UserTouch(initialTime.add(59.seconds())),
     ],
   );
+
+  blocTest<InactivityCubit, InactivityState>(
+    'SGC-1487 zero timout disables',
+    setUp: () {
+      when(() => settingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(activityTimeout: 0),
+        ),
+      );
+    },
+    build: () => InactivityCubit(
+      const Duration(minutes: 5),
+      fakeTicker,
+      settingsBloc,
+      activityDetectedStream,
+    ),
+    act: (c) async {
+      tickerController.add(initialTime.add(1.minutes()));
+      tickerController.add(initialTime.add(2.minutes()));
+      tickerController.add(initialTime.add(3.minutes()));
+      tickerController.add(initialTime.add(4.minutes()));
+      tickerController.add(initialTime.add(5.minutes()));
+    },
+    expect: () => [CalendarInactivityThresholdReached(initialTime)],
+  );
 }
