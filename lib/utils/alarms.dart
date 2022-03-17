@@ -33,6 +33,7 @@ extension IterableActivity on Iterable<Activity> {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
         .expand((a) => a.dayActivitiesForDay(day))
+        .where((a) => !a.isSignedOff)
         .toList();
     final activitiesWithAlarm =
         activitiesThisDay.where((ad) => ad.activity.alarm.shouldAlarm);
