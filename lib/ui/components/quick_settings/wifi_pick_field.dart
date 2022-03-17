@@ -21,11 +21,11 @@ class WiFiPickField extends StatelessWidget {
           text: Text(t.wifi),
           secondaryText: Text(
             _connected ? t.connected : t.notConnected,
-          ),
-          secondaryStyle:
-              (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
-            height: 1.0,
-            color: _connected ? AbiliaColors.green : AbiliaColors.red,
+            style:
+                (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
+              height: 1.0,
+              color: _connected ? AbiliaColors.green : AbiliaColors.red,
+            ),
           ),
           onTap: AndroidIntents.openWifiSettings,
         );
