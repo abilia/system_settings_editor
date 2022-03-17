@@ -2,36 +2,58 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class InactivityCubit extends Cubit<InactivityState> {
-  final Duration _inactivityTime;
-  final ClockBloc clockBloc;
+  final Duration _calendarInactivityTime;
+  final Ticker ticker;
+  final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
+  late StreamSubscription<PointerDown> _activitySubscription;
 
   InactivityCubit(
-    this._inactivityTime,
-    this.clockBloc,
-  ) : super(ActivityDetectedState(clockBloc.state)) {
-    _clockSubscription = clockBloc.stream.listen(_ticking);
+    this._calendarInactivityTime,
+    this.ticker,
+    this.settingsBloc,
+    Stream<PointerDown> activityDetectedStream,
+  ) : super(UserTouch(ticker.time)) {
+    _clockSubscription = ticker.minutes.listen(_ticking);
+    _activitySubscription = activityDetectedStream.listen(
+      (state) => emit(UserTouch(ticker.time)),
+    );
   }
 
-  void _ticking(DateTime time) async {
+  void _ticking(DateTime time) {
     final state = this.state;
-    if (state is ActivityDetectedState &&
-        time.isAfter(state.timeStamp.add(_inactivityTime))) {
-      emit(const InactivityThresholdReachedState());
-    }
-  }
+    if (state is! _NotFinalState) return;
+    final settings = settingsBloc.state;
+    final activityTimeout = settings.activityTimeout;
+    final calendarInactivityTime = _calendarInactivityTime > activityTimeout
+        ? activityTimeout
+        : _calendarInactivityTime;
 
-  void activityDetected(_) async {
-    emit(ActivityDetectedState(clockBloc.state));
+    if (time
+        .isAtSameMomentOrAfter(state.timeStamp.add(calendarInactivityTime))) {
+      emit(CalendarInactivityThresholdReached(state.timeStamp));
+    }
+    if (time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
+      emit(
+        HomeScreenInactivityThresholdReached(
+          startView: settings.startView,
+          showScreensaver: settings.useScreensaver,
+        ),
+      );
+    }
   }
 
   @override
   Future<void> close() async {
-    await super.close();
     await _clockSubscription.cancel();
+    await _activitySubscription.cancel();
+    await super.close();
   }
 }
 
@@ -39,15 +61,36 @@ abstract class InactivityState extends Equatable {
   const InactivityState();
 }
 
-class InactivityThresholdReachedState extends InactivityState {
-  const InactivityThresholdReachedState();
-  @override
-  List<Object> get props => [];
-}
-
-class ActivityDetectedState extends InactivityState {
+abstract class _NotFinalState extends InactivityState {
   final DateTime timeStamp;
-  const ActivityDetectedState(this.timeStamp);
+
+  const _NotFinalState(this.timeStamp);
+
   @override
   List<Object> get props => [timeStamp];
+}
+
+class UserTouch extends _NotFinalState {
+  const UserTouch(DateTime timeStamp) : super(timeStamp);
+}
+
+class CalendarInactivityThresholdReached extends _NotFinalState {
+  const CalendarInactivityThresholdReached(DateTime timeStamp)
+      : super(timeStamp);
+}
+
+class HomeScreenInactivityThresholdReached extends InactivityState {
+  const HomeScreenInactivityThresholdReached({
+    required this.startView,
+    required this.showScreensaver,
+  });
+
+  final StartView startView;
+  final bool showScreensaver;
+
+  bool get screensaverOrPhotoAlbum =>
+      showScreensaver || startView == StartView.photoAlbum;
+
+  @override
+  List<Object?> get props => [startView, showScreensaver];
 }

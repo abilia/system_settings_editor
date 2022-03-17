@@ -112,6 +112,7 @@ class ClockPainter extends CustomPainter {
     final centerPointPaint = Paint()
       ..strokeWidth = centerPointRadius ?? ((radius - borderWidth) / 10)
       ..strokeCap = StrokeCap.round
+      ..blendMode = BlendMode.src
       ..color = centerPointColor;
     canvas.drawPoints(PointMode.points, [const Offset(0, 0)], centerPointPaint);
   }
@@ -130,7 +131,7 @@ class ClockPainter extends CustomPainter {
         fontSize: fontSize ?? 7.s,
         fontWeight: medium,
         height: 1,
-        color: AbiliaColors.black,
+        color: numberColor,
       );
       final hourText = hourNumbers[intHour - 1];
       _hourTextPainter.text = TextSpan(
