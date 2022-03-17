@@ -3,15 +3,12 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class BasicTemplatesPage extends StatelessWidget {
-  const BasicTemplatesPage({
-    Key? key,
-  }) : super(key: key);
+  const BasicTemplatesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return DefaultTabController(
-      initialIndex: 0,
       length: 2,
       child: Scaffold(
         appBar: AbiliaAppBar(
@@ -25,14 +22,11 @@ class BasicTemplatesPage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
           children: [
             _BasicTemplateTab<BasicActivityData>(
-              translate: translate,
               noTemplateText: translate.noBasicActivities,
             ),
             _BasicTemplateTab<BasicTimerData>(
-              translate: translate,
               noTemplateText: translate.noBasicTimers,
             ),
           ],
@@ -43,11 +37,11 @@ class BasicTemplatesPage extends StatelessWidget {
 }
 
 class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplateTab(
-      {Key? key, required this.translate, required this.noTemplateText})
-      : super(key: key);
+  const _BasicTemplateTab({
+    required this.noTemplateText,
+    Key? key,
+  }) : super(key: key);
 
-  final Translated translate;
   final String noTemplateText;
 
   @override
@@ -55,8 +49,7 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
       BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
         builder: (context, state) => Scaffold(
           body: ListLibrary<T>(
-            (Sortable<T> s) =>
-                _BasicTemplatePickField(translate: translate, sortable: s),
+            _BasicTemplatePickField.new,
             noTemplateText,
           ),
           bottomNavigationBar: BottomNavigation(
@@ -65,57 +58,83 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
                     onPressed: Navigator.of(context).maybePop,
                   )
                 : PreviousButton(
-                    onPressed: () =>
-                        context.read<SortableArchiveCubit<T>>().navigateUp(),
+                    onPressed:
+                        context.read<SortableArchiveCubit<T>>().navigateUp,
                   ),
           ),
         ),
       );
 }
 
-class _BasicTemplatePickField extends StatelessWidget {
-  const _BasicTemplatePickField({
-    Key? key,
-    required this.translate,
-    required this.sortable,
-  }) : super(key: key);
-  final Sortable sortable;
-  final Translated translate;
+class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
+  const _BasicTemplatePickField(this.sortable, {Key? key}) : super(key: key);
+  final Sortable<T> sortable;
 
   @override
   Widget build(BuildContext context) {
-    final BasicTemplatesPageLayout pageLayout = layout.basicTemplatesPage;
+    final text = Text(sortable.data.title(Translator.of(context).translate));
+
+    if (sortable.isGroup) {
+      return PickField(
+        onTap: () =>
+            context.read<SortableArchiveCubit<T>>().folderChanged(sortable.id),
+        text: text,
+        leading: _PickFolder(sortableData: sortable.data),
+        leadingPadding: layout.listFolder.margin,
+      );
+    }
     return PickField(
-      height: pageLayout.pickFieldHeight,
-      text: Text(sortable.data.title(translate)),
-      leading: sortable.isGroup
-          ? FittedBox(
-              child: LibraryFolder(
-                sortableData: sortable.data,
-                showTitle: false,
-              ),
+      onTap: () {},
+      text: text,
+      leading: sortable.data.hasImage()
+          ? FadeInAbiliaImage(
+              imageFileId: sortable.data.dataFileId(),
+              imageFilePath: sortable.data.dataFilePath(),
+              fit: BoxFit.contain,
             )
-          : sortable.data.hasImage()
-              ? FadeInAbiliaImage(
-                  imageFileId: sortable.data.dataFileId(),
-                  imageFilePath: sortable.data.dataFilePath(),
-                  fit: BoxFit.contain,
-                )
-              : Icon(
-                  AbiliaIcons.basicActivity,
-                  size: pageLayout.basicActivityIconSize,
-                  color: AbiliaColors.white140,
-                ),
-      trailing: sortable.isGroup ? null : Container(),
-      padding: pageLayout.pickFieldPadding,
-      customDecoration: BoxDecoration(
-        color: AbiliaColors.white,
-        borderRadius: borderRadius,
-        border: Border.fromBorderSide(
-          BorderSide(
-              color: AbiliaColors.white140, width: pageLayout.pickFieldBorder),
+          : const Icon(
+              AbiliaIcons.basicActivity,
+              color: AbiliaColors.white140,
+            ),
+      trailing: null,
+    );
+  }
+}
+
+class _PickFolder extends StatelessWidget {
+  final SortableData sortableData;
+  const _PickFolder({
+    Key? key,
+    required this.sortableData,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final folderLayout = layout.listFolder;
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Icon(
+          AbiliaIcons.folder,
+          size: folderLayout.iconSize,
+          color: AbiliaColors.orange,
         ),
-      ),
+        if (sortableData.hasImage())
+          Padding(
+            padding: layout.listFolder.imagePadding,
+            child: AspectRatio(
+              aspectRatio: 1.75,
+              child: FadeInAbiliaImage(
+                imageFileId: sortableData.dataFileId(),
+                imageFilePath: sortableData.dataFilePath(),
+                fit: BoxFit.fitWidth,
+                borderRadius: BorderRadius.circular(
+                  folderLayout.imageBorderRadius,
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

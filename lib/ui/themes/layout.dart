@@ -48,7 +48,7 @@ class Layout {
   final AlarmSettingsPageLayout alarmSettingsPage;
   final ComponentsLayout components;
   final PickFieldLayout pickField;
-  final BasicTemplatesPageLayout basicTemplatesPage;
+  final ListFolderLayout listFolder;
 
   const Layout({
     this.radius = 12,
@@ -88,7 +88,7 @@ class Layout {
     this.alarmSettingsPage = const AlarmSettingsPageLayout(),
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
-    this.basicTemplatesPage = const BasicTemplatesPageLayout(),
+    this.listFolder = const ListFolderLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -555,7 +555,8 @@ class LibraryPageLayout {
       crossAxisSpacing,
       folderIconSize,
       headerFontSize,
-      childAspectRatio;
+      childAspectRatio,
+      listSeperation;
   final int crossAxisCount;
   final EdgeInsets headerPadding, folderImagePadding;
 
@@ -568,6 +569,7 @@ class LibraryPageLayout {
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 110 / 112,
+    this.listSeperation = 8,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(
@@ -806,29 +808,32 @@ class AlarmSettingsPageLayout {
 class ComponentsLayout {
   final EdgeInsets subHeadingPadding;
 
-  const ComponentsLayout(
-      {this.subHeadingPadding = const EdgeInsets.only(bottom: 8)});
-}
-
-class PickFieldLayout {
-  final double height, iconSeparation;
-  final EdgeInsets innerPadding;
-
-  const PickFieldLayout({
-    this.height = 56,
-    this.iconSeparation = 12,
-    this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
+  const ComponentsLayout({
+    this.subHeadingPadding = const EdgeInsets.only(bottom: 8),
   });
 }
 
-class BasicTemplatesPageLayout {
-  final EdgeInsets pickFieldPadding;
-  final double pickFieldBorder, pickFieldHeight, basicActivityIconSize;
+class PickFieldLayout {
+  final double height;
+  final Size leadingSize;
+  final EdgeInsets padding, leadingPadding;
 
-  const BasicTemplatesPageLayout({
-    this.pickFieldPadding = const EdgeInsets.fromLTRB(12, 4, 12, 4),
-    this.pickFieldBorder = 1,
-    this.pickFieldHeight = 56,
-    this.basicActivityIconSize = 24,
+  const PickFieldLayout({
+    this.height = 56,
+    this.leadingSize = const Size(48, 48),
+    this.padding = const EdgeInsets.only(left: 4, right: 12),
+    this.leadingPadding = const EdgeInsets.only(right: 8),
+  });
+}
+
+class ListFolderLayout {
+  final double iconSize, imageBorderRadius;
+  final EdgeInsets margin, imagePadding;
+
+  const ListFolderLayout({
+    this.iconSize = 42,
+    this.imageBorderRadius = 2,
+    this.imagePadding = const EdgeInsets.fromLTRB(6, 16, 6, 11),
+    this.margin = const EdgeInsets.only(left: 2, right: 6),
   });
 }
