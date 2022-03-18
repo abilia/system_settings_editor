@@ -48,15 +48,10 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
         builder: (context, state) => Scaffold(
-          body: ListLibrary<T>(
-            _BasicTemplatePickField.new,
-            noTemplateText,
-          ),
+          body: ListLibrary<T>(_BasicTemplatePickField.new, noTemplateText),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: state.isAtRoot
-                ? CloseButton(
-                    onPressed: Navigator.of(context).maybePop,
-                  )
+                ? CloseButton(onPressed: Navigator.of(context).maybePop)
                 : PreviousButton(
                     onPressed:
                         context.read<SortableArchiveCubit<T>>().navigateUp,

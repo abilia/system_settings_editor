@@ -1210,9 +1210,6 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
-  final String basicActivities = 'Basic Activities';
-
-  @override
   final String start = 'Starta';
 
   @override

@@ -8,11 +8,9 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
   const BasicLibraryItem({
     Key? key,
     required this.sortable,
-    this.isList = false,
   }) : super(key: key);
 
   static final imageHeight = 86.s, imageWidth = 84.s;
-  final bool isList;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
               borderRadius: borderRadius,
               child: Stack(
                 alignment: Alignment.center,
-                fit: isList ? StackFit.loose : StackFit.expand,
+                fit: StackFit.expand,
                 clipBehavior: Clip.none,
                 children: [
                   AnimatedContainer(
@@ -74,18 +72,17 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (!isList)
-                    PositionedRadio<Sortable<T>>(
-                      value: sortable,
-                      groupValue: state.selected,
-                      onChanged: (v) {
-                        if (v != null) {
-                          context
-                              .read<SortableArchiveCubit<T>>()
-                              .sortableSelected(v);
-                        }
-                      },
-                    ),
+                  PositionedRadio<Sortable<T>>(
+                    value: sortable,
+                    groupValue: state.selected,
+                    onChanged: (v) {
+                      if (v != null) {
+                        context
+                            .read<SortableArchiveCubit<T>>()
+                            .sortableSelected(v);
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
