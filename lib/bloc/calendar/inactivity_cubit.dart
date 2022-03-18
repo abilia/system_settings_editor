@@ -31,15 +31,18 @@ class InactivityCubit extends Cubit<InactivityState> {
     if (state is! _NotFinalState) return;
     final settings = settingsBloc.state;
     final activityTimeout = settings.activityTimeout;
-    final calendarInactivityTime = _calendarInactivityTime > activityTimeout
-        ? activityTimeout
-        : _calendarInactivityTime;
+    final hasTimeout = activityTimeout > Duration.zero;
+    final calendarInactivityTime =
+        hasTimeout && _calendarInactivityTime > activityTimeout
+            ? activityTimeout
+            : _calendarInactivityTime;
 
     if (time
         .isAtSameMomentOrAfter(state.timeStamp.add(calendarInactivityTime))) {
       emit(CalendarInactivityThresholdReached(state.timeStamp));
     }
-    if (time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
+    if (hasTimeout &&
+        time.isAtSameMomentOrAfter(state.timeStamp.add(activityTimeout))) {
       emit(
         HomeScreenInactivityThresholdReached(
           startView: settings.startView,
