@@ -13,7 +13,7 @@ class AvailableForWiz extends StatelessWidget {
         iconData: AbiliaIcons.unlock,
         title: translate.availableFor,
         body: Padding(
-          padding: formFrame,
+          padding: m1Padding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

@@ -159,14 +159,14 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
       trailing: [
         const SizedBox(),
         const Divider(),
-        SizedBox(height: 8.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         AlarmOnlyAtStartSwitch(
           alarm: activity.alarm,
           onChanged: _changeStartTime,
         ),
-        SizedBox(height: 8.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         const Divider(),
-        SizedBox(height: 24.s),
+        SizedBox(height: layout.formPadding.dividerDistance),
         RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
       ],
     );

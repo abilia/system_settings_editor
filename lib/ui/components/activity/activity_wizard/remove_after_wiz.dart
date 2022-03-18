@@ -13,7 +13,7 @@ class RemoveAfterWiz extends StatelessWidget {
         iconData: AbiliaIcons.deleteAllClear,
         title: translate.deleteAfter,
         body: Padding(
-          padding: formFrame,
+          padding: m1Padding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

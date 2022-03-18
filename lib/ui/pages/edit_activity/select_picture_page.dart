@@ -92,7 +92,7 @@ class SelectPictureBody extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: formFrame,
+              padding: m1Padding,
               child: Column(
                 children: [
                   PickField(

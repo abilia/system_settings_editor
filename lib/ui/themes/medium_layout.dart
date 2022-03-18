@@ -83,7 +83,7 @@ class MediumLayout extends Layout {
             fontSize: 12,
           ),
           formPadding: const FormPaddingLayout(
-            left: 18,
+            left: 24,
             right: 24,
             top: 36,
             verticalItemDistance: 12,

@@ -161,45 +161,41 @@ class _DefaultInputPageState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: ordinaryPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SubHeading(widget.heading),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          key: TestKey.input,
-                          controller: controller,
-                          keyboardType: widget.keyboardType,
-                          inputFormatters: widget.inputFormatters,
-                          textCapitalization: widget.textCapitalization,
-                          style: Theme.of(context).textTheme.bodyText1,
-                          autofocus: true,
-                          focusNode: focusNode,
-                          onEditingComplete:
-                              _validInput ? _returnNewText : () {},
-                          maxLines: widget.maxLines,
-                          minLines: 1,
-                          smartDashesType: SmartDashesType.disabled,
-                          smartQuotesType: SmartQuotesType.disabled,
-                          autocorrect: widget.autocorrect,
-                        ),
-                      ),
-                      TtsPlayButton(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SubHeading(widget.heading),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        key: TestKey.input,
                         controller: controller,
-                        padding: EdgeInsets.only(
-                          left: layout.defaultTextInputPage
-                              .textFieldActionButtonSpacing,
-                        ),
+                        keyboardType: widget.keyboardType,
+                        inputFormatters: widget.inputFormatters,
+                        textCapitalization: widget.textCapitalization,
+                        style: Theme.of(context).textTheme.bodyText1,
+                        autofocus: true,
+                        focusNode: focusNode,
+                        onEditingComplete: _validInput ? _returnNewText : () {},
+                        maxLines: widget.maxLines,
+                        minLines: 1,
+                        smartDashesType: SmartDashesType.disabled,
+                        smartQuotesType: SmartQuotesType.disabled,
+                        autocorrect: widget.autocorrect,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                    ),
+                    TtsPlayButton(
+                      controller: controller,
+                      padding: EdgeInsets.only(
+                        left: layout
+                            .defaultTextInputPage.textFieldActionButtonSpacing,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ).pad(m1Padding),
             const Spacer(),
             BottomNavigation(
               backNavigationWidget: const CancelButton(),
