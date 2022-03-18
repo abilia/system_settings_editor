@@ -48,7 +48,7 @@ class _ImportPictureBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: layout.formPadding.frame,
+              padding: formFrame,
               child: Column(
                 children: [
                   if (state.displayLocalImages) ...[

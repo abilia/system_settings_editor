@@ -270,17 +270,15 @@ class ClockLayout {
 }
 
 class FormPaddingLayout {
-  final double left, right, top, verticalItemDistance, dividerDistance;
-
-  final EdgeInsets frame;
+  final double left, right, top, verticalItemDistance, dividerDistance, bottom;
 
   const FormPaddingLayout({
     this.left = 12,
-    this.right = 16,
-    this.top = 20,
+    this.right = 12,
+    this.top = 24,
     this.verticalItemDistance = 8,
     this.dividerDistance = 24,
-    this.frame = const EdgeInsets.fromLTRB(12.0, 24.0, 12.0, 64.0),
+    this.bottom = 64,
   });
 }
 

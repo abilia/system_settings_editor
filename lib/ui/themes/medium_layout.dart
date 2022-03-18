@@ -88,7 +88,7 @@ class MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
             dividerDistance: 36,
-            frame: EdgeInsets.fromLTRB(24.0, 24.0, 36.0, 96.0),
+            bottom: 96,
           ),
           weekCalendar: const WeekCalendarLayout(
             activityBorderWidth: 2.25,

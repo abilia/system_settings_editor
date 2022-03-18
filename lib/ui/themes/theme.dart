@@ -17,12 +17,18 @@ final ordinaryPadding = EdgeInsets.fromLTRB(
   verticalPadding,
 );
 
-final topPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
+// Form paddings
+final formTopItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.top, layout.formPadding.right, 0);
 final formItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
-final formTopSpacer = SizedBox(
-    height: layout.formPadding.top - layout.formPadding.verticalItemDistance);
+final formTopSpacer = SizedBox(height: layout.formPadding.top);
+final formFrame = EdgeInsets.fromLTRB(
+  layout.formPadding.left,
+  layout.formPadding.top,
+  layout.formPadding.right,
+  layout.formPadding.bottom,
+);
 
 final abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white110,

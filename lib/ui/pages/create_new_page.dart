@@ -68,7 +68,7 @@ class CreateNewPage extends StatelessWidget {
               onTap: () async {
                 navigateToTimerWizard(context, authProviders);
               },
-            ).pad(topPadding),
+            ).pad(formTopItemPadding),
             PickField(
               key: TestKey.basicTimerChoice,
               leading: const Icon(AbiliaIcons.folder),
