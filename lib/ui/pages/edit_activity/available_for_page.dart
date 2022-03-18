@@ -29,7 +29,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
         title: translate.availableFor,
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
+        padding: layout.formPadding.frame,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[

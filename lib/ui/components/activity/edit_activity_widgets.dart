@@ -384,7 +384,7 @@ class AlarmWidget extends StatelessWidget {
                   }
                 : null,
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
             onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(

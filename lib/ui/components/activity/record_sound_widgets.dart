@@ -61,7 +61,7 @@ class RecordSoundWidget extends StatelessWidget {
                             );
                           },
                         ),
-                        SizedBox(height: 8.0.s),
+                        SizedBox(height: layout.formPadding.verticalItemDistance),
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnEnd,
                           permissionStatus: permission,
@@ -207,7 +207,7 @@ class RecordingWidget extends StatelessWidget {
               const _TimeDisplay(),
             ],
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           const _Progress(),
           SizedBox(height: 24.0.s),
           const _RecordActionRow(),

@@ -13,7 +13,7 @@ class AvailableForWiz extends StatelessWidget {
         iconData: AbiliaIcons.unlock,
         title: translate.availableFor,
         body: Padding(
-          padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
+          padding: layout.formPadding.frame,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -26,7 +26,7 @@ class AvailableForWiz extends StatelessWidget {
                 leading: const Icon(AbiliaIcons.passwordProtection),
                 text: Text(translate.onlyMe),
               ),
-              SizedBox(height: 8.0.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               RadioField<bool?>(
                 groupValue: state.activity.secret,
                 onChanged: (value) => context

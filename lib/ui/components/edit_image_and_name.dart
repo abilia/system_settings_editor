@@ -40,7 +40,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
       body: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
+            padding: layout.formPadding.frame,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

@@ -13,7 +13,7 @@ class CheckableWiz extends StatelessWidget {
         iconData: AbiliaIcons.handiCheck,
         title: translate.checkable,
         body: Padding(
-          padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
+          padding: layout.formPadding.frame,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -26,7 +26,7 @@ class CheckableWiz extends StatelessWidget {
                 value: true,
                 text: Text(translate.checkable),
               ),
-              SizedBox(height: 8.0.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               RadioField<bool?>(
                 groupValue: state.activity.checkable,
                 onChanged: (value) => context
