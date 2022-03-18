@@ -67,41 +67,33 @@ class LinedBorder extends StatelessWidget {
 }
 
 class PickField extends StatelessWidget {
-  static final trailingArrow = Icon(
+  static const trailingArrow = Icon(
     AbiliaIcons.navigationNext,
-    size: layout.iconSize.normal,
     color: AbiliaColors.black60,
   );
   final GestureTapCallback? onTap;
   final Widget? leading, trailing;
+  final EdgeInsets? leadingPadding;
   final Text text;
-  final double? height;
-  final EdgeInsets? padding;
   final bool errorState;
   final String? semanticsLabel;
   final Text? secondaryText;
-  final TextStyle? secondaryStyle;
-  final BoxDecoration? customDecoration;
-  final double? iconSize;
 
   const PickField({
     required this.text,
     Key? key,
     this.leading,
-    this.trailing,
+    this.trailing = trailingArrow,
     this.onTap,
-    this.height,
     this.errorState = false,
     this.semanticsLabel,
-    this.padding,
     this.secondaryText,
-    this.secondaryStyle,
-    this.customDecoration,
-    this.iconSize,
+    this.leadingPadding,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final l = leading;
+    final leading = this.leading;
+    final trailing = this.trailing;
     final secondary = secondaryText;
     return Tts.fromSemantics(
       SemanticsProperties(
@@ -114,28 +106,33 @@ class PickField extends StatelessWidget {
           onTap: onTap,
           borderRadius: borderRadius,
           child: Ink(
-            height: height ?? layout.pickField.height,
+            height: layout.pickField.height,
             decoration: errorState
                 ? whiteErrorBoxDecoration
                 : onTap == null
-                    ? customDecoration ?? disabledBoxDecoration
+                    ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: padding ?? layout.pickField.innerPadding,
+            padding: layout.pickField.padding,
             child: Row(
               children: <Widget>[
-                if (l != null)
+                if (leading != null)
                   IconTheme(
                     data: Theme.of(context)
                         .iconTheme
-                        .copyWith(size: iconSize ?? layout.iconSize.small),
-                    child: l,
+                        .copyWith(size: layout.iconSize.small),
+                    child: Padding(
+                      padding:
+                          leadingPadding ?? layout.pickField.leadingPadding,
+                      child: SizedBox.fromSize(
+                        size: layout.pickField.leadingSize,
+                        child: leading,
+                      ),
+                    ),
                   ),
-                if (l != null) SizedBox(width: layout.pickField.iconSeparation),
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,
-                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-                        .copyWith(height: 1.0),
+                    style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
                     child: text,
                   ),
                 ),
@@ -144,16 +141,13 @@ class PickField extends StatelessWidget {
                     padding: EdgeInsets.only(right: 8.s),
                     child: DefaultTextStyle(
                       overflow: TextOverflow.ellipsis,
-                      style: secondaryStyle ??
+                      style:
                           (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
-                              .copyWith(
-                            height: 1.0,
-                            color: AbiliaColors.white140,
-                          ),
+                              .copyWith(color: AbiliaColors.white140),
                       child: secondary,
                     ),
                   ),
-                trailing ?? trailingArrow,
+                if (trailing != null) trailing,
               ],
             ),
           ),
@@ -171,8 +165,6 @@ class RadioField<T> extends StatelessWidget {
   final T? groupValue;
   final ValueChanged<T?>? onChanged;
   final EdgeInsetsGeometry? padding;
-  static final defaultHeight = 56.s;
-  static final defaultPadding = EdgeInsets.symmetric(horizontal: 14.0.s);
 
   const RadioField({
     Key? key,
@@ -189,7 +181,7 @@ class RadioField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final decoration = selectableBoxDecoration(value == groupValue);
-    final paddingToUse = padding ?? defaultPadding;
+    final paddingToUse = padding ?? layout.pickField.padding;
     final l = leading;
     return Tts.fromSemantics(
       SemanticsProperties(
@@ -207,7 +199,7 @@ class RadioField<T> extends StatelessWidget {
             clipBehavior: Clip.none,
             children: <Widget>[
               Ink(
-                height: heigth ?? defaultHeight,
+                height: heigth ?? layout.pickField.height,
                 width: width,
                 decoration: decoration,
                 padding: paddingToUse

@@ -123,9 +123,9 @@ inTimePre	in	om	om	in	&empty&	in	om
 timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
-basicTemplates	Basic templates
-basicActivities	Basic Activities	Basic Activities
-
+basicTemplates	Basic templates						
+basicActivities	Basic Activities	Basic Activities					
+							
 ### Timer related							
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
@@ -136,9 +136,9 @@ fromBasicTimer	From Basic Timer	Från bastimers	Fra standardtimer	Uit standaardt
 noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
 selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
-timeIsUp	Time is up	Tiden är slut
+timeIsUp	Time is up	Tiden är slut					
 basicTimers	Basic Timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
-
+							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
 cancel	Cancel	Avbryt	Annuller	Annuleren	Peruuta	Abbrechen	Avbryt
@@ -214,7 +214,7 @@ alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Al
 selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
 removeImage	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
-devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat 	Bilder des Geräts	Enhetens bilder 
+devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat	Bilder des Geräts	Enhetens bilder
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
 mobilePictures	Mobile pictures	Mobilbilder	Telefonbilleder	Telefoonafbeeldingen	Matkapuhelimen kuvat	Mobilgerät Bilder	Mobilbilder
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde
