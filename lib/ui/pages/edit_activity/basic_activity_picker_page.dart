@@ -19,7 +19,7 @@ class BasicActivityPickerPage extends StatelessWidget {
             iconData: AbiliaIcons.basicActivity,
             title:
                 state.allById[state.currentFolderId]?.data.title(translate) ??
-                    translate.basicActivities,
+                    translate.selectBasicActivity,
           ),
           body: SortableLibrary<BasicActivityData>(
             (Sortable<BasicActivityData> s) =>

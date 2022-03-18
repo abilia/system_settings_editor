@@ -228,11 +228,54 @@ class _SortableLibraryState<T extends SortableData>
   }
 }
 
-class Folder<T extends SortableData> extends StatelessWidget {
-  const Folder({
+class ListLibrary<T extends SortableData> extends StatelessWidget {
+  final LibraryItemGenerator<T> libraryItemGenerator;
+  final String emptyLibraryMessage;
+
+  const ListLibrary(
+    this.libraryItemGenerator,
+    this.emptyLibraryMessage, {
     Key? key,
-    required this.sortable,
   }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _controller = ScrollController();
+    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
+      builder: (context, archiveState) {
+        List<Sortable<T>> content =
+            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
+              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+        if (content.isEmpty) {
+          return EmptyLibraryMessage(
+            emptyLibraryMessage: emptyLibraryMessage,
+            rootFolder: archiveState.isAtRoot,
+          );
+        }
+        return ScrollArrows.vertical(
+          controller: _controller,
+          child: ListView.separated(
+            controller: _controller,
+            padding: EdgeInsets.only(
+              top: verticalPadding,
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            itemCount: content.length,
+            separatorBuilder: (context, index) =>
+                SizedBox(height: layout.libraryPage.listSeperation),
+            itemBuilder: (BuildContext context, int index) =>
+                libraryItemGenerator(content[index]),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class Folder<T extends SortableData> extends StatelessWidget {
+  const Folder({Key? key, required this.sortable}) : super(key: key);
 
   final Sortable<T> sortable;
 
@@ -242,10 +285,8 @@ class Folder<T extends SortableData> extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: borderRadius,
-        onTap: () {
-          BlocProvider.of<SortableArchiveCubit<T>>(context)
-              .folderChanged(sortable.id);
-        },
+        onTap: () => BlocProvider.of<SortableArchiveCubit<T>>(context)
+            .folderChanged(sortable.id),
         child: LibraryFolder(sortableData: sortable.data),
       ),
     );

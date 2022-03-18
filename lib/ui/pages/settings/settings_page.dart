@@ -34,11 +34,6 @@ class SettingsPage extends StatelessWidget {
             navigateTo: const MenuSettingsPage(),
           ),
           MenuItemPickField(
-            icon: AbiliaIcons.stopWatch,
-            text: t.countdown,
-            navigateTo: const CountdownSettingsPage(),
-          ),
-          MenuItemPickField(
             icon: AbiliaIcons.technicalSettings,
             text: t.system,
             navigateTo: const SystemSettingsPage(),

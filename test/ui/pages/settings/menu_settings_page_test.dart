@@ -55,7 +55,6 @@ void main() {
       expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.myPhotos), findsWidgets);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.stopWatch), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.menuSetup), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
     });
@@ -95,19 +94,6 @@ void main() {
         tester,
         genericDb,
         key: MenuSettings.showPhotoCalendarKey,
-        matcher: isFalse,
-      );
-    });
-
-    testWidgets('change display countdown is stored', (tester) async {
-      await tester.goToMenuSettingPage();
-      await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
-      await tester.tap(find.byType(OkButton));
-      await tester.pumpAndSettle();
-      verifySyncGeneric(
-        tester,
-        genericDb,
-        key: MenuSettings.showTimersKey,
         matcher: isFalse,
       );
     });
@@ -181,7 +167,6 @@ void main() {
       expect(find.byType(CameraButton), findsOneWidget);
       expect(find.byType(MyPhotosButton), findsOneWidget);
       expect(find.byType(PhotoCalendarButton), findsOneWidget);
-      expect(find.byType(CountdownButton), findsOneWidget);
       expect(find.byType(QuickSettingsButton), findsOneWidget);
       expect(find.byType(SettingsButton), findsOneWidget);
     });
@@ -230,20 +215,6 @@ void main() {
       ];
       await tester.goToMenuPage();
       expect(find.byType(PhotoCalendarButton), findsNothing);
-    });
-
-    testWidgets('hides CountdownButton', (tester) async {
-      // Arrange
-      generics = [
-        Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MenuSettings.showTimersKey,
-          ),
-        ),
-      ];
-      await tester.goToMenuPage();
-      expect(find.byType(CountdownButton), findsNothing);
     });
 
     testWidgets('hides QuickSettingsButton', (tester) async {
