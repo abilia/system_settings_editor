@@ -203,6 +203,40 @@ void main() {
       // Assert
       expect(alarms, isEmpty);
     });
+
+    test('SGC-1483 Alarm goes off even if activity is checked. Start time', () {
+      // Arrange
+      final checkedActivity = Activity.createNew(
+        title: 'null',
+        startTime: startDate,
+        checkable: true,
+        signedOffDates: [day].map(whaleDateFormat),
+      );
+      final activities = [checkedActivity];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate);
+      // Assert
+      expect(alarms, isEmpty);
+    });
+
+    test('SGC-1483 Alarm goes off even if activity is checked. End time', () {
+      // Arrange
+      const duration = Duration(minutes: 15);
+      final checkedActivity = Activity.createNew(
+        title: 'null',
+        startTime: startDate,
+        duration: duration,
+        checkable: true,
+        signedOffDates: [day].map(whaleDateFormat),
+      );
+      final activities = [checkedActivity];
+
+      // Act
+      final alarms = activities.alarmsOnExactMinute(startDate.add(duration));
+      // Assert
+      expect(alarms, isEmpty);
+    });
   });
 
   group('all alarms from', () {

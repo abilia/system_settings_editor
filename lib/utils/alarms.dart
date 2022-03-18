@@ -33,6 +33,7 @@ extension IterableActivity on Iterable<Activity> {
     final day = time.onlyDays();
     final activitiesThisDay = where((a) => !a.fullDay)
         .expand((a) => a.dayActivitiesForDay(day))
+        .where((a) => !a.isSignedOff)
         .toList();
     final activitiesWithAlarm =
         activitiesThisDay.where((ad) => ad.activity.alarm.shouldAlarm);
@@ -50,7 +51,7 @@ extension IterableActivity on Iterable<Activity> {
     final reminders = activitiesThisDay.expand(
       (ad) => [
         ...ad.activity.reminders.map((r) => ReminderBefore(ad, reminder: r)),
-        if (!ad.isSignedOff && ad.activity.checkable) ...uncheckedReminders(ad),
+        if (ad.activity.checkable) ...uncheckedReminders(ad),
       ].where(reminderTest),
     );
 

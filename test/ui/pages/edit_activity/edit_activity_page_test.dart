@@ -1511,6 +1511,41 @@ text''';
       expect(find.text('11:55 AM'), findsOneWidget);
     });
 
+    testWidgets('SGC-1471 - Can edit start time when end time is not visible',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            activityEndTimeEditable: false,
+          ),
+        ),
+      );
+      final acivity = Activity.createNew(
+          title: '', startTime: DateTime(2000, 11, 22, 11, 55));
+      await tester.pumpWidget(
+        createEditActivityPage(
+          givenActivity: acivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities start time shows
+      expect(find.text('9:33 AM'), findsNothing);
+      expect(find.text('11:55 AM'), findsOneWidget);
+
+      // Act -- Change input to new start time
+      await tester.tap(timeFieldFinder);
+      await tester.pumpAndSettle();
+      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.pumpAndSettle();
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Assert -- that the activities new start time shows
+      expect(find.text('9:33 AM'), findsOneWidget);
+    });
+
     testWidgets('can change am to pm', (WidgetTester tester) async {
       // Arrange
       final acivity = Activity.createNew(
