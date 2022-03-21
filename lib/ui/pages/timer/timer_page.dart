@@ -161,10 +161,11 @@ class _TimerBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            if (timer.paused)
-              PlayTimerButton(timer: timer)
-            else
-              PauseTimerButton(timer: timer),
+            if (Config.beta)
+              if (timer.paused)
+                PlayTimerButton(timer: timer)
+              else
+                PauseTimerButton(timer: timer),
             IconActionButtonLight(
               onPressed: () async {
                 final t = Translator.of(context).translate;
