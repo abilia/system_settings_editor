@@ -110,7 +110,7 @@ check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
 undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
 fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
-basicActivities	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
+selectBasicActivity	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
 deleteActivity	Do you want to delete this activity?	Är du säker på att du vill ta bort aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
 editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
 deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
@@ -123,6 +123,8 @@ inTimePre	in	om	om	in	&empty&	in	om
 timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
+basicTemplates	Basic templates						
+basicActivities	Basic Activities						
 							
 ### Timer related							
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
@@ -135,6 +137,7 @@ noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standa
 selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
 timeIsUp	Time is up	Tiden är slut					
+basicTimers	Basic Timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -211,7 +214,7 @@ alertAlarmsDisabled	All alarms will be disabled until midnight on this device	Al
 selectImage	Select image	Välj bild	Vælg billede	Afbeelding selecteren	Valitse kuva	Bild auswählen	Velg bilde
 removeImage	Remove image	Ta bort bild	Fjern billede	Afbeelding verwijderen	Poista kuva	Entferne Bild	Fjern bildet
 imageArchive	Image Archive	Bildarkiv	Billedarkiv	Afbeeldingenarchief	Kuva-arkisto	Bildarchiv	Bildearkiv
-devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat 	Bilder des Geräts	Enhetens bilder 
+devicesLocalImages	Device’s local images	Enhetens bilder	Enhedens billeder	Afbeeldingen van het apparaat	Laitteen kuvat	Bilder des Geräts	Enhetens bilder
 myPhotos	My photos	Mina foton	Mine fotos	Mijn foto's	Omat valokuvat	Meine Fotos	Mine foto
 mobilePictures	Mobile pictures	Mobilbilder	Telefonbilleder	Telefoonafbeeldingen	Matkapuhelimen kuvat	Mobilgerät Bilder	Mobilbilder
 takeNewPhoto	Take new photo	Ta ny bild	Tag et nyt billede	Nieuwe foto nemen	Ota uusi kuva	Neues Foto machen	Ta nytt bilde

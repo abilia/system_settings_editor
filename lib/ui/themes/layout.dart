@@ -49,6 +49,7 @@ class Layout {
   final ComponentsLayout components;
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
+  final ListFolderLayout listFolder;
 
   const Layout({
     this.radius = 12,
@@ -89,6 +90,7 @@ class Layout {
     this.components = const ComponentsLayout(),
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
+    this.listFolder = const ListFolderLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -561,7 +563,8 @@ class LibraryPageLayout {
       crossAxisSpacing,
       folderIconSize,
       headerFontSize,
-      childAspectRatio;
+      childAspectRatio,
+      listSeperation;
   final int crossAxisCount;
   final EdgeInsets headerPadding, folderImagePadding;
 
@@ -574,6 +577,7 @@ class LibraryPageLayout {
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 110 / 112,
+    this.listSeperation = 8,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(
@@ -812,18 +816,20 @@ class AlarmSettingsPageLayout {
 class ComponentsLayout {
   final EdgeInsets subHeadingPadding;
 
-  const ComponentsLayout(
-      {this.subHeadingPadding = const EdgeInsets.only(bottom: 8)});
+  const ComponentsLayout({
+    this.subHeadingPadding = const EdgeInsets.only(bottom: 8),
+  });
 }
 
 class PickFieldLayout {
-  final double height, iconSeparation;
-  final EdgeInsets innerPadding;
+  final double height;
+  final Size leadingSize;
+  final EdgeInsets padding, leadingPadding;
 
   const PickFieldLayout({
     this.height = 56,
-    this.iconSeparation = 12,
-    this.innerPadding = const EdgeInsets.only(left: 12, right: 12),
+    this.leadingSize = const Size(48, 48),
+    this.padding = const EdgeInsets.only(left: 4, right: 12),
   });
 }
 
@@ -833,5 +839,18 @@ class EventImageLayout {
   const EventImageLayout({
     this.fallbackCrossPadding = const EdgeInsets.all(4),
     this.fallbackCheckPadding = const EdgeInsets.all(8),
+    this.leadingPadding = const EdgeInsets.only(right: 8),
+  });
+}
+
+class ListFolderLayout {
+  final double iconSize, imageBorderRadius;
+  final EdgeInsets margin, imagePadding;
+
+  const ListFolderLayout({
+    this.iconSize = 42,
+    this.imageBorderRadius = 2,
+    this.imagePadding = const EdgeInsets.fromLTRB(6, 16, 6, 11),
+    this.margin = const EdgeInsets.only(left: 2, right: 6),
   });
 }

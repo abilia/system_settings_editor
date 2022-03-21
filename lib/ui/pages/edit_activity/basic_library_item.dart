@@ -11,6 +11,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
   }) : super(key: key);
 
   static final imageHeight = 86.s, imageWidth = 84.s;
+
   @override
   Widget build(BuildContext context) {
     final basicLibraryData = sortable.data;

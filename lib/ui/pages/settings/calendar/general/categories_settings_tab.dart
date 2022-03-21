@@ -80,15 +80,10 @@ class _CategoryPickField extends StatelessWidget {
   Widget build(BuildContext context) {
     return PickField(
       text: Text(imageAndName.hasName ? imageAndName.name : defaultName),
-      padding: imageAndName.image.isNotEmpty
-          ? EdgeInsets.fromLTRB(4.s, 4.s, 12.s, 4.s)
-          : null,
       leading: imageAndName.image.isNotEmpty
           ? FadeInAbiliaImage(
               imageFileId: imageAndName.image.id,
               imageFilePath: imageAndName.image.path,
-              width: 48.s,
-              height: 48.s,
             )
           : null,
       onTap: () async {
