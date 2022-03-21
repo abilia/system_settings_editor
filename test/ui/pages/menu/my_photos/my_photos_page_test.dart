@@ -15,11 +15,12 @@ import '../../../../mocks/mocks.dart';
 import '../../../../test_helpers/app_pumper.dart';
 
 void main() {
+  late MockSortableDb mockSortableDb;
   setUp(() async {
     setupPermissions();
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
-    final mockSortableDb = MockSortableDb();
+    mockSortableDb = MockSortableDb();
 
     final myPhotosFolder = Sortable.createNew(
       data: const ImageArchiveData(myPhotos: true),
@@ -141,6 +142,37 @@ void main() {
         expect(find.byKey(TestKey.photoCalendarTab), findsOneWidget);
         expect(find.byType(ThumbnailPhoto), findsOneWidget);
         expect(find.byType(PhotoCalendarSticker), findsOneWidget);
+      });
+    });
+
+    testWidgets('Photo can be deleted', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.goToMyPhotos();
+        expect(find.byType(ThumbnailPhoto), findsNWidgets(2));
+
+        await tester.tap(find.byType(ThumbnailPhoto).first);
+        await tester.pumpAndSettle();
+        expect(find.byType(PhotoPage), findsOneWidget);
+
+        await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ViewDialog), findsOneWidget);
+        await tester.tap(find.byType(YesButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PhotoPage), findsNothing);
+        expect(find.byType(MyPhotosPage), findsOneWidget);
+
+        final capturedSortable =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured;
+
+        expect(
+          ((capturedSortable.single as List).single as Sortable<SortableData>)
+              .deleted,
+          isTrue,
+        );
       });
     });
   });

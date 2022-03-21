@@ -846,6 +846,8 @@ abstract class Translated {
       'Remove this photo from Photo-calendar?';
 
   final String remove = 'Remove';
+
+  final String doYouWantToDeleteThisPhoto = 'Do you want to delete this photo?';
 }
 
 class EN extends Translated {

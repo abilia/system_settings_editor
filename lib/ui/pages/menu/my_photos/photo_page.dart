@@ -65,41 +65,28 @@ class PhotoPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  if (isInPhotoCalendar)
-                    TextAndOrIconActionButtonLight(
-                      translate.remove,
-                      AbiliaIcons.noPhotoCalendar,
-                      onPressed: () {
-                        _addOrRemovePhotoFromPhotoCalendar(
-                          context,
-                          remove: isInPhotoCalendar,
-                          sortable: updatedSortable,
-                        );
-                      },
-                    ),
-                  if (!isInPhotoCalendar)
-                    TextAndOrIconActionButtonLight(
-                      isInPhotoCalendar ? translate.remove : translate.add,
-                      isInPhotoCalendar
-                          ? AbiliaIcons.noPhotoCalendar
-                          : AbiliaIcons.photoCalendar,
-                      onPressed: () {
-                        _addOrRemovePhotoFromPhotoCalendar(
-                          context,
-                          remove: isInPhotoCalendar,
-                          sortable: updatedSortable,
-                        );
-                      },
-                    ),
+                  TextAndOrIconActionButtonLight(
+                    isInPhotoCalendar ? translate.remove : translate.add,
+                    isInPhotoCalendar
+                        ? AbiliaIcons.noPhotoCalendar
+                        : AbiliaIcons.photoCalendar,
+                    onPressed: () {
+                      _addOrRemovePhotoFromPhotoCalendar(
+                        context,
+                        remove: isInPhotoCalendar,
+                        sortable: updatedSortable,
+                      );
+                    },
+                  ),
                   TextAndOrIconActionButtonLight(
                     translate.delete,
                     AbiliaIcons.deleteAllClear,
-                    onPressed: () {},
+                    onPressed: () => _deletePhoto(context, sortable),
                   ),
                   TextAndOrIconActionButtonLight(
                     translate.close,
                     AbiliaIcons.navigationPrevious,
-                    onPressed: () => Navigator.of(context).maybePop(),
+                    onPressed: Navigator.of(context).maybePop,
                   ),
                 ],
               ),
@@ -110,7 +97,7 @@ class PhotoPage extends StatelessWidget {
     );
   }
 
-  void _addOrRemovePhotoFromPhotoCalendar(
+  Future _addOrRemovePhotoFromPhotoCalendar(
     BuildContext context, {
     required bool remove,
     required Sortable<ImageArchiveData> sortable,
@@ -153,5 +140,31 @@ class PhotoPage extends StatelessWidget {
             );
       }
     }
+  }
+}
+
+Future _deletePhoto(
+  BuildContext context,
+  Sortable<ImageArchiveData> sortable,
+) async {
+  final translate = Translator.of(context).translate;
+  final result = await showViewDialog<bool>(
+    context: context,
+    builder: (_) => ViewDialog(
+      heading: AppBarHeading(
+        text: translate.delete,
+        iconData: AbiliaIcons.deleteAllClear,
+      ),
+      body: Tts(child: Text(translate.doYouWantToDeleteThisPhoto)),
+      backNavigationWidget: const NoButton(),
+      forwardNavigationWidget: const YesButton(),
+    ),
+  );
+
+  if (result == true) {
+    context
+        .read<SortableBloc>()
+        .add(SortableUpdated(sortable.copyWith(deleted: true)));
+    await Navigator.of(context).maybePop();
   }
 }
