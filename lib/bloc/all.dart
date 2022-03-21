@@ -3,6 +3,7 @@ export 'package:bloc/bloc.dart';
 export 'activities/activities_bloc.dart';
 export 'activities/edit_activity/edit_activity_cubit.dart';
 export 'activities/edit_activity/recurring_week/recurring_week_cubit.dart';
+export 'activities/edit_recurring_mixin.dart';
 export 'authentication/authentication_bloc.dart';
 export 'login/all.dart';
 export 'calendar/day_picker_bloc.dart';

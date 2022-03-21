@@ -3,8 +3,7 @@ library flutter_analog_clock;
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-
-import 'clock_painter.dart';
+import 'package:seagull/ui/components/clock/clock_painter.dart';
 
 class AnalogClock extends StatelessWidget {
   const AnalogClock({
