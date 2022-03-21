@@ -61,7 +61,8 @@ class RecordSoundWidget extends StatelessWidget {
                             );
                           },
                         ),
-                        SizedBox(height: layout.formPadding.verticalItemDistance),
+                        SizedBox(
+                            height: layout.formPadding.verticalItemDistance),
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnEnd,
                           permissionStatus: permission,

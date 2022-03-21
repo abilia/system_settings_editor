@@ -830,6 +830,7 @@ class PickFieldLayout {
     this.height = 56,
     this.leadingSize = const Size(48, 48),
     this.padding = const EdgeInsets.only(left: 4, right: 12),
+    this.leadingPadding = const EdgeInsets.only(right: 8),
   });
 }
 
@@ -839,7 +840,6 @@ class EventImageLayout {
   const EventImageLayout({
     this.fallbackCrossPadding = const EdgeInsets.all(4),
     this.fallbackCheckPadding = const EdgeInsets.all(8),
-    this.leadingPadding = const EdgeInsets.only(right: 8),
   });
 }
 
