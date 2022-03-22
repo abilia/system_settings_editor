@@ -1,35 +1,13 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class MenuButton extends StatefulWidget {
+class MenuButton extends StatelessWidget {
   const MenuButton({
     Key? key,
     required this.tabIndex,
   }) : super(key: key);
 
   final int tabIndex;
-
-  @override
-  State<MenuButton> createState() => _MenuButtonState();
-}
-
-class _MenuButtonState extends State<MenuButton> {
-  TabController? controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (controller == null) {
-      controller = DefaultTabController.of(context);
-      controller?.addListener(_tabControllerListener);
-    }
-  }
-
-  @override
-  void dispose() {
-    controller?.removeListener(_tabControllerListener);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +17,10 @@ class _MenuButtonState extends State<MenuButton> {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            TextAndOrIconActionButtonLight(
+            TabControlledButton(
               Translator.of(context).translate.menu,
               AbiliaIcons.appMenu,
-              onPressed: () {
-                controller?.index = widget.tabIndex;
-              },
-              selected: controller?.index == widget.tabIndex,
+              tabIndex: tabIndex,
             ),
             if (importantPermissionMissing)
               Positioned(
@@ -58,6 +33,4 @@ class _MenuButtonState extends State<MenuButton> {
       },
     );
   }
-
-  _tabControllerListener() => setState(() {});
 }
