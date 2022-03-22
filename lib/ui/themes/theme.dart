@@ -134,18 +134,21 @@ final border = Border.fromBorderSide(
 
 final ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentWhite30, width: layout.borders.thin),
+  side: BorderSide(
+      color: AbiliaColors.transparentWhite30, width: layout.borders.thin),
 );
 final darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentBlack30, width: layout.borders.thin),
+  side: BorderSide(
+      color: AbiliaColors.transparentBlack30, width: layout.borders.thin),
 );
 final menuButtonBorder = darkShapeBorder.copyWith(
   borderRadius:
       BorderRadius.circular(layout.menuPage.menuItemButton.borderRadius),
 );
 final inputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
+  borderSide:
+      BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
 final redOutlineInputBorder = OutlineInputBorder(
