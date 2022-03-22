@@ -156,11 +156,10 @@ void main() {
 
         await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
         await tester.pumpAndSettle();
-
         expect(find.byType(ViewDialog), findsOneWidget);
+
         await tester.tap(find.byType(YesButton));
         await tester.pumpAndSettle();
-
         expect(find.byType(PhotoPage), findsNothing);
         expect(find.byType(MyPhotosPage), findsOneWidget);
 
@@ -174,7 +173,7 @@ void main() {
           isTrue,
         );
       });
-    });
+    }, skip: true); // TODO unskip when photo_view is 0.14.0
   });
 }
 
