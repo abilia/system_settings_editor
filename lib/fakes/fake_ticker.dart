@@ -18,7 +18,7 @@ class _FakeTickerState extends State<FakeTicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: layout.formPadding.dividerBottomDistance),
+      padding: EdgeInsets.only(top: layout.formPadding.groupTopDistance),
       child: Column(
         children: [
           SwitchField(

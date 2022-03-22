@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
               if (Config.isMP) ...[
                 const SearchForUpdateButton().pad(m1ItemPadding),
               ],
-              SizedBox(height: layout.formPadding.dividerBottomDistance),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               const Divider(),
               Text(
                 translate.producer,
@@ -53,7 +53,7 @@ class AboutPage extends StatelessWidget {
                       'www.abilia.com')
                   .withTts()
                   .pad(m1ItemPadding),
-              SizedBox(height: layout.formPadding.dividerBottomDistance),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               const Text(
                 'This product is developed in accordance with and complies to '
                 'all necessary requirements, regulations and directives for '

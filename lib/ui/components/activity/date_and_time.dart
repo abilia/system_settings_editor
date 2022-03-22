@@ -27,7 +27,7 @@ class DateAndTimeWidget extends StatelessWidget {
                         context.read<EditActivityCubit>().changeDate(newDate)
                     : null,
               ),
-              SizedBox(height: layout.formPadding.dividerBottomDistance),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               CollapsableWidget(
                 collapsed: fullDay,
                 padding: EdgeInsets.only(

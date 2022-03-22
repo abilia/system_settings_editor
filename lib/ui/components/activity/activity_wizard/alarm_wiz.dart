@@ -48,7 +48,7 @@ class SelectAlarmWizPage extends StatelessWidget {
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           const Divider(),
-          SizedBox(height: layout.formPadding.dividerBottomDistance),
+          SizedBox(height: layout.formPadding.groupTopDistance),
           RecordSoundWidget(
             activity: state.activity,
             soundChanged: (Activity newActivity) =>

@@ -16,7 +16,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
             controller: _scrollController,
             children: <Widget>[
               AlarmWidget(activity).pad(m1TopPadding),
-              SizedBox(height: layout.formPadding.dividerTopDistance),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
               const Divider(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +32,7 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                   ),
                 ],
               ).pad(m1TopPadding),
-              SizedBox(height: layout.formPadding.dividerTopDistance),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
               const Divider(),
               RecordSoundWidget(activity: activity).pad(m1TopPadding),
             ],
