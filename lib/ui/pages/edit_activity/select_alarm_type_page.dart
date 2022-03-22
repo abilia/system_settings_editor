@@ -58,8 +58,10 @@ class SelectAlarmTypeBody extends StatelessWidget {
         controller: scrollController,
         child: ListView(
           controller: scrollController,
-          padding:
-              EdgeInsets.only(top: 24.0.s).add(EditActivityTab.bottomPadding),
+          padding: EdgeInsets.only(
+            top: layout.formPadding.top,
+            bottom: layout.formPadding.m1Bottom,
+          ),
           children: <Widget>[
             ...[
               if (memoSettingsState.activityDisplayAlarmOption)
@@ -159,14 +161,14 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
       trailing: [
         const SizedBox(),
         const Divider(),
-        SizedBox(height: 8.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         AlarmOnlyAtStartSwitch(
           alarm: activity.alarm,
           onChanged: _changeStartTime,
         ),
-        SizedBox(height: 8.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         const Divider(),
-        SizedBox(height: 24.s),
+        SizedBox(height: layout.formPadding.dividerBottomDistance),
         RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
       ],
     );

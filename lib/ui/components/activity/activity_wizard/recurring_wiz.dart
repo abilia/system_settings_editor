@@ -18,7 +18,7 @@ class RecurringWiz extends StatelessWidget {
           title: translate.recurrence,
           iconData: AbiliaIcons.repeat,
           body: Padding(
-            padding: ordinaryPadding,
+            padding: m1Padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -29,7 +29,8 @@ class RecurringWiz extends StatelessWidget {
                   RecurrentType.yearly
                 ].map(
                   (type) => Padding(
-                    padding: EdgeInsets.only(bottom: 8.0.s),
+                    padding: EdgeInsets.only(
+                        bottom: layout.formPadding.verticalItemDistance),
                     child: RadioField<RecurrentType>(
                       groupValue: state.activity.recurs.recurrance,
                       onChanged: (v) =>

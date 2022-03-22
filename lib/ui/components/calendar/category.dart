@@ -217,7 +217,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
               child: Container(
                 clipBehavior: Clip.hardEdge,
                 margin: EdgeInsets.only(top: 4.0.s),
-                height: 44.s,
+                height: layout.category.height,
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   color: AbiliaColors.black80,

@@ -15,7 +15,7 @@ class BackendSwitchesDialog extends StatelessWidget {
         children: [
           BlocBuilder<BaseUrlCubit, String>(
             builder: (context, baseUrl) => Wrap(
-              spacing: 8.s,
+              spacing: layout.formPadding.verticalItemDistance,
               children: [
                 ...backendEnvironments.entries.map(
                   (kvp) => BackendButton(
@@ -27,7 +27,7 @@ class BackendSwitchesDialog extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           const Version(),
         ],
       ),
@@ -58,7 +58,7 @@ class BackendButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 24.s,
+            height: layout.formPadding.dividerBottomDistance,
             child: FittedBox(
               child: Radio(
                 groupValue: currentBaseUrl,

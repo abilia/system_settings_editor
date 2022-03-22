@@ -155,7 +155,6 @@ class ActivityCard extends StatelessWidget {
 
 class CardIcon extends StatelessWidget {
   final IconData icon;
-  static final EdgeInsets padding = EdgeInsets.only(right: 4.0.s);
 
   const CardIcon(
     this.icon, {
@@ -165,7 +164,7 @@ class CardIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: layout.eventCard.cardIconPadding,
       child: Icon(icon, size: layout.eventCard.iconSize),
     );
   }
@@ -182,10 +181,10 @@ class PrivateIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: CardIcon.padding,
+      margin: layout.eventCard.cardIconPadding,
       duration: ActivityCard.duration,
-      width: 24.s,
-      height: 24.s,
+      width: layout.eventCard.privateIconSize,
+      height: layout.eventCard.privateIconSize,
       decoration: BoxDecoration(
         color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
         borderRadius: borderRadius,

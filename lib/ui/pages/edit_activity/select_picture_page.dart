@@ -65,34 +65,29 @@ class SelectPictureBody extends StatelessWidget {
           children: <Widget>[
             if (selectedImage.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(right: 12.0.s),
-                child: Separated(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 12.0.s, top: 24.0.s, bottom: 18.0.s),
-                    child: Column(
-                      children: [
-                        SelectedImageWidget(selectedImage: selectedImage),
-                        SizedBox(height: 10.0.s),
-                        RemoveButton(
-                          key: TestKey.removePicture,
-                          onTap: () {
-                            imageCallback.call(AbiliaFile.empty);
-                          },
-                          icon: Icon(
-                            AbiliaIcons.deleteAllClear,
-                            color: AbiliaColors.white,
-                            size: layout.iconSize.small,
-                          ),
-                          text: translate.removeImage,
-                        ),
-                      ],
+                padding: EdgeInsets.only(top: layout.formPadding.top),
+                child: Column(
+                  children: [
+                    SelectedImageWidget(selectedImage: selectedImage),
+                    SizedBox(height: 10.0.s),
+                    RemoveButton(
+                      key: TestKey.removePicture,
+                      onTap: () {
+                        imageCallback.call(AbiliaFile.empty);
+                      },
+                      icon: Icon(
+                        AbiliaIcons.deleteAllClear,
+                        color: AbiliaColors.white,
+                        size: layout.iconSize.small,
+                      ),
+                      text: translate.removeImage,
                     ),
-                  ),
+                    const Divider().pad(dividerPadding),
+                  ],
                 ),
               ),
             Padding(
-              padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0.0),
+              padding: m1Padding,
               child: Column(
                 children: [
                   PickField(

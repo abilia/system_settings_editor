@@ -74,7 +74,7 @@ class NameAndPictureWidget extends StatelessWidget {
             onImageSelected: onImageSelected,
             errorState: errorState,
           ),
-          SizedBox(width: 12.s),
+          SizedBox(width: layout.formPadding.largeVerticalItemDistance),
           Expanded(
             child: NameInput(
               text: text,
@@ -264,7 +264,7 @@ class CategoryWidget extends StatelessWidget {
                     onChanged: _onChange,
                   ),
                 ),
-                SizedBox(width: 8.s),
+                SizedBox(width: layout.formPadding.verticalItemDistance),
                 Expanded(
                   child: CategoryRadioField(
                     category: Category.right,
@@ -315,7 +315,7 @@ class CategoryRadioField extends StatelessWidget {
         final nothing = fileId.isEmpty && !state.showCategoryColor;
         return RadioField<int>(
           key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
-          padding: nothing ? null : EdgeInsets.all(8.s),
+          padding: nothing ? null : layout.category.radioPadding,
           onChanged: onChanged,
           leading: nothing
               ? null
@@ -384,7 +384,7 @@ class AlarmWidget extends StatelessWidget {
                   }
                 : null,
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           AlarmOnlyAtStartSwitch(
             alarm: alarm,
             onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
@@ -444,7 +444,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
               .replaceActivity(activity.copyWith(checkable: v)),
           child: Text(translator.checkable),
         ),
-        SizedBox(height: 8.0.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
@@ -667,19 +667,22 @@ class WeekDays extends StatelessWidget {
           .copyWith(height: 1.5.s),
       child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
-        builder: (context, state) => Wrap(
-          spacing: 14.s,
-          runSpacing: 8.s,
-          children: [
-            ...RecurringWeekState.allWeekdays.map(
-              (d) => SelectableField(
-                text: Text(translate.shortWeekday(d)),
-                selected: state.weekdays.contains(d),
-                onTap: () =>
-                    context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
+        builder: (context, state) => Padding(
+          padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
+          child: Wrap(
+            spacing: layout.formPadding.horizontalItemDistance,
+            runSpacing: layout.formPadding.verticalItemDistance,
+            children: [
+              ...RecurringWeekState.allWeekdays.map(
+                (d) => SelectableField(
+                  text: Text(translate.shortWeekday(d)),
+                  selected: state.weekdays.contains(d),
+                  onTap: () =>
+                      context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -694,37 +697,40 @@ class MonthDays extends StatelessWidget {
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final selectedMonthDays = state.activity.recurs.monthDays;
-        return Wrap(
-          spacing: 14.0.s,
-          runSpacing: 8.0.s,
-          children: List.generate(
-            31,
-            (i) {
-              final d = i + 1;
-              return SelectableField(
-                text: Text(
-                  '$d',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(height: 1.5),
-                ),
-                selected: selectedMonthDays.contains(d),
-                onTap: () {
-                  if (!selectedMonthDays.add(d)) {
-                    selectedMonthDays.remove(d);
-                  }
-                  context.read<EditActivityCubit>().replaceActivity(
-                        state.activity.copyWith(
-                          recurs: Recurs.monthlyOnDays(
-                            selectedMonthDays,
-                            ends: state.activity.recurs.end,
+        return Padding(
+          padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
+          child: Wrap(
+            spacing: layout.formPadding.horizontalItemDistance,
+            runSpacing: layout.formPadding.horizontalItemDistance,
+            children: List.generate(
+              31,
+              (i) {
+                final d = i + 1;
+                return SelectableField(
+                  text: Text(
+                    '$d',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(height: 1.5),
+                  ),
+                  selected: selectedMonthDays.contains(d),
+                  onTap: () {
+                    if (!selectedMonthDays.add(d)) {
+                      selectedMonthDays.remove(d);
+                    }
+                    context.read<EditActivityCubit>().replaceActivity(
+                          state.activity.copyWith(
+                            recurs: Recurs.monthlyOnDays(
+                              selectedMonthDays,
+                              ends: state.activity.recurs.end,
+                            ),
                           ),
-                        ),
-                      );
-                },
-              );
-            },
+                        );
+                  },
+                );
+              },
+            ),
           ),
         );
       },

@@ -11,7 +11,7 @@ class TypeWiz extends StatelessWidget {
       iconData: AbiliaIcons.plus,
       title: Translator.of(context).translate.selectType,
       body: Padding(
-        padding: ordinaryPadding,
+        padding: m1Padding,
         child: const _TypeWidget(),
       ),
     );
@@ -55,13 +55,13 @@ class _TypeWidget extends StatelessWidget {
                     value: _fullDayValue,
                     groupValue: groupValue,
                     onChanged: _onChange),
-                SizedBox(height: 8.s),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
                 CategoryRadioField(
                   category: Category.left,
                   groupValue: groupValue,
                   onChanged: _onChange,
                 ),
-                SizedBox(height: 8.s),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
                 CategoryRadioField(
                   category: Category.right,
                   groupValue: groupValue,

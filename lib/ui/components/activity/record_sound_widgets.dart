@@ -61,7 +61,8 @@ class RecordSoundWidget extends StatelessWidget {
                             );
                           },
                         ),
-                        SizedBox(height: 8.0.s),
+                        SizedBox(
+                            height: layout.formPadding.verticalItemDistance),
                         SelectOrPlaySoundWidget(
                           label: translator.speechOnEnd,
                           permissionStatus: permission,
@@ -82,7 +83,9 @@ class RecordSoundWidget extends StatelessWidget {
                   ),
                   if (permission == PermissionStatus.permanentlyDenied)
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0.s),
+                      padding: EdgeInsets.only(
+                        left: layout.formPadding.horizontalItemDistance,
+                      ),
                       child: InfoButton(
                         onTap: () => showViewDialog(
                           useSafeArea: false,
@@ -207,7 +210,7 @@ class RecordingWidget extends StatelessWidget {
               const _TimeDisplay(),
             ],
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           const _Progress(),
           SizedBox(height: 24.0.s),
           const _RecordActionRow(),
