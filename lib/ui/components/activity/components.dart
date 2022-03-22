@@ -368,13 +368,16 @@ class SelectableField extends StatelessWidget {
                 height: heigth ?? layout.selectableField.height,
                 width: width,
                 decoration: decoration,
-                padding: EdgeInsets.fromLTRB(
-                        layout.selectableField.textLeftPadding,
-                        layout.selectableField.textTopPadding,
-                        layout.selectableField.textRightPadding,
-                        decoration.border?.bottom.width ?? 0.0)
-                    .subtract(decoration.border?.dimensions ?? EdgeInsets.zero),
-                child: text,
+                padding: EdgeInsets.only(
+                  left: layout.selectableField.textLeftPadding,
+                  right: layout.selectableField.textRightPadding,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    text,
+                  ],
+                ),
               ),
               Positioned(
                 top: layout.selectableField.position,

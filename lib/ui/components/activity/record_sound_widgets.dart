@@ -183,7 +183,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
           BlocBuilder<UserFileCubit, UserFileState>(
             builder: (context, state) {
               return Padding(
-                padding: EdgeInsets.only(left: 12.s),
+                padding: EdgeInsets.only(
+                    left: layout.formPadding.largeHorizontalItemDistance),
                 child: PlaySoundButton(sound: recordedAudio),
               );
             },
@@ -199,7 +200,7 @@ class RecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.s),
+      padding: layout.recording.padding,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -212,7 +213,7 @@ class RecordingWidget extends StatelessWidget {
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           const _Progress(),
-          SizedBox(height: 24.0.s),
+          SizedBox(height: layout.formPadding.groupTopDistance),
           const _RecordActionRow(),
         ],
       ),
@@ -228,7 +229,7 @@ class _Progress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.s),
+      padding: EdgeInsets.symmetric(horizontal: layout.recording.thumbRadius),
       child: BlocBuilder<SoundCubit, SoundState>(
         buildWhen: (prev, curr) =>
             curr is SoundPlaying || prev.runtimeType != curr.runtimeType,
@@ -253,9 +254,9 @@ class _Progress extends StatelessWidget {
                 disabledActiveTrackColor: color,
                 disabledThumbColor: color,
                 disabledInactiveTrackColor: AbiliaColors.white120,
-                trackHeight: 4.s,
+                trackHeight: layout.recording.trackHeight,
                 thumbShape: RoundSliderThumbShape(
-                  disabledThumbRadius: 12.s,
+                  disabledThumbRadius: layout.recording.thumbRadius,
                   elevation: 0,
                 ),
                 trackShape: _NotPaddedRoundedRectSliderTrackShape(),
@@ -313,7 +314,8 @@ class _RecordActionRow extends StatelessWidget {
                     Expanded(
                       child: PlayRecordingButton(recordState.recordedFile),
                     ),
-                    SizedBox(width: 12.s),
+                    SizedBox(
+                        width: layout.formPadding.largeHorizontalItemDistance),
                     const DeleteButton()
                   ],
                 if (recordState is RecordingSoundState)
@@ -339,8 +341,8 @@ class _TimeDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120.s,
-      height: 64.s,
+      width: layout.recording.timeDisplayWidth,
+      height: layout.recording.timeDisplayHeight,
       alignment: Alignment.center,
       decoration: disabledBoxDecoration,
       child: BlocBuilder<SoundCubit, SoundState>(

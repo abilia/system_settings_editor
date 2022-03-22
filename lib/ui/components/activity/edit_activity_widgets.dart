@@ -92,7 +92,8 @@ class NameAndPictureWidget extends StatelessWidget {
 }
 
 class SelectPictureWidget extends StatelessWidget {
-  static final imageSize = 84.0.s, padding = 4.0.s;
+  static final imageSize = layout.selectPicture.imageSize,
+      padding = layout.selectPicture.padding;
   final AbiliaFile selectedImage;
 
   final void Function(AbiliaFile)? onImageSelected;
@@ -598,7 +599,7 @@ class EndDateWidget extends StatelessWidget {
                                   ),
                                 ),
                   ),
-                  SizedBox(height: 16.s),
+                  SizedBox(height: layout.formPadding.groupBottomDistance),
                 ],
               ),
             ),
@@ -664,7 +665,7 @@ class WeekDays extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-          .copyWith(height: 1.5.s),
+          .copyWith(height: 1.5),
       child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
         builder: (context, state) => Padding(

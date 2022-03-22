@@ -22,7 +22,7 @@ class BottomNavigation extends StatelessWidget {
         children: [
           if (forwardNavigationWidget != null) ...[
             Expanded(child: backNavigationWidget),
-            SizedBox(width: 8.s),
+            SizedBox(width: layout.formPadding.horizontalItemDistance),
             Expanded(child: forwardNavigationWidget),
           ] else
             Center(child: backNavigationWidget),
@@ -46,9 +46,9 @@ class _BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottom = Container(
       color: AbiliaColors.black80,
-      height: 84.0.s,
+      height: layout.navigationBar.height,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(12.s, 8.s, 12.s, 12.s),
+        padding: layout.templates.bottomNavigation,
         child: child,
       ),
     );

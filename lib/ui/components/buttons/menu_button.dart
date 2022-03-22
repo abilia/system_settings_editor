@@ -49,8 +49,8 @@ class _MenuButtonState extends State<MenuButton> {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: -3.s,
-                right: -3.s,
+                top: layout.menuButton.dotPosition,
+                right: layout.menuButton.dotPosition,
                 child: const OrangeDot(),
               ),
           ],
