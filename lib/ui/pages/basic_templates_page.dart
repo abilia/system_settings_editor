@@ -47,26 +47,47 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
-        builder: (context, state) => Scaffold(
-          body: ListLibrary<T>(_BasicTemplatePickField.new, noTemplateText),
+          builder: (context, archiveState) {
+        return Scaffold(
+          body: ListLibrary<T>(
+            emptyLibraryMessage: noTemplateText,
+            libraryItemGenerator: _BasicTemplatePickField.new,
+          ),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: state.isAtRoot
+            backNavigationWidget: archiveState.isAtRoot
                 ? CloseButton(onPressed: Navigator.of(context).maybePop)
                 : PreviousButton(
                     onPressed:
                         context.read<SortableArchiveCubit<T>>().navigateUp,
                   ),
           ),
-        ),
-      );
+        );
+      });
 }
 
-class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplatePickField(this.sortable, {Key? key}) : super(key: key);
+class _BasicTemplatePickField<T extends SortableData> extends StatefulWidget {
+  const _BasicTemplatePickField(this.sortable, this.onTapReorder, {Key? key})
+      : super(key: key);
+
   final Sortable<T> sortable;
+  final Function(Sortable, ChecklistReorderDirection, BuildContext)?
+      onTapReorder;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _BasicTemplatePickFieldState();
+  }
+}
+
+class _BasicTemplatePickFieldState<T extends SortableData>
+    extends State<_BasicTemplatePickField<T>> {
+  bool selected = false;
+  int? selectedQuestion;
 
   @override
   Widget build(BuildContext context) {
+    final Sortable<T> sortable = widget.sortable;
+
     final text = Text(sortable.data.title(Translator.of(context).translate));
 
     if (sortable.isGroup) {
@@ -79,7 +100,12 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       );
     }
     return PickField(
-      onTap: () {},
+      onTap: () => setState(() {
+        selected = !selected;
+      }),
+      padding: selected
+          ? layout.pickField.padding.copyWith(right: 0)
+          : layout.pickField.padding,
       text: text,
       leading: sortable.data.hasImage()
           ? FadeInAbiliaImage(
@@ -91,13 +117,44 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
               AbiliaIcons.basicActivity,
               color: AbiliaColors.white140,
             ),
-      trailing: null,
+      trailing: selected
+          ? ChecklistToolbar(
+              onTapEdit: () {
+                _deselect();
+                // TODO: edit
+              },
+              onTapDelete: () {
+                _deselect();
+                // TODO: delete
+              },
+              onTapReorder: (direction) {
+                widget.onTapReorder?.call(sortable, direction, context);
+                // final selectedIndex = selectedQuestion;
+                //
+                // if (widget.onTapReorder != null && selectedIndex != null) {
+                //   final newSelectedIndex =
+                //       direction == ChecklistReorderDirection.up
+                //           ? selectedIndex - 1
+                //           : selectedIndex + 1;
+                //   if (newSelectedIndex >= 0 &&
+                //       newSelectedIndex < widget.checklist.questions.length) {
+                //     selectedQuestion = newSelectedIndex;
+                //   }
+                // }
+              },
+            )
+          : null,
     );
+  }
+
+  _deselect() {
+    // setState() => selected = false;
   }
 }
 
 class _PickFolder extends StatelessWidget {
   final SortableData sortableData;
+
   const _PickFolder({
     Key? key,
     required this.sortableData,

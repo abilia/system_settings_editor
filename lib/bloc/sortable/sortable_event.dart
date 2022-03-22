@@ -65,3 +65,15 @@ class SortableUpdated extends SortableEvent {
   @override
   List<Object> get props => [sortable];
 }
+
+class SortablesUpdated extends SortableEvent {
+  final List<Sortable> sortables;
+
+  const SortablesUpdated(this.sortables);
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object> get props => [sortables];
+}

@@ -556,7 +556,7 @@ class LibraryPageLayout {
       folderIconSize,
       headerFontSize,
       childAspectRatio,
-      listSeperation;
+      listSeparation;
   final int crossAxisCount;
   final EdgeInsets headerPadding, folderImagePadding;
 
@@ -569,7 +569,7 @@ class LibraryPageLayout {
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 110 / 112,
-    this.listSeperation = 8,
+    this.listSeparation = 8,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(

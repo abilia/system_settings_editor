@@ -83,6 +83,7 @@ class _ChecklistViewState extends State<ChecklistView> {
                   child: ChecklistToolbar(
                     disableUp: i == 0,
                     disableDown: i == widget.checklist.questions.length - 1,
+                    margin: layout.checkList.questionViewPadding,
                     onTapEdit: () {
                       _deselectQuestion();
                       widget.onTapEdit?.call(question);

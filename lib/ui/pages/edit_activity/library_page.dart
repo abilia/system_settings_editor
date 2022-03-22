@@ -5,6 +5,10 @@ import 'package:seagull/ui/all.dart';
 typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
+typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
+    Sortable<SortableData>,
+    Function(Sortable<SortableData>, ChecklistReorderDirection, BuildContext));
+
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
     Key? key,
@@ -228,28 +232,35 @@ class _SortableLibraryState<T extends SortableData>
   }
 }
 
-class ListLibrary<T extends SortableData> extends StatelessWidget {
-  final LibraryItemGenerator<T> libraryItemGenerator;
+class ListLibrary<T extends SortableData> extends StatefulWidget {
+  final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
-  const ListLibrary(
-    this.libraryItemGenerator,
-    this.emptyLibraryMessage, {
+  const ListLibrary({
     Key? key,
+    required this.emptyLibraryMessage,
+    required this.libraryItemGenerator,
   }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ListLibraryState<T>();
+  }
+}
+
+class ListLibraryState<T extends SortableData> extends State<ListLibrary> {
+  late List<Sortable> content;
 
   @override
   Widget build(BuildContext context) {
     final _controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        List<Sortable<T>> content =
-            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
-              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
+        content =
+            (archiveState.allByFolder[archiveState.currentFolderId] ?? []);
         if (content.isEmpty) {
           return EmptyLibraryMessage(
-            emptyLibraryMessage: emptyLibraryMessage,
+            emptyLibraryMessage: widget.emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
           );
         }
@@ -264,13 +275,35 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             ),
             itemCount: content.length,
             separatorBuilder: (context, index) =>
-                SizedBox(height: layout.libraryPage.listSeperation),
-            itemBuilder: (BuildContext context, int index) =>
-                libraryItemGenerator(content[index]),
+                SizedBox(height: layout.libraryPage.listSeparation),
+            itemBuilder: (BuildContext context, int index) => widget
+                .libraryItemGenerator(content[index], _handleReorderSortable),
           ),
         );
       },
     );
+  }
+
+  void _handleReorderSortable(
+    final Sortable question,
+    ChecklistReorderDirection direction,
+    BuildContext context,
+  ) {
+    var sortables = content.toList();
+    final qIndex = sortables.indexWhere((q) => q.id == question.id);
+    final swapWithIndex =
+        direction == ChecklistReorderDirection.up ? qIndex - 1 : qIndex + 1;
+
+    if (qIndex >= 0 &&
+        qIndex < sortables.length &&
+        swapWithIndex >= 0 &&
+        swapWithIndex < sortables.length) {
+      final tmpQ = sortables[qIndex];
+      sortables[qIndex] = sortables[swapWithIndex];
+      sortables[swapWithIndex] = tmpQ;
+    }
+    context.read<SortableBloc>().add(SortablesUpdated(sortables));
+    context.read<SortableArchiveCubit<T>>().sortablesUpdated(sortables);
   }
 }
 
