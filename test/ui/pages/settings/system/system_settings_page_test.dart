@@ -161,7 +161,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
     await tester.pumpAndSettle();
-    expect(find.byType(CodeProtectPage), findsOneWidget);
+    expect(find.byType(CodeProtectSettingsPage), findsOneWidget);
   });
 
   testWidgets('android settings availible', (WidgetTester tester) async {

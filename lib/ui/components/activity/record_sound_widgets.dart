@@ -339,8 +339,8 @@ class _TimeDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120.s,
-      height: 64.s,
+      width: layout.timeInput.width,
+      height: layout.timeInput.height,
       alignment: Alignment.center,
       decoration: disabledBoxDecoration,
       child: BlocBuilder<SoundCubit, SoundState>(

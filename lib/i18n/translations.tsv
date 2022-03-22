@@ -401,6 +401,8 @@ code	Code	Kod	Kode	Code	Koodi	Code	Kode
 codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Codebeschermingsinstellingen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
 codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne visning.	Deze weergave met code beschermen	Suojaa tämä näkymä koodilla	Diese Anzeige durch Code schützen	Kodebeskytte denne visning.
 codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
+enterCode	Enter code						
+enterYourCodeToAccess	Enter your code to access						
 enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
 confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
 incorrectCode	Incorrect code	Felaktig kod	Forkert kodeord	Onjuiste code	Virheellinen koodi	Falscher Code	Feil kode

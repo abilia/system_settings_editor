@@ -56,6 +56,9 @@ class Layout {
   final SelectableFieldLayout selectableField;
   final CategoryLayout category;
   final RadioLayout radio;
+  final TimeInputLayout timeInput;
+
+  final EdgeInsets bodyTemplateL4;
 
   const Layout({
     this.radius = 12,
@@ -103,6 +106,8 @@ class Layout {
     this.selectableField = const SelectableFieldLayout(),
     this.category = const CategoryLayout(),
     this.radio = const RadioLayout(),
+    this.timeInput = const TimeInputLayout(),
+    this.bodyTemplateL4 = const EdgeInsets.symmetric(vertical: 64),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -941,5 +946,14 @@ class RadioLayout {
   const RadioLayout({
     this.outerRadius = 11.5,
     this.innerRadius = 8.5,
+  });
+}
+
+class TimeInputLayout {
+  final double width, height;
+
+  const TimeInputLayout({
+    this.width = 120,
+    this.height = 64,
   });
 }
