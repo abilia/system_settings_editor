@@ -35,35 +35,33 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
           }
         }
 
-        return padded(
-          Padding(
-            padding: EdgeInsets.only(right: layout.formPadding.right),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SubHeading(translate.infoType),
-                if (infoItem is Checklist)
-                  EditChecklistWidget(
-                    activity: activity,
-                    checklist: infoItem,
-                    onTap: onTap,
-                  )
-                else if (infoItem is NoteInfoItem)
-                  EditNoteWidget(
-                    activity: activity,
-                    infoItem: infoItem,
-                    onTap: onTap,
-                  )
-                else
-                  PickField(
-                    key: TestKey.changeInfoItem,
-                    leading: const Icon(AbiliaIcons.information),
-                    text: Text(translate.infoTypeNone),
-                    onTap: onTap,
-                  ),
-              ],
-            ),
+        return Padding(
+          padding: m2Padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SubHeading(translate.infoType),
+              if (infoItem is Checklist)
+                EditChecklistWidget(
+                  activity: activity,
+                  checklist: infoItem,
+                  onTap: onTap,
+                )
+              else if (infoItem is NoteInfoItem)
+                EditNoteWidget(
+                  activity: activity,
+                  infoItem: infoItem,
+                  onTap: onTap,
+                )
+              else
+                PickField(
+                  key: TestKey.changeInfoItem,
+                  leading: const Icon(AbiliaIcons.information),
+                  text: Text(translate.infoTypeNone),
+                  onTap: onTap,
+                ),
+            ],
           ),
         );
       },

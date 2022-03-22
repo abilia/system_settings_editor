@@ -478,7 +478,7 @@ void main() {
       const leftRadioKey = ObjectKey(TestKey.leftCategoryRadio);
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -150);
+      await tester.scrollDown(dy: -200);
       final leftCategoryRadio1 =
           tester.widget<AbiliaRadio>(find.byKey(leftRadioKey));
       final rightCategoryRadio1 =
@@ -2592,7 +2592,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -150);
+      await tester.scrollDown(dy: -200);
 
       await tester.verifyTts(find.byKey(TestKey.rightCategoryRadio),
           exact: translate.right);
@@ -2636,7 +2636,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -500);
+      await tester.scrollDown(dy: -550);
 
       await tester.verifyTts(find.byKey(TestKey.availibleFor),
           exact: translate.meAndSupportPersons);

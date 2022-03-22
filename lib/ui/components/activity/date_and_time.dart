@@ -31,7 +31,8 @@ class DateAndTimeWidget extends StatelessWidget {
               CollapsableWidget(
                 collapsed: fullDay,
                 padding: EdgeInsets.only(
-                    bottom: layout.formPadding.largeVerticalItemDistance),
+                  bottom: layout.formPadding.verticalItemDistance,
+                ),
                 child: BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
                   builder: (context, wizState) => TimeIntervallPicker(
                       editActivityState.timeInterval,

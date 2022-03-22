@@ -18,19 +18,26 @@ class MainTab extends StatelessWidget with EditActivityTab {
             controller: _scrollController,
             child: ListView(
               controller: _scrollController,
-              padding: EditActivityTab.rightPadding
-                  .add(EditActivityTab.bottomPadding),
+              padding: EdgeInsets.only(bottom: layout.formPadding.m1Bottom),
               children: <Widget>[
-                separatedAndPadded(const ActivityNameAndPictureWidget()),
-                separatedAndPadded(const DateAndTimeWidget()),
+                const ActivityNameAndPictureWidget().pad(m1TopPadding),
+                const Divider().pad(dividerPadding),
+                const DateAndTimeWidget().pad(m1TopPadding),
                 if (memoSettingsState.showCategories)
                   CollapsableWidget(
                     collapsed: activity.fullDay ||
                         !memoSettingsState.activityTypeEditable,
-                    child: separatedAndPadded(CategoryWidget(activity)),
+                    child: Column(
+                      children: [
+                        const Divider().pad(dividerPadding),
+                        CategoryWidget(activity).pad(m1TopPadding),
+                      ],
+                    ),
                   ),
-                separatedAndPadded(CheckableAndDeleteAfterWidget(activity)),
-                padded(AvailableForWidget(activity)),
+                const Divider().pad(dividerPadding),
+                CheckableAndDeleteAfterWidget(activity).pad(m1TopPadding),
+                const Divider().pad(dividerPadding),
+                AvailableForWidget(activity).pad(m1TopPadding),
               ],
             ),
           ),

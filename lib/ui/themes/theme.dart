@@ -20,6 +20,9 @@ final ordinaryPadding = EdgeInsets.fromLTRB(
 // Form paddings
 final m1TopPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.top, layout.formPadding.right, 0);
+final dividerPadding = EdgeInsets.only(
+  top: layout.formPadding.dividerTopDistance,
+);
 final m1ItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
 final formTopSpacer = SizedBox(height: layout.formPadding.top);
@@ -27,7 +30,13 @@ final m1Padding = EdgeInsets.fromLTRB(
   layout.formPadding.left,
   layout.formPadding.top,
   layout.formPadding.right,
-  layout.formPadding.bottom,
+  layout.formPadding.m1Bottom,
+);
+final m2Padding = EdgeInsets.fromLTRB(
+  layout.formPadding.left,
+  layout.formPadding.top,
+  layout.formPadding.right,
+  layout.formPadding.m2Bottom,
 );
 final s3Padding = EdgeInsets.only(
   left: layout.formPadding.left,

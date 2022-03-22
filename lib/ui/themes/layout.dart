@@ -294,7 +294,8 @@ class FormPaddingLayout {
       dividerBottomDistance,
       horizontalItemDistance,
       largeHorizontalItemDistance,
-      bottom;
+      m1Bottom,
+      m2Bottom;
 
   const FormPaddingLayout({
     this.left = 12,
@@ -306,7 +307,8 @@ class FormPaddingLayout {
     this.dividerBottomDistance = 24,
     this.horizontalItemDistance = 8,
     this.largeHorizontalItemDistance = 12,
-    this.bottom = 64,
+    this.m1Bottom = 64,
+    this.m2Bottom = 12,
   });
 }
 
@@ -880,9 +882,12 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets s1;
+  final EdgeInsets s1, s2;
 
-  const LayoutTemplates({this.s1 = const EdgeInsets.all(12)});
+  const LayoutTemplates({
+    this.s1 = const EdgeInsets.all(12),
+    this.s2 = const EdgeInsets.all(4),
+  });
 }
 
 class BorderLayout {

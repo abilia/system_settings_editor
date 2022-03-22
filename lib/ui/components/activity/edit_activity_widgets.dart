@@ -667,19 +667,22 @@ class WeekDays extends StatelessWidget {
           .copyWith(height: 1.5.s),
       child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
-        builder: (context, state) => Wrap(
-          spacing: layout.formPadding.horizontalItemDistance,
-          runSpacing: layout.formPadding.verticalItemDistance,
-          children: [
-            ...RecurringWeekState.allWeekdays.map(
-              (d) => SelectableField(
-                text: Text(translate.shortWeekday(d)),
-                selected: state.weekdays.contains(d),
-                onTap: () =>
-                    context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
+        builder: (context, state) => Padding(
+          padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
+          child: Wrap(
+            spacing: layout.formPadding.horizontalItemDistance,
+            runSpacing: layout.formPadding.verticalItemDistance,
+            children: [
+              ...RecurringWeekState.allWeekdays.map(
+                (d) => SelectableField(
+                  text: Text(translate.shortWeekday(d)),
+                  selected: state.weekdays.contains(d),
+                  onTap: () =>
+                      context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -694,37 +697,40 @@ class MonthDays extends StatelessWidget {
     return BlocBuilder<EditActivityCubit, EditActivityState>(
       builder: (context, state) {
         final selectedMonthDays = state.activity.recurs.monthDays;
-        return Wrap(
-          spacing: layout.formPadding.horizontalItemDistance,
-          runSpacing: layout.formPadding.horizontalItemDistance,
-          children: List.generate(
-            31,
-            (i) {
-              final d = i + 1;
-              return SelectableField(
-                text: Text(
-                  '$d',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(height: 1.5),
-                ),
-                selected: selectedMonthDays.contains(d),
-                onTap: () {
-                  if (!selectedMonthDays.add(d)) {
-                    selectedMonthDays.remove(d);
-                  }
-                  context.read<EditActivityCubit>().replaceActivity(
-                        state.activity.copyWith(
-                          recurs: Recurs.monthlyOnDays(
-                            selectedMonthDays,
-                            ends: state.activity.recurs.end,
+        return Padding(
+          padding: EdgeInsets.only(top: layout.selectableField.position.abs()),
+          child: Wrap(
+            spacing: layout.formPadding.horizontalItemDistance,
+            runSpacing: layout.formPadding.horizontalItemDistance,
+            children: List.generate(
+              31,
+              (i) {
+                final d = i + 1;
+                return SelectableField(
+                  text: Text(
+                    '$d',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(height: 1.5),
+                  ),
+                  selected: selectedMonthDays.contains(d),
+                  onTap: () {
+                    if (!selectedMonthDays.add(d)) {
+                      selectedMonthDays.remove(d);
+                    }
+                    context.read<EditActivityCubit>().replaceActivity(
+                          state.activity.copyWith(
+                            recurs: Recurs.monthlyOnDays(
+                              selectedMonthDays,
+                              ends: state.activity.recurs.end,
+                            ),
                           ),
-                        ),
-                      );
-                },
-              );
-            },
+                        );
+                  },
+                );
+              },
+            ),
           ),
         );
       },

@@ -91,7 +91,8 @@ class MediumLayout extends Layout {
             dividerTopDistance: 24,
             dividerBottomDistance: 36,
             horizontalItemDistance: 12,
-            bottom: 96,
+            m1Bottom: 96,
+            m2Bottom: 24,
           ),
           weekCalendar: const WeekCalendarLayout(
             activityBorderWidth: 2.25,
@@ -319,6 +320,7 @@ class MediumLayout extends Layout {
           ),
           templates: const LayoutTemplates(
             s1: EdgeInsets.all(18),
+            s2: EdgeInsets.all(6),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),

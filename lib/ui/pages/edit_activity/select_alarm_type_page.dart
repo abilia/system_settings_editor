@@ -58,8 +58,10 @@ class SelectAlarmTypeBody extends StatelessWidget {
         controller: scrollController,
         child: ListView(
           controller: scrollController,
-          padding:
-              EdgeInsets.only(top: 24.0.s).add(EditActivityTab.bottomPadding),
+          padding: EdgeInsets.only(
+            top: layout.formPadding.top,
+            bottom: layout.formPadding.m1Bottom,
+          ),
           children: <Widget>[
             ...[
               if (memoSettingsState.activityDisplayAlarmOption)
