@@ -37,7 +37,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
 
         return padded(
           Padding(
-            padding: EdgeInsets.only(right: 12.0.s),
+            padding: EdgeInsets.only(right: layout.formPadding.right),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -120,7 +120,7 @@ class EditChecklistWidget extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 16.0.s),
+        SizedBox(height: layout.formPadding.largeVerticalItemDistance),
         Expanded(
           child: GestureDetector(
             child: Container(
@@ -358,7 +358,7 @@ class EditNoteWidget extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 16.0.s),
+        SizedBox(height: layout.formPadding.largeVerticalItemDistance),
         Expanded(
           child: GestureDetector(
             onTap: () => editText(context, activity, infoItem),

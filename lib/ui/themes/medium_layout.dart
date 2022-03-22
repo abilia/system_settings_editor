@@ -66,7 +66,7 @@ class MediumLayout extends Layout {
             overline: 15,
           ),
           iconSize: const IconSize(
-            small: 48,
+            small: 36,
             button: 42,
             normal: 64,
             large: 96,
@@ -87,7 +87,10 @@ class MediumLayout extends Layout {
             right: 24,
             top: 36,
             verticalItemDistance: 12,
-            dividerDistance: 36,
+            largeVerticalItemDistance: 18,
+            dividerTopDistance: 24,
+            dividerBottomDistance: 36,
+            horizontalItemDistance: 12,
             bottom: 96,
           ),
           weekCalendar: const WeekCalendarLayout(
@@ -151,7 +154,6 @@ class MediumLayout extends Layout {
             topInfoHeight: 232,
             imageSize: 200,
             imagePadding: 16,
-            bodyPadding: EdgeInsets.all(18),
             topPadding: EdgeInsets.all(16),
           ),
           timePillar: const TimepillarLayout(
@@ -273,6 +275,7 @@ class MediumLayout extends Layout {
             questionImageSize: 60,
             dividerHeight: 2,
             dividerIndentation: 16,
+            toolbarButtonSize: 60,
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
@@ -313,6 +316,28 @@ class MediumLayout extends Layout {
             imageBorderRadius: 4,
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
+          ),
+          templates: const LayoutTemplates(
+            s1: EdgeInsets.all(18),
+          ),
+          borders: const BorderLayout(thin: 1.5, medium: 3),
+          linedBorder: const LinedBorderLayout(dashSize: 6),
+          selectableField: const SelectableFieldLayout(
+            height: 72,
+            position: -9,
+            size: 36,
+            textLeftPadding: 18,
+            textRightPadding: 39,
+            textTopPadding: 15,
+            padding: EdgeInsets.all(6),
+          ),
+          category: const CategoryLayout(
+            height: 66,
+            radioPadding: EdgeInsets.all(12),
+          ),
+          radio: const RadioLayout(
+            outerRadius: 17.25,
+            innerRadius: 12.75,
           ),
         );
 }

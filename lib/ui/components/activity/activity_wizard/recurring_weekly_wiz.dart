@@ -16,14 +16,14 @@ class RecurringWeeklyWiz extends StatelessWidget {
             RecurringWeekCubit(context.read<EditActivityCubit>()),
         child: Column(
           children: [
-            SizedBox(height: layout.formPadding.dividerDistance),
+            SizedBox(height: layout.formPadding.dividerBottomDistance),
             const Padding(
               padding: EdgeInsets.zero,
               child: WeekDays(),
             ),
-            SizedBox(height: layout.formPadding.dividerDistance),
+            SizedBox(height: layout.formPadding.dividerBottomDistance),
             const SelectAllWeekdaysButton(),
-            SizedBox(height: layout.formPadding.dividerDistance),
+            SizedBox(height: layout.formPadding.dividerBottomDistance),
             const Divider(),
             const EveryOtherWeekSwitch().pad(m1TopPadding),
             const EndDateWizWidget().pad(m1ItemPadding),

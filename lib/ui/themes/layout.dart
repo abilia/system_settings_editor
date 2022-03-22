@@ -50,6 +50,12 @@ class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
+  final LayoutTemplates templates;
+  final BorderLayout borders;
+  final LinedBorderLayout linedBorder;
+  final SelectableFieldLayout selectableField;
+  final CategoryLayout category;
+  final RadioLayout radio;
 
   const Layout({
     this.radius = 12,
@@ -91,6 +97,12 @@ class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
+    this.templates = const LayoutTemplates(),
+    this.borders = const BorderLayout(),
+    this.linedBorder = const LinedBorderLayout(),
+    this.selectableField = const SelectableFieldLayout(),
+    this.category = const CategoryLayout(),
+    this.radio = const RadioLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -151,12 +163,13 @@ class MyPhotosLayout {
   final int crossAxisCount;
   final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
 
-  const MyPhotosLayout(
-      {this.childAspectRatio,
-      this.fullScreenImageBorderRadius = 12,
-      this.crossAxisCount = 3,
-      this.fullScreenImagePadding = const EdgeInsets.all(12),
-      this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16)});
+  const MyPhotosLayout({
+    this.childAspectRatio,
+    this.fullScreenImageBorderRadius = 12,
+    this.crossAxisCount = 3,
+    this.fullScreenImagePadding = const EdgeInsets.all(12),
+    this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16),
+  });
 }
 
 class ToolbarLayout {
@@ -272,14 +285,27 @@ class ClockLayout {
 }
 
 class FormPaddingLayout {
-  final double left, right, top, verticalItemDistance, dividerDistance, bottom;
+  final double left,
+      right,
+      top,
+      verticalItemDistance,
+      largeVerticalItemDistance,
+      dividerTopDistance,
+      dividerBottomDistance,
+      horizontalItemDistance,
+      largeHorizontalItemDistance,
+      bottom;
 
   const FormPaddingLayout({
     this.left = 12,
     this.right = 12,
     this.top = 24,
     this.verticalItemDistance = 8,
-    this.dividerDistance = 24,
+    this.largeVerticalItemDistance = 12,
+    this.dividerTopDistance = 16,
+    this.dividerBottomDistance = 24,
+    this.horizontalItemDistance = 8,
+    this.largeHorizontalItemDistance = 12,
     this.bottom = 64,
   });
 }
@@ -421,10 +447,7 @@ class EventCardLayout {
 class TimerPageLayout {
   final double topInfoHeight, imageSize, imagePadding, pauseTextHeight;
 
-  final EdgeInsets bodyPadding,
-      topPadding,
-      pauseTextPadding,
-      mainContentPadding;
+  final EdgeInsets topPadding, pauseTextPadding, mainContentPadding;
 
   const TimerPageLayout({
     this.topInfoHeight = 126,
@@ -432,7 +455,6 @@ class TimerPageLayout {
     this.imagePadding = 8,
     this.pauseTextHeight = 40,
     this.mainContentPadding = const EdgeInsets.fromLTRB(30, 20, 30, 0),
-    this.bodyPadding = const EdgeInsets.all(12),
     this.topPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
     this.pauseTextPadding = const EdgeInsets.only(top: 16),
   });
@@ -728,6 +750,7 @@ class CheckListLayout {
   final double questionImageSize,
       questionViewHeight,
       dividerHeight,
+      toolbarButtonSize,
       dividerIndentation;
 
   const CheckListLayout({
@@ -742,6 +765,7 @@ class CheckListLayout {
     this.questionViewHeight = 48,
     this.dividerHeight = 1,
     this.dividerIndentation = 12,
+    this.toolbarButtonSize = 40,
   });
 }
 
@@ -852,5 +876,65 @@ class ListFolderLayout {
     this.imageBorderRadius = 2,
     this.imagePadding = const EdgeInsets.fromLTRB(6, 16, 6, 11),
     this.margin = const EdgeInsets.only(left: 2, right: 6),
+  });
+}
+
+class LayoutTemplates {
+  final EdgeInsets s1;
+
+  const LayoutTemplates({this.s1 = const EdgeInsets.all(12)});
+}
+
+class BorderLayout {
+  final double thin, medium;
+
+  const BorderLayout({
+    this.thin = 1,
+    this.medium = 2,
+  });
+}
+
+class LinedBorderLayout {
+  final double dashSize;
+
+  const LinedBorderLayout({this.dashSize = 4});
+}
+
+class SelectableFieldLayout {
+  final double position,
+      size,
+      height,
+      textLeftPadding,
+      textRightPadding,
+      textTopPadding;
+  final EdgeInsets padding;
+
+  const SelectableFieldLayout({
+    this.height = 48,
+    this.position = -6,
+    this.size = 24,
+    this.textLeftPadding = 12,
+    this.textRightPadding = 26,
+    this.textTopPadding = 10,
+    this.padding = const EdgeInsets.all(4),
+  });
+}
+
+class CategoryLayout {
+  final double height;
+  final EdgeInsets radioPadding;
+
+  const CategoryLayout({
+    this.height = 44,
+    this.radioPadding = const EdgeInsets.all(8),
+  });
+}
+
+class RadioLayout {
+  final double outerRadius, innerRadius;
+
+  const RadioLayout({
+    this.outerRadius = 11.5,
+    this.innerRadius = 8.5,
   });
 }

@@ -27,10 +27,11 @@ class DateAndTimeWidget extends StatelessWidget {
                         context.read<EditActivityCubit>().changeDate(newDate)
                     : null,
               ),
-              SizedBox(height: 24.0.s),
+              SizedBox(height: layout.formPadding.dividerBottomDistance),
               CollapsableWidget(
                 collapsed: fullDay,
-                padding: EdgeInsets.only(bottom: 12.0.s),
+                padding: EdgeInsets.only(
+                    bottom: layout.formPadding.largeVerticalItemDistance),
                 child: BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
                   builder: (context, wizState) => TimeIntervallPicker(
                       editActivityState.timeInterval,
@@ -271,8 +272,8 @@ class Reminders extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     return Wrap(
-      spacing: 14.0.s,
-      runSpacing: 8.0.s,
+      spacing: layout.formPadding.horizontalItemDistance,
+      runSpacing: layout.formPadding.verticalItemDistance,
       children: [
         5.minutes(),
         15.minutes(),

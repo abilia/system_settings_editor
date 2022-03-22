@@ -74,7 +74,7 @@ class NameAndPictureWidget extends StatelessWidget {
             onImageSelected: onImageSelected,
             errorState: errorState,
           ),
-          SizedBox(width: 12.s),
+          SizedBox(width: layout.formPadding.largeVerticalItemDistance),
           Expanded(
             child: NameInput(
               text: text,
@@ -264,7 +264,7 @@ class CategoryWidget extends StatelessWidget {
                     onChanged: _onChange,
                   ),
                 ),
-                SizedBox(width: 8.s),
+                SizedBox(width: layout.formPadding.verticalItemDistance),
                 Expanded(
                   child: CategoryRadioField(
                     category: Category.right,
@@ -315,7 +315,7 @@ class CategoryRadioField extends StatelessWidget {
         final nothing = fileId.isEmpty && !state.showCategoryColor;
         return RadioField<int>(
           key: isRight ? TestKey.rightCategoryRadio : TestKey.leftCategoryRadio,
-          padding: nothing ? null : EdgeInsets.all(8.s),
+          padding: nothing ? null : layout.category.radioPadding,
           onChanged: onChanged,
           leading: nothing
               ? null
@@ -444,7 +444,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
               .replaceActivity(activity.copyWith(checkable: v)),
           child: Text(translator.checkable),
         ),
-        SizedBox(height: 8.0.s),
+        SizedBox(height: layout.formPadding.verticalItemDistance),
         SwitchField(
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
@@ -668,8 +668,8 @@ class WeekDays extends StatelessWidget {
       child: BlocBuilder<RecurringWeekCubit, RecurringWeekState>(
         buildWhen: (previous, current) => previous.weekdays != current.weekdays,
         builder: (context, state) => Wrap(
-          spacing: 14.s,
-          runSpacing: 8.s,
+          spacing: layout.formPadding.horizontalItemDistance,
+          runSpacing: layout.formPadding.verticalItemDistance,
           children: [
             ...RecurringWeekState.allWeekdays.map(
               (d) => SelectableField(
@@ -695,8 +695,8 @@ class MonthDays extends StatelessWidget {
       builder: (context, state) {
         final selectedMonthDays = state.activity.recurs.monthDays;
         return Wrap(
-          spacing: 14.0.s,
-          runSpacing: 8.0.s,
+          spacing: layout.formPadding.horizontalItemDistance,
+          runSpacing: layout.formPadding.horizontalItemDistance,
           children: List.generate(
             31,
             (i) {

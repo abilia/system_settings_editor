@@ -83,7 +83,9 @@ class RecordSoundWidget extends StatelessWidget {
                   ),
                   if (permission == PermissionStatus.permanentlyDenied)
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0.s),
+                      padding: EdgeInsets.only(
+                        left: layout.formPadding.horizontalItemDistance,
+                      ),
                       child: InfoButton(
                         onTap: () => showViewDialog(
                           useSafeArea: false,

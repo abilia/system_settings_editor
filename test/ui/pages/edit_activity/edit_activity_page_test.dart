@@ -2608,7 +2608,7 @@ text''';
         ),
       );
       await tester.pumpAndSettle();
-      await tester.scrollDown(dy: -300);
+      await tester.scrollDown(dy: -400);
 
       await tester.verifyTts(find.byKey(TestKey.checkableSwitch),
           exact: translate.checkable);

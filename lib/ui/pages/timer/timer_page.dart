@@ -25,7 +25,7 @@ class TimerPage extends StatelessWidget {
           return Scaffold(
             appBar: DayAppBar(day: day),
             body: Padding(
-              padding: layout.timerPage.bodyPadding,
+              padding: layout.templates.s1,
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,

@@ -26,7 +26,7 @@ class AboutPage extends StatelessWidget {
                 translate.version,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ).pad(m1TopPadding),
+              ).withTts().pad(m1TopPadding),
               DefaultTextStyle(
                 style: textTheme.headline6 ?? headline6,
                 child: const Version(),
@@ -34,30 +34,32 @@ class AboutPage extends StatelessWidget {
               if (Config.isMP) ...[
                 const SearchForUpdateButton().pad(m1ItemPadding),
               ],
-              SizedBox(height: layout.formPadding.dividerDistance),
+              SizedBox(height: layout.formPadding.dividerBottomDistance),
               const Divider(),
               Text(
                 translate.producer,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ).pad(m1TopPadding),
+              ).withTts().pad(m1TopPadding),
               Text(
                 'Abilia AB',
                 style: textTheme.headline6,
-              ).pad(m1ItemPadding),
+              ).withTts().pad(m1ItemPadding),
               const Text('Råsundavägen 6, 169 67 Solna, Sweden')
+                  .withTts()
                   .pad(m1TopPadding),
               const Text('+46 (0)8- 594 694 00\n'
                       'info@abilia.com\n'
                       'www.abilia.com')
+                  .withTts()
                   .pad(m1ItemPadding),
-              SizedBox(height: layout.formPadding.dividerDistance),
+              SizedBox(height: layout.formPadding.dividerBottomDistance),
               const Text(
                 'This product is developed in accordance with and complies to '
                 'all necessary requirements, regulations and directives for '
                 'medical devices.',
-              ).pad(m1ItemPadding),
-            ].map(_textToTts),
+              ).withTts().pad(m1ItemPadding),
+            ],
           ],
         ),
       ),
@@ -66,9 +68,6 @@ class AboutPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _textToTts(Widget widget) =>
-      widget is Text ? Tts(child: widget) : widget;
 }
 
 class SearchForUpdateButton extends StatelessWidget {

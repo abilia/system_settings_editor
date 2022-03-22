@@ -6,7 +6,12 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 final pastSideDotShape = ShapeDecoration(
-  shape: CircleBorder(side: BorderSide(color: AbiliaColors.black, width: 1.s)),
+  shape: CircleBorder(
+    side: BorderSide(
+      color: AbiliaColors.black,
+      width: layout.borders.thin,
+    ),
+  ),
 );
 const pastDotShape = ShapeDecoration(
       shape: CircleBorder(side: BorderSide(color: AbiliaColors.black)),

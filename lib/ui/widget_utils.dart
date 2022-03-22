@@ -8,3 +8,11 @@ extension PaddingExtension on Widget {
     );
   }
 }
+
+extension TtsExtension on Text {
+  Tts withTts() {
+    return Tts(
+      child: this,
+    );
+  }
+}

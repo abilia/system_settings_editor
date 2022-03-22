@@ -15,9 +15,9 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
-            padding: EditActivityTab.rightPadding
-                .add(EditActivityTab.bottomPadding)
-                .subtract(EditActivityTab.errorBorderPaddingRight),
+            padding: EdgeInsets.only(
+              bottom: layout.formPadding.bottom,
+            ),
             children: <Widget>[
               Padding(
                 padding: EditActivityTab.errorBorderPaddingRight,
