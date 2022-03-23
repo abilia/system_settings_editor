@@ -38,9 +38,9 @@ class CodeProtectPage extends StatelessWidget {
                           .change(state.copyWith(code: newCode));
                     }
                   }),
-              SizedBox(height: 8.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               const Divider(),
-              SizedBox(height: 8.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               SwitchField(
                 leading: const Icon(AbiliaIcons.settings),
                 value: state.protectSettings,

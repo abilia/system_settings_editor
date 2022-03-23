@@ -35,7 +35,7 @@ class SelectAlarmWizPage extends StatelessWidget {
         trailing: [
           const SizedBox(),
           const Divider(),
-          SizedBox(height: 8.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           AlarmOnlyAtStartSwitch(
             alarm: state.activity.alarm,
             onChanged: (bool onStart) => context
@@ -46,9 +46,9 @@ class SelectAlarmWizPage extends StatelessWidget {
                   ),
                 ),
           ),
-          SizedBox(height: 8.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           const Divider(),
-          SizedBox(height: 24.s),
+          SizedBox(height: layout.formPadding.groupTopDistance),
           RecordSoundWidget(
             activity: state.activity,
             soundChanged: (Activity newActivity) =>

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
@@ -29,8 +27,6 @@ void main() {
     notificationsPluginInstance = FakeFlutterLocalNotificationsPlugin();
     scheduleAlarmNotificationsIsolated = noAlarmScheduler;
 
-    final mockTicker = StreamController<DateTime>();
-
     final mockActivityDb = MockActivityDb();
     when(() => mockActivityDb.getAllNonDeleted()).thenAnswer((_) =>
         Future.value([Activity.createNew(title: 'null', startTime: initTime)]));
@@ -58,7 +54,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker.fake(stream: mockTicker.stream, initialTime: initTime)
+      ..ticker = Ticker.fake(initialTime: initTime)
       ..fireBasePushService = FakeFirebasePushService()
       ..client = Fakes.client(activityResponse: () => [])
       ..fileStorage = FakeFileStorage()

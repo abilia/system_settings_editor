@@ -103,7 +103,10 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    mockTicker.close();
+    GetIt.I.reset();
+  });
 
   Widget wrapWithMaterialApp(Widget widget) => FakeAuthenticatedBlocsProvider(
         child: MultiBlocProvider(

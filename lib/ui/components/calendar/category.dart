@@ -158,9 +158,9 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
     super.initState();
     value = widget.expanded;
     alignment = AlignmentDirectional.topStart.resolve(widget.direction);
-    borderRadius =
-        BorderRadiusDirectional.horizontal(end: Radius.circular(100.s))
-            .resolve(widget.direction);
+    borderRadius = BorderRadiusDirectional.horizontal(
+            end: Radius.circular(layout.category.radius))
+        .resolve(widget.direction);
 
     controller = AnimationController(
       duration: const Duration(milliseconds: 500),
@@ -171,12 +171,12 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
       end: widget.expanded ? Matrix4.rotationY(pi) : Matrix4.identity(),
     ).animate(controller);
     final p1 = EdgeInsetsDirectional.only(
-      start: 8.s,
-      end: 4.s,
+      start: layout.category.startPadding,
+      end: layout.category.endPadding,
     ).resolve(widget.direction);
     final p2 = EdgeInsetsDirectional.only(
       start: 0,
-      end: 4.s,
+      end: layout.category.endPadding,
     ).resolve(widget.direction);
     paddingAnimation = EdgeInsetsGeometryTween(
       begin: value ? p1 : p2,
@@ -216,8 +216,8 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
               constraints: BoxConstraints(maxWidth: widget.maxWidth),
               child: Container(
                 clipBehavior: Clip.hardEdge,
-                margin: EdgeInsets.only(top: 4.0.s),
-                height: 44.s,
+                margin: EdgeInsets.only(top: layout.category.topMargin),
+                height: layout.category.height,
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
                   color: AbiliaColors.black80,
@@ -269,7 +269,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                         ),
                       )
                     else
-                      SizedBox(width: 16.s)
+                      SizedBox(width: layout.category.emptySize)
                   ],
                 ),
               ),
@@ -296,9 +296,9 @@ class CategoryImage extends StatelessWidget {
   })  : assert(fileId.isNotEmpty || showColors),
         super(key: key);
 
-  static final diameter = 36.s,
+  static final diameter = layout.category.imageDiameter,
       borderRadius = BorderRadius.circular(diameter / 2),
-      noColorsImageSize = 30.s,
+      noColorsImageSize = layout.category.noColorsImageSize,
       noColorsImageBorderRadius = BorderRadius.circular(noColorsImageSize / 2);
   final String fileId;
   final int category;
@@ -320,7 +320,7 @@ class CategoryImage extends StatelessWidget {
         color: categoryColor(category: category),
         borderRadius: borderRadius,
       ),
-      padding: EdgeInsets.all(3.s),
+      padding: layout.category.imagePadding,
       child: fileId.isNotEmpty
           ? FadeInAbiliaImage(
               imageFileId: fileId,

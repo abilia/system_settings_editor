@@ -13,7 +13,7 @@ class RemoveAfterWiz extends StatelessWidget {
         iconData: AbiliaIcons.deleteAllClear,
         title: translate.deleteAfter,
         body: Padding(
-          padding: EdgeInsets.fromLTRB(12.0.s, 24.0.s, 16.0.s, 0),
+          padding: m1Padding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -27,7 +27,7 @@ class RemoveAfterWiz extends StatelessWidget {
                 value: true,
                 text: Text(translate.deleteAfter),
               ),
-              SizedBox(height: 8.0.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               RadioField<bool?>(
                 groupValue: state.activity.removeAfter,
                 onChanged: (value) => context

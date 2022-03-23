@@ -19,7 +19,9 @@ class _HiddenSettingState extends State<HiddenSetting> {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
-        padding: EdgeInsets.only(top: widget.showCategories ? 50.s : 4.s),
+        padding: EdgeInsets.only(
+          top: widget.showCategories ? layout.category.height : 0,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

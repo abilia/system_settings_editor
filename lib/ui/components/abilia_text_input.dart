@@ -162,7 +162,7 @@ class _DefaultInputPageState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: ordinaryPadding,
+              padding: m1Padding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

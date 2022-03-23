@@ -110,7 +110,7 @@ class DayHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderSize = 1.s;
+    final borderSize = layout.borders.thin;
     final dayTheme = weekdayTheme(
       dayColor: dayColor,
       languageCode: Localizations.localeOf(context).languageCode,

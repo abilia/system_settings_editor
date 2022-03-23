@@ -18,7 +18,7 @@ class _FakeTickerState extends State<FakeTicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 32.0.s),
+      padding: EdgeInsets.only(top: layout.formPadding.groupTopDistance),
       child: Column(
         children: [
           SwitchField(
@@ -36,7 +36,7 @@ class _FakeTickerState extends State<FakeTicker> {
           CollapsableWidget(
             collapsed: !useMockTime,
             child: Padding(
-              padding: EdgeInsets.all(8.0.s),
+              padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
               child: BlocBuilder<ClockBloc, DateTime>(
                 builder: (context, state) {
                   final time = TimeOfDay.fromDateTime(state);

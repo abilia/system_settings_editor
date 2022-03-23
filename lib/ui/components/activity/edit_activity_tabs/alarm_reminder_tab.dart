@@ -14,26 +14,27 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
-            padding:
-                EditActivityTab.rightPadding.add(EditActivityTab.bottomPadding),
             children: <Widget>[
-              separatedAndPadded(AlarmWidget(activity)),
-              separatedAndPadded(
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SubHeading(Translator.of(context).translate.reminders),
-                    ReminderSwitch(activity: activity),
-                    CollapsableWidget(
-                      padding: EdgeInsets.only(top: 8.0.s),
-                      collapsed:
-                          activity.fullDay || activity.reminderBefore.isEmpty,
-                      child: Reminders(activity: activity),
-                    ),
-                  ],
-                ),
-              ),
-              padded(RecordSoundWidget(activity: activity)),
+              AlarmWidget(activity).pad(m1TopPadding),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
+              const Divider(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SubHeading(Translator.of(context).translate.reminders),
+                  ReminderSwitch(activity: activity),
+                  CollapsableWidget(
+                    padding: EdgeInsets.only(
+                        top: layout.formPadding.verticalItemDistance),
+                    collapsed:
+                        activity.fullDay || activity.reminderBefore.isEmpty,
+                    child: Reminders(activity: activity),
+                  ),
+                ],
+              ).pad(m1TopPadding),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
+              const Divider(),
+              RecordSoundWidget(activity: activity).pad(m1TopPadding),
             ],
           ),
         );

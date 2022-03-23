@@ -15,39 +15,32 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
           controller: _scrollController,
           child: ListView(
             controller: _scrollController,
-            padding: EditActivityTab.rightPadding
-                .add(EditActivityTab.bottomPadding)
-                .subtract(EditActivityTab.errorBorderPaddingRight),
+            padding: EdgeInsets.only(
+              bottom: layout.formPadding.m1Bottom,
+            ),
             children: <Widget>[
-              Padding(
-                padding: EditActivityTab.errorBorderPaddingRight,
-                child: Column(
-                  children: [
-                    CollapsableWidget(
-                      collapsed: activity.fullDay,
-                      child: separatedAndPadded(
+              Column(
+                children: [
+                  CollapsableWidget(
+                    collapsed: activity.fullDay,
+                    child:
                         BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-                          buildWhen: (prev, current) =>
-                              current.saveErrors.isNotEmpty,
-                          builder: (context, wizState) => TimeIntervallPicker(
+                      buildWhen: (prev, current) =>
+                          current.saveErrors.isNotEmpty,
+                      builder: (context, wizState) => Column(
+                        children: [
+                          TimeIntervallPicker(
                             state.timeInterval,
                             startTimeError: wizState.saveErrors
                                 .contains(SaveError.noStartTime),
-                          ),
-                        ),
+                          ).pad(m1TopPadding),
+                          const Divider().pad(dividerPadding),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: EditActivityTab.ordinaryPadding
-                          .subtract(EdgeInsets.only(
-                              bottom: EditActivityTab.ordinaryPadding.bottom))
-                          .add(EdgeInsets.only(
-                              bottom:
-                                  EditActivityTab.errorBorderPadding.bottom)),
-                      child: RecurrenceWidget(state),
-                    ),
-                  ],
-                ),
+                  ),
+                  RecurrenceWidget(state).pad(m1TopPadding),
+                ],
               ),
               if (recurs.weekly || recurs.monthly)
                 BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
@@ -61,27 +54,12 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                           if (recurs.weekly)
                             Weekly(errorState: recurringDataError)
                           else if (recurs.monthly)
-                            Separated(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: EditActivityTab.ordinaryPadding.left -
-                                      EditActivityTab.errorBorderPadding.left,
-                                  bottom: EditActivityTab
-                                          .ordinaryPadding.bottom -
-                                      EditActivityTab.errorBorderPadding.bottom,
-                                ),
-                                child: errorBordered(
-                                  const MonthDays(),
-                                  errorState: recurringDataError,
-                                ),
-                              ),
-                            ),
-                          Padding(
-                            padding: EditActivityTab.errorBorderPaddingRight,
-                            child: padded(
-                              const EndDateWidget(),
-                            ),
-                          ),
+                            errorBordered(
+                              const MonthDays(),
+                              errorState: recurringDataError,
+                            ).pad(m1ItemPadding),
+                          const Divider().pad(dividerPadding),
+                          const EndDateWidget().pad(m1TopPadding),
                         ],
                       );
                     }),
@@ -108,26 +86,11 @@ class Weekly extends StatelessWidget with EditActivityTab {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: EdgeInsets.only(
-                left: EditActivityTab.ordinaryPadding.left -
-                    EditActivityTab.errorBorderPadding.left),
-            child: errorBordered(
-              const WeekDays(),
-              errorState: errorState,
-            ),
-          ),
-          Padding(
-            padding: EditActivityTab.errorBorderPaddingRight,
-            child: Separated(
-              child: Padding(
-                padding: EditActivityTab.ordinaryPadding.subtract(
-                  EdgeInsets.only(top: EditActivityTab.errorBorderPadding.top),
-                ),
-                child: const EveryOtherWeekSwitch(),
-              ),
-            ),
-          ),
+          errorBordered(
+            const WeekDays(),
+            errorState: errorState,
+          ).pad(m1ItemPadding),
+          const EveryOtherWeekSwitch().pad(m1ItemPadding),
         ],
       ),
     );

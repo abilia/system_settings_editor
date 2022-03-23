@@ -31,13 +31,17 @@ class FullDayStack extends StatelessWidget {
     final body = Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 4.s, left: 4.s),
+          margin: EdgeInsets.only(
+              top: layout.commonCalendar.fullDayStackDistance,
+              left: layout.commonCalendar.fullDayStackDistance),
           width: width,
           height: height,
           decoration: decoration,
         ),
         Container(
-          margin: EdgeInsets.only(bottom: 4.s, right: 4.s),
+          margin: EdgeInsets.only(
+              bottom: layout.commonCalendar.fullDayStackDistance,
+              right: layout.commonCalendar.fullDayStackDistance),
           decoration: decoration,
           width: width,
           height: height,

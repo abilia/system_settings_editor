@@ -25,14 +25,15 @@ class RemoveButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: AbiliaColors.transparentRed[80],
             borderRadius: borderRadius,
-            border: Border.all(color: AbiliaColors.red, width: 1.s),
+            border:
+                Border.all(color: AbiliaColors.red, width: layout.borders.thin),
           ),
-          padding: EdgeInsets.fromLTRB(8.s, 6.s, 8.s, 6.s),
+          padding: layout.selectPicture.removeButtonPadding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (i != null) i,
-              SizedBox(width: 4.s),
+              SizedBox(width: layout.formPadding.horizontalItemDistance),
               if (t != null)
                 Text(t,
                     style: abiliaTextTheme.bodyText1

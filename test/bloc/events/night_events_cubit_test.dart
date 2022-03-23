@@ -54,6 +54,12 @@ void main() {
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
   });
 
+  tearDown(() {
+    mockSettingStream.close();
+    activityBlocStreamController.close();
+    timerCubitStreamController.close();
+  });
+
   group('occasion', () {
     blocTest<NightEventsCubit, EventsState>(
       'initial state morning before',

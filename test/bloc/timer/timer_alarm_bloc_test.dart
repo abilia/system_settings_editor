@@ -24,6 +24,10 @@ void main() {
     when(() => mockTimerCubit.state).thenReturn(TimerState());
   });
 
+  tearDown(() {
+    streamController.close();
+  });
+
   final pastTimer = AbiliaTimer.createNew(
         title: 'past timer',
         startTime: initialTime.subtract(1.hours()),

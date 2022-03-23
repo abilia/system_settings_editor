@@ -29,14 +29,14 @@ class CategoriesSettingsTab extends StatelessWidget {
               collapsed: !state.categories.show,
               child: Column(
                 children: [
-                  SizedBox(height: 8.s),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
                   _CategoryPickField(
                     key: TestKey.editLeftCategory,
                     imageAndName: state.categories.left,
                     defaultName: t.left,
                     onResult: (r) => state.categories.copyWith(left: r),
                   ),
-                  SizedBox(height: 8.s),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
                   _CategoryPickField(
                     key: TestKey.editRigthCategory,
                     imageAndName: state.categories.right,

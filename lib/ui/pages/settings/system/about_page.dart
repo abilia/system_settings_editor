@@ -22,46 +22,44 @@ class AboutPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ...[
-              SizedBox(height: 24.s),
               Text(
                 translate.version,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ),
-              SizedBox(height: 8.s),
+              ).withTts().pad(m1TopPadding),
               DefaultTextStyle(
                 style: textTheme.headline6 ?? headline6,
                 child: const Version(),
-              ),
+              ).pad(m1ItemPadding),
               if (Config.isMP) ...[
-                SizedBox(height: 8.s),
-                const SearchForUpdateButton(),
+                const SearchForUpdateButton().pad(m1ItemPadding),
               ],
-              Divider(height: 32.s),
-              SizedBox(height: 8.s),
+              SizedBox(height: layout.formPadding.groupTopDistance),
+              const Divider(),
               Text(
                 translate.producer,
                 style:
                     textTheme.bodyText2?.copyWith(color: AbiliaColors.black75),
-              ),
-              SizedBox(height: 8.s),
+              ).withTts().pad(m1TopPadding),
               Text(
                 'Abilia AB',
                 style: textTheme.headline6,
-              ),
-              SizedBox(height: 24.s),
-              const Text('Råsundavägen 6, 169 67 Solna, Sweden'),
-              SizedBox(height: 8.s),
+              ).withTts().pad(m1ItemPadding),
+              const Text('Råsundavägen 6, 169 67 Solna, Sweden')
+                  .withTts()
+                  .pad(m1TopPadding),
               const Text('+46 (0)8- 594 694 00\n'
-                  'info@abilia.com\n'
-                  'www.abilia.com'),
-              SizedBox(height: 32.s),
+                      'info@abilia.com\n'
+                      'www.abilia.com')
+                  .withTts()
+                  .pad(m1ItemPadding),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               const Text(
                 'This product is developed in accordance with and complies to '
                 'all necessary requirements, regulations and directives for '
                 'medical devices.',
-              ),
-            ].map(_textToTts).map(_addPadding),
+              ).withTts().pad(m1ItemPadding),
+            ],
           ],
         ),
       ),
@@ -70,16 +68,6 @@ class AboutPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _textToTts(Widget widget) =>
-      widget is Text ? Tts(child: widget) : widget;
-
-  Widget _addPadding(Widget widget) => widget is Divider
-      ? widget
-      : Padding(
-          padding: EdgeInsets.only(left: 12.s, right: 16.s),
-          child: widget,
-        );
 }
 
 class SearchForUpdateButton extends StatelessWidget {

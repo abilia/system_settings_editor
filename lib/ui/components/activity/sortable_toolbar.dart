@@ -20,7 +20,7 @@ class SortableToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spacing = 8.s;
+    final spacing = layout.formPadding.horizontalItemDistance;
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
@@ -85,8 +85,8 @@ class _ChecklistToolbarButton extends StatelessWidget {
         customBorder: const CircleBorder(side: BorderSide.none),
         onTap: disabled ? null : onTap,
         child: Container(
-          height: 40.s,
-          width: 40.s,
+          height: layout.checkList.toolbarButtonSize,
+          width: layout.checkList.toolbarButtonSize,
           decoration: disabled
               ? null
               : BoxDecoration(
@@ -94,13 +94,13 @@ class _ChecklistToolbarButton extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: AbiliaColors.transparentWhite30,
-                    width: 1.s,
+                    width: layout.borders.thin,
                   ),
                 ),
           child: Icon(
             iconData,
             color: disabled ? AbiliaColors.white140 : AbiliaColors.white,
-            size: 24.s,
+            size: layout.iconSize.small,
           ),
         ),
       ),

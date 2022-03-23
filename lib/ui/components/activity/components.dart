@@ -53,8 +53,11 @@ class LinedBorder extends StatelessWidget {
                 child: child,
               )
             : DottedBorder(
-                dashPattern: [4.s, 4.s],
-                strokeWidth: 1.0.s,
+                dashPattern: [
+                  layout.linedBorder.dashSize,
+                  layout.linedBorder.dashSize
+                ],
+                strokeWidth: layout.borders.thin,
                 borderType: BorderType.RRect,
                 color: AbiliaColors.white140,
                 radius: radius,
@@ -139,7 +142,9 @@ class PickField extends StatelessWidget {
                 ),
                 if (secondary != null)
                   Padding(
-                    padding: EdgeInsets.only(right: 8.s),
+                    padding: EdgeInsets.only(
+                      right: layout.formPadding.horizontalItemDistance,
+                    ),
                     child: DefaultTextStyle(
                       overflow: TextOverflow.ellipsis,
                       style:
@@ -260,17 +265,17 @@ class PositionedRadio<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: -6.s,
-      right: -6.s,
+      top: layout.selectableField.position,
+      right: layout.selectableField.position,
       child: Container(
-        padding: EdgeInsets.all(4.0.s),
+        padding: layout.selectableField.padding,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           shape: BoxShape.circle,
         ),
         child: SizedBox(
-          width: 24.s,
-          height: 24.s,
+          width: layout.selectableField.size,
+          height: layout.selectableField.size,
           child: AbiliaRadio(
             key: radioKey,
             value: value,
@@ -333,7 +338,6 @@ class SelectableField extends StatelessWidget {
   final bool selected;
   final GestureTapCallback onTap;
 
-  static final defaultHeigth = 48.s;
   const SelectableField({
     Key? key,
     required this.selected,
@@ -362,26 +366,30 @@ class SelectableField extends StatelessWidget {
             clipBehavior: Clip.none,
             children: <Widget>[
               Ink(
-                height: heigth ?? defaultHeigth,
+                height: heigth ?? layout.selectableField.height,
                 width: width,
                 decoration: decoration,
-                padding: EdgeInsets.fromLTRB(12.0.s, 10.0.s, 26.0.s,
-                        decoration.border?.bottom.width ?? 0.0)
-                    .subtract(decoration.border?.dimensions ?? EdgeInsets.zero),
-                child: text,
+                padding: EdgeInsets.only(
+                  left: layout.selectableField.textLeftPadding,
+                  right: layout.selectableField.textRightPadding,
+                ),
+                child: Align(
+                  widthFactor: 1,
+                  child: text,
+                ),
               ),
               Positioned(
-                top: -6.s,
-                right: -6.s,
+                top: layout.selectableField.position,
+                right: layout.selectableField.position,
                 child: Container(
-                  padding: EdgeInsets.all(4.0.s),
+                  padding: layout.selectableField.padding,
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
-                    width: 24.s,
-                    height: 24.s,
+                    width: layout.selectableField.size,
+                    height: layout.selectableField.size,
                     child: AnimatedSwitcher(
                       duration: 300.milliseconds(),
                       transitionBuilder: (child, animation) =>
@@ -419,8 +427,6 @@ class SelectableField extends StatelessWidget {
 }
 
 class AbiliaRadio<T> extends StatefulWidget {
-  static final outerRadius = 11.5.s;
-  static final innerRadius = 8.5.s;
   const AbiliaRadio({
     Key? key,
     required this.value,
@@ -651,13 +657,13 @@ class _RadioPainter extends ToggleablePainter {
       ..color = Color.lerp(inactiveColor, activeColor, position.value)!
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
-    canvas.drawCircle(center, AbiliaRadio.outerRadius, paint);
+    canvas.drawCircle(center, layout.radio.outerRadius, paint);
 
     // Inner circle
     if (!position.isDismissed) {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(
-          center, AbiliaRadio.innerRadius * position.value, paint);
+          center, layout.radio.innerRadius * position.value, paint);
     }
   }
 }

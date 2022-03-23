@@ -25,7 +25,7 @@ class TimerPage extends StatelessWidget {
           return Scaffold(
             appBar: DayAppBar(day: day),
             body: Padding(
-              padding: layout.timerPage.bodyPadding,
+              padding: layout.templates.s1,
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
@@ -161,10 +161,11 @@ class _TimerBottomBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            if (timer.paused)
-              PlayTimerButton(timer: timer)
-            else
-              PauseTimerButton(timer: timer),
+            if (Config.beta)
+              if (timer.paused)
+                PlayTimerButton(timer: timer)
+              else
+                PauseTimerButton(timer: timer),
             IconActionButtonLight(
               onPressed: () async {
                 final t = Translator.of(context).translate;

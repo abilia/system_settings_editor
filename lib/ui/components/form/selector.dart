@@ -40,7 +40,7 @@ class Selector<T> extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 8.s)
+          SizedBox(height: layout.formPadding.verticalItemDistance)
         ],
         Row(
           children: [
@@ -96,7 +96,8 @@ class _SelectButton<T> extends StatelessWidget {
           isSelected: value == groupValue,
         ).copyWith(
           textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
-          padding: MaterialStateProperty.all(EdgeInsets.only(bottom: 8.0.s)),
+          padding: MaterialStateProperty.all(
+              EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance)),
         ),
         child: Column(
           children: [

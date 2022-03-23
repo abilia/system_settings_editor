@@ -45,7 +45,7 @@ class SettingsPage extends StatelessWidget {
             text: t.alarmSettings,
             navigateTo: const AlarmSettingsPage(),
           ),
-          SizedBox(height: 8.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           Tts(child: Text(t.system)),
           const TextToSpeechSwitch(),
           const PermissionPickField(),

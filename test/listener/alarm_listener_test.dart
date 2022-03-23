@@ -96,6 +96,7 @@ void main() {
   tearDown(() async {
     await GetIt.I.reset();
     notificationsPluginInstance = null;
+    mockTicker.close();
     setupPermissions();
   });
 

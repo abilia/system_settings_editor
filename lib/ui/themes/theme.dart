@@ -17,12 +17,35 @@ final ordinaryPadding = EdgeInsets.fromLTRB(
   verticalPadding,
 );
 
-final topPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
+// Form paddings
+final m1TopPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.top, layout.formPadding.right, 0);
-final formItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
+final dividerPadding = EdgeInsets.only(
+  top: layout.formPadding.groupBottomDistance,
+);
+final m1ItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
-final formTopSpacer = SizedBox(
-    height: layout.formPadding.top - layout.formPadding.verticalItemDistance);
+final formTopSpacer = SizedBox(height: layout.formPadding.top);
+final m1Horizontal = EdgeInsets.only(
+  left: layout.formPadding.left,
+  right: layout.formPadding.right,
+);
+final m1Padding = EdgeInsets.fromLTRB(
+  layout.formPadding.left,
+  layout.formPadding.top,
+  layout.formPadding.right,
+  layout.formPadding.m1Bottom,
+);
+final m2Padding = EdgeInsets.fromLTRB(
+  layout.formPadding.left,
+  layout.formPadding.top,
+  layout.formPadding.right,
+  layout.formPadding.m2Bottom,
+);
+final s3Padding = EdgeInsets.only(
+  left: layout.formPadding.left,
+  right: layout.formPadding.right,
+);
 
 final abiliaTheme = ThemeData(
   scaffoldBackgroundColor: AbiliaColors.white110,
@@ -54,8 +77,8 @@ final abiliaTheme = ThemeData(
   toggleableActiveColor: AbiliaColors.green,
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
-    endIndent: 12.s,
-    thickness: 1.s,
+    endIndent: layout.formPadding.right,
+    thickness: layout.borders.thin,
     space: 0,
   ),
 );
@@ -107,7 +130,7 @@ final Border currentBorder = Border.fromBorderSide(
       width: layout.monthCalendar.dayBorderWidthHighlighted),
 );
 final Border errorBorder = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.red, width: 1.s),
+  BorderSide(color: AbiliaColors.red, width: layout.borders.thin),
 );
 final Border transparentBlackBorder = Border.fromBorderSide(
   BorderSide(
@@ -119,31 +142,34 @@ final borderOrange = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.orange40, width: 2.s),
 );
 final border = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.white140, width: 1.s),
+  BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
 );
 
 final ligthShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentWhite30, width: 1.s),
+  side: BorderSide(
+      color: AbiliaColors.transparentWhite30, width: layout.borders.thin),
 );
 final darkShapeBorder = RoundedRectangleBorder(
   borderRadius: borderRadius,
-  side: BorderSide(color: AbiliaColors.transparentBlack30, width: 1.s),
+  side: BorderSide(
+      color: AbiliaColors.transparentBlack30, width: layout.borders.thin),
 );
 final menuButtonBorder = darkShapeBorder.copyWith(
   borderRadius:
       BorderRadius.circular(layout.menuPage.menuItemButton.borderRadius),
 );
 final inputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.white140, width: 1.s),
+  borderSide:
+      BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
 final redOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: AbiliaColors.red, width: 1.s),
+  borderSide: BorderSide(color: AbiliaColors.red, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
 final transparentOutlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: Colors.transparent, width: 1.s),
+  borderSide: BorderSide(color: Colors.transparent, width: layout.borders.thin),
   borderRadius: borderRadius,
 );
 

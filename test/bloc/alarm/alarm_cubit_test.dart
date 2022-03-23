@@ -345,6 +345,10 @@ void main() {
       );
     });
 
+    tearDown(() {
+      notificationSelected.close();
+    });
+
     test('initial state', () {
       expect(notificationBloc.state, null);
     });

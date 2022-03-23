@@ -150,7 +150,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
             ? AbiliaColors.black
             : dayTheme.borderColor;
     final thickBorder = selected || today;
-    final borderSize = thickBorder ? 2.s : 1.s;
+    final borderSize =
+        thickBorder ? layout.borders.medium : layout.borders.thin;
     final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1);
 
     return Flexible(
@@ -331,7 +332,8 @@ class WeekDayColumn extends StatelessWidget {
             final selected = day.isAtSameDay(dayPickerState.day);
             final today = now.isAtSameDay(day);
             final thickBorder = selected || today;
-            final borderSize = thickBorder ? 2.s : 1.s;
+            final borderSize =
+                thickBorder ? layout.borders.medium : layout.borders.thin;
             final dayTheme = weekdayTheme(
               dayColor: memosettings.calendarDayColor,
               languageCode: Localizations.localeOf(context).languageCode,

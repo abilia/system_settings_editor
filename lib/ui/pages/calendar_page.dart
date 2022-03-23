@@ -17,10 +17,11 @@ class CalendarPage extends StatelessWidget {
         builder: (context, settingsState) => DefaultTabController(
           length: settingsState.calendarCount,
           child: Scaffold(
-            bottomNavigationBar: settingsState is MemoplannerSettingsLoaded &&
-                    settingsState.displayBottomBar
-                ? const CalendarBottomBar()
-                : null,
+            bottomNavigationBar:
+                settingsState is! MemoplannerSettingsNotLoaded &&
+                        settingsState.displayBottomBar
+                    ? const CalendarBottomBar()
+                    : null,
             body: HomeScreenInactivityListener(
               settingsState: settingsState,
               child: TabBarView(

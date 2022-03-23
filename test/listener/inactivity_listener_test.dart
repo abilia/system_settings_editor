@@ -304,7 +304,8 @@ void main() {
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
-    testWidgets('Stacks photopage then screen saver under', (tester) async {
+    testWidgets('Stacks PhotoCalendarPage then screen saver under',
+        (tester) async {
       // Arrange
       genericResponse = () => [
             activityTimeoutGeneric(),
@@ -328,12 +329,7 @@ void main() {
 
       // Assert
       expect(find.byType(ScreenSaverPage), findsNothing);
-      expect(
-        find.byType(PhotoPage),
-        findsOneWidget,
-        skip: 'For some reason both ScreenSaverPage and PhotoPage'
-            ' pops in test',
-      );
+      expect(find.byType(PhotoCalendarPage), findsOneWidget);
     });
 
     testWidgets('Touched screen does not time out', (tester) async {

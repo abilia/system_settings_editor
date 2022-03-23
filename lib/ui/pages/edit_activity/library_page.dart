@@ -118,10 +118,9 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
           );
     return Tts.data(
       data: heading,
-      child: Padding(
-        padding: EdgeInsets.only(right: 12.s),
-        child: Separated(
-          child: Padding(
+      child: Column(
+        children: [
+          Padding(
             padding: layout.libraryPage.headerPadding,
             child: Row(
               children: [
@@ -141,7 +140,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
               ],
             ),
           ),
-        ),
+          const Divider(),
+        ],
       ),
     );
   }

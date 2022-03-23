@@ -36,11 +36,11 @@ class IntervalStepper extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            SizedBox(height: 8.s),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
             Tts(
               child: Text(_title(part, Translator.of(context).translate)),
             ),
-            SizedBox(height: 8.s),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
             SizedBox(
               width: 230.s,
               child: Row(
@@ -77,7 +77,7 @@ class IntervalStepper extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 8.s),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
           ],
         );
       },

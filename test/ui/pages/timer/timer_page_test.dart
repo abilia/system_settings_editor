@@ -156,7 +156,7 @@ void main() {
     await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
     await expect;
-  });
+  }, skip: Config.release);
 
   testWidgets('Pausing timer, cancel pause', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
@@ -166,7 +166,7 @@ void main() {
     await tester.tapAt(Offset.zero);
     await tester.pumpAndSettle();
     expect(find.byType(TimerTickerBuilder), findsOneWidget);
-  });
+  }, skip: Config.release);
 
   testWidgets('Resuming timer, TimerCubit emits "default"(non-paused) timer',
       (WidgetTester tester) async {
@@ -187,5 +187,5 @@ void main() {
     await tester.tap(find.byType(YesButton));
     await tester.pumpAndSettle();
     await expect;
-  });
+  }, skip: Config.release);
 }

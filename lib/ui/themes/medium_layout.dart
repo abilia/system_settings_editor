@@ -7,6 +7,8 @@ class MediumLayout extends Layout {
           appBar: const AppBarLayout(
             largeAppBarHeight: 148,
             height: 104,
+            fontSize: 22,
+            horizontalPadding: 16,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -66,7 +68,7 @@ class MediumLayout extends Layout {
             overline: 15,
           ),
           iconSize: const IconSize(
-            small: 48,
+            small: 36,
             button: 42,
             normal: 64,
             large: 96,
@@ -83,10 +85,17 @@ class MediumLayout extends Layout {
             fontSize: 12,
           ),
           formPadding: const FormPaddingLayout(
-            left: 18,
+            left: 24,
             right: 24,
             top: 36,
             verticalItemDistance: 12,
+            largeVerticalItemDistance: 18,
+            groupBottomDistance: 24,
+            groupTopDistance: 36,
+            horizontalItemDistance: 12,
+            largeHorizontalItemDistance: 18,
+            m1Bottom: 96,
+            m2Bottom: 24,
           ),
           weekCalendar: const WeekCalendarLayout(
             activityBorderWidth: 2.25,
@@ -142,12 +151,13 @@ class MediumLayout extends Layout {
             titlePadding:
                 EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
             statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
+            privateIconSize: 36,
+            cardIconPadding: EdgeInsets.only(right: 6),
           ),
           timerPage: const TimerPageLayout(
             topInfoHeight: 232,
             imageSize: 200,
             imagePadding: 16,
-            bodyPadding: EdgeInsets.all(18),
             topPadding: EdgeInsets.all(16),
           ),
           timePillar: const TimepillarLayout(
@@ -155,6 +165,7 @@ class MediumLayout extends Layout {
             width: 80,
             padding: 8,
             hourPadding: 1.5,
+            flarpRadius: 12,
             dot: TimepillarDotLayout(
               size: 16,
               padding: 4,
@@ -269,6 +280,7 @@ class MediumLayout extends Layout {
             questionImageSize: 60,
             dividerHeight: 2,
             dividerIndentation: 16,
+            toolbarButtonSize: 60,
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
@@ -295,16 +307,81 @@ class MediumLayout extends Layout {
             subHeadingPadding: EdgeInsets.only(bottom: 12),
           ),
           pickField: const PickFieldLayout(
-            height: 88,
-            leadingSize: Size(72, 72),
             padding: EdgeInsets.only(left: 8, right: 16),
             leadingPadding: EdgeInsets.only(right: 12),
+            height: 88,
+            leadingSize: Size(72, 72),
+          ),
+          eventImageLayout: const EventImageLayout(
+            fallbackCrossPadding: EdgeInsets.all(6),
+            fallbackCheckPadding: EdgeInsets.all(12),
           ),
           listFolder: const ListFolderLayout(
             iconSize: 68,
             imageBorderRadius: 4,
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
+          ),
+          templates: const LayoutTemplates(
+            s1: EdgeInsets.all(18),
+            s2: EdgeInsets.all(6),
+            bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
+          ),
+          borders: const BorderLayout(thin: 1.5, medium: 3),
+          linedBorder: const LinedBorderLayout(dashSize: 6),
+          selectableField: const SelectableFieldLayout(
+            height: 72,
+            position: -9,
+            size: 36,
+            textLeftPadding: 18,
+            textRightPadding: 39,
+            textTopPadding: 15,
+            padding: EdgeInsets.all(6),
+          ),
+          category: const CategoryLayout(
+            height: 66,
+            radius: 150,
+            startPadding: 12,
+            endPadding: 6,
+            emptySize: 24,
+            topMargin: 6,
+            imageDiameter: 54,
+            noColorsImageSize: 45,
+            radioPadding: EdgeInsets.all(12),
+            imagePadding: EdgeInsets.all(4.5),
+          ),
+          radio: const RadioLayout(
+            outerRadius: 17.25,
+            innerRadius: 12.75,
+          ),
+          selectPicture: const SelectPictureLayout(
+            imageSize: 126,
+            padding: 6,
+            removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
+          ),
+          recording: const RecordingLayout(
+            trackHeight: 6,
+            thumbRadius: 18,
+            timeDisplayHeight: 96,
+            timeDisplayWidth: 180,
+            padding: EdgeInsets.symmetric(horizontal: 48),
+          ),
+          arrows: const ArrowsLayout(
+            collapseMargin: 3,
+            radius: 150,
+            size: 72,
+          ),
+          menuButton: const MenuButtonLayout(
+            dotPosition: -4.5,
+          ),
+          agenda: const AgendaLayout(
+            topPadding: 90,
+            bottomPadding: 187.5,
+            sliverTopPadding: 144,
+          ),
+          commonCalendar: const CommonCalendarLayout(
+            fullDayStackDistance: 6,
+            goToNowButtonTop: 48,
           ),
         );
 }

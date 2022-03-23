@@ -27,7 +27,7 @@ class CreateNewPage extends StatelessWidget {
                 leading: const Icon(AbiliaIcons.basicActivity),
                 text: Text(t.newActivity),
                 onTap: () => navigateToActivityWizard(context, authProviders),
-              ).pad(formItemPadding),
+              ).pad(m1ItemPadding),
             if (memoplannerSettingsState.basicActivityOption)
               PickField(
                 key: TestKey.basicActivityChoice,
@@ -59,7 +59,7 @@ class CreateNewPage extends StatelessWidget {
                     );
                   }
                 },
-              ).pad(formItemPadding),
+              ).pad(m1ItemPadding),
             const Divider().pad(EdgeInsets.only(top: 16.s)),
             PickField(
               key: TestKey.newTimerChoice,
@@ -68,7 +68,7 @@ class CreateNewPage extends StatelessWidget {
               onTap: () async {
                 navigateToTimerWizard(context, authProviders);
               },
-            ).pad(topPadding),
+            ).pad(m1TopPadding),
             PickField(
               key: TestKey.basicTimerChoice,
               leading: const Icon(AbiliaIcons.folder),
@@ -96,7 +96,7 @@ class CreateNewPage extends StatelessWidget {
                   );
                 }
               },
-            ).pad(formItemPadding),
+            ).pad(m1ItemPadding),
           ],
         ),
         bottomNavigationBar: const BottomNavigation(

@@ -72,7 +72,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                     onChanged: (type) => setState(() => calendarType = type),
                   ),
                 ),
-                Divider(endIndent: 16.s)
+                const Divider()
               ],
               CollapsableWidget(
                 collapsed: calendarType != DayCalendarType.oneTimepillar,
@@ -104,7 +104,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                           onChanged: (newDayInterval) =>
                               setState(() => dayInterval = newDayInterval),
                         ),
-                        Divider(endIndent: 16.s)
+                        const Divider()
                       ],
                       if (state.settingViewOptionsZoom) ...[
                         Selector<TimepillarZoom>(
@@ -133,7 +133,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                             });
                           },
                         ),
-                        Divider(endIndent: 16.s)
+                        const Divider()
                       ],
                     ].map(_addPadding),
                   ],

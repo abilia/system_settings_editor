@@ -64,11 +64,13 @@ class CalendarBottomBar extends StatelessWidget {
                     },
                   )
                 else
-                  const Spacer(),
+                  TabControlledButton(
+                    translate.day.capitalize(),
+                    AbiliaIcons.day,
+                    tabIndex: 0,
+                  ),
                 if (settingsState.displayMenu)
-                  MenuButton(
-                    tabIndex: tabItems.length,
-                  )
+                  MenuButton(tabIndex: tabItems.length)
                 else
                   SizedBox(width: layout.actionButton.size),
               ],
