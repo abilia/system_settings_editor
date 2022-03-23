@@ -168,7 +168,7 @@ class _SelectAlarmPageState extends State<SelectAlarmPage> {
         ),
         SizedBox(height: layout.formPadding.verticalItemDistance),
         const Divider(),
-        SizedBox(height: layout.formPadding.dividerBottomDistance),
+        SizedBox(height: layout.formPadding.groupTopDistance),
         RecordSoundWidget(activity: activity, soundChanged: _changeRecording),
       ],
     );

@@ -135,7 +135,9 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                             Align(
                               alignment: Alignment.topCenter,
                               child: Padding(
-                                padding: EdgeInsets.only(top: 32.0.s),
+                                padding: EdgeInsets.only(
+                                  top: layout.commonCalendar.goToNowButtonTop,
+                                ),
                                 child: const GoToNowButton(),
                               ),
                             ),

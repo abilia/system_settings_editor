@@ -3,7 +3,8 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 
 class Agenda extends StatefulWidget {
-  static final topPadding = 60.0.s, bottomPadding = 125.0.s;
+  static final topPadding = layout.agenda.topPadding,
+      bottomPadding = layout.agenda.bottomPadding;
 
   final EventsLoaded eventState;
 
@@ -174,7 +175,7 @@ class SliverNoActivities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: EdgeInsets.only(top: 96.s),
+      padding: EdgeInsets.only(top: layout.agenda.sliverTopPadding),
       sliver: SliverToBoxAdapter(
         child: Center(
           child: Tts(
@@ -211,7 +212,7 @@ class SliverEventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 12.0.s),
+      padding: m1Horizontal,
       sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.showCategories != current.showCategories ||

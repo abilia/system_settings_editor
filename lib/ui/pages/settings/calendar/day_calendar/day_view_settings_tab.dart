@@ -11,7 +11,7 @@ class DayViewSettingsTab extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<DayCalendarSettingsCubit>();
         return SettingsTab(
-          dividerPadding: 8.s,
+          dividerPadding: layout.formPadding.verticalItemDistance,
           children: [
             Selector<DayCalendarType>(
               heading: t.viewMode,
@@ -36,7 +36,7 @@ class DayViewSettingsTab extends StatelessWidget {
               onChanged: (type) => cubit.changeDayCalendarSettings(
                   state.copyWith(calendarType: type)),
             ),
-            Divider(endIndent: 16.s),
+            const Divider(),
             Selector<TimepillarIntervalType>(
               heading: t.dayInterval,
               groupValue: state.dayInterval,
@@ -60,7 +60,7 @@ class DayViewSettingsTab extends StatelessWidget {
               onChanged: (newDayInterval) => cubit.changeDayCalendarSettings(
                   state.copyWith(dayInterval: newDayInterval)),
             ),
-            Divider(endIndent: 16.s),
+            const Divider(),
             Selector<TimepillarZoom>(
               heading: t.zoom,
               groupValue: state.timepillarZoom,
@@ -84,7 +84,7 @@ class DayViewSettingsTab extends StatelessWidget {
               onChanged: (newZoom) => cubit.changeDayCalendarSettings(
                   state.copyWith(timepillarZoom: newZoom)),
             ),
-            Divider(endIndent: 16.s),
+            const Divider(),
             Selector<bool>(
               heading: t.activityDuration,
               groupValue: state.dotsInTimePillar,

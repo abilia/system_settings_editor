@@ -58,7 +58,7 @@ class BackendButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: layout.formPadding.dividerBottomDistance,
+            height: layout.formPadding.groupTopDistance,
             child: FittedBox(
               child: Radio(
                 groupValue: currentBaseUrl,

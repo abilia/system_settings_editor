@@ -15,11 +15,11 @@ class RecurringMonthlyWiz extends StatelessWidget {
           controller: scrollController,
           children: <Widget>[
             ...[
-              SizedBox(height: layout.formPadding.dividerBottomDistance),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               const MonthDays(),
-              SizedBox(height: layout.formPadding.dividerTopDistance),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
               const Divider(),
-              SizedBox(height: layout.formPadding.dividerBottomDistance),
+              SizedBox(height: layout.formPadding.groupTopDistance),
               const EndDateWizWidget(),
             ].map(
               (w) => w is Divider

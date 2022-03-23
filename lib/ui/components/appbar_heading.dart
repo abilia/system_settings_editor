@@ -24,7 +24,7 @@ class AppBarHeading extends StatelessWidget {
         child: DefaultTextStyle(
           style: (theme.textTheme.headline5 ?? headline5).copyWith(
             color: AbiliaColors.white,
-            fontSize: 22.0.s,
+            fontSize: layout.appBar.fontSize,
           ),
           child: Row(
             children: [
@@ -36,7 +36,8 @@ class AppBarHeading extends StatelessWidget {
                   children: [
                     if (iconData != null) ...[
                       Icon(iconData),
-                      SizedBox(width: 8.s),
+                      SizedBox(
+                          width: layout.formPadding.horizontalItemDistance),
                     ],
                     if (label.isNotEmpty)
                       Flexible(

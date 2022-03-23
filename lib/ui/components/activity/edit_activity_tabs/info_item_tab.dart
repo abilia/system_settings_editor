@@ -96,6 +96,7 @@ class EditChecklistWidget extends StatelessWidget {
                 onTap: onTap,
               ),
             ),
+            SizedBox(width: layout.formPadding.horizontalItemDistance),
             _LibraryButton(
               onPressed: () async {
                 final authProviders = copiedAuthProviders(context);
@@ -115,7 +116,7 @@ class EditChecklistWidget extends StatelessWidget {
                       );
                 }
               },
-            )
+            ).pad(layout.templates.s2)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),
@@ -334,6 +335,9 @@ class EditNoteWidget extends StatelessWidget {
                 onTap: onTap,
               ),
             ),
+            SizedBox(
+              width: layout.formPadding.horizontalItemDistance,
+            ),
             _LibraryButton(
               onPressed: () async {
                 final authProviders = copiedAuthProviders(context);
@@ -353,7 +357,7 @@ class EditNoteWidget extends StatelessWidget {
                       );
                 }
               },
-            )
+            ).pad(layout.templates.s2)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),
@@ -417,15 +421,12 @@ class _LibraryButton extends StatelessWidget {
   const _LibraryButton({Key? key, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(12.0.s, 4.0.s, 4.0.s, 4.0.s),
-      child: IconActionButtonDark(
-        onPressed: onPressed,
-        child: Icon(
-          AbiliaIcons.showText,
-          size: layout.iconSize.normal,
-          color: AbiliaColors.black,
-        ),
+    return IconActionButtonDark(
+      onPressed: onPressed,
+      child: Icon(
+        AbiliaIcons.showText,
+        size: layout.iconSize.normal,
+        color: AbiliaColors.black,
       ),
     );
   }

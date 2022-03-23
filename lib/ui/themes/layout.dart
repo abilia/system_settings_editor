@@ -56,6 +56,12 @@ class Layout {
   final SelectableFieldLayout selectableField;
   final CategoryLayout category;
   final RadioLayout radio;
+  final SelectPictureLayout selectPicture;
+  final RecordingLayout recording;
+  final ArrowsLayout arrows;
+  final MenuButtonLayout menuButton;
+  final AgendaLayout agenda;
+  final CommonCalendarLayout commonCalendar;
 
   const Layout({
     this.radius = 12,
@@ -103,18 +109,25 @@ class Layout {
     this.selectableField = const SelectableFieldLayout(),
     this.category = const CategoryLayout(),
     this.radio = const RadioLayout(),
+    this.selectPicture = const SelectPictureLayout(),
+    this.recording = const RecordingLayout(),
+    this.arrows = const ArrowsLayout(),
+    this.menuButton = const MenuButtonLayout(),
+    this.agenda = const AgendaLayout(),
+    this.commonCalendar = const CommonCalendarLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
-  final double horizontalPadding, largeAppBarHeight, height;
+  final double horizontalPadding, largeAppBarHeight, height, fontSize;
 
   const AppBarLayout({
     this.horizontalPadding = 16,
     this.largeAppBarHeight = 80,
     this.height = 68,
+    this.fontSize = 22,
   });
 }
 
@@ -290,8 +303,8 @@ class FormPaddingLayout {
       top,
       verticalItemDistance,
       largeVerticalItemDistance,
-      dividerTopDistance,
-      dividerBottomDistance,
+      groupBottomDistance,
+      groupTopDistance,
       horizontalItemDistance,
       largeHorizontalItemDistance,
       m1Bottom,
@@ -303,8 +316,8 @@ class FormPaddingLayout {
     this.top = 24,
     this.verticalItemDistance = 8,
     this.largeVerticalItemDistance = 12,
-    this.dividerTopDistance = 16,
-    this.dividerBottomDistance = 24,
+    this.groupBottomDistance = 16,
+    this.groupTopDistance = 24,
     this.horizontalItemDistance = 8,
     this.largeHorizontalItemDistance = 12,
     this.m1Bottom = 64,
@@ -470,7 +483,8 @@ class TimepillarLayout {
       hourLineWidth,
       topMargin,
       bottomMargin,
-      timeLineHeight;
+      timeLineHeight,
+      flarpRadius;
 
   final TimepillarDotLayout dot;
   final TimepillarCardLayout card;
@@ -485,6 +499,7 @@ class TimepillarLayout {
     this.topMargin = 96,
     this.bottomMargin = 64,
     this.timeLineHeight = 2,
+    this.flarpRadius = 8,
     this.dot = const TimepillarDotLayout(),
     this.card = const TimepillarCardLayout(),
     this.twoTimePillar = const TwoTimepillarLayout(),
@@ -882,11 +897,12 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets s1, s2;
+  final EdgeInsets s1, s2, bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
     this.s2 = const EdgeInsets.all(4),
+    this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
   });
 }
 
@@ -926,12 +942,27 @@ class SelectableFieldLayout {
 }
 
 class CategoryLayout {
-  final double height;
-  final EdgeInsets radioPadding;
+  final double height,
+      radius,
+      startPadding,
+      endPadding,
+      emptySize,
+      topMargin,
+      imageDiameter,
+      noColorsImageSize;
+  final EdgeInsets radioPadding, imagePadding;
 
   const CategoryLayout({
     this.height = 44,
+    this.radius = 100,
+    this.startPadding = 8,
+    this.endPadding = 4,
+    this.emptySize = 16,
+    this.topMargin = 4,
+    this.imageDiameter = 36,
+    this.noColorsImageSize = 30,
     this.radioPadding = const EdgeInsets.all(8),
+    this.imagePadding = const EdgeInsets.all(3),
   });
 }
 
@@ -941,5 +972,68 @@ class RadioLayout {
   const RadioLayout({
     this.outerRadius = 11.5,
     this.innerRadius = 8.5,
+  });
+}
+
+class SelectPictureLayout {
+  final double imageSize, padding;
+  final EdgeInsets removeButtonPadding;
+
+  const SelectPictureLayout({
+    this.imageSize = 84,
+    this.padding = 4,
+    this.removeButtonPadding = const EdgeInsets.fromLTRB(8, 6, 8, 6),
+  });
+}
+
+class RecordingLayout {
+  final double trackHeight, thumbRadius, timeDisplayHeight, timeDisplayWidth;
+  final EdgeInsets padding;
+
+  const RecordingLayout({
+    this.trackHeight = 4,
+    this.thumbRadius = 12,
+    this.timeDisplayHeight = 64,
+    this.timeDisplayWidth = 120,
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 32,
+    ),
+  });
+}
+
+class ArrowsLayout {
+  final double collapseMargin, radius, size;
+
+  const ArrowsLayout({
+    this.collapseMargin = 2,
+    this.radius = 100,
+    this.size = 48,
+  });
+}
+
+class MenuButtonLayout {
+  final double dotPosition;
+
+  const MenuButtonLayout({
+    this.dotPosition = -3,
+  });
+}
+
+class AgendaLayout {
+  final double topPadding, bottomPadding, sliverTopPadding;
+
+  const AgendaLayout({
+    this.topPadding = 60,
+    this.bottomPadding = 125,
+    this.sliverTopPadding = 96,
+  });
+}
+
+class CommonCalendarLayout {
+  final double fullDayStackDistance, goToNowButtonTop;
+
+  const CommonCalendarLayout({
+    this.fullDayStackDistance = 4,
+    this.goToNowButtonTop = 32,
   });
 }

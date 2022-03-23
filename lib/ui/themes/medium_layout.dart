@@ -7,6 +7,8 @@ class MediumLayout extends Layout {
           appBar: const AppBarLayout(
             largeAppBarHeight: 148,
             height: 104,
+            fontSize: 22,
+            horizontalPadding: 16,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -88,9 +90,10 @@ class MediumLayout extends Layout {
             top: 36,
             verticalItemDistance: 12,
             largeVerticalItemDistance: 18,
-            dividerTopDistance: 24,
-            dividerBottomDistance: 36,
+            groupBottomDistance: 24,
+            groupTopDistance: 36,
             horizontalItemDistance: 12,
+            largeHorizontalItemDistance: 18,
             m1Bottom: 96,
             m2Bottom: 24,
           ),
@@ -162,6 +165,7 @@ class MediumLayout extends Layout {
             width: 80,
             padding: 8,
             hourPadding: 1.5,
+            flarpRadius: 12,
             dot: TimepillarDotLayout(
               size: 16,
               padding: 4,
@@ -321,6 +325,7 @@ class MediumLayout extends Layout {
           templates: const LayoutTemplates(
             s1: EdgeInsets.all(18),
             s2: EdgeInsets.all(6),
+            bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -335,11 +340,48 @@ class MediumLayout extends Layout {
           ),
           category: const CategoryLayout(
             height: 66,
+            radius: 150,
+            startPadding: 12,
+            endPadding: 6,
+            emptySize: 24,
+            topMargin: 6,
+            imageDiameter: 54,
+            noColorsImageSize: 45,
             radioPadding: EdgeInsets.all(12),
+            imagePadding: EdgeInsets.all(4.5),
           ),
           radio: const RadioLayout(
             outerRadius: 17.25,
             innerRadius: 12.75,
+          ),
+          selectPicture: const SelectPictureLayout(
+            imageSize: 126,
+            padding: 6,
+            removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
+          ),
+          recording: const RecordingLayout(
+            trackHeight: 6,
+            thumbRadius: 18,
+            timeDisplayHeight: 96,
+            timeDisplayWidth: 180,
+            padding: EdgeInsets.symmetric(horizontal: 48),
+          ),
+          arrows: const ArrowsLayout(
+            collapseMargin: 3,
+            radius: 150,
+            size: 72,
+          ),
+          menuButton: const MenuButtonLayout(
+            dotPosition: -4.5,
+          ),
+          agenda: const AgendaLayout(
+            topPadding: 90,
+            bottomPadding: 187.5,
+            sliverTopPadding: 144,
+          ),
+          commonCalendar: const CommonCalendarLayout(
+            fullDayStackDistance: 6,
+            goToNowButtonTop: 48,
           ),
         );
 }

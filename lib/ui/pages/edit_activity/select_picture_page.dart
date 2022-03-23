@@ -69,7 +69,8 @@ class SelectPictureBody extends StatelessWidget {
                 child: Column(
                   children: [
                     SelectedImageWidget(selectedImage: selectedImage),
-                    SizedBox(height: 10.0.s),
+                    SizedBox(
+                        height: layout.formPadding.largeVerticalItemDistance),
                     RemoveButton(
                       key: TestKey.removePicture,
                       onTap: () {

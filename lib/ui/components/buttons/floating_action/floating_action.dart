@@ -28,9 +28,9 @@ class FloatingActions extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(
-                        left: 12.s,
-                        right: 24.s,
-                        bottom: 12.s,
+                        left: layout.formPadding.largeHorizontalItemDistance,
+                        right:
+                            layout.formPadding.largeHorizontalItemDistance * 2,
                       ),
                       child: ErrorMessage(
                         text: Text(
@@ -76,7 +76,9 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
             if (state.displayEyeButton)
               if (tabController.index == 0)
                 Padding(
-                  padding: EdgeInsets.only(top: 8.s),
+                  padding: EdgeInsets.only(
+                    top: layout.formPadding.verticalItemDistance,
+                  ),
                   child: const EyeButtonDay(),
                 ),
           ],
