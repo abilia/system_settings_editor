@@ -382,8 +382,7 @@ class WeekDayColumn extends StatelessWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 6.s, horizontal: 2.s),
+                        padding: layout.weekCalendar.innerDayPadding,
                         child:
                             BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
                           buildWhen: (previous, current) =>
@@ -397,7 +396,9 @@ class WeekDayColumn extends StatelessWidget {
                                       .map(
                                         (ao) => Padding(
                                           padding: EdgeInsets.symmetric(
-                                              vertical: 2.s),
+                                            vertical: layout
+                                                .weekCalendar.activityDistance,
+                                          ),
                                           child: AspectRatio(
                                             aspectRatio: 1,
                                             child: WeekActivityContent(

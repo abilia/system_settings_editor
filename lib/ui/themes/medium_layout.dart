@@ -106,9 +106,11 @@ class MediumLayout extends Layout {
             headerBottomPadding: 6,
             headerHeight: 66,
             fullDayHeight: 54,
+            activityDistance: 3,
             crossOverPadding: EdgeInsets.fromLTRB(6, 6, 6, 18),
             bodyPadding: EdgeInsets.fromLTRB(3, 6, 3, 6),
             activityTextPadding: EdgeInsets.all(4.5),
+            innerDayPadding: EdgeInsets.symmetric(vertical: 9, horizontal: 3),
           ),
           monthCalendar: const MonthCalendarLayout(
               monthContentFlex: 620,

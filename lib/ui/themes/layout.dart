@@ -333,8 +333,12 @@ class WeekCalendarLayout {
       headerTopPaddingSmall,
       headerBottomPadding,
       headerHeight,
-      fullDayHeight;
-  final EdgeInsets crossOverPadding, bodyPadding, activityTextPadding;
+      fullDayHeight,
+      activityDistance;
+  final EdgeInsets crossOverPadding,
+      bodyPadding,
+      activityTextPadding,
+      innerDayPadding;
 
   const WeekCalendarLayout({
     this.activityBorderWidth = 1.5,
@@ -345,9 +349,12 @@ class WeekCalendarLayout {
     this.headerBottomPadding = 4,
     this.headerHeight = 44,
     this.fullDayHeight = 36,
+    this.activityDistance = 2,
     this.crossOverPadding = const EdgeInsets.fromLTRB(4, 4, 4, 12),
     this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
     this.activityTextPadding = const EdgeInsets.all(3.0),
+    this.innerDayPadding =
+        const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
   });
 }
 
