@@ -49,6 +49,11 @@ void main() {
     );
   });
 
+  tearDown(() {
+    _batteryStreamController.close();
+    _memoSettingsStreamController.close();
+  });
+
   test('set screen on while charging', () {
     expectLater(
       _wakeLockCubit.stream,

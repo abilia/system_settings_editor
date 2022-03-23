@@ -94,6 +94,7 @@ void main() {
     genericResponse = () => [];
     activityResponse = () => [];
     timerResponse = () => [];
+    mockTicker.close();
     GetIt.I.reset();
   });
 

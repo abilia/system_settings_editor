@@ -60,7 +60,12 @@ void main() {
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    GetIt.I.reset();
+    activitiesStreamController.close();
+    settingsStreamController.close();
+    timerStreamController.close();
+  });
 
   Widget _authListener() => MaterialApp(
         home: TopLevelBlocsProvider(
