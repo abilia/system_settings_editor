@@ -54,18 +54,6 @@ class PhotoAdded extends SortableEvent {
       ];
 }
 
-class SortableUpdated extends SortableEvent {
-  final Sortable sortable;
-
-  const SortableUpdated(this.sortable);
-
-  @override
-  bool get stringify => true;
-
-  @override
-  List<Object> get props => [sortable];
-}
-
 class SortablesUpdated extends SortableEvent {
   final List<Sortable> sortables;
 
@@ -76,4 +64,8 @@ class SortablesUpdated extends SortableEvent {
 
   @override
   List<Object> get props => [sortables];
+}
+
+class SortableUpdated extends SortablesUpdated {
+  SortableUpdated(Sortable sortable) : super([sortable]);
 }
