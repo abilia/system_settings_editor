@@ -50,7 +50,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           SwitchField(
             key: TestKey.showTypeOfDisplaySwitch,
             value: state.showTypeOfDisplay,

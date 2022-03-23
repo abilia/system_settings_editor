@@ -12,3 +12,4 @@ export 'play_sound_button.dart';
 export 'play_alarm_sound_button.dart';
 export 'floating_action/all.dart';
 export 'play_alarm_speech_button.dart';
+export 'tab_controlled_button.dart';

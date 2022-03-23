@@ -73,7 +73,8 @@ class _SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SettingsTab(children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 8.s),
+          padding:
+              EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance),
           child: Tts(child: Text(hint)),
         ),
         ...children,

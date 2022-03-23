@@ -5,8 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-
-import '../all.dart';
+import 'package:seagull/repository/all.dart';
 
 class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;

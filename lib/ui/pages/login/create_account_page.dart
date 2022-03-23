@@ -71,7 +71,7 @@ class CreateAccountPage extends StatelessWidget {
                       style: textTheme.headline6,
                     ),
                   ),
-                  SizedBox(height: 8.s),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
                   Tts(
                     child: Text(
                       t.createAaccountSubheading,

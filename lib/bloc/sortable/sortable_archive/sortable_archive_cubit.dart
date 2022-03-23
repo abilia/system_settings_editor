@@ -11,7 +11,7 @@ part 'sortable_archive_state.dart';
 
 class SortableArchiveCubit<T extends SortableData>
     extends Cubit<SortableArchiveState<T>> {
-  late final StreamSubscription sortableSubscription;
+  late final StreamSubscription _sortableSubscription;
   final bool Function(Sortable<T>)? visibilityFilter;
   final bool showFolders;
 
@@ -26,7 +26,7 @@ class SortableArchiveCubit<T extends SortableData>
           visibilityFilter,
           showFolders,
         )) {
-    sortableSubscription = sortableBloc.stream.listen((sortableState) {
+    _sortableSubscription = sortableBloc.stream.listen((sortableState) {
       if (sortableState is SortablesLoaded) {
         sortablesUpdated(sortableState.sortables);
       }
@@ -79,6 +79,12 @@ class SortableArchiveCubit<T extends SortableData>
         initialFolderId: state.initialFolderId,
       ),
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _sortableSubscription.cancel();
+    return super.close();
   }
 
   static SortableArchiveState<T> _initialState<T extends SortableData>(

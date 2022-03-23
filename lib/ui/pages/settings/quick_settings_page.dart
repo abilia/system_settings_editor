@@ -25,7 +25,7 @@ class QuickSettingsPage extends StatelessWidget {
             ),
             QuickSettingsGroup(children: [
               const WiFiPickField(),
-              SizedBox(height: 8.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               const SoundEffectsSwitch(),
             ]),
             QuickSettingsGroup(children: [
@@ -41,7 +41,7 @@ class QuickSettingsPage extends StatelessWidget {
             QuickSettingsGroup(children: [
               SubHeading(t.screenTimeout),
               const ScreenTimeoutPickField(),
-              SizedBox(height: 8.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               const KeepOnWhileChargingSwitch(),
             ]),
           ],

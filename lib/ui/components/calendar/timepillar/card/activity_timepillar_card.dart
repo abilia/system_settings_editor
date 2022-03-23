@@ -171,8 +171,11 @@ class SideTime extends StatelessWidget {
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-            color: colorFromOccasion(occasion),
-            borderRadius: BorderRadius.all(Radius.circular(8.0.s))),
+          color: colorFromOccasion(occasion),
+          borderRadius: BorderRadius.all(
+            Radius.circular(layout.timePillar.flarpRadius),
+          ),
+        ),
       ),
     );
   }

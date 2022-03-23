@@ -7,8 +7,6 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-import 'edit_recurring_mixin.dart';
-
 part 'activities_event.dart';
 part 'activities_state.dart';
 

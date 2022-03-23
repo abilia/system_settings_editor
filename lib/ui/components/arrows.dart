@@ -236,7 +236,7 @@ class _ArrowDown extends _ArrowBase {
 abstract class _ArrowBase extends StatelessWidget {
   final ScrollController? controller;
   final double? collapseMargin;
-  static final double defaultCollapseMargin = 2.0.s;
+  static final double defaultCollapseMargin = layout.arrows.collapseMargin;
 
   double get getCollapseMargin => collapseMargin ?? defaultCollapseMargin;
 
@@ -248,8 +248,8 @@ abstract class _ArrowBase extends StatelessWidget {
 }
 
 class _Arrow extends StatefulWidget {
-  static final Radius radius = Radius.circular(100.s);
-  static final double arrowSize = 48.0.s;
+  static final Radius radius = Radius.circular(layout.arrows.radius);
+  static final double arrowSize = layout.arrows.size;
   static final double translationPixels = arrowSize / 2;
 
   final IconData icon;

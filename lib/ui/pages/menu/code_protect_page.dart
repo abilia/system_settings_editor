@@ -75,7 +75,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
                 Navigator.of(context).pop(true);
               },
             ),
-            SizedBox(height: layout.formPadding.dividerTopDistance),
+            SizedBox(height: layout.formPadding.groupBottomDistance),
             Tts(
               child: Text(
                 '${translate.enterYourCodeToAccess} ${widget.name}',
