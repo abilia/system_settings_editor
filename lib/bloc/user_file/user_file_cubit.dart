@@ -21,7 +21,7 @@ class UserFileCubit extends Cubit<UserFileState> {
   final UserFileRepository userFileRepository;
   final SyncBloc syncBloc;
   final FileStorage fileStorage;
-  late final StreamSubscription pushSubscription;
+  late final StreamSubscription _pushSubscription;
 
   UserFileCubit({
     required this.userFileRepository,
@@ -29,7 +29,7 @@ class UserFileCubit extends Cubit<UserFileState> {
     required this.fileStorage,
     required PushCubit pushCubit,
   }) : super(const UserFilesNotLoaded()) {
-    pushSubscription =
+    _pushSubscription =
         pushCubit.stream.whereType<PushReceived>().listen(loadUserFiles);
   }
 
@@ -110,4 +110,10 @@ class UserFileCubit extends Cubit<UserFileState> {
         deleted: false,
         fileLoaded: true,
       );
+
+  @override
+  Future<void> close() async {
+    await _pushSubscription.cancel();
+    return super.close();
+  }
 }
