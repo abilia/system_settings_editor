@@ -33,6 +33,10 @@ void main() {
     activityDetectedStream = activityDetectionCubit.stream;
   });
 
+  tearDown(() {
+    tickerController.close();
+  });
+
   blocTest<InactivityCubit, InactivityState>(
     'initial state',
     build: () => InactivityCubit(

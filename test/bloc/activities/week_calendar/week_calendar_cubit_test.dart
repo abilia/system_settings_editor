@@ -38,6 +38,10 @@ void main() {
       );
     });
 
+    tearDown(() {
+      mockedTicker.close();
+    });
+
     test('initial state is WeekCalendarInitial', () {
       expect(weekCalendarBloc.state, isA<WeekCalendarInitial>());
       expect(weekCalendarBloc.state.currentWeekStart,

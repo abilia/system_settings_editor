@@ -40,6 +40,10 @@ void main() {
         curve: any(named: 'curve'))).thenAnswer((_) => Future.value());
   });
 
+  tearDown(() {
+    ticker.close();
+  });
+
   test('initial state is Unready', () {
     // Assert
     expect(scrollPositionCubit.state, Unready());

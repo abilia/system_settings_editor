@@ -73,6 +73,10 @@ void main() {
     );
   });
 
+  tearDown(() {
+    _batteryStreamController.close();
+  });
+
   Widget _wrapWithMaterialApp() => MaterialApp(
         builder: (context, child) => BlocProvider<WakeLockCubit>(
           create: (context) => wakeLockCubit,

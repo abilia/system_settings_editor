@@ -35,6 +35,10 @@ void main() {
     );
   });
 
+  tearDown(() {
+    clock.close();
+  });
+
   group('Calendar days are correct', () {
     setUp(() {
       when(() => mockActivityRepository.load())
