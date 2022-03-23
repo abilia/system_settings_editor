@@ -372,11 +372,9 @@ class SelectableField extends StatelessWidget {
                   left: layout.selectableField.textLeftPadding,
                   right: layout.selectableField.textRightPadding,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    text,
-                  ],
+                child: Align(
+                  widthFactor: 1,
+                  child: text,
                 ),
               ),
               Positioned(
