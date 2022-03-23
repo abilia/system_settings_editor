@@ -59,7 +59,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
         await _addMissingDefaults(sortables);
       }
     } catch (e) {
-      _log.warning('exception when loadning sortable $e');
+      _log.warning('exception when loading sortable $e');
       emit(SortablesLoadedFailed());
     }
   }

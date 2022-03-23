@@ -12,6 +12,9 @@ import '../../../test_helpers/app_pumper.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  const String activityNameOne = 'Basic Activity 1';
+  const String activityNameTwo = 'Basic Activity 2';
+
   setUp(() async {
     setupPermissions();
     final mockSortableDb = MockSortableDb();
@@ -19,10 +22,10 @@ void main() {
       (invocation) => Future.value(
         <Sortable<SortableData>>[
           Sortable.createNew<BasicActivityDataItem>(
-            data: BasicActivityDataItem.createNew(title: 'Basic Activity 1'),
+            data: BasicActivityDataItem.createNew(title: activityNameOne),
           ),
           Sortable.createNew<BasicActivityDataItem>(
-            data: BasicActivityDataItem.createNew(title: 'Basic Activity 2'),
+            data: BasicActivityDataItem.createNew(title: activityNameTwo),
           ),
           Sortable.createNew<BasicActivityDataItem>(
             isGroup: true,
@@ -81,6 +84,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNothing);
       expect(find.byType(PreviousButton), findsOneWidget);
+    });
+
+    group('Tool bar', () {
+      testWidgets('Tapping item shows and hides toolbar', (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SortableToolbar), findsOneWidget);
+
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SortableToolbar), findsNothing);
+      });
     });
   });
 }

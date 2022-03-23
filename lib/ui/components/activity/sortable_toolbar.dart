@@ -1,9 +1,9 @@
 import 'package:seagull/ui/all.dart';
 
-enum ChecklistReorderDirection { up, down }
+enum SortableReorderDirection { up, down }
 
-class ChecklistToolbar extends StatelessWidget {
-  const ChecklistToolbar({
+class SortableToolbar extends StatelessWidget {
+  const SortableToolbar({
     Key? key,
     this.disableUp = false,
     this.disableDown = false,
@@ -15,7 +15,7 @@ class ChecklistToolbar extends StatelessWidget {
 
   final bool disableUp, disableDown;
   final Function() onTapEdit, onTapDelete;
-  final Function(ChecklistReorderDirection) onTapReorder;
+  final Function(SortableReorderDirection) onTapReorder;
   final EdgeInsets? margin;
 
   @override
@@ -37,7 +37,7 @@ class ChecklistToolbar extends StatelessWidget {
             _ChecklistToolbarButton(
               disabled: disableUp,
               iconData: AbiliaIcons.cursorUp,
-              onTap: () => onTapReorder(ChecklistReorderDirection.up),
+              onTap: () => onTapReorder(SortableReorderDirection.up),
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
@@ -56,7 +56,7 @@ class ChecklistToolbar extends StatelessWidget {
               key: TestKey.checklistToolbarDownButton,
               disabled: disableDown,
               iconData: AbiliaIcons.cursorDown,
-              onTap: () => onTapReorder(ChecklistReorderDirection.down),
+              onTap: () => onTapReorder(SortableReorderDirection.down),
             ),
             SizedBox(width: spacing),
           ],

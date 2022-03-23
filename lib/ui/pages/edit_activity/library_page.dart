@@ -6,8 +6,10 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
-    Sortable<SortableData>,
-    Function(Sortable<SortableData>, ChecklistReorderDirection, BuildContext));
+  Sortable<SortableData>,
+  Function(),
+  SortableToolbar?,
+);
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
@@ -249,14 +251,14 @@ class ListLibrary<T extends SortableData> extends StatefulWidget {
 }
 
 class ListLibraryState<T extends SortableData> extends State<ListLibrary> {
-  late List<Sortable> content;
+  int? _selectedIndex;
 
   @override
   Widget build(BuildContext context) {
     final _controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        content =
+        final content =
             (archiveState.allByFolder[archiveState.currentFolderId] ?? []);
         if (content.isEmpty) {
           return EmptyLibraryMessage(
@@ -276,34 +278,70 @@ class ListLibraryState<T extends SortableData> extends State<ListLibrary> {
             itemCount: content.length,
             separatorBuilder: (context, index) =>
                 SizedBox(height: layout.libraryPage.listSeparation),
-            itemBuilder: (BuildContext context, int index) => widget
-                .libraryItemGenerator(content[index], _handleReorderSortable),
+            itemBuilder: (BuildContext context, int index) {
+              final Sortable sortable = content[index];
+              final bool selected =
+                  _selectedIndex != null && _selectedIndex == index;
+              return widget.libraryItemGenerator(
+                sortable,
+                () => sortable.isGroup
+                    ? _tapFolder(sortable.id, index)
+                    : setState(
+                        () => selected
+                            ? _selectedIndex = null
+                            : _selectedIndex = index,
+                      ),
+                selected
+                    ? SortableToolbar(
+                        disableUp: index == 0,
+                        disableDown: index == content.length - 1,
+                        onTapEdit: () {
+                          // TODO: edit timer/activity
+                        },
+                        onTapDelete: () {
+                          // TODO: delete timer/activity
+                        },
+                        onTapReorder: (direction) => _handleReorderSortable(
+                            content, sortable, direction, context),
+                      )
+                    : null,
+              );
+            },
           ),
         );
       },
     );
   }
 
+  void _tapFolder(String id, int index) {
+    context.read<SortableArchiveCubit<T>>().folderChanged(id);
+    setState(
+      () => _selectedIndex = null,
+    );
+  }
+
   void _handleReorderSortable(
+    final List<Sortable> sortables,
     final Sortable question,
-    ChecklistReorderDirection direction,
+    SortableReorderDirection direction,
     BuildContext context,
   ) {
-    var sortables = content.toList();
-    final qIndex = sortables.indexWhere((q) => q.id == question.id);
-    final swapWithIndex =
-        direction == ChecklistReorderDirection.up ? qIndex - 1 : qIndex + 1;
-
-    if (qIndex >= 0 &&
-        qIndex < sortables.length &&
+    final sortableIndex = sortables.indexWhere((q) => q.id == question.id);
+    final swapWithIndex = direction == SortableReorderDirection.up
+        ? sortableIndex - 1
+        : sortableIndex + 1;
+    if (sortableIndex >= 0 &&
+        sortableIndex < sortables.length &&
         swapWithIndex >= 0 &&
         swapWithIndex < sortables.length) {
-      final tmpQ = sortables[qIndex];
-      sortables[qIndex] = sortables[swapWithIndex];
+      final tmpQ = sortables[sortableIndex];
+      sortables[sortableIndex] = sortables[swapWithIndex];
       sortables[swapWithIndex] = tmpQ;
+      setState(() {
+        _selectedIndex = swapWithIndex;
+      });
     }
     context.read<SortableBloc>().add(SortablesUpdated(sortables));
-    context.read<SortableArchiveCubit<T>>().sortablesUpdated(sortables);
   }
 }
 

@@ -65,90 +65,45 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
       });
 }
 
-class _BasicTemplatePickField<T extends SortableData> extends StatefulWidget {
-  const _BasicTemplatePickField(this.sortable, this.onTapReorder, {Key? key})
+class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
+  const _BasicTemplatePickField(this._sortable, this._onTap, this._toolBar,
+      {Key? key})
       : super(key: key);
 
-  final Sortable<T> sortable;
-  final Function(Sortable, ChecklistReorderDirection, BuildContext)?
-      onTapReorder;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _BasicTemplatePickFieldState();
-  }
-}
-
-class _BasicTemplatePickFieldState<T extends SortableData>
-    extends State<_BasicTemplatePickField<T>> {
-  bool selected = false;
-  int? selectedQuestion;
+  final Sortable<T> _sortable;
+  final SortableToolbar? _toolBar;
+  final Function() _onTap;
 
   @override
   Widget build(BuildContext context) {
-    final Sortable<T> sortable = widget.sortable;
+    final text = Text(_sortable.data.title(Translator.of(context).translate));
 
-    final text = Text(sortable.data.title(Translator.of(context).translate));
-
-    if (sortable.isGroup) {
+    if (_sortable.isGroup) {
       return PickField(
-        onTap: () =>
-            context.read<SortableArchiveCubit<T>>().folderChanged(sortable.id),
+        onTap: _onTap,
         text: text,
-        leading: _PickFolder(sortableData: sortable.data),
+        leading: _PickFolder(sortableData: _sortable.data),
         leadingPadding: layout.listFolder.margin,
       );
     }
     return PickField(
-      onTap: () => setState(() {
-        selected = !selected;
-      }),
-      padding: selected
+      onTap: _onTap,
+      padding: _toolBar != null
           ? layout.pickField.padding.copyWith(right: 0)
           : layout.pickField.padding,
       text: text,
-      leading: sortable.data.hasImage()
+      leading: _sortable.data.hasImage()
           ? FadeInAbiliaImage(
-              imageFileId: sortable.data.dataFileId(),
-              imageFilePath: sortable.data.dataFilePath(),
+              imageFileId: _sortable.data.dataFileId(),
+              imageFilePath: _sortable.data.dataFilePath(),
               fit: BoxFit.contain,
             )
           : const Icon(
               AbiliaIcons.basicActivity,
               color: AbiliaColors.white140,
             ),
-      trailing: selected
-          ? ChecklistToolbar(
-              onTapEdit: () {
-                _deselect();
-                // TODO: edit
-              },
-              onTapDelete: () {
-                _deselect();
-                // TODO: delete
-              },
-              onTapReorder: (direction) {
-                widget.onTapReorder?.call(sortable, direction, context);
-                // final selectedIndex = selectedQuestion;
-                //
-                // if (widget.onTapReorder != null && selectedIndex != null) {
-                //   final newSelectedIndex =
-                //       direction == ChecklistReorderDirection.up
-                //           ? selectedIndex - 1
-                //           : selectedIndex + 1;
-                //   if (newSelectedIndex >= 0 &&
-                //       newSelectedIndex < widget.checklist.questions.length) {
-                //     selectedQuestion = newSelectedIndex;
-                //   }
-                // }
-              },
-            )
-          : null,
+      trailing: _toolBar,
     );
-  }
-
-  _deselect() {
-    // setState() => selected = false;
   }
 }
 
