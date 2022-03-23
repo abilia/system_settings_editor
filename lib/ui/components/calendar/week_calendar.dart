@@ -17,7 +17,7 @@ class WeekCalendarTab extends StatelessWidget {
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Padding(
-        padding: EdgeInsets.fromLTRB(2.s, 4.s, 2.s, 0),
+        padding: layout.weekCalendar.bodyPadding,
         child: const WeekCalendar(),
       ),
     );
@@ -166,7 +166,8 @@ class WeekCalenderHeadingContent extends StatelessWidget {
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.0.s),
+          padding:
+              EdgeInsets.symmetric(horizontal: layout.weekCalendar.dayDistance),
           child: Container(
             decoration: BoxDecoration(
               color: borderColor,
@@ -187,16 +188,18 @@ class WeekCalenderHeadingContent extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: thickBorder ? 3.s : 4.s,
-                  right: 2.s,
-                  left: 2.s,
-                  bottom: 4.s,
+                  top: thickBorder
+                      ? layout.weekCalendar.headerTopPaddingSmall
+                      : layout.weekCalendar.headerTopPadding,
+                  right: layout.weekCalendar.dayDistance,
+                  left: layout.weekCalendar.dayDistance,
+                  bottom: layout.weekCalendar.headerBottomPadding,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(
-                      height: 44.s,
+                      height: layout.weekCalendar.headerHeight,
                       child: DefaultTextStyle(
                         style: _bodyText1.copyWith(height: 18 / 16),
                         child: Tts.data(
@@ -207,7 +210,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                             builder: (context, now) => WithCrossOver(
                               color: _bodyText1.color,
                               crossOverPadding:
-                                  EdgeInsets.fromLTRB(4.s, 4.s, 4.s, 12.s),
+                                  layout.weekCalendar.crossOverPadding,
                               applyCross: day.isBefore(now.onlyDays()),
                               child: Center(
                                 child: Column(
@@ -262,7 +265,7 @@ class FullDayActivies extends StatelessWidget {
         if (fullDayActivities.length > 1) {
           return FullDayStack(
               numberOfActivities: fullDayActivities.length,
-              height: 36.s,
+              height: layout.weekCalendar.fullDayHeight,
               width: double.infinity);
         } else if (fullDayActivities.length == 1) {
           return WeekActivityContent(activityOccasion: fullDayActivities.first);
@@ -352,7 +355,9 @@ class WeekDayColumn extends StatelessWidget {
                   BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day));
                 },
                 child: Padding(
-                  padding: EdgeInsets.only(right: 2.s, left: 2.s, bottom: 4.s),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: layout.weekCalendar.dayDistance,
+                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: borderColor,
@@ -455,7 +460,9 @@ class WeekActivityContent extends StatelessWidget {
             },
             child: Container(
               clipBehavior: Clip.hardEdge,
-              height: activityOccasion.activity.fullDay ? 36.s : null,
+              height: activityOccasion.activity.fullDay
+                  ? layout.weekCalendar.fullDayHeight
+                  : null,
               foregroundDecoration: BoxDecoration(
                 border: getCategoryBorder(
                   inactive: inactive,
@@ -489,7 +496,7 @@ class WeekActivityContent extends StatelessWidget {
                     )
                   else
                     Padding(
-                      padding: EdgeInsets.all(3.0.s),
+                      padding: layout.weekCalendar.activityTextPadding,
                       child: Center(
                         child: Text(
                           activityOccasion.activity.title,

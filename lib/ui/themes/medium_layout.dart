@@ -100,6 +100,15 @@ class MediumLayout extends Layout {
           weekCalendar: const WeekCalendarLayout(
             activityBorderWidth: 2.25,
             currentActivityBorderWidth: 4.5,
+            dayDistance: 3,
+            headerTopPadding: 6,
+            headerTopPaddingSmall: 4.5,
+            headerBottomPadding: 6,
+            headerHeight: 66,
+            fullDayHeight: 54,
+            crossOverPadding: EdgeInsets.fromLTRB(6, 6, 6, 18),
+            bodyPadding: EdgeInsets.fromLTRB(3, 6, 3, 6),
+            activityTextPadding: EdgeInsets.all(4.5),
           ),
           monthCalendar: const MonthCalendarLayout(
               monthContentFlex: 620,

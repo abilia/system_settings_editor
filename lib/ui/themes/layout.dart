@@ -326,11 +326,28 @@ class FormPaddingLayout {
 }
 
 class WeekCalendarLayout {
-  final double activityBorderWidth, currentActivityBorderWidth;
+  final double activityBorderWidth,
+      currentActivityBorderWidth,
+      dayDistance,
+      headerTopPadding,
+      headerTopPaddingSmall,
+      headerBottomPadding,
+      headerHeight,
+      fullDayHeight;
+  final EdgeInsets crossOverPadding, bodyPadding, activityTextPadding;
 
   const WeekCalendarLayout({
     this.activityBorderWidth = 1.5,
     this.currentActivityBorderWidth = 3,
+    this.dayDistance = 2,
+    this.headerTopPadding = 4,
+    this.headerTopPaddingSmall = 3,
+    this.headerBottomPadding = 4,
+    this.headerHeight = 44,
+    this.fullDayHeight = 36,
+    this.crossOverPadding = const EdgeInsets.fromLTRB(4, 4, 4, 12),
+    this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
+    this.activityTextPadding = const EdgeInsets.all(3.0),
   });
 }
 
