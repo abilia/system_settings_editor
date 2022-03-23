@@ -163,19 +163,19 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
 
   Future<void> _mapSortableUpdatedToState(
       SortableUpdated event, Emitter<SortableState> emit) async {
-    final currentState = state;
-    if (currentState is SortablesLoaded) {
-      await sortableRepository.save([event.sortable]);
-      await _mapLoadSortablesToState(false, emit);
-      syncBloc.add(const SortableSaved());
-    }
+    await _saveSortables([event.sortable], emit);
   }
 
   Future<void> _mapSortablesUpdatedToState(
       SortablesUpdated event, Emitter<SortableState> emit) async {
+    await _saveSortables(event.sortables, emit);
+  }
+
+  Future<void> _saveSortables(
+      List<Sortable> sortables, Emitter<SortableState> emit) async {
     final currentState = state;
     if (currentState is SortablesLoaded) {
-      await sortableRepository.save(event.sortables);
+      await sortableRepository.save(sortables);
       await _mapLoadSortablesToState(false, emit);
       syncBloc.add(const SortableSaved());
     }
