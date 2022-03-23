@@ -117,6 +117,7 @@ void main() {
         );
       });
     });
+
     group('home button settings tab', () {
       testWidgets('hides home button options when bottom bar hidden ',
           (tester) async {
@@ -401,8 +402,41 @@ void main() {
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
       expect(find.byType(AbiliaTabBar), findsNothing);
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.month), findsNothing);
       expect(find.byIcon(AbiliaIcons.week), findsNothing);
+    });
+
+    testWidgets(
+        'Can change between page in bottom bar (BUG SGC-1488, SGC-1489)',
+        (tester) async {
+      // Arrange
+      generics = [
+        MemoplannerSettings.functionMenuDisplayMonthKey,
+        MemoplannerSettings.functionMenuDisplayWeekKey,
+      ].map(
+        (id) => Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(data: false, identifier: id),
+        ),
+      );
+      // Act
+      await tester.pumpApp();
+      // Assert -- There is still a icon with day calendar
+      expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      generics = [
+        MemoplannerSettings.functionMenuDisplayMonthKey,
+        MemoplannerSettings.functionMenuDisplayWeekKey,
+      ].map(
+        (id) => Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(data: true, identifier: id),
+        ),
+      );
+      await tester.drag(find.byType(CalendarPage), const Offset(0, 500));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      // Assert -- Can switch to MenuPage
+      expect(find.byType(MenuPage), findsOneWidget);
     });
 
     testWidgets('hides bottomBar', (tester) async {
