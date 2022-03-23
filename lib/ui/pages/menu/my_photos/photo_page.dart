@@ -150,14 +150,10 @@ Future _deletePhoto(
   final translate = Translator.of(context).translate;
   final result = await showViewDialog<bool>(
     context: context,
-    builder: (_) => ViewDialog(
-      heading: AppBarHeading(
-        text: translate.delete,
-        iconData: AbiliaIcons.deleteAllClear,
-      ),
-      body: Tts(child: Text(translate.doYouWantToDeleteThisPhoto)),
-      backNavigationWidget: const NoButton(),
-      forwardNavigationWidget: const YesButton(),
+    builder: (_) => YesNoDialog(
+      heading: translate.delete,
+      headingIcon: AbiliaIcons.deleteAllClear,
+      text: translate.doYouWantToDeleteThisPhoto,
     ),
   );
 
