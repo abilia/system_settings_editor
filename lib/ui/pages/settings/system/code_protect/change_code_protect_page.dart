@@ -8,14 +8,14 @@ class ChangeCodeProtectPage extends StatefulWidget {
 }
 
 class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
-  late final CodeProtextTextEditController controller;
+  late final CodeProtectTextEditController controller;
 
   String? firstCode;
   bool get isAtFirstCode => firstCode == null;
   @override
   void initState() {
     super.initState();
-    controller = CodeProtextTextEditController();
+    controller = CodeProtectTextEditController();
   }
 
   @override

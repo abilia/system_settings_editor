@@ -37,19 +37,19 @@ class SystemSettingsPage extends StatelessWidget {
         ),
         const TextToSpeechSwitch(),
         PickField(
-            leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
-            text: Text(t.androidSettings),
-            onTap: () async {
-              final accessGranted = await codeProtectAccess(
-                context,
-                restricted: (codeSettings) =>
-                    codeSettings.protectAndroidSettings,
-                name: t.androidSettings,
-              );
-              if (accessGranted) {
-                AndroidIntents.openSettings();
-              }
-            }),
+          leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
+          text: Text(t.androidSettings),
+          onTap: () async {
+            final accessGranted = await codeProtectAccess(
+              context,
+              restricted: (codeSettings) => codeSettings.protectAndroidSettings,
+              name: t.androidSettings,
+            );
+            if (accessGranted) {
+              AndroidIntents.openSettings();
+            }
+          },
+        ),
         const PermissionPickField(),
         MenuItemPickField(
           icon: AbiliaIcons.information,

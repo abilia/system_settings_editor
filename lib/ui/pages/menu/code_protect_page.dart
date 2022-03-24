@@ -32,17 +32,17 @@ class CodeProtectPage extends StatefulWidget {
 }
 
 class _CodeProtectPageState extends State<CodeProtectPage> {
-  late final CodeProtextTextEditController controller;
+  late final CodeProtectTextEditController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = CodeProtextTextEditController();
+    controller = CodeProtectTextEditController();
     controller.addListener(_listener);
   }
 
   Future _listener() async {
-    if (controller.selection.baseOffset == _pinLenght) {
+    if (controller.selection.baseOffset == _pinLength) {
       if (controller.text == widget.code) {
         return Navigator.of(context).pop(true);
       }
@@ -100,7 +100,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
   }
 }
 
-const _pinLenght = 4;
+const _pinLength = 4;
 const _dash = '-';
 
 class PinCodeWidget extends StatelessWidget {
@@ -136,7 +136,7 @@ class PinCodeWidget extends StatelessWidget {
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(_pinLenght),
+              LengthLimitingTextInputFormatter(_pinLength),
               DashedInputFormatter(),
             ],
             style: Theme.of(context).textTheme.headline4,
@@ -156,17 +156,17 @@ class PinCodeWidget extends StatelessWidget {
   }
 }
 
-class CodeProtextTextEditController extends TextEditingController {
-  CodeProtextTextEditController()
+class CodeProtectTextEditController extends TextEditingController {
+  CodeProtectTextEditController()
       : super(
-          text: _dash * _pinLenght,
+          text: _dash * _pinLength,
         ) {
     selection = const TextSelection.collapsed(offset: 0);
   }
 
   @override
   void clear() {
-    text = _dash * _pinLenght;
+    text = _dash * _pinLength;
     selection = const TextSelection.collapsed(offset: 0);
   }
 }
@@ -175,5 +175,5 @@ class DashedInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
           TextEditingValue oldValue, TextEditingValue newValue) =>
-      newValue.copyWith(text: newValue.text.padRight(_pinLenght, _dash));
+      newValue.copyWith(text: newValue.text.padRight(_pinLength, _dash));
 }
