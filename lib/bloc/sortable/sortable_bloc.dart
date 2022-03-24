@@ -43,8 +43,6 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       await _mapPhotoAddedToState(event, emit);
     } else if (event is ImageArchiveImageAdded) {
       await _mapImageArchiveImageAddedToState(event, emit);
-    } else if (event is SortableUpdated) {
-      await _mapSortableUpdatedToState(event, emit);
     } else if (event is SortablesUpdated) {
       await _mapSortablesUpdatedToState(event, emit);
     }
@@ -161,21 +159,11 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
-  Future<void> _mapSortableUpdatedToState(
-      SortableUpdated event, Emitter<SortableState> emit) async {
-    await _saveSortables([event.sortable], emit);
-  }
-
   Future<void> _mapSortablesUpdatedToState(
       SortablesUpdated event, Emitter<SortableState> emit) async {
-    await _saveSortables(event.sortables, emit);
-  }
-
-  Future<void> _saveSortables(
-      List<Sortable> sortables, Emitter<SortableState> emit) async {
     final currentState = state;
     if (currentState is SortablesLoaded) {
-      await sortableRepository.save(sortables);
+      await sortableRepository.save(event.sortables);
       await _mapLoadSortablesToState(false, emit);
       syncBloc.add(const SortableSaved());
     }
