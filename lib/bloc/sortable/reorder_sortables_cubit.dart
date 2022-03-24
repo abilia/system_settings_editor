@@ -21,8 +21,10 @@ class ReorderSortablesCubit extends Cubit<int> {
         swapWithIndex >= 0 &&
         swapWithIndex < sortables.length) {
       final tmpQ = sortables[sortableIndex];
-      sortables[sortableIndex] = sortables[swapWithIndex];
-      sortables[swapWithIndex] = tmpQ;
+      sortables[sortableIndex] = sortables[swapWithIndex]
+          .copyWith(sortOrder: sortables[sortableIndex].sortOrder);
+      sortables[swapWithIndex] =
+          tmpQ.copyWith(sortOrder: sortables[swapWithIndex].sortOrder);
       emit(swapWithIndex);
       _sortableBloc.add(SortablesUpdated(sortables));
     } else {

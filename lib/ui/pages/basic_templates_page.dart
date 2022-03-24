@@ -82,7 +82,6 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Text(_sortable.data.title(Translator.of(context).translate));
-
     if (_sortable.isGroup) {
       return PickField(
         onTap: _onTap,
@@ -103,8 +102,10 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
               imageFilePath: _sortable.data.dataFilePath(),
               fit: BoxFit.contain,
             )
-          : const Icon(
-              AbiliaIcons.basicActivity,
+          : Icon(
+              _sortable.data is BasicActivityData
+                  ? AbiliaIcons.basicActivity
+                  : AbiliaIcons.stopWatch,
               color: AbiliaColors.white140,
             ),
       trailing: _toolBar,
