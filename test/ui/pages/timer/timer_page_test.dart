@@ -118,6 +118,23 @@ void main() {
     expect(find.byType(TimerPage), findsOneWidget);
   });
 
+  testWidgets('BUG SGC-1503 really long title', (WidgetTester tester) async {
+    final longTitleTimer = AbiliaTimer.createNew(
+        title: 'Phone: iPhone 11App version: 1.4.0-alpha (1111)'
+            'Steps to reproduce'
+            'Test to login to myAbilia and navigate to Basic timer.'
+            'Create a Basic timer with a very long title and upload picture (attached file: upload). Duration: 1 minute'
+            'Test to open up MEMOplanner Go app. Select (newly created myAbilia) Basic Timerc.'
+            'Actual result: Picture is truncated and text-overflow in activity/alarm screen.'
+            'See flow (steps) in attached screenshot.Expected result:  Entire picture should displays and no text-overflow.',
+        duration: const Duration(hours: 16),
+        startTime: startTime);
+    await tester.pumpWidget(wrapWithMaterialApp(timer: longTitleTimer));
+    await tester.pumpAndSettle();
+    expect(find.text(longTitleTimer.title), findsOneWidget);
+    expect(tester.widget<Text>(find.text(longTitleTimer.title)).maxLines, 3);
+  });
+
   testWidgets('Running timer has TimerTickerBuilder',
       (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(timer: defaultTimer));
