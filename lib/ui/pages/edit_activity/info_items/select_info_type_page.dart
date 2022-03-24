@@ -34,7 +34,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
         title: translate.selectInfoType,
       ),
       body: Padding(
-        padding: m1Padding,
+        padding: layout.templates.m1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[

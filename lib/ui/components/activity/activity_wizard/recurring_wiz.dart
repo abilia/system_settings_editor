@@ -18,7 +18,7 @@ class RecurringWiz extends StatelessWidget {
           title: translate.recurrence,
           iconData: AbiliaIcons.repeat,
           body: Padding(
-            padding: m1Padding,
+            padding: layout.templates.m1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

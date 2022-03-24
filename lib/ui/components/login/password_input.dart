@@ -138,12 +138,7 @@ class _PasswordInputPageState
                 obscured: true,
               ),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  leftPadding,
-                  verticalPadding,
-                  0,
-                  verticalPadding,
-                ),
+                padding: layout.templates.m1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -170,10 +165,11 @@ class _PasswordInputPageState
                             },
                           ),
                         ),
-                        SizedBox(width: 12.s),
                         HidePasswordButton(
-                          padding:
-                              EdgeInsets.only(right: layout.formPadding.right),
+                          padding: EdgeInsets.only(
+                            left:
+                                layout.formPadding.largeHorizontalItemDistance,
+                          ),
                         ),
                       ],
                     ),

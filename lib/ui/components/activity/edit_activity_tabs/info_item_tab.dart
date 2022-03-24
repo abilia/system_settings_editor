@@ -36,7 +36,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
         }
 
         return Padding(
-          padding: m2Padding,
+          padding: layout.templates.m2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

@@ -64,6 +64,7 @@ class Layout {
   final CommonCalendarLayout commonCalendar;
   final MessageLayout message;
   final SliderLayout slider;
+  final SwitchFieldLayout switchField;
 
   const Layout({
     this.radius = 12,
@@ -119,6 +120,7 @@ class Layout {
     this.commonCalendar = const CommonCalendarLayout(),
     this.message = const MessageLayout(),
     this.slider = const SliderLayout(),
+    this.switchField = const SwitchFieldLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -934,13 +936,17 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets s1, s2, bottomNavigation, m5Padding;
+  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
     this.s2 = const EdgeInsets.all(4),
     this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.m5Padding = const EdgeInsets.fromLTRB(12, 48, 12, 12),
+    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 24),
+    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
+    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
+    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
+    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
   });
 }
 
@@ -1113,5 +1119,14 @@ class SliderLayout {
     this.pressedElevation = 2,
     this.outerBorder = 2,
     this.trackHeight = 4,
+  });
+}
+
+class SwitchFieldLayout {
+  final double height, toggleSize;
+
+  const SwitchFieldLayout({
+    this.height = 56,
+    this.toggleSize = 48,
   });
 }

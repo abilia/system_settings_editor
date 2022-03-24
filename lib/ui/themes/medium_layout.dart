@@ -7,7 +7,7 @@ class MediumLayout extends Layout {
           appBar: const AppBarLayout(
             largeAppBarHeight: 148,
             height: 104,
-            fontSize: 22,
+            fontSize: 32,
             horizontalPadding: 16,
           ),
           actionButton: const ActionButtonLayout(
@@ -212,9 +212,9 @@ class MediumLayout extends Layout {
             textFieldActionButtonSpacing: 18,
           ),
           imageArchive: const ImageArchiveLayout(
-            imageWidth: 142,
+            imageWidth: 140,
             imageHeight: 129,
-            imagePadding: 6,
+            imagePadding: 3,
             imageNameBottomPadding: 3,
             fullscreenImagePadding: 18,
           ),
@@ -342,7 +342,11 @@ class MediumLayout extends Layout {
             s1: EdgeInsets.all(18),
             s2: EdgeInsets.all(6),
             bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
-            m5Padding: EdgeInsets.fromLTRB(18, 72, 18, 18),
+            m1: EdgeInsets.fromLTRB(24, 36, 24, 64),
+            m2: EdgeInsets.fromLTRB(0, 32, 0, 32),
+            m3: EdgeInsets.fromLTRB(24, 36, 24, 24),
+            m4: EdgeInsets.symmetric(horizontal: 32),
+            m5: EdgeInsets.fromLTRB(24, 96, 24, 24),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -418,6 +422,10 @@ class MediumLayout extends Layout {
             pressedElevation: 3,
             outerBorder: 3,
             trackHeight: 6,
+          ),
+          switchField: const SwitchFieldLayout(
+            height: 84,
+            toggleSize: 72,
           ),
         );
 }

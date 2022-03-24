@@ -202,7 +202,7 @@ class _SortableLibraryState<T extends SortableData>
             controller: _controller,
             padding: EdgeInsets.only(
               top: verticalPadding,
-              left: leftPadding,
+              left: layout.templates.m1.left,
               right: layout.formPadding.right,
             ),
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
@@ -259,7 +259,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             controller: _controller,
             padding: EdgeInsets.only(
               top: verticalPadding,
-              left: leftPadding,
+              left: layout.templates.m1.left,
               right: layout.formPadding.right,
             ),
             itemCount: content.length,

@@ -5,13 +5,7 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final verticalPadding = 24.s, leftPadding = 12.s, seperatorPadding = 16.s;
-final ordinaryPadding = EdgeInsets.fromLTRB(
-  layout.formPadding.left,
-  verticalPadding,
-  layout.formPadding.right,
-  verticalPadding,
-);
+final verticalPadding = 24.s;
 
 // Form paddings
 final m1TopPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
@@ -23,21 +17,10 @@ final m1ItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
     layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
 final formTopSpacer = SizedBox(height: layout.formPadding.top);
 final m1Horizontal = EdgeInsets.only(
-  left: layout.formPadding.left,
-  right: layout.formPadding.right,
+  left: layout.templates.m1.left,
+  right: layout.templates.m1.right,
 );
-final m1Padding = EdgeInsets.fromLTRB(
-  layout.formPadding.left,
-  layout.formPadding.top,
-  layout.formPadding.right,
-  layout.formPadding.m1Bottom,
-);
-final m2Padding = EdgeInsets.fromLTRB(
-  layout.formPadding.left,
-  layout.formPadding.top,
-  layout.formPadding.right,
-  layout.formPadding.m2Bottom,
-);
+
 final s3Padding = EdgeInsets.only(
   left: layout.formPadding.left,
   right: layout.formPadding.right,

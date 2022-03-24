@@ -13,7 +13,7 @@ class CheckableWiz extends StatelessWidget {
         iconData: AbiliaIcons.handiCheck,
         title: translate.checkable,
         body: Padding(
-          padding: m1Padding,
+          padding: layout.templates.m1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

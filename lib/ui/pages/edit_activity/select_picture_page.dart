@@ -88,7 +88,7 @@ class SelectPictureBody extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: m1Padding,
+              padding: layout.templates.m1,
               child: Column(
                 children: [
                   PickField(

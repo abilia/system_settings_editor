@@ -13,7 +13,7 @@ class RemindersWiz extends StatelessWidget {
         iconData: AbiliaIcons.handiReminder,
         title: translate.reminders,
         body: Padding(
-          padding: m1Padding,
+          padding: layout.templates.m1,
           child: Reminders(
             activity: state.activity,
             expanded: true,

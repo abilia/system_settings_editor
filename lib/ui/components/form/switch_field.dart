@@ -8,7 +8,7 @@ class SwitchField extends StatelessWidget {
   final double? heigth, width;
   final bool value;
   final Decoration? decoration;
-  static final defaultHeight = 56.s;
+  static final defaultHeight = layout.switchField.height;
 
   const SwitchField({
     Key? key,
@@ -73,7 +73,7 @@ class SwitchField extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 48.s,
+                  height: layout.switchField.toggleSize,
                   child: FittedBox(
                     child: switchToggle,
                   ),
