@@ -84,7 +84,7 @@ void main() {
         emits(2),
       );
 
-      cubit.reorder(sortables, sortables.first, SortableReorderDirection.down);
+      cubit.reorder(sortables, sortables[1], SortableReorderDirection.down);
 
       await expected;
     });
