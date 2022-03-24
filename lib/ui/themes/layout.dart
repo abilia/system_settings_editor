@@ -62,6 +62,7 @@ class Layout {
   final MenuButtonLayout menuButton;
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
+  final FloatingActionButtonLayout fab;
 
   const Layout({
     this.radius = 12,
@@ -115,6 +116,7 @@ class Layout {
     this.menuButton = const MenuButtonLayout(),
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
+    this.fab = const FloatingActionButtonLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -1036,4 +1038,9 @@ class CommonCalendarLayout {
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
   });
+}
+
+class FloatingActionButtonLayout {
+  final EdgeInsets padding;
+  const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
 }

@@ -16,9 +16,6 @@ class EditNotePage extends StatefulWidget {
 class _EditNotePageState extends State<EditNotePage> {
   late TextEditingController _textEditingController;
   late ScrollController _scrollController;
-  static const _bottomBottomNavigationHeight = 84.0;
-  static const _bottomPadding =
-      EdgeInsets.only(bottom: _bottomBottomNavigationHeight);
 
   @override
   void initState() {
@@ -40,6 +37,7 @@ class _EditNotePageState extends State<EditNotePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _bottomPadding = EdgeInsets.only(bottom: layout.navigationBar.height);
     final translate = Translator.of(context).translate;
     return Theme(
       data: abiliaTheme.copyWith(
@@ -66,46 +64,59 @@ class _EditNotePageState extends State<EditNotePage> {
         ),
         body: Padding(
           padding: _bottomPadding,
-          child: LayoutBuilder(builder: (context, constraints) {
-            final textRenderSize =
-                _textEditingController.text.calulcateTextRenderSize(
-              constraints: constraints,
-              textStyle: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-              padding: EditNotePage.padding,
-              textScaleFactor: MediaQuery.of(context).textScaleFactor,
-            );
-            return ScrollArrows.vertical(
-              controller: _scrollController,
-              scrollbarAlwaysShown: true,
-              downCollapseMargin: _bottomBottomNavigationHeight,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: EditNotePage.padding.add(_bottomPadding),
-                child: Stack(
-                  children: <Widget>[
-                    Lines(
-                      lineHeight: textRenderSize.scaledLineHeight,
-                      numberOfLines: textRenderSize.numberOfLines,
-                    ),
-                    ConstrainedBox(
-                      constraints: constraints.copyWith(
-                        maxHeight: textRenderSize.scaledTextHeight,
+          child: Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final textRenderSize =
+                      _textEditingController.text.calulcateTextRenderSize(
+                    constraints: constraints,
+                    textStyle:
+                        Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+                    padding: EditNotePage.padding,
+                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                  );
+                  return ScrollArrows.vertical(
+                    controller: _scrollController,
+                    scrollbarAlwaysShown: true,
+                    downCollapseMargin: layout.navigationBar.height,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      padding: EditNotePage.padding.add(_bottomPadding),
+                      child: Stack(
+                        children: <Widget>[
+                          Lines(
+                            lineHeight: textRenderSize.scaledLineHeight,
+                            numberOfLines: textRenderSize.numberOfLines,
+                          ),
+                          ConstrainedBox(
+                            constraints: constraints.copyWith(
+                              maxHeight: textRenderSize.scaledTextHeight,
+                            ),
+                            child: TextField(
+                              key: TestKey.input,
+                              style: abiliaTextTheme.bodyText1,
+                              controller: _textEditingController,
+                              autofocus: true,
+                              maxLines: null,
+                              expands: true,
+                              scrollPhysics:
+                                  const NeverScrollableScrollPhysics(),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: TextField(
-                        key: TestKey.input,
-                        style: abiliaTextTheme.bodyText1,
-                        controller: _textEditingController,
-                        autofocus: true,
-                        maxLines: null,
-                        expands: true,
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
-                      ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          }),
+              Padding(
+                padding: layout.fab.padding,
+                child: TtsPlayButton(controller: _textEditingController),
+              )
+            ],
+          ),
         ),
       ),
     );
