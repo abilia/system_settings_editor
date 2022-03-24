@@ -62,6 +62,8 @@ class Layout {
   final MenuButtonLayout menuButton;
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
+  final MessageLayout message;
+  final SliderLayout slider;
 
   const Layout({
     this.radius = 12,
@@ -115,6 +117,8 @@ class Layout {
     this.menuButton = const MenuButtonLayout(),
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
+    this.message = const MessageLayout(),
+    this.slider = const SliderLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -161,12 +165,13 @@ class MenuPageLayout {
 }
 
 class MenuItemButtonLayout {
-  final double size, borderRadius, orangeDotInset;
+  final double size, borderRadius, orangeDotInset, orangeDotRadius;
 
   const MenuItemButtonLayout({
     this.size = 48,
     this.borderRadius = 12,
     this.orangeDotInset = 4,
+    this.orangeDotRadius = 6,
   });
 }
 
@@ -283,6 +288,8 @@ class ClockLayout {
       hourNumberScale,
       hourHandLength,
       minuteHandLength,
+      hourHandWidth,
+      minuteHandWidth,
       fontSize;
 
   const ClockLayout({
@@ -293,6 +300,8 @@ class ClockLayout {
     this.hourNumberScale = 1.5,
     this.hourHandLength = 11,
     this.minuteHandLength = 15,
+    this.hourHandWidth = 1,
+    this.minuteHandWidth = 1,
     this.fontSize = 7,
   });
 }
@@ -307,6 +316,8 @@ class FormPaddingLayout {
       groupTopDistance,
       horizontalItemDistance,
       largeHorizontalItemDistance,
+      groupHorizontalDistance,
+      selectorDistance,
       m1Bottom,
       m2Bottom;
 
@@ -320,6 +331,8 @@ class FormPaddingLayout {
     this.groupTopDistance = 24,
     this.horizontalItemDistance = 8,
     this.largeHorizontalItemDistance = 12,
+    this.groupHorizontalDistance = 16,
+    this.selectorDistance = 2,
     this.m1Bottom = 64,
     this.m2Bottom = 12,
   });
@@ -921,12 +934,13 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets s1, s2, bottomNavigation;
+  final EdgeInsets s1, s2, bottomNavigation, m5Padding;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
     this.s2 = const EdgeInsets.all(4),
     this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
+    this.m5Padding = const EdgeInsets.fromLTRB(12, 48, 12, 12),
   });
 }
 
@@ -1054,10 +1068,50 @@ class AgendaLayout {
 }
 
 class CommonCalendarLayout {
-  final double fullDayStackDistance, goToNowButtonTop;
+  final double fullDayStackDistance,
+      goToNowButtonTop,
+      crossOverStrokeWidth,
+      crossOverFallback;
 
   const CommonCalendarLayout({
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
+    this.crossOverStrokeWidth = 2,
+    this.crossOverFallback = 215,
+  });
+}
+
+class MessageLayout {
+  final EdgeInsets padding;
+
+  const MessageLayout({
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 20,
+    ),
+  });
+}
+
+class SliderLayout {
+  final double defaultHeight,
+      leftPadding,
+      rightPadding,
+      iconRightPadding,
+      thumbRadius,
+      elevation,
+      pressedElevation,
+      outerBorder,
+      trackHeight;
+
+  const SliderLayout({
+    this.defaultHeight = 56,
+    this.leftPadding = 12,
+    this.rightPadding = 4,
+    this.iconRightPadding = 12,
+    this.thumbRadius = 12,
+    this.elevation = 1,
+    this.pressedElevation = 2,
+    this.outerBorder = 2,
+    this.trackHeight = 4,
   });
 }

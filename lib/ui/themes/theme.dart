@@ -5,15 +5,11 @@ import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
 import 'package:seagull/utils/all.dart';
 
-final verticalPadding = 24.s,
-    horizontalPadding = 16.s,
-    rightPadding = horizontalPadding,
-    leftPadding = 12.s,
-    seperatorPadding = 16.s;
+final verticalPadding = 24.s, leftPadding = 12.s, seperatorPadding = 16.s;
 final ordinaryPadding = EdgeInsets.fromLTRB(
-  leftPadding,
+  layout.formPadding.left,
   verticalPadding,
-  rightPadding,
+  layout.formPadding.right,
   verticalPadding,
 );
 

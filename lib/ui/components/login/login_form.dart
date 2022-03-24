@@ -15,12 +15,7 @@ class LoginForm extends StatelessWidget {
       builder: (context, state) {
         return Form(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              48.s,
-              horizontalPadding,
-              horizontalPadding,
-            ),
+            padding: layout.templates.m5Padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,

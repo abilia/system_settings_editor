@@ -172,7 +172,8 @@ class _PasswordInputPageState
                         ),
                         SizedBox(width: 12.s),
                         HidePasswordButton(
-                          padding: EdgeInsets.only(right: horizontalPadding),
+                          padding:
+                              EdgeInsets.only(right: layout.formPadding.right),
                         ),
                       ],
                     ),

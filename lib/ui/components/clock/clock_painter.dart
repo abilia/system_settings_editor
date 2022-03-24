@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/themes/all.dart';
 
 import 'package:flutter/material.dart';
@@ -68,8 +67,8 @@ class ClockPainter extends CustomPainter {
     final radius = min(size.width, size.height) / 2;
     final borderWidth = showBorder ? (_borderWidth ?? radius / 20.0) : 0.0;
     final circumference = 2 * (radius - borderWidth) * pi;
-    final hourHandWidth = 1.s;
-    final minuteHandWidth = 1.s;
+    final hourHandWidth = layout.clock.hourHandWidth;
+    final minuteHandWidth = layout.clock.minuteHandWidth;
 
     canvas.translate(size.width / 2, size.height / 2);
 
@@ -128,7 +127,7 @@ class ClockPainter extends CustomPainter {
       var intHour = i + 3;
       if (intHour > 12) intHour = intHour - 12;
       final style = TextStyle(
-        fontSize: fontSize ?? 7.s,
+        fontSize: fontSize ?? layout.clock.fontSize,
         fontWeight: medium,
         height: 1,
         color: numberColor,

@@ -203,7 +203,7 @@ class _SortableLibraryState<T extends SortableData>
             padding: EdgeInsets.only(
               top: verticalPadding,
               left: leftPadding,
-              right: rightPadding,
+              right: layout.formPadding.right,
             ),
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
             crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
@@ -260,7 +260,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             padding: EdgeInsets.only(
               top: verticalPadding,
               left: leftPadding,
-              right: rightPadding,
+              right: layout.formPadding.right,
             ),
             itemCount: content.length,
             separatorBuilder: (context, index) =>

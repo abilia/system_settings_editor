@@ -26,6 +26,7 @@ class MediumLayout extends Layout {
               size: 96,
               borderRadius: 20,
               orangeDotInset: 6,
+              orangeDotRadius: 9,
             ),
           ),
           myPhotos: const MyPhotosLayout(
@@ -82,6 +83,8 @@ class MediumLayout extends Layout {
             hourNumberScale: 1.5,
             hourHandLength: 22,
             minuteHandLength: 30,
+            hourHandWidth: 1.5,
+            minuteHandWidth: 1.5,
             fontSize: 12,
           ),
           formPadding: const FormPaddingLayout(
@@ -94,6 +97,8 @@ class MediumLayout extends Layout {
             groupTopDistance: 36,
             horizontalItemDistance: 12,
             largeHorizontalItemDistance: 18,
+            groupHorizontalDistance: 24,
+            selectorDistance: 3,
             m1Bottom: 96,
             m2Bottom: 24,
           ),
@@ -337,6 +342,7 @@ class MediumLayout extends Layout {
             s1: EdgeInsets.all(18),
             s2: EdgeInsets.all(6),
             bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
+            m5Padding: EdgeInsets.fromLTRB(18, 72, 18, 18),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -393,6 +399,25 @@ class MediumLayout extends Layout {
           commonCalendar: const CommonCalendarLayout(
             fullDayStackDistance: 6,
             goToNowButtonTop: 48,
+            crossOverStrokeWidth: 2,
+            crossOverFallback: 215,
+          ),
+          message: const MessageLayout(
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 30,
+            ),
+          ),
+          slider: const SliderLayout(
+            defaultHeight: 84,
+            leftPadding: 18,
+            rightPadding: 6,
+            iconRightPadding: 18,
+            thumbRadius: 18,
+            elevation: 1.5,
+            pressedElevation: 3,
+            outerBorder: 3,
+            trackHeight: 6,
           ),
         );
 }

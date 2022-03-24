@@ -90,7 +90,7 @@ class SelectAlarmTypeBody extends StatelessWidget {
                     : Padding(
                         padding: EdgeInsets.only(
                           left: leftPadding,
-                          right: rightPadding,
+                          right: layout.formPadding.right,
                           bottom: 8.0.s,
                         ),
                         child: widget,

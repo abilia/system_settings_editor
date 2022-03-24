@@ -51,7 +51,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                         imageAndName.copyWith(image: selectedImage),
                   ),
                 ),
-                SizedBox(width: 16.0.s),
+                SizedBox(width: layout.formPadding.groupHorizontalDistance),
                 Expanded(
                   child: Tts.fromSemantics(
                     SemanticsProperties(label: heading),

@@ -13,9 +13,12 @@ class CrossOver extends StatelessWidget {
   final double? strokeWidth;
   final double? fallbackWidth;
   final double? fallbackHeight;
-  static final double defaultStrokeWidth = 2.0.s;
-  static final double defaultFallbackWidth = 215.0.s;
-  static final double defaultFallbackHeight = 215.0.s;
+  static final double defaultStrokeWidth =
+      layout.commonCalendar.crossOverStrokeWidth;
+  static final double defaultFallbackWidth =
+      layout.commonCalendar.crossOverFallback;
+  static final double defaultFallbackHeight =
+      layout.commonCalendar.crossOverFallback;
 
   @override
   Widget build(BuildContext context) {
