@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sortable/reorder_sortables_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -49,9 +50,13 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
       BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
           builder: (context, archiveState) {
         return Scaffold(
-          body: ListLibrary<T>(
-            emptyLibraryMessage: noTemplateText,
-            libraryItemGenerator: _BasicTemplatePickField.new,
+          body: BlocProvider(
+            create: (context) =>
+                ReorderSortablesCubit(context.read<SortableBloc>()),
+            child: ListLibrary<T>(
+              emptyLibraryMessage: noTemplateText,
+              libraryItemGenerator: _BasicTemplatePickField.new,
+            ),
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: archiveState.isAtRoot

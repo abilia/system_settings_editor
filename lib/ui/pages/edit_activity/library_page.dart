@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/sortable/reorder_sortables_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -234,7 +235,7 @@ class _SortableLibraryState<T extends SortableData>
   }
 }
 
-class ListLibrary<T extends SortableData> extends StatefulWidget {
+class ListLibrary<T extends SortableData> extends StatelessWidget {
   final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
@@ -245,15 +246,6 @@ class ListLibrary<T extends SortableData> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return ListLibraryState<T>();
-  }
-}
-
-class ListLibraryState<T extends SortableData> extends State<ListLibrary> {
-  int? _selectedIndex;
-
-  @override
   Widget build(BuildContext context) {
     final _controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
@@ -262,86 +254,60 @@ class ListLibraryState<T extends SortableData> extends State<ListLibrary> {
             (archiveState.allByFolder[archiveState.currentFolderId] ?? []);
         if (content.isEmpty) {
           return EmptyLibraryMessage(
-            emptyLibraryMessage: widget.emptyLibraryMessage,
+            emptyLibraryMessage: emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
           );
         }
-        return ScrollArrows.vertical(
-          controller: _controller,
-          child: ListView.separated(
-            controller: _controller,
-            padding: EdgeInsets.only(
-              top: verticalPadding,
-              left: leftPadding,
-              right: rightPadding,
-            ),
-            itemCount: content.length,
-            separatorBuilder: (context, index) =>
-                SizedBox(height: layout.libraryPage.listSeparation),
-            itemBuilder: (BuildContext context, int index) {
-              final Sortable sortable = content[index];
-              final bool selected =
-                  _selectedIndex != null && _selectedIndex == index;
-              return widget.libraryItemGenerator(
-                sortable,
-                () => sortable.isGroup
-                    ? _tapFolder(sortable.id, index)
-                    : setState(
-                        () => selected
-                            ? _selectedIndex = null
-                            : _selectedIndex = index,
-                      ),
-                selected
-                    ? SortableToolbar(
-                        disableUp: index == 0,
-                        disableDown: index == content.length - 1,
-                        onTapEdit: () {
-                          // TODO: edit timer/activity
-                        },
-                        onTapDelete: () {
-                          // TODO: delete timer/activity
-                        },
-                        onTapReorder: (direction) => _handleReorderSortable(
-                            content, sortable, direction, context),
-                      )
-                    : null,
-              );
-            },
-          ),
+        return BlocBuilder<ReorderSortablesCubit, int>(
+          builder: (context, selectedIndex) {
+            return ScrollArrows.vertical(
+              controller: _controller,
+              child: ListView.separated(
+                controller: _controller,
+                padding: EdgeInsets.only(
+                  top: verticalPadding,
+                  left: leftPadding,
+                  right: rightPadding,
+                ),
+                itemCount: content.length,
+                separatorBuilder: (context, index) =>
+                    SizedBox(height: layout.libraryPage.listSeparation),
+                itemBuilder: (BuildContext context, int index) {
+                  final Sortable sortable = content[index];
+                  final bool selected = selectedIndex == index;
+                  return libraryItemGenerator(
+                    sortable,
+                    () => sortable.isGroup
+                        ? {
+                            context
+                                .read<SortableArchiveCubit<T>>()
+                                .folderChanged(sortable.id),
+                            context.read<ReorderSortablesCubit>().select(-1),
+                          }
+                        : context.read<ReorderSortablesCubit>().select(index),
+                    selected
+                        ? SortableToolbar(
+                            disableUp: index == 0,
+                            disableDown: index == content.length - 1,
+                            onTapEdit: () {
+                              // TODO: edit timer/activity
+                            },
+                            onTapDelete: () {
+                              // TODO: delete timer/activity
+                            },
+                            onTapReorder: (direction) => context
+                                .read<ReorderSortablesCubit>()
+                                .reorder(content, sortable, direction),
+                          )
+                        : null,
+                  );
+                },
+              ),
+            );
+          },
         );
       },
     );
-  }
-
-  void _tapFolder(String id, int index) {
-    context.read<SortableArchiveCubit<T>>().folderChanged(id);
-    setState(
-      () => _selectedIndex = null,
-    );
-  }
-
-  void _handleReorderSortable(
-    final List<Sortable> sortables,
-    final Sortable question,
-    SortableReorderDirection direction,
-    BuildContext context,
-  ) {
-    final sortableIndex = sortables.indexWhere((q) => q.id == question.id);
-    final swapWithIndex = direction == SortableReorderDirection.up
-        ? sortableIndex - 1
-        : sortableIndex + 1;
-    if (sortableIndex >= 0 &&
-        sortableIndex < sortables.length &&
-        swapWithIndex >= 0 &&
-        swapWithIndex < sortables.length) {
-      final tmpQ = sortables[sortableIndex];
-      sortables[sortableIndex] = sortables[swapWithIndex];
-      sortables[swapWithIndex] = tmpQ;
-      setState(() {
-        _selectedIndex = swapWithIndex;
-      });
-    }
-    context.read<SortableBloc>().add(SortablesUpdated(sortables));
   }
 }
 
