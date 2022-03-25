@@ -22,7 +22,7 @@ class DateAndTimeWidget extends StatelessWidget {
               SubHeading(Translator.of(context).translate.date),
               DatePicker(
                 editActivityState.timeInterval.startDate,
-                onChange: memoSettingsState.activityDateEditable
+                onChange: memoSettingsState.settings.editActivity.date
                     ? (newDate) =>
                         context.read<EditActivityCubit>().changeDate(newDate)
                     : null,

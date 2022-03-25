@@ -10,60 +10,57 @@ class AddActivityAddSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
         builder: (context, state) {
-      final addTabState = state.addTabEditViewSettingsState;
+      final addTabState = state.editActivitySettings;
       final stepState = state.stepByStepSettingsState;
-      onModeChanged(v) =>
+      onModeChanged(mode) =>
           context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-                state.copyWith(
-                  addTabEditViewSettingsState:
-                      addTabState.copyWith(newActivityMode: v),
-                ),
+                state.copyWith(newActivityMode: mode),
               );
-      onTabStateChanged(AddTabEditViewSettingsState tss) =>
+      onTabStateChanged(EditActivitySettings editSettings) =>
           context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-              state.copyWith(addTabEditViewSettingsState: tss));
-      onStepChanged(WizardStepsSettings sss) =>
+              state.copyWith(editActivitySettings: editSettings));
+      onStepChanged(WizardStepsSettings wizardSettings) =>
           context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-              state.copyWith(stepByStepSettingsState: sss));
+              state.copyWith(stepByStepSettingsState: wizardSettings));
 
       return SettingsTab(
         children: [
           Tts(child: Text(t.add)),
           RadioField(
             value: NewActivityMode.editView,
-            groupValue: addTabState.newActivityMode,
+            groupValue: state.newActivityMode,
             onChanged: onModeChanged,
             text: Text(t.throughEditView),
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           RadioField(
             value: NewActivityMode.stepByStep,
-            groupValue: addTabState.newActivityMode,
+            groupValue: state.newActivityMode,
             onChanged: onModeChanged,
             text: Text(t.stepByStep),
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           const Divider(),
-          if (addTabState.newActivityMode == NewActivityMode.editView) ...[
+          if (state.newActivityMode == NewActivityMode.editView) ...[
             SwitchField(
               leading: const Icon(AbiliaIcons.month),
-              value: addTabState.selectDate,
+              value: addTabState.date,
               onChanged: (v) =>
-                  onTabStateChanged(addTabState.copyWith(selectDate: v)),
+                  onTabStateChanged(addTabState.copyWith(date: v)),
               child: Text(t.selectDate),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.sendAndReceive),
-              value: addTabState.selectType,
+              value: addTabState.type,
               onChanged: (v) =>
-                  onTabStateChanged(addTabState.copyWith(selectType: v)),
+                  onTabStateChanged(addTabState.copyWith(type: v)),
               child: Text(t.selectType),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.basicActivity),
-              value: addTabState.showBasicActivities,
-              onChanged: (v) => onTabStateChanged(
-                  addTabState.copyWith(showBasicActivities: v)),
+              value: addTabState.template,
+              onChanged: (v) =>
+                  onTabStateChanged(addTabState.copyWith(template: v)),
               child: Text(t.showBasicActivities),
             ),
           ] else ...[

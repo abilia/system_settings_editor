@@ -199,7 +199,10 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: ClockBloc.fixed(nowTime),
       settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(advancedActivityTemplate: false)),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
     );
     final activity = editActivityCubit.state.activity;
     final activityWithTitle = activity.copyWith(title: 'title');

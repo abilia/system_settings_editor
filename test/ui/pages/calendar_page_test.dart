@@ -252,31 +252,31 @@ void main() {
         final removeAfter = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: WizardStepsSettings.wizardRemoveAfterStepKey,
+            identifier: WizardStepsSettings.removeAfterKey,
           ),
         );
         final reminderStep = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: WizardStepsSettings.wizardRemindersStepKey,
+            identifier: WizardStepsSettings.remindersKey,
           ),
         );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardTemplateStepKey,
+            identifier: WizardStepsSettings.templateKey,
           ),
         );
         final noImage = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardImageStepKey,
+            identifier: WizardStepsSettings.imageKey,
           ),
         );
         final noDate = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardDatePickerStepKey,
+            identifier: WizardStepsSettings.dateKey,
           ),
         );
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
@@ -363,7 +363,7 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.advancedActivityTemplateKey,
+                    identifier: EditActivitySettings.templateKey,
                   ),
                 ),
               ],
@@ -404,13 +404,13 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: WizardStepsSettings.wizardTitleStepKey,
+                    identifier: WizardStepsSettings.titleKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: WizardStepsSettings.wizardImageStepKey,
+                    identifier: WizardStepsSettings.imageKey,
                   ),
                 ),
               ],

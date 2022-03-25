@@ -20,9 +20,6 @@ class MemoplannerSettings extends Equatable {
       displayQuarterHourKey = 'activity_detailed_setting_display_qhw',
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
       dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
-      activityDateEditableKey = 'advanced_activity_date',
-      activityTypeEditableKey = 'advanced_activity_type',
-      advancedActivityTemplateKey = 'advanced_activity_template',
       activityDefaultAlarmTypeKey = 'activity_default_alarm_type',
       activityEndTimeEditableKey = 'add_activity_end_time',
       activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
@@ -86,9 +83,6 @@ class MemoplannerSettings extends Equatable {
       displayQuarterHour,
       displayTimeLeft,
       dayCaptionShowDayButtons,
-      activityDateEditable,
-      activityTypeEditable,
-      advancedActivityTemplate,
       activityEndTimeEditable,
       activityTimeBeforeCurrent,
       activityRecurringEditable,
@@ -153,6 +147,7 @@ class MemoplannerSettings extends Equatable {
   final CodeProtectSettings codeProtect;
   final KeepScreenAwakeSettings keepScreenAwakeSettings;
   final MenuSettings menu;
+  final EditActivitySettings editActivity;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -161,9 +156,6 @@ class MemoplannerSettings extends Equatable {
     this.displayQuarterHour = true,
     this.displayTimeLeft = true,
     this.dayCaptionShowDayButtons = true,
-    this.activityDateEditable = true,
-    this.activityTypeEditable = true,
-    this.advancedActivityTemplate = true,
     this.activityDefaultAlarmType = alarmSoundAndVibration,
     this.activityEndTimeEditable = true,
     this.activityTimeBeforeCurrent = true,
@@ -225,6 +217,7 @@ class MemoplannerSettings extends Equatable {
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
     this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
+    this.editActivity = const EditActivitySettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -247,15 +240,6 @@ class MemoplannerSettings extends Equatable {
       ),
       dayCaptionShowDayButtons: settings.getBool(
         dayCaptionShowDayButtonsKey,
-      ),
-      activityDateEditable: settings.getBool(
-        activityDateEditableKey,
-      ),
-      activityTypeEditable: settings.getBool(
-        activityTypeEditableKey,
-      ),
-      advancedActivityTemplate: settings.getBool(
-        advancedActivityTemplateKey,
       ),
       activityDefaultAlarmType: settings.parse(
         activityDefaultAlarmTypeKey,
@@ -455,6 +439,7 @@ class MemoplannerSettings extends Equatable {
       menu: MenuSettings.fromSettingsMap(settings),
       keepScreenAwakeSettings:
           KeepScreenAwakeSettings.fromSettingsMap(settings),
+      editActivity: EditActivitySettings.fromSettingsMap(settings),
     );
   }
 
@@ -466,9 +451,6 @@ class MemoplannerSettings extends Equatable {
         displayQuarterHour,
         displayTimeLeft,
         dayCaptionShowDayButtons,
-        activityDateEditable,
-        activityTypeEditable,
-        advancedActivityTemplate,
         activityDefaultAlarmType,
         activityEndTimeEditable,
         activityTimeBeforeCurrent,
@@ -530,6 +512,7 @@ class MemoplannerSettings extends Equatable {
         codeProtect,
         menu,
         keepScreenAwakeSettings,
+        editActivity,
       ];
 }
 

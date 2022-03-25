@@ -13,7 +13,8 @@ class MainTab extends StatelessWidget with EditActivityTab {
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           buildWhen: (previous, current) =>
               previous.showCategories != current.showCategories ||
-              previous.activityTypeEditable != current.activityTypeEditable,
+              previous.settings.editActivity.type !=
+                  current.settings.editActivity.type,
           builder: (context, memoSettingsState) => ScrollArrows.vertical(
             controller: _scrollController,
             child: ListView(
@@ -26,7 +27,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
                 if (memoSettingsState.showCategories)
                   CollapsableWidget(
                     collapsed: activity.fullDay ||
-                        !memoSettingsState.activityTypeEditable,
+                        !memoSettingsState.settings.editActivity.type,
                     child: Column(
                       children: [
                         const Divider().pad(dividerPadding),

@@ -10,9 +10,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayQuarterHour => settings.displayQuarterHour;
   bool get displayTimeLeft => settings.displayTimeLeft;
   bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
-  bool get activityDateEditable => settings.activityDateEditable;
-  bool get activityTypeEditable => settings.activityTypeEditable;
-  bool get advancedActivityTemplate => settings.advancedActivityTemplate;
   bool get activityEndTimeEditable => settings.activityEndTimeEditable;
   bool get activityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
   bool get activityRecurringEditable => settings.activityRecurringEditable;
@@ -116,7 +113,7 @@ abstract class MemoplannerSettingsState extends Equatable {
 
   bool get basicActivityOption =>
       (addActivityType == NewActivityMode.editView &&
-          advancedActivityTemplate) ||
+          settings.editActivity.template) ||
       (addActivityType == NewActivityMode.stepByStep &&
           settings.wizard.template);
 

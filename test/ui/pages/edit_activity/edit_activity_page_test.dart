@@ -55,8 +55,12 @@ void main() {
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-            MemoplannerSettings(advancedActivityTemplate: false)));
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
+    );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
   });
@@ -2168,10 +2172,13 @@ text''';
   group('Memoplanner settings', () {
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityDateEditable: false,
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(date: false),
+          ),
+        ),
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(DatePicker), findsOneWidget);
@@ -2181,10 +2188,15 @@ text''';
     });
 
     testWidgets('Right/left not visible', (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityTypeEditable: false,
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              type: false,
+            ),
+          ),
+        ),
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 

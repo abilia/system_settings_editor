@@ -173,7 +173,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(advancedActivityTemplate: false),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
       ),
     );
 
@@ -325,7 +327,10 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(advancedActivityTemplate: false)),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
     );
 
     final activity = editActivityCubit.state.activity;
@@ -742,7 +747,10 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(advancedActivityTemplate: false)),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
     );
 
     // Act
@@ -804,7 +812,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -890,7 +901,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -973,7 +987,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1158,7 +1175,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1242,7 +1262,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1386,7 +1409,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1446,7 +1472,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act

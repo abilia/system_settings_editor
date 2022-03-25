@@ -166,7 +166,7 @@ void main() {
         await tester.verifyInAddTab(
           find.text(translate.selectDate),
           genericDb,
-          key: MemoplannerSettings.activityDateEditableKey,
+          key: EditActivitySettings.dateKey,
           matcher: isFalse,
         );
       });
@@ -175,7 +175,7 @@ void main() {
         await tester.verifyInAddTab(
           find.text(translate.selectType),
           genericDb,
-          key: MemoplannerSettings.activityTypeEditableKey,
+          key: EditActivitySettings.typeKey,
           matcher: isFalse,
         );
       });
@@ -184,7 +184,7 @@ void main() {
         await tester.verifyInAddTab(
           find.text(translate.showBasicActivities),
           genericDb,
-          key: MemoplannerSettings.advancedActivityTemplateKey,
+          key: EditActivitySettings.templateKey,
           matcher: isFalse,
         );
       });
@@ -193,7 +193,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.showBasicActivities),
           genericDb,
-          key: WizardStepsSettings.wizardTemplateStepKey,
+          key: WizardStepsSettings.templateKey,
           matcher: isFalse,
         );
       });
@@ -202,7 +202,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectName),
           genericDb,
-          key: WizardStepsSettings.wizardTitleStepKey,
+          key: WizardStepsSettings.titleKey,
           matcher: isFalse,
         );
       });
@@ -211,7 +211,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectImage),
           genericDb,
-          key: WizardStepsSettings.wizardImageStepKey,
+          key: WizardStepsSettings.imageKey,
           matcher: isFalse,
         );
       });
@@ -220,7 +220,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectDate),
           genericDb,
-          key: WizardStepsSettings.wizardDatePickerStepKey,
+          key: WizardStepsSettings.dateKey,
           matcher: isFalse,
         );
       });
@@ -229,7 +229,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectImage),
           genericDb,
-          key: WizardStepsSettings.wizardTypeStepKey,
+          key: WizardStepsSettings.typeKey,
           matcher: isFalse,
         );
       });
@@ -238,7 +238,7 @@ void main() {
         await tester.verifyStepByStep(
           find.byIcon(AbiliaIcons.handiCheck, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardCheckableStepKey,
+          key: WizardStepsSettings.checkableKey,
           matcher: isFalse,
         );
       });
@@ -247,7 +247,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectAvailableFor, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardAvailabilityTypeKey,
+          key: WizardStepsSettings.availabilityKey,
           matcher: isFalse,
         );
       });
@@ -256,7 +256,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectDeleteAfter, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardRemoveAfterStepKey,
+          key: WizardStepsSettings.removeAfterKey,
           matcher: isTrue,
         );
       });
@@ -265,7 +265,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectAlarm, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardAlarmStepKey,
+          key: WizardStepsSettings.alarmKey,
           matcher: isTrue,
         );
       });
@@ -274,7 +274,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectChecklist, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardChecklistStepKey,
+          key: WizardStepsSettings.checklistKey,
           matcher: isTrue,
         );
       });
@@ -283,7 +283,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectNote, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardNotesStepKey,
+          key: WizardStepsSettings.notesKey,
           matcher: isTrue,
         );
       });
@@ -292,7 +292,7 @@ void main() {
         await tester.verifyStepByStep(
           find.text(translate.selectReminder, skipOffstage: false),
           genericDb,
-          key: WizardStepsSettings.wizardRemindersStepKey,
+          key: WizardStepsSettings.remindersKey,
           matcher: isTrue,
         );
       });
