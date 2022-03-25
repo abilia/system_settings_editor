@@ -290,7 +290,8 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                               // TODO: edit timer/activity
                             },
                             onTapDelete: () {
-                              // TODO: delete timer/activity
+                              context
+                                  .read<ReorderSortablesCubit>().delete(content, sortable);
                             },
                             onTapReorder: (direction) => context
                                 .read<ReorderSortablesCubit>()

@@ -219,5 +219,26 @@ void main() {
         ).called(2);
       });
     });
+
+    testWidgets(
+        'Delete sortable',
+            (tester) async {
+          await tester.pumpWidget(
+            wrapWithMaterialApp(
+              const BasicTemplatesPage(),
+            ),
+          );
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(activityNameOne));
+          await tester.pumpAndSettle();
+
+          expect(find.byType(SortableToolbar), findsOneWidget);
+
+          await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+          await tester.pumpAndSettle();
+
+          expect(find.byKey(TestKey.checklistToolbarDownButton), findsNothing);
+          expect(find.byType(PickField), findsNWidgets(2));
+        });
   });
 }
