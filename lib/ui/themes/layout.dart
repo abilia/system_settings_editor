@@ -1060,13 +1060,20 @@ class SelectPictureLayout {
 }
 
 class TimeInputLayout {
-  final double width, height, amPmHeight, timeDashAlignValue;
+  final double width,
+      height,
+      amPmHeight,
+      amPmWidth,
+      timeDashAlignValue,
+      amPmDistance;
 
   const TimeInputLayout({
     this.width = 120,
     this.height = 64,
     this.amPmHeight = 48,
+    this.amPmWidth = 59,
     this.timeDashAlignValue = 14,
+    this.amPmDistance = 2,
   });
 }
 
