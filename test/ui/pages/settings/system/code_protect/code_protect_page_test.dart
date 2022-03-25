@@ -15,7 +15,7 @@ import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
-  Iterable<Generic> generics = [];
+  GenericResponse genericResponse = () => [];
   late MockGenericDb genericDb;
 
   setUp(() async {
@@ -25,7 +25,7 @@ void main() {
 
     genericDb = MockGenericDb();
     when(() => genericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value(generics));
+        .thenAnswer((_) => Future.value(genericResponse()));
     when(() => genericDb.getAllDirty()).thenAnswer((_) => Future.value([]));
     when(() => genericDb.insertAndAddDirty(any()))
         .thenAnswer((_) => Future.value(true));
@@ -35,19 +35,22 @@ void main() {
       ..ticker = Ticker.fake(
         initialTime: DateTime(2021, 10, 29, 09, 20),
       )
-      ..client = Fakes.client(genericResponse: () => generics)
+      ..client = Fakes.client(genericResponse: genericResponse)
       ..database = FakeDatabase()
       ..genericDb = genericDb
       ..battery = FakeBattery()
       ..init();
   });
 
-  tearDown(GetIt.I.reset);
+  tearDown(() {
+    GetIt.I.reset();
+    genericResponse = () => [];
+  });
 
-  group('code protect page', () {
+  group('code protect settings page', () {
     testWidgets('shows', (tester) async {
       await tester._goToCodeProtectPage();
-      expect(find.byType(CodeProtectPage), findsOneWidget);
+      expect(find.byType(CodeProtectSettingsPage), findsOneWidget);
       expect(find.byType(OkButton), findsOneWidget);
       expect(find.byType(CancelButton), findsOneWidget);
     });
@@ -180,18 +183,105 @@ void main() {
       expect(find.text(CodeProtectSettings.defaultCode), findsOneWidget);
     });
   }, skip: !Config.isMP);
+
+  group('shows code protect on screens', () {
+    testWidgets('settings is protected', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: CodeProtectSettings.protectSettingsKey,
+              ),
+            ),
+          ];
+
+      await tester._goToSettings();
+      expect(find.byType(CodeProtectPage), findsOneWidget);
+
+      await tester._enterCode(CodeProtectSettings.defaultCode);
+      expect(find.byType(SettingsPage), findsOneWidget);
+    });
+
+    testWidgets('android settings is protected', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: CodeProtectSettings.protectAndroidSettingsKey,
+              ),
+            ),
+          ];
+      // Act
+      await tester._goToSettings();
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byIcon(AbiliaIcons.pastPictureFromWindowsClipboard),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(CodeProtectPage), findsOneWidget);
+    });
+
+    testWidgets('code protect is protected, error when wrong code',
+        (tester) async {
+      // Assert
+      genericResponse = () => [
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: true,
+                identifier: CodeProtectSettings.protectCodeProtectKey,
+              ),
+            ),
+            Generic.createNew<MemoplannerSettingData>(
+              data: MemoplannerSettingData.fromData(
+                data: '1234',
+                identifier: CodeProtectSettings.codeKey,
+              ),
+            ),
+          ];
+      // Act
+      await tester._goToSettings();
+      await tester.tap(find.byIcon(AbiliaIcons.technicalSettings));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.numericKeyboard));
+      await tester.pumpAndSettle();
+      expect(find.byType(CodeProtectPage), findsOneWidget);
+      await tester._enterCode('1111');
+      expect(find.byType(ErrorDialog), findsOneWidget);
+      await tester.tap(
+        find.descendant(
+            of: find.byType(ErrorDialog),
+            matching: find.byType(PreviousButton)),
+      );
+      expect(find.byType(CodeProtectSettingsPage), findsNothing);
+      await tester.pumpAndSettle();
+      await tester._enterCode('1234');
+      expect(find.byType(CodeProtectSettingsPage), findsOneWidget);
+    });
+  }, skip: !Config.isMP);
 }
 
 extension on WidgetTester {
-  Future<void> _goToCodeProtectPage() async {
+  Future<void> _goToSettings() async {
     await pumpApp();
     await tap(find.byType(MenuButton));
     await pumpAndSettle();
     await tap(find.byType(SettingsButton));
     await pumpAndSettle();
+  }
+
+  Future<void> _goToCodeProtectPage() async {
+    await _goToSettings();
     await tap(find.byIcon(AbiliaIcons.technicalSettings));
     await pumpAndSettle();
     await tap(find.byIcon(AbiliaIcons.numericKeyboard));
+    await pumpAndSettle();
+  }
+
+  Future<void> _enterCode(String code) async {
+    await enterText(find.byType(TextField), code);
     await pumpAndSettle();
   }
 }

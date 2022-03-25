@@ -387,11 +387,15 @@ class MediumLayout extends Layout {
             padding: 6,
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
+          timeInput: const TimeInputLayout(
+            height: 96,
+            width: 180,
+            amPmHeight: 72,
+            timeDashAlignValue: 21,
+          ),
           recording: const RecordingLayout(
             trackHeight: 6,
             thumbRadius: 18,
-            timeDisplayHeight: 96,
-            timeDisplayWidth: 180,
             padding: EdgeInsets.symmetric(horizontal: 48),
           ),
           arrows: const ArrowsLayout(
@@ -457,10 +461,6 @@ class MediumLayout extends Layout {
           ),
           logout: const LogoutLayout(
             profilePictureSize: 126,
-          ),
-          timeInput: const TimeInputLayout(
-            amPmHeight: 72,
-            timeDashAlignValue: 21,
           ),
         );
 }
