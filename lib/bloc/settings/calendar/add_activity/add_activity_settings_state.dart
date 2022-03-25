@@ -10,7 +10,7 @@ class AddActivitySettingsState extends Equatable {
 
   final AddTabEditViewSettingsState addTabEditViewSettingsState;
   final WizardStepsSettings stepByStepSettingsState;
-  final DefaultsTabSettingsState defaultsTabSettingsState;
+  final Alarm defaultAlarm;
 
   const AddActivitySettingsState._({
     required this.allowPassedStartTime,
@@ -21,7 +21,7 @@ class AddActivitySettingsState extends Equatable {
     required this.showNoAlarm,
     required this.addTabEditViewSettingsState,
     required this.stepByStepSettingsState,
-    required this.defaultsTabSettingsState,
+    required this.defaultAlarm,
   });
 
   factory AddActivitySettingsState.fromMemoplannerSettings(
@@ -37,8 +37,7 @@ class AddActivitySettingsState extends Equatable {
         addTabEditViewSettingsState:
             AddTabEditViewSettingsState.fromMemoplannerSettings(state),
         stepByStepSettingsState: state.settings.wizard,
-        defaultsTabSettingsState:
-            DefaultsTabSettingsState.fromMemoplannerSettings(state),
+        defaultAlarm: Alarm.fromInt(state.defaultAlarmTypeSetting),
       );
 
   AddActivitySettingsState copyWith({
@@ -50,7 +49,7 @@ class AddActivitySettingsState extends Equatable {
     bool? showNoAlarm,
     AddTabEditViewSettingsState? addTabEditViewSettingsState,
     WizardStepsSettings? stepByStepSettingsState,
-    DefaultsTabSettingsState? defaultsTabSettingsState,
+    Alarm? defaultAlarm,
   }) =>
       AddActivitySettingsState._(
         allowPassedStartTime: allowPassedStartTime ?? this.allowPassedStartTime,
@@ -63,8 +62,7 @@ class AddActivitySettingsState extends Equatable {
             addTabEditViewSettingsState ?? this.addTabEditViewSettingsState,
         stepByStepSettingsState:
             stepByStepSettingsState ?? this.stepByStepSettingsState,
-        defaultsTabSettingsState:
-            defaultsTabSettingsState ?? this.defaultsTabSettingsState,
+        defaultAlarm: defaultAlarm ?? this.defaultAlarm,
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
@@ -94,7 +92,7 @@ class AddActivitySettingsState extends Equatable {
         ),
         ...addTabEditViewSettingsState.memoplannerSettingData,
         ...stepByStepSettingsState.memoplannerSettingData,
-        ...defaultsTabSettingsState.memoplannerSettingData,
+        defaultAlarm.memoplannerSettingData,
       ];
 
   @override
@@ -107,7 +105,7 @@ class AddActivitySettingsState extends Equatable {
         showNoAlarm,
         addTabEditViewSettingsState,
         stepByStepSettingsState,
-        defaultsTabSettingsState,
+        defaultAlarm,
       ];
 }
 
@@ -255,44 +253,10 @@ extension StepByStepSettingsState on WizardStepsSettings {
       ];
 }
 
-class DefaultsTabSettingsState extends Equatable {
-  final AlarmType alarmType;
-  final bool alarmOnlyAtStartTime;
-
-  const DefaultsTabSettingsState._({
-    required this.alarmType,
-    required this.alarmOnlyAtStartTime,
-  });
-
-  factory DefaultsTabSettingsState.fromMemoplannerSettings(
-    MemoplannerSettingsState state,
-  ) {
-    final alarm = Alarm.fromInt(state.defaultAlarmTypeSetting);
-    return DefaultsTabSettingsState._(
-      alarmType: alarm.type,
-      alarmOnlyAtStartTime: alarm.onlyStart,
-    );
-  }
-
-  DefaultsTabSettingsState copyWith({
-    AlarmType? alarmType,
-    bool? alarmOnlyAtStartTime,
-  }) =>
-      DefaultsTabSettingsState._(
-        alarmType: alarmType ?? this.alarmType,
-        alarmOnlyAtStartTime: alarmOnlyAtStartTime ?? this.alarmOnlyAtStartTime,
+extension on Alarm {
+  MemoplannerSettingData get memoplannerSettingData =>
+      MemoplannerSettingData.fromData(
+        data: toInt,
+        identifier: MemoplannerSettings.activityDefaultAlarmTypeKey,
       );
-
-  List<MemoplannerSettingData> get memoplannerSettingData => [
-        MemoplannerSettingData.fromData(
-          data: Alarm(type: alarmType, onlyStart: alarmOnlyAtStartTime).toInt,
-          identifier: MemoplannerSettings.activityDefaultAlarmTypeKey,
-        ),
-      ];
-
-  @override
-  List<Object> get props => [
-        alarmType,
-        alarmOnlyAtStartTime,
-      ];
 }
