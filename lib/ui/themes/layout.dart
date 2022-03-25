@@ -57,11 +57,13 @@ class Layout {
   final CategoryLayout category;
   final RadioLayout radio;
   final SelectPictureLayout selectPicture;
+  final TimeInputLayout timeInput;
   final RecordingLayout recording;
   final ArrowsLayout arrows;
   final MenuButtonLayout menuButton;
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
+  final EdgeInsets bodyTemplateL4;
 
   const Layout({
     this.radius = 12,
@@ -110,11 +112,13 @@ class Layout {
     this.category = const CategoryLayout(),
     this.radio = const RadioLayout(),
     this.selectPicture = const SelectPictureLayout(),
+    this.timeInput = const TimeInputLayout(),
     this.recording = const RecordingLayout(),
     this.arrows = const ArrowsLayout(),
     this.menuButton = const MenuButtonLayout(),
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
+    this.bodyTemplateL4 = const EdgeInsets.symmetric(vertical: 64),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -986,15 +990,22 @@ class SelectPictureLayout {
   });
 }
 
+class TimeInputLayout {
+  final double width, height;
+
+  const TimeInputLayout({
+    this.width = 120,
+    this.height = 64,
+  });
+}
+
 class RecordingLayout {
-  final double trackHeight, thumbRadius, timeDisplayHeight, timeDisplayWidth;
+  final double trackHeight, thumbRadius;
   final EdgeInsets padding;
 
   const RecordingLayout({
     this.trackHeight = 4,
     this.thumbRadius = 12,
-    this.timeDisplayHeight = 64,
-    this.timeDisplayWidth = 120,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 32,
     ),

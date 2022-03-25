@@ -4,8 +4,8 @@ import 'package:seagull/ui/all.dart';
 
 import 'package:seagull/ui/pages/settings/system/code_protect/change_code_protect_page.dart';
 
-class CodeProtectPage extends StatelessWidget {
-  const CodeProtectPage({Key? key}) : super(key: key);
+class CodeProtectSettingsPage extends StatelessWidget {
+  const CodeProtectSettingsPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;

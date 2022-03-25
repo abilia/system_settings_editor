@@ -765,6 +765,10 @@ abstract class Translated {
 
   final String codeProtectAndroidSettings = 'Code protect Android Settings';
 
+  final String enterCode = 'Enter code';
+
+  final String enterYourCodeToAccess = 'Enter your code to access';
+
   final String enterNewCode = 'Enter new code';
 
   final String confirmCode = 'Confirm code';

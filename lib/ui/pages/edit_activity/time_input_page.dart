@@ -416,8 +416,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120.s,
-      height: 64.s,
+      width: layout.timeInput.width,
       child: Stack(
         children: [
           TextField(
