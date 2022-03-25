@@ -76,14 +76,12 @@ void main() {
 
     testWidgets('Shows 3 items in activities', (tester) async {
       await tester.goToTemplates();
-      await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNWidgets(3));
       expect(find.byIcon(AbiliaIcons.navigationNext), findsOneWidget);
     });
 
     testWidgets('Shows 1 item in timers', (tester) async {
       await tester.goToTemplates();
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsOneWidget);
@@ -91,7 +89,6 @@ void main() {
 
     testWidgets('Tapping folder enters', (tester) async {
       await tester.goToTemplates();
-      await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNothing);
@@ -101,7 +98,6 @@ void main() {
     group('Tool bar', () {
       testWidgets('Tapping item shows and hides toolbar', (tester) async {
         await tester.goToTemplates();
-        await tester.pumpAndSettle();
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
 
@@ -116,7 +112,6 @@ void main() {
       testWidgets('Tapping down moves activity down and changes sort order',
           (tester) async {
         await tester.goToTemplates();
-        await tester.pumpAndSettle();
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
 
@@ -136,31 +131,32 @@ void main() {
           }
         }
       });
-    });
 
-    testWidgets('Delete sortable', (tester) async {
-      await tester.goToTemplates();
-      await tester.tap(find.text(activityNameOne));
-      await tester.pumpAndSettle();
+      testWidgets('Delete sortable', (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
 
-      expect(find.byType(SortableToolbar), findsOneWidget);
+        expect(find.byType(SortableToolbar), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(YesButton));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(YesButton));
+        await tester.pumpAndSettle();
 
-      final capturedSortable =
-          verify(() => mockSortableDb.insertAndAddDirty(captureAny())).captured;
+        final capturedSortable =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured;
 
-      int deleted = 0;
-      for (var element in (capturedSortable.last as List)) {
-        if (element.deleted) {
-          deleted++;
+        int deleted = 0;
+        for (var element in (capturedSortable.last as List)) {
+          if (element.deleted) {
+            deleted++;
+          }
         }
-      }
-      expect(deleted, 1);
+        expect(deleted, 1);
+      });
     });
   });
 }
