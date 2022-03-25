@@ -122,7 +122,7 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                   onPressed: () => back(context, sortableArchiveState),
                   child: const Icon(AbiliaIcons.navigationPrevious),
                 ),
-                SizedBox(width: 12.0.s),
+                SizedBox(width: layout.formPadding.largeHorizontalItemDistance),
                 Expanded(
                   child: Text(
                     heading,
@@ -200,11 +200,7 @@ class _SortableLibraryState<T extends SortableData>
           controller: _controller,
           child: GridView.count(
             controller: _controller,
-            padding: EdgeInsets.only(
-              top: verticalPadding,
-              left: layout.templates.m1.left,
-              right: layout.formPadding.right,
-            ),
+            padding: layout.templates.m1.copyWith(bottom: 0),
             mainAxisSpacing: layout.libraryPage.mainAxisSpacing,
             crossAxisSpacing: layout.libraryPage.crossAxisSpacing,
             crossAxisCount:
@@ -257,11 +253,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
           controller: _controller,
           child: ListView.separated(
             controller: _controller,
-            padding: EdgeInsets.only(
-              top: verticalPadding,
-              left: layout.templates.m1.left,
-              right: layout.formPadding.right,
-            ),
+            padding: m1WithZeroBottom,
             itemCount: content.length,
             separatorBuilder: (context, index) =>
                 SizedBox(height: layout.libraryPage.listSeperation),
@@ -330,7 +322,7 @@ class EmptyLibraryMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 60.0.s),
+      padding: EdgeInsets.only(top: layout.libraryPage.emptyMessageTopPadding),
       child: Align(
         alignment: Alignment.topCenter,
         child: Tts(
@@ -366,7 +358,7 @@ class LibraryFolder extends StatelessWidget {
         button: true,
       ),
       child: Padding(
-        padding: EdgeInsets.all(4.0.s),
+        padding: layout.libraryPage.contentPadding,
         child: Column(
           children: <Widget>[
             Text(
@@ -374,7 +366,7 @@ class LibraryFolder extends StatelessWidget {
               style: abiliaTextTheme.caption?.copyWith(height: 1),
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 2.s),
+            SizedBox(height: layout.libraryPage.textImageDistance),
             Stack(
               children: [
                 Icon(
@@ -392,7 +384,9 @@ class LibraryFolder extends StatelessWidget {
                         imageFileId: sortableData.dataFileId(),
                         imageFilePath: sortableData.dataFilePath(),
                         fit: BoxFit.contain,
-                        borderRadius: BorderRadius.circular(4.s),
+                        borderRadius: BorderRadius.circular(
+                          layout.libraryPage.folderImageRadius,
+                        ),
                       ),
                     ),
                   ),

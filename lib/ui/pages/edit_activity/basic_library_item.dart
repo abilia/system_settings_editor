@@ -10,7 +10,8 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
     required this.sortable,
   }) : super(key: key);
 
-  static final imageHeight = 86.s, imageWidth = 84.s;
+  static final imageHeight = layout.libraryPage.imageHeight,
+      imageWidth = layout.libraryPage.imageWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +42,10 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                     duration: const Duration(microseconds: 400),
                     decoration:
                         isSelected ? selectedBoxDecoration : boxDecoration,
-                    padding: EdgeInsets.all(4.s).subtract(
-                      isSelected ? EdgeInsets.all(1.s) : EdgeInsets.zero,
+                    padding: layout.templates.s3.subtract(
+                      isSelected
+                          ? EdgeInsets.all(layout.borders.thin)
+                          : EdgeInsets.zero,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -53,7 +56,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: abiliaTextTheme.caption,
                           ),
-                        SizedBox(height: 2.s),
+                        SizedBox(height: layout.libraryPage.textImageDistance),
                         SizedBox(
                           height: imageHeight,
                           child: basicLibraryData.hasImage()
@@ -65,7 +68,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                                 )
                               : Icon(
                                   AbiliaIcons.day,
-                                  size: 48.s,
+                                  size: layout.icon.large,
                                   color: AbiliaColors.white140,
                                 ),
                         ),

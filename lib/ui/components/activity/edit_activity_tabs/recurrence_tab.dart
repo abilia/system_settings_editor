@@ -16,7 +16,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
           child: ListView(
             controller: _scrollController,
             padding: EdgeInsets.only(
-              bottom: layout.formPadding.m1Bottom,
+              bottom: layout.templates.m1.bottom,
             ),
             children: <Widget>[
               Column(
@@ -33,13 +33,13 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                             state.timeInterval,
                             startTimeError: wizState.saveErrors
                                 .contains(SaveError.noStartTime),
-                          ).pad(m1TopPadding),
+                          ).pad(m1WithZeroBottom),
                           const Divider().pad(dividerPadding),
                         ],
                       ),
                     ),
                   ),
-                  RecurrenceWidget(state).pad(m1TopPadding),
+                  RecurrenceWidget(state).pad(m1WithZeroBottom),
                 ],
               ),
               if (recurs.weekly || recurs.monthly)
@@ -59,7 +59,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                               errorState: recurringDataError,
                             ).pad(m1ItemPadding),
                           const Divider().pad(dividerPadding),
-                          const EndDateWidget().pad(m1TopPadding),
+                          const EndDateWidget().pad(m1WithZeroBottom),
                         ],
                       );
                     }),

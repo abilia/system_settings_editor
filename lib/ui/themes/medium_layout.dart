@@ -91,9 +91,6 @@ class MediumLayout extends Layout {
             fontSize: 12,
           ),
           formPadding: const FormPaddingLayout(
-            left: 24,
-            right: 24,
-            top: 36,
             verticalItemDistance: 12,
             largeVerticalItemDistance: 18,
             groupBottomDistance: 24,
@@ -102,8 +99,6 @@ class MediumLayout extends Layout {
             largeHorizontalItemDistance: 18,
             groupHorizontalDistance: 24,
             selectorDistance: 3,
-            m1Bottom: 96,
-            m2Bottom: 24,
           ),
           weekCalendar: const WeekCalendarLayout(
             activityBorderWidth: 2.25,
@@ -227,9 +222,16 @@ class MediumLayout extends Layout {
             crossAxisCount: 4,
             headerPadding: EdgeInsets.fromLTRB(24, 12, 0, 3),
             folderImagePadding: EdgeInsets.fromLTRB(15, 42, 15, 24),
+            notePadding: EdgeInsets.fromLTRB(7.5, 13.5, 7.5, 9),
+            contentPadding: EdgeInsets.all(6),
             folderIconSize: 129,
             headerFontSize: 32,
             childAspectRatio: 181 / 168,
+            imageHeight: 129,
+            imageWidth: 126,
+            textImageDistance: 3,
+            emptyMessageTopPadding: 90,
+            folderImageRadius: 6,
           ),
           ongoingFullscreen: const OngoingTabLayout(
             height: 96,
@@ -343,7 +345,7 @@ class MediumLayout extends Layout {
           ),
           templates: const LayoutTemplates(
             s1: EdgeInsets.all(18),
-            s2: EdgeInsets.all(6),
+            s3: EdgeInsets.all(6),
             bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
             m1: EdgeInsets.fromLTRB(24, 36, 24, 64),
             m2: EdgeInsets.fromLTRB(0, 32, 0, 32),
@@ -351,6 +353,7 @@ class MediumLayout extends Layout {
             m4: EdgeInsets.symmetric(horizontal: 32),
             m5: EdgeInsets.fromLTRB(24, 96, 24, 24),
             l2: EdgeInsets.symmetric(horizontal: 32, vertical: 96),
+            l4: EdgeInsets.symmetric(vertical: 96),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -454,6 +457,10 @@ class MediumLayout extends Layout {
           ),
           logout: const LogoutLayout(
             profilePictureSize: 126,
+          ),
+          timeInput: const TimeInputLayout(
+            amPmHeight: 72,
+            timeDashAlignValue: 21,
           ),
         );
 }

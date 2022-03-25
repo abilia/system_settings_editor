@@ -36,7 +36,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
         }
 
         return Padding(
-          padding: layout.templates.m2,
+          padding: layout.templates.m3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -116,7 +116,7 @@ class EditChecklistWidget extends StatelessWidget {
                       );
                 }
               },
-            ).pad(layout.templates.s2)
+            ).pad(layout.templates.s3)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),
@@ -357,7 +357,7 @@ class EditNoteWidget extends StatelessWidget {
                       );
                 }
               },
-            ).pad(layout.templates.s2)
+            ).pad(layout.templates.s3)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),

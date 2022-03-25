@@ -65,7 +65,7 @@ class SelectPictureBody extends StatelessWidget {
           children: <Widget>[
             if (selectedImage.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(top: layout.formPadding.top),
+                padding: EdgeInsets.only(top: layout.templates.m1.top),
                 child: Column(
                   children: [
                     SelectedImageWidget(selectedImage: selectedImage),
@@ -111,7 +111,7 @@ class SelectPictureBody extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 8.0.s),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
                   if (state.displayMyPhotos) ...[
                     BlocSelector<SortableBloc, SortableState,
                         Sortable<ImageArchiveData>?>(
@@ -147,7 +147,7 @@ class SelectPictureBody extends StatelessWidget {
                             : null,
                       ),
                     ),
-                    SizedBox(height: 8.0.s),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
                   if (Config.isMPGO && state.displayLocalImages) ...[
                     ImageSourceWidget(
@@ -157,7 +157,7 @@ class SelectPictureBody extends StatelessWidget {
                       permission: Permission.photos,
                       imageCallback: imageCallback,
                     ),
-                    SizedBox(height: 8.0.s),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
                   if (state.displayCamera)
                     ImageSourceWidget(
@@ -212,7 +212,9 @@ class ImageSourceWidget extends StatelessWidget {
             ),
             if (permissionState.status[permission]?.isPermanentlyDenied == true)
               Padding(
-                padding: EdgeInsets.only(left: 8.0.s),
+                padding: EdgeInsets.only(
+                  left: layout.formPadding.horizontalItemDistance,
+                ),
                 child: InfoButton(
                   key: Key('$imageSource$permission'),
                   onTap: () => showViewDialog(

@@ -179,7 +179,7 @@ class SelectedImageWidget extends StatelessWidget {
       height: SelectPictureWidget.imageSize,
       child: LinedBorder(
         key: TestKey.addPicture,
-        padding: layout.templates.s2,
+        padding: layout.templates.s3,
         errorState: errorState,
         onTap: onTap,
         child: selectedImage.isNotEmpty

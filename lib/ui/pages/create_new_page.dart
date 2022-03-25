@@ -20,7 +20,7 @@ class CreateNewPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            formTopSpacer,
+            SizedBox(height: layout.templates.m1.top),
             if (memoplannerSettingsState.newActivityOption)
               PickField(
                 key: TestKey.newActivityChoice,
@@ -60,7 +60,9 @@ class CreateNewPage extends StatelessWidget {
                   }
                 },
               ).pad(m1ItemPadding),
-            const Divider().pad(EdgeInsets.only(top: 16.s)),
+            const Divider().pad(EdgeInsets.only(
+              top: layout.formPadding.groupBottomDistance,
+            )),
             PickField(
               key: TestKey.newTimerChoice,
               leading: const Icon(AbiliaIcons.stopWatch),
@@ -68,7 +70,7 @@ class CreateNewPage extends StatelessWidget {
               onTap: () async {
                 navigateToTimerWizard(context, authProviders);
               },
-            ).pad(m1TopPadding),
+            ).pad(m1WithZeroBottom),
             PickField(
               key: TestKey.basicTimerChoice,
               leading: const Icon(AbiliaIcons.folder),

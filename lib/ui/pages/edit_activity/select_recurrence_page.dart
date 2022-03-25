@@ -30,10 +30,7 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
         iconData: AbiliaIcons.repeat,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12.0.s,
-          vertical: 24.s,
-        ),
+        padding: layout.templates.m1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -44,7 +41,9 @@ class _SelectRecurrencePageState extends State<SelectRecurrencePage> {
               RecurrentType.yearly
             ].map(
               (type) => Padding(
-                padding: EdgeInsets.only(bottom: 8.0.s),
+                padding: EdgeInsets.only(
+                  bottom: layout.formPadding.verticalItemDistance,
+                ),
                 child: RadioField<RecurrentType>(
                   groupValue: newType,
                   onChanged: (v) {

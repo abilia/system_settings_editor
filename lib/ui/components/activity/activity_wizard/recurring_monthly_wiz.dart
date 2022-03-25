@@ -25,7 +25,7 @@ class RecurringMonthlyWiz extends StatelessWidget {
               (w) => w is Divider
                   ? w
                   : Padding(
-                      padding: s3Padding,
+                      padding: layout.templates.s4,
                       child: w,
                     ),
             )

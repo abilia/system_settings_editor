@@ -8,22 +8,15 @@ import 'package:seagull/utils/all.dart';
 final verticalPadding = 24.s;
 
 // Form paddings
-final m1TopPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
-    layout.formPadding.top, layout.formPadding.right, 0);
+final m1WithZeroBottom = layout.templates.m1.copyWith(bottom: 0);
 final dividerPadding = EdgeInsets.only(
   top: layout.formPadding.groupBottomDistance,
 );
-final m1ItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
-    layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
-final formTopSpacer = SizedBox(height: layout.formPadding.top);
+final m1ItemPadding = EdgeInsets.fromLTRB(layout.templates.m1.left,
+    layout.formPadding.verticalItemDistance, layout.templates.m1.right, 0);
 final m1Horizontal = EdgeInsets.only(
   left: layout.templates.m1.left,
   right: layout.templates.m1.right,
-);
-
-final s3Padding = EdgeInsets.only(
-  left: layout.formPadding.left,
-  right: layout.formPadding.right,
 );
 
 final abiliaTheme = ThemeData(
@@ -56,7 +49,7 @@ final abiliaTheme = ThemeData(
   toggleableActiveColor: AbiliaColors.green,
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
-    endIndent: layout.formPadding.right,
+    endIndent: layout.templates.m1.right,
     thickness: layout.borders.thin,
     space: 0,
   ),

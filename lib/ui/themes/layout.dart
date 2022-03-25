@@ -69,6 +69,7 @@ class Layout {
   final DialogLayout dialog;
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
+  final TimeInputLayout timeInput;
 
   const Layout({
     this.radius = 12,
@@ -129,6 +130,7 @@ class Layout {
     this.dialog = const DialogLayout(),
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
+    this.timeInput = const TimeInputLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -327,24 +329,16 @@ class ClockLayout {
 }
 
 class FormPaddingLayout {
-  final double left,
-      right,
-      top,
-      verticalItemDistance,
+  final double verticalItemDistance,
       largeVerticalItemDistance,
       groupBottomDistance,
       groupTopDistance,
       horizontalItemDistance,
       largeHorizontalItemDistance,
       groupHorizontalDistance,
-      selectorDistance,
-      m1Bottom,
-      m2Bottom;
+      selectorDistance;
 
   const FormPaddingLayout({
-    this.left = 12,
-    this.right = 12,
-    this.top = 24,
     this.verticalItemDistance = 8,
     this.largeVerticalItemDistance = 12,
     this.groupBottomDistance = 16,
@@ -353,8 +347,6 @@ class FormPaddingLayout {
     this.largeHorizontalItemDistance = 12,
     this.groupHorizontalDistance = 16,
     this.selectorDistance = 2,
-    this.m1Bottom = 64,
-    this.m2Bottom = 12,
   });
 }
 
@@ -660,9 +652,17 @@ class LibraryPageLayout {
       folderIconSize,
       headerFontSize,
       childAspectRatio,
+      imageHeight,
+      imageWidth,
+      textImageDistance,
+      emptyMessageTopPadding,
+      folderImageRadius,
       listSeperation;
   final int crossAxisCount;
-  final EdgeInsets headerPadding, folderImagePadding;
+  final EdgeInsets headerPadding,
+      folderImagePadding,
+      notePadding,
+      contentPadding;
 
   const LibraryPageLayout({
     this.mainAxisSpacing = 8,
@@ -670,9 +670,16 @@ class LibraryPageLayout {
     this.crossAxisCount = 3,
     this.headerPadding = const EdgeInsets.fromLTRB(16, 12, 0, 3),
     this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),
+    this.notePadding = const EdgeInsets.fromLTRB(5, 9, 5, 6),
+    this.contentPadding = const EdgeInsets.all(4),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
     this.childAspectRatio = 110 / 112,
+    this.imageHeight = 86,
+    this.imageWidth = 84,
+    this.textImageDistance = 2,
+    this.emptyMessageTopPadding = 60,
+    this.folderImageRadius = 4,
     this.listSeperation = 8,
   });
 
@@ -954,11 +961,13 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, l2, bottomNavigation;
+  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, s3, s4, l2, l4, bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
-    this.s2 = const EdgeInsets.all(4),
+    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
+    this.s3 = const EdgeInsets.all(4),
+    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
     this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
     this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 24),
     this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
@@ -966,6 +975,7 @@ class LayoutTemplates {
     this.m4 = const EdgeInsets.symmetric(horizontal: 24),
     this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
     this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
+    this.l4 = const EdgeInsets.symmetric(vertical: 64),
   });
 }
 
@@ -1195,5 +1205,14 @@ class LogoutLayout {
 
   const LogoutLayout({
     this.profilePictureSize = 84,
+  });
+}
+
+class TimeInputLayout {
+  final double amPmHeight, timeDashAlignValue;
+
+  const TimeInputLayout({
+    this.amPmHeight = 48,
+    this.timeDashAlignValue = 14,
   });
 }

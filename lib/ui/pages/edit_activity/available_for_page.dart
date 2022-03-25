@@ -40,7 +40,7 @@ class _AvailableForPageState extends State<AvailableForPage> {
               leading: const Icon(AbiliaIcons.passwordProtection),
               text: Text(translate.onlyMe),
             ),
-            SizedBox(height: 8.0.s),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
             RadioField<bool?>(
               groupValue: secret,
               onChanged: _onSelected,
