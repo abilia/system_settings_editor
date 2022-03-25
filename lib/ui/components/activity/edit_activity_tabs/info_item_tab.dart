@@ -167,7 +167,7 @@ class EditChecklistWidget extends StatelessWidget {
                               padding: layout.checkList.addNewQIconPadding,
                               child: Icon(
                                 AbiliaIcons.newIcon,
-                                size: layout.iconSize.small,
+                                size: layout.icon.small,
                                 color: AbiliaColors.white,
                               ),
                             ),
@@ -425,7 +425,7 @@ class _LibraryButton extends StatelessWidget {
       onPressed: onPressed,
       child: Icon(
         AbiliaIcons.showText,
-        size: layout.iconSize.normal,
+        size: layout.icon.normal,
         color: AbiliaColors.black,
       ),
     );

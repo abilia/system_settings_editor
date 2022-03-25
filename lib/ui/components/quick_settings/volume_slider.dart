@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/utils/scale_util.dart';
+import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 
 class AlarmVolumeSlider extends _VolumeSlider {
@@ -29,9 +27,12 @@ class _AlarmVolumeSliderState extends _VolumeSliderState {
           leading: Stack(clipBehavior: Clip.none, children: [
             const Icon(AbiliaIcons.volumeNormal),
             Positioned(
-              top: 14.s,
-              left: 25.s,
-              child: Icon(AbiliaIcons.handiAlarmVibration, size: 20.s),
+              top: layout.icon.doubleIconTop,
+              left: layout.icon.doubleIconLeft,
+              child: Icon(
+                AbiliaIcons.handiAlarmVibration,
+                size: layout.icon.tiny,
+              ),
             )
           ]),
         );

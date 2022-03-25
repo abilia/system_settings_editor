@@ -314,7 +314,7 @@ class _ArrowState extends State<_Arrow> {
           color: AbiliaColors.white135,
         ),
         duration: const Duration(milliseconds: 200),
-        child: Icon(widget.icon, size: layout.iconSize.small),
+        child: Icon(widget.icon, size: layout.icon.small),
       ),
     );
   }

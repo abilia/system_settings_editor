@@ -23,7 +23,7 @@ class Layout {
   final ToolbarLayout toolbar;
   final NavigationBarLayout navigationBar;
   final FontSize fontSize;
-  final IconSize iconSize;
+  final IconLayout icon;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
   final WeekCalendarLayout weekCalendar;
@@ -65,6 +65,10 @@ class Layout {
   final MessageLayout message;
   final SliderLayout slider;
   final SwitchFieldLayout switchField;
+  final LoginLayout login;
+  final DialogLayout dialog;
+  final ActivityAlarmPreviewLayout activityPreview;
+  final LogoutLayout logout;
 
   const Layout({
     this.radius = 12,
@@ -75,7 +79,7 @@ class Layout {
     this.navigationBar = const NavigationBarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
-    this.iconSize = const IconSize(),
+    this.icon = const IconLayout(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
     this.weekCalendar = const WeekCalendarLayout(),
@@ -121,6 +125,10 @@ class Layout {
     this.message = const MessageLayout(),
     this.slider = const SliderLayout(),
     this.switchField = const SwitchFieldLayout(),
+    this.login = const LoginLayout(),
+    this.dialog = const DialogLayout(),
+    this.activityPreview = const ActivityAlarmPreviewLayout(),
+    this.logout = const LogoutLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -270,15 +278,25 @@ class FontSize {
   });
 }
 
-class IconSize {
-  final double small, button, normal, large, huge;
+class IconLayout {
+  final double tiny,
+      small,
+      button,
+      normal,
+      large,
+      huge,
+      doubleIconTop,
+      doubleIconLeft;
 
-  const IconSize({
+  const IconLayout({
+    this.tiny = 20,
     this.small = 24,
     this.button = 28,
     this.normal = 32,
     this.large = 48,
     this.huge = 96,
+    this.doubleIconTop = 20,
+    this.doubleIconLeft = 32,
   });
 }
 
@@ -936,7 +954,7 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, bottomNavigation;
+  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, l2, bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
@@ -947,6 +965,7 @@ class LayoutTemplates {
     this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
     this.m4 = const EdgeInsets.symmetric(horizontal: 24),
     this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
+    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
   });
 }
 
@@ -1079,11 +1098,15 @@ class CommonCalendarLayout {
       crossOverStrokeWidth,
       crossOverFallback;
 
+  final EdgeInsets fullDayPadding, fullDayButtonPadding;
+
   const CommonCalendarLayout({
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
     this.crossOverStrokeWidth = 2,
     this.crossOverFallback = 215,
+    this.fullDayPadding = const EdgeInsets.all(12),
+    this.fullDayButtonPadding = const EdgeInsets.fromLTRB(10, 4, 4, 4),
   });
 }
 
@@ -1124,9 +1147,53 @@ class SliderLayout {
 
 class SwitchFieldLayout {
   final double height, toggleSize;
+  final EdgeInsets padding;
 
   const SwitchFieldLayout({
     this.height = 56,
     this.toggleSize = 48,
+    this.padding = const EdgeInsets.only(left: 12.0, right: 4.0),
+  });
+}
+
+class LoginLayout {
+  final double topFormDistance, logoSize, progressWidth;
+  final EdgeInsets createAccountPadding, loginButtonPadding;
+
+  const LoginLayout({
+    this.topFormDistance = 32,
+    this.logoSize = 64,
+    this.progressWidth = 6,
+    this.createAccountPadding = const EdgeInsets.fromLTRB(16, 8, 16, 32),
+    this.loginButtonPadding = const EdgeInsets.fromLTRB(16, 32, 16, 0),
+  });
+}
+
+class DialogLayout {
+  final double iconTextDistance, fullscreenTop, fullscreenIconDistance;
+
+  const DialogLayout({
+    this.iconTextDistance = 24,
+    this.fullscreenTop = 128,
+    this.fullscreenIconDistance = 80,
+  });
+}
+
+class ActivityAlarmPreviewLayout {
+  final double radius, height, activityHeight, activityWidth;
+
+  const ActivityAlarmPreviewLayout({
+    this.radius = 4,
+    this.height = 256,
+    this.activityHeight = 450,
+    this.activityWidth = 800,
+  });
+}
+
+class LogoutLayout {
+  final double profilePictureSize;
+
+  const LogoutLayout({
+    this.profilePictureSize = 84,
   });
 }

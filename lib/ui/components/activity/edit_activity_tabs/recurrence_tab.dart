@@ -110,7 +110,7 @@ class EveryOtherWeekSwitch extends StatelessWidget {
       builder: (context, state) => SwitchField(
         leading: Icon(
           AbiliaIcons.thisWeek,
-          size: layout.iconSize.small,
+          size: layout.icon.small,
         ),
         value: state.everyOtherWeek,
         onChanged: (v) =>

@@ -68,12 +68,15 @@ class MediumLayout extends Layout {
             button: 24,
             overline: 15,
           ),
-          iconSize: const IconSize(
+          icon: const IconLayout(
+            tiny: 30,
             small: 36,
             button: 42,
             normal: 64,
             large: 96,
             huge: 192,
+            doubleIconTop: 30,
+            doubleIconLeft: 48,
           ),
           clock: const ClockLayout(
             height: 124,
@@ -347,6 +350,7 @@ class MediumLayout extends Layout {
             m3: EdgeInsets.fromLTRB(24, 36, 24, 24),
             m4: EdgeInsets.symmetric(horizontal: 32),
             m5: EdgeInsets.fromLTRB(24, 96, 24, 24),
+            l2: EdgeInsets.symmetric(horizontal: 32, vertical: 96),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -405,6 +409,8 @@ class MediumLayout extends Layout {
             goToNowButtonTop: 48,
             crossOverStrokeWidth: 2,
             crossOverFallback: 215,
+            fullDayPadding: EdgeInsets.all(18),
+            fullDayButtonPadding: EdgeInsets.fromLTRB(15, 6, 6, 6),
           ),
           message: const MessageLayout(
             padding: EdgeInsets.symmetric(
@@ -426,6 +432,28 @@ class MediumLayout extends Layout {
           switchField: const SwitchFieldLayout(
             height: 84,
             toggleSize: 72,
+            padding: EdgeInsets.only(left: 18.0, right: 6.0),
+          ),
+          login: const LoginLayout(
+            topFormDistance: 48,
+            logoSize: 96,
+            progressWidth: 9,
+            createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
+            loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
+          ),
+          dialog: const DialogLayout(
+            iconTextDistance: 36,
+            fullscreenTop: 192,
+            fullscreenIconDistance: 120,
+          ),
+          activityPreview: const ActivityAlarmPreviewLayout(
+            radius: 4,
+            height: 256,
+            activityHeight: 450,
+            activityWidth: 800,
+          ),
+          logout: const LogoutLayout(
+            profilePictureSize: 126,
           ),
         );
 }

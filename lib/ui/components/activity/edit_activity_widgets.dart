@@ -194,7 +194,7 @@ class SelectedImageWidget extends StatelessWidget {
                 height: innerSize,
                 child: Icon(
                   AbiliaIcons.addPhoto,
-                  size: layout.iconSize.normal,
+                  size: layout.icon.normal,
                   color: AbiliaColors.black75,
                 ),
               ),
@@ -413,7 +413,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
         key: TestKey.alarmAtStartSwitch,
         leading: Icon(
           AbiliaIcons.handiAlarm,
-          size: layout.iconSize.small,
+          size: layout.icon.small,
         ),
         value: alarm.onlyStart,
         onChanged: alarm.shouldAlarm ? onChanged : null,
@@ -437,7 +437,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           key: TestKey.checkableSwitch,
           leading: Icon(
             AbiliaIcons.handiCheck,
-            size: layout.iconSize.small,
+            size: layout.icon.small,
           ),
           value: activity.checkable,
           onChanged: (v) => context
@@ -450,7 +450,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
           key: TestKey.deleteAfterSwitch,
           leading: Icon(
             AbiliaIcons.deleteAllClear,
-            size: layout.iconSize.small,
+            size: layout.icon.small,
           ),
           value: activity.removeAfter,
           onChanged: (v) => context
@@ -606,7 +606,7 @@ class EndDateWidget extends StatelessWidget {
             SwitchField(
               leading: Icon(
                 AbiliaIcons.basicActivity,
-                size: layout.iconSize.small,
+                size: layout.icon.small,
               ),
               value: recurs.hasNoEnd,
               onChanged: disabled
@@ -640,7 +640,7 @@ class EndDateWizWidget extends StatelessWidget {
         return SwitchField(
           leading: Icon(
             AbiliaIcons.basicActivity,
-            size: layout.iconSize.small,
+            size: layout.icon.small,
           ),
           value: recurs.hasNoEnd,
           onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(

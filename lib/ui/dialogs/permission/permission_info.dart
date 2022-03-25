@@ -27,7 +27,7 @@ class PermissionInfoDialog extends StatelessWidget {
             const Spacer(flex: 96),
             Icon(
               permission.iconData,
-              size: layout.iconSize.huge,
+              size: layout.icon.huge,
             ),
             const Spacer(flex: 64),
             Tts(
@@ -36,13 +36,13 @@ class PermissionInfoDialog extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
-            SizedBox(height: 8.0.s),
+            SizedBox(height: layout.formPadding.verticalItemDistance),
             PermissionInfoBodyText(
               allowAccessBodyText: body(translate),
             ),
             const Spacer(flex: 32),
             Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 0, 16.s, 0),
+              padding: m1Horizontal,
               child: PermissionSwitch(
                 permission: permission,
                 status: PermissionStatus.permanentlyDenied,
@@ -80,7 +80,7 @@ class PermissionInfoBodyText extends StatelessWidget {
         ?.copyWith(color: AbiliaColors.black75);
     final translate = Translator.of(context).translate;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0.s),
+      padding: layout.templates.m4,
       child: Tts.fromSemantics(
         SemanticsProperties(
           multiline: true,

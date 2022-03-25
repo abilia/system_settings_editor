@@ -49,7 +49,7 @@ class SwitchField extends StatelessWidget {
             decoration: onChanged == null
                 ? boxDecoration
                 : decoration ?? whiteBoxDecoration,
-            padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
+            padding: layout.switchField.padding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -59,10 +59,12 @@ class SwitchField extends StatelessWidget {
                       IconTheme(
                         data: Theme.of(context)
                             .iconTheme
-                            .copyWith(size: layout.iconSize.small),
+                            .copyWith(size: layout.icon.small),
                         child: leading,
                       ),
-                      SizedBox(width: 12.s),
+                      SizedBox(
+                        width: layout.formPadding.largeHorizontalItemDistance,
+                      ),
                     ],
                     DefaultTextStyle(
                       style:

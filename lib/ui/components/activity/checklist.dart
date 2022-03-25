@@ -222,7 +222,7 @@ class QuestionView extends StatelessWidget {
                       IconTheme(
                         data: Theme.of(context)
                             .iconTheme
-                            .copyWith(size: layout.iconSize.small),
+                            .copyWith(size: layout.icon.small),
                         child: Padding(
                           padding: layout.checkList.questionIconPadding,
                           child: AnimatedCrossFade(

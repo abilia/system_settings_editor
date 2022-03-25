@@ -22,12 +22,14 @@ class BatteryLevel extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(width: 18.s),
+                  SizedBox(
+                    width: layout.formPadding.largeHorizontalItemDistance,
+                  ),
                   Icon(
                     _batteryLevelIcon(batteryLevel),
-                    size: layout.iconSize.large,
+                    size: layout.icon.large,
                   ),
-                  SizedBox(width: 16.s),
+                  SizedBox(width: layout.formPadding.groupHorizontalDistance),
                   Text(
                     batteryLevel > 0 ? batteryLevel.toString() + '%' : '',
                     style: Theme.of(context).textTheme.headline6,

@@ -78,7 +78,9 @@ class PasswordInput extends StatelessWidget {
                   ),
                 ),
                 HidePasswordButton(
-                  padding: EdgeInsets.only(left: 12.s),
+                  padding: EdgeInsets.only(
+                    left: layout.formPadding.largeHorizontalItemDistance,
+                  ),
                 )
               ],
             ),

@@ -5,7 +5,7 @@ import 'package:seagull/ui/all.dart';
 class ProfilePicture extends StatelessWidget {
   final String baseUrl;
   final User user;
-  static final radius = 84.0.s;
+  static final radius = layout.logout.profilePictureSize;
   const ProfilePicture(this.baseUrl, this.user, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ProfilePicture extends StatelessWidget {
               Icon(
                 AbiliaIcons.contact,
                 color: AbiliaColors.black75,
-                size: layout.iconSize.huge,
+                size: layout.icon.huge,
               ),
               if (user.image.isNotEmpty && baseUrl.isNotEmpty)
                 FadeInImage.memoryNetwork(

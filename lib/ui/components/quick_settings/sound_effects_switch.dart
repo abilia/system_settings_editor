@@ -27,7 +27,7 @@ class _SoundEffectSwitchState extends State<SoundEffectsSwitch> {
     return SwitchField(
       leading: Icon(
         AbiliaIcons.touch,
-        size: layout.iconSize.small,
+        size: layout.icon.small,
       ),
       value: _on,
       onChanged: (switchOn) {

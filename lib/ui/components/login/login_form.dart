@@ -21,7 +21,7 @@ class LoginForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const MEMOplannerLogo(),
-                SizedBox(height: 16.s),
+                SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
                   child: Text(
                     Config.isMPGO
@@ -32,14 +32,14 @@ class LoginForm extends StatelessWidget {
                         .copyWith(color: AbiliaColors.black75),
                   ),
                 ),
-                SizedBox(height: 32.s),
+                SizedBox(height: layout.login.topFormDistance),
                 UsernameInput(
                   initialValue: state.username,
                   errorState: state.usernameError,
                   onChanged: (newUsername) =>
                       context.read<LoginCubit>().usernameChanged(newUsername),
                 ),
-                SizedBox(height: 16.s),
+                SizedBox(height: layout.formPadding.groupBottomDistance),
                 PasswordInput(
                   errorState: state.passwordError,
                   password: state.password,
@@ -47,11 +47,7 @@ class LoginForm extends StatelessWidget {
                       context.read<LoginCubit>().passwordChanged(newPassword),
                   validator: LoginCubit.passwordValid,
                 ),
-                SizedBox(height: 32.s),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.s),
-                  child: const LoginButton(),
-                ),
+                const LoginButton().pad(layout.login.loginButtonPadding),
                 const Spacer(),
                 if (Config.isMP)
                   const MEMOplannerLoginFooter()
@@ -105,12 +101,12 @@ class MEMOplannerLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) => SizedBox(
-        width: 64.s,
-        height: 64.s,
+        width: layout.login.logoSize,
+        height: layout.login.logoSize,
         child: state is LoginLoading
             ? CircularProgressIndicator(
                 valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                strokeWidth: 6.s,
+                strokeWidth: layout.login.progressWidth,
               )
             : GestureDetector(
                 onLongPress: () {

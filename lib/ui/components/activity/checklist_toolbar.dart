@@ -98,7 +98,7 @@ class _ChecklistToolbarButton extends StatelessWidget {
           child: Icon(
             iconData,
             color: disabled ? AbiliaColors.white140 : AbiliaColors.white,
-            size: layout.iconSize.small,
+            size: layout.icon.small,
           ),
         ),
       ),
