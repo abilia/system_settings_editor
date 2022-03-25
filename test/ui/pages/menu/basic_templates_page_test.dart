@@ -1,15 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/sortable_db.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-import 'package:intl/date_symbol_data_local.dart';
 import '../../../fakes/all.dart';
-import '../../../mocks/mock_bloc.dart';
 import '../../../mocks/mocks.dart';
+import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -19,10 +18,7 @@ void main() {
   const String activityNameTwo = 'Basic Activity 2';
 
   late List<Sortable> initialSortables;
-
-  late SortableBloc mockSortableBloc;
-  late MockUserFileCubit mockUserFileCubit;
-  late MockMemoplannerSettingBloc mockMemoplannerSettingBloc;
+  late SortableDb mockSortableDb;
 
   setUp(() async {
     setupPermissions();
@@ -44,77 +40,28 @@ void main() {
       ),
     ];
 
-    mockSortableBloc = MockSortableBloc();
-    when(() => mockSortableBloc.state).thenAnswer(
-        (invocation) => SortablesLoaded(sortables: initialSortables));
+    mockSortableDb = MockSortableDb();
 
-    mockUserFileCubit = MockUserFileCubit();
-    when(() => mockUserFileCubit.stream)
-        .thenAnswer((_) => const Stream.empty());
-    mockMemoplannerSettingBloc = MockMemoplannerSettingBloc();
-    when(() => mockMemoplannerSettingBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-            MemoplannerSettings(alarm: AlarmSettings(durationMs: 0))));
+    when(() => mockSortableDb.getAllNonDeleted()).thenAnswer(
+      (invocation) => Future.value(initialSortables),
+    );
+
+    when(() => mockSortableDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+
+    when(() => mockSortableDb.getAllDirty())
+        .thenAnswer((_) => Future.value(<DbModel<Sortable>>[]));
 
     registerFallbackValues();
-    await initializeDateFormatting();
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..client = Fakes.client()
       ..database = FakeDatabase()
-      ..sortableDb = MockSortableDb()
+      ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
       ..init();
   });
-
-  Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
-        supportedLocales: Translator.supportedLocals,
-        localizationsDelegates: const [Translator.delegate],
-        localeResolutionCallback: (locale, supportedLocales) => supportedLocales
-            .firstWhere((l) => l.languageCode == locale?.languageCode,
-                orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<SortableBloc>(
-              create: (context) => mockSortableBloc,
-            ),
-            BlocProvider<SortableArchiveCubit>(
-              create: (context) =>
-                  SortableArchiveCubit(sortableBloc: mockSortableBloc),
-            ),
-            BlocProvider<ClockBloc>(
-              create: (context) =>
-                  ClockBloc.fixed(DateTime(2011, 11, 11, 11, 11)),
-            ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
-              ),
-            ),
-            BlocProvider<MemoplannerSettingBloc>(
-              create: (context) => mockMemoplannerSettingBloc,
-            ),
-            BlocProvider<UserFileCubit>(
-              create: (context) => mockUserFileCubit,
-            ),
-            BlocProvider(
-              create: (context) => SortableArchiveCubit<BasicActivityData>(
-                sortableBloc: BlocProvider.of<SortableBloc>(context),
-              ),
-            ),
-            BlocProvider(
-              create: (context) => SortableArchiveCubit<BasicTimerData>(
-                sortableBloc: BlocProvider.of<SortableBloc>(context),
-              ),
-            ),
-            // BlocProvider<ReorderSortablesCubit>(
-            //   create: (context) => reorderSortablesCubit,
-            //   ),
-          ],
-          child: widget,
-        ),
-      );
 
   tearDown(() {
     GetIt.I.reset();
@@ -122,33 +69,20 @@ void main() {
 
   group('Basic Templates page', () {
     testWidgets('Page shows', (tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          const BasicTemplatesPage(),
-        ),
-      );
-      await tester.pumpAndSettle();
+      await tester.goToTemplates();
       expect(find.byType(BasicTemplatesPage), findsOneWidget);
       expect(find.byType(CloseButton), findsOneWidget);
     });
 
     testWidgets('Shows 3 items in activities', (tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          const BasicTemplatesPage(),
-        ),
-      );
+      await tester.goToTemplates();
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNWidgets(3));
       expect(find.byIcon(AbiliaIcons.navigationNext), findsOneWidget);
     });
 
     testWidgets('Shows 1 item in timers', (tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          const BasicTemplatesPage(),
-        ),
-      );
+      await tester.goToTemplates();
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
       await tester.pumpAndSettle();
@@ -156,11 +90,7 @@ void main() {
     });
 
     testWidgets('Tapping folder enters', (tester) async {
-      await tester.pumpWidget(
-        wrapWithMaterialApp(
-          const BasicTemplatesPage(),
-        ),
-      );
+      await tester.goToTemplates();
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
       await tester.pumpAndSettle();
@@ -170,11 +100,7 @@ void main() {
 
     group('Tool bar', () {
       testWidgets('Tapping item shows and hides toolbar', (tester) async {
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const BasicTemplatesPage(),
-          ),
-        );
+        await tester.goToTemplates();
         await tester.pumpAndSettle();
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
@@ -187,14 +113,9 @@ void main() {
         expect(find.byType(SortableToolbar), findsNothing);
       });
 
-      testWidgets(
-          'Tapping down on toolbar triggers a SortablesUpdated. Three items means it can move down twice',
+      testWidgets('Tapping down moves activity down and changes sort order',
           (tester) async {
-        await tester.pumpWidget(
-          wrapWithMaterialApp(
-            const BasicTemplatesPage(),
-          ),
-        );
+        await tester.goToTemplates();
         await tester.pumpAndSettle();
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
@@ -204,41 +125,52 @@ void main() {
         await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
-        await tester.pumpAndSettle();
-
-        // third tap closes toolbar because it can't move down
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byKey(TestKey.checklistToolbarDownButton), findsNothing);
-
-        // update should have been called twice
-        verify(
-          () => mockSortableBloc.add(any(that: isA<SortablesUpdated>())),
-        ).called(2);
+        final capturedSortable =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured;
+        for (var element in (capturedSortable.last as List)) {
+          if (element.data.title == activityNameOne) {
+            expect(element.sortOrder, '1');
+          } else if (element.data.title == activityNameTwo) {
+            expect(element.sortOrder, '0');
+          }
+        }
       });
     });
 
-    testWidgets(
-        'Delete sortable',
-            (tester) async {
-          await tester.pumpWidget(
-            wrapWithMaterialApp(
-              const BasicTemplatesPage(),
-            ),
-          );
-          await tester.pumpAndSettle();
-          await tester.tap(find.text(activityNameOne));
-          await tester.pumpAndSettle();
+    testWidgets('Delete sortable', (tester) async {
+      await tester.goToTemplates();
+      await tester.tap(find.text(activityNameOne));
+      await tester.pumpAndSettle();
 
-          expect(find.byType(SortableToolbar), findsOneWidget);
+      expect(find.byType(SortableToolbar), findsOneWidget);
 
-          await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
-          await tester.pumpAndSettle();
+      await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+      await tester.pumpAndSettle();
 
-          expect(find.byKey(TestKey.checklistToolbarDownButton), findsNothing);
-          expect(find.byType(PickField), findsNWidgets(2));
-        });
+      await tester.tap(find.byType(YesButton));
+      await tester.pumpAndSettle();
+
+      final capturedSortable =
+          verify(() => mockSortableDb.insertAndAddDirty(captureAny())).captured;
+
+      int deleted = 0;
+      for (var element in (capturedSortable.last as List)) {
+        if (element.deleted) {
+          deleted++;
+        }
+      }
+      expect(deleted, 1);
+    });
   });
+}
+
+extension on WidgetTester {
+  Future<void> goToTemplates() async {
+    await pumpApp();
+    await tap(find.byType(MenuButton));
+    await pumpAndSettle();
+    await tap(find.byType(BasicTemplatesButton));
+    await pumpAndSettle();
+  }
 }
