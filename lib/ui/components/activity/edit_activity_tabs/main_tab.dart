@@ -18,7 +18,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
             controller: _scrollController,
             child: ListView(
               controller: _scrollController,
-              padding: EdgeInsets.only(bottom: layout.templates.m1.bottom),
+              padding: EdgeInsets.only(bottom: layout.templates.l4.bottom),
               children: <Widget>[
                 const ActivityNameAndPictureWidget().pad(m1WithZeroBottom),
                 const Divider().pad(dividerPadding),
