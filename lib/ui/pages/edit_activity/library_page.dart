@@ -193,9 +193,7 @@ class _SortableLibraryState<T extends SortableData>
   Widget build(BuildContext context) {
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        List<Sortable<T>> content =
-            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
-              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        final content = archiveState.currentFolderSorted;
 
         if (content.isEmpty) {
           return EmptyLibraryMessage(
@@ -250,8 +248,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     final _controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        final content =
-            (archiveState.allByFolder[archiveState.currentFolderId] ?? []);
+        final content = archiveState.currentFolderSorted;
         if (content.isEmpty) {
           return EmptyLibraryMessage(
             emptyLibraryMessage: emptyLibraryMessage,

@@ -28,4 +28,5 @@ void registerFallbackValues() {
       duration: Duration.zero,
     ),
   );
+  registerFallbackValue(const LoadSortables());
 }
