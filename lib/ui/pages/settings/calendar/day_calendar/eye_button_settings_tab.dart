@@ -8,7 +8,10 @@ class EyeButtonSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<DayCalendarSettingsCubit, DayCalendarSettingsState>(
       builder: (context, state) => ListView(
-        padding: EdgeInsets.only(top: 20.s, right: 16.s, bottom: 56.s),
+        padding: EdgeInsets.only(
+          top: layout.templates.m1.top,
+          bottom: layout.templates.m1.bottom,
+        ),
         children: [
           Tts(child: Text(t.viewSettings)),
           CollapsableWidget(
@@ -50,7 +53,6 @@ class EyeButtonSettingsTab extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: layout.formPadding.verticalItemDistance),
           SwitchField(
             key: TestKey.showTypeOfDisplaySwitch,
             value: state.showTypeOfDisplay,
@@ -62,7 +64,12 @@ class EyeButtonSettingsTab extends StatelessWidget {
                   ),
             },
             child: Text(t.typeOfDisplay),
-          ),
+          ).pad(EdgeInsets.fromLTRB(
+            layout.templates.m1.left,
+            layout.formPadding.groupBottomDistance,
+            layout.templates.m1.right,
+            0,
+          )),
           SwitchField(
             key: TestKey.showTimepillarLengthSwitch,
             value: state.showTimepillarLength,
@@ -74,7 +81,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                   ),
             },
             child: Text(t.timelineLength),
-          ),
+          ).pad(m1ItemPadding),
           SwitchField(
             key: TestKey.showTimelineZoomSwitch,
             value: state.showTimelineZoom,
@@ -86,7 +93,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
                   ),
             },
             child: Text(t.zoom),
-          ),
+          ).pad(m1ItemPadding),
           SwitchField(
             key: TestKey.showDurationSelectionSwitch,
             value: state.showDurationSelection,
@@ -98,17 +105,8 @@ class EyeButtonSettingsTab extends StatelessWidget {
                   ),
             },
             child: Text(t.activityDuration),
-          ),
-        ]
-            .map(
-              (w) => w is CollapsableWidget
-                  ? w
-                  : Padding(
-                      padding: EdgeInsets.only(left: 12.s, bottom: 8.s),
-                      child: w,
-                    ),
-            )
-            .toList(),
+          ).pad(m1ItemPadding),
+        ],
       ),
     );
   }
@@ -117,13 +115,19 @@ class EyeButtonSettingsTab extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 12.s, top: 8.s),
+          padding: EdgeInsets.only(
+            left: layout.templates.m1.left,
+            right: layout.templates.m1.right,
+            top: layout.formPadding.verticalItemDistance,
+          ),
           child: Selector(
             groupValue: 0,
             items: items,
           ),
         ),
-        Divider(endIndent: 0, height: 16.s),
+        Divider(
+          height: layout.formPadding.groupBottomDistance,
+        ),
       ],
     );
   }

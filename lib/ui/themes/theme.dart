@@ -12,8 +12,12 @@ final m1WithZeroBottom = layout.templates.m1.copyWith(bottom: 0);
 final dividerPadding = EdgeInsets.only(
   top: layout.formPadding.groupBottomDistance,
 );
-final m1ItemPadding = EdgeInsets.fromLTRB(layout.templates.m1.left,
-    layout.formPadding.verticalItemDistance, layout.templates.m1.right, 0);
+final m1ItemPadding = EdgeInsets.fromLTRB(
+  layout.templates.m1.left,
+  layout.formPadding.verticalItemDistance,
+  layout.templates.m1.right,
+  0,
+);
 final m1Horizontal = EdgeInsets.only(
   left: layout.templates.m1.left,
   right: layout.templates.m1.right,

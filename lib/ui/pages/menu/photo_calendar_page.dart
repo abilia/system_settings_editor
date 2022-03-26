@@ -34,10 +34,10 @@ class PhotoCalendarPage extends StatelessWidget {
                             children: [
                               if (state.clockType != ClockType.digital)
                                 Padding(
-                                  padding: EdgeInsets.all(20.s),
+                                  padding: layout.photoCalendar.clockPadding,
                                   child: SizedBox(
-                                    height: 92.s,
-                                    width: 92.s,
+                                    height: layout.photoCalendar.clockSize,
+                                    width: layout.photoCalendar.clockSize,
                                     child: const FittedBox(
                                       child: AnalogClock(),
                                     ),
@@ -45,11 +45,13 @@ class PhotoCalendarPage extends StatelessWidget {
                                 ),
                               if (state.clockType != ClockType.analogue)
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20.s),
+                                  padding:
+                                      layout.photoCalendar.digitalClockPadding,
                                   child: DigitalClock(
                                     style:
                                         theme.theme.textTheme.caption?.copyWith(
-                                      fontSize: 32.s,
+                                      fontSize:
+                                          layout.photoCalendar.clockFontSize,
                                       height: 1,
                                     ),
                                   ),
@@ -58,8 +60,8 @@ class PhotoCalendarPage extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          bottom: 12.s,
-                          right: 12.s,
+                          bottom: layout.photoCalendar.backButtonPosition,
+                          right: layout.photoCalendar.backButtonPosition,
                           child: IconActionButton(
                             onPressed: () {
                               Navigator.of(context)

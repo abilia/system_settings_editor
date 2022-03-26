@@ -43,7 +43,7 @@ class CategoriesSettingsTab extends StatelessWidget {
                     defaultName: t.right,
                     onResult: (r) => state.categories.copyWith(right: r),
                   ),
-                  SizedBox(height: 16.s),
+                  SizedBox(height: layout.formPadding.groupBottomDistance),
                   SwitchField(
                     value: state.categories.colors,
                     onChanged: (value) => context
@@ -118,7 +118,9 @@ class _CategoriesPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(vertical: 8.s),
+        padding: EdgeInsets.symmetric(
+          vertical: layout.formPadding.verticalItemDistance,
+        ),
         decoration: boxDecoration,
         child: BlocProvider(
           create: (context) => ClockBloc.fixed(DateTime(2021, 1, 1, 8, 30)),

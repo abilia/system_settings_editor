@@ -59,12 +59,11 @@ class CreateAccountPage extends StatelessWidget {
         child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
           builder: (context, state) => Scaffold(
             body: Padding(
-              padding: EdgeInsets.only(left: 16.s, top: 24.0, right: 16.s),
+              padding: layout.templates.m5,
               child: Column(
                 children: [
-                  SizedBox(height: 48.s),
                   const MyAbiliaLogo(),
-                  SizedBox(height: 32.s),
+                  SizedBox(height: layout.formPadding.largeGroupDistance),
                   Tts(
                     child: Text(
                       t.createAaccountHeading,
@@ -78,7 +77,7 @@ class CreateAccountPage extends StatelessWidget {
                       style: textTheme.bodyText2,
                     ),
                   ),
-                  SizedBox(height: 32.s),
+                  SizedBox(height: layout.formPadding.largeGroupDistance),
                   UsernameInput(
                     initialValue: state.username,
                     errorState: state.usernameFailure,
@@ -87,7 +86,7 @@ class CreateAccountPage extends StatelessWidget {
                         .read<CreateAccountCubit>()
                         .usernameEmailChanged(newUsername),
                   ),
-                  SizedBox(height: 16.s),
+                  SizedBox(height: layout.formPadding.groupBottomDistance),
                   PasswordInput(
                     key: TestKey.createAccountPassword,
                     inputHeading: t.passwordHint,
@@ -98,7 +97,7 @@ class CreateAccountPage extends StatelessWidget {
                     errorState: state.passwordFailure,
                     validator: (p) => p.isNotEmpty,
                   ),
-                  SizedBox(height: 16.s),
+                  SizedBox(height: layout.formPadding.groupBottomDistance),
                   PasswordInput(
                     key: TestKey.createAccountPasswordConfirm,
                     inputHeading: t.confirmPassword,
@@ -109,7 +108,7 @@ class CreateAccountPage extends StatelessWidget {
                     errorState: state.conformPasswordFailure,
                     validator: (p) => p.isNotEmpty,
                   ),
-                  SizedBox(height: 48.s),
+                  SizedBox(height: layout.login.termsPadding),
                   AcceptTermsSwitch(
                     key: TestKey.acceptTermsOfUse,
                     linkText: t.termsOfUse,
@@ -120,7 +119,7 @@ class CreateAccountPage extends StatelessWidget {
                         .read<CreateAccountCubit>()
                         .termsOfUseAccepted(v),
                   ),
-                  SizedBox(height: 4.s),
+                  SizedBox(height: layout.formPadding.verticalItemDistance),
                   AcceptTermsSwitch(
                     key: TestKey.acceptPrivacyPolicy,
                     linkText: t.privacyPolicy,
@@ -204,11 +203,11 @@ class MyAbiliaLogo extends StatelessWidget {
       builder: (context, state) {
         if (state is CreateAccountLoading) {
           return SizedBox(
-            width: 64.s,
-            height: 64.s,
+            width: layout.login.logoSize,
+            height: layout.login.logoSize,
             child: CircularProgressIndicator(
               valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-              strokeWidth: 6.s,
+              strokeWidth: layout.login.progressWidth,
             ),
           );
         }

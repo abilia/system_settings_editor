@@ -9,6 +9,7 @@ class MediumLayout extends Layout {
             height: 104,
             fontSize: 32,
             horizontalPadding: 16,
+            previewWidth: 562.5,
           ),
           actionButton: const ActionButtonLayout(
             size: 88,
@@ -98,6 +99,7 @@ class MediumLayout extends Layout {
             horizontalItemDistance: 12,
             largeHorizontalItemDistance: 18,
             groupHorizontalDistance: 24,
+            largeGroupDistance: 48,
             selectorDistance: 3,
           ),
           weekCalendar: const WeekCalendarLayout(
@@ -449,6 +451,7 @@ class MediumLayout extends Layout {
             progressWidth: 9,
             createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
             loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
+            termsPadding: 72,
           ),
           dialog: const DialogLayout(
             iconTextDistance: 36,
@@ -463,6 +466,13 @@ class MediumLayout extends Layout {
           ),
           logout: const LogoutLayout(
             profilePictureSize: 126,
+          ),
+          photoCalendar: const PhotoCalendarLayout(
+            clockSize: 138,
+            clockFontSize: 48,
+            backButtonPosition: 18,
+            clockPadding: EdgeInsets.all(30),
+            digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
           ),
         );
 }

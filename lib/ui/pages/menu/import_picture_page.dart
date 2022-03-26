@@ -58,7 +58,7 @@ class _ImportPictureBody extends StatelessWidget {
                       permission: Permission.photos,
                       imageCallback: imageCallback,
                     ),
-                    SizedBox(height: 8.0.s),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
                   if (state.displayCamera)
                     ImageSourceWidget(

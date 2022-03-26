@@ -17,7 +17,7 @@ class AppBarPreview extends StatelessWidget {
       builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
         builder: (context, currentTime) => FittedBox(
           child: SizedBox(
-            width: 375.s,
+            width: layout.appBar.previewWidth,
             height: CalendarAppBar.size.height,
             child: SizedBox(
               height: CalendarAppBar.size.height,

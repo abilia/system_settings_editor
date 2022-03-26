@@ -145,7 +145,7 @@ class PinCodeWidget extends StatelessWidget {
                 borderRadius: borderRadius,
                 borderSide: BorderSide(
                   color: Colors.black,
-                  width: 2.s,
+                  width: layout.borders.medium,
                 ),
               ),
             ),
