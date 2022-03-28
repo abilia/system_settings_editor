@@ -71,6 +71,7 @@ class Layout {
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
   final PhotoCalendarLayout photoCalendar;
+  final SettingsLayout settings;
 
   const Layout({
     this.radius = 12,
@@ -133,6 +134,7 @@ class Layout {
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
     this.photoCalendar = const PhotoCalendarLayout(),
+    this.settings = const SettingsLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -1247,4 +1249,30 @@ class PhotoCalendarLayout {
   });
 }
 
-class EyeButtonSettingsLayout {}
+class SettingsLayout {
+  final double clockHeight,
+      clockWidth,
+      previewTimePillarWidth,
+      intervalStepperWidth,
+      monthPreviewHeight,
+      monthPreviewHeaderHeight,
+      weekCalendarHeight,
+      weekCalendarHeadingHeight,
+      weekDayHeight;
+
+  final EdgeInsets monthDaysPadding, weekDaysPadding;
+
+  const SettingsLayout({
+    this.clockHeight = 90,
+    this.clockWidth = 72,
+    this.previewTimePillarWidth = 138,
+    this.intervalStepperWidth = 230,
+    this.monthPreviewHeight = 96,
+    this.monthPreviewHeaderHeight = 32,
+    this.weekCalendarHeight = 148,
+    this.weekCalendarHeadingHeight = 44,
+    this.weekDayHeight = 86,
+    this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
+    this.weekDaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
+  });
+}

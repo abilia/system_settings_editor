@@ -20,7 +20,8 @@ class QuickSettingsPage extends StatelessWidget {
           controller: scrollController,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(12.s, 20.s, 16.s, 20.s),
+              padding: layout.templates.m1
+                  .copyWith(bottom: layout.formPadding.groupBottomDistance),
               child: BatteryLevel(battery: GetIt.I<Battery>()),
             ),
             QuickSettingsGroup(children: [
@@ -31,7 +32,7 @@ class QuickSettingsPage extends StatelessWidget {
             QuickSettingsGroup(children: [
               SubHeading(t.volumeAlarm),
               const AlarmVolumeSlider(),
-              SizedBox(height: 20.s),
+              SizedBox(height: layout.formPadding.groupBottomDistance),
               SubHeading(t.volumeMedia),
               const MediaVolumeSlider(),
             ]),
@@ -67,7 +68,9 @@ class QuickSettingsGroup extends StatelessWidget {
       children: [
         const Divider(),
         Padding(
-          padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 20.s),
+          padding: layout.templates.m1.copyWith(
+            bottom: layout.formPadding.groupBottomDistance,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

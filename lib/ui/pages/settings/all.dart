@@ -2,7 +2,6 @@ export 'calendar/all.dart';
 export 'system/all.dart';
 export 'settings_page.dart';
 export 'function_settings_page.dart';
-export 'countdown_setings_page.dart';
 export 'menu_settings_page.dart';
 export 'alarm_settings_page.dart';
 export 'settings_base_page.dart';

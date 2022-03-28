@@ -50,12 +50,15 @@ class SettingsTab extends StatelessWidget {
   final List<Widget> children;
   @override
   Widget build(BuildContext context) {
-    final padding = dividerPadding ?? 16.s;
+    final padding = dividerPadding ?? layout.formPadding.groupBottomDistance;
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
           .copyWith(color: AbiliaColors.black75),
       child: ListView(
-        padding: EdgeInsets.symmetric(vertical: 20.s),
+        padding: EdgeInsets.only(
+          top: layout.templates.m1.top,
+          bottom: layout.templates.m1.bottom,
+        ),
         children: [
           ...children.map(
             (w) => w is Divider
@@ -64,7 +67,7 @@ class SettingsTab extends StatelessWidget {
                     child: w,
                   )
                 : Padding(
-                    padding: layout.settingsBasePage.itemPadding,
+                    padding: m1ItemPadding,
                     child: w,
                   ),
           )

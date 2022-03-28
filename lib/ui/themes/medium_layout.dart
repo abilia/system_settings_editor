@@ -474,5 +474,18 @@ class MediumLayout extends Layout {
             clockPadding: EdgeInsets.all(30),
             digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
           ),
+          settings: const SettingsLayout(
+            clockHeight: 135,
+            clockWidth: 108,
+            previewTimePillarWidth: 207,
+            intervalStepperWidth: 345,
+            monthPreviewHeight: 144,
+            monthDaysPadding: EdgeInsets.only(left: 6, right: 6),
+            monthPreviewHeaderHeight: 48,
+            weekCalendarHeight: 222,
+            weekCalendarHeadingHeight: 66,
+            weekDayHeight: 129,
+            weekDaysPadding: EdgeInsets.symmetric(horizontal: 3.0),
+          ),
         );
 }
