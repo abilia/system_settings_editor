@@ -681,7 +681,7 @@ class LibraryPageLayout {
       imageWidth,
       textImageDistance,
       emptyMessageTopPadding,
-      folderImageRadius,
+      folderImageRadius;
   final int crossAxisCount;
   final EdgeInsets headerPadding,
       folderImagePadding,

@@ -258,7 +258,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             padding: m1WithZeroBottom,
             itemCount: content.length,
             separatorBuilder: (context, index) =>
-                SizedBox(height: layout.libraryPage.listSeparation),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
             itemBuilder: (BuildContext context, int index) {
               final Sortable<T> sortable = content[index];
               final bool selected = archiveState.selected?.id == sortable.id;
