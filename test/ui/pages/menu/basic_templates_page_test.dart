@@ -207,8 +207,8 @@ void main() {
         await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
         await tester.pumpAndSettle();
 
-        // third tap closes toolbar because it can't move down
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
+        // tap closes toolbar
+        await tester.tap(find.byType(SortableToolbar));
         await tester.pumpAndSettle();
 
         expect(find.byKey(TestKey.checklistToolbarDownButton), findsNothing);
