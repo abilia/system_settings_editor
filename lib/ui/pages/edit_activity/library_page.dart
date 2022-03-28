@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sortable/reorder_sortables_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -255,53 +254,49 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             rootFolder: archiveState.isAtRoot,
           );
         }
-        return BlocBuilder<ReorderSortablesCubit, int>(
-          builder: (context, selectedIndex) {
-            return ScrollArrows.vertical(
-              controller: _controller,
-              child: ListView.separated(
-                controller: _controller,
-                padding: EdgeInsets.only(
-                  top: verticalPadding,
-                  left: leftPadding,
-                  right: rightPadding,
-                ),
-                itemCount: content.length,
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: layout.libraryPage.listSeparation),
-                itemBuilder: (BuildContext context, int index) {
-                  final Sortable sortable = content[index];
-                  final bool selected = selectedIndex == index;
-                  return libraryItemGenerator(
-                    sortable,
-                    () => sortable.isGroup
-                        ? {
-                            context
-                                .read<SortableArchiveCubit<T>>()
-                                .folderChanged(sortable.id),
-                            context.read<ReorderSortablesCubit>().select(-1),
-                          }
-                        : context.read<ReorderSortablesCubit>().select(index),
-                    selected
-                        ? SortableToolbar(
-                            disableUp: index == 0,
-                            disableDown: index == content.length - 1,
-                            onTapEdit: () {
-                              // TODO: edit timer/activity
-                            },
-                            onTapDelete: () {
-                              // TODO: delete timer/activity
-                            },
-                            onTapReorder: (direction) => context
-                                .read<ReorderSortablesCubit>()
-                                .reorder(content, sortable, direction),
-                          )
-                        : null,
-                  );
-                },
-              ),
-            );
-          },
+
+        return ScrollArrows.vertical(
+          controller: _controller,
+          child: ListView.separated(
+            controller: _controller,
+            padding: EdgeInsets.only(
+              top: verticalPadding,
+              left: leftPadding,
+              right: rightPadding,
+            ),
+            itemCount: content.length,
+            separatorBuilder: (context, index) =>
+                SizedBox(height: layout.libraryPage.listSeparation),
+            itemBuilder: (BuildContext context, int index) {
+              final Sortable<T> sortable = content[index];
+              final bool selected = archiveState.selected?.id == sortable.id;
+              return libraryItemGenerator(
+                sortable,
+                () => sortable.isGroup
+                    ? context
+                        .read<SortableArchiveCubit<T>>()
+                        .folderChanged(sortable.id)
+                    : context
+                        .read<SortableArchiveCubit<T>>()
+                        .sortableSelected(selected ? null : sortable),
+                selected
+                    ? SortableToolbar(
+                        disableUp: index == 0,
+                        disableDown: index == content.length - 1,
+                        onTapEdit: () {
+                          // TODO: edit timer/activity
+                        },
+                        onTapDelete: () {
+                          // TODO: delete timer/activity
+                        },
+                        onTapReorder: (direction) => context
+                            .read<SortableArchiveCubit<T>>()
+                            .reorder(direction),
+                      )
+                    : null,
+              );
+            },
+          ),
         );
       },
     );

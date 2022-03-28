@@ -1,0 +1,1 @@
+enum SortableReorderDirection { up, down }
