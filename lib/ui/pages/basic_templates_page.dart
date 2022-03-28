@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/sortable/reorder_sortables_cubit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -46,28 +45,24 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   final String noTemplateText;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
-          builder: (context, archiveState) {
-        return Scaffold(
-          body: BlocProvider(
-            create: (context) =>
-                ReorderSortablesCubit(context.read<SortableBloc>()),
-            child: ListLibrary<T>(
-              emptyLibraryMessage: noTemplateText,
-              libraryItemGenerator: _BasicTemplatePickField.new,
-            ),
-          ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: archiveState.isAtRoot
+  Widget build(BuildContext context) => Scaffold(
+        body: ListLibrary<T>(
+          emptyLibraryMessage: noTemplateText,
+          libraryItemGenerator: _BasicTemplatePickField.new,
+        ),
+        bottomNavigationBar: BlocSelector<SortableArchiveCubit<T>,
+            SortableArchiveState<T>, bool>(
+          selector: (state) => state.isAtRoot,
+          builder: (context, isAtRoot) => BottomNavigation(
+            backNavigationWidget: isAtRoot
                 ? CloseButton(onPressed: Navigator.of(context).maybePop)
                 : PreviousButton(
                     onPressed:
                         context.read<SortableArchiveCubit<T>>().navigateUp,
                   ),
           ),
-        );
-      });
+        ),
+      );
 }
 
 class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
