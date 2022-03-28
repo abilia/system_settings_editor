@@ -83,10 +83,10 @@ class SortableArchiveCubit<T extends SortableData>
   }
 
   void reorder(SortableReorderDirection direction) {
-    final sortable = state.selected;
-    if (sortable == null) return;
+    final selectedId = state.selected?.id;
+    if (selectedId == null) return;
     final sortables = state.currentFolderSorted;
-    final sortableIndex = sortables.indexWhere((q) => q.id == sortable.id);
+    final sortableIndex = sortables.indexWhere((q) => q.id == selectedId);
     final swapWithIndex = direction == SortableReorderDirection.up
         ? sortableIndex - 1
         : sortableIndex + 1;
@@ -94,6 +94,7 @@ class SortableArchiveCubit<T extends SortableData>
         sortableIndex < sortables.length &&
         swapWithIndex >= 0 &&
         swapWithIndex < sortables.length) {
+      final sortable = sortables[sortableIndex];
       final sortableSwap = sortables[swapWithIndex];
       final newSortOrder = sortableSwap.sortOrder;
       sortableBloc.add(SortablesUpdated([
