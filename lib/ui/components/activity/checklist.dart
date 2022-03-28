@@ -169,7 +169,8 @@ class QuestionView extends StatelessWidget {
                 borderRadius: borderRadius,
                 onTap: onTap,
                 child: AnimatedContainer(
-                  height: layout.checkList.questionViewHeight,
+                  constraints: BoxConstraints(
+                      minHeight: layout.checkList.questionViewHeight),
                   duration: duration,
                   decoration: signedOff
                       ? boxDecoration.copyWith(
