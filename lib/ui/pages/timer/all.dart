@@ -3,3 +3,4 @@ export 'timer_wizard_page.dart';
 export 'timer_start_wiz.dart';
 export 'edit_timer_widgets.dart';
 export 'timer_page.dart';
+export 'edit_timer_typing_page.dart';
