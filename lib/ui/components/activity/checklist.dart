@@ -5,7 +5,7 @@ class ChecklistView extends StatefulWidget {
   final Checklist checklist;
   final DateTime? day;
   final Function(Question)? onTap, onTapEdit, onTapDelete;
-  final Function(Question, ChecklistReorderDirection)? onTapReorder;
+  final Function(Question, SortableReorderDirection)? onTapReorder;
   final EdgeInsetsGeometry padding;
   final bool preview, hasToolbar;
 
@@ -80,9 +80,10 @@ class _ChecklistViewState extends State<ChecklistView> {
               ),
               if (widget.hasToolbar && selectedQuestion == i)
                 Positioned.fill(
-                  child: ChecklistToolbar(
+                  child: SortableToolbar(
                     disableUp: i == 0,
                     disableDown: i == widget.checklist.questions.length - 1,
+                    margin: layout.checkList.questionViewPadding,
                     onTapEdit: () {
                       _deselectQuestion();
                       widget.onTapEdit?.call(question);
@@ -98,7 +99,7 @@ class _ChecklistViewState extends State<ChecklistView> {
                       if (widget.onTapReorder != null &&
                           selectedIndex != null) {
                         final newSelectedIndex =
-                            direction == ChecklistReorderDirection.up
+                            direction == SortableReorderDirection.up
                                 ? selectedIndex - 1
                                 : selectedIndex + 1;
                         if (newSelectedIndex >= 0 &&

@@ -682,7 +682,6 @@ class LibraryPageLayout {
       textImageDistance,
       emptyMessageTopPadding,
       folderImageRadius,
-      listSeperation;
   final int crossAxisCount;
   final EdgeInsets headerPadding,
       folderImagePadding,
@@ -705,7 +704,6 @@ class LibraryPageLayout {
     this.textImageDistance = 2,
     this.emptyMessageTopPadding = 60,
     this.folderImageRadius = 4,
-    this.listSeperation = 8,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(

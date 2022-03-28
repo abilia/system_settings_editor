@@ -45,12 +45,16 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   final String noTemplateText;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
-        builder: (context, state) => Scaffold(
-          body: ListLibrary<T>(_BasicTemplatePickField.new, noTemplateText),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: state.isAtRoot
+  Widget build(BuildContext context) => Scaffold(
+        body: ListLibrary<T>(
+          emptyLibraryMessage: noTemplateText,
+          libraryItemGenerator: _BasicTemplatePickField.new,
+        ),
+        bottomNavigationBar: BlocSelector<SortableArchiveCubit<T>,
+            SortableArchiveState<T>, bool>(
+          selector: (state) => state.isAtRoot,
+          builder: (context, isAtRoot) => BottomNavigation(
+            backNavigationWidget: isAtRoot
                 ? CloseButton(onPressed: Navigator.of(context).maybePop)
                 : PreviousButton(
                     onPressed:
@@ -62,50 +66,51 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
 }
 
 class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplatePickField(this.sortable, {Key? key}) : super(key: key);
-  final Sortable<T> sortable;
+  const _BasicTemplatePickField(this._sortable, this._onTap, this._toolBar,
+      {Key? key})
+      : super(key: key);
+
+  final Sortable<T> _sortable;
+  final SortableToolbar? _toolBar;
+  final Function() _onTap;
 
   @override
   Widget build(BuildContext context) {
-    final text = Text(sortable.data.title(Translator.of(context).translate));
-
-    if (sortable.isGroup) {
+    final text = Text(_sortable.data.title(Translator.of(context).translate));
+    if (_sortable.isGroup) {
       return PickField(
-        onTap: () =>
-            context.read<SortableArchiveCubit<T>>().folderChanged(sortable.id),
+        onTap: _onTap,
         text: text,
-        padding: layout.pickField.imagePadding,
-        leading: SizedBox.fromSize(
-          size: layout.pickField.leadingSize,
-          child: _PickFolder(sortableData: sortable.data),
-        ),
+        leading: _PickFolder(sortableData: _sortable.data),
         leadingPadding: layout.listFolder.margin,
       );
     }
     return PickField(
-      onTap: () {},
+      onTap: _onTap,
+      padding: _toolBar != null
+          ? layout.pickField.padding.copyWith(right: 0)
+          : layout.pickField.padding,
       text: text,
-      padding: layout.pickField.imagePadding,
-      leading: sortable.data.hasImage()
-          ? SizedBox.fromSize(
-              size: layout.pickField.leadingSize,
-              child: FadeInAbiliaImage(
-                imageFileId: sortable.data.dataFileId(),
-                imageFilePath: sortable.data.dataFilePath(),
-                fit: BoxFit.cover,
-              ),
+      leading: _sortable.data.hasImage()
+          ? FadeInAbiliaImage(
+              imageFileId: _sortable.data.dataFileId(),
+              imageFilePath: _sortable.data.dataFilePath(),
+              fit: BoxFit.contain,
             )
-          : const Icon(
-              AbiliaIcons.basicActivity,
+          : Icon(
+              _sortable.data is BasicActivityData
+                  ? AbiliaIcons.basicActivity
+                  : AbiliaIcons.stopWatch,
               color: AbiliaColors.white140,
             ),
-      trailing: null,
+      trailing: _toolBar,
     );
   }
 }
 
 class _PickFolder extends StatelessWidget {
   final SortableData sortableData;
+
   const _PickFolder({
     Key? key,
     required this.sortableData,

@@ -5,6 +5,12 @@ import 'package:seagull/ui/all.dart';
 typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
+typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
+  Sortable<SortableData>,
+  Function(),
+  SortableToolbar?,
+);
+
 class LibraryPage<T extends SortableData> extends StatelessWidget {
   const LibraryPage.nonSelectable({
     Key? key,
@@ -186,9 +192,7 @@ class _SortableLibraryState<T extends SortableData>
   Widget build(BuildContext context) {
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        List<Sortable<T>> content =
-            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
-              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        final content = archiveState.currentFolderSorted;
 
         if (content.isEmpty) {
           return EmptyLibraryMessage(
@@ -225,13 +229,13 @@ class _SortableLibraryState<T extends SortableData>
 }
 
 class ListLibrary<T extends SortableData> extends StatelessWidget {
-  final LibraryItemGenerator<T> libraryItemGenerator;
+  final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
 
-  const ListLibrary(
-    this.libraryItemGenerator,
-    this.emptyLibraryMessage, {
+  const ListLibrary({
     Key? key,
+    required this.emptyLibraryMessage,
+    required this.libraryItemGenerator,
   }) : super(key: key);
 
   @override
@@ -239,16 +243,14 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     final _controller = ScrollController();
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
-        List<Sortable<T>> content =
-            (archiveState.allByFolder[archiveState.currentFolderId] ?? [])
-              ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
+        final content = archiveState.currentFolderSorted;
         if (content.isEmpty) {
           return EmptyLibraryMessage(
             emptyLibraryMessage: emptyLibraryMessage,
             rootFolder: archiveState.isAtRoot,
           );
         }
+
         return ScrollArrows.vertical(
           controller: _controller,
           child: ListView.separated(
@@ -256,9 +258,36 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
             padding: m1WithZeroBottom,
             itemCount: content.length,
             separatorBuilder: (context, index) =>
-                SizedBox(height: layout.libraryPage.listSeperation),
-            itemBuilder: (BuildContext context, int index) =>
-                libraryItemGenerator(content[index]),
+                SizedBox(height: layout.libraryPage.listSeparation),
+            itemBuilder: (BuildContext context, int index) {
+              final Sortable<T> sortable = content[index];
+              final bool selected = archiveState.selected?.id == sortable.id;
+              return libraryItemGenerator(
+                sortable,
+                () => sortable.isGroup
+                    ? context
+                        .read<SortableArchiveCubit<T>>()
+                        .folderChanged(sortable.id)
+                    : context
+                        .read<SortableArchiveCubit<T>>()
+                        .sortableSelected(selected ? null : sortable),
+                selected
+                    ? SortableToolbar(
+                        disableUp: index == 0,
+                        disableDown: index == content.length - 1,
+                        onTapEdit: () {
+                          // TODO: edit timer/activity
+                        },
+                        onTapDelete: () {
+                          // TODO: delete timer/activity
+                        },
+                        onTapReorder: (direction) => context
+                            .read<SortableArchiveCubit<T>>()
+                            .reorder(direction),
+                      )
+                    : null,
+              );
+            },
           ),
         );
       },
