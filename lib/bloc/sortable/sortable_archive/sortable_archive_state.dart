@@ -37,6 +37,10 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
 
   bool get isAtRootAndNoSelection => isAtRoot && !isSelected;
 
+  List<Sortable<T>> get currentFolderSorted =>
+      (allByFolder[currentFolderId] ?? [])
+        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
   String title(Translated translate) =>
       (isSelected ? selected : allById[currentFolderId])
           ?.data

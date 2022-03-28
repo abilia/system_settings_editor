@@ -1080,17 +1080,17 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
-        expect(find.byType(ChecklistToolbar), findsOneWidget);
+        expect(find.byType(SortableToolbar), findsOneWidget);
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
-        expect(find.byType(ChecklistToolbar), findsNothing);
+        expect(find.byType(SortableToolbar), findsNothing);
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
         await tester.tap(find.text(questions[2]!));
         await tester.pumpAndSettle();
-        expect(find.byType(ChecklistToolbar), findsOneWidget);
+        expect(find.byType(SortableToolbar), findsOneWidget);
       });
 
       testWidgets('Can reorder questions', (WidgetTester tester) async {
@@ -1105,7 +1105,7 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
-        expect(find.byType(ChecklistToolbar), findsOneWidget);
+        expect(find.byType(SortableToolbar), findsOneWidget);
         await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
         await tester.pumpAndSettle();
 

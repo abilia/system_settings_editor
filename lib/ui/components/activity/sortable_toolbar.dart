@@ -1,12 +1,12 @@
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-enum ChecklistReorderDirection { up, down }
-
-class ChecklistToolbar extends StatelessWidget {
-  const ChecklistToolbar({
+class SortableToolbar extends StatelessWidget {
+  const SortableToolbar({
     Key? key,
     this.disableUp = false,
     this.disableDown = false,
+    this.margin,
     required this.onTapEdit,
     required this.onTapDelete,
     required this.onTapReorder,
@@ -14,7 +14,8 @@ class ChecklistToolbar extends StatelessWidget {
 
   final bool disableUp, disableDown;
   final Function() onTapEdit, onTapDelete;
-  final Function(ChecklistReorderDirection) onTapReorder;
+  final Function(SortableReorderDirection) onTapReorder;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class ChecklistToolbar extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        margin: layout.checkList.questionViewPadding,
+        margin: margin,
         decoration: boxDecoration.copyWith(
           color: AbiliaColors.black80,
           border: Border.all(style: BorderStyle.none),
@@ -35,7 +36,7 @@ class ChecklistToolbar extends StatelessWidget {
             _ChecklistToolbarButton(
               disabled: disableUp,
               iconData: AbiliaIcons.cursorUp,
-              onTap: () => onTapReorder(ChecklistReorderDirection.up),
+              onTap: () => onTapReorder(SortableReorderDirection.up),
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
@@ -54,7 +55,7 @@ class ChecklistToolbar extends StatelessWidget {
               key: TestKey.checklistToolbarDownButton,
               disabled: disableDown,
               iconData: AbiliaIcons.cursorDown,
-              onTap: () => onTapReorder(ChecklistReorderDirection.down),
+              onTap: () => onTapReorder(SortableReorderDirection.down),
             ),
             SizedBox(width: spacing),
           ],

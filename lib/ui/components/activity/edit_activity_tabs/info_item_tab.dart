@@ -251,13 +251,13 @@ class EditChecklistWidget extends StatelessWidget {
 
   void _handleReorderQuestion(
     final Question question,
-    ChecklistReorderDirection direction,
+    SortableReorderDirection direction,
     BuildContext context,
   ) {
     var questions = checklist.questions.toList();
     final qIndex = questions.indexWhere((q) => q.id == question.id);
     final swapWithIndex =
-        direction == ChecklistReorderDirection.up ? qIndex - 1 : qIndex + 1;
+        direction == SortableReorderDirection.up ? qIndex - 1 : qIndex + 1;
 
     if (qIndex >= 0 &&
         qIndex < questions.length &&

@@ -7,7 +7,7 @@ export 'activity_top_info.dart';
 export 'check_mark.dart';
 export 'note_block.dart';
 export 'checklist.dart';
-export 'checklist_toolbar.dart';
+export 'sortable_toolbar.dart';
 export 'edit_activity_tabs/all.dart';
 export 'record_sound_widgets.dart';
 export 'activity_wizard/all.dart';
