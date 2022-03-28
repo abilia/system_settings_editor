@@ -81,21 +81,29 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       return PickField(
         onTap: _onTap,
         text: text,
-        leading: _PickFolder(sortableData: _sortable.data),
-        leadingPadding: layout.listFolder.margin,
+        padding: layout.pickField.imagePadding,
+        leading: SizedBox.fromSize(
+            size: layout.pickField.leadingSize,
+            child: _PickFolder(
+              sortableData: _sortable.data,
+            )),
+        leadingPadding: layout.pickField.imagePadding,
       );
     }
     return PickField(
       onTap: _onTap,
       padding: _toolBar != null
-          ? layout.pickField.padding.copyWith(right: 0)
-          : layout.pickField.padding,
+          ? layout.pickField.imagePadding.copyWith(right: 0)
+          : layout.pickField.imagePadding,
       text: text,
       leading: _sortable.data.hasImage()
-          ? FadeInAbiliaImage(
-              imageFileId: _sortable.data.dataFileId(),
-              imageFilePath: _sortable.data.dataFilePath(),
-              fit: BoxFit.contain,
+          ? SizedBox.fromSize(
+              size: layout.pickField.leadingSize,
+              child: FadeInAbiliaImage(
+                imageFileId: _sortable.data.dataFileId(),
+                imageFilePath: _sortable.data.dataFilePath(),
+                fit: BoxFit.cover,
+              ),
             )
           : Icon(
               _sortable.data is BasicActivityData
