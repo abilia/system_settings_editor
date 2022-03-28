@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
-import 'package:seagull/utils/all.dart';
-
-final verticalPadding = 24.s;
 
 // Form paddings
 final m1WithZeroBottom = layout.templates.m1.copyWith(bottom: 0);
@@ -63,7 +60,7 @@ final abiliaWhiteTheme =
     abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white);
 
 final inputDecorationTheme = InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(vertical: 14.s, horizontal: 16.s),
+    contentPadding: layout.theme.inputPadding,
     focusedBorder: inputBorder,
     enabledBorder: inputBorder,
     errorBorder: redOutlineInputBorder,
@@ -91,7 +88,8 @@ final borderRadiusTop = BorderRadius.only(
   topRight: radius,
 );
 
-final circleRadius = BorderRadius.all(Radius.circular(24.s));
+final circleRadius =
+    BorderRadius.all(Radius.circular(layout.theme.circleRadius));
 
 // Borders
 
@@ -115,7 +113,7 @@ final Border transparentBlackBorder = Border.fromBorderSide(
 );
 
 final borderOrange = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.orange40, width: 2.s),
+  BorderSide(color: AbiliaColors.orange40, width: layout.borders.medium),
 );
 final border = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
@@ -167,8 +165,7 @@ final selectedBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: Border.fromBorderSide(
-    BorderSide(color: AbiliaColors.green, width: 2.s),
-  ),
+      BorderSide(color: AbiliaColors.green, width: layout.borders.medium)),
 );
 final whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
@@ -260,7 +257,8 @@ Color categoryColor({
 
 final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
-    padding: EdgeInsetsDirectional.only(end: 16.s),
+    padding: EdgeInsetsDirectional.only(
+        end: layout.formPadding.groupHorizontalDistance),
     child: Icon(
       AbiliaIcons.irError,
       color: AbiliaColors.red,

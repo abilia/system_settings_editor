@@ -82,7 +82,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(8.0.s, 0, 4.0.s, 0),
+          padding: layout.settings.textToSpeechPadding,
           child: InfoButton(
             onTap: () => showViewDialog(
               useSafeArea: false,
@@ -123,8 +123,8 @@ class PermissionPickField extends StatelessWidget {
           ),
           if (state.importantPermissionMissing)
             Positioned(
-              top: 8.0.s,
-              right: 8.0.s,
+              top: layout.settings.permissionsDotPosition,
+              right: layout.settings.permissionsDotPosition,
               child: const OrangeDot(),
             ),
         ],

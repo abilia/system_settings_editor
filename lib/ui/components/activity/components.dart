@@ -76,7 +76,7 @@ class PickField extends StatelessWidget {
   );
   final GestureTapCallback? onTap;
   final Widget? leading, trailing;
-  final EdgeInsets? leadingPadding;
+  final EdgeInsets? leadingPadding, padding;
   final Text text;
   final bool errorState;
   final String? semanticsLabel;
@@ -92,6 +92,7 @@ class PickField extends StatelessWidget {
     this.semanticsLabel,
     this.secondaryText,
     this.leadingPadding,
+    this.padding,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ class PickField extends StatelessWidget {
                 : onTap == null
                     ? disabledBoxDecoration
                     : whiteBoxDecoration,
-            padding: layout.pickField.padding,
+            padding: padding ?? layout.pickField.padding,
             child: Row(
               children: <Widget>[
                 if (leading != null)
@@ -126,16 +127,17 @@ class PickField extends StatelessWidget {
                     child: Padding(
                       padding:
                           leadingPadding ?? layout.pickField.leadingPadding,
-                      child: SizedBox.fromSize(
-                        size: layout.pickField.leadingSize,
-                        child: leading,
-                      ),
+                      child: leading,
                     ),
                   ),
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+                    style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            ?.copyWith(height: 1) ??
+                        bodyText1.copyWith(height: 1),
                     child: text,
                   ),
                 ),

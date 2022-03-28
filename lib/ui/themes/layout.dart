@@ -72,6 +72,11 @@ class Layout {
   final LogoutLayout logout;
   final PhotoCalendarLayout photoCalendar;
   final SettingsLayout settings;
+  final PermissionsPageLayout permissionsPage;
+  final EditTimerLayout editTimer;
+  final ButtonLayout button;
+  final ThemeLayout theme;
+  final DotLayout dot;
 
   const Layout({
     this.radius = 12,
@@ -135,6 +140,11 @@ class Layout {
     this.logout = const LogoutLayout(),
     this.photoCalendar = const PhotoCalendarLayout(),
     this.settings = const SettingsLayout(),
+    this.permissionsPage = const PermissionsPageLayout(),
+    this.editTimer = const EditTimerLayout(),
+    this.button = const ButtonLayout(),
+    this.theme = const ThemeLayout(),
+    this.dot = const DotLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -940,13 +950,14 @@ class ComponentsLayout {
 class PickFieldLayout {
   final double height;
   final Size leadingSize;
-  final EdgeInsets padding, leadingPadding;
+  final EdgeInsets padding, leadingPadding, imagePadding;
 
   const PickFieldLayout({
     this.height = 56,
     this.leadingSize = const Size(48, 48),
-    this.padding = const EdgeInsets.only(left: 4, right: 12),
-    this.leadingPadding = const EdgeInsets.only(right: 8),
+    this.padding = const EdgeInsets.only(left: 12, right: 12),
+    this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
+    this.leadingPadding = const EdgeInsets.only(right: 12),
   });
 }
 
@@ -1223,16 +1234,17 @@ class ActivityAlarmPreviewLayout {
   const ActivityAlarmPreviewLayout({
     this.radius = 4,
     this.height = 256,
-    this.activityHeight = 450,
-    this.activityWidth = 800,
+    this.activityHeight = 800,
+    this.activityWidth = 450,
   });
 }
 
 class LogoutLayout {
-  final double profilePictureSize;
+  final double profilePictureSize, profileDistance;
 
   const LogoutLayout({
     this.profilePictureSize = 84,
+    this.profileDistance = 24,
   });
 }
 
@@ -1258,9 +1270,10 @@ class SettingsLayout {
       monthPreviewHeaderHeight,
       weekCalendarHeight,
       weekCalendarHeadingHeight,
-      weekDayHeight;
+      weekDayHeight,
+      permissionsDotPosition;
 
-  final EdgeInsets monthDaysPadding, weekDaysPadding;
+  final EdgeInsets monthDaysPadding, weekDaysPadding, textToSpeechPadding;
 
   const SettingsLayout({
     this.clockHeight = 90,
@@ -1272,7 +1285,70 @@ class SettingsLayout {
     this.weekCalendarHeight = 148,
     this.weekCalendarHeadingHeight = 44,
     this.weekDayHeight = 86,
+    this.permissionsDotPosition = 8,
     this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
     this.weekDaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
+    this.textToSpeechPadding = const EdgeInsets.only(left: 8, right: 4),
+  });
+}
+
+class PermissionsPageLayout {
+  final double deniedDotPosition, deniedContainerSize, deniedBorderRadius;
+
+  final EdgeInsets deniedPadding, deniedVerticalPadding;
+
+  const PermissionsPageLayout({
+    this.deniedDotPosition = -10,
+    this.deniedContainerSize = 32,
+    this.deniedBorderRadius = 16,
+    this.deniedPadding = const EdgeInsets.only(top: 4),
+    this.deniedVerticalPadding = const EdgeInsets.symmetric(vertical: 4),
+  });
+}
+
+class EditTimerLayout {
+  final double inputTimeWidth, textToWheelDistance;
+  final EdgeInsets inputTimePadding;
+
+  const EditTimerLayout({
+    this.inputTimeWidth = 120,
+    this.textToWheelDistance = 40,
+    this.inputTimePadding = const EdgeInsets.symmetric(vertical: 38),
+  });
+}
+
+class ButtonLayout {
+  final double baseButtonMinHeight, secondaryActionButtonMinSize;
+  final Size redButtonMinSize;
+  final EdgeInsets textButtonInsets, redButtonPadding;
+
+  const ButtonLayout({
+    this.baseButtonMinHeight = 64,
+    this.redButtonMinSize = const Size(0, 48),
+    this.secondaryActionButtonMinSize = 40,
+    this.textButtonInsets =
+        const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+    this.redButtonPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
+  });
+}
+
+class ThemeLayout {
+  final double circleRadius;
+  final EdgeInsets inputPadding;
+
+  const ThemeLayout({
+    this.circleRadius = 24,
+    this.inputPadding =
+        const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+  });
+}
+
+class DotLayout {
+  final double bigDotSize, miniDotSize, bigDotPadding;
+
+  const DotLayout({
+    this.bigDotSize = 28,
+    this.miniDotSize = 4,
+    this.bigDotPadding = 6,
   });
 }

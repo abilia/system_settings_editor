@@ -12,14 +12,14 @@ class TimerDurationWiz extends StatelessWidget {
     return BlocBuilder<TimerWizardCubit, TimerWizardState>(
       builder: (context, state) => Scaffold(
         appBar: AbiliaAppBar(iconData: AbiliaIcons.clock, title: t.setDuration),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 36.s),
-              child: SizedBox(
-                width: 119.s,
+        body: Padding(
+          padding: layout.editTimer.inputTimePadding,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: layout.editTimer.inputTimeWidth,
                 child: TextField(
                   textAlign: TextAlign.center,
                   style: abiliaTextTheme.headline6,
@@ -43,22 +43,25 @@ class TimerDurationWiz extends StatelessWidget {
                   },
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 26.s),
-                child: TimerWheel.interactive(
-                  lengthInSeconds: state.duration.inSeconds,
-                  onMinutesSelectedChanged: (minutesSelected) {
-                    HapticFeedback.selectionClick();
-                    context.read<TimerWizardCubit>().updateDuration(
-                          Duration(minutes: minutesSelected),
-                        );
-                  },
+              SizedBox(
+                height: layout.editTimer.textToWheelDistance,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: layout.templates.m4,
+                  child: TimerWheel.interactive(
+                    lengthInSeconds: state.duration.inSeconds,
+                    onMinutesSelectedChanged: (minutesSelected) {
+                      HapticFeedback.selectionClick();
+                      context.read<TimerWizardCubit>().updateDuration(
+                            Duration(minutes: minutesSelected),
+                          );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: PreviousButton(

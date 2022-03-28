@@ -330,8 +330,9 @@ class MediumLayout extends Layout {
             subHeadingPadding: EdgeInsets.only(bottom: 12),
           ),
           pickField: const PickFieldLayout(
-            padding: EdgeInsets.only(left: 8, right: 16),
-            leadingPadding: EdgeInsets.only(right: 12),
+            padding: EdgeInsets.only(left: 18, right: 18),
+            imagePadding: EdgeInsets.only(left: 4, right: 12),
+            leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
           ),
@@ -459,13 +460,14 @@ class MediumLayout extends Layout {
             fullscreenIconDistance: 120,
           ),
           activityPreview: const ActivityAlarmPreviewLayout(
-            radius: 4,
-            height: 256,
-            activityHeight: 450,
-            activityWidth: 800,
+            radius: 6,
+            height: 384,
+            activityHeight: 1200,
+            activityWidth: 675,
           ),
           logout: const LogoutLayout(
             profilePictureSize: 126,
+            profileDistance: 35,
           ),
           photoCalendar: const PhotoCalendarLayout(
             clockSize: 138,
@@ -480,12 +482,43 @@ class MediumLayout extends Layout {
             previewTimePillarWidth: 207,
             intervalStepperWidth: 345,
             monthPreviewHeight: 144,
-            monthDaysPadding: EdgeInsets.only(left: 6, right: 6),
             monthPreviewHeaderHeight: 48,
             weekCalendarHeight: 222,
             weekCalendarHeadingHeight: 66,
             weekDayHeight: 129,
-            weekDaysPadding: EdgeInsets.symmetric(horizontal: 3.0),
+            permissionsDotPosition: 12,
+            monthDaysPadding: EdgeInsets.only(left: 6, right: 6),
+            weekDaysPadding: EdgeInsets.symmetric(horizontal: 3),
+            textToSpeechPadding: EdgeInsets.only(left: 12, right: 6),
+          ),
+          permissionsPage: const PermissionsPageLayout(
+            deniedDotPosition: -15,
+            deniedContainerSize: 48,
+            deniedBorderRadius: 24,
+            deniedPadding: EdgeInsets.only(top: 6),
+            deniedVerticalPadding: EdgeInsets.symmetric(vertical: 6),
+          ),
+          editTimer: const EditTimerLayout(
+            inputTimeWidth: 180,
+            textToWheelDistance: 60,
+            inputTimePadding: EdgeInsets.symmetric(vertical: 57),
+          ),
+          button: const ButtonLayout(
+            baseButtonMinHeight: 96,
+            redButtonMinSize: Size(0, 72),
+            secondaryActionButtonMinSize: 60,
+            textButtonInsets:
+                EdgeInsets.symmetric(horizontal: 48, vertical: 30),
+            redButtonPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
+          ),
+          theme: const ThemeLayout(
+            circleRadius: 36,
+            inputPadding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+          ),
+          dot: const DotLayout(
+            bigDotSize: 42,
+            miniDotSize: 6,
+            bigDotPadding: 9,
           ),
         );
 }

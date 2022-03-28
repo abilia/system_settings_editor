@@ -60,30 +60,35 @@ class _TimerInputContent extends StatelessWidget {
                       textTheme: theme.textTheme
                           .copyWith(subtitle1: abiliaTextTheme.headline4)),
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 42.s, top: 64.s, right: 42.s),
+                    padding: layout.templates.l4,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        _TimeTextField(
-                            key: TestKey.hours,
-                            header: translate.hours.capitalize(),
-                            text: _pad0(state.hours.toString()),
-                            onChanged: (hours) {
-                              context
-                                  .read<_EditTimerCubit>()
-                                  .updateDuration(hours: int.tryParse(hours));
-                            },
-                            granularityFormatter: _HourInputFormatter()),
+                        SizedBox(
+                          width: layout.editTimer.inputTimeWidth,
+                          child: _TimeTextField(
+                              key: TestKey.hours,
+                              header: translate.hours.capitalize(),
+                              text: _pad0(state.hours.toString()),
+                              onChanged: (hours) {
+                                context
+                                    .read<_EditTimerCubit>()
+                                    .updateDuration(hours: int.tryParse(hours));
+                              },
+                              granularityFormatter: _HourInputFormatter()),
+                        ),
                         Padding(
-                          padding: EdgeInsets.all(16.s),
+                          padding: EdgeInsets.all(
+                              layout.formPadding.groupHorizontalDistance),
                           child: DefaultTextStyle(
                             style: (theme.textTheme.headline5 ?? headline5),
                             child: const Text(':'),
                           ),
                         ),
-                        _TimeTextField(
+                        SizedBox(
+                          width: layout.editTimer.inputTimeWidth,
+                          child: _TimeTextField(
                             key: TestKey.minutes,
                             header: translate.minutes.capitalize(),
                             text: (state.minutes % Duration.minutesPerHour)
@@ -93,7 +98,9 @@ class _TimerInputContent extends StatelessWidget {
                               context.read<_EditTimerCubit>().updateDuration(
                                   minutes: int.tryParse(minutes));
                             },
-                            granularityFormatter: _MinuteInputFormatter()),
+                            granularityFormatter: _MinuteInputFormatter(),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -148,45 +155,43 @@ class _TimeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SubHeading(header),
-          TextField(
-            key: key,
-            onTap: () => focusNode?.requestFocus(),
-            focusNode: focusNode,
-            enableInteractiveSelection: false,
-            keyboardType: TextInputType.number,
-            showCursor: false,
-            controller: TextEditingController(text: _pad0(text))
-              ..selection = _textSelection,
-            onChanged: (value) => onChanged.call(value),
-            textInputAction: TextInputAction.done,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              _EmptyInputFormatter(),
-              _LeadingZeroInputFormatter(),
-              LengthLimitingTextInputFormatter(2),
-              granularityFormatter,
-            ],
-            textAlign: TextAlign.center,
-            textAlignVertical: TextAlignVertical.center,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: borderRadius,
-                borderSide: BorderSide(
-                  color: Colors.black,
-                  width: 2.s,
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SubHeading(header),
+        TextField(
+          key: key,
+          onTap: () => focusNode?.requestFocus(),
+          focusNode: focusNode,
+          enableInteractiveSelection: false,
+          keyboardType: TextInputType.number,
+          showCursor: false,
+          controller: TextEditingController(text: _pad0(text))
+            ..selection = _textSelection,
+          onChanged: (value) => onChanged.call(value),
+          textInputAction: TextInputAction.done,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            _EmptyInputFormatter(),
+            _LeadingZeroInputFormatter(),
+            LengthLimitingTextInputFormatter(2),
+            granularityFormatter,
+          ],
+          textAlign: TextAlign.center,
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: borderRadius,
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: layout.borders.medium,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

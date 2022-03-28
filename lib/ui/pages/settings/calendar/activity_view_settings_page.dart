@@ -18,7 +18,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
       child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettingsState>(
         builder: (context, state) => SettingsBasePage(
           icon: AbiliaIcons.fullScreen,
-          title: Translator.of(context).translate.activityView,
+          title: t.activityView,
           widgets: [
             const _FakeMemoplannerSetting(
               child: ActivityPagePreview(),

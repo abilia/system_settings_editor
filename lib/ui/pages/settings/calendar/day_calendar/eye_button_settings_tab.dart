@@ -13,7 +13,7 @@ class EyeButtonSettingsTab extends StatelessWidget {
           bottom: layout.templates.m1.bottom,
         ),
         children: [
-          Tts(child: Text(t.viewSettings)),
+          Tts(child: Text(t.viewSettings)).pad(m1Horizontal),
           CollapsableWidget(
             collapsed: !state.showTypeOfDisplay,
             child: _buildSelector(

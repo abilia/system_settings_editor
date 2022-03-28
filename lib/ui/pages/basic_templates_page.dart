@@ -74,18 +74,26 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
         onTap: () =>
             context.read<SortableArchiveCubit<T>>().folderChanged(sortable.id),
         text: text,
-        leading: _PickFolder(sortableData: sortable.data),
+        padding: layout.pickField.imagePadding,
+        leading: SizedBox.fromSize(
+          size: layout.pickField.leadingSize,
+          child: _PickFolder(sortableData: sortable.data),
+        ),
         leadingPadding: layout.listFolder.margin,
       );
     }
     return PickField(
       onTap: () {},
       text: text,
+      padding: layout.pickField.imagePadding,
       leading: sortable.data.hasImage()
-          ? FadeInAbiliaImage(
-              imageFileId: sortable.data.dataFileId(),
-              imageFilePath: sortable.data.dataFilePath(),
-              fit: BoxFit.contain,
+          ? SizedBox.fromSize(
+              size: layout.pickField.leadingSize,
+              child: FadeInAbiliaImage(
+                imageFileId: sortable.data.dataFileId(),
+                imageFilePath: sortable.data.dataFilePath(),
+                fit: BoxFit.cover,
+              ),
             )
           : const Icon(
               AbiliaIcons.basicActivity,

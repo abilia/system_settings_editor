@@ -65,13 +65,14 @@ final baseButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(
     abiliaTextTheme.subtitle1?.copyWith(height: 1),
   ),
-  minimumSize: MaterialStateProperty.all(Size.fromHeight(64.0.s)),
+  minimumSize: MaterialStateProperty.all(
+      Size.fromHeight(layout.button.baseButtonMinHeight)),
 );
 
 final textButtonStyle = baseButtonStyle.copyWith(
   shape: noBorder,
   padding: MaterialStateProperty.all(
-    EdgeInsets.symmetric(horizontal: 32.s, vertical: 20.s),
+    layout.button.textButtonInsets,
   ),
 );
 
@@ -111,9 +112,9 @@ final iconTextButtonStyleNext = iconTextButtonStyleGreen.copyWith(
 final actionIconTextButtonStyleRed = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
   textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
-  minimumSize: MaterialStateProperty.all(Size(0.0, 48.0.s)),
+  minimumSize: MaterialStateProperty.all(layout.button.redButtonMinSize),
   padding: MaterialStateProperty.all(
-    EdgeInsets.fromLTRB(10.0.s, 10.0.s, 20.0.s, 10.0.s),
+    layout.button.redButtonPadding,
   ),
   backgroundColor: buttonBackgroundRed,
   shape: MaterialStateProperty.resolveWith(
@@ -123,13 +124,15 @@ final actionIconTextButtonStyleRed = ButtonStyle(
       }
       return RoundedRectangleBorder(
         borderRadius: borderRadius,
-        side: BorderSide(color: AbiliaColors.red140, width: 1.0.s),
+        side:
+            BorderSide(color: AbiliaColors.red140, width: layout.borders.thin),
       );
     },
   ),
 );
 
-final double secondaryActionButtonMinSize = 40.0.s;
+final double secondaryActionButtonMinSize =
+    layout.button.secondaryActionButtonMinSize;
 
 final _actionButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
@@ -148,7 +151,10 @@ final actionButtonStyleRed = _actionButtonStyle.copyWith(
       }
       return RoundedRectangleBorder(
         borderRadius: borderRadius,
-        side: BorderSide(color: AbiliaColors.red140, width: 1.0.s),
+        side: BorderSide(
+          color: AbiliaColors.red140,
+          width: layout.borders.thin,
+        ),
       );
     },
   ),
