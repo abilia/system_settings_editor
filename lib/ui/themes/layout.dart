@@ -63,6 +63,7 @@ class Layout {
   final MenuButtonLayout menuButton;
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
+  final FloatingActionButtonLayout fab;
   final EdgeInsets bodyTemplateL4;
 
   const Layout({
@@ -118,6 +119,7 @@ class Layout {
     this.menuButton = const MenuButtonLayout(),
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
+    this.fab = const FloatingActionButtonLayout(),
     this.bodyTemplateL4 = const EdgeInsets.symmetric(vertical: 64),
   });
 
@@ -1047,4 +1049,9 @@ class CommonCalendarLayout {
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
   });
+}
+
+class FloatingActionButtonLayout {
+  final EdgeInsets padding;
+  const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
 }

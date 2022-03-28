@@ -385,5 +385,6 @@ class MediumLayout extends Layout {
             fullDayStackDistance: 6,
             goToNowButtonTop: 48,
           ),
+          fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
         );
 }
