@@ -28,6 +28,7 @@ class ImageArchivePage extends StatelessWidget {
           iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
           title: translate.selectImage,
         ),
+        gridChildAspectRatio: layout.imageArchive.aspectRatio,
         rootHeading: header ?? translate.imageArchive,
         libraryItemGenerator: (imageArchive) =>
             ArchiveImage(sortable: imageArchive),
@@ -67,13 +68,13 @@ class ArchiveImage extends StatelessWidget {
         decoration: boxDecoration,
         padding: EdgeInsets.all(layout.imageArchive.imagePadding),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (name.isNotEmpty) ...[
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.caption?.copyWith(height: 1),
+                style: abiliaTextTheme.caption,
               ),
               SizedBox(height: layout.imageArchive.imageNameBottomPadding),
             ],

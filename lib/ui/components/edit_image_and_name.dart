@@ -59,18 +59,34 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SubHeading(heading),
-                        TextField(
-                          controller: txtEditController,
-                          decoration:
-                              InputDecoration(hintText: widget.hintText),
-                          textCapitalization: TextCapitalization.sentences,
-                          style: Theme.of(context).textTheme.bodyText1,
-                          autofocus: true,
-                          onEditingComplete: Navigator.of(context).maybePop,
-                          onChanged: (text) => setState(() =>
-                              imageAndName = imageAndName.copyWith(name: text)),
-                          maxLines: widget.maxLines,
-                          minLines: widget.minLines,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: txtEditController,
+                                decoration:
+                                    InputDecoration(hintText: widget.hintText),
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                style: Theme.of(context).textTheme.bodyText1,
+                                autofocus: true,
+                                onEditingComplete:
+                                    Navigator.of(context).maybePop,
+                                onChanged: (text) => setState(() =>
+                                    imageAndName =
+                                        imageAndName.copyWith(name: text)),
+                                maxLines: widget.maxLines,
+                                minLines: widget.minLines,
+                              ),
+                            ),
+                            TtsPlayButton(
+                              controller: txtEditController,
+                              padding: EdgeInsets.only(
+                                left: layout
+                                    .formPadding.largeHorizontalItemDistance,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

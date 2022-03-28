@@ -54,7 +54,7 @@ class BasicLibraryItem<T extends SortableData> extends StatelessWidget {
                           Text(
                             name,
                             overflow: TextOverflow.ellipsis,
-                            style: abiliaTextTheme.caption,
+                            style: abiliaTextTheme.caption?.copyWith(height: 1),
                           ),
                         SizedBox(height: layout.libraryPage.textImageDistance),
                         SizedBox(

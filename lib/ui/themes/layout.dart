@@ -64,6 +64,7 @@ class Layout {
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
   final MessageLayout message;
+  final FloatingActionButtonLayout fab;
   final SliderLayout slider;
   final SwitchFieldLayout switchField;
   final LoginLayout login;
@@ -132,6 +133,7 @@ class Layout {
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
     this.message = const MessageLayout(),
+    this.fab = const FloatingActionButtonLayout(),
     this.slider = const SliderLayout(),
     this.switchField = const SwitchFieldLayout(),
     this.login = const LoginLayout(),
@@ -656,7 +658,8 @@ class ImageArchiveLayout {
       imageHeight,
       imagePadding,
       fullscreenImagePadding,
-      imageNameBottomPadding;
+      imageNameBottomPadding,
+      aspectRatio;
 
   const ImageArchiveLayout({
     this.imageWidth = 84,
@@ -664,6 +667,7 @@ class ImageArchiveLayout {
     this.imagePadding = 4,
     this.fullscreenImagePadding = 12,
     this.imageNameBottomPadding = 2,
+    this.aspectRatio = 1,
   });
 }
 
@@ -695,9 +699,9 @@ class LibraryPageLayout {
     this.contentPadding = const EdgeInsets.all(4),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
-    this.childAspectRatio = 110 / 112,
+    this.childAspectRatio = 112 / 112,
     this.imageHeight = 86,
-    this.imageWidth = 84,
+    this.imageWidth = 86,
     this.textImageDistance = 2,
     this.emptyMessageTopPadding = 60,
     this.folderImageRadius = 4,
@@ -1351,4 +1355,9 @@ class DotLayout {
     this.miniDotSize = 4,
     this.bigDotPadding = 6,
   });
+}
+
+class FloatingActionButtonLayout {
+  final EdgeInsets padding;
+  const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
 }

@@ -680,6 +680,15 @@ void main() {
     });
 
     group('note', () {
+      setUp(() async {
+        setupFakeTts();
+        GetItInitializer()
+          ..fileStorage = FakeFileStorage()
+          ..sharedPreferences = await FakeSharedPreferences.getInstance()
+          ..database = FakeDatabase()
+          ..init();
+      });
+
       Future goToNote(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
@@ -801,6 +810,11 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.enterText(find.byType(TextField), noteText);
         await tester.pumpAndSettle();
+        await tester.verifyTts(
+          find.byType(TtsPlayButton),
+          exact: noteText,
+          useTap: true,
+        );
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
 
@@ -888,6 +902,7 @@ Internal improvements to tests and examples.''';
 
     group('checklist', () {
       setUp(() async {
+        setupFakeTts();
         GetItInitializer()
           ..fileStorage = FakeFileStorage()
           ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -998,6 +1013,11 @@ Internal improvements to tests and examples.''';
         await tester.enterText(find.byType(TextField), questionName);
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsWidgets);
+        await tester.verifyTts(
+          find.byType(TtsPlayButton),
+          exact: questionName,
+          useTap: true,
+        );
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
         await tester.scrollDown(dy: -150);

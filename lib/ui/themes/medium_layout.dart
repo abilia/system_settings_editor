@@ -217,6 +217,7 @@ class MediumLayout extends Layout {
             imagePadding: 3,
             imageNameBottomPadding: 3,
             fullscreenImagePadding: 18,
+            aspectRatio: 188 / 180,
           ),
           libraryPage: const LibraryPageLayout(
             mainAxisSpacing: 12,
@@ -228,9 +229,9 @@ class MediumLayout extends Layout {
             contentPadding: EdgeInsets.all(6),
             folderIconSize: 129,
             headerFontSize: 32,
-            childAspectRatio: 181 / 168,
-            imageHeight: 129,
-            imageWidth: 126,
+            childAspectRatio: 183 / 188,
+            imageHeight: 144,
+            imageWidth: 140,
             textImageDistance: 3,
             emptyMessageTopPadding: 90,
             folderImageRadius: 6,
@@ -520,5 +521,6 @@ class MediumLayout extends Layout {
             miniDotSize: 6,
             bigDotPadding: 9,
           ),
+          fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
         );
 }
