@@ -19,7 +19,8 @@ class CodeProtectSettingsPage extends StatelessWidget {
         builder: (context, state) {
           return SettingsBasePage(
             icon: AbiliaIcons.numericKeyboard,
-            title: Translator.of(context).translate.codeProtect,
+            title: translate.codeProtect,
+            label: translate.system,
             widgets: [
               SubHeading(translate.code),
               PickField(

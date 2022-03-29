@@ -4,12 +4,14 @@ class SettingsBasePage extends StatelessWidget {
   final List<Widget> widgets;
   final IconData icon;
   final String title;
+  final String? label;
   final Widget? bottomNavigationBar;
   const SettingsBasePage({
     Key? key,
     required this.widgets,
     required this.icon,
     required this.title,
+    this.label,
     this.bottomNavigationBar,
   }) : super(key: key);
   @override
@@ -17,6 +19,7 @@ class SettingsBasePage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: title,
+        label: label,
         iconData: icon,
       ),
       body: DividerTheme(

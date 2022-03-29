@@ -22,7 +22,8 @@ class AlarmSettingsPage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               appBar: AbiliaAppBar(
-                title: Translator.of(context).translate.alarmSettings,
+                title: t.alarmSettings,
+                label: t.settings,
                 iconData: AbiliaIcons.handiAlarmVibration,
               ),
               body: ListView(

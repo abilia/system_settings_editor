@@ -15,7 +15,8 @@ class WeekCalendarSettingsPage extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.weekCalendar,
+            title: t.weekCalendar,
+            label: t.calendar,
             iconData: AbiliaIcons.week,
             bottom: AbiliaTabBar(
               tabs: <Widget>[
