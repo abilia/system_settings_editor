@@ -101,9 +101,9 @@ final _noColor = DayTheme._light(
     _friday = DayTheme._dark(AbiliaColors.yellow, AbiliaColors.fridayYellow40),
     _saturday = DayTheme._light(AbiliaColors.pink, AbiliaColors.saturdayPink40),
     _danishTuesday =
-        DayTheme._light(AbiliaColors.purple60, AbiliaColors.purple60),
+        DayTheme._light(AbiliaColors.purple60, AbiliaColors.purple40),
     _danishWednesDay =
-        DayTheme._light(AbiliaColors.orange120, AbiliaColors.orange120);
+        DayTheme._light(AbiliaColors.orange120, AbiliaColors.orange60);
 
 DayTheme weekdayTheme({
   required DayColor dayColor,
