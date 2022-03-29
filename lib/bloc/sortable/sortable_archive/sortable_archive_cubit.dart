@@ -104,6 +104,15 @@ class SortableArchiveCubit<T extends SortableData>
     }
   }
 
+  void delete() {
+    final selectedId = state.selected?.id;
+    if (selectedId == null) return;
+    final sortables = state.currentFolderSorted;
+    final sortableIndex = sortables.indexWhere((q) => q.id == selectedId);
+    sortableBloc.add(
+        SortablesUpdated([sortables[sortableIndex].copyWith(deleted: true)]));
+  }
+
   @override
   Future<void> close() async {
     await _sortableSubscription.cancel();

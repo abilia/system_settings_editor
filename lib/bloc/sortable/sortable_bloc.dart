@@ -73,7 +73,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       if (myPhotosFolder == null) {
         final myPhotos = Sortable.createNew<ImageArchiveData>(
           data: const ImageArchiveData(myPhotos: true),
-          sortOrder: startSordOrder,
+          sortOrder: startSortOrder,
           isGroup: true,
           fixed: true,
         );
@@ -91,7 +91,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       if (uploadsFolder == null) {
         final upload = Sortable.createNew<ImageArchiveData>(
           data: const ImageArchiveData(upload: true),
-          sortOrder: startSordOrder,
+          sortOrder: startSortOrder,
           isGroup: true,
           fixed: true,
         );
@@ -143,7 +143,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
             .toList();
         folderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         final sortOrder = folderContent.isEmpty
-            ? startSordOrder
+            ? startSortOrder
             : calculateNextSortOrder(folderContent.last.sortOrder, 1);
         final newSortable = Sortable.createNew<ImageArchiveData>(
           data: sortableData,
