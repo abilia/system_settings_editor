@@ -96,21 +96,21 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
           ? layout.pickField.imagePadding.copyWith(right: 0)
           : layout.pickField.imagePadding,
       text: text,
-      leading: _sortable.data.hasImage()
-          ? SizedBox.fromSize(
-              size: layout.pickField.leadingSize,
-              child: FadeInAbiliaImage(
+      leading: SizedBox.fromSize(
+        size: layout.pickField.leadingSize,
+        child: _sortable.data.hasImage()
+            ? FadeInAbiliaImage(
                 imageFileId: _sortable.data.dataFileId(),
                 imageFilePath: _sortable.data.dataFilePath(),
                 fit: BoxFit.cover,
+              )
+            : Icon(
+                _sortable.data is BasicActivityData
+                    ? AbiliaIcons.basicActivity
+                    : AbiliaIcons.stopWatch,
+                color: AbiliaColors.white140,
               ),
-            )
-          : Icon(
-              _sortable.data is BasicActivityData
-                  ? AbiliaIcons.basicActivity
-                  : AbiliaIcons.stopWatch,
-              color: AbiliaColors.white140,
-            ),
+      ),
       trailing: _toolBar,
     );
   }
