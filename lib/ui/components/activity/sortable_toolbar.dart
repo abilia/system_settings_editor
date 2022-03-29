@@ -1,6 +1,5 @@
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-
-enum SortableReorderDirection { up, down }
 
 class SortableToolbar extends StatelessWidget {
   const SortableToolbar({

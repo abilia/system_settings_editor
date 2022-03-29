@@ -26,7 +26,7 @@ extension VerifyTts on WidgetTester {
     String? contains,
     String? exact,
     bool warnIfMissed = true,
-    useTap = false,
+    bool useTap = false,
   }) async {
     if (useTap) {
       await tap(finder, warnIfMissed: warnIfMissed);

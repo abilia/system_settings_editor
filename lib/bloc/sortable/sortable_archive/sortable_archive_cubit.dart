@@ -12,11 +12,12 @@ part 'sortable_archive_state.dart';
 class SortableArchiveCubit<T extends SortableData>
     extends Cubit<SortableArchiveState<T>> {
   late final StreamSubscription _sortableSubscription;
+  final SortableBloc sortableBloc;
   final bool Function(Sortable<T>)? visibilityFilter;
   final bool showFolders;
 
   SortableArchiveCubit({
-    required SortableBloc sortableBloc,
+    required this.sortableBloc,
     String initialFolderId = '',
     this.visibilityFilter,
     this.showFolders = true,
@@ -35,7 +36,7 @@ class SortableArchiveCubit<T extends SortableData>
 
   void sortablesUpdated(Iterable<Sortable> sortables) {
     emit(
-      _stateFromSortables<T>(
+      stateFromSortables<T>(
         sortables: sortables,
         initialFolderId: state.initialFolderId,
         currentFolderId: state.currentFolderId,
@@ -58,7 +59,7 @@ class SortableArchiveCubit<T extends SortableData>
     );
   }
 
-  void sortableSelected(Sortable<T> selected) {
+  void sortableSelected(Sortable<T>? selected) {
     emit(
       SortableArchiveState<T>(
         state.allByFolder,
@@ -81,6 +82,37 @@ class SortableArchiveCubit<T extends SortableData>
     );
   }
 
+  void reorder(SortableReorderDirection direction) {
+    final selectedId = state.selected?.id;
+    if (selectedId == null) return;
+    final sortables = state.currentFolderSorted;
+    final sortableIndex = sortables.indexWhere((q) => q.id == selectedId);
+    final swapWithIndex = direction == SortableReorderDirection.up
+        ? sortableIndex - 1
+        : sortableIndex + 1;
+    if (sortableIndex >= 0 &&
+        sortableIndex < sortables.length &&
+        swapWithIndex >= 0 &&
+        swapWithIndex < sortables.length) {
+      final sortable = sortables[sortableIndex];
+      final sortableSwap = sortables[swapWithIndex];
+      final newSortOrder = sortableSwap.sortOrder;
+      sortableBloc.add(SortablesUpdated([
+        sortableSwap.copyWith(sortOrder: sortable.sortOrder),
+        sortable.copyWith(sortOrder: newSortOrder),
+      ]));
+    }
+  }
+
+  void delete() {
+    final selectedId = state.selected?.id;
+    if (selectedId == null) return;
+    final sortables = state.currentFolderSorted;
+    final sortableIndex = sortables.indexWhere((q) => q.id == selectedId);
+    sortableBloc.add(
+        SortablesUpdated([sortables[sortableIndex].copyWith(deleted: true)]));
+  }
+
   @override
   Future<void> close() async {
     await _sortableSubscription.cancel();
@@ -93,7 +125,7 @@ class SortableArchiveCubit<T extends SortableData>
     bool Function(Sortable<T>)? visibilityFilter,
     bool showFolder,
   ) =>
-      _stateFromSortables(
+      stateFromSortables(
         sortables: sortableState is SortablesLoaded
             ? sortableState.sortables
             : <Sortable<SortableData>>[],
@@ -103,7 +135,7 @@ class SortableArchiveCubit<T extends SortableData>
         showFolder: showFolder,
       );
 
-  static SortableArchiveState<T> _stateFromSortables<T extends SortableData>({
+  static SortableArchiveState<T> stateFromSortables<T extends SortableData>({
     required Iterable<Sortable> sortables,
     required String initialFolderId,
     required String currentFolderId,

@@ -196,21 +196,31 @@ class SettingsButton extends StatelessWidget {
     return BlocSelector<PermissionCubit, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
+        final name = Translator.of(context).translate.settings;
         return Stack(
           children: [
             MenuItemButton(
               style: blackButtonStyle,
-              text: Translator.of(context).translate.settings,
+              text: name,
               icon: AbiliaIcons.settings,
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const SettingsPage(),
-                  ),
-                  settings: const RouteSettings(name: 'SettingsPage'),
-                ),
-              ),
+              onPressed: () async {
+                final accessGranted = await codeProtectAccess(
+                  context,
+                  restricted: (codeSettings) => codeSettings.protectSettings,
+                  name: name,
+                );
+                if (accessGranted) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MultiBlocProvider(
+                        providers: authProviders,
+                        child: const SettingsPage(),
+                      ),
+                      settings: const RouteSettings(name: 'SettingsPage'),
+                    ),
+                  );
+                }
+              },
             ),
             if (importantPermissionMissing)
               Positioned(

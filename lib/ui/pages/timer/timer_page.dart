@@ -133,7 +133,8 @@ class TimerTopInfo extends StatelessWidget {
                 child: Text(
                   timer.title,
                   style: themeData.textTheme.headline5,
-                  overflow: TextOverflow.visible,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -359,11 +359,13 @@ class MediumLayout extends Layout {
             padding: 6,
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
+          timeInput: const TimeInputLayout(
+            height: 96,
+            width: 180,
+          ),
           recording: const RecordingLayout(
             trackHeight: 6,
             thumbRadius: 18,
-            timeDisplayHeight: 96,
-            timeDisplayWidth: 180,
             padding: EdgeInsets.symmetric(horizontal: 48),
           ),
           arrows: const ArrowsLayout(
@@ -383,5 +385,6 @@ class MediumLayout extends Layout {
             fullDayStackDistance: 6,
             goToNowButtonTop: 48,
           ),
+          fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
         );
 }
