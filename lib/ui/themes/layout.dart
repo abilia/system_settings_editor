@@ -1,6 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
+
+import 'dart:ui' as ui;
 
 part 'go_layout.dart';
 
@@ -8,9 +9,12 @@ part 'large_layout.dart';
 
 part 'medium_layout.dart';
 
-final Layout layout = Device.screenSize.longestSide > 1500
+late final ui.Size screenSize =
+    ui.window.physicalSize / ui.window.devicePixelRatio;
+
+late final Layout layout = screenSize.longestSide > 1500
     ? const _LargeLayout()
-    : Device.screenSize.longestSide > 1000
+    : screenSize.longestSide > 1000
         ? const MediumLayout()
         : const _GoLayout();
 
