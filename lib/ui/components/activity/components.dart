@@ -133,11 +133,8 @@ class PickField extends StatelessWidget {
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(height: 1) ??
-                        bodyText1.copyWith(height: 1),
+                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                        .copyWith(height: 1),
                     child: text,
                   ),
                 ),
