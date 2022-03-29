@@ -14,11 +14,14 @@ class PermissionsPage extends StatelessWidget {
       ),
       body: BlocBuilder<PermissionCubit, PermissionState>(
         builder: (context, state) => ListView(
-          padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 0),
+          padding: layout.templates.m1,
           children: state.status.entries
               .where((p) => PermissionCubit.allPermissions.contains(p.key))
               .map((e) => PermissionSetting(e))
-              .expand((e) => [e, SizedBox(height: 8.0.s)])
+              .expand((e) => [
+                    e,
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
+                  ])
               .toList(),
         ),
       ),
@@ -120,18 +123,22 @@ class NotificationPermissionSwitch extends StatelessWidget {
             ),
             if (denied)
               Positioned(
-                right: -10.s,
-                top: -10.s,
+                right: layout.permissionsPage.deniedDotPosition,
+                top: layout.permissionsPage.deniedDotPosition,
                 child: Container(
-                  width: 32.s,
-                  height: 32.s,
+                  width: layout.permissionsPage.deniedContainerSize,
+                  height: layout.permissionsPage.deniedContainerSize,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16.s)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        layout.permissionsPage.deniedBorderRadius,
+                      ),
+                    ),
                     color: AbiliaColors.orange40,
                   ),
                   child: Icon(
                     AbiliaIcons.irError,
-                    size: 20.0.s,
+                    size: layout.icon.tiny,
                   ),
                 ),
               ),
@@ -139,7 +146,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
         ),
         if (denied)
           Padding(
-            padding: EdgeInsets.only(top: 4.0.s),
+            padding: layout.permissionsPage.deniedPadding,
             child: ErrorMessage(
               text: Text(translate.notificationsWarningHintText),
             ),
@@ -196,18 +203,19 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                   ),
                   if (denied)
                     Positioned(
-                      right: -10.s,
-                      top: -10.s,
+                      right: layout.permissionsPage.deniedDotPosition,
+                      top: layout.permissionsPage.deniedDotPosition,
                       child: Container(
-                        width: 32.s,
-                        height: 32.s,
+                        width: layout.permissionsPage.deniedContainerSize,
+                        height: layout.permissionsPage.deniedContainerSize,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(16.s)),
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              layout.permissionsPage.deniedBorderRadius)),
                           color: AbiliaColors.orange40,
                         ),
                         child: Icon(
                           AbiliaIcons.irError,
-                          size: 20.0.s,
+                          size: layout.icon.tiny,
                         ),
                       ),
                     ),
@@ -215,7 +223,9 @@ class FullscreenPermissionSwitch extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 8.0.s),
+              padding: EdgeInsets.only(
+                left: layout.formPadding.horizontalItemDistance,
+              ),
               child: InfoButton(
                 onTap: () => showViewDialog(
                   context: context,
@@ -227,7 +237,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
         ),
         if (denied) ...[
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0.s),
+            padding: layout.permissionsPage.deniedVerticalPadding,
             child: ErrorMessage(
               text: Text(translate.fullScreenAlarmInfo),
             ),

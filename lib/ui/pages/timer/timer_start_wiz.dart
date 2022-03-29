@@ -16,12 +16,12 @@ class TimerStartWiz extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-                padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 20.s),
+                padding: layout.templates.m3,
                 child: const TimerNameAndPictureWidget()),
             const Divider(),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(12.s, 12.s, 16.s, 12.s),
+                padding: layout.templates.s1,
                 child: Container(
                   decoration: BoxDecoration(
                     color: AbiliaColors.white,

@@ -18,11 +18,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(16.s, 8.s, 16.s, 32.s),
-          child: const GoToCreateAccountButton(),
-        ),
-        SizedBox(height: 32.s),
+        const GoToCreateAccountButton().pad(layout.login.createAccountPadding),
         Row(
           children: const [
             AbiliaLogo(),

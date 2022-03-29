@@ -28,7 +28,7 @@ class FullDayContainer extends StatelessWidget {
               color: Theme.of(context).appBarTheme.backgroundColor,
             ),
             child: Padding(
-              padding: EdgeInsets.all(12.s),
+              padding: layout.commonCalendar.fullDayPadding,
               child: SafeArea(
                 child: Row(
                   children: fullDayActivities
@@ -76,7 +76,7 @@ class ShowAllFullDayActivitiesButton extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(10.s, 4.s, 4.s, 4.s),
+      padding: layout.commonCalendar.fullDayButtonPadding,
       child: IconActionButton(
         onPressed: () {
           Navigator.of(context).push(

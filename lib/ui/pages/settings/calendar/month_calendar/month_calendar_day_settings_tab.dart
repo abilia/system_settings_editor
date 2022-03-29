@@ -17,8 +17,11 @@ class MonthDisplaySettingsTab extends StatelessWidget {
           children: [
             Tts(child: Text(t.display)),
             Padding(
-              padding: EdgeInsets.only(left: 4.0.s, right: 4.s, bottom: 8.s),
+              padding: layout.settings.monthDaysPadding,
               child: const _MonthCalendarPreview(),
+            ),
+            SizedBox(
+              height: layout.formPadding.verticalItemDistance,
             ),
             RadioField(
               key: TestKey.monthColorSwith,
@@ -47,7 +50,7 @@ class _MonthCalendarPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
     return SizedBox(
-      height: 96.s,
+      height: layout.settings.monthPreviewHeight,
       child: Row(
           children: List.generate(
         DateTime.daysPerWeek,
@@ -74,7 +77,7 @@ class _MonthDayView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4.s),
+        margin: layout.settings.monthDaysPadding,
         foregroundDecoration: BoxDecoration(
           border: transparentBlackBorder,
           borderRadius: BorderRadius.circular(layout.monthCalendar.dayRadius),
@@ -88,7 +91,7 @@ class _MonthDayView extends StatelessWidget {
                   top: Radius.circular(layout.monthCalendar.dayRadius),
                 ),
               ),
-              height: 32.s,
+              height: layout.settings.monthPreviewHeaderHeight,
             ),
             Expanded(
               child: BlocBuilder<MonthCalendarSettingsCubit,

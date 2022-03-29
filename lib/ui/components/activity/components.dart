@@ -123,20 +123,18 @@ class PickField extends StatelessWidget {
                   IconTheme(
                     data: Theme.of(context)
                         .iconTheme
-                        .copyWith(size: layout.iconSize.small),
+                        .copyWith(size: layout.icon.small),
                     child: Padding(
                       padding:
                           leadingPadding ?? layout.pickField.leadingPadding,
-                      child: SizedBox.fromSize(
-                        size: layout.pickField.leadingSize,
-                        child: leading,
-                      ),
+                      child: leading,
                     ),
                   ),
                 Expanded(
                   child: DefaultTextStyle(
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                        .copyWith(height: 1),
                     child: text,
                   ),
                 ),
@@ -217,7 +215,7 @@ class RadioField<T> extends StatelessWidget {
                       IconTheme(
                           data: Theme.of(context)
                               .iconTheme
-                              .copyWith(size: layout.iconSize.small),
+                              .copyWith(size: layout.icon.small),
                           child: l),
                       SizedBox(
                         width: paddingToUse.resolve(text.textDirection).left,
@@ -406,7 +404,7 @@ class SelectableField extends StatelessWidget {
                           ? Icon(
                               AbiliaIcons.radiocheckboxSelected,
                               color: AbiliaColors.green,
-                              size: layout.iconSize.small,
+                              size: layout.icon.small,
                             )
                           : Container(
                               decoration: BoxDecoration(

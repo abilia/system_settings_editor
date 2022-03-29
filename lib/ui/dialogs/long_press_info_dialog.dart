@@ -10,7 +10,7 @@ class LongPressInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return ViewDialog(
-      bodyPadding: EdgeInsets.symmetric(horizontal: 20.s),
+      bodyPadding: layout.templates.m4,
       expanded: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,7 +22,7 @@ class LongPressInfoDialog extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Icon(
                 AbiliaIcons.speakOnEntry,
-                size: layout.iconSize.huge,
+                size: layout.icon.huge,
               ),
             ),
           ]),
@@ -61,7 +61,9 @@ class _Preview extends StatelessWidget {
   Widget build(BuildContext context) {
     final time = GetIt.I<Ticker>().time;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0.s),
+      padding: EdgeInsets.symmetric(
+        horizontal: layout.formPadding.horizontalItemDistance,
+      ),
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
           Activity.createNew(

@@ -78,7 +78,9 @@ class PasswordInput extends StatelessWidget {
                   ),
                 ),
                 HidePasswordButton(
-                  padding: EdgeInsets.only(left: 12.s),
+                  padding: EdgeInsets.only(
+                    left: layout.formPadding.largeHorizontalItemDistance,
+                  ),
                 )
               ],
             ),
@@ -138,12 +140,7 @@ class _PasswordInputPageState
                 obscured: true,
               ),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  leftPadding,
-                  verticalPadding,
-                  0,
-                  verticalPadding,
-                ),
+                padding: layout.templates.m1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -170,9 +167,11 @@ class _PasswordInputPageState
                             },
                           ),
                         ),
-                        SizedBox(width: 12.s),
                         HidePasswordButton(
-                          padding: EdgeInsets.only(right: horizontalPadding),
+                          padding: EdgeInsets.only(
+                            left:
+                                layout.formPadding.largeHorizontalItemDistance,
+                          ),
                         ),
                       ],
                     ),

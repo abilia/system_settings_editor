@@ -59,8 +59,8 @@ class SelectAlarmTypeBody extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           padding: EdgeInsets.only(
-            top: layout.formPadding.top,
-            bottom: layout.formPadding.m1Bottom,
+            top: layout.templates.m1.top,
+            bottom: layout.templates.m1.bottom,
           ),
           children: <Widget>[
             ...[
@@ -89,9 +89,9 @@ class SelectAlarmTypeBody extends StatelessWidget {
                     ? widget
                     : Padding(
                         padding: EdgeInsets.only(
-                          left: leftPadding,
-                          right: rightPadding,
-                          bottom: 8.0.s,
+                          left: layout.templates.m1.left,
+                          right: layout.templates.m1.right,
+                          bottom: layout.formPadding.verticalItemDistance,
                         ),
                         child: widget,
                       ),

@@ -25,7 +25,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
             const SelectAllWeekdaysButton(),
             SizedBox(height: layout.formPadding.groupTopDistance),
             const Divider(),
-            const EveryOtherWeekSwitch().pad(m1TopPadding),
+            const EveryOtherWeekSwitch().pad(m1WithZeroBottom),
             const EndDateWizWidget().pad(m1ItemPadding),
           ],
         ),

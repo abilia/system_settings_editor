@@ -66,7 +66,7 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
         iconData: AbiliaIcons.unlock,
       ),
       body: Padding(
-        padding: layout.bodyTemplateL4,
+        padding: layout.templates.l4,
         child: Column(
           children: [
             PinCodeWidget(
@@ -145,7 +145,7 @@ class PinCodeWidget extends StatelessWidget {
                 borderRadius: borderRadius,
                 borderSide: BorderSide(
                   color: Colors.black,
-                  width: 2.s,
+                  width: layout.borders.medium,
                 ),
               ),
             ),

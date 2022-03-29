@@ -59,13 +59,13 @@ class WeekCalendarDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekStart = context.read<ClockBloc>().state.firstInWeek();
     return Container(
-      height: 148.s,
+      height: layout.settings.weekCalendarHeight,
       decoration: BoxDecoration(
         color: AbiliaColors.white,
         borderRadius: borderRadius,
       ),
       child: Padding(
-        padding: EdgeInsets.all(8.0.s),
+        padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
         child:
             BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
                 builder: (context, state) {
@@ -118,7 +118,7 @@ class DayHeading extends StatelessWidget {
     );
     return Flexible(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.0.s),
+        padding: layout.settings.weekDaysPadding,
         child: Container(
           decoration: BoxDecoration(
             color: dayTheme.borderColor,
@@ -128,7 +128,7 @@ class DayHeading extends StatelessWidget {
             ),
           ),
           child: Container(
-            height: 44.s,
+            height: layout.settings.weekCalendarHeadingHeight,
             width: double.infinity,
             margin: EdgeInsetsDirectional.only(
                 start: borderSize, end: borderSize, top: borderSize),
@@ -158,7 +158,7 @@ class DayColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderSize = 1.s;
+    final borderSize = layout.borders.thin;
     final dayTheme = weekdayTheme(
       dayColor: dayColor,
       languageCode: Localizations.localeOf(context).languageCode,
@@ -166,10 +166,7 @@ class DayColumn extends StatelessWidget {
     );
     return Flexible(
       child: Padding(
-        padding: EdgeInsets.only(
-          right: 2.s,
-          left: 2.s,
-        ),
+        padding: layout.settings.weekDaysPadding,
         child:
             BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
           builder: (context, state) => Container(
@@ -184,7 +181,7 @@ class DayColumn extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
-              height: 86.s,
+              height: layout.settings.weekDayHeight,
               margin: EdgeInsetsDirectional.only(
                   start: borderSize, end: borderSize, bottom: borderSize),
               decoration: BoxDecoration(

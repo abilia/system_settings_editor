@@ -6,7 +6,7 @@ class AbiliaSlider extends StatelessWidget {
   final Widget? leading;
   final double? heigth, width;
   final double value;
-  static final defaultHeight = 56.s;
+  static final defaultHeight = layout.slider.defaultHeight;
 
   const AbiliaSlider({
     Key? key,
@@ -25,24 +25,27 @@ class AbiliaSlider extends StatelessWidget {
       height: heigth ?? defaultHeight,
       width: width,
       decoration: whiteBoxDecoration,
-      padding: EdgeInsets.only(left: 12.0.s, right: 4.0.s),
+      padding: EdgeInsets.only(
+        left: layout.slider.leftPadding,
+        right: layout.slider.rightPadding,
+      ),
       child: Row(
         children: <Widget>[
           if (leading != null)
             Padding(
-              padding: EdgeInsets.only(right: 12.s),
+              padding: EdgeInsets.only(right: layout.slider.iconRightPadding),
               child: leading,
             ),
           Expanded(
             child: SliderTheme(
               data: SliderTheme.of(context).copyWith(
                 thumbShape: AbiliaThumbShape(
-                  enabledThumbRadius: 12.s,
-                  elevation: 1.s,
-                  pressedElevation: 2.s,
-                  outerBorder: 2.s,
+                  enabledThumbRadius: layout.slider.thumbRadius,
+                  elevation: layout.slider.elevation,
+                  pressedElevation: layout.slider.pressedElevation,
+                  outerBorder: layout.slider.outerBorder,
                 ),
-                trackHeight: 4.s,
+                trackHeight: layout.slider.trackHeight,
               ),
               child: Slider(
                 onChanged: onChanged,

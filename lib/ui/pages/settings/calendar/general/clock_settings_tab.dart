@@ -22,8 +22,8 @@ class ClockSettingsTab extends StatelessWidget {
             Center(
               child: FittedAbiliaClock(
                 state.clockType,
-                height: 90.s,
-                width: 72.s,
+                height: layout.settings.clockHeight,
+                width: layout.settings.clockWidth,
               ),
             ),
             RadioField(
@@ -118,7 +118,7 @@ class PreviewTimePillar extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Center(
           child: SizedBox(
-            width: 138.s,
+            width: layout.settings.previewTimePillarWidth,
             child: BlocBuilder<GeneralCalendarSettingsCubit,
                 GeneralCalendarSettingsState>(
               buildWhen: (previous, current) =>

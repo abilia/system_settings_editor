@@ -18,12 +18,12 @@ class ActivityViewSettingsPage extends StatelessWidget {
       child: BlocBuilder<ActivityViewSettingsCubit, ActivityViewSettingsState>(
         builder: (context, state) => SettingsBasePage(
           icon: AbiliaIcons.fullScreen,
-          title: Translator.of(context).translate.activityView,
+          title: t.activityView,
           widgets: [
             const _FakeMemoplannerSetting(
               child: ActivityPagePreview(),
             ),
-            SizedBox(height: 16.s),
+            SizedBox(height: layout.formPadding.groupBottomDistance),
             SwitchField(
               key: TestKey.activityViewAlarmSwitch,
               leading: const Icon(AbiliaIcons.handiAlarmVibration),
@@ -152,16 +152,17 @@ class ActivityPagePreview extends StatelessWidget {
     return AbsorbPointer(
       child: Center(
         child: Material(
-          borderRadius: BorderRadius.all(Radius.circular(4.s)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(layout.activityPreview.radius)),
           elevation: 3,
           shadowColor: Colors.black,
           clipBehavior: Clip.hardEdge,
           child: SizedBox(
-            height: 256.s,
+            height: layout.activityPreview.height,
             child: FittedBox(
               child: SizedBox(
-                width: 450.0.s,
-                height: 800.0.s,
+                width: layout.activityPreview.activityWidth,
+                height: layout.activityPreview.activityHeight,
                 child: BlocProvider(
                   create: (context) => ClockBloc.fixed(time),
                   child: ActivityPage(

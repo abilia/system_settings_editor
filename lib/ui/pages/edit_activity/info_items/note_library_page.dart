@@ -39,7 +39,7 @@ class LibraryNote extends StatelessWidget {
       ),
       child: Container(
         decoration: whiteBoxDecoration,
-        padding: EdgeInsets.fromLTRB(4.s, 8.s, 4.s, 0),
+        padding: layout.libraryPage.notePadding,
         child: LayoutBuilder(
           builder: (context, constraints) => Stack(
             clipBehavior: Clip.hardEdge,
@@ -51,7 +51,7 @@ class LibraryNote extends StatelessWidget {
                       textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )
                     .scaledLineHeight,
-                numberOfLines: 6,
+                numberOfLines: 5,
               ),
               Text(
                 content,
@@ -76,7 +76,7 @@ class FullScreenNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.all(12.s),
+        padding: layout.templates.s1,
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Container(

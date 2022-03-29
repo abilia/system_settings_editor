@@ -56,10 +56,17 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
         title: widget.appBarTitle,
       ),
       body: ListView.separated(
-        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
+        padding: EdgeInsets.fromLTRB(
+          layout.templates.m1.left,
+          layout.formPadding.groupBottomDistance,
+          layout.templates.m1.right,
+          layout.formPadding.groupBottomDistance,
+        ),
         itemBuilder: (context, i) => widgets[i],
         itemCount: widgets.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
+        separatorBuilder: (context, index) => SizedBox(
+          height: layout.formPadding.verticalItemDistance,
+        ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),

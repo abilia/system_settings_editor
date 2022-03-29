@@ -38,6 +38,9 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final dividerPad = EdgeInsets.only(
+        top: layout.formPadding.horizontalItemDistance,
+        bottom: layout.formPadding.groupBottomDistance);
     return ViewDialog(
       heading: AppBarHeading(
         text: t.display,
@@ -47,32 +50,33 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
         child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           builder: (context, state) => ListView(
             children: [
+              SizedBox(
+                height: layout.templates.m1.top,
+              ),
               if (state.settingViewOptionsTimeView) ...[
-                _addPadding(
-                  Selector<DayCalendarType>(
-                    heading: t.viewMode,
-                    groupValue: calendarType,
-                    items: [
-                      SelectorItem(
-                        t.listView,
-                        AbiliaIcons.calendarList,
-                        DayCalendarType.list,
-                      ),
-                      SelectorItem(
-                        t.oneTimePillarView,
-                        AbiliaIcons.timeline,
-                        DayCalendarType.oneTimepillar,
-                      ),
-                      SelectorItem(
-                        t.twoTimePillarsView,
-                        AbiliaIcons.twoTimelines,
-                        DayCalendarType.twoTimepillars,
-                      ),
-                    ],
-                    onChanged: (type) => setState(() => calendarType = type),
-                  ),
-                ),
-                const Divider()
+                Selector<DayCalendarType>(
+                  heading: t.viewMode,
+                  groupValue: calendarType,
+                  items: [
+                    SelectorItem(
+                      t.listView,
+                      AbiliaIcons.calendarList,
+                      DayCalendarType.list,
+                    ),
+                    SelectorItem(
+                      t.oneTimePillarView,
+                      AbiliaIcons.timeline,
+                      DayCalendarType.oneTimepillar,
+                    ),
+                    SelectorItem(
+                      t.twoTimePillarsView,
+                      AbiliaIcons.twoTimelines,
+                      DayCalendarType.twoTimepillars,
+                    ),
+                  ],
+                  onChanged: (type) => setState(() => calendarType = type),
+                ).pad(m1Horizontal),
+                const Divider().pad(dividerPad)
               ],
               CollapsableWidget(
                 collapsed: calendarType != DayCalendarType.oneTimepillar,
@@ -103,8 +107,8 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                           ],
                           onChanged: (newDayInterval) =>
                               setState(() => dayInterval = newDayInterval),
-                        ),
-                        const Divider()
+                        ).pad(m1Horizontal),
+                        const Divider().pad(dividerPad)
                       ],
                       if (state.settingViewOptionsZoom) ...[
                         Selector<TimepillarZoom>(
@@ -132,37 +136,35 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                               timepillarZoom = newZoom;
                             });
                           },
-                        ),
-                        const Divider()
+                        ).pad(m1Horizontal),
+                        const Divider().pad(dividerPad)
                       ],
-                    ].map(_addPadding),
+                    ],
                   ],
                 ),
               ),
               if (state.settingViewOptionsDurationDots)
-                _addPadding(
-                  CollapsableWidget(
-                    collapsed: calendarType == DayCalendarType.list,
-                    child: Selector<bool>(
-                      heading: t.activityDuration,
-                      groupValue: dotsInTimePillar,
-                      items: [
-                        SelectorItem(
-                          t.dots,
-                          AbiliaIcons.options,
-                          true,
-                        ),
-                        SelectorItem(
-                          t.edge,
-                          AbiliaIcons.flarp,
-                          false,
-                        ),
-                      ],
-                      onChanged: (dots) =>
-                          setState(() => dotsInTimePillar = dots),
-                    ),
+                CollapsableWidget(
+                  collapsed: calendarType == DayCalendarType.list,
+                  child: Selector<bool>(
+                    heading: t.activityDuration,
+                    groupValue: dotsInTimePillar,
+                    items: [
+                      SelectorItem(
+                        t.dots,
+                        AbiliaIcons.options,
+                        true,
+                      ),
+                      SelectorItem(
+                        t.edge,
+                        AbiliaIcons.flarp,
+                        false,
+                      ),
+                    ],
+                    onChanged: (dots) =>
+                        setState(() => dotsInTimePillar = dots),
                   ),
-                ),
+                ).pad(m1Horizontal),
             ],
           ),
         ),
@@ -182,11 +184,4 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
       ),
     );
   }
-
-  Widget _addPadding(Widget widget) => widget is Divider
-      ? widget
-      : Padding(
-          padding: EdgeInsets.fromLTRB(12.s, 24.s, 16.s, 8.s),
-          child: widget,
-        );
 }

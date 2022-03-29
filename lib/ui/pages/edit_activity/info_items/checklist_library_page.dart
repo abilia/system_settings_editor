@@ -33,8 +33,8 @@ class LibraryChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageHeight = 84.s;
-    final imageWidth = 84.s;
+    final imageHeight = layout.libraryPage.imageHeight;
+    final imageWidth = layout.libraryPage.imageWidth;
     final imageId = checklist.fileId;
     final name = checklist.name;
     final iconPath = checklist.image;
@@ -42,7 +42,7 @@ class LibraryChecklist extends StatelessWidget {
       SemanticsProperties(label: name),
       child: Container(
         decoration: boxDecoration,
-        padding: EdgeInsets.all(4.s),
+        padding: layout.templates.s3,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -50,9 +50,9 @@ class LibraryChecklist extends StatelessWidget {
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.caption,
+                style: abiliaTextTheme.caption?.copyWith(height: 1),
               ),
-            SizedBox(height: 2.s),
+            SizedBox(height: layout.libraryPage.textImageDistance),
             if (checklist.hasImage)
               FadeInAbiliaImage(
                 height: imageHeight,
@@ -65,7 +65,7 @@ class LibraryChecklist extends StatelessWidget {
                 height: imageHeight,
                 child: Icon(
                   AbiliaIcons.checkButton,
-                  size: 48.0.s,
+                  size: layout.icon.large,
                   color: AbiliaColors.white140,
                 ),
               ),
@@ -85,13 +85,12 @@ class FullScreenChecklist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin:
-            EdgeInsets.only(left: 12.s, top: 24.s, right: 16.s, bottom: 12.s),
+        margin: layout.templates.m3,
         decoration: whiteBoxDecoration,
         child: ChecklistView(
           checklist,
           preview: true,
-          padding: EdgeInsets.all(12.s),
+          padding: layout.templates.s1,
         ),
       );
 }

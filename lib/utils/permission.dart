@@ -16,7 +16,7 @@ extension PermissionExtension on Permission {
 
   Widget get icon => Icon(
         iconData,
-        size: layout.iconSize.small,
+        size: layout.icon.small,
       );
 
   IconData get iconData {

@@ -235,7 +235,7 @@ class __CategoryState extends State<_Category> with TickerProviderStateMixin {
                       ),
                       child: Icon(
                         widget.icon,
-                        size: layout.iconSize.small,
+                        size: layout.icon.small,
                         color: AbiliaColors.black60,
                       ),
                     ),

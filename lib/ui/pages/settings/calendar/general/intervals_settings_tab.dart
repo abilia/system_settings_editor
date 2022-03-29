@@ -13,7 +13,11 @@ class IntervalsSettingsTab extends StatelessWidget {
   const IntervalsSettingsTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 12.s),
+        padding: EdgeInsets.only(
+          top:
+              layout.templates.m1.top - layout.formPadding.verticalItemDistance,
+          bottom: layout.templates.m1.bottom,
+        ),
         itemBuilder: (context, index) => IntervalStepper(part: dayparts[index]),
         separatorBuilder: (_, __) => const Divider(),
         itemCount: dayparts.length,
@@ -42,7 +46,7 @@ class IntervalStepper extends StatelessWidget {
             ),
             SizedBox(height: layout.formPadding.verticalItemDistance),
             SizedBox(
-              width: 230.s,
+              width: layout.settings.intervalStepperWidth,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

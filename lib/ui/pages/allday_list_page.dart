@@ -25,7 +25,7 @@ class AllDayList extends StatelessWidget {
                     child: ListView.builder(
                       itemExtent: layout.eventCard.height +
                           layout.eventCard.marginSmall,
-                      padding: EdgeInsets.all(12.s),
+                      padding: layout.templates.s1,
                       itemCount: state.fullDayActivities.length,
                       itemBuilder: (context, index) => Padding(
                         padding: EdgeInsets.only(

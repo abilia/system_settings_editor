@@ -7,7 +7,6 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets? bodyPadding;
   final bool expanded;
-  static final horizontalPadding = 20.s;
   const ViewDialog({
     Key? key,
     this.heading,
@@ -22,11 +21,7 @@ class ViewDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final bodyContainer = Container(
       color: AbiliaColors.white110,
-      padding: bodyPadding ??
-          EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: 64.s,
-          ),
+      padding: bodyPadding ?? layout.templates.l2,
       child: Center(
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
@@ -39,7 +34,7 @@ class ViewDialog extends StatelessWidget {
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0.s, vertical: 48.s),
+          padding: layout.templates.s4,
           child: ClipRRect(
             borderRadius: borderRadius,
             child: Column(

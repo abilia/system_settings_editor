@@ -9,7 +9,7 @@ mixin EditActivityTab {
         borderRadius: borderRadius,
         child: Padding(
           padding: errorState
-              ? layout.templates.s2
+              ? layout.templates.s3
                   .subtract(decoration.border?.dimensions ?? EdgeInsets.zero)
               : EdgeInsets.zero,
           child: child,

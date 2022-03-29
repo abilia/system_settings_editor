@@ -48,7 +48,7 @@ class _ImportPictureBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: m1Padding,
+              padding: layout.templates.m1,
               child: Column(
                 children: [
                   if (state.displayLocalImages) ...[
@@ -58,7 +58,7 @@ class _ImportPictureBody extends StatelessWidget {
                       permission: Permission.photos,
                       imageCallback: imageCallback,
                     ),
-                    SizedBox(height: 8.0.s),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
                   ],
                   if (state.displayCamera)
                     ImageSourceWidget(

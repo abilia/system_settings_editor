@@ -11,7 +11,7 @@ class TypeWiz extends StatelessWidget {
       iconData: AbiliaIcons.plus,
       title: Translator.of(context).translate.selectType,
       body: Padding(
-        padding: m1Padding,
+        padding: layout.templates.m1,
         child: const _TypeWidget(),
       ),
     );
@@ -50,7 +50,7 @@ class _TypeWidget extends StatelessWidget {
                     ),
                     leading: Icon(
                       AbiliaIcons.restore,
-                      size: layout.iconSize.small,
+                      size: layout.icon.small,
                     ),
                     value: _fullDayValue,
                     groupValue: groupValue,

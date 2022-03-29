@@ -39,7 +39,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: m1Padding,
+                padding: layout.templates.m1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

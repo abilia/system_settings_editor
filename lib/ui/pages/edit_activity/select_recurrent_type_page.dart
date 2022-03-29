@@ -30,10 +30,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
         iconData: widget.headingIcon,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12.0.s,
-          vertical: 24.s,
-        ),
+        padding: layout.templates.m1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -46,7 +43,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
               onChanged: _radioChanged,
             ),
             if (widget.allDaysVisible) ...[
-              SizedBox(height: 8.0.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               RadioField(
                 key: TestKey.allDays,
                 leading: const Icon(AbiliaIcons.month),
@@ -57,7 +54,7 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
               ),
             ],
             if (widget.thisDayAndForwardVisible) ...[
-              SizedBox(height: 8.0.s),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
               RadioField(
                 key: TestKey.thisDayAndForward,
                 leading: const Icon(AbiliaIcons.week),

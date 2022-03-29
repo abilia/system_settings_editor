@@ -34,7 +34,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
         title: translate.selectInfoType,
       ),
       body: Padding(
-        padding: m1Padding,
+        padding: layout.templates.m1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -45,7 +45,7 @@ class _SelectInfoTypePageState extends State<SelectInfoTypePage> {
               value: NoInfoItem,
               leading: Icon(
                 AbiliaIcons.information,
-                size: layout.iconSize.small,
+                size: layout.icon.small,
               ),
               text: Text(translate.infoTypeNone),
             ),

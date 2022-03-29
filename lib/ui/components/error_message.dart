@@ -18,8 +18,7 @@ class ErrorMessage extends StatelessWidget {
           ),
           width: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: horizontalPadding, vertical: 20.s),
+            padding: layout.message.padding,
             child: DefaultTextStyle(
               style: Theme.of(context).textTheme.bodyText2 ?? bodyText2,
               child: text,

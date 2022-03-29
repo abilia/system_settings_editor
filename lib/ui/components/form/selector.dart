@@ -46,8 +46,11 @@ class Selector<T> extends StatelessWidget {
           children: [
             for (int i = 0; i < items.length; i++)
               Padding(
-                padding:
-                    EdgeInsets.only(right: i == items.length - 1 ? 0 : 2.s),
+                padding: EdgeInsets.only(
+                  right: i == items.length - 1
+                      ? 0
+                      : layout.formPadding.selectorDistance,
+                ),
                 child: _SelectButton<T>(
                   text: items[i].title,
                   onPressed: () => onChanged?.call(items[i].value),

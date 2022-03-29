@@ -223,7 +223,7 @@ class _TimeInputContentState extends State<TimeInputContent>
                 textTheme: theme.textTheme
                     .copyWith(subtitle1: abiliaTextTheme.headline4)),
             child: Padding(
-              padding: EdgeInsets.only(top: 64.0.s),
+              padding: layout.templates.l4,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -253,21 +253,27 @@ class _TimeInputContentState extends State<TimeInputContent>
                   ),
                   if (memoSettingsState.activityEndTimeEditable) ...[
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(height: 28.s),
-                        SizedBox(
-                          height: 64.s,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0.s),
-                              child: Text(
-                                '—',
-                                style: abiliaTextTheme.headline5,
-                              ),
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  layout.formPadding.groupHorizontalDistance,
+                            ),
+                            child: Text(
+                              '—',
+                              style: abiliaTextTheme.headline5,
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: layout.timeInput.timeDashAlignValue +
+                              layout.formPadding.verticalItemDistance +
+                              (twelveHourClock
+                                  ? layout.timeInput.amPmHeight
+                                  : 0),
+                        ),
                       ],
                     ),
                     _TimeInput(
@@ -351,7 +357,7 @@ class _TimeInput extends StatelessWidget {
             onTimeChanged: onTimeChanged,
             onDone: onDone,
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           if (twelveHourClock)
             AmPmSelector(
               amRadioFieldKey: amRadioFieldKey,
@@ -456,7 +462,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
                   borderRadius: borderRadius,
                   borderSide: BorderSide(
                     color: editFocus.hasFocus ? Colors.black : Colors.grey,
-                    width: 2.s,
+                    width: layout.borders.medium,
                   ),
                 ),
               ),
@@ -619,7 +625,7 @@ class AmPmSelector extends StatelessWidget {
         value: DayPeriod.am,
         borderRadius: borderRadiusLeft,
       ),
-      SizedBox(width: 2.s),
+      SizedBox(width: layout.timeInput.amPmDistance),
       _AmPmButton(
         buttonKey: pmRadioFieldKey,
         text: Translator.of(context).translate.pm,
@@ -660,7 +666,10 @@ class _AmPmButton extends StatelessWidget {
           borderRadius: borderRadius,
           isSelected: value == groupValue,
         ).copyWith(
-          minimumSize: MaterialStateProperty.all(Size(59.0.s, 48.0.s)),
+          minimumSize: MaterialStateProperty.all(Size(
+            layout.timeInput.amPmWidth,
+            layout.timeInput.amPmHeight,
+          )),
           textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle1),
         ),
         child: Text(text),

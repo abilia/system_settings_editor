@@ -1,11 +1,13 @@
-import 'package:seagull/utils/scale_util.dart';
+import 'package:seagull/ui/all.dart';
 
 const int dotsPerHour = 4,
     minutesPerDot = 60 ~/ dotsPerHour,
     minutePerSubDot = minutesPerDot ~/ 5,
     roundingMinute = minutesPerDot ~/ 2;
 const minutesPerDotDuration = Duration(minutes: minutesPerDot);
-final bigDotSize = 28.0.s, miniDotSize = 4.0.s, bigDotPadding = 6.0.s;
+final bigDotSize = layout.dot.bigDotSize,
+    miniDotSize = layout.dot.miniDotSize,
+    bigDotPadding = layout.dot.bigDotPadding;
 
 double timeToMidDotPixelDistance({
   required DateTime now,

@@ -27,7 +27,7 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
         iconData: AbiliaIcons.unlock,
       ),
       body: Padding(
-        padding: layout.bodyTemplateL4,
+        padding: layout.templates.l4,
         child: Column(
           children: [
             PinCodeWidget(

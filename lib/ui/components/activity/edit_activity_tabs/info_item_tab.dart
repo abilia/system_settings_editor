@@ -36,7 +36,7 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
         }
 
         return Padding(
-          padding: m2Padding,
+          padding: layout.templates.m3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -116,7 +116,7 @@ class EditChecklistWidget extends StatelessWidget {
                       );
                 }
               },
-            ).pad(layout.templates.s2)
+            ).pad(layout.templates.s3)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),
@@ -167,7 +167,7 @@ class EditChecklistWidget extends StatelessWidget {
                               padding: layout.checkList.addNewQIconPadding,
                               child: Icon(
                                 AbiliaIcons.newIcon,
-                                size: layout.iconSize.small,
+                                size: layout.icon.small,
                                 color: AbiliaColors.white,
                               ),
                             ),
@@ -357,7 +357,7 @@ class EditNoteWidget extends StatelessWidget {
                       );
                 }
               },
-            ).pad(layout.templates.s2)
+            ).pad(layout.templates.s3)
           ],
         ),
         SizedBox(height: layout.formPadding.largeVerticalItemDistance),
@@ -425,7 +425,7 @@ class _LibraryButton extends StatelessWidget {
       onPressed: onPressed,
       child: Icon(
         AbiliaIcons.showText,
-        size: layout.iconSize.normal,
+        size: layout.icon.normal,
         color: AbiliaColors.black,
       ),
     );

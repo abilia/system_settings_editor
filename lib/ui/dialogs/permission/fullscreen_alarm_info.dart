@@ -14,8 +14,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
     return ViewDialog(
-      bodyPadding:
-          EdgeInsets.symmetric(horizontal: ViewDialog.horizontalPadding),
+      bodyPadding: layout.templates.m4,
       expanded: true,
       backNavigationWidget: const CancelButton(),
       forwardNavigationWidget:
@@ -31,7 +30,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          SizedBox(height: 8.0.s),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
           Tts(
             child: Text(
               translate.fullScreenAlarmInfo,
@@ -52,7 +51,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 12.s),
+            SizedBox(height: layout.formPadding.largeVerticalItemDistance),
           ] else
             const Spacer(flex: 71),
         ],
@@ -72,18 +71,20 @@ class ActivityAlarmPreview extends StatelessWidget {
     return AbsorbPointer(
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(4.s)),
+        borderRadius: BorderRadius.all(Radius.circular(
+          layout.activityPreview.radius,
+        )),
         clipBehavior: Clip.antiAlias,
         elevation: 3,
         shadowColor: Colors.black,
         child: SizedBox(
-          height: 256.0.s,
+          height: layout.activityPreview.height,
           child: FittedBox(
             fit: BoxFit.contain,
             alignment: Alignment.center,
             child: SizedBox(
-              width: 450.0.s,
-              height: 800.0.s,
+              width: layout.activityPreview.activityWidth,
+              height: layout.activityPreview.activityHeight,
               child: BlocProvider(
                 create: (context) => ClockBloc.fixed(startTime),
                 child: AlarmPage(

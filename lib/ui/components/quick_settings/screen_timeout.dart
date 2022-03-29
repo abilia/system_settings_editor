@@ -87,13 +87,14 @@ class ScreenTimeOutSelectorState extends State<ScreenTimeOutSelector> {
               style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                   .copyWith(color: AbiliaColors.black75),
               child: ListView(
-                padding: EdgeInsets.only(top: 24.0.s),
+                padding: layout.templates.m1,
                 children: [
                   ...([1, 30, 0].map((d) => d.minutes()).toSet()..add(_timeout))
                       .map(
                     (d) => Padding(
-                      padding:
-                          EdgeInsets.only(left: 12.s, right: 16.s, bottom: 8.s),
+                      padding: EdgeInsets.only(
+                        bottom: layout.formPadding.verticalItemDistance,
+                      ),
                       child: RadioField<Duration>(
                         text: Text(
                           d.inMilliseconds == 0

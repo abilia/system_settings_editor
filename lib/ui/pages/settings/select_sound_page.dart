@@ -48,7 +48,9 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
                 axis: Axis.horizontal,
                 collapsed: !(selectedSound == s && s != Sound.NoSound),
                 child: Padding(
-                  padding: EdgeInsets.only(left: 12.0.s),
+                  padding: EdgeInsets.only(
+                    left: layout.formPadding.largeHorizontalItemDistance,
+                  ),
                   child: PlayAlarmSoundButton(sound: s),
                 ),
               ),
@@ -62,10 +64,12 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
         title: widget.appBarTitle,
       ),
       body: ListView.separated(
-        padding: EdgeInsets.fromLTRB(12.0.s, 20.0.s, 16.0.s, 20.0.s),
+        padding: layout.templates.m1,
         itemBuilder: (context, i) => widgets[i],
         itemCount: widgets.length,
-        separatorBuilder: (context, index) => SizedBox(height: 8.0.s),
+        separatorBuilder: (context, index) => SizedBox(
+          height: layout.formPadding.verticalItemDistance,
+        ),
       ),
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),

@@ -23,7 +23,7 @@ class Layout {
   final ToolbarLayout toolbar;
   final NavigationBarLayout navigationBar;
   final FontSize fontSize;
-  final IconSize iconSize;
+  final IconLayout icon;
   final ClockLayout clock;
   final FormPaddingLayout formPadding;
   final WeekCalendarLayout weekCalendar;
@@ -63,8 +63,21 @@ class Layout {
   final MenuButtonLayout menuButton;
   final AgendaLayout agenda;
   final CommonCalendarLayout commonCalendar;
+  final MessageLayout message;
   final FloatingActionButtonLayout fab;
-  final EdgeInsets bodyTemplateL4;
+  final SliderLayout slider;
+  final SwitchFieldLayout switchField;
+  final LoginLayout login;
+  final DialogLayout dialog;
+  final ActivityAlarmPreviewLayout activityPreview;
+  final LogoutLayout logout;
+  final PhotoCalendarLayout photoCalendar;
+  final SettingsLayout settings;
+  final PermissionsPageLayout permissionsPage;
+  final EditTimerLayout editTimer;
+  final ButtonLayout button;
+  final ThemeLayout theme;
+  final DotLayout dot;
 
   const Layout({
     this.radius = 12,
@@ -75,7 +88,7 @@ class Layout {
     this.navigationBar = const NavigationBarLayout(),
     this.tabBar = const TabBarLayout(),
     this.fontSize = const FontSize(),
-    this.iconSize = const IconSize(),
+    this.icon = const IconLayout(),
     this.clock = const ClockLayout(),
     this.formPadding = const FormPaddingLayout(),
     this.weekCalendar = const WeekCalendarLayout(),
@@ -119,21 +132,39 @@ class Layout {
     this.menuButton = const MenuButtonLayout(),
     this.agenda = const AgendaLayout(),
     this.commonCalendar = const CommonCalendarLayout(),
+    this.message = const MessageLayout(),
     this.fab = const FloatingActionButtonLayout(),
-    this.bodyTemplateL4 = const EdgeInsets.symmetric(vertical: 64),
+    this.slider = const SliderLayout(),
+    this.switchField = const SwitchFieldLayout(),
+    this.login = const LoginLayout(),
+    this.dialog = const DialogLayout(),
+    this.activityPreview = const ActivityAlarmPreviewLayout(),
+    this.logout = const LogoutLayout(),
+    this.photoCalendar = const PhotoCalendarLayout(),
+    this.settings = const SettingsLayout(),
+    this.permissionsPage = const PermissionsPageLayout(),
+    this.editTimer = const EditTimerLayout(),
+    this.button = const ButtonLayout(),
+    this.theme = const ThemeLayout(),
+    this.dot = const DotLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
 }
 
 class AppBarLayout {
-  final double horizontalPadding, largeAppBarHeight, height, fontSize;
+  final double horizontalPadding,
+      largeAppBarHeight,
+      height,
+      fontSize,
+      previewWidth;
 
   const AppBarLayout({
     this.horizontalPadding = 16,
     this.largeAppBarHeight = 80,
     this.height = 68,
     this.fontSize = 22,
+    this.previewWidth = 375,
   });
 }
 
@@ -167,12 +198,13 @@ class MenuPageLayout {
 }
 
 class MenuItemButtonLayout {
-  final double size, borderRadius, orangeDotInset;
+  final double size, borderRadius, orangeDotInset, orangeDotRadius;
 
   const MenuItemButtonLayout({
     this.size = 48,
     this.borderRadius = 12,
     this.orangeDotInset = 4,
+    this.orangeDotRadius = 6,
   });
 }
 
@@ -269,15 +301,25 @@ class FontSize {
   });
 }
 
-class IconSize {
-  final double small, button, normal, large, huge;
+class IconLayout {
+  final double tiny,
+      small,
+      button,
+      normal,
+      large,
+      huge,
+      doubleIconTop,
+      doubleIconLeft;
 
-  const IconSize({
+  const IconLayout({
+    this.tiny = 20,
     this.small = 24,
     this.button = 28,
     this.normal = 32,
     this.large = 48,
     this.huge = 96,
+    this.doubleIconTop = 20,
+    this.doubleIconLeft = 32,
   });
 }
 
@@ -289,6 +331,8 @@ class ClockLayout {
       hourNumberScale,
       hourHandLength,
       minuteHandLength,
+      hourHandWidth,
+      minuteHandWidth,
       fontSize;
 
   const ClockLayout({
@@ -299,44 +343,66 @@ class ClockLayout {
     this.hourNumberScale = 1.5,
     this.hourHandLength = 11,
     this.minuteHandLength = 15,
+    this.hourHandWidth = 1,
+    this.minuteHandWidth = 1,
     this.fontSize = 7,
   });
 }
 
 class FormPaddingLayout {
-  final double left,
-      right,
-      top,
-      verticalItemDistance,
+  final double verticalItemDistance,
       largeVerticalItemDistance,
       groupBottomDistance,
       groupTopDistance,
       horizontalItemDistance,
       largeHorizontalItemDistance,
-      m1Bottom,
-      m2Bottom;
+      groupHorizontalDistance,
+      largeGroupDistance,
+      selectorDistance;
 
   const FormPaddingLayout({
-    this.left = 12,
-    this.right = 12,
-    this.top = 24,
     this.verticalItemDistance = 8,
     this.largeVerticalItemDistance = 12,
     this.groupBottomDistance = 16,
     this.groupTopDistance = 24,
     this.horizontalItemDistance = 8,
     this.largeHorizontalItemDistance = 12,
-    this.m1Bottom = 64,
-    this.m2Bottom = 12,
+    this.groupHorizontalDistance = 16,
+    this.largeGroupDistance = 32,
+    this.selectorDistance = 2,
   });
 }
 
 class WeekCalendarLayout {
-  final double activityBorderWidth, currentActivityBorderWidth;
+  final double activityBorderWidth,
+      currentActivityBorderWidth,
+      dayDistance,
+      headerTopPadding,
+      headerTopPaddingSmall,
+      headerBottomPadding,
+      headerHeight,
+      fullDayHeight,
+      activityDistance;
+  final EdgeInsets crossOverPadding,
+      bodyPadding,
+      activityTextPadding,
+      innerDayPadding;
 
   const WeekCalendarLayout({
     this.activityBorderWidth = 1.5,
     this.currentActivityBorderWidth = 3,
+    this.dayDistance = 2,
+    this.headerTopPadding = 4,
+    this.headerTopPaddingSmall = 3,
+    this.headerBottomPadding = 4,
+    this.headerHeight = 44,
+    this.fullDayHeight = 36,
+    this.activityDistance = 2,
+    this.crossOverPadding = const EdgeInsets.fromLTRB(4, 4, 4, 12),
+    this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
+    this.activityTextPadding = const EdgeInsets.all(3.0),
+    this.innerDayPadding =
+        const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
   });
 }
 
@@ -592,7 +658,8 @@ class ImageArchiveLayout {
       imageHeight,
       imagePadding,
       fullscreenImagePadding,
-      imageNameBottomPadding;
+      imageNameBottomPadding,
+      aspectRatio;
 
   const ImageArchiveLayout({
     this.imageWidth = 84,
@@ -600,6 +667,7 @@ class ImageArchiveLayout {
     this.imagePadding = 4,
     this.fullscreenImagePadding = 12,
     this.imageNameBottomPadding = 2,
+    this.aspectRatio = 1,
   });
 }
 
@@ -609,9 +677,16 @@ class LibraryPageLayout {
       folderIconSize,
       headerFontSize,
       childAspectRatio,
-      listSeparation;
+      imageHeight,
+      imageWidth,
+      textImageDistance,
+      emptyMessageTopPadding,
+      folderImageRadius;
   final int crossAxisCount;
-  final EdgeInsets headerPadding, folderImagePadding;
+  final EdgeInsets headerPadding,
+      folderImagePadding,
+      notePadding,
+      contentPadding;
 
   const LibraryPageLayout({
     this.mainAxisSpacing = 8,
@@ -619,10 +694,16 @@ class LibraryPageLayout {
     this.crossAxisCount = 3,
     this.headerPadding = const EdgeInsets.fromLTRB(16, 12, 0, 3),
     this.folderImagePadding = const EdgeInsets.fromLTRB(10, 28, 10, 16),
+    this.notePadding = const EdgeInsets.fromLTRB(5, 9, 5, 6),
+    this.contentPadding = const EdgeInsets.all(4),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
-    this.childAspectRatio = 110 / 112,
-    this.listSeparation = 8,
+    this.childAspectRatio = 1,
+    this.imageHeight = 86,
+    this.imageWidth = 86,
+    this.textImageDistance = 2,
+    this.emptyMessageTopPadding = 60,
+    this.folderImageRadius = 4,
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(
@@ -871,13 +952,14 @@ class ComponentsLayout {
 class PickFieldLayout {
   final double height;
   final Size leadingSize;
-  final EdgeInsets padding, leadingPadding;
+  final EdgeInsets padding, leadingPadding, imagePadding;
 
   const PickFieldLayout({
     this.height = 56,
     this.leadingSize = const Size(48, 48),
-    this.padding = const EdgeInsets.only(left: 4, right: 12),
-    this.leadingPadding = const EdgeInsets.only(right: 8),
+    this.padding = const EdgeInsets.only(left: 12, right: 12),
+    this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
+    this.leadingPadding = const EdgeInsets.only(right: 12),
   });
 }
 
@@ -903,12 +985,21 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets s1, s2, bottomNavigation;
+  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, s3, s4, l2, l4, bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
-    this.s2 = const EdgeInsets.all(4),
+    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
+    this.s3 = const EdgeInsets.all(4),
+    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
     this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
+    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 24),
+    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
+    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
+    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
+    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
+    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
+    this.l4 = const EdgeInsets.symmetric(vertical: 64),
   });
 }
 
@@ -993,11 +1084,20 @@ class SelectPictureLayout {
 }
 
 class TimeInputLayout {
-  final double width, height;
+  final double width,
+      height,
+      amPmHeight,
+      amPmWidth,
+      timeDashAlignValue,
+      amPmDistance;
 
   const TimeInputLayout({
     this.width = 120,
     this.height = 64,
+    this.amPmHeight = 48,
+    this.amPmWidth = 59,
+    this.timeDashAlignValue = 14,
+    this.amPmDistance = 2,
   });
 }
 
@@ -1043,11 +1143,215 @@ class AgendaLayout {
 }
 
 class CommonCalendarLayout {
-  final double fullDayStackDistance, goToNowButtonTop;
+  final double fullDayStackDistance,
+      goToNowButtonTop,
+      crossOverStrokeWidth,
+      crossOverFallback;
+
+  final EdgeInsets fullDayPadding, fullDayButtonPadding;
 
   const CommonCalendarLayout({
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
+    this.crossOverStrokeWidth = 2,
+    this.crossOverFallback = 215,
+    this.fullDayPadding = const EdgeInsets.all(12),
+    this.fullDayButtonPadding = const EdgeInsets.fromLTRB(10, 4, 4, 4),
+  });
+}
+
+class MessageLayout {
+  final EdgeInsets padding;
+
+  const MessageLayout({
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 20,
+    ),
+  });
+}
+
+class SliderLayout {
+  final double defaultHeight,
+      leftPadding,
+      rightPadding,
+      iconRightPadding,
+      thumbRadius,
+      elevation,
+      pressedElevation,
+      outerBorder,
+      trackHeight;
+
+  const SliderLayout({
+    this.defaultHeight = 56,
+    this.leftPadding = 12,
+    this.rightPadding = 4,
+    this.iconRightPadding = 12,
+    this.thumbRadius = 12,
+    this.elevation = 1,
+    this.pressedElevation = 2,
+    this.outerBorder = 2,
+    this.trackHeight = 4,
+  });
+}
+
+class SwitchFieldLayout {
+  final double height, toggleSize;
+  final EdgeInsets padding;
+
+  const SwitchFieldLayout({
+    this.height = 56,
+    this.toggleSize = 48,
+    this.padding = const EdgeInsets.only(left: 12.0, right: 4.0),
+  });
+}
+
+class LoginLayout {
+  final double topFormDistance, logoSize, progressWidth, termsPadding;
+  final EdgeInsets createAccountPadding, loginButtonPadding;
+
+  const LoginLayout({
+    this.topFormDistance = 32,
+    this.logoSize = 64,
+    this.progressWidth = 6,
+    this.termsPadding = 48,
+    this.createAccountPadding = const EdgeInsets.fromLTRB(16, 8, 16, 32),
+    this.loginButtonPadding = const EdgeInsets.fromLTRB(16, 32, 16, 0),
+  });
+}
+
+class DialogLayout {
+  final double iconTextDistance, fullscreenTop, fullscreenIconDistance;
+
+  const DialogLayout({
+    this.iconTextDistance = 24,
+    this.fullscreenTop = 128,
+    this.fullscreenIconDistance = 80,
+  });
+}
+
+class ActivityAlarmPreviewLayout {
+  final double radius, height, activityHeight, activityWidth;
+
+  const ActivityAlarmPreviewLayout({
+    this.radius = 4,
+    this.height = 256,
+    this.activityHeight = 800,
+    this.activityWidth = 450,
+  });
+}
+
+class LogoutLayout {
+  final double profilePictureSize, profileDistance;
+
+  const LogoutLayout({
+    this.profilePictureSize = 84,
+    this.profileDistance = 24,
+  });
+}
+
+class PhotoCalendarLayout {
+  final double clockSize, clockFontSize, backButtonPosition;
+  final EdgeInsets clockPadding, digitalClockPadding;
+
+  const PhotoCalendarLayout({
+    this.clockSize = 92,
+    this.clockFontSize = 32,
+    this.backButtonPosition = 12,
+    this.clockPadding = const EdgeInsets.all(20),
+    this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
+  });
+}
+
+class SettingsLayout {
+  final double clockHeight,
+      clockWidth,
+      previewTimePillarWidth,
+      intervalStepperWidth,
+      monthPreviewHeight,
+      monthPreviewHeaderHeight,
+      weekCalendarHeight,
+      weekCalendarHeadingHeight,
+      weekDayHeight,
+      permissionsDotPosition;
+
+  final EdgeInsets monthDaysPadding, weekDaysPadding, textToSpeechPadding;
+
+  const SettingsLayout({
+    this.clockHeight = 90,
+    this.clockWidth = 72,
+    this.previewTimePillarWidth = 138,
+    this.intervalStepperWidth = 230,
+    this.monthPreviewHeight = 96,
+    this.monthPreviewHeaderHeight = 32,
+    this.weekCalendarHeight = 148,
+    this.weekCalendarHeadingHeight = 44,
+    this.weekDayHeight = 86,
+    this.permissionsDotPosition = 8,
+    this.monthDaysPadding = const EdgeInsets.only(left: 4.0, right: 4),
+    this.weekDaysPadding = const EdgeInsets.symmetric(horizontal: 2.0),
+    this.textToSpeechPadding = const EdgeInsets.only(left: 8, right: 4),
+  });
+}
+
+class PermissionsPageLayout {
+  final double deniedDotPosition, deniedContainerSize, deniedBorderRadius;
+
+  final EdgeInsets deniedPadding, deniedVerticalPadding;
+
+  const PermissionsPageLayout({
+    this.deniedDotPosition = -10,
+    this.deniedContainerSize = 32,
+    this.deniedBorderRadius = 16,
+    this.deniedPadding = const EdgeInsets.only(top: 4),
+    this.deniedVerticalPadding = const EdgeInsets.symmetric(vertical: 4),
+  });
+}
+
+class EditTimerLayout {
+  final double inputTimeWidth, textToWheelDistance;
+  final EdgeInsets inputTimePadding;
+
+  const EditTimerLayout({
+    this.inputTimeWidth = 120,
+    this.textToWheelDistance = 40,
+    this.inputTimePadding = const EdgeInsets.symmetric(vertical: 38),
+  });
+}
+
+class ButtonLayout {
+  final double baseButtonMinHeight, secondaryActionButtonMinSize;
+  final Size redButtonMinSize;
+  final EdgeInsets textButtonInsets, redButtonPadding;
+
+  const ButtonLayout({
+    this.baseButtonMinHeight = 64,
+    this.redButtonMinSize = const Size(0, 48),
+    this.secondaryActionButtonMinSize = 40,
+    this.textButtonInsets =
+        const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+    this.redButtonPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
+  });
+}
+
+class ThemeLayout {
+  final double circleRadius;
+  final EdgeInsets inputPadding;
+
+  const ThemeLayout({
+    this.circleRadius = 24,
+    this.inputPadding =
+        const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+  });
+}
+
+class DotLayout {
+  final double bigDotSize, miniDotSize, bigDotPadding;
+
+  const DotLayout({
+    this.bigDotSize = 28,
+    this.miniDotSize = 4,
+    this.bigDotPadding = 6,
   });
 }
 

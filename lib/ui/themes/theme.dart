@@ -3,48 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/components/abilia_icons.dart';
 import 'package:seagull/ui/themes/all.dart';
-import 'package:seagull/utils/all.dart';
-
-final verticalPadding = 24.s,
-    horizontalPadding = 16.s,
-    rightPadding = horizontalPadding,
-    leftPadding = 12.s,
-    seperatorPadding = 16.s;
-final ordinaryPadding = EdgeInsets.fromLTRB(
-  leftPadding,
-  verticalPadding,
-  rightPadding,
-  verticalPadding,
-);
 
 // Form paddings
-final m1TopPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
-    layout.formPadding.top, layout.formPadding.right, 0);
+final m1WithZeroBottom = layout.templates.m1.copyWith(bottom: 0);
 final dividerPadding = EdgeInsets.only(
   top: layout.formPadding.groupBottomDistance,
 );
-final m1ItemPadding = EdgeInsets.fromLTRB(layout.formPadding.left,
-    layout.formPadding.verticalItemDistance, layout.formPadding.right, 0);
-final formTopSpacer = SizedBox(height: layout.formPadding.top);
+final m1ItemPadding = EdgeInsets.fromLTRB(
+  layout.templates.m1.left,
+  layout.formPadding.verticalItemDistance,
+  layout.templates.m1.right,
+  0,
+);
 final m1Horizontal = EdgeInsets.only(
-  left: layout.formPadding.left,
-  right: layout.formPadding.right,
-);
-final m1Padding = EdgeInsets.fromLTRB(
-  layout.formPadding.left,
-  layout.formPadding.top,
-  layout.formPadding.right,
-  layout.formPadding.m1Bottom,
-);
-final m2Padding = EdgeInsets.fromLTRB(
-  layout.formPadding.left,
-  layout.formPadding.top,
-  layout.formPadding.right,
-  layout.formPadding.m2Bottom,
-);
-final s3Padding = EdgeInsets.only(
-  left: layout.formPadding.left,
-  right: layout.formPadding.right,
+  left: layout.templates.m1.left,
+  right: layout.templates.m1.right,
 );
 
 final abiliaTheme = ThemeData(
@@ -61,7 +34,7 @@ final abiliaTheme = ThemeData(
   textTheme: abiliaTextTheme,
   highlightColor: AbiliaColors.transparentBlack40,
   iconTheme: IconThemeData(
-    size: layout.iconSize.normal,
+    size: layout.icon.normal,
     color: AbiliaColors.black,
   ),
   textSelectionTheme: const TextSelectionThemeData(
@@ -77,7 +50,7 @@ final abiliaTheme = ThemeData(
   toggleableActiveColor: AbiliaColors.green,
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
-    endIndent: layout.formPadding.right,
+    endIndent: layout.templates.m1.right,
     thickness: layout.borders.thin,
     space: 0,
   ),
@@ -87,7 +60,7 @@ final abiliaWhiteTheme =
     abiliaTheme.copyWith(scaffoldBackgroundColor: AbiliaColors.white);
 
 final inputDecorationTheme = InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(vertical: 14.s, horizontal: 16.s),
+    contentPadding: layout.theme.inputPadding,
     focusedBorder: inputBorder,
     enabledBorder: inputBorder,
     errorBorder: redOutlineInputBorder,
@@ -115,7 +88,8 @@ final borderRadiusTop = BorderRadius.only(
   topRight: radius,
 );
 
-final circleRadius = BorderRadius.all(Radius.circular(24.s));
+final circleRadius =
+    BorderRadius.all(Radius.circular(layout.theme.circleRadius));
 
 // Borders
 
@@ -139,7 +113,7 @@ final Border transparentBlackBorder = Border.fromBorderSide(
 );
 
 final borderOrange = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.orange40, width: 2.s),
+  BorderSide(color: AbiliaColors.orange40, width: layout.borders.medium),
 );
 final border = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
@@ -191,8 +165,7 @@ final selectedBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
   border: Border.fromBorderSide(
-    BorderSide(color: AbiliaColors.green, width: 2.s),
-  ),
+      BorderSide(color: AbiliaColors.green, width: layout.borders.medium)),
 );
 final whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
@@ -284,17 +257,18 @@ Color categoryColor({
 
 final inputErrorDecoration = InputDecoration(
   suffixIcon: Padding(
-    padding: EdgeInsetsDirectional.only(end: 16.s),
+    padding: EdgeInsetsDirectional.only(
+        end: layout.formPadding.groupHorizontalDistance),
     child: Icon(
       AbiliaIcons.irError,
       color: AbiliaColors.red,
-      size: layout.iconSize.small,
+      size: layout.icon.small,
     ),
   ),
 );
 
 // Icon theme
 final lightIconThemeData = IconThemeData(
-  size: layout.iconSize.button,
+  size: layout.icon.button,
   color: AbiliaColors.white,
 );
