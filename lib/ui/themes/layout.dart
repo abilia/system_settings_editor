@@ -698,7 +698,7 @@ class LibraryPageLayout {
     this.contentPadding = const EdgeInsets.all(4),
     this.folderIconSize = 86,
     this.headerFontSize = 20,
-    this.childAspectRatio = 112 / 112,
+    this.childAspectRatio = 1,
     this.imageHeight = 86,
     this.imageWidth = 86,
     this.textImageDistance = 2,
