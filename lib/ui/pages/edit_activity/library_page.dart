@@ -244,51 +244,64 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
       builder: (context, archiveState) {
         final content = archiveState.currentFolderSorted;
-        if (content.isEmpty) {
-          return EmptyLibraryMessage(
-            emptyLibraryMessage: emptyLibraryMessage,
-            rootFolder: archiveState.isAtRoot,
-          );
-        }
 
-        return ScrollArrows.vertical(
-          controller: _controller,
-          child: ListView.separated(
-            controller: _controller,
-            padding: m1WithZeroBottom,
-            itemCount: content.length,
-            separatorBuilder: (context, index) =>
-                SizedBox(height: layout.formPadding.verticalItemDistance),
-            itemBuilder: (BuildContext context, int index) {
-              final Sortable<T> sortable = content[index];
-              final bool selected = archiveState.selected?.id == sortable.id;
-              return libraryItemGenerator(
-                sortable,
-                () => sortable.isGroup
-                    ? context
-                        .read<SortableArchiveCubit<T>>()
-                        .folderChanged(sortable.id)
-                    : context
-                        .read<SortableArchiveCubit<T>>()
-                        .sortableSelected(selected ? null : sortable),
-                selected
-                    ? SortableToolbar(
-                        disableUp: index == 0,
-                        disableDown: index == content.length - 1,
-                        onTapEdit: () {
-                          // TODO: edit timer/activity
+        return Column(
+          children: [
+            if (!archiveState.isAtRootAndNoSelection &&
+                archiveState.selected == null)
+              LibraryHeading<T>(
+                sortableArchiveState: archiveState,
+                rootHeading: '',
+              ),
+            Expanded(
+              child: content.isEmpty
+                  ? EmptyLibraryMessage(
+                      emptyLibraryMessage: emptyLibraryMessage,
+                      rootFolder: archiveState.isAtRoot,
+                    )
+                  : ScrollArrows.vertical(
+                      controller: _controller,
+                      child: ListView.separated(
+                        controller: _controller,
+                        padding: m1WithZeroBottom,
+                        itemCount: content.length,
+                        separatorBuilder: (context, index) => SizedBox(
+                            height: layout.formPadding.verticalItemDistance),
+                        itemBuilder: (BuildContext context, int index) {
+                          final Sortable<T> sortable = content[index];
+                          final bool selected =
+                              archiveState.selected?.id == sortable.id;
+                          return libraryItemGenerator(
+                            sortable,
+                            () => sortable.isGroup
+                                ? context
+                                    .read<SortableArchiveCubit<T>>()
+                                    .folderChanged(sortable.id)
+                                : context
+                                    .read<SortableArchiveCubit<T>>()
+                                    .sortableSelected(
+                                        selected ? null : sortable),
+                            selected
+                                ? SortableToolbar(
+                                    disableUp: index == 0,
+                                    disableDown: index == content.length - 1,
+                                    onTapEdit: () {
+                                      // TODO: edit timer/activity
+                                    },
+                                    onTapDelete: () {
+                                      // TODO: delete timer/activity
+                                    },
+                                    onTapReorder: (direction) => context
+                                        .read<SortableArchiveCubit<T>>()
+                                        .reorder(direction),
+                                  )
+                                : null,
+                          );
                         },
-                        onTapDelete: () {
-                          // TODO: delete timer/activity
-                        },
-                        onTapReorder: (direction) => context
-                            .read<SortableArchiveCubit<T>>()
-                            .reorder(direction),
-                      )
-                    : null,
-              );
-            },
-          ),
+                      ),
+                    ),
+            ),
+          ],
         );
       },
     );
