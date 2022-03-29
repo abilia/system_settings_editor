@@ -54,13 +54,8 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
             SortableArchiveState<T>, bool>(
           selector: (state) => state.isAtRoot,
           builder: (context, isAtRoot) => BottomNavigation(
-            backNavigationWidget: isAtRoot
-                ? CloseButton(onPressed: Navigator.of(context).maybePop)
-                : PreviousButton(
-                    onPressed:
-                        context.read<SortableArchiveCubit<T>>().navigateUp,
-                  ),
-          ),
+              backNavigationWidget:
+                  CloseButton(onPressed: Navigator.of(context).maybePop)),
         ),
       );
 }

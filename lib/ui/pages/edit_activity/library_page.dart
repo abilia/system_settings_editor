@@ -288,9 +288,8 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                     onTapEdit: () {
                                       // TODO: edit timer/activity
                                     },
-                                    onTapDelete: () {
-                                      // TODO: delete timer/activity
-                                    },
+                                    onTapDelete: () =>
+                                        _checkDeleteItem(context, sortable),
                                     onTapReorder: (direction) => context
                                         .read<SortableArchiveCubit<T>>()
                                         .reorder(direction),
@@ -305,6 +304,27 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future _checkDeleteItem(
+    BuildContext context,
+    Sortable sortable,
+  ) async {
+    final translate = Translator.of(context).translate;
+    final result = await showViewDialog<bool>(
+      context: context,
+      builder: (_) => YesNoDialog(
+        heading: translate.delete,
+        headingIcon: AbiliaIcons.deleteAllClear,
+        text: sortable.data is BasicTimerData
+            ? translate.timerDelete
+            : translate.deleteActivity,
+      ),
+    );
+
+    if (result == true) {
+      context.read<SortableArchiveCubit<T>>().delete();
+    }
   }
 }
 
