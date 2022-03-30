@@ -52,6 +52,30 @@ class _EditActivitySettingsWidget extends StatelessWidget {
         return Column(
           children: [
             SwitchField(
+              leading: const Icon(AbiliaIcons.basicActivity),
+              value: addTabState.template,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(template: v)),
+              child: Text(t.showBasicActivities),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.selectTextSize),
+              value: addTabState.title,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(title: v)),
+              child: Text(t.selectName),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.myPhotos),
+              value: addTabState.image,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(image: v)),
+              child: Text(t.selectImage),
+            ),
+            SwitchField(
               leading: const Icon(AbiliaIcons.month),
               value: addTabState.date,
               onChanged: (v) => context
@@ -68,12 +92,28 @@ class _EditActivitySettingsWidget extends StatelessWidget {
               child: Text(t.selectType),
             ),
             SwitchField(
-              leading: const Icon(AbiliaIcons.basicActivity),
-              value: addTabState.template,
+              leading: const Icon(AbiliaIcons.handiCheck),
+              value: addTabState.checkable,
               onChanged: (v) => context
                   .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(template: v)),
-              child: Text(t.showBasicActivities),
+                  .editSettings(addTabState.copyWith(checkable: v)),
+              child: Text(t.selectCheckable),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.passwordProtection),
+              value: addTabState.availability,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(availability: v)),
+              child: Text(t.selectAvailableFor),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.deleteAllClear),
+              value: addTabState.removeAfter,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(removeAfter: v)),
+              child: Text(t.selectDeleteAfter),
             ),
           ]
               .map((c) => Padding(

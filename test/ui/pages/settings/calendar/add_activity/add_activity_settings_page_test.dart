@@ -175,6 +175,7 @@ void main() {
             matcher: isFalse,
           );
         });
+
         testWidgets('Set Select name', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectName),
@@ -183,6 +184,7 @@ void main() {
             matcher: isFalse,
           );
         });
+
         testWidgets('Set Select image', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectImage),
@@ -206,6 +208,33 @@ void main() {
             find.text(translate.selectType),
             genericDb,
             key: EditActivitySettings.typeKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('Set Checkable', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectCheckable),
+            genericDb,
+            key: EditActivitySettings.checkableKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('Set Available for', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectAvailableFor),
+            genericDb,
+            key: EditActivitySettings.availabilityKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('Set Delete after', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectDeleteAfter),
+            genericDb,
+            key: EditActivitySettings.removeAfterKey,
             matcher: isFalse,
           );
         });
