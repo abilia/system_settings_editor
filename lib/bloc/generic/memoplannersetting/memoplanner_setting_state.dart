@@ -10,14 +10,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   bool get displayQuarterHour => settings.displayQuarterHour;
   bool get displayTimeLeft => settings.displayTimeLeft;
   bool get dayCaptionShowDayButtons => settings.dayCaptionShowDayButtons;
-  bool get activityEndTimeEditable => settings.activityEndTimeEditable;
-  bool get activityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
-  bool get activityRecurringEditable => settings.activityRecurringEditable;
-  bool get activityDisplayAlarmOption => settings.activityDisplayAlarmOption;
-  bool get activityDisplaySilentAlarmOption =>
-      settings.activityDisplaySilentAlarmOption;
-  bool get activityDisplayNoAlarmOption =>
-      settings.activityDisplayNoAlarmOption;
   bool get activityDisplayDayPeriod => settings.activityDisplayDayPeriod;
   bool get activityDisplayWeekDay => settings.activityDisplayWeekDay;
   bool get activityDisplayDate => settings.activityDisplayDate;
@@ -115,12 +107,12 @@ abstract class MemoplannerSettingsState extends Equatable {
       (addActivityType == NewActivityMode.editView &&
           settings.editActivity.template) ||
       (addActivityType == NewActivityMode.stepByStep &&
-          settings.wizard.template);
+          settings.stepByStep.template);
 
   bool get newActivityOption =>
       addActivityType == NewActivityMode.editView ||
-      settings.wizard.title ||
-      settings.wizard.image;
+      settings.stepByStep.title ||
+      settings.stepByStep.image;
 
   WeekDisplayDays get weekDisplayDays =>
       WeekDisplayDays.values[settings.weekDisplayShowFullWeek];
@@ -232,16 +224,6 @@ abstract class MemoplannerSettingsState extends Equatable {
   String get rightCategoryName => settings.calendarActivityTypeRight;
   String get leftCategoryImage => settings.calendarActivityTypeLeftImage;
   String get rightCategoryImage => settings.calendarActivityTypeRightImage;
-
-  // Properties derived from one or more settings
-  bool get abilityToSelectAlarm =>
-      [
-        settings.activityDisplayAlarmOption,
-        settings.activityDisplaySilentAlarmOption, // for Vibration
-        settings.activityDisplaySilentAlarmOption, // and Silent
-        settings.activityDisplayNoAlarmOption
-      ].where((e) => e).length >=
-      2;
 
   @override
   List<Object> get props => settings.props;

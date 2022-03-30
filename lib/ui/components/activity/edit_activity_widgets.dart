@@ -352,8 +352,9 @@ class AlarmWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
     final alarm = activity.alarm;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => Column(
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.settings.addActivity.abilityToSelectAlarm,
+      builder: (context, abilityToSelectAlarm) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SubHeading(translator.alarm),
@@ -361,7 +362,7 @@ class AlarmWidget extends StatelessWidget {
             key: TestKey.selectAlarm,
             leading: Icon(alarm.iconData()),
             text: Text(alarm.text(translator)),
-            onTap: memoSettingsState.abilityToSelectAlarm
+            onTap: abilityToSelectAlarm
                 ? () async {
                     final authProviders = copiedAuthProviders(context);
                     final result = await Navigator.of(context)

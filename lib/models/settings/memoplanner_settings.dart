@@ -21,12 +21,6 @@ class MemoplannerSettings extends Equatable {
       displayTimeLeftKey = 'activity_detailed_setting_display_qhw_time_left',
       dayCaptionShowDayButtonsKey = 'day_caption_show_day_buttons',
       activityDefaultAlarmTypeKey = 'activity_default_alarm_type',
-      activityEndTimeEditableKey = 'add_activity_end_time',
-      activityTimeBeforeCurrentKey = 'add_activity_time_before_current',
-      activityRecurringEditableKey = 'add_activity_recurring_step',
-      activityDisplayAlarmOptionKey = 'add_activity_display_alarm',
-      activityDisplaySilentAlarmOptionKey = 'add_activity_display_silent_alarm',
-      activityDisplayNoAlarmOptionKey = 'add_activity_display_no_alarm',
       activityDisplayDayPeriodKey = 'day_caption_show_period',
       activityDisplayWeekDayKey = 'day_caption_show_weekday',
       activityDisplayDateKey = 'day_caption_show_date',
@@ -83,12 +77,6 @@ class MemoplannerSettings extends Equatable {
       displayQuarterHour,
       displayTimeLeft,
       dayCaptionShowDayButtons,
-      activityEndTimeEditable,
-      activityTimeBeforeCurrent,
-      activityRecurringEditable,
-      activityDisplayAlarmOption,
-      activityDisplaySilentAlarmOption,
-      activityDisplayNoAlarmOption,
       activityDisplayDayPeriod,
       activityDisplayWeekDay,
       activityDisplayDate,
@@ -143,11 +131,12 @@ class MemoplannerSettings extends Equatable {
       calendarActivityTypeRightImage;
 
   final AlarmSettings alarm;
-  final WizardStepsSettings wizard;
+  final StepByStepSettings stepByStep;
   final CodeProtectSettings codeProtect;
   final KeepScreenAwakeSettings keepScreenAwakeSettings;
   final MenuSettings menu;
   final EditActivitySettings editActivity;
+  final AddActivitySettings addActivity;
 
   const MemoplannerSettings({
     this.displayAlarmButton = true,
@@ -157,12 +146,6 @@ class MemoplannerSettings extends Equatable {
     this.displayTimeLeft = true,
     this.dayCaptionShowDayButtons = true,
     this.activityDefaultAlarmType = alarmSoundAndVibration,
-    this.activityEndTimeEditable = true,
-    this.activityTimeBeforeCurrent = true,
-    this.activityRecurringEditable = true,
-    this.activityDisplayAlarmOption = true,
-    this.activityDisplaySilentAlarmOption = true,
-    this.activityDisplayNoAlarmOption = true,
     this.activityDisplayDayPeriod = true,
     this.activityDisplayWeekDay = true,
     this.activityDisplayDate = true,
@@ -213,11 +196,12 @@ class MemoplannerSettings extends Equatable {
     this.settingViewOptionsTimeInterval = true,
     this.settingViewOptionsZoom = true,
     this.settingViewOptionsDurationDots = true,
-    this.wizard = const WizardStepsSettings(),
+    this.stepByStep = const StepByStepSettings(),
     this.codeProtect = const CodeProtectSettings(),
     this.menu = const MenuSettings(),
     this.keepScreenAwakeSettings = const KeepScreenAwakeSettings(),
     this.editActivity = const EditActivitySettings(),
+    this.addActivity = const AddActivitySettings(),
   });
 
   factory MemoplannerSettings.fromSettingsMap(
@@ -244,24 +228,6 @@ class MemoplannerSettings extends Equatable {
       activityDefaultAlarmType: settings.parse(
         activityDefaultAlarmTypeKey,
         alarmSoundAndVibration,
-      ),
-      activityEndTimeEditable: settings.getBool(
-        activityEndTimeEditableKey,
-      ),
-      activityTimeBeforeCurrent: settings.getBool(
-        activityTimeBeforeCurrentKey,
-      ),
-      activityRecurringEditable: settings.getBool(
-        activityRecurringEditableKey,
-      ),
-      activityDisplayAlarmOption: settings.getBool(
-        activityDisplayAlarmOptionKey,
-      ),
-      activityDisplaySilentAlarmOption: settings.getBool(
-        activityDisplaySilentAlarmOptionKey,
-      ),
-      activityDisplayNoAlarmOption: settings.getBool(
-        activityDisplayNoAlarmOptionKey,
       ),
       activityDisplayDayPeriod: settings.getBool(
         activityDisplayDayPeriodKey,
@@ -434,12 +400,13 @@ class MemoplannerSettings extends Equatable {
       settingViewOptionsDurationDots: settings.getBool(
         settingViewOptionsDurationDotsKey,
       ),
-      wizard: WizardStepsSettings.fromSettingsMap(settings),
+      stepByStep: StepByStepSettings.fromSettingsMap(settings),
       codeProtect: CodeProtectSettings.fromSettingsMap(settings),
       menu: MenuSettings.fromSettingsMap(settings),
       keepScreenAwakeSettings:
           KeepScreenAwakeSettings.fromSettingsMap(settings),
       editActivity: EditActivitySettings.fromSettingsMap(settings),
+      addActivity: AddActivitySettings.fromSettingsMap(settings),
     );
   }
 
@@ -452,12 +419,6 @@ class MemoplannerSettings extends Equatable {
         displayTimeLeft,
         dayCaptionShowDayButtons,
         activityDefaultAlarmType,
-        activityEndTimeEditable,
-        activityTimeBeforeCurrent,
-        activityRecurringEditable,
-        activityDisplayAlarmOption,
-        activityDisplaySilentAlarmOption,
-        activityDisplayNoAlarmOption,
         activityDisplayDayPeriod,
         activityDisplayWeekDay,
         activityDisplayDate,
@@ -508,11 +469,12 @@ class MemoplannerSettings extends Equatable {
         settingViewOptionsTimeInterval,
         settingViewOptionsZoom,
         settingViewOptionsDurationDots,
-        wizard,
+        stepByStep,
         codeProtect,
         menu,
         keepScreenAwakeSettings,
         editActivity,
+        addActivity,
       ];
 }
 

@@ -6,17 +6,14 @@ class EditActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.activityRecurringEditable !=
-          current.activityRecurringEditable,
-      builder: (context, memoSettingsState) =>
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.settings.addActivity.addRecurringActivity,
+      builder: (context, displayRecurrence) =>
           BlocBuilder<EditActivityCubit, EditActivityState>(
         buildWhen: (previous, current) =>
             previous.activity.fullDay != current.activity.fullDay,
         builder: (context, state) {
           final fullDay = state.activity.fullDay;
-          final displayRecurrence = memoSettingsState.activityRecurringEditable;
           final tabs = [
             const MainTab(),
             if (!fullDay) const AlarmAndReminderTab(),

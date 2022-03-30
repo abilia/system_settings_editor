@@ -1,143 +1,90 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class EditActivitySettings extends Equatable {
-  static const templateKey = 'advanced_activity_template',
-      titleKey = 'advanced_activity_title',
-      imageKey = 'advanced_activity_image',
-      dateKey = 'advanced_activity_date',
-      typeKey = 'advanced_activity_type',
-      checkableKey = 'advanced_activity_checkable',
-      availabilityKey = 'advanced_activity_availability',
-      removeAfterKey = 'advanced_activity_remove_after',
-      alarmKey = 'advanced_activity_alarm',
-      checklistKey = 'advanced_activity_checklist',
-      notesKey = 'advanced_activity_notes',
-      remindersKey = 'advanced_activity_reminders';
+class AddActivitySettings extends Equatable {
+  static const allowPassedStartTimeKey = 'add_activity_time_before_current',
+      addRecurringActivityKey = 'add_activity_recurring_step',
+      showEndTimeKey = 'add_activity_end_time',
+      showAlarmKey = 'add_activity_display_alarm',
+      showSilentAlarmKey = 'add_activity_display_silent_alarm',
+      showNoAlarmKey = 'add_activity_display_no_alarm';
 
-  final bool template,
-      title,
-      image,
-      date,
-      type,
-      checkable,
-      availability,
-      removeAfter,
-      alarm,
-      checklist,
-      notes,
-      reminders;
+  final bool allowPassedStartTime,
+      addRecurringActivity,
+      showEndTime,
+      showAlarm,
+      showSilentAlarm,
+      showNoAlarm;
 
-  const EditActivitySettings({
-    this.template = true,
-    this.title = true,
-    this.image = true,
-    this.date = true,
-    this.type = true,
-    this.checkable = true,
-    this.availability = true,
-    this.removeAfter = true,
-    this.alarm = true,
-    this.checklist = true,
-    this.notes = true,
-    this.reminders = true,
+  // Properties derived from one or more settings
+  bool get abilityToSelectAlarm =>
+      [
+        showAlarm,
+        showSilentAlarm, // for Vibration
+        showSilentAlarm, // and Silent
+        showNoAlarm,
+      ].where((e) => e).length >=
+      2;
+
+  const AddActivitySettings({
+    this.allowPassedStartTime = true,
+    this.addRecurringActivity = true,
+    this.showEndTime = true,
+    this.showAlarm = true,
+    this.showSilentAlarm = true,
+    this.showNoAlarm = true,
   });
 
-  factory EditActivitySettings.fromSettingsMap(
+  AddActivitySettings copyWith({
+    bool? allowPassedStartTime,
+    bool? addRecurringActivity,
+    bool? showEndTime,
+    bool? showAlarm,
+    bool? showSilentAlarm,
+    bool? showNoAlarm,
+  }) =>
+      AddActivitySettings(
+        allowPassedStartTime: allowPassedStartTime ?? this.allowPassedStartTime,
+        addRecurringActivity: addRecurringActivity ?? this.addRecurringActivity,
+        showEndTime: showEndTime ?? this.showEndTime,
+        showAlarm: showAlarm ?? this.showAlarm,
+        showSilentAlarm: showSilentAlarm ?? this.showSilentAlarm,
+        showNoAlarm: showNoAlarm ?? this.showNoAlarm,
+      );
+
+  factory AddActivitySettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
-      EditActivitySettings(
-        template: settings.getBool(templateKey),
-        title: settings.getBool(titleKey),
-        image: settings.getBool(imageKey),
-        date: settings.getBool(dateKey),
-        type: settings.getBool(typeKey),
-        checkable: settings.getBool(checkableKey),
-        availability: settings.getBool(availabilityKey),
-        removeAfter: settings.getBool(removeAfterKey),
-        alarm: settings.getBool(alarmKey),
-        checklist: settings.getBool(checklistKey),
-        notes: settings.getBool(notesKey),
-        reminders: settings.getBool(remindersKey),
+      AddActivitySettings(
+        allowPassedStartTime: settings.getBool(allowPassedStartTimeKey),
+        addRecurringActivity: settings.getBool(addRecurringActivityKey),
+        showEndTime: settings.getBool(showEndTimeKey),
+        showAlarm: settings.getBool(showAlarmKey),
+        showSilentAlarm: settings.getBool(showSilentAlarmKey),
+        showNoAlarm: settings.getBool(showNoAlarmKey),
       );
 
   List<MemoplannerSettingData> get memoplannerSettingData => [
         MemoplannerSettingData.fromData(
-          data: template,
-          identifier: templateKey,
-        ),
-        MemoplannerSettingData.fromData(data: title, identifier: titleKey),
-        MemoplannerSettingData.fromData(data: image, identifier: imageKey),
-        MemoplannerSettingData.fromData(data: date, identifier: dateKey),
-        MemoplannerSettingData.fromData(data: type, identifier: typeKey),
+            data: allowPassedStartTime, identifier: allowPassedStartTimeKey),
         MemoplannerSettingData.fromData(
-          data: checkable,
-          identifier: checkableKey,
-        ),
+            data: addRecurringActivity, identifier: addRecurringActivityKey),
         MemoplannerSettingData.fromData(
-          data: availability,
-          identifier: availabilityKey,
-        ),
+            data: showEndTime, identifier: showEndTimeKey),
         MemoplannerSettingData.fromData(
-          data: removeAfter,
-          identifier: removeAfterKey,
-        ),
+            data: showAlarm, identifier: showAlarmKey),
         MemoplannerSettingData.fromData(
-          data: alarm,
-          identifier: alarmKey,
-        ),
+            data: showSilentAlarm, identifier: showSilentAlarmKey),
         MemoplannerSettingData.fromData(
-          data: checklist,
-          identifier: checklistKey,
-        ),
-        MemoplannerSettingData.fromData(data: notes, identifier: notesKey),
-        MemoplannerSettingData.fromData(
-          data: reminders,
-          identifier: remindersKey,
-        ),
+            data: showNoAlarm, identifier: showNoAlarmKey),
       ];
-
-  EditActivitySettings copyWith({
-    bool? template,
-    bool? title,
-    bool? image,
-    bool? date,
-    bool? type,
-    bool? checkable,
-    bool? availability,
-    bool? removeAfter,
-    bool? alarm,
-    bool? checklist,
-    bool? notes,
-    bool? reminders,
-  }) =>
-      EditActivitySettings(
-        template: template ?? this.template,
-        title: title ?? this.title,
-        image: image ?? this.image,
-        date: date ?? this.date,
-        type: type ?? this.type,
-        checkable: checkable ?? this.checkable,
-        availability: availability ?? this.availability,
-        removeAfter: removeAfter ?? this.removeAfter,
-        alarm: alarm ?? this.alarm,
-        checklist: checklist ?? this.checklist,
-        notes: notes ?? this.notes,
-        reminders: reminders ?? this.reminders,
-      );
 
   @override
   List<Object?> get props => [
-        template,
-        title,
-        image,
-        date,
-        type,
-        checkable,
-        availability,
-        removeAfter,
-        alarm,
-        checklist,
-        notes,
-        reminders,
+        allowPassedStartTime,
+        addRecurringActivity,
+        showEndTime,
+        showAlarm,
+        showSilentAlarm,
+        showNoAlarm,
       ];
 }

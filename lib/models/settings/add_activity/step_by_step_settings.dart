@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 
-class WizardStepsSettings extends Equatable {
+class StepByStepSettings extends Equatable {
   static const templateKey = 'wizard_template_step',
       titleKey = 'wizard_title_step',
       imageKey = 'wizard_image_step',
@@ -30,7 +30,7 @@ class WizardStepsSettings extends Equatable {
 
   bool get onlyTemplateStep => template && !title && !image;
 
-  const WizardStepsSettings({
+  const StepByStepSettings({
     this.template = true,
     this.title = true,
     this.image = true,
@@ -45,7 +45,7 @@ class WizardStepsSettings extends Equatable {
     this.reminders = false,
   });
 
-  WizardStepsSettings copyWith({
+  StepByStepSettings copyWith({
     bool? showBasicActivities,
     bool? selectName,
     bool? selectImage,
@@ -59,7 +59,7 @@ class WizardStepsSettings extends Equatable {
     bool? selectNote,
     bool? selectReminder,
   }) =>
-      WizardStepsSettings(
+      StepByStepSettings(
         template: showBasicActivities ?? template,
         title: selectName ?? title,
         image: selectImage ?? image,
@@ -74,9 +74,9 @@ class WizardStepsSettings extends Equatable {
         reminders: selectReminder ?? reminders,
       );
 
-  factory WizardStepsSettings.fromSettingsMap(
+  factory StepByStepSettings.fromSettingsMap(
           Map<String, MemoplannerSettingData> settings) =>
-      WizardStepsSettings(
+      StepByStepSettings(
         template: settings.getBool(
           templateKey,
         ),

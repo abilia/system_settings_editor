@@ -11,17 +11,14 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
 
     return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
         builder: (context, state) {
-      onAlarmTypeChanged(AlarmType? alarmType) => context
-          .read<AddActivitySettingsCubit>()
-          .changeAddActivitySettings(state.copyWith(
-              defaultAlarm: state.defaultAlarm.copyWith(type: alarmType)));
       return SettingsTab(
         children: [
           Tts(child: Text(t.defaults)),
           RadioField(
             value: AlarmType.soundAndVibration,
             groupValue: state.defaultAlarm.type,
-            onChanged: onAlarmTypeChanged,
+            onChanged:
+                context.read<AddActivitySettingsCubit>().defaultAlarmType,
             text: Text(t.alarmAndVibration),
             leading: const Icon(
               AbiliaIcons.handiAlarmVibration,
@@ -30,7 +27,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           RadioField(
             value: AlarmType.vibration,
             groupValue: state.defaultAlarm.type,
-            onChanged: onAlarmTypeChanged,
+            onChanged:
+                context.read<AddActivitySettingsCubit>().defaultAlarmType,
             text: Text(t.vibration),
             leading: const Icon(
               AbiliaIcons.handiVibration,
@@ -39,7 +37,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           RadioField(
             value: AlarmType.silent,
             groupValue: state.defaultAlarm.type,
-            onChanged: onAlarmTypeChanged,
+            onChanged:
+                context.read<AddActivitySettingsCubit>().defaultAlarmType,
             text: Text(t.silentAlarm),
             leading: const Icon(
               AbiliaIcons.handiAlarm,
@@ -48,7 +47,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           RadioField(
             value: AlarmType.noAlarm,
             groupValue: state.defaultAlarm.type,
-            onChanged: onAlarmTypeChanged,
+            onChanged:
+                context.read<AddActivitySettingsCubit>().defaultAlarmType,
             text: Text(t.noAlarm),
             leading: const Icon(
               AbiliaIcons.handiNoAlarmVibration,
@@ -58,9 +58,8 @@ class AddActivityDefaultSettingsTab extends StatelessWidget {
           SwitchField(
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
             value: state.defaultAlarm.onlyStart,
-            onChanged: (v) => context
-                .read<AddActivitySettingsCubit>()
-                .changeAddActivitySettings(state.copyWith(
+            onChanged: (v) => context.read<AddActivitySettingsCubit>().change(
+                state.copyWith(
                     defaultAlarm: state.defaultAlarm.copyWith(onlyStart: v))),
             child: Text(t.alarmOnlyAtStartTime),
           ),
