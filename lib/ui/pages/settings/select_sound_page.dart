@@ -5,6 +5,7 @@ class SelectSoundPage extends StatefulWidget {
   final Sound sound;
   final IconData appBarIcon;
   final String appBarTitle;
+  final String appBarLabel;
   final bool noSoundOption;
 
   const SelectSoundPage({
@@ -12,6 +13,7 @@ class SelectSoundPage extends StatefulWidget {
     required this.sound,
     required this.appBarIcon,
     required this.appBarTitle,
+    required this.appBarLabel,
     this.noSoundOption = false,
   }) : super(key: key);
 
@@ -62,6 +64,7 @@ class _SelectSoundPageState extends State<SelectSoundPage> {
       appBar: AbiliaAppBar(
         iconData: widget.appBarIcon,
         title: widget.appBarTitle,
+        label: widget.appBarLabel,
       ),
       body: ListView.separated(
         padding: layout.templates.m1,

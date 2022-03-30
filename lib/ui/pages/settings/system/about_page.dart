@@ -14,6 +14,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.about,
+        label: translate.system,
         iconData: AbiliaIcons.information,
       ),
       body: DefaultTextStyle(

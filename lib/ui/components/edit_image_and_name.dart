@@ -7,6 +7,7 @@ class EditImageAndName extends StatefulWidget {
   final int? maxLines, minLines;
   final bool allowEmpty;
   final String? hintText;
+  final String? selectPictureLabel;
   const EditImageAndName({
     Key? key,
     this.imageAndName,
@@ -15,6 +16,7 @@ class EditImageAndName extends StatefulWidget {
     this.minLines,
     this.allowEmpty = false,
     this.hintText,
+    this.selectPictureLabel,
   }) : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
               children: <Widget>[
                 SelectPictureWidget(
                   selectedImage: imageAndName.image,
+                  label: widget.selectPictureLabel,
                   onImageSelected: (selectedImage) => setState(
                     () => imageAndName =
                         imageAndName.copyWith(image: selectedImage),

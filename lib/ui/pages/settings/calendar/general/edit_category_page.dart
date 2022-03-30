@@ -12,15 +12,18 @@ class EditCategoryPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final label = Translator.of(context).translate.general;
     return EditImageAndName(
       maxLines: 1,
       minLines: 1,
       allowEmpty: true,
       hintText: hintText,
       imageAndName: imageAndName,
+      selectPictureLabel: label,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
         title: Translator.of(context).translate.editCategory,
+        label: label,
       ),
     );
   }

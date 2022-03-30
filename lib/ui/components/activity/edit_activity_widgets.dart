@@ -98,12 +98,14 @@ class SelectPictureWidget extends StatelessWidget {
 
   final void Function(AbiliaFile)? onImageSelected;
   final bool errorState;
+  final String? label;
 
   const SelectPictureWidget({
     Key? key,
     required this.selectedImage,
     this.onImageSelected,
     this.errorState = false,
+    this.label,
   }) : super(key: key);
 
   @override
@@ -133,6 +135,7 @@ class SelectPictureWidget extends StatelessWidget {
           providers: authProviders,
           child: SelectPicturePage(
             selectedImage: selectedImage,
+            label: label,
           ),
         ),
       ),
