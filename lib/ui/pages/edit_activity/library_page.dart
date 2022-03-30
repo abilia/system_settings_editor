@@ -105,17 +105,18 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     Key? key,
     required this.sortableArchiveState,
     required this.rootHeading,
+    this.showOnlyFolders = false,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
+  final bool showOnlyFolders;
 
   @override
   Widget build(BuildContext context) {
     final heading = sortableArchiveState.isAtRootAndNoSelection
         ? rootHeading
-        : sortableArchiveState.title(
-            Translator.of(context).translate,
-          );
+        : sortableArchiveState.title(Translator.of(context).translate,
+            onlyFolders: showOnlyFolders);
     return Tts.data(
       data: heading,
       child: Column(
@@ -247,11 +248,11 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
 
         return Column(
           children: [
-            if (!archiveState.isAtRootAndNoSelection &&
-                archiveState.selected == null)
+            if (!archiveState.isAtRoot)
               LibraryHeading<T>(
                 sortableArchiveState: archiveState,
                 rootHeading: '',
+                showOnlyFolders: true,
               ),
             Expanded(
               child: content.isEmpty

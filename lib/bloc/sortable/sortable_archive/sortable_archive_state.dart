@@ -41,11 +41,14 @@ class SortableArchiveState<T extends SortableData> extends Equatable {
       (allByFolder[currentFolderId] ?? [])
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
-  String title(Translated translate) =>
-      (isSelected ? selected : allById[currentFolderId])
+  String title(Translated translate, {bool onlyFolders = false}) =>
+      (isSelected && !onlyFolders ? selected : allById[currentFolderId])
           ?.data
           .title(translate) ??
       '';
+
+  String folderTitle(Translated translate) =>
+      allById[currentFolderId]?.data.title(translate) ?? '';
 
   @override
   List<Object?> get props => [
