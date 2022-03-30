@@ -20,7 +20,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _log = Logger('main');
@@ -151,10 +150,7 @@ class SeagullApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           builder: (context, child) => child != null
               ? MediaQuery(
-                  data: MediaQuery.of(context).copyWith(
-                    textScaleFactor: 1.0,
-                    devicePixelRatio: Device.devicePixelRatioCorrection,
-                  ),
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   child: child,
                 )
               : const SplashPage(),

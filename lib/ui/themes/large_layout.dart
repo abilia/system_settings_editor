@@ -1,7 +1,7 @@
 part of 'layout.dart';
 
 class _LargeLayout extends Layout {
-  static const double scaleFactor = 1.5;
+  static const double scaleFactor = 1;
   const _LargeLayout()
       : super(
           radius: 18 * scaleFactor,

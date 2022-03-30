@@ -18,8 +18,6 @@ export 'semantics_properties_extension.dart';
 export 'dots_definition.dart';
 export 'timeformat.dart';
 export 'login_error_message.dart';
-export 'device.dart';
-export 'scale_util.dart';
 export 'generic_extensions.dart';
 export 'android_intents.dart';
 export 'sortable_util.dart';
