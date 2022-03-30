@@ -21,7 +21,8 @@ class AddActivitySettingsCubit extends Cubit<AddActivitySettingsState> {
       change(state.copyWith(stepByStepSetting: setting));
   void editSettings(EditActivitySettings setting) =>
       change(state.copyWith(editActivitySetting: setting));
-  void defaultAlarmType(AlarmType? alarmType) => change(state.copyWith(
-      defaultAlarm: state.defaultAlarm.copyWith(type: alarmType)));
+  void defaultAlarm(Alarm alarm) => change(state.copyWith(defaultAlarm: alarm));
+  void defaultAlarmType(AlarmType? alarmType) =>
+      defaultAlarm(state.defaultAlarm.copyWith(type: alarmType));
   void save() => genericCubit.genericUpdated(state.memoplannerSettingData);
 }

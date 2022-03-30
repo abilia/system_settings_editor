@@ -40,8 +40,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                 value: settings.showEndTime,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(showEndTime: v)),
+                    .addActivitySetting(settings.copyWith(showEndTime: v)),
                 child: Text(t.showEndTime),
               ),
               const SizedBox(),
@@ -58,8 +57,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                 value: settings.showSilentAlarm,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(showSilentAlarm: v)),
+                    .addActivitySetting(settings.copyWith(showSilentAlarm: v)),
                 child: Text(t.showSilentAlarm),
               ),
               SwitchField(
@@ -67,8 +65,7 @@ class AddActivityGeneralSettingsTab extends StatelessWidget {
                 value: settings.showNoAlarm,
                 onChanged: (v) => context
                     .read<AddActivitySettingsCubit>()
-                    .addActivitySetting(
-                        settings.copyWith(showNoAlarm: v)),
+                    .addActivitySetting(settings.copyWith(showNoAlarm: v)),
                 child: Text(t.showNoAlarm),
               ),
             ],
