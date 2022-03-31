@@ -167,7 +167,7 @@ void main() {
       });
 
       group('Advanced -', () {
-        testWidgets('Set Show basic activities', (tester) async {
+        testWidgets('deselect Show basic activities', (tester) async {
           await tester.verifyInAddTab(
             find.byIcon(AbiliaIcons.basicActivity),
             genericDb,
@@ -176,7 +176,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Select name', (tester) async {
+        testWidgets('deselect Select name', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectName),
             genericDb,
@@ -185,7 +185,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Select image', (tester) async {
+        testWidgets('deselect Select image', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectImage),
             genericDb,
@@ -194,7 +194,18 @@ void main() {
           );
         });
 
-        testWidgets('Set Select date', (tester) async {
+        testWidgets('can not deselect basic, name and image', (tester) async {
+          await tester.goToAddTab();
+          await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectName));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectImage));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+        });
+
+        testWidgets('deselect Select date', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectDate),
             genericDb,
@@ -203,7 +214,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Select type', (tester) async {
+        testWidgets('deselect Select type', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectType),
             genericDb,
@@ -212,7 +223,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Checkable', (tester) async {
+        testWidgets('deselect Checkable', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectCheckable),
             genericDb,
@@ -221,7 +232,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Available for', (tester) async {
+        testWidgets('deselect Available for', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectAvailableFor),
             genericDb,
@@ -230,7 +241,7 @@ void main() {
           );
         });
 
-        testWidgets('Set Delete after', (tester) async {
+        testWidgets('deselect Delete after', (tester) async {
           await tester.verifyInAddTab(
             find.text(translate.selectDeleteAfter),
             genericDb,
@@ -241,7 +252,7 @@ void main() {
       });
 
       group('Step-by-step -', () {
-        testWidgets('Show basic activities', (tester) async {
+        testWidgets('deselect Show basic activities', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.showBasicActivities),
             genericDb,
@@ -250,7 +261,7 @@ void main() {
           );
         });
 
-        testWidgets('Select name', (tester) async {
+        testWidgets('deselect Select name', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectName),
             genericDb,
@@ -259,7 +270,7 @@ void main() {
           );
         });
 
-        testWidgets('Select image', (tester) async {
+        testWidgets('deselect Select image', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectImage),
             genericDb,
@@ -268,7 +279,20 @@ void main() {
           );
         });
 
-        testWidgets('Select date', (tester) async {
+        testWidgets('can not deselect basic, name and image', (tester) async {
+          await tester.goToAddTab();
+          await tester.tap(find.text(translate.stepByStep));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectImage));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectName));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.showBasicActivities));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+        });
+
+        testWidgets('deselect Select date', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectDate),
             genericDb,
@@ -277,7 +301,7 @@ void main() {
           );
         });
 
-        testWidgets('Select type', (tester) async {
+        testWidgets('deselect Select type', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectImage),
             genericDb,
@@ -286,7 +310,7 @@ void main() {
           );
         });
 
-        testWidgets('Select checkable', (tester) async {
+        testWidgets('deselect Select checkable', (tester) async {
           await tester.verifyStepByStep(
             find.byIcon(AbiliaIcons.handiCheck, skipOffstage: false),
             genericDb,
@@ -295,7 +319,7 @@ void main() {
           );
         });
 
-        testWidgets('Select available for', (tester) async {
+        testWidgets('deselect Select available for', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectAvailableFor, skipOffstage: false),
             genericDb,
@@ -304,7 +328,7 @@ void main() {
           );
         });
 
-        testWidgets('Select delete after', (tester) async {
+        testWidgets('deselect Select delete after', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectDeleteAfter, skipOffstage: false),
             genericDb,
@@ -313,7 +337,7 @@ void main() {
           );
         });
 
-        testWidgets('Select alarm', (tester) async {
+        testWidgets('deselect Select alarm', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectAlarm, skipOffstage: false),
             genericDb,
@@ -322,7 +346,7 @@ void main() {
           );
         });
 
-        testWidgets('Select checklist', (tester) async {
+        testWidgets('deselect Select checklist', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectChecklist, skipOffstage: false),
             genericDb,
@@ -331,7 +355,7 @@ void main() {
           );
         });
 
-        testWidgets('Select note', (tester) async {
+        testWidgets('deselect Select note', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectNote, skipOffstage: false),
             genericDb,
@@ -340,7 +364,7 @@ void main() {
           );
         });
 
-        testWidgets('Select reminder', (tester) async {
+        testWidgets('deselect Select reminder', (tester) async {
           await tester.verifyStepByStep(
             find.text(translate.selectReminder, skipOffstage: false),
             genericDb,

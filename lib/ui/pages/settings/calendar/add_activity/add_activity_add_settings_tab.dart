@@ -39,6 +39,13 @@ class AddActivityAddSettingsTab extends StatelessWidget {
   }
 }
 
+void _showErrorDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => ErrorDialog(
+        text: Translator.of(context).translate.missingRequiredActivitySetting,
+      ),
+    );
+
 class _EditActivitySettingsWidget extends StatelessWidget {
   const _EditActivitySettingsWidget({Key? key}) : super(key: key);
 
@@ -54,25 +61,43 @@ class _EditActivitySettingsWidget extends StatelessWidget {
             SwitchField(
               leading: const Icon(AbiliaIcons.basicActivity),
               value: addTabState.template,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(template: v)),
+              onChanged: (v) {
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(template: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.showBasicActivities),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.selectTextSize),
               value: addTabState.title,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(title: v)),
+              onChanged: (v) {
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(title: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.selectName),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.myPhotos),
               value: addTabState.image,
-              onChanged: (v) => context
-                  .read<AddActivitySettingsCubit>()
-                  .editSettings(addTabState.copyWith(image: v)),
+              onChanged: (v) {
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(image: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
               child: Text(t.selectImage),
             ),
             SwitchField(
@@ -126,6 +151,14 @@ class _EditActivitySettingsWidget extends StatelessWidget {
       },
     );
   }
+
+  bool _checkRequiredStates(EditActivitySettings settings) =>
+      [
+        settings.title,
+        settings.image,
+        settings.template,
+      ].where((checked) => checked).length >
+      1;
 }
 
 class _StepByStepSettingsWidget extends StatelessWidget {
@@ -264,13 +297,6 @@ class _StepByStepSettingsWidget extends StatelessWidget {
       },
     );
   }
-
-  void _showErrorDialog(BuildContext context) => showDialog(
-        context: context,
-        builder: (context) => ErrorDialog(
-          text: Translator.of(context).translate.missingRequiredActivitySetting,
-        ),
-      );
 
   bool _checkRequiredStates(StepByStepSettings settings) =>
       [
