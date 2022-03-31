@@ -30,9 +30,9 @@ void main() {
       Sortable.createNew<BasicActivityDataItem>(
         data: BasicActivityDataItem.createNew(title: activityNameTwo),
       ),
-      Sortable.createNew<BasicActivityDataItem>(
+      Sortable.createNew<BasicActivityDataFolder>(
         isGroup: true,
-        data: BasicActivityDataItem.createNew(title: 'Folder'),
+        data: BasicActivityDataFolder.createNew(name: 'Folder'),
       ),
       Sortable.createNew<BasicTimerDataItem>(
         data: BasicTimerDataItem.fromJson(
@@ -87,21 +87,24 @@ void main() {
       expect(find.byType(PickField), findsOneWidget);
     });
 
-    testWidgets('Tapping folder enters', (tester) async {
+    testWidgets('Tapping folder enters, shows LibraryHeading', (tester) async {
       await tester.goToTemplates();
       await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNothing);
-      expect(find.byType(PreviousButton), findsOneWidget);
+      expect(find.byType(LibraryHeading<BasicActivityData>), findsOneWidget);
     });
 
     group('Tool bar', () {
-      testWidgets('Tapping item shows and hides toolbar', (tester) async {
+      testWidgets(
+          'Tapping item shows and hides toolbar, never shows LibraryHeading',
+          (tester) async {
         await tester.goToTemplates();
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
 
         expect(find.byType(SortableToolbar), findsOneWidget);
+        expect(find.byType(LibraryHeading), findsNothing);
 
         await tester.tap(find.text(activityNameOne));
         await tester.pumpAndSettle();
