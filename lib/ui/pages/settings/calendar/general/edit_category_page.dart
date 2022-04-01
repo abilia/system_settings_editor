@@ -19,11 +19,11 @@ class EditCategoryPage extends StatelessWidget {
       allowEmpty: true,
       hintText: hintText,
       imageAndName: imageAndName,
-      selectPictureLabel: label,
+      selectPictureLabel: Config.isMP ? label : null,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
         title: Translator.of(context).translate.editCategory,
-        label: label,
+        label: Config.isMP ? label : null,
       ),
     );
   }

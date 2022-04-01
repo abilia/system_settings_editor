@@ -16,7 +16,7 @@ class DayCalendarSettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: t.dayCalendar,
-            label: t.calendar,
+            label: Config.isMP ? t.calendar : null,
             iconData: AbiliaIcons.day,
             bottom: AbiliaTabBar(
               tabs: <Widget>[

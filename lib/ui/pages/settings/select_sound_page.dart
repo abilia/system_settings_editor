@@ -5,7 +5,7 @@ class SelectSoundPage extends StatefulWidget {
   final Sound sound;
   final IconData appBarIcon;
   final String appBarTitle;
-  final String appBarLabel;
+  final String? appBarLabel;
   final bool noSoundOption;
 
   const SelectSoundPage({
@@ -13,7 +13,7 @@ class SelectSoundPage extends StatefulWidget {
     required this.sound,
     required this.appBarIcon,
     required this.appBarTitle,
-    required this.appBarLabel,
+    this.appBarLabel,
     this.noSoundOption = false,
   }) : super(key: key);
 

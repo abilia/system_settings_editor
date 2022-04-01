@@ -17,7 +17,7 @@ class AddActivitySettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: t.addActivity,
-            label: t.calendar,
+            label: Config.isMP ? t.calendar : null,
             iconData: AbiliaIcons.newIcon,
             bottom: AbiliaTabBar(
               tabs: <Widget>[

@@ -20,7 +20,7 @@ class CodeProtectSettingsPage extends StatelessWidget {
           return SettingsBasePage(
             icon: AbiliaIcons.numericKeyboard,
             title: translate.codeProtect,
-            label: translate.system,
+            label: Config.isMP ? translate.system : null,
             widgets: [
               SubHeading(translate.code),
               PickField(

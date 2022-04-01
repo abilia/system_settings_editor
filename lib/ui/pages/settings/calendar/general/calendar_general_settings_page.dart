@@ -16,7 +16,7 @@ class CalendarGeneralSettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: t.general,
-            label: t.calendar,
+            label: Config.isMP ? t.calendar : null,
             iconData: AbiliaIcons.settings,
             bottom: AbiliaTabBar(
               tabs: <Widget>[

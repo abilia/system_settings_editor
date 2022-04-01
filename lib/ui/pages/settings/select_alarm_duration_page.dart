@@ -8,13 +8,13 @@ class SelectAlarmDurationPage extends StatefulWidget {
   final AlarmDuration duration;
   final IconData appBarIcon;
   final String appBarTitle;
-  final String appBarLabel;
+  final String? appBarLabel;
   const SelectAlarmDurationPage({
     Key? key,
     required this.duration,
     required this.appBarIcon,
     required this.appBarTitle,
-    required this.appBarLabel,
+    this.appBarLabel,
   }) : super(key: key);
 
   @override

@@ -10,7 +10,7 @@ class PermissionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: translate.permissions,
-        label: translate.system,
+        label: Config.isMP ? translate.system : null,
         iconData: AbiliaIcons.menuSetup,
       ),
       body: BlocBuilder<PermissionCubit, PermissionState>(

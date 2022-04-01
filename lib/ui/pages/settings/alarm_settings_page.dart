@@ -23,7 +23,7 @@ class AlarmSettingsPage extends StatelessWidget {
             return Scaffold(
               appBar: AbiliaAppBar(
                 title: t.alarmSettings,
-                label: t.calendar,
+                label: Config.isMP ? t.calendar : null,
                 iconData: AbiliaIcons.handiAlarmVibration,
               ),
               body: ListView(
@@ -164,8 +164,9 @@ class _AlarmSelector extends StatelessWidget {
                           noSoundOption: noSoundOption,
                           appBarIcon: icon,
                           appBarTitle: heading,
-                          appBarLabel:
-                              Translator.of(context).translate.alarmSettings,
+                          appBarLabel: Config.isMP
+                              ? Translator.of(context).translate.alarmSettings
+                              : null,
                         ),
                       ),
                     ),
@@ -210,7 +211,7 @@ class _AlarmDurationSelector extends StatelessWidget {
                     duration: duration,
                     appBarIcon: AbiliaIcons.stopWatch,
                     appBarTitle: t.alarmTime,
-                    appBarLabel: t.alarmSettings,
+                    appBarLabel: Config.isMP ? t.alarmSettings : null,
                   ),
                 ),
               );

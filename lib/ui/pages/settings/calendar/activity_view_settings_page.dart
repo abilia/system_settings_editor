@@ -19,7 +19,7 @@ class ActivityViewSettingsPage extends StatelessWidget {
         builder: (context, state) => SettingsBasePage(
           icon: AbiliaIcons.fullScreen,
           title: t.activityView,
-          label: t.calendar,
+          label: Config.isMP ? t.calendar : null,
           widgets: [
             const _FakeMemoplannerSetting(
               child: ActivityPagePreview(),

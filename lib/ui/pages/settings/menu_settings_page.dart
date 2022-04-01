@@ -36,7 +36,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
     return SettingsBasePage(
       icon: AbiliaIcons.appMenu,
       title: Translator.of(context).translate.menu,
-      label: Translator.of(context).translate.settings,
+      label: Config.isMP ? Translator.of(context).translate.settings : null,
       bottomNavigationBar: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget: Builder(
