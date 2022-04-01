@@ -18,6 +18,7 @@ class FunctionSettingsPage extends StatelessWidget {
         child: Scaffold(
           appBar: AbiliaAppBar(
             title: t.functions,
+            label: Config.isMP ? t.settings : null,
             iconData: AbiliaIcons.menuSetup,
             bottom: AbiliaTabBar(
               tabs: <Widget>[

@@ -8,12 +8,13 @@ class SelectAlarmDurationPage extends StatefulWidget {
   final AlarmDuration duration;
   final IconData appBarIcon;
   final String appBarTitle;
-
+  final String? appBarLabel;
   const SelectAlarmDurationPage({
     Key? key,
     required this.duration,
     required this.appBarIcon,
     required this.appBarTitle,
+    this.appBarLabel,
   }) : super(key: key);
 
   @override
@@ -54,6 +55,7 @@ class _SelectAlarmDurationPageState extends State<SelectAlarmDurationPage> {
       appBar: AbiliaAppBar(
         iconData: widget.appBarIcon,
         title: widget.appBarTitle,
+        label: widget.appBarLabel,
       ),
       body: ListView.separated(
         padding: EdgeInsets.fromLTRB(

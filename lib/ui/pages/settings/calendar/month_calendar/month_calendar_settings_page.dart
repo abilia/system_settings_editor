@@ -15,7 +15,8 @@ class MonthCalendarSettingsPage extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AbiliaAppBar(
-            title: Translator.of(context).translate.monthCalendar,
+            title: t.monthCalendar,
+            label: Config.isMP ? t.calendar : null,
             iconData: AbiliaIcons.month,
             bottom: AbiliaTabBar(
               tabs: <Widget>[

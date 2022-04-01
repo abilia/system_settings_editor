@@ -13,8 +13,9 @@ final _log = Logger((SelectPicturePage).toString());
 
 class SelectPicturePage extends StatelessWidget {
   final AbiliaFile selectedImage;
+  final String? label;
 
-  const SelectPicturePage({Key? key, required this.selectedImage})
+  const SelectPicturePage({Key? key, required this.selectedImage, this.label})
       : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class SelectPicturePage extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         title: translate.selectImage,
+        label: label,
       ),
       body: SelectPictureBody(
         imageCallback: (selectedImage) async {

@@ -11,6 +11,7 @@ class SystemSettingsPage extends StatelessWidget {
     return SettingsBasePage(
       icon: AbiliaIcons.technicalSettings,
       title: t.system,
+      label: Config.isMP ? t.settings : null,
       widgets: [
         PickField(
           leading: const Icon(AbiliaIcons.numericKeyboard),

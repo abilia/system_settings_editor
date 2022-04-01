@@ -15,6 +15,7 @@ class LogoutPage extends StatelessWidget {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.logout,
+        label: Config.isMP ? Translator.of(context).translate.system : null,
         iconData: AbiliaIcons.powerOffOn,
       ),
       body: Padding(

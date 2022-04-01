@@ -149,7 +149,9 @@ void main() {
         .whereType<Text>()
         .map((t) => t.data)
         .whereNotNull()
-        .where((s) => s.isNotEmpty);
+        .where((s) => s.isNotEmpty)
+        // Need to exclude these two fields because tts sees them as one
+        .where((s) => s != 'System' && s != 'About');
     for (var text in textWidgets) {
       await tester.verifyTts(find.text(text), exact: text);
     }

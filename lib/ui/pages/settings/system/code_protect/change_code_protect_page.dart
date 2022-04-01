@@ -24,6 +24,7 @@ class _ChangeCodeProtectPageState extends State<ChangeCodeProtectPage> {
     return Scaffold(
       appBar: AbiliaAppBar(
         title: isAtFirstCode ? translate.enterNewCode : translate.confirmCode,
+        label: Config.isMP ? translate.codeProtect : null,
         iconData: AbiliaIcons.unlock,
       ),
       body: Padding(

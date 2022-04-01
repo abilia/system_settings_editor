@@ -22,12 +22,13 @@ class AlarmSettingsPage extends StatelessWidget {
           builder: (context, state) {
             return Scaffold(
               appBar: AbiliaAppBar(
-                title: Translator.of(context).translate.alarmSettings,
+                title: t.alarmSettings,
+                label: Config.isMP ? t.calendar : null,
                 iconData: AbiliaIcons.handiAlarmVibration,
               ),
               body: ListView(
                 children: [
-                  AlarmSelector(
+                  _AlarmSelector(
                     key: TestKey.nonCheckableAlarmSelector,
                     heading: t.nonCheckableActivities,
                     icon: AbiliaIcons.handiUncheck,
@@ -37,7 +38,7 @@ class AlarmSettingsPage extends StatelessWidget {
                         .changeAlarmSettings(
                             state.copyWith(nonCheckableSound: sound)),
                   ).pad(topPadding),
-                  AlarmSelector(
+                  _AlarmSelector(
                     key: TestKey.checkableAlarmSelector,
                     heading: t.checkableActivities,
                     icon: AbiliaIcons.handiCheck,
@@ -47,7 +48,7 @@ class AlarmSettingsPage extends StatelessWidget {
                         .changeAlarmSettings(
                             state.copyWith(checkableSound: sound)),
                   ).pad(defaultPadding),
-                  AlarmSelector(
+                  _AlarmSelector(
                     key: TestKey.reminderAlarmSelector,
                     heading: t.reminders,
                     icon: AbiliaIcons.handiReminder,
@@ -68,7 +69,7 @@ class AlarmSettingsPage extends StatelessWidget {
                             state.copyWith(vibrateAtReminder: v)),
                     child: Text(t.vibrationOnReminder),
                   ).pad(defaultPadding),
-                  AlarmSelector(
+                  _AlarmSelector(
                     key: TestKey.timerAlarmSelector,
                     heading: t.timer,
                     icon: AbiliaIcons.stopWatch,
@@ -78,7 +79,7 @@ class AlarmSettingsPage extends StatelessWidget {
                         .read<AlarmSettingsCubit>()
                         .changeAlarmSettings(state.copyWith(timerSound: sound)),
                   ).pad(defaultPadding),
-                  AlarmDurationSelector(
+                  _AlarmDurationSelector(
                     key: TestKey.alarmDurationSelector,
                     duration: state.alarmDuration,
                   ).pad(defaultPadding),
@@ -124,13 +125,13 @@ class AlarmSettingsPage extends StatelessWidget {
   }
 }
 
-class AlarmSelector extends StatelessWidget {
+class _AlarmSelector extends StatelessWidget {
   final String heading;
   final IconData icon;
   final Sound sound;
   final ValueChanged<Sound> onChanged;
   final bool noSoundOption;
-  const AlarmSelector({
+  const _AlarmSelector({
     Key? key,
     required this.heading,
     required this.icon,
@@ -163,6 +164,9 @@ class AlarmSelector extends StatelessWidget {
                           noSoundOption: noSoundOption,
                           appBarIcon: icon,
                           appBarTitle: heading,
+                          appBarLabel: Config.isMP
+                              ? Translator.of(context).translate.alarmSettings
+                              : null,
                         ),
                       ),
                     ),
@@ -184,9 +188,9 @@ class AlarmSelector extends StatelessWidget {
   }
 }
 
-class AlarmDurationSelector extends StatelessWidget {
+class _AlarmDurationSelector extends StatelessWidget {
   final AlarmDuration duration;
-  const AlarmDurationSelector({
+  const _AlarmDurationSelector({
     Key? key,
     required this.duration,
   }) : super(key: key);
@@ -207,6 +211,7 @@ class AlarmDurationSelector extends StatelessWidget {
                     duration: duration,
                     appBarIcon: AbiliaIcons.stopWatch,
                     appBarTitle: t.alarmTime,
+                    appBarLabel: Config.isMP ? t.alarmSettings : null,
                   ),
                 ),
               );

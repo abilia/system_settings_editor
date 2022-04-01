@@ -6,6 +6,7 @@ class CalendarSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsBasePage(
+      label: Config.isMP ? Translator.of(context).translate.settings : null,
       widgets: [
         MenuItemPickField(
           icon: AbiliaIcons.settings,
