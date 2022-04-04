@@ -82,7 +82,11 @@ class AbiliaTextInput extends StatelessWidget {
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.always,
                   validator: (_) => errorState ? '' : null,
-                  decoration: errorState ? inputErrorDecoration : null,
+                  decoration: onChanged == null
+                      ? inputDisabledDecoration
+                      : errorState
+                          ? inputErrorDecoration
+                          : null,
                 ),
               ),
             ),

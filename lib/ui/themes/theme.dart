@@ -267,6 +267,14 @@ final inputErrorDecoration = InputDecoration(
   ),
 );
 
+final inputDisabledDecoration = InputDecoration(
+  fillColor: AbiliaColors.transparentWhite40,
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide.none,
+    borderRadius: borderRadius,
+  ),
+);
+
 // Icon theme
 final lightIconThemeData = IconThemeData(
   size: layout.icon.button,
