@@ -50,7 +50,6 @@ class ActivityInfo extends StatefulWidget {
     this.previewImage,
     this.alarm,
   }) : super(key: key);
-
   factory ActivityInfo.from({
     required Activity activity,
     required DateTime day,
@@ -118,7 +117,6 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 
 mixin ActivityMixin {
   static final _log = Logger((ActivityMixin).toString());
-
   Future<bool?> checkConfirmation(
     BuildContext context,
     ActivityDay activityDay, {
