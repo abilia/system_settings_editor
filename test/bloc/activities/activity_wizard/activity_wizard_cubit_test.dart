@@ -447,11 +447,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(
-            addActivity: AddActivitySettings(allowPassedStartTime: false),
-          ),
-        ),
+        settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
       );
 
       // Assert
@@ -604,11 +600,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     // Assert
@@ -667,11 +659,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     final expected1 = expectLater(
@@ -721,11 +709,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     final expected1 = expectLater(
