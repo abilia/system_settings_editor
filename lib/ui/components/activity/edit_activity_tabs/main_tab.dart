@@ -13,8 +13,7 @@ class MainTab extends StatelessWidget with EditActivityTab {
         return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
           buildWhen: (previous, current) =>
               previous.showCategories != current.showCategories ||
-              previous.settings.editActivity.type !=
-                  current.settings.editActivity.type,
+              previous.settings.editActivity != current.settings.editActivity,
           builder: (context, memoSettingsState) => ScrollArrows.vertical(
             controller: _scrollController,
             child: ListView(
@@ -24,10 +23,10 @@ class MainTab extends StatelessWidget with EditActivityTab {
                 const ActivityNameAndPictureWidget().pad(m1WithZeroBottom),
                 const Divider().pad(dividerPadding),
                 const DateAndTimeWidget().pad(m1WithZeroBottom),
-                if (memoSettingsState.showCategories)
+                if (memoSettingsState.showCategories ||
+                    memoSettingsState.settings.editActivity.type)
                   CollapsableWidget(
-                    collapsed: activity.fullDay ||
-                        !memoSettingsState.settings.editActivity.type,
+                    collapsed: activity.fullDay,
                     child: Column(
                       children: [
                         const Divider().pad(dividerPadding),
@@ -35,10 +34,15 @@ class MainTab extends StatelessWidget with EditActivityTab {
                       ],
                     ),
                   ),
-                const Divider().pad(dividerPadding),
-                CheckableAndDeleteAfterWidget(activity).pad(m1WithZeroBottom),
-                const Divider().pad(dividerPadding),
-                AvailableForWidget(activity).pad(m1WithZeroBottom),
+                if (memoSettingsState.settings.editActivity.checkable ||
+                    memoSettingsState.settings.editActivity.removeAfter) ...[
+                  const Divider().pad(dividerPadding),
+                  CheckableAndDeleteAfterWidget(activity).pad(m1WithZeroBottom),
+                ],
+                if (memoSettingsState.settings.editActivity.availability) ...[
+                  const Divider().pad(dividerPadding),
+                  AvailableForWidget(activity).pad(m1WithZeroBottom),
+                ],
               ],
             ),
           ),

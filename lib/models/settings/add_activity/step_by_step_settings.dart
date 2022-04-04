@@ -28,8 +28,6 @@ class StepByStepSettings extends Equatable {
       notes,
       reminders;
 
-  bool get onlyTemplateStep => template && !title && !image;
-
   const StepByStepSettings({
     this.template = true,
     this.title = true,
