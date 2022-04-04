@@ -14,7 +14,7 @@ import '../../../../../test_helpers/app_pumper.dart';
 import '../../../../../test_helpers/verify_generic.dart';
 
 void main() {
-  group('New activity settings page', () {
+  group('New activity settings page -', () {
     final translate = Locales.language.values.first;
     final initialTime = DateTime(2021, 04, 17, 09, 20);
     Iterable<Generic> generics = [];
@@ -42,7 +42,10 @@ void main() {
         ..init();
     });
 
-    tearDown(GetIt.I.reset);
+    tearDown(() {
+      GetIt.I.reset();
+      generics = [];
+    });
 
     testWidgets('Navigate to page', (tester) async {
       await tester.goToNewActivitySettingsPage();
@@ -51,7 +54,7 @@ void main() {
       expect(find.byType(CancelButton), findsOneWidget);
     });
 
-    group('General tab', () {
+    group('General tab -', () {
       testWidgets('Allow passed start time', (tester) async {
         await tester.goToNewActivitySettingsPage();
         await tester.tap(find.text(translate.allowPassedStartTime));
@@ -62,7 +65,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityTimeBeforeCurrentKey,
+          key: AddActivitySettings.allowPassedStartTimeKey,
           matcher: isFalse,
         );
       });
@@ -77,7 +80,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityRecurringEditableKey,
+          key: AddActivitySettings.addRecurringActivityKey,
           matcher: isFalse,
         );
       });
@@ -92,7 +95,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityEndTimeEditableKey,
+          key: AddActivitySettings.showEndTimeKey,
           matcher: isFalse,
         );
       });
@@ -107,7 +110,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayAlarmOptionKey,
+          key: AddActivitySettings.showAlarmKey,
           matcher: isFalse,
         );
       });
@@ -122,7 +125,7 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplaySilentAlarmOptionKey,
+          key: AddActivitySettings.showSilentAlarmKey,
           matcher: isFalse,
         );
       });
@@ -140,12 +143,13 @@ void main() {
         verifySyncGeneric(
           tester,
           genericDb,
-          key: MemoplannerSettings.activityDisplayNoAlarmOptionKey,
+          key: AddActivitySettings.showNoAlarmKey,
           matcher: isFalse,
         );
       });
     });
-    group('Add tab', () {
+
+    group('Add tab -', () {
       testWidgets('Select add type', (tester) async {
         await tester.goToAddTab();
         expect(find.byType(AddActivityAddSettingsTab), findsOneWidget);
@@ -162,142 +166,216 @@ void main() {
         );
       });
 
-      testWidgets('Advanced - Set select date', (tester) async {
-        await tester.verifyInAddTab(
-          find.text(translate.selectDate),
-          genericDb,
-          key: MemoplannerSettings.activityDateEditableKey,
-          matcher: isFalse,
-        );
+      group('Advanced -', () {
+        testWidgets('deselect Show basic activities', (tester) async {
+          await tester.verifyInAddTab(
+            find.byIcon(AbiliaIcons.basicActivity),
+            genericDb,
+            key: EditActivitySettings.templateKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Select name', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectName),
+            genericDb,
+            key: EditActivitySettings.titleKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Select image', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectImage),
+            genericDb,
+            key: EditActivitySettings.imageKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('can not deselect basic, name and image', (tester) async {
+          await tester.goToAddTab();
+          await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectName));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectImage));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+        });
+
+        testWidgets('deselect Select date', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectDate),
+            genericDb,
+            key: EditActivitySettings.dateKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Select type', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectType),
+            genericDb,
+            key: EditActivitySettings.typeKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Checkable', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectCheckable),
+            genericDb,
+            key: EditActivitySettings.checkableKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Available for', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectAvailableFor),
+            genericDb,
+            key: EditActivitySettings.availabilityKey,
+            matcher: isFalse,
+          );
+        });
+
+        testWidgets('deselect Delete after', (tester) async {
+          await tester.verifyInAddTab(
+            find.text(translate.selectDeleteAfter),
+            genericDb,
+            key: EditActivitySettings.removeAfterKey,
+            matcher: isFalse,
+          );
+        });
       });
 
-      testWidgets('Advanced - Set select type', (tester) async {
-        await tester.verifyInAddTab(
-          find.text(translate.selectType),
-          genericDb,
-          key: MemoplannerSettings.activityTypeEditableKey,
-          matcher: isFalse,
-        );
-      });
+      group('Step-by-step -', () {
+        testWidgets('deselect Show basic activities', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.showBasicActivities),
+            genericDb,
+            key: StepByStepSettings.templateKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('Advanced - Show basic activities', (tester) async {
-        await tester.verifyInAddTab(
-          find.text(translate.showBasicActivities),
-          genericDb,
-          key: MemoplannerSettings.advancedActivityTemplateKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select name', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectName),
+            genericDb,
+            key: StepByStepSettings.titleKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Show basic activities', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.showBasicActivities),
-          genericDb,
-          key: WizardStepsSettings.wizardTemplateStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select image', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectImage),
+            genericDb,
+            key: StepByStepSettings.imageKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Select name', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectName),
-          genericDb,
-          key: WizardStepsSettings.wizardTitleStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('can not deselect basic, name and image', (tester) async {
+          await tester.goToAddTab();
+          await tester.tap(find.text(translate.stepByStep));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectImage));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.selectName));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(translate.showBasicActivities));
+          await tester.pumpAndSettle();
+          expect(find.byType(ErrorDialog), findsOneWidget);
+        });
 
-      testWidgets('StepByStep - Select image', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectImage),
-          genericDb,
-          key: WizardStepsSettings.wizardImageStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select date', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectDate),
+            genericDb,
+            key: StepByStepSettings.dateKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Select date', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectDate),
-          genericDb,
-          key: WizardStepsSettings.wizardDatePickerStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select type', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectImage),
+            genericDb,
+            key: StepByStepSettings.typeKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Select type', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectImage),
-          genericDb,
-          key: WizardStepsSettings.wizardTypeStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select checkable', (tester) async {
+          await tester.verifyStepByStep(
+            find.byIcon(AbiliaIcons.handiCheck, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.checkableKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Select checkable', (tester) async {
-        await tester.verifyStepByStep(
-          find.byIcon(AbiliaIcons.handiCheck, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardCheckableStepKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select available for', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectAvailableFor, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.availabilityKey,
+            matcher: isFalse,
+          );
+        });
 
-      testWidgets('StepByStep - Select available for', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectAvailableFor, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardAvailabilityTypeKey,
-          matcher: isFalse,
-        );
-      });
+        testWidgets('deselect Select delete after', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectDeleteAfter, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.removeAfterKey,
+            matcher: isTrue,
+          );
+        });
 
-      testWidgets('StepByStep - Select delete after', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectDeleteAfter, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardRemoveAfterStepKey,
-          matcher: isTrue,
-        );
-      });
+        testWidgets('deselect Select alarm', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectAlarm, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.alarmKey,
+            matcher: isTrue,
+          );
+        });
 
-      testWidgets('StepByStep - Select alarm', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectAlarm, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardAlarmStepKey,
-          matcher: isTrue,
-        );
-      });
+        testWidgets('deselect Select checklist', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectChecklist, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.checklistKey,
+            matcher: isTrue,
+          );
+        });
 
-      testWidgets('StepByStep - Select checklist', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectChecklist, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardChecklistStepKey,
-          matcher: isTrue,
-        );
-      });
+        testWidgets('deselect Select note', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectNote, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.notesKey,
+            matcher: isTrue,
+          );
+        });
 
-      testWidgets('StepByStep - Select note', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectNote, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardNotesStepKey,
-          matcher: isTrue,
-        );
-      });
-
-      testWidgets('StepByStep - Select reminder', (tester) async {
-        await tester.verifyStepByStep(
-          find.text(translate.selectReminder, skipOffstage: false),
-          genericDb,
-          key: WizardStepsSettings.wizardRemindersStepKey,
-          matcher: isTrue,
-        );
+        testWidgets('deselect Select reminder', (tester) async {
+          await tester.verifyStepByStep(
+            find.text(translate.selectReminder, skipOffstage: false),
+            genericDb,
+            key: StepByStepSettings.remindersKey,
+            matcher: isTrue,
+          );
+        });
       });
     });
-    group('Defaults tab', () {
+
+    group('Defaults tab -', () {
       testWidgets('Select vibration', (tester) async {
         await tester.goToDefaultsTab();
         expect(find.byType(AddActivityDefaultSettingsTab), findsOneWidget);

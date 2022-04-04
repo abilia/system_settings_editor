@@ -22,8 +22,13 @@ void main() {
           .thenAnswer((_) => const Stream.empty());
       mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-          const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)));
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(template: false),
+          ),
+        ),
+      );
+
       when(() => mockMemoplannerSettingsBloc.stream)
           .thenAnswer((_) => const Stream.empty());
     });

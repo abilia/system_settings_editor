@@ -8,71 +8,64 @@ class AddActivityAddSettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocBuilder<AddActivitySettingsCubit, AddActivitySettingsState>(
-        builder: (context, state) {
-      final addTabState = state.addTabEditViewSettingsState;
-      final stepState = state.stepByStepSettingsState;
-      onModeChanged(v) =>
-          context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-                state.copyWith(
-                  addTabEditViewSettingsState:
-                      addTabState.copyWith(newActivityMode: v),
-                ),
-              );
-      onTabStateChanged(AddTabEditViewSettingsState tss) =>
-          context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-              state.copyWith(addTabEditViewSettingsState: tss));
-      onStepChanged(WizardStepsSettings sss) =>
-          context.read<AddActivitySettingsCubit>().changeAddActivitySettings(
-              state.copyWith(stepByStepSettingsState: sss));
-
-      return SettingsTab(
+    return BlocSelector<AddActivitySettingsCubit, AddActivitySettingsState,
+        NewActivityMode>(
+      selector: (state) => state.newActivityMode,
+      builder: (context, newActivityMode) => SettingsTab(
         children: [
           Tts(child: Text(t.add)),
           RadioField(
             value: NewActivityMode.editView,
-            groupValue: addTabState.newActivityMode,
-            onChanged: onModeChanged,
+            groupValue: newActivityMode,
+            onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.throughEditView),
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           RadioField(
             value: NewActivityMode.stepByStep,
-            groupValue: addTabState.newActivityMode,
-            onChanged: onModeChanged,
+            groupValue: newActivityMode,
+            onChanged: context.read<AddActivitySettingsCubit>().newActivityMode,
             text: Text(t.stepByStep),
             leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           ),
           const Divider(),
-          if (addTabState.newActivityMode == NewActivityMode.editView) ...[
-            SwitchField(
-              leading: const Icon(AbiliaIcons.month),
-              value: addTabState.selectDate,
-              onChanged: (v) =>
-                  onTabStateChanged(addTabState.copyWith(selectDate: v)),
-              child: Text(t.selectDate),
-            ),
-            SwitchField(
-              leading: const Icon(AbiliaIcons.sendAndReceive),
-              value: addTabState.selectType,
-              onChanged: (v) =>
-                  onTabStateChanged(addTabState.copyWith(selectType: v)),
-              child: Text(t.selectType),
-            ),
+          if (newActivityMode == NewActivityMode.editView)
+            const _EditActivitySettingsWidget()
+          else
+            const _StepByStepSettingsWidget(),
+        ],
+      ),
+    );
+  }
+}
+
+void _showErrorDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => ErrorDialog(
+        text: Translator.of(context).translate.missingRequiredActivitySetting,
+      ),
+    );
+
+class _EditActivitySettingsWidget extends StatelessWidget {
+  const _EditActivitySettingsWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return BlocSelector<AddActivitySettingsCubit, AddActivitySettingsState,
+        EditActivitySettings>(
+      selector: (state) => state.editActivitySetting,
+      builder: (context, addTabState) {
+        return Column(
+          children: [
             SwitchField(
               leading: const Icon(AbiliaIcons.basicActivity),
-              value: addTabState.showBasicActivities,
-              onChanged: (v) => onTabStateChanged(
-                  addTabState.copyWith(showBasicActivities: v)),
-              child: Text(t.showBasicActivities),
-            ),
-          ] else ...[
-            SwitchField(
-              leading: const Icon(AbiliaIcons.basicActivity),
-              value: stepState.template,
+              value: addTabState.template,
               onChanged: (v) {
-                if (_checkRequiredStates(stepState, v)) {
-                  onStepChanged(stepState.copyWith(showBasicActivities: v));
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(template: v));
                 } else {
                   _showErrorDialog(context);
                 }
@@ -81,10 +74,12 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.selectTextSize),
-              value: stepState.title,
+              value: addTabState.title,
               onChanged: (v) {
-                if (_checkRequiredStates(stepState, v)) {
-                  onStepChanged(stepState.copyWith(selectName: v));
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(title: v));
                 } else {
                   _showErrorDialog(context);
                 }
@@ -93,10 +88,12 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.myPhotos),
-              value: stepState.image,
+              value: addTabState.image,
               onChanged: (v) {
-                if (_checkRequiredStates(stepState, v)) {
-                  onStepChanged(stepState.copyWith(selectImage: v));
+                if (v || _checkRequiredStates(addTabState)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .editSettings(addTabState.copyWith(image: v));
                 } else {
                   _showErrorDialog(context);
                 }
@@ -105,90 +102,207 @@ class AddActivityAddSettingsTab extends StatelessWidget {
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.month),
-              value: stepState.datePicker,
-              onChanged: (v) => onStepChanged(stepState.copyWith(setDate: v)),
+              value: addTabState.date,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(date: v)),
               child: Text(t.selectDate),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.sendAndReceive),
-              value: stepState.type,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectType: v)),
+              value: addTabState.type,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(type: v)),
               child: Text(t.selectType),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.handiCheck),
-              value: stepState.checkable,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectCheckable: v)),
+              value: addTabState.checkable,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(checkable: v)),
               child: Text(t.selectCheckable),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.passwordProtection),
-              value: stepState.availability,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectAvailableFor: v)),
+              value: addTabState.availability,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(availability: v)),
               child: Text(t.selectAvailableFor),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.deleteAllClear),
-              value: stepState.removeAfter,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectDeleteAfter: v)),
+              value: addTabState.removeAfter,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .editSettings(addTabState.copyWith(removeAfter: v)),
+              child: Text(t.selectDeleteAfter),
+            ),
+          ]
+              .map((c) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: layout.formPadding.verticalItemDistance,
+                  ),
+                  child: c))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  bool _checkRequiredStates(EditActivitySettings settings) =>
+      [
+        settings.title,
+        settings.image,
+        settings.template,
+      ].where((checked) => checked).length >
+      1;
+}
+
+class _StepByStepSettingsWidget extends StatelessWidget {
+  const _StepByStepSettingsWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+    return BlocSelector<AddActivitySettingsCubit, AddActivitySettingsState,
+        StepByStepSettings>(
+      selector: (state) => state.stepByStepSetting,
+      builder: (context, settings) {
+        return Column(
+          children: [
+            SwitchField(
+              leading: const Icon(AbiliaIcons.basicActivity),
+              value: settings.template,
+              onChanged: (v) {
+                if (v || _checkRequiredStates(settings)) {
+                  context.read<AddActivitySettingsCubit>().stepByStepSetting(
+                      settings.copyWith(showBasicActivities: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
+              child: Text(t.showBasicActivities),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.selectTextSize),
+              value: settings.title,
+              onChanged: (v) {
+                if (v || _checkRequiredStates(settings)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .stepByStepSetting(settings.copyWith(selectName: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
+              child: Text(t.selectName),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.myPhotos),
+              value: settings.image,
+              onChanged: (v) {
+                if (v || _checkRequiredStates(settings)) {
+                  context
+                      .read<AddActivitySettingsCubit>()
+                      .stepByStepSetting(settings.copyWith(selectImage: v));
+                } else {
+                  _showErrorDialog(context);
+                }
+              },
+              child: Text(t.selectImage),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.month),
+              value: settings.datePicker,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(setDate: v)),
+              child: Text(t.selectDate),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.sendAndReceive),
+              value: settings.type,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectType: v)),
+              child: Text(t.selectType),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.handiCheck),
+              value: settings.checkable,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectCheckable: v)),
+              child: Text(t.selectCheckable),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.passwordProtection),
+              value: settings.availability,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectAvailableFor: v)),
+              child: Text(t.selectAvailableFor),
+            ),
+            SwitchField(
+              leading: const Icon(AbiliaIcons.deleteAllClear),
+              value: settings.removeAfter,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectDeleteAfter: v)),
               child: Text(t.selectDeleteAfter),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.handiAlarm),
-              value: stepState.alarm,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectAlarm: v)),
+              value: settings.alarm,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectAlarm: v)),
               child: Text(t.selectAlarm),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.radiocheckboxUnselected),
-              value: stepState.checklist,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectChecklist: v)),
+              value: settings.checklist,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectChecklist: v)),
               child: Text(t.selectChecklist),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.note),
-              value: stepState.notes,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectNote: v)),
+              value: settings.notes,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectNote: v)),
               child: Text(t.selectNote),
             ),
             SwitchField(
               leading: const Icon(AbiliaIcons.handiReminder),
-              value: stepState.reminders,
-              onChanged: (v) =>
-                  onStepChanged(stepState.copyWith(selectReminder: v)),
+              value: settings.reminders,
+              onChanged: (v) => context
+                  .read<AddActivitySettingsCubit>()
+                  .stepByStepSetting(settings.copyWith(selectReminder: v)),
               child: Text(t.selectReminder),
             ),
           ]
-        ],
-      );
-    });
-  }
-
-  void _showErrorDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => ErrorDialog(
-        text: Translator.of(context).translate.missingRequiredActivitySetting,
-      ),
+              .map((c) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: layout.formPadding.verticalItemDistance,
+                  ),
+                  child: c))
+              .toList(),
+        );
+      },
     );
   }
 
-  bool _checkRequiredStates(WizardStepsSettings stepState, bool value) {
-    if (value) {
-      return true;
-    }
-    var numberOfChecked = [
-      stepState.title,
-      stepState.image,
-      stepState.template,
-    ].where((checked) => checked).length;
-    return numberOfChecked > 1;
-  }
+  bool _checkRequiredStates(StepByStepSettings settings) =>
+      [
+        settings.title,
+        settings.image,
+        settings.template,
+      ].where((checked) => checked).length >
+      1;
 }

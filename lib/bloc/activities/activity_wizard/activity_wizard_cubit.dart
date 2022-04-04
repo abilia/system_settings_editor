@@ -15,7 +15,8 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   final ClockBloc clockBloc;
   final bool edit;
 
-  bool get allowActivityTimeBeforeCurrent => settings.activityTimeBeforeCurrent;
+  bool get allowActivityTimeBeforeCurrent =>
+      settings.settings.addActivity.allowPassedStartTime;
 
   StreamSubscription<EditActivityState>? _editActivityCubitSubscription;
 
@@ -35,13 +36,22 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
                     ],
                   )
                 : _generateWizardSteps(
-                    settings, editActivityCubit.state.activity),
+                    stepByStep: settings.settings.stepByStep,
+                    addRecurringActivity:
+                        settings.settings.addActivity.addRecurringActivity,
+                    activity: editActivityCubit.state.activity,
+                  ),
           ),
         ) {
     if (settings.addActivityType == NewActivityMode.stepByStep) {
       _editActivityCubitSubscription = editActivityCubit.stream.listen(
         (event) {
-          final newSteps = _generateWizardSteps(settings, event.activity);
+          final newSteps = _generateWizardSteps(
+            stepByStep: settings.settings.stepByStep,
+            addRecurringActivity:
+                settings.settings.addActivity.addRecurringActivity,
+            activity: event.activity,
+          );
           if (newSteps != state.steps) {
             emit(state.copyWith(newSteps: newSteps));
           }
@@ -50,27 +60,25 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     }
   }
 
-  static List<WizardStep> _generateWizardSteps(
-    MemoplannerSettingsState settings,
-    Activity activity,
-  ) =>
+  static List<WizardStep> _generateWizardSteps({
+    required StepByStepSettings stepByStep,
+    required bool addRecurringActivity,
+    required Activity activity,
+  }) =>
       [
-        if (settings.settings.wizard.datePicker) WizardStep.date,
-        if (settings.settings.wizard.title) WizardStep.title,
-        if (settings.settings.wizard.image) WizardStep.image,
-        if (settings.settings.wizard.type) WizardStep.type,
-        if (settings.settings.wizard.availability) WizardStep.availableFor,
-        if (settings.settings.wizard.checkable) WizardStep.checkable,
-        if (settings.settings.wizard.removeAfter) WizardStep.deleteAfter,
+        if (stepByStep.datePicker) WizardStep.date,
+        if (stepByStep.title) WizardStep.title,
+        if (stepByStep.image) WizardStep.image,
+        if (stepByStep.type) WizardStep.type,
+        if (stepByStep.availability) WizardStep.availableFor,
+        if (stepByStep.checkable) WizardStep.checkable,
+        if (stepByStep.removeAfter) WizardStep.deleteAfter,
         if (!activity.fullDay) WizardStep.time,
-        if (!activity.fullDay && settings.settings.wizard.alarm)
-          WizardStep.alarm,
-        if (settings.settings.wizard.checklist ||
-            settings.settings.wizard.notes)
+        if (!activity.fullDay && stepByStep.alarm) WizardStep.alarm,
+        if (stepByStep.checklist || stepByStep.notes)
           WizardStep.connectedFunction,
-        if (settings.settings.wizard.reminders && !activity.fullDay)
-          WizardStep.reminder,
-        if (settings.activityRecurringEditable) WizardStep.recurring,
+        if (stepByStep.reminders && !activity.fullDay) WizardStep.reminder,
+        if (addRecurringActivity) WizardStep.recurring,
         if (activity.recurs.weekly) WizardStep.recursWeekly,
         if (activity.recurs.monthly) WizardStep.recursMonthly,
         if (activity.isRecurring && !activity.recurs.hasNoEnd)

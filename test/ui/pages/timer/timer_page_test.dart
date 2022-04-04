@@ -45,8 +45,12 @@ void main() {
     navObserver = NavObserver();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-            MemoplannerSettings(advancedActivityTemplate: false)));
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
+    );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();

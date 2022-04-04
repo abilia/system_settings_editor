@@ -25,18 +25,16 @@ class _TimeWizContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      buildWhen: (previous, current) =>
-          previous.activityEndTimeEditable != current.activityEndTimeEditable,
-      builder: (context, memoSettingsState) =>
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.settings.addActivity.showEndTime,
+      builder: (context, showEndTime) =>
           BlocBuilder<EditActivityCubit, EditActivityState>(
         buildWhen: (previous, current) =>
             previous.timeInterval != current.timeInterval,
         builder: (context, state) => TimeInputContent(
           timeInput: TimeInput(
               state.timeInterval.startTime,
-              state.timeInterval.sameTime ||
-                      !memoSettingsState.activityEndTimeEditable
+              state.timeInterval.sameTime || !showEndTime
                   ? null
                   : state.timeInterval.endTime),
           is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,

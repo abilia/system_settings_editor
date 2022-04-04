@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull/background/notification_isolate.dart';
 import 'package:seagull/db/sortable_db.dart';
 import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
@@ -12,6 +13,8 @@ import '../../../test_helpers/app_pumper.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
+  scheduleAlarmNotificationsIsolated = noAlarmScheduler;
+
   TestWidgetsFlutterBinding.ensureInitialized();
 
   const String activityNameOne = 'Basic Activity 1';

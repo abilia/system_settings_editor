@@ -252,31 +252,31 @@ void main() {
         final removeAfter = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: WizardStepsSettings.wizardRemoveAfterStepKey,
+            identifier: StepByStepSettings.removeAfterKey,
           ),
         );
         final reminderStep = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: true,
-            identifier: WizardStepsSettings.wizardRemindersStepKey,
+            identifier: StepByStepSettings.remindersKey,
           ),
         );
         final noBasic = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardTemplateStepKey,
+            identifier: StepByStepSettings.templateKey,
           ),
         );
         final noImage = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardImageStepKey,
+            identifier: StepByStepSettings.imageKey,
           ),
         );
         final noDate = Generic.createNew<MemoplannerSettingData>(
           data: MemoplannerSettingData.fromData(
             data: false,
-            identifier: WizardStepsSettings.wizardDatePickerStepKey,
+            identifier: StepByStepSettings.dateKey,
           ),
         );
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
@@ -363,7 +363,7 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: MemoplannerSettings.advancedActivityTemplateKey,
+                    identifier: EditActivitySettings.templateKey,
                   ),
                 ),
               ],
@@ -404,13 +404,13 @@ void main() {
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: WizardStepsSettings.wizardTitleStepKey,
+                    identifier: StepByStepSettings.titleKey,
                   ),
                 ),
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: WizardStepsSettings.wizardImageStepKey,
+                    identifier: StepByStepSettings.imageKey,
                   ),
                 ),
               ],
@@ -1005,7 +1005,9 @@ void main() {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
         const CalendarPage(),
@@ -1042,7 +1044,9 @@ void main() {
       const testActivityTitle = 'fulldayactivity';
       when(() => memoplannerSettingBlocMock.state)
           .thenReturn(const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ));
       await tester.pumpWidget(wrapWithMaterialApp(
         const CalendarPage(),

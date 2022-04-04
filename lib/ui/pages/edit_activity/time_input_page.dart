@@ -212,8 +212,9 @@ class _TimeInputContentState extends State<TimeInputContent>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => Column(
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.settings.addActivity.showEndTime,
+      builder: (context, showEndTime) => Column(
         children: [
           Theme(
             data: theme.copyWith(
@@ -251,7 +252,7 @@ class _TimeInputContentState extends State<TimeInputContent>
                     focusNode: startTimeFocus,
                     controller: startTimeController,
                   ),
-                  if (memoSettingsState.activityEndTimeEditable) ...[
+                  if (showEndTime) ...[
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

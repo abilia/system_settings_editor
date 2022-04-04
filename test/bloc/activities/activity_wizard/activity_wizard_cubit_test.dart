@@ -39,7 +39,9 @@ void main() {
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -107,7 +109,9 @@ void main() {
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -136,7 +140,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -173,7 +179,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(advancedActivityTemplate: false),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
       ),
     );
 
@@ -281,7 +289,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -325,7 +335,10 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(advancedActivityTemplate: false)),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
     );
 
     final activity = editActivityCubit.state.activity;
@@ -434,9 +447,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(activityTimeBeforeCurrent: true),
-        ),
+        settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
       );
 
       // Assert
@@ -515,7 +526,9 @@ void main() {
       clockBloc: clockBloc,
       editActivityCubit: editActivityCubit,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: true),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -587,9 +600,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: true),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     // Assert
@@ -648,9 +659,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: true),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     final expected1 = expectLater(
@@ -700,9 +709,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: true),
-      ),
+      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
     );
 
     final expected1 = expectLater(
@@ -742,7 +749,10 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-          MemoplannerSettings(advancedActivityTemplate: false)),
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
     );
 
     // Act
@@ -804,7 +814,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -890,7 +903,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(time),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -973,7 +989,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1067,7 +1086,9 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(activityTimeBeforeCurrent: true),
+            MemoplannerSettings(
+              addActivity: AddActivitySettings(allowPassedStartTime: true),
+            ),
           ),
         );
 
@@ -1158,7 +1179,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1242,7 +1266,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1323,7 +1350,9 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(activityTimeBeforeCurrent: false),
+            MemoplannerSettings(
+              addActivity: AddActivitySettings(allowPassedStartTime: false),
+            ),
           ),
         );
 
@@ -1386,7 +1415,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1446,7 +1478,10 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-              MemoplannerSettings(advancedActivityTemplate: false)),
+            MemoplannerSettings(
+              editActivity: EditActivitySettings(template: false),
+            ),
+          ),
         );
 
         // Act
@@ -1519,7 +1554,9 @@ void main() {
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
           settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(activityTimeBeforeCurrent: false),
+            MemoplannerSettings(
+              addActivity: AddActivitySettings(allowPassedStartTime: false),
+            ),
           ),
         );
 
@@ -1578,7 +1615,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -1637,7 +1676,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -1696,7 +1737,9 @@ void main() {
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(activityTimeBeforeCurrent: false),
+        MemoplannerSettings(
+          addActivity: AddActivitySettings(allowPassedStartTime: false),
+        ),
       ),
     );
 
@@ -1771,7 +1814,7 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizard: WizardStepsSettings(
+            stepByStep: StepByStepSettings(
               datePicker: false,
               image: false,
               title: false,
@@ -1783,7 +1826,7 @@ void main() {
               notes: true,
               reminders: true,
             ),
-            activityRecurringEditable: false,
+            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1818,7 +1861,7 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizard: WizardStepsSettings(
+            stepByStep: StepByStepSettings(
               template: false,
               datePicker: false,
               image: false,
@@ -1832,7 +1875,7 @@ void main() {
               notes: false,
               reminders: false,
             ),
-            activityRecurringEditable: false,
+            addActivity: AddActivitySettings(addRecurringActivity: false),
           ),
         ),
       );
@@ -1851,7 +1894,7 @@ void main() {
 
     const allWizStepsSettings = MemoplannerSettings(
       addActivityTypeAdvanced: false,
-      wizard: WizardStepsSettings(
+      stepByStep: StepByStepSettings(
         template: true,
         datePicker: true,
         image: true,
@@ -1865,7 +1908,7 @@ void main() {
         notes: true,
         reminders: true,
       ),
-      activityRecurringEditable: true,
+      addActivity: AddActivitySettings(addRecurringActivity: true),
     );
 
     const allWizStep = [
@@ -2071,7 +2114,7 @@ void main() {
         settings: const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             addActivityTypeAdvanced: false,
-            wizard: WizardStepsSettings(
+            stepByStep: StepByStepSettings(
               template: false,
               datePicker: false,
               image: false,
@@ -2085,7 +2128,7 @@ void main() {
               notes: false,
               reminders: false,
             ),
-            activityRecurringEditable: true,
+            addActivity: AddActivitySettings(addRecurringActivity: true),
           ),
         ),
       );

@@ -53,8 +53,10 @@ class SelectAlarmTypeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final translate = Translator.of(context).translate;
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => ScrollArrows.vertical(
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        AddActivitySettings>(
+      selector: (state) => state.settings.addActivity,
+      builder: (context, addActivity) => ScrollArrows.vertical(
         controller: scrollController,
         child: ListView(
           controller: scrollController,
@@ -64,14 +66,12 @@ class SelectAlarmTypeBody extends StatelessWidget {
           ),
           children: <Widget>[
             ...[
-              if (memoSettingsState.activityDisplayAlarmOption)
-                AlarmType.soundAndVibration,
-              if (memoSettingsState.activityDisplaySilentAlarmOption) ...[
+              if (addActivity.showAlarm) AlarmType.soundAndVibration,
+              if (addActivity.showSilentAlarm) ...[
                 AlarmType.vibration,
                 AlarmType.silent,
               ],
-              if (memoSettingsState.activityDisplayNoAlarmOption)
-                AlarmType.noAlarm,
+              if (addActivity.showNoAlarm) AlarmType.noAlarm,
             ].map((type) => Alarm(type: type)).map(
                   (alarmType) => RadioField(
                     key: ObjectKey(alarmType.typeSeagull),

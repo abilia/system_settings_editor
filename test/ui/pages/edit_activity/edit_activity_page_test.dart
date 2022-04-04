@@ -55,8 +55,12 @@ void main() {
     mockTimerCubit = MockTimerCubit();
     mockMemoplannerSettingsBloc = MockMemoplannerSettingBloc();
     when(() => mockMemoplannerSettingsBloc.state).thenReturn(
-        const MemoplannerSettingsLoaded(
-            MemoplannerSettings(advancedActivityTemplate: false)));
+      const MemoplannerSettingsLoaded(
+        MemoplannerSettings(
+          editActivity: EditActivitySettings(template: false),
+        ),
+      ),
+    );
     when(() => mockMemoplannerSettingsBloc.stream)
         .thenAnswer((_) => const Stream.empty());
   });
@@ -1537,7 +1541,7 @@ text''';
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
-            activityEndTimeEditable: false,
+            addActivity: AddActivitySettings(showEndTime: false),
           ),
         ),
       );
@@ -1822,7 +1826,7 @@ text''';
       // Arrange
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityEndTimeEditable: false,
+        addActivity: AddActivitySettings(showEndTime: false),
       )));
 
       final acivity = Activity.createNew(
@@ -2168,10 +2172,13 @@ text''';
   group('Memoplanner settings', () {
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityDateEditable: false,
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(date: false),
+          ),
+        ),
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       expect(find.byType(DatePicker), findsOneWidget);
@@ -2181,10 +2188,15 @@ text''';
     });
 
     testWidgets('Right/left not visible', (WidgetTester tester) async {
-      when(() => mockMemoplannerSettingsBloc.state)
-          .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityTypeEditable: false,
-      )));
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(
+              type: false,
+            ),
+          ),
+        ),
+      );
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
 
@@ -2195,7 +2207,7 @@ text''';
     testWidgets('No end time', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityEndTimeEditable: false,
+        addActivity: AddActivitySettings(showEndTime: false),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2207,7 +2219,7 @@ text''';
     testWidgets('No recurring option', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityRecurringEditable: false,
+        addActivity: AddActivitySettings(addRecurringActivity: false),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2218,8 +2230,10 @@ text''';
     testWidgets('Alarm options', (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityDisplayAlarmOption: false,
-        activityDisplaySilentAlarmOption: false,
+        addActivity: AddActivitySettings(
+          showAlarm: false,
+          showSilentAlarm: false,
+        ),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2237,8 +2251,10 @@ text''';
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityDisplayAlarmOption: false,
-        activityDisplayNoAlarmOption: false,
+        addActivity: AddActivitySettings(
+          showAlarm: false,
+          showNoAlarm: false,
+        ),
       )));
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
@@ -2264,7 +2280,7 @@ text''';
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityTimeBeforeCurrent: false,
+        addActivity: AddActivitySettings(allowPassedStartTime: false),
       )));
       await tester.pumpWidget(
         createEditActivityPage(
@@ -2298,7 +2314,7 @@ text''';
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityTimeBeforeCurrent: false,
+        addActivity: AddActivitySettings(allowPassedStartTime: false),
       )));
       await tester.pumpWidget(
         createEditActivityPage(
@@ -2327,7 +2343,7 @@ text''';
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state)
           .thenReturn(const MemoplannerSettingsLoaded(MemoplannerSettings(
-        activityTimeBeforeCurrent: false,
+        addActivity: AddActivitySettings(allowPassedStartTime: false),
       )));
 
       final activity = Activity.createNew(
