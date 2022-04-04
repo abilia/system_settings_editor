@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
@@ -26,6 +27,9 @@ final _log = Logger('main');
 
 void main() async {
   await initServices();
+  if (Config.isMP) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
   final payload = await getOrAddPayloadToStream();
   BlocOverrides.runZoned(
     () => runApp(
