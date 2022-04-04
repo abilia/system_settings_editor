@@ -239,14 +239,15 @@ class BasicTimerDataItem extends BasicTimerData {
   String dataFilePath() => icon;
 
   @override
-  List<Object> get props => [title, icon, fileId];
+  List<Object> get props => [basicTimerTitle, duration, icon, fileId];
 
   @override
   String title(t) => basicTimerTitle;
 
   @override
   String toRaw() => json.encode({
-        'name': basicTimerTitle,
+        'title': basicTimerTitle,
+        'duration': duration,
         'icon': icon,
         'fileId': fileId,
       });
