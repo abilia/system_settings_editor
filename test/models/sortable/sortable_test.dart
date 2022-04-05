@@ -122,4 +122,25 @@ void main() {
     );
     expect(s.type, SortableType.note);
   });
+
+  test('SGC-1525 Sorting basic timers deletes name (and duration) in list', () {
+    const title = 'basicTimerTitle';
+    const duration = 1000;
+    final dbMap = {
+      'id': 'cc8cc2c3-5fc7-4343-8bd6-4db0952cd80c',
+      'type': SortableType.basicTimer,
+      'data': '{"title":"$title","icon":"", "duration":$duration}',
+      'group_id': null,
+      'sort_order': 'wsdfgh',
+      'deleted': 1,
+      'is_group': 0,
+      'visible': 1,
+      'revision': 0,
+      'dirty': 0,
+    };
+    final timer = DbSortable.fromDbMap(dbMap).sortable;
+    final converted = BasicTimerDataItem.fromJson(timer.data.toRaw());
+    expect(title, converted.basicTimerTitle);
+    expect(duration, converted.duration);
+  });
 }
