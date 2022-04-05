@@ -163,7 +163,7 @@ class Checklist extends InfoItem {
         checked.map((k, v) => MapEntry<String, Set<int>>(k, Set.from(v)));
     final checkThisDay = modifiableChecked[key] ?? <int>{};
     if (!checkThisDay.remove(id)) {
-      (checkThisDay.add(id));
+      checkThisDay.add(id);
     }
     modifiableChecked[key] = checkThisDay;
     return copyWith(checked: modifiableChecked);

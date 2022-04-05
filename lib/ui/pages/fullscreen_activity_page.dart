@@ -128,7 +128,6 @@ class FullScreenActivityTabItem extends StatelessWidget {
                   : AbiliaColors.white140;
           final innerBorder =
               BorderRadius.all(innerRadiusFromBorderSize(border));
-          borderRadius;
           return AnimatedPadding(
             duration: _animationDuration,
             padding: selected ? _layout.selectedPadding : _layout.padding,
