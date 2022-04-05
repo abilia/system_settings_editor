@@ -28,7 +28,7 @@ final _log = Logger('main');
 void main() async {
   await initServices();
   if (Config.isMP) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
   final payload = await getOrAddPayloadToStream();
   BlocOverrides.runZoned(
