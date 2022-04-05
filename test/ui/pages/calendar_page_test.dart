@@ -75,6 +75,7 @@ void main() {
 
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
+  GenericResponse genericResponse = () => [];
   final initialDay = DateTime(2020, 08, 05);
 
   setUpAll(() {
@@ -107,7 +108,7 @@ void main() {
 
     mockGenericDb = MockGenericDb();
     when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-        .thenAnswer((_) => Future.value([]));
+        .thenAnswer((_) => Future.value(genericResponse()));
     when(() => mockGenericDb.getById(any()))
         .thenAnswer((_) => Future.value(null));
     when(() => mockGenericDb.insert(any())).thenAnswer((_) async {});
@@ -144,6 +145,7 @@ void main() {
       ..client = Fakes.client(
         activityResponse: activityResponse,
         sortableResponse: sortableResponse,
+        genericResponse: genericResponse,
       )
       ..fileStorage = FakeFileStorage()
       ..userFileDb = FakeUserFileDb()
@@ -159,6 +161,7 @@ void main() {
   tearDown(() {
     activityResponse = () => [];
     sortableResponse = () => [];
+    genericResponse = () => [];
     GetIt.I.reset();
   });
 
@@ -183,8 +186,7 @@ void main() {
             identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
           ),
         );
-        when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-            .thenAnswer((_) => Future.value([wizardSetting]));
+        genericResponse = () => [wizardSetting];
 
         const title = 'title';
         await tester.pumpWidget(App());
@@ -279,18 +281,14 @@ void main() {
             identifier: StepByStepSettings.dateKey,
           ),
         );
-        when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-          (_) => Future.value(
-            [
+        genericResponse = () => [
               wizardSetting,
               removeAfter,
               reminderStep,
               noBasic,
               noImage,
               noDate,
-            ],
-          ),
-        );
+            ];
 
         const title = 'title';
         await tester.pumpWidget(App());
@@ -355,26 +353,72 @@ void main() {
       });
 
       group('basic activity', () {
-        testWidgets('No option for basic activity when option set',
+        testWidgets('No option for basic activity when step-by-step',
             (WidgetTester tester) async {
-          when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-            (_) => Future.value(
-              [
+          genericResponse = () => [
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
-                    identifier: EditActivitySettings.templateKey,
+                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
                   ),
                 ),
-              ],
-            ),
-          );
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: StepByStepSettings.templateKey,
+                  ),
+                ),
+              ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
           await tester.tap(find.byType(AddButton));
           await tester.pumpAndSettle();
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
+        });
+
+        testWidgets('No option for basic activity when option set',
+            (WidgetTester tester) async {
+          genericResponse = () => [
+                Generic.createNew<MemoplannerSettingData>(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.templateKey,
+                  ),
+                ),
+              ];
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(AddButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
+        });
+
+        testWidgets(
+            'New activity - name and title off: only basic activity choice ',
+            (WidgetTester tester) async {
+          genericResponse = () => [
+                Generic.createNew(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.titleKey,
+                  ),
+                ),
+                Generic.createNew(
+                  data: MemoplannerSettingData.fromData(
+                    data: false,
+                    identifier: EditActivitySettings.imageKey,
+                  ),
+                ),
+              ];
+          await tester.pumpWidget(App());
+          await tester.pumpAndSettle();
+          await tester.tap(find.byType(AddButton));
+          await tester.pumpAndSettle();
+          expect(find.byType(CreateNewPage), findsOneWidget);
+          expect(find.byKey(TestKey.newActivityChoice), findsNothing);
+          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
         });
 
         testWidgets('Empty message when no basic activities',
@@ -392,9 +436,7 @@ void main() {
             'if wizard enabled, title and image disabled and '
             'one basic activites: No new activity option',
             (WidgetTester tester) async {
-          when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-            (_) => Future.value(
-              [
+          genericResponse = () => [
                 Generic.createNew<MemoplannerSettingData>(
                   data: MemoplannerSettingData.fromData(
                     data: false,
@@ -413,9 +455,7 @@ void main() {
                     identifier: StepByStepSettings.imageKey,
                   ),
                 ),
-              ],
-            ),
-          );
+              ];
 
           final basicActivity = Sortable.createNew(
             data: BasicActivityDataItem.createNew(title: 'title'),
@@ -965,8 +1005,7 @@ void main() {
     testWidgets(
         'timepillar is choosen in memoplanner settings shows timepillar view',
         (WidgetTester tester) async {
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision())
-          .thenAnswer((_) => Future.value([timepillarGeneric]));
+      genericResponse = () => [timepillarGeneric];
 
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -1698,26 +1737,20 @@ void main() {
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
       final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-        (_) => Future.value(
-          [
+      genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
             )
-          ],
-        ),
-      );
+          ];
 
       await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage()));
       await tester.pumpAndSettle();
       expect(find.byType(ToggleAlarmButtonInactive), findsOneWidget);
 
-      when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
-        (_) => Future.value(
-          [
+      genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(
                 data: true,
@@ -1730,9 +1763,7 @@ void main() {
                 identifier: AlarmSettings.alarmsDisabledUntilKey,
               ),
             ),
-          ],
-        ),
-      );
+          ];
 
       await tester.tap(find.byType(ToggleAlarmButton));
       await tester.pumpAndSettle();

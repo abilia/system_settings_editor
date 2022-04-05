@@ -24,7 +24,6 @@ class TestKey {
       deleteAfterSwitch = Key('deleteAfterSwitch'),
       addPicture = Key('addPicture'),
       selectAlarm = Key('selectAlarm'),
-      availibleFor = Key('availibleFor'),
       closeDialog = Key('closeDialog'),
       okDialog = Key('okDialog'),
       editAlarm = Key('editAlarm'),

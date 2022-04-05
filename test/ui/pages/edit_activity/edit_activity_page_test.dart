@@ -520,10 +520,10 @@ void main() {
       await tester.scrollDown();
       await tester.pumpAndSettle();
 
-      expect(find.byKey(TestKey.availibleFor), findsOneWidget);
+      expect(find.byType(AvailableForWidget), findsOneWidget);
       expect(find.text(translate.onlyMe), findsNothing);
       expect(find.byIcon(AbiliaIcons.passwordProtection), findsNothing);
-      await tester.tap(find.byKey(TestKey.availibleFor));
+      await tester.tap(find.byType(AvailableForWidget));
       await tester.pumpAndSettle();
       expect(find.byType(AvailableForPage), findsOneWidget);
       await tester.tap(find.byIcon(AbiliaIcons.passwordProtection));
@@ -2169,7 +2169,45 @@ text''';
     });
   });
 
-  group('Memoplanner settings', () {
+  group('Memoplanner settings -', () {
+    testWidgets('Select name off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(title: false),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      final namePictureW = tester.widget<NameAndPictureWidget>(
+        find.byType(NameAndPictureWidget),
+      );
+      expect(namePictureW.onTextEdit, isNull);
+      await tester.tap(find.byType(NameInput));
+      await tester.pumpAndSettle();
+      expect(find.byType(DefaultTextInputPage), findsNothing);
+    });
+
+    testWidgets('Select image off', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(image: false),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      final namePictureW = tester.widget<NameAndPictureWidget>(
+        find.byType(NameAndPictureWidget),
+      );
+      expect(namePictureW.onImageSelected, isNull);
+      await tester.tap(find.byType(SelectPictureWidget));
+      await tester.pumpAndSettle();
+      expect(find.byType(SelectPicturePage), findsNothing);
+    });
+
     testWidgets('Date picker not available when setting says so',
         (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
@@ -2187,13 +2225,30 @@ text''';
       expect(datePicker.onChange, isNull);
     });
 
-    testWidgets('Right/left not visible', (WidgetTester tester) async {
+    testWidgets('category not visible - edit settings ',
+        (WidgetTester tester) async {
       when(() => mockMemoplannerSettingsBloc.state).thenReturn(
         const MemoplannerSettingsLoaded(
           MemoplannerSettings(
             editActivity: EditActivitySettings(
               type: false,
             ),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(TestKey.leftCategoryRadio), findsNothing);
+      expect(find.byKey(TestKey.rightCategoryRadio), findsNothing);
+    });
+
+    testWidgets('category not visible - category show settings',
+        (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            calendarActivityTypeShowTypes: false,
           ),
         ),
       );
@@ -2214,6 +2269,51 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       expect(endTimeInputFinder, findsNothing);
+    });
+
+    testWidgets('No Availible For', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(availability: false),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      expect(find.byType(AvailableForWidget), findsNothing);
+    });
+
+    testWidgets('No Checkable', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(checkable: false),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      expect(find.byKey(TestKey.checkableSwitch), findsNothing);
+    });
+
+    testWidgets('No Remove after', (WidgetTester tester) async {
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            editActivity: EditActivitySettings(removeAfter: false),
+          ),
+        ),
+      );
+      await tester.pumpWidget(createEditActivityPage());
+      await tester.pumpAndSettle();
+      await tester.scrollDown();
+
+      expect(find.byKey(TestKey.deleteAfterSwitch), findsNothing);
     });
 
     testWidgets('No recurring option', (WidgetTester tester) async {
@@ -2674,10 +2774,10 @@ text''';
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -550);
 
-      await tester.verifyTts(find.byKey(TestKey.availibleFor),
+      await tester.verifyTts(find.byType(AvailableForWidget),
           exact: translate.meAndSupportPersons);
 
-      await tester.tap(find.byKey(TestKey.availibleFor));
+      await tester.tap(find.byType(AvailableForWidget));
       await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byIcon(AbiliaIcons.passwordProtection),

@@ -46,28 +46,30 @@ class AbiliaTextInput extends StatelessWidget {
         Tts.data(
           data: initialValue.isNotEmpty ? initialValue : heading,
           child: GestureDetector(
-            onTap: () async {
-              final newText = await Navigator.of(context).push<String>(
-                MaterialPageRoute(
-                  builder: (context) => DefaultTextInputPage(
-                    inputHeading: inputHeading,
-                    icon: icon,
-                    text: initialValue,
-                    heading: heading,
-                    keyboardType: keyboardType,
-                    inputFormatters: inputFormatters,
-                    textCapitalization: textCapitalization,
-                    maxLines: maxLines,
-                    autocorrect: autoCorrect,
-                    inputValid: inputValid ?? (s) => true,
-                  ),
-                ),
-              );
+            onTap: onChanged == null
+                ? null
+                : () async {
+                    final newText = await Navigator.of(context).push<String>(
+                      MaterialPageRoute(
+                        builder: (context) => DefaultTextInputPage(
+                          inputHeading: inputHeading,
+                          icon: icon,
+                          text: initialValue,
+                          heading: heading,
+                          keyboardType: keyboardType,
+                          inputFormatters: inputFormatters,
+                          textCapitalization: textCapitalization,
+                          maxLines: maxLines,
+                          autocorrect: autoCorrect,
+                          inputValid: inputValid ?? (s) => true,
+                        ),
+                      ),
+                    );
 
-              if (newText != null) {
-                onChanged?.call(newText);
-              }
-            },
+                    if (newText != null) {
+                      onChanged?.call(newText);
+                    }
+                  },
             child: Container(
               color: Colors.transparent,
               child: IgnorePointer(
@@ -80,7 +82,11 @@ class AbiliaTextInput extends StatelessWidget {
                   style: theme.textTheme.bodyText1,
                   autovalidateMode: AutovalidateMode.always,
                   validator: (_) => errorState ? '' : null,
-                  decoration: errorState ? inputErrorDecoration : null,
+                  decoration: onChanged == null
+                      ? inputDisabledDecoration
+                      : errorState
+                          ? inputErrorDecoration
+                          : null,
                 ),
               ),
             ),

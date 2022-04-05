@@ -9,35 +9,36 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
   const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-      builder: (context, state) {
-        return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-          builder: (context, wizState) {
-            return NameAndPictureWidget(
+  Widget build(BuildContext context) => BlocSelector<MemoplannerSettingBloc,
+          MemoplannerSettingsState, EditActivitySettings>(
+        selector: (state) => state.settings.editActivity,
+        builder: (context, editActivity) =>
+            BlocBuilder<EditActivityCubit, EditActivityState>(
+          builder: (context, state) =>
+              BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+            builder: (context, wizState) => NameAndPictureWidget(
               selectedImage: state.selectedImage,
               errorState:
                   wizState.saveErrors.contains(SaveError.noTitleOrImage),
               text: state.activity.title,
               inputFormatters: [LengthLimitingTextInputFormatter(50)],
-              onImageSelected: (selectedImage) {
-                context.read<EditActivityCubit>().imageSelected(
-                      selectedImage,
-                    );
-              },
-              onTextEdit: (text) {
-                if (state.activity.title != text) {
-                  context
+              onImageSelected: editActivity.image
+                  ? (selectedImage) => context
                       .read<EditActivityCubit>()
-                      .replaceActivity(state.activity.copyWith(title: text));
-                }
-              },
-            );
-          },
-        );
-      },
-    );
-  }
+                      .imageSelected(selectedImage)
+                  : null,
+              onTextEdit: editActivity.title
+                  ? (text) {
+                      if (state.activity.title != text) {
+                        context.read<EditActivityCubit>().replaceActivity(
+                            state.activity.copyWith(title: text));
+                      }
+                    }
+                  : null,
+            ),
+          ),
+        ),
+      );
 }
 
 class NameAndPictureWidget extends StatelessWidget {
@@ -103,7 +104,7 @@ class SelectPictureWidget extends StatelessWidget {
   const SelectPictureWidget({
     Key? key,
     required this.selectedImage,
-    this.onImageSelected,
+    required this.onImageSelected,
     this.errorState = false,
     this.label,
   }) : super(key: key);
@@ -119,7 +120,7 @@ class SelectPictureWidget extends StatelessWidget {
           SubHeading(heading),
           SelectedImageWidget(
             errorState: errorState,
-            onTap: () => imageClick(context),
+            onTap: onImageSelected != null ? () => imageClick(context) : null,
             selectedImage: selectedImage,
           ),
         ],
@@ -177,6 +178,7 @@ class SelectedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final disabeld = onTap == null;
     return SizedBox(
       width: SelectPictureWidget.imageSize,
       height: SelectPictureWidget.imageSize,
@@ -186,13 +188,18 @@ class SelectedImageWidget extends StatelessWidget {
         errorState: errorState,
         onTap: onTap,
         child: selectedImage.isNotEmpty
-            ? FadeInCalendarImage(
-                height: innerSize,
-                width: innerSize,
-                imageFile: selectedImage,
+            ? Opacity(
+                opacity: disabeld ? 0.4 : 1,
+                child: FadeInCalendarImage(
+                  height: innerSize,
+                  width: innerSize,
+                  imageFile: selectedImage,
+                ),
               )
             : Container(
-                decoration: whiteNoBorderBoxDecoration,
+                decoration: disabeld
+                    ? disabledBoxDecoration
+                    : whiteNoBorderBoxDecoration,
                 width: innerSize,
                 height: innerSize,
                 child: Icon(
@@ -210,7 +217,7 @@ class NameInput extends StatelessWidget {
   const NameInput({
     Key? key,
     required this.text,
-    this.onEdit,
+    required this.onEdit,
     this.errorState = false,
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
@@ -434,35 +441,45 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SwitchField(
-          key: TestKey.checkableSwitch,
-          leading: Icon(
-            AbiliaIcons.handiCheck,
-            size: layout.icon.small,
-          ),
-          value: activity.checkable,
-          onChanged: (v) => context
-              .read<EditActivityCubit>()
-              .replaceActivity(activity.copyWith(checkable: v)),
-          child: Text(translator.checkable),
-        ),
-        SizedBox(height: layout.formPadding.verticalItemDistance),
-        SwitchField(
-          key: TestKey.deleteAfterSwitch,
-          leading: Icon(
-            AbiliaIcons.deleteAllClear,
-            size: layout.icon.small,
-          ),
-          value: activity.removeAfter,
-          onChanged: (v) => context
-              .read<EditActivityCubit>()
-              .replaceActivity(activity.copyWith(removeAfter: v)),
-          child: Text(translator.deleteAfter),
-        ),
-      ],
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        EditActivitySettings>(
+      selector: (state) => state.settings.editActivity,
+      builder: (context, editActivity) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (editActivity.checkable)
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: layout.formPadding.verticalItemDistance,
+              ),
+              child: SwitchField(
+                key: TestKey.checkableSwitch,
+                leading: Icon(
+                  AbiliaIcons.handiCheck,
+                  size: layout.icon.small,
+                ),
+                value: activity.checkable,
+                onChanged: (v) => context
+                    .read<EditActivityCubit>()
+                    .replaceActivity(activity.copyWith(checkable: v)),
+                child: Text(translator.checkable),
+              ),
+            ),
+          if (editActivity.removeAfter)
+            SwitchField(
+              key: TestKey.deleteAfterSwitch,
+              leading: Icon(
+                AbiliaIcons.deleteAllClear,
+                size: layout.icon.small,
+              ),
+              value: activity.removeAfter,
+              onChanged: (v) => context
+                  .read<EditActivityCubit>()
+                  .replaceActivity(activity.copyWith(removeAfter: v)),
+              child: Text(translator.deleteAfter),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -481,7 +498,6 @@ class AvailableForWidget extends StatelessWidget {
       children: <Widget>[
         SubHeading(translator.availableFor),
         PickField(
-          key: TestKey.availibleFor,
           leading: Icon(
             secret ? AbiliaIcons.passwordProtection : AbiliaIcons.userGroup,
           ),

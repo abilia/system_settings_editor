@@ -152,7 +152,6 @@ class _AlarmSelector extends StatelessWidget {
           children: [
             Expanded(
               child: PickField(
-                key: TestKey.availibleFor,
                 text: Text(sound.displayName(t)),
                 onTap: () async {
                   final result = await Navigator.of(context).push<Sound>(
