@@ -15,6 +15,7 @@ class TimeWiz extends StatelessWidget {
         title: Translator.of(context).translate.setTime,
         body: const _TimeWizContent(),
         bottomNavigationBar: null,
+        trailingClock: true,
       ),
     );
   }

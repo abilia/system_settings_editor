@@ -466,6 +466,7 @@ class _LargeLayout extends Layout {
             amPmWidth: 88.5 * scaleFactor,
             timeDashAlignValue: 21 * scaleFactor,
             amPmDistance: 3 * scaleFactor,
+            headerClockPadding: EdgeInsets.only(right: 3 * scaleFactor),
           ),
           recording: const RecordingLayout(
             trackHeight: 6 * scaleFactor,

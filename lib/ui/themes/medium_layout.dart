@@ -398,6 +398,7 @@ class MediumLayout extends Layout {
             amPmWidth: 88.5,
             timeDashAlignValue: 21,
             amPmDistance: 3,
+            headerClockPadding: EdgeInsets.only(right: 18),
           ),
           recording: const RecordingLayout(
             trackHeight: 6,
