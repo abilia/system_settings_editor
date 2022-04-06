@@ -1255,12 +1255,13 @@ class LogoutLayout {
 }
 
 class PhotoCalendarLayout {
-  final double clockSize, clockFontSize, backButtonPosition;
+  final double clockSize, clockFontSize, clockFontSizeSmall, backButtonPosition;
   final EdgeInsets clockPadding, digitalClockPadding;
 
   const PhotoCalendarLayout({
     this.clockSize = 92,
     this.clockFontSize = 32,
+    this.clockFontSizeSmall = 32,
     this.backButtonPosition = 12,
     this.clockPadding = const EdgeInsets.all(20),
     this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),

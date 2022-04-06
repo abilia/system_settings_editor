@@ -50,8 +50,11 @@ class PhotoCalendarPage extends StatelessWidget {
                                   child: DigitalClock(
                                     style:
                                         theme.theme.textTheme.caption?.copyWith(
-                                      fontSize:
-                                          layout.photoCalendar.clockFontSize,
+                                      fontSize: state.clockType ==
+                                              ClockType.analogueDigital
+                                          ? layout
+                                              .photoCalendar.clockFontSizeSmall
+                                          : layout.photoCalendar.clockFontSize,
                                       height: 1,
                                     ),
                                   ),
@@ -88,6 +91,7 @@ class PhotoCalendarPage extends StatelessWidget {
 
 class SlideShow extends StatelessWidget {
   const SlideShow({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final poppyImage = Image.asset(
@@ -150,6 +154,7 @@ class PhotoCalendarAppBar extends StatelessWidget
                 dayParts: memoSettingsState.dayParts,
                 langCode: Localizations.localeOf(context).toLanguageTag(),
                 translator: Translator.of(context).translate,
+                compactDay: true,
               ),
               showClock: false,
             ),
