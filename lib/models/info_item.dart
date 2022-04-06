@@ -169,17 +169,20 @@ class Checklist extends InfoItem {
     return copyWith(checked: modifiableChecked);
   }
 
-  factory Checklist.fromJson(Map<String, dynamic> json) => Checklist(
-        image: json['image'] ?? '',
-        fileId: json['fileId'] ?? '',
-        name: json['name'] ?? '',
-        questions: List<Question>.from(
-          json['questions']?.map((x) => Question.fromJson(x)) ?? [],
-        ),
-        checked: Map.from(json['checked']?.map(
-                (k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))) ??
-            {}),
-      );
+  factory Checklist.fromJson(Map<String, dynamic> json) {
+    int nextId = 0;
+    return Checklist(
+      image: json['image'] ?? '',
+      fileId: json['fileId'] ?? '',
+      name: json['name'] ?? '',
+      questions: List<Question>.from(
+        json['questions']?.map((x) => Question.fromJson(x, nextId++)) ?? [],
+      ),
+      checked: Map.from(json['checked']?.map(
+              (k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))) ??
+          {}),
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() => {
@@ -232,8 +235,9 @@ class Question extends Equatable {
         checked: checked ?? this.checked,
       );
 
-  factory Question.fromJson(Map<String, dynamic> json) => Question(
-        id: json['id'] ?? 0,
+  factory Question.fromJson(Map<String, dynamic> json, int defaultId) =>
+      Question(
+        id: json['id'] ?? defaultId,
         name: json['name'] ?? '',
         image: json['image'] ?? json['imageName'] ?? '',
         fileId: json['fileId'] ?? '',

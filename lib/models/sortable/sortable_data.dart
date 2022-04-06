@@ -180,6 +180,7 @@ class ChecklistData extends SortableData {
 
   factory ChecklistData.fromJson(String data) {
     final sortableData = json.decode(data);
+    int nextId = 0;
     final checklist = Checklist(
       image: sortableData['image'] ?? '',
       fileId: sortableData['fileId'] ?? '',
@@ -188,7 +189,7 @@ class ChecklistData extends SortableData {
       questions: sortableData['checkItems'] != null
           ? List<Question>.from(
               sortableData['checkItems'].map(
-                (x) => Question.fromJson(x),
+                (x) => Question.fromJson(x, nextId++),
               ),
             )
           : List<Question>.empty(),

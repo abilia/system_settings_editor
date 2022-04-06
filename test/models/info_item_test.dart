@@ -86,9 +86,11 @@ void main() {
     expect(json['name'], decoded['name']);
     expect(json['fileId'], decoded['fileId']);
     expect(json['image'], decoded['image']);
-
-    final jQ = (json['questions'] as List).map((j) => Question.fromJson(j));
-    final dQ = (decoded['questions'] as List).map((j) => Question.fromJson(j));
+    int nextId = 0;
+    final jQ =
+        (json['questions'] as List).map((j) => Question.fromJson(j, nextId++));
+    final dQ = (decoded['questions'] as List)
+        .map((j) => Question.fromJson(j, nextId++));
     expect(dQ, jQ);
 
     expect(json['checked'], hasLength(1));
@@ -223,5 +225,18 @@ void main() {
     });
 
     expect(checkedList.isSignedOff(question, day), isFalse);
+  });
+
+  test(
+      'BUG SGC-1518 No ids on checklist from base items gives all items same id',
+      () {
+    const testJsonWithoutIds =
+        '{"info-item":[{"type":"checklist","data":{"name":"Remember","fileId":"17c463bb-344b-4fef-b84b-afa8809d600b","image":"/Handi/User/Picture/remember.gif","questions":[{"name":"key","fileId":"aef629ce-dbc1-4e8d-b3a8-0c4499a39b0e","image":"/Handi/User/Picture/key.gif"},{"name":"purse","fileId":"e119ccd3-8949-4d82-8249-f4bdf1423afb","image":"/Handi/User/Picture/purse.gif"},{"name":"mobile phone","fileId":"289fadbd-df10-4bb9-b9e0-692b343932b7","image":"/Handi/User/Picture/mobile phone.gif"},{"name":"fruit","fileId":"9965aa32-3be0-46b6-bf12-53c7b33842a6","image":"/Handi/User/Picture/fruit.gif"}]}}]}';
+
+    final infoItem = InfoItem.fromJsonString(testJsonWithoutIds) as Checklist;
+    int ids = 0;
+    for (var question in infoItem.questions) {
+      expect(ids++, question.id);
+    }
   });
 }
