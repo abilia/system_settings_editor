@@ -117,7 +117,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     final now = context.read<ClockBloc>().state;
     final scrollOffset = widget.eventState.isToday
         ? timeToPixels(now.hour, now.minute, ts.dotDistance) -
-            ts.hourHeight * 2 -
+            ts.hourHeight * 2 +
+            topMargin -
             hoursToPixels(interval.startTime.hour, ts.dotDistance)
         : ts.hourHeight * widget.dayParts.morning.inHours;
     return ScrollController(initialScrollOffset: max(scrollOffset, 0));
