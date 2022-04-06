@@ -8,6 +8,7 @@ class ChecklistView extends StatefulWidget {
   final Function(Question, SortableReorderDirection)? onTapReorder;
   final EdgeInsetsGeometry padding;
   final bool preview, hasToolbar;
+  final bool showCheckBox;
 
   const ChecklistView(
     this.checklist, {
@@ -15,6 +16,7 @@ class ChecklistView extends StatefulWidget {
     this.onTap,
     this.padding = EdgeInsets.zero,
     this.preview = false,
+    this.showCheckBox = true,
     Key? key,
   })  : hasToolbar = false,
         onTapEdit = null,
@@ -30,6 +32,7 @@ class ChecklistView extends StatefulWidget {
     required this.onTapReorder,
     this.padding = EdgeInsets.zero,
     this.preview = false,
+    this.showCheckBox = true,
     Key? key,
   })  : hasToolbar = true,
         onTap = null,
@@ -77,6 +80,7 @@ class _ChecklistViewState extends State<ChecklistView> {
                                   selectedQuestion == i ? null : i;
                             })
                         : null,
+                showCheckBox: widget.showCheckBox,
               ),
               if (widget.hasToolbar && selectedQuestion == i)
                 Positioned.fill(
@@ -128,12 +132,14 @@ class QuestionView extends StatelessWidget {
   final bool signedOff;
   final GestureTapCallback? onTap;
   final bool inactive;
+  final bool showCheckBox;
 
   const QuestionView(
     this.question, {
     this.onTap,
     this.signedOff = false,
     this.inactive = false,
+    required this.showCheckBox,
     Key? key,
   }) : super(key: key);
 
@@ -221,32 +227,33 @@ class QuestionView extends StatelessWidget {
                             ),
                           ),
                         ),
-                      IconTheme(
-                        data: Theme.of(context)
-                            .iconTheme
-                            .copyWith(size: layout.icon.small),
-                        child: Padding(
-                          padding: layout.checkList.questionIconPadding,
-                          child: AnimatedCrossFade(
-                            firstChild: Icon(
-                              AbiliaIcons.checkboxSelected,
-                              color: inactive
-                                  ? AbiliaColors.green40
-                                  : AbiliaColors.green,
+                      if (showCheckBox)
+                        IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: layout.icon.small),
+                          child: Padding(
+                            padding: layout.checkList.questionIconPadding,
+                            child: AnimatedCrossFade(
+                              firstChild: Icon(
+                                AbiliaIcons.checkboxSelected,
+                                color: inactive
+                                    ? AbiliaColors.green40
+                                    : AbiliaColors.green,
+                              ),
+                              secondChild: Icon(
+                                AbiliaIcons.checkboxUnselected,
+                                color: inactive
+                                    ? AbiliaColors.white140
+                                    : AbiliaColors.black,
+                              ),
+                              crossFadeState: signedOff
+                                  ? CrossFadeState.showFirst
+                                  : CrossFadeState.showSecond,
+                              duration: duration,
                             ),
-                            secondChild: Icon(
-                              AbiliaIcons.checkboxUnselected,
-                              color: inactive
-                                  ? AbiliaColors.white140
-                                  : AbiliaColors.black,
-                            ),
-                            crossFadeState: signedOff
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            duration: duration,
                           ),
-                        ),
-                      )
+                        )
                     ],
                   ),
                 ),

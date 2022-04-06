@@ -135,6 +135,7 @@ class EditChecklistWidget extends StatelessWidget {
                       onTapReorder: (q, d) =>
                           _handleReorderQuestion(q, d, context),
                       preview: true,
+                      showCheckBox: false,
                     ),
                   ),
                   Divider(

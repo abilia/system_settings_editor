@@ -1003,6 +1003,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
       });
 
       testWidgets('Can add question to checklist', (WidgetTester tester) async {
