@@ -544,8 +544,8 @@ class _LargeLayout extends Layout {
           ),
           photoCalendar: const PhotoCalendarLayout(
             clockSize: 200 * scaleFactor,
-            clockFontSize: 84 * scaleFactor,
-            clockFontSizeSmall: 75 * scaleFactor,
+            clockFontSize: 72 * scaleFactor,
+            clockFontSizeSmall: 64 * scaleFactor,
             backButtonPosition: 18 * scaleFactor,
             clockPadding: EdgeInsets.all(30 * scaleFactor),
             digitalClockPadding:

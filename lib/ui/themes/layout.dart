@@ -1266,6 +1266,12 @@ class PhotoCalendarLayout {
     this.clockPadding = const EdgeInsets.all(20),
     this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
   });
+
+  TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
+        fontSize: small ? clockFontSizeSmall : clockFontSize,
+        fontWeight: FontWeight.w400,
+        height: 75 / 64,
+      );
 }
 
 class SettingsLayout {

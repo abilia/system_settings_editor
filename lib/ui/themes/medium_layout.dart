@@ -472,8 +472,8 @@ class MediumLayout extends Layout {
           ),
           photoCalendar: const PhotoCalendarLayout(
             clockSize: 200,
-            clockFontSize: 84,
-            clockFontSizeSmall: 75,
+            clockFontSize: 72,
+            clockFontSizeSmall: 64,
             backButtonPosition: 18,
             clockPadding: EdgeInsets.all(30),
             digitalClockPadding: EdgeInsets.symmetric(vertical: 30),

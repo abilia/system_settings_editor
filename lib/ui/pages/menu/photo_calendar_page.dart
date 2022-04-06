@@ -49,13 +49,9 @@ class PhotoCalendarPage extends StatelessWidget {
                                       layout.photoCalendar.digitalClockPadding,
                                   child: DigitalClock(
                                     style:
-                                        theme.theme.textTheme.caption?.copyWith(
-                                      fontSize: state.clockType ==
-                                              ClockType.analogueDigital
-                                          ? layout
-                                              .photoCalendar.clockFontSizeSmall
-                                          : layout.photoCalendar.clockFontSize,
-                                      height: 1,
+                                        layout.photoCalendar.digitalClockStyle(
+                                      small: state.clockType ==
+                                          ClockType.analogueDigital,
                                     ),
                                   ),
                                 ),
