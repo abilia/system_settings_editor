@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:seagull/models/login_error.dart';
-import 'package:seagull/repository/json_response.dart';
 
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
@@ -58,7 +57,7 @@ class UserRepository extends Repository {
       case 401:
         throw UnauthorizedException();
       case 403:
-        var errorMessage = LoginError.fromJson(json.decode(response.body));
+        var errorMessage = LoginError.fromJson(response.json());
         if (errorMessage.errors.isNotEmpty &&
             errorMessage.errors.first.code == Error.unsupportedUserType) {
           throw WrongUserTypeException();
@@ -192,7 +191,10 @@ class UserRepository extends Repository {
         break;
       default:
         throw CreateAccountException(
-            badRequest: BadRequest.fromJson(json.decode(response.body)));
+          badRequest: BadRequest.fromJson(
+            response.json(),
+          ),
+        );
     }
   }
 

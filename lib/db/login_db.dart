@@ -27,7 +27,9 @@ class LoginDb {
   LoginInfo? getLoginInfo() {
     final loginInfoString = prefs.getString(loginInfoKey);
     if (loginInfoString != null) {
-      return LoginInfo.fromJson(jsonDecode(loginInfoString));
+      return LoginInfo.fromJson(
+        jsonDecode(loginInfoString),
+      );
     }
     return null;
   }

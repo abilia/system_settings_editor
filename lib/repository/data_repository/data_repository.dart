@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:synchronized/extension.dart';
-import 'package:collection/collection.dart';
-
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 import 'package:seagull/repository/all.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:synchronized/extension.dart';
 
 typedef JsonToDataModel<M extends DataModel> = DbModel<M> Function(
     Map<String, dynamic> json);
@@ -117,12 +116,14 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     );
 
     if (response.statusCode == 200) {
-      final dataUpdateResponse =
-          DataUpdateResponse.fromJson(json.decode(response.body));
+      final dataUpdateResponse = DataUpdateResponse.fromJson(response.json());
       return dataUpdateResponse;
     } else if (response.statusCode == 400) {
       throw BadRequestException(
-          badRequest: BadRequest.fromJson(json.decode(response.body)));
+        badRequest: BadRequest.fromJson(
+          response.json(),
+        ),
+      );
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     }
