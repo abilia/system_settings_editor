@@ -1274,6 +1274,7 @@ text''';
         expect(find.text(checklisttitle1), findsOneWidget);
         expect(find.text(checklisttitle2), findsOneWidget);
         expect(find.byType(ChecklistView), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
       });
     });
   });
