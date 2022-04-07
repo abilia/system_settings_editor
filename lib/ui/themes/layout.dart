@@ -1094,6 +1094,7 @@ class TimeInputLayout {
       amPmWidth,
       timeDashAlignValue,
       amPmDistance;
+  final EdgeInsets headerClockPadding;
 
   const TimeInputLayout({
     this.width = 120,
@@ -1102,6 +1103,7 @@ class TimeInputLayout {
     this.amPmWidth = 59,
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
+    this.headerClockPadding = const EdgeInsets.only(right: 16),
   });
 }
 
