@@ -6,10 +6,11 @@ import 'package:seagull/utils/all.dart';
 
 extension ActivityExtensions on Activity {
   String subtitle(BuildContext context) {
-    if (fullDay) return Translator.of(context).translate.fullDay;
+    final t = Translator.of(context).translate;
+    if (fullDay) return t.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
     if (hasEndTime) {
-      return '${timeFormat(startTime)} - ${timeFormat(noneRecurringEnd)}';
+      return '${timeFormat(startTime)} ${t.timeTo} ${timeFormat(noneRecurringEnd)}';
     }
     return timeFormat(startTime);
   }

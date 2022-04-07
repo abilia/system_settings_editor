@@ -265,6 +265,8 @@ abstract class Translated {
 
   final String basicActivities = 'Basic Activities';
 
+  final String timeTo = 'to';
+
   final String start = 'Start';
 
   final String newTimer = 'New timer';
@@ -1214,6 +1216,9 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
+
+  @override
+  final String timeTo = 'till';
 
   @override
   final String start = 'Starta';
@@ -2399,6 +2404,9 @@ class DA extends Translated {
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
 
   @override
+  final String timeTo = 'til';
+
+  @override
   final String start = 'Start';
 
   @override
@@ -3574,6 +3582,9 @@ class NL extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
+
+  @override
+  final String timeTo = 'tot';
 
   @override
   final String start = 'Begin';
@@ -4753,6 +4764,9 @@ class FI extends Translated {
   @override
   final String checklistDoneInfo =
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
+
+  @override
+  final String timeTo = '-';
 
   @override
   final String start = 'Alkaa';
@@ -5936,6 +5950,9 @@ class DE extends Translated {
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
 
   @override
+  final String timeTo = 'bis';
+
+  @override
   final String start = 'Anfang';
 
   @override
@@ -7115,6 +7132,9 @@ class NB extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
+
+  @override
+  final String timeTo = 'til';
 
   @override
   final String start = 'Start';
