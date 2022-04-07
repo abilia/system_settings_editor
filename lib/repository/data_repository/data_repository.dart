@@ -67,7 +67,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
       '$baseUrl/api/v1/data/$userId/$path?revision=$revision'.toUri(),
       headers: authHeader(authToken),
     );
-    final decoded = (json.decode(response.body)) as List;
+    final decoded = response.json() as List;
     return decoded
         .exceptionSafeMap(
           (j) => fromJsonToDataModel(j),
