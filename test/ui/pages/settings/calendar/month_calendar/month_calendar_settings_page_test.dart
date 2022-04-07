@@ -215,7 +215,7 @@ void main() {
       expect((dayContainer1.decoration as BoxDecoration).color,
           isNot(AbiliaColors.white110));
 
-      await tester.tap(find.text(translate.headings));
+      await tester.tap(find.text(translate.captions));
       await tester.pumpAndSettle();
       final dayContainer2 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
