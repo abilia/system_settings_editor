@@ -58,7 +58,9 @@ class Extras extends Equatable {
   static Extras fromJsonString(String? jsonString) {
     if (jsonString == null || jsonString.isEmpty) return Extras.empty;
     try {
-      return Extras._(jsonDecode(jsonString));
+      return Extras._(
+        jsonDecode(jsonString),
+      );
     } on FormatException catch (_) {
       return Extras.empty;
     }

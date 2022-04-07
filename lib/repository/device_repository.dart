@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/repository/json_response.dart';
 import 'package:seagull/utils/strings.dart';
 
 class DeviceRepository extends Repository {

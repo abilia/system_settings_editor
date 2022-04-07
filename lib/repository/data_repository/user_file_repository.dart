@@ -94,12 +94,12 @@ class UserFileRepository extends DataRepository<UserFile> {
     );
 
     if (response.statusCode == 200) {
-      final syncResponseJson = json.decode(response.body) as List;
+      final syncResponseJson = response.json() as List;
       return syncResponseJson
           .map((r) => DataRevisionUpdate.fromJson(r))
           .toList();
     } else if (response.statusCode == 400) {
-      final errorResponse = json.decode(response.body);
+      final errorResponse = response.json();
       final errors = (errorResponse['errors'] as List)
           .map((r) => ResponseError.fromJson(r));
       for (final error in errors) {

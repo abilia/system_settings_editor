@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -46,7 +44,7 @@ class SortableRepository extends DataRepository<Sortable> {
         headers: jsonAuthHeader(authToken),
       );
       if (response.statusCode == 200) {
-        return fromJsonToDataModel(json.decode(response.body));
+        return fromJsonToDataModel(response.json());
       }
       log.warning('Could not fetch $folder ${response.statusCode}');
       log.warning(response.body);
