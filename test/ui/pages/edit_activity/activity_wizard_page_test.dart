@@ -381,6 +381,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(TimeWiz), findsOneWidget);
+      expect(find.byType(AbiliaClock), findsOneWidget);
+
       expect(find.text('05:55'), findsOneWidget);
       expect(find.text('08:00'), findsOneWidget);
     });

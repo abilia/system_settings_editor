@@ -187,8 +187,8 @@ class ChecklistData extends SortableData {
       name: sortableData['name'] ?? '',
       questions: sortableData['checkItems'] != null
           ? List<Question>.from(
-              sortableData['checkItems'].map(
-                (x) => Question.fromJson(x),
+              (sortableData['checkItems'] as List).mapIndexed(
+                (i, x) => Question.fromJson(x, i),
               ),
             )
           : List<Question>.empty(),

@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/data_repository/activity_repository.dart';
 import 'package:seagull/ui/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
@@ -50,6 +51,7 @@ class ActivityInfo extends StatefulWidget {
     this.previewImage,
     this.alarm,
   }) : super(key: key);
+
   factory ActivityInfo.from({
     required Activity activity,
     required DateTime day,
@@ -117,6 +119,7 @@ class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
 
 mixin ActivityMixin {
   static final _log = Logger((ActivityMixin).toString());
+
   Future<bool?> checkConfirmation(
     BuildContext context,
     ActivityDay activityDay, {
@@ -143,6 +146,7 @@ mixin ActivityMixin {
     _log.fine('pop Alarm: $alarm');
     if (!await Navigator.of(context).maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
+      await context.read<ActivityRepository>().synchronize();
       await SystemNavigator.pop();
     }
   }

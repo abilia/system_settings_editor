@@ -180,7 +180,7 @@ void main() {
       ),
     );
     await tester.verifyTts(find.text(title),
-        exact: '$title, ${dateFormat(startTime)} - ${dateFormat(endTime)}');
+        exact: '$title, ${dateFormat(startTime)} to ${dateFormat(endTime)}');
   });
 
   group('position', () {
