@@ -95,8 +95,8 @@ void main() {
       ),
     ).thenAnswer(
       (_) => Future.value(
-        Response(
-          sortableJson,
+        Response.bytes(
+          utf8.encode(sortableJson),
           200,
         ),
       ),
