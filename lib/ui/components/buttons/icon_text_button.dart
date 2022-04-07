@@ -32,7 +32,9 @@ class IconAndTextButton extends StatelessWidget {
                 child: Icon(icon),
               ),
               SizedBox(width: layout.iconTextButton.iconTextSpacing),
-              Text(text),
+              Text(text,
+                  style: Theme.of(context).textTheme.caption?.copyWith(
+                      color: AbiliaColors.white, height: 1, fontSize: 16)),
             ],
           ),
         ),
