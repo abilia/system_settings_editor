@@ -142,7 +142,15 @@ class FakeBatch extends Fake implements Batch {
   void delete(String table, {String? where, List<Object?>? whereArgs}) {}
 }
 
-class FakeGenericRepository extends Fake implements GenericRepository {}
+class FakeGenericRepository extends Fake implements GenericRepository {
+  @override
+  Future<bool> synchronize() => Future.value(true);
+}
+
+class FakeActivityRepository extends Fake implements ActivityRepository {
+  @override
+  Future<bool> synchronize() => Future.value(true);
+}
 
 class FakeFileStorage extends Fake implements FileStorage {
   @override

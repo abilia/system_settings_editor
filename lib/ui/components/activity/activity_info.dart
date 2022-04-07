@@ -1,9 +1,11 @@
 import 'package:flutter/services.dart';
+import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/repository/data_repository/activity_repository.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class ActivityInfoWithDots extends StatelessWidget {
   final ActivityDay activityDay;
@@ -142,6 +144,23 @@ mixin ActivityMixin {
     return check;
   }
 
+  Future checkConfirmationAndRemoveAlarm(
+    BuildContext context,
+    ActivityDay activityDay, {
+    ActivityAlarm? alarm,
+    String? message,
+  }) async {
+    final checked = await checkConfirmation(
+      context,
+      activityDay,
+      message: message,
+    );
+    if (checked == true && alarm != null) {
+      await cancelNotifications(uncheckedReminders(alarm.activityDay));
+      await popAlarm(context, alarm);
+    }
+  }
+
   Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
     _log.fine('pop Alarm: $alarm');
     if (!await Navigator.of(context).maybePop()) {
@@ -244,15 +263,12 @@ class Attachment extends StatelessWidget with ActivityMixin {
           if (signedOff.allSignedOff(activityDay.day) &&
               updatedActivity.checkable &&
               !activityDay.isSignedOff) {
-            final checked = await checkConfirmation(
+            await checkConfirmationAndRemoveAlarm(
               context,
               ActivityDay(updatedActivity, activityDay.day),
+              alarm: alarm,
               message: translate.checklistDoneInfo,
             );
-            final a = alarm;
-            if (a != null && checked == true) {
-              await popAlarm(context, a);
-            }
           }
         },
       );
