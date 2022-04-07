@@ -21,5 +21,9 @@ class FakeBattery extends Fake implements Battery {
   Future<bool> get isInBatterySaveMode => Future.value(false);
 
   @override
+  Future<BatteryState> get batteryState =>
+      Future.value(BatteryState.discharging);
+
+  @override
   Stream<BatteryState> get onBatteryStateChanged => const Stream.empty();
 }

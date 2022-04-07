@@ -11,10 +11,11 @@ class BatteryLevel extends StatelessWidget {
     final t = Translator.of(context).translate;
     return StreamBuilder(
       stream: battery.onBatteryStateChanged,
-      builder: (context, _) => FutureBuilder<int>(
-        future: battery.batteryLevel,
+      builder: (context, _) => FutureBuilder<List<dynamic>>(
+        future: Future.wait([battery.batteryLevel, battery.batteryState]),
         builder: (context, snapshot) {
-          final batteryLevel = snapshot.data ?? 0;
+          final batteryLevel = snapshot.data?[0] ?? 0;
+          final batteryState = snapshot.data?[1] ?? BatteryState.unknown;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -26,7 +27,9 @@ class BatteryLevel extends StatelessWidget {
                     width: layout.formPadding.largeHorizontalItemDistance,
                   ),
                   Icon(
-                    _batteryLevelIcon(batteryLevel),
+                    batteryState == BatteryState.charging
+                        ? AbiliaIcons.batteryCharging
+                        : _batteryLevelIcon(batteryLevel),
                     size: layout.icon.large,
                   ),
                   SizedBox(width: layout.formPadding.groupHorizontalDistance),

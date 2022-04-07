@@ -16,6 +16,8 @@ void main() {
     mockBattery = MockBattery();
     when(() => mockBattery.onBatteryStateChanged)
         .thenAnswer((_) => Stream.value(BatteryState.unknown));
+    when(() => mockBattery.batteryState)
+        .thenAnswer((_) => Future.value(BatteryState.discharging));
   });
 
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
@@ -100,5 +102,16 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byIcon(AbiliaIcons.batteryLevel_100), findsOneWidget);
+  });
+
+  testWidgets('Battery charging', (WidgetTester tester) async {
+    when(() => mockBattery.batteryLevel).thenAnswer((_) => Future.value(50));
+    when(() => mockBattery.batteryState)
+        .thenAnswer((_) => Future.value(BatteryState.charging));
+    await tester.pumpWidget(
+      wrapWithMaterialApp(BatteryLevel(battery: mockBattery)),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byIcon(AbiliaIcons.batteryCharging), findsOneWidget);
   });
 }
