@@ -221,32 +221,33 @@ class QuestionView extends StatelessWidget {
                             ),
                           ),
                         ),
-                      IconTheme(
-                        data: Theme.of(context)
-                            .iconTheme
-                            .copyWith(size: layout.icon.small),
-                        child: Padding(
-                          padding: layout.checkList.questionIconPadding,
-                          child: AnimatedCrossFade(
-                            firstChild: Icon(
-                              AbiliaIcons.checkboxSelected,
-                              color: inactive
-                                  ? AbiliaColors.green40
-                                  : AbiliaColors.green,
+                      if (!inactive)
+                        IconTheme(
+                          data: Theme.of(context)
+                              .iconTheme
+                              .copyWith(size: layout.icon.small),
+                          child: Padding(
+                            padding: layout.checkList.questionIconPadding,
+                            child: AnimatedCrossFade(
+                              firstChild: Icon(
+                                AbiliaIcons.checkboxSelected,
+                                color: inactive
+                                    ? AbiliaColors.green40
+                                    : AbiliaColors.green,
+                              ),
+                              secondChild: Icon(
+                                AbiliaIcons.checkboxUnselected,
+                                color: inactive
+                                    ? AbiliaColors.white140
+                                    : AbiliaColors.black,
+                              ),
+                              crossFadeState: signedOff
+                                  ? CrossFadeState.showFirst
+                                  : CrossFadeState.showSecond,
+                              duration: duration,
                             ),
-                            secondChild: Icon(
-                              AbiliaIcons.checkboxUnselected,
-                              color: inactive
-                                  ? AbiliaColors.white140
-                                  : AbiliaColors.black,
-                            ),
-                            crossFadeState: signedOff
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            duration: duration,
                           ),
-                        ),
-                      )
+                        )
                     ],
                   ),
                 ),
