@@ -204,8 +204,8 @@ void main() {
       expect(w.groupValue, WeekColor.captions);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect((dayContainer.decoration as BoxDecoration).color,
-          AbiliaColors.white110);
+      expect(
+          (dayContainer.decoration as BoxDecoration).color, AbiliaColors.white);
     });
 
     testWidgets('color saved', (tester) async {
@@ -221,7 +221,7 @@ void main() {
           find.byKey(TestKey.monthDisplaySettingsDayView));
 
       expect((dayContainer2.decoration as BoxDecoration).color,
-          AbiliaColors.white110);
+          AbiliaColors.white);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 
