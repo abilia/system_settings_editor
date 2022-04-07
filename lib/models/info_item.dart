@@ -179,7 +179,7 @@ class Checklist extends InfoItem {
                     .mapIndexed((i, x) => Question.fromJson(x, i)),
               )
             : List<Question>.empty(),
-        checked: Map.from(json['checked']?.mapIndexed(
+        checked: Map.from(json['checked']?.map(
                 (k, v) => MapEntry<String, Set<int>>(k, Set<int>.from(v))) ??
             {}),
       );
