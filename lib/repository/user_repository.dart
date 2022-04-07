@@ -94,7 +94,7 @@ class UserRepository extends Repository {
         headers: authHeader(token));
 
     if (response.statusCode == 200) {
-      final responseJson = json.decode(response.body);
+      final responseJson = response.json();
       return User.fromJson(responseJson['me']);
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
@@ -120,9 +120,7 @@ class UserRepository extends Repository {
         '$baseUrl/api/v1/license/portal/me'.toUri(),
         headers: authHeader(token));
     if (response.statusCode == 200) {
-      return (json.decode(response.body) as List)
-          .map((l) => License.fromJson(l))
-          .toList();
+      return (response.json() as List).map((l) => License.fromJson(l)).toList();
     } else if (response.statusCode == 401) {
       throw UnauthorizedException();
     } else {
