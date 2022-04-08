@@ -49,8 +49,8 @@ class _AlarmVolumeSliderState extends _VolumeSliderState {
   }
 
   @override
-  Future<void> setVolume(double volume) {
-    return VolumeSettings.setAlarmVolume(volume);
+  Future<void> setVolume(double volume) async {
+    await VolumeSettings.setAlarmVolume(volume);
   }
 }
 
@@ -64,8 +64,8 @@ class _MediaVolumeSliderState extends _VolumeSliderState {
   }
 
   @override
-  Future<void> setVolume(double volume) {
-    return VolumeSettings.setMediaVolume(volume);
+  Future<void> setVolume(double volume) async {
+    await VolumeSettings.setMediaVolume(volume);
   }
 }
 
@@ -115,13 +115,13 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
           leading: leading,
           value: _volume,
           onChanged: (double b) async {
-            await setVolume(_volume);
+            await setVolume(b);
             setState(() {
               _volume = b;
             });
           },
           onChangeEnd: (double b) async {
-            await setVolume(_volume);
+            await setVolume(b);
             widget.onVolumeSet?.call();
             setState(() {
               _volume = b;
