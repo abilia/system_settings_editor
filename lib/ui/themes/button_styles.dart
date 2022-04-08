@@ -111,7 +111,8 @@ final iconTextButtonStyleNext = iconTextButtonStyleGreen.copyWith(
 
 final actionIconTextButtonStyleRed = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
+  textStyle:
+      MaterialStateProperty.all(abiliaTextTheme.bodyText1?.copyWith(height: 1)),
   minimumSize: MaterialStateProperty.all(layout.button.redButtonMinSize),
   padding: MaterialStateProperty.all(
     layout.button.redButtonPadding,
