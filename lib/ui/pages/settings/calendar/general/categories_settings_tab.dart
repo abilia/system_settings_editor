@@ -121,7 +121,7 @@ class _CategoriesPreview extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           vertical: layout.formPadding.verticalItemDistance,
         ),
-        decoration: boxDecoration,
+        decoration: whiteBoxDecoration,
         child: BlocProvider(
           create: (context) => ClockBloc.fixed(DateTime(2021, 1, 1, 8, 30)),
           child: BlocBuilder<TimepillarCubit, TimepillarState>(
