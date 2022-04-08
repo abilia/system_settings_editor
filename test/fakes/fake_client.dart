@@ -5,7 +5,8 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/fakes/all.dart';
+
+import 'all.dart';
 
 typedef ActivityResponse = Iterable<Activity> Function();
 typedef SortableResponse = Iterable<Sortable> Function();

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/fakes/fake_client.dart';
+import 'fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';

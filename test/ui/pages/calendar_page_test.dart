@@ -8,7 +8,6 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
