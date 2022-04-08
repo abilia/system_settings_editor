@@ -192,6 +192,12 @@ class DayColumn extends StatelessWidget {
                   bottomLeft: innerRadiusFromBorderSize(borderSize),
                   bottomRight: innerRadiusFromBorderSize(borderSize),
                 ),
+                border: day.weekday == DateTime.wednesday
+                    ? Border.all(
+                        color: AbiliaColors.white120,
+                        width: borderSize,
+                      )
+                    : null,
               ),
             ),
           ),

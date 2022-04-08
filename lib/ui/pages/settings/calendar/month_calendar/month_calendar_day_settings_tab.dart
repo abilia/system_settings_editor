@@ -49,19 +49,27 @@ class _MonthCalendarPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
-    return SizedBox(
+    return Container(
       height: layout.settings.monthPreviewHeight,
-      child: Row(
+      decoration: BoxDecoration(
+        color: AbiliaColors.white,
+        borderRadius: borderRadius,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
+        child: Row(
           children: List.generate(
-        DateTime.daysPerWeek,
-        (d) => _MonthDayView(
-          dayTheme: weekdayTheme(
-            dayColor: DayColor.allDays,
-            languageCode: languageCode,
-            weekday: d + 1,
+            DateTime.daysPerWeek,
+            (d) => _MonthDayView(
+              dayTheme: weekdayTheme(
+                dayColor: DayColor.allDays,
+                languageCode: languageCode,
+                weekday: d + 1,
+              ),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }
