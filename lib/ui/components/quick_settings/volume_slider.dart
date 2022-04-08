@@ -49,8 +49,8 @@ class _AlarmVolumeSliderState extends _VolumeSliderState {
   }
 
   @override
-  Future<void> setVolume(double volume) async {
-    await VolumeSettings.setAlarmVolume(volume);
+  Future<void> setVolume(double volume) {
+    return VolumeSettings.setAlarmVolume(volume);
   }
 }
 
@@ -64,8 +64,8 @@ class _MediaVolumeSliderState extends _VolumeSliderState {
   }
 
   @override
-  Future<void> setVolume(double volume) async {
-    await VolumeSettings.setMediaVolume(volume);
+  Future<void> setVolume(double volume) {
+    return VolumeSettings.setMediaVolume(volume);
   }
 }
 
