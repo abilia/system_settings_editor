@@ -171,7 +171,8 @@ class DayColumn extends StatelessWidget {
             BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
           builder: (context, state) => Container(
             decoration: BoxDecoration(
-              color: state.weekColor == WeekColor.columns
+              color: state.weekColor == WeekColor.columns &&
+                      dayTheme.secondaryColor != AbiliaColors.white
                   ? dayTheme.secondaryColor
                   : AbiliaColors.white110,
               borderRadius: BorderRadius.only(
