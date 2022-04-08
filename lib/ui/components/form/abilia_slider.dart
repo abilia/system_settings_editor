@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 class AbiliaSlider extends StatelessWidget {
   final ValueChanged<double>? onChanged;
+  final ValueChanged<double>? onChangeEnd;
   final Widget? leading;
   final double? heigth, width;
   final double value;
@@ -11,6 +12,7 @@ class AbiliaSlider extends StatelessWidget {
   const AbiliaSlider({
     Key? key,
     this.onChanged,
+    this.onChangeEnd,
     this.leading,
     this.heigth,
     this.width,
@@ -20,7 +22,6 @@ class AbiliaSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final leading = this.leading;
-    final onChanged = this.onChanged;
     return Container(
       height: heigth ?? defaultHeight,
       width: width,
@@ -49,6 +50,7 @@ class AbiliaSlider extends StatelessWidget {
               ),
               child: Slider(
                 onChanged: onChanged,
+                onChangeEnd: onChangeEnd,
                 value: value,
               ),
             ),

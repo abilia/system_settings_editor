@@ -4,37 +4,43 @@ import 'package:seagull/ui/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 
 class AlarmVolumeSlider extends _VolumeSlider {
-  const AlarmVolumeSlider({Key? key}) : super(key: key);
+  const AlarmVolumeSlider({Key? key, VoidCallback? onVolumeSet})
+      : super(key: key, onVolumeSet: onVolumeSet);
 
   @override
   State<_VolumeSlider> createState() => _AlarmVolumeSliderState();
 }
 
 class MediaVolumeSlider extends _VolumeSlider {
-  const MediaVolumeSlider({Key? key}) : super(key: key);
+  const MediaVolumeSlider({Key? key, VoidCallback? onVolumeSet})
+      : super(key: key, onVolumeSet: onVolumeSet);
 
   @override
   State<_VolumeSlider> createState() => _MediaVolumeSliderState();
 }
 
 abstract class _VolumeSlider extends StatefulWidget {
-  const _VolumeSlider({Key? key}) : super(key: key);
+  final VoidCallback? onVolumeSet;
+  const _VolumeSlider({Key? key, this.onVolumeSet}) : super(key: key);
 }
 
 class _AlarmVolumeSliderState extends _VolumeSliderState {
   _AlarmVolumeSliderState()
       : super(
-          leading: Stack(clipBehavior: Clip.none, children: [
-            const Icon(AbiliaIcons.volumeNormal),
-            Positioned(
-              top: layout.icon.doubleIconTop,
-              left: layout.icon.doubleIconLeft,
-              child: Icon(
-                AbiliaIcons.handiAlarmVibration,
-                size: layout.icon.tiny,
-              ),
-            )
-          ]),
+          leading: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(AbiliaIcons.volumeNormal),
+              Positioned(
+                top: layout.icon.doubleIconTop,
+                left: layout.icon.doubleIconLeft,
+                child: Icon(
+                  AbiliaIcons.handiAlarmVibration,
+                  size: layout.icon.tiny,
+                ),
+              )
+            ],
+          ),
         );
 
   @override
@@ -106,14 +112,22 @@ abstract class _VolumeSliderState extends State<_VolumeSlider>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AbiliaSlider(
-            leading: leading,
-            value: _volume,
-            onChanged: (double b) {
-              setState(() {
-                _volume = b;
-                setVolume(_volume);
-              });
-            }),
+          leading: leading,
+          value: _volume,
+          onChanged: (double b) async {
+            await setVolume(b);
+            setState(() {
+              _volume = b;
+            });
+          },
+          onChangeEnd: (double b) async {
+            await setVolume(b);
+            widget.onVolumeSet?.call();
+            setState(() {
+              _volume = b;
+            });
+          },
+        ),
       ],
     );
   }
