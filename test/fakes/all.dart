@@ -6,3 +6,6 @@ export 'fakes_blocs.dart';
 export 'permission.dart';
 export 'flutter_local_notifications_plugin.dart';
 export 'fake_battery.dart';
+export 'fake_client.dart';
+export 'fake_activities.dart';
+export 'fake_user_files.dart';

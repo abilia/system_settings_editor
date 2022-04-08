@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 

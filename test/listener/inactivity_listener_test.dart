@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/fake_client.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/listener/inactivity_listener.dart';
 import 'package:seagull/models/all.dart';

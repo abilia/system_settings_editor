@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 
 import 'package:seagull/db/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 

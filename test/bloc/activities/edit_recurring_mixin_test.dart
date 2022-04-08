@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/activities/edit_recurring_mixin.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
+import '../../fakes/all.dart';
 import '../../test_helpers/matchers.dart';
 
 class _TestObject with EditRecurringMixin {}
