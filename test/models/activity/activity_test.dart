@@ -321,6 +321,7 @@ void main() {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
     final a = Activity.createNew(
       title: 'Title',
+      calendarId: 'calendarID',
       startTime: now,
       fileId: '',
       extras: Extras.createNew(

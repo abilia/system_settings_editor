@@ -16,6 +16,7 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
+  final CalendarDb calendarDb;
   final DeviceDb deviceDb;
 
   const UserRepository({
@@ -25,6 +26,7 @@ class UserRepository extends Repository {
     required this.userDb,
     required this.licenseDb,
     required this.deviceDb,
+    required this.calendarDb,
   }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
@@ -128,6 +130,17 @@ class UserRepository extends Repository {
     }
   }
 
+  Future fetchAndSetCalendar(String token, int userId) async {
+    if (calendarDb.getCalendarType() == null) {
+      final response = await client.post(
+        '$baseUrl/api/v1/calendar/$userId?type=MEMOPLANNER'.toUri(),
+        headers: authHeader(token),
+      );
+      final calendarType = CalendarType.fromJson(response.json());
+      await calendarDb.setCalendarType(calendarType);
+    }
+  }
+
   Future logout([String? token]) async {
     _log.fine('unregister Client');
     await _unregisterClient(token);
@@ -136,6 +149,8 @@ class UserRepository extends Repository {
     await loginDb.deleteLoginInfo();
     _log.fine('deleting user');
     await userDb.deleteUser();
+    _log.fine('deleting calendar');
+    await calendarDb.deleteCalendar();
   }
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>

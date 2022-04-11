@@ -35,7 +35,7 @@ class Activity extends DataModel {
     );
   }
 
-  final String seriesId, title, fileId, icon, timezone;
+  final String seriesId, calendarId, title, fileId, icon, timezone;
   final DateTime startTime;
   final DateTime noneRecurringEnd;
   final Duration duration;
@@ -52,6 +52,7 @@ class Activity extends DataModel {
   Activity._({
     required String id,
     required this.seriesId,
+    required this.calendarId,
     required this.title,
     required this.startTime,
     required this.duration,
@@ -81,6 +82,8 @@ class Activity extends DataModel {
 
   static Activity createNew({
     String title = '',
+    // TODO required String calendarId,
+    String calendarId = '',
     required DateTime startTime,
     Duration duration = Duration.zero,
     int category = Category.right,
@@ -101,6 +104,7 @@ class Activity extends DataModel {
     final id = const Uuid().v4();
     return Activity._(
       id: id,
+      calendarId: calendarId,
       seriesId: id,
       title: title,
       startTime: startTime,
@@ -160,6 +164,7 @@ class Activity extends DataModel {
   }) =>
       Activity._(
         id: newId ? const Uuid().v4() : id,
+        calendarId: calendarId,
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
@@ -229,6 +234,7 @@ class Activity extends DataModel {
   List<Object> get props => [
         id,
         seriesId,
+        calendarId,
         title,
         startTime.millisecondsSinceEpoch,
         duration,

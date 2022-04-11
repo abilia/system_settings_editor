@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -155,6 +156,7 @@ class CreateNewPage extends StatelessWidget {
             BlocProvider<EditActivityCubit>(
               create: (_) => EditActivityCubit.newActivity(
                 day: context.read<DayPickerBloc>().state.day,
+                calendarId: GetIt.I<CalendarDb>().getCalendarType()?.id ?? '',
                 defaultAlarmTypeSetting: context
                     .read<MemoplannerSettingBloc>()
                     .state

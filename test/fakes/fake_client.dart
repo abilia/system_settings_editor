@@ -77,7 +77,9 @@ class Fakes {
             response = licenseResponse?.call() ??
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
-
+          if (pathSegments.containsAll(['calendar'])) {
+            response = calendarSuccessResponse;
+          }
           if (pathSegments.containsAll({'entity', 'user'})) {
             final uName = json.decode(r.body)['usernameOrEmail'];
             if (uName == 'taken') {
@@ -91,7 +93,6 @@ class Fakes {
                 200,
               );
             }
-            // {"usernameOrEmail":"abc","password":"","language":"en","termsOfCondition":true,"privacyPolicy":true}
           }
 
           return Future.value(
@@ -135,6 +136,14 @@ class Fakes {
         "language" : "sv",
         "image" : null
       }
+    }''', 200);
+
+  static final Response calendarSuccessResponse = Response('''
+    {
+      "id": "an-unique-calender-id-of-type-memoplanner",
+      "type": "MEMOPLANNER",
+      "owner": $userId,
+      "main": true
     }''', 200);
 
   static Response licenseResponseExpires(DateTime expires) => Response('''

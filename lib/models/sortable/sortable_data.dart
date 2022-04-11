@@ -407,10 +407,12 @@ class BasicActivityDataItem extends BasicActivityData {
 
   Activity toActivity({
     required String timezone,
+    required String calendarId,
     required DateTime day,
   }) {
     return Activity.createNew(
       title: activityTitle,
+      calendarId: calendarId,
       startTime: day,
       timezone: timezone,
       alarmType: alarmType,

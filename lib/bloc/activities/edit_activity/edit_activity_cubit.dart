@@ -31,12 +31,16 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   EditActivityCubit.newActivity({
     required this.day,
     required int defaultAlarmTypeSetting,
+    // TODO
+    // required String calendarId,
+    String calendarId = '',
     BasicActivityDataItem? basicActivityData,
   }) : super(
           basicActivityData == null
               ? UnstoredActivityState(
                   Activity.createNew(
                     title: '',
+                    calendarId: calendarId,
                     startTime: day,
                     timezone: tz.local.name,
                     alarmType: defaultAlarmTypeSetting,
@@ -45,7 +49,10 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                 )
               : UnstoredActivityState(
                   basicActivityData.toActivity(
-                      timezone: tz.local.name, day: day),
+                    timezone: tz.local.name,
+                    day: day,
+                    calendarId: calendarId,
+                  ),
                   basicActivityData.toTimeInterval(startDate: day),
                 ),
         );

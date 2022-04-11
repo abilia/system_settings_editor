@@ -24,6 +24,7 @@ void main() {
         licenseDb: LicenseDb(prefs),
         baseUrlDb: BaseUrlDb(prefs),
         deviceDb: DeviceDb(prefs),
+        calendarDb: CalendarDb(prefs),
       );
     });
 

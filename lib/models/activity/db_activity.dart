@@ -22,6 +22,7 @@ class DbActivity extends DbModel<Activity> {
   static DbActivity fromJson(Map<String, dynamic> json) => DbActivity._(
         activity: Activity._(
           id: json['id'],
+          calendarId: json['calendarId'] ?? '',
           seriesId: json['seriesId'],
           title: json['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
@@ -55,6 +56,7 @@ class DbActivity extends DbModel<Activity> {
   static DbActivity fromDbMap(Map<String, dynamic> dbRow) => DbActivity._(
         activity: Activity._(
           id: dbRow['id'],
+          calendarId: dbRow['calendar_id'] ?? '',
           seriesId: dbRow['series_id'],
           title: dbRow['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
@@ -89,6 +91,7 @@ class DbActivity extends DbModel<Activity> {
   Map<String, dynamic> toJson() => {
         'id': activity.id,
         'seriesId': activity.seriesId,
+        'calendarId': activity.calendarId.isEmpty ? null : activity.calendarId,
         'title': activity.title,
         'startTime': activity.startTime.millisecondsSinceEpoch,
         'endTime': activity.recurs.endTime,
@@ -116,6 +119,7 @@ class DbActivity extends DbModel<Activity> {
   Map<String, dynamic> toMapForDb() => {
         'id': activity.id,
         'series_id': activity.seriesId,
+        'calendar_id': activity.calendarId,
         'title': activity.title,
         'start_time': activity.startTime.millisecondsSinceEpoch,
         'end_time': activity.recurs.endTime,

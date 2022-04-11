@@ -100,6 +100,7 @@ class DatabaseRepository {
     'alter table $calendarTableName add column extras text',
     'alter table $sortableTableName add column fixed int',
     _createTimersTable,
+    'alter table $calendarTableName add column calendar_id text',
   ];
 
   static Future<Database> createSqfliteDb() async {
