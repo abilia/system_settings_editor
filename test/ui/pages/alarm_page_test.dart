@@ -12,6 +12,7 @@ import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -74,27 +75,30 @@ void main() {
         localeResolutionCallback: (locale, supportedLocales) => supportedLocales
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider<ActivitiesBloc>(
-              create: (context) => FakeActivitiesBloc(),
-            ),
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc.fixed(day),
-            ),
-            BlocProvider<SettingsCubit>(
-              create: (context) => SettingsCubit(
-                settingsDb: FakeSettingsDb(),
+        home: RepositoryProvider<ActivityRepository>(
+          create: (context) => FakeActivityRepository(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ActivitiesBloc>(
+                create: (context) => FakeActivitiesBloc(),
               ),
-            ),
-            BlocProvider<MemoplannerSettingBloc>(
-              create: (context) => mockMPSettingsBloc,
-            ),
-            BlocProvider<UserFileCubit>(
-              create: (context) => mockUserFileCubit,
-            ),
-          ],
-          child: widget,
+              BlocProvider<ClockBloc>(
+                create: (context) => ClockBloc.fixed(day),
+              ),
+              BlocProvider<SettingsCubit>(
+                create: (context) => SettingsCubit(
+                  settingsDb: FakeSettingsDb(),
+                ),
+              ),
+              BlocProvider<MemoplannerSettingBloc>(
+                create: (context) => mockMPSettingsBloc,
+              ),
+              BlocProvider<UserFileCubit>(
+                create: (context) => mockUserFileCubit,
+              ),
+            ],
+            child: widget,
+          ),
         ),
       );
 
@@ -299,5 +303,49 @@ void main() {
       expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
       expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
     });
+  });
+
+  testWidgets(
+      'BUG SGC-1553 - '
+      'checking all items off checklist in checkable activity '
+      'shows CheckActivityConfirmDialog and confirming that '
+      'cancels alarms', (WidgetTester tester) async {
+    final checklist = Checklist(
+      questions: const [
+        Question(id: 1, name: '1one'),
+      ],
+    );
+    final checkableWithChecklist = Activity.createNew(
+      title: 'Checkable',
+      startTime: startTime,
+      checkable: true,
+      infoItem: checklist,
+    );
+
+    final StartAlarm startAlarm = StartAlarm(
+      ActivityDay(checkableWithChecklist, day),
+    );
+    await tester.pumpWidget(
+      wrapWithMaterialApp(
+        PopAwareAlarmPage(
+          alarm: startAlarm,
+          alarmNavigator: _alarmNavigator,
+          child: AlarmPage(alarm: startAlarm),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    for (var q in checklist.questions) {
+      await tester.tap(find.text(q.name));
+      await tester.pumpAndSettle();
+    }
+    expect(find.byType(CheckActivityConfirmDialog), findsOneWidget);
+    await tester.tap(find.byType(YesButton));
+    await tester.pumpAndSettle();
+
+    expect(
+      localNotificationLog.where((call) => call.method == 'cancel'),
+      hasLength(unsignedOffActivityReminders.length + 1),
+    );
   });
 }
