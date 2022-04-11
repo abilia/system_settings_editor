@@ -31,9 +31,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   EditActivityCubit.newActivity({
     required this.day,
     required int defaultAlarmTypeSetting,
-    // TODO
-    // required String calendarId,
-    String calendarId = '',
+    required String calendarId,
     BasicActivityDataItem? basicActivityData,
   }) : super(
           basicActivityData == null

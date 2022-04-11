@@ -18,6 +18,7 @@ void main() {
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
+  const calendarId = 'Some calendar id';
 
   setUpAll(() {
     registerFallbackValues();
@@ -76,7 +77,10 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: EditActivityCubit.newActivity(
-          day: aDay, defaultAlarmTypeSetting: noAlarm),
+        day: aDay,
+        defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
+      ),
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(addActivityTypeAdvanced: false),
@@ -133,6 +137,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final activityWizardCubit = ActivityWizardCubit.edit(
@@ -173,6 +178,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: mockActivitiesBloc,
@@ -328,6 +334,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -742,6 +749,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -807,6 +815,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -896,6 +905,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -983,6 +993,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
@@ -1172,6 +1183,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1259,6 +1271,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1408,6 +1421,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1471,6 +1485,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1772,6 +1787,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1805,6 +1821,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1852,6 +1869,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1931,6 +1949,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1954,6 +1973,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2030,6 +2050,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2072,6 +2093,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2104,6 +2126,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
