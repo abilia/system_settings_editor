@@ -30,13 +30,6 @@ class MyPhotosPage extends StatelessWidget {
           appBar: AbiliaAppBar(
             title: translate.myPhotos,
             iconData: AbiliaIcons.myPhotos,
-            trailing: Padding(
-              padding: layout.myPhotos.addPhotoButtonPadding,
-              child: _AddPhotoButton(
-                myPhotoFolderId: myPhotoFolderId,
-                photoCalendarTabIndex: 1,
-              ),
-            ),
             bottom: AbiliaTabBar(
               tabs: [
                 TabItem(
@@ -63,6 +56,10 @@ class MyPhotosPage extends StatelessWidget {
                 myPhotoFolderId: myPhotoFolderId,
               ),
             ],
+          ),
+          floatingActionButton: _AddPhotoButton(
+            myPhotoFolderId: myPhotoFolderId,
+            photoCalendarTabIndex: 1,
           ),
           bottomNavigationBar: const BottomNavigation(
             backNavigationWidget: CloseButton(),
@@ -144,7 +141,7 @@ class _AddPhotoButton extends StatelessWidget {
             builder: (context, _) {
               final includeInPhotoCalendar =
                   tabController.index == photoCalendarTabIndex;
-              return IconActionButtonLight(
+              return IconActionButtonBlack(
                 onPressed: () async {
                   if (Config.isMP) {
                     if (permissionState
