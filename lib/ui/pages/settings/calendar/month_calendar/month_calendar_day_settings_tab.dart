@@ -28,7 +28,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
               value: WeekColor.captions,
               groupValue: state.color,
               onChanged: onWeekColorChanged,
-              text: Text(t.headings),
+              text: Text(t.captions),
             ),
             RadioField(
               value: WeekColor.columns,
@@ -49,19 +49,27 @@ class _MonthCalendarPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
-    return SizedBox(
+    return Container(
       height: layout.settings.monthPreviewHeight,
-      child: Row(
+      decoration: BoxDecoration(
+        color: AbiliaColors.white,
+        borderRadius: borderRadius,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
+        child: Row(
           children: List.generate(
-        DateTime.daysPerWeek,
-        (d) => _MonthDayView(
-          dayTheme: weekdayTheme(
-            dayColor: DayColor.allDays,
-            languageCode: languageCode,
-            weekday: d + 1,
+            DateTime.daysPerWeek,
+            (d) => _MonthDayView(
+              dayTheme: weekdayTheme(
+                dayColor: DayColor.allDays,
+                languageCode: languageCode,
+                weekday: d + 1,
+              ),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }
@@ -103,7 +111,7 @@ class _MonthDayView extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: state.color == WeekColor.columns
                         ? dayTheme.secondaryColor
-                        : AbiliaColors.white110,
+                        : AbiliaColors.white,
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(layout.monthCalendar.dayRadius),
                     ),

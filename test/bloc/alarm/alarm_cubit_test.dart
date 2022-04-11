@@ -6,11 +6,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart';
 
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../fakes/fakes_blocs.dart';
+import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 
 void main() {

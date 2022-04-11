@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/authentication/renew_token_cubit.dart';
-import 'package:seagull/fakes/fake_client.dart';
+import '../../fakes/fake_client.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
 void main() {

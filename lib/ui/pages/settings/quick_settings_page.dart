@@ -1,5 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/sound.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
 
@@ -29,13 +31,31 @@ class QuickSettingsPage extends StatelessWidget {
               SizedBox(height: layout.formPadding.verticalItemDistance),
               const SoundEffectsSwitch(),
             ]),
-            QuickSettingsGroup(children: [
-              SubHeading(t.volumeAlarm),
-              const AlarmVolumeSlider(),
-              SizedBox(height: layout.formPadding.groupBottomDistance),
-              SubHeading(t.volumeMedia),
-              const MediaVolumeSlider(),
-            ]),
+            BlocProvider<AlarmSoundCubit>(
+              create: (_) => AlarmSoundCubit(),
+              child: BlocBuilder<AlarmSoundCubit, Sound?>(
+                builder: (context, state) => QuickSettingsGroup(children: [
+                  SubHeading(t.volumeAlarm),
+                  AlarmVolumeSlider(
+                    onVolumeSet: () async {
+                      await context
+                          .read<AlarmSoundCubit>()
+                          .playSound(Sound.Default);
+                    },
+                  ),
+                  SizedBox(height: layout.formPadding.groupBottomDistance),
+                  SubHeading(t.volumeMedia),
+                  MediaVolumeSlider(
+                    onVolumeSet: () async {
+                      await context.read<AlarmSoundCubit>().stopSound();
+                      await context
+                          .read<AlarmSoundCubit>()
+                          .playSound(Sound.Harpe);
+                    },
+                  ),
+                ]),
+              ),
+            ),
             const QuickSettingsGroup(children: [
               BrightnessSlider(),
             ]),

@@ -172,16 +172,11 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
                   key: TestKey.activityCheckButton,
                   text: translate.check,
                   icon: AbiliaIcons.handiCheck,
-                  onPressed: () async {
-                    final checked =
-                        await checkConfirmation(context, activityDay);
-                    if (checked == true) {
-                      await cancelNotifications(
-                        uncheckedReminders(activityDay),
-                      );
-                      await popAlarm(context, alarm);
-                    }
-                  },
+                  onPressed: () => checkConfirmationAndRemoveAlarm(
+                    context,
+                    activityDay,
+                    alarm: alarm,
+                  ),
                 ),
               ),
             ],

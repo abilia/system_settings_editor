@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
+
+import '../fakes/all.dart';
 
 void main() {
   group('alarms On Exact Minute', () {

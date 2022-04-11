@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
+import 'package:seagull/config.dart';
 import 'package:synchronized/synchronized.dart';
 
 import 'package:seagull/background/all.dart';
@@ -298,6 +299,7 @@ Future<AndroidNotificationDetails> _androidNotificationDetails(
     timeoutAfter: settings.durationMs,
     startActivityClassName:
         'com.abilia.memoplanner.AlarmActivity', // This is 'package.name.Activity', dont change to application flavor id
+    showNotification: Config.isMPGO,
     largeIcon: await _androidLargeIcon(
       notificationAlarm.event.image.id,
       fileStorage,

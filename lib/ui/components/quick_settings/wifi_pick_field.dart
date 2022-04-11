@@ -12,22 +12,28 @@ class WiFiPickField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final c = connectivity ?? Connectivity();
     return StreamBuilder<ConnectivityResult>(
-      stream: (connectivity ?? Connectivity()).onConnectivityChanged,
-      builder: (context, snapshot) {
-        final bool _connected = snapshot.data != ConnectivityResult.none;
-        return PickField(
-          leading: Icon(_connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
-          text: Text(t.wifi),
-          secondaryText: Text(
-            _connected ? t.connected : t.notConnected,
-            style:
-                (Theme.of(context).textTheme.bodyText2 ?? bodyText2).copyWith(
-              height: 1.0,
-              color: _connected ? AbiliaColors.green : AbiliaColors.red,
-            ),
-          ),
-          onTap: AndroidIntents.openWifiSettings,
+      stream: c.onConnectivityChanged,
+      builder: (context, _) {
+        return FutureBuilder(
+          future: c.checkConnectivity(),
+          builder: (context, snapshot) {
+            final bool _connected = snapshot.data != ConnectivityResult.none;
+            return PickField(
+              leading: Icon(_connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
+              text: Text(t.wifi),
+              secondaryText: Text(
+                _connected ? t.connected : t.notConnected,
+                style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                    .copyWith(
+                  height: 1.0,
+                  color: _connected ? AbiliaColors.green : AbiliaColors.red,
+                ),
+              ),
+              onTap: AndroidIntents.openWifiSettings,
+            );
+          },
         );
       },
     );

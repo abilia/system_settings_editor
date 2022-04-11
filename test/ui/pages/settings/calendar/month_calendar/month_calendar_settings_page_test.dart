@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/background/all.dart';
-import 'package:seagull/fakes/all.dart';
 import 'package:seagull/getit.dart';
 
 import 'package:seagull/models/all.dart';
@@ -204,8 +203,8 @@ void main() {
       expect(w.groupValue, WeekColor.captions);
       final dayContainer = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
-      expect((dayContainer.decoration as BoxDecoration).color,
-          AbiliaColors.white110);
+      expect(
+          (dayContainer.decoration as BoxDecoration).color, AbiliaColors.white);
     });
 
     testWidgets('color saved', (tester) async {
@@ -215,13 +214,13 @@ void main() {
       expect((dayContainer1.decoration as BoxDecoration).color,
           isNot(AbiliaColors.white110));
 
-      await tester.tap(find.text(translate.headings));
+      await tester.tap(find.text(translate.captions));
       await tester.pumpAndSettle();
       final dayContainer2 = tester.firstWidget<Container>(
           find.byKey(TestKey.monthDisplaySettingsDayView));
 
       expect((dayContainer2.decoration as BoxDecoration).color,
-          AbiliaColors.white110);
+          AbiliaColors.white);
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
 

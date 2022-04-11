@@ -1,5 +1,5 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/fakes/all.dart';
+import 'package:seagull/ui/pages/settings/fake_ticker.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
