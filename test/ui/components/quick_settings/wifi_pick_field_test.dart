@@ -36,6 +36,8 @@ void main() {
   testWidgets('Not connected shows no wifi icon', (WidgetTester tester) async {
     when(() => mockConnectivity.onConnectivityChanged)
         .thenAnswer((_) => Stream.value(ConnectivityResult.none));
+    when(() => mockConnectivity.checkConnectivity())
+        .thenAnswer((_) => Future.value(ConnectivityResult.none));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
       connectivity: mockConnectivity,
     )));
@@ -47,6 +49,8 @@ void main() {
   testWidgets('Connected shows wifi icon', (WidgetTester tester) async {
     when(() => mockConnectivity.onConnectivityChanged)
         .thenAnswer((_) => Stream.value(ConnectivityResult.wifi));
+    when(() => mockConnectivity.checkConnectivity())
+        .thenAnswer((_) => Future.value(ConnectivityResult.wifi));
     await tester.pumpWidget(wrapWithMaterialApp(WiFiPickField(
       connectivity: mockConnectivity,
     )));
