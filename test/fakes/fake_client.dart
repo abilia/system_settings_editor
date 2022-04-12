@@ -77,7 +77,7 @@ class Fakes {
             response = licenseResponse?.call() ??
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
-          if (pathSegments.containsAll(['calendar'])) {
+          if (pathSegments.contains('calendar')) {
             response = calendarSuccessResponse;
           }
           if (pathSegments.containsAll({'entity', 'user'})) {

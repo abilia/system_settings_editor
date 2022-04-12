@@ -1,23 +1,28 @@
-import 'dart:convert';
-
 import 'package:seagull/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarDb {
-  static const String _calendarIdRecord = 'calendarIdRecord';
+  static const String _calendarIdRecord = 'calendarIdRecord',
+      _calendarTypeRecord = 'calendarTypeRecord',
+      _calendarOwnerRecord = 'calendarOwnerRecord',
+      _calendarMainRecord = 'calendarMainRecord';
+
   final SharedPreferences prefs;
   const CalendarDb(this.prefs);
 
-  Future<void> setCalendarType(CalendarType calendarType) =>
-      prefs.setString(_calendarIdRecord, jsonEncode(calendarType.toJson()));
+  Future setCalendar(Calendar calendar) => Future.wait([
+        prefs.setString(_calendarIdRecord, calendar.id),
+        prefs.setString(_calendarTypeRecord, calendar.type),
+        prefs.setInt(_calendarOwnerRecord, calendar.owner),
+        prefs.setBool(_calendarMainRecord, calendar.main),
+      ]);
 
-  CalendarType? getCalendarType() {
-    final calendarTypeJson = prefs.getString(_calendarIdRecord);
-    if (calendarTypeJson != null) {
-      return CalendarType.fromJson(jsonDecode(calendarTypeJson));
-    }
-    return null;
-  }
+  String? getCalendarId() => prefs.getString(_calendarIdRecord);
 
-  Future<bool> deleteCalendar() => prefs.remove(_calendarIdRecord);
+  Future deleteCalendar() => Future.wait([
+        prefs.remove(_calendarIdRecord),
+        prefs.remove(_calendarTypeRecord),
+        prefs.remove(_calendarOwnerRecord),
+        prefs.remove(_calendarMainRecord),
+      ]);
 }

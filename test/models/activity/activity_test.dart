@@ -266,7 +266,7 @@ void main() {
       ]),
       fileId: fileId,
       checkable: true,
-      signedOffDates: ['00-02-20'],
+      signedOffDates: const ['00-02-20'],
       infoItem: infoItem,
       extras: Extras.createNew(
         startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
@@ -319,13 +319,15 @@ void main() {
 
   test('same values in db and json', () {
     final now = DateTime(2020, 02, 02, 02, 02, 02, 02);
-    final a = Activity.createNew(
+    final a = Activity(
       title: 'Title',
       calendarId: 'calendarID',
       startTime: now,
-      fileId: '',
+      fileId: 'fileId',
+      icon: 'icon',
       extras: Extras.createNew(
           startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm')),
+      timezone: 'time/zone',
     );
     final dbModel = a.wrapWithDbModel();
     final json = dbModel.toJson();
@@ -499,6 +501,27 @@ void main() {
       final a2 = a.copyWith(recurs: Recurs.not);
       expect(a.recurs.end, Recurs.noEndDate);
       expect(a2.recurs.end, expected);
+    });
+
+    test('calendar with calendarId stored', () {
+      const calId = 'calendarId';
+
+      final amodel = Activity.createNew(
+        startTime: DateTime(2022, 2, 22, 22, 22),
+        calendarId: calId,
+      ).wrapWithDbModel();
+
+      final json = amodel.toJson();
+      expect(json['calendarId'], calId);
+      final dbMap = amodel.toMapForDb();
+      expect(dbMap['calendar_id'], calId);
+    });
+
+    test('calendar without calendarId toJson is ignored', () {
+      final json = Activity.createNew(
+        startTime: DateTime(2022, 2, 22, 22, 22),
+      ).wrapWithDbModel().toJson();
+      expect(json['calendarId'], isNull);
     });
   });
 }

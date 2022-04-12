@@ -35,9 +35,8 @@ class Activity extends DataModel {
     );
   }
 
-  final String seriesId, calendarId, title, fileId, icon, timezone;
+  final String seriesId, title, fileId, icon, timezone, calendarId;
   final DateTime startTime;
-  final DateTime noneRecurringEnd;
   final Duration duration;
   final int category, alarmType;
   final bool deleted, fullDay, checkable, removeAfter, secret;
@@ -46,13 +45,16 @@ class Activity extends DataModel {
   final InfoItem infoItem;
   final Recurs recurs;
   final Extras extras;
-  final UnmodifiableSetView<Duration> reminders;
-  final Alarm alarm;
+
+  late final DateTime noneRecurringEnd = startTime.add(duration);
+  late final UnmodifiableSetView<Duration> reminders = UnmodifiableSetView(
+    reminderBefore.map((ms) => Duration(milliseconds: ms)).toSet(),
+  );
+  late final Alarm alarm = Alarm.fromInt(alarmType);
 
   Activity._({
     required String id,
     required this.seriesId,
-    required this.calendarId,
     required this.title,
     required this.startTime,
     required this.duration,
@@ -71,19 +73,13 @@ class Activity extends DataModel {
     required this.signedOffDates,
     required this.timezone,
     required this.extras,
+    required this.calendarId,
   })  : assert(alarmType >= 0),
         assert(category >= 0),
-        noneRecurringEnd = startTime.add(duration),
-        reminders = UnmodifiableSetView(
-          reminderBefore.map((ms) => Duration(milliseconds: ms)).toSet(),
-        ),
-        alarm = Alarm.fromInt(alarmType),
         super(id);
 
-  static Activity createNew({
+  factory Activity({
     String title = '',
-    // TODO required String calendarId,
-    String calendarId = '',
     required DateTime startTime,
     Duration duration = Duration.zero,
     int category = Category.right,
@@ -98,13 +94,13 @@ class Activity extends DataModel {
     String icon = '',
     Iterable<int> reminderBefore = const [],
     Iterable<String> signedOffDates = const [],
-    String timezone = '',
+    required String timezone,
     Extras extras = Extras.empty,
+    required String calendarId,
   }) {
     final id = const Uuid().v4();
     return Activity._(
       id: id,
-      calendarId: calendarId,
       seriesId: id,
       title: title,
       startTime: startTime,
@@ -124,8 +120,51 @@ class Activity extends DataModel {
       signedOffDates: UnmodifiableListView(signedOffDates),
       timezone: timezone,
       extras: extras,
+      calendarId: calendarId,
     );
   }
+
+  @visibleForTesting
+  factory Activity.createNew({
+    String title = '',
+    required DateTime startTime,
+    Duration duration = Duration.zero,
+    int category = Category.right,
+    Recurs recurs = Recurs.not,
+    bool fullDay = false,
+    bool checkable = false,
+    bool removeAfter = false,
+    bool secret = false,
+    int alarmType = alarmSoundAndVibration,
+    InfoItem infoItem = const NoInfoItem(),
+    String fileId = '',
+    String icon = '',
+    Iterable<int> reminderBefore = const [],
+    Iterable<String> signedOffDates = const [],
+    String timezone = '',
+    Extras extras = Extras.empty,
+    String calendarId = '',
+  }) =>
+      Activity(
+        title: title,
+        startTime: startTime,
+        duration: duration,
+        fileId: fileId,
+        icon: icon,
+        category: category,
+        checkable: checkable,
+        removeAfter: removeAfter,
+        secret: secret,
+        fullDay: fullDay,
+        recurs: recurs,
+        reminderBefore: reminderBefore,
+        alarmType: alarmType,
+        infoItem: infoItem,
+        signedOffDates: signedOffDates,
+        timezone: timezone,
+        extras: extras,
+        calendarId: calendarId,
+      );
 
   @override
   DbActivity wrapWithDbModel({int revision = 0, int dirty = 0}) => DbActivity._(
@@ -161,10 +200,10 @@ class Activity extends DataModel {
     Iterable<String>? signedOffDates,
     String? timezone,
     Extras? extras,
+    String? calendarId,
   }) =>
       Activity._(
         id: newId ? const Uuid().v4() : id,
-        calendarId: calendarId,
         seriesId: seriesId,
         title: title ?? this.title,
         startTime: startTime ?? this.startTime,
@@ -193,6 +232,7 @@ class Activity extends DataModel {
             : this.signedOffDates,
         timezone: timezone ?? this.timezone,
         extras: extras ?? this.extras,
+        calendarId: calendarId ?? this.calendarId,
       );
 
   static Recurs _newRecurrence(
@@ -228,13 +268,13 @@ class Activity extends DataModel {
         recurs:
             recurs.isRecurring ? other.recurs.changeEnd(recurs.end) : recurs,
         extras: other.extras,
+        calendarId: other.calendarId,
       );
 
   @override
   List<Object> get props => [
         id,
         seriesId,
-        calendarId,
         title,
         startTime.millisecondsSinceEpoch,
         duration,
@@ -253,6 +293,7 @@ class Activity extends DataModel {
         signedOffDates,
         timezone,
         extras,
+        calendarId,
       ];
 
   @override

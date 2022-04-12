@@ -22,7 +22,6 @@ class DbActivity extends DbModel<Activity> {
   static DbActivity fromJson(Map<String, dynamic> json) => DbActivity._(
         activity: Activity._(
           id: json['id'],
-          calendarId: json['calendarId'] ?? '',
           seriesId: json['seriesId'],
           title: json['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
@@ -48,6 +47,7 @@ class DbActivity extends DbModel<Activity> {
               ? tz.local.name
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
+          calendarId: json['calendarId'] ?? '',
         ),
         revision: json['revision'],
         dirty: 0,
@@ -56,7 +56,6 @@ class DbActivity extends DbModel<Activity> {
   static DbActivity fromDbMap(Map<String, dynamic> dbRow) => DbActivity._(
         activity: Activity._(
           id: dbRow['id'],
-          calendarId: dbRow['calendar_id'] ?? '',
           seriesId: dbRow['series_id'],
           title: dbRow['title'] ?? '',
           startTime: DateTime.fromMillisecondsSinceEpoch(dbRow['start_time']),
@@ -82,6 +81,7 @@ class DbActivity extends DbModel<Activity> {
               ? tz.local.name
               : dbRow['timezone'],
           extras: Extras.fromJsonString(dbRow['extras']),
+          calendarId: dbRow['calendar_id'] ?? '',
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -91,7 +91,6 @@ class DbActivity extends DbModel<Activity> {
   Map<String, dynamic> toJson() => {
         'id': activity.id,
         'seriesId': activity.seriesId,
-        'calendarId': activity.calendarId.isEmpty ? null : activity.calendarId,
         'title': activity.title,
         'startTime': activity.startTime.millisecondsSinceEpoch,
         'endTime': activity.recurs.endTime,
@@ -113,13 +112,13 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
+        if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
   @override
   Map<String, dynamic> toMapForDb() => {
         'id': activity.id,
         'series_id': activity.seriesId,
-        'calendar_id': activity.calendarId,
         'title': activity.title,
         'start_time': activity.startTime.millisecondsSinceEpoch,
         'end_time': activity.recurs.endTime,
@@ -140,6 +139,7 @@ class DbActivity extends DbModel<Activity> {
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
+        'calendar_id': activity.calendarId,
         'revision': revision,
         'dirty': dirty,
       };

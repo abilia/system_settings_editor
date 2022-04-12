@@ -144,6 +144,45 @@ void main() {
     );
 
     blocTest(
+      'CheckAuthentication event fetches calendar',
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
+      verify: (bloc) => verify(
+        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
+      ).called(1),
+    );
+
+    blocTest(
+      'CheckAuthentication event auth failed, no calendar fethed',
+      setUp: () {
+        when(() => mockedUserRepository.getToken()).thenReturn(null);
+      },
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
+      verify: (bloc) => verifyNever(
+        () => mockedUserRepository.fetchAndSetCalendar(any(), any()),
+      ),
+    );
+
+    blocTest(
+      'loggedIn event fetches calendar',
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(
+          const LoggedIn(
+            loginInfo: LoginInfo(
+              token: Fakes.token,
+              endDate: 1111,
+              renewToken: 'renewToken',
+            ),
+          ),
+        ),
+      verify: (bloc) => verify(
+        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
+      ).called(1),
+    );
+
+    blocTest(
       'loggedOut calls deletes token',
       build: () => AuthenticationBloc(
         mockedUserRepository,

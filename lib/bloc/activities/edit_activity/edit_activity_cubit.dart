@@ -36,12 +36,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   }) : super(
           basicActivityData == null
               ? UnstoredActivityState(
-                  Activity.createNew(
-                    title: '',
-                    calendarId: calendarId,
+                  Activity(
                     startTime: day,
                     timezone: tz.local.name,
                     alarmType: defaultAlarmTypeSetting,
+                    calendarId: calendarId,
                   ),
                   TimeInterval(startDate: day),
                 )

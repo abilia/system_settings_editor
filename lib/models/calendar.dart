@@ -1,16 +1,16 @@
-class CalendarType {
+class Calendar {
   final String id, type;
   final int owner;
   final bool main;
 
-  const CalendarType._(
+  const Calendar._(
     this.id,
     this.type,
     this.owner,
     this.main,
   );
 
-  factory CalendarType.fromJson(Map<String, dynamic> json) => CalendarType._(
+  factory Calendar.fromJson(Map<String, dynamic> json) => Calendar._(
         json['id'],
         json['type'],
         json['owner'],

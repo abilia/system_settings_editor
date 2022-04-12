@@ -156,7 +156,7 @@ class CreateNewPage extends StatelessWidget {
             BlocProvider<EditActivityCubit>(
               create: (_) => EditActivityCubit.newActivity(
                 day: context.read<DayPickerBloc>().state.day,
-                calendarId: GetIt.I<CalendarDb>().getCalendarType()?.id ?? '',
+                calendarId: GetIt.I<CalendarDb>().getCalendarId() ?? '',
                 defaultAlarmTypeSetting: context
                     .read<MemoplannerSettingBloc>()
                     .state
