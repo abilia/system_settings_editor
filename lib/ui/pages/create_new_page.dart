@@ -162,7 +162,7 @@ class CreateNewPage extends StatelessWidget {
                 basicActivityData: basicActivity,
               ),
             ),
-            BlocProvider(
+            BlocProvider<WizardCubit>(
               create: (context) => ActivityWizardCubit.newActivity(
                 activitiesBloc: context.read<ActivitiesBloc>(),
                 editActivityCubit: context.read<EditActivityCubit>(),

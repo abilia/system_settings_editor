@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/settings/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class EndDatePickerWiz extends StatelessWidget {
@@ -37,12 +38,11 @@ class EndDatePickerWiz extends StatelessWidget {
                   ),
                 );
               },
-              child:
-                  BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.calendarDayColor != current.calendarDayColor,
-                builder: (context, memoSettingsState) => MonthBody(
-                  calendarDayColor: memoSettingsState.calendarDayColor,
+              child: BlocSelector<MemoplannerSettingBloc,
+                  MemoplannerSettingsState, DayColor>(
+                selector: (state) => state.calendarDayColor,
+                builder: (context, calendarDayColor) => MonthBody(
+                  calendarDayColor: calendarDayColor,
                   showPreview: false,
                 ),
               ),

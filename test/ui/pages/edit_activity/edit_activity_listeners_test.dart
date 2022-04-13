@@ -92,7 +92,7 @@ void main() {
                         ActivityDay(activity, today),
                       ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => newActivity
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),

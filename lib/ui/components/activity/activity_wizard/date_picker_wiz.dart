@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DatePickerWiz extends StatelessWidget {
@@ -24,25 +25,21 @@ class DatePickerWiz extends StatelessWidget {
               ),
             ),
           ],
-          child: WizardScaffold(
-            title: Translator.of(context).translate.selectDate,
-            iconData: AbiliaIcons.day,
-            bottom: const MonthAppBarStepper(),
-            body: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-              buildWhen: (previous, current) =>
-                  previous.calendarDayColor != current.calendarDayColor,
-              builder: (context, memoSettingsState) => MonthBody(
-                calendarDayColor: memoSettingsState.calendarDayColor,
-                showPreview: false,
+          child: BlocListener<DayPickerBloc, DayPickerState>(
+            listener: (context, state) =>
+                context.read<EditActivityCubit>().changeDate(state.day),
+            child: WizardScaffold(
+              title: Translator.of(context).translate.selectDate,
+              iconData: AbiliaIcons.day,
+              bottom: const MonthAppBarStepper(),
+              body: BlocSelector<MemoplannerSettingBloc,
+                  MemoplannerSettingsState, DayColor>(
+                selector: (state) => state.calendarDayColor,
+                builder: (context, calendarDayColor) => MonthBody(
+                  calendarDayColor: calendarDayColor,
+                  showPreview: false,
+                ),
               ),
-            ),
-            bottomNavigationBar: Builder(
-              builder: (context) => WizardBottomNavigation(beforeOnNext: () {
-                context.read<EditActivityCubit>().changeDate(
-                      context.read<DayPickerBloc>().state.day,
-                    );
-                return null;
-              }),
             ),
           ),
         );

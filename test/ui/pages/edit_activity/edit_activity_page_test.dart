@@ -40,13 +40,13 @@ void main() {
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
     registerFallbackValues();
+    tz.initializeTimeZones();
+    await initializeDateFormatting();
   });
 
   setUp(() async {
-    tz.initializeTimeZones();
-    await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();
@@ -102,7 +102,7 @@ void main() {
                         ActivityDay(activity, today),
                       ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => newActivity
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),
@@ -973,7 +973,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
+        expect(find.byType(FadeInCalendarImage), findsOneWidget);
       });
 
       testWidgets('Can open new question dialog', (WidgetTester tester) async {
@@ -1068,7 +1068,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
         await tester.pumpAndSettle();
         expect(find.text(questions[0]!), findsNothing);
         expect(find.text(questions[1]!), findsOneWidget);
@@ -1111,7 +1111,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
+        await tester.tap(find.byIcon(AbiliaIcons.cursorDown));
         await tester.pumpAndSettle();
 
         final newQuestion0y = tester.getCenter(find.text(questions[0]!)).dy;
@@ -1128,7 +1128,7 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);
@@ -1173,7 +1173,7 @@ text''';
         expect(find.text(questions[0]!), findsOneWidget);
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);

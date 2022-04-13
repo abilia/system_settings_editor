@@ -1,15 +1,10 @@
-import 'dart:convert';
-
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:seagull/i18n/all.dart';
+
 import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
 import 'package:seagull/utils/all.dart';
 
 part 'db_sortable.dart';
-part 'sortable_data.dart';
 
 class SortableType {
   static const String imageArchive = 'imagearchive',
@@ -49,7 +44,7 @@ class Sortable<T extends SortableData> extends DataModel {
     assert(sortOrder.isNotEmpty);
     return Sortable<T>._(
       id: const Uuid().v4(),
-      type: _getTypeString<T>(),
+      type: _getTypeString(data.runtimeType),
       data: data,
       groupId: groupId,
       sortOrder: sortOrder,
@@ -60,10 +55,24 @@ class Sortable<T extends SortableData> extends DataModel {
     );
   }
 
-  static String _getTypeString<T extends SortableData>() {
-    if (T == ImageArchiveData) return SortableType.imageArchive;
-    if (T == NoteData) return SortableType.note;
-    return '';
+  static String _getTypeString(Type t) {
+    switch (t) {
+      case ImageArchiveData:
+        return SortableType.imageArchive;
+      case NoteData:
+        return SortableType.note;
+      case ChecklistData:
+        return SortableType.checklist;
+      case BasicActivityData:
+      case BasicActivityDataItem:
+      case BasicActivityDataFolder:
+        return SortableType.basicActivity;
+      case BasicTimerData:
+      case BasicTimerDataItem:
+      case BasicTimerDataFolder:
+        return SortableType.basicActivity;
+    }
+    throw 'no mapping from Type $t and type string';
   }
 
   @override

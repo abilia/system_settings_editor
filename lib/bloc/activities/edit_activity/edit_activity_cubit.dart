@@ -11,11 +11,8 @@ import 'package:seagull/utils/all.dart';
 part 'edit_activity_state.dart';
 
 class EditActivityCubit extends Cubit<EditActivityState> {
-  final DateTime day;
-
   EditActivityCubit.edit(ActivityDay activityDay)
-      : day = activityDay.day,
-        super(
+      : super(
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
@@ -27,9 +24,19 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                           : null),
               activityDay.day),
         );
+  EditActivityCubit.editTemplate(
+    BasicActivityDataItem basicActivityData,
+    DateTime day,
+  ) : super(
+          StoredActivityState(
+            basicActivityData.toActivity(timezone: tz.local.name, day: day),
+            TimeInterval(startDate: day),
+            day,
+          ),
+        );
 
   EditActivityCubit.newActivity({
-    required this.day,
+    required DateTime day,
     required int defaultAlarmTypeSetting,
     BasicActivityDataItem? basicActivityData,
   }) : super(

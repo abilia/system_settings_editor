@@ -1,22 +1,16 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
-part 'activity_wizard_state.dart';
-
-class ActivityWizardCubit extends Cubit<ActivityWizardState> {
+class ActivityWizardCubit extends WizardCubit {
   final ActivitiesBloc activitiesBloc;
   final EditActivityCubit editActivityCubit;
-  final MemoplannerSettingsState settings;
   final ClockBloc clockBloc;
-  final bool edit;
-
-  bool get allowActivityTimeBeforeCurrent =>
-      settings.settings.addActivity.allowPassedStartTime;
+  final bool allowActivityTimeBeforeCurrent;
 
   StreamSubscription<EditActivityState>? _editActivityCubitSubscription;
 
@@ -24,17 +18,14 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.activitiesBloc,
     required this.editActivityCubit,
     required this.clockBloc,
-    required this.settings,
-  })  : edit = false,
+    required MemoplannerSettingsState settings,
+  })  : allowActivityTimeBeforeCurrent =
+            settings.settings.addActivity.allowPassedStartTime,
         super(
-          ActivityWizardState(
+          WizardState(
             0,
             settings.addActivityType == NewActivityMode.editView
-                ? UnmodifiableListView(
-                    [
-                      WizardStep.advance,
-                    ],
-                  )
+                ? UnmodifiableListView([WizardStep.advance])
                 : _generateWizardSteps(
                     stepByStep: settings.settings.stepByStep,
                     addRecurringActivity:
@@ -89,10 +80,12 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     required this.activitiesBloc,
     required this.editActivityCubit,
     required this.clockBloc,
-    required this.settings,
-  })  : edit = true,
-        super(ActivityWizardState(0, const [WizardStep.advance]));
+    required MemoplannerSettingsState settings,
+  })  : allowActivityTimeBeforeCurrent =
+            settings.settings.addActivity.allowPassedStartTime,
+        super(WizardState(0, const [WizardStep.advance]));
 
+  @override
   void next({
     bool warningConfirmed = false,
     SaveRecurring? saveRecurring,
@@ -123,9 +116,7 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
     emit(state.copyWith(newStep: (state.step + 1)));
   }
 
-  void previous() => emit(state.copyWith(newStep: (state.step - 1)));
-
-  ActivityWizardState _saveActivity(
+  WizardState _saveActivity(
     EditActivityState editState, {
     required bool beforeNowWarningConfirmed,
     required bool conflictWarningConfirmed,
@@ -173,13 +164,6 @@ class ActivityWizardCubit extends Cubit<ActivityWizardState> {
   }
 }
 
-class SaveRecurring {
-  final ApplyTo applyTo;
-  final DateTime day;
-
-  const SaveRecurring(this.applyTo, this.day);
-}
-
 extension SaveErrorExtension on EditActivityState {
   Set<SaveError> saveErrors({
     required bool beforeNowWarningConfirmed,
@@ -210,7 +194,7 @@ extension SaveErrorExtension on EditActivityState {
       };
 
   SaveError? stepErrors({
-    required ActivityWizardState wizState,
+    required WizardState wizState,
     required DateTime now,
     required bool allowActivityTimeBeforeCurrent,
     required bool warningConfirmed,

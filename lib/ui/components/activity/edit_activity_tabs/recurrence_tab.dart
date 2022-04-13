@@ -23,8 +23,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 children: [
                   CollapsableWidget(
                     collapsed: activity.fullDay,
-                    child:
-                        BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                    child: BlocBuilder<WizardCubit, WizardState>(
                       buildWhen: (prev, current) =>
                           current.saveErrors.isNotEmpty,
                       builder: (context, wizState) => Column(
@@ -43,7 +42,7 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
                 ],
               ),
               if (recurs.weekly || recurs.monthly)
-                BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                BlocBuilder<WizardCubit, WizardState>(
                     buildWhen: (prev, current) => current.saveErrors.isNotEmpty,
                     builder: (context, wizState) {
                       final recurringDataError = wizState.saveErrors
