@@ -1,28 +1,28 @@
+import 'package:seagull/db/database_repository.dart';
 import 'package:seagull/models/all.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:sqflite/sqflite.dart';
 
 class CalendarDb {
-  static const String _calendarIdRecord = 'calendarIdRecord',
-      _calendarTypeRecord = 'calendarTypeRecord',
-      _calendarOwnerRecord = 'calendarOwnerRecord',
-      _calendarMainRecord = 'calendarMainRecord';
+  static const memoType = 'MEMOPLANNER';
+  final Database db;
+  const CalendarDb(this.db);
 
-  final SharedPreferences prefs;
-  const CalendarDb(this.prefs);
+  Future insert(Calendar calendar) => db.insert(
+        DatabaseRepository.calendarTableName,
+        calendar.toMapForDb(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
 
-  Future setCalendar(Calendar calendar) => Future.wait([
-        prefs.setString(_calendarIdRecord, calendar.id),
-        prefs.setString(_calendarTypeRecord, calendar.type),
-        prefs.setInt(_calendarOwnerRecord, calendar.owner),
-        prefs.setBool(_calendarMainRecord, calendar.main),
-      ]);
-
-  String? getCalendarId() => prefs.getString(_calendarIdRecord);
-
-  Future deleteCalendar() => Future.wait([
-        prefs.remove(_calendarIdRecord),
-        prefs.remove(_calendarTypeRecord),
-        prefs.remove(_calendarOwnerRecord),
-        prefs.remove(_calendarMainRecord),
-      ]);
+  Future<String?> getCalendarId() async {
+    final queryResult = await db.query(
+      DatabaseRepository.calendarTableName,
+      where: 'type = ?',
+      orderBy: 'main',
+      limit: 1,
+      whereArgs: [memoType],
+    );
+    if (queryResult.isEmpty) return null;
+    return Calendar.fromDbMap(queryResult.first).id;
+  }
 }

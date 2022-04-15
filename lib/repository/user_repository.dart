@@ -131,13 +131,18 @@ class UserRepository extends Repository {
   }
 
   Future fetchAndSetCalendar(String token, int userId) async {
-    if (calendarDb.getCalendarId() == null) {
-      final response = await client.post(
-        '$baseUrl/api/v1/calendar/$userId?type=MEMOPLANNER'.toUri(),
-        headers: authHeader(token),
-      );
-      final calendarType = Calendar.fromJson(response.json());
-      await calendarDb.setCalendar(calendarType);
+    try {
+      if (await calendarDb.getCalendarId() == null) {
+        final response = await client.post(
+          '$baseUrl/api/v1/calendar/$userId?type=${CalendarDb.memoType}'
+              .toUri(),
+          headers: authHeader(token),
+        );
+        final calendarType = Calendar.fromJson(response.json());
+        await calendarDb.insert(calendarType);
+      }
+    } catch (e, s) {
+      _log.severe('could not fetch calendarId', e, s);
     }
   }
 
@@ -149,8 +154,6 @@ class UserRepository extends Repository {
     await loginDb.deleteLoginInfo();
     _log.fine('deleting user');
     await userDb.deleteUser();
-    _log.fine('deleting calendar id');
-    await calendarDb.deleteCalendar();
   }
 
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>

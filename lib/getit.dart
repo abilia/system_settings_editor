@@ -125,8 +125,7 @@ class GetItInitializer {
     ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
     ..registerSingleton<SettingsDb>(
         _settingsDb ?? SettingsDb(_sharedPreferences))
-    ..registerSingleton<CalendarDb>(
-        _calendarDb ?? CalendarDb(_sharedPreferences))
+    ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
     ..registerSingleton<FileStorage>(
         _fileStorage ?? FileStorage(_documentsDirectory?.path))
     ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)

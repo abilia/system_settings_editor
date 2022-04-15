@@ -148,6 +148,7 @@ class CreateNewPage extends StatelessWidget {
   Future<void> navigateToActivityWizard(
       BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
+    final calendarId = await GetIt.I<CalendarDb>().getCalendarId() ?? '';
     final activityCreated = await Navigator.of(context).push<bool>(
       _createRoute<bool>(
         MultiBlocProvider(
@@ -156,7 +157,7 @@ class CreateNewPage extends StatelessWidget {
             BlocProvider<EditActivityCubit>(
               create: (_) => EditActivityCubit.newActivity(
                 day: context.read<DayPickerBloc>().state.day,
-                calendarId: GetIt.I<CalendarDb>().getCalendarId() ?? '',
+                calendarId: calendarId,
                 defaultAlarmTypeSetting: context
                     .read<MemoplannerSettingBloc>()
                     .state

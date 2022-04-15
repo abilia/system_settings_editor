@@ -6,7 +6,7 @@ class ActivityDb extends DataDb<Activity> {
   ActivityDb(Database database) : super(database);
 
   @override
-  String get tableName => DatabaseRepository.calendarTableName;
+  String get tableName => DatabaseRepository.activityTableName;
   @override
   DbMapTo<Activity> get convertToDataModel => DbActivity.fromDbMap;
 

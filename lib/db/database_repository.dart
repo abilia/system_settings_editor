@@ -1,22 +1,20 @@
 import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-final _log = Logger((DatabaseRepository).toString());
-
 class DatabaseRepository {
   DatabaseRepository._();
-  static const calendarTableName = 'calendar_activity';
+  static const activityTableName = 'calendar_activity';
   static const sortableTableName = 'sortable';
   static const userFileTableName = 'user_file';
   static const genericTableName = 'generic';
   static const timerTableName = 'timer';
+  static const calendarTableName = 'calendar';
   @visibleForTesting
   static final initialScript = [
     '''
-      create table $calendarTableName (
+      create table $activityTableName (
         id text primary key not null,
         series_id text not null,
         title text,
@@ -94,13 +92,22 @@ class DatabaseRepository {
           paused_at int
         )
   ''';
+  static const String _createCalendarTable = '''
+    create table $calendarTableName (
+          id text primary key not null,
+          type text,
+          owner int,
+          main bool
+        )
+  ''';
 
   @visibleForTesting
   static final migrations = <String>[
-    'alter table $calendarTableName add column extras text',
+    'alter table $activityTableName add column extras text',
     'alter table $sortableTableName add column fixed int',
     _createTimersTable,
-    'alter table $calendarTableName add column calendar_id text',
+    'alter table $activityTableName add column calendar_id text',
+    _createCalendarTable,
   ];
 
   static Future<Database> createSqfliteDb() async {
@@ -126,36 +133,14 @@ class DatabaseRepository {
     );
   }
 
-  static Future logAll(Database db) async {
-    void logTable(List<Map<String, dynamic>> calendar) {
-      if (calendar.isEmpty) return;
-      _log.info(calendar.first.keys.join('\t\t'));
-      for (final element in calendar) {
-        _log.info(element.values.join('\t'));
-      }
-    }
-
-    final calendar = await db.rawQuery(
-        'select id, title, file_id, revision, dirty, deleted from $calendarTableName order by revision desc');
-    _log.info('------------------- CALENDAR ---------------------');
-    logTable(calendar);
-    final userFile = await db.rawQuery(
-        'select id, revision, deleted, path, content_type, file_loaded from $userFileTableName order by revision desc');
-    _log.info('------------------- USER FILES ---------------------');
-    logTable(userFile);
-    final sortables = await db.rawQuery(
-        'select id, data, revision, dirty, deleted, is_group, type, group_id from $sortableTableName order by revision desc');
-    _log.info('------------------- SORTABLES ---------------------');
-    logTable(sortables);
-  }
-
   static Future clearAll(Database db) {
     final batch = db.batch()
-      ..delete(calendarTableName)
+      ..delete(activityTableName)
       ..delete(sortableTableName)
       ..delete(userFileTableName)
       ..delete(timerTableName)
-      ..delete(genericTableName);
+      ..delete(genericTableName)
+      ..delete(calendarTableName);
     return batch.commit();
   }
 

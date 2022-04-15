@@ -98,7 +98,6 @@ void main() {
     when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
-    when(() => mockCalendarDb.deleteCalendar()).thenAnswer((_) async => true);
     when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
             headers: authHeader(token)))
         .thenAnswer((_) => Future.value(Response('body', 200)));
@@ -112,7 +111,6 @@ void main() {
     verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
-    verify(() => mockCalendarDb.deleteCalendar());
   });
 
   test('exception when logging out', () async {
@@ -123,7 +121,6 @@ void main() {
     when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
-    when(() => mockCalendarDb.deleteCalendar()).thenAnswer((_) async => true);
 
     // Act
     await userRepo.logout(token);
@@ -134,6 +131,5 @@ void main() {
     verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
-    verify(() => mockCalendarDb.deleteCalendar());
   });
 }

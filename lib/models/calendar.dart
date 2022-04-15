@@ -17,10 +17,16 @@ class Calendar {
         json['main'],
       );
 
-  Map<String, dynamic> toJson() => {
+  factory Calendar.fromDbMap(Map<String, dynamic> dbMap) => Calendar._(
+        dbMap['id'],
+        dbMap['type'],
+        dbMap['owner'],
+        dbMap['main'] == 1,
+      );
+  Map<String, dynamic> toMapForDb() => {
         'id': id,
         'type': type,
         'owner': owner,
-        'main': main,
+        'main': main ? 1 : 0,
       };
 }

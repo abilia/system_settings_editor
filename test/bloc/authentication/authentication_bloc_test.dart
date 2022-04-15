@@ -17,6 +17,7 @@ void main() {
     late UserRepository userRepository;
     setUp(() async {
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
+      final db = await DatabaseRepository.createInMemoryFfiDb();
       userRepository = UserRepository(
         client: Fakes.client(),
         loginDb: LoginDb(prefs),
@@ -24,7 +25,7 @@ void main() {
         licenseDb: LicenseDb(prefs),
         baseUrlDb: BaseUrlDb(prefs),
         deviceDb: DeviceDb(prefs),
-        calendarDb: CalendarDb(prefs),
+        calendarDb: CalendarDb(db),
       );
     });
 
