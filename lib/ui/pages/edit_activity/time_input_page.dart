@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
+import '../../components/custom_num_pad.dart';
+
 class TimeInputPage extends StatelessWidget {
   final TimeInput timeInput;
 
@@ -310,10 +312,30 @@ class _TimeInputContentState extends State<TimeInputContent>
                       focusNode: endTimeFocus,
                       controller: endTimeController,
                     ),
-                  ]
+                  ],
                 ],
               ),
             ),
+          ),
+          NumPad(
+            buttonSize: 50,
+            controller: startTimeController,
+            delete: () {
+              startTimeController.text = startTimeController.text
+                  .substring(0, startTimeController.text.length - 1);
+            },
+            // do something with the input numbers
+            onSubmit: () {
+              debugPrint('Your code: ${startTimeController.text}');
+              showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    content: Text(
+                      'You code is ${startTimeController.text}',
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                  ));
+            },
           ),
           const Spacer(),
           widget.bottomNavigationBuilder(
