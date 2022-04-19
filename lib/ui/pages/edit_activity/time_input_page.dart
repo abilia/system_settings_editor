@@ -330,11 +330,11 @@ class _TimeInputContentState extends State<TimeInputContent>
               showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    content: Text(
-                      'You code is ${startTimeController.text}',
-                      style: const TextStyle(fontSize: 30),
-                    ),
-                  ));
+                        content: Text(
+                          'You code is ${startTimeController.text}',
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                      ));
             },
           ),
           const Spacer(),

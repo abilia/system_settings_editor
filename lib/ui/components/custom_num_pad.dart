@@ -171,9 +171,8 @@ class NumberButton extends StatelessWidget {
         style: TextButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            side: const BorderSide(width: 0.4, color: AbiliaColors.black)
-          ),
+              borderRadius: BorderRadius.circular(12.0),
+              side: const BorderSide(width: 0.4, color: AbiliaColors.black)),
         ),
         onPressed: () {
           controller.text += number.toString();
@@ -181,8 +180,7 @@ class NumberButton extends StatelessWidget {
         child: Center(
           child: Text(
             number.toString(),
-            style: const TextStyle(
-                color: AbiliaColors.black, fontSize: 24),
+            style: const TextStyle(color: AbiliaColors.black, fontSize: 24),
           ),
         ),
       ),
