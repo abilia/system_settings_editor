@@ -1,9 +1,10 @@
+import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/config.dart';
 
 class Tts extends StatelessWidget {
   final Text child;
@@ -59,6 +60,7 @@ class _Tts extends StatelessWidget {
     this.onLongPress,
   })  : assert(data != null || onLongPress != null),
         super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<SettingsCubit, SettingsState>(
@@ -67,10 +69,17 @@ class _Tts extends StatelessWidget {
           excludeFromSemantics: true,
           onLongPress: settingsState.textToSpeech &&
                   (onLongPress != null || data != null)
-              ? () =>
-                  GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data ?? '')
+              ? _playTts
               : null,
           child: child,
         ),
       );
+
+  void _playTts() async {
+    if(Config.isMP){
+      await AcapelaTts.playTts(onLongPress?.call() ?? data ?? '');
+    } else {
+      GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data ?? '');
+    }
+  }
 }
