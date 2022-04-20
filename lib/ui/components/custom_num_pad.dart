@@ -6,20 +6,22 @@ class NumPad extends StatelessWidget {
   final double buttonHeight;
   final Color buttonColor;
   final Color iconColor;
-  final TextEditingController controller;
+  final TextEditingController controllerStart;
+  final TextEditingController controllerEnd;
   final Function delete;
-  final Function onSubmit;
+  final Function onClear;
 
   const NumPad({
     Key? key,
-    this.buttonSize = 70,
+    this.buttonSize = 48,
     this.buttonWidth = 80,
     this.buttonHeight = 48,
     this.buttonColor = AbiliaColors.white135,
     this.iconColor = AbiliaColors.black,
     required this.delete,
-    required this.onSubmit,
-    required this.controller,
+    required this.onClear,
+    required this.controllerStart,
+    required this.controllerEnd,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,6 @@ class NumPad extends StatelessWidget {
       margin: const EdgeInsets.only(left: 60, right: 60),
       child: Column(
         children: [
-          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -37,21 +38,24 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 2,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 3,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
             ],
           ),
@@ -64,21 +68,24 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 5,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 6,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
             ],
           ),
@@ -91,21 +98,24 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 8,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
               NumberButton(
                 number: 9,
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
             ],
           ),
@@ -113,9 +123,8 @@ class NumPad extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // submit entered value -> change to clear
               IconButton(
-                onPressed: () => onSubmit(),
+                onPressed: () => onClear(),
                 icon: const Icon(
                   AbiliaIcons.cancel,
                   color: AbiliaColors.black,
@@ -127,9 +136,9 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controller: controller,
+                controllerStart: controllerStart,
+                controllerEnd: controllerEnd,
               ),
-              // Delete last number
               IconButton(
                 onPressed: () => delete(),
                 icon: const Icon(
@@ -151,7 +160,8 @@ class NumberButton extends StatelessWidget {
   final double width;
   final double height;
   final Color color;
-  final TextEditingController controller;
+  final TextEditingController controllerStart;
+  final TextEditingController controllerEnd;
 
   const NumberButton({
     Key? key,
@@ -159,7 +169,8 @@ class NumberButton extends StatelessWidget {
     required this.width,
     required this.height,
     required this.color,
-    required this.controller,
+    required this.controllerStart,
+    required this.controllerEnd,
   }) : super(key: key);
 
   @override
@@ -175,7 +186,14 @@ class NumberButton extends StatelessWidget {
               side: const BorderSide(width: 0.4, color: AbiliaColors.black)),
         ),
         onPressed: () {
-          controller.text += number.toString();
+          debugPrint('Text length: ${controllerStart.text.length}');
+          if (controllerStart.text.length < 4) {
+            controllerStart.text += number.toString();
+          } else {
+            if (controllerEnd.text.length < 4) {
+              controllerEnd.text += number.toString();
+            }
+          }
         },
         child: Center(
           child: Text(
