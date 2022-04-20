@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:seagull/config.dart';
 
 import 'package:seagull/logging.dart';
 import 'package:seagull/utils/all.dart';
@@ -41,6 +42,9 @@ class PermissionCubit extends Cubit<PermissionState> with Info {
       Permission.microphone,
       if (!Platform.isIOS) ...{
         Permission.systemAlertWindow,
+        if (Config.isMP) ...{
+          Permission.manageExternalStorage,
+        }
       },
       if (!Platform.isAndroid) ...{
         Permission.photos,

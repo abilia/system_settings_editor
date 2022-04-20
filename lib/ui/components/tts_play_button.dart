@@ -1,3 +1,4 @@
+import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
@@ -60,18 +61,30 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
 
   _play() {
     setState(() => ttsIsPlaying = true);
-    GetIt.I<FlutterTts>().speak(widget.controller.text).whenComplete(() {
+    final onComplete = () {
       if (mounted) {
         setState(() => ttsIsPlaying = false);
       }
-    });
+    };
+    if (Config.isMP) {
+      AcapelaTts.playTts(widget.controller.text).whenComplete(onComplete);
+    } else {
+      GetIt.I<FlutterTts>()
+          .speak(widget.controller.text)
+          .whenComplete(onComplete);
+    }
   }
 
   _stop() {
-    GetIt.I<FlutterTts>().stop().whenComplete(() {
+    final onComplete = () {
       if (mounted) {
         setState(() => ttsIsPlaying = false);
       }
-    });
+    };
+    if (Config.isMP) {
+      AcapelaTts.stop().whenComplete(onComplete);
+    } else {
+      GetIt.I<FlutterTts>().stop().whenComplete(onComplete);
+    }
   }
 }

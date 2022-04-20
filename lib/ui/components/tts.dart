@@ -76,7 +76,7 @@ class _Tts extends StatelessWidget {
       );
 
   void _playTts() async {
-    if(Config.isMP){
+    if (Config.isMP) {
       await AcapelaTts.playTts(onLongPress?.call() ?? data ?? '');
     } else {
       GetIt.I<FlutterTts>().speak(onLongPress?.call() ?? data ?? '');
