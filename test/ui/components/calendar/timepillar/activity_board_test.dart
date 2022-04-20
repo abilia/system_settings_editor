@@ -65,14 +65,15 @@ void main() {
       end: startInterval.add(1.days()),
     );
     final mocktimepillarCubit = MocktimepillarCubit();
-    final ts = TimepillarState(interval, 1);
+    final ts = TimepillarState(interval, 1, const []);
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: startTime, end: startTime), 1));
-    when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
-        Stream.fromIterable([
-          TimepillarState(
-              TimepillarInterval(start: startTime, end: startTime), 1)
-        ]));
+        TimepillarInterval(start: startTime, end: startTime), 1, const []));
+    when(() => mocktimepillarCubit.stream)
+        .thenAnswer((_) => Stream.fromIterable([
+              TimepillarState(
+                  TimepillarInterval(start: startTime, end: startTime),
+                  1, const [])
+            ]));
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -213,7 +214,7 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final interval = TimepillarInterval(start: time, end: time);
-      final ts = TimepillarState(interval, 1);
+      final ts = TimepillarState(interval, 1, const []);
       for (final y in activityYPos) {
         expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
       }
@@ -248,7 +249,7 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final ts = TimepillarState(
-          TimepillarInterval(end: startTime, start: startTime), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1, const []);
       for (final y in activityYPos) {
         final activityDotMidPos = y + ts.dotSize / 2;
         expect(
@@ -317,7 +318,7 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
       final ts = TimepillarState(
-          TimepillarInterval(end: startTime, start: startTime), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1, const []);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.cardTotalWidth));
     });
@@ -353,7 +354,7 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
       final ts = TimepillarState(
-          TimepillarInterval(end: startTime, start: startTime), 1);
+          TimepillarInterval(end: startTime, start: startTime), 1, const []);
       expect((activityAXPos - activityBXPos).abs(),
           greaterThanOrEqualTo(ts.cardTotalWidth));
     });
@@ -405,7 +406,7 @@ void main() {
         textScaleFactor: 1.0,
         dayParts: DayParts.standard(),
         timepillarSide: TimepillarSide.right,
-        timepillarState: TimepillarState(interval, 1),
+        timepillarState: TimepillarState(interval, 1, const []),
         topMargin: layout.timePillar.topMargin,
         bottomMargin: layout.timePillar.bottomMargin,
       );

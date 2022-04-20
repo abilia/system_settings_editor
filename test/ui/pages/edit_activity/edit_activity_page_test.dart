@@ -137,6 +137,8 @@ void main() {
                   clockBloc: context.read<ClockBloc>(),
                   memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
                   dayPickerBloc: context.read<DayPickerBloc>(),
+                  activitiesBloc: context.read<ActivitiesBloc>(),
+                  timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 ),
               ),
               BlocProvider<WakeLockCubit>(

@@ -107,7 +107,7 @@ class PreviewTimePillar extends StatelessWidget {
       start: DateTime(2021, 1, 1, 12),
       end: DateTime(2021, 1, 1, 15),
     );
-    final ts = TimepillarState(interval, 1.0);
+    final ts = TimepillarState(interval, 1.0, const []);
 
     return MultiBlocProvider(
       providers: [

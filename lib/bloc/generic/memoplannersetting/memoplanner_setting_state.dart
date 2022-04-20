@@ -131,7 +131,7 @@ abstract class MemoplannerSettingsState extends Equatable {
       case TimepillarIntervalType.day:
         if (now.isBefore(day.add(morningStart.milliseconds()))) {
           return TimepillarInterval(
-            start: day,
+            start: day.previousDay().add(nightStart.milliseconds()),
             end: day.add(morningStart.milliseconds()),
             intervalPart: IntervalPart.night,
           );
@@ -139,7 +139,7 @@ abstract class MemoplannerSettingsState extends Equatable {
             .isAtSameMomentOrAfter(day.add(nightStart.milliseconds()))) {
           return TimepillarInterval(
             start: day.add(nightStart.milliseconds()),
-            end: day.nextDay(),
+            end: day.nextDay().add(morningStart.milliseconds()),
             intervalPart: IntervalPart.night,
           );
         }
@@ -178,14 +178,14 @@ abstract class MemoplannerSettingsState extends Equatable {
       case DayPart.night:
         if (now.isBefore(base.add(morningStart.milliseconds()))) {
           return TimepillarInterval(
-            start: base,
+            start: base.previousDay().add(nightStart.milliseconds()),
             end: base.add(morningStart.milliseconds()),
             intervalPart: IntervalPart.night,
           );
         } else {
           return TimepillarInterval(
             start: base.add(nightStart.milliseconds()),
-            end: base.nextDay(),
+            end: base.nextDay().add(morningStart.milliseconds()),
             intervalPart: IntervalPart.night,
           );
         }

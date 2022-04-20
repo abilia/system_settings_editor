@@ -132,7 +132,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     final fontSize = textTheme.fontSize!;
     final textStyle = textTheme.copyWith(fontSize: fontSize * ts.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
-    final events = interval.getForInterval(widget.eventState.events);
+    final events = interval.getForInterval(widget.timepillarState.events);
     final np = interval.intervalPart == IntervalPart.dayAndNight
         ? nightParts(widget.dayParts, ts, topMargin)
         : <NightPart>[];

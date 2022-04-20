@@ -4,8 +4,9 @@ class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;
   final double zoom;
   final TimepillarLayout _layout = layout.timePillar;
+  final List<Event> events;
 
-  TimepillarState(this.timepillarInterval, this.zoom);
+  TimepillarState(this.timepillarInterval, this.zoom, this.events);
 
   // TimepillarCard
   late final double cardMinImageHeight = _layout.card.imageMinHeight * zoom;
@@ -61,5 +62,5 @@ class TimepillarState extends Equatable {
   }
 
   @override
-  List<Object> get props => [timepillarInterval, zoom];
+  List<Object> get props => [timepillarInterval, zoom, events];
 }

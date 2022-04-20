@@ -77,6 +77,26 @@ extension RecurringActivityExtension on Activity {
     ];
   }
 
+  List<ActivityDay> dayActivitiesForInterval(
+    DateTime intervalStart,
+    DateTime intervalEnd,
+  ) {
+    final numberOfDays =
+        intervalEnd.onlyDays().difference(intervalStart.onlyDays()).inDays + 1;
+    final days = List.generate(
+      numberOfDays,
+      (i) => DateTime(
+        intervalStart.year,
+        intervalStart.month,
+        intervalStart.day + i,
+      ),
+    );
+
+    debugPrint(days.toString());
+
+    return days.expand((day) => dayActivitiesForDay(day)).toList();
+  }
+
   List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) =>
       nightActivitiesForNight(
         day,

@@ -305,7 +305,8 @@ void main() {
       when(() => mockScrollController.offset).thenReturn(initialOffset);
       when(() => mockScrollPosition.maxScrollExtent).thenReturn(400);
       final ts = TimepillarState(
-          TimepillarInterval(start: initialTime, end: initialTime), 1);
+          TimepillarInterval(start: initialTime, end: initialTime),
+          1, const []);
       final timePixelOffset = timeToPixels(
         1,
         30,

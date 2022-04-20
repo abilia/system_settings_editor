@@ -76,6 +76,7 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
           end: DateTime(1066, 10, 14, 17, 54),
         ),
         1,
+        const [],
       );
   @override
   Future<void> close() async {}

@@ -34,13 +34,15 @@ class TwoTimepillarCalendar extends StatelessWidget {
     final maxInterval = dayInterval.lengthInHours > nightInterval.lengthInHours
         ? dayInterval
         : nightInterval;
-    final tpHeight = TimepillarState(maxInterval, 1.0).timePillarHeight +
-        layout.timePillar.twoTimePillar.verticalMargin * 2;
+    final tpHeight =
+        TimepillarState(maxInterval, 1.0, const []).timePillarHeight +
+            layout.timePillar.twoTimePillar.verticalMargin * 2;
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         final zoom = boxConstraints.maxHeight / tpHeight;
-        final nightTimepillarState = TimepillarState(nightInterval, zoom);
-        final dayTimepillarState = TimepillarState(dayInterval, zoom);
+        final nightTimepillarState =
+            TimepillarState(nightInterval, zoom, const []);
+        final dayTimepillarState = TimepillarState(dayInterval, zoom, const []);
         final categoryLabelWidth =
             (boxConstraints.maxWidth - layout.timePillar.width) / 2;
         final nightTimepillarHeight = nightTimepillarState.timePillarHeight +
@@ -56,7 +58,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
                         TimepillarCubit.fixed(state: dayTimepillarState),
                     child: OneTimepillarCalendar(
                       eventState: eventState,
-                      timepillarState: dayTimepillarState,
+                      timepillarState:
+                          TimepillarState(dayInterval, zoom, eventState.events),
                       dayParts: dayParts,
                       displayTimeline: displayTimeline,
                       showCategories: showCategories,
@@ -104,7 +107,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
                       child: BlocBuilder<NightEventsCubit, EventsLoaded>(
                         builder: (context, nightState) => OneTimepillarCalendar(
                           eventState: nightState,
-                          timepillarState: nightTimepillarState,
+                          timepillarState: TimepillarState(
+                              nightInterval, zoom, nightState.events),
                           dayParts: dayParts,
                           displayTimeline: displayTimeline,
                           showCategories: showCategories,
