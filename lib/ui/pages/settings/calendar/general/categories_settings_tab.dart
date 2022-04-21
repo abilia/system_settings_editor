@@ -128,7 +128,7 @@ class _CategoriesPreview extends StatelessWidget {
             builder: (context, ts) => LayoutBuilder(
               builder: (context, boxConstraints) {
                 final categoryWidth =
-                    (boxConstraints.maxWidth - ts.timePillarTotalWidth) / 2;
+                    (boxConstraints.maxWidth - ts.measures.timePillarTotalWidth) / 2;
                 return Stack(
                   children: [
                     if (state.categories.show)
@@ -154,7 +154,7 @@ class _CategoriesPreview extends StatelessWidget {
                         ),
                         columnOfDots: state.timepillar.columnOfDots,
                         topMargin: 0.0,
-                        timePillarState: ts,
+                        measures: ts.measures,
                       ),
                     ),
                     if (state.categories.show)

@@ -138,7 +138,8 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
       final hours = diff.inHours;
       final minutes = diff.inMinutes % Duration.minutesPerHour;
 
-      return timeToPixels(hours, minutes, timepillarCubit.state.dotDistance);
+      return timeToPixels(
+          hours, minutes, timepillarCubit.state.measures.dotDistance);
     }
     return 0.0;
   }

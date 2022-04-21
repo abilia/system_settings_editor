@@ -3,10 +3,33 @@ part of 'timepillar_cubit.dart';
 class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;
   final double zoom;
-  final TimepillarLayout _layout = layout.timePillar;
+  final TimepillarMeasures measures;
   final List<Event> events;
+  final DayCalendarType calendarType;
 
-  TimepillarState(this.timepillarInterval, this.zoom, this.events);
+  TimepillarState(
+    this.timepillarInterval,
+    this.zoom,
+    this.events,
+    this.calendarType,
+  ) : measures = TimepillarMeasures(timepillarInterval, zoom);
+
+  @override
+  List<Object> get props => [timepillarInterval, zoom, measures, events];
+
+  // TODO IMPLEMENT THIS!
+  bool get isToday => true;
+
+  // TODO IMPLEMENT THIS!
+  get occasion => Occasion.current;
+}
+
+class TimepillarMeasures {
+  final double zoom;
+  final TimepillarInterval timepillarInterval;
+  final TimepillarLayout _layout = layout.timePillar;
+
+  TimepillarMeasures(this.timepillarInterval, this.zoom);
 
   // TimepillarCard
   late final double cardMinImageHeight = _layout.card.imageMinHeight * zoom;
@@ -60,7 +83,4 @@ class TimepillarState extends Equatable {
     }
     return hoursToPixels(timepillarInterval.startTime.hour, dotDistance);
   }
-
-  @override
-  List<Object> get props => [timepillarInterval, zoom, events];
 }

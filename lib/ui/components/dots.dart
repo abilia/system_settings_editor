@@ -104,14 +104,15 @@ class Dots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TimepillarCubit, TimepillarState>(
-      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
+      buildWhen: (oldState, newState) =>
+          oldState.measures.dotSize != newState.measures.dotSize,
       builder: (context, ts) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: ts.dotSize,
-            width: ts.dotSize,
+            height: ts.measures.dotSize,
+            width: ts.measures.dotSize,
             decoration: decoration,
           ),
         ),
@@ -134,11 +135,12 @@ class AnimatedDot extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<TimepillarCubit, TimepillarState>(
         buildWhen: (previous, current) =>
-            size == null && previous.dotSize != current.dotSize,
+            size == null &&
+            previous.measures.dotSize != current.measures.dotSize,
         builder: (context, ts) => AnimatedContainer(
           duration: transitionDuration,
-          height: size ?? ts.dotSize,
-          width: size ?? ts.dotSize,
+          height: size ?? ts.measures.dotSize,
+          width: size ?? ts.measures.dotSize,
           decoration: decoration,
           child: child,
         ),
@@ -186,8 +188,10 @@ class SideDots extends StatelessWidget {
               }
               return AnimatedDot(decoration: pastSideDotShape);
             },
-          ).expand((d) => [d, SizedBox(height: ts.dotPadding)]).toList()
-            ..add(SizedBox(width: ts.dotSize)),
+          )
+              .expand((d) => [d, SizedBox(height: ts.measures.dotPadding)])
+              .toList()
+            ..add(SizedBox(width: ts.measures.dotSize)),
         ),
       ),
     );

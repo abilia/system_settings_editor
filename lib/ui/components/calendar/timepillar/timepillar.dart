@@ -13,7 +13,7 @@ class TimePillar extends StatelessWidget {
   final bool columnOfDots;
   final bool preview;
   final double topMargin;
-  final TimepillarState timePillarState;
+  final TimepillarMeasures measures;
 
   const TimePillar({
     Key? key,
@@ -24,7 +24,7 @@ class TimePillar extends StatelessWidget {
     required this.dayParts,
     required this.columnOfDots,
     required this.topMargin,
-    required this.timePillarState,
+    required this.measures,
     this.preview = false,
   }) : super(key: key);
 
@@ -39,13 +39,13 @@ class TimePillar extends StatelessWidget {
     final formatHour = onlyHourFormat(context, use12h: use12h);
     return Padding(
       padding: EdgeInsets.fromLTRB(
-        timePillarState.timePillarPadding,
+        measures.timePillarPadding,
         topMargin,
-        timePillarState.timePillarPadding,
+        measures.timePillarPadding,
         0,
       ),
       child: SizedBox(
-        width: timePillarState.timePillarWidth,
+        width: measures.timePillarWidth,
         child: Column(
           children: [
             ...List.generate(
@@ -63,7 +63,7 @@ class TimePillar extends StatelessWidget {
                     columnOfDots,
                   ),
                   isNight: isNight,
-                  timepillarState: timePillarState,
+                  measures: measures,
                 );
               },
             ),
@@ -71,11 +71,11 @@ class TimePillar extends StatelessWidget {
               Hour(
                 hour: formatHour(interval.endTime),
                 dots: SizedBox(
-                  width: timePillarState.dotSize,
-                  height: timePillarState.dotSize,
+                  width: measures.dotSize,
+                  height: measures.dotSize,
                 ),
                 isNight: interval.endTime.subtract(1.hours()).isNight(dayParts),
-                timepillarState: timePillarState,
+                measures: measures,
               ),
           ],
         ),
@@ -101,31 +101,29 @@ class Hour extends StatelessWidget {
     required this.hour,
     required this.dots,
     required this.isNight,
-    required this.timepillarState,
+    required this.measures,
   }) : super(key: key);
 
   final String hour;
   final Widget dots;
   final bool isNight;
-  final TimepillarState timepillarState;
+  final TimepillarMeasures measures;
 
   @override
   Widget build(BuildContext context) {
-    final ts = timepillarState;
-
     return DefaultTextStyle(
-      style: layout.timePillar.textStyle(isNight, ts.zoom),
+      style: layout.timePillar.textStyle(isNight, measures.zoom),
       softWrap: false,
       overflow: TextOverflow.visible,
       textAlign: TextAlign.end,
       child: Container(
-        height: ts.hourHeight,
-        padding: EdgeInsets.symmetric(vertical: ts.hourPadding),
+        height: measures.hourHeight,
+        padding: EdgeInsets.symmetric(vertical: measures.hourPadding),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
               color: isNight ? AbiliaColors.white140 : AbiliaColors.white140,
-              width: ts.hourLineWidth,
+              width: measures.hourLineWidth,
             ),
           ),
         ),

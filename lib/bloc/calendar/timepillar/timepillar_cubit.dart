@@ -35,19 +35,13 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         dayPickerBloc = dayPickerBloc,
         activitiesBloc = activitiesBloc,
         timerAlarmBloc = timerAlarmBloc,
-        super(
-          TimepillarState(
-            generateInterval(clockBloc.state, dayPickerBloc.state.day,
-                memoSettingsBloc.state),
-            memoSettingsBloc.state.timepillarZoom.zoomValue,
-            generateEvents(
-              activitiesBloc.state.activities,
-              timerAlarmBloc.state.timers,
-              generateInterval(clockBloc.state, dayPickerBloc.state.day,
-                  memoSettingsBloc.state),
-            ),
-          ),
-        ) {
+        super(_generateState(
+          clockBloc.state,
+          dayPickerBloc.state.day,
+          memoSettingsBloc.state,
+          activitiesBloc.state.activities,
+          timerAlarmBloc.state.timers,
+        )) {
     _clockSubscription = clockBloc.stream.listen((state) {
       _onTimepillarConditionsChanged();
     });
@@ -79,15 +73,36 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final day = dayPickerBloc?.state.day;
     final settings = memoSettingsBloc?.state;
     if (time != null && day != null && settings != null) {
-      final interval = generateInterval(time, day, settings);
-      // Get events for interval
       final activities = activitiesBloc?.state.activities ?? [];
       final timers = timerAlarmBloc?.state.timers ?? <TimerOccasion>[];
-      final events = generateEvents(activities, timers, interval);
-      emit(
-        TimepillarState(interval, settings.timepillarZoom.zoomValue, events),
-      );
+      emit(_generateState(
+        time,
+        day,
+        settings,
+        activities,
+        timers,
+      ));
     }
+  }
+
+  static TimepillarState _generateState(
+      DateTime state,
+      DateTime day,
+      MemoplannerSettingsState memoState,
+      List<Activity> activities,
+      List<TimerOccasion> timers) {
+    return TimepillarState(
+      generateInterval(state, day, memoState),
+      memoState.dayCalendarType == DayCalendarType.twoTimepillars
+          ? TimepillarZoom.small.zoomValue
+          : memoState.timepillarZoom.zoomValue,
+      generateEvents(
+        activities,
+        timers,
+        generateInterval(state, day, memoState),
+      ),
+      DayCalendarType.oneTimepillar,
+    );
   }
 
   static TimepillarInterval generateInterval(

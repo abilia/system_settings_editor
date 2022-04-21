@@ -26,25 +26,29 @@ class TimepillarCalendar extends StatelessWidget {
           previous.showCategories != current.showCategories ||
           previous.displayHourLines != current.displayHourLines,
       builder: (context, memoplannerSettingsState) {
-        if (type == DayCalendarType.oneTimepillar) {
-          return BlocBuilder<TimepillarCubit, TimepillarState>(
-            builder: (context, timepillarState) => OneTimepillarCalendar(
-              key: ValueKey(timepillarState.timepillarInterval),
-              timepillarState: timepillarState,
-              dayParts: memoplannerSettingsState.dayParts,
-              displayTimeline: memoplannerSettingsState.displayTimeline,
-              showCategories: memoplannerSettingsState.showCategories,
-              displayHourLines: memoplannerSettingsState.displayHourLines,
-              eventState: eventState,
-            ),
-          );
-        }
-        return TwoTimepillarCalendar(
-          eventState: eventState,
-          showCategories: memoplannerSettingsState.showCategories,
-          displayHourLines: memoplannerSettingsState.displayHourLines,
-          displayTimeline: memoplannerSettingsState.displayTimeline,
-          dayParts: memoplannerSettingsState.dayParts,
+        return BlocBuilder<TimepillarCubit, TimepillarState>(
+          builder: (context, timepillarState) {
+            if (type == DayCalendarType.oneTimepillar) {
+              return OneTimepillarCalendar(
+                key: ValueKey(timepillarState.timepillarInterval),
+                timepillarState: timepillarState,
+                timepillarMeasures: timepillarState.measures,
+                dayParts: memoplannerSettingsState.dayParts,
+                displayTimeline: memoplannerSettingsState.displayTimeline,
+                showCategories: memoplannerSettingsState.showCategories,
+                displayHourLines: memoplannerSettingsState.displayHourLines,
+              );
+            } else {
+              return TwoTimepillarCalendar(
+                timepillarState: timepillarState,
+                eventState: eventState,
+                showCategories: memoplannerSettingsState.showCategories,
+                displayHourLines: memoplannerSettingsState.displayHourLines,
+                displayTimeline: memoplannerSettingsState.displayTimeline,
+                dayParts: memoplannerSettingsState.dayParts,
+              );
+            }
+          },
         );
       },
     );
@@ -52,8 +56,8 @@ class TimepillarCalendar extends StatelessWidget {
 }
 
 class OneTimepillarCalendar extends StatefulWidget {
-  final EventsLoaded eventState;
   final TimepillarState timepillarState;
+  final TimepillarMeasures timepillarMeasures;
   final bool showCategories,
       displayHourLines,
       displayTimeline,
@@ -64,12 +68,12 @@ class OneTimepillarCalendar extends StatefulWidget {
 
   OneTimepillarCalendar({
     Key? key,
-    required this.eventState,
     required this.timepillarState,
     required this.showCategories,
     required this.displayHourLines,
     required this.displayTimeline,
     required this.dayParts,
+    required this.timepillarMeasures,
     this.scrollToTimeOffset = true,
     double? topMargin,
     double? bottomMargin,
@@ -90,13 +94,15 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   final Key center = const Key('center');
 
   bool get enableScrollNotification =>
-      widget.eventState.isToday && widget.scrollToTimeOffset;
-  bool get showTimeLine => widget.eventState.isToday && widget.displayTimeline;
-  TimepillarState get ts => widget.timepillarState;
+      widget.timepillarState.isToday && widget.scrollToTimeOffset;
+  bool get showTimeLine =>
+      widget.timepillarState.isToday && widget.displayTimeline;
+  TimepillarMeasures get measures => widget.timepillarMeasures;
   double get topMargin => widget.topMargin;
   double get bottomMargin => widget.topMargin;
 
-  TimepillarInterval get interval => widget.timepillarState.timepillarInterval;
+  TimepillarInterval get interval =>
+      widget.timepillarMeasures.timepillarInterval;
 
   @override
   void initState() {
@@ -115,12 +121,12 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
   ScrollController _timeOffsetVerticalScroll() {
     final now = context.read<ClockBloc>().state;
-    final scrollOffset = widget.eventState.isToday
-        ? timeToPixels(now.hour, now.minute, ts.dotDistance) -
-            ts.hourHeight * 2 +
+    final scrollOffset = widget.timepillarState.isToday
+        ? timeToPixels(now.hour, now.minute, measures.dotDistance) -
+            measures.hourHeight * 2 +
             topMargin -
-            hoursToPixels(interval.startTime.hour, ts.dotDistance)
-        : ts.hourHeight * widget.dayParts.morning.inHours;
+            hoursToPixels(interval.startTime.hour, measures.dotDistance)
+        : measures.hourHeight * widget.dayParts.morning.inHours;
     return ScrollController(initialScrollOffset: max(scrollOffset, 0));
   }
 
@@ -130,11 +136,11 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
     final textTheme = Theme.of(context).textTheme.caption ?? caption;
     final fontSize = textTheme.fontSize!;
-    final textStyle = textTheme.copyWith(fontSize: fontSize * ts.zoom);
+    final textStyle = textTheme.copyWith(fontSize: fontSize * measures.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
     final events = interval.getForInterval(widget.timepillarState.events);
     final np = interval.intervalPart == IntervalPart.dayAndNight
-        ? nightParts(widget.dayParts, ts, topMargin)
+        ? nightParts(widget.dayParts, measures, topMargin)
         : <NightPart>[];
 
     return BlocBuilder<ClockBloc, DateTime>(
@@ -150,7 +156,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
           textScaleFactor: textScaleFactor,
           dayParts: widget.dayParts,
           timepillarSide: TimepillarSide.left,
-          timepillarState: ts,
+          measures: measures,
           topMargin: topMargin,
           bottomMargin: bottomMargin,
         );
@@ -164,7 +170,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
           textScaleFactor: textScaleFactor,
           dayParts: widget.dayParts,
           timepillarSide: TimepillarSide.right,
-          timepillarState: ts,
+          measures: measures,
           topMargin: topMargin,
           bottomMargin: bottomMargin,
         );
@@ -175,13 +181,15 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         return LayoutBuilder(
           builder: (context, boxConstraints) {
             final maxWidth = boxConstraints.maxWidth;
-            final categoryMinWidth = (maxWidth - ts.timePillarTotalWidth) / 2;
+            final categoryMinWidth =
+                (maxWidth - measures.timePillarTotalWidth) / 2;
             final timePillarPercentOfTotalScreen =
-                (ts.timePillarTotalWidth / 2) / maxWidth;
+                (measures.timePillarTotalWidth / 2) / maxWidth;
             final horizontalAnchor = widget.showCategories
                 ? 0.5 - timePillarPercentOfTotalScreen
                 : 0.0;
-            final tsHeight = ts.timePillarHeight + topMargin + bottomMargin;
+            final tsHeight =
+                measures.timePillarHeight + topMargin + bottomMargin;
             final calendarHeight =
                 max(tsHeight, max(leftBoardData.heigth, rightBoardData.heigth));
             final height = max(calendarHeight, boxConstraints.maxHeight);
@@ -231,22 +239,23 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                   ),
                                   child: HourLines(
                                     numberOfLines: interval.lengthInHours + 1,
-                                    hourHeight: ts.hourHeight,
+                                    hourHeight: measures.hourHeight,
                                   ),
                                 ),
                               if (showTimeLine)
                                 BlocBuilder<ClockBloc, DateTime>(
                                   builder: (context, now) {
                                     if (now.inRangeWithInclusiveStart(
-                                        startDate:
-                                            ts.timepillarInterval.startTime,
-                                        endDate:
-                                            ts.timepillarInterval.endTime)) {
+                                        startDate: measures
+                                            .timepillarInterval.startTime,
+                                        endDate: measures
+                                            .timepillarInterval.endTime)) {
                                       return Timeline(
                                         now: now,
                                         width: boxConstraints.maxWidth,
-                                        offset: ts.topOffset(now) - topMargin,
-                                        timepillarState: ts,
+                                        offset:
+                                            measures.topOffset(now) - topMargin,
+                                        measures: measures,
                                       );
                                     }
                                     return const SizedBox.shrink();
@@ -268,7 +277,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                         child: TimepillarBoard(
                                           leftBoardData,
                                           categoryMinWidth: categoryMinWidth,
-                                          timepillarWidth: ts.cardTotalWidth,
+                                          timepillarWidth:
+                                              measures.cardTotalWidth,
                                           textStyle: textStyle,
                                         ),
                                       ),
@@ -285,14 +295,15 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       builder: (context, memoSettings) =>
                                           TimePillar(
                                         interval: interval,
-                                        dayOccasion: widget.eventState.occasion,
+                                        dayOccasion:
+                                            widget.timepillarState.occasion,
                                         use12h:
                                             memoSettings.timepillar12HourFormat,
                                         nightParts: np,
                                         dayParts: widget.dayParts,
                                         columnOfDots: memoSettings.columnOfDots,
                                         topMargin: topMargin,
-                                        timePillarState: ts,
+                                        measures: measures,
                                       ),
                                     ),
                                   ),
@@ -305,7 +316,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                       child: TimepillarBoard(
                                         rightBoardData,
                                         categoryMinWidth: categoryMinWidth,
-                                        timepillarWidth: ts.cardTotalWidth,
+                                        timepillarWidth:
+                                            measures.cardTotalWidth,
                                         textStyle: textStyle,
                                       ),
                                     ),
@@ -329,27 +341,27 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
 
   List<NightPart> nightParts(
     DayParts dayParts,
-    TimepillarState ts,
+    TimepillarMeasures measures,
     double topMargin,
   ) {
-    final interval = ts.timepillarInterval;
+    final interval = measures.timepillarInterval;
     final intervalDay = interval.startTime.onlyDays();
     return <NightPart>[
       if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
         NightPart(
           0,
-          hoursToPixels(
-                  intervalDay.add(dayParts.morning).hour, ts.dotDistance) +
+          hoursToPixels(intervalDay.add(dayParts.morning).hour,
+                  measures.dotDistance) +
               topMargin,
         ),
       if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
-            hoursToPixels(
-                    intervalDay.add(dayParts.night).hour, ts.dotDistance) +
+            hoursToPixels(intervalDay.add(dayParts.night).hour,
+                    measures.dotDistance) +
                 topMargin,
             hoursToPixels(
                 interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
-                ts.dotDistance))
+                measures.dotDistance))
     ];
   }
 
