@@ -205,7 +205,7 @@ extension SaveErrorExtension on EditActivityState {
             activitiesState.anyConflictWith(activityToStore()))
           SaveError.unconfirmedActivityConflict,
         if (activity.isRecurring &&
-            activity.recurs.end.isBefore(activity.startTime))
+            activity.recurs.end.isBefore(timeInterval.startDate))
           SaveError.endDateBeforeStart
       };
 
@@ -240,7 +240,7 @@ extension SaveErrorExtension on EditActivityState {
 
         break;
       case WizardStep.endDate:
-        if (activity.recurs.end.isBefore(activity.startTime)) {
+        if (activity.recurs.end.isBefore(timeInterval.startDate)) {
           return SaveError.endDateBeforeStart;
         }
         break;
