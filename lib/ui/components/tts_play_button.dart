@@ -1,7 +1,6 @@
-import 'package:acapela_tts/acapela_tts.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/tts/tts_interface.dart';
 import 'package:seagull/ui/all.dart';
 
 class TtsPlayButton extends StatefulWidget {
@@ -61,30 +60,22 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
 
   _play() {
     setState(() => ttsIsPlaying = true);
-    final onComplete = () {
-      if (mounted) {
-        setState(() => ttsIsPlaying = false);
-      }
-    };
-    if (Config.isMP) {
-      AcapelaTts.playTts(widget.controller.text).whenComplete(onComplete);
-    } else {
-      GetIt.I<FlutterTts>()
-          .speak(widget.controller.text)
-          .whenComplete(onComplete);
-    }
+    GetIt.I<TtsInterface>().play(widget.controller.text).whenComplete(
+      () {
+        if (mounted) {
+          setState(() => ttsIsPlaying = false);
+        }
+      },
+    );
   }
 
   _stop() {
-    final onComplete = () {
-      if (mounted) {
-        setState(() => ttsIsPlaying = false);
-      }
-    };
-    if (Config.isMP) {
-      AcapelaTts.stop().whenComplete(onComplete);
-    } else {
-      GetIt.I<FlutterTts>().stop().whenComplete(onComplete);
-    }
+    GetIt.I<TtsInterface>().stop().whenComplete(
+      () {
+        if (mounted) {
+          setState(() => ttsIsPlaying = false);
+        }
+      },
+    );
   }
 }
