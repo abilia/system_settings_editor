@@ -124,6 +124,11 @@ abstract class MemoplannerSettingsState extends Equatable {
       WeekColor.values[settings.calendarMonthViewShowColors];
 
   TimepillarInterval todayTimepillarInterval(DateTime now) {
+    return todayTimepillarIntervalFromType(now, timepillarIntervalType);
+  }
+
+  TimepillarInterval todayTimepillarIntervalFromType(
+      DateTime now, TimepillarIntervalType timepillarIntervalType) {
     final day = now.onlyDays();
     switch (timepillarIntervalType) {
       case TimepillarIntervalType.interval:

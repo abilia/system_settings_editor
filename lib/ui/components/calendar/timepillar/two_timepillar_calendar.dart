@@ -51,18 +51,22 @@ class TwoTimepillarCalendar extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 232,
-                  child: OneTimepillarCalendar(
-                    timepillarMeasures: dayTimepillarMeasures,
-                    timepillarState: timepillarState,
-                    dayParts: dayParts,
-                    displayTimeline: displayTimeline,
-                    showCategories: showCategories,
-                    showCategoryLabels: false,
-                    scrollToTimeOffset: false,
-                    displayHourLines: displayHourLines,
-                    topMargin: layout.timePillar.twoTimePillar.verticalMargin,
-                    bottomMargin:
-                        layout.timePillar.twoTimePillar.verticalMargin,
+                  child: BlocProvider<TimepillarMeasuresCubit>(
+                    create: (_) => TimepillarMeasuresCubit.fixed(
+                        state: dayTimepillarMeasures),
+                    child: OneTimepillarCalendar(
+                      timepillarMeasures: dayTimepillarMeasures,
+                      timepillarState: timepillarState,
+                      dayParts: dayParts,
+                      displayTimeline: displayTimeline,
+                      showCategories: showCategories,
+                      showCategoryLabels: false,
+                      scrollToTimeOffset: false,
+                      displayHourLines: displayHourLines,
+                      topMargin: layout.timePillar.twoTimePillar.verticalMargin,
+                      bottomMargin:
+                          layout.timePillar.twoTimePillar.verticalMargin,
+                    ),
                   ),
                 ),
                 Flexible(
@@ -89,19 +93,23 @@ class TwoTimepillarCalendar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      child: OneTimepillarCalendar(
-                        timepillarMeasures: nightTimepillarMeasures,
-                        timepillarState: timepillarState,
-                        dayParts: dayParts,
-                        displayTimeline: displayTimeline,
-                        showCategories: showCategories,
-                        showCategoryLabels: false,
-                        scrollToTimeOffset: false,
-                        displayHourLines: displayHourLines,
-                        topMargin:
-                            layout.timePillar.twoTimePillar.verticalMargin,
-                        bottomMargin:
-                            layout.timePillar.twoTimePillar.verticalMargin,
+                      child: BlocProvider<TimepillarMeasuresCubit>(
+                        create: (_) => TimepillarMeasuresCubit.fixed(
+                            state: nightTimepillarMeasures),
+                        child: OneTimepillarCalendar(
+                          timepillarMeasures: nightTimepillarMeasures,
+                          timepillarState: timepillarState,
+                          dayParts: dayParts,
+                          displayTimeline: displayTimeline,
+                          showCategories: showCategories,
+                          showCategoryLabels: false,
+                          scrollToTimeOffset: false,
+                          displayHourLines: displayHourLines,
+                          topMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
+                          bottomMargin:
+                              layout.timePillar.twoTimePillar.verticalMargin,
+                        ),
                       ),
                     ),
                   ),

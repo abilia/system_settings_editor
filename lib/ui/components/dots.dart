@@ -103,16 +103,15 @@ class Dots extends StatelessWidget {
   const Dots({Key? key, required this.decoration}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimepillarCubit, TimepillarState>(
-      buildWhen: (oldState, newState) =>
-          oldState.measures.dotSize != newState.measures.dotSize,
-      builder: (context, ts) => Column(
+    return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
+      buildWhen: (oldState, newState) => oldState.dotSize != newState.dotSize,
+      builder: (context, measures) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
           dotsPerHour,
           (_) => Container(
-            height: ts.measures.dotSize,
-            width: ts.measures.dotSize,
+            height: measures.dotSize,
+            width: measures.dotSize,
             decoration: decoration,
           ),
         ),
@@ -133,14 +132,13 @@ class AnimatedDot extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<TimepillarCubit, TimepillarState>(
+      BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
         buildWhen: (previous, current) =>
-            size == null &&
-            previous.measures.dotSize != current.measures.dotSize,
-        builder: (context, ts) => AnimatedContainer(
+            size == null && previous.dotSize != current.dotSize,
+        builder: (context, measures) => AnimatedContainer(
           duration: transitionDuration,
-          height: size ?? ts.measures.dotSize,
-          width: size ?? ts.measures.dotSize,
+          height: size ?? measures.dotSize,
+          width: size ?? measures.dotSize,
           decoration: decoration,
           child: child,
         ),
@@ -162,8 +160,8 @@ class SideDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
-    return BlocBuilder<TimepillarCubit, TimepillarState>(
-      builder: (context, ts) => BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
+      builder: (context, measures) => BlocBuilder<ClockBloc, DateTime>(
         builder: (_, now) => Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
@@ -188,10 +186,8 @@ class SideDots extends StatelessWidget {
               }
               return AnimatedDot(decoration: pastSideDotShape);
             },
-          )
-              .expand((d) => [d, SizedBox(height: ts.measures.dotPadding)])
-              .toList()
-            ..add(SizedBox(width: ts.measures.dotSize)),
+          ).expand((d) => [d, SizedBox(height: measures.dotPadding)]).toList()
+            ..add(SizedBox(width: measures.dotSize)),
         ),
       ),
     );

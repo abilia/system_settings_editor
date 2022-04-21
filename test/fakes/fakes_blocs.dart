@@ -65,7 +65,7 @@ class FakeMemoplannerSettingsBloc extends Fake
   Future<void> close() async {}
 }
 
-class FaketimepillarCubit extends Fake implements TimepillarCubit {
+class FakeTimepillarCubit extends Fake implements TimepillarCubit {
   @override
   Stream<TimepillarState> get stream => const Stream.empty();
 
@@ -75,9 +75,25 @@ class FaketimepillarCubit extends Fake implements TimepillarCubit {
           start: DateTime(1066, 10, 14, 09, 00),
           end: DateTime(1066, 10, 14, 17, 54),
         ),
-        1,
         const [],
         DayCalendarType.oneTimepillar,
+      );
+  @override
+  Future<void> close() async {}
+}
+
+class FakeTimepillarMeasuresCubit extends Fake
+    implements TimepillarMeasuresCubit {
+  @override
+  Stream<TimepillarMeasures> get stream => const Stream.empty();
+
+  @override
+  TimepillarMeasures get state => TimepillarMeasures(
+        TimepillarInterval(
+          start: DateTime(1066, 10, 14, 09, 00),
+          end: DateTime(1066, 10, 14, 17, 54),
+        ),
+        1,
       );
   @override
   Future<void> close() async {}

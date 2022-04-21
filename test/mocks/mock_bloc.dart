@@ -23,8 +23,11 @@ class MockMemoplannerSettingBloc
     extends MockBloc<MemoplannerSettingsEvent, MemoplannerSettingsState>
     implements MemoplannerSettingBloc {}
 
-class MocktimepillarCubit extends MockCubit<TimepillarState>
+class MockTimepillarCubit extends MockCubit<TimepillarState>
     implements TimepillarCubit {}
+
+class MockTimepillarMeasuresCubit extends MockCubit<TimepillarMeasures>
+    implements TimepillarMeasuresCubit {}
 
 class MockUserFileCubit extends MockCubit<UserFileState>
     implements UserFileCubit {}

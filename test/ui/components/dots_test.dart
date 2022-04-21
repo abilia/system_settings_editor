@@ -41,7 +41,7 @@ void main() {
               ),
             ),
             BlocProvider<TimepillarCubit>(
-              create: (context) => FaketimepillarCubit(),
+              create: (context) => FakeTimepillarCubit(),
             ),
           ],
           child: widget,

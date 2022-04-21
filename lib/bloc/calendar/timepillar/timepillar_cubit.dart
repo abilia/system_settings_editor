@@ -10,32 +10,25 @@ import 'package:seagull/models/all.dart';
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
-  /// All fields are null when timepillarCubit is fixed
-  /// in Timepillar settings (`PreviewTimePillar`), or `TwoTimepillarCalendar`
-  final ClockBloc? clockBloc;
-  final MemoplannerSettingBloc? memoSettingsBloc;
-  final DayPickerBloc? dayPickerBloc;
-  final ActivitiesBloc? activitiesBloc;
-  final TimerAlarmBloc? timerAlarmBloc;
-  StreamSubscription? _clockSubscription;
-  StreamSubscription? _memoSettingsSubscription;
-  StreamSubscription? _dayPickerSubscription;
-  StreamSubscription? _activitiesSubscription;
-  StreamSubscription? _timerSubscription;
+  final ClockBloc clockBloc;
+  final MemoplannerSettingBloc memoSettingsBloc;
+  final DayPickerBloc dayPickerBloc;
+  final ActivitiesBloc activitiesBloc;
+  final TimerAlarmBloc timerAlarmBloc;
+  late StreamSubscription _clockSubscription;
+  late StreamSubscription _memoSettingsSubscription;
+  late StreamSubscription _dayPickerSubscription;
+  late StreamSubscription _activitiesSubscription;
+  late StreamSubscription _timerSubscription;
 
   // ignore_for_file: prefer_initializing_formals
   TimepillarCubit({
-    required ClockBloc clockBloc,
-    required MemoplannerSettingBloc memoSettingsBloc,
-    required DayPickerBloc dayPickerBloc,
-    required TimerAlarmBloc timerAlarmBloc,
-    required ActivitiesBloc activitiesBloc,
-  })  : clockBloc = clockBloc,
-        memoSettingsBloc = memoSettingsBloc,
-        dayPickerBloc = dayPickerBloc,
-        activitiesBloc = activitiesBloc,
-        timerAlarmBloc = timerAlarmBloc,
-        super(_generateState(
+    required this.clockBloc,
+    required this.memoSettingsBloc,
+    required this.dayPickerBloc,
+    required this.timerAlarmBloc,
+    required this.activitiesBloc,
+  }) : super(_generateState(
           clockBloc.state,
           dayPickerBloc.state.day,
           memoSettingsBloc.state,
@@ -59,55 +52,62 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     });
   }
 
-  TimepillarCubit.fixed({
-    this.clockBloc,
-    this.memoSettingsBloc,
-    this.dayPickerBloc,
-    this.activitiesBloc,
-    this.timerAlarmBloc,
-    required TimepillarState state,
-  }) : super(state);
-
   void _onTimepillarConditionsChanged() {
-    final time = clockBloc?.state;
-    final day = dayPickerBloc?.state.day;
-    final settings = memoSettingsBloc?.state;
-    if (time != null && day != null && settings != null) {
-      final activities = activitiesBloc?.state.activities ?? [];
-      final timers = timerAlarmBloc?.state.timers ?? <TimerOccasion>[];
-      emit(_generateState(
-        time,
-        day,
-        settings,
-        activities,
-        timers,
-      ));
-    }
+    final time = clockBloc.state;
+    final day = dayPickerBloc.state.day;
+    final settings = memoSettingsBloc.state;
+    final activities = activitiesBloc.state.activities;
+    final timers = timerAlarmBloc.state.timers;
+    emit(_generateState(
+      time,
+      day,
+      settings,
+      activities,
+      timers,
+    ));
   }
 
   static TimepillarState _generateState(
-      DateTime state,
-      DateTime day,
+      DateTime now,
+      DateTime selectedDay,
       MemoplannerSettingsState memoState,
       List<Activity> activities,
       List<TimerOccasion> timers) {
+    final interval = generateInterval(now, selectedDay, memoState);
+    final todayNight =
+        selectedDay.isAtSameDay(now) && now.isNight(memoState.dayParts);
     return TimepillarState(
-      generateInterval(state, day, memoState),
-      memoState.dayCalendarType == DayCalendarType.twoTimepillars
-          ? TimepillarZoom.small.zoomValue
-          : memoState.timepillarZoom.zoomValue,
+      interval,
       generateEvents(
         activities,
         timers,
-        generateInterval(state, day, memoState),
+        interval,
       ),
-      DayCalendarType.oneTimepillar,
+      memoState.dayCalendarType == DayCalendarType.twoTimepillars && todayNight
+          ? DayCalendarType.oneTimepillar
+          : memoState.dayCalendarType,
     );
   }
 
   static TimepillarInterval generateInterval(
       DateTime now, DateTime day, MemoplannerSettingsState memoSettings) {
     final isToday = day.isAtSameDay(now);
+    final isNight = now.isNight(memoSettings.dayParts);
+    if (memoSettings.dayCalendarType == DayCalendarType.twoTimepillars &&
+        isToday &&
+        isNight) {
+      return memoSettings.todayTimepillarIntervalFromType(
+          now, TimepillarIntervalType.interval);
+    }
+    if (memoSettings.dayCalendarType == DayCalendarType.twoTimepillars) {
+      final intervalStart =
+          day.add(memoSettings.dayParts.morningStart.milliseconds());
+      final intervalEnd = intervalStart.addDays(1);
+      return TimepillarInterval(
+          start: intervalStart,
+          end: intervalEnd,
+          intervalPart: IntervalPart.dayAndNight);
+    }
     return isToday
         ? memoSettings.todayTimepillarInterval(now)
         : TimepillarInterval(
@@ -135,20 +135,20 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   }
 
   void next() {
-    dayPickerBloc?.add(NextDay());
+    dayPickerBloc.add(NextDay());
   }
 
   void previous() {
-    dayPickerBloc?.add(PreviousDay());
+    dayPickerBloc.add(PreviousDay());
   }
 
   @override
   Future<void> close() async {
-    await _clockSubscription?.cancel();
-    await _memoSettingsSubscription?.cancel();
-    await _dayPickerSubscription?.cancel();
-    await _timerSubscription?.cancel();
-    await _activitiesSubscription?.cancel();
+    await _clockSubscription.cancel();
+    await _memoSettingsSubscription.cancel();
+    await _dayPickerSubscription.cancel();
+    await _timerSubscription.cancel();
+    await _activitiesSubscription.cancel();
     return super.close();
   }
 }

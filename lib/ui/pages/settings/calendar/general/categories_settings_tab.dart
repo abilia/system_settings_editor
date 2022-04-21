@@ -124,11 +124,12 @@ class _CategoriesPreview extends StatelessWidget {
         decoration: whiteBoxDecoration,
         child: BlocProvider(
           create: (context) => ClockBloc.fixed(DateTime(2021, 1, 1, 8, 30)),
-          child: BlocBuilder<TimepillarCubit, TimepillarState>(
-            builder: (context, ts) => LayoutBuilder(
+          child: BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
+            builder: (context, measures) => LayoutBuilder(
               builder: (context, boxConstraints) {
                 final categoryWidth =
-                    (boxConstraints.maxWidth - ts.measures.timePillarTotalWidth) / 2;
+                    (boxConstraints.maxWidth - measures.timePillarTotalWidth) /
+                        2;
                 return Stack(
                   children: [
                     if (state.categories.show)
@@ -154,7 +155,7 @@ class _CategoriesPreview extends StatelessWidget {
                         ),
                         columnOfDots: state.timepillar.columnOfDots,
                         topMargin: 0.0,
-                        measures: ts.measures,
+                        measures: measures,
                       ),
                     ),
                     if (state.categories.show)

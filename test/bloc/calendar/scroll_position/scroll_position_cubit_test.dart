@@ -31,7 +31,7 @@ void main() {
     scrollPositionCubit = ScrollPositionCubit(
       dayPickerBloc: dayPickerBloc,
       clockBloc: clockBloc,
-      timepillarCubit: FaketimepillarCubit(),
+      timepillarMeasuresCubit: FakeTimepillarMeasuresCubit(),
     );
     when(() => mockScrollController.position).thenReturn(mockScrollPosition);
     when(() => mockScrollController.hasClients).thenReturn(true);

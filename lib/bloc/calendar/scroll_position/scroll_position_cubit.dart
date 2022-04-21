@@ -15,14 +15,14 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
 
   final DayPickerBloc dayPickerBloc;
   final ClockBloc clockBloc;
-  final TimepillarCubit timepillarCubit;
+  final TimepillarMeasuresCubit timepillarMeasuresCubit;
   late final StreamSubscription dayPickerBlocSubscription;
   late final StreamSubscription clockBlocSubscription;
 
   ScrollPositionCubit({
     required this.dayPickerBloc,
     required this.clockBloc,
-    required this.timepillarCubit,
+    required this.timepillarMeasuresCubit,
     this.nowMarginTop = 8,
     this.nowMarginBottom = 8,
   }) : super(dayPickerBloc.state.isToday ? Unready() : WrongDay()) {
@@ -139,7 +139,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
       final minutes = diff.inMinutes % Duration.minutesPerHour;
 
       return timeToPixels(
-          hours, minutes, timepillarCubit.state.measures.dotDistance);
+          hours, minutes, timepillarMeasuresCubit.state.dotDistance);
     }
     return 0.0;
   }
