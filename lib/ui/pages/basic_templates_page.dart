@@ -62,13 +62,15 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
 }
 
 class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplatePickField(this._sortable, this._onTap, this._toolBar,
+  const _BasicTemplatePickField(
+      this._sortable, this._onTap, this._toolBar, this.selected,
       {Key? key})
       : super(key: key);
 
   final Sortable<T> _sortable;
-  final SortableToolbar? _toolBar;
+  final SortableToolbar _toolBar;
   final GestureTapCallback _onTap;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,7 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       secondaryText: data is BasicTimerDataItem
           ? Text(Duration(milliseconds: data.duration).toHMSorMS())
           : null,
+      selected: selected,
       leading: SizedBox.fromSize(
         size: layout.pickField.leadingSize,
         child: _sortable.data.hasImage()
