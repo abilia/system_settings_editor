@@ -78,7 +78,8 @@ void main() {
 
     testWidgets('Shows 3 items in activities', (tester) async {
       await tester.goToTemplates();
-      expect(find.byType(PickField), findsNWidgets(3));
+      expect(find.byType(ListDataItem), findsNWidgets(2));
+      expect(find.byType(PickField), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.navigationNext), findsOneWidget);
     });
 
@@ -86,7 +87,7 @@ void main() {
       await tester.goToTemplates();
       await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
       await tester.pumpAndSettle();
-      expect(find.byType(PickField), findsOneWidget);
+      expect(find.byType(ListDataItem), findsOneWidget);
     });
 
     testWidgets('Tapping folder enters, shows LibraryHeading', (tester) async {

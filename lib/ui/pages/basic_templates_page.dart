@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class BasicTemplatesPage extends StatelessWidget {
   const BasicTemplatesPage({Key? key}) : super(key: key);
@@ -67,7 +68,7 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
 
   final Sortable<T> _sortable;
   final SortableToolbar? _toolBar;
-  final Function() _onTap;
+  final GestureTapCallback _onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -78,19 +79,21 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
         text: text,
         padding: layout.pickField.imagePadding,
         leading: SizedBox.fromSize(
-            size: layout.pickField.leadingSize,
-            child: _PickFolder(
-              sortableData: _sortable.data,
-            )),
-        leadingPadding: layout.pickField.imagePadding,
+          size: layout.pickField.leadingSize,
+          child: _PickFolder(
+            sortableData: _sortable.data,
+          ),
+        ),
       );
     }
-    return PickField(
+
+    final data = _sortable.data;
+    return ListDataItem(
       onTap: _onTap,
-      padding: _toolBar != null
-          ? layout.pickField.imagePadding.copyWith(right: 0)
-          : layout.pickField.imagePadding,
       text: text,
+      secondaryText: data is BasicTimerDataItem
+          ? Text(Duration(milliseconds: data.duration).toHMSorMS())
+          : null,
       leading: SizedBox.fromSize(
         size: layout.pickField.leadingSize,
         child: _sortable.data.hasImage()
