@@ -296,6 +296,7 @@ class _TimeInputContentState extends State<TimeInputContent>
                       onPeriodChanged: (period) =>
                           setState(() => endTimePeriod = period),
                       onTimeChanged: (value) {
+                        debugPrint(value);
                         if (valid(startTimeController)) {
                           final onValidTimeInput = widget.onValidTimeInput;
                           if (onValidTimeInput != null) {
@@ -318,17 +319,38 @@ class _TimeInputContentState extends State<TimeInputContent>
             controllerStart: startTimeController,
             controllerEnd: endTimeController,
             delete: () {
-              if (endTimeController.text.isNotEmpty) {
+              if (endTimeController.text.isNotEmpty && endTimeFocus.hasFocus) {
                 endTimeController.text = endTimeController.text
                     .substring(0, endTimeController.text.length - 1);
               } else {
-                startTimeController.text = startTimeController.text
-                    .substring(0, startTimeController.text.length - 1);
+                startTimeFocus.requestFocus();
+                if(startTimeController.text.isNotEmpty) {
+                  startTimeController.text = startTimeController.text
+                      .substring(0, startTimeController.text.length - 1);
+                }
+              }
+            },
+            onNumPress: (value) {
+              if (startTimeFocus.hasFocus) {
+                String currentTextControllerState = startTimeController.text;
+                startTimeController.text = _validateTimeInput(currentTextControllerState, currentTextControllerState += value, twelveHourClock);
+              } else {
+                String currentTextControllerState = endTimeController.text;
+                endTimeController.text = _validateTimeInput(currentTextControllerState, currentTextControllerState += value, twelveHourClock);
+              }
+              if (valid(startTimeController)) {
+                endTimeFocus.requestFocus();
+                if (widget.onValidTimeInput != null) {
+                  widget.onValidTimeInput?.call(newTimeInput);
+                } else {
+                  setState(() {});
+                }
               }
             },
             onClear: () {
               startTimeController.clear();
               endTimeController.clear();
+              startTimeFocus.requestFocus();
             },
           ),
           const Spacer(),
@@ -339,6 +361,44 @@ class _TimeInputContentState extends State<TimeInputContent>
         ],
       ),
     );
+  }
+}
+
+String _validateTimeInput(String oldValue, String newValue, bool twelveHourClock) {
+  final newText = _handleLeadingZero(newValue, twelveHourClock);
+  return _validTimeInput(newText, twelveHourClock) ? newText : oldValue;
+}
+
+String _handleLeadingZero(String newValue, bool twelveHourClock) {
+  final intVal = int.tryParse(newValue);
+  if (newValue.length == 1 &&
+      intVal != null &&
+      intVal > (twelveHourClock ? 1 : 2)) {
+      debugPrint(pad0(newValue));
+    return pad0(newValue);
+  } else {
+    return newValue;
+  }
+}
+
+bool _validTimeInput(String input, twelveHourClock) {
+  if (input.isEmpty) return true;
+  final intVal = int.tryParse(input);
+  if (intVal == null) return false;
+
+  switch (input.length) {
+    case 1:
+      return twelveHourClock ? intVal <= 1 : intVal <= 2;
+    case 2:
+      return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
+    case 3:
+      final sub = int.tryParse(input.substring(2, 3));
+      return sub != null && sub <= 5;
+    case 4:
+      final sub = int.tryParse(input.substring(2, 4));
+      return sub != null && sub <= 59;
+    default:
+      return false;
   }
 }
 
@@ -467,10 +527,7 @@ class _TimeInputStackState extends State<_TimeInputStack> {
             textInputAction: TextInputAction.done,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
-              DeleteInputFormatter(),
-              LeadingZeroInputFormatter(widget.twelveHourClock),
               LengthLimitingTextInputFormatter(4),
-              TimeInputFormatter(widget.twelveHourClock),
             ],
           ),
           GestureDetector(
@@ -521,84 +578,6 @@ String formatTimeToDisplay(String input) {
         input.substring(2);
   } else {
     return emptyPattern;
-  }
-}
-
-class DeleteInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (oldValue.text.length == 4 && newValue.text.isEmpty) {
-      return TextEditingValue(
-        text: oldValue.text.substring(0, 3),
-        selection: const TextSelection.collapsed(offset: 3),
-      );
-    } else if (oldValue.text.length == 1 && newValue.text.length == 4) {
-      return TextEditingValue(
-        text: oldValue.text + newValue.text.substring(3, 4),
-        selection: const TextSelection.collapsed(offset: 2),
-      );
-    } else {
-      return newValue;
-    }
-  }
-}
-
-class LeadingZeroInputFormatter extends TextInputFormatter {
-  final bool twelveHourClock;
-
-  LeadingZeroInputFormatter(this.twelveHourClock);
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final intVal = int.tryParse(newValue.text);
-    if (newValue.text.length == 1 &&
-        intVal != null &&
-        intVal > (twelveHourClock ? 1 : 2)) {
-      return TextEditingValue(
-        text: pad0(newValue.text),
-        selection: const TextSelection.collapsed(offset: 2),
-      );
-    } else {
-      return newValue;
-    }
-  }
-}
-
-class TimeInputFormatter extends TextInputFormatter {
-  final bool twelveHourClock;
-
-  TimeInputFormatter(this.twelveHourClock);
-
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    final newText = newValue.text;
-    return validTimeInput(newText) ? newValue : oldValue;
-  }
-
-  bool validTimeInput(String input) {
-    if (input.isEmpty) return true;
-    final intVal = int.tryParse(input);
-    if (intVal == null) return false;
-
-    switch (input.length) {
-      case 1:
-        return twelveHourClock ? intVal <= 1 : intVal <= 2;
-      case 2:
-        return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
-      case 3:
-        final sub = int.tryParse(input.substring(2, 3));
-        return sub != null && sub <= 5;
-      case 4:
-        final sub = int.tryParse(input.substring(2, 4));
-        return sub != null && sub <= 59;
-      default:
-        return false;
-    }
   }
 }
 

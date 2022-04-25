@@ -10,6 +10,7 @@ class NumPad extends StatelessWidget {
   final TextEditingController controllerEnd;
   final Function delete;
   final Function onClear;
+  final Function onNumPress;
 
   const NumPad({
     Key? key,
@@ -20,6 +21,7 @@ class NumPad extends StatelessWidget {
     this.iconColor = AbiliaColors.black,
     required this.delete,
     required this.onClear,
+    required this.onNumPress,
     required this.controllerStart,
     required this.controllerEnd,
   }) : super(key: key);
@@ -40,6 +42,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               NumberButton(
                 number: 2,
@@ -48,6 +52,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               NumberButton(
                 number: 3,
@@ -56,6 +62,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
             ],
           ),
@@ -70,6 +78,7 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
               ),
               NumberButton(
                 number: 5,
@@ -78,6 +87,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               NumberButton(
                 number: 6,
@@ -86,6 +97,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
             ],
           ),
@@ -100,6 +113,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               NumberButton(
                 number: 8,
@@ -108,6 +123,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               NumberButton(
                 number: 9,
@@ -116,6 +133,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
             ],
           ),
@@ -138,6 +157,8 @@ class NumPad extends StatelessWidget {
                 color: buttonColor,
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
+                onNumPress: onNumPress,
+
               ),
               IconButton(
                 onPressed: () => delete(),
@@ -162,6 +183,7 @@ class NumberButton extends StatelessWidget {
   final Color color;
   final TextEditingController controllerStart;
   final TextEditingController controllerEnd;
+  final Function onNumPress;
 
   const NumberButton({
     Key? key,
@@ -171,6 +193,7 @@ class NumberButton extends StatelessWidget {
     required this.color,
     required this.controllerStart,
     required this.controllerEnd,
+    required this.onNumPress,
   }) : super(key: key);
 
   @override
@@ -185,17 +208,8 @@ class NumberButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
               side: const BorderSide(width: 0.4, color: AbiliaColors.black)),
         ),
-        onPressed: () {
-          debugPrint('Text length: ${controllerStart.text.length}');
-          if (controllerStart.text.length < 4) {
-            controllerStart.text += number.toString();
-          } else {
-            if (controllerEnd.text.length < 4) {
-              controllerEnd.text += number.toString();
-            }
-          }
-        },
-        child: Center(
+        onPressed: () => onNumPress(number.toString()),
+          child: Center(
           child: Text(
             number.toString(),
             style: const TextStyle(color: AbiliaColors.black, fontSize: 24),
