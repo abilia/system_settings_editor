@@ -247,8 +247,8 @@ extra	Extra	Extra	Ekstra	Extra	Ekstrat	Extra	Ekstra
 infoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 selectInfoType	Select extra function	Välj extra funktion	Vælg ekstra funktion	Extra functie selecteren	Valitse lisätoiminto	Extrafunktion auswählen	Velg ekstra funksjon
 infoTypeNone	No extra function selected	Ingen extra funktion vald	Ingen yderligere funktion er valgt	Geen extra functie geselecteerd	Lisätoimintoa ei ole valittu	Keine Extrafunktion ausgewählt	Ingen ekstra funksjon valgt
-infoTypeChecklist	Checklist	Checklista	Tjekliste	Checklist	Tarkistusluettelo	Checkliste	Sjekkliste
-infoTypeNote	Note	Anteckning	Note	Notitie	Muistiinpano	Hinweis	Notat
+addChecklist	Add checklist	Lägg till checklista	Tilføj tjekliste	Checklist toevoegen	Lisää tarkistusluettelo	Checkliste hinzufügen	Legg til sjekkliste
+addNote	Add note	Lägg till anteckning	Tilføj note	Notitie toevoegen	Lisää muistiinpano	Hinweis hinzufügen	Legg til notat
 typeSomething	Type something…	Skriv något…	Skriv noget…	Typ iets	Kirjoita jotain	Geben Sie etwas ein…	Skriv noe…
 enterText	Enter text	Skriv text	Indtast tekst	Voer tekst in	Kirjoita teksti	Text eingeben	Skriv inn tekst
 clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette

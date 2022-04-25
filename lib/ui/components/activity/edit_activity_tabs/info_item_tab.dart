@@ -13,266 +13,224 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<EditActivityCubit, EditActivityState>(
-      builder: (context, state) {
-        final translate = Translator.of(context).translate;
-        final activity = state.activity;
-        final infoItem = activity.infoItem;
-
-        Future onTap() async {
-          final result = await Navigator.of(context).push<Type>(
-            MaterialPageRoute(
-              builder: (context) => SelectInfoTypePage(
-                infoItemType: activity.infoItem.runtimeType,
-                showChecklist: showChecklist,
-                showNote: showNote,
-              ),
-            ),
-          );
-          if (result != null) {
-            context.read<EditActivityCubit>().changeInfoItemType(result);
-          }
-        }
-
-        return Padding(
-          padding: layout.templates.m3,
-          child: Column(
+  Widget build(BuildContext context) => Padding(
+        padding: layout.templates.m3,
+        child: BlocSelector<EditActivityCubit, EditActivityState, InfoItem>(
+          selector: (state) => state.activity.infoItem,
+          builder: (context, infoItem) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SubHeading(translate.infoType),
+              SubHeading(Translator.of(context).translate.infoType),
+              PickInfoItem(
+                showChecklist: showChecklist,
+                showNote: showNote,
+                infoItem: infoItem,
+              ),
+              SizedBox(height: layout.formPadding.largeVerticalItemDistance),
               if (infoItem is Checklist)
-                EditChecklistWidget(
-                  activity: activity,
-                  checklist: infoItem,
-                  onTap: onTap,
-                )
+                const EditChecklistWidget()
               else if (infoItem is NoteInfoItem)
-                EditNoteWidget(
-                  activity: activity,
-                  infoItem: infoItem,
-                  onTap: onTap,
-                )
-              else
-                PickField(
-                  key: TestKey.changeInfoItem,
-                  leading: const Icon(AbiliaIcons.information),
-                  text: Text(translate.infoTypeNone),
-                  onTap: onTap,
-                ),
+                EditNoteWidget(infoItem: infoItem)
             ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
 }
 
-class EditChecklistWidget extends StatelessWidget {
-  final Activity activity;
-  final Checklist checklist;
-  final GestureTapCallback onTap;
-
-  const EditChecklistWidget({
+class PickInfoItem extends StatelessWidget {
+  final bool showChecklist, showNote;
+  final InfoItem infoItem;
+  const PickInfoItem({
     Key? key,
-    required this.activity,
-    required this.checklist,
-    required this.onTap,
+    required this.showChecklist,
+    required this.showNote,
+    required this.infoItem,
+  }) : super(key: key);
+
+  bool get isChecklist => infoItem is Checklist;
+  bool get isNote => infoItem is NoteInfoItem;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          ChangeInfoItemPicker(
+            infoItem,
+            showChecklist: showChecklist,
+            showNote: showNote,
+          ),
+          if (isChecklist || isNote) ...[
+            SizedBox(width: layout.formPadding.horizontalItemDistance),
+            LibraryButton(
+              infoItem: infoItem,
+            ).pad(layout.templates.s3)
+          ],
+        ],
+      );
+}
+
+class ChangeInfoItemPicker extends StatelessWidget {
+  final InfoItem infoItem;
+  final bool showChecklist, showNote;
+
+  const ChangeInfoItemPicker(
+    this.infoItem, {
+    Key? key,
+    required this.showChecklist,
+    required this.showNote,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    return Expanded(
-      child: Column(children: [
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: PickField(
-                key: TestKey.changeInfoItem,
-                leading: const Icon(AbiliaIcons.ok),
-                text: Text(translate.infoTypeChecklist),
-                onTap: onTap,
+  Widget build(BuildContext context) => Expanded(
+        child: PickField(
+          leading: _icon(infoItem),
+          text: Text(_text(Translator.of(context).translate, infoItem)),
+          onTap: () async {
+            final result = await Navigator.of(context).push<Type>(
+              MaterialPageRoute(
+                builder: (context) => SelectInfoTypePage(
+                  infoItemType: infoItem.runtimeType,
+                  showChecklist: showChecklist,
+                  showNote: showNote,
+                ),
+              ),
+            );
+            if (result != null) {
+              context.read<EditActivityCubit>().changeInfoItemType(result);
+            }
+          },
+        ),
+      );
+
+  String _text(Translated t, InfoItem infoItem) {
+    if (infoItem is Checklist) {
+      return t.addChecklist;
+    } else if (infoItem is NoteInfoItem) {
+      return t.addNote;
+    }
+    return t.infoTypeNone;
+  }
+
+  Icon _icon(InfoItem infoItem) {
+    if (infoItem is Checklist) {
+      return const Icon(AbiliaIcons.ok);
+    } else if (infoItem is NoteInfoItem) {
+      return const Icon(AbiliaIcons.edit);
+    }
+    return const Icon(AbiliaIcons.information);
+  }
+}
+
+class LibraryButton extends StatelessWidget {
+  final InfoItem infoItem;
+
+  bool get isChecklist => infoItem is Checklist;
+
+  const LibraryButton({Key? key, required this.infoItem}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => IconActionButtonDark(
+        onPressed: () async {
+          final authProviders = copiedAuthProviders(context);
+          final infoItem = await Navigator.of(context).push<InfoItem>(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: authProviders,
+                child: isChecklist
+                    ? const ChecklistLibraryPage()
+                    : const NoteLibraryPage(),
               ),
             ),
-            SizedBox(width: layout.formPadding.horizontalItemDistance),
-            _LibraryButton(
-              onPressed: () async {
-                final authProviders = copiedAuthProviders(context);
-                final selectedChecklist =
-                    await Navigator.of(context).push<Checklist>(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child: const ChecklistLibraryPage(),
-                    ),
-                  ),
+          );
+          if (infoItem != null && infoItem != this.infoItem) {
+            context.read<EditActivityCubit>().replaceActivity(
+                  context
+                      .read<EditActivityCubit>()
+                      .state
+                      .activity
+                      .copyWith(infoItem: infoItem),
                 );
-                if (selectedChecklist != null &&
-                    selectedChecklist != checklist) {
-                  context.read<EditActivityCubit>().replaceActivity(
-                        activity.copyWith(infoItem: selectedChecklist),
-                      );
-                }
-              },
-            ).pad(layout.templates.s3)
-          ],
+          }
+        },
+        child: Icon(
+          AbiliaIcons.showText,
+          size: layout.icon.normal,
+          color: AbiliaColors.black,
         ),
-        SizedBox(height: layout.formPadding.largeVerticalItemDistance),
-        Expanded(
-          child: GestureDetector(
-            child: Container(
-              decoration: whiteBoxDecoration,
+      );
+}
+
+class EditChecklistWidget extends StatelessWidget {
+  const EditChecklistWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Expanded(
+        child: GestureDetector(
+          child: Container(
+            decoration: whiteBoxDecoration,
+            child: BlocProvider(
+              create: (context) => EditChecklistCubit(
+                context.read<EditActivityCubit>(),
+              ),
               child: Column(
                 children: <Widget>[
-                  Expanded(
-                    child: ChecklistView.withToolbar(
-                      checklist,
-                      padding: layout.checkList.questionListPadding,
-                      onTapEdit: (r) => _handleEditQuestionResult(r, context),
-                      onTapDelete: (q) => _handleDeleteQuestion(q, context),
-                      onTapReorder: (q, d) =>
-                          _handleReorderQuestion(q, d, context),
-                      preview: true,
-                    ),
-                  ),
-                  Divider(
-                    height: layout.checkList.dividerHeight,
-                    endIndent: 0,
-                    indent: layout.checkList.dividerIndentation,
-                  ),
+                  const Expanded(child: EditChecklistView()),
+                  Divider(indent: layout.checklist.listPadding.left),
                   Padding(
-                    padding: layout.checkList.addNewQButtonPadding,
-                    child: Tts.data(
-                      data: Translator.of(context).translate.addNew,
-                      child: RawMaterialButton(
-                        constraints: BoxConstraints(
-                          minHeight: layout.checkList.questionViewHeight,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(color: AbiliaColors.green140),
-                          borderRadius: borderRadius,
-                        ),
-                        fillColor: AbiliaColors.green,
-                        elevation: 0,
-                        disabledElevation: 0,
-                        focusElevation: 0,
-                        highlightElevation: 0,
-                        hoverElevation: 0,
-                        onPressed: () => _handleNewQuestion(context),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: layout.checkList.addNewQIconPadding,
-                              child: Icon(
-                                AbiliaIcons.newIcon,
-                                size: layout.icon.small,
-                                color: AbiliaColors.white,
-                              ),
-                            ),
-                            Text(
-                              Translator.of(context).translate.addNew,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(
-                                    height: 1,
-                                    color: AbiliaColors.white,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    padding: layout.checklist.addNewQButtonPadding,
+                    child: const AddNewQuestionButton(),
                   )
                 ],
               ),
             ),
           ),
         ),
-      ]),
-    );
-  }
+      );
+}
 
-  void _handleEditQuestionResult(
-    final Question oldQuestion,
-    BuildContext context,
-  ) async {
-    final authProviders = copiedAuthProviders(context);
-    final result = await Navigator.of(context).push<ImageAndName>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: EditQuestionPage(
-            question: oldQuestion,
-          ),
+class AddNewQuestionButton extends StatelessWidget {
+  const AddNewQuestionButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    return Tts.data(
+      data: translate.addNew,
+      child: RawMaterialButton(
+        constraints: BoxConstraints(
+          minHeight: layout.checklist.question.viewHeight,
+        ),
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: AbiliaColors.green140),
+          borderRadius: borderRadius,
+        ),
+        fillColor: AbiliaColors.green,
+        elevation: 0,
+        disabledElevation: 0,
+        focusElevation: 0,
+        highlightElevation: 0,
+        hoverElevation: 0,
+        onPressed: () => _handleNewQuestion(context),
+        child: Row(
+          children: [
+            Padding(
+              padding: layout.checklist.addNewQIconPadding,
+              child: Icon(
+                AbiliaIcons.newIcon,
+                size: layout.icon.small,
+                color: AbiliaColors.white,
+              ),
+            ),
+            Text(
+              translate.addNew,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    height: 1,
+                    color: AbiliaColors.white,
+                  ),
+            ),
+          ],
         ),
       ),
     );
-    bool changed(ImageAndName imageAndName) =>
-        imageAndName.name != oldQuestion.name ||
-        imageAndName.image.id != oldQuestion.fileId;
-
-    if (result != null && changed(result)) {
-      final questionMap = {for (var q in checklist.questions) q.id: q};
-      if (result.isEmpty) {
-        questionMap.remove(oldQuestion.id);
-      } else {
-        questionMap[oldQuestion.id] = Question(
-          id: oldQuestion.id,
-          name: result.name,
-          fileId: result.image.id,
-          image: result.image.path,
-        );
-      }
-
-      context.read<EditActivityCubit>().replaceActivity(
-            activity.copyWith(
-              infoItem: checklist.copyWith(questions: questionMap.values),
-            ),
-          );
-    }
-  }
-
-  void _handleDeleteQuestion(
-    final Question deletedQuestion,
-    BuildContext context,
-  ) {
-    final filteredQuestions =
-        checklist.questions.where((q) => q.id != deletedQuestion.id);
-
-    context.read<EditActivityCubit>().replaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(questions: filteredQuestions),
-          ),
-        );
-  }
-
-  void _handleReorderQuestion(
-    final Question question,
-    SortableReorderDirection direction,
-    BuildContext context,
-  ) {
-    var questions = checklist.questions.toList();
-    final qIndex = questions.indexWhere((q) => q.id == question.id);
-    final swapWithIndex =
-        direction == SortableReorderDirection.up ? qIndex - 1 : qIndex + 1;
-
-    if (qIndex >= 0 &&
-        qIndex < questions.length &&
-        swapWithIndex >= 0 &&
-        swapWithIndex < questions.length) {
-      final tmpQ = questions[qIndex];
-      questions[qIndex] = questions[swapWithIndex];
-      questions[swapWithIndex] = tmpQ;
-    }
-
-    context.read<EditActivityCubit>().replaceActivity(
-          activity.copyWith(
-            infoItem: checklist.copyWith(questions: questions),
-          ),
-        );
   }
 
   void _handleNewQuestion(BuildContext context) async {
@@ -287,105 +245,38 @@ class EditChecklistWidget extends StatelessWidget {
     );
 
     if (result != null && result.isNotEmpty) {
-      final uniqueId = DateTime.now().millisecondsSinceEpoch;
-
-      context.read<EditActivityCubit>().replaceActivity(
-            activity.copyWith(
-              infoItem: checklist.copyWith(
-                questions: [
-                  ...checklist.questions,
-                  Question(
-                    id: uniqueId,
-                    name: result.name,
-                    fileId: result.image.id,
-                    image: result.image.path,
-                  ),
-                ],
-              ),
-            ),
-          );
+      context.read<EditChecklistCubit>().newQuestion(result);
     }
   }
 }
 
 class EditNoteWidget extends StatelessWidget {
-  final Activity activity;
   final NoteInfoItem infoItem;
-  final GestureTapCallback onTap;
 
-  const EditNoteWidget({
-    Key? key,
-    required this.activity,
-    required this.infoItem,
-    required this.onTap,
-  }) : super(key: key);
+  const EditNoteWidget({Key? key, required this.infoItem}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    return Expanded(
-      child: Column(children: [
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: PickField(
-                key: TestKey.changeInfoItem,
-                leading: const Icon(AbiliaIcons.edit),
-                text: Text(translate.infoTypeNote),
-                onTap: onTap,
-              ),
-            ),
-            SizedBox(
-              width: layout.formPadding.horizontalItemDistance,
-            ),
-            _LibraryButton(
-              onPressed: () async {
-                final authProviders = copiedAuthProviders(context);
-                final result = await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child: const NoteLibraryPage(),
-                    ),
-                  ),
-                );
-                if (result != null && result != infoItem.text) {
-                  context.read<EditActivityCubit>().replaceActivity(
-                        activity.copyWith(
-                          infoItem: NoteInfoItem(result),
-                        ),
-                      );
-                }
-              },
-            ).pad(layout.templates.s3)
-          ],
-        ),
-        SizedBox(height: layout.formPadding.largeVerticalItemDistance),
-        Expanded(
-          child: GestureDetector(
-            onTap: () => editText(context, activity, infoItem),
-            child: Container(
-              decoration: whiteBoxDecoration,
-              child: NoteBlock(
-                text: infoItem.text,
-                textWidget: infoItem.text.isEmpty
-                    ? Text(
-                        Translator.of(context).translate.typeSomething,
-                        style: abiliaTextTheme.bodyText1
-                            ?.copyWith(color: const Color(0xff747474)),
-                      )
-                    : Text(infoItem.text),
-              ),
+  Widget build(BuildContext context) => Expanded(
+        child: GestureDetector(
+          onTap: () => editText(context, infoItem),
+          child: Container(
+            decoration: whiteBoxDecoration,
+            child: NoteBlock(
+              text: infoItem.text,
+              textWidget: infoItem.text.isEmpty
+                  ? Text(
+                      Translator.of(context).translate.typeSomething,
+                      style: abiliaTextTheme.bodyText1
+                          ?.copyWith(color: const Color(0xff747474)),
+                    )
+                  : Text(infoItem.text),
             ),
           ),
         ),
-      ]),
-    );
-  }
+      );
 
   Future editText(
     BuildContext context,
-    Activity activity,
     NoteInfoItem infoItem,
   ) async {
     final authProviders = copiedAuthProviders(context);
@@ -407,27 +298,12 @@ class EditNoteWidget extends StatelessWidget {
     );
     if (result != null && result != infoItem.text) {
       context.read<EditActivityCubit>().replaceActivity(
-            activity.copyWith(
-              infoItem: NoteInfoItem(result),
-            ),
+            context
+                .read<EditActivityCubit>()
+                .state
+                .activity
+                .copyWith(infoItem: NoteInfoItem(result)),
           );
     }
-  }
-}
-
-class _LibraryButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  const _LibraryButton({Key? key, this.onPressed}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return IconActionButtonDark(
-      onPressed: onPressed,
-      child: Icon(
-        AbiliaIcons.showText,
-        size: layout.icon.normal,
-        color: AbiliaColors.black,
-      ),
-    );
   }
 }

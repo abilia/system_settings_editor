@@ -615,7 +615,7 @@ void main() {
       await tester.goToInfoItemTab();
 
       expect(find.byType(InfoItemTab), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byType(SelectInfoTypePage), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
@@ -638,7 +638,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();
@@ -654,7 +654,7 @@ void main() {
 
       expect(find.text(noteText), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
       await tester.pumpAndSettle();
@@ -665,14 +665,14 @@ void main() {
       expect(find.text(q2), findsOneWidget);
       expect(find.text(q3), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoneRadio));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();
@@ -695,7 +695,7 @@ void main() {
       Future goToNote(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
         await tester.pumpAndSettle();
@@ -759,7 +759,7 @@ that it is visible in the info item tab
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
 
         expect(find.byType(SelectInfoTypePage), findsOneWidget);
@@ -771,7 +771,7 @@ that it is visible in the info item tab
         await tester.pumpAndSettle();
         expect(find.byType(SelectInfoTypePage), findsNothing);
         expect(find.text(translate.infoType), findsOneWidget);
-        expect(find.text(translate.infoTypeNote), findsOneWidget);
+        expect(find.text(translate.addNote), findsOneWidget);
         expect(find.text(translate.typeSomething), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       });
@@ -928,7 +928,7 @@ Internal improvements to tests and examples.''';
       Future goToChecklist(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
@@ -1170,6 +1170,8 @@ text''';
         await tester.goToInfoItemTab();
 
         expect(find.text(questions[0]!), findsOneWidget);
+        await tester.scrollDown();
+        await tester.pumpAndSettle();
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.edit));
@@ -2893,15 +2895,15 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
 
         await tester.verifyTts(find.byKey(TestKey.infoItemNoneRadio),
             exact: translate.infoTypeNone);
         await tester.verifyTts(find.byKey(TestKey.infoItemChecklistRadio),
-            exact: translate.infoTypeChecklist);
+            exact: translate.addChecklist);
         await tester.verifyTts(find.byKey(TestKey.infoItemNoteRadio),
-            exact: translate.infoTypeNote);
+            exact: translate.addNote);
       });
 
       testWidgets('checklist', (WidgetTester tester) async {
@@ -2931,7 +2933,7 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
@@ -2971,7 +2973,7 @@ text''';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();

@@ -290,19 +290,19 @@ class MediumLayout extends Layout {
             timeBoxCurrentBorderWidth: 3,
             timeBoxFutureBorderWidth: 2,
           ),
-          checkList: const CheckListLayout(
-            questionViewPadding: EdgeInsets.only(bottom: 12),
-            questionIconPadding: EdgeInsets.only(right: 22),
-            questionImagePadding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-            questionTitlePadding: EdgeInsets.only(left: 12, right: 16),
+          checklist: const ChecklistLayout(
+            question: ChecklistQuestionLayout(
+              imagePadding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+              titlePadding: EdgeInsets.fromLTRB(12, 16, 0, 16),
+              iconPadding: EdgeInsets.fromLTRB(16, 22, 22, 22),
+              viewHeight: 80,
+              imageSize: 60,
+              fontSize: 28,
+              lineHeight: 48,
+            ),
+            listPadding: EdgeInsets.all(24),
             addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
             addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
-            questionListPadding: EdgeInsets.fromLTRB(18, 18, 18, 0),
-            questionViewHeight: 80,
-            questionImageSize: 60,
-            dividerHeight: 2,
-            dividerIndentation: 16,
-            toolbarButtonSize: 60,
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
@@ -334,7 +334,6 @@ class MediumLayout extends Layout {
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
-            vericalDistanceText: 6,
           ),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),
