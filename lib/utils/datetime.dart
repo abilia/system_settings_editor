@@ -153,6 +153,11 @@ extension DateTimeExtensions on DateTime {
     return DayPart.night == dayPart(dayParts);
   }
 
+  bool isNightBeforeMidnight(DayParts dayParts) {
+    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
+    return msAfterMidnight >= dayParts.nightStart;
+  }
+
   int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
 }
 
