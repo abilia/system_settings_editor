@@ -336,6 +336,7 @@ class MediumLayout extends Layout {
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
+            vericalDistanceText: 6,
           ),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),
