@@ -324,7 +324,7 @@ class _TimeInputContentState extends State<TimeInputContent>
                     .substring(0, endTimeController.text.length - 1);
               } else {
                 startTimeFocus.requestFocus();
-                if(startTimeController.text.isNotEmpty) {
+                if (startTimeController.text.isNotEmpty) {
                   startTimeController.text = startTimeController.text
                       .substring(0, startTimeController.text.length - 1);
                 }
@@ -333,10 +333,16 @@ class _TimeInputContentState extends State<TimeInputContent>
             onNumPress: (value) {
               if (startTimeFocus.hasFocus) {
                 String currentTextControllerState = startTimeController.text;
-                startTimeController.text = _validateTimeInput(currentTextControllerState, currentTextControllerState += value, twelveHourClock);
+                startTimeController.text = _validateTimeInput(
+                    currentTextControllerState,
+                    currentTextControllerState += value,
+                    twelveHourClock);
               } else {
                 String currentTextControllerState = endTimeController.text;
-                endTimeController.text = _validateTimeInput(currentTextControllerState, currentTextControllerState += value, twelveHourClock);
+                endTimeController.text = _validateTimeInput(
+                    currentTextControllerState,
+                    currentTextControllerState += value,
+                    twelveHourClock);
               }
               if (valid(startTimeController)) {
                 endTimeFocus.requestFocus();
@@ -364,7 +370,8 @@ class _TimeInputContentState extends State<TimeInputContent>
   }
 }
 
-String _validateTimeInput(String oldValue, String newValue, bool twelveHourClock) {
+String _validateTimeInput(
+    String oldValue, String newValue, bool twelveHourClock) {
   final newText = _handleLeadingZero(newValue, twelveHourClock);
   return _validTimeInput(newText, twelveHourClock) ? newText : oldValue;
 }
@@ -374,7 +381,7 @@ String _handleLeadingZero(String newValue, bool twelveHourClock) {
   if (newValue.length == 1 &&
       intVal != null &&
       intVal > (twelveHourClock ? 1 : 2)) {
-      debugPrint(pad0(newValue));
+    debugPrint(pad0(newValue));
     return pad0(newValue);
   } else {
     return newValue;

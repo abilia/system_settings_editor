@@ -43,7 +43,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               NumberButton(
                 number: 2,
@@ -53,7 +52,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               NumberButton(
                 number: 3,
@@ -63,7 +61,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
             ],
           ),
@@ -88,7 +85,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               NumberButton(
                 number: 6,
@@ -98,7 +94,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
             ],
           ),
@@ -114,7 +109,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               NumberButton(
                 number: 8,
@@ -124,7 +118,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               NumberButton(
                 number: 9,
@@ -134,7 +127,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
             ],
           ),
@@ -158,7 +150,6 @@ class NumPad extends StatelessWidget {
                 controllerStart: controllerStart,
                 controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
-
               ),
               IconButton(
                 onPressed: () => delete(),
@@ -209,7 +200,7 @@ class NumberButton extends StatelessWidget {
               side: const BorderSide(width: 0.4, color: AbiliaColors.black)),
         ),
         onPressed: () => onNumPress(number.toString()),
-          child: Center(
+        child: Center(
           child: Text(
             number.toString(),
             style: const TextStyle(color: AbiliaColors.black, fontSize: 24),
