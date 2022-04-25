@@ -67,18 +67,25 @@ void main() {
     final mocktimepillarCubit = MockTimepillarCubit();
     final mocktimepillarMeasuresCubit = MockTimepillarMeasuresCubit();
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: startTime, end: startTime),
-        const [],
-        DayCalendarType.oneTimepillar));
+      TimepillarInterval(start: startTime, end: startTime),
+      const [],
+      DayCalendarType.oneTimepillar,
+      Occasion.current,
+    ));
     final measures = TimepillarMeasures(interval, 1);
     when(() => mocktimepillarMeasuresCubit.state).thenReturn(measures);
-    when(() => mocktimepillarCubit.stream)
-        .thenAnswer((_) => Stream.fromIterable([
-              TimepillarState(
-                  TimepillarInterval(start: startTime, end: startTime),
-                  const [],
-                  DayCalendarType.oneTimepillar)
-            ]));
+    when(() => mocktimepillarCubit.stream).thenAnswer(
+      (_) => Stream.fromIterable(
+        [
+          TimepillarState(
+            TimepillarInterval(start: startTime, end: startTime),
+            const [],
+            DayCalendarType.oneTimepillar,
+            Occasion.current,
+          ),
+        ],
+      ),
+    );
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -95,6 +102,9 @@ void main() {
             ),
             BlocProvider<TimepillarCubit>(
               create: (context) => mocktimepillarCubit,
+            ),
+            BlocProvider<TimepillarMeasuresCubit>(
+              create: (context) => mocktimepillarMeasuresCubit,
             ),
           ],
           child: Stack(

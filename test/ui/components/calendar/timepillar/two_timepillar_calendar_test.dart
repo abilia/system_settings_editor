@@ -142,7 +142,7 @@ void main() {
       expect(find.byType(PastDots), findsNothing);
       expect(find.byType(AnimatedDot), findsWidgets);
       expect(find.byType(CurrentDots), findsWidgets);
-      expect(find.byType(FutureDots), findsWidgets);
+      expect(find.byType(FutureDots), findsNothing);
     });
 
     testWidgets('Yesterday shows only past dots', (WidgetTester tester) async {
@@ -711,24 +711,6 @@ void main() {
               title: 'title',
               startTime: time.subtract(9.hours()),
               duration: 8.hours(),
-            )
-          ];
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
-      // Assert
-      expect(find.byType(CrossOver), findsWidgets);
-    });
-
-    testWidgets('past activity with endtime shows CrossOver',
-        (WidgetTester tester) async {
-      // Arrange
-      activityResponse = () => [
-            Activity.createNew(
-              title: 'title',
-              startTime: time.subtract(2.hours()),
-              duration: 1.hours(),
             )
           ];
       await tester.pumpWidget(App());

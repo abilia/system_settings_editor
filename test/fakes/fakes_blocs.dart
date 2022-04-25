@@ -77,6 +77,7 @@ class FakeTimepillarCubit extends Fake implements TimepillarCubit {
         ),
         const [],
         DayCalendarType.oneTimepillar,
+        Occasion.current,
       );
   @override
   Future<void> close() async {}

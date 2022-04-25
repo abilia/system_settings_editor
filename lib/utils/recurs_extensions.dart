@@ -92,8 +92,6 @@ extension RecurringActivityExtension on Activity {
       ),
     );
 
-    debugPrint(days.toString());
-
     return days.expand((day) => dayActivitiesForDay(day)).toList();
   }
 

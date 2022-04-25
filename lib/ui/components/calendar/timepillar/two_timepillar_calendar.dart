@@ -71,45 +71,35 @@ class TwoTimepillarCalendar extends StatelessWidget {
                 ),
                 Flexible(
                   flex: 135,
-                  child: BlocProvider<NightEventsCubit>(
-                    create: (context) => NightEventsCubit(
-                      activitiesBloc: context.read<ActivitiesBloc>(),
-                      timerAlarmBloc: context.read<TimerAlarmBloc>(),
-                      clockBloc: context.read<ClockBloc>(),
-                      dayPickerBloc: context.read<DayPickerBloc>(),
-                      memoplannerSettingBloc:
-                          context.read<MemoplannerSettingBloc>(),
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    height: nightTimepillarHeight,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: layout.timePillar.twoTimePillar.nightMargin,
                     ),
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      height: nightTimepillarHeight,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: layout.timePillar.twoTimePillar.nightMargin,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            layout.timePillar.twoTimePillar.radius,
-                          ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          layout.timePillar.twoTimePillar.radius,
                         ),
                       ),
-                      child: BlocProvider<TimepillarMeasuresCubit>(
-                        create: (_) => TimepillarMeasuresCubit.fixed(
-                            state: nightTimepillarMeasures),
-                        child: OneTimepillarCalendar(
-                          timepillarMeasures: nightTimepillarMeasures,
-                          timepillarState: timepillarState,
-                          dayParts: dayParts,
-                          displayTimeline: displayTimeline,
-                          showCategories: showCategories,
-                          showCategoryLabels: false,
-                          scrollToTimeOffset: false,
-                          displayHourLines: displayHourLines,
-                          topMargin:
-                              layout.timePillar.twoTimePillar.verticalMargin,
-                          bottomMargin:
-                              layout.timePillar.twoTimePillar.verticalMargin,
-                        ),
+                    ),
+                    child: BlocProvider<TimepillarMeasuresCubit>(
+                      create: (_) => TimepillarMeasuresCubit.fixed(
+                          state: nightTimepillarMeasures),
+                      child: OneTimepillarCalendar(
+                        timepillarMeasures: nightTimepillarMeasures,
+                        timepillarState: timepillarState,
+                        dayParts: dayParts,
+                        displayTimeline: displayTimeline,
+                        showCategories: showCategories,
+                        showCategoryLabels: false,
+                        scrollToTimeOffset: false,
+                        displayHourLines: displayHourLines,
+                        topMargin:
+                            layout.timePillar.twoTimePillar.verticalMargin,
+                        bottomMargin:
+                            layout.timePillar.twoTimePillar.verticalMargin,
                       ),
                     ),
                   ),

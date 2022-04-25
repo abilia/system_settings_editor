@@ -122,15 +122,6 @@ void main() {
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
               ),
-              BlocProvider<TimepillarCubit>(
-                create: (context) => TimepillarCubit(
-                  clockBloc: context.read<ClockBloc>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
-                  dayPickerBloc: context.read<DayPickerBloc>(),
-                  activitiesBloc: context.read<ActivitiesBloc>(),
-                  timerAlarmBloc: context.read<TimerAlarmBloc>(),
-                ),
-              ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: Future.value(30.minutes()),

@@ -131,8 +131,8 @@ void main() {
                 clockBloc: clockBloc,
               ),
             ),
-            BlocProvider<TimepillarCubit>(
-                create: (context) => FakeTimepillarCubit()),
+            BlocProvider<TimepillarMeasuresCubit>(
+                create: (context) => FakeTimepillarMeasuresCubit()),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

@@ -4,21 +4,19 @@ class TimepillarState extends Equatable {
   final TimepillarInterval timepillarInterval;
   final List<Event> events;
   final DayCalendarType calendarType;
+  final Occasion occasion;
 
   const TimepillarState(
     this.timepillarInterval,
     this.events,
     this.calendarType,
+    this.occasion,
   );
 
   @override
   List<Object> get props => [timepillarInterval, events, calendarType];
 
-  // TODO IMPLEMENT THIS!
-  bool get isToday => true;
-
-  // TODO IMPLEMENT THIS!
-  get occasion => Occasion.current;
+  bool get isToday => occasion == Occasion.current;
 }
 
 class TimepillarMeasures extends Equatable {

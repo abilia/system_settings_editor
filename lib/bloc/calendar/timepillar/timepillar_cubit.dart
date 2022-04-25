@@ -82,6 +82,11 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         generateInterval(now, selectedDay, memoState, forceFullDay);
     final todayNight =
         selectedDay.isAtSameDay(now) && now.isNight(memoState.dayParts);
+    final occasion = now.isBefore(interval.startTime)
+        ? Occasion.future
+        : now.isAfter(interval.endTime)
+            ? Occasion.past
+            : Occasion.current;
     return TimepillarState(
       interval,
       generateEvents(
@@ -94,6 +99,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
               !forceFullDay
           ? DayCalendarType.oneTimepillar
           : memoState.dayCalendarType,
+      occasion,
     );
   }
 
