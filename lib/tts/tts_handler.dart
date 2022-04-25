@@ -1,11 +1,8 @@
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:get_it/get_it.dart';
 
 abstract class TtsInterface {
-  void initialize();
-
-  Future<dynamic> play(String text);
+  Future<dynamic> speak(String text);
 
   Future<dynamic> stop();
 
@@ -15,14 +12,9 @@ abstract class TtsInterface {
 }
 
 class FlutterTtsHandler implements TtsInterface {
-  late FlutterTts flutterTts;
+  final FlutterTts flutterTts;
 
-  FlutterTtsHandler() {
-    flutterTts = GetIt.I<FlutterTts>();
-  }
-
-  @override
-  void initialize() {}
+  FlutterTtsHandler(this.flutterTts);
 
   @override
   Future<dynamic> pause() async {
@@ -30,7 +22,7 @@ class FlutterTtsHandler implements TtsInterface {
   }
 
   @override
-  Future<dynamic> play(String text) async {
+  Future<dynamic> speak(String text) async {
     return flutterTts.speak(text);
   }
 
@@ -44,13 +36,14 @@ class FlutterTtsHandler implements TtsInterface {
 }
 
 class AcapelaTtsHandler implements TtsInterface {
-  AcapelaTtsHandler() {
-    initialize();
+  AcapelaTtsHandler({initialize = false}) {
+    if (initialize) {
+      setLicense();
+    }
   }
 
-  @override
-  void initialize() async {
-    await AcapelaTts.setLicense(0x31364e69, 0x004dfba3,
+  Future<dynamic> setLicense() async {
+    return await AcapelaTts.setLicense(0x31364e69, 0x004dfba3,
         '"4877 0 iN61 #EVALUATION#Abilia-Solna-Sweden"\nUulz3XChrD9pVq!udAjvoOjtUunooL3FMZa6plK6RhhwiTzf\$Qaorlmwdyh#\nX6XAIrmYSRSUMSSNL25d7kHMXTKDS@Nlg2kl@YK4RsFVGPDX\nTqUDZO3UZgZhyJFRbfKSpQ##\n');
   }
 
@@ -60,8 +53,8 @@ class AcapelaTtsHandler implements TtsInterface {
   }
 
   @override
-  Future<dynamic> play(String text) async {
-    return await AcapelaTts.playTts(text);
+  Future<dynamic> speak(String text) async {
+    return await AcapelaTts.speak(text);
   }
 
   @override

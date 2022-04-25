@@ -1,13 +1,18 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/config.dart';
 
 String? _spoken;
-const _ttsChannelName = 'flutter_tts';
+const _ttsChannelName = Config.isMP ? 'acapela_tts' : 'flutter_tts';
 // ignore: prefer_function_declarations_over_variables
 final _ttsHandler = (MethodCall methodCall) {
   switch (methodCall.method) {
     case 'speak':
-      _spoken = methodCall.arguments;
+      if (_ttsChannelName == 'acapela_tts') {
+        _spoken = methodCall.arguments['text'];
+      } else {
+        _spoken = methodCall.arguments;
+      }
       break;
   }
 };

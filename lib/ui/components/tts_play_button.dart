@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/tts/tts_interface.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 
 class TtsPlayButton extends StatefulWidget {
@@ -60,7 +60,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
 
   _play() {
     setState(() => ttsIsPlaying = true);
-    GetIt.I<TtsInterface>().play(widget.controller.text).whenComplete(
+    GetIt.I<TtsInterface>().speak(widget.controller.text).whenComplete(
       () {
         if (mounted) {
           setState(() => ttsIsPlaying = false);

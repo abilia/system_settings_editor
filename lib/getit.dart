@@ -11,7 +11,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/file_storage.dart';
-import 'package:seagull/tts/tts_interface.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,10 +112,6 @@ class GetItInitializer {
   set alarmNavigator(AlarmNavigator alarmNavigator) =>
       _alarmNavigator = alarmNavigator;
 
-  late FlutterTts _flutterTts = FlutterTts();
-
-  set flutterTts(FlutterTts flutterTts) => _flutterTts = flutterTts;
-
   late PackageInfo _packageInfo =
       PackageInfo(appName: '', buildNumber: '', packageName: '', version: '');
 
@@ -126,7 +122,7 @@ class GetItInitializer {
   set battery(Battery battery) => _battery = battery;
 
   late TtsInterface _ttsHandler =
-      Config.isMP ? AcapelaTtsHandler() : FlutterTtsHandler();
+      Config.isMP ? AcapelaTtsHandler() : FlutterTtsHandler(FlutterTts());
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
@@ -155,7 +151,6 @@ class GetItInitializer {
         _fileStorage ?? FileStorage(_documentsDirectory?.path))
     ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
     ..registerSingleton<SyncDelays>(_syncDelay)
-    ..registerSingleton<FlutterTts>(_flutterTts)
     ..registerSingleton<PackageInfo>(_packageInfo)
     ..registerSingleton<Battery>(_battery)
     ..registerSingleton<TtsInterface>(_ttsHandler);

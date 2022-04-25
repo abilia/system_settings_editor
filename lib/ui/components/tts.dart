@@ -2,7 +2,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/tts/tts_interface.dart';
+import 'package:seagull/tts/tts_handler.dart';
 
 class Tts extends StatelessWidget {
   final Text child;
@@ -74,6 +74,6 @@ class _Tts extends StatelessWidget {
       );
 
   void _playTts() async {
-    GetIt.I<TtsInterface>().play(onLongPress?.call() ?? data ?? '');
+    GetIt.I<TtsInterface>().speak(onLongPress?.call() ?? data ?? '');
   }
 }
