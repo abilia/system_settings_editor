@@ -296,7 +296,6 @@ class _TimeInputContentState extends State<TimeInputContent>
                       onPeriodChanged: (period) =>
                           setState(() => endTimePeriod = period),
                       onTimeChanged: (value) {
-                        debugPrint(value);
                         if (valid(startTimeController)) {
                           final onValidTimeInput = widget.onValidTimeInput;
                           if (onValidTimeInput != null) {
@@ -315,49 +314,10 @@ class _TimeInputContentState extends State<TimeInputContent>
               ),
             ),
           ),
-          NumPad(
-            controllerStart: startTimeController,
-            controllerEnd: endTimeController,
-            delete: () {
-              if (endTimeController.text.isNotEmpty && endTimeFocus.hasFocus) {
-                endTimeController.text = endTimeController.text
-                    .substring(0, endTimeController.text.length - 1);
-              } else {
-                startTimeFocus.requestFocus();
-                if (startTimeController.text.isNotEmpty) {
-                  startTimeController.text = startTimeController.text
-                      .substring(0, startTimeController.text.length - 1);
-                }
-              }
-            },
-            onNumPress: (value) {
-              if (startTimeFocus.hasFocus) {
-                String currentTextControllerState = startTimeController.text;
-                startTimeController.text = _validateTimeInput(
-                    currentTextControllerState,
-                    currentTextControllerState += value,
-                    twelveHourClock);
-              } else {
-                String currentTextControllerState = endTimeController.text;
-                endTimeController.text = _validateTimeInput(
-                    currentTextControllerState,
-                    currentTextControllerState += value,
-                    twelveHourClock);
-              }
-              if (valid(startTimeController)) {
-                endTimeFocus.requestFocus();
-                if (widget.onValidTimeInput != null) {
-                  widget.onValidTimeInput?.call(newTimeInput);
-                } else {
-                  setState(() {});
-                }
-              }
-            },
-            onClear: () {
-              startTimeController.clear();
-              endTimeController.clear();
-              startTimeFocus.requestFocus();
-            },
+          AbiliaNumPad(
+            delete: deleteOneDigit,
+            onNumPress: (number) => numPadKeyPress(number),
+            onClear: clearFields,
           ),
           const Spacer(),
           widget.bottomNavigationBuilder(
@@ -368,12 +328,50 @@ class _TimeInputContentState extends State<TimeInputContent>
       ),
     );
   }
+
+  void clearFields() {
+    startTimeController.clear();
+    endTimeController.clear();
+    startTimeFocus.requestFocus();
+  }
+
+  void deleteOneDigit() {
+    if (endTimeController.text.isNotEmpty && endTimeFocus.hasFocus) {
+      endTimeController.text = endTimeController.text
+          .substring(0, endTimeController.text.length - 1);
+    } else {
+      startTimeFocus.requestFocus();
+      if (startTimeController.text.isNotEmpty) {
+        startTimeController.text = startTimeController.text
+            .substring(0, startTimeController.text.length - 1);
+      }
+    }
+  }
+
+  void numPadKeyPress(value) {
+    if (startTimeFocus.hasFocus) {
+      String currentTextControllerState =
+          valid(startTimeController) ? '' : startTimeController.text;
+
+      startTimeController.text = _validateTimeInput(currentTextControllerState,
+          currentTextControllerState += value, twelveHourClock);
+    } else {
+      String currentTextControllerState =
+          valid(endTimeController) ? '' : endTimeController.text;
+
+      endTimeController.text = _validateTimeInput(currentTextControllerState,
+          currentTextControllerState += value, twelveHourClock);
+    }
+    if (valid(startTimeController)) {
+      endTimeFocus.requestFocus();
+    }
+  }
 }
 
 String _validateTimeInput(
     String oldValue, String newValue, bool twelveHourClock) {
   final newText = _handleLeadingZero(newValue, twelveHourClock);
-  return _validTimeInput(newText, twelveHourClock) ? newText : oldValue;
+  return _isTimeInputValid(newText, twelveHourClock) ? newText : oldValue;
 }
 
 String _handleLeadingZero(String newValue, bool twelveHourClock) {
@@ -381,14 +379,13 @@ String _handleLeadingZero(String newValue, bool twelveHourClock) {
   if (newValue.length == 1 &&
       intVal != null &&
       intVal > (twelveHourClock ? 1 : 2)) {
-    debugPrint(pad0(newValue));
     return pad0(newValue);
   } else {
     return newValue;
   }
 }
 
-bool _validTimeInput(String input, twelveHourClock) {
+bool _isTimeInputValid(String input, twelveHourClock) {
   if (input.isEmpty) return true;
   final intVal = int.tryParse(input);
   if (intVal == null) return false;

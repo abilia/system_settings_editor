@@ -1,18 +1,17 @@
 import 'package:seagull/ui/all.dart';
 
-class NumPad extends StatelessWidget {
+class AbiliaNumPad extends StatelessWidget {
   final double buttonSize;
   final double buttonWidth;
   final double buttonHeight;
   final Color buttonColor;
   final Color iconColor;
-  final TextEditingController controllerStart;
-  final TextEditingController controllerEnd;
+
   final Function delete;
   final Function onClear;
   final Function onNumPress;
 
-  const NumPad({
+  const AbiliaNumPad({
     Key? key,
     this.buttonSize = 48,
     this.buttonWidth = 80,
@@ -22,8 +21,6 @@ class NumPad extends StatelessWidget {
     required this.delete,
     required this.onClear,
     required this.onNumPress,
-    required this.controllerStart,
-    required this.controllerEnd,
   }) : super(key: key);
 
   @override
@@ -40,8 +37,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -49,8 +44,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -58,8 +51,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
             ],
@@ -73,8 +64,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -82,8 +71,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -91,8 +78,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
             ],
@@ -106,8 +91,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -115,8 +98,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               NumberButton(
@@ -124,8 +105,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
             ],
@@ -147,8 +126,6 @@ class NumPad extends StatelessWidget {
                 width: buttonWidth,
                 height: buttonHeight,
                 color: buttonColor,
-                controllerStart: controllerStart,
-                controllerEnd: controllerEnd,
                 onNumPress: onNumPress,
               ),
               IconButton(
@@ -172,8 +149,6 @@ class NumberButton extends StatelessWidget {
   final double width;
   final double height;
   final Color color;
-  final TextEditingController controllerStart;
-  final TextEditingController controllerEnd;
   final Function onNumPress;
 
   const NumberButton({
@@ -182,8 +157,6 @@ class NumberButton extends StatelessWidget {
     required this.width,
     required this.height,
     required this.color,
-    required this.controllerStart,
-    required this.controllerEnd,
     required this.onNumPress,
   }) : super(key: key);
 
