@@ -73,7 +73,6 @@ class _Tts extends StatelessWidget {
         ),
       );
 
-  void _playTts() async {
-    GetIt.I<TtsInterface>().speak(onLongPress?.call() ?? data ?? '');
-  }
+  void _playTts() =>
+      GetIt.I<TtsInterface>().speak(onLongPress?.call() ?? data ?? '');
 }

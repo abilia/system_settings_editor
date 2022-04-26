@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-import 'package:seagull/tts/tts_handler.dart';
 
 import 'package:seagull/ui/all.dart';
 
@@ -41,9 +39,6 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
-      ..ttsHandler = Config.isMP
-          ? AcapelaTtsHandler(initialize: false)
-          : FlutterTtsHandler(FlutterTts())
       ..init();
   });
 
