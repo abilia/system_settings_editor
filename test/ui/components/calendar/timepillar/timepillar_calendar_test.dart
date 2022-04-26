@@ -1137,4 +1137,65 @@ void main() {
       });
     });
   });
+
+  group('Night', () {
+    testWidgets('Night interval shows whole night',
+        (WidgetTester tester) async {
+      const nightActivityTitle = 'nighttitle';
+      activityResponse = () => [
+            Activity.createNew(
+              startTime: DateTime(2022, 04, 27, 02, 00),
+              title: nightActivityTitle,
+            )
+          ];
+      mockTicker.add(DateTime(2022, 04, 26, 23, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(nightActivityTitle), findsOneWidget);
+    });
+
+    testWidgets('Navigate next shows full next day',
+        (WidgetTester tester) async {
+      const nightActivityTitle = 'nighttitle';
+      const eveningTitle = 'eveningtitle';
+      activityResponse = () => [
+            Activity.createNew(
+              startTime: DateTime(2022, 04, 27, 02, 00),
+              title: nightActivityTitle,
+            ),
+            Activity.createNew(
+              startTime: DateTime(2022, 04, 27, 23, 30),
+              title: eveningTitle,
+            )
+          ];
+      mockTicker.add(DateTime(2022, 04, 26, 23, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(nightActivityTitle), findsOneWidget);
+      expect(find.text(eveningTitle), findsNothing);
+
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text(eveningTitle), findsOneWidget);
+    });
+
+    testWidgets('Navigate previous when before midnight shows full current day',
+        (WidgetTester tester) async {
+      const dayActivity = 'nighttitle';
+      activityResponse = () => [
+            Activity.createNew(
+              startTime: DateTime(2022, 04, 26, 13, 00),
+              title: dayActivity,
+            ),
+          ];
+      mockTicker.add(DateTime(2022, 04, 26, 23, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivity), findsNothing);
+
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivity), findsOneWidget);
+    });
+  });
 }

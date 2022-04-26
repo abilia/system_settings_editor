@@ -733,10 +733,124 @@ void main() {
           ];
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      // Act
-      await tester.pumpAndSettle();
       // Assert
       expect(find.byType(CrossOver), findsNothing);
+    });
+  });
+
+  group('Night', () {
+    testWidgets('Only one timepillar at night', (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 26, 23, 30);
+      mockTicker.add(night);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsNothing);
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+    });
+
+    testWidgets('Moving from day to night', (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 26, 22, 59);
+      mockTicker.add(night);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      mockTicker.add(night.add(1.minutes()));
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsNothing);
+      expect(find.byType(OneTimepillarCalendar), findsOneWidget);
+    });
+
+    testWidgets(
+        'Navigating to next day when before midnight shows next day with two timepillars',
+        (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 26, 23, 30);
+      mockTicker.add(night);
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+    });
+
+    testWidgets(
+        'Navigating to previous day when before midnight shows the current day with two timepillars',
+        (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 26, 23, 30);
+      mockTicker.add(night);
+      const dayActivityTitle = 'Day activity';
+
+      activityResponse = () => [
+            Activity.createNew(
+              title: dayActivityTitle,
+              startTime: DateTime(2022, 04, 26, 13, 00),
+              duration: 1.hours(),
+            )
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivityTitle), findsNothing);
+
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      expect(find.text(dayActivityTitle), findsOneWidget);
+
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsNothing);
+    });
+
+    testWidgets(
+        'Navigating to previous day when after midnight shows previous day',
+        (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 27, 01, 00);
+      mockTicker.add(night);
+      const previousDayTitle = 'prevday';
+
+      activityResponse = () => [
+            Activity.createNew(
+              title: previousDayTitle,
+              startTime: DateTime(2022, 04, 26, 13, 00),
+              duration: 1.hours(),
+            )
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(previousDayTitle), findsNothing);
+      expect(find.byType(TwoTimepillarCalendar), findsNothing);
+
+      await tester.tap(previusDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      expect(find.text(previousDayTitle), findsOneWidget);
+    });
+
+    testWidgets(
+        'Navigating to next day when after midnight shows the full current day',
+        (WidgetTester tester) async {
+      final night = DateTime(2022, 04, 27, 01, 00);
+      mockTicker.add(night);
+      const dayActivityTitle = 'day activity';
+
+      activityResponse = () => [
+            Activity.createNew(
+              title: dayActivityTitle,
+              startTime: DateTime(2022, 04, 27, 13, 00),
+              duration: 1.hours(),
+            )
+          ];
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text(dayActivityTitle), findsNothing);
+      expect(find.byType(TwoTimepillarCalendar), findsNothing);
+
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.byType(TwoTimepillarCalendar), findsOneWidget);
+      expect(find.text(dayActivityTitle), findsOneWidget);
     });
   });
 }

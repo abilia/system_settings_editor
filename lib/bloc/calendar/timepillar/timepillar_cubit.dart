@@ -43,7 +43,10 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       _onTimepillarConditionsChanged();
     });
     _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
-      forceFullDay = false;
+      if (!(state.lastDayPickerEvent is NextDay ||
+          state.lastDayPickerEvent is PreviousDay)) {
+        forceFullDay = false;
+      }
       _onTimepillarConditionsChanged();
     });
     _timerSubscription = timerAlarmBloc.stream.listen((state) {
@@ -55,17 +58,12 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   }
 
   void _onTimepillarConditionsChanged() {
-    final time = clockBloc.state;
-    final day = dayPickerBloc.state.day;
-    final settings = memoSettingsBloc.state;
-    final activities = activitiesBloc.state.activities;
-    final timers = timerAlarmBloc.state.timers;
     emit(_generateState(
-      time,
-      day,
-      settings,
-      activities,
-      timers,
+      clockBloc.state,
+      dayPickerBloc.state.day,
+      memoSettingsBloc.state,
+      activitiesBloc.state.activities,
+      timerAlarmBloc.state.timers,
       forceFullDay,
     ));
   }
@@ -134,7 +132,6 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
   static List<Event> generateEvents(List<Activity> activities,
       List<TimerOccasion> timers, TimepillarInterval interval) {
-    // First do a fast filter
     final dayActivities = activities
         .expand((activity) => activity.dayActivitiesForInterval(
             interval.startTime, interval.endTime))
