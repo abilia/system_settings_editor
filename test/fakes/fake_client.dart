@@ -15,6 +15,7 @@ typedef TimerResponse = Iterable<AbiliaTimer> Function();
 
 class Fakes {
   Fakes._();
+
   static int get userId => 1234;
   static const String token = 'token',
       name = 'Testcase user',
@@ -92,6 +93,17 @@ class Fakes {
               );
             }
             // {"usernameOrEmail":"abc","password":"","language":"en","termsOfCondition":true,"privacyPolicy":true}
+          }
+          if (pathSegments.containsAll(['token', 'renew'])) {
+            if (r.body.contains('"renewToken":"renewToken"')) {
+              response = Response('''{
+                            "token" : "$token",
+                            "endDate" : 1231244,
+                            "renewToken" : "renewToken"
+                          }''', 200);
+            } else {
+              response = Response(json.encode(List.empty()), 401);
+            }
           }
 
           return Future.value(
