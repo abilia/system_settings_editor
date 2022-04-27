@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:battery_plus/battery_plus.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:package_info/package_info.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
@@ -121,8 +119,7 @@ class GetItInitializer {
 
   set battery(Battery battery) => _battery = battery;
 
-  late TtsInterface _ttsHandler =
-      Config.isMP ? AcapelaTtsHandler() : FlutterTtsHandler(FlutterTts());
+  late TtsInterface _ttsHandler = FlutterTtsHandler();
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 

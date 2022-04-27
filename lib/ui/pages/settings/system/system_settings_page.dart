@@ -42,7 +42,7 @@ class SystemSettingsPage extends StatelessWidget {
           text: Text(t.textToSpeech),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => const SpeechSupportPage(),
+              builder: (_) => SpeechSupportPage(),
               settings: RouteSettings(name: t.textToSpeech),
             ),
           ),

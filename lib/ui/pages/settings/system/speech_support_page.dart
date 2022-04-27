@@ -1,11 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/pages/settings/system/voices_page.dart';
 
 class SpeechSupportPage extends StatelessWidget {
-  const SpeechSupportPage({Key? key}) : super(key: key);
+  SpeechSupportPage({Key? key}) : super(key: key);
+
+  final AcapelaTtsHandler _acapelaTts =
+      GetIt.I<TtsInterface>() as AcapelaTtsHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,8 @@ class SpeechSupportPage extends StatelessWidget {
                 ),
               ).pad(defaultPadding),
               const Divider().pad(dividerPadding),
-              Tts(child: Text(t.speechRate + ' ${state.speechRate}')).pad(defaultPadding),
+              Tts(child: Text(t.speechRate + ' ${state.speechRate}'))
+                  .pad(defaultPadding),
               Row(
                 children: [
                   Expanded(
@@ -46,12 +52,23 @@ class SpeechSupportPage extends StatelessWidget {
                           context.read<SettingsCubit>().setSpeechRate(v * 100),
                     ),
                   ),
-                  const TtsPlayButton().pad(layout.speechSupportPage.buttonPadding),
+                  const TtsPlayButton()
+                      .pad(layout.speechSupportPage.buttonPadding),
                 ],
               ).pad(defaultPadding),
               Tts(child: Text(t.voice)).pad(defaultPadding),
               PickField(
                 text: Text(state.voice),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => BlocProvider<SpeechSupportCubit>(
+                      create: (context) => SpeechSupportCubit(
+                          GetIt.I<BaseClient>(), 'sv', state.voice),
+                      child: VoicesPage(acapelaTts: _acapelaTts),
+                    ),
+                    settings: RouteSettings(name: t.textToSpeech),
+                  ),
+                ),
               ).pad(bottomPadding),
             ],
           ),

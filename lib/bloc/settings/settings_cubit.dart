@@ -23,4 +23,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     await settingsDb.setSpeechRate(speechRate);
     emit(state.copyWith(speechRate: speechRate));
   }
+
+  Future<void> setVoice(String voice) async {
+    await settingsDb.setVoice(voice);
+    emit(state.copyWith(voice: voice));
+  }
 }
