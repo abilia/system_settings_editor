@@ -396,6 +396,11 @@ showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen
 showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
 editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
 							
+### Speech support settings							
+speakEveryWord	Read out word when space bar is pressed	Uppläsning av varje ord	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
+speechRate	Speech rate	Talhastighet	Talehastighed	Spraaksnelheid	Puhenopeus	Sprechtempo	Talehastighet
+voice	Voice	Röst					
+							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
 code	Code	Kod	Kode	Code	Koodi	Code	Kode

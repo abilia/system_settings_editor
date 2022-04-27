@@ -66,36 +66,6 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      builder: (context, settingsState) => Row(children: [
-        Expanded(
-          child: SwitchField(
-            value: settingsState.textToSpeech,
-            leading: const Icon(AbiliaIcons.speakText),
-            onChanged: (v) => context.read<SettingsCubit>().setTextToSpeech(v),
-            child: Text(Translator.of(context).translate.textToSpeech),
-          ),
-        ),
-        Padding(
-          padding: layout.settings.textToSpeechPadding,
-          child: InfoButton(
-            onTap: () => showViewDialog(
-              useSafeArea: false,
-              context: context,
-              builder: (context) => const LongPressInfoDialog(),
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
-}
-
 class PermissionPickField extends StatelessWidget {
   const PermissionPickField({Key? key}) : super(key: key);
 

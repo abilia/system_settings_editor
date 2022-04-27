@@ -757,6 +757,12 @@ abstract class Translated {
 
   final String editCategory = 'Edit category';
 
+  final String speakEveryWord = 'Read out word when space bar is pressed';
+
+  final String speechRate = 'Speech rate';
+
+  final String voice = 'Voice';
+
   final String codeProtect = 'Code protect';
 
   final String code = 'Code';
@@ -1943,6 +1949,15 @@ class SV extends Translated {
   final String editCategory = 'Redigera kategori';
 
   @override
+  final String speakEveryWord = 'Uppläsning av varje ord';
+
+  @override
+  final String speechRate = 'Talhastighet';
+
+  @override
+  final String voice = 'Röst';
+
+  @override
   final String codeProtect = 'Kodskydd';
 
   @override
@@ -3123,6 +3138,12 @@ class DA extends Translated {
 
   @override
   final String editCategory = 'Rediger kategori';
+
+  @override
+  final String speakEveryWord = 'Oplæs ord ved mellemrum';
+
+  @override
+  final String speechRate = 'Talehastighed';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
@@ -4306,6 +4327,13 @@ class NL extends Translated {
   final String editCategory = 'Bewerk categorie';
 
   @override
+  final String speakEveryWord =
+      'Woord voorlezen als er op de spatiebalk wordt gedrukt';
+
+  @override
+  final String speechRate = 'Spraaksnelheid';
+
+  @override
   final String codeProtect = 'Codebescherming';
 
   @override
@@ -5486,6 +5514,13 @@ class FI extends Translated {
 
   @override
   final String editCategory = 'Muokkaa kategoriaa';
+
+  @override
+  final String speakEveryWord =
+      'Lue sana ääneen, kun välilyöntipainiketta painetaan';
+
+  @override
+  final String speechRate = 'Puhenopeus';
 
   @override
   final String codeProtect = 'Suojakoodi';
@@ -6674,6 +6709,12 @@ class DE extends Translated {
   final String editCategory = 'Kategorie bearbeiten';
 
   @override
+  final String speakEveryWord = 'Bei gedrückter Leertaste Wort vorlesen';
+
+  @override
+  final String speechRate = 'Sprechtempo';
+
+  @override
   final String codeProtect = 'Schutz durch Code';
 
   @override
@@ -7852,6 +7893,12 @@ class NB extends Translated {
 
   @override
   final String editCategory = 'Rediger kategori';
+
+  @override
+  final String speakEveryWord = 'Opplesning av ord ved mellomrom';
+
+  @override
+  final String speechRate = 'Talehastighet';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';

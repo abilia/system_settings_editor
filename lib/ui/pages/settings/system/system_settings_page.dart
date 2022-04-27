@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/ui/pages/settings/system/speech_support_page.dart';
 import 'package:seagull/utils/all.dart';
 
 class SystemSettingsPage extends StatelessWidget {
@@ -36,7 +37,16 @@ class SystemSettingsPage extends StatelessWidget {
             }
           },
         ),
-        const TextToSpeechSwitch(),
+        PickField(
+          leading: const Icon(AbiliaIcons.speakText),
+          text: Text(t.textToSpeech),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const SpeechSupportPage(),
+              settings: RouteSettings(name: t.textToSpeech),
+            ),
+          ),
+        ),
         PickField(
           leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           text: Text(t.androidSettings),

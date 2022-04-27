@@ -1,7 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
-
-import 'dart:ui' as ui;
 
 part 'go_layout.dart';
 
@@ -82,6 +82,7 @@ class Layout {
   final ButtonLayout button;
   final ThemeLayout theme;
   final DotLayout dot;
+  final SpeechSupportPageLayout speechSupportPage;
 
   const Layout({
     this.radius = 12,
@@ -151,6 +152,7 @@ class Layout {
     this.button = const ButtonLayout(),
     this.theme = const ThemeLayout(),
     this.dot = const DotLayout(),
+    this.speechSupportPage = const SpeechSupportPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -1370,5 +1372,18 @@ class DotLayout {
 
 class FloatingActionButtonLayout {
   final EdgeInsets padding;
+
   const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
+}
+
+class SpeechSupportPageLayout {
+  final EdgeInsets defaultPadding, topPadding, bottomPadding, dividerPadding, buttonPadding;
+
+  const SpeechSupportPageLayout({
+    this.dividerPadding = const EdgeInsets.only(top: 24, bottom: 36),
+    this.defaultPadding = const EdgeInsets.fromLTRB(24, 0, 24, 0),
+    this.topPadding = const EdgeInsets.fromLTRB(24, 24, 24, 0),
+    this.bottomPadding = const EdgeInsets.fromLTRB(24, 24, 24, 64),
+    this.buttonPadding = const EdgeInsets.only(left: 16),
+  });
 }
