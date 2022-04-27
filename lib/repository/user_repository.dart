@@ -18,6 +18,7 @@ class UserRepository extends Repository {
   final LicenseDb licenseDb;
   final CalendarDb calendarDb;
   final DeviceDb deviceDb;
+  final int postApiVersion;
 
   const UserRepository({
     required BaseUrlDb baseUrlDb,
@@ -27,6 +28,7 @@ class UserRepository extends Repository {
     required this.licenseDb,
     required this.deviceDb,
     required this.calendarDb,
+    this.postApiVersion = 1,
   }) : super(client, baseUrlDb);
 
   Future<LoginInfo> authenticate({
@@ -37,7 +39,7 @@ class UserRepository extends Repository {
   }) async {
     final clientId = await deviceDb.getClientId();
     final response = await client.post(
-      '$baseUrl/api/v1/auth/client/me'.toUri(),
+      '$baseUrl/api/v$postApiVersion/auth/client/me'.toUri(),
       headers: {
         HttpHeaders.authorizationHeader:
             'Basic ${base64Encode(utf8.encode('$username:$password'))}',
@@ -92,7 +94,8 @@ class UserRepository extends Repository {
   }
 
   Future<User> getUserFromApi(String token) async {
-    final response = await client.get('$baseUrl/api/v1/entity/me'.toUri(),
+    final response = await client.get(
+        '$baseUrl/api/v$postApiVersion/entity/me'.toUri(),
         headers: authHeader(token));
 
     if (response.statusCode == 200) {
@@ -119,7 +122,7 @@ class UserRepository extends Repository {
 
   Future<List<License>> getLicensesFromApi(String token) async {
     final response = await client.get(
-        '$baseUrl/api/v1/license/portal/me'.toUri(),
+        '$baseUrl/api/v$postApiVersion/license/portal/me'.toUri(),
         headers: authHeader(token));
     if (response.statusCode == 200) {
       return (response.json() as List).map((l) => License.fromJson(l)).toList();
@@ -166,7 +169,7 @@ class UserRepository extends Repository {
       token ??= getToken();
       if (token == null) throw 'token is null';
       final response = await client.delete(
-          '$baseUrl/api/v1/auth/client'.toUri(),
+          '$baseUrl/api/v$postApiVersion/auth/client'.toUri(),
           headers: authHeader(token));
       return response.statusCode == 200;
     } catch (e) {
@@ -185,7 +188,7 @@ class UserRepository extends Repository {
     _log.fine('try creating account $usernameOrEmail');
 
     final response = await client.post(
-      '$baseUrl/open/v1/entity/user'.toUri(),
+      '$baseUrl/open/v$postApiVersion/entity/user'.toUri(),
       headers: const {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(
         {
@@ -207,6 +210,31 @@ class UserRepository extends Repository {
         break;
       default:
         throw CreateAccountException(
+          badRequest: BadRequest.fromJson(
+            response.json(),
+          ),
+        );
+    }
+  }
+
+  Future<Map<String, dynamic>?> requestToken(
+      String clientId, String renewToken) async {
+    final response = await client.post(
+      '$baseUrl/api/v$postApiVersion/token/renew'.toUri(),
+      body: jsonEncode(
+        {
+          'clientId': clientId,
+          'renewToken': renewToken,
+        },
+      ),
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        _log.fine('token renewed');
+        return response.json();
+      default:
+        throw RequestTokenException(
           badRequest: BadRequest.fromJson(
             response.json(),
           ),

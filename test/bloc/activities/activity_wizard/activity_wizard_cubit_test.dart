@@ -2198,5 +2198,99 @@ void main() {
         ),
       );
     });
+
+    test(
+        'BUG SGC-1595 '
+        'Saving recuring weekly without any days yeilds warning', () async {
+      // Arrange
+      final editActivityCubit = EditActivityCubit.newActivity(
+        day: aDay,
+        defaultAlarmTypeSetting: noAlarm,
+        calendarId: '',
+      );
+      final activity = editActivityCubit.state.activity;
+
+      final wizCubit = ActivityWizardCubit.newActivity(
+        activitiesBloc: FakeActivitiesBloc(),
+        editActivityCubit: editActivityCubit,
+        clockBloc: clockBloc,
+        settings: const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            stepByStep: StepByStepSettings(
+              template: false,
+              title: false,
+              image: false,
+              datePicker: false,
+              type: false,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              checklist: false,
+              notes: false,
+              reminders: false,
+            ),
+            addActivity: AddActivitySettings(addRecurringActivity: true),
+          ),
+        ),
+      );
+
+      editActivityCubit.changeDate(nowTime.add(7.days()).onlyDays());
+      editActivityCubit.changeTimeInterval(
+        startTime: const TimeOfDay(hour: 12, minute: 34),
+      );
+      editActivityCubit.replaceActivity(
+        activity.copyWith(
+          title: '-_title_-',
+          recurs: Recurs.weeklyOnDays(
+            const [1, 2, 3, 4, 5, 6, 7],
+            ends: nowTime.add(1.days()).onlyDays(),
+          ),
+        ),
+      );
+
+      await expectLater(
+        wizCubit.stream,
+        emitsInOrder([
+          ActivityWizardState(
+            0,
+            const [
+              WizardStep.time,
+              WizardStep.recurring,
+            ],
+          ),
+          ActivityWizardState(
+            0,
+            const [
+              WizardStep.time,
+              WizardStep.recurring,
+              WizardStep.recursWeekly,
+              WizardStep.endDate,
+            ],
+          ),
+        ]),
+      );
+
+      wizCubit.next();
+      wizCubit.next();
+      wizCubit.next();
+      wizCubit.next();
+
+      expect(
+        wizCubit.state,
+        ActivityWizardState(
+          3,
+          const [
+            WizardStep.time,
+            WizardStep.recurring,
+            WizardStep.recursWeekly,
+            WizardStep.endDate,
+          ],
+          saveErrors: const {SaveError.endDateBeforeStart},
+          sucessfullSave: false,
+        ),
+      );
+    });
   });
 }
