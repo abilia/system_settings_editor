@@ -6,7 +6,6 @@ class AbiliaNumPad extends StatelessWidget {
   final double buttonHeight;
   final Color buttonColor;
   final Color iconColor;
-
   final Function delete;
   final Function onClear;
   final Function onNumPress;
@@ -113,14 +112,12 @@ class AbiliaNumPad extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                onPressed: () => onClear(),
-                icon: const Icon(
-                  AbiliaIcons.cancel,
-                  color: AbiliaColors.black,
-                ),
-                iconSize: buttonSize,
-              ),
+              ActionButton(
+                  buttonIcon: AbiliaIcons.cancel,
+                  buttonWidth: buttonWidth,
+                  buttonHeight: buttonHeight,
+                  onButtonPress: onClear,
+                  buttonSize: buttonSize),
               NumberButton(
                 number: 0,
                 width: buttonWidth,
@@ -128,17 +125,53 @@ class AbiliaNumPad extends StatelessWidget {
                 color: buttonColor,
                 onNumPress: onNumPress,
               ),
-              IconButton(
-                onPressed: () => delete(),
-                icon: const Icon(
-                  AbiliaIcons.delete,
-                  color: AbiliaColors.black,
-                ),
-                iconSize: buttonSize,
-              ),
+              ActionButton(
+                  buttonIcon: AbiliaIcons.delete,
+                  buttonWidth: buttonWidth,
+                  buttonHeight: buttonHeight,
+                  onButtonPress: delete,
+                  buttonSize: buttonSize),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    Key? key,
+    required this.buttonIcon,
+    required this.buttonWidth,
+    required this.buttonHeight,
+    required this.onButtonPress,
+    required this.buttonSize,
+  }) : super(key: key);
+
+  final IconData buttonIcon;
+  final double buttonWidth;
+  final double buttonHeight;
+  final Function onButtonPress;
+  final double buttonSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12.0),
+      child: Container(
+        width: buttonWidth,
+        height: buttonHeight,
+        color: AbiliaColors.white,
+        child: IconButton(
+          onPressed: () => onButtonPress(),
+          icon: Icon(
+            buttonIcon,
+            size: 32,
+            color: AbiliaColors.black,
+          ),
+          iconSize: buttonSize,
+        ),
       ),
     );
   }
