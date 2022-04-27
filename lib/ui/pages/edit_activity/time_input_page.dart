@@ -352,18 +352,20 @@ class _TimeInputContentState extends State<TimeInputContent>
   }
 
   void numPadKeyPress(value) {
+    TimeInputValidator newValidator = TimeInputValidator(twelveHourClock);
+
     if (startTimeFocus.hasFocus) {
       String currentTextControllerState =
           valid(startTimeController) ? '' : startTimeController.text;
 
-      startTimeController.text = _validateTimeInput(currentTextControllerState,
-          currentTextControllerState += value, twelveHourClock);
+      startTimeController.text = newValidator.validate(
+          currentTextControllerState, currentTextControllerState += value);
     } else {
       String currentTextControllerState =
           valid(endTimeController) ? '' : endTimeController.text;
 
-      endTimeController.text = _validateTimeInput(currentTextControllerState,
-          currentTextControllerState += value, twelveHourClock);
+      endTimeController.text = newValidator.validate(
+          currentTextControllerState, currentTextControllerState += value);
     }
     if (valid(startTimeController)) {
       endTimeFocus.requestFocus();
@@ -371,41 +373,45 @@ class _TimeInputContentState extends State<TimeInputContent>
   }
 }
 
-String _validateTimeInput(
-    String oldValue, String newValue, bool twelveHourClock) {
-  final newText = _handleLeadingZero(newValue, twelveHourClock);
-  return _isTimeInputValid(newText, twelveHourClock) ? newText : oldValue;
-}
+class TimeInputValidator {
+  final bool twelveHourClock;
+  TimeInputValidator(this.twelveHourClock);
 
-String _handleLeadingZero(String newValue, bool twelveHourClock) {
-  final intVal = int.tryParse(newValue);
-  if (newValue.length == 1 &&
-      intVal != null &&
-      intVal > (twelveHourClock ? 1 : 2)) {
-    return pad0(newValue);
-  } else {
-    return newValue;
+  String validate(String oldValue, String newValue) {
+    final newText = handleLeadingZero(newValue);
+    return isTimeInputValid(newText) ? newText : oldValue;
   }
-}
 
-bool _isTimeInputValid(String input, twelveHourClock) {
-  if (input.isEmpty) return true;
-  final intVal = int.tryParse(input);
-  if (intVal == null) return false;
+  String handleLeadingZero(String value) {
+    final intVal = int.tryParse(value);
+    if (value.length == 1 &&
+        intVal != null &&
+        intVal > (twelveHourClock ? 1 : 2)) {
+      return pad0(value);
+    } else {
+      return value;
+    }
+  }
 
-  switch (input.length) {
-    case 1:
-      return twelveHourClock ? intVal <= 1 : intVal <= 2;
-    case 2:
-      return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
-    case 3:
-      final sub = int.tryParse(input.substring(2, 3));
-      return sub != null && sub <= 5;
-    case 4:
-      final sub = int.tryParse(input.substring(2, 4));
-      return sub != null && sub <= 59;
-    default:
-      return false;
+  bool isTimeInputValid(String input) {
+    if (input.isEmpty) return true;
+    final intVal = int.tryParse(input);
+    if (intVal == null) return false;
+
+    switch (input.length) {
+      case 1:
+        return twelveHourClock ? intVal <= 1 : intVal <= 2;
+      case 2:
+        return twelveHourClock ? intVal >= 1 && intVal <= 12 : intVal <= 23;
+      case 3:
+        final sub = int.tryParse(input.substring(2, 3));
+        return sub != null && sub <= 5;
+      case 4:
+        final sub = int.tryParse(input.substring(2, 4));
+        return sub != null && sub <= 59;
+      default:
+        return false;
+    }
   }
 }
 
