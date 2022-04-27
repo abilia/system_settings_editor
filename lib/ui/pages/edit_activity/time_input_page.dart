@@ -232,94 +232,97 @@ class _TimeInputContentState extends State<TimeInputContent>
                 ),
                 textTheme: theme.textTheme
                     .copyWith(subtitle1: abiliaTextTheme.headline4)),
-            child: Padding(
-              padding: layout.templates.l4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
+            child: Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _TimeInput(
-                    inputKey: TestKey.startTimeInput,
-                    amRadioFieldKey: TestKey.startTimeAmRadioField,
-                    pmRadioFieldKey: TestKey.startTimePmRadioField,
-                    heading: translate.startTime,
-                    onTimeChanged: (value) {
-                      if (valid(startTimeController)) {
-                        endTimeFocus.requestFocus();
-                        if (widget.onValidTimeInput != null) {
-                          widget.onValidTimeInput?.call(newTimeInput);
-                        } else {
-                          setState(() {});
-                        }
-                      }
-                    },
-                    period: startTimePeriod,
-                    onDone: save,
-                    onPeriodChanged: (period) =>
-                        setState(() => startTimePeriod = period),
-                    twelveHourClock: twelveHourClock,
-                    focusNode: startTimeFocus,
-                    controller: startTimeController,
-                  ),
-                  if (showEndTime) ...[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  layout.formPadding.groupHorizontalDistance,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _TimeInput(
+                        inputKey: TestKey.startTimeInput,
+                        amRadioFieldKey: TestKey.startTimeAmRadioField,
+                        pmRadioFieldKey: TestKey.startTimePmRadioField,
+                        heading: translate.startTime,
+                        onTimeChanged: (value) {
+                          if (valid(startTimeController)) {
+                            endTimeFocus.requestFocus();
+                            if (widget.onValidTimeInput != null) {
+                              widget.onValidTimeInput?.call(newTimeInput);
+                            } else {
+                              setState(() {});
+                            }
+                          }
+                        },
+                        period: startTimePeriod,
+                        onDone: save,
+                        onPeriodChanged: (period) =>
+                            setState(() => startTimePeriod = period),
+                        twelveHourClock: twelveHourClock,
+                        focusNode: startTimeFocus,
+                        controller: startTimeController,
+                      ),
+                      if (showEndTime) ...[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: layout
+                                      .formPadding.groupHorizontalDistance,
+                                ),
+                                child: Text(
+                                  '—',
+                                  style: abiliaTextTheme.headline5,
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              '—',
-                              style: abiliaTextTheme.headline5,
+                            SizedBox(
+                              height: layout.timeInput.timeDashAlignValue +
+                                  layout.formPadding.verticalItemDistance +
+                                  (twelveHourClock
+                                      ? layout.timeInput.amPmHeight
+                                      : 0),
                             ),
-                          ),
+                          ],
                         ),
-                        SizedBox(
-                          height: layout.timeInput.timeDashAlignValue +
-                              layout.formPadding.verticalItemDistance +
-                              (twelveHourClock
-                                  ? layout.timeInput.amPmHeight
-                                  : 0),
+                        _TimeInput(
+                          inputKey: TestKey.endTimeInput,
+                          amRadioFieldKey: TestKey.endTimeAmRadioField,
+                          pmRadioFieldKey: TestKey.endTimePmRadioField,
+                          heading: translate.endTime,
+                          period: endTimePeriod,
+                          onDone: save,
+                          onPeriodChanged: (period) =>
+                              setState(() => endTimePeriod = period),
+                          onTimeChanged: (value) {
+                            if (valid(startTimeController)) {
+                              final onValidTimeInput = widget.onValidTimeInput;
+                              if (onValidTimeInput != null) {
+                                onValidTimeInput(newTimeInput);
+                              } else {
+                                setState(() {});
+                              }
+                            }
+                          },
+                          twelveHourClock: twelveHourClock,
+                          focusNode: endTimeFocus,
+                          controller: endTimeController,
                         ),
                       ],
-                    ),
-                    _TimeInput(
-                      inputKey: TestKey.endTimeInput,
-                      amRadioFieldKey: TestKey.endTimeAmRadioField,
-                      pmRadioFieldKey: TestKey.endTimePmRadioField,
-                      heading: translate.endTime,
-                      period: endTimePeriod,
-                      onDone: save,
-                      onPeriodChanged: (period) =>
-                          setState(() => endTimePeriod = period),
-                      onTimeChanged: (value) {
-                        if (valid(startTimeController)) {
-                          final onValidTimeInput = widget.onValidTimeInput;
-                          if (onValidTimeInput != null) {
-                            onValidTimeInput(newTimeInput);
-                          } else {
-                            setState(() {});
-                          }
-                        }
-                      },
-                      twelveHourClock: twelveHourClock,
-                      focusNode: endTimeFocus,
-                      controller: endTimeController,
-                    ),
-                  ],
+                    ],
+                  ),
+                  AbiliaNumPad(
+                    delete: deleteOneDigit,
+                    onNumPress: (number) => numPadKeyPress(number),
+                    onClear: clearFields,
+                  ),
                 ],
               ),
             ),
           ),
-          AbiliaNumPad(
-            delete: deleteOneDigit,
-            onNumPress: (number) => numPadKeyPress(number),
-            onClear: clearFields,
-          ),
-          const Spacer(),
           widget.bottomNavigationBuilder(
             context,
             valid(startTimeController) ? newTimeInput : null,
