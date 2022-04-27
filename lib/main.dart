@@ -19,7 +19,6 @@ import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
-import 'package:seagull/tts/flutter_tts.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,9 +68,7 @@ Future<void> initServices() async {
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..ttsHandler = Config.isMP
-        ? AcapelaTtsHandler(initialize: true)
-        : FlutterTtsHandler(await flutterTts())
+    ..ttsHandler = await TtsInterface.implementation()
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();
