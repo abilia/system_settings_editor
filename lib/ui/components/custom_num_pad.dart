@@ -164,6 +164,7 @@ class ActionButton extends StatelessWidget {
         height: buttonHeight,
         color: AbiliaColors.white,
         child: IconButton(
+          key: TestKey.numPadActionButton,
           onPressed: () => onButtonPress(),
           icon: Icon(
             buttonIcon,
@@ -199,6 +200,7 @@ class NumberButton extends StatelessWidget {
       width: width,
       height: height,
       child: TextButton(
+        key: TestKey.numPadButton,
         style: TextButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
