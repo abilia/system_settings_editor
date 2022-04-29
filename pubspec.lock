@@ -12,8 +12,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.0.5"
-      resolved-ref: e0d8455c305e19b1f6e72fa6fca76de9b985ad59
+      ref: "v1.1.0"
+      resolved-ref: "7eabdc3c48cf8eddd041e160cf7b1e543f830727"
       url: "https://github.com/abilia/acapela_tts.git"
     source: git
     version: "1.0.4"

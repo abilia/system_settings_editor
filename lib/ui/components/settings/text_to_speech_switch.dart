@@ -7,7 +7,9 @@ import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/ui/themes/layout.dart';
 
 class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key? key}) : super(key: key);
+  const TextToSpeechSwitch({Key? key, this.onChanged}) : super(key: key);
+
+  final Function(bool)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,8 @@ class TextToSpeechSwitch extends StatelessWidget {
           child: SwitchField(
             value: settingsState.textToSpeech,
             leading: const Icon(AbiliaIcons.speakText),
-            onChanged: (v) => context.read<SettingsCubit>().setTextToSpeech(v),
+            onChanged: onChanged ??
+                (v) => context.read<SettingsCubit>().setTextToSpeech(v),
             child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),
