@@ -1,75 +1,49 @@
-import 'package:acapela_tts/acapela_tts.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/bloc/settings/speech_support/voice_data.dart';
 import 'package:seagull/ui/all.dart';
 
-class VoicesPage extends StatefulWidget {
-  final AcapelaTts acapelaTts;
+class VoicesPage extends StatelessWidget {
+  final String initialSelection;
 
-  const VoicesPage({Key? key, required this.acapelaTts}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return VoicesPageState();
-  }
-}
-
-class VoicesPageState extends State<VoicesPage> {
-  List<String>? _downloadedVoices;
-  String? downloadingVoice;
-
-  @override
-  void initState() {
-    super.initState();
-    loadVoices();
-  }
+  const VoicesPage({Key? key, required this.initialSelection})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: t.textToSpeech,
-        label: t.system,
-        iconData: AbiliaIcons.handiAlarmVibration,
-      ),
-      body: BlocBuilder<SpeechSupportCubit, SpeechSupportState>(
-        builder: (context, state) => ListView(
+    return BlocBuilder<SpeechSupportCubit, SpeechSupportState>(
+      builder: (context, state) => Scaffold(
+        appBar: AbiliaAppBar(
+          title: t.textToSpeech,
+          label: t.system,
+          iconData: AbiliaIcons.handiAlarmVibration,
+        ),
+        body: ListView(
           children: state.voices.map((VoiceData voice) {
             final name = voice.name;
             return VoiceRow(
-              selected: name == state.selectedVoice.name,
+              selected: name == state.selectedVoice,
               voice: voice,
-              downloaded: _downloadedVoices?.contains(name) ?? false,
-              downloading: downloadingVoice != null && downloadingVoice == name,
-              selectedVoice: state.selectedVoice.name,
-              keep: _downloadedVoices?.length == 1 &&
-                  _downloadedVoices?.first == name,
+              downloaded: state.downloadedVoices.contains(name),
+              downloading: state.downloadingVoice == name,
+              selectedVoice: state.selectedVoice,
+              keep: state.downloadedVoices.length == 1 &&
+                  state.downloadedVoices.first == name,
             );
           }).toList(),
         ).pad(layout.speechSupportPage.bottomPadding),
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget: const CloseButton(),
+          forwardNavigationWidget: state.selectedVoice != initialSelection
+              ? SaveButton(
+                  onPressed: () =>
+                      Navigator.of(context).pop(state.selectedVoice),
+                )
+              : null,
+        ),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(backNavigationWidget: CloseButton()),
     );
   }
-
-  Future<void> loadVoices() async {
-    final List<Object?>? voices = await widget.acapelaTts.availableVoices;
-
-    setState(() {
-      if (voices != null) {
-        _downloadedVoices = (voices.map((e) => e.toString())).toList();
-      }
-    });
-  }
-
-  void onDownloadVoice(String voice) {
-    setState(() {
-      downloadingVoice = voice;
-    });
-  }
-
 }
 
 class VoiceRow extends StatelessWidget {
@@ -92,26 +66,51 @@ class VoiceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SpeechSupportPageLayout pageLayout = layout.speechSupportPage;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Expanded(
-            child: downloaded
-                ? RadioField<String>(
-                    groupValue: selectedVoice,
-                    onChanged: (name) {
-                      if (downloaded && name != null && !selected) {
-                        context.read<SpeechSupportCubit>().selectVoice(voice);
-                      }
-                    },
-                    value: voice.name,
-                    text: Text('${voice.name}: ${_bytesToMegaBytes(voice.size)}MB '),
-                  )
-                : DisabledVoiceRow(name: voice.name),
+          child: downloaded
+              ? RadioField<String>(
+                  groupValue: selectedVoice,
+                  onChanged: (name) {
+                    if (downloaded && name != null && !selected) {
+                      context.read<SpeechSupportCubit>().selectVoice(voice);
+                    }
+                  },
+                  value: voice.name,
+                  text:
+                      Text('${voice.name}: ${_bytesToMegaBytes(voice.size)}MB'),
+                )
+              : DisabledVoiceRow(name: voice.name),
         ),
         CollapsableWidget(
           axis: Axis.horizontal,
-          collapsed: !downloading && !downloaded,
+          collapsed: downloaded,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: layout.formPadding.largeHorizontalItemDistance,
+            ),
+            child: downloading
+                ? SizedBox(
+                    width: layout.actionButton.size,
+                    height: layout.actionButton.size,
+                    child: CircularProgressIndicator(
+                            strokeWidth: pageLayout.loaderStrokeWidth,
+                            color: AbiliaColors.red)
+                        .pad(pageLayout.loaderPadding),
+                  ).pad(pageLayout.actionButtonPadding)
+                : IconActionButtonDark(
+                    child: const Icon(AbiliaIcons.download),
+                    onPressed: () =>
+                        context.read<SpeechSupportCubit>().downloadVoice(voice),
+                  ).pad(pageLayout.actionButtonPadding),
+          ),
+        ),
+        CollapsableWidget(
+          axis: Axis.horizontal,
+          collapsed: downloading || !downloaded,
           child: Padding(
             padding: EdgeInsets.only(
               left: layout.formPadding.largeHorizontalItemDistance,
@@ -119,31 +118,14 @@ class VoiceRow extends StatelessWidget {
             child: DeleteButton(
               voice: voice,
               enabled: !keep,
-            ).pad(layout.speechSupportPage.actionButtonPadding),
-          ),
-        ),
-        CollapsableWidget(
-          axis: Axis.horizontal,
-          collapsed: !downloading && downloaded,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: layout.formPadding.largeHorizontalItemDistance,
-            ),
-            child: downloading
-                ? const CircularProgressIndicator()
-                    .pad(layout.speechSupportPage.actionButtonPadding)
-                : IconActionButtonDark(
-                    child: const Icon(AbiliaIcons.download),
-                    onPressed: () =>
-                        context.read<SpeechSupportCubit>().downloadVoice(voice),
-                  ).pad(layout.speechSupportPage.actionButtonPadding),
+            ).pad(pageLayout.actionButtonPadding),
           ),
         ),
       ],
-    ).pad(layout.speechSupportPage.voiceRowPadding);
+    ).pad(pageLayout.voiceRowPadding);
   }
 
-  int _bytesToMegaBytes(int bytes){
+  int _bytesToMegaBytes(int bytes) {
     return bytes ~/ 1048576;
   }
 }
@@ -166,10 +148,10 @@ class DeleteButton extends StatelessWidget {
 }
 
 class DisabledVoiceRow extends StatelessWidget {
-
   final String name;
 
   const DisabledVoiceRow({Key? key, required this.name}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -177,11 +159,9 @@ class DisabledVoiceRow extends StatelessWidget {
       decoration: whiteBoxDecoration,
       padding: layout.speechSupportPage.defaultPadding,
       child: DefaultTextStyle(
-        style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-            .copyWith(height: 1.0),
+        style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
         child: Text(name),
       ).align(Alignment.centerLeft),
     );
   }
-
 }

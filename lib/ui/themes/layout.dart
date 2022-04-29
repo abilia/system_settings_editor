@@ -1377,8 +1377,15 @@ class FloatingActionButtonLayout {
 }
 
 class SpeechSupportPageLayout {
-  final EdgeInsets defaultPadding, topPadding, bottomPadding, dividerPadding, buttonPadding, actionButtonPadding, voiceRowPadding;
-  final double rowHeight;
+  final EdgeInsets defaultPadding,
+      topPadding,
+      bottomPadding,
+      dividerPadding,
+      buttonPadding,
+      actionButtonPadding,
+      voiceRowPadding,
+      loaderPadding;
+  final double rowHeight, loaderStrokeWidth;
 
   const SpeechSupportPageLayout({
     this.dividerPadding = const EdgeInsets.only(top: 24, bottom: 36),
@@ -1386,8 +1393,10 @@ class SpeechSupportPageLayout {
     this.topPadding = const EdgeInsets.fromLTRB(24, 36, 24, 0),
     this.bottomPadding = const EdgeInsets.fromLTRB(24, 36, 24, 64),
     this.buttonPadding = const EdgeInsets.only(left: 16),
-    this.actionButtonPadding = const EdgeInsets.only(left:16),
+    this.actionButtonPadding = const EdgeInsets.only(left: 16),
     this.voiceRowPadding = const EdgeInsets.only(top: 12),
     this.rowHeight = 84,
+    this.loaderPadding = const EdgeInsets.all(12),
+    this.loaderStrokeWidth = 6,
   });
 }

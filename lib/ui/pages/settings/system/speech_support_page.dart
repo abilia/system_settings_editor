@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
@@ -15,6 +14,7 @@ class SpeechSupportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final locale = Translator.of(context).locale.toString();
     final defaultPadding = layout.speechSupportPage.defaultPadding;
     final topPadding = layout.speechSupportPage.topPadding;
     final bottomPadding = layout.speechSupportPage.bottomPadding;
@@ -31,13 +31,11 @@ class SpeechSupportPage extends StatelessWidget {
             children: [
               const TextToSpeechSwitch().pad(topPadding),
               const Divider().pad(dividerPadding),
-              Expanded(
-                child: SwitchField(
-                  value: state.speakEveryWord,
-                  onChanged: (v) =>
-                      context.read<SettingsCubit>().setTextToSpeech(v),
-                  child: Text(t.speakEveryWord),
-                ),
+              SwitchField(
+                value: state.speakEveryWord,
+                onChanged: (v) =>
+                    context.read<SettingsCubit>().setTextToSpeech(v),
+                child: Text(t.speakEveryWord),
               ).pad(defaultPadding),
               const Divider().pad(dividerPadding),
               Tts(child: Text(t.speechRate + ' ${state.speechRate}'))
@@ -59,19 +57,31 @@ class SpeechSupportPage extends StatelessWidget {
               Tts(child: Text(t.voice)).pad(defaultPadding),
               PickField(
                 text: Text(state.voice),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => BlocProvider<SpeechSupportCubit>(
-                      create: (context) => SpeechSupportCubit(
-                          GetIt.I<BaseClient>(), 'sv', state.voice),
-                      child: VoicesPage(acapelaTts: _acapelaTts),
+                onTap: () async {
+                  final selectedVoice =
+                      await Navigator.of(context).push<String?>(
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider<SpeechSupportCubit>(
+                        create: (context) => SpeechSupportCubit(
+                            GetIt.I<BaseClient>(),
+                            _acapelaTts,
+                            locale,
+                            state.voice),
+                        child: VoicesPage(initialSelection: state.voice),
+                      ),
+                      settings: RouteSettings(name: t.textToSpeech),
                     ),
-                    settings: RouteSettings(name: t.textToSpeech),
-                  ),
-                ),
+                  );
+                  if (selectedVoice != null) {
+                    context.read<SettingsCubit>().setVoice(selectedVoice);
+                    _acapelaTts.setVoice(selectedVoice);
+                  }
+                },
               ).pad(bottomPadding),
             ],
           ),
+          bottomNavigationBar:
+              const BottomNavigation(backNavigationWidget: CloseButton()),
         );
       },
     );
