@@ -370,6 +370,14 @@ class _TimeInputContentState extends State<TimeInputContent>
     if (valid(startTimeController)) {
       endTimeFocus.requestFocus();
     }
+    if (valid(startTimeController)) {
+      final onValidTimeInput = widget.onValidTimeInput;
+      if (onValidTimeInput != null) {
+        onValidTimeInput(newTimeInput);
+      } else {
+        setState(() {});
+      }
+    }
   }
 }
 

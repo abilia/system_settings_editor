@@ -106,6 +106,16 @@ class TestKey {
       allPhotosTabButton = Key('allPhotosTabButton'),
       allPhotosTab = Key('allPhotosTab'),
       timerAlarmSelector = Key('timerAlarmSelector'),
-      numPadActionButton = Key('numPadActionButton'),
-      numPadButton = Key('numPadButton');
+      numPadDelete = Key('numPadDelete'),
+      numPadClear = Key('numPadClear'),
+      numPadZero = Key('numPadZero'),
+      numPadOne = Key('numPadOne'),
+      numPadTwo = Key('numPadTwo'),
+      numPadThree = Key('numPadThree'),
+      numPadFour = Key('numPadFour'),
+      numPadFive = Key('numPadFive'),
+      numPadSix = Key('numPadSix'),
+      numPadSeven = Key('numPadSeven'),
+      numPadEight = Key('numPadEight'),
+      numPadNine = Key('numPadNine');
 }

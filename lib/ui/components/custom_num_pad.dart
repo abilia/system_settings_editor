@@ -32,6 +32,7 @@ class AbiliaNumPad extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberButton(
+                buttonKey: TestKey.numPadOne,
                 number: 1,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -39,6 +40,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadTwo,
                 number: 2,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -46,6 +48,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadThree,
                 number: 3,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -59,6 +62,7 @@ class AbiliaNumPad extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberButton(
+                buttonKey: TestKey.numPadFour,
                 number: 4,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -66,6 +70,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadFive,
                 number: 5,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -73,6 +78,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadSix,
                 number: 6,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -86,6 +92,7 @@ class AbiliaNumPad extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberButton(
+                buttonKey: TestKey.numPadSeven,
                 number: 7,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -93,6 +100,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadEight,
                 number: 8,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -100,6 +108,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               NumberButton(
+                buttonKey: TestKey.numPadNine,
                 number: 9,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -113,12 +122,14 @@ class AbiliaNumPad extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ActionButton(
+                  buttonKey: TestKey.numPadClear,
                   buttonIcon: AbiliaIcons.cancel,
                   buttonWidth: buttonWidth,
                   buttonHeight: buttonHeight,
                   onButtonPress: onClear,
                   buttonSize: buttonSize),
               NumberButton(
+                buttonKey: TestKey.numPadZero,
                 number: 0,
                 width: buttonWidth,
                 height: buttonHeight,
@@ -126,6 +137,7 @@ class AbiliaNumPad extends StatelessWidget {
                 onNumPress: onNumPress,
               ),
               ActionButton(
+                  buttonKey: TestKey.numPadDelete,
                   buttonIcon: AbiliaIcons.delete,
                   buttonWidth: buttonWidth,
                   buttonHeight: buttonHeight,
@@ -140,6 +152,13 @@ class AbiliaNumPad extends StatelessWidget {
 }
 
 class ActionButton extends StatelessWidget {
+  final IconData buttonIcon;
+  final double buttonWidth;
+  final double buttonHeight;
+  final Function onButtonPress;
+  final double buttonSize;
+  final Key buttonKey;
+
   const ActionButton({
     Key? key,
     required this.buttonIcon,
@@ -147,13 +166,8 @@ class ActionButton extends StatelessWidget {
     required this.buttonHeight,
     required this.onButtonPress,
     required this.buttonSize,
+    required this.buttonKey,
   }) : super(key: key);
-
-  final IconData buttonIcon;
-  final double buttonWidth;
-  final double buttonHeight;
-  final Function onButtonPress;
-  final double buttonSize;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +178,7 @@ class ActionButton extends StatelessWidget {
         height: buttonHeight,
         color: AbiliaColors.white,
         child: IconButton(
-          key: TestKey.numPadActionButton,
+          key: buttonKey,
           onPressed: () => onButtonPress(),
           icon: Icon(
             buttonIcon,
@@ -184,15 +198,17 @@ class NumberButton extends StatelessWidget {
   final double height;
   final Color color;
   final Function onNumPress;
+  final Key buttonKey;
 
-  const NumberButton({
-    Key? key,
-    required this.number,
-    required this.width,
-    required this.height,
-    required this.color,
-    required this.onNumPress,
-  }) : super(key: key);
+  const NumberButton(
+      {Key? key,
+      required this.number,
+      required this.width,
+      required this.height,
+      required this.color,
+      required this.onNumPress,
+      required this.buttonKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +216,7 @@ class NumberButton extends StatelessWidget {
       width: width,
       height: height,
       child: TextButton(
-        key: TestKey.numPadButton,
+        key: buttonKey,
         style: TextButton.styleFrom(
           backgroundColor: color,
           shape: RoundedRectangleBorder(
