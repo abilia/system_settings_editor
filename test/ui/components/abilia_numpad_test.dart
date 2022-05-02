@@ -3,7 +3,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/custom_num_pad.dart';
 
 void main() {
-
   testWidgets('Build AbiliaNumPad', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Material(
