@@ -1,19 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/ui/components/abilia_num_pad.dart';
+
+import '../../fakes/all.dart';
 
 void main() {
   testWidgets('Build AbiliaNumPad', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Material(
+            child: BlocProvider<SettingsCubit>(
+      create: (_) => FakeSettingsBloc(),
       child: AbiliaNumPad(
           delete: () => {}, onClear: () => {}, onNumPress: (value) => value),
-    )));
+    ))));
 
     await tester.pump();
     expect(find.byType(KeyboardNumberButton), findsNWidgets(10));
     expect(find.byType(KeyboardActionButton), findsNWidgets(2));
-    expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
     expect(find.text('3'), findsOneWidget);
