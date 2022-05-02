@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seagull/ui/components/abilia_num_pad.dart';
 import 'package:seagull/ui/widget_test_keys.dart';
 
 extension OurEnterText on WidgetTester {
@@ -9,5 +10,15 @@ extension OurEnterText on WidgetTester {
     await pumpAndSettle();
     await tap(find.byKey(TestKey.inputOk));
     await pumpAndSettle();
+  }
+
+  Future<void> enterTime(Finder finder, String time) async {
+    await tap(finder);
+    await pumpAndSettle();
+    final chars = time.split('');
+    for (var input in chars) {
+      await tap(find.widgetWithText(KeyboardNumberButton, input));
+      await pumpAndSettle();
+    }
   }
 }

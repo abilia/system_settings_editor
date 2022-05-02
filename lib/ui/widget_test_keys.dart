@@ -105,17 +105,5 @@ class TestKey {
       photoCalendarTab = Key('photoCalendarTab'),
       allPhotosTabButton = Key('allPhotosTabButton'),
       allPhotosTab = Key('allPhotosTab'),
-      timerAlarmSelector = Key('timerAlarmSelector'),
-      numPadDelete = Key('numPadDelete'),
-      numPadClear = Key('numPadClear'),
-      numPadZero = Key('numPadZero'),
-      numPadOne = Key('numPadOne'),
-      numPadTwo = Key('numPadTwo'),
-      numPadThree = Key('numPadThree'),
-      numPadFour = Key('numPadFour'),
-      numPadFive = Key('numPadFive'),
-      numPadSix = Key('numPadSix'),
-      numPadSeven = Key('numPadSeven'),
-      numPadEight = Key('numPadEight'),
-      numPadNine = Key('numPadNine');
+      timerAlarmSelector = Key('timerAlarmSelector');
 }

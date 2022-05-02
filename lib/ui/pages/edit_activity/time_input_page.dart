@@ -3,7 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/custom_num_pad.dart';
+import 'package:seagull/ui/components/abilia_num_pad.dart';
 
 class TimeInputPage extends StatelessWidget {
   final TimeInput timeInput;

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/ui/components/abilia_num_pad.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -1480,9 +1481,9 @@ text''';
 
     testWidgets('can change start time', (WidgetTester tester) async {
       // Arrange
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyThree = find.byKey(TestKey.numPadThree);
-      final keyNine = find.byKey(TestKey.numPadNine);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyThree = find.byKey(TestKey.numPadThree);
+      // final keyNine = find.byKey(TestKey.numPadNine);
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
@@ -1499,11 +1500,7 @@ text''';
       // Act -- Change input to new start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(keyZero);
-      await tester.tap(keyNine);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1553,9 +1550,9 @@ text''';
           ),
         ),
       );
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyThree = find.byKey(TestKey.numPadThree);
-      final keyNine = find.byKey(TestKey.numPadNine);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyThree = find.byKey(TestKey.numPadThree);
+      // final keyNine = find.byKey(TestKey.numPadNine);
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 11, 55));
       await tester.pumpWidget(
@@ -1640,7 +1637,9 @@ text''';
     testWidgets('removing original leaves same value',
         (WidgetTester tester) async {
       // Arrange
-      final clearAll = find.byKey(TestKey.numPadClear);
+      final clearAll =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.delete);
+
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(

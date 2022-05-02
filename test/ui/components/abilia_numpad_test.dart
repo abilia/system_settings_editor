@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/components/custom_num_pad.dart';
+import 'package:seagull/ui/components/abilia_num_pad.dart';
 
 void main() {
   testWidgets('Build AbiliaNumPad', (WidgetTester tester) async {
@@ -11,8 +11,8 @@ void main() {
     )));
 
     await tester.pump();
-    expect(find.byType(NumberButton), findsNWidgets(10));
-    expect(find.byType(ActionButton), findsNWidgets(2));
+    expect(find.byType(KeyboardNumberButton), findsNWidgets(10));
+    expect(find.byType(KeyboardActionButton), findsNWidgets(2));
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
