@@ -169,7 +169,9 @@ void main() {
       testWidgets('New activity', (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -190,7 +192,9 @@ void main() {
         const title = 'title';
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
 
@@ -292,7 +296,9 @@ void main() {
         const title = 'title';
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
         await tester.tap(find.byKey(TestKey.newActivityChoice));
@@ -370,7 +376,9 @@ void main() {
               ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
@@ -388,7 +396,9 @@ void main() {
               ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
@@ -413,7 +423,9 @@ void main() {
               ];
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           expect(find.byType(CreateNewPage), findsOneWidget);
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
@@ -424,7 +436,9 @@ void main() {
             (WidgetTester tester) async {
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
@@ -464,7 +478,9 @@ void main() {
 
           await tester.pumpWidget(App());
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           expect(find.byKey(TestKey.newActivityChoice), findsNothing);
           expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
@@ -486,7 +502,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
@@ -528,7 +546,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
@@ -567,7 +587,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -650,7 +672,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -693,7 +717,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -737,7 +763,9 @@ void main() {
           await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
               sortableBloc: sortableBlocMock));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
+          await tester.tap(find.byKey(
+            Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+          ));
           await tester.pumpAndSettle();
 
           // Act Go to basic activity archive
@@ -790,33 +818,33 @@ void main() {
     });
 
     group('add timer', () {
-      testWidgets('from scratch is possible', (WidgetTester tester) async {
+      testWidgets('from scratch, with automatically set name',
+          (WidgetTester tester) async {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addTimerButton,
+        ));
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
+
         await tester.tap(find.byKey(TestKey.newTimerChoice));
         await tester.pumpAndSettle();
-        expect(find.byType(TimerWizardPage), findsOneWidget);
-        expect(find.byType(TimerDurationWiz), findsOneWidget);
-        await tester.tap(find.byType(TextField));
+        expect(find.byType(EditTimerPage), findsOneWidget);
+
+        await tester.tap(find.byType(PickField));
         await tester.pumpAndSettle();
-        expect(find.byType(EditTimerByTypingPage), findsOneWidget);
+        expect(find.byType(EditTimerDurationPage), findsOneWidget);
 
         await tester.enterText(find.byKey(TestKey.minutes), '20');
         await tester.pumpAndSettle();
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
-
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerStartWiz), findsOneWidget);
-
         await tester.tap(find.byType(StartButton));
         await tester.pumpAndSettle();
         expect(find.byType(TimerPage), findsOneWidget);
         expect(find.text('20 minutes'), findsOneWidget);
+
         await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
@@ -831,6 +859,74 @@ void main() {
             savedTimer.title,
             const Duration(minutes: 20)
                 .toDurationString(translate, shortMin: false));
+        expect(savedTimer.paused, false);
+        expect(savedTimer.pausedAt, Duration.zero);
+      });
+
+      testWidgets('from scratch, with custom name',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(App());
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addTimerButton,
+        ));
+        await tester.pumpAndSettle();
+        expect(find.byType(CreateNewPage), findsOneWidget);
+
+        await tester.tap(find.byKey(TestKey.newTimerChoice));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsOneWidget);
+
+        await tester.tap(find.byType(PickField));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerDurationPage), findsOneWidget);
+
+        // Setting the timer duration updates the timer name
+        await tester.enterText(find.byKey(TestKey.minutes), '20');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsOneWidget);
+        var timerNameWidget =
+            tester.firstWidget(find.byKey(TestKey.timerNameText)) as NameInput;
+        expect(timerNameWidget.text, '20 minutes');
+
+        // Can set the timer name manually
+        const emptyTimerName = '';
+        await tester.tap(find.byKey(TestKey.timerNameText));
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byKey(TestKey.input), emptyTimerName);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+        timerNameWidget =
+            tester.firstWidget(find.byKey(TestKey.timerNameText)) as NameInput;
+        expect(timerNameWidget.text, emptyTimerName);
+
+        // The timer name doesn't change after it has been set manually
+        await tester.tap(find.byType(PickField));
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byKey(TestKey.minutes), '15');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+        timerNameWidget =
+            tester.firstWidget(find.byKey(TestKey.timerNameText)) as NameInput;
+        expect(timerNameWidget.text, emptyTimerName);
+
+        await tester.tap(find.byType(StartButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
+        await tester.pumpAndSettle();
+        expect(find.byType(CalendarPage), findsOneWidget);
+        expect(find.byType(TimerCard), findsOneWidget);
+        expect(find.text(emptyTimerName), findsOneWidget);
+
+        final captured =
+            verify(() => mockTimerDb.insert(captureAny())).captured;
+        final savedTimer = captured.single as AbiliaTimer;
+        expect(savedTimer.duration, 15.minutes());
+        expect(savedTimer.title, emptyTimerName);
         expect(savedTimer.paused, false);
         expect(savedTimer.pausedAt, Duration.zero);
       });
@@ -852,24 +948,23 @@ void main() {
         await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
             sortableBloc: sortableBlocMock));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
+        await tester.tap(find.byKey(
+          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addTimerButton,
+        ));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.basicTimerChoice));
         await tester.pumpAndSettle();
-        expect(find.byType(SortableLibrary<BasicTimerData>), findsOneWidget);
-        expect(find.byType(BasicLibraryItem<BasicTimerData>), findsOneWidget);
+        expect(find.byType(ListLibrary<BasicTimerData>), findsOneWidget);
+        expect(
+          find.byType(BasicTemplatePickField<BasicTimerData>),
+          findsOneWidget,
+        );
         expect(find.text(title), findsOneWidget);
-        await tester.tap(find.text(title));
+
+        await tester.tap(find.byKey(TestKey.startBasicTimerButton));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerWizardPage), findsOneWidget);
-        expect(find.byType(TimerStartWiz), findsOneWidget);
-        final nameAndPicture = find.byType(NameAndPictureWidget);
-        expect(nameAndPicture, findsOneWidget);
-        final nameAndPictureWidget =
-            tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
-        expect(nameAndPictureWidget.text, title);
+        expect(find.byType(TimerPage), findsOneWidget);
+        expect(find.text(title), findsOneWidget);
       });
     });
 
@@ -1053,7 +1148,9 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddButton));
+      await tester.tap(find.byKey(
+        Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+      ));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
@@ -1093,7 +1190,9 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddButton));
+      await tester.tap(find.byKey(
+        Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
+      ));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();

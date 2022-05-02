@@ -5,6 +5,7 @@ timerResume	Do you want to continue the timer?	Vill du fortsätta timern?
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
+activity	Activity	Aktivitet
 basicTemplates	Basic templates						
 basicActivities	Basic Activities						
 enterNameForTimer	Enter name for timer	Ange namn för timer					

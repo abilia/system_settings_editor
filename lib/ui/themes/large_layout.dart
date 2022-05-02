@@ -392,6 +392,7 @@ class _LargeLayout extends Layout {
             imagePadding:
                 EdgeInsets.only(left: 4 * scaleFactor, right: 12 * scaleFactor),
             leadingPadding: EdgeInsets.only(right: 18 * scaleFactor),
+            subtitlePadding: EdgeInsets.only(top: 8 * scaleFactor),
             height: 88 * scaleFactor,
             leadingSize: Size(72 * scaleFactor, 72 * scaleFactor),
           ),
@@ -455,7 +456,9 @@ class _LargeLayout extends Layout {
           ),
           selectPicture: const SelectPictureLayout(
             imageSize: 126 * scaleFactor,
+            imageSizeLarge: 178 * scaleFactor,
             padding: 6 * scaleFactor,
+            paddingLarge: 8.48 * scaleFactor,
             removeButtonPadding: EdgeInsets.fromLTRB(9 * scaleFactor,
                 12 * scaleFactor, 9 * scaleFactor, 12 * scaleFactor),
           ),
@@ -579,22 +582,33 @@ class _LargeLayout extends Layout {
           ),
           editTimer: const EditTimerLayout(
             inputTimeWidth: 180 * scaleFactor,
-            textToWheelDistance: 60 * scaleFactor,
-            inputTimePadding: EdgeInsets.symmetric(vertical: 57 * scaleFactor),
+            wheelPadding: EdgeInsets.only(top: 32 * scaleFactor),
           ),
           button: const ButtonLayout(
             baseButtonMinHeight: 96 * scaleFactor,
             redButtonMinSize: Size(0 * scaleFactor, 72 * scaleFactor),
             secondaryActionButtonMinSize: 60 * scaleFactor,
             textButtonInsets: EdgeInsets.symmetric(
-                horizontal: 48 * scaleFactor, vertical: 30 * scaleFactor),
-            redButtonPadding: EdgeInsets.fromLTRB(15 * scaleFactor,
-                15 * scaleFactor, 30 * scaleFactor, 15 * scaleFactor),
+              horizontal: 48 * scaleFactor,
+              vertical: 30 * scaleFactor,
+            ),
+            actionButtonIconTextPadding: EdgeInsets.fromLTRB(
+              15 * scaleFactor,
+              15 * scaleFactor,
+              30 * scaleFactor,
+              15 * scaleFactor,
+            ),
+            startBasicTimerPadding: EdgeInsets.fromLTRB(
+              0,
+              6 * scaleFactor,
+              6 * scaleFactor,
+              6 * scaleFactor,
+            ),
           ),
           theme: const ThemeLayout(
             circleRadius: 36 * scaleFactor,
             inputPadding: EdgeInsets.symmetric(
-                vertical: 24 * scaleFactor, horizontal: 24 * scaleFactor),
+                vertical: 21 * scaleFactor, horizontal: 24 * scaleFactor),
           ),
           dot: const DotLayout(
             bigDotSize: 42 * scaleFactor,

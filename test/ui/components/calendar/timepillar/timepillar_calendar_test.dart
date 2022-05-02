@@ -172,8 +172,9 @@ void main() {
 
     testWidgets('BUG SGC-1427 GoToNowButton should not expand in width',
         (WidgetTester tester) async {
-      const screenWidth = 400.0;
-      await tester.binding.setSurfaceSize(const Size(screenWidth, 800));
+      const screenWidth = 600.0;
+      await tester.binding
+          .setSurfaceSize(const Size(screenWidth, screenWidth * 2));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       await tester.flingFrom(const Offset(200, 200), const Offset(0, 200), 200);

@@ -20,7 +20,7 @@ void main() {
             create: (context) => SettingsCubit(
                   settingsDb: FakeSettingsDb(),
                 ),
-            child: EditTimerByTypingPage(
+            child: EditTimerDurationPage(
               initialDuration: initialDuration,
             )),
       );
@@ -28,7 +28,7 @@ void main() {
   testWidgets('Page visible', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    expect(find.byType(EditTimerByTypingPage), findsOneWidget);
+    expect(find.byType(EditTimerDurationPage), findsOneWidget);
   });
 
   testWidgets('initialDuration displayed correctly',

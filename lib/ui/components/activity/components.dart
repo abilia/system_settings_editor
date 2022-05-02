@@ -30,12 +30,10 @@ class SubHeading extends StatelessWidget {
 class LinedBorder extends StatelessWidget {
   final Widget child;
   final GestureTapCallback? onTap;
-  final EdgeInsets padding;
   final bool errorState;
   const LinedBorder({
     Key? key,
     required this.child,
-    required this.padding,
     this.onTap,
     this.errorState = false,
   }) : super(key: key);
@@ -49,7 +47,6 @@ class LinedBorder extends StatelessWidget {
         child: errorState
             ? Container(
                 decoration: errorBoxDecoration,
-                padding: padding,
                 child: child,
               )
             : DottedBorder(
@@ -61,7 +58,7 @@ class LinedBorder extends StatelessWidget {
                 borderType: BorderType.RRect,
                 color: AbiliaColors.white140,
                 radius: radius,
-                padding: padding,
+                padding: const EdgeInsets.all(0),
                 child: child,
               ),
       ),
@@ -79,7 +76,7 @@ class PickField extends StatelessWidget {
   final EdgeInsets? leadingPadding, padding;
   final Text text;
   final bool errorState;
-  final String? semanticsLabel;
+  final String? semanticsLabel, subtitleText;
   final Text? secondaryText;
 
   const PickField({
@@ -91,6 +88,7 @@ class PickField extends StatelessWidget {
     this.errorState = false,
     this.semanticsLabel,
     this.secondaryText,
+    this.subtitleText,
     this.leadingPadding,
     this.padding,
   }) : super(key: key);
@@ -99,6 +97,7 @@ class PickField extends StatelessWidget {
     final leading = this.leading;
     final trailing = this.trailing;
     final secondary = secondaryText;
+    final subtitle = subtitleText;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data?.isEmpty == true ? semanticsLabel : text.data,
@@ -131,11 +130,28 @@ class PickField extends StatelessWidget {
                     ),
                   ),
                 Expanded(
-                  child: DefaultTextStyle(
-                    overflow: TextOverflow.ellipsis,
-                    style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-                        .copyWith(height: 1),
-                    child: text,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultTextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+                                .copyWith(height: 1),
+                        child: text,
+                      ),
+                      if (subtitle != null)
+                        DefaultTextStyle(
+                          style:
+                              (Theme.of(context).textTheme.caption ?? caption)
+                                  .copyWith(
+                            height: 1,
+                            color: AbiliaColors.black60,
+                          ),
+                          child: Text(subtitle),
+                        ).pad(layout.pickField.subtitlePadding),
+                    ],
                   ),
                 ),
                 if (secondary != null)

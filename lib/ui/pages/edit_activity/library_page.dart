@@ -6,7 +6,7 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
-  Sortable<SortableData>,
+  Sortable<T>,
   Function(),
   SortableToolbar?,
 );
@@ -232,11 +232,13 @@ class _SortableLibraryState<T extends SortableData>
 class ListLibrary<T extends SortableData> extends StatelessWidget {
   final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
+  final bool selectableItems;
 
   const ListLibrary({
     Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
+    this.selectableItems = true,
   }) : super(key: key);
 
   @override
@@ -278,10 +280,13 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                 ? context
                                     .read<SortableArchiveCubit<T>>()
                                     .folderChanged(sortable.id)
-                                : context
-                                    .read<SortableArchiveCubit<T>>()
-                                    .sortableSelected(
-                                        selected ? null : sortable),
+                                : selectableItems
+                                    ? context
+                                        .read<SortableArchiveCubit<T>>()
+                                        .sortableSelected(
+                                          selected ? null : sortable,
+                                        )
+                                    : {},
                             selected
                                 ? SortableToolbar(
                                     disableUp: index == 0,

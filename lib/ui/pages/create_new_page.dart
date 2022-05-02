@@ -6,109 +6,145 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class CreateNewPage extends StatelessWidget {
-  const CreateNewPage({Key? key}) : super(key: key);
+  const CreateNewPage({
+    Key? key,
+    this.showActivities = true,
+    this.showTimers = true,
+  })  : assert(
+          !(Config.isMPGO && (showActivities == false || showTimers == false)),
+        ),
+        super(key: key);
+
+  final bool showActivities, showTimers;
 
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
     final t = Translator.of(context).translate;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoplannerSettingsState) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.plus,
-          title: t.add,
-        ),
-        body: Column(
-          children: [
-            SizedBox(height: layout.templates.m1.top),
-            if (memoplannerSettingsState.newActivityOption)
-              PickField(
-                key: TestKey.newActivityChoice,
-                leading: const Icon(AbiliaIcons.basicActivity),
-                text: Text(t.newActivity),
-                onTap: () => navigateToActivityWizard(context, authProviders),
-              ).pad(m1ItemPadding),
-            if (memoplannerSettingsState.basicActivityOption)
-              PickField(
-                key: TestKey.basicActivityChoice,
-                leading: const Icon(AbiliaIcons.folder),
-                text: Text(t.selectBasicActivity),
-                onTap: () async {
-                  final basicActivityData =
-                      await Navigator.of(context).push<BasicActivityData>(
-                    MaterialPageRoute(
-                      builder: (_) => MultiBlocProvider(
-                        providers: authProviders,
-                        child: BlocProvider<
-                            SortableArchiveCubit<BasicActivityData>>(
-                          create: (_) =>
-                              SortableArchiveCubit<BasicActivityData>(
-                            sortableBloc:
-                                BlocProvider.of<SortableBloc>(context),
+      builder: (context, memoplannerSettingsState) {
+        final displayNewActivity =
+            memoplannerSettingsState.displayNewActivity && showActivities;
+        final displayNewTimer =
+            memoplannerSettingsState.displayNewTimer && showTimers;
+
+        return Scaffold(
+          appBar: AbiliaAppBar(
+            iconData: Config.isMPGO || displayNewActivity
+                ? AbiliaIcons.plus
+                : AbiliaIcons.stopWatch,
+            title: Config.isMPGO || displayNewTimer && displayNewActivity
+                ? t.add
+                : displayNewActivity
+                    ? t.newActivity
+                    : t.newTimer,
+          ),
+          body: Column(
+            children: [
+              SizedBox(height: layout.templates.m1.top),
+              if (memoplannerSettingsState.newActivityOption &&
+                  displayNewActivity)
+                PickField(
+                  key: TestKey.newActivityChoice,
+                  leading: const Icon(AbiliaIcons.basicActivity),
+                  text: Text(t.newActivity),
+                  onTap: () => navigateToActivityWizard(context, authProviders),
+                ).pad(m1ItemPadding),
+              if (memoplannerSettingsState.basicActivityOption &&
+                  displayNewActivity)
+                PickField(
+                  key: TestKey.basicActivityChoice,
+                  leading: const Icon(AbiliaIcons.folder),
+                  text: Text(t.selectBasicActivity),
+                  onTap: () async {
+                    final basicActivityData =
+                        await Navigator.of(context).push<BasicActivityData>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: authProviders,
+                          child: BlocProvider<
+                              SortableArchiveCubit<BasicActivityData>>(
+                            create: (_) =>
+                                SortableArchiveCubit<BasicActivityData>(
+                              sortableBloc:
+                                  BlocProvider.of<SortableBloc>(context),
+                            ),
+                            child: const BasicActivityPickerPage(),
                           ),
-                          child: const BasicActivityPickerPage(),
                         ),
                       ),
-                    ),
-                  );
-                  if (basicActivityData is BasicActivityDataItem) {
-                    await navigateToActivityWizard(
-                      context,
-                      authProviders,
-                      basicActivityData,
                     );
-                  }
-                },
-              ).pad(m1ItemPadding),
-            const Divider().pad(EdgeInsets.only(
-              top: layout.formPadding.groupBottomDistance,
-            )),
-            PickField(
-              key: TestKey.newTimerChoice,
-              leading: const Icon(AbiliaIcons.stopWatch),
-              text: Text(t.newTimer),
-              onTap: () async {
-                navigateToTimerWizard(context, authProviders);
-              },
-            ).pad(m1WithZeroBottom),
-            PickField(
-              key: TestKey.basicTimerChoice,
-              leading: const Icon(AbiliaIcons.folder),
-              text: Text(t.selectBaseTimer),
-              onTap: () async {
-                final basicTimerData =
-                    await Navigator.of(context).push<BasicTimerData>(
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: authProviders,
-                      child: BlocProvider<SortableArchiveCubit<BasicTimerData>>(
-                        create: (_) => SortableArchiveCubit<BasicTimerData>(
-                          sortableBloc: BlocProvider.of<SortableBloc>(context),
-                        ),
-                        child: const BasicTimerPickerPage(),
-                      ),
-                    ),
+                    if (basicActivityData is BasicActivityDataItem) {
+                      await navigateToActivityWizard(
+                        context,
+                        authProviders,
+                        basicActivityData,
+                      );
+                    }
+                  },
+                ).pad(m1ItemPadding),
+              if (displayNewActivity && displayNewTimer)
+                const Divider().pad(
+                  EdgeInsets.only(
+                    top: layout.formPadding.groupBottomDistance,
                   ),
-                );
-                if (basicTimerData is BasicTimerDataItem) {
-                  await navigateToTimerWizard(
-                    context,
-                    authProviders,
-                    basicTimerData,
-                  );
-                }
-              },
-            ).pad(m1ItemPadding),
-          ],
-        ),
-        bottomNavigationBar: const BottomNavigation(
-          backNavigationWidget: CancelButton(),
-        ),
-      ),
+                ),
+              if (displayNewTimer)
+                PickField(
+                  key: TestKey.newTimerChoice,
+                  leading: const Icon(AbiliaIcons.stopWatch),
+                  text: Text(t.newTimer),
+                  onTap: () async {
+                    navigateToEditTimerPage(context, authProviders);
+                  },
+                ).pad(m1WithZeroBottom),
+              if (displayNewTimer)
+                PickField(
+                  key: TestKey.basicTimerChoice,
+                  leading: const Icon(AbiliaIcons.folder),
+                  text: Text(t.selectBaseTimer),
+                  onTap: () async {
+                    final timerStarted =
+                        await Navigator.of(context).push<AbiliaTimer>(
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: [
+                            ...authProviders,
+                            BlocProvider<SortableArchiveCubit<BasicTimerData>>(
+                              create: (_) =>
+                                  SortableArchiveCubit<BasicTimerData>(
+                                sortableBloc:
+                                    BlocProvider.of<SortableBloc>(context),
+                              ),
+                            ),
+                            BlocProvider<EditTimerCubit>(
+                              create: (_) => EditTimerCubit(
+                                timerCubit: context.read<TimerCubit>(),
+                                translate: t,
+                                ticker: GetIt.I<Ticker>(),
+                              ),
+                            ),
+                          ],
+                          child: const BasicTimerPickerPage(),
+                        ),
+                      ),
+                    );
+                    if (timerStarted != null) {
+                      navigateToTimerPage(context, authProviders, timerStarted);
+                    }
+                  },
+                ).pad(m1ItemPadding),
+            ],
+          ),
+          bottomNavigationBar: const BottomNavigation(
+            backNavigationWidget: CancelButton(),
+          ),
+        );
+      },
     );
   }
 
-  Future<void> navigateToTimerWizard(
+  Future<void> navigateToEditTimerPage(
       BuildContext buildContext, List<BlocProvider> authProviders,
       [BasicTimerDataItem? basicTimer]) async {
     final timerStarted = await Navigator.of(buildContext).push(
@@ -116,32 +152,40 @@ class CreateNewPage extends StatelessWidget {
         MultiBlocProvider(
           providers: authProviders,
           child: BlocProvider(
-            create: (context) => TimerWizardCubit(
+            create: (context) => EditTimerCubit(
               timerCubit: context.read<TimerCubit>(),
               translate: Translator.of(buildContext).translate,
               ticker: GetIt.I<Ticker>(),
               basicTimer: basicTimer,
             ),
-            child: const TimerWizardPage(),
+            child: const EditTimerPage(),
           ),
         ),
       ),
     );
     if (timerStarted != null) {
-      Navigator.of(buildContext).pop();
-      final providers = copiedAuthProviders(buildContext);
-      Navigator.of(buildContext).push(
-        MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: providers,
-            child: TimerPage(
-              timerOccasion: TimerOccasion(timerStarted, Occasion.current),
-              day: timerStarted.startTime.onlyDays(),
-            ),
+      navigateToTimerPage(buildContext, authProviders, timerStarted);
+    }
+  }
+
+  void navigateToTimerPage(
+    BuildContext buildContext,
+    List<BlocProvider> authProviders,
+    AbiliaTimer timer,
+  ) {
+    Navigator.of(buildContext).pop();
+    final providers = copiedAuthProviders(buildContext);
+    Navigator.of(buildContext).push(
+      MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+          providers: providers,
+          child: TimerPage(
+            timerOccasion: TimerOccasion(timer, Occasion.current),
+            day: timer.startTime.onlyDays(),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   Future<void> navigateToActivityWizard(

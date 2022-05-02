@@ -334,6 +334,7 @@ class MediumLayout extends Layout {
             padding: EdgeInsets.only(left: 18, right: 18),
             imagePadding: EdgeInsets.only(left: 4, right: 12),
             leadingPadding: EdgeInsets.only(right: 18),
+            subtitlePadding: EdgeInsets.only(top: 8),
             height: 88,
             leadingSize: Size(72, 72),
           ),
@@ -388,7 +389,9 @@ class MediumLayout extends Layout {
           ),
           selectPicture: const SelectPictureLayout(
             imageSize: 126,
+            imageSizeLarge: 178,
             padding: 6,
+            paddingLarge: 8.48,
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
           timeInput: const TimeInputLayout(
@@ -503,20 +506,19 @@ class MediumLayout extends Layout {
           ),
           editTimer: const EditTimerLayout(
             inputTimeWidth: 180,
-            textToWheelDistance: 60,
-            inputTimePadding: EdgeInsets.symmetric(vertical: 57),
+            wheelPadding: EdgeInsets.only(top: 32),
           ),
           button: const ButtonLayout(
-            baseButtonMinHeight: 96,
-            redButtonMinSize: Size(0, 72),
-            secondaryActionButtonMinSize: 60,
-            textButtonInsets:
-                EdgeInsets.symmetric(horizontal: 48, vertical: 30),
-            redButtonPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
-          ),
+              baseButtonMinHeight: 96,
+              redButtonMinSize: Size(0, 72),
+              secondaryActionButtonMinSize: 60,
+              textButtonInsets:
+                  EdgeInsets.symmetric(horizontal: 48, vertical: 30),
+              actionButtonIconTextPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
+              startBasicTimerPadding: EdgeInsets.fromLTRB(0, 6, 6, 6)),
           theme: const ThemeLayout(
             circleRadius: 36,
-            inputPadding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            inputPadding: EdgeInsets.symmetric(vertical: 21, horizontal: 24),
           ),
           dot: const DotLayout(
             bigDotSize: 42,

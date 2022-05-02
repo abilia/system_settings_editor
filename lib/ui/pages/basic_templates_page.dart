@@ -48,7 +48,7 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: ListLibrary<T>(
           emptyLibraryMessage: noTemplateText,
-          libraryItemGenerator: _BasicTemplatePickField.new,
+          libraryItemGenerator: BasicTemplatePickField.new,
         ),
         bottomNavigationBar: BlocSelector<SortableArchiveCubit<T>,
             SortableArchiveState<T>, bool>(
@@ -60,14 +60,22 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
       );
 }
 
-class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplatePickField(this._sortable, this._onTap, this._toolBar,
-      {Key? key})
-      : super(key: key);
+class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
+  const BasicTemplatePickField(
+    this._sortable,
+    this._onTap,
+    this._toolBar, {
+    Key? key,
+    this.trailing,
+    this.subtitleText,
+  })  : assert(_toolBar == null || trailing == null),
+        super(key: key);
 
   final Sortable<T> _sortable;
   final SortableToolbar? _toolBar;
   final Function() _onTap;
+  final Widget? trailing;
+  final String? subtitleText;
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +95,11 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
     }
     return PickField(
       onTap: _onTap,
-      padding: _toolBar != null
+      padding: trailing != null || _toolBar != null
           ? layout.pickField.imagePadding.copyWith(right: 0)
           : layout.pickField.imagePadding,
       text: text,
+      subtitleText: subtitleText,
       leading: SizedBox.fromSize(
         size: layout.pickField.leadingSize,
         child: _sortable.data.hasImage()
@@ -106,7 +115,7 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
                 color: AbiliaColors.white140,
               ),
       ),
-      trailing: _toolBar,
+      trailing: trailing ?? _toolBar,
     );
   }
 }
