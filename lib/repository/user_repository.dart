@@ -133,7 +133,7 @@ class UserRepository extends Repository {
     }
   }
 
-  Future fetchAndSetCalendar(String token, int userId) async {
+  Future<void> fetchAndSetCalendar(String token, int userId) async {
     try {
       if (await calendarDb.getCalendarId() == null) {
         final response = await client.post(
@@ -149,7 +149,7 @@ class UserRepository extends Repository {
     }
   }
 
-  Future logout([String? token]) async {
+  Future<void> logout([String? token]) async {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');

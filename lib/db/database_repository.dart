@@ -97,7 +97,7 @@ class DatabaseRepository {
           id text primary key not null,
           type text,
           owner int,
-          main bool
+          main int
         )
   ''';
 

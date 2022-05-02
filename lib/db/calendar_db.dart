@@ -8,7 +8,7 @@ class CalendarDb {
   final Database db;
   const CalendarDb(this.db);
 
-  Future insert(Calendar calendar) => db.insert(
+  Future<int> insert(Calendar calendar) => db.insert(
         DatabaseRepository.calendarTableName,
         calendar.toMapForDb(),
         conflictAlgorithm: ConflictAlgorithm.replace,
