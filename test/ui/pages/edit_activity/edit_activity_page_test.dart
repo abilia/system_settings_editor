@@ -1569,10 +1569,10 @@ text''';
       // Act -- Change input to new start time to 09:33
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(keyZero);
-      await tester.tap(keyNine);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyNine);
+      // await tester.tap(keyThree);
+      // await tester.tap(keyThree);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1666,8 +1666,8 @@ text''';
     testWidgets('Changes focus to endTime when startTime is filled in',
         (WidgetTester tester) async {
       // Arrange
-      final numPadOne = find.byKey(TestKey.numPadOne);
-      final numPadTwo = find.byKey(TestKey.numPadTwo);
+      // final numPadOne = find.byKey(TestKey.numPadOne);
+      // final numPadTwo = find.byKey(TestKey.numPadTwo);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2000, 11, 22, 3, 04),
@@ -1696,10 +1696,10 @@ text''';
 
       await tester.tap(startTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(numPadOne);
-      await tester.tap(numPadOne);
-      await tester.tap(numPadOne);
-      await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
       expect(find.text('11:11'), findsOneWidget);
 
       expect(
@@ -1713,10 +1713,10 @@ text''';
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(numPadOne);
-      await tester.tap(numPadOne);
-      await tester.tap(numPadOne);
-      await tester.tap(numPadTwo);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadOne);
+      // await tester.tap(numPadTwo);
       await tester.pumpAndSettle();
       expect(find.text('11:12'), findsOneWidget);
 
@@ -1731,8 +1731,8 @@ text''';
       // Arrange
       Intl.defaultLocale = 'sv_SE';
       addTearDown(() => Intl.defaultLocale = null);
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyOne = find.byKey(TestKey.numPadOne);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyOne = find.byKey(TestKey.numPadOne);
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 13, 44));
       await tester.pumpWidget(
@@ -1758,7 +1758,7 @@ text''';
       expect(find.text('13:44'), findsOneWidget);
       await tester.tap(startTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(keyZero);
+      // await tester.tap(keyZero);
       expect(find.text('0'), findsWidgets);
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
@@ -1767,17 +1767,17 @@ text''';
           findsOneWidget); // Time resets when no valid time is entered
 
       // Type '1111'
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
       expect(find.text('11:11'), findsOneWidget);
 
       // Type '0001'
-      await tester.tap(keyZero);
-      await tester.tap(keyZero);
-      await tester.tap(keyZero);
-      await tester.tap(keyOne);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyOne);
       expect(find.text('00:01'), findsOneWidget);
       await tester.pumpAndSettle();
 
@@ -1791,7 +1791,7 @@ text''';
 
     testWidgets('Leading 0 for hour not necessary when entering time',
         (WidgetTester tester) async {
-      final keyNine = find.byKey(TestKey.numPadNine);
+      // final keyNine = find.byKey(TestKey.numPadNine);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
@@ -1805,15 +1805,15 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(keyNine);
+      // await tester.tap(keyNine);
       await tester.pumpAndSettle();
       expect(find.text('09:--'), findsOneWidget);
     });
 
     testWidgets('Keyboard done saves time', (WidgetTester tester) async {
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyOne = find.byKey(TestKey.numPadOne);
-      final keyThree = find.byKey(TestKey.numPadThree);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyOne = find.byKey(TestKey.numPadOne);
+      // final keyThree = find.byKey(TestKey.numPadThree);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
@@ -1828,17 +1828,17 @@ text''';
       await tester.pumpAndSettle();
 
       // Type 1033 in start time input field
-      await tester.tap(keyOne);
-      await tester.tap(keyZero);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyThree);
+      // await tester.tap(keyThree);
       await tester.pumpAndSettle();
 
       // Type 1111 in end time input field
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
       await tester.testTextInput.receiveAction(TextInputAction.done);
 
       await tester.pumpAndSettle();
@@ -1848,10 +1848,10 @@ text''';
 
     testWidgets('Delete key just deletes last digit',
         (WidgetTester tester) async {
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyOne = find.byKey(TestKey.numPadOne);
-      final keyThree = find.byKey(TestKey.numPadThree);
-      final deleteOne = find.byKey(TestKey.numPadDelete);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyOne = find.byKey(TestKey.numPadOne);
+      // final keyThree = find.byKey(TestKey.numPadThree);
+      // final deleteOne = find.byKey(TestKey.numPadDelete);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
@@ -1862,23 +1862,23 @@ text''';
       await tester.pumpAndSettle();
 
       // Type 1033 in start time input field
-      await tester.tap(keyOne);
-      await tester.tap(keyZero);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyThree);
+      // await tester.tap(keyThree);
       await tester.pumpAndSettle();
 
       // Type 1111 in end time input field
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
-      await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
+      // await tester.tap(keyOne);
 
       await tester.tap(startTimeInputFinder,
           warnIfMissed:
               false); // startTimeInputFinder is below another input widget that catches the tap event
       await tester.pumpAndSettle();
-      await tester.tap(deleteOne);
+      // await tester.tap(deleteOne);
       await tester.pumpAndSettle();
       expect(find.text('10:3-'), findsOneWidget);
     });
@@ -2153,9 +2153,9 @@ text''';
         'add activity without recurance data tab scrolls back to recurance tab',
         (WidgetTester tester) async {
       // Arrange
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyThree = find.byKey(TestKey.numPadThree);
-      final keyNine = find.byKey(TestKey.numPadNine);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyThree = find.byKey(TestKey.numPadThree);
+      // final keyNine = find.byKey(TestKey.numPadNine);
       await tester.pumpWidget(createEditActivityPage(newActivity: true));
 
       await tester.pumpAndSettle();
@@ -2166,10 +2166,10 @@ text''';
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(keyZero);
-      await tester.tap(keyNine);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyNine);
+      // await tester.tap(keyThree);
+      // await tester.tap(keyThree);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -2209,9 +2209,9 @@ text''';
     testWidgets('"only this day" when changing end time (Bug SGC-1423)',
         (WidgetTester tester) async {
       // Arrange
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyOne = find.byKey(TestKey.numPadOne);
-      final keySeven = find.byKey(TestKey.numPadSeven);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyOne = find.byKey(TestKey.numPadOne);
+      // final keySeven = find.byKey(TestKey.numPadSeven);
       await tester.pumpWidget(
         createEditActivityPage(
           givenActivity: Activity.createNew(
@@ -2229,10 +2229,10 @@ text''';
       await tester.tap(find.byType(TimeIntervallPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.endTimeInput), warnIfMissed: false);
-      await tester.tap(keyOne);
-      await tester.tap(keySeven);
-      await tester.tap(keyZero);
-      await tester.tap(keyZero);
+      // await tester.tap(keyOne);
+      // await tester.tap(keySeven);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyZero);
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -2632,9 +2632,9 @@ text''';
 
     testWidgets('time', (WidgetTester tester) async {
       // Arrange
-      final keyZero = find.byKey(TestKey.numPadZero);
-      final keyNine = find.byKey(TestKey.numPadNine);
-      final keyThree = find.byKey(TestKey.numPadThree);
+      // final keyZero = find.byKey(TestKey.numPadZero);
+      // final keyNine = find.byKey(TestKey.numPadNine);
+      // final keyThree = find.byKey(TestKey.numPadThree);
 
       await tester.pumpWidget(
         createEditActivityPage(
@@ -2649,10 +2649,10 @@ text''';
       // Act -- Change time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.tap(keyZero);
-      await tester.tap(keyNine);
-      await tester.tap(keyThree);
-      await tester.tap(keyThree);
+      // await tester.tap(keyZero);
+      // await tester.tap(keyNine);
+      // await tester.tap(keyThree);
+      // await tester.tap(keyThree);
       await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
 
@@ -2759,7 +2759,7 @@ text''';
 
       testWidgets('invalid input tts', (WidgetTester tester) async {
         // Arrange
-        final keyOne = find.byKey(TestKey.numPadOne);
+        // final keyOne = find.byKey(TestKey.numPadOne);
         final acivity = Activity.createNew(
             title: '', startTime: DateTime(2000, 11, 22, 3, 44));
         await tester.pumpWidget(
@@ -2773,7 +2773,7 @@ text''';
         await tester.tap(timeFieldFinder);
         await tester.pumpAndSettle();
 
-        await tester.tap(keyOne);
+        // await tester.tap(keyOne);
         await tester.pumpAndSettle();
 
         // Assert
