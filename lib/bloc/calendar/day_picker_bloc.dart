@@ -18,22 +18,24 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
           DayPickerState(
             (initialDay ?? clockBloc.state).onlyDays(),
             clockBloc.state,
+            false,
           ),
         ) {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
     on<NextDay>(
-        (event, emit) => emit(generateState(state.day.nextDay(), event)));
+        (event, emit) => emit(generateState(state.day.nextDay(), true)));
     on<PreviousDay>(
-        (event, emit) => emit(generateState(state.day.previousDay(), event)));
+        (event, emit) => emit(generateState(state.day.previousDay(), true)));
     on<CurrentDay>(
-        (event, emit) => emit(generateState(clockBloc.state, event)));
-    on<GoTo>((event, emit) => emit(generateState(event.day, event)));
-    on<TimeChanged>((event, emit) => emit(state._timeChange(event)));
+        (event, emit) => emit(generateState(clockBloc.state, false)));
+    on<GoTo>((event, emit) => emit(generateState(event.day, false)));
+    on<TimeChanged>(
+        (event, emit) => emit(DayPickerState(state.day, event.now, false)));
   }
 
-  DayPickerState generateState(DateTime day, DayPickerEvent lastEvent) =>
-      DayPickerState(day.onlyDays(), clockBloc.state, lastEvent);
+  DayPickerState generateState(DateTime day, bool stepEvent) =>
+      DayPickerState(day.onlyDays(), clockBloc.state, stepEvent);
 
   @override
   Future<void> close() async {
@@ -46,10 +48,10 @@ class DayPickerState extends Equatable {
   final DateTime day;
   final int index;
   final Occasion occasion;
-  final DayPickerEvent? lastDayPickerEvent;
+  final bool lastEventStepEvent;
   bool get isToday => occasion == Occasion.current;
 
-  DayPickerState(this.day, DateTime now, [this.lastDayPickerEvent])
+  DayPickerState(this.day, DateTime now, this.lastEventStepEvent)
       : index = day.dayIndex,
         occasion = day.isAtSameDay(now)
             ? Occasion.current
@@ -58,7 +60,8 @@ class DayPickerState extends Equatable {
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.occasion, [this.lastDayPickerEvent])
+  DayPickerState.forTest(this.day, this.occasion,
+      {this.lastEventStepEvent = false})
       : index = day.dayIndex;
 
   @override
@@ -67,7 +70,4 @@ class DayPickerState extends Equatable {
 
   @override
   List<Object> get props => [day, occasion];
-
-  DayPickerState _timeChange(TimeChanged event) =>
-      DayPickerState(day, event.now, event);
 }

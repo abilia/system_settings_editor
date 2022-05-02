@@ -43,10 +43,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       _onTimepillarConditionsChanged();
     });
     _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
-      if (!(state.lastDayPickerEvent is NextDay ||
-          state.lastDayPickerEvent is PreviousDay)) {
-        forceFullDay = false;
-      }
+      if (!state.lastEventStepEvent) forceFullDay = false;
       _onTimepillarConditionsChanged();
     });
     _timerSubscription = timerAlarmBloc.stream.listen((state) {
@@ -147,39 +144,39 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   }
 
   void next() {
-    final selectedDay = dayPickerBloc.state.day;
     final now = clockBloc.state;
-    final memoState = memoSettingsBloc.state;
+    final dayParts = memoSettingsBloc.state.dayParts;
     final todayNight =
-        selectedDay.isAtSameDay(now) && now.isNight(memoState.dayParts);
-    final nightBeforeMidnight = now.isNightBeforeMidnight(memoState.dayParts);
-    if (todayNight && !forceFullDay && !nightBeforeMidnight) {
-      forceFullDay = true;
-      _onTimepillarConditionsChanged();
-    } else if (todayNight && forceFullDay && nightBeforeMidnight) {
-      forceFullDay = false;
-      _onTimepillarConditionsChanged();
-    } else {
-      dayPickerBloc.add(NextDay());
+        dayPickerBloc.state.day.isAtSameDay(now) && now.isNight(dayParts);
+    if (todayNight) {
+      final nightBeforeMidnight = now.isNightBeforeMidnight(dayParts);
+      if (!forceFullDay && !nightBeforeMidnight) {
+        forceFullDay = true;
+        return _onTimepillarConditionsChanged();
+      } else if (forceFullDay && nightBeforeMidnight) {
+        forceFullDay = false;
+        return _onTimepillarConditionsChanged();
+      }
     }
+    dayPickerBloc.add(NextDay());
   }
 
   void previous() {
-    final selectedDay = dayPickerBloc.state.day;
     final now = clockBloc.state;
-    final memoState = memoSettingsBloc.state;
+    final dayParts = memoSettingsBloc.state.dayParts;
     final todayNight =
-        selectedDay.isAtSameDay(now) && now.isNight(memoState.dayParts);
-    final nightBeforeMidnight = now.isNightBeforeMidnight(memoState.dayParts);
-    if (todayNight && forceFullDay && !nightBeforeMidnight) {
-      forceFullDay = false;
-      _onTimepillarConditionsChanged();
-    } else if (todayNight && !forceFullDay && nightBeforeMidnight) {
-      forceFullDay = true;
-      _onTimepillarConditionsChanged();
-    } else {
-      dayPickerBloc.add(PreviousDay());
+        dayPickerBloc.state.day.isAtSameDay(now) && now.isNight(dayParts);
+    if (todayNight) {
+      final nightBeforeMidnight = now.isNightBeforeMidnight(dayParts);
+      if (forceFullDay && !nightBeforeMidnight) {
+        forceFullDay = false;
+        return _onTimepillarConditionsChanged();
+      } else if (!forceFullDay && nightBeforeMidnight) {
+        forceFullDay = true;
+        return _onTimepillarConditionsChanged();
+      }
     }
+    dayPickerBloc.add(PreviousDay());
   }
 
   @override
