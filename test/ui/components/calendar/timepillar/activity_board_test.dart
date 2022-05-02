@@ -71,6 +71,7 @@ void main() {
       const [],
       DayCalendarType.oneTimepillar,
       Occasion.current,
+      false,
     ));
     final measures = TimepillarMeasures(interval, 1);
     when(() => mocktimepillarMeasuresCubit.state).thenReturn(measures);
@@ -82,6 +83,7 @@ void main() {
             const [],
             DayCalendarType.oneTimepillar,
             Occasion.current,
+            false,
           ),
         ],
       ),

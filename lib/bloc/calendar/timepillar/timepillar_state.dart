@@ -5,12 +5,14 @@ class TimepillarState extends Equatable {
   final List<Event> events;
   final DayCalendarType calendarType;
   final Occasion occasion;
+  final bool forceFullDay;
 
   const TimepillarState(
     this.timepillarInterval,
     this.events,
     this.calendarType,
     this.occasion,
+    this.forceFullDay,
   );
 
   @override
