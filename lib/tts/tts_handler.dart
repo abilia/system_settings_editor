@@ -1,12 +1,11 @@
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:seagull/config.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
   static Future<TtsInterface> implementation() async {
-    // TODO if (Config.isMPGO)
-    return FlutterTtsHandler();
-    // ignore: dead_code
+    if (Config.isMPGO) return FlutterTtsHandler();
     final _log = Logger((TtsInterface).toString());
     final acapela = AcapelaTtsHandler();
     bool initialized = await acapela.setLicense(
