@@ -13,20 +13,24 @@ class TimepillarInterval extends Equatable {
   })  : startTime = start.copyWith(minute: 0),
         endTime = end.copyWith(minute: 0);
 
-  int get lengthInHours =>
+  factory TimepillarInterval.dayAndNight(DateTime day) => TimepillarInterval(
+        start: day,
+        end: day.addDays(1),
+        intervalPart: IntervalPart.dayAndNight,
+      );
+
+  late final int lengthInHours =
       (endTime.difference(startTime).inMinutes / 60).ceil();
 
-  List<Event> getForInterval(List<Event> events) {
-    return events
-        .where((a) =>
-            a.start.inRangeWithInclusiveStart(
-                startDate: startTime, endDate: endTime) ||
-            (a.start.isBefore(startTime) && a.end.isAfter(startTime)))
-        .toList();
-  }
+  Occasion occasion(DateTime now) => now.isBefore(startTime)
+      ? Occasion.future
+      : now.isAfter(endTime)
+          ? Occasion.past
+          : Occasion.current;
 
   @override
-  List<Object> get props => [startTime, endTime];
+  List<Object> get props => [startTime, endTime, intervalPart];
+
   @override
   bool get stringify => true;
 }

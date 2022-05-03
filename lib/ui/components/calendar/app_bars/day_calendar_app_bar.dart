@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -9,27 +8,13 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) =>
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.dayCaptionShowDayButtons,
+      builder: (context, dayCaptionShowDayButtons) =>
           BlocBuilder<DayPickerBloc, DayPickerState>(
         builder: (context, dayPickerState) {
-          if (!memoSettingsState.dayCaptionShowDayButtons) {
+          if (!dayCaptionShowDayButtons) {
             return DayAppBar(day: dayPickerState.day);
-          }
-          if (memoSettingsState.dayCalendarType == DayCalendarType.list) {
-            return DayAppBar(
-              day: dayPickerState.day,
-              leftAction: IconActionButton(
-                onPressed: () =>
-                    BlocProvider.of<DayPickerBloc>(context).add(PreviousDay()),
-                child: const Icon(AbiliaIcons.returnToPreviousPage),
-              ),
-              rightAction: IconActionButton(
-                onPressed: () =>
-                    BlocProvider.of<DayPickerBloc>(context).add(NextDay()),
-                child: const Icon(AbiliaIcons.goToNextPage),
-              ),
-            );
           }
 
           return DayAppBar(

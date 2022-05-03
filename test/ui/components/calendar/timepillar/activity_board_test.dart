@@ -67,11 +67,11 @@ void main() {
     final mocktimepillarCubit = MockTimepillarCubit();
     final mocktimepillarMeasuresCubit = MockTimepillarMeasuresCubit();
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-      TimepillarInterval(start: startTime, end: startTime),
-      const [],
-      DayCalendarType.oneTimepillar,
-      Occasion.current,
-      false,
+      interval: TimepillarInterval(start: startTime, end: startTime),
+      events: const [],
+      calendarType: DayCalendarType.oneTimepillar,
+      occasion: Occasion.current,
+      showNightCalendar: false,
     ));
     final measures = TimepillarMeasures(interval, 1);
     when(() => mocktimepillarMeasuresCubit.state).thenReturn(measures);
@@ -79,11 +79,11 @@ void main() {
       (_) => Stream.fromIterable(
         [
           TimepillarState(
-            TimepillarInterval(start: startTime, end: startTime),
-            const [],
-            DayCalendarType.oneTimepillar,
-            Occasion.current,
-            false,
+            interval: TimepillarInterval(start: startTime, end: startTime),
+            events: const [],
+            calendarType: DayCalendarType.oneTimepillar,
+            occasion: Occasion.current,
+            showNightCalendar: false,
           ),
         ],
       ),

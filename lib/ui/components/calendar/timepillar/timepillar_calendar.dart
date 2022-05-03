@@ -33,7 +33,6 @@ class TimepillarCalendar extends StatelessWidget {
                 if (timepillarState.calendarType ==
                     DayCalendarType.oneTimepillar) {
                   return OneTimepillarCalendar(
-                    key: ValueKey(timepillarState.timepillarInterval),
                     timepillarState: timepillarState,
                     timepillarMeasures: measures,
                     dayParts: memoplannerSettingsState.dayParts,
@@ -41,16 +40,15 @@ class TimepillarCalendar extends StatelessWidget {
                     showCategories: memoplannerSettingsState.showCategories,
                     displayHourLines: memoplannerSettingsState.displayHourLines,
                   );
-                } else {
-                  return TwoTimepillarCalendar(
-                    timepillarState: timepillarState,
-                    eventState: eventState,
-                    showCategories: memoplannerSettingsState.showCategories,
-                    displayHourLines: memoplannerSettingsState.displayHourLines,
-                    displayTimeline: memoplannerSettingsState.displayTimeline,
-                    dayParts: memoplannerSettingsState.dayParts,
-                  );
                 }
+                return TwoTimepillarCalendar(
+                  timepillarState: timepillarState,
+                  eventState: eventState,
+                  showCategories: memoplannerSettingsState.showCategories,
+                  displayHourLines: memoplannerSettingsState.displayHourLines,
+                  displayTimeline: memoplannerSettingsState.displayTimeline,
+                  dayParts: memoplannerSettingsState.dayParts,
+                );
               },
             );
           },
@@ -143,7 +141,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     final fontSize = textTheme.fontSize!;
     final textStyle = textTheme.copyWith(fontSize: fontSize * measures.zoom);
     final textScaleFactor = mediaData.textScaleFactor;
-    final events = interval.getForInterval(widget.timepillarState.events);
+    final events = widget.timepillarState.eventsForInterval(interval);
     final np = interval.intervalPart == IntervalPart.dayAndNight
         ? nightParts(widget.dayParts, measures, topMargin)
         : <NightPart>[];

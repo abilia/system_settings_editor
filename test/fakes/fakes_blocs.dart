@@ -71,14 +71,14 @@ class FakeTimepillarCubit extends Fake implements TimepillarCubit {
 
   @override
   TimepillarState get state => TimepillarState(
-        TimepillarInterval(
+        interval: TimepillarInterval(
           start: DateTime(1066, 10, 14, 09, 00),
           end: DateTime(1066, 10, 14, 17, 54),
         ),
-        const [],
-        DayCalendarType.oneTimepillar,
-        Occasion.current,
-        false,
+        events: const [],
+        calendarType: DayCalendarType.oneTimepillar,
+        occasion: Occasion.current,
+        showNightCalendar: false,
       );
   @override
   Future<void> close() async {}

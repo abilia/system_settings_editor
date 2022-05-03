@@ -24,18 +24,18 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
     clockBlocSubscription =
         clockBloc.stream.listen((now) => add(TimeChanged(now)));
     on<NextDay>(
-        (event, emit) => emit(generateState(state.day.nextDay(), true)));
+        (event, emit) => emit(_generateState(state.day.nextDay(), false)));
     on<PreviousDay>(
-        (event, emit) => emit(generateState(state.day.previousDay(), true)));
+        (event, emit) => emit(_generateState(state.day.previousDay(), false)));
     on<CurrentDay>(
-        (event, emit) => emit(generateState(clockBloc.state, false)));
-    on<GoTo>((event, emit) => emit(generateState(event.day, false)));
-    on<TimeChanged>(
-        (event, emit) => emit(DayPickerState(state.day, event.now, false)));
+        (event, emit) => emit(_generateState(clockBloc.state, true)));
+    on<GoTo>((event, emit) => emit(_generateState(event.day, true)));
+    on<TimeChanged>((event, emit) =>
+        emit(DayPickerState(state.day, event.now, state.setShowNightCalendar)));
   }
 
-  DayPickerState generateState(DateTime day, bool stepEvent) =>
-      DayPickerState(day.onlyDays(), clockBloc.state, stepEvent);
+  DayPickerState _generateState(DateTime day, bool setShowNightCalendar) =>
+      DayPickerState(day.onlyDays(), clockBloc.state, setShowNightCalendar);
 
   @override
   Future<void> close() async {
@@ -48,10 +48,10 @@ class DayPickerState extends Equatable {
   final DateTime day;
   final int index;
   final Occasion occasion;
-  final bool lastEventStepEvent;
+  final bool setShowNightCalendar;
   bool get isToday => occasion == Occasion.current;
 
-  DayPickerState(this.day, DateTime now, this.lastEventStepEvent)
+  DayPickerState(this.day, DateTime now, this.setShowNightCalendar)
       : index = day.dayIndex,
         occasion = day.isAtSameDay(now)
             ? Occasion.current
@@ -60,9 +60,11 @@ class DayPickerState extends Equatable {
                 : Occasion.past;
 
   @visibleForTesting
-  DayPickerState.forTest(this.day, this.occasion,
-      {this.lastEventStepEvent = false})
-      : index = day.dayIndex;
+  DayPickerState.forTest(
+    this.day,
+    this.occasion, {
+    this.setShowNightCalendar = false,
+  }) : index = day.dayIndex;
 
   @override
   String toString() =>
