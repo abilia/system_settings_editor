@@ -24,12 +24,17 @@ class EditActivityCubit extends Cubit<EditActivityState> {
                           : null),
               activityDay.day),
         );
+
   EditActivityCubit.editTemplate(
     BasicActivityDataItem basicActivityData,
     DateTime day,
   ) : super(
           StoredActivityState(
-            basicActivityData.toActivity(timezone: tz.local.name, day: day),
+            basicActivityData.toActivity(
+              timezone: tz.local.name,
+              day: day,
+              calendarId: '',
+            ),
             TimeInterval(startDate: day),
             day,
           ),
@@ -38,21 +43,25 @@ class EditActivityCubit extends Cubit<EditActivityState> {
   EditActivityCubit.newActivity({
     required DateTime day,
     required int defaultAlarmTypeSetting,
+    required String calendarId,
     BasicActivityDataItem? basicActivityData,
   }) : super(
           basicActivityData == null
               ? UnstoredActivityState(
-                  Activity.createNew(
-                    title: '',
+                  Activity(
                     startTime: day,
                     timezone: tz.local.name,
                     alarmType: defaultAlarmTypeSetting,
+                    calendarId: calendarId,
                   ),
                   TimeInterval(startDate: day),
                 )
               : UnstoredActivityState(
                   basicActivityData.toActivity(
-                      timezone: tz.local.name, day: day),
+                    timezone: tz.local.name,
+                    day: day,
+                    calendarId: calendarId,
+                  ),
                   basicActivityData.toTimeInterval(startDate: day),
                 ),
         );

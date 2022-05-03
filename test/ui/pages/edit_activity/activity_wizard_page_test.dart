@@ -88,6 +88,7 @@ void main() {
                   defaultAlarmTypeSetting:
                       mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
                   basicActivityData: basicActivityData,
+                  calendarId: 'calendarId',
                 ),
               ),
               BlocProvider<WizardCubit>(

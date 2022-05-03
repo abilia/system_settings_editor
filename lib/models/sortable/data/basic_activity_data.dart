@@ -137,8 +137,9 @@ class BasicActivityDataItem extends BasicActivityData {
   Activity toActivity({
     required String timezone,
     required DateTime day,
+    required String calendarId,
   }) =>
-      Activity.createNew(
+      Activity(
         title: activityTitle,
         startTime: day,
         timezone: timezone,
@@ -153,6 +154,7 @@ class BasicActivityDataItem extends BasicActivityData {
         icon: icon,
         infoItem: InfoItem.fromJsonString(info),
         reminderBefore: DbActivity.parseReminders(reminders),
+        calendarId: calendarId,
       );
 
   TimeInterval toTimeInterval({required DateTime startDate}) => TimeInterval(

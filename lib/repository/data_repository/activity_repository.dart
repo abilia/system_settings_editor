@@ -16,7 +16,7 @@ class ActivityRepository extends DataRepository<Activity> {
           client: client,
           baseUrlDb: baseUrlDb,
           path: 'activities',
-          postApiVersion: 2,
+          postApiVersion: 3,
           authToken: authToken,
           userId: userId,
           db: activityDb,

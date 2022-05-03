@@ -215,6 +215,7 @@ class AddTemplateButton extends StatelessWidget {
                     .read<MemoplannerSettingBloc>()
                     .state
                     .defaultAlarmTypeSetting,
+                calendarId: '',
               ),
             ),
             BlocProvider<WizardCubit>(

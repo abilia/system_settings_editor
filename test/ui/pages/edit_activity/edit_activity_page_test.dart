@@ -97,6 +97,7 @@ void main() {
                         day: today,
                         defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
                             .state.defaultAlarmTypeSetting,
+                        calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
                         ActivityDay(activity, today),

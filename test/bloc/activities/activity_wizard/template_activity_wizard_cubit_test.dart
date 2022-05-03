@@ -25,6 +25,7 @@ void main() {
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
       folderId: 'a folder',
@@ -41,6 +42,7 @@ void main() {
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
       folderId: 'a folder',
@@ -57,6 +59,7 @@ void main() {
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
       folderId: 'some group',
@@ -81,6 +84,7 @@ void main() {
       editActivityCubit: EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
       folderId: 'some group',

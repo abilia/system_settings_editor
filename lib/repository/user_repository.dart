@@ -16,6 +16,7 @@ class UserRepository extends Repository {
   final LoginDb loginDb;
   final UserDb userDb;
   final LicenseDb licenseDb;
+  final CalendarDb calendarDb;
   final DeviceDb deviceDb;
   final int postApiVersion;
 
@@ -26,6 +27,7 @@ class UserRepository extends Repository {
     required this.userDb,
     required this.licenseDb,
     required this.deviceDb,
+    required this.calendarDb,
     this.postApiVersion = 1,
   }) : super(client, baseUrlDb);
 
@@ -131,7 +133,23 @@ class UserRepository extends Repository {
     }
   }
 
-  Future logout([String? token]) async {
+  Future<void> fetchAndSetCalendar(String token, int userId) async {
+    try {
+      if (await calendarDb.getCalendarId() == null) {
+        final response = await client.post(
+          '$baseUrl/api/v1/calendar/$userId?type=${CalendarDb.memoType}'
+              .toUri(),
+          headers: authHeader(token),
+        );
+        final calendarType = Calendar.fromJson(response.json());
+        await calendarDb.insert(calendarType);
+      }
+    } catch (e, s) {
+      _log.severe('could not fetch calendarId', e, s);
+    }
+  }
+
+  Future<void> logout([String? token]) async {
     _log.fine('unregister Client');
     await _unregisterClient(token);
     _log.fine('deleting token');
