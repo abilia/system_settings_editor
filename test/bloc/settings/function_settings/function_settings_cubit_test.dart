@@ -214,6 +214,7 @@ void main() {
         displayWeek: false,
         displayMonth: false,
         displayNewActivity: false,
+        displayNewTimer: false,
         displayMenu: false,
         timeout: 0,
         useScreensaver: true,
@@ -233,6 +234,10 @@ void main() {
       MemoplannerSettingData<dynamic>.fromData(
         data: false,
         identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+      ),
+      MemoplannerSettingData<dynamic>.fromData(
+        data: false,
+        identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
       ),
       MemoplannerSettingData<dynamic>.fromData(
           data: false,

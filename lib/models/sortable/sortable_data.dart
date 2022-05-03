@@ -273,6 +273,18 @@ class BasicTimerDataFolder extends BasicTimerData {
     );
   }
 
+  @visibleForTesting
+  factory BasicTimerDataFolder.createNew({
+    String? name,
+    String? icon,
+    String? fileId,
+  }) =>
+      BasicTimerDataFolder._(
+        name: name ?? '',
+        icon: icon ?? '',
+        fileId: fileId ?? '',
+      );
+
   @override
   String dataFileId() => fileId;
 

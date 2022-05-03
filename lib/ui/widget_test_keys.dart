@@ -110,5 +110,6 @@ class TestKey {
       photoCalendarTab = Key('photoCalendarTab'),
       allPhotosTabButton = Key('allPhotosTabButton'),
       allPhotosTab = Key('allPhotosTab'),
-      timerAlarmSelector = Key('timerAlarmSelector');
+      timerAlarmSelector = Key('timerAlarmSelector'),
+      basicTimerLibraryFolder = Key('basicTimerLibraryFolder');
 }

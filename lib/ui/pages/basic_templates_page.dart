@@ -82,6 +82,7 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
     final text = Text(_sortable.data.title(Translator.of(context).translate));
     if (_sortable.isGroup) {
       return PickField(
+        key: TestKey.basicTimerLibraryFolder,
         onTap: _onTap,
         text: text,
         padding: layout.pickField.imagePadding,
