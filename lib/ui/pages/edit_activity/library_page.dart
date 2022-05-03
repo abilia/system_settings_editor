@@ -7,8 +7,9 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
   Sortable<SortableData>,
-  Function(),
-  SortableToolbar?,
+  GestureTapCallback,
+  SortableToolbar,
+  bool,
 );
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
@@ -282,20 +283,19 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                     .read<SortableArchiveCubit<T>>()
                                     .sortableSelected(
                                         selected ? null : sortable),
-                            selected
-                                ? SortableToolbar(
-                                    disableUp: index == 0,
-                                    disableDown: index == content.length - 1,
-                                    onTapEdit: () {
-                                      // TODO: edit timer/activity
-                                    },
-                                    onTapDelete: () =>
-                                        _checkDeleteItem(context, sortable),
-                                    onTapReorder: (direction) => context
-                                        .read<SortableArchiveCubit<T>>()
-                                        .reorder(direction),
-                                  )
-                                : null,
+                            SortableToolbar(
+                              disableUp: index == 0,
+                              disableDown: index == content.length - 1,
+                              onTapEdit: () {
+                                // TODO: edit timer/activity
+                              },
+                              onTapDelete: () =>
+                                  _checkDeleteItem(context, sortable),
+                              onTapReorder: (direction) => context
+                                  .read<SortableArchiveCubit<T>>()
+                                  .reorder(direction),
+                            ),
+                            selected,
                           );
                         },
                       ),

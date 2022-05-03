@@ -23,7 +23,7 @@ class WiFiPickField extends StatelessWidget {
             return PickField(
               leading: Icon(_connected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
               text: Text(t.wifi),
-              secondaryText: Text(
+              trailingText: Text(
                 _connected ? t.connected : t.notConnected,
                 style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                     .copyWith(

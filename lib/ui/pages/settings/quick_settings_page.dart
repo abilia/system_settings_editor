@@ -47,10 +47,9 @@ class QuickSettingsPage extends StatelessWidget {
                   SubHeading(t.volumeMedia),
                   MediaVolumeSlider(
                     onVolumeSet: () async {
-                      await context.read<AlarmSoundCubit>().stopSound();
-                      await context
-                          .read<AlarmSoundCubit>()
-                          .playSound(Sound.Harpe);
+                      final cubit = context.read<AlarmSoundCubit>();
+                      await cubit.stopSound();
+                      await cubit.playSound(Sound.Harpe);
                     },
                   ),
                 ]),

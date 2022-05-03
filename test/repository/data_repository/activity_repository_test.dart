@@ -79,7 +79,9 @@ void main() {
           ''';
     when(
       () => mockClient.post(
-        '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+        '$baseUrl/api/v${activityRepo.postApiVersion}'
+                '/data/$userId/activities'
+            .toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
       ),
@@ -104,7 +106,9 @@ void main() {
     // Arrange
     when(
       () => mockClient.post(
-        '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+        '$baseUrl/api/v${activityRepo.postApiVersion}'
+                '/data/$userId/activities'
+            .toUri(),
         headers: jsonAuthHeader(Fakes.token),
         body: jsonEncode(dbActivities),
       ),
@@ -139,7 +143,9 @@ void main() {
     when(() => mockActivityDb.getAllDirty())
         .thenAnswer((_) => Future.value(activities));
     when(() => mockClient.post(
-          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          '$baseUrl/api/v${activityRepo.postApiVersion}'
+                  '/data/$userId/activities'
+              .toUri(),
           headers: jsonAuthHeader(Fakes.token),
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
@@ -160,7 +166,9 @@ void main() {
 
     // Expect
     verify(() => mockClient.post(
-          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          '$baseUrl/api/v${activityRepo.postApiVersion}'
+                  '/data/$userId/activities'
+              .toUri(),
           headers: jsonAuthHeader(Fakes.token),
           body: jsonEncode(activities),
         ));
@@ -192,7 +200,9 @@ void main() {
     when(() => mockActivityDb.getLastRevision())
         .thenAnswer((_) => Future.value(100));
     when(() => mockClient.post(
-          '$baseUrl/api/v2/data/$userId/activities'.toUri(),
+          '$baseUrl/api/v${activityRepo.postApiVersion}'
+                  '/data/$userId/activities'
+              .toUri(),
           headers: jsonAuthHeader(Fakes.token),
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
@@ -202,11 +212,11 @@ void main() {
           ),
         ));
 
-    when(() =>
-        mockClient.get(
-            '$baseUrl/api/v1/data/$userId/activities?revision=$failedRevision'
-                .toUri(),
-            headers: authHeader(Fakes.token))).thenAnswer((_) => (Future.value(
+    when(() => mockClient.get(
+        '$baseUrl/api/v1'
+                '/data/$userId/activities?revision=$failedRevision'
+            .toUri(),
+        headers: authHeader(Fakes.token))).thenAnswer((_) => (Future.value(
           Response(
             json.encode(
                 [failedActivity.copyWith(revision: failedRevision).toJson()]),

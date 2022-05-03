@@ -15,6 +15,7 @@ void main() {
   final mockClient = MockBaseClient();
   final mockUserDb = MockUserDb();
   final mockLoginDb = MockLoginDb();
+  final mockCalendarDb = MockCalendarDb();
   final userRepo = UserRepository(
     baseUrlDb: mockBaseUrlDb,
     client: mockClient,
@@ -22,6 +23,7 @@ void main() {
     userDb: mockUserDb,
     licenseDb: FakeLicenseDb(),
     deviceDb: MockDeviceDb(),
+    calendarDb: mockCalendarDb,
   );
 
   setUp(() {
