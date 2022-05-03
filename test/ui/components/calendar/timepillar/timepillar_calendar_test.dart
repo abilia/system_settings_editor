@@ -109,7 +109,7 @@ void main() {
         startTime: time.onlyDays(),
         duration: 1.days() - 1.milliseconds(),
         fullDay: true,
-        reminderBefore: [60 * 60 * 1000],
+        reminderBefore: const [60 * 60 * 1000],
         alarmType: noAlarm);
     activityResponse = () => [activity];
     await tester.pumpWidget(App());

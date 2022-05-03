@@ -168,12 +168,14 @@ class ActivityPagePreview extends StatelessWidget {
                   create: (context) => ClockBloc.fixed(time),
                   child: ActivityPage(
                     activityDay: ActivityDay(
+                      // ignore: invalid_use_of_visible_for_testing_member
                       Activity.createNew(
-                          title: Translator.of(context)
-                              .translate
-                              .previewActivityTitle,
-                          startTime: startTime,
-                          duration: const Duration(hours: 1)),
+                        title: Translator.of(context)
+                            .translate
+                            .previewActivityTitle,
+                        startTime: startTime,
+                        duration: const Duration(hours: 1),
+                      ),
                       startTime,
                     ),
                     previewImage: const Image(

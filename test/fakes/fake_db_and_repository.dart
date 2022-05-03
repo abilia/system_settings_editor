@@ -49,6 +49,8 @@ class FakeLicenseDb extends Fake implements LicenseDb {
       ];
 }
 
+class FakeCalendarDb extends Fake implements CalendarDb {}
+
 class FakeUserFileDb extends Fake implements UserFileDb {
   @override
   Future<Iterable<UserFile>> getMissingFiles({int? limit}) => Future.value([]);

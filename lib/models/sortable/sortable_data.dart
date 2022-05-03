@@ -407,25 +407,26 @@ class BasicActivityDataItem extends BasicActivityData {
 
   Activity toActivity({
     required String timezone,
+    required String calendarId,
     required DateTime day,
-  }) {
-    return Activity.createNew(
-      title: activityTitle,
-      startTime: day,
-      timezone: timezone,
-      alarmType: alarmType,
-      category: category,
-      duration: Duration(milliseconds: duration),
-      checkable: checkable,
-      fullDay: fullDay,
-      removeAfter: removeAfter,
-      secret: secret,
-      fileId: fileId,
-      icon: icon,
-      infoItem: InfoItem.fromJsonString(info),
-      reminderBefore: DbActivity.parseReminders(reminders),
-    );
-  }
+  }) =>
+      Activity(
+        title: activityTitle,
+        calendarId: calendarId,
+        startTime: day,
+        timezone: timezone,
+        alarmType: alarmType,
+        category: category,
+        duration: Duration(milliseconds: duration),
+        checkable: checkable,
+        fullDay: fullDay,
+        removeAfter: removeAfter,
+        secret: secret,
+        fileId: fileId,
+        icon: icon,
+        infoItem: InfoItem.fromJsonString(info),
+        reminderBefore: DbActivity.parseReminders(reminders),
+      );
 
   TimeInterval toTimeInterval({required DateTime startDate}) => TimeInterval(
         startDate: startDate.onlyDays(),

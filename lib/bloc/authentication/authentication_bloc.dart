@@ -75,6 +75,7 @@ class AuthenticationBloc
   }) async {
     try {
       final user = await userRepository.me(token);
+      await userRepository.fetchAndSetCalendar(token, user.id);
       return Authenticated(
         token: token,
         userId: user.id,
