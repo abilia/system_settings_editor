@@ -39,11 +39,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     expect(activityWizardCubit.state,
@@ -112,11 +108,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     expect(
@@ -144,11 +136,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     // Act
@@ -294,11 +282,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final timeInterval = TimeInterval(
@@ -454,7 +438,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+        allowPassedStartTime: true,
       );
 
       // Assert
@@ -532,11 +516,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       clockBloc: clockBloc,
       editActivityCubit: editActivityCubit,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     // Assert
@@ -607,7 +587,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     // Assert
@@ -666,7 +646,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     final expected1 = expectLater(
@@ -716,7 +696,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     final expected1 = expectLater(
@@ -1096,11 +1076,7 @@ void main() {
           activitiesBloc: FakeActivitiesBloc(),
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: true),
-            ),
-          ),
+          allowPassedStartTime: true,
         );
 
         final expectedTimeIntervall = TimeInterval(
@@ -1362,11 +1338,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: false),
-            ),
-          ),
+          allowPassedStartTime: false,
         );
 
         // Act
@@ -1565,11 +1537,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: false),
-            ),
-          ),
+          allowPassedStartTime: false,
         );
 
         // Act
@@ -1625,11 +1593,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final expectedTimeIntervall = TimeInterval(
@@ -1686,11 +1650,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1747,11 +1707,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final nextDay = aTime.add(1.days());

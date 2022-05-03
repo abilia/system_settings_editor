@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -10,45 +11,72 @@ class ActivityWizardCubit extends WizardCubit {
   final ActivitiesBloc activitiesBloc;
   final EditActivityCubit editActivityCubit;
   final ClockBloc clockBloc;
-  final bool allowActivityTimeBeforeCurrent;
+  final bool allowPassedStartTime;
 
   StreamSubscription<EditActivityState>? _editActivityCubitSubscription;
 
-  ActivityWizardCubit.newActivity({
+  @visibleForTesting
+  factory ActivityWizardCubit.newActivity({
+    required ActivitiesBloc activitiesBloc,
+    required EditActivityCubit editActivityCubit,
+    required ClockBloc clockBloc,
+    required MemoplannerSettingsState settings,
+  }) {
+    if (settings.addActivityType == NewActivityMode.editView) {
+      return ActivityWizardCubit.newAdvanced(
+        activitiesBloc: activitiesBloc,
+        editActivityCubit: editActivityCubit,
+        clockBloc: clockBloc,
+        allowPassedStartTime:
+            settings.settings.addActivity.allowPassedStartTime,
+      );
+    }
+    return ActivityWizardCubit.newStepByStep(
+      activitiesBloc: activitiesBloc,
+      editActivityCubit: editActivityCubit,
+      clockBloc: clockBloc,
+      allowPassedStartTime: settings.settings.addActivity.allowPassedStartTime,
+      stepByStep: settings.settings.stepByStep,
+      addRecurringActivity: settings.settings.addActivity.addRecurringActivity,
+    );
+  }
+
+  ActivityWizardCubit.newAdvanced({
     required this.activitiesBloc,
     required this.editActivityCubit,
     required this.clockBloc,
-    required MemoplannerSettingsState settings,
-  })  : allowActivityTimeBeforeCurrent =
-            settings.settings.addActivity.allowPassedStartTime,
-        super(
+    required this.allowPassedStartTime,
+  }) : super(WizardState(0, UnmodifiableListView([WizardStep.advance])));
+
+  ActivityWizardCubit.newStepByStep({
+    required this.activitiesBloc,
+    required this.editActivityCubit,
+    required this.clockBloc,
+    required this.allowPassedStartTime,
+    required StepByStepSettings stepByStep,
+    required bool addRecurringActivity,
+  }) : super(
           WizardState(
             0,
-            settings.addActivityType == NewActivityMode.editView
-                ? UnmodifiableListView([WizardStep.advance])
-                : _generateWizardSteps(
-                    stepByStep: settings.settings.stepByStep,
-                    addRecurringActivity:
-                        settings.settings.addActivity.addRecurringActivity,
-                    activity: editActivityCubit.state.activity,
-                  ),
+            _generateWizardSteps(
+              stepByStep: stepByStep,
+              addRecurringActivity: addRecurringActivity,
+              activity: editActivityCubit.state.activity,
+            ),
           ),
         ) {
-    if (settings.addActivityType == NewActivityMode.stepByStep) {
-      _editActivityCubitSubscription = editActivityCubit.stream.listen(
-        (event) {
-          final newSteps = _generateWizardSteps(
-            stepByStep: settings.settings.stepByStep,
-            addRecurringActivity:
-                settings.settings.addActivity.addRecurringActivity,
-            activity: event.activity,
-          );
-          if (newSteps != state.steps) {
-            emit(state.copyWith(newSteps: newSteps));
-          }
-        },
-      );
-    }
+    _editActivityCubitSubscription = editActivityCubit.stream.listen(
+      (event) {
+        final newSteps = _generateWizardSteps(
+          stepByStep: stepByStep,
+          addRecurringActivity: addRecurringActivity,
+          activity: event.activity,
+        );
+        if (newSteps != state.steps) {
+          emit(state.copyWith(newSteps: newSteps));
+        }
+      },
+    );
   }
 
   static List<WizardStep> _generateWizardSteps({
@@ -80,10 +108,8 @@ class ActivityWizardCubit extends WizardCubit {
     required this.activitiesBloc,
     required this.editActivityCubit,
     required this.clockBloc,
-    required MemoplannerSettingsState settings,
-  })  : allowActivityTimeBeforeCurrent =
-            settings.settings.addActivity.allowPassedStartTime,
-        super(WizardState(0, const [WizardStep.advance]));
+    required this.allowPassedStartTime,
+  }) : super(WizardState(0, const [WizardStep.advance]));
 
   @override
   void next({
@@ -105,7 +131,7 @@ class ActivityWizardCubit extends WizardCubit {
     final error = editActivityCubit.state.stepErrors(
       wizState: state,
       now: clockBloc.state,
-      allowActivityTimeBeforeCurrent: allowActivityTimeBeforeCurrent,
+      allowPassedStartTime: allowPassedStartTime,
       warningConfirmed: warningConfirmed,
     );
 
@@ -130,7 +156,7 @@ class ActivityWizardCubit extends WizardCubit {
       beforeNowWarningConfirmed: beforeNowWarningConfirmed,
       conflictWarningConfirmed: conflictWarningConfirmed,
       saveReccuringDefined: saveRecurring != null,
-      allowActivityTimeBeforeCurrent: allowActivityTimeBeforeCurrent,
+      allowPassedStartTime: allowPassedStartTime,
       activitiesState: activitiesBloc.state,
       now: clockBloc.state,
     );
@@ -169,7 +195,7 @@ extension SaveErrorExtension on EditActivityState {
     required bool beforeNowWarningConfirmed,
     required bool conflictWarningConfirmed,
     required bool saveReccuringDefined,
-    required bool allowActivityTimeBeforeCurrent,
+    required bool allowPassedStartTime,
     required DateTime now,
     required ActivitiesState activitiesState,
   }) =>
@@ -177,7 +203,7 @@ extension SaveErrorExtension on EditActivityState {
         if (!hasTitleOrImage) SaveError.noTitleOrImage,
         if (!hasStartTime) SaveError.noStartTime,
         if (startTimeBeforeNow(now))
-          if (!allowActivityTimeBeforeCurrent)
+          if (!allowPassedStartTime)
             SaveError.startTimeBeforeNow
           else if (!beforeNowWarningConfirmed)
             SaveError.unconfirmedStartTimeBeforeNow,
@@ -196,7 +222,7 @@ extension SaveErrorExtension on EditActivityState {
   SaveError? stepErrors({
     required WizardState wizState,
     required DateTime now,
-    required bool allowActivityTimeBeforeCurrent,
+    required bool allowPassedStartTime,
     required bool warningConfirmed,
   }) {
     switch (wizState.currentStep) {
@@ -211,7 +237,7 @@ extension SaveErrorExtension on EditActivityState {
       case WizardStep.time:
         if (!hasStartTime) return SaveError.noStartTime;
         if (startTimeBeforeNow(now)) {
-          if (!allowActivityTimeBeforeCurrent) {
+          if (!allowPassedStartTime) {
             return SaveError.startTimeBeforeNow;
           } else if (!warningConfirmed) {
             return SaveError.unconfirmedStartTimeBeforeNow;

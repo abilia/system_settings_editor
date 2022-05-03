@@ -240,7 +240,12 @@ class EditActivityButton extends StatelessWidget {
                       activitiesBloc: context.read<ActivitiesBloc>(),
                       editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
-                      settings: context.read<MemoplannerSettingBloc>().state,
+                      allowPassedStartTime: context
+                          .read<MemoplannerSettingBloc>()
+                          .state
+                          .settings
+                          .addActivity
+                          .allowPassedStartTime,
                     ),
                   ),
                 ],
