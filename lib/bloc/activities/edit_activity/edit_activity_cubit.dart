@@ -35,7 +35,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
               day: day,
               calendarId: '',
             ),
-            TimeInterval(startDate: day),
+            TimeInterval(
+              startDate: day,
+              startTime: basicActivityData.startTimeOfDay,
+              endTime: basicActivityData.endTimeOfDay,
+            ),
             day,
           ),
         );
