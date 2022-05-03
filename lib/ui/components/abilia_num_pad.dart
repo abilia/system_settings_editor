@@ -15,12 +15,14 @@ class AbiliaNumPad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80 * 3 + 8 * 2,
+      width: 3 * layout.timeInput.keyboardButtonWidth +
+          2 * layout.timeInput.keyboardButtonPadding,
       child: GridView.extent(
-        maxCrossAxisExtent: 80,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 80 / 48,
+        maxCrossAxisExtent: layout.timeInput.keyboardButtonWidth,
+        mainAxisSpacing: layout.timeInput.keyboardButtonPadding,
+        crossAxisSpacing: layout.timeInput.keyboardButtonPadding,
+        childAspectRatio: layout.timeInput.keyboardButtonWidth /
+            layout.timeInput.keyboardButtonHeight,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [

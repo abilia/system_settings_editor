@@ -401,11 +401,11 @@ final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
   }),
 );
 
-final ButtonStyle keyBoardButtonStyle = ButtonStyle(
+final ButtonStyle keyboardButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.headline6),
-  fixedSize:
-      MaterialStateProperty.all(const Size(80, 48)), // TODO put in layout
-
+  fixedSize: MaterialStateProperty.all(Size(
+      layout.timeInput.keyboardButtonWidth,
+      layout.timeInput.keyboardButtonHeight)),
   foregroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -417,7 +417,7 @@ final ButtonStyle keyBoardButtonStyle = ButtonStyle(
   shape: MaterialStateProperty.all(noBorderShape),
 );
 
-final ButtonStyle keyboardNumberButtonStyle = keyBoardButtonStyle.copyWith(
+final ButtonStyle keyboardNumberButtonStyle = keyboardButtonStyle.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
         states.contains(MaterialState.pressed)) {
@@ -438,7 +438,7 @@ final ButtonStyle keyboardNumberButtonStyle = keyBoardButtonStyle.copyWith(
   ),
 );
 
-final ButtonStyle keyboardActionButtonStyle = keyBoardButtonStyle.copyWith(
+final ButtonStyle keyboardActionButtonStyle = keyboardButtonStyle.copyWith(
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {

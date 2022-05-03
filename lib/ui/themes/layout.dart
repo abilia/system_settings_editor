@@ -1088,13 +1088,15 @@ class SelectPictureLayout {
 }
 
 class TimeInputLayout {
-  // TODO add numpad values
   final double width,
       height,
       amPmHeight,
       amPmWidth,
       timeDashAlignValue,
-      amPmDistance;
+      amPmDistance,
+      keyboardButtonHeight,
+      keyboardButtonWidth,
+      keyboardButtonPadding;
   final EdgeInsets headerClockPadding;
 
   const TimeInputLayout({
@@ -1105,6 +1107,9 @@ class TimeInputLayout {
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
     this.headerClockPadding = const EdgeInsets.only(right: 16),
+    this.keyboardButtonHeight = 48,
+    this.keyboardButtonWidth = 80,
+    this.keyboardButtonPadding = 8,
   });
 }
 
