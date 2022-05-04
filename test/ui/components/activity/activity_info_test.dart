@@ -90,7 +90,6 @@ void main() {
     final activity = Activity.createNew(
       title: 'title',
       startTime: startTime,
-      reminderBefore: [],
     );
 
     // Act
@@ -116,7 +115,6 @@ void main() {
       title: 'title',
       startTime: startTime,
       checkable: true,
-      reminderBefore: [],
     );
 
     await tester.pumpWidget(
@@ -143,7 +141,6 @@ void main() {
       title: 'title',
       startTime: startTime,
       checkable: true,
-      reminderBefore: [],
       signedOffDates: [day].map(whaleDateFormat),
     );
     await tester.pumpWidget(

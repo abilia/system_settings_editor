@@ -71,6 +71,8 @@ void main() {
           ),
         ]),
       );
+      when(() => mockUserRepository.fetchAndSetCalendar(any(), any()))
+          .thenAnswer((_) => Future.value());
 
       // Act
       authenticationBloc.add(CheckAuthentication());

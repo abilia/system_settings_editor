@@ -954,7 +954,7 @@ class ComponentsLayout {
 }
 
 class PickFieldLayout {
-  final double height;
+  final double height, vericalDistanceText;
   final Size leadingSize;
   final EdgeInsets padding, leadingPadding, imagePadding, subtitlePadding;
 
@@ -964,7 +964,8 @@ class PickFieldLayout {
     this.padding = const EdgeInsets.only(left: 12, right: 12),
     this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
     this.leadingPadding = const EdgeInsets.only(right: 12),
-    this.subtitlePadding = const EdgeInsets.only(top: 8),
+    this.subtitlePadding = const EdgeInsets.only(top: 8), //TODO: Remove?
+    this.vericalDistanceText = 8, //TODO: Remove?
   });
 }
 

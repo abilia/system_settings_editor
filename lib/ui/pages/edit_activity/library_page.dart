@@ -6,9 +6,10 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
-  Sortable<T>,
-  Function(),
-  SortableToolbar?,
+  Sortable<SortableData>,
+  GestureTapCallback,
+  SortableToolbar,
+  bool,
 );
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
@@ -232,13 +233,11 @@ class _SortableLibraryState<T extends SortableData>
 class ListLibrary<T extends SortableData> extends StatelessWidget {
   final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
-  final bool selectableItems;
 
   const ListLibrary({
     Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
-    this.selectableItems = true,
   }) : super(key: key);
 
   @override
@@ -280,27 +279,23 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                 ? context
                                     .read<SortableArchiveCubit<T>>()
                                     .folderChanged(sortable.id)
-                                : selectableItems
-                                    ? context
-                                        .read<SortableArchiveCubit<T>>()
-                                        .sortableSelected(
-                                          selected ? null : sortable,
-                                        )
-                                    : {},
-                            selected
-                                ? SortableToolbar(
-                                    disableUp: index == 0,
-                                    disableDown: index == content.length - 1,
-                                    onTapEdit: () {
-                                      // TODO: edit timer/activity
-                                    },
-                                    onTapDelete: () =>
-                                        _checkDeleteItem(context, sortable),
-                                    onTapReorder: (direction) => context
-                                        .read<SortableArchiveCubit<T>>()
-                                        .reorder(direction),
-                                  )
-                                : null,
+                                : context
+                                    .read<SortableArchiveCubit<T>>()
+                                    .sortableSelected(
+                                        selected ? null : sortable),
+                            SortableToolbar(
+                              disableUp: index == 0,
+                              disableDown: index == content.length - 1,
+                              onTapEdit: () {
+                                // TODO: edit timer/activity
+                              },
+                              onTapDelete: () =>
+                                  _checkDeleteItem(context, sortable),
+                              onTapReorder: (direction) => context
+                                  .read<SortableArchiveCubit<T>>()
+                                  .reorder(direction),
+                            ),
+                            selected,
                           );
                         },
                       ),

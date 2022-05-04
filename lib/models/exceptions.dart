@@ -42,3 +42,9 @@ class VerifyDeviceException implements Exception {
 
   VerifyDeviceException({required this.badRequest});
 }
+
+class RequestTokenException implements Exception {
+  final BadRequest badRequest;
+
+  RequestTokenException({required this.badRequest});
+}

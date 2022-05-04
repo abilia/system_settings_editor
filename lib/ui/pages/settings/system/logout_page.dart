@@ -59,9 +59,7 @@ class _ProfilePictureNameAndEmailState
       children: <Widget>[
         if (user != null) ...[
           GestureDetector(
-            onLongPress: () => Config.beta
-                ? DatabaseRepository.logAll(GetIt.I<Database>())
-                : GetIt.I<SeagullLogger>().sendLogsToBackend(),
+            onLongPress: () => GetIt.I<SeagullLogger>().sendLogsToBackend(),
             onDoubleTap: () => setState(() => showVersion = !showVersion),
             child: ProfilePicture(
               baseUrl,

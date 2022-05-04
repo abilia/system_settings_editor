@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -191,6 +192,7 @@ class CreateNewPage extends StatelessWidget {
   Future<void> navigateToActivityWizard(
       BuildContext context, List<BlocProvider> authProviders,
       [BasicActivityDataItem? basicActivity]) async {
+    final calendarId = await GetIt.I<CalendarDb>().getCalendarId() ?? '';
     final activityCreated = await Navigator.of(context).push<bool>(
       _createRoute<bool>(
         MultiBlocProvider(
@@ -199,6 +201,7 @@ class CreateNewPage extends StatelessWidget {
             BlocProvider<EditActivityCubit>(
               create: (_) => EditActivityCubit.newActivity(
                 day: context.read<DayPickerBloc>().state.day,
+                calendarId: calendarId,
                 defaultAlarmTypeSetting: context
                     .read<MemoplannerSettingBloc>()
                     .state
