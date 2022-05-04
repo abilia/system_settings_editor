@@ -954,9 +954,9 @@ class ComponentsLayout {
 }
 
 class PickFieldLayout {
-  final double height, vericalDistanceText;
+  final double height, verticalDistanceText;
   final Size leadingSize;
-  final EdgeInsets padding, leadingPadding, imagePadding, subtitlePadding;
+  final EdgeInsets padding, leadingPadding, imagePadding;
 
   const PickFieldLayout({
     this.height = 56,
@@ -964,8 +964,7 @@ class PickFieldLayout {
     this.padding = const EdgeInsets.only(left: 12, right: 12),
     this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
     this.leadingPadding = const EdgeInsets.only(right: 12),
-    this.subtitlePadding = const EdgeInsets.only(top: 8), //TODO: Remove?
-    this.vericalDistanceText = 8, //TODO: Remove?
+    this.verticalDistanceText = 8,
   });
 }
 
@@ -1350,7 +1349,7 @@ class ButtonLayout {
         const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
     this.actionButtonIconTextPadding =
         const EdgeInsets.fromLTRB(10, 10, 20, 10),
-    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 3, 3, 3),
+    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 4, 4, 4),
   });
 }
 

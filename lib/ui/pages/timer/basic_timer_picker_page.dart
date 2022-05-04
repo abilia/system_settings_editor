@@ -1,7 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class BasicTimerPickerPage extends StatelessWidget {
   const BasicTimerPickerPage({Key? key}) : super(key: key);
@@ -21,34 +20,28 @@ class BasicTimerPickerPage extends StatelessWidget {
           return Scaffold(
             appBar: AbiliaAppBar(
               iconData: AbiliaIcons.basicTimers,
-              title:
-                  state.allById[state.currentFolderId]?.data.title(translate) ??
-                      translate.fromBasicTimer,
+              title: translate.fromBasicTimer,
             ),
             body: ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noBasicTimers,
               selectableItems: false,
-              libraryItemGenerator: (sortable, onTap, _) {
+              libraryItemGenerator: (sortable, onTap, _, __) {
                 final sortableData = sortable.data;
                 return BasicTemplatePickField<BasicTimerData>(
                   sortable,
                   onTap,
-                  null,
-                  subtitleText: sortableData is BasicTimerDataItem
-                      ? sortableData.duration.milliseconds().toHMSorMS()
-                      : null,
-                  trailing: sortable.data is BasicTimerDataItem
-                      ? _StartBasicTimerButton(
-                          key: TestKey.startBasicTimerButton,
-                          onPressed: () {
-                            if (sortableData is BasicTimerDataItem) {
-                              context.read<EditTimerCubit>()
-                                ..loadBasicTimer(sortableData)
-                                ..start();
-                            }
-                          },
-                        ).pad(layout.button.startBasicTimerPadding)
-                      : null,
+                  _StartBasicTimerButton(
+                    key: TestKey.startBasicTimerButton,
+                    onPressed: () {
+                      if (sortableData is BasicTimerDataItem) {
+                        context.read<EditTimerCubit>()
+                          ..loadBasicTimer(sortableData)
+                          ..start();
+                      }
+                    },
+                  ).pad(layout.button.startBasicTimerPadding),
+                  false,
+                  alwaysShowTrailing: sortableData is BasicTimerDataItem,
                 );
               },
             ),

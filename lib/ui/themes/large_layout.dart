@@ -392,7 +392,6 @@ class _LargeLayout extends Layout {
             imagePadding:
                 EdgeInsets.only(left: 4 * scaleFactor, right: 12 * scaleFactor),
             leadingPadding: EdgeInsets.only(right: 18 * scaleFactor),
-            subtitlePadding: EdgeInsets.only(top: 8 * scaleFactor),
             height: 88 * scaleFactor,
             leadingSize: Size(72 * scaleFactor, 72 * scaleFactor),
           ),
@@ -600,9 +599,9 @@ class _LargeLayout extends Layout {
             ),
             startBasicTimerPadding: EdgeInsets.fromLTRB(
               0,
-              6 * scaleFactor,
-              6 * scaleFactor,
-              6 * scaleFactor,
+              8 * scaleFactor,
+              8 * scaleFactor,
+              8 * scaleFactor,
             ),
           ),
           theme: const ThemeLayout(

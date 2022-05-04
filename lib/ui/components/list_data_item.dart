@@ -3,26 +3,25 @@ import 'package:seagull/ui/all.dart';
 class ListDataItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final Widget leading, trailing;
-  final bool selected;
+  final bool selected, alwaysShowTrailing;
   final Text text;
   final Text? secondaryText;
 
   final String? semanticsLabel;
 
   const ListDataItem({
+    Key? key,
     required this.text,
     required this.onTap,
     required this.leading,
     required this.trailing,
     required this.selected,
-    Key? key,
+    this.alwaysShowTrailing = false,
     this.semanticsLabel,
     this.secondaryText,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final trailing = this.trailing;
-
     final secondaryText = this.secondaryText;
     return Tts.fromSemantics(
       SemanticsProperties(
@@ -66,7 +65,7 @@ class ListDataItem extends StatelessWidget {
                           ),
                           if (secondaryText != null) ...[
                             SizedBox(
-                              height: layout.pickField.vericalDistanceText,
+                              height: layout.pickField.verticalDistanceText,
                             ),
                             DefaultTextStyle(
                               overflow: TextOverflow.ellipsis,
@@ -91,7 +90,7 @@ class ListDataItem extends StatelessWidget {
               height: layout.pickField.height,
               child: CollapsableWidget(
                 axis: Axis.horizontal,
-                collapsed: !selected,
+                collapsed: !alwaysShowTrailing && !selected,
                 child: trailing,
               ),
             ),

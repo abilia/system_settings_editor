@@ -49,7 +49,7 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         body: ListLibrary<T>(
           emptyLibraryMessage: noTemplateText,
-          libraryItemGenerator: _BasicTemplatePickField.new,
+          libraryItemGenerator: BasicTemplatePickField.new,
         ),
         bottomNavigationBar: BlocSelector<SortableArchiveCubit<T>,
             SortableArchiveState<T>, bool>(
@@ -61,35 +61,43 @@ class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
       );
 }
 
-class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplatePickField(
-      this._sortable, this._onTap, this._toolBar, this.selected,
-      {Key? key})
-      : super(key: key);
+class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
+  const BasicTemplatePickField(
+    this._sortable,
+    this._onTap,
+    this._trailing,
+    this.selected, {
+    Key? key,
+    this.alwaysShowTrailing = false,
+  }) : super(key: key);
 
   final Sortable<T> _sortable;
-  final SortableToolbar _toolBar;
   final GestureTapCallback _onTap;
-  final bool selected;
+  final bool selected, alwaysShowTrailing;
+  final Widget _trailing;
 
   @override
   Widget build(BuildContext context) {
     final text = Text(_sortable.data.title(Translator.of(context).translate));
+    final data = _sortable.data;
+
     if (_sortable.isGroup) {
       return PickField(
+        key: data is BasicTimerDataFolder
+            ? TestKey.basicTimerLibraryFolder
+            : null,
         onTap: _onTap,
         text: text,
         padding: layout.pickField.imagePadding,
         leading: SizedBox.fromSize(
           size: layout.pickField.leadingSize,
           child: _PickFolder(
-            sortableData: _sortable.data,
+            sortableData: data,
           ),
         ),
       );
     }
 
-    final data = _sortable.data;
     return ListDataItem(
       onTap: _onTap,
       text: text,
@@ -99,20 +107,21 @@ class _BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       selected: selected,
       leading: SizedBox.fromSize(
         size: layout.pickField.leadingSize,
-        child: _sortable.data.hasImage()
+        child: data.hasImage()
             ? FadeInAbiliaImage(
-                imageFileId: _sortable.data.dataFileId(),
-                imageFilePath: _sortable.data.dataFilePath(),
+                imageFileId: data.dataFileId(),
+                imageFilePath: data.dataFilePath(),
                 fit: BoxFit.cover,
               )
             : Icon(
-                _sortable.data is BasicActivityData
+                data is BasicActivityData
                     ? AbiliaIcons.basicActivity
                     : AbiliaIcons.stopWatch,
                 color: AbiliaColors.white140,
               ),
       ),
-      trailing: _toolBar,
+      trailing: _trailing,
+      alwaysShowTrailing: alwaysShowTrailing,
     );
   }
 }
