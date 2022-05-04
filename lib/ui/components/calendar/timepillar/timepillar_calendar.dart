@@ -29,27 +29,26 @@ class TimepillarCalendar extends StatelessWidget {
         return BlocBuilder<TimepillarCubit, TimepillarState>(
           builder: (context, timepillarState) {
             return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-              builder: (context, measures) {
-                if (timepillarState.calendarType ==
-                    DayCalendarType.oneTimepillar) {
-                  return OneTimepillarCalendar(
-                    timepillarState: timepillarState,
-                    timepillarMeasures: measures,
-                    dayParts: memoplannerSettingsState.dayParts,
-                    displayTimeline: memoplannerSettingsState.displayTimeline,
-                    showCategories: memoplannerSettingsState.showCategories,
-                    displayHourLines: memoplannerSettingsState.displayHourLines,
-                  );
-                }
-                return TwoTimepillarCalendar(
-                  timepillarState: timepillarState,
-                  eventState: eventState,
-                  showCategories: memoplannerSettingsState.showCategories,
-                  displayHourLines: memoplannerSettingsState.displayHourLines,
-                  displayTimeline: memoplannerSettingsState.displayTimeline,
-                  dayParts: memoplannerSettingsState.dayParts,
-                );
-              },
+              builder: (context, measures) => timepillarState.calendarType ==
+                      DayCalendarType.oneTimepillar
+                  ? OneTimepillarCalendar(
+                      timepillarState: timepillarState,
+                      timepillarMeasures: measures,
+                      dayParts: memoplannerSettingsState.dayParts,
+                      displayTimeline: memoplannerSettingsState.displayTimeline,
+                      showCategories: memoplannerSettingsState.showCategories,
+                      displayHourLines:
+                          memoplannerSettingsState.displayHourLines,
+                    )
+                  : TwoTimepillarCalendar(
+                      timepillarState: timepillarState,
+                      eventState: eventState,
+                      showCategories: memoplannerSettingsState.showCategories,
+                      displayHourLines:
+                          memoplannerSettingsState.displayHourLines,
+                      displayTimeline: memoplannerSettingsState.displayTimeline,
+                      dayParts: memoplannerSettingsState.dayParts,
+                    ),
             );
           },
         );
