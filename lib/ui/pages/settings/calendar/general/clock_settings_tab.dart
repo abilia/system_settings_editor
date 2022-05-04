@@ -110,8 +110,13 @@ class PreviewTimePillar extends StatelessWidget {
     );
     final measures = TimepillarMeasures(interval, 1.0);
 
-    return BlocProvider(
-      create: (context) => ClockBloc.fixed(_time),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TimepillarMeasuresCubit.fixed(state: measures),
+        ),
+        BlocProvider(create: (context) => ClockBloc.fixed(_time)),
+      ],
       child: Provider(
         create: (_) => measures,
         child: Padding(

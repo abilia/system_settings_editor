@@ -1,22 +1,36 @@
 part of 'timepillar_cubit.dart';
 
 class TimepillarState extends Equatable {
-  final TimepillarInterval timepillarInterval;
+  final TimepillarInterval interval;
   final List<Event> events;
   final DayCalendarType calendarType;
   final Occasion occasion;
+  final bool showNightCalendar;
 
-  const TimepillarState(
-    this.timepillarInterval,
-    this.events,
-    this.calendarType,
-    this.occasion,
-  );
+  const TimepillarState({
+    required this.interval,
+    required this.events,
+    required this.calendarType,
+    required this.occasion,
+    required this.showNightCalendar,
+  });
 
   @override
-  List<Object> get props => [timepillarInterval, events, calendarType];
+  List<Object> get props => [interval, events, calendarType];
 
   bool get isToday => occasion == Occasion.current;
+
+  List<Event> eventsForInterval(TimepillarInterval interval) => events
+      .where(
+        (a) =>
+            a.start.inRangeWithInclusiveStart(
+              startDate: interval.startTime,
+              endDate: interval.endTime,
+            ) ||
+            (a.start.isBefore(interval.startTime) &&
+                a.end.isAfter(interval.startTime)),
+      )
+      .toList();
 }
 
 class TimepillarMeasures extends Equatable {

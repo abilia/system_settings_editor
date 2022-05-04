@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -9,31 +8,27 @@ class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) =>
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
+      selector: (state) => state.dayCaptionShowDayButtons,
+      builder: (context, dayCaptionShowDayButtons) =>
           BlocBuilder<DayPickerBloc, DayPickerState>(
-        builder: (context, dayPickerState) => DayAppBar(
-          day: dayPickerState.day,
-          leftAction: memoSettingsState.dayCaptionShowDayButtons
-              ? IconActionButton(
-                  onPressed: () => memoSettingsState.dayCalendarType ==
-                          DayCalendarType.list
-                      ? BlocProvider.of<DayPickerBloc>(context)
-                          .add(PreviousDay())
-                      : BlocProvider.of<TimepillarCubit>(context).previous(),
-                  child: const Icon(AbiliaIcons.returnToPreviousPage),
-                )
-              : null,
-          rightAction: memoSettingsState.dayCaptionShowDayButtons
-              ? IconActionButton(
-                  onPressed: () => memoSettingsState.dayCalendarType ==
-                          DayCalendarType.list
-                      ? BlocProvider.of<DayPickerBloc>(context).add(NextDay())
-                      : BlocProvider.of<TimepillarCubit>(context).next(),
-                  child: const Icon(AbiliaIcons.goToNextPage),
-                )
-              : null,
-        ),
+        builder: (context, dayPickerState) {
+          if (!dayCaptionShowDayButtons) {
+            return DayAppBar(day: dayPickerState.day);
+          }
+
+          return DayAppBar(
+            day: dayPickerState.day,
+            leftAction: IconActionButton(
+              onPressed: BlocProvider.of<TimepillarCubit>(context).previous,
+              child: const Icon(AbiliaIcons.returnToPreviousPage),
+            ),
+            rightAction: IconActionButton(
+              onPressed: BlocProvider.of<TimepillarCubit>(context).next,
+              child: const Icon(AbiliaIcons.goToNextPage),
+            ),
+          );
+        },
       ),
     );
   }
