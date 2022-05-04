@@ -40,10 +40,11 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       timerAlarmBloc.stream,
     ]).listen(
       (streamState) => _onTimepillarConditionsChanged(
-        showNightCalendar:
-            streamState is DayPickerState && streamState.setShowNightCalendar
-                ? true
-                : state.showNightCalendar,
+        showNightCalendar: streamState is DayPickerState &&
+                !(streamState.lastEvent is NextDay ||
+                    streamState.lastEvent is PreviousDay)
+            ? true
+            : state.showNightCalendar,
       ),
     );
   }

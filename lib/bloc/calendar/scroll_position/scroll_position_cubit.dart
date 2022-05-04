@@ -157,7 +157,7 @@ class ScrollPositionCubit extends Cubit<ScrollPositionState> {
         curve: Curves.easeOut,
       );
     } else if (state is WrongDay) {
-      dayPickerBloc.add(CurrentDay());
+      dayPickerBloc.add(const CurrentDay());
     }
   }
 

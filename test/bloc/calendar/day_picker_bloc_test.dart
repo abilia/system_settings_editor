@@ -72,7 +72,7 @@ void main() {
   test('Current day returns to start day', () async {
     dayPickerBloc.add(NextDay());
     dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(CurrentDay());
+    dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
       emitsInOrder([
@@ -212,7 +212,7 @@ void main() {
     }
     await Future.delayed(const Duration(milliseconds: 100));
     dayPickerBloc.add(NextDay());
-    dayPickerBloc.add(CurrentDay());
+    dayPickerBloc.add(const CurrentDay());
     expect(
       dayPickerBloc.stream,
       emitsInOrder([
@@ -233,7 +233,7 @@ void main() {
     clockStream.add(theDayAfter);
     await Future.doWhile(() => Future.delayed(
         const Duration(milliseconds: 10), () => clockBloc.state == theDay));
-    dayPickerBloc.add(CurrentDay());
+    dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
       emits(
@@ -251,7 +251,7 @@ void main() {
     clockStream.add(theDayAfterTomorrow);
     await Future.doWhile(() => Future.delayed(
         const Duration(milliseconds: 10), () => clockBloc.state == theDay));
-    dayPickerBloc.add(CurrentDay());
+    dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
       emits(
@@ -269,7 +269,7 @@ void main() {
       clockStream.add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
     }
     await Future.delayed(const Duration(milliseconds: 100));
-    dayPickerBloc.add(CurrentDay());
+    dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
       emits(
