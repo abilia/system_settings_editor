@@ -149,6 +149,8 @@ extension DateTimeExtensions on DateTime {
     return DayPart.night;
   }
 
+  bool isMidnight() => compareTo(onlyDays()) == 0;
+
   bool isNight(DayParts dayParts) {
     return DayPart.night == dayPart(dayParts);
   }

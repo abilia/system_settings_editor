@@ -7,7 +7,7 @@ import 'package:seagull/models/all.dart';
 void main() {
   late DayPickerBloc dayPickerBloc;
   late ClockBloc clockBloc;
-  late StreamController<DateTime> streamController;
+  late StreamController<DateTime> clockStream;
   final theTime = DateTime(1987, 10, 06, 04, 34, 55, 55, 55);
   final theDay = DateTime(1987, 10, 06);
   final thedayBefore = DateTime(1987, 10, 05);
@@ -15,8 +15,8 @@ void main() {
   final theDayAfterTomorrow = DateTime(1987, 10, 08);
 
   setUp(() {
-    streamController = StreamController();
-    clockBloc = ClockBloc(streamController.stream, initialTime: theTime);
+    clockStream = StreamController();
+    clockBloc = ClockBloc(clockStream.stream, initialTime: theTime);
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
   });
 
@@ -208,7 +208,7 @@ void main() {
 
   test('currentDay state should not change until next day', () async {
     for (var i = 0; i < Duration.minutesPerDay; i++) {
-      streamController.add(theDay.add(Duration(minutes: i)));
+      clockStream.add(theDay.add(Duration(minutes: i)));
     }
     await Future.delayed(const Duration(milliseconds: 100));
     dayPickerBloc.add(NextDay());
@@ -229,7 +229,8 @@ void main() {
   });
 
   test('currentDay should change with clock passing next day', () async {
-    streamController.add(theDayAfter);
+    dayPickerBloc.add(PreviousDay());
+    clockStream.add(theDayAfter);
     await Future.doWhile(() => Future.delayed(
         const Duration(milliseconds: 10), () => clockBloc.state == theDay));
     dayPickerBloc.add(CurrentDay());
@@ -247,7 +248,7 @@ void main() {
   });
 
   test('currentDay should change with clocks passing day after next', () async {
-    streamController.add(theDayAfterTomorrow);
+    clockStream.add(theDayAfterTomorrow);
     await Future.doWhile(() => Future.delayed(
         const Duration(milliseconds: 10), () => clockBloc.state == theDay));
     dayPickerBloc.add(CurrentDay());
@@ -263,9 +264,9 @@ void main() {
   });
 
   test('state should only be day granularity', () async {
+    dayPickerBloc.add(PreviousDay());
     for (var i = 0; i < 2 * Duration.secondsPerMinute; i++) {
-      streamController
-          .add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
+      clockStream.add(theDay.add(Duration(hours: 23, minutes: 59, seconds: i)));
     }
     await Future.delayed(const Duration(milliseconds: 100));
     dayPickerBloc.add(CurrentDay());
@@ -282,8 +283,21 @@ void main() {
     await expectLater(dayPickerBloc.stream, emitsDone);
   });
 
+  test('Picked day updates when time goes to next day', () async {
+    clockStream.add(theDayAfter);
+    expect(
+      dayPickerBloc.stream,
+      emitsInOrder([
+        DayPickerState.forTest(
+          theDayAfter,
+          Occasion.current,
+        ),
+      ]),
+    );
+  });
+
   tearDown(() {
     dayPickerBloc.close();
-    streamController.close();
+    clockStream.close();
   });
 }
