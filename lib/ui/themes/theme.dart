@@ -167,6 +167,16 @@ final selectedBoxDecoration = BoxDecoration(
   border: Border.fromBorderSide(
       BorderSide(color: AbiliaColors.green, width: layout.borders.medium)),
 );
+final greySelectedBoxDecoration = BoxDecoration(
+  color: AbiliaColors.white120,
+  borderRadius: borderRadius,
+  border: Border.fromBorderSide(
+    BorderSide(
+      color: AbiliaColors.white140,
+      width: layout.borders.medium,
+    ),
+  ),
+);
 final whiteNoBorderBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,

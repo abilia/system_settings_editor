@@ -247,6 +247,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
             userDb: GetIt.I<UserDb>(),
             licenseDb: GetIt.I<LicenseDb>(),
             deviceDb: GetIt.I<DeviceDb>(),
+            calendarDb: GetIt.I<CalendarDb>(),
           ),
         ),
         RepositoryProvider<DeviceRepository>(

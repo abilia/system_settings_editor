@@ -94,6 +94,7 @@ class ActivityAlarmPreview extends StatelessWidget {
                   ),
                   alarm: StartAlarm(
                     ActivityDay(
+                      // ignore: invalid_use_of_visible_for_testing_member
                       Activity.createNew(
                         title: Translator.of(context)
                             .translate

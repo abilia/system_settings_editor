@@ -87,6 +87,7 @@ void main() {
                             .read<MemoplannerSettingBloc>()
                             .state
                             .defaultAlarmTypeSetting,
+                        calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
                         ActivityDay(activity, today),

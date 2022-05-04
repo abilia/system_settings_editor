@@ -3,18 +3,14 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AddButton extends StatelessWidget {
-  const AddButton({
-    Key? key,
-  }) : super(key: key);
+  const AddButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, state) => TextAndOrIconActionButtonLight(
+  Widget build(BuildContext context) => TextAndOrIconActionButtonLight(
         Translator.of(context).translate.newActivityButton,
         AbiliaIcons.plus,
         onPressed: () {
+          final authProviders = copiedAuthProviders(context);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
@@ -24,7 +20,5 @@ class AddButton extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
+      );
 }
