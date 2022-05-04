@@ -400,6 +400,9 @@ class MediumLayout extends Layout {
             timeDashAlignValue: 21,
             amPmDistance: 3,
             headerClockPadding: EdgeInsets.only(right: 18),
+            keyboardButtonHeight: 88,
+            keyboardButtonWidth: 160,
+            keyboardButtonPadding: 12,
           ),
           recording: const RecordingLayout(
             trackHeight: 6,

@@ -17,14 +17,9 @@ class AbiliaNumPad extends StatelessWidget {
     return SizedBox(
       width: 3 * layout.timeInput.keyboardButtonWidth +
           2 * layout.timeInput.keyboardButtonPadding,
-      child: GridView.extent(
-        maxCrossAxisExtent: layout.timeInput.keyboardButtonWidth,
-        mainAxisSpacing: layout.timeInput.keyboardButtonPadding,
-        crossAxisSpacing: layout.timeInput.keyboardButtonPadding,
-        childAspectRatio: layout.timeInput.keyboardButtonWidth /
-            layout.timeInput.keyboardButtonHeight,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+      child: Wrap(
+        spacing: layout.timeInput.keyboardButtonPadding,
+        runSpacing: layout.timeInput.keyboardButtonPadding,
         children: [
           ...Iterable.generate(9).map(
             (n) => KeyboardNumberButton(
