@@ -77,98 +77,23 @@ extension RecurringActivityExtension on Activity {
     ];
   }
 
-  List<ActivityDay> nightActivitiesForDay(DateTime day, DayParts dayParts) =>
-      nightActivitiesForNight(
-        day,
-        dayParts.nightBegins(day),
-        dayParts.nightEnd(day),
-      );
-
-  List<ActivityDay> nightActivitiesForNight(
-    DateTime day,
-    DateTime nightStart,
-    DateTime nightEnd,
+  List<ActivityDay> dayActivitiesForInterval(
+    DateTime intervalStart,
+    DateTime intervalEnd,
   ) {
-    // Don't care about full days on night
-    if (fullDay) {
-      return const [];
-    }
+    final numberOfDays =
+        intervalEnd.onlyDays().difference(intervalStart.onlyDays()).inDays + 1;
+    final days = List.generate(
+      numberOfDays,
+      (i) => DateTime(
+        intervalStart.year,
+        intervalStart.month,
+        intervalStart.day + i,
+      ),
+    );
 
-    if (!isRecurring) {
-      return [
-        if (startTime.inRangeWithInclusiveStart(
-              startDate: nightStart,
-              endDate: nightEnd,
-            ) ||
-            nightStart.inExclusiveRange(
-              startDate: startTime,
-              endDate: endClock(day),
-            ))
-          ActivityDay(this, startTime.onlyDays())
-      ];
-    }
-
-    if (startTime.isAfter(nightEnd) || startTime.isAfter(recurs.end)) {
-      return const [];
-    }
-
-    if (recurs.end.isBefore(nightStart)) {
-      return [
-        if (endClock(day).isAfter(nightStart) &&
-            recursOnNight(
-              nightStart,
-              day,
-              nightStart,
-              nightEnd,
-            ))
-          ActivityDay(this, day)
-      ];
-    }
-
-    if (nightStart.isBefore(startTime)) {
-      final nextDay = day.nextDay();
-      return [
-        if (startClock(nextDay).isAfter(nightStart) &&
-            recursOnNight(
-              nightStart,
-              nextDay,
-              nightStart,
-              nightEnd,
-            ))
-          ActivityDay(this, nextDay)
-      ];
-    }
-
-    return [
-      for (var dayIterator = nightStart.subtract(duration).onlyDays(),
-              start = startClock(dayIterator);
-          start.isBefore(nightEnd);
-          dayIterator = dayIterator.nextDay(), start = startClock(dayIterator))
-        if (recursOnNight(
-          start,
-          dayIterator,
-          nightStart,
-          nightEnd,
-        ))
-          ActivityDay(this, dayIterator)
-    ];
+    return days.expand((day) => dayActivitiesForDay(day)).toList();
   }
 
   bool recursOnDay(DateTime day) => recurs.recursOnDay(day);
-
-  bool recursOnNight(
-    DateTime startClock,
-    DateTime day,
-    DateTime nightStart,
-    DateTime nightEnd,
-  ) =>
-      recursOnDay(day) &&
-      (startClock.inRangeWithInclusiveStart(
-            startDate: nightStart,
-            endDate: nightEnd,
-          ) ||
-          nightStart.inExclusiveRange(
-            startDate: startClock,
-            endDate: endClock(day),
-          ));
 }

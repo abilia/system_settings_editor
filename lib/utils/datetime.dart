@@ -149,8 +149,15 @@ extension DateTimeExtensions on DateTime {
     return DayPart.night;
   }
 
+  bool isMidnight() => compareTo(onlyDays()) == 0;
+
   bool isNight(DayParts dayParts) {
     return DayPart.night == dayPart(dayParts);
+  }
+
+  bool isNightBeforeMidnight(DayParts dayParts) {
+    final msAfterMidnight = difference(onlyDays()).inMilliseconds;
+    return msAfterMidnight >= dayParts.nightStart;
   }
 
   int get dayIndex => millisecondsSinceEpoch ~/ Duration.millisecondsPerDay;
