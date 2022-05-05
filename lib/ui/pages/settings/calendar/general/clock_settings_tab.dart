@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -107,57 +108,62 @@ class PreviewTimePillar extends StatelessWidget {
       start: DateTime(2021, 1, 1, 12),
       end: DateTime(2021, 1, 1, 15),
     );
-    final ts = TimepillarState(interval, 1.0);
+    final measures = TimepillarMeasures(interval, 1.0);
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => TimepillarCubit.fixed(state: ts)),
+        BlocProvider(
+          create: (context) => TimepillarMeasuresCubit.fixed(state: measures),
+        ),
         BlocProvider(create: (context) => ClockBloc.fixed(_time)),
       ],
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Center(
-          child: SizedBox(
-            width: layout.settings.previewTimePillarWidth,
-            child: BlocBuilder<GeneralCalendarSettingsCubit,
-                GeneralCalendarSettingsState>(
-              buildWhen: (previous, current) =>
-                  previous.timepillar != current.timepillar,
-              builder: (context, state) {
-                final tpState = state.timepillar;
-                return Stack(
-                  children: [
-                    if (tpState.hourLines)
-                      HourLines(
-                        numberOfLines: 3,
-                        hourHeight: ts.hourHeight,
-                      ),
-                    Center(
-                      child: TimePillar(
-                        preview: true,
-                        dayOccasion: Occasion.current,
-                        dayParts: DayParts.standard(),
-                        use12h: tpState.use12h,
-                        nightParts: const [],
-                        interval: interval,
-                        columnOfDots: tpState.columnOfDots,
-                        topMargin: 0.0,
-                        timePillarState: ts,
-                      ),
-                    ),
-                    if (tpState.timeline)
-                      Timeline(
-                        now: _time,
-                        width: ts.timePillarTotalWidth * 3,
-                        timepillarState: ts,
-                        offset: hoursToPixels(
-                          interval.startTime.hour,
-                          ts.dotDistance,
+      child: Provider(
+        create: (_) => measures,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Center(
+            child: SizedBox(
+              width: layout.settings.previewTimePillarWidth,
+              child: BlocBuilder<GeneralCalendarSettingsCubit,
+                  GeneralCalendarSettingsState>(
+                buildWhen: (previous, current) =>
+                    previous.timepillar != current.timepillar,
+                builder: (context, state) {
+                  final tpState = state.timepillar;
+                  return Stack(
+                    children: [
+                      if (tpState.hourLines)
+                        HourLines(
+                          numberOfLines: 3,
+                          hourHeight: measures.hourHeight,
+                        ),
+                      Center(
+                        child: TimePillar(
+                          preview: true,
+                          dayOccasion: Occasion.current,
+                          dayParts: DayParts.standard(),
+                          use12h: tpState.use12h,
+                          nightParts: const [],
+                          interval: interval,
+                          columnOfDots: tpState.columnOfDots,
+                          topMargin: 0.0,
+                          measures: measures,
                         ),
                       ),
-                  ],
-                );
-              },
+                      if (tpState.timeline)
+                        Timeline(
+                          now: _time,
+                          width: measures.timePillarTotalWidth * 3,
+                          measures: measures,
+                          offset: hoursToPixels(
+                            interval.startTime.hour,
+                            measures.dotDistance,
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

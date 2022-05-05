@@ -64,15 +64,30 @@ void main() {
       start: startInterval,
       end: startInterval.add(1.days()),
     );
-    final mocktimepillarCubit = MocktimepillarCubit();
-    final ts = TimepillarState(interval, 1);
+    final mocktimepillarCubit = MockTimepillarCubit();
+    final mocktimepillarMeasuresCubit = MockTimepillarMeasuresCubit();
     when(() => mocktimepillarCubit.state).thenReturn(TimepillarState(
-        TimepillarInterval(start: startTime, end: startTime), 1));
-    when(() => mocktimepillarCubit.stream).thenAnswer((_) =>
-        Stream.fromIterable([
+      interval: TimepillarInterval(start: startTime, end: startTime),
+      events: const [],
+      calendarType: DayCalendarType.oneTimepillar,
+      occasion: Occasion.current,
+      showNightCalendar: false,
+    ));
+    final measures = TimepillarMeasures(interval, 1);
+    when(() => mocktimepillarMeasuresCubit.state).thenReturn(measures);
+    when(() => mocktimepillarCubit.stream).thenAnswer(
+      (_) => Stream.fromIterable(
+        [
           TimepillarState(
-              TimepillarInterval(start: startTime, end: startTime), 1)
-        ]));
+            interval: TimepillarInterval(start: startTime, end: startTime),
+            events: const [],
+            calendarType: DayCalendarType.oneTimepillar,
+            occasion: Occasion.current,
+            showNightCalendar: false,
+          ),
+        ],
+      ),
+    );
     return MaterialApp(
       home: Directionality(
         textDirection: TextDirection.ltr,
@@ -90,6 +105,9 @@ void main() {
             BlocProvider<TimepillarCubit>(
               create: (context) => mocktimepillarCubit,
             ),
+            BlocProvider<TimepillarMeasuresCubit>(
+              create: (context) => mocktimepillarMeasuresCubit,
+            ),
           ],
           child: Stack(
             children: <Widget>[
@@ -97,7 +115,7 @@ void main() {
                 now: initialTime ?? startTime,
                 width: 40,
                 offset: -layout.timePillar.topMargin,
-                timepillarState: ts,
+                measures: measures,
               ),
               TimepillarBoard(
                 TimepillarBoard.positionTimepillarCards(
@@ -106,12 +124,12 @@ void main() {
                   textScaleFactor: 1.0,
                   dayParts: DayParts.standard(),
                   timepillarSide: TimepillarSide.right,
-                  timepillarState: ts,
+                  measures: measures,
                   topMargin: layout.timePillar.topMargin,
                   bottomMargin: layout.timePillar.bottomMargin,
                 ),
                 categoryMinWidth: 400,
-                timepillarWidth: ts.cardTotalWidth,
+                timepillarWidth: measures.cardTotalWidth,
                 textStyle: caption,
               ),
             ],
@@ -213,9 +231,9 @@ void main() {
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
       final interval = TimepillarInterval(start: time, end: time);
-      final ts = TimepillarState(interval, 1);
+      final measures = TimepillarMeasures(interval, 1);
       for (final y in activityYPos) {
-        expect(y, closeTo(timelineYPostion, ts.dotSize / 2));
+        expect(y, closeTo(timelineYPostion, measures.dotSize / 2));
       }
     });
 
@@ -247,12 +265,12 @@ void main() {
       final activityYPos = activities.map(
         (a) => tester.getTopLeft(find.byKey(ObjectKey(a))).dy,
       );
-      final ts = TimepillarState(
-          TimepillarInterval(end: startTime, start: startTime), 1);
+      final interval = TimepillarInterval(end: startTime, start: startTime);
+      final measures = TimepillarMeasures(interval, 1);
       for (final y in activityYPos) {
-        final activityDotMidPos = y + ts.dotSize / 2;
-        expect(
-            (activityDotMidPos - timelineMidPos).abs(), equals(ts.dotDistance));
+        final activityDotMidPos = y + measures.dotSize / 2;
+        expect((activityDotMidPos - timelineMidPos).abs(),
+            equals(measures.dotDistance));
       }
     });
     testWidgets(
@@ -316,10 +334,10 @@ void main() {
           tester.getTopLeft(find.byKey(ObjectKey(activityA))).dx;
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
-      final ts = TimepillarState(
+      final measures = TimepillarMeasures(
           TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ts.cardTotalWidth));
+          greaterThanOrEqualTo(measures.cardTotalWidth));
     });
     testWidgets(
         'two activities to sufficient time distance but the first with a long title does not has same vertical position',
@@ -352,10 +370,10 @@ void main() {
       final activityBXPos =
           tester.getTopLeft(find.byKey(ObjectKey(activityB))).dx;
 
-      final ts = TimepillarState(
+      final measures = TimepillarMeasures(
           TimepillarInterval(end: startTime, start: startTime), 1);
       expect((activityAXPos - activityBXPos).abs(),
-          greaterThanOrEqualTo(ts.cardTotalWidth));
+          greaterThanOrEqualTo(measures.cardTotalWidth));
     });
 
     testWidgets('Is not placed at same horizontal position',
@@ -405,7 +423,7 @@ void main() {
         textScaleFactor: 1.0,
         dayParts: DayParts.standard(),
         timepillarSide: TimepillarSide.right,
-        timepillarState: TimepillarState(interval, 1),
+        measures: TimepillarMeasures(interval, 1),
         topMargin: layout.timePillar.topMargin,
         bottomMargin: layout.timePillar.bottomMargin,
       );

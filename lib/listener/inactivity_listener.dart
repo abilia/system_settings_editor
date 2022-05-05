@@ -14,7 +14,7 @@ class CalendarInactivityListener
           listener: (context, state) {
             context.read<MonthCalendarCubit>().goToCurrentMonth();
             context.read<WeekCalendarCubit>().goToCurrentWeek();
-            context.read<DayPickerBloc>().add(CurrentDay());
+            context.read<DayPickerBloc>().add(const CurrentDay());
           },
         );
 }

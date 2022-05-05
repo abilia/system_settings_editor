@@ -65,7 +65,7 @@ void main() {
                 create: (context) => FakeActivitiesBloc(),
               ),
               BlocProvider<TimepillarCubit>(
-                create: (context) => FaketimepillarCubit(),
+                create: (context) => FakeTimepillarCubit(),
               ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
