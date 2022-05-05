@@ -74,7 +74,14 @@ class TimerTimepillardCard extends TimepillarCard {
                     ),
                   )
                 else if (timer.hasTitle)
-                  Text(timer.title),
+                  Text(timer.title)
+                else if (!timer.hasTitle && !timer.hasImage)
+                  timerOccasion.isOngoing
+                      ? TimerTickerBuilder(
+                          timerOccasion.timer,
+                          builder: (context, left) => Text(left.toHMSorMS()),
+                        )
+                      : Text(timerOccasion.timer.pausedAt.toHMSorMS()),
               ],
             ),
           ),
