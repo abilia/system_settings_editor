@@ -1095,6 +1095,7 @@ class TimeInputLayout {
       amPmWidth,
       timeDashAlignValue,
       amPmDistance,
+      inputKeyboardDistance,
       keyboardButtonHeight,
       keyboardButtonWidth,
       keyboardButtonPadding;
@@ -1107,6 +1108,7 @@ class TimeInputLayout {
     this.amPmWidth = 59,
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
+    this.inputKeyboardDistance = 44,
     this.headerClockPadding = const EdgeInsets.only(right: 16),
     this.keyboardButtonHeight = 48,
     this.keyboardButtonWidth = 80,

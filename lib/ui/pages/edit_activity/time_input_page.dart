@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io' show Platform;
-import 'package:flutter/services.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -31,7 +29,6 @@ class TimeInputPage extends StatelessWidget {
       body: TimeInputContent(
         timeInput: timeInput,
         is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-        onSave: (context, newTimInput) => onSave(context, newTimInput),
         bottomNavigationBuilder: (context, newTimeInput) => BottomNavigation(
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
@@ -64,8 +61,7 @@ class TimeInputPage extends StatelessWidget {
 class TimeInputContent extends StatefulWidget {
   final TimeInput timeInput;
 
-  final BottomNavigationBuilder bottomNavigationBuilder;
-  final SaveTimeInput onSave;
+  final BottomNavigationBuilder? bottomNavigationBuilder;
   final OnValidTimeInput? onValidTimeInput;
 
   final bool is24HoursFormat;
@@ -74,8 +70,7 @@ class TimeInputContent extends StatefulWidget {
     Key? key,
     required this.timeInput,
     required this.is24HoursFormat,
-    required this.bottomNavigationBuilder,
-    required this.onSave,
+    this.bottomNavigationBuilder,
     this.onValidTimeInput,
   }) : super(key: key);
 
@@ -88,13 +83,9 @@ String pad0(String s) => s.padLeft(2, '0');
 typedef BottomNavigationBuilder = Widget Function(
     BuildContext context, TimeInput? newTimeInput);
 
-typedef SaveTimeInput = FutureOr<bool> Function(
-    BuildContext context, TimeInput? newTimeInput);
-
 typedef OnValidTimeInput = void Function(TimeInput newTimeInput);
 
-class _TimeInputContentState extends State<TimeInputContent>
-    with WidgetsBindingObserver {
+class _TimeInputContentState extends State<TimeInputContent> {
   late TextEditingController startTimeController;
   late TextEditingController endTimeController;
   late DayPeriod startTimePeriod;
@@ -104,28 +95,11 @@ class _TimeInputContentState extends State<TimeInputContent>
   late String validatedNewStartTime;
   late String validatedNewEndTime;
 
-  bool _startTimeFocus = true, _paused = false;
   bool get twelveHourClock => !widget.is24HoursFormat;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      if (_startTimeFocus) {
-        startTimeFocus.requestFocus();
-      } else {
-        endTimeFocus.requestFocus();
-      }
-      _paused = true;
-    } else if (state == AppLifecycleState.paused) {
-      startTimeFocus.unfocus();
-      endTimeFocus.unfocus();
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WidgetsBinding.instance?.addObserver(this);
 
     startTimePeriod = widget.timeInput.startTime?.period ?? DayPeriod.pm;
     endTimePeriod = widget.timeInput.endTime?.period ?? DayPeriod.pm;
@@ -133,52 +107,54 @@ class _TimeInputContentState extends State<TimeInputContent>
     startTimeFocus = FocusNode()
       ..requestFocus()
       ..addListener(() {
-        if (startTimeFocus.hasFocus) {
-          if (_paused) {
-            _paused = false;
-          } else {
-            _startTimeFocus = true;
-            startTimeController.selection = TextSelection(
-                baseOffset: 0, extentOffset: startTimeController.text.length);
-            final validEndTime =
-                valid(endTimeController) || endTimeController.text.isEmpty;
-            final validatedEndTime =
-                validEndTime ? endTimeController.text : validatedNewEndTime;
-            endTimeController.text = validatedEndTime;
-            setState(() => validatedNewEndTime = validatedEndTime);
-          }
+        if (!startTimeFocus.hasFocus) {
+          setState(() => validatedNewStartTime =
+              _focusChangedValidation(validatedNewStartTime));
         }
       });
+
     endTimeFocus = FocusNode()
       ..addListener(() {
-        if (endTimeFocus.hasFocus) {
-          if (_paused) {
-            _paused = false;
-          } else {
-            _startTimeFocus = false;
-            endTimeController.selection = TextSelection(
-                baseOffset: 0, extentOffset: endTimeController.text.length);
-            final validStartTime =
-                valid(startTimeController) || startTimeController.text.isEmpty;
-            final validatedStartTime = validStartTime
-                ? startTimeController.text
-                : validatedNewStartTime;
-            startTimeController.text = validatedStartTime;
-            setState(() => validatedNewStartTime = validatedStartTime);
-          }
+        if (!endTimeFocus.hasFocus) {
+          setState(() => validatedNewEndTime = _focusChangedValidation());
         }
       });
 
     validatedNewStartTime = widget.timeInput.rawStartTime(twelveHourClock);
     validatedNewEndTime = widget.timeInput.rawEndTime(twelveHourClock);
 
-    startTimeController = TextEditingController(text: validatedNewStartTime);
-    endTimeController = TextEditingController(text: validatedNewEndTime);
+    startTimeController = TextEditingController(text: validatedNewStartTime)
+      ..addListener(() {
+        if (valid(startTimeController)) {
+          _onNewValidTime();
+        }
+      });
+
+    endTimeController = TextEditingController(text: validatedNewEndTime)
+      ..addListener(() {
+        if (valid(endTimeController) || endTimeController.text.isEmpty) {
+          _onNewValidTime();
+        }
+      });
+  }
+
+  void _onNewValidTime() {
+    widget.onValidTimeInput?.call(newTimeInput);
+    if (widget.onValidTimeInput == null) {
+      setState(() {});
+    }
+  }
+
+  String _focusChangedValidation([final String oldValidTime = '']) {
+    final controller =
+        startTimeFocus.hasFocus ? endTimeController : startTimeController;
+    controller.selection =
+        TextSelection(baseOffset: 0, extentOffset: controller.text.length);
+    return controller.text = valid(controller) ? controller.text : oldValidTime;
   }
 
   @override
   void dispose() {
-    if (Platform.isAndroid) WidgetsBinding.instance?.removeObserver(this);
     startTimeController.dispose();
     endTimeController.dispose();
     super.dispose();
@@ -198,13 +174,13 @@ class _TimeInputContentState extends State<TimeInputContent>
     return null;
   }
 
+  TextEditingController get focusedController =>
+      startTimeFocus.hasFocus ? startTimeController : endTimeController;
+
   TimeInput get newTimeInput => TimeInput(
         newTime(startTimeController, startTimePeriod),
         newTime(endTimeController, endTimePeriod),
       );
-
-  FutureOr<bool> save() =>
-      widget.onSave(context, valid(startTimeController) ? newTimeInput : null);
 
   int in24HourClock(int hour, DayPeriod period) {
     if (!twelveHourClock) return hour;
@@ -220,6 +196,7 @@ class _TimeInputContentState extends State<TimeInputContent>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
+    final bottomNavigationBuilder = widget.bottomNavigationBuilder;
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
       selector: (state) => state.settings.addActivity.showEndTime,
       builder: (context, showEndTime) => Column(
@@ -233,7 +210,7 @@ class _TimeInputContentState extends State<TimeInputContent>
                     .copyWith(subtitle1: abiliaTextTheme.headline4)),
             child: Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -244,20 +221,11 @@ class _TimeInputContentState extends State<TimeInputContent>
                         amRadioFieldKey: TestKey.startTimeAmRadioField,
                         pmRadioFieldKey: TestKey.startTimePmRadioField,
                         heading: translate.startTime,
-                        onTimeChanged: (value) {
-                          if (valid(startTimeController)) {
-                            endTimeFocus.requestFocus();
-                            if (widget.onValidTimeInput != null) {
-                              widget.onValidTimeInput?.call(newTimeInput);
-                            } else {
-                              setState(() {});
-                            }
-                          }
-                        },
                         period: startTimePeriod,
-                        onDone: save,
-                        onPeriodChanged: (period) =>
-                            setState(() => startTimePeriod = period),
+                        onPeriodChanged: (period) {
+                          _onNewValidTime();
+                          setState(() => startTimePeriod = period);
+                        },
                         twelveHourClock: twelveHourClock,
                         focusNode: startTimeFocus,
                         controller: startTimeController,
@@ -293,18 +261,9 @@ class _TimeInputContentState extends State<TimeInputContent>
                           pmRadioFieldKey: TestKey.endTimePmRadioField,
                           heading: translate.endTime,
                           period: endTimePeriod,
-                          onDone: save,
-                          onPeriodChanged: (period) =>
-                              setState(() => endTimePeriod = period),
-                          onTimeChanged: (value) {
-                            if (valid(startTimeController)) {
-                              final onValidTimeInput = widget.onValidTimeInput;
-                              if (onValidTimeInput != null) {
-                                onValidTimeInput(newTimeInput);
-                              } else {
-                                setState(() {});
-                              }
-                            }
+                          onPeriodChanged: (period) {
+                            _onNewValidTime();
+                            setState(() => endTimePeriod = period);
                           },
                           twelveHourClock: twelveHourClock,
                           focusNode: endTimeFocus,
@@ -313,83 +272,58 @@ class _TimeInputContentState extends State<TimeInputContent>
                       ],
                     ],
                   ),
+                  SizedBox(
+                    height: layout.timeInput.inputKeyboardDistance,
+                  ),
                   AbiliaNumPad(
-                    delete: deleteOneDigit,
-                    onNumPress: (number) => numPadKeyPress(number),
-                    onClear: clearFields,
+                    delete: _deleteOneDigit,
+                    onNumPress: _numPadKeyPress,
+                    onClear: () => focusedController.clear(),
                   ),
                 ],
               ),
             ),
           ),
-          widget.bottomNavigationBuilder(
-            context,
-            valid(startTimeController) ? newTimeInput : null,
-          ),
+          if (bottomNavigationBuilder != null)
+            bottomNavigationBuilder(
+              context,
+              valid(startTimeController) ? newTimeInput : null,
+            ),
         ],
       ),
     );
   }
 
-  void clearFields() {
-    startTimeController.clear();
-    endTimeController.clear();
-    startTimeFocus.requestFocus();
-  }
-
-  void deleteOneDigit() {
-    if (endTimeController.text.isNotEmpty && endTimeFocus.hasFocus) {
-      endTimeController.text = endTimeController.text
-          .substring(0, endTimeController.text.length - 1);
-    } else {
+  void _deleteOneDigit() {
+    if (endTimeFocus.hasFocus && endTimeController.text.isEmpty) {
       startTimeFocus.requestFocus();
-      if (startTimeController.text.isNotEmpty) {
-        startTimeController.text = startTimeController.text
-            .substring(0, startTimeController.text.length - 1);
-      }
     }
+
+    final controller = focusedController;
+    if (controller.text.isEmpty) return;
+    controller.text = controller.text.substring(0, controller.text.length - 1);
   }
 
-  void numPadKeyPress(value) {
-    TimeInputValidator newValidator = TimeInputValidator(twelveHourClock);
+  void _numPadKeyPress(String value) {
+    final controller = focusedController;
+    final currentTextControllerState = valid(controller) ? '' : controller.text;
 
-    if (startTimeFocus.hasFocus) {
-      String currentTextControllerState =
-          valid(startTimeController) ? '' : startTimeController.text;
+    controller.text = _validate(
+      currentTextControllerState,
+      currentTextControllerState + value,
+    );
 
-      startTimeController.text = newValidator.validate(
-          currentTextControllerState, currentTextControllerState += value);
-    } else {
-      String currentTextControllerState =
-          valid(endTimeController) ? '' : endTimeController.text;
-
-      endTimeController.text = newValidator.validate(
-          currentTextControllerState, currentTextControllerState += value);
-    }
-    if (valid(startTimeController)) {
+    if (startTimeFocus.hasFocus && valid(startTimeController)) {
       endTimeFocus.requestFocus();
     }
-    if (valid(startTimeController)) {
-      final onValidTimeInput = widget.onValidTimeInput;
-      if (onValidTimeInput != null) {
-        onValidTimeInput(newTimeInput);
-      } else {
-        setState(() {});
-      }
-    }
-  }
-}
-
-class TimeInputValidator {
-  final bool twelveHourClock;
-  TimeInputValidator(this.twelveHourClock);
-
-  String validate(String oldValue, String newValue) {
-    final newText = handleLeadingZero(newValue);
-    return isTimeInputValid(newText) ? newText : oldValue;
   }
 
-  String handleLeadingZero(String value) {
+  String _validate(String oldValue, String newValue) {
+    final newText = _handleLeadingZero(newValue);
+    return _isTimeInputValid(newText) ? newText : oldValue;
+  }
+
+  String _handleLeadingZero(String value) {
     final intVal = int.tryParse(value);
     if (value.length == 1 &&
         intVal != null &&
@@ -400,7 +334,7 @@ class TimeInputValidator {
     }
   }
 
-  bool isTimeInputValid(String input) {
+  bool _isTimeInputValid(String input) {
     if (input.isEmpty) return true;
     final intVal = int.tryParse(input);
     if (intVal == null) return false;
@@ -434,8 +368,6 @@ class _TimeInput extends StatelessWidget {
     required this.amRadioFieldKey,
     required this.pmRadioFieldKey,
     required this.inputKey,
-    required this.onDone,
-    this.onTimeChanged,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -443,10 +375,9 @@ class _TimeInput extends StatelessWidget {
   final bool twelveHourClock;
   final DayPeriod period;
   final ValueChanged<DayPeriod> onPeriodChanged;
-  final ValueChanged<String>? onTimeChanged;
+
   final String heading;
   final Key amRadioFieldKey, pmRadioFieldKey, inputKey;
-  final FutureOr<bool> Function() onDone;
 
   @override
   Widget build(BuildContext context) {
@@ -456,13 +387,10 @@ class _TimeInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SubHeading(heading),
-          _TimeInputStack(
+          _TimeInputField(
             inputKey: inputKey,
             editingController: controller,
-            editFocus: focusNode,
-            twelveHourClock: twelveHourClock,
-            onTimeChanged: onTimeChanged,
-            onDone: onDone,
+            focus: focusNode,
           ),
           SizedBox(height: layout.formPadding.verticalItemDistance),
           if (twelveHourClock)
@@ -486,93 +414,68 @@ class _TimeInput extends StatelessWidget {
   }
 }
 
-class _TimeInputStack extends StatefulWidget {
+class _TimeInputField extends StatefulWidget {
   final TextEditingController editingController;
-  final FocusNode editFocus;
-  final ValueChanged<String>? onTimeChanged;
-  final FutureOr<bool> Function() onDone;
-  final bool twelveHourClock;
+  final FocusNode focus;
+
   final Key? inputKey;
 
-  const _TimeInputStack({
+  const _TimeInputField({
     this.inputKey,
     required this.editingController,
-    required this.editFocus,
-    required this.twelveHourClock,
-    required this.onDone,
-    this.onTimeChanged,
+    required this.focus,
   });
   @override
-  _TimeInputStackState createState() => _TimeInputStackState();
+  _TimeInputFieldState createState() => _TimeInputFieldState();
 }
 
-class _TimeInputStackState extends State<_TimeInputStack> {
-  final displayFocus = FocusNode(
-    canRequestFocus: false,
-  );
-
+class _TimeInputFieldState extends State<_TimeInputField> {
   late TextEditingController displayController;
-
-  TextEditingController get editController => widget.editingController;
-  FocusNode get editFocus => widget.editFocus;
 
   @override
   void initState() {
     super.initState();
-    displayController = TextEditingController();
-    displayController.text = formatTimeToDisplay(widget.editingController.text);
-    editController.addListener(() {
-      displayController.text = formatTimeToDisplay(editController.text);
-    });
+    displayController = TextEditingController(
+        text: formatTimeToDisplay(widget.editingController.text));
+    widget.editingController.addListener(() => displayController.text =
+        formatTimeToDisplay(widget.editingController.text));
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: layout.timeInput.width,
-      child: Stack(
-        children: [
-          TextField(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => widget.focus.requestFocus(),
+      child: SizedBox(
+        width: layout.timeInput.width,
+        child: IgnorePointer(
+          child: TextField(
             key: widget.inputKey,
-            focusNode: editFocus,
+            readOnly: true,
+            focusNode: widget.focus,
             keyboardType: TextInputType.number,
             showCursor: false,
-            controller: editController,
-            onChanged: (value) => widget.onTimeChanged?.call(value),
-            onSubmitted: (v) async {
-              if (!(await widget.onDone())) {
-                editFocus.requestFocus();
-              }
-            },
-            textInputAction: TextInputAction.done,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(4),
-            ],
-          ),
-          GestureDetector(
-            onTap: () => editFocus.requestFocus(),
-            child: TextField(
-              readOnly: true,
-              enabled: false,
-              focusNode: displayFocus,
-              keyboardType: TextInputType.number,
-              showCursor: false,
-              controller: displayController,
-              textAlign: TextAlign.center,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: borderRadius,
-                  borderSide: BorderSide(
-                    color: editFocus.hasFocus ? Colors.black : Colors.grey,
-                    width: layout.borders.medium,
-                  ),
+            controller: displayController,
+            textAlign: TextAlign.center,
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: layout.borders.medium,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                  width: layout.borders.thin,
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
