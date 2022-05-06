@@ -24,7 +24,6 @@ class TimeWiz extends StatelessWidget {
           ),
         ),
         body: const _TimeWizContent(),
-        bottomNavigationBar: null,
       ),
     );
   }
@@ -46,16 +45,11 @@ class _TimeWizContent extends StatelessWidget {
             timeInterval.sameTime || !showEndTime ? null : timeInterval.endTime,
           ),
           is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-          onSave: (context, _) {
-            context.read<WizardCubit>().next();
-            return false;
-          },
           onValidTimeInput: (newTimeInput) =>
               context.read<EditActivityCubit>().changeTimeInterval(
                     startTime: newTimeInput.startTime,
                     endTime: newTimeInput.endTime,
                   ),
-          bottomNavigationBuilder: (_, __) => const WizardBottomNavigation(),
         ),
       ),
     );

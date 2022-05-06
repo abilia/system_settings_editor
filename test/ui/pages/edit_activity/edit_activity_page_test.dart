@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -1495,8 +1494,7 @@ text''';
       // Act -- Change input to new start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1525,8 +1523,13 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
-      await tester.showKeyboard(endTimeInputFinder);
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithIcon(
+          KeyboardActionButton,
+          AbiliaIcons.cancel,
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1559,11 +1562,11 @@ text''';
       expect(find.text('9:33 AM'), findsNothing);
       expect(find.text('11:55 AM'), findsOneWidget);
 
-      // Act -- Change input to new start time
+      // Act -- Change input to new start time to 09:33
+
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1627,6 +1630,9 @@ text''';
     testWidgets('removing original leaves same value',
         (WidgetTester tester) async {
       // Arrange
+      final clear =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.cancel);
+
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(
@@ -1639,10 +1645,9 @@ text''';
       // Act -- remove values
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '');
-      await tester.enterText(endTimeInputFinder, '');
-
+      await tester.tap(startTimeInputFinder, warnIfMissed: false);
+      await tester.pumpAndSettle();
+      await tester.tap(clear);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1680,7 +1685,7 @@ text''';
         isFalse,
       );
 
-      await tester.enterText(startTimeInputFinder, '1111');
+      await tester.enterTime(startTimeInputFinder, '1111');
       await tester.pumpAndSettle();
       expect(find.text('11:11'), findsOneWidget);
 
@@ -1693,13 +1698,12 @@ text''';
         isFalse,
       );
 
-      await tester.enterText(endTimeInputFinder, '1112');
+      await tester.enterTime(endTimeInputFinder, '1112');
       await tester.pumpAndSettle();
       expect(find.text('11:12'), findsOneWidget);
 
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-
       expect(find.byType(TimeInputPage), findsNothing);
       expect(find.text('3:04 AM'), findsNothing);
       expect(find.text('11:11 AM - 11:12 PM'), findsOneWidget);
@@ -1732,22 +1736,23 @@ text''';
 
       // Act -- change time to 01:01
       expect(find.text('13:44'), findsOneWidget);
-
-      await tester.enterText(startTimeInputFinder, '0');
-      expect(find.text('0'), findsOneWidget);
+      await tester.enterTime(startTimeInputFinder, '0');
+      expect(find.text('0'), findsWidgets);
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
           findsOneWidget); // Time resets when no valid time is entered
 
-      await tester.enterText(endTimeInputFinder, '1111');
+      // Type '1111'
+      await tester.enterTime(startTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
 
-      await tester.enterText(startTimeInputFinder, '0001');
+      // Type '0001'
+      await tester.enterTime(startTimeInputFinder, '0001');
       expect(find.text('00:01'), findsOneWidget);
-      await tester.pumpAndSettle();
 
+      // Tap OK button
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1761,6 +1766,7 @@ text''';
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
+
       await tester.pumpWidget(
         createEditActivityPage(
           givenActivity: acivity,
@@ -1769,37 +1775,14 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '9');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '9');
       expect(find.text('09:--'), findsOneWidget);
-    });
-
-    testWidgets('Keyboard done saves time', (WidgetTester tester) async {
-      final acivity = Activity.createNew(
-        title: '',
-        startTime: DateTime(2020, 2, 20, 10, 00),
-      );
-      await tester.pumpWidget(
-        createEditActivityPage(
-          givenActivity: acivity,
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '1033');
-      await tester.enterText(endTimeInputFinder, '1111');
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-
-      await tester.pumpAndSettle();
-      expect(startTimeInputFinder, findsNothing);
-      expect(find.text('10:33 AM - 11:11 PM'), findsOneWidget);
     });
 
     testWidgets('Delete key just deletes last digit',
         (WidgetTester tester) async {
+      final delete =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.delete);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
@@ -1809,14 +1792,18 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
 
-      await tester.enterText(startTimeInputFinder, '1033');
-      await tester.enterText(endTimeInputFinder, '1111');
+      // Type 1033 in start time input field
+      await tester.enterTime(startTimeInputFinder, '1033');
+
+      // Type 1111 in end time input field
+      await tester.enterTime(endTimeInputFinder, '1111');
 
       await tester.tap(startTimeInputFinder,
           warnIfMissed:
               false); // startTimeInputFinder is below another input widget that catches the tap event
       await tester.pumpAndSettle();
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+
+      await tester.tap(delete);
       await tester.pumpAndSettle();
       expect(find.text('10:3-'), findsOneWidget);
     });
@@ -2101,10 +2088,11 @@ text''';
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
+
       // Arrange -- set weekly recurance
       await tester.goToRecurrenceTab();
       await tester.pumpAndSettle();
@@ -2114,6 +2102,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
+
       // Arrange -- deselect preselect
       await tester.tap(find.text(translate.shortWeekday(startTime.weekday)));
       await tester.goToMainTab();
@@ -2154,10 +2143,10 @@ text''';
       );
       await tester.pumpAndSettle();
 
-      // Act -- Change end time
+      // Act -- Change end time to 17:00
       await tester.tap(find.byType(TimeIntervallPicker));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1700');
+      await tester.enterTime(endTimeInputFinder, '1700');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -2396,11 +2385,10 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       final startTimeBefore = '${startTime.hour}${startTime.minute - 1}';
-      await tester.enterText(
+      await tester.enterTime(
         startTimeInputFinder,
         startTimeBefore,
       );
-      await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextWizardStepButton));
@@ -2570,7 +2558,7 @@ text''';
       // Act -- Change time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
 
@@ -2689,8 +2677,7 @@ text''';
         // Act -- remove values
         await tester.tap(timeFieldFinder);
         await tester.pumpAndSettle();
-
-        await tester.enterText(startTimeInputFinder, '1');
+        await tester.enterTime(startTimeInputFinder, '1');
         await tester.pumpAndSettle();
 
         // Assert

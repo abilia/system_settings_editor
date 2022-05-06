@@ -104,6 +104,10 @@ class FakeTimepillarMeasuresCubit extends Fake
 class FakeSettingsBloc extends Fake implements SettingsCubit {
   @override
   Stream<SettingsState> get stream => const Stream.empty();
+  @override
+  SettingsState get state => const SettingsState(textToSpeech: false);
+  @override
+  Future<void> close() async {}
 }
 
 class FakeUserFileCubit extends Fake implements UserFileCubit {
