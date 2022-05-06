@@ -65,6 +65,11 @@ void main() {
     expect(find.byType(CancelButton), findsOneWidget);
   }, skip: !Config.isMP);
 
+  testWidgets('BUG SGC-1564 Has ScrollArrows', (tester) async {
+    await tester.goToGeneralCalendarSettingsPage();
+    expect(find.byType(ScrollArrows), findsOneWidget);
+  }, skip: !Config.isMP);
+
   group('clock', () {
     testWidgets('digital clock choice saved', (tester) async {
       await tester.goToGeneralCalendarSettingsPage();

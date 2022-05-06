@@ -9,7 +9,7 @@ class ActivityWizardPage extends StatelessWidget {
     final pageController = PageController(initialPage: 0);
     return PopOnSaveListener(
       child: ErrorPopupListener(
-        child: BlocListener<ActivityWizardCubit, ActivityWizardState>(
+        child: BlocListener<WizardCubit, WizardState>(
           listenWhen: (previous, current) =>
               current.currentStep != previous.currentStep,
           listener: (context, state) => pageController.animateToPage(state.step,
@@ -26,7 +26,7 @@ class ActivityWizardPage extends StatelessWidget {
   }
 
   Widget getPage(BuildContext context) {
-    final step = context.read<ActivityWizardCubit>().state.currentStep;
+    final step = context.read<WizardCubit>().state.currentStep;
     switch (step) {
       case WizardStep.advance:
         return const EditActivityPage();

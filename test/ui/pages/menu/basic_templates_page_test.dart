@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
 import 'package:seagull/background/notification_isolate.dart';
 import 'package:seagull/db/sortable_db.dart';
 import 'package:seagull/getit.dart';
@@ -9,6 +11,7 @@ import 'package:seagull/ui/all.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
+import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -21,14 +24,18 @@ void main() {
 
   late List<Sortable> initialSortables;
   late SortableDb mockSortableDb;
+  setUpAll(() {
+    tz.initializeTimeZones();
+    setupPermissions();
+  });
+
+  final basicActivitySortable = Sortable.createNew<BasicActivityDataItem>(
+    data: BasicActivityDataItem.createNew(title: activityNameOne),
+  );
 
   setUp(() async {
-    setupPermissions();
-
     initialSortables = [
-      Sortable.createNew<BasicActivityDataItem>(
-        data: BasicActivityDataItem.createNew(title: activityNameOne),
-      ),
+      basicActivitySortable,
       Sortable.createNew<BasicActivityDataItem>(
         data: BasicActivityDataItem.createNew(title: activityNameTwo),
       ),
@@ -98,6 +105,33 @@ void main() {
       expect(find.byType(LibraryHeading<BasicActivityData>), findsOneWidget);
     });
 
+    testWidgets('Can create sortable activity', (tester) async {
+      const title = 'a brand new title';
+      await tester.goToTemplates();
+      await tester.tap(find.byType(AddTemplateButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditActivityPage), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
+      expect(find.byType(DatePicker), findsNothing);
+
+      await tester.ourEnterText(
+        find.byKey(TestKey.editTitleTextFormField),
+        title,
+      );
+      await tester.tap(find.byType(NextWizardStepButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(EditActivityPage), findsNothing);
+      final captured =
+          verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+              .captured
+              .last;
+
+      final sortable =
+          (captured as List).single as Sortable<BasicActivityDataItem>;
+      expect(sortable.data.activityTitle, title);
+      expect(sortable.data.name, title);
+    });
+
     group('Tool bar', () {
       testWidgets(
           'Tapping item shows and hides toolbar, never shows LibraryHeading',
@@ -123,7 +157,7 @@ void main() {
 
         expect(find.byType(SortableToolbar), findsOneWidget);
 
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
+        await tester.tap(find.byIcon(AbiliaIcons.cursorDown));
         await tester.pumpAndSettle();
 
         final capturedSortable =
@@ -145,7 +179,7 @@ void main() {
 
         expect(find.byType(SortableToolbar), findsOneWidget);
 
-        await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(YesButton));
@@ -153,15 +187,89 @@ void main() {
 
         final capturedSortable =
             verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
-                .captured;
+                .captured
+                .whereType<List<Sortable>>()
+                .expand((l) => l);
+        expect(capturedSortable, hasLength(3));
+        expect(capturedSortable.last.deleted, isTrue);
+      });
 
-        int deleted = 0;
-        for (var element in (capturedSortable.last as List)) {
-          if (element.deleted) {
-            deleted++;
-          }
-        }
-        expect(deleted, 1);
+      testWidgets('Edit sortable activity', (tester) async {
+        await tester.goToTemplates();
+        await tester.tap(find.text(activityNameOne));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
+        expect(find.byType(DatePicker), findsNothing);
+
+        // Change title
+        const newTitle = 'newActivtyTitle';
+        await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField),
+          newTitle,
+        );
+        // Change alarm
+        await tester.tap(find.byIcon(AbiliaIcons.attention));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.selectAlarm));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const ObjectKey(AlarmType.silent)));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        // add reminder
+        await tester.tap(find.byType(ReminderSwitch));
+        await tester.pumpAndSettle();
+
+        // add info item note
+        const noteText = 'note Text';
+        await tester.tap(find.byIcon(AbiliaIcons.attachment));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(NoteBlock));
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byType(TextField), noteText);
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(GreenButton));
+        await tester.pumpAndSettle();
+
+        // SAVE
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(BasicTemplatesPage), findsOneWidget);
+
+        final capturedSortable =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .whereType<List<Sortable>>()
+                .expand((l) => l);
+        final updated = capturedSortable.last;
+
+        expect(updated.id, basicActivitySortable.id);
+        final basicActivity = updated.data as BasicActivityDataItem;
+        // Expect new title
+        expect(basicActivity.activityTitle, newTitle);
+        expect(basicActivity.name, newTitle);
+        // Expect new alarm
+        expect(basicActivity.alarmType, alarmSilentOnlyOnStart);
+        // Expect new reminders
+        expect(basicActivity.reminders,
+            '${const Duration(minutes: 15).inMilliseconds}');
+        // Expect note
+        expect(
+          basicActivity.info,
+          '{"info-item":[{"type":"note","data":{"text":"note Text"}}]}',
+        );
       });
     });
   });

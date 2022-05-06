@@ -71,6 +71,8 @@ final baseButtonStyle = ButtonStyle(
 
 final textButtonStyle = baseButtonStyle.copyWith(
   shape: noBorder,
+  minimumSize: MaterialStateProperty.all(layout.iconTextButton.minimumSize),
+  maximumSize: MaterialStateProperty.all(layout.iconTextButton.maximumSize),
   padding: MaterialStateProperty.all(
     layout.button.textButtonInsets,
   ),

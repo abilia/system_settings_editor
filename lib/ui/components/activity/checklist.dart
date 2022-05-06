@@ -195,7 +195,6 @@ class QuestionView extends StatelessWidget {
                               duration: duration,
                               opacity: signedOff ? 0.5 : 1.0,
                               child: FadeInCalendarImage(
-                                key: TestKey.checklistQuestionImageKey,
                                 imageFile: AbiliaFile.from(
                                   id: question.fileId,
                                   path: question.image,

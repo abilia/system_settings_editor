@@ -66,10 +66,16 @@ class CalendarAppBar extends StatelessWidget {
                           child: AppBarTitle(rows: rows),
                         ),
                         if (crossedOver)
-                          CrossOver(
-                            color:
-                                Theme.of(context).textTheme.headline6?.color ??
-                                    AbiliaColors.black,
+                          Padding(
+                            padding: EdgeInsets.all(
+                                layout.formPadding.verticalItemDistance),
+                            child: CrossOver(
+                              color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      ?.color ??
+                                  AbiliaColors.black,
+                            ),
                           ),
                       ],
                     ),

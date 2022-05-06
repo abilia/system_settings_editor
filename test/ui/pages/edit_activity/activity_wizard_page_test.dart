@@ -92,7 +92,7 @@ void main() {
                   calendarId: 'calendarId',
                 ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => ActivityWizardCubit.newActivity(
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
@@ -114,13 +114,6 @@ void main() {
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
-              ),
-              BlocProvider<TimepillarCubit>(
-                create: (context) => TimepillarCubit(
-                  clockBloc: context.read<ClockBloc>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
-                  dayPickerBloc: context.read<DayPickerBloc>(),
-                ),
               ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(

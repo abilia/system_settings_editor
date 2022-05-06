@@ -110,17 +110,50 @@ void main() {
   });
 
   test('Get correct type when ImageArchiveData', () {
-    final s = Sortable.createNew<ImageArchiveData>(
+    final s = Sortable.createNew(
       data: const ImageArchiveData(),
     );
     expect(s.type, SortableType.imageArchive);
   });
 
   test('Get correct type when NoteData', () {
-    final s = Sortable.createNew<NoteData>(
+    final s = Sortable.createNew(
       data: const NoteData(),
     );
     expect(s.type, SortableType.note);
+  });
+
+  test('Get correct type when BasicActivityDataItem', () {
+    final s = Sortable.createNew(
+      data: BasicActivityDataItem.createNew(title: 'title'),
+    );
+    expect(s.type, SortableType.basicActivity);
+  });
+
+  test('Get correct type when BasicActivityDataFolder', () {
+    final s = Sortable.createNew(
+      data: BasicActivityDataFolder.createNew(name: 'foldername'),
+    );
+    expect(s.type, SortableType.basicActivity);
+  });
+
+  test('Get correct type when BasicTimerDataItem', () {
+    final s = Sortable.createNew(
+      data: BasicTimerDataItem.fromJson(
+        '{'
+        '"title":"title",'
+        '"duration":60000'
+        '}',
+      ),
+    );
+    expect(s.type, SortableType.basicActivity);
+  });
+
+  test('Get correct type when BasicTimerDataFolder', () {
+    final s = Sortable.createNew(
+      data: BasicTimerDataFolder.fromJson('{"title":"title"}'),
+    );
+    expect(s.type, SortableType.basicActivity);
   });
 
   test('SGC-1525 Sorting basic timers deletes name (and duration) in list', () {
