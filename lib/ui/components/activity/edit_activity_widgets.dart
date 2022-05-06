@@ -556,13 +556,16 @@ class RecurrenceWidget extends StatelessWidget {
                       ),
                     );
               } else {
-                final recurentType = _newType(
+                final recurs = _newRecurs(
                   result,
                   state.timeInterval.startDate,
+                  result != RecurrentType.none
+                      ? state.timeInterval.startDate
+                      : null,
                 );
                 context.read<EditActivityCubit>().replaceActivity(
                       activity.copyWith(
-                        recurs: recurentType,
+                        recurs: recurs,
                       ),
                     );
               }
@@ -573,14 +576,15 @@ class RecurrenceWidget extends StatelessWidget {
     );
   }
 
-  Recurs _newType(RecurrentType type, DateTime startdate) {
+  Recurs _newRecurs(RecurrentType type, DateTime startDate,
+      [DateTime? endDate]) {
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startdate.weekday);
+        return Recurs.weeklyOnDay(startDate.weekday, ends: endDate);
       case RecurrentType.monthly:
-        return Recurs.monthly(startdate.day);
+        return Recurs.monthly(startDate.day, ends: endDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startdate);
+        return Recurs.yearly(startDate, ends: endDate);
       default:
         return Recurs.not;
     }

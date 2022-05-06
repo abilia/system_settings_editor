@@ -1348,8 +1348,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       expect(find.text('February 14, 2020'), findsOneWidget);
     });
 
@@ -1366,8 +1364,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
       await tester.goToMainTab();
       // Act change start date to 14th
@@ -1399,8 +1395,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
@@ -2032,8 +2026,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
 
       // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
