@@ -12,7 +12,7 @@ extension OurEnterText on WidgetTester {
   }
 
   Future<void> enterTime(Finder finder, String time) async {
-    await tap(finder);
+    await tap(finder, warnIfMissed: false);
     await pumpAndSettle();
     final chars = time.split('');
     for (var input in chars) {

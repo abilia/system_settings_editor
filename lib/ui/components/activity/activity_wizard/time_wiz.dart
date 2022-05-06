@@ -14,7 +14,6 @@ class TimeWiz extends StatelessWidget {
         iconData: AbiliaIcons.clock,
         title: Translator.of(context).translate.setTime,
         body: const _TimeWizContent(),
-        bottomNavigationBar: null,
         trailingClock: true,
       ),
     );
@@ -39,16 +38,11 @@ class _TimeWizContent extends StatelessWidget {
                   ? null
                   : state.timeInterval.endTime),
           is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-          onSave: (context, _) {
-            context.read<ActivityWizardCubit>().next();
-            return false;
-          },
           onValidTimeInput: (newTimeInput) =>
               context.read<EditActivityCubit>().changeTimeInterval(
                     startTime: newTimeInput.startTime,
                     endTime: newTimeInput.endTime,
                   ),
-          bottomNavigationBuilder: (_, __) => const WizardBottomNavigation(),
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -1526,8 +1525,13 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
-      await tester.showKeyboard(endTimeInputFinder);
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithIcon(
+          KeyboardActionButton,
+          AbiliaIcons.cancel,
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1628,8 +1632,8 @@ text''';
     testWidgets('removing original leaves same value',
         (WidgetTester tester) async {
       // Arrange
-      final delete =
-          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.delete);
+      final clear =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.cancel);
 
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
@@ -1645,7 +1649,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(startTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
-      await tester.tap(delete);
+      await tester.tap(clear);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1734,8 +1738,7 @@ text''';
 
       // Act -- change time to 01:01
       expect(find.text('13:44'), findsOneWidget);
-      await tester.tap(startTimeInputFinder, warnIfMissed: false);
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0');
       expect(find.text('0'), findsWidgets);
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
@@ -1745,14 +1748,11 @@ text''';
 
       // Type '1111'
       await tester.enterTime(startTimeInputFinder, '1111');
-      await tester.pumpAndSettle();
       expect(find.text('11:11'), findsOneWidget);
 
       // Type '0001'
       await tester.enterTime(startTimeInputFinder, '0001');
-      await tester.pumpAndSettle();
       expect(find.text('00:01'), findsOneWidget);
-      await tester.pumpAndSettle();
 
       // Tap OK button
       await tester.tap(okButtonFinder);
@@ -1781,34 +1781,6 @@ text''';
       expect(find.text('09:--'), findsOneWidget);
     });
 
-    testWidgets('Keyboard done saves time', (WidgetTester tester) async {
-      final acivity = Activity.createNew(
-        title: '',
-        startTime: DateTime(2020, 2, 20, 10, 00),
-      );
-      await tester.pumpWidget(
-        createEditActivityPage(
-          givenActivity: acivity,
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-
-      // Type 1033 in start time input field
-      await tester.enterTime(startTimeInputFinder, '1033');
-      await tester.pumpAndSettle();
-
-      // Type 1111 in end time input field
-      await tester.enterTime(endTimeInputFinder, '1111');
-      await tester.pumpAndSettle();
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-
-      await tester.pumpAndSettle();
-      expect(startTimeInputFinder, findsNothing);
-      expect(find.text('10:33 AM - 11:11 PM'), findsOneWidget);
-    });
-
     testWidgets('Delete key just deletes last digit',
         (WidgetTester tester) async {
       final delete =
@@ -1824,11 +1796,9 @@ text''';
 
       // Type 1033 in start time input field
       await tester.enterTime(startTimeInputFinder, '1033');
-      await tester.pumpAndSettle();
 
       // Type 1111 in end time input field
       await tester.enterTime(endTimeInputFinder, '1111');
-      await tester.pumpAndSettle();
 
       await tester.tap(startTimeInputFinder,
           warnIfMissed:
@@ -2417,11 +2387,10 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       final startTimeBefore = '${startTime.hour}${startTime.minute - 1}';
-      await tester.enterText(
+      await tester.enterTime(
         startTimeInputFinder,
         startTimeBefore,
       );
-      await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextWizardStepButton));
