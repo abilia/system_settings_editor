@@ -13,7 +13,7 @@ class SortableToolbar extends StatelessWidget {
   }) : super(key: key);
 
   final bool disableUp, disableDown;
-  final Function() onTapEdit, onTapDelete;
+  final void Function()? onTapEdit, onTapDelete;
   final Function(SortableReorderDirection) onTapReorder;
   final EdgeInsets? margin;
 
@@ -40,19 +40,16 @@ class SortableToolbar extends StatelessWidget {
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
-              key: TestKey.checklistToolbarDeleteQButton,
               iconData: AbiliaIcons.deleteAllClear,
               onTap: onTapDelete,
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
-              key: TestKey.checklistToolbarEditQButton,
               iconData: AbiliaIcons.edit,
               onTap: onTapEdit,
             ),
             SizedBox(width: spacing),
             _ChecklistToolbarButton(
-              key: TestKey.checklistToolbarDownButton,
               disabled: disableDown,
               iconData: AbiliaIcons.cursorDown,
               onTap: () => onTapReorder(SortableReorderDirection.down),

@@ -54,27 +54,32 @@ class SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = dividerPadding ?? layout.formPadding.groupBottomDistance;
+    final scrollController = ScrollController();
     return DefaultTextStyle(
       style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
           .copyWith(color: AbiliaColors.black75),
-      child: ListView(
-        padding: EdgeInsets.only(
-          top: layout.templates.m1.top,
-          bottom: layout.templates.m1.bottom,
+      child: ScrollArrows.vertical(
+        controller: scrollController,
+        child: ListView(
+          controller: scrollController,
+          padding: EdgeInsets.only(
+            top: layout.templates.m1.top,
+            bottom: layout.templates.m1.bottom,
+          ),
+          children: [
+            ...children.map(
+              (w) => w is Divider
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(vertical: padding),
+                      child: w,
+                    )
+                  : Padding(
+                      padding: m1ItemPadding,
+                      child: w,
+                    ),
+            )
+          ],
         ),
-        children: [
-          ...children.map(
-            (w) => w is Divider
-                ? Padding(
-                    padding: EdgeInsets.symmetric(vertical: padding),
-                    child: w,
-                  )
-                : Padding(
-                    padding: m1ItemPadding,
-                    child: w,
-                  ),
-          )
-        ],
       ),
     );
   }

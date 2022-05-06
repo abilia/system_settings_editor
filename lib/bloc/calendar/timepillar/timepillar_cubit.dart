@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -10,77 +11,213 @@ import 'package:seagull/models/all.dart';
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
-  /// All fields are null when timepillarCubit is fixed
-  /// in Timepillar settings (`PreviewTimePillar`), or `TwoTimepillarCalendar`
-  final ClockBloc? clockBloc;
-  final MemoplannerSettingBloc? memoSettingsBloc;
-  final DayPickerBloc? dayPickerBloc;
-  StreamSubscription? _clockSubscription;
-  StreamSubscription? _memoSettingsSubscription;
-  StreamSubscription? _dayPickerSubscription;
+  final ClockBloc clockBloc;
+  final MemoplannerSettingBloc memoSettingsBloc;
+  final DayPickerBloc dayPickerBloc;
+  final ActivitiesBloc activitiesBloc;
+  final TimerAlarmBloc timerAlarmBloc;
+  late StreamSubscription _streamSubscription;
 
-  // ignore_for_file: prefer_initializing_formals
   TimepillarCubit({
-    required ClockBloc clockBloc,
-    required MemoplannerSettingBloc memoSettingsBloc,
-    required DayPickerBloc dayPickerBloc,
-  })  : clockBloc = clockBloc,
-        memoSettingsBloc = memoSettingsBloc,
-        dayPickerBloc = dayPickerBloc,
-        super(TimepillarState(
-          generateInterval(
-              clockBloc.state, dayPickerBloc.state.day, memoSettingsBloc.state),
-          memoSettingsBloc.state.timepillarZoom.zoomValue,
+    required this.clockBloc,
+    required this.memoSettingsBloc,
+    required this.dayPickerBloc,
+    required this.timerAlarmBloc,
+    required this.activitiesBloc,
+  }) : super(_generateState(
+          clockBloc.state,
+          dayPickerBloc.state.day,
+          memoSettingsBloc.state,
+          activitiesBloc.state.activities,
+          timerAlarmBloc.state.timers,
+          true,
         )) {
-    _clockSubscription = clockBloc.stream.listen((state) {
-      _onTimepillarConditionsChanged();
-    });
-    _memoSettingsSubscription = memoSettingsBloc.stream.listen((state) {
-      _onTimepillarConditionsChanged();
-    });
-    _dayPickerSubscription = dayPickerBloc.stream.listen((state) {
-      _onTimepillarConditionsChanged();
-    });
+    _streamSubscription = MergeStream([
+      clockBloc.stream,
+      memoSettingsBloc.stream,
+      dayPickerBloc.stream,
+      activitiesBloc.stream,
+      timerAlarmBloc.stream,
+    ]).listen(
+      (streamState) => _onTimepillarConditionsChanged(
+        showNightCalendar: streamState is DayPickerState &&
+                !(streamState.lastEvent is NextDay ||
+                    streamState.lastEvent is PreviousDay)
+            ? true
+            : state.showNightCalendar,
+      ),
+    );
   }
 
-  TimepillarCubit.fixed({
-    this.clockBloc,
-    this.memoSettingsBloc,
-    this.dayPickerBloc,
-    required TimepillarState state,
-  }) : super(state);
+  void _onTimepillarConditionsChanged({required bool showNightCalendar}) {
+    emit(
+      _generateState(
+        clockBloc.state,
+        dayPickerBloc.state.day,
+        memoSettingsBloc.state,
+        activitiesBloc.state.activities,
+        timerAlarmBloc.state.timers,
+        showNightCalendar,
+      ),
+    );
+  }
 
-  void _onTimepillarConditionsChanged() {
-    final time = clockBloc?.state;
-    final day = dayPickerBloc?.state.day;
-    final settings = memoSettingsBloc?.state;
-    if (time != null && day != null && settings != null) {
-      emit(
-        TimepillarState(
-          generateInterval(time, day, settings),
-          settings.timepillarZoom.zoomValue,
-        ),
+  static TimepillarState _generateState(
+    DateTime now,
+    DateTime selectedDay,
+    MemoplannerSettingsState memoState,
+    List<Activity> activities,
+    List<TimerOccasion> timers,
+    bool showNightCalendar,
+  ) {
+    final interval = getInterval(
+      now,
+      selectedDay,
+      memoState,
+      showNightCalendar,
+    );
+    return TimepillarState(
+      interval: interval,
+      events: generateEvents(
+        activities,
+        timers,
+        interval,
+      ),
+      calendarType: getCalendarType(
+        showNightCalendar,
+        memoState.dayCalendarType,
+        selectedDay,
+        now,
+        memoState.dayParts,
+      ),
+      occasion: interval.occasion(now),
+      showNightCalendar: showNightCalendar,
+    );
+  }
+
+  static TimepillarInterval getInterval(
+    DateTime now,
+    DateTime day,
+    MemoplannerSettingsState memoSettings,
+    bool showNightCalendar,
+  ) {
+    final isToday = day.isAtSameDay(now);
+    final twoTimepillars =
+        memoSettings.dayCalendarType == DayCalendarType.twoTimepillars;
+
+    if (twoTimepillars) {
+      bool shouldShowNightCalendar =
+          showNightCalendar && isToday && now.isNight(memoSettings.dayParts);
+
+      if (shouldShowNightCalendar) {
+        return memoSettings.todayTimepillarIntervalFromType(
+          now,
+          TimepillarIntervalType.interval,
+        );
+      }
+
+      return TimepillarInterval.dayAndNight(
+        day.add(memoSettings.dayParts.morningStart.milliseconds()),
       );
+    }
+
+    if (showNightCalendar && isToday) {
+      return memoSettings.todayTimepillarInterval(now);
+    }
+
+    return TimepillarInterval.dayAndNight(day);
+  }
+
+  static List<Event> generateEvents(
+    List<Activity> activities,
+    List<TimerOccasion> timers,
+    TimepillarInterval interval,
+  ) {
+    final dayActivities = activities.expand(
+      (activity) => activity.dayActivitiesForInterval(
+        interval.startTime,
+        interval.endTime,
+      ),
+    );
+    final timerOccasions = timers.where(
+      (timer) =>
+          timer.start.inInclusiveRange(
+            startDate: interval.startTime,
+            endDate: interval.endTime,
+          ) ||
+          timer.end.inInclusiveRange(
+            startDate: interval.startTime,
+            endDate: interval.endTime,
+          ),
+    );
+    return {...dayActivities, ...timerOccasions}.toList();
+  }
+
+  static DayCalendarType getCalendarType(
+    bool showNightCalendar,
+    DayCalendarType settingsDayCalendarType,
+    DateTime selectedDay,
+    DateTime now,
+    DayParts dayParts,
+  ) {
+    bool shouldShowNightCalendar = showNightCalendar &&
+        settingsDayCalendarType == DayCalendarType.twoTimepillars &&
+        isTonight(day: selectedDay, now: now, dayParts: dayParts);
+    return shouldShowNightCalendar
+        ? DayCalendarType.oneTimepillar
+        : settingsDayCalendarType;
+  }
+
+  static bool isTonight({
+    required DateTime day,
+    required DateTime now,
+    required DayParts dayParts,
+  }) =>
+      day.isAtSameDay(now) && now.isNight(dayParts);
+
+  void next() {
+    if (_shouldStepDay(forward: true)) {
+      dayPickerBloc.add(NextDay());
     }
   }
 
-  static TimepillarInterval generateInterval(
-      DateTime now, DateTime day, MemoplannerSettingsState memoSettings) {
-    final isToday = day.isAtSameDay(now);
-    return isToday
-        ? memoSettings.todayTimepillarInterval(now)
-        : TimepillarInterval(
-            start: day.onlyDays(),
-            end: day.onlyDays().add(1.days()),
-            intervalPart: IntervalPart.dayAndNight,
-          );
+  void previous() {
+    if (_shouldStepDay(forward: false)) {
+      dayPickerBloc.add(PreviousDay());
+    }
+  }
+
+  bool _shouldStepDay({required bool forward}) {
+    final memeSettings = memoSettingsBloc.state;
+
+    if (memeSettings.dayCalendarType == DayCalendarType.list) return true;
+
+    if (memeSettings.dayCalendarType == DayCalendarType.oneTimepillar &&
+        memeSettings.timepillarIntervalType ==
+            TimepillarIntervalType.dayAndNight) return true;
+
+    if (!isTonight(
+      day: dayPickerBloc.state.day,
+      now: clockBloc.state,
+      dayParts: memeSettings.dayParts,
+    )) return true;
+
+    final isBeforeMidNight =
+        clockBloc.state.isNightBeforeMidnight(memeSettings.dayParts);
+
+    final beforeMidnightGoingForwardOrAfterMidnightGoingBack =
+        (forward ? isBeforeMidNight : !isBeforeMidNight) ==
+            state.showNightCalendar;
+
+    if (beforeMidnightGoingForwardOrAfterMidnightGoingBack) return true;
+
+    _onTimepillarConditionsChanged(showNightCalendar: !state.showNightCalendar);
+    return false;
   }
 
   @override
   Future<void> close() async {
-    await _clockSubscription?.cancel();
-    await _memoSettingsSubscription?.cancel();
-    await _dayPickerSubscription?.cancel();
+    await _streamSubscription.cancel();
     return super.close();
   }
 }

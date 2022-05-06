@@ -1,4 +1,4 @@
-part of 'activity_wizard_cubit.dart';
+part of 'wizard_cubit.dart';
 
 enum WizardStep {
   advance,
@@ -46,13 +46,13 @@ extension SaveErrors on Set<SaveError> {
       }.contains);
 }
 
-class ActivityWizardState extends Equatable {
+class WizardState extends Equatable {
   final int step;
   final UnmodifiableListView<WizardStep> steps;
   final Set<SaveError> saveErrors;
   final bool? sucessfullSave;
 
-  ActivityWizardState(
+  WizardState(
     this.step,
     Iterable<WizardStep> steps, {
     this.saveErrors = const UnmodifiableSetView.empty(),
@@ -63,17 +63,16 @@ class ActivityWizardState extends Equatable {
   bool get isLastStep => step >= steps.length - 1;
   WizardStep get currentStep => steps[step];
 
-  ActivityWizardState copyWith({
+  WizardState copyWith({
     int? newStep,
     List<WizardStep>? newSteps,
   }) {
     newStep ??= step;
     newSteps ??= steps;
-    return ActivityWizardState(newStep.clamp(0, newSteps.length - 1), newSteps);
+    return WizardState(newStep.clamp(0, newSteps.length - 1), newSteps);
   }
 
-  ActivityWizardState failSave(Set<SaveError> saveErrors) =>
-      ActivityWizardState(
+  WizardState failSave(Set<SaveError> saveErrors) => WizardState(
         step,
         steps,
         saveErrors: saveErrors,
@@ -82,7 +81,7 @@ class ActivityWizardState extends Equatable {
             : null, // this ugly trick to force state change each failSave
       );
 
-  ActivityWizardState saveSucess() => ActivityWizardState(
+  WizardState saveSucess() => WizardState(
         step,
         steps,
         sucessfullSave: true,

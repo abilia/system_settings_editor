@@ -1,4 +1,5 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class TimeWiz extends StatelessWidget {
@@ -6,16 +7,24 @@ class TimeWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
+    return BlocListener<WizardCubit, WizardState>(
       listenWhen: (_, current) => current.currentStep != WizardStep.time,
       listener: (context, state) =>
           FocusScope.of(context).requestFocus(FocusNode()),
       child: WizardScaffold(
         iconData: AbiliaIcons.clock,
         title: Translator.of(context).translate.setTime,
+        appBarTrailing: Padding(
+          padding: layout.timeInput.headerClockPadding,
+          child: AbiliaClock(
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                ?.copyWith(color: AbiliaColors.white),
+          ),
+        ),
         body: const _TimeWizContent(),
         bottomNavigationBar: null,
-        trailingClock: true,
       ),
     );
   }
@@ -29,18 +38,16 @@ class _TimeWizContent extends StatelessWidget {
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
       selector: (state) => state.settings.addActivity.showEndTime,
       builder: (context, showEndTime) =>
-          BlocBuilder<EditActivityCubit, EditActivityState>(
-        buildWhen: (previous, current) =>
-            previous.timeInterval != current.timeInterval,
-        builder: (context, state) => TimeInputContent(
+          BlocSelector<EditActivityCubit, EditActivityState, TimeInterval>(
+        selector: (state) => state.timeInterval,
+        builder: (context, timeInterval) => TimeInputContent(
           timeInput: TimeInput(
-              state.timeInterval.startTime,
-              state.timeInterval.sameTime || !showEndTime
-                  ? null
-                  : state.timeInterval.endTime),
+            timeInterval.startTime,
+            timeInterval.sameTime || !showEndTime ? null : timeInterval.endTime,
+          ),
           is24HoursFormat: MediaQuery.of(context).alwaysUse24HourFormat,
           onSave: (context, _) {
-            context.read<ActivityWizardCubit>().next();
+            context.read<WizardCubit>().next();
             return false;
           },
           onValidTimeInput: (newTimeInput) =>

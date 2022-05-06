@@ -165,13 +165,28 @@ class CreateNewPage extends StatelessWidget {
                 basicActivityData: basicActivity,
               ),
             ),
-            BlocProvider(
-              create: (context) => ActivityWizardCubit.newActivity(
-                activitiesBloc: context.read<ActivitiesBloc>(),
-                editActivityCubit: context.read<EditActivityCubit>(),
-                clockBloc: context.read<ClockBloc>(),
-                settings: context.read<MemoplannerSettingBloc>().state,
-              ),
+            BlocProvider<WizardCubit>(
+              create: (context) {
+                final settings = context.read<MemoplannerSettingBloc>().state;
+                return settings.addActivityType == NewActivityMode.editView
+                    ? ActivityWizardCubit.newAdvanced(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        allowPassedStartTime:
+                            settings.settings.addActivity.allowPassedStartTime,
+                      )
+                    : ActivityWizardCubit.newStepByStep(
+                        activitiesBloc: context.read<ActivitiesBloc>(),
+                        editActivityCubit: context.read<EditActivityCubit>(),
+                        clockBloc: context.read<ClockBloc>(),
+                        allowPassedStartTime:
+                            settings.settings.addActivity.allowPassedStartTime,
+                        stepByStep: settings.settings.stepByStep,
+                        addRecurringActivity:
+                            settings.settings.addActivity.addRecurringActivity,
+                      );
+              },
             ),
           ],
           child: const ActivityWizardPage(),

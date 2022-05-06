@@ -21,23 +21,25 @@ class DateAndTimeWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SubHeading(Translator.of(context).translate.date),
-                  DatePicker(
-                    editActivityState.timeInterval.startDate,
-                    onChange: canEditDate
-                        ? (newDate) => context
-                            .read<EditActivityCubit>()
-                            .changeDate(newDate)
-                        : null,
-                  ),
-                  SizedBox(height: layout.formPadding.groupTopDistance),
+                  if (context.read<WizardCubit>()
+                      is! TemplateActivityWizardCubit) ...[
+                    SubHeading(Translator.of(context).translate.date),
+                    DatePicker(
+                      editActivityState.timeInterval.startDate,
+                      onChange: canEditDate
+                          ? (newDate) => context
+                              .read<EditActivityCubit>()
+                              .changeDate(newDate)
+                          : null,
+                    ),
+                    SizedBox(height: layout.formPadding.groupTopDistance),
+                  ],
                   CollapsableWidget(
                     collapsed: fullDay,
                     padding: EdgeInsets.only(
                       bottom: layout.formPadding.verticalItemDistance,
                     ),
-                    child:
-                        BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                    child: BlocBuilder<WizardCubit, WizardState>(
                       builder: (context, wizState) => TimeIntervallPicker(
                           editActivityState.timeInterval,
                           startTimeError: wizState.saveErrors.any({
