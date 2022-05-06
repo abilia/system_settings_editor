@@ -24,7 +24,6 @@ class TimeWiz extends StatelessWidget {
           ),
         ),
         body: const _TimeWizContent(),
-        trailingClock: true,
       ),
     );
   }
