@@ -403,6 +403,57 @@ final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
   }),
 );
 
+final ButtonStyle keyboardButtonStyle = ButtonStyle(
+  textStyle: MaterialStateProperty.all(abiliaTextTheme.headline6),
+  fixedSize: MaterialStateProperty.all(Size(
+      layout.timeInput.keyboardButtonWidth,
+      layout.timeInput.keyboardButtonHeight)),
+  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AbiliaColors.white140;
+      }
+      return AbiliaColors.black;
+    },
+  ),
+  shape: MaterialStateProperty.all(noBorderShape),
+);
+
+final ButtonStyle keyboardNumberButtonStyle = keyboardButtonStyle.copyWith(
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) {
+      return noBorderShape;
+    }
+    return menuButtonBorder;
+  }),
+  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.transparentBlack40;
+      }
+      return AbiliaColors.transparentBlack20;
+    },
+  ),
+);
+
+final ButtonStyle keyboardActionButtonStyle = keyboardButtonStyle.copyWith(
+  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AbiliaColors.transparentWhite40;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return AbiliaColors.white120;
+      }
+      return AbiliaColors.white;
+    },
+  ),
+);
+
 class _ButtonDef {
   final _StateColors foreGround;
   final _StateColors background;

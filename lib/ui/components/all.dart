@@ -25,6 +25,7 @@ export 'edit_image_and_name.dart';
 export 'quick_settings/all.dart';
 export 'timer/all.dart';
 export 'tts_play_button.dart';
+export 'abilia_num_pad.dart';
 export 'pick_field.dart';
 export 'radio_field.dart';
 export 'selectable_field.dart';

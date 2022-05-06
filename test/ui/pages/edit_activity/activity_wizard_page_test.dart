@@ -12,6 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -61,7 +62,7 @@ void main() {
   });
 
   Widget wizardPage({
-    bool use24H = false,
+    bool use24 = false,
     BasicActivityDataItem? basicActivityData,
   }) {
     return MaterialApp(
@@ -71,7 +72,7 @@ void main() {
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24),
         child: FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
@@ -132,7 +133,7 @@ void main() {
   }
 
   testWidgets('wizard shows all steps', (WidgetTester tester) async {
-    await tester.pumpWidget(wizardPage());
+    await tester.pumpWidget(wizardPage(use24: true));
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityWizardPage), findsOneWidget);
@@ -158,8 +159,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TimeWiz), findsOneWidget);
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -405,7 +405,7 @@ void main() {
       );
       const title = 'testtitle';
 
-      await tester.pumpWidget(wizardPage());
+      await tester.pumpWidget(wizardPage(use24: true));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), title);
@@ -414,12 +414,12 @@ void main() {
 
       expect(find.byType(TimeWiz), findsOneWidget);
       expect(find.text('--:--'), findsNWidgets(2));
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
       expect(find.text('13:37'), findsOneWidget);
       expect(find.text('--:--'), findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
-      await tester.pumpAndSettle();
+
+      await tester.enterTime(find.byKey(TestKey.endTimeInput), '1448');
       expect(find.text('--:--'), findsNothing);
       expect(find.text('13:37'), findsOneWidget);
       expect(find.text('14:48'), findsOneWidget);
@@ -449,17 +449,15 @@ void main() {
       );
       const title = 'testtitle';
 
-      await tester.pumpWidget(wizardPage());
+      await tester.pumpWidget(wizardPage(use24: true));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), title);
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
-      await tester.pumpAndSettle();
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+      await tester.enterTime(find.byKey(TestKey.endTimeInput), '1448');
 
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -929,8 +927,7 @@ void main() {
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(TimeWiz), findsOneWidget);
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1111');
-      await tester.pumpAndSettle();
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1111');
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(RemindersWiz), findsOneWidget);
@@ -1112,9 +1109,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
-      await tester.enterText(
+      await tester.enterTime(
           find.byKey(TestKey.startTimeInput), '1111'); // time wiz
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
