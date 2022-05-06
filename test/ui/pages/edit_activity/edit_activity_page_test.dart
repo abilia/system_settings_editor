@@ -2033,6 +2033,36 @@ text''';
       expect(find.text(translate.endDate), findsOneWidget);
     });
 
+    testWidgets('end date defaults to start date', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to weekly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      // Assert -- end date defaults to start date
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      final noEndDateSwitchValue = (find
+              .byKey(TestKey.noEndDateSwitch)
+              .evaluate()
+              .first
+              .widget as SwitchField)
+          .value;
+      expect(noEndDateSwitchValue, false);
+    });
+
     testWidgets('end date disabled if edit recurring (Bug SGC-354)',
         (WidgetTester tester) async {
       final activity = Activity.createNew(
@@ -2850,6 +2880,12 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
+
+      await tester.verifyTts(find.byType(EndDateWidget),
+          exact: '(Today) February 10, 2020');
+
+      await tester.tap(find.byKey(TestKey.noEndDateSwitch));
+      await tester.pumpAndSettle();
 
       await tester.verifyTts(find.byType(EndDateWidget),
           exact: translate.noEndDate);

@@ -628,6 +628,7 @@ class EndDateWidget extends StatelessWidget {
               ),
             ),
             SwitchField(
+              key: TestKey.noEndDateSwitch,
               leading: Icon(
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
