@@ -185,7 +185,7 @@ void main() {
       Activity.createNew(
         title: 'title',
         startTime: startTime,
-        reminderBefore: [124],
+        reminderBefore: const [124],
       ),
     );
     expect(find.byIcon(AbiliaIcons.handiReminder), findsOneWidget);

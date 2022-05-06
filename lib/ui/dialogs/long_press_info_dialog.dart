@@ -66,6 +66,7 @@ class _Preview extends StatelessWidget {
       ),
       child: ActivityCard(
         activityOccasion: ActivityOccasion(
+          // ignore: invalid_use_of_visible_for_testing_member
           Activity.createNew(
             title: Translator.of(context).translate.lunch,
             startTime: time.withTime(const TimeOfDay(hour: 12, minute: 0)),

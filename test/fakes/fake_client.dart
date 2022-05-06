@@ -15,6 +15,7 @@ typedef TimerResponse = Iterable<AbiliaTimer> Function();
 
 class Fakes {
   Fakes._();
+
   static int get userId => 1234;
   static const String token = 'token',
       name = 'Testcase user',
@@ -77,7 +78,9 @@ class Fakes {
             response = licenseResponse?.call() ??
                 licenseResponseExpires(DateTime.now().add(10.days()));
           }
-
+          if (pathSegments.contains('calendar')) {
+            response = calendarSuccessResponse;
+          }
           if (pathSegments.containsAll({'entity', 'user'})) {
             final uName = json.decode(r.body)['usernameOrEmail'];
             if (uName == 'taken') {
@@ -91,7 +94,17 @@ class Fakes {
                 200,
               );
             }
-            // {"usernameOrEmail":"abc","password":"","language":"en","termsOfCondition":true,"privacyPolicy":true}
+          }
+          if (pathSegments.containsAll(['token', 'renew'])) {
+            if (r.body.contains('"renewToken":"renewToken"')) {
+              response = Response('''{
+                            "token" : "$token",
+                            "endDate" : 1231244,
+                            "renewToken" : "renewToken"
+                          }''', 200);
+            } else {
+              response = Response(json.encode(List.empty()), 401);
+            }
           }
 
           return Future.value(
@@ -135,6 +148,14 @@ class Fakes {
         "language" : "sv",
         "image" : null
       }
+    }''', 200);
+
+  static final Response calendarSuccessResponse = Response('''
+    {
+      "id": "an-unique-calender-id-of-type-memoplanner",
+      "type": "MEMOPLANNER",
+      "owner": $userId,
+      "main": true
     }''', 200);
 
   static Response licenseResponseExpires(DateTime expires) => Response('''

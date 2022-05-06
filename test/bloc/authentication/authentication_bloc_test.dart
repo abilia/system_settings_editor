@@ -17,6 +17,7 @@ void main() {
     late UserRepository userRepository;
     setUp(() async {
       final prefs = await FakeSharedPreferences.getInstance(loggedIn: false);
+      final db = await DatabaseRepository.createInMemoryFfiDb();
       userRepository = UserRepository(
         client: Fakes.client(),
         loginDb: LoginDb(prefs),
@@ -24,6 +25,7 @@ void main() {
         licenseDb: LicenseDb(prefs),
         baseUrlDb: BaseUrlDb(prefs),
         deviceDb: DeviceDb(prefs),
+        calendarDb: CalendarDb(db),
       );
     });
 
@@ -139,6 +141,45 @@ void main() {
             renewToken: 'renewToken',
           ),
         ),
+      ).called(1),
+    );
+
+    blocTest(
+      'CheckAuthentication event fetches calendar',
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
+      verify: (bloc) => verify(
+        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
+      ).called(1),
+    );
+
+    blocTest(
+      'CheckAuthentication event auth failed, no calendar fethed',
+      setUp: () {
+        when(() => mockedUserRepository.getToken()).thenReturn(null);
+      },
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
+      verify: (bloc) => verifyNever(
+        () => mockedUserRepository.fetchAndSetCalendar(any(), any()),
+      ),
+    );
+
+    blocTest(
+      'loggedIn event fetches calendar',
+      build: () => AuthenticationBloc(mockedUserRepository),
+      act: (AuthenticationBloc bloc) => bloc
+        ..add(
+          const LoggedIn(
+            loginInfo: LoginInfo(
+              token: Fakes.token,
+              endDate: 1111,
+              renewToken: 'renewToken',
+            ),
+          ),
+        ),
+      verify: (bloc) => verify(
+        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
       ).called(1),
     );
 
