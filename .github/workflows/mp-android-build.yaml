@@ -92,7 +92,7 @@ jobs:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
       - id: decide_track
         run: |
-          track=$([[ "${{ needs.build.outputs.releasetype }}" == "release" ]] && echo "alpha" || echo "dev")
+          track=$([[ "${{ needs.build.outputs.releasetype }}" == "release" ]] && echo "alpha" || echo "Development track")
           echo "::set-output name=track::$track"
       - uses: r0adkll/upload-google-play@v1
         if: ${{ !contains(matrix.flavor, 'go') }}
