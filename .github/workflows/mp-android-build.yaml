@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - release
-      - SGC-1610*
     paths-ignore:
       - 'ios/**'
       - 'test/**'
@@ -90,10 +89,12 @@ jobs:
           status: completed
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+
       - id: decide_track
         run: |
           track=$([[ "${{ needs.build.outputs.releasetype }}" == "release" ]] && echo "alpha" || echo "Development track")
           echo "::set-output name=track::$track"
+
       - uses: r0adkll/upload-google-play@v1
         if: ${{ !contains(matrix.flavor, 'go') }}
         with:
