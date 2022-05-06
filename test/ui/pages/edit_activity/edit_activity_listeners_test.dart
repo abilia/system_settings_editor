@@ -93,7 +93,7 @@ void main() {
                         ActivityDay(activity, today),
                       ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => newActivity
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),
@@ -105,7 +105,12 @@ void main() {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        settings: context.read<MemoplannerSettingBloc>().state,
+                        allowPassedStartTime: context
+                            .read<MemoplannerSettingBloc>()
+                            .state
+                            .settings
+                            .addActivity
+                            .allowPassedStartTime,
                       ),
               ),
               BlocProvider<SortableBloc>(create: (_) => FakeSortableBloc()),

@@ -22,7 +22,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
-    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
+    return BlocListener<WizardCubit, WizardState>(
       listener: (context, state) {
         if (state.currentStep == WizardStep.title) {
           focusNode.requestFocus();

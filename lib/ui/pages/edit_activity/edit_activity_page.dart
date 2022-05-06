@@ -8,12 +8,12 @@ class EditActivityPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState, bool>(
       selector: (state) => state.settings.addActivity.addRecurringActivity,
-      builder: (context, displayRecurrence) =>
-          BlocBuilder<EditActivityCubit, EditActivityState>(
-        buildWhen: (previous, current) =>
-            previous.activity.fullDay != current.activity.fullDay,
-        builder: (context, state) {
-          final fullDay = state.activity.fullDay;
+      builder: (context, addRecurringActivity) =>
+          BlocSelector<EditActivityCubit, EditActivityState, bool>(
+        selector: (state) => state.activity.fullDay,
+        builder: (context, fullDay) {
+          final displayRecurrence = addRecurringActivity &&
+              context.read<WizardCubit>() is! TemplateActivityWizardCubit;
           final tabs = [
             const MainTab(),
             if (!fullDay) const AlarmAndReminderTab(),
@@ -28,9 +28,7 @@ class EditActivityPage extends StatelessWidget {
               child: Scaffold(
                 appBar: AbiliaAppBar(
                   iconData: AbiliaIcons.plus,
-                  title: state is StoredActivityState
-                      ? translate.editActivity
-                      : translate.newActivity,
+                  title: getTitle(context),
                   bottom: AbiliaTabBar(
                     collapsedCondition: (i) {
                       switch (i) {
@@ -60,5 +58,19 @@ class EditActivityPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String getTitle(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final isTemplate =
+        context.read<WizardCubit>() is TemplateActivityWizardCubit;
+    final isEdit =
+        context.read<EditActivityCubit>().state is StoredActivityState;
+    if (isTemplate) {
+      if (isEdit) return translate.editBasicActivity;
+      return translate.newBasicActivity;
+    }
+    if (isEdit) return translate.editActivity;
+    return translate.newActivity;
   }
 }

@@ -265,6 +265,10 @@ abstract class Translated {
 
   final String basicActivities = 'Basic Activities';
 
+  final String newBasicActivity = 'New Basic Activity';
+
+  final String editBasicActivity = 'Edit Basic Activity';
+
   final String timeTo = 'to';
 
   final String start = 'Start';

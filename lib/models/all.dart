@@ -1,6 +1,6 @@
 export 'settings/all.dart';
+export 'sortable/all.dart';
 export 'activity/activity.dart';
-export 'sortable/sortable.dart';
 export 'occasion/all.dart';
 export 'data_update_response.dart';
 export 'alarm.dart';
@@ -26,5 +26,4 @@ export 'image_and_name.dart';
 export 'bad_request.dart';
 export 'sync_delays.dart';
 export 'abilia_timer.dart';
-export 'sortable/reorder_direction.dart';
 export 'calendar.dart';

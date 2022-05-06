@@ -91,7 +91,7 @@ void main() {
                   calendarId: 'calendarId',
                 ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => ActivityWizardCubit.newActivity(
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),

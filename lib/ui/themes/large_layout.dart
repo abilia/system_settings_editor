@@ -41,10 +41,6 @@ class _LargeLayout extends Layout {
             childAspectRatio: 240 / 188,
             fullScreenImagePadding: EdgeInsets.fromLTRB(24 * scaleFactor,
                 22 * scaleFactor, 24 * scaleFactor, 24 * scaleFactor),
-            addPhotoButtonPadding: EdgeInsets.only(
-                top: 8 * scaleFactor,
-                bottom: 8 * scaleFactor,
-                right: 16 * scaleFactor),
           ),
           toolbar: const ToolbarLayout(
             height: 120 * scaleFactor,

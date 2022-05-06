@@ -1,76 +1,42 @@
-import 'dart:async';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 class WizardBottomNavigation extends StatelessWidget {
-  final FutureOr<bool?> Function()? beforeOnNext;
-  final FutureOr<bool?> Function()? beforeOnPrevious;
-  const WizardBottomNavigation({
-    Key? key,
-    this.beforeOnNext,
-    this.beforeOnPrevious,
-  }) : super(key: key);
+  const WizardBottomNavigation({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => BottomNavigation(
-        backNavigationWidget: PreviousWizardStepButton(
-          beforeOnPrevious: beforeOnPrevious,
-        ),
-        forwardNavigationWidget: NextWizardStepButton(
-          beforeOnNext: beforeOnNext,
-        ),
+  Widget build(BuildContext context) => const BottomNavigation(
+        backNavigationWidget: PreviousWizardStepButton(),
+        forwardNavigationWidget: NextWizardStepButton(),
       );
 }
 
 class PreviousWizardStepButton extends StatelessWidget {
-  final FutureOr<bool?> Function()? beforeOnPrevious;
-  const PreviousWizardStepButton({
-    Key? key,
-    this.beforeOnPrevious,
-  }) : super(key: key);
+  const PreviousWizardStepButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      context.read<ActivityWizardCubit>().state.isFirstStep
-          ? context.read<ActivityWizardCubit>().edit
+      context.read<WizardCubit>().state.isFirstStep
+          ? context.read<EditActivityCubit>().state is StoredActivityState
               ? const CancelButton()
               : PreviousButton(
                   onPressed: () async {
                     await Navigator.of(context).maybePop();
-                    context.read<ActivityWizardCubit>().previous();
+                    context.read<WizardCubit>().previous();
                   },
                 )
-          : PreviousButton(
-              onPressed: () async {
-                if (await beforeOnPrevious?.call() != false) {
-                  context.read<ActivityWizardCubit>().previous();
-                }
-              },
-            );
+          : PreviousButton(onPressed: context.read<WizardCubit>().previous);
 }
 
 class NextWizardStepButton extends StatelessWidget {
-  final FutureOr<bool?> Function()? beforeOnNext;
-  const NextWizardStepButton({
-    Key? key,
-    this.beforeOnNext,
-  }) : super(key: key);
+  const NextWizardStepButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    void onNext() async {
-      if (await beforeOnNext?.call() != false) {
-        context.read<ActivityWizardCubit>().next();
-      }
-    }
-
-    return BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-      buildWhen: (previous, current) =>
-          previous.isLastStep != current.isLastStep,
-      builder: (context, state) => state.isLastStep
-          ? SaveButton(onPressed: onNext)
-          : NextButton(onPressed: onNext),
-    );
-  }
+  Widget build(BuildContext context) =>
+      BlocSelector<WizardCubit, WizardState, bool>(
+        selector: (state) => state.isLastStep,
+        builder: (context, isLastStep) => isLastStep
+            ? SaveButton(onPressed: context.read<WizardCubit>().next)
+            : NextButton(onPressed: context.read<WizardCubit>().next),
+      );
 }

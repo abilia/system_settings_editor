@@ -33,9 +33,9 @@ void main() {
 
   test('SortablesUpdated will set the sortables in the state', () async {
     final imageArchiveSortable =
-        Sortable.createNew<ImageArchiveData>(data: const ImageArchiveData());
+        Sortable.createNew(data: const ImageArchiveData());
     final checklistSortable =
-        Sortable.createNew<RawSortableData>(data: const RawSortableData(''));
+        Sortable.createNew(data: ChecklistData(Checklist()));
     final expect = expectLater(
       imageArchiveBloc.stream,
       emits(stateFromSortables([imageArchiveSortable])),

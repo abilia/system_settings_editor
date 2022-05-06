@@ -33,12 +33,12 @@ class MyPhotosPage extends StatelessWidget {
             bottom: AbiliaTabBar(
               tabs: [
                 TabItem(
-                  translate.allPhotos,
+                  translate.allPhotos.singleLine,
                   AbiliaIcons.myPhotos,
                   key: TestKey.allPhotosTabButton,
                 ),
                 TabItem(
-                  translate.photoCalendar,
+                  translate.photoCalendar.singleLine,
                   AbiliaIcons.photoCalendar,
                   key: TestKey.photoCalendarTabButton,
                 ),
