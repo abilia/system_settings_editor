@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: test
+    outputs:
+      releasetype: ${{ steps.set_build_number.outputs.releasetype }}
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
@@ -87,13 +89,19 @@ jobs:
           status: completed
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+
+      - id: decide_track
+        run: |
+          track=$([[ "${{ needs.build.outputs.releasetype }}" == "release" ]] && echo "alpha" || echo "Development track")
+          echo "::set-output name=track::$track"
+
       - uses: r0adkll/upload-google-play@v1
         if: ${{ !contains(matrix.flavor, 'go') }}
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: com.abilia.memoplanner
           releaseFiles: ./**/app-${{ matrix.flavor }}-release.aab
-          track: alpha
+          track: ${{ steps.decide_track.outputs.track }}
           status: completed
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
