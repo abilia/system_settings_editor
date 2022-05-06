@@ -19,6 +19,7 @@ import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
 
+import '../../test_helpers/app_pumper.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 import '../../test_helpers/enter_text.dart';
@@ -218,8 +219,7 @@ void main() {
         genericResponse = () => [wizardSetting];
 
         const title = 'title';
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
+        await tester.pumpApp(use24: true);
         await tester.tap(addActivityButtonFinder);
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
@@ -252,8 +252,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-        await tester.pumpAndSettle();
+        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
@@ -320,8 +319,7 @@ void main() {
             ];
 
         const title = 'title';
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
+        await tester.pumpApp(use24: true);
         await tester.tap(addActivityButtonFinder);
         await tester.pumpAndSettle();
         expect(find.byType(CreateNewPage), findsOneWidget);
@@ -351,8 +349,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-        await tester.pumpAndSettle();
+        await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
 
