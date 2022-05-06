@@ -33,13 +33,13 @@ We will roughly follow the following branching model: [a-successful-git-branchin
 
 There are two main branches in the repository: master and release.
 
-Each commit to the master branch should create and distribute an alpha version for internal testing on both platforms.
+Each commit to the master branch should create and distribute an dev version for internal testing on both platforms.
 
-Each commit to the release branch should create a release candidate and should distribute a (none alpha/beta) version for testing
+Each commit to the release branch should create a release candidate and should distribute a new version for testing
 
 ## Flow
 
-When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the master branch. A new alpha version is built from master. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
+When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the master branch. A new dev version is built from master. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
 
 Squash commits for feature branches are permitted if there are trivial commits that clutter the history. Developer or reviewer can suggest squash, and it should be agreed on by both parties.
 
