@@ -35,8 +35,6 @@ class MediumLayout extends Layout {
             fullScreenImageBorderRadius: 20,
             childAspectRatio: 240 / 168,
             fullScreenImagePadding: EdgeInsets.fromLTRB(24, 22, 24, 24),
-            addPhotoButtonPadding:
-                EdgeInsets.only(top: 8, bottom: 8, right: 16),
           ),
           toolbar: const ToolbarLayout(
             height: 120,

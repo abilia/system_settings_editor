@@ -216,14 +216,13 @@ class MyPhotosLayout {
   final double? childAspectRatio;
   final double fullScreenImageBorderRadius;
   final int crossAxisCount;
-  final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
+  final EdgeInsets fullScreenImagePadding;
 
   const MyPhotosLayout({
     this.childAspectRatio,
     this.fullScreenImageBorderRadius = 12,
     this.crossAxisCount = 3,
     this.fullScreenImagePadding = const EdgeInsets.all(12),
-    this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16),
   });
 }
 

@@ -43,7 +43,7 @@ class CalendarBottomBar extends StatelessWidget {
                   AbiliaTabs(
                     tabs: tabItems,
                     onTabTap: (index) {
-                      context.read<DayPickerBloc>().add(CurrentDay());
+                      context.read<DayPickerBloc>().add(const CurrentDay());
                       switch (index) {
                         case 0:
                           return;

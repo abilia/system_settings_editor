@@ -45,7 +45,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
               clockReplacement: !state.currentWeekStart.isSameWeek(time)
                   ? GoToCurrentActionButton(
                       onPressed: () {
-                        context.read<DayPickerBloc>().add(CurrentDay());
+                        context.read<DayPickerBloc>().add(const CurrentDay());
                         context.read<WeekCalendarCubit>().goToCurrentWeek();
                       },
                     )

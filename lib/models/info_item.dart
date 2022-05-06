@@ -56,20 +56,20 @@ abstract class InfoItem extends Equatable {
     return const NoInfoItem();
   }
 
-  String? toBase64() => base64Encode(
-        utf8.encode(
-          json.encode(
-            {
-              'info-item': [
-                {
-                  'type': typeId,
-                  'data': toJson(),
-                }
-              ],
-            },
-          ),
-        ),
-      );
+  String toBase64() => base64Encode(utf8.encode(infoItemJson()));
+
+  String infoItemJson() => this is NoInfoItem
+      ? ''
+      : json.encode(
+          {
+            'info-item': [
+              {
+                'type': typeId,
+                'data': toJson(),
+              }
+            ],
+          },
+        );
 }
 
 class NoInfoItem extends InfoItem {
@@ -79,7 +79,7 @@ class NoInfoItem extends InfoItem {
   @override
   Map<String, dynamic> toJson() => {};
   @override
-  String? toBase64() => null;
+  String toBase64() => '';
   @override
   String get typeId => '';
   @override

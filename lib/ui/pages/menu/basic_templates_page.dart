@@ -24,41 +24,58 @@ class BasicTemplatesPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            _BasicTemplateTab<BasicActivityData>(
-              noTemplateText: translate.noBasicActivities,
+            ListLibrary<BasicActivityData>(
+              emptyLibraryMessage: translate.noBasicActivities,
+              libraryItemGenerator: BasicTemplatePickField.new,
+              onTapEdit: _onEditTemplateActivity,
             ),
-            _BasicTemplateTab<BasicTimerData>(
-              noTemplateText: translate.noBasicTimers,
+            ListLibrary<BasicTimerData>(
+              emptyLibraryMessage: translate.noBasicTimers,
+              libraryItemGenerator: BasicTemplatePickField.new,
             ),
           ],
+        ),
+        bottomNavigationBar: BottomNavigation(
+          backNavigationWidget:
+              CloseButton(onPressed: Navigator.of(context).maybePop),
+        ),
+        floatingActionButton: const AddTemplateButton(
+          activityTemplateIndex: 0,
         ),
       ),
     );
   }
-}
 
-class _BasicTemplateTab<T extends SortableData> extends StatelessWidget {
-  const _BasicTemplateTab({
-    required this.noTemplateText,
-    Key? key,
-  }) : super(key: key);
-
-  final String noTemplateText;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: ListLibrary<T>(
-          emptyLibraryMessage: noTemplateText,
-          libraryItemGenerator: BasicTemplatePickField.new,
+  void _onEditTemplateActivity(
+    BuildContext context,
+    Sortable<BasicActivityData> sortable,
+  ) {
+    if (sortable is! Sortable<BasicActivityDataItem>) return;
+    final authProviders = copiedAuthProviders(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: [
+            ...authProviders,
+            BlocProvider<EditActivityCubit>(
+              create: (_) => EditActivityCubit.editTemplate(
+                sortable.data,
+                context.read<DayPickerBloc>().state.day,
+              ),
+            ),
+            BlocProvider<WizardCubit>(
+              create: (context) => TemplateActivityWizardCubit(
+                editActivityCubit: context.read<EditActivityCubit>(),
+                sortableBloc: context.read<SortableBloc>(),
+                original: sortable,
+              ),
+            ),
+          ],
+          child: const ActivityWizardPage(),
         ),
-        bottomNavigationBar: BlocSelector<SortableArchiveCubit<T>,
-            SortableArchiveState<T>, bool>(
-          selector: (state) => state.isAtRoot,
-          builder: (context, isAtRoot) => BottomNavigation(
-              backNavigationWidget:
-                  CloseButton(onPressed: Navigator.of(context).maybePop)),
-        ),
-      );
+      ),
+    );
+  }
 }
 
 class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
@@ -161,6 +178,66 @@ class _PickFolder extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class AddTemplateButton extends StatelessWidget {
+  final int activityTemplateIndex;
+  const AddTemplateButton({
+    Key? key,
+    required this.activityTemplateIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final tabController = DefaultTabController.of(context);
+    if (tabController == null) return const SizedBox.shrink();
+    return AnimatedBuilder(
+      animation: tabController,
+      builder: (context, _) {
+        return IconActionButtonBlack(
+          onPressed: tabController.index == activityTemplateIndex
+              ? () => _addNewActivityTemplate(context)
+              : null,
+          child: const Icon(AbiliaIcons.plus),
+        );
+      },
+    );
+  }
+
+  void _addNewActivityTemplate(BuildContext context) {
+    final authProviders = copiedAuthProviders(context);
+    final currentFolderId = context
+        .read<SortableArchiveCubit<BasicActivityData>>()
+        .state
+        .currentFolderId;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: [
+            ...authProviders,
+            BlocProvider<EditActivityCubit>(
+              create: (_) => EditActivityCubit.newActivity(
+                day: context.read<DayPickerBloc>().state.day,
+                defaultAlarmTypeSetting: context
+                    .read<MemoplannerSettingBloc>()
+                    .state
+                    .defaultAlarmTypeSetting,
+                calendarId: '',
+              ),
+            ),
+            BlocProvider<WizardCubit>(
+              create: (context) => TemplateActivityWizardCubit(
+                editActivityCubit: context.read<EditActivityCubit>(),
+                sortableBloc: context.read<SortableBloc>(),
+                folderId: currentFolderId,
+              ),
+            ),
+          ],
+          child: const ActivityWizardPage(),
+        ),
+      ),
     );
   }
 }

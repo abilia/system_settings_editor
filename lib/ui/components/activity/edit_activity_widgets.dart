@@ -15,11 +15,11 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
         builder: (context, editActivity) =>
             BlocBuilder<EditActivityCubit, EditActivityState>(
           builder: (context, state) =>
-              BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-            builder: (context, wizState) => NameAndPictureWidget(
+              BlocSelector<WizardCubit, WizardState, Set<SaveError>>(
+            selector: (state) => state.saveErrors,
+            builder: (context, saveErrors) => NameAndPictureWidget(
               selectedImage: state.selectedImage,
-              errorState:
-                  wizState.saveErrors.contains(SaveError.noTitleOrImage),
+              errorState: saveErrors.contains(SaveError.noTitleOrImage),
               text: state.activity.title,
               inputFormatters: [LengthLimitingTextInputFormatter(50)],
               onImageSelected: editActivity.image

@@ -40,8 +40,8 @@ void main() {
                 settingsDb: FakeSettingsDb(),
               ),
             ),
-            BlocProvider<TimepillarCubit>(
-              create: (context) => FaketimepillarCubit(),
+            BlocProvider<TimepillarMeasuresCubit>(
+              create: (context) => FakeTimepillarMeasuresCubit(),
             ),
           ],
           child: widget,

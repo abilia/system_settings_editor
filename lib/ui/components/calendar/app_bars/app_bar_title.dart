@@ -71,7 +71,14 @@ class AppBarTitleRows {
     required String langCode,
     required Translated translator,
   }) {
-    final weekday = displayWeekDay ? DateFormat.EEEE(langCode).format(day) : '';
+    final currentNight = currentTime.isAtSameDay(day) &&
+        currentTime.dayPart(dayParts) == DayPart.night;
+
+    final weekday = displayWeekDay
+        ? currentNight
+            ? nightDay(currentTime, dayParts, langCode)
+            : DateFormat.EEEE(langCode).format(day)
+        : '';
     final daypart = displayPartOfDay
         ? _getPartOfDay(
             currentTime.isAtSameDay(day),
@@ -84,6 +91,26 @@ class AppBarTitleRows {
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),
         compactDay ? '' : daypart, date, dateShort);
+  }
+
+  static String nightDay(
+    DateTime currentTime,
+    DayParts dayParts,
+    String langCode,
+  ) {
+    final msAfterMidnight =
+        currentTime.difference(currentTime.onlyDays()).inMilliseconds;
+    final beforeMidnight = msAfterMidnight >= dayParts.nightStart;
+    if (beforeMidnight) {
+      String firstDay = DateFormat.E(langCode).format(currentTime);
+      String secondDay = DateFormat.E(langCode).format(currentTime.nextDay());
+      return '$firstDay - $secondDay';
+    } else {
+      String firstDay =
+          DateFormat.E(langCode).format(currentTime.previousDay());
+      String secondDay = DateFormat.E(langCode).format(currentTime);
+      return '$firstDay - $secondDay';
+    }
   }
 
   static String _getPartOfDay(

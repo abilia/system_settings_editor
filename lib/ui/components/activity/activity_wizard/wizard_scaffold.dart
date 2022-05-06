@@ -4,9 +4,8 @@ class WizardScaffold extends StatelessWidget {
   final IconData iconData;
   final String title;
   final Widget body;
-  final Widget? bottomNavigationBar;
+  final Widget? bottomNavigationBar, appBarTrailing;
   final PreferredSizeWidget? bottom;
-  final bool trailingClock;
 
   const WizardScaffold({
     Key? key,
@@ -15,7 +14,7 @@ class WizardScaffold extends StatelessWidget {
     required this.body,
     this.bottom,
     this.bottomNavigationBar = const WizardBottomNavigation(),
-    this.trailingClock = false,
+    this.appBarTrailing,
   }) : super(key: key);
 
   @override
@@ -25,17 +24,7 @@ class WizardScaffold extends StatelessWidget {
           label: Translator.of(context).translate.newActivity,
           title: title,
           bottom: bottom,
-          trailing: trailingClock
-              ? Padding(
-                  padding: layout.timeInput.headerClockPadding,
-                  child: AbiliaClock(
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.copyWith(color: AbiliaColors.white),
-                  ),
-                )
-              : null, // state.clockType
+          trailing: appBarTrailing,
         ),
         body: body,
         bottomNavigationBar: bottomNavigationBar,
