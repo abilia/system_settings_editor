@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 30
     needs: test
     outputs:
-      releasetype: ${{ steps.set_build_number.outputs.releasetype }}
+      releasetype: ${{ steps.set_release_type.outputs.releasetype }}
     strategy:
       matrix:
         flavor: ['mp', 'mpgo']
