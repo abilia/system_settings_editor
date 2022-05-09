@@ -35,10 +35,19 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
                       }
                     }
                   : null,
+              inputHeadingForNameField: _heading(context),
             ),
           ),
         ),
       );
+
+  String _heading(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final isTemplate =
+        context.read<WizardCubit>() is TemplateActivityWizardCubit;
+    if (isTemplate) return translate.enterNameForBasicActivity;
+    return translate.name;
+  }
 }
 
 class NameAndPictureWidget extends StatelessWidget {

@@ -10,6 +10,7 @@ basicTemplates	Basic templates
 basicActivities	Basic activities	Basaktivitet					
 newBasicActivity	New basic activity	Ny basaktivitet					
 editBasicActivity	Edit basic activity	Ändra basaktivitet					
+enterNameForBasicActivity	Enter name for basic activity						
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
 onlyAppliesToGo	Only applies to MEMOplanner Go						

@@ -271,6 +271,8 @@ abstract class Translated {
 
   final String editBasicActivity = 'Edit basic activity';
 
+  final String enterNameForBasicActivity = 'Enter name for basic activity';
+
   final String timeTo = 'to';
 
   final String start = 'Start';
