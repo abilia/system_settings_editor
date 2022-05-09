@@ -232,11 +232,11 @@ abstract class Translated {
 
   final String undo = 'Undo';
 
-  final String fromBasicActivity = 'From Basic Activity';
+  final String fromBasicActivity = 'From basic activity';
 
   final String createActivity = 'New activity';
 
-  final String selectBasicActivity = 'Select Basic Activity';
+  final String selectBasicActivity = 'Select Basic activity';
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
@@ -265,11 +265,11 @@ abstract class Translated {
 
   final String basicTemplates = 'Basic templates';
 
-  final String basicActivities = 'Basic Activities';
+  final String basicActivities = 'Basic activities';
 
-  final String newBasicActivity = 'New Basic Activity';
+  final String newBasicActivity = 'New basic activity';
 
-  final String editBasicActivity = 'Edit Basic Activity';
+  final String editBasicActivity = 'Edit basic activity';
 
   final String timeTo = 'to';
 
@@ -283,17 +283,17 @@ abstract class Translated {
 
   final String enterNameForTimer = 'Enter name for timer';
 
-  final String fromBasicTimer = 'From Basic Timer';
+  final String fromBasicTimer = 'From basic bimer';
 
   final String noBasicTimers = 'You have no basic timers';
 
-  final String selectBaseTimer = 'Select Basic Timer';
+  final String selectBaseTimer = 'Select basic timer';
 
   final String timer = 'Timer';
 
   final String timeIsUp = 'Time is up';
 
-  final String basicTimers = 'Basic Timers';
+  final String basicTimers = 'Basic timers';
 
   final String menu = 'Menu';
 
@@ -1225,6 +1225,15 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
+
+  @override
+  final String basicActivities = 'Basaktivitet';
+
+  @override
+  final String newBasicActivity = 'Ny basaktivitet';
+
+  @override
+  final String editBasicActivity = 'Ändra basaktivitet';
 
   @override
   final String timeTo = 'till';

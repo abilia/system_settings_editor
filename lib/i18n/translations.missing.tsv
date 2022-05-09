@@ -7,9 +7,9 @@ pause	Pause	Pausa
 resume	Continue	Fortsätt					
 activity	Activity	Aktivitet
 basicTemplates	Basic templates						
-basicActivities	Basic Activities						
-newBasicActivity	New Basic Activity						
-editBasicActivity	Edit Basic Activity						
+basicActivities	Basic activities	Basaktivitet					
+newBasicActivity	New basic activity	Ny basaktivitet					
+editBasicActivity	Edit basic activity	Ändra basaktivitet					
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
 onlyAppliesToGo	Only applies to MEMOplanner Go						
