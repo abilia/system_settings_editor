@@ -556,13 +556,13 @@ class RecurrenceWidget extends StatelessWidget {
                       ),
                     );
               } else {
-                final recurentType = _newType(
+                final recurs = _newRecurs(
                   result,
                   state.timeInterval.startDate,
                 );
                 context.read<EditActivityCubit>().replaceActivity(
                       activity.copyWith(
-                        recurs: recurentType,
+                        recurs: recurs,
                       ),
                     );
               }
@@ -573,14 +573,14 @@ class RecurrenceWidget extends StatelessWidget {
     );
   }
 
-  Recurs _newType(RecurrentType type, DateTime startdate) {
+  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startdate.weekday);
+        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
       case RecurrentType.monthly:
-        return Recurs.monthly(startdate.day);
+        return Recurs.monthly(startDate.day, ends: startDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startdate);
+        return Recurs.yearly(startDate, ends: startDate);
       default:
         return Recurs.not;
     }
@@ -624,6 +624,7 @@ class EndDateWidget extends StatelessWidget {
               ),
             ),
             SwitchField(
+              key: TestKey.noEndDateSwitch,
               leading: Icon(
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
