@@ -31,7 +31,6 @@ class BasicTimerPickerPage extends StatelessWidget {
                   sortable,
                   onTap,
                   _StartBasicTimerButton(
-                    key: TestKey.startBasicTimerButton,
                     onPressed: () {
                       if (sortableData is BasicTimerDataItem) {
                         context.read<EditTimerCubit>()
@@ -49,9 +48,9 @@ class BasicTimerPickerPage extends StatelessWidget {
               backNavigationWidget: PreviousButton(
                 onPressed: state.isAtRoot
                     ? Navigator.of(context).maybePop
-                    : () => context
+                    : context
                         .read<SortableArchiveCubit<BasicTimerData>>()
-                        .navigateUp(),
+                        .navigateUp,
               ),
             ),
           );
@@ -67,11 +66,10 @@ class _StartBasicTimerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
     return IconAndTextButton(
       onPressed: onPressed,
       icon: AbiliaIcons.playSound,
-      text: translate.start,
+      text: Translator.of(context).translate.start,
       style: iconTextButtonStyleGreen.copyWith(
         shape: MaterialStateProperty.all(darkShapeBorder),
         minimumSize: MaterialStateProperty.all(null),

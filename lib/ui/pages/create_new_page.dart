@@ -11,9 +11,8 @@ class CreateNewPage extends StatelessWidget {
     Key? key,
     this.showActivities = true,
     this.showTimers = true,
-  })  : assert(
-          !(Config.isMPGO && (showActivities == false || showTimers == false)),
-        ),
+  })  : assert(showActivities || showTimers),
+        assert(!Config.isMPGO || (showActivities && showTimers)),
         super(key: key);
 
   final bool showActivities, showTimers;
@@ -30,16 +29,7 @@ class CreateNewPage extends StatelessWidget {
             memoplannerSettingsState.displayNewTimer && showTimers;
 
         return Scaffold(
-          appBar: AbiliaAppBar(
-            iconData: Config.isMPGO || displayNewActivity
-                ? AbiliaIcons.plus
-                : AbiliaIcons.stopWatch,
-            title: Config.isMPGO || displayNewTimer && displayNewActivity
-                ? t.add
-                : displayNewActivity
-                    ? t.newActivity
-                    : t.newTimer,
-          ),
+          appBar: _appBar(t, displayNewActivity, displayNewTimer),
           body: Column(
             children: [
               SizedBox(height: layout.templates.m1.top),
@@ -142,6 +132,23 @@ class CreateNewPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  AbiliaAppBar _appBar(
+    Translated t,
+    bool displayNewActivity,
+    bool displayNewTimer,
+  ) {
+    return AbiliaAppBar(
+      iconData: Config.isMPGO || displayNewActivity
+          ? AbiliaIcons.plus
+          : AbiliaIcons.stopWatch,
+      title: Config.isMPGO || displayNewTimer && displayNewActivity
+          ? t.add
+          : displayNewActivity
+              ? t.newActivity
+              : t.newTimer,
     );
   }
 

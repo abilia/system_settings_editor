@@ -345,9 +345,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(
-        Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
-      ));
+      await tester.tap(find.byKey(TestKey.addActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
@@ -387,9 +385,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(
-        Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
-      ));
+      await tester.tap(find.byKey(TestKey.addActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();

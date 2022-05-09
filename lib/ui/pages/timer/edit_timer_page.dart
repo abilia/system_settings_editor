@@ -17,8 +17,10 @@ class EditTimerPage extends StatelessWidget {
       child: BlocBuilder<EditTimerCubit, EditTimerState>(
         builder: (context, state) => Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar:
-              AbiliaAppBar(iconData: AbiliaIcons.stopWatch, title: t.newTimer),
+          appBar: AbiliaAppBar(
+            iconData: AbiliaIcons.stopWatch,
+            title: t.newTimer,
+          ),
           body: Padding(
             padding: layout.templates.m3,
             child: Column(
@@ -41,7 +43,7 @@ class EditTimerPage extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: PreviousButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: Navigator.of(context).pop,
             ),
             forwardNavigationWidget: StartButton(
               onPressed: state.duration.inMinutes > 0
@@ -49,9 +51,7 @@ class EditTimerPage extends StatelessWidget {
                   : () => showViewDialog(
                         context: context,
                         builder: (context) => ErrorDialog(
-                          text: Translator.of(context)
-                              .translate
-                              .timerInvalidDuration,
+                          text: t.timerInvalidDuration,
                         ),
                       ),
             ),

@@ -1,6 +1,5 @@
 import 'package:uuid/uuid.dart';
 import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class AbiliaTimer extends Event {
   @override
@@ -35,18 +34,6 @@ class AbiliaTimer extends Event {
         fileId: fileId ?? '',
         startTime: startTime,
         duration: duration,
-      );
-
-  factory AbiliaTimer.fromBasicTimer({
-    required BasicTimerDataItem basicTimer,
-    required DateTime startTime,
-  }) =>
-      AbiliaTimer(
-        id: const Uuid().v4(),
-        title: basicTimer.basicTimerTitle,
-        fileId: basicTimer.fileId,
-        startTime: startTime,
-        duration: basicTimer.duration.milliseconds(),
       );
 
   @override

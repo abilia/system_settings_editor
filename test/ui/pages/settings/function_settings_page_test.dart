@@ -330,12 +330,9 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      if (Config.isMPGO) {
-        expect(find.byKey(TestKey.addButtonMPGO), findsOneWidget);
-      } else {
-        expect(find.byKey(TestKey.addActivityButton), findsNothing);
-      }
-    });
+      expect(find.byKey(TestKey.addActivityButton), findsNothing);
+      expect(find.byKey(TestKey.addTimerButton), findsOneWidget);
+    }, skip: !Config.isMP);
 
     testWidgets('hides AddTimer Button in bottomBar', (tester) async {
       // Arrange
@@ -351,12 +348,9 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      if (Config.isMPGO) {
-        expect(find.byKey(TestKey.addButtonMPGO), findsOneWidget);
-      } else {
-        expect(find.byKey(TestKey.addTimerButton), findsNothing);
-      }
-    });
+      expect(find.byKey(TestKey.addActivityButton), findsOneWidget);
+      expect(find.byKey(TestKey.addTimerButton), findsNothing);
+    }, skip: !Config.isMP);
 
     testWidgets('hides AddActivity and AddTimer Button in bottomBar',
         (tester) async {
@@ -373,12 +367,8 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      if (Config.isMPGO) {
-        expect(find.byKey(TestKey.addButtonMPGO), findsNothing);
-      } else {
-        expect(find.byKey(TestKey.addActivityButton), findsNothing);
-        expect(find.byKey(TestKey.addTimerButton), findsNothing);
-      }
+      expect(find.byKey(TestKey.addActivityButton), findsNothing);
+      expect(find.byKey(TestKey.addTimerButton), findsNothing);
     });
 
     testWidgets('hides Menu Button in bottomBar', (tester) async {

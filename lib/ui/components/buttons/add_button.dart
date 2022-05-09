@@ -16,13 +16,13 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, settingsState) {
-        final configuration = _configuration(
-          settingsState.displayNewActivity,
-          settingsState.displayNewTimer,
-        );
-
+    return BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+        _addButtonConfiguration>(
+      selector: (state) => _configuration(
+        state.displayNewActivity,
+        state.displayNewTimer,
+      ),
+      builder: (context, configuration) {
         switch (configuration) {
           case _addButtonConfiguration.none:
             return SizedBox(width: layout.actionButton.size);
@@ -43,8 +43,7 @@ class AddButton extends StatelessWidget {
     bool displayNewActivity,
     bool displayNewTimer,
   ) {
-    final configuration = _configuration(displayNewActivity, displayNewTimer);
-    switch (configuration) {
+    switch (_configuration(displayNewActivity, displayNewTimer)) {
       case _addButtonConfiguration.none:
       case _addButtonConfiguration.mpGo:
       case _addButtonConfiguration.onlyNewActivity:
@@ -63,15 +62,14 @@ class AddButton extends StatelessWidget {
       return displayNewActivity || displayNewTimer
           ? _addButtonConfiguration.mpGo
           : _addButtonConfiguration.none;
-    } else {
-      return displayNewActivity && displayNewTimer
-          ? _addButtonConfiguration.newActivityAndNewTimer
-          : displayNewActivity
-              ? _addButtonConfiguration.onlyNewActivity
-              : displayNewTimer
-                  ? _addButtonConfiguration.onlyNewTimer
-                  : _addButtonConfiguration.none;
     }
+    return displayNewActivity && displayNewTimer
+        ? _addButtonConfiguration.newActivityAndNewTimer
+        : displayNewActivity
+            ? _addButtonConfiguration.onlyNewActivity
+            : displayNewTimer
+                ? _addButtonConfiguration.onlyNewTimer
+                : _addButtonConfiguration.none;
   }
 }
 
@@ -83,7 +81,7 @@ class _AddButtonMPGO extends StatelessWidget {
     return TextAndOrIconActionButtonLight(
       Translator.of(context).translate.activity,
       AbiliaIcons.plus,
-      key: TestKey.addButtonMPGO,
+      key: TestKey.addActivityButton,
       onPressed: () => _navigateToCreateNewPage(context: context),
     );
   }
