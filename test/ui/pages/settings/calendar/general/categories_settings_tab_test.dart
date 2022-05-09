@@ -633,9 +633,7 @@ void main() {
       await mockNetworkImages(() async {
         // Act
         await tester.pumpApp();
-        await tester.tap(find.byKey(
-          Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
-        ));
+        await tester.tap(find.byKey(TestKey.addActivityButton));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.newActivityChoice));
         await tester.pumpAndSettle();

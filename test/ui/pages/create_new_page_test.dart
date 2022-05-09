@@ -28,11 +28,9 @@ void main() {
   final editActivityButtonFinder = find.byIcon(AbiliaIcons.edit);
   final editTitleFieldFinder = find.byKey(TestKey.editTitleTextFormField);
   final saveEditActivityButtonFinder = find.byType(NextWizardStepButton);
-  final addActivityButtonFinder = find.byKey(
-    Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addActivityButton,
-  );
+  final addActivityButtonFinder = find.byKey(TestKey.addActivityButton);
   final addTimerButtonFinder = find.byKey(
-    Config.isMPGO ? TestKey.addButtonMPGO : TestKey.addTimerButton,
+    Config.isMPGO ? TestKey.addActivityButton : TestKey.addTimerButton,
   );
 
   final translate = Locales.language.values.first;
@@ -1050,7 +1048,8 @@ void main() {
         expect(find.text(const Duration(milliseconds: 60000).toHMSorMS()),
             findsOneWidget);
 
-        await tester.tap(find.byKey(TestKey.startBasicTimerButton));
+        await tester
+            .tap(find.widgetWithIcon(IconAndTextButton, AbiliaIcons.playSound));
         await tester.pumpAndSettle();
         expect(find.byType(TimerPage), findsOneWidget);
         expect(find.text(title), findsOneWidget);
