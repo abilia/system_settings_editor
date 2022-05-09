@@ -6,7 +6,7 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
-  Sortable<SortableData>,
+  Sortable<T>,
   GestureTapCallback,
   SortableToolbar,
   bool,

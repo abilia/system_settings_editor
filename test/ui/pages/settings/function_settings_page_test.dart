@@ -330,7 +330,45 @@ void main() {
       await tester.pumpApp();
       // Assert
       expect(find.byType(CalendarBottomBar), findsOneWidget);
-      expect(find.byType(AddButton), findsNothing);
+      expect(find.byKey(TestKey.addActivityButton), findsNothing);
+      expect(find.byKey(TestKey.addTimerButton), findsOneWidget);
+    }, skip: !Config.isMP);
+
+    testWidgets('hides AddTimer Button in bottomBar', (tester) async {
+      // Arrange
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
+          ),
+        ),
+      ];
+      // Act
+      await tester.pumpApp();
+      // Assert
+      expect(find.byType(CalendarBottomBar), findsOneWidget);
+      expect(find.byKey(TestKey.addActivityButton), findsOneWidget);
+      expect(find.byKey(TestKey.addTimerButton), findsNothing);
+    }, skip: !Config.isMP);
+
+    testWidgets('hides AddActivity and AddTimer Button in bottomBar',
+        (tester) async {
+      // Arrange
+      generics = [
+        MemoplannerSettings.functionMenuDisplayNewActivityKey,
+        MemoplannerSettings.functionMenuDisplayNewTimerKey,
+      ].map(
+        (id) => Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(data: false, identifier: id),
+        ),
+      );
+      // Act
+      await tester.pumpApp();
+      // Assert
+      expect(find.byType(CalendarBottomBar), findsOneWidget);
+      expect(find.byKey(TestKey.addActivityButton), findsNothing);
+      expect(find.byKey(TestKey.addTimerButton), findsNothing);
     });
 
     testWidgets('hides Menu Button in bottomBar', (tester) async {
@@ -444,6 +482,7 @@ void main() {
         MemoplannerSettings.functionMenuDisplayMonthKey,
         MemoplannerSettings.functionMenuDisplayWeekKey,
         MemoplannerSettings.functionMenuDisplayNewActivityKey,
+        MemoplannerSettings.functionMenuDisplayNewTimerKey,
         MemoplannerSettings.functionMenuDisplayMenuKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(
@@ -463,6 +502,7 @@ void main() {
         MemoplannerSettings.functionMenuDisplayMonthKey,
         MemoplannerSettings.functionMenuDisplayWeekKey,
         MemoplannerSettings.functionMenuDisplayNewActivityKey,
+        MemoplannerSettings.functionMenuDisplayNewTimerKey,
         MemoplannerSettings.functionMenuDisplayMenuKey,
       ].map(
         (id) => Generic.createNew<MemoplannerSettingData>(

@@ -78,7 +78,6 @@ class TimerCard extends StatelessWidget {
                       child: Padding(
                         padding: layout.eventCard.titlePadding,
                         child: Stack(
-                          alignment: Alignment.bottomLeft,
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
@@ -88,7 +87,12 @@ class TimerCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            TimeLeft(timerOccasion),
+                            Align(
+                              alignment: timerOccasion.timer.hasTitle
+                                  ? Alignment.bottomLeft
+                                  : Alignment.centerLeft,
+                              child: TimeLeft(timerOccasion),
+                            ),
                           ],
                         ),
                       ),

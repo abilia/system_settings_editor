@@ -9,12 +9,14 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final ItemSelected<T>? onTapEdit;
+  final bool selectableItems;
 
   const ListLibrary({
     Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
     this.onTapEdit,
+    this.selectableItems = true,
   }) : super(key: key);
 
   @override
@@ -57,10 +59,12 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                 ? context
                                     .read<SortableArchiveCubit<T>>()
                                     .folderChanged(sortable.id)
-                                : context
-                                    .read<SortableArchiveCubit<T>>()
-                                    .sortableSelected(
-                                        selected ? null : sortable),
+                                : selectableItems
+                                    ? context
+                                        .read<SortableArchiveCubit<T>>()
+                                        .sortableSelected(
+                                            selected ? null : sortable)
+                                    : {},
                             SortableToolbar(
                               disableUp: index == 0,
                               disableDown: index == content.length - 1,

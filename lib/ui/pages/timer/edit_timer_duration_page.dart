@@ -8,10 +8,10 @@ String _pad0(String s) => s.padLeft(2, '0');
 const _textSelection = TextSelection(baseOffset: 0, extentOffset: 2);
 const _emptyPattern = '00';
 
-class EditTimerByTypingPage extends StatelessWidget {
+class EditTimerDurationPage extends StatelessWidget {
   final Duration initialDuration;
 
-  const EditTimerByTypingPage({
+  const EditTimerDurationPage({
     Key? key,
     this.initialDuration = Duration.zero,
   }) : super(key: key);

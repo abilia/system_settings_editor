@@ -25,6 +25,7 @@ class GoToNowButton extends StatelessWidget {
                     onPressed: () =>
                         context.read<ScrollPositionCubit>().goToNow(),
                     style: actionIconTextButtonStyleRed,
+                    padding: EdgeInsets.zero,
                   ),
                 )
               : null,

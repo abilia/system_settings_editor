@@ -35,8 +35,10 @@ abstract class MemoplannerSettingsState extends Equatable {
       displayMenu ||
       displayNewActivity ||
       displayMonthCalendar ||
-      displayWeekCalendar;
+      displayWeekCalendar ||
+      displayNewTimer;
   bool get displayNewActivity => settings.functionMenuDisplayNewActivity;
+  bool get displayNewTimer => settings.functionMenuDisplayNewTimer;
   bool get displayMenu =>
       settings.functionMenuDisplayMenu && !settings.menu.allDisabled;
   bool get useScreensaver => settings.useScreensaver;

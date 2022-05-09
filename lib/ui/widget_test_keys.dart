@@ -52,10 +52,13 @@ class TestKey {
       checkDialogCancelButton = Key('checkDialogCancelButton'),
       cameraPickField = Key('cameraPickField'),
       photosPickField = Key('photosPickField'),
+      addActivityButton = Key('addActivityButton'),
+      addTimerButton = Key('addTimerButton'),
       newActivityChoice = Key('newActivityChoice'),
       basicActivityChoice = Key('basicActivityChoice'),
       basicTimerChoice = Key('basicTimerChoice'),
       newTimerChoice = Key('newTimerChoice'),
+      timerNameText = Key('timerNameText'),
       nonCheckableAlarmSelector = Key('nonCheckableAlarmSelector'),
       checkableAlarmSelector = Key('checkableAlarmSelector'),
       reminderAlarmSelector = Key('reminderAlarmSelector'),
@@ -102,5 +105,6 @@ class TestKey {
       photoCalendarTab = Key('photoCalendarTab'),
       allPhotosTabButton = Key('allPhotosTabButton'),
       allPhotosTab = Key('allPhotosTab'),
-      timerAlarmSelector = Key('timerAlarmSelector');
+      timerAlarmSelector = Key('timerAlarmSelector'),
+      basicTimerLibraryFolder = Key('basicTimerLibraryFolder');
 }

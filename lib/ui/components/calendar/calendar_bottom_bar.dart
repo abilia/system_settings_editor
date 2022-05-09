@@ -38,10 +38,7 @@ class CalendarBottomBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                if (settingsState.displayNewActivity)
-                  const AddButton()
-                else
-                  SizedBox(width: layout.actionButton.size),
+                const AddButton(),
                 if (!settingsState.displayOnlyDayCalendar)
                   AbiliaTabs(
                     tabs: tabItems,
@@ -69,10 +66,21 @@ class CalendarBottomBar extends StatelessWidget {
                     AbiliaIcons.day,
                     tabIndex: 0,
                   ),
-                if (settingsState.displayMenu)
-                  MenuButton(tabIndex: tabItems.length)
-                else
-                  SizedBox(width: layout.actionButton.size),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: AddButton.width(
+                            settingsState.displayNewActivity,
+                            settingsState.displayNewTimer,
+                          ) -
+                          (settingsState.displayMenu
+                              ? layout.actionButton.size
+                              : 0),
+                    ),
+                    if (settingsState.displayMenu)
+                      MenuButton(tabIndex: tabItems.length),
+                  ],
+                ),
               ],
             ),
           ),
