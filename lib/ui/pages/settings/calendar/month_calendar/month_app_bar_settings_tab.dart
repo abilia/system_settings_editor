@@ -1,5 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class MonthAppBarSettingsTab extends StatelessWidget {
   const MonthAppBarSettingsTab({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class _MonthAppBarPreview extends StatelessWidget {
           showBrowseButtons: state.browseButtons,
           showClock: state.clock,
           rows: AppBarTitleRows.month(
+            selectedDay: currentTime.onlyDays(),
             currentTime: currentTime,
             langCode: Localizations.localeOf(context).toLanguageTag(),
             showYear: state.year,

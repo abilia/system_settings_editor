@@ -43,35 +43,38 @@ class MonthAppBarStepper extends StatelessWidget
       buildWhen: (previous, current) =>
           previous.firstDay != current.firstDay ||
           previous.occasion != current.occasion,
-      builder: (context, state) => CalendarAppBar(
-        day: state.firstDay,
-        calendarDayColor: DayColor.noColors,
-        rows: AppBarTitleRows.month(
-          currentTime: state.firstDay,
-          langCode: Localizations.localeOf(context).toLanguageTag(),
-          showYear: showYear,
+      builder: (context, state) => BlocBuilder<DayPickerBloc, DayPickerState>(
+        builder: (context, daypickerState) => CalendarAppBar(
+          day: state.firstDay,
+          calendarDayColor: DayColor.noColors,
+          rows: AppBarTitleRows.month(
+            selectedDay: daypickerState.day,
+            currentTime: state.firstDay,
+            langCode: Localizations.localeOf(context).toLanguageTag(),
+            showYear: showYear,
+          ),
+          leftAction: showBrowseButtons
+              ? IconActionButton(
+                  onPressed: () =>
+                      context.read<MonthCalendarCubit>().goToPreviousMonth(),
+                  child: const Icon(AbiliaIcons.returnToPreviousPage),
+                )
+              : null,
+          showClock: showClock,
+          clockReplacement: state.occasion != Occasion.current
+              ? GoToCurrentActionButton(
+                  onPressed: () =>
+                      context.read<MonthCalendarCubit>().goToCurrentMonth(),
+                )
+              : null,
+          rightAction: showBrowseButtons
+              ? IconActionButton(
+                  onPressed: () =>
+                      context.read<MonthCalendarCubit>().goToNextMonth(),
+                  child: const Icon(AbiliaIcons.goToNextPage),
+                )
+              : null,
         ),
-        leftAction: showBrowseButtons
-            ? IconActionButton(
-                onPressed: () =>
-                    context.read<MonthCalendarCubit>().goToPreviousMonth(),
-                child: const Icon(AbiliaIcons.returnToPreviousPage),
-              )
-            : null,
-        showClock: showClock,
-        clockReplacement: state.occasion != Occasion.current
-            ? GoToCurrentActionButton(
-                onPressed: () =>
-                    context.read<MonthCalendarCubit>().goToCurrentMonth(),
-              )
-            : null,
-        rightAction: showBrowseButtons
-            ? IconActionButton(
-                onPressed: () =>
-                    context.read<MonthCalendarCubit>().goToNextMonth(),
-                child: const Icon(AbiliaIcons.goToNextPage),
-              )
-            : null,
       ),
     );
   }
