@@ -33,13 +33,13 @@ We will roughly follow the following branching model: [a-successful-git-branchin
 
 There are two main branches in the repository: master and release.
 
-Each commit to the master branch should create and distribute an alpha version for internal testing on both platforms. The version number should always contain the suffix -alpha.
+Each commit to the master branch should create and distribute an dev version for internal testing on both platforms.
 
-Each commit to the release branch should create a release candidate and should distribute a (none alpha/beta) version for testing
+Each commit to the release branch should create a release candidate and should distribute a new version for testing
 
 ## Flow
 
-When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the master branch. A new alpha version is built from master. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
+When starting implementing a story a new branch is created that starts with the story id of the JIRA story. The story is then reviewed and merged to the master branch. A new dev version is built from master. If the story fails testing it is moved back to in progress and a new branch is created that fixes the bugs found in test. When the story pass test it is moved do done.
 
 Squash commits for feature branches are permitted if there are trivial commits that clutter the history. Developer or reviewer can suggest squash, and it should be agreed on by both parties.
 
@@ -53,23 +53,19 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 ### Creating the release candidate
 
-The master branch is then merged to the release branch and at the same time the suffix is change to rc.1 in [version.dart](https://github.com/abilia/seagull/blob/master/lib/version.dart)
+The master branch is then merged to the release branch.
 
-[major].[minor].[patch]-rc.1
-
-After first release candidate the version in the master branch should be increased to the next major or minor version but still containing the -alpha suffix.
+After first release candidate the version in the master branch should be increased to the next major or minor version.
 
 ### Fixes in release candidate
 
 [patch] should only be increased on released version fix-ups/bug fixes in a release version.
 
-For each new commit to release branch, the release candidate number should increase by 1, e.g. 1.1.0-rc.2
-
 Each fix to the release branch should be merged into the master branch.
 
 ### Releasing the app
 
-Once a release is created, a new commit is created in the release branch removing the -rc.[x] part of the version name, this is the only commit that will not be merge into master branch. This commit is also tagged with the version number.
+Once a release is created the last commit is tagged with the version number.
 
 ## Translations
 

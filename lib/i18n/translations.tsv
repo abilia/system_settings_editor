@@ -97,7 +97,8 @@ timerPaused	Paused	Pausad
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
 							
-### Activity related							
+### Activity related
+activity	Activity	Aktivitet
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 
 abstract class BasicTimerData extends SortableData {}
@@ -65,6 +66,18 @@ class BasicTimerDataFolder extends BasicTimerData {
       fileId: sortableData['fileId'] ?? '',
     );
   }
+
+  @visibleForTesting
+  factory BasicTimerDataFolder.createNew({
+    String? name,
+    String? icon,
+    String? fileId,
+  }) =>
+      BasicTimerDataFolder._(
+        name: name ?? '',
+        icon: icon ?? '',
+        fileId: fileId ?? '',
+      );
 
   @override
   String dataFileId() => fileId;

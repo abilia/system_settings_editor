@@ -57,6 +57,7 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayWeekKey = 'function_menu_display_week',
       functionMenuDisplayMonthKey = 'function_menu_display_month',
       functionMenuDisplayNewActivityKey = 'function_menu_display_new_activity',
+      functionMenuDisplayNewTimerKey = 'function_menu_display_new_timer',
       functionMenuDisplayMenuKey = 'function_menu_display_menu',
       activityTimeoutKey = 'activity_timeout',
       useScreensaverKey = 'use_screensaver',
@@ -98,6 +99,7 @@ class MemoplannerSettings extends Equatable {
       functionMenuDisplayWeek,
       functionMenuDisplayMonth,
       functionMenuDisplayNewActivity,
+      functionMenuDisplayNewTimer,
       functionMenuDisplayMenu,
       useScreensaver,
       imageMenuDisplayPhotoItem,
@@ -186,6 +188,7 @@ class MemoplannerSettings extends Equatable {
     this.functionMenuDisplayWeek = true,
     this.functionMenuDisplayMonth = true,
     this.functionMenuDisplayNewActivity = true,
+    this.functionMenuDisplayNewTimer = true,
     this.functionMenuDisplayMenu = true,
     this.activityTimeout = 0,
     this.useScreensaver = false,
@@ -302,6 +305,9 @@ class MemoplannerSettings extends Equatable {
       ),
       functionMenuDisplayNewActivity: settings.getBool(
         functionMenuDisplayNewActivityKey,
+      ),
+      functionMenuDisplayNewTimer: settings.getBool(
+        functionMenuDisplayNewTimerKey,
       ),
       functionMenuDisplayMenu: settings.getBool(
         functionMenuDisplayMenuKey,
@@ -456,6 +462,7 @@ class MemoplannerSettings extends Equatable {
         functionMenuDisplayWeek,
         functionMenuDisplayMonth,
         functionMenuDisplayNewActivity,
+        functionMenuDisplayNewTimer,
         functionMenuDisplayMenu,
         activityTimeout,
         useScreensaver,

@@ -267,6 +267,23 @@ void main() {
       expect(find.text('30 August 2020'), findsOneWidget);
     });
 
+    testWidgets(
+        'tapping specific day from month view on second time goes back to that day calendar',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('30'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('30'));
+      await tester.pumpAndSettle();
+      expect(find.byType(DayAppBar), findsOneWidget);
+      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.text('Sunday'), findsOneWidget);
+      expect(find.text('30 August 2020'), findsOneWidget);
+    });
+
     testWidgets('Shows activity in the preview', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();

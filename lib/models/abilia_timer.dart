@@ -1,5 +1,5 @@
-import 'package:seagull/models/all.dart';
 import 'package:uuid/uuid.dart';
+import 'package:seagull/models/all.dart';
 
 class AbiliaTimer extends Event {
   @override

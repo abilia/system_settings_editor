@@ -245,7 +245,10 @@ class MonthDayView extends StatelessWidget {
               .format(day.day),
       child: GestureDetector(
         onTap: () {
-          BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
+          final currentDay = context.read<DayPickerBloc>().state.day;
+          currentDay.isAtSameDay(day.day)
+              ? DefaultTabController.of(context)?.animateTo(0)
+              : BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
             builder: (context, dayPickerState) {
@@ -406,8 +409,12 @@ class MonthDayViewCompact extends StatelessWidget {
           DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
               .format(day.day),
       child: GestureDetector(
-        onTap: () =>
-            BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day)),
+        onTap: () {
+          final currentDay = context.read<DayPickerBloc>().state.day;
+          currentDay.isAtSameDay(day.day)
+              ? DefaultTabController.of(context)?.animateTo(0)
+              : BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
+        },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
             builder: (context, dayPickerState) {
           final dayIsHighlighted =

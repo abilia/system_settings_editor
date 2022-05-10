@@ -970,7 +970,7 @@ class ComponentsLayout {
 }
 
 class PickFieldLayout {
-  final double height;
+  final double height, verticalDistanceText;
   final Size leadingSize;
   final EdgeInsets padding, leadingPadding, imagePadding;
 
@@ -980,6 +980,7 @@ class PickFieldLayout {
     this.padding = const EdgeInsets.only(left: 12, right: 12),
     this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
     this.leadingPadding = const EdgeInsets.only(right: 12),
+    this.verticalDistanceText = 8,
   });
 }
 
@@ -1093,12 +1094,14 @@ class RadioLayout {
 }
 
 class SelectPictureLayout {
-  final double imageSize, padding;
+  final double imageSize, imageSizeLarge, padding, paddingLarge;
   final EdgeInsets removeButtonPadding;
 
   const SelectPictureLayout({
     this.imageSize = 84,
+    this.imageSizeLarge = 119,
     this.padding = 4,
+    this.paddingLarge = 5.67,
     this.removeButtonPadding = const EdgeInsets.fromLTRB(8, 6, 8, 6),
   });
 }
@@ -1109,7 +1112,11 @@ class TimeInputLayout {
       amPmHeight,
       amPmWidth,
       timeDashAlignValue,
-      amPmDistance;
+      amPmDistance,
+      inputKeyboardDistance,
+      keyboardButtonHeight,
+      keyboardButtonWidth,
+      keyboardButtonPadding;
   final EdgeInsets headerClockPadding;
 
   const TimeInputLayout({
@@ -1119,7 +1126,11 @@ class TimeInputLayout {
     this.amPmWidth = 59,
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
+    this.inputKeyboardDistance = 44,
     this.headerClockPadding = const EdgeInsets.only(right: 16),
+    this.keyboardButtonHeight = 48,
+    this.keyboardButtonWidth = 80,
+    this.keyboardButtonPadding = 8,
   });
 }
 
@@ -1341,20 +1352,21 @@ class PermissionsPageLayout {
 }
 
 class EditTimerLayout {
-  final double inputTimeWidth, textToWheelDistance;
-  final EdgeInsets inputTimePadding;
+  final double inputTimeWidth;
+  final EdgeInsets wheelPadding;
 
   const EditTimerLayout({
     this.inputTimeWidth = 120,
-    this.textToWheelDistance = 40,
-    this.inputTimePadding = const EdgeInsets.symmetric(vertical: 38),
+    this.wheelPadding = const EdgeInsets.only(top: 11),
   });
 }
 
 class ButtonLayout {
   final double baseButtonMinHeight, secondaryActionButtonMinSize;
   final Size redButtonMinSize;
-  final EdgeInsets textButtonInsets, redButtonPadding;
+  final EdgeInsets textButtonInsets,
+      actionButtonIconTextPadding,
+      startBasicTimerPadding;
 
   const ButtonLayout({
     this.baseButtonMinHeight = 64,
@@ -1362,7 +1374,9 @@ class ButtonLayout {
     this.secondaryActionButtonMinSize = 40,
     this.textButtonInsets =
         const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-    this.redButtonPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
+    this.actionButtonIconTextPadding =
+        const EdgeInsets.fromLTRB(10, 10, 20, 10),
+    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 4, 4, 4),
   });
 }
 
@@ -1373,7 +1387,7 @@ class ThemeLayout {
   const ThemeLayout({
     this.circleRadius = 24,
     this.inputPadding =
-        const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
   });
 }
 

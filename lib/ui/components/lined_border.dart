@@ -5,12 +5,10 @@ import 'package:seagull/ui/all.dart';
 class LinedBorder extends StatelessWidget {
   final Widget child;
   final GestureTapCallback? onTap;
-  final EdgeInsets padding;
   final bool errorState;
   const LinedBorder({
     Key? key,
     required this.child,
-    required this.padding,
     this.onTap,
     this.errorState = false,
   }) : super(key: key);
@@ -24,7 +22,6 @@ class LinedBorder extends StatelessWidget {
         child: errorState
             ? Container(
                 decoration: errorBoxDecoration,
-                padding: padding,
                 child: child,
               )
             : DottedBorder(
@@ -36,7 +33,7 @@ class LinedBorder extends StatelessWidget {
                 borderType: BorderType.RRect,
                 color: AbiliaColors.white140,
                 radius: radius,
-                padding: padding,
+                padding: const EdgeInsets.all(0),
                 child: child,
               ),
       ),

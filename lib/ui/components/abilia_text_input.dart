@@ -167,9 +167,9 @@ class _DefaultInputPageState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: layout.templates.m1,
+            Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SubHeading(widget.heading),
@@ -204,9 +204,8 @@ class _DefaultInputPageState
                     ],
                   ),
                 ],
-              ),
+              ).pad(layout.templates.m1.copyWith(top: 0, bottom: 0)),
             ),
-            const Spacer(),
             BottomNavigation(
               backNavigationWidget: const CancelButton(),
               forwardNavigationWidget: OkButton(

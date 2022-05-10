@@ -257,8 +257,7 @@ void main() {
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '0133');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0133');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
@@ -311,8 +310,7 @@ void main() {
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '0133');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0133');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
@@ -367,8 +365,7 @@ void main() {
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '0133');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0133');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
@@ -418,8 +415,7 @@ void main() {
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '0333');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0333');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
@@ -484,8 +480,7 @@ void main() {
     // Act -- Change input to new start time
     await tester.tap(timeFieldFinder);
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '0325');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '0325');
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 

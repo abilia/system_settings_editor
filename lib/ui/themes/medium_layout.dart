@@ -334,6 +334,7 @@ class MediumLayout extends Layout {
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
+            verticalDistanceText: 6,
           ),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),
@@ -386,7 +387,9 @@ class MediumLayout extends Layout {
           ),
           selectPicture: const SelectPictureLayout(
             imageSize: 126,
+            imageSizeLarge: 178,
             padding: 6,
+            paddingLarge: 8.48,
             removeButtonPadding: EdgeInsets.fromLTRB(9, 12, 9, 12),
           ),
           timeInput: const TimeInputLayout(
@@ -397,6 +400,10 @@ class MediumLayout extends Layout {
             timeDashAlignValue: 21,
             amPmDistance: 3,
             headerClockPadding: EdgeInsets.only(right: 18),
+            inputKeyboardDistance: 96,
+            keyboardButtonHeight: 88,
+            keyboardButtonWidth: 160,
+            keyboardButtonPadding: 12,
           ),
           recording: const RecordingLayout(
             trackHeight: 6,
@@ -501,20 +508,19 @@ class MediumLayout extends Layout {
           ),
           editTimer: const EditTimerLayout(
             inputTimeWidth: 180,
-            textToWheelDistance: 60,
-            inputTimePadding: EdgeInsets.symmetric(vertical: 57),
+            wheelPadding: EdgeInsets.only(top: 32),
           ),
           button: const ButtonLayout(
-            baseButtonMinHeight: 96,
-            redButtonMinSize: Size(0, 72),
-            secondaryActionButtonMinSize: 60,
-            textButtonInsets:
-                EdgeInsets.symmetric(horizontal: 48, vertical: 30),
-            redButtonPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
-          ),
+              baseButtonMinHeight: 96,
+              redButtonMinSize: Size(0, 72),
+              secondaryActionButtonMinSize: 60,
+              textButtonInsets:
+                  EdgeInsets.symmetric(horizontal: 48, vertical: 30),
+              actionButtonIconTextPadding: EdgeInsets.fromLTRB(15, 15, 30, 15),
+              startBasicTimerPadding: EdgeInsets.fromLTRB(0, 8, 8, 8)),
           theme: const ThemeLayout(
             circleRadius: 36,
-            inputPadding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            inputPadding: EdgeInsets.symmetric(vertical: 21, horizontal: 24),
           ),
           dot: const DotLayout(
             bigDotSize: 42,

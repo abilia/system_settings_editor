@@ -15,6 +15,7 @@ class TimerWheel extends StatefulWidget {
         lengthInMinutes = null,
         paused = false,
         isPast = false,
+        showTimeText = false,
         super(key: key);
 
   const TimerWheel.nonInteractive({
@@ -28,6 +29,7 @@ class TimerWheel extends StatefulWidget {
         finished = false,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
+        showTimeText = true,
         super(key: key);
 
   const TimerWheel.simplified({
@@ -41,6 +43,7 @@ class TimerWheel extends StatefulWidget {
         finished = false,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
+        showTimeText = false,
         super(key: key);
 
   const TimerWheel.finished({
@@ -54,6 +57,7 @@ class TimerWheel extends StatefulWidget {
         lengthInMinutes = length,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
+        showTimeText = true,
         super(key: key);
 
   final TimerWheelStyle style;
@@ -63,6 +67,7 @@ class TimerWheel extends StatefulWidget {
   final bool paused;
   final bool isPast;
   final bool finished;
+  final bool showTimeText;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -100,6 +105,7 @@ class _TimerWheelState extends State<TimerWheel> {
               config: config,
               activeSeconds: widget.activeSeconds,
               finished: widget.finished,
+              showTimeText: widget.showTimeText,
             ),
           ),
         ],
