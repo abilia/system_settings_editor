@@ -19,6 +19,7 @@ class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
         showYear: settingState.monthCaptionShowYear,
         showBrowseButtons: settingState.monthCaptionShowBrowseButtons,
         showClock: settingState.monthCaptionShowClock,
+        showDay: true,
       ),
     );
   }
@@ -29,10 +30,11 @@ class MonthAppBarStepper extends StatelessWidget
   @override
   Size get preferredSize => AbiliaAppBar.size;
 
-  final bool showYear, showBrowseButtons, showClock;
+  final bool showYear, showDay, showBrowseButtons, showClock;
   const MonthAppBarStepper({
     Key? key,
     this.showYear = true,
+    this.showDay = false,
     this.showBrowseButtons = true,
     this.showClock = false,
   }) : super(key: key);
@@ -52,6 +54,7 @@ class MonthAppBarStepper extends StatelessWidget
             currentTime: state.firstDay,
             langCode: Localizations.localeOf(context).toLanguageTag(),
             showYear: showYear,
+            showDay: showDay,
           ),
           leftAction: showBrowseButtons
               ? IconActionButton(
