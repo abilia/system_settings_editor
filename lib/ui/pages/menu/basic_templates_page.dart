@@ -208,10 +208,9 @@ class AddTemplateButton extends StatelessWidget {
 
   void _addNewActivityTemplate(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
-    final currentFolderId = context
-        .read<SortableArchiveCubit<BasicActivityData>>()
-        .state
-        .currentFolderId;
+    final sortableState =
+        context.read<SortableArchiveCubit<BasicActivityData>>().state;
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -231,7 +230,11 @@ class AddTemplateButton extends StatelessWidget {
               create: (context) => TemplateActivityWizardCubit(
                 editActivityCubit: context.read<EditActivityCubit>(),
                 sortableBloc: context.read<SortableBloc>(),
-                folderId: currentFolderId,
+                original: Sortable.createNew(
+                  groupId: sortableState.currentFolderId,
+                  sortOrder: sortableState.currentFolderSorted.firstSortOrder(),
+                  data: BasicActivityDataItem.createNew(),
+                ),
               ),
             ),
           ],
