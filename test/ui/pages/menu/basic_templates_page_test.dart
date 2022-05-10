@@ -222,6 +222,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
+        // No speech on start or speech on end
+        expect(find.byType(RecordSoundWidget), findsNothing);
 
         // add reminder
         await tester.tap(find.byType(ReminderSwitch));
