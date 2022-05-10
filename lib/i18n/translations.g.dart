@@ -236,7 +236,7 @@ abstract class Translated {
 
   final String createActivity = 'New activity';
 
-  final String selectBasicActivity = 'Select Basic activity';
+  final String selectBasicActivity = 'Select basic activity';
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
@@ -285,7 +285,7 @@ abstract class Translated {
 
   final String enterNameForTimer = 'Enter name for timer';
 
-  final String fromBasicTimer = 'From basic bimer';
+  final String fromBasicTimer = 'From basic timer';
 
   final String noBasicTimers = 'You have no basic timers';
 
