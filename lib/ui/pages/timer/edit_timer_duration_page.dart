@@ -1,11 +1,8 @@
-import 'package:flutter/services.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
 
 String _pad0(String s) => s.padLeft(2, '0');
 
-const _textSelection = TextSelection(baseOffset: 0, extentOffset: 2);
 const _emptyPattern = '00';
 
 class EditTimerDurationPage extends StatelessWidget {
@@ -28,99 +25,117 @@ class EditTimerDurationPage extends StatelessWidget {
   }
 }
 
-class _TimerInputContent extends StatelessWidget {
-  final FocusNode minuteFocus = FocusNode()..requestFocus();
+class _TimerInputContent extends StatefulWidget {
   final Duration initialDuration;
 
-  _TimerInputContent({Key? key, required this.initialDuration})
+  const _TimerInputContent({Key? key, required this.initialDuration})
       : super(key: key);
+
+  @override
+  State<_TimerInputContent> createState() => _TimerInputContentState();
+}
+
+class _TimerInputContentState extends State<_TimerInputContent> {
+  final FocusNode minuteFocus = FocusNode()..requestFocus();
+  late final TextEditingController hourController;
+  late final TextEditingController minuteController;
+
+  @override
+  void initState() {
+    super.initState();
+    final duration = widget.initialDuration;
+    final minutes = duration.inMinutes % Duration.minutesPerHour;
+    final hours = duration.inHours;
+    minuteController = TextEditingController(text: _pad0(minutes.toString()));
+    hourController = TextEditingController(text: _pad0(hours.toString()));
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final translate = Translator.of(context).translate;
-    return BlocProvider<_EditTimerCubit>(
-      create: (context) => _EditTimerCubit(initialDuration.inHours,
-          initialDuration.inMinutes % Duration.minutesPerHour),
-      child: BlocBuilder<_EditTimerCubit, _EditTimerState>(
-        builder: (context, state) {
-          return BlocListener<_EditTimerCubit, _EditTimerState>(
-            listener: (context, state) {
-              if (state.hours > 2) {
-                minuteFocus.requestFocus();
-              }
-            },
-            child: Column(
-              children: [
-                Theme(
-                  data: theme.copyWith(
-                      textSelectionTheme: theme.textSelectionTheme.copyWith(
-                        selectionColor: Colors.transparent,
-                      ),
-                      textTheme: theme.textTheme
-                          .copyWith(subtitle1: abiliaTextTheme.headline4)),
-                  child: Padding(
-                    padding: layout.templates.l4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: layout.editTimer.inputTimeWidth,
-                          child: _TimeTextField(
-                              key: TestKey.hours,
-                              header: translate.hours.capitalize(),
-                              text: _pad0(state.hours.toString()),
-                              onChanged: (hours) {
-                                context
-                                    .read<_EditTimerCubit>()
-                                    .updateDuration(hours: int.tryParse(hours));
-                              },
-                              granularityFormatter: _HourInputFormatter()),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(
-                              layout.formPadding.groupHorizontalDistance),
-                          child: DefaultTextStyle(
-                            style: (theme.textTheme.headline5 ?? headline5),
-                            child: const Text(':'),
-                          ),
-                        ),
-                        SizedBox(
-                          width: layout.editTimer.inputTimeWidth,
-                          child: _TimeTextField(
-                            key: TestKey.minutes,
-                            header: translate.minutes.capitalize(),
-                            text: (state.minutes % Duration.minutesPerHour)
-                                .toString(),
-                            focusNode: minuteFocus,
-                            onChanged: (minutes) {
-                              context.read<_EditTimerCubit>().updateDuration(
-                                  minutes: int.tryParse(minutes));
-                            },
-                            granularityFormatter: _MinuteInputFormatter(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+    return Column(
+      children: [
+        const Spacer(),
+        Theme(
+          data: theme.copyWith(
+              textSelectionTheme: theme.textSelectionTheme.copyWith(
+                selectionColor: Colors.transparent,
+              ),
+              textTheme: theme.textTheme
+                  .copyWith(subtitle1: abiliaTextTheme.headline4)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: layout.editTimer.inputTimeWidth,
+                child: _TimeTextField(
+                  key: TestKey.hours,
+                  controller: hourController,
+                  header: translate.hours.capitalize(),
                 ),
-                const Spacer(),
-                BottomNavigation(
-                  backNavigationWidget: const CancelButton(),
-                  forwardNavigationWidget: SaveButton(
-                    onPressed: () => onSave(
-                      context,
-                      state.duration,
-                    ),
-                  ),
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.all(layout.formPadding.groupHorizontalDistance),
+                child: DefaultTextStyle(
+                  style: (theme.textTheme.headline5 ?? headline5),
+                  child: const Text(':'),
                 ),
-              ],
+              ),
+              SizedBox(
+                width: layout.editTimer.inputTimeWidth,
+                child: _TimeTextField(
+                  key: TestKey.minutes,
+                  header: translate.minutes.capitalize(),
+                  focusNode: minuteFocus,
+                  controller: minuteController,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: layout.timeInput.inputKeyboardDistance,
+        ),
+        AbiliaNumPad(delete: () {
+          if (minuteFocus.hasFocus) {
+            minuteController.text =
+                _pad0(minuteController.text.substring(0, 1));
+          } else {
+            hourController.text = _pad0(hourController.text.substring(0, 1));
+          }
+        }, onClear: () {
+          minuteController.text = _emptyPattern;
+          hourController.text = _emptyPattern;
+        }, onNumPress: (v) {
+          if (minuteFocus.hasFocus) {
+            handleMinutes(v);
+          } else {
+            if (handleHours(v)) {
+              minuteFocus.requestFocus();
+            }
+          }
+        }),
+        const Spacer(),
+        BottomNavigation(
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget: SaveButton(
+            onPressed: () => onSave(
+              context,
+              Duration(
+                  hours: int.tryParse(hourController.text) ?? 0,
+                  minutes: int.tryParse(minuteController.text) ?? 0),
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
+  }
+
+  TextEditingController getFocusedController() {
+    return minuteFocus.hasFocus ? minuteController : hourController;
   }
 
   Future<void> onSave(BuildContext context, Duration duration) async {
@@ -135,23 +150,46 @@ class _TimerInputContent extends StatelessWidget {
       );
     }
   }
+
+  void handleMinutes(String v) {
+    final currentValue = minuteController.text;
+    final intVal = int.tryParse(currentValue) ?? 0;
+    final newVal = intVal.toString() + v;
+    final newInt = int.tryParse(newVal) ?? 0;
+    if (newInt > 59) {
+      minuteController.text = _pad0(v);
+    } else {
+      minuteController.text = _pad0(newInt.toString());
+    }
+  }
+
+  bool handleHours(String v) {
+    final currentValue = hourController.text;
+    final intVal = int.tryParse(currentValue);
+    final newVal = intVal.toString() + v;
+    final newInt = int.tryParse(newVal);
+    if (newInt == null) {
+      // Do nothing
+    } else if (newInt > 23) {
+      hourController.text = _pad0(v);
+    } else {
+      hourController.text = _pad0(newInt.toString());
+    }
+    return (int.tryParse(hourController.text) ?? 0) > 2;
+  }
 }
 
 class _TimeTextField extends StatelessWidget {
-  final ValueChanged<String> onChanged;
-  final TextInputFormatter granularityFormatter;
   final String header;
   final FocusNode? focusNode;
-  final String text;
+  final TextEditingController controller;
 
-  const _TimeTextField(
-      {Key? key,
-      required this.text,
-      required this.header,
-      required this.onChanged,
-      this.focusNode,
-      required this.granularityFormatter})
-      : super(key: key);
+  const _TimeTextField({
+    Key? key,
+    required this.header,
+    required this.controller,
+    this.focusNode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -161,23 +199,14 @@ class _TimeTextField extends StatelessWidget {
       children: [
         SubHeading(header),
         TextField(
-          key: key,
           onTap: () => focusNode?.requestFocus(),
+          readOnly: true,
           focusNode: focusNode,
           enableInteractiveSelection: false,
           keyboardType: TextInputType.number,
           showCursor: false,
-          controller: TextEditingController(text: _pad0(text))
-            ..selection = _textSelection,
-          onChanged: (value) => onChanged.call(value),
+          controller: controller,
           textInputAction: TextInputAction.done,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            _EmptyInputFormatter(),
-            _LeadingZeroInputFormatter(),
-            LengthLimitingTextInputFormatter(2),
-            granularityFormatter,
-          ],
           textAlign: TextAlign.center,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
@@ -193,88 +222,5 @@ class _TimeTextField extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _LeadingZeroInputFormatter extends TextInputFormatter {
-  _LeadingZeroInputFormatter();
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final intVal = int.tryParse(newValue.text);
-    if (newValue.text.length == 1 && intVal != null) {
-      if (oldValue.text != _emptyPattern && oldValue.text.startsWith('0')) {
-        return TextEditingValue(
-          text: oldValue.text.substring(1) + newValue.text,
-          selection: _textSelection,
-        );
-      }
-      return TextEditingValue(
-        text: _pad0(newValue.text),
-        selection: _textSelection,
-      );
-    }
-    return newValue;
-  }
-}
-
-class _EmptyInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.isEmpty) {
-      return const TextEditingValue(
-        text: _emptyPattern,
-        selection: _textSelection,
-      );
-    }
-    return newValue;
-  }
-}
-
-class _MinuteInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final intVal = int.tryParse(newValue.text);
-    if (intVal == null || intVal > 59) {
-      return oldValue;
-    }
-    return newValue;
-  }
-}
-
-class _HourInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final intVal = int.tryParse(newValue.text);
-    if (intVal == null || intVal > 23) {
-      return oldValue;
-    }
-    return newValue;
-  }
-}
-
-class _EditTimerCubit extends Cubit<_EditTimerState> {
-  _EditTimerCubit(int hours, int minutes)
-      : super(_EditTimerState(hours, minutes));
-
-  void updateDuration({int? hours, int? minutes}) {
-    emit(state.copyWith(hours, minutes));
-  }
-}
-
-class _EditTimerState {
-  final int hours;
-  final int minutes;
-
-  get duration => Duration(hours: hours, minutes: minutes);
-
-  _EditTimerState(this.hours, this.minutes);
-
-  _EditTimerState copyWith(int? hours, int? minutes) {
-    return _EditTimerState(hours ?? this.hours, minutes ?? this.minutes);
   }
 }
