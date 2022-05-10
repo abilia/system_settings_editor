@@ -113,6 +113,8 @@ void main() {
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
       expect(find.byType(DatePicker), findsNothing);
+      expect(find.byType(CancelButton), findsOneWidget);
+      expect(find.byType(PreviousButton), findsNothing);
 
       await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField),
