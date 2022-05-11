@@ -95,38 +95,6 @@ void main() {
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
   });
 
-  testWidgets('tts', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
-    await tester.pumpAndSettle();
-    await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
-        exact: translate.logout);
-    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
-    await tester.pumpAndSettle();
-    await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
-    await tester.verifyTts(find.text(user.name), exact: user.name);
-    await tester.verifyTts(find.text(user.username), exact: user.username);
-  });
-
-  testWidgets('Tts info page', (WidgetTester tester) async {
-    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(InfoButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(LongPressInfoDialog), findsOneWidget);
-    await tester.verifyTts(find.text(translate.longPressInfoText),
-        exact: translate.longPressInfoText);
-  });
-
-  testWidgets('Tts switched off', (WidgetTester tester) async {
-    when(() => mockSettingsDb.textToSpeech).thenReturn(false);
-    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(InfoButton));
-    await tester.pumpAndSettle();
-    expect(find.byType(LongPressInfoDialog), findsOneWidget);
-    await tester.verifyNoTts(find.text(translate.longPressInfoText));
-  });
-
   testWidgets('About page', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();

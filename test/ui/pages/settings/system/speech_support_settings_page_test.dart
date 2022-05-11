@@ -70,6 +70,13 @@ void main() {
       expect(find.byType(TextToSpeechSwitch), findsOneWidget);
     });
 
+    testWidgets('Tts info page', (WidgetTester tester) async {
+      await tester.goToSpeechSettingsPage();
+      await tester.tap(find.byType(InfoButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(LongPressInfoDialog), findsOneWidget);
+    });
+
     testWidgets('When TTS setting false, no other options should be available',
         (tester) async {
       when(() => settingsDb.textToSpeech).thenAnswer((_) => false);
