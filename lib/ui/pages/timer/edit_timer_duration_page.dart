@@ -2,7 +2,6 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/strings.dart';
 
 String _pad0(String s) => s.padLeft(2, '0');
-
 const _emptyPattern = '00';
 
 class EditTimerDurationPage extends StatelessWidget {
@@ -100,22 +99,19 @@ class _TimerInputContentState extends State<_TimerInputContent> {
           height: layout.timeInput.inputKeyboardDistance,
         ),
         AbiliaNumPad(delete: () {
-          if (minuteFocus.hasFocus) {
-            minuteController.text =
-                _pad0(minuteController.text.substring(0, 1));
-          } else {
-            hourController.text = _pad0(hourController.text.substring(0, 1));
-          }
+          final controller = _activeController();
+          controller.text = _pad0(controller.text.substring(0, 1));
         }, onClear: () {
           minuteController.text = _emptyPattern;
           hourController.text = _emptyPattern;
         }, onNumPress: (v) {
-          if (minuteFocus.hasFocus) {
-            handleMinutes(v);
-          } else {
-            if (handleHours(v)) {
-              minuteFocus.requestFocus();
-            }
+          final controller = _activeController();
+          final maxVal = _maxValueForActiveController();
+          final next = _nextVal(controller.text, v, maxVal);
+          controller.text = next;
+          if (!minuteFocus.hasFocus &&
+              (int.tryParse(controller.text) ?? 0) > 2) {
+            minuteFocus.requestFocus();
           }
         }),
         const Spacer(),
@@ -134,8 +130,19 @@ class _TimerInputContentState extends State<_TimerInputContent> {
     );
   }
 
-  TextEditingController getFocusedController() {
+  TextEditingController _activeController() {
     return minuteFocus.hasFocus ? minuteController : hourController;
+  }
+
+  int _maxValueForActiveController() {
+    return minuteFocus.hasFocus ? 59 : 23;
+  }
+
+  String _nextVal(String current, String added, int max) {
+    final intVal = int.tryParse(current) ?? 0;
+    final newVal = intVal.toString() + added;
+    final newInt = int.tryParse(newVal) ?? 0;
+    return newInt > max ? _pad0(added) : _pad0(newInt.toString());
   }
 
   Future<void> onSave(BuildContext context, Duration duration) async {
@@ -149,33 +156,6 @@ class _TimerInputContentState extends State<_TimerInputContent> {
         ),
       );
     }
-  }
-
-  void handleMinutes(String v) {
-    final currentValue = minuteController.text;
-    final intVal = int.tryParse(currentValue) ?? 0;
-    final newVal = intVal.toString() + v;
-    final newInt = int.tryParse(newVal) ?? 0;
-    if (newInt > 59) {
-      minuteController.text = _pad0(v);
-    } else {
-      minuteController.text = _pad0(newInt.toString());
-    }
-  }
-
-  bool handleHours(String v) {
-    final currentValue = hourController.text;
-    final intVal = int.tryParse(currentValue);
-    final newVal = intVal.toString() + v;
-    final newInt = int.tryParse(newVal);
-    if (newInt == null) {
-      // Do nothing
-    } else if (newInt > 23) {
-      hourController.text = _pad0(v);
-    } else {
-      hourController.text = _pad0(newInt.toString());
-    }
-    return (int.tryParse(hourController.text) ?? 0) > 2;
   }
 }
 
