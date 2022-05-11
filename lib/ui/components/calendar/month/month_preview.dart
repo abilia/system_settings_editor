@@ -130,8 +130,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     FullDayStack(
                       key: TestKey.monthPreviewHeaderFullDayStack,
                       numberOfActivities: fullDayActivies,
-                      width: layout
-                          .monthCalendar.monthPreview.headingFullDayActivityWidth,
+                      width: layout.monthCalendar.monthPreview
+                          .headingFullDayActivityWidth,
                       height: layout.monthCalendar.monthPreview
                           .headingFullDayActivityHeight,
                       goToActivitiesListOnTap: true,
@@ -141,8 +141,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     MonthActivityContent(
                       key: TestKey.monthPreviewHeaderActivity,
                       activityDay: activityState.fullDayActivities.first,
-                      width: layout
-                          .monthCalendar.monthPreview.headingFullDayActivityWidth,
+                      width: layout.monthCalendar.monthPreview
+                          .headingFullDayActivityWidth,
                       height: layout.monthCalendar.monthPreview
                           .headingFullDayActivityHeight,
                       goToActivityOnTap: true,
