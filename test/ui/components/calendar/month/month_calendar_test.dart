@@ -415,7 +415,7 @@ void main() {
   });
 
   testWidgets(
-      'SGC-1616 Header contains day when current month is shown. When going to next or previous month, day should not be displayed unless it is selected.',
+      'Header contains current day when current month is shown. When going to next or previous month, day should not be displayed.',
       (WidgetTester tester) async {
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();

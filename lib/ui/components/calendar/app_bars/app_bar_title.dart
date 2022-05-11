@@ -161,17 +161,14 @@ class AppBarTitleRows {
   }
 
   factory AppBarTitleRows.month({
-    required DateTime selectedDay,
     required DateTime currentTime,
+    required DateTime currentDay,
     required String langCode,
     required bool showYear,
-    bool showDay = false,
+    required bool showDay,
   }) {
-    final displayMonthDay = selectedDay.isAtSameMonth(currentTime);
     return AppBarTitleRows._(
-      showDay && displayMonthDay
-          ? DateFormat.EEEE(langCode).format(selectedDay)
-          : '',
+      showDay ? DateFormat.EEEE(langCode).format(currentDay) : '',
       DateFormat.MMMM(langCode).format(currentTime),
       showYear ? DateFormat.y(langCode).format(currentTime) : '',
     );
