@@ -98,7 +98,7 @@ pause	Pause	Pausa
 resume	Continue	Fortsätt					
 							
 ### Activity related
-activity	Activity	Aktivitet
+activity	Activity	Aktivitet	Aktivitet	Activiteit	Aktiviteetti	Aktivität	Aktivitet
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm
@@ -125,9 +125,9 @@ timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 basicTemplates	Basic templates						
-basicActivities	Basic activities	Basaktivitet					
-newBasicActivity	New basic activity	Ny basaktivitet					
-editBasicActivity	Edit basic activity	Ändra basaktivitet					
+basicActivities	Basic activities	Basaktiviteter	Standardaktiviteter	Standaard activiteiten	Perusaktiviteetit	Standardaktivitäten	Standardaktiviteter
+newBasicActivity	New basic activity	Ny basaktivitet	Ny standardaktivitet	Nieuwe standaardactiviteit	Uusi perusaktiviteetti	Neue Standardaktivität	Ny standardaktivitet
+editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivitet	Standaardactiviteit bewerken	Muokkaa perusaktiviteettia	Standardaktivität bearbeiten	Endre standardaktivitet
 enterNameForBasicActivity	Enter name for basic activity						
 timeTo	to	till	til	tot	-	bis	til
 							

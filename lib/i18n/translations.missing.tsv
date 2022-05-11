@@ -5,11 +5,7 @@ timerResume	Do you want to continue the timer?	Vill du fortsätta timern?
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
-activity	Activity	Aktivitet
 basicTemplates	Basic templates						
-basicActivities	Basic activities	Basaktivitet					
-newBasicActivity	New basic activity	Ny basaktivitet					
-editBasicActivity	Edit basic activity	Ändra basaktivitet					
 enterNameForBasicActivity	Enter name for basic activity						
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
