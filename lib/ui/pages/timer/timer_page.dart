@@ -35,12 +35,14 @@ class TimerPage extends StatelessWidget {
                 constraints: const BoxConstraints.expand(),
                 child: Column(
                   children: <Widget>[
-                    TimerTopInfo(timer: timer),
-                    Divider(
-                      height: layout.activityPage.dividerHeight,
-                      endIndent: 0,
-                      indent: layout.activityPage.dividerIndentation,
-                    ),
+                    if (timer.hasTitle || timer.hasImage)
+                      TimerTopInfo(timer: timer),
+                    if (timer.hasTitle || timer.hasImage)
+                      Divider(
+                        height: layout.activityPage.dividerHeight,
+                        endIndent: 0,
+                        indent: layout.activityPage.dividerIndentation,
+                      ),
                     Expanded(
                       child: Padding(
                         padding: layout.timerPage.mainContentPadding,
@@ -117,7 +119,7 @@ class TimerTopInfo extends StatelessWidget {
       child: Padding(
         padding: layout.timerPage.topPadding,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (timer.hasImage)
               Padding(
@@ -128,17 +130,18 @@ class TimerTopInfo extends StatelessWidget {
                   imageFile: timer.image,
                 ),
               ),
-            Expanded(
-              child: Tts(
-                child: Text(
-                  timer.title,
-                  style: themeData.textTheme.headline5,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  textAlign: TextAlign.center,
+            if (timer.hasTitle)
+              Expanded(
+                child: Tts(
+                  child: Text(
+                    timer.title,
+                    style: themeData.textTheme.headline5,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

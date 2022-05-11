@@ -251,7 +251,7 @@ void main() {
     });
 
     testWidgets(
-        'tapping button in preview header goes back to that day calendar',
+        'tapping header area in preview header goes back to that day calendar',
         (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
@@ -259,7 +259,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('30'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(AbiliaIcons.navigationNext));
+      await tester.tap(find.byType(MonthDayPreviewHeading));
       await tester.pumpAndSettle();
       expect(find.byType(DayAppBar), findsOneWidget);
       expect(find.byType(DayCalendar), findsOneWidget);

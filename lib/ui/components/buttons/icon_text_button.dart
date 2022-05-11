@@ -5,6 +5,7 @@ class IconAndTextButton extends StatelessWidget {
   final IconData icon;
   final ButtonStyle style;
   final VoidCallback? onPressed;
+  final EdgeInsets? padding;
 
   const IconAndTextButton({
     Key? key,
@@ -12,6 +13,7 @@ class IconAndTextButton extends StatelessWidget {
     required this.icon,
     required this.style,
     this.onPressed,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class IconAndTextButton extends StatelessWidget {
         style: style,
         onPressed: onPressed,
         child: Padding(
-          padding: layout.iconTextButton.padding,
+          padding: padding ?? layout.iconTextButton.padding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,

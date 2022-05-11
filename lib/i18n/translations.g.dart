@@ -210,6 +210,8 @@ abstract class Translated {
 
   final String resume = 'Continue';
 
+  final String activity = 'Activity';
+
   final String reminders = 'Reminders';
 
   final String reminder = 'Reminder';
@@ -1142,6 +1144,9 @@ class SV extends Translated {
 
   @override
   final String resume = 'Fortsätt';
+
+  @override
+  final String activity = 'Aktivitet';
 
   @override
   final String reminders = 'Påminnelser';

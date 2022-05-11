@@ -108,75 +108,81 @@ class MonthDayPreviewHeading extends StatelessWidget {
     final previewLayout = layout.monthCalendar.monthPreview;
     return Tts.data(
       data: text,
-      child: Container(
-        padding: previewLayout.headingPadding,
-        height: previewLayout.headingHeight,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: radius),
-          color: Theme.of(context).appBarTheme.backgroundColor,
-        ),
-        child: BlocBuilder<DayEventsCubit, EventsState>(
-          buildWhen: (oldState, newState) =>
-              (oldState is EventsLoaded &&
-                  newState is EventsLoaded &&
-                  oldState.day != newState.day) ||
-              oldState.runtimeType != newState.runtimeType,
-          builder: (context, activityState) {
-            final fullDayActivies =
-                (activityState as EventsLoaded).fullDayActivities.length;
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (fullDayActivies > 0)
-                  CrossOver(
-                    type: CrossOverType.darkSecondary,
-                    applyCross: isPast,
-                    padding: previewLayout.crossOverPadding,
-                    child: (fullDayActivies > 1)
-                        ? FullDayStack(
-                            key: TestKey.monthPreviewHeaderFullDayStack,
-                            numberOfActivities: fullDayActivies,
-                            width: previewLayout.headingFullDayActivityWidth,
-                            height: previewLayout.headingFullDayActivityHeight,
-                            goToActivitiesListOnTap: true,
-                            day: activityState.day,
-                          )
-                        : MonthActivityContent(
-                            key: TestKey.monthPreviewHeaderActivity,
-                            activityDay: activityState.fullDayActivities.first,
-                            width: previewLayout.headingFullDayActivityWidth,
-                            height: previewLayout.headingFullDayActivityHeight,
-                            goToActivityOnTap: true,
-                          ),
-                  ),
-                CrossOver(
-                  applyCross: isPast,
-                  fallbackHeight: previewLayout.dateTextCrossOverSize.height,
-                  fallbackWidth: previewLayout.dateTextCrossOverSize.width,
-                  colorOverride: Theme.of(context).textTheme.subtitle1?.color,
-                  child: Center(
-                    child: Text(
-                      text,
-                      style: Theme.of(context).textTheme.subtitle1,
+      child: GestureDetector(
+        onTap: () => DefaultTabController.of(context)?.animateTo(0),
+        child: Container(
+          padding: previewLayout.headingPadding,
+          height: previewLayout.headingHeight,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(top: radius),
+            color: Theme.of(context).appBarTheme.backgroundColor,
+          ),
+          child: BlocBuilder<DayEventsCubit, EventsState>(
+            buildWhen: (oldState, newState) =>
+                (oldState is EventsLoaded &&
+                    newState is EventsLoaded &&
+                    oldState.day != newState.day) ||
+                oldState.runtimeType != newState.runtimeType,
+            builder: (context, activityState) {
+              final fullDayActivies =
+                  (activityState as EventsLoaded).fullDayActivities.length;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: (fullDayActivies > 0)
+                          ? CrossOver(
+                              type: CrossOverType.darkSecondary,
+                              applyCross: isPast,
+                              padding: previewLayout.crossOverPadding,
+                              child: (fullDayActivies > 1)
+                                  ? FullDayStack(
+                                      key: TestKey
+                                          .monthPreviewHeaderFullDayStack,
+                                      numberOfActivities: fullDayActivies,
+                                      width: previewLayout
+                                          .headingFullDayActivityWidth,
+                                      height: previewLayout
+                                          .headingFullDayActivityHeight,
+                                      goToActivitiesListOnTap: true,
+                                      day: activityState.day,
+                                    )
+                                  : MonthActivityContent(
+                                      key: TestKey.monthPreviewHeaderActivity,
+                                      activityDay:
+                                          activityState.fullDayActivities.first,
+                                      width: previewLayout
+                                          .headingFullDayActivityWidth,
+                                      height: previewLayout
+                                          .headingFullDayActivityHeight,
+                                      goToActivityOnTap: true,
+                                    ),
+                            )
+                          : null,
                     ),
                   ),
-                ),
-                SecondaryActionButton(
-                  onPressed: () =>
-                      DefaultTabController.of(context)?.animateTo(0),
-                  style: isLight
-                      ? secondaryActionButtonStyleLight
-                      : secondaryActionButtonStyleDark,
-                  child: Icon(
-                    AbiliaIcons.navigationNext,
-                    size:
-                        layout.monthCalendar.monthPreview.headingButtonIconSize,
+                  CrossOver(
+                    applyCross: isPast,
+                    fallbackHeight: previewLayout.dateTextCrossOverSize.height,
+                    fallbackWidth: previewLayout.dateTextCrossOverSize.width,
+                    colorOverride: Theme.of(context).textTheme.subtitle1?.color,
+                    child: Center(
+                      child: Text(
+                        text,
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                  const Spacer(),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
