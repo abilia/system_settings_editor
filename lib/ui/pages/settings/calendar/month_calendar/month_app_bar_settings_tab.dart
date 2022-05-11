@@ -51,10 +51,9 @@ class _MonthAppBarPreview extends StatelessWidget {
           showClock: state.clock,
           rows: AppBarTitleRows.month(
             currentTime: currentTime,
-            currentDay: context.read<ClockBloc>().state,
             langCode: Localizations.localeOf(context).toLanguageTag(),
             showYear: state.year,
-            showDay: false,
+            showDay: true,
           ),
         ),
       ),
