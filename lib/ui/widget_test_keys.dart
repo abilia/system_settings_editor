@@ -107,6 +107,4 @@ class TestKey {
       allPhotosTab = Key('allPhotosTab'),
       timerAlarmSelector = Key('timerAlarmSelector'),
       basicTimerLibraryFolder = Key('basicTimerLibraryFolder');
-
-  static Key keyPadNumber(int n) => Key('keyPadNumber$n');
 }

@@ -23,7 +23,6 @@ class AbiliaNumPad extends StatelessWidget {
         children: [
           ...Iterable.generate(9).map(
             (n) => KeyboardNumberButton(
-              key: TestKey.keyPadNumber(n + 1),
               number: '${n + 1}',
               onNumPress: onNumPress,
             ),
@@ -33,7 +32,6 @@ class AbiliaNumPad extends StatelessWidget {
             onPressed: onClear,
           ),
           KeyboardNumberButton(
-            key: TestKey.keyPadNumber(0),
             number: '0',
             onNumPress: onNumPress,
           ),
