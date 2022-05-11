@@ -868,8 +868,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(EditTimerDurationPage), findsOneWidget);
 
-        await tester.enterText(find.byKey(TestKey.minutes), '20');
-        await tester.pumpAndSettle();
+        await tester.enterTime(find.byKey(TestKey.minutes), '20');
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
         expect(find.text('20 minutes'), findsOneWidget);
@@ -968,8 +967,7 @@ void main() {
         expect(find.byType(EditTimerDurationPage), findsOneWidget);
 
         // Setting the timer duration updates the timer name
-        await tester.enterText(find.byKey(TestKey.minutes), '20');
-        await tester.pumpAndSettle();
+        await tester.enterTime(find.byKey(TestKey.minutes), '20');
         await tester.tap(find.byType(SaveButton));
         await tester.pumpAndSettle();
         expect(find.byType(EditTimerPage), findsOneWidget);
