@@ -363,6 +363,40 @@ void main() {
           findsOneWidget);
     });
 
+    testWidgets('Preview header with one past activity shows CrossOver',
+        (WidgetTester tester) async {
+      final activities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: initialDay.subtract(1.days()),
+          fullDay: true,
+          checkable: true,
+          signedOffDates: [time].map(whaleDateFormat),
+        )
+      ];
+      activityResponse = () => activities;
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('${initialDay.day - 1}'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FullDayStack), findsNothing);
+      expect(
+          (find
+                  .ancestor(
+                    of: find.byKey(TestKey.monthPreviewHeaderActivity),
+                    matching: find.byType(CrossOver),
+                  )
+                  .evaluate()
+                  .first
+                  .widget as CrossOver)
+              .applyCross,
+          true);
+    });
+
     testWidgets('Preview header shows many activities',
         (WidgetTester tester) async {
       final activities = [
@@ -385,6 +419,79 @@ void main() {
               of: find.byKey(TestKey.monthPreviewHeaderFullDayStack),
               matching: find.text('+2')),
           findsOneWidget);
+    });
+
+    testWidgets('Preview header with many past activity shows CrossOver',
+        (WidgetTester tester) async {
+      final activities = [
+        Activity.createNew(
+          title: 'title',
+          startTime: initialDay.subtract(1.days()),
+          fullDay: true,
+          checkable: true,
+          signedOffDates: [time].map(whaleDateFormat),
+        ),
+        Activity.createNew(
+          title: 'title 2',
+          startTime: initialDay.subtract(1.days()),
+          fullDay: true,
+          checkable: true,
+          signedOffDates: [time].map(whaleDateFormat),
+        )
+      ];
+      activityResponse = () => activities;
+
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('${initialDay.day - 1}'));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(TestKey.monthPreviewHeaderActivity), findsNothing);
+      expect(
+          (find
+                  .ancestor(
+                    of: find.byKey(TestKey.monthPreviewHeaderFullDayStack),
+                    matching: find.byType(CrossOver),
+                  )
+                  .evaluate()
+                  .first
+                  .widget as CrossOver)
+              .applyCross,
+          true);
+    });
+
+    testWidgets('Past day text has CrossOver', (WidgetTester tester) async {
+      // Arrange
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time.subtract(1.hours()),
+              duration: 30.minutes(),
+              checkable: true,
+              signedOffDates: [time].map(whaleDateFormat),
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('${initialDay.day - 1}'));
+      await tester.pumpAndSettle();
+
+      expect(
+        (find
+                .ancestor(
+                  of: find.byType(Text),
+                  matching: find.byType(CrossOver),
+                )
+                .evaluate()
+                .first
+                .widget as CrossOver)
+            .applyCross,
+        true,
+      );
     });
 
     testWidgets(

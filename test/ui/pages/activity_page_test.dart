@@ -360,15 +360,16 @@ void main() {
 
       // Assert -- is past, crossover showing and no sideDots showing
       expect(
-          tester
-              .widget<AnimatedOpacity>(
-                find.ancestor(
-                  of: find.byType(CrossOver),
-                  matching: find.byType(AnimatedOpacity),
-                ),
-              )
-              .opacity,
-          1.0);
+        tester
+            .widget<AnimatedOpacity>(
+              find.ancestor(
+                of: find.byType(CrossOver),
+                matching: find.byType(AnimatedOpacity),
+              ),
+            )
+            .opacity,
+        1.0,
+      );
       expect(find.byType(SideDotsLarge), findsNothing);
 
       // Act --  edit acvtivity date to today and save
@@ -381,15 +382,16 @@ void main() {
       // Assert -- we are at activity page, cross over is gone and side time dots visible
       expect(activityPageFinder, findsOneWidget);
       expect(
-          tester
-              .widget<AnimatedOpacity>(
-                find.ancestor(
-                  of: find.byType(CrossOver),
-                  matching: find.byType(AnimatedOpacity),
-                ),
-              )
-              .opacity,
-          0.0);
+        tester
+            .widget<AnimatedOpacity>(
+              find.ancestor(
+                of: find.byType(CrossOver),
+                matching: find.byType(AnimatedOpacity),
+              ),
+            )
+            .opacity,
+        0.0,
+      );
       expect(find.byType(SideDotsLarge), findsOneWidget);
     });
   });

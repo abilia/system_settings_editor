@@ -24,10 +24,7 @@ class BasicTimerPickerPage extends StatelessWidget {
           body: SortableLibrary<BasicTimerData>(
             (Sortable<BasicTimerData> s) => s is Sortable<BasicTimerDataItem>
                 ? BasicLibraryItem<BasicTimerData>(sortable: s)
-                : CrossOver(
-                    fallbackHeight: BasicLibraryItem.imageHeight,
-                    fallbackWidth: BasicLibraryItem.imageWidth,
-                  ),
+                : const CrossOver(type: CrossOverType.darkSecondary),
             translate.noBasicTimers,
           ),
           bottomNavigationBar: BottomNavigation(

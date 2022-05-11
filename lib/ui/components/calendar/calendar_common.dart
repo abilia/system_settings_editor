@@ -10,8 +10,7 @@ class FullDayStack extends StatelessWidget {
     this.height,
     this.goToActivitiesListOnTap = false,
     this.day,
-  })  : assert(!(goToActivitiesListOnTap && day == null),
-            'When goToActivitiesListOnTap is true, day must not be null'),
+  })  : assert(!(goToActivitiesListOnTap && day == null)),
         super(key: key);
 
   final int numberOfActivities;

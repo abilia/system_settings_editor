@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
+import 'package:seagull/models/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
@@ -99,14 +100,17 @@ class MonthDayPreviewHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPast = day.occasion(context.read<ClockBloc>().state.onlyDays()) ==
+        Occasion.past;
     final text =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
+    final previewLayout = layout.monthCalendar.monthPreview;
     return Tts.data(
       data: text,
       child: Container(
-        padding: layout.monthCalendar.monthPreview.headingPadding,
-        height: layout.monthCalendar.monthPreview.headingHeight,
+        padding: previewLayout.headingPadding,
+        height: previewLayout.headingHeight,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: radius),
@@ -124,28 +128,40 @@ class MonthDayPreviewHeading extends StatelessWidget {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (fullDayActivies > 1)
-                  FullDayStack(
-                    key: TestKey.monthPreviewHeaderFullDayStack,
-                    numberOfActivities: fullDayActivies,
-                    width: layout
-                        .monthCalendar.monthPreview.headingFullDayActivityWidth,
-                    height: layout.monthCalendar.monthPreview
-                        .headingFullDayActivityHeight,
-                    goToActivitiesListOnTap: true,
-                    day: activityState.day,
-                  )
-                else if (fullDayActivies > 0)
-                  MonthActivityContent(
-                    key: TestKey.monthPreviewHeaderActivity,
-                    activityDay: activityState.fullDayActivities.first,
-                    width: layout
-                        .monthCalendar.monthPreview.headingFullDayActivityWidth,
-                    height: layout.monthCalendar.monthPreview
-                        .headingFullDayActivityHeight,
-                    goToActivityOnTap: true,
+                if (fullDayActivies > 0)
+                  CrossOver(
+                    type: CrossOverType.darkSecondary,
+                    applyCross: isPast,
+                    padding: previewLayout.crossOverPadding,
+                    child: (fullDayActivies > 1)
+                        ? FullDayStack(
+                            key: TestKey.monthPreviewHeaderFullDayStack,
+                            numberOfActivities: fullDayActivies,
+                            width: previewLayout.headingFullDayActivityWidth,
+                            height: previewLayout.headingFullDayActivityHeight,
+                            goToActivitiesListOnTap: true,
+                            day: activityState.day,
+                          )
+                        : MonthActivityContent(
+                            key: TestKey.monthPreviewHeaderActivity,
+                            activityDay: activityState.fullDayActivities.first,
+                            width: previewLayout.headingFullDayActivityWidth,
+                            height: previewLayout.headingFullDayActivityHeight,
+                            goToActivityOnTap: true,
+                          ),
                   ),
-                Text(text, style: Theme.of(context).textTheme.subtitle1),
+                CrossOver(
+                  applyCross: isPast,
+                  fallbackHeight: previewLayout.dateTextCrossOverSize.height,
+                  fallbackWidth: previewLayout.dateTextCrossOverSize.width,
+                  colorOverride: Theme.of(context).textTheme.subtitle1?.color,
+                  child: Center(
+                    child: Text(
+                      text,
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ),
+                ),
                 SecondaryActionButton(
                   onPressed: () =>
                       DefaultTabController.of(context)?.animateTo(0),

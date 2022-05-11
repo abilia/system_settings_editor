@@ -207,10 +207,9 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                           child: BlocBuilder<ClockBloc, DateTime>(
                             buildWhen: (previous, current) =>
                                 !previous.isAtSameDay(current),
-                            builder: (context, now) => WithCrossOver(
-                              color: _bodyText1.color,
-                              crossOverPadding:
-                                  layout.weekCalendar.crossOverPadding,
+                            builder: (context, now) => CrossOver(
+                              colorOverride: _bodyText1.color,
+                              padding: layout.weekCalendar.crossOverPadding,
                               applyCross: day.isBefore(now.onlyDays()),
                               child: Center(
                                 child: Column(
@@ -509,17 +508,19 @@ class WeekActivityContent extends StatelessWidget {
                         ),
                       ),
                     ),
+                  if (activityOccasion.isPast)
+                    FractionallySizedBox(
+                      widthFactor: scaleFactor,
+                      heightFactor: scaleFactor,
+                      child: const CrossOver(
+                        type: CrossOverType.darkSecondary,
+                      ),
+                    ),
                   if (activityOccasion.isSignedOff)
                     FractionallySizedBox(
                       widthFactor: scaleFactor,
                       heightFactor: scaleFactor,
                       child: const CheckMark(),
-                    )
-                  else if (activityOccasion.isPast)
-                    FractionallySizedBox(
-                      widthFactor: scaleFactor,
-                      heightFactor: scaleFactor,
-                      child: const CrossOver(),
                     ),
                 ],
               ),
