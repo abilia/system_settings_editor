@@ -1,10 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/speech_support/speech_settings_cubit.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/system/voices_page.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({Key? key}) : super(key: key);

@@ -5,8 +5,6 @@ import 'package:seagull/models/generic/generic.dart';
 import 'package:seagull/repository/ticker.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/ui/pages/settings/system/speech_support_settings_page.dart';
-import 'package:seagull/ui/pages/settings/system/voices_page.dart';
 
 import '../../../../fakes/all.dart';
 import '../../../../mocks/mocks.dart';

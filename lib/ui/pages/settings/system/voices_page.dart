@@ -21,7 +21,7 @@ class VoicesPage extends StatelessWidget {
         body: ListView(
           children: state.voices.map((VoiceData voice) {
             final name = voice.name;
-            return VoiceRow(
+            return _VoiceRow(
               selected: name == state.selectedVoice,
               voice: voice,
               downloaded: state.downloadedVoices.contains(name),
@@ -46,7 +46,7 @@ class VoicesPage extends StatelessWidget {
   }
 }
 
-class VoiceRow extends StatelessWidget {
+class _VoiceRow extends StatelessWidget {
   final bool keep;
   final bool selected;
   final bool downloaded;
@@ -54,7 +54,7 @@ class VoiceRow extends StatelessWidget {
   final VoiceData voice;
   final String selectedVoice;
 
-  const VoiceRow({
+  const _VoiceRow({
     Key? key,
     this.keep = false,
     required this.selected,
@@ -82,7 +82,7 @@ class VoiceRow extends StatelessWidget {
                   value: voice.name,
                   text: Text('${voice.name}: ${voice.size}MB'),
                 )
-              : DisabledVoiceRow(name: '${voice.name}: ${voice.size}MB'),
+              : _DisabledVoiceRow(name: '${voice.name}: ${voice.size}MB'),
         ),
         CollapsableWidget(
           axis: Axis.horizontal,
@@ -114,7 +114,7 @@ class VoiceRow extends StatelessWidget {
             padding: EdgeInsets.only(
               left: layout.formPadding.largeHorizontalItemDistance,
             ),
-            child: DeleteButton(
+            child: _DeleteButton(
               voice: voice,
               enabled: !keep,
             ).pad(pageLayout.buttonPadding),
@@ -125,8 +125,8 @@ class VoiceRow extends StatelessWidget {
   }
 }
 
-class DeleteButton extends StatelessWidget {
-  const DeleteButton({Key? key, required this.voice, this.enabled = true})
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton({Key? key, required this.voice, this.enabled = true})
       : super(key: key);
 
   final VoiceData voice;
@@ -141,10 +141,10 @@ class DeleteButton extends StatelessWidget {
       : const IconActionButtonLight(child: Icon(AbiliaIcons.deleteAllClear));
 }
 
-class DisabledVoiceRow extends StatelessWidget {
+class _DisabledVoiceRow extends StatelessWidget {
   final String name;
 
-  const DisabledVoiceRow({Key? key, required this.name}) : super(key: key);
+  const _DisabledVoiceRow({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
