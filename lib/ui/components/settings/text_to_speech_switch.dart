@@ -20,7 +20,10 @@ class TextToSpeechSwitch extends StatelessWidget {
             value: settingsState.textToSpeech,
             leading: const Icon(AbiliaIcons.speakText),
             onChanged: onChanged ??
-                (v) => context.read<SettingsCubit>().setTextToSpeech(v),
+                (v) {
+                  context.read<SettingsCubit>().setTextToSpeech(v);
+                  context.read<SettingsCubit>().save();
+                },
             child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),
