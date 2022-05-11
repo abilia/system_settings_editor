@@ -173,34 +173,37 @@ class _TimeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SubHeading(header),
-        TextField(
-          onTap: () => focusNode?.requestFocus(),
-          readOnly: true,
-          focusNode: focusNode,
-          enableInteractiveSelection: false,
-          keyboardType: TextInputType.number,
-          showCursor: false,
-          controller: controller,
-          textInputAction: TextInputAction.done,
-          textAlign: TextAlign.center,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: layout.borders.medium,
+    return Tts.fromSemantics(
+      SemanticsProperties(label: header),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SubHeading(header),
+          TextField(
+            onTap: () => focusNode?.requestFocus(),
+            readOnly: true,
+            focusNode: focusNode,
+            enableInteractiveSelection: false,
+            keyboardType: TextInputType.number,
+            showCursor: false,
+            controller: controller,
+            textInputAction: TextInputAction.done,
+            textAlign: TextAlign.center,
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: borderRadius,
+                borderSide: BorderSide(
+                  color: Colors.black,
+                  width: layout.borders.medium,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
