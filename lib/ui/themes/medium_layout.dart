@@ -306,6 +306,7 @@ class MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+            lineOffset: 3,
           ),
           iconTextButton: const IconTextButtonStyle(
             minimumSize: Size(376, 96),

@@ -45,13 +45,12 @@ class LibraryNote extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             children: <Widget>[
               Lines(
-                lineHeight: content
+                textRenderingSize: content
                     .calulcateTextRenderSize(
                       constraints: constraints,
                       textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )
-                    .scaledLineHeight,
-                numberOfLines: 5,
+                    .copyWith(numberOfLines: 5),
               ),
               Text(
                 content,

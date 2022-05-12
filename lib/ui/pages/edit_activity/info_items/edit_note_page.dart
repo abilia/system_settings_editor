@@ -86,13 +86,10 @@ class _EditNotePageState extends State<EditNotePage> {
                       padding: EditNotePage.padding.add(_bottomPadding),
                       child: Stack(
                         children: <Widget>[
-                          Lines(
-                            lineHeight: textRenderSize.scaledLineHeight,
-                            numberOfLines: textRenderSize.numberOfLines,
-                          ),
+                          Lines(textRenderingSize: textRenderSize),
                           ConstrainedBox(
                             constraints: constraints.copyWith(
-                              maxHeight: textRenderSize.scaledTextHeight,
+                              maxHeight: textRenderSize.textPainter.height,
                             ),
                             child: TextField(
                               key: TestKey.input,
