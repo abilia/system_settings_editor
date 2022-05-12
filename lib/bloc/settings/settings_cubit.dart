@@ -14,8 +14,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     required this.settingsDb,
   }) : super(SettingsState(textToSpeech: settingsDb.textToSpeech));
 
-  Future<void> setTextToSpeech(bool textToSpeech) async {
+  void setTextToSpeech(bool textToSpeech) {
     emit(state.copyWith(textToSpeech: textToSpeech));
+  }
+
+  void reset() {
+    emit(state.copyWith(textToSpeech: settingsDb.textToSpeech));
   }
 
   Future<void> save() async {

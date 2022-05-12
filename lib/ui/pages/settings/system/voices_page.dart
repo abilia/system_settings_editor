@@ -29,6 +29,7 @@ class VoicesPage extends StatelessWidget {
               selectedVoice: state.selectedVoice,
               keep: state.downloadedVoices.length == 1 &&
                   state.downloadedVoices.first == name,
+              firstSelection: initialSelection.isEmpty,
             );
           }).toList(),
         ).pad(layout.speechSupportPage.bottomPadding),
@@ -53,6 +54,7 @@ class _VoiceRow extends StatelessWidget {
   final bool downloading;
   final VoiceData voice;
   final String selectedVoice;
+  final bool firstSelection;
 
   const _VoiceRow({
     Key? key,
@@ -62,6 +64,7 @@ class _VoiceRow extends StatelessWidget {
     this.downloaded = false,
     this.downloading = false,
     required this.selectedVoice,
+    required this.firstSelection,
   }) : super(key: key);
 
   @override
@@ -109,7 +112,7 @@ class _VoiceRow extends StatelessWidget {
         ),
         CollapsableWidget(
           axis: Axis.horizontal,
-          collapsed: downloading || !downloaded,
+          collapsed: downloading || !downloaded || firstSelection,
           child: Padding(
             padding: EdgeInsets.only(
               left: layout.formPadding.largeHorizontalItemDistance,

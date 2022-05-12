@@ -29,6 +29,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
               return ListView(
                 children: [
                   TextToSpeechSwitch(
+                    immediate: false,
                     onChanged: !settingsState.textToSpeech &&
                             state.voice.isEmpty
                         ? (v) => pushVoicesPage(context, locale, state.voice)
@@ -38,8 +39,6 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                     const Divider().pad(dividerPadding),
                     SwitchField(
                       value: state.speakEveryWord,
-                      onChanged: (v) =>
-                          context.read<SettingsCubit>().setTextToSpeech(v),
                       child: Text(t.speakEveryWord),
                     ).pad(defaultPadding),
                     const Divider().pad(dividerPadding),
@@ -77,6 +76,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(
               onPressed: () {
+                context.read<SettingsCubit>().reset();
                 context.read<SpeechSettingsCubit>().reset();
                 Navigator.of(context).maybePop();
               },
