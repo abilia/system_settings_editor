@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:seagull/utils/all.dart';
 import 'package:test/expect.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:seagull/bloc/all.dart';
@@ -28,7 +29,11 @@ void main() {
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
-      folderId: 'a folder',
+      original: Sortable.createNew(
+        groupId: 'a folder',
+        sortOrder: startSortOrder,
+        data: BasicActivityDataItem.createNew(),
+      ),
     ),
     verify: (c) => expect(
       c.state,
@@ -45,7 +50,11 @@ void main() {
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
-      folderId: 'a folder',
+      original: Sortable.createNew(
+        groupId: 'a folder',
+        sortOrder: startSortOrder,
+        data: BasicActivityDataItem.createNew(),
+      ),
     ),
     act: (c) => c.previous(),
     expect: () => [
@@ -62,7 +71,11 @@ void main() {
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
-      folderId: 'some group',
+      original: Sortable.createNew(
+        groupId: 'a folder',
+        sortOrder: startSortOrder,
+        data: BasicActivityDataItem.createNew(),
+      ),
     ),
     act: (c) => c.next(),
     expect: () => [
@@ -87,7 +100,11 @@ void main() {
         calendarId: 'calendarId',
       ),
       sortableBloc: mockSortableBloc,
-      folderId: 'some group',
+      original: Sortable.createNew(
+        groupId: 'some group',
+        sortOrder: 'sort-order',
+        data: BasicActivityDataItem.createNew(),
+      ),
     ),
     act: (c) {
       final a = c.editActivityCubit.state.activity;
@@ -107,6 +124,7 @@ void main() {
       expect(captured, hasLength(1));
       final saved = (captured[0] as SortableUpdated).sortables.first;
       expect(saved.groupId, 'some group');
+      expect(saved.sortOrder, 'sort-order');
       final data = saved.data as BasicActivityDataItem;
       expect(data.name, 'some title');
       expect(data.activityTitle, 'some title');

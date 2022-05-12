@@ -98,7 +98,7 @@ pause	Pause	Pausa
 resume	Continue	Fortsätt					
 							
 ### Activity related
-activity	Activity	Aktivitet
+activity	Activity	Aktivitet	Aktivitet	Activiteit	Aktiviteetti	Aktivität	Aktivitet
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
 alarm	Alarm	Larm	Alarm	Alarm	Hälytys	Alarm	Alarm
@@ -109,9 +109,9 @@ left	Left	Vänster	Venstre	Links	Vasen	Links	Venstre
 right	Right	Höger	Højre	Rechts	Oikea	Rechts	Høyre
 check	Check	Kvittera	Kvittere	Afvinken	Tarkista	Kontrollieren	Kvittere
 undo	Undo	Ångra	Fortryd	Ongedaan maken	Peruuta	Rückgängig	Angre
-fromBasicActivity	From Basic Activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
+fromBasicActivity	From basic activity	Från basaktivitet	Fra standardaktivitet	Uit standaardactiviteit	Perusaktiviteetista	Von Standardaktivität	Fra standardaktivitet
 createActivity	New activity	Ny aktivitet	Ny aktivitet	Nieuwe activiteit	Uusi aktiviteetti	Neue Aktivität	Ny aktivitet
-selectBasicActivity	Select Basic Activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
+selectBasicActivity	Select basic activity	Välj basaktivitet	Vælg standardaktivitet	Standaardactiviteit selecteren	Valitse perusaktiviteetti	Standardaktivität auswählen	Velg standardaktivitet
 deleteActivity	Do you want to delete this activity?	Är du säker på att du vill ta bort aktiviteten?	Er du sikker på, at du vil slette aktiviteten?	Wilt u deze activiteit verwijderen?	Haluatko poistaa tämän aktiviteetin?	Möchten Sie diese Aktivität löschen?	Er du sikker på at du vil slette aktiviteten?
 editRecurringActivity	Edit recurring activity	Ändra återkommande aktivitet	Ændre gentagende aktivitet	Terugkerende activiteit bewerken	Muokkaa toistuvaa aktiviteettia	Wiederkehrende Aktivität bearbeiten	Endre gjentakende aktivitet
 deleteRecurringActivity	Delete recurring activity	Ta bort återkommande aktivitet	Slet gentagende aktivitet	Terugkerende activiteit verwijder	Poista toistuva aktiviteettia	Wiederkehrende Aktivitäten löschen	Slett gjentakende aktivitet
@@ -125,9 +125,10 @@ timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
 basicTemplates	Basic templates						
-basicActivities	Basic Activities						
-newBasicActivity	New Basic Activity						
-editBasicActivity	Edit Basic Activity						
+basicActivities	Basic activities	Basaktiviteter	Standardaktiviteter	Standaard activiteiten	Perusaktiviteetit	Standardaktivitäten	Standardaktiviteter
+newBasicActivity	New basic activity	Ny basaktivitet	Ny standardaktivitet	Nieuwe standaardactiviteit	Uusi perusaktiviteetti	Neue Standardaktivität	Ny standardaktivitet
+editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivitet	Standaardactiviteit bewerken	Muokkaa perusaktiviteettia	Standardaktivität bearbeiten	Endre standardaktivitet
+enterNameForBasicActivity	Enter name for basic activity						
 timeTo	to	till	til	tot	-	bis	til
 							
 ### Timer related							
@@ -136,12 +137,12 @@ newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny ti
 setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					
-fromBasicTimer	From Basic Timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
+fromBasicTimer	From basic timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere
 noBasicTimers	You have no basic timers	Du har inga bastimers	Du har ingen standardtimer	Je hebt geen standaardtimers	Sinulla ei ole perusajastimia	Sie haben keine Standardtimer	Du har ingen standardtimere
-selectBaseTimer	Select Basic Timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
+selectBaseTimer	Select basic timer	Välj bastimer	Vælg bastimer	Standaardtimers selecteren	Valitse perusajastin	Standardtimer auswählen	Velg standardtimere
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
 timeIsUp	Time is up	Tiden är slut					
-basicTimers	Basic Timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
+basicTimers	Basic timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny

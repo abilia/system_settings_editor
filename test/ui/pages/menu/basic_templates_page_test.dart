@@ -113,6 +113,8 @@ void main() {
       expect(find.byType(EditActivityPage), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
       expect(find.byType(DatePicker), findsNothing);
+      expect(find.byType(CancelButton), findsOneWidget);
+      expect(find.byType(PreviousButton), findsNothing);
 
       await tester.ourEnterText(
         find.byKey(TestKey.editTitleTextFormField),
@@ -220,6 +222,8 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(OkButton));
         await tester.pumpAndSettle();
+        // No speech on start or speech on end
+        expect(find.byType(RecordSoundWidget), findsNothing);
 
         // add reminder
         await tester.tap(find.byType(ReminderSwitch));

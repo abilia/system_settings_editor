@@ -40,7 +40,7 @@ void main() {
           Sortable.createNew(
             data: const ImageArchiveData(),
             groupId: myPhotosFolder.id,
-            sortOrder: 'a',
+            sortOrder: 'c',
           ),
         ],
       ),

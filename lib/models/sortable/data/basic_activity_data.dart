@@ -48,9 +48,8 @@ class BasicActivityDataItem extends BasicActivityData {
     );
   }
 
-  @visibleForTesting
   factory BasicActivityDataItem.createNew({
-    required String title,
+    String title = '',
     Duration startTime = Duration.zero,
     Duration duration = Duration.zero,
   }) =>

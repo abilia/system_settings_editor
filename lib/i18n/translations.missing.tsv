@@ -5,11 +5,8 @@ timerResume	Do you want to continue the timer?	Vill du fortsätta timern?
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
-activity	Activity	Aktivitet
 basicTemplates	Basic templates						
-basicActivities	Basic Activities						
-newBasicActivity	New Basic Activity						
-editBasicActivity	Edit Basic Activity						
+enterNameForBasicActivity	Enter name for basic activity						
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
 onlyAppliesToGo	Only applies to MEMOplanner Go						
