@@ -50,7 +50,7 @@ class LibraryChecklist extends StatelessWidget {
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.caption?.copyWith(height: 1),
+                style: abiliaTextTheme.caption,
               ),
             SizedBox(height: layout.libraryPage.textImageDistance),
             if (checklist.hasImage)

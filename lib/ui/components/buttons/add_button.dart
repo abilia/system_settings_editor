@@ -187,7 +187,6 @@ class _AddTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = (Theme.of(context).textTheme.caption ?? caption).copyWith(
-      height: 1,
       color: AbiliaColors.white,
     );
     final iconTheme = IconTheme.of(context).copyWith(
