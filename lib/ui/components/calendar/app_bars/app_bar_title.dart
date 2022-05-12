@@ -65,21 +65,19 @@ class AppBarTitleRows {
     bool displayPartOfDay = true,
     bool displayDate = true,
     bool compactDay = false,
+    bool currentNight = true,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
     required String langCode,
     required Translated translator,
   }) {
-    final currentNight = currentTime.isAtSameDay(day) &&
-        currentTime.dayPart(dayParts) == DayPart.night;
-
     final weekday = displayWeekDay
         ? currentNight
             ? nightDay(currentTime, dayParts, langCode)
             : DateFormat.EEEE(langCode).format(day)
         : '';
-    final daypart = displayPartOfDay
+    final daypart = currentNight && displayPartOfDay
         ? _getPartOfDay(
             currentTime.isAtSameDay(day),
             currentTime.hour,
