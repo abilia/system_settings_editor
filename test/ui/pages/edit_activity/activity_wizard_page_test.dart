@@ -698,8 +698,8 @@ void main() {
 
       await tester.tap(find.byIcon(AbiliaIcons.basicActivity));
       await tester.pumpAndSettle();
-      expect(find.byType(SaveButton), findsNothing);
-      expect(find.byType(NextButton), findsOneWidget);
+      expect(find.byType(SaveButton), findsOneWidget);
+      expect(find.byType(NextButton), findsNothing);
 
       await tester.tap(find.byIcon(AbiliaIcons.month));
       await tester.pumpAndSettle();

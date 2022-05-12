@@ -580,7 +580,7 @@ class RecurrenceWidget extends StatelessWidget {
       case RecurrentType.monthly:
         return Recurs.monthly(startDate.day, ends: startDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startDate, ends: startDate);
+        return Recurs.yearly(startDate);
       default:
         return Recurs.not;
     }
