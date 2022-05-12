@@ -22,12 +22,12 @@ class EditChecklistCubit extends Cubit<EditChecklistState> {
 
   void changeChecklist(Checklist checklist) {
     final i = checklist.questions.indexWhere((q) => q.id == state.selected?.id);
-    emit(state.changeChecklist(checklist, i >= 0 ? i : null));
+    emit(EditChecklistState(checklist, i >= 0 ? i : null));
   }
 
   void select(Question q) {
     final i = state.checklist.questions.indexOf(q);
-    emit(state.select(i == state.index ? null : i));
+    emit(EditChecklistState(state.checklist, i == state.index ? null : i));
   }
 
   void reorder(SortableReorderDirection direction) {

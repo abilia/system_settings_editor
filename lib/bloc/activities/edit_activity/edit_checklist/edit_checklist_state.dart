@@ -10,10 +10,6 @@ class EditChecklistState extends Equatable {
   EditChecklistState(InfoItem checklist, [this.index])
       : checklist = checklist is Checklist ? checklist : Checklist();
 
-  EditChecklistState select(int? index) => EditChecklistState(checklist, index);
-  EditChecklistState changeChecklist(Checklist checklist, int? index) =>
-      EditChecklistState(checklist, index);
-
   @override
   List<Object?> get props => [checklist, index];
 }
