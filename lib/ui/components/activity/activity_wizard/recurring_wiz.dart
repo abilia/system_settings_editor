@@ -36,7 +36,7 @@ class RecurringWiz extends StatelessWidget {
                       onChanged: (v) =>
                           context.read<EditActivityCubit>().replaceActivity(
                                 state.activity.copyWith(
-                                  recurs: _newType(
+                                  recurs: _newRecurs(
                                     type,
                                     state.activity.startTime,
                                   ),
@@ -56,14 +56,14 @@ class RecurringWiz extends StatelessWidget {
     );
   }
 
-  Recurs _newType(RecurrentType type, DateTime startdate) {
+  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startdate.weekday);
+        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
       case RecurrentType.monthly:
-        return Recurs.monthly(startdate.day);
+        return Recurs.monthly(startDate.day, ends: startDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startdate);
+        return Recurs.yearly(startDate);
       default:
         return Recurs.not;
     }
