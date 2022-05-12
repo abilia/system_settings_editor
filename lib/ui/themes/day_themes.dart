@@ -37,9 +37,7 @@ class DayTheme {
         ),
         monthColor = monthColor ?? color,
         monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface,
-        monthPastColor = monthPastColor ??
-            monthColor?.withOpacity(0.4) ??
-            color.withOpacity(0.4);
+        monthPastColor = monthPastColor ?? AbiliaColors.white110;
 
   DayTheme._light(
     Color color,
@@ -55,7 +53,7 @@ class DayTheme {
           _lightAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? secondaryColor,
+          monthPastHeadingColor ?? AbiliaColors.white140,
           background,
           onSurface: onSurface,
           isColor: isColor,
@@ -74,7 +72,7 @@ class DayTheme {
           _darkAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? secondaryColor,
+          monthPastHeadingColor ?? AbiliaColors.white140,
           background,
           isLight: false,
         );
@@ -92,7 +90,7 @@ final _noColor = DayTheme._light(
       monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white110, AbiliaColors.white,
-        monthPastHeadingColor: AbiliaColors.white110, background: false),
+        monthPastHeadingColor: AbiliaColors.white140, background: false),
     _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
     _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
     _blue = DayTheme._light(AbiliaColors.blue, AbiliaColors.tuesdayBlue40),
