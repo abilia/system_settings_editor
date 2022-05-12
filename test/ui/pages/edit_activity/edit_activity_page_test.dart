@@ -1844,17 +1844,6 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Shows time picker widget ', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(createEditActivityPage(newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.byType(TimeIntervallPicker), findsOneWidget);
-    });
-
     testWidgets('Does not shows time picker widget on fullday ',
         (WidgetTester tester) async {
       // Arrange
