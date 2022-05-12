@@ -413,4 +413,17 @@ void main() {
       expect(find.text('new title'), findsOneWidget);
     });
   });
+
+  testWidgets(
+      'Header contains current day when current month is shown. When going to next or previous month, day should not be displayed.',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(AbiliaIcons.month));
+    await tester.pumpAndSettle();
+    expect(find.text('Wednesday'), findsOneWidget);
+    await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
+    await tester.pumpAndSettle();
+    expect(find.text('Wednesday'), findsNothing);
+  });
 }
