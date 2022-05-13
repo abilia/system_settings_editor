@@ -106,6 +106,7 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
         onTap: _onTap,
         text: text,
         padding: layout.pickField.imagePadding,
+        leadingPadding: layout.listDataItem.folderPadding,
         leading: SizedBox.fromSize(
           size: layout.pickField.leadingSize,
           child: _PickFolder(

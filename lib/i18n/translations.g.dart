@@ -273,6 +273,8 @@ abstract class Translated {
 
   final String timeTo = 'to';
 
+  final String addTimer = 'Add Timer';
+
   final String start = 'Start';
 
   final String newTimer = 'New timer';

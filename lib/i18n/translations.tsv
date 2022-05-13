@@ -130,7 +130,8 @@ newBasicActivity	New Basic Activity
 editBasicActivity	Edit Basic Activity						
 timeTo	to	till	til	tot	-	bis	til
 							
-### Timer related							
+### Timer related
+addTimer	Add Timer
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
