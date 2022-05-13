@@ -35,10 +35,19 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
                       }
                     }
                   : null,
+              inputHeadingForNameField: _heading(context),
             ),
           ),
         ),
       );
+
+  String _heading(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final isTemplate =
+        context.read<WizardCubit>() is TemplateActivityWizardCubit;
+    if (isTemplate) return translate.enterNameForBasicActivity;
+    return translate.name;
+  }
 }
 
 class NameAndPictureWidget extends StatelessWidget {
@@ -587,7 +596,7 @@ class RecurrenceWidget extends StatelessWidget {
       case RecurrentType.monthly:
         return Recurs.monthly(startDate.day, ends: startDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startDate, ends: startDate);
+        return Recurs.yearly(startDate);
       default:
         return Recurs.not;
     }
@@ -666,6 +675,7 @@ class EndDateWizWidget extends StatelessWidget {
         final activity = state.activity;
         final recurs = activity.recurs;
         return SwitchField(
+          key: TestKey.noEndDateSwitch,
           leading: Icon(
             AbiliaIcons.basicActivity,
             size: layout.icon.small,

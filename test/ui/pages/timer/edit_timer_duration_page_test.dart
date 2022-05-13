@@ -3,6 +3,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 
 import '../../../fakes/all.dart';
+import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/navigation_observer.dart';
 
 final navObserver = NavObserver();
@@ -52,16 +53,14 @@ void main() {
   testWidgets('Enter 45 minutes', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.minutes), '4');
-    await tester.enterText(find.byKey(TestKey.minutes), '5');
+    await tester.enterTime(find.byKey(TestKey.minutes), '45');
     expect(find.text('45'), findsOneWidget);
   });
 
   testWidgets('Save 45 minutes', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.minutes), '45');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.minutes), '45');
     expect(find.text('45'), findsOneWidget);
     await tester.tap(find.byType(SaveButton));
     await tester.pumpAndSettle();
@@ -76,11 +75,8 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.minutes), '1');
-    await tester.enterText(find.byKey(TestKey.minutes), '5');
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.hours), '2');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.minutes), '15');
+    await tester.enterTime(find.byKey(TestKey.hours), '2');
     await tester.tap(find.byType(SaveButton));
     await tester.pumpAndSettle();
     final popped = navObserver.routesPoped;
@@ -93,19 +89,16 @@ void main() {
   testWidgets('Try enter 97 minutes', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.minutes), '9');
-    await tester.enterText(find.byKey(TestKey.minutes), '7');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.minutes), '97');
     expect(find.text('97'), findsNothing);
-    expect(find.text('09'), findsOneWidget);
+    expect(find.text('07'), findsOneWidget);
   });
 
   testWidgets('Try enter 32 hours', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.hours), '3');
-    await tester.enterText(find.byKey(TestKey.hours), '2');
-    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(TestKey.hours));
+    await tester.enterTime(find.byKey(TestKey.hours), '32');
     expect(find.text('32'), findsNothing);
     expect(find.text('03'), findsOneWidget);
   });

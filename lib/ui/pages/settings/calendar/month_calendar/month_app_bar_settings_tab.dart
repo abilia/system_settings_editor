@@ -53,6 +53,7 @@ class _MonthAppBarPreview extends StatelessWidget {
             currentTime: currentTime,
             langCode: Localizations.localeOf(context).toLanguageTag(),
             showYear: state.year,
+            showDay: true,
           ),
         ),
       ),
