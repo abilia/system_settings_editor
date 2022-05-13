@@ -70,7 +70,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     List<TimerOccasion> timers,
     bool showNightCalendar,
   ) {
-    final interval = getInterval(
+    final interval = _getInterval(
       now,
       selectedDay,
       memoState,
@@ -78,12 +78,12 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
     return TimepillarState(
       interval: interval,
-      events: generateEvents(
+      events: _generateEvents(
         activities,
         timers,
         interval,
       ),
-      calendarType: getCalendarType(
+      calendarType: _getCalendarType(
         showNightCalendar,
         memoState.dayCalendarType,
         selectedDay,
@@ -95,7 +95,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     );
   }
 
-  static TimepillarInterval getInterval(
+  static TimepillarInterval _getInterval(
     DateTime now,
     DateTime day,
     MemoplannerSettingsState memoSettings,
@@ -128,17 +128,17 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     return TimepillarInterval.dayAndNight(day);
   }
 
-  static List<Event> generateEvents(
+  static List<Event> _generateEvents(
     List<Activity> activities,
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {
-    final dayActivities = activities.expand(
-      (activity) => activity.dayActivitiesForInterval(
-        interval.startTime,
-        interval.endTime,
-      ),
-    );
+    final dayActivities = activities.where((a) => !a.fullDay).expand(
+          (activity) => activity.dayActivitiesForInterval(
+            interval.startTime,
+            interval.endTime,
+          ),
+        );
     final timerOccasions = timers.where(
       (timer) =>
           timer.start.inInclusiveRange(
@@ -153,7 +153,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     return {...dayActivities, ...timerOccasions}.toList();
   }
 
-  static DayCalendarType getCalendarType(
+  static DayCalendarType _getCalendarType(
     bool showNightCalendar,
     DayCalendarType settingsDayCalendarType,
     DateTime selectedDay,
@@ -162,13 +162,13 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   ) {
     bool shouldShowNightCalendar = showNightCalendar &&
         settingsDayCalendarType == DayCalendarType.twoTimepillars &&
-        isTonight(day: selectedDay, now: now, dayParts: dayParts);
+        _isTonight(day: selectedDay, now: now, dayParts: dayParts);
     return shouldShowNightCalendar
         ? DayCalendarType.oneTimepillar
         : settingsDayCalendarType;
   }
 
-  static bool isTonight({
+  static bool _isTonight({
     required DateTime day,
     required DateTime now,
     required DayParts dayParts,
@@ -196,7 +196,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
         memeSettings.timepillarIntervalType ==
             TimepillarIntervalType.dayAndNight) return true;
 
-    if (!isTonight(
+    if (!_isTonight(
       day: dayPickerBloc.state.day,
       now: clockBloc.state,
       dayParts: memeSettings.dayParts,

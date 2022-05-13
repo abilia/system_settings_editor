@@ -202,6 +202,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
+
+    testWidgets(
+        'SGC-1638 Full day activity should not be present in timepillar',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time,
+              fullDay: true,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
   });
 
   group('timepillar dots', () {

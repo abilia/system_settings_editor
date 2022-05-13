@@ -269,7 +269,10 @@ class ThumbnailPhoto extends StatelessWidget {
                     child: Text(
                       imageArchiveData.name,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(height: 1),
                     ),
                   ),
                   Expanded(
