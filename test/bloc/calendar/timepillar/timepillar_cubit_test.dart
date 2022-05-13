@@ -24,10 +24,6 @@ void main() {
     clockStream = StreamController();
     clockBloc = ClockBloc(clockStream.stream, initialTime: now);
     activitiesBloc = MockActivitiesBloc();
-    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded([
-      nowActivity,
-      fullDayActivity,
-    ]));
     dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -43,6 +39,13 @@ void main() {
       timers: const [],
       queue: const [],
     ));
+  });
+
+  test('No full day in timepillar state', () {
+    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded([
+      nowActivity,
+      fullDayActivity,
+    ]));
 
     timepillarCubit = TimepillarCubit(
       clockBloc: clockBloc,
@@ -51,9 +54,7 @@ void main() {
       memoSettingsBloc: memoplannerSettingBloc,
       timerAlarmBloc: timerAlarmBloc,
     );
-  });
 
-  test('No full day in timepillar state', () {
     expect(
       timepillarCubit.state,
       TimepillarState(
