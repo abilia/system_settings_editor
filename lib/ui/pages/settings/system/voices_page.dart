@@ -1,5 +1,4 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/settings/speech_support/voice_data.dart';
 import 'package:seagull/ui/all.dart';
 
 class VoicesPage extends StatelessWidget {
@@ -155,10 +154,13 @@ class _DisabledVoiceRow extends StatelessWidget {
       height: layout.pickField.height,
       decoration: whiteBoxDecoration,
       padding: layout.speechSupportPage.buttonPadding,
-      child: DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-        child: Text(name),
-      ).align(Alignment.centerLeft),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: DefaultTextStyle(
+          style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+          child: Text(name),
+        ),
+      ),
     );
   }
 }

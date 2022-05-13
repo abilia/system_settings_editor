@@ -16,14 +16,3 @@ extension TtsExtension on Text {
     );
   }
 }
-
-extension AlignExtension on Widget {
-  Widget align(Alignment alignment,
-      {double? widthFactor, double? heightFactor}) {
-    return Align(
-        alignment: alignment,
-        widthFactor: widthFactor,
-        heightFactor: heightFactor,
-        child: this);
-  }
-}

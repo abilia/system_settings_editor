@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'voices_cubit.dart';
 
 class VoiceData extends Equatable {
   final String name;
@@ -6,7 +6,7 @@ class VoiceData extends Equatable {
   final String lang;
   final List<VoiceFile> files;
   final int size;
-  static const int _bytesPerMegaByte = 1048576;
+  static const int _bytesPerMegaByte = 1000000;
 
   const VoiceData(this.name, this.type, this.lang, this.files, this.size);
 

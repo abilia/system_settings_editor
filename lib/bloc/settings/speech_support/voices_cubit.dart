@@ -11,16 +11,24 @@ import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/utils/strings.dart';
 
-import 'package:seagull/bloc/settings/speech_support/voice_data.dart';
+part 'voice_data.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit(this.client, this.locale, selectedVoice)
       : super(VoicesState(
-            voices: List.empty(growable: true),
-            downloadedVoices: List.empty(growable: true),
+            voices: List.empty(),
+            downloadedVoices: List.empty(),
             selectedVoice: selectedVoice)) {
-    _readAvailableVoices();
-    _readDownloadedVoices();
+    initialize();
+  }
+
+  void initialize() async {
+    final availableVoices = await _readAvailableVoices();
+    final downloadedVoices = await _readDownloadedVoices();
+    emit(
+      state.copyWith(
+          voices: availableVoices, downloadedVoices: downloadedVoices),
+    );
   }
 
   final BaseClient client;
@@ -31,18 +39,17 @@ class VoicesCubit extends Cubit<VoicesState> {
   VoiceData getVoice(String name) =>
       state.voices.firstWhere((voice) => voice.name == name);
 
-  void _readAvailableVoices() async {
+  Future<List<VoiceData>> _readAvailableVoices() async {
     var url = '$_baseUrl/$locale/'.toUri();
     final response = await client.get(url);
 
     final statusCode = response.statusCode;
     if (statusCode == 200 && !isClosed) {
       final json = jsonDecode(response.body) as List;
-      emit(state.copyWith(
-          voices: json
-              .where((jsonVoice) => jsonVoice['type'] == 1)
-              .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
-              .toList()));
+      return json
+          .where((jsonVoice) => jsonVoice['type'] == 1)
+          .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
+          .toList();
     } else if (statusCode == 401) {
       throw UnauthorizedException();
     } else {
@@ -50,13 +57,13 @@ class VoicesCubit extends Cubit<VoicesState> {
     }
   }
 
-  void _readDownloadedVoices() async {
+  Future<List<String>> _readDownloadedVoices() async {
     final List<Object?>? voices =
         await (GetIt.I<TtsInterface>() as AcapelaTtsHandler).availableVoices;
     if (voices != null && !isClosed) {
-      emit(state.copyWith(
-          downloadedVoices: (voices.map((e) => e.toString())).toList()));
+      return (voices.map((e) => e.toString())).toList();
     }
+    return List.empty();
   }
 
   void selectVoice(VoiceData voice) {

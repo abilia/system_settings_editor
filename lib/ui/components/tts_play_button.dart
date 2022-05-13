@@ -39,13 +39,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
                 child: IconActionButton(
                   key: TestKey.ttsPlayButton,
                   style: actionButtonStyleDark,
-                  onPressed: () async {
-                    if (ttsIsPlaying) {
-                      _stop();
-                    } else {
-                      _play();
-                    }
-                  },
+                  onPressed: () => ttsIsPlaying ? _stop() : _play(),
                   child: Icon(
                     ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
                   ),
@@ -58,24 +52,18 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
     );
   }
 
-  _play() {
+  Future<void> _play() async {
     setState(() => ttsIsPlaying = true);
-    GetIt.I<TtsInterface>().speak(widget.controller.text).whenComplete(
-      () {
-        if (mounted) {
-          setState(() => ttsIsPlaying = false);
-        }
-      },
-    );
+    await GetIt.I<TtsInterface>().speak(widget.controller.text);
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 
-  _stop() {
-    GetIt.I<TtsInterface>().stop().whenComplete(
-      () {
-        if (mounted) {
-          setState(() => ttsIsPlaying = false);
-        }
-      },
-    );
+  Future<void> _stop() async {
+    await GetIt.I<TtsInterface>().stop();
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 }

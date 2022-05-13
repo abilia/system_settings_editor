@@ -24,18 +24,18 @@ class SpeechSupportSettingsPage extends StatelessWidget {
             label: t.system,
             iconData: AbiliaIcons.handiAlarmVibration,
           ),
-          body: BlocBuilder<SettingsCubit, SettingsState>(
-            builder: (context, settingsState) {
+          body: BlocSelector<SettingsCubit, SettingsState, bool>(
+            selector: (state) => state.textToSpeech,
+            builder: (context, textToSpeech) {
               return ListView(
                 children: [
                   TextToSpeechSwitch(
                     immediate: false,
-                    onChanged: !settingsState.textToSpeech &&
-                            state.voice.isEmpty
+                    onChanged: !textToSpeech && state.voice.isEmpty
                         ? (v) => pushVoicesPage(context, locale, state.voice)
                         : null,
                   ).pad(topPadding),
-                  if (settingsState.textToSpeech) ...[
+                  if (textToSpeech) ...[
                     const Divider().pad(dividerPadding),
                     SwitchField(
                       value: state.speakEveryWord,
@@ -117,10 +117,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
 class TtsTestButton extends StatefulWidget {
   const TtsTestButton({
     Key? key,
-    this.padding = EdgeInsets.zero,
   }) : super(key: key);
-
-  final EdgeInsets padding;
 
   @override
   State<TtsTestButton> createState() => _TtsTestButtonState();
@@ -136,44 +133,30 @@ class _TtsTestButtonState extends State<TtsTestButton> {
           previous.textToSpeech != current.textToSpeech,
       builder: (context, settingsState) => SizedBox(
         height: layout.actionButton.size,
-        child: Padding(
-          padding: widget.padding,
-          child: IconActionButton(
-            key: TestKey.ttsPlayButton,
-            style: actionButtonStyleDark,
-            onPressed: () async {
-              if (ttsIsPlaying) {
-                _stop();
-              } else {
-                _play();
-              }
-            },
-            child: Icon(
-              ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-            ),
+        child: IconActionButton(
+          style: actionButtonStyleDark,
+          onPressed: () => ttsIsPlaying ? _stop() : _play(),
+          child: Icon(
+            ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
           ),
         ),
       ),
     );
   }
 
-  _play() {
+  Future<void> _play() async {
     setState(() => ttsIsPlaying = true);
     Translated t = Translator.of(context).translate;
-    GetIt.I<TtsInterface>()
-        .speak('${t.textToSpeech}  ${t.speechRate}')
-        .whenComplete(() {
-      if (mounted) {
-        setState(() => ttsIsPlaying = false);
-      }
-    });
+    await GetIt.I<TtsInterface>().speak('${t.textToSpeech}  ${t.speechRate}');
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 
-  _stop() {
-    GetIt.I<TtsInterface>().stop().whenComplete(() {
-      if (mounted) {
-        setState(() => ttsIsPlaying = false);
-      }
-    });
+  Future<void> _stop() async {
+    await GetIt.I<TtsInterface>().stop();
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 }

@@ -9,10 +9,11 @@ part 'speech_settings_state.dart';
 
 class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   final SettingsDb settingsDb;
-  final AcapelaTts _acapelaTts = GetIt.I<TtsInterface>() as AcapelaTtsHandler;
+  final AcapelaTts acapelaTts;
 
   SpeechSettingsCubit({
     required this.settingsDb,
+    required this.acapelaTts,
   }) : super(
           SpeechSettingsState(
               speechRate: settingsDb.speechRate,
@@ -20,27 +21,27 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
               voice: settingsDb.voice),
         );
 
-  setSpeechRate(double speechRate) {
-    _acapelaTts.setSpeechRate(speechRate);
+  void setSpeechRate(double speechRate) {
+    acapelaTts.setSpeechRate(speechRate);
     emit(state.copyWith(speechRate: speechRate));
   }
 
-  setVoice(String voice) {
-    _acapelaTts.setVoice(voice);
+  void setVoice(String voice) {
+    acapelaTts.setVoice(voice);
     emit(state.copyWith(voice: voice));
   }
 
-  save() async {
+  void save() async {
     await settingsDb.setSpeechRate(state.speechRate);
     await settingsDb.setVoice(state.voice);
   }
 
-  reset() async {
+  void reset() async {
     emit(SpeechSettingsState(
         speechRate: settingsDb.speechRate,
         speakEveryWord: settingsDb.speakEveryWord,
         voice: settingsDb.voice));
-    _acapelaTts.setSpeechRate(state.speechRate);
-    _acapelaTts.setVoice(state.voice);
+    acapelaTts.setSpeechRate(state.speechRate);
+    acapelaTts.setVoice(state.voice);
   }
 }
