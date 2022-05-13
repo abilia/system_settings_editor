@@ -124,6 +124,9 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingBloc,
             ),
+            BlocProvider<TimepillarCubit>(
+              create: (context) => FakeTimepillarCubit(),
+            ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
                 selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),

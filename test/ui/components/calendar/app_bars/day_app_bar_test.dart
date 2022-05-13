@@ -18,6 +18,7 @@ void main() {
   final day = DateTime(2020, 10, 05, 08, 00);
   final defaultClockBloc = ClockBloc.fixed(day);
   late MockMemoplannerSettingBloc memoplannerSettingsBlocMock;
+  late FakeTimepillarCubit timepillarCubit;
 
   Widget wrapWithMaterialApp(Widget widget, ClockBloc clockBloc) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
@@ -28,6 +29,9 @@ void main() {
         home: MultiBlocProvider(providers: [
           BlocProvider<ClockBloc>(
             create: (context) => clockBloc,
+          ),
+          BlocProvider<TimepillarCubit>(
+            create: (context) => timepillarCubit,
           ),
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => memoplannerSettingsBlocMock,
@@ -49,6 +53,7 @@ void main() {
     memoplannerSettingsBlocMock = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingsBlocMock.stream)
         .thenAnswer((_) => const Stream.empty());
+    timepillarCubit = FakeTimepillarCubit();
   });
 
   void _expectSettings(MemoplannerSettings settings) {
