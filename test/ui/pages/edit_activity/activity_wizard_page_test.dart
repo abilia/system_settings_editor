@@ -755,7 +755,7 @@ void main() {
 
       await tester.tap(find.text(translate.shortWeekday(today.weekday)));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveButton));
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
@@ -768,9 +768,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SelectAllWeekdaysButton));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(EndDateWizWidget));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(NextButton));
@@ -833,7 +830,7 @@ void main() {
 
       await tester.tap(find.text('${today.day}'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveButton));
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
@@ -848,9 +845,6 @@ void main() {
       await tester.tap(find.text('31'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(EndDateWizWidget));
-      await tester.pumpAndSettle();
-
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
@@ -861,6 +855,54 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsNothing);
+    });
+
+    testWidgets('No end date defaults to deselected',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(MemoplannerSettings(
+          addActivityTypeAdvanced: false,
+          stepByStep: StepByStepSettings(
+            template: false,
+            datePicker: false,
+            image: false,
+            title: true,
+            type: true,
+            availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            notes: false,
+            reminders: false,
+          ),
+          addActivity: AddActivitySettings(addRecurringActivity: true),
+        )),
+      );
+
+      // Act
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      // Assert
+      final noEndDateSwitchValue = (find
+              .byKey(TestKey.noEndDateSwitch)
+              .evaluate()
+              .first
+              .widget as SwitchField)
+          .value;
+      expect(noEndDateSwitchValue, false);
     });
   });
 
@@ -982,7 +1024,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1020,7 +1062,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsNothing);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1064,7 +1106,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsNothing);

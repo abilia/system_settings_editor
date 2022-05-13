@@ -37,7 +37,7 @@ class RemoveButton extends StatelessWidget {
               if (t != null)
                 Text(t,
                     style: abiliaTextTheme.bodyText1
-                        ?.copyWith(color: AbiliaColors.white, height: 1)),
+                        ?.copyWith(color: AbiliaColors.white)),
             ],
           ),
         ),

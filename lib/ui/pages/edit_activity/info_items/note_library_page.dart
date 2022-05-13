@@ -20,8 +20,8 @@ class NoteLibraryPage extends StatelessWidget {
           libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
           selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
           emptyLibraryMessage: Translator.of(context).translate.noNotes,
-          onOk: (selected) =>
-              Navigator.of(context).pop<String>(selected.data.text),
+          onOk: (selected) => Navigator.of(context)
+              .pop<InfoItem>(NoteInfoItem(selected.data.text)),
         ),
       );
 }
@@ -45,13 +45,12 @@ class LibraryNote extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             children: <Widget>[
               Lines(
-                lineHeight: content
+                textRenderingSize: content
                     .calulcateTextRenderSize(
                       constraints: constraints,
                       textStyle: Theme.of(context).textTheme.caption ?? caption,
                     )
-                    .scaledLineHeight,
-                numberOfLines: 5,
+                    .copyWith(numberOfLines: 5),
               ),
               Text(
                 content,

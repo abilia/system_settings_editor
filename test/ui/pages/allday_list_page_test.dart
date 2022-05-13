@@ -19,6 +19,8 @@ import '../../test_helpers/tts.dart';
 void main() {
   final day = DateTime(2111, 11, 11);
   late MockDayEventsCubit dayEventsCubitMock;
+  late FakeTimepillarCubit timepillarCubit;
+
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
@@ -39,6 +41,9 @@ void main() {
           ),
           BlocProvider<MemoplannerSettingBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),
+          ),
+          BlocProvider<TimepillarCubit>(
+            create: (context) => timepillarCubit,
           ),
           BlocProvider<SettingsCubit>(
             create: (context) => SettingsCubit(
@@ -61,7 +66,7 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     dayEventsCubitMock = MockDayEventsCubit();
-
+    timepillarCubit = FakeTimepillarCubit();
     final allDayActivities = [
       Activity.createNew(
         title: title0,

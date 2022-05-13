@@ -233,7 +233,7 @@ void main() {
         const noteText = 'note Text';
         await tester.tap(find.byIcon(AbiliaIcons.attachment));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
         await tester.pumpAndSettle();

@@ -24,80 +24,40 @@ class SortableToolbar extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Container(
         margin: margin,
+        constraints: const BoxConstraints(minHeight: double.infinity),
         decoration: boxDecoration.copyWith(
           color: AbiliaColors.black80,
           border: Border.all(style: BorderStyle.none),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(width: spacing),
-            _ChecklistToolbarButton(
-              disabled: disableUp,
-              iconData: AbiliaIcons.cursorUp,
-              onTap: () => onTapReorder(SortableReorderDirection.up),
+            SecondaryActionButtonLight(
+              child: const Icon(AbiliaIcons.cursorUp),
+              onPressed: disableUp
+                  ? null
+                  : () => onTapReorder(SortableReorderDirection.up),
             ),
             SizedBox(width: spacing),
-            _ChecklistToolbarButton(
-              iconData: AbiliaIcons.deleteAllClear,
-              onTap: onTapDelete,
+            SecondaryActionButtonLight(
+              child: const Icon(AbiliaIcons.deleteAllClear),
+              onPressed: onTapDelete,
             ),
             SizedBox(width: spacing),
-            _ChecklistToolbarButton(
-              iconData: AbiliaIcons.edit,
-              onTap: onTapEdit,
+            SecondaryActionButtonLight(
+              child: const Icon(AbiliaIcons.edit),
+              onPressed: onTapEdit,
             ),
             SizedBox(width: spacing),
-            _ChecklistToolbarButton(
-              disabled: disableDown,
-              iconData: AbiliaIcons.cursorDown,
-              onTap: () => onTapReorder(SortableReorderDirection.down),
+            SecondaryActionButtonLight(
+              child: const Icon(AbiliaIcons.cursorDown),
+              onPressed: disableDown
+                  ? null
+                  : () => onTapReorder(SortableReorderDirection.down),
             ),
             SizedBox(width: spacing),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ChecklistToolbarButton extends StatelessWidget {
-  const _ChecklistToolbarButton({
-    Key? key,
-    required this.iconData,
-    this.disabled = false,
-    this.onTap,
-  }) : super(key: key);
-  final IconData iconData;
-  final bool disabled;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        customBorder: const CircleBorder(side: BorderSide.none),
-        onTap: disabled ? null : onTap,
-        child: Container(
-          height: layout.checkList.toolbarButtonSize,
-          width: layout.checkList.toolbarButtonSize,
-          decoration: disabled
-              ? null
-              : BoxDecoration(
-                  color: AbiliaColors.transparentWhite20,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AbiliaColors.transparentWhite30,
-                    width: layout.borders.thin,
-                  ),
-                ),
-          child: Icon(
-            iconData,
-            color: disabled ? AbiliaColors.white140 : AbiliaColors.white,
-            size: layout.icon.small,
-          ),
         ),
       ),
     );
