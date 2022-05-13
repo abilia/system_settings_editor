@@ -63,7 +63,7 @@ void main() {
           end: DateTime(2022, 05, 12, 23),
           intervalPart: IntervalPart.day,
         ),
-        events: <Event>[...nowActivity.dayActivitiesForDay(now)],
+        events: <Event>[ActivityDay(nowActivity, now.onlyDays())],
         calendarType: DayCalendarType.oneTimepillar,
         occasion: Occasion.current,
         showNightCalendar: true,
