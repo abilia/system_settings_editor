@@ -36,12 +36,6 @@ class _NoteBlockState extends State<NoteBlock> {
       data: text?.data ?? '',
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final textRenderingSize = widget.text.calulcateTextRenderSize(
-            constraints: constraints,
-            textStyle: textStyle,
-            padding: layout.note.notePadding,
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
-          );
           return DefaultTextStyle(
             style: textStyle,
             child: ScrollArrows.vertical(
@@ -51,11 +45,15 @@ class _NoteBlockState extends State<NoteBlock> {
                 controller: controller,
                 child: Stack(
                   children: [
-                    if (text != null) text,
                     Lines(
-                      lineHeight: textRenderingSize.scaledLineHeight,
-                      numberOfLines: textRenderingSize.numberOfLines,
+                      textRenderingSize: widget.text.calulcateTextRenderSize(
+                        constraints: constraints,
+                        textStyle: textStyle,
+                        padding: layout.note.notePadding,
+                        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                      ),
                     ),
+                    if (text != null) text,
                   ],
                 ),
               ),
@@ -68,23 +66,23 @@ class _NoteBlockState extends State<NoteBlock> {
 }
 
 class Lines extends StatelessWidget {
-  final double lineHeight;
-  final int numberOfLines;
-  const Lines({
-    Key? key,
-    required this.lineHeight,
-    required this.numberOfLines,
-  }) : super(key: key);
+  final TextRenderingSize textRenderingSize;
+
+  const Lines({Key? key, required this.textRenderingSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final line = Padding(
-      padding: EdgeInsets.only(top: lineHeight),
+      padding: EdgeInsets.only(
+        top: textRenderingSize.textPainter.preferredLineHeight -
+            layout.note.lineOffset,
+        bottom: layout.note.lineOffset,
+      ),
       child: const Divider(endIndent: 0),
     );
 
     return Column(
-      children: List.generate(numberOfLines, (_) => line).toList(),
+      children: List.generate(textRenderingSize.numberOfLines, (_) => line),
     );
   }
 }

@@ -67,9 +67,7 @@ class SwitchField extends StatelessWidget {
                       ),
                     ],
                     DefaultTextStyle(
-                      style:
-                          (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-                              .copyWith(height: 1.0),
+                      style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
                       child: child,
                     ),
                   ],

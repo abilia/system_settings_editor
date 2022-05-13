@@ -130,6 +130,7 @@ class ClockPainter extends CustomPainter {
         fontSize: fontSize ?? layout.clock.fontSize,
         fontWeight: medium,
         height: 1,
+        leadingDistribution: TextLeadingDistribution.even,
         color: numberColor,
       );
       final hourText = hourNumbers[intHour - 1];

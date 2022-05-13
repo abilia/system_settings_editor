@@ -173,7 +173,7 @@ final greySelectedBoxDecoration = BoxDecoration(
   border: Border.fromBorderSide(
     BorderSide(
       color: AbiliaColors.white140,
-      width: layout.borders.medium,
+      width: layout.borders.thin,
     ),
   ),
 );

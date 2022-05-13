@@ -58,9 +58,8 @@ class ListDataItem extends StatelessWidget {
                         children: [
                           DefaultTextStyle(
                             overflow: TextOverflow.ellipsis,
-                            style: (Theme.of(context).textTheme.bodyText1 ??
-                                    bodyText1)
-                                .copyWith(height: 1),
+                            style: Theme.of(context).textTheme.bodyText1 ??
+                                bodyText1,
                             child: text,
                           ),
                           if (secondaryText != null) ...[
@@ -71,13 +70,10 @@ class ListDataItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: (Theme.of(context).textTheme.caption ??
                                       caption)
-                                  .copyWith(
-                                color: AbiliaColors.black60,
-                                height: 1,
-                              ),
+                                  .copyWith(color: AbiliaColors.black60),
                               child: secondaryText,
                             ),
-                          ]
+                          ],
                         ],
                       ),
                     ),

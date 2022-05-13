@@ -1024,7 +1024,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1062,7 +1062,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsNothing);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1106,7 +1106,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsNothing);

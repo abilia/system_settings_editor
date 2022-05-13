@@ -294,8 +294,7 @@ class CheckButton extends StatelessWidget {
         child: TextButton.icon(
           onPressed: onPressed,
           style: ButtonStyle(
-            textStyle: MaterialStateProperty.all(
-                abiliaTextTheme.bodyText1?.copyWith(height: 1)),
+            textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText1),
             minimumSize: MaterialStateProperty.all(
               Size(0, layout.activityPage.checkButtonHeight),
             ),

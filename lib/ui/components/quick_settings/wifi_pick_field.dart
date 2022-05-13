@@ -27,7 +27,6 @@ class WiFiPickField extends StatelessWidget {
                 _connected ? t.connected : t.notConnected,
                 style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                     .copyWith(
-                  height: 1.0,
                   color: _connected ? AbiliaColors.green : AbiliaColors.red,
                 ),
               ),

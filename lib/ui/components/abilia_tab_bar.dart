@@ -13,6 +13,7 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(text),
             SizedBox(height: layout.actionButton.spacing),
