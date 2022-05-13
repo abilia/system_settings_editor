@@ -225,7 +225,7 @@ class MediumLayout extends Layout {
             folderImagePadding: EdgeInsets.fromLTRB(15, 42, 15, 24),
             notePadding: EdgeInsets.fromLTRB(7.5, 13.5, 7.5, 9),
             contentPadding: EdgeInsets.all(6),
-            folderIconSize: 129,
+            folderIconSize: 128,
             headerFontSize: 32,
             childAspectRatio: 183 / 188,
             imageHeight: 144,
@@ -306,6 +306,7 @@ class MediumLayout extends Layout {
           ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
+            lineOffset: 3,
           ),
           iconTextButton: const IconTextButtonStyle(
             minimumSize: Size(376, 96),

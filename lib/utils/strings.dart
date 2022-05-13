@@ -46,15 +46,17 @@ extension Replace on String {
 }
 
 class TextRenderingSize {
-  final int numberOfLines;
   final TextPainter textPainter;
-  double get scaledLineHeight => textPainter.preferredLineHeight;
-  double get scaledTextHeight => textPainter.height;
+  final int numberOfLines;
   const TextRenderingSize(
     this.textPainter,
     this.numberOfLines,
   );
-  @override
-  String toString() =>
-      'TextRenderingSize: {numberOfLines: $numberOfLines, scaledTextHeight: $scaledTextHeight, scaledLineHeight: $scaledLineHeight}';
+
+  TextRenderingSize copyWith({
+    TextPainter? textPainter,
+    int? numberOfLines,
+  }) =>
+      TextRenderingSize(
+          textPainter ?? this.textPainter, numberOfLines ?? this.numberOfLines);
 }

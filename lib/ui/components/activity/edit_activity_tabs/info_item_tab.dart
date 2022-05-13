@@ -223,7 +223,6 @@ class AddNewQuestionButton extends StatelessWidget {
             Text(
               translate.addNew,
               style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    height: 1,
                     color: AbiliaColors.white,
                   ),
             ),

@@ -63,8 +63,7 @@ class RadioField<T> extends StatelessWidget {
                     Expanded(
                       child: DefaultTextStyle(
                         style:
-                            (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
-                                .copyWith(height: 1.0),
+                            Theme.of(context).textTheme.bodyText1 ?? bodyText1,
                         child: text,
                       ),
                     ),
