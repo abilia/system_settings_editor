@@ -3,7 +3,6 @@ import 'package:package_info/package_info.dart';
 
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
-import 'package:seagull/version.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -96,8 +95,6 @@ class Version extends StatelessWidget {
 
   String _versionText(PackageInfo packageInfo) =>
       packageInfo.version +
-      (versionSuffix == 'release' || versionSuffix.isEmpty
-          ? ''
-          : '-$versionSuffix') +
-      (Config.beta ? ' (${packageInfo.buildNumber})' : '');
+      ' (${packageInfo.buildNumber})' +
+      (Config.beta ? '-dev' : '');
 }

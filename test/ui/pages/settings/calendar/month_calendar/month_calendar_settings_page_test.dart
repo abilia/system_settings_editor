@@ -86,7 +86,8 @@ void main() {
       expect(find.byType(AbiliaClock), findsNothing);
       expect(find.byIcon(AbiliaIcons.goToNextPage), findsNothing);
       expect(find.byIcon(AbiliaIcons.returnToPreviousPage), findsNothing);
-      expect(find.text('May 2021'), findsNothing);
+      expect(find.text('2021'), findsNothing);
+      expect(find.text('Monday'), findsOneWidget);
       expect(find.text('May'), findsOneWidget);
     });
 
@@ -142,6 +143,7 @@ void main() {
       expect(find.byType(AbiliaClock), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.goToNextPage), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.returnToPreviousPage), findsOneWidget);
+      expect(find.text('Monday'), findsOneWidget);
       expect(find.text('May'), findsOneWidget);
       expect(find.text('2021'), findsOneWidget);
     });
@@ -171,7 +173,8 @@ void main() {
       expect(find.byType(AbiliaClock), findsNothing);
       expect(find.byIcon(AbiliaIcons.goToNextPage), findsNothing);
       expect(find.byIcon(AbiliaIcons.returnToPreviousPage), findsNothing);
-      expect(find.text('May 2021'), findsNothing);
+      expect(find.text('2021'), findsNothing);
+      expect(find.text('Monday'), findsOneWidget);
       expect(find.text('May'), findsOneWidget);
     });
   });

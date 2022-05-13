@@ -232,11 +232,11 @@ abstract class Translated {
 
   final String undo = 'Undo';
 
-  final String fromBasicActivity = 'From Basic Activity';
+  final String fromBasicActivity = 'From basic activity';
 
   final String createActivity = 'New activity';
 
-  final String selectBasicActivity = 'Select Basic Activity';
+  final String selectBasicActivity = 'Select basic activity';
 
   final String deleteActivity = 'Do you want to delete this activity?';
 
@@ -265,11 +265,13 @@ abstract class Translated {
 
   final String basicTemplates = 'Basic templates';
 
-  final String basicActivities = 'Basic Activities';
+  final String basicActivities = 'Basic activities';
 
-  final String newBasicActivity = 'New Basic Activity';
+  final String newBasicActivity = 'New basic activity';
 
-  final String editBasicActivity = 'Edit Basic Activity';
+  final String editBasicActivity = 'Edit basic activity';
+
+  final String enterNameForBasicActivity = 'Enter name for basic activity';
 
   final String timeTo = 'to';
 
@@ -285,17 +287,17 @@ abstract class Translated {
 
   final String enterNameForTimer = 'Enter name for timer';
 
-  final String fromBasicTimer = 'From Basic Timer';
+  final String fromBasicTimer = 'From basic timer';
 
   final String noBasicTimers = 'You have no basic timers';
 
-  final String selectBaseTimer = 'Select Basic Timer';
+  final String selectBaseTimer = 'Select basic timer';
 
   final String timer = 'Timer';
 
   final String timeIsUp = 'Time is up';
 
-  final String basicTimers = 'Basic Timers';
+  final String basicTimers = 'Basic timers';
 
   final String menu = 'Menu';
 
@@ -1227,6 +1229,15 @@ class SV extends Translated {
   @override
   final String checklistDoneInfo =
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
+
+  @override
+  final String basicActivities = 'Basaktiviteter';
+
+  @override
+  final String newBasicActivity = 'Ny basaktivitet';
+
+  @override
+  final String editBasicActivity = 'Ändra basaktivitet';
 
   @override
   final String timeTo = 'till';
@@ -2337,6 +2348,9 @@ class DA extends Translated {
   final String timerInvalidDuration = 'Varigheden kan ikke være nul.';
 
   @override
+  final String activity = 'Aktivitet';
+
+  @override
   final String reminders = 'Påmindelser';
 
   @override
@@ -2413,6 +2427,15 @@ class DA extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?';
+
+  @override
+  final String basicActivities = 'Standardaktiviteter';
+
+  @override
+  final String newBasicActivity = 'Ny standardaktivitet';
+
+  @override
+  final String editBasicActivity = 'Rediger standardaktivitet';
 
   @override
   final String timeTo = 'til';
@@ -3519,6 +3542,9 @@ class NL extends Translated {
   final String timerInvalidDuration = 'De duur kan niet nul zijn.';
 
   @override
+  final String activity = 'Activiteit';
+
+  @override
   final String reminders = 'Herinneringen';
 
   @override
@@ -3593,6 +3619,15 @@ class NL extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?';
+
+  @override
+  final String basicActivities = 'Standaard activiteiten';
+
+  @override
+  final String newBasicActivity = 'Nieuwe standaardactiviteit';
+
+  @override
+  final String editBasicActivity = 'Standaardactiviteit bewerken';
 
   @override
   final String timeTo = 'tot';
@@ -4700,6 +4735,9 @@ class FI extends Translated {
   final String timerInvalidDuration = 'Kesto ei voi olla nolla.';
 
   @override
+  final String activity = 'Aktiviteetti';
+
+  @override
   final String reminders = 'Muistutukset';
 
   @override
@@ -4775,6 +4813,15 @@ class FI extends Translated {
   @override
   final String checklistDoneInfo =
       'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?';
+
+  @override
+  final String basicActivities = 'Perusaktiviteetit';
+
+  @override
+  final String newBasicActivity = 'Uusi perusaktiviteetti';
+
+  @override
+  final String editBasicActivity = 'Muokkaa perusaktiviteettia';
 
   @override
   final String timeTo = '-';
@@ -5884,6 +5931,9 @@ class DE extends Translated {
   final String timerInvalidDuration = 'Dauer kann nicht Null sein';
 
   @override
+  final String activity = 'Aktivität';
+
+  @override
   final String reminders = 'Erinnerungen';
 
   @override
@@ -5959,6 +6009,15 @@ class DE extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?';
+
+  @override
+  final String basicActivities = 'Standardaktivitäten';
+
+  @override
+  final String newBasicActivity = 'Neue Standardaktivität';
+
+  @override
+  final String editBasicActivity = 'Standardaktivität bearbeiten';
 
   @override
   final String timeTo = 'bis';
@@ -7068,6 +7127,9 @@ class NB extends Translated {
   final String timerInvalidDuration = 'Varigheten kan ikke være null.';
 
   @override
+  final String activity = 'Aktivitet';
+
+  @override
   final String reminders = 'Påminnelser';
 
   @override
@@ -7143,6 +7205,15 @@ class NB extends Translated {
   @override
   final String checklistDoneInfo =
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
+
+  @override
+  final String basicActivities = 'Standardaktiviteter';
+
+  @override
+  final String newBasicActivity = 'Ny standardaktivitet';
+
+  @override
+  final String editBasicActivity = 'Endre standardaktivitet';
 
   @override
   final String timeTo = 'til';

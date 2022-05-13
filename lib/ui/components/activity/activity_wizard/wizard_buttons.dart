@@ -17,7 +17,8 @@ class PreviousWizardStepButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       context.read<WizardCubit>().state.isFirstStep
-          ? context.read<EditActivityCubit>().state is StoredActivityState
+          ? context.read<EditActivityCubit>().state is StoredActivityState ||
+                  context.read<WizardCubit>() is TemplateActivityWizardCubit
               ? const CancelButton()
               : PreviousButton(
                   onPressed: () async {

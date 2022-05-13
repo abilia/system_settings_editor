@@ -164,9 +164,12 @@ class AppBarTitleRows {
     required DateTime currentTime,
     required String langCode,
     required bool showYear,
-  }) =>
-      AppBarTitleRows._(
-        DateFormat.MMMM(langCode).format(currentTime),
-        showYear ? DateFormat.y(langCode).format(currentTime) : '',
-      );
+    required bool showDay,
+  }) {
+    return AppBarTitleRows._(
+      showDay ? DateFormat.EEEE(langCode).format(currentTime) : '',
+      DateFormat.MMMM(langCode).format(currentTime),
+      showYear ? DateFormat.y(langCode).format(currentTime) : '',
+    );
+  }
 }

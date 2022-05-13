@@ -4,13 +4,7 @@ import 'package:seagull/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;
-  final Color color,
-      secondaryColor,
-      borderColor,
-      monthColor,
-      monthSurfaceColor,
-      monthPastColor,
-      monthPastHeadingColor;
+  final Color color, secondaryColor, borderColor, monthColor, monthSurfaceColor;
   final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
@@ -18,14 +12,12 @@ class DayTheme {
     ThemeData theme,
     this.color,
     this.secondaryColor,
-    this.monthPastHeadingColor,
     bool background, {
     Color? onSurface,
     this.isColor = true,
     required this.isLight,
     Color? monthColor,
     Color? monthSurfaceColor,
-    Color? monthPastColor,
   })  : borderColor =
             color == AbiliaColors.white ? AbiliaColors.white110 : color,
         theme = theme.copyWith(
@@ -36,45 +28,36 @@ class DayTheme {
           colorScheme: theme.colorScheme.copyWith(onSurface: onSurface),
         ),
         monthColor = monthColor ?? color,
-        monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface,
-        monthPastColor = monthPastColor ??
-            monthColor?.withOpacity(0.4) ??
-            color.withOpacity(0.4);
+        monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface;
 
   DayTheme._light(
     Color color,
     Color secondaryColor, {
-    Color? monthPastHeadingColor,
     Color? onSurface,
     background = true,
     isColor = true,
     Color? monthColor,
     Color monthSurfaceColor = AbiliaColors.white,
-    Color? monthPastColor,
   }) : this._(
           _lightAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? secondaryColor,
           background,
           onSurface: onSurface,
           isColor: isColor,
           isLight: true,
           monthColor: monthColor,
           monthSurfaceColor: monthSurfaceColor,
-          monthPastColor: monthPastColor,
         );
 
   DayTheme._dark(
     Color color,
     Color secondaryColor, {
-    Color? monthPastHeadingColor,
     bool background = true,
   }) : this._(
           _darkAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? secondaryColor,
           background,
           isLight: false,
         );
@@ -82,17 +65,15 @@ class DayTheme {
 
 final _noColor = DayTheme._light(
       AbiliaColors.black80,
-      AbiliaColors.white110,
-      monthPastHeadingColor: AbiliaColors.white140,
+      AbiliaColors.white,
       onSurface: AbiliaColors.white,
       background: false,
       isColor: false,
       monthColor: AbiliaColors.white,
       monthSurfaceColor: AbiliaColors.black,
-      monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white110, AbiliaColors.white,
-        monthPastHeadingColor: AbiliaColors.white110, background: false),
+        background: false),
     _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
     _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
     _blue = DayTheme._light(AbiliaColors.blue, AbiliaColors.tuesdayBlue40),
