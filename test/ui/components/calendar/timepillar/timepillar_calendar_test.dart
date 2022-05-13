@@ -1215,10 +1215,10 @@ void main() {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
-      expect(find.text("night"), findsOneWidget);
+      expect(find.text('night'), findsOneWidget);
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
-      expect(find.text("night"), findsNothing);
+      expect(find.text('night'), findsNothing);
     });
   });
 }
