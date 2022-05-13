@@ -439,7 +439,7 @@ class MonthDayViewCompact extends StatelessWidget {
                         borderRadius: borderRadius,
                       ),
             decoration: BoxDecoration(
-              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
+              color: day.isPast ? AbiliaColors.white110 : dayTheme.monthColor,
               borderRadius: borderRadius,
             ),
             padding: dayIsHighlighted

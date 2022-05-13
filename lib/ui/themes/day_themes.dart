@@ -4,12 +4,7 @@ import 'package:seagull/ui/all.dart';
 
 class DayTheme {
   final ThemeData theme;
-  final Color color,
-      secondaryColor,
-      borderColor,
-      monthColor,
-      monthSurfaceColor,
-      monthPastColor;
+  final Color color, secondaryColor, borderColor, monthColor, monthSurfaceColor;
   final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
@@ -23,7 +18,6 @@ class DayTheme {
     required this.isLight,
     Color? monthColor,
     Color? monthSurfaceColor,
-    Color? monthPastColor,
   })  : borderColor =
             color == AbiliaColors.white ? AbiliaColors.white110 : color,
         theme = theme.copyWith(
@@ -34,8 +28,7 @@ class DayTheme {
           colorScheme: theme.colorScheme.copyWith(onSurface: onSurface),
         ),
         monthColor = monthColor ?? color,
-        monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface,
-        monthPastColor = monthPastColor ?? AbiliaColors.white110;
+        monthSurfaceColor = monthSurfaceColor ?? theme.colorScheme.onSurface;
 
   DayTheme._light(
     Color color,
@@ -45,7 +38,6 @@ class DayTheme {
     isColor = true,
     Color? monthColor,
     Color monthSurfaceColor = AbiliaColors.white,
-    Color? monthPastColor,
   }) : this._(
           _lightAppBarTheme,
           color,
@@ -56,7 +48,6 @@ class DayTheme {
           isLight: true,
           monthColor: monthColor,
           monthSurfaceColor: monthSurfaceColor,
-          monthPastColor: monthPastColor,
         );
 
   DayTheme._dark(
@@ -80,7 +71,6 @@ final _noColor = DayTheme._light(
       isColor: false,
       monthColor: AbiliaColors.white,
       monthSurfaceColor: AbiliaColors.black,
-      monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white110, AbiliaColors.white,
         background: false),
