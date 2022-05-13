@@ -3,7 +3,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-main() {
+void main() {
   test('Persist login info', () async {
     SharedPreferences.setMockInitialValues({});
     SharedPreferences pref = await SharedPreferences.getInstance();

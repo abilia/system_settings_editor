@@ -11,10 +11,10 @@ class WeekSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<WeekCalendarSettingsCubit, WeekCalendarSettingsState>(
         builder: (context, state) {
-      onDisplaDaysChanged(WeekDisplayDays? w) => context
+      void onDisplaDaysChanged(WeekDisplayDays? w) => context
           .read<WeekCalendarSettingsCubit>()
           .changeWeekCalendarSettings(state.copyWith(weekDisplayDays: w));
-      onWeekColorChanged(WeekColor? w) => context
+      void onWeekColorChanged(WeekColor? w) => context
           .read<WeekCalendarSettingsCubit>()
           .changeWeekCalendarSettings(state.copyWith(weekColor: w));
       return SettingsTab(

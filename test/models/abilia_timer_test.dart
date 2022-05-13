@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/duration.dart';
 
-main() {
+void main() {
   test('Timer to dbMap and back', () {
     final timer = AbiliaTimer.createNew(
       title: 'myTitle',
