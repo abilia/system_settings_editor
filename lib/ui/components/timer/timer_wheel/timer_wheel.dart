@@ -124,13 +124,13 @@ class _TimerWheelState extends State<TimerWheel> {
     });
   }
 
-  _updateMinutesSelected(int minutes) {
+  void _updateMinutesSelected(int minutes) {
     if (widget.activeSeconds / Duration.secondsPerMinute != minutes) {
       widget.onMinutesSelectedChanged?.call(minutes);
     }
   }
 
-  _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
+  void _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
     sliderTemporaryLocked = false;
     if (_pointIsOnWheel(details.localPosition, config)) {
       minutesSelectedOnTapDown =
@@ -138,7 +138,7 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
+  void _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
     void maybeLockSlider() {
       const controlMargin = 5;
 
@@ -177,7 +177,7 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
+  void _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
     if (minutesSelectedOnTapDown ==
         _minutesFromPoint(details.localPosition, config)) {
       int desiredMinutesLeft =

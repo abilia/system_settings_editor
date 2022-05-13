@@ -272,7 +272,7 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    _onChange(v) => context
+    void _onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(

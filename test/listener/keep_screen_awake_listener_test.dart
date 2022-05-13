@@ -29,7 +29,7 @@ void main() {
   Map<String, dynamic> systemSettingsChannelCallArguments = {};
   const MethodChannel systemSettingsChannel =
       MethodChannel('system_settings_editor');
-  setUpMockSystemSettingsChannel({
+  void setUpMockSystemSettingsChannel({
     int screenOffTimeout = systemTimeOutMs,
     bool canWriteSettings = true,
   }) {
