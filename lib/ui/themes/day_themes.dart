@@ -9,8 +9,7 @@ class DayTheme {
       borderColor,
       monthColor,
       monthSurfaceColor,
-      monthPastColor,
-      monthPastHeadingColor;
+      monthPastColor;
   final bool isColor, isLight;
   Color? get dayColor => isColor ? color : null;
 
@@ -18,7 +17,6 @@ class DayTheme {
     ThemeData theme,
     this.color,
     this.secondaryColor,
-    this.monthPastHeadingColor,
     bool background, {
     Color? onSurface,
     this.isColor = true,
@@ -42,7 +40,6 @@ class DayTheme {
   DayTheme._light(
     Color color,
     Color secondaryColor, {
-    Color? monthPastHeadingColor,
     Color? onSurface,
     background = true,
     isColor = true,
@@ -53,7 +50,6 @@ class DayTheme {
           _lightAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? AbiliaColors.white140,
           background,
           onSurface: onSurface,
           isColor: isColor,
@@ -66,13 +62,11 @@ class DayTheme {
   DayTheme._dark(
     Color color,
     Color secondaryColor, {
-    Color? monthPastHeadingColor,
     bool background = true,
   }) : this._(
           _darkAppBarTheme,
           color,
           secondaryColor,
-          monthPastHeadingColor ?? AbiliaColors.white140,
           background,
           isLight: false,
         );
@@ -81,7 +75,6 @@ class DayTheme {
 final _noColor = DayTheme._light(
       AbiliaColors.black80,
       AbiliaColors.white,
-      monthPastHeadingColor: AbiliaColors.white140,
       onSurface: AbiliaColors.white,
       background: false,
       isColor: false,
@@ -90,7 +83,7 @@ final _noColor = DayTheme._light(
       monthPastColor: AbiliaColors.white110,
     ),
     _white = DayTheme._dark(AbiliaColors.white110, AbiliaColors.white,
-        monthPastHeadingColor: AbiliaColors.white140, background: false),
+        background: false),
     _red = DayTheme._light(AbiliaColors.sundayRed, AbiliaColors.sundayRed40),
     _monday = DayTheme._light(AbiliaColors.green, AbiliaColors.mondayGreen40),
     _blue = DayTheme._light(AbiliaColors.blue, AbiliaColors.tuesdayBlue40),

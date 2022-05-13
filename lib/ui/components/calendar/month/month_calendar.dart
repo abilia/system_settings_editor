@@ -301,7 +301,7 @@ class MonthDayView extends StatelessWidget {
                         height: layout.monthCalendar.dayHeaderHeight,
                         decoration: BoxDecoration(
                           color: day.isPast
-                              ? dayTheme.monthPastHeadingColor
+                              ? AbiliaColors.white140
                               : dayTheme.color,
                           borderRadius:
                               BorderRadius.vertical(top: borderRadius.topRight),
