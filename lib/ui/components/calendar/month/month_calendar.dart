@@ -262,10 +262,10 @@ class MonthDayView extends StatelessWidget {
                     ? layout.monthCalendar.dayRadiusHighlighted
                     : layout.monthCalendar.dayRadius);
 
-                final backgroundColor =
-                    settingState.monthWeekColor == WeekColor.captions ||
-                            day.isPast
-                        ? AbiliaColors.white110
+                final backgroundColor = day.isPast
+                    ? AbiliaColors.white110
+                    : settingState.monthWeekColor == WeekColor.captions
+                        ? AbiliaColors.white
                         : dayTheme.secondaryColor;
 
                 return Container(
