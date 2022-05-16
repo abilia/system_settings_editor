@@ -46,6 +46,7 @@ class MonthListPreview extends StatelessWidget {
                       child: MonthDayPreviewHeading(
                         day: dayPickerState.day,
                         isLight: dayTheme.isLight,
+                        occasion: dayPickerState.occasion,
                       ),
                     ),
                     const Expanded(child: MonthPreview()),
@@ -93,21 +94,22 @@ class MonthDayPreviewHeading extends StatelessWidget {
     Key? key,
     required this.day,
     required this.isLight,
+    required this.occasion,
   }) : super(key: key);
 
   final DateTime day;
   final bool isLight;
+  final Occasion occasion;
 
   @override
   Widget build(BuildContext context) {
-    final isPast = day.occasion(context.read<ClockBloc>().state.onlyDays()) ==
-        Occasion.past;
-    final text =
+    final isPast = occasion == Occasion.past;
+    final dateText =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
     final previewLayout = layout.monthCalendar.monthPreview;
     return Tts.data(
-      data: text,
+      data: dateText,
       child: GestureDetector(
         onTap: () => DefaultTabController.of(context)?.animateTo(0),
         child: Container(
@@ -124,38 +126,37 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     newState is EventsLoaded &&
                     oldState.day != newState.day) ||
                 oldState.runtimeType != newState.runtimeType,
-            builder: (context, activityState) {
-              final fullDayActivies =
-                  (activityState as EventsLoaded).fullDayActivities.length;
+            builder: (context, eventState) {
+              if (eventState is! EventsLoaded) return const SizedBox.shrink();
+              final fullDayActivities = eventState.fullDayActivities.length;
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
-                    flex: 1,
                     fit: FlexFit.tight,
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: (fullDayActivies > 0)
+                      child: (fullDayActivities > 0)
                           ? CrossOver(
                               style: CrossOverStyle.darkSecondary,
                               applyCross: isPast,
                               padding: previewLayout.crossOverPadding,
-                              child: (fullDayActivies > 1)
+                              child: (fullDayActivities > 1)
                                   ? FullDayStack(
                                       key: TestKey
                                           .monthPreviewHeaderFullDayStack,
-                                      numberOfActivities: fullDayActivies,
+                                      numberOfActivities: fullDayActivities,
                                       width: previewLayout
                                           .headingFullDayActivityWidth,
                                       height: previewLayout
                                           .headingFullDayActivityHeight,
                                       goToActivitiesListOnTap: true,
-                                      day: activityState.day,
+                                      day: eventState.day,
                                     )
                                   : MonthActivityContent(
                                       key: TestKey.monthPreviewHeaderActivity,
                                       activityDay:
-                                          activityState.fullDayActivities.first,
+                                          eventState.fullDayActivities.first,
                                       width: previewLayout
                                           .headingFullDayActivityWidth,
                                       height: previewLayout
@@ -175,7 +176,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     fallbackWidth: previewLayout.dateTextCrossOverSize.width,
                     child: Center(
                       child: Text(
-                        text,
+                        dateText,
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                     ),
