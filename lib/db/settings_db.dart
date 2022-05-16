@@ -8,10 +8,7 @@ class SettingsDb {
       _alwaysUse24Record = 'ALWAYS_USE_24',
       _textToSpeechRecord = 'TEXT_TO_SPEECH',
       _categoryLeftExpanded = 'CATEGORY_LEFT_EXPANDED',
-      _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED',
-      _speechRate = 'SPEECH_RATE',
-      _speakEveryWord = 'SPEAK_EVERY_WORD',
-      _voice = 'VOICE';
+      _categoryRightExpanded = 'CATEGORY_RIGHT_EXPANDED';
 
   final SharedPreferences preferences;
 
@@ -49,32 +46,9 @@ class SettingsDb {
 
   bool get leftCategoryExpanded => _tryGetBool(_categoryLeftExpanded, true);
 
-  Future setSpeechRate(double speechRate) =>
-      preferences.setDouble(_speechRate, speechRate);
-
-  double get speechRate => _tryGetDouble(_speechRate, 100);
-
-  Future setSpeakEveryWord(bool speakEveryWord) =>
-      preferences.setBool(_speakEveryWord, speakEveryWord);
-
-  bool get speakEveryWord => _tryGetBool(_speakEveryWord, false);
-
-  Future setVoice(String voice) => preferences.setString(_voice, voice);
-
-  String get voice => preferences.getString(_voice) ?? '';
-
   bool _tryGetBool(String key, bool fallback) {
     try {
       return preferences.getBool(key) ?? fallback;
-    } catch (_) {
-      _log.warning('Could not get $key settings. Defaults to $fallback.');
-      return fallback;
-    }
-  }
-
-  double _tryGetDouble(String key, double fallback) {
-    try {
-      return preferences.getDouble(key) ?? fallback;
     } catch (_) {
       _log.warning('Could not get $key settings. Defaults to $fallback.');
       return fallback;

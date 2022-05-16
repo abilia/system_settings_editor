@@ -16,6 +16,7 @@ void main() {
     Iterable<Generic> generics = [];
     late MockGenericDb genericDb;
     late MockSettingsDb settingsDb;
+    late MockVoiceDb voiceDb;
 
     setUp(() async {
       setupPermissions();
@@ -42,9 +43,12 @@ void main() {
       when(() => settingsDb.rightCategoryExpanded).thenReturn(true);
       when(() => settingsDb.setRightCategoryExpanded(any()))
           .thenAnswer((_) => Future.value());
-      when(() => settingsDb.speechRate).thenAnswer((_) => 100);
-      when(() => settingsDb.speakEveryWord).thenAnswer((_) => false);
-      when(() => settingsDb.voice).thenAnswer((_) => '');
+      when(() => settingsDb.language).thenReturn('en');
+
+      voiceDb = MockVoiceDb();
+      when(() => voiceDb.speechRate).thenAnswer((_) => 100);
+      when(() => voiceDb.speakEveryWord).thenAnswer((_) => false);
+      when(() => voiceDb.voice).thenAnswer((_) => '');
 
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()

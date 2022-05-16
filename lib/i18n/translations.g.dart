@@ -763,6 +763,12 @@ abstract class Translated {
 
   final String voice = 'Voice';
 
+  final String noVoicesInstalled = 'No voices installed';
+
+  final String installingVoice = 'Installing';
+
+  final String speechTest = 'Test of speech rate';
+
   final String codeProtect = 'Code protect';
 
   final String code = 'Code';
@@ -1958,6 +1964,15 @@ class SV extends Translated {
   final String voice = 'Röst';
 
   @override
+  final String noVoicesInstalled = 'Inga röster är installerade';
+
+  @override
+  final String installingVoice = 'Installerar';
+
+  @override
+  final String speechTest = 'Test av talhastighet';
+
+  @override
   final String codeProtect = 'Kodskydd';
 
   @override
@@ -3144,6 +3159,12 @@ class DA extends Translated {
 
   @override
   final String speechRate = 'Talehastighed';
+
+  @override
+  final String noVoicesInstalled = 'Der er ikke installeret nogen stemmer';
+
+  @override
+  final String speechTest = 'Test af talehastighed';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
@@ -4334,6 +4355,12 @@ class NL extends Translated {
   final String speechRate = 'Spraaksnelheid';
 
   @override
+  final String noVoicesInstalled = 'Geen stemmen geïnstalleerd';
+
+  @override
+  final String speechTest = 'Test van spraaksnelheid';
+
+  @override
   final String codeProtect = 'Codebescherming';
 
   @override
@@ -5521,6 +5548,12 @@ class FI extends Translated {
 
   @override
   final String speechRate = 'Puhenopeus';
+
+  @override
+  final String noVoicesInstalled = 'Ääniä ei ole asennettu';
+
+  @override
+  final String speechTest = 'Puhenopeuden testaus';
 
   @override
   final String codeProtect = 'Suojakoodi';
@@ -6715,6 +6748,12 @@ class DE extends Translated {
   final String speechRate = 'Sprechtempo';
 
   @override
+  final String noVoicesInstalled = 'Keine Stimmen installiert';
+
+  @override
+  final String speechTest = 'Test des Sprechtempos';
+
+  @override
   final String codeProtect = 'Schutz durch Code';
 
   @override
@@ -7899,6 +7938,12 @@ class NB extends Translated {
 
   @override
   final String speechRate = 'Talehastighet';
+
+  @override
+  final String noVoicesInstalled = 'Ingen stemmer er installert';
+
+  @override
+  final String speechTest = 'Test av talehastighet';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';

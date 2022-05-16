@@ -85,6 +85,10 @@ class GetItInitializer {
 
   set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
 
+  VoiceDb? _voiceDb;
+
+  set voiceDb(VoiceDb voiceDb) => _voiceDb = voiceDb;
+
   late MultipartRequestBuilder _multipartRequestBuilder =
       MultipartRequestBuilder();
 
@@ -150,5 +154,6 @@ class GetItInitializer {
     ..registerSingleton<SyncDelays>(_syncDelay)
     ..registerSingleton<PackageInfo>(_packageInfo)
     ..registerSingleton<Battery>(_battery)
-    ..registerSingleton<TtsInterface>(_ttsHandler);
+    ..registerSingleton<TtsInterface>(_ttsHandler)
+    ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences));
 }

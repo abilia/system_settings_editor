@@ -7,11 +7,9 @@ import 'package:seagull/ui/dialogs/all.dart';
 import 'package:seagull/ui/themes/layout.dart';
 
 class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key? key, this.onChanged, this.immediate = true})
-      : super(key: key);
+  const TextToSpeechSwitch({Key? key, this.onChanged}) : super(key: key);
 
   final Function(bool)? onChanged;
-  final bool immediate;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,6 @@ class TextToSpeechSwitch extends StatelessWidget {
             onChanged: onChanged ??
                 (v) {
                   context.read<SettingsCubit>().setTextToSpeech(v);
-                  if (immediate) context.read<SettingsCubit>().save();
                 },
             child: Text(Translator.of(context).translate.textToSpeech),
           ),

@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/db/settings_db.dart';
+import 'package:seagull/db/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -45,11 +45,14 @@ class SystemSettingsPage extends StatelessWidget {
           text: Text(t.textToSpeech),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => BlocProvider<SpeechSettingsCubit>(
-                create: (context) => SpeechSettingsCubit(
-                    settingsDb: GetIt.I<SettingsDb>(),
-                    acapelaTts: GetIt.I<TtsInterface>() as AcapelaTtsHandler),
-                child: const SpeechSupportSettingsPage(),
+              builder: (_) => MultiBlocProvider(
+                providers: copiedAuthProviders(context),
+                child: BlocProvider<SpeechSettingsCubit>(
+                  create: (context) => SpeechSettingsCubit(
+                      voiceDb: GetIt.I<VoiceDb>(),
+                      acapelaTts: GetIt.I<TtsInterface>() as AcapelaTtsHandler),
+                  child: const SpeechSupportSettingsPage(),
+                ),
               ),
               settings: const RouteSettings(name: 'SpeechSupportSettingsPage'),
             ),

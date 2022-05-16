@@ -17,29 +17,28 @@ class VoicesPage extends StatelessWidget {
           label: t.system,
           iconData: AbiliaIcons.handiAlarmVibration,
         ),
-        body: ListView(
-          children: state.voices.map((VoiceData voice) {
-            final name = voice.name;
-            return _VoiceRow(
-              selected: name == state.selectedVoice,
-              voice: voice,
-              downloaded: state.downloadedVoices.contains(name),
-              downloading: state.downloadingVoice == name,
-              selectedVoice: state.selectedVoice,
-              keep: state.downloadedVoices.length == 1 &&
-                  state.downloadedVoices.first == name,
-              firstSelection: initialSelection.isEmpty,
-            );
-          }).toList(),
-        ).pad(layout.speechSupportPage.bottomPadding),
+        body: Padding(
+          padding: layout.settingsBasePage.listPadding,
+          child: ListView(
+            children: state.voices.map((VoiceData voice) {
+              final name = voice.name;
+              return _VoiceRow(
+                selected: name == state.selectedVoice,
+                voice: voice,
+                downloaded: state.downloadedVoices.contains(name),
+                downloading: state.downloadingVoice == name,
+                selectedVoice: state.selectedVoice,
+                keep: state.downloadedVoices.length == 1 &&
+                    state.downloadedVoices.first == name,
+                firstSelection: initialSelection.isEmpty,
+              );
+            }).toList(),
+          ),
+        ),
         bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: const CloseButton(),
-          forwardNavigationWidget: state.selectedVoice != initialSelection
-              ? SaveButton(
-                  onPressed: () =>
-                      Navigator.of(context).pop(state.selectedVoice),
-                )
-              : null,
+          backNavigationWidget: OkButton(
+            onPressed: () => Navigator.of(context).pop(state.selectedVoice),
+          ),
         ),
       ),
     );
@@ -69,61 +68,71 @@ class _VoiceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechSupportPageLayout pageLayout = layout.speechSupportPage;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child: downloaded
-              ? RadioField<String>(
-                  groupValue: selectedVoice,
-                  onChanged: (name) {
-                    if (downloaded && name != null && !selected) {
-                      context.read<VoicesCubit>().selectVoice(voice);
-                    }
-                  },
-                  value: voice.name,
-                  text: Text('${voice.name}: ${voice.size}MB'),
-                )
-              : _DisabledVoiceRow(name: '${voice.name}: ${voice.size}MB'),
-        ),
-        CollapsableWidget(
-          axis: Axis.horizontal,
-          collapsed: downloaded,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: layout.formPadding.largeHorizontalItemDistance,
+    return Padding(
+      padding: layout.settingsBasePage.itemPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          CollapsableWidget(
+            axis: Axis.horizontal,
+            collapsed: downloaded,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: layout.formPadding.largeHorizontalItemDistance,
+              ),
+              child: downloading
+                  ? SizedBox(
+                      width: layout.actionButton.size,
+                      height: layout.actionButton.size,
+                      child: CircularProgressIndicator(
+                        strokeWidth: pageLayout.loaderStrokeWidth,
+                        valueColor:
+                            const AlwaysStoppedAnimation(AbiliaColors.red),
+                      ).pad(pageLayout.loaderPadding),
+                    )
+                  : IconActionButtonDark(
+                      child: const Icon(AbiliaIcons.download),
+                      onPressed: () async => await context
+                          .read<VoicesCubit>()
+                          .downloadVoice(voice),
+                    ),
             ),
-            child: downloading
-                ? SizedBox(
-                    width: layout.actionButton.size,
-                    height: layout.actionButton.size,
-                    child: CircularProgressIndicator(
-                            strokeWidth: pageLayout.loaderStrokeWidth,
-                            color: AbiliaColors.red)
-                        .pad(pageLayout.loaderPadding),
-                  ).pad(pageLayout.buttonPadding)
-                : IconActionButtonDark(
-                    child: const Icon(AbiliaIcons.download),
-                    onPressed: () =>
-                        context.read<VoicesCubit>().downloadVoice(voice),
-                  ).pad(pageLayout.buttonPadding),
           ),
-        ),
-        CollapsableWidget(
-          axis: Axis.horizontal,
-          collapsed: downloading || !downloaded || firstSelection,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: layout.formPadding.largeHorizontalItemDistance,
+          CollapsableWidget(
+            axis: Axis.horizontal,
+            collapsed: downloading || !downloaded || firstSelection,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: layout.formPadding.largeHorizontalItemDistance,
+              ),
+              child: _DeleteButton(
+                voice: voice,
+                enabled: !keep,
+              ),
             ),
-            child: _DeleteButton(
-              voice: voice,
-              enabled: !keep,
-            ).pad(pageLayout.buttonPadding),
           ),
-        ),
-      ],
-    ).pad(pageLayout.voiceRowPadding);
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: layout.formPadding.largeHorizontalItemDistance,
+              ),
+              child: downloaded
+                  ? RadioField<String>(
+                      groupValue: selectedVoice,
+                      onChanged: (name) {
+                        if (downloaded && name != null && !selected) {
+                          context.read<VoicesCubit>().selectVoice(voice);
+                        }
+                      },
+                      value: voice.name,
+                      text: Text('${voice.name}: ${voice.size}MB'),
+                    )
+                  : _DisabledVoiceRow(name: '${voice.name}: ${voice.size}MB'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -153,7 +162,9 @@ class _DisabledVoiceRow extends StatelessWidget {
     return Container(
       height: layout.pickField.height,
       decoration: whiteBoxDecoration,
-      padding: layout.speechSupportPage.buttonPadding,
+      padding: EdgeInsets.only(
+        left: layout.formPadding.largeHorizontalItemDistance,
+      ),
       child: Align(
         alignment: Alignment.centerLeft,
         child: DefaultTextStyle(

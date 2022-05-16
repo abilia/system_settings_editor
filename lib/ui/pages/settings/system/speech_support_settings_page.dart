@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({Key? key}) : super(key: key);
@@ -11,10 +11,9 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final locale = Translator.of(context).locale.toString();
-    final defaultPadding = layout.speechSupportPage.defaultPadding;
-    final topPadding = layout.speechSupportPage.topPadding;
-    final bottomPadding = layout.speechSupportPage.bottomPadding;
-    final dividerPadding = layout.speechSupportPage.dividerPadding;
+    bool textToSpeech = context.read<SettingsCubit>().state.textToSpeech;
+    double speechRate = context.read<SpeechSettingsCubit>().state.speechRate;
+    String voice = context.read<SpeechSettingsCubit>().state.voice;
 
     return BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
       builder: (context, state) {
@@ -27,64 +26,100 @@ class SpeechSupportSettingsPage extends StatelessWidget {
           body: BlocSelector<SettingsCubit, SettingsState, bool>(
             selector: (state) => state.textToSpeech,
             builder: (context, textToSpeech) {
-              return ListView(
-                children: [
-                  TextToSpeechSwitch(
-                    immediate: false,
-                    onChanged: !textToSpeech && state.voice.isEmpty
-                        ? (v) => pushVoicesPage(context, locale, state.voice)
-                        : null,
-                  ).pad(topPadding),
-                  if (textToSpeech) ...[
-                    const Divider().pad(dividerPadding),
-                    SwitchField(
-                      value: state.speakEveryWord,
-                      child: Text(t.speakEveryWord),
-                    ).pad(defaultPadding),
-                    const Divider().pad(dividerPadding),
-                    Tts(
-                      child:
-                          Text(t.speechRate + ' ${state.speechRate.toInt()}'),
-                    ).pad(defaultPadding),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AbiliaSlider(
-                            value: state.speechRate / 100,
-                            leading: const Icon(AbiliaIcons.fastForward),
-                            onChanged: (v) {
-                              context
-                                  .read<SpeechSettingsCubit>()
-                                  .setSpeechRate(v * 100);
-                            },
+              return BlocSelector<VoicesCubit, VoicesState, String>(
+                  selector: (state) => state.downloadingVoice,
+                  builder: (context, downloadingVoice) {
+                    return BlocListener<VoicesCubit, VoicesState>(
+                      listener: (context, voicesState) async {
+                        voice = voicesState.selectedVoice;
+                        await context
+                            .read<SpeechSettingsCubit>()
+                            .setVoice(voice);
+                      },
+                      child: DividerTheme(
+                        data: layout.settingsBasePage.dividerThemeData,
+                        child: Padding(
+                          padding: layout.settingsBasePage.listPadding,
+                          child: ListView(
+                            children: [
+                              TextToSpeechSwitch(
+                                onChanged: !textToSpeech && state.voice.isEmpty
+                                    ? (v) => pushVoicesPage(
+                                        context, locale, state.voice)
+                                    : null,
+                              ).pad(layout.settingsBasePage.itemPadding),
+                              if (textToSpeech) ...[
+                                const Divider(),
+                                Tts(
+                                  child: Text(t.voice),
+                                ).pad(layout.settingsBasePage.itemPadding),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: PickField(
+                                        text: Text(state.voice.isEmpty
+                                            ? downloadingVoice.isEmpty
+                                                ? t.noVoicesInstalled
+                                                : t.installingVoice
+                                            : state.voice),
+                                        onTap: () => pushVoicesPage(
+                                            context, locale, state.voice),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: layout.formPadding
+                                            .largeHorizontalItemDistance,
+                                      ),
+                                      child: const TtsTestButton(),
+                                    ),
+                                  ],
+                                ).pad(layout.settingsBasePage.itemPadding),
+                                Tts(
+                                  child: Text(t.speechRate +
+                                      ' ${state.speechRate.toInt()}'),
+                                ).pad(layout.settingsBasePage.itemPadding),
+                                AbiliaSlider(
+                                  value: state.speechRate,
+                                  min: 50,
+                                  max: 150,
+                                  leading: const Icon(AbiliaIcons.fastForward),
+                                  onChanged: (v) {
+                                    context
+                                        .read<SpeechSettingsCubit>()
+                                        .setSpeechRate(v);
+                                  },
+                                  divisions: 10,
+                                ).pad(layout.settingsBasePage.itemPadding),
+                                const Divider(),
+                                SwitchField(
+                                  value: state.speakEveryWord,
+                                  child: Text(t.speakEveryWord),
+                                ).pad(layout.settingsBasePage.itemPadding),
+                              ],
+                            ],
                           ),
                         ),
-                        const TtsTestButton()
-                            .pad(layout.speechSupportPage.buttonPadding),
-                      ],
-                    ).pad(defaultPadding),
-                    Tts(child: Text(t.voice)).pad(defaultPadding),
-                    PickField(
-                      text: Text(state.voice),
-                      onTap: () => pushVoicesPage(context, locale, state.voice),
-                    ).pad(bottomPadding),
-                  ],
-                ],
-              );
+                      ),
+                    );
+                  });
             },
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(
-              onPressed: () {
-                context.read<SettingsCubit>().reset();
-                context.read<SpeechSettingsCubit>().reset();
+              onPressed: () async {
+                await context
+                    .read<SettingsCubit>()
+                    .setTextToSpeech(textToSpeech);
+                await context.read<SpeechSettingsCubit>().setVoice(voice);
+                await context
+                    .read<SpeechSettingsCubit>()
+                    .setSpeechRate(speechRate);
                 Navigator.of(context).maybePop();
               },
             ),
             forwardNavigationWidget: OkButton(
               onPressed: () {
-                context.read<SpeechSettingsCubit>().save();
-                context.read<SettingsCubit>().save();
                 Navigator.of(context).maybePop();
               },
             ),
@@ -95,11 +130,12 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   }
 
   void pushVoicesPage(BuildContext context, String locale, String voice) async {
+    final authProviders = copiedAuthProviders(context);
+
     final selectedVoice = await Navigator.of(context).push<String?>(
       MaterialPageRoute(
-        builder: (_) => BlocProvider<VoicesCubit>(
-          create: (context) =>
-              VoicesCubit(GetIt.I<BaseClient>(), locale, voice),
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
           child: VoicesPage(initialSelection: voice),
         ),
         settings:
@@ -147,7 +183,7 @@ class _TtsTestButtonState extends State<TtsTestButton> {
   Future<void> _play() async {
     setState(() => ttsIsPlaying = true);
     Translated t = Translator.of(context).translate;
-    await GetIt.I<TtsInterface>().speak('${t.textToSpeech}  ${t.speechRate}');
+    await GetIt.I<TtsInterface>().speak(t.speechTest);
     if (mounted) {
       setState(() => ttsIsPlaying = false);
     }

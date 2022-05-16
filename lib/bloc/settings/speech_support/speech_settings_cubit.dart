@@ -1,47 +1,42 @@
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:seagull/db/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
 
 part 'speech_settings_state.dart';
 
 class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
-  final SettingsDb settingsDb;
+  final VoiceDb voiceDb;
   final AcapelaTts acapelaTts;
 
   SpeechSettingsCubit({
-    required this.settingsDb,
+    required this.voiceDb,
     required this.acapelaTts,
   }) : super(
           SpeechSettingsState(
-              speechRate: settingsDb.speechRate,
-              speakEveryWord: settingsDb.speakEveryWord,
-              voice: settingsDb.voice),
+              speechRate: voiceDb.speechRate,
+              speakEveryWord: voiceDb.speakEveryWord,
+              voice: voiceDb.voice),
         );
 
-  void setSpeechRate(double speechRate) {
+  Future<void> setSpeechRate(double speechRate) async {
     acapelaTts.setSpeechRate(speechRate);
     emit(state.copyWith(speechRate: speechRate));
+    await voiceDb.setSpeechRate(state.speechRate);
   }
 
-  void setVoice(String voice) {
+  Future<void> setVoice(String voice) async {
     acapelaTts.setVoice(voice);
     emit(state.copyWith(voice: voice));
+    await voiceDb.setVoice(state.voice);
   }
 
-  void save() async {
-    await settingsDb.setSpeechRate(state.speechRate);
-    await settingsDb.setVoice(state.voice);
-  }
+  void save() async {}
 
   void reset() async {
     emit(SpeechSettingsState(
-        speechRate: settingsDb.speechRate,
-        speakEveryWord: settingsDb.speakEveryWord,
-        voice: settingsDb.voice));
-    acapelaTts.setSpeechRate(state.speechRate);
-    acapelaTts.setVoice(state.voice);
+        speechRate: voiceDb.speechRate,
+        speakEveryWord: voiceDb.speakEveryWord,
+        voice: voiceDb.voice));
   }
 }
