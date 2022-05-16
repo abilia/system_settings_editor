@@ -1005,7 +1005,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(CalendarPage), findsOneWidget);
         expect(find.byType(TimerCard), findsOneWidget);
-        expect(find.text(emptyTimerName), findsOneWidget);
+        expect(find.byType(TimerTopInfo), findsNothing);
 
         final captured =
             verify(() => mockTimerDb.insert(captureAny())).captured;

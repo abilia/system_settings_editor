@@ -368,7 +368,6 @@ class MediumLayout extends Layout {
             l1: EdgeInsets.fromLTRB(24, 146, 24, 64),
             l2: EdgeInsets.symmetric(horizontal: 32, vertical: 96),
             l3: EdgeInsets.symmetric(horizontal: 24, vertical: 96),
-            l4: EdgeInsets.zero,
             l5: EdgeInsets.symmetric(horizontal: 48, vertical: 96),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
@@ -488,6 +487,7 @@ class MediumLayout extends Layout {
           logout: const LogoutLayout(
             profilePictureSize: 126,
             profileDistance: 35,
+            topDistance: 94,
           ),
           photoCalendar: const PhotoCalendarLayout(
             clockSize: 200,

@@ -1018,7 +1018,6 @@ class LayoutTemplates {
       l1,
       l2,
       l3,
-      l4,
       l5,
       bottomNavigation;
 
@@ -1036,7 +1035,6 @@ class LayoutTemplates {
     this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
     this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
     this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
-    this.l4 = EdgeInsets.zero,
     this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
   });
 }
@@ -1292,11 +1290,12 @@ class ActivityAlarmPreviewLayout {
 }
 
 class LogoutLayout {
-  final double profilePictureSize, profileDistance;
+  final double profilePictureSize, profileDistance, topDistance;
 
   const LogoutLayout({
     this.profilePictureSize = 84,
     this.profileDistance = 24,
+    this.topDistance = 64,
   });
 }
 
