@@ -36,7 +36,7 @@ class TimerAlarmBloc extends Bloc<TimerAlarmEvent, TimerAlarmState> {
     on<TimerAlarmEvent>(_onEvent, transformer: sequential());
   }
 
-  _onEvent(TimerAlarmEvent event, Emitter emit) {
+  void _onEvent(TimerAlarmEvent event, Emitter emit) {
     if (event is _TimersChanged) {
       emit(_timersToState(event.timers, ticker.time));
     }

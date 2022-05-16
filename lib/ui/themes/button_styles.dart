@@ -138,7 +138,8 @@ final double secondaryActionButtonMinSize =
     layout.button.secondaryActionButtonMinSize;
 
 final _actionButtonStyle = ButtonStyle(
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
+  textStyle:
+      MaterialStateProperty.all(abiliaTextTheme.caption?.copyWith(height: 1)),
   minimumSize: MaterialStateProperty.all(
       Size(layout.actionButton.size, layout.actionButton.size)),
   padding: MaterialStateProperty.all(layout.actionButton.padding),

@@ -65,28 +65,28 @@ class AppBarTitleRows {
     bool displayPartOfDay = true,
     bool displayDate = true,
     bool compactDay = false,
+    bool currentNight = true,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
     required String langCode,
     required Translated translator,
   }) {
-    final currentNight = currentTime.isAtSameDay(day) &&
-        currentTime.dayPart(dayParts) == DayPart.night;
-
     final weekday = displayWeekDay
         ? currentNight
             ? nightDay(currentTime, dayParts, langCode)
             : DateFormat.EEEE(langCode).format(day)
         : '';
-    final daypart = displayPartOfDay
-        ? _getPartOfDay(
-            currentTime.isAtSameDay(day),
-            currentTime.hour,
-            currentTime.dayPart(dayParts),
-            translator,
-          )
-        : '';
+    final daypart =
+        (currentTime.dayPart(dayParts) != DayPart.night || currentNight) &&
+                displayPartOfDay
+            ? _getPartOfDay(
+                currentTime.isAtSameDay(day),
+                currentTime.hour,
+                currentTime.dayPart(dayParts),
+                translator,
+              )
+            : '';
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),

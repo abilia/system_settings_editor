@@ -37,7 +37,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   late final StreamSubscription _clockBlocSubscription;
   late final StreamSubscription _alarmCubitSubscription;
 
-  _emit(ActivitiesState activitiesState, DateTime time) =>
+  void _emit(ActivitiesState activitiesState, DateTime time) =>
       emit(_stateFrom(activitiesState, time, state.selected));
 
   void setCurrentActivity(ActivityDay activityDay) {

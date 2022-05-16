@@ -262,10 +262,10 @@ class MonthDayView extends StatelessWidget {
                     ? layout.monthCalendar.dayRadiusHighlighted
                     : layout.monthCalendar.dayRadius);
 
-                final backgroundColor =
-                    settingState.monthWeekColor == WeekColor.captions ||
-                            day.isPast
-                        ? AbiliaColors.white110
+                final backgroundColor = day.isPast
+                    ? AbiliaColors.white110
+                    : settingState.monthWeekColor == WeekColor.captions
+                        ? AbiliaColors.white
                         : dayTheme.secondaryColor;
 
                 return Container(
@@ -301,7 +301,7 @@ class MonthDayView extends StatelessWidget {
                         height: layout.monthCalendar.dayHeaderHeight,
                         decoration: BoxDecoration(
                           color: day.isPast
-                              ? dayTheme.monthPastHeadingColor
+                              ? AbiliaColors.white140
                               : dayTheme.color,
                           borderRadius:
                               BorderRadius.vertical(top: borderRadius.topRight),
@@ -438,7 +438,7 @@ class MonthDayViewCompact extends StatelessWidget {
                         borderRadius: borderRadius,
                       ),
             decoration: BoxDecoration(
-              color: day.isPast ? dayTheme.monthPastColor : dayTheme.monthColor,
+              color: day.isPast ? AbiliaColors.white110 : dayTheme.monthColor,
               borderRadius: borderRadius,
             ),
             padding: dayIsHighlighted

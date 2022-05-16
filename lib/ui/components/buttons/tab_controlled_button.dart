@@ -45,5 +45,5 @@ class _TabControlledButtonState extends State<TabControlledButton> {
     );
   }
 
-  _tabControllerListener() => setState(() {});
+  void _tabControllerListener() => setState(() {});
 }

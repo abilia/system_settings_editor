@@ -202,6 +202,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.goToNowButton), findsOneWidget);
     });
+
+    testWidgets(
+        'SGC-1638 Full day activity should not be present in timepillar',
+        (WidgetTester tester) async {
+      activityResponse = () => [
+            Activity.createNew(
+              title: 'title',
+              startTime: time,
+              fullDay: true,
+            )
+          ];
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.byType(ActivityTimepillarCard), findsNothing);
+    });
   });
 
   group('timepillar dots', () {
@@ -1201,6 +1216,28 @@ void main() {
       await tester.tap(previusDayButtonFinder);
       await tester.pumpAndSettle();
       expect(find.text(dayActivity), findsOneWidget);
+    });
+
+    testWidgets('SGC-1632 Night view: Header should be dark',
+        (WidgetTester tester) async {
+      mockTicker.add(DateTime(2022, 04, 27, 00, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      CalendarAppBar appBar =
+          tester.firstWidget(find.byType(CalendarAppBar)) as CalendarAppBar;
+      expect(appBar.calendarDayColor, DayColor.noColors);
+    });
+
+    testWidgets(
+        'SGC-1633 Night view: Wrong day in header when navigating to rest of day',
+        (WidgetTester tester) async {
+      mockTicker.add(DateTime(2022, 04, 27, 00, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      expect(find.text('night'), findsOneWidget);
+      await tester.tap(nextDayButtonFinder);
+      await tester.pumpAndSettle();
+      expect(find.text('night'), findsNothing);
     });
   });
 }

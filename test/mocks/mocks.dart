@@ -77,7 +77,7 @@ class MockMultipartRequestBuilder extends Mock
 class MockMultipartRequest extends Mock implements MultipartRequest {}
 
 class Notification {
-  mockCancelAll() {}
+  void mockCancelAll() {}
 }
 
 class MockConnectivity extends Mock implements Connectivity {}

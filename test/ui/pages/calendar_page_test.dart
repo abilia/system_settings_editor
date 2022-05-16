@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -14,15 +11,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
-
-import '../../test_helpers/register_fallback_values.dart';
-import '../../test_helpers/tts.dart';
 import '../../test_helpers/enter_text.dart';
+import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
+import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -75,7 +72,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
-  final initialDay = DateTime(2020, 08, 05);
+  final initialTime = DateTime(2020, 08, 05, 14, 10, 00);
 
   setUpAll(() {
     registerFallbackValues();
@@ -139,7 +136,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker.fake(initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
         activityResponse: activityResponse,
@@ -169,18 +166,20 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
-          initialDay.add(3.days()));
+          initialTime.onlyDays().add(3.days()));
       await tester.tap(find.byType(GoToNowButton));
       await tester.pumpAndSettle();
 
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
     });
 
     testWidgets('Tapping Day in TabBar returns to this week',
@@ -195,7 +194,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
     });
 
     group('Premissions', () {
@@ -399,7 +399,7 @@ void main() {
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('${initialDay.subtract(1.days()).day}'),
+          of: find.text('${initialTime.subtract(1.days()).day}'),
           matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -626,7 +626,7 @@ void main() {
     const title1 = 'fulldaytitle1';
     const title2 = 'fullday title 2';
     const title3 = 'full day title 3';
-    final date = initialDay.onlyDays();
+    final date = initialTime.onlyDays();
 
     final day1Finder = find.text(title1);
     final day2Finder = find.text(title2);
@@ -777,11 +777,11 @@ void main() {
     const fridayTitle = 'f-r-i-d-a-y',
         nextWeekTitle = 'N-e-x-t week title',
         todaytitle = 't-o-d-a-y';
-    final friday = initialDay.addDays(2);
-    final nextWeek = initialDay.nextWeek();
+    final friday = initialTime.addDays(2);
+    final nextWeek = initialTime.nextWeek();
     setUp(() {
       final activities = [
-        FakeActivity.starts(initialDay, title: todaytitle),
+        FakeActivity.starts(initialTime, title: todaytitle),
         FakeActivity.starts(friday, title: fridayTitle),
         FakeActivity.starts(nextWeek, title: nextWeekTitle),
       ];
@@ -847,7 +847,7 @@ void main() {
 
       final selected = allHeadings.firstWhere((element) => element.selected);
 
-      expect(selected.day, initialDay);
+      expect(selected.day, initialTime.onlyDays());
     });
 
     testWidgets(
@@ -916,7 +916,7 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPreSelect, isEmpty);
 
-      final d = initialDay.addDays(8).day;
+      final d = initialTime.addDays(8).day;
       await tester.tap(find.text('$d'));
       await tester.pumpAndSettle();
       final selectedHeadingsnextWeekPostSelect = tester.widgetList(
@@ -946,30 +946,30 @@ void main() {
     testWidgets('Overflow issue during development of SGC-754',
         (WidgetTester tester) async {
       final activities = [
-        FakeActivity.starts(initialDay, title: 'one')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 1))),
-        FakeActivity.starts(initialDay, title: 'two')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 2))),
-        FakeActivity.starts(initialDay, title: 'three')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 3))),
-        FakeActivity.starts(initialDay, title: 'four')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 4))),
-        FakeActivity.starts(initialDay, title: 'five')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 5))),
-        FakeActivity.starts(initialDay, title: 'six')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 6))),
-        FakeActivity.starts(initialDay, title: 'seven')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 7))),
-        FakeActivity.starts(initialDay, title: 'eight')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 8))),
-        FakeActivity.starts(initialDay, title: 'nine')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 9))),
-        FakeActivity.starts(initialDay, title: 'ten')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 10))),
-        FakeActivity.starts(initialDay, title: 'eleven')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 11))),
-        FakeActivity.starts(initialDay, title: 'twelve')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 12))),
+        FakeActivity.starts(initialTime, title: 'one')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 1))),
+        FakeActivity.starts(initialTime, title: 'two')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 2))),
+        FakeActivity.starts(initialTime, title: 'three')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 3))),
+        FakeActivity.starts(initialTime, title: 'four')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 4))),
+        FakeActivity.starts(initialTime, title: 'five')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 5))),
+        FakeActivity.starts(initialTime, title: 'six')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 6))),
+        FakeActivity.starts(initialTime, title: 'seven')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 7))),
+        FakeActivity.starts(initialTime, title: 'eight')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 8))),
+        FakeActivity.starts(initialTime, title: 'nine')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 9))),
+        FakeActivity.starts(initialTime, title: 'ten')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 10))),
+        FakeActivity.starts(initialTime, title: 'eleven')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 11))),
+        FakeActivity.starts(initialTime, title: 'twelve')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 12))),
       ];
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
@@ -1027,7 +1027,8 @@ void main() {
 
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
-      final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
+      final expectedTime =
+          initialTime.onlyDays().nextDay().millisecondsSinceEpoch;
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(

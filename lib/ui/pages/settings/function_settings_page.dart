@@ -153,7 +153,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<FunctionSettingsCubit, FunctionSettingsState>(
       builder: (context, state) {
-        onChange(v) => context
+        void onChange(v) => context
             .read<FunctionSettingsCubit>()
             .changeFunctionSettings(state.copyWith(startView: v));
         return _SettingsTab(

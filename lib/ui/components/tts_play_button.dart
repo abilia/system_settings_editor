@@ -58,7 +58,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
     );
   }
 
-  _play() {
+  void _play() {
     setState(() => ttsIsPlaying = true);
     GetIt.I<TtsInterface>().speak(widget.controller.text).whenComplete(
       () {
@@ -69,7 +69,7 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
     );
   }
 
-  _stop() {
+  void _stop() {
     GetIt.I<TtsInterface>().stop().whenComplete(
       () {
         if (mounted) {

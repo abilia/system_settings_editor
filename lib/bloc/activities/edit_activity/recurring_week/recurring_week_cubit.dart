@@ -49,7 +49,7 @@ class RecurringWeekCubit extends Cubit<RecurringWeekState> {
     emit(state.copyWith(weekdays: weekdays));
   }
 
-  selectWeekdays([final Set<int> days = const {}]) =>
+  void selectWeekdays([final Set<int> days = const {}]) =>
       emit(state.copyWith(weekdays: days));
 
   @override

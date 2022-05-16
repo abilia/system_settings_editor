@@ -50,7 +50,7 @@ class LibraryChecklist extends StatelessWidget {
               Text(
                 name,
                 overflow: TextOverflow.ellipsis,
-                style: abiliaTextTheme.caption?.copyWith(height: 1),
+                style: abiliaTextTheme.caption,
               ),
             SizedBox(height: layout.libraryPage.textImageDistance),
             if (checklist.hasImage)
@@ -87,10 +87,6 @@ class FullScreenChecklist extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: layout.templates.m3,
         decoration: whiteBoxDecoration,
-        child: ChecklistView(
-          checklist,
-          preview: true,
-          padding: layout.templates.s1,
-        ),
+        child: ChecklistView(checklist, padding: layout.templates.s1),
       );
 }
