@@ -504,10 +504,10 @@ class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
+    required this.isPast,
     this.width,
     this.height,
     this.goToActivityOnTap = false,
-    required this.isPast,
   }) : super(key: key);
 
   final ActivityDay activityDay;
@@ -518,7 +518,6 @@ class MonthActivityContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inactive = isPast;
     final body = Container(
       width: width,
       height: height,
@@ -535,7 +534,7 @@ class MonthActivityContent extends StatelessWidget {
         child: activityDay.activity.hasImage
             ? AnimatedOpacity(
                 duration: const Duration(milliseconds: 400),
-                opacity: inactive ? 0.5 : 1.0,
+                opacity: isPast ? 0.5 : 1.0,
                 child: FadeInAbiliaImage(
                   imageFileId: activityDay.activity.fileId,
                   imageFilePath: activityDay.activity.icon,
