@@ -376,7 +376,7 @@ class MonthDayContainer extends StatelessWidget {
                   ),
                 if (d.isPast)
                   const CrossOver(
-                    type: CrossOverType.darkSecondary,
+                    style: CrossOverStyle.darkSecondary,
                   ),
               ],
             )
@@ -464,7 +464,7 @@ class MonthDayViewCompact extends StatelessWidget {
                     Padding(
                       padding: layout.monthCalendar.crossOverPadding,
                       child: const CrossOver(
-                        type: CrossOverType.darkSecondary,
+                        style: CrossOverStyle.darkSecondary,
                       ),
                     ),
                 ],

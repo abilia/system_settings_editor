@@ -137,7 +137,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: (fullDayActivies > 0)
                           ? CrossOver(
-                              type: CrossOverType.darkSecondary,
+                              style: CrossOverStyle.darkSecondary,
                               applyCross: isPast,
                               padding: previewLayout.crossOverPadding,
                               child: (fullDayActivies > 1)
@@ -167,10 +167,12 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     ),
                   ),
                   CrossOver(
+                    style: isLight
+                        ? CrossOverStyle.lightDefault
+                        : CrossOverStyle.darkDefault,
                     applyCross: isPast,
                     fallbackHeight: previewLayout.dateTextCrossOverSize.height,
                     fallbackWidth: previewLayout.dateTextCrossOverSize.width,
-                    colorOverride: Theme.of(context).textTheme.subtitle1?.color,
                     child: Center(
                       child: Text(
                         text,

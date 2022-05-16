@@ -208,7 +208,9 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                             buildWhen: (previous, current) =>
                                 !previous.isAtSameDay(current),
                             builder: (context, now) => CrossOver(
-                              colorOverride: _bodyText1.color,
+                              style: dayTheme.isLight
+                                  ? CrossOverStyle.lightDefault
+                                  : CrossOverStyle.darkDefault,
                               padding: layout.weekCalendar.crossOverPadding,
                               applyCross: day.isBefore(now.onlyDays()),
                               child: Center(
@@ -513,7 +515,7 @@ class WeekActivityContent extends StatelessWidget {
                       widthFactor: scaleFactor,
                       heightFactor: scaleFactor,
                       child: const CrossOver(
-                        type: CrossOverType.darkSecondary,
+                        style: CrossOverStyle.darkSecondary,
                       ),
                     ),
                   if (activityOccasion.isSignedOff)

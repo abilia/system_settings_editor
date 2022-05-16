@@ -3,18 +3,16 @@ import 'package:seagull/ui/all.dart';
 class CrossOver extends StatelessWidget {
   const CrossOver({
     Key? key,
-    this.type = CrossOverType.darkDefault,
+    this.style = CrossOverStyle.darkDefault,
     this.applyCross = true,
-    this.colorOverride,
     this.fallbackWidth,
     this.fallbackHeight,
     this.padding,
     this.child,
   }) : super(key: key);
 
-  final CrossOverType type;
+  final CrossOverStyle style;
   final bool applyCross;
-  final Color? colorOverride;
   final double? fallbackWidth, fallbackHeight;
   final EdgeInsets? padding;
   final Widget? child;
@@ -30,7 +28,7 @@ class CrossOver extends StatelessWidget {
         size: Size.infinite,
         foregroundPainter: applyCross
             ? _CrossOverPainter(
-                color: colorOverride ?? type.color,
+                color: style.color,
                 padding: padding,
               )
             : null,
@@ -78,23 +76,23 @@ class _CrossOverPainter extends CustomPainter {
 }
 
 // Names are from the Figma component
-enum CrossOverType {
+enum CrossOverStyle {
   darkDefault,
   darkSecondary,
   lightDefault,
   lightSecondary,
 }
 
-extension CrossOverColor on CrossOverType {
+extension CrossOverColor on CrossOverStyle {
   Color get color {
     switch (this) {
-      case CrossOverType.darkDefault:
+      case CrossOverStyle.darkDefault:
         return AbiliaColors.black;
-      case CrossOverType.darkSecondary:
+      case CrossOverStyle.darkSecondary:
         return AbiliaColors.transparentBlack30;
-      case CrossOverType.lightDefault:
+      case CrossOverStyle.lightDefault:
         return AbiliaColors.white;
-      case CrossOverType.lightSecondary:
+      case CrossOverStyle.lightSecondary:
         return AbiliaColors.transparentWhite30;
     }
   }

@@ -84,7 +84,7 @@ class EventImage extends StatelessWidget {
           ),
         if (past)
           CrossOver(
-            type: CrossOverType.darkSecondary,
+            style: CrossOverStyle.darkSecondary,
             padding:
                 crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
           ),
@@ -418,7 +418,7 @@ class FadeInNetworkImage extends StatelessWidget {
               width: width,
               placeholder: MemoryImage(kTransparentImage),
               imageErrorBuilder: (_, __, ___) => CrossOver(
-                type: CrossOverType.darkSecondary,
+                style: CrossOverStyle.darkSecondary,
                 fallbackHeight: height,
                 fallbackWidth: width,
               ),
