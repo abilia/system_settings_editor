@@ -508,7 +508,8 @@ class MediumLayout extends Layout {
             deniedVerticalPadding: EdgeInsets.symmetric(vertical: 6),
           ),
           editTimer: const EditTimerLayout(
-            inputTimeWidth: 180,
+            inputTimeWidth: 233,
+            inputTimePadding: 35,
             wheelPadding: EdgeInsets.only(top: 32),
           ),
           button: const ButtonLayout(
