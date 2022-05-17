@@ -62,7 +62,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterTime(find.byKey(TestKey.minutes), '45');
     expect(find.text('45'), findsOneWidget);
-    await tester.tap(find.byType(SaveButton));
+    await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
     final popped = navObserver.routesPoped;
     expect(popped, hasLength(1));
@@ -77,7 +77,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.enterTime(find.byKey(TestKey.minutes), '15');
     await tester.enterTime(find.byKey(TestKey.hours), '2');
-    await tester.tap(find.byType(SaveButton));
+    await tester.tap(find.byType(OkButton));
     await tester.pumpAndSettle();
     final popped = navObserver.routesPoped;
     expect(popped, hasLength(1));

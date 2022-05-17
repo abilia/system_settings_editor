@@ -376,9 +376,8 @@ class MonthDayContainer extends StatelessWidget {
                     isPast: d.isPast,
                   ),
                 if (d.isPast)
-                  CrossOver(
-                    strokeWidth: layout.eventCard.crossOverStrokeWidth,
-                    color: AbiliaColors.transparentBlack30,
+                  const CrossOver(
+                    style: CrossOverStyle.darkSecondary,
                   ),
               ],
             )
@@ -466,7 +465,7 @@ class MonthDayViewCompact extends StatelessWidget {
                     Padding(
                       padding: layout.monthCalendar.crossOverPadding,
                       child: const CrossOver(
-                        color: AbiliaColors.transparentBlack30,
+                        style: CrossOverStyle.darkSecondary,
                       ),
                     ),
                 ],

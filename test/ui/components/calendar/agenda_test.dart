@@ -39,6 +39,10 @@ void main() {
           FakeActivity.fullday(now).copyWith(title: forthFullDayTitle);
 
   late StreamController<DateTime> timeTicker;
+
+  bool applyCrossOver() =>
+      (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
+
   setUp(() async {
     setupPermissions();
     setupFakeTts();
@@ -141,7 +145,6 @@ void main() {
 
   testWidgets('Past days are crossed over, future days and present day is not',
       (WidgetTester tester) async {
-    final crossOverFinder = find.byType(CrossOver);
     final previousDayButtonFinder =
         find.byIcon(AbiliaIcons.returnToPreviousPage);
     final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
@@ -149,14 +152,14 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(crossOverFinder, findsNothing);
+    expect(applyCrossOver(), false);
     await tester.tap(nextDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(crossOverFinder, findsNothing);
+    expect(applyCrossOver(), false);
     await tester.tap(previousDayButtonFinder);
     await tester.tap(previousDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(crossOverFinder, findsOneWidget);
+    expect(applyCrossOver(), true);
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
@@ -427,7 +430,26 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(find.byType(CrossOver), findsOneWidget);
+    expect(applyCrossOver(), true);
+  });
+
+  testWidgets('signed off past activity shows CrossOver',
+      (WidgetTester tester) async {
+    // Arrange
+    activityResponse = () => [
+          Activity.createNew(
+            title: 'title',
+            startTime: now.subtract(1.hours()),
+            duration: 30.minutes(),
+            checkable: true,
+            signedOffDates: [now].map(whaleDateFormat),
+          )
+        ];
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+
+    // Assert
+    expect(applyCrossOver(), true);
   });
 
   testWidgets('tts', (WidgetTester tester) async {

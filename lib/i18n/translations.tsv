@@ -134,7 +134,7 @@ timeTo	to	till	til	tot	-	bis	til
 ### Timer related							
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
-setDuration	Set duration	Ange varaktighet	Indstille varighed	Duur instellen	Aseta kesto	Dauer einstellen	Angi varighet
+selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
 startTimer	Start timer	Starta timer	Start timeren	Start timer	Käynnistysajastin	Timer starten	Start timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 fromBasicTimer	From basic timer	Från bastimers	Fra standardtimer	Uit standaardtimers	Perusajastimesta	Von Standardtimer	Fra standardtimere

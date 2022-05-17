@@ -19,6 +19,9 @@ import '../../../test_helpers/tts.dart';
 void main() {
   final startTime = DateTime(2011, 11, 11, 11, 11);
 
+  bool applyCrossOver() =>
+      (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
+
   Future pumpActivityCard(
     WidgetTester tester,
     Activity activity, [
@@ -236,7 +239,7 @@ void main() {
           startTime: startTime,
         ),
         Occasion.past);
-    expect(find.byType(CrossOver), findsOneWidget);
+    expect(applyCrossOver(), true);
   });
 
   testWidgets('past activity with image is crossed over',
@@ -251,11 +254,11 @@ void main() {
           ),
           Occasion.past);
 
-      expect(find.byType(CrossOver), findsOneWidget);
+      expect(applyCrossOver(), true);
     });
   });
 
-  testWidgets('past activity with image and is signed off is not crossed over',
+  testWidgets('past activity with image and is signed off is crossed over',
       (WidgetTester tester) async {
     await mockNetworkImages(() async {
       await pumpActivityCard(
@@ -269,7 +272,7 @@ void main() {
           ),
           Occasion.past);
 
-      expect(find.byType(CrossOver), findsNothing);
+      expect(applyCrossOver(), true);
     });
   });
 
