@@ -82,6 +82,7 @@ class Layout {
   final ButtonLayout button;
   final ThemeLayout theme;
   final DotLayout dot;
+  final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
 
   const Layout({
@@ -152,6 +153,7 @@ class Layout {
     this.button = const ButtonLayout(),
     this.theme = const ThemeLayout(),
     this.dot = const DotLayout(),
+    this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
   });
 
@@ -475,7 +477,10 @@ class MonthPreviewLayout {
 
   final EdgeInsets monthListPreviewPadding,
       headingPadding,
-      noSelectedDayPadding;
+      noSelectedDayPadding,
+      crossOverPadding;
+
+  final Size dateTextCrossOverSize;
 
   const MonthPreviewLayout({
     this.monthPreviewBorderWidth = 1,
@@ -489,6 +494,8 @@ class MonthPreviewLayout {
         const EdgeInsets.only(left: 8, top: 14, right: 8),
     this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
     this.noSelectedDayPadding = const EdgeInsets.only(top: 32),
+    this.crossOverPadding = const EdgeInsets.all(4),
+    this.dateTextCrossOverSize = const Size(163, 32),
   });
 }
 
@@ -500,7 +507,6 @@ class EventCardLayout {
       categorySideOffset,
       iconSize,
       titleImagePadding,
-      crossOverStrokeWidth,
       borderWidth,
       currentBorderWidth,
       timerWheelSize,
@@ -521,7 +527,6 @@ class EventCardLayout {
     this.categorySideOffset = 43,
     this.iconSize = 18,
     this.titleImagePadding = 10,
-    this.crossOverStrokeWidth = 2,
     this.borderWidth = 1.5,
     this.currentBorderWidth = 3,
     this.timerWheelSize = 44,
@@ -1180,18 +1185,13 @@ class AgendaLayout {
 }
 
 class CommonCalendarLayout {
-  final double fullDayStackDistance,
-      goToNowButtonTop,
-      crossOverStrokeWidth,
-      crossOverFallback;
+  final double fullDayStackDistance, goToNowButtonTop;
 
   final EdgeInsets fullDayPadding, fullDayButtonPadding;
 
   const CommonCalendarLayout({
     this.fullDayStackDistance = 4,
     this.goToNowButtonTop = 32,
-    this.crossOverStrokeWidth = 2,
-    this.crossOverFallback = 215,
     this.fullDayPadding = const EdgeInsets.all(12),
     this.fullDayButtonPadding = const EdgeInsets.fromLTRB(10, 4, 4, 4),
   });
@@ -1356,11 +1356,12 @@ class PermissionsPageLayout {
 }
 
 class EditTimerLayout {
-  final double inputTimeWidth;
+  final double inputTimeWidth, inputTimePadding;
   final EdgeInsets wheelPadding;
 
   const EditTimerLayout({
     this.inputTimeWidth = 120,
+    this.inputTimePadding = 16,
     this.wheelPadding = const EdgeInsets.only(top: 11),
   });
 }
@@ -1409,6 +1410,14 @@ class FloatingActionButtonLayout {
   final EdgeInsets padding;
 
   const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
+}
+
+class CrossOverLayout {
+  final double strokeWidth;
+
+  const CrossOverLayout({
+    this.strokeWidth = 2,
+  });
 }
 
 class SpeechSupportPageLayout {

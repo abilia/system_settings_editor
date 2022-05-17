@@ -561,6 +561,10 @@ void main() {
   });
 
   group('Activities', () {
+    bool applyCrossOver() =>
+        (find.byType(CrossOver).evaluate().first.widget as CrossOver)
+            .applyCross;
+
     final leftActivityFinder = find.text(leftTitle);
     final rightActivityFinder = find.text(rightTitle);
     final cardFinder = find.byType(ActivityTimepillarCard);
@@ -673,7 +677,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsNothing);
+      expect(applyCrossOver(), false);
     });
 
     testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
@@ -685,10 +689,10 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
-    testWidgets('past activity with endtime shows CrossOver',
+    testWidgets('past activity with endtime shows CrossOver - long activity',
         (WidgetTester tester) async {
       // Arrange
       activityResponse = () => [
@@ -701,10 +705,10 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
-    testWidgets('past activity with endtime shows CrossOver',
+    testWidgets('past activity with endtime shows CrossOver - short activity',
         (WidgetTester tester) async {
       // Arrange
       activityResponse = () => [
@@ -717,7 +721,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
     testWidgets('SGC-735 past activity with long title shows CrossOver',
@@ -734,10 +738,10 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
-    testWidgets('signed off past activity shows no CrossOver',
+    testWidgets('signed off past activity shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
       activityResponse = () => [
@@ -750,7 +754,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsNothing);
+      expect(applyCrossOver(), true);
     });
 
     group('Timers', () {
@@ -840,7 +844,7 @@ void main() {
           await tester.pumpAndSettle();
           // Assert
           expect(find.byType(EventImage), findsWidgets);
-          expect(find.byType(CrossOver), findsNothing);
+          expect(applyCrossOver(), false);
         });
       });
 
@@ -853,7 +857,7 @@ void main() {
           await tester.pumpAndSettle();
           // Assert
           expect(find.byType(EventImage), findsWidgets);
-          expect(find.byType(CrossOver), findsWidgets);
+          expect(applyCrossOver(), true);
           expect(find.text(pastTimerWithImage.title), findsNothing);
         });
       });
