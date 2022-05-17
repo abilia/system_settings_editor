@@ -3,34 +3,36 @@ import 'package:seagull/ui/all.dart';
 class CrossOver extends StatelessWidget {
   const CrossOver({
     Key? key,
-    this.color,
-    this.strokeWidth,
+    this.style = CrossOverStyle.darkDefault,
+    this.applyCross = true,
     this.fallbackWidth,
     this.fallbackHeight,
+    this.padding,
+    this.child,
   }) : super(key: key);
 
-  final Color? color;
-  final double? strokeWidth;
-  final double? fallbackWidth;
-  final double? fallbackHeight;
-  static final double defaultStrokeWidth =
-      layout.commonCalendar.crossOverStrokeWidth;
-  static final double defaultFallbackWidth =
-      layout.commonCalendar.crossOverFallback;
-  static final double defaultFallbackHeight =
-      layout.commonCalendar.crossOverFallback;
+  final CrossOverStyle style;
+  final bool applyCross;
+  final double? fallbackWidth, fallbackHeight;
+  final EdgeInsets? padding;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    return LimitedBox(
-      maxWidth: fallbackWidth ?? defaultFallbackWidth,
-      maxHeight: fallbackHeight ?? defaultFallbackHeight,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: fallbackWidth ?? double.infinity,
+        maxHeight: fallbackHeight ?? double.infinity,
+      ),
       child: CustomPaint(
         size: Size.infinite,
-        foregroundPainter: _CrossOverPainter(
-          color: color ?? const Color(0xFF000000),
-          strokeWidth: strokeWidth ?? defaultStrokeWidth,
-        ),
+        foregroundPainter: applyCross
+            ? _CrossOverPainter(
+                color: style.color,
+                padding: padding,
+              )
+            : null,
+        child: child,
       ),
     );
   }
@@ -39,19 +41,25 @@ class CrossOver extends StatelessWidget {
 class _CrossOverPainter extends CustomPainter {
   const _CrossOverPainter({
     required this.color,
-    required this.strokeWidth,
-  });
+    padding,
+  }) : padding = padding ?? EdgeInsets.zero;
 
   final Color color;
-  final double strokeWidth;
+  final EdgeInsets padding;
 
   @override
   void paint(Canvas canvas, Size size) {
+    size = Size(
+      size.width - padding.horizontal,
+      size.height - padding.vertical,
+    );
+
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-    final rect = Offset.zero & size;
+      ..strokeWidth = layout.crossOver.strokeWidth
+      ..strokeCap = StrokeCap.round;
+    final rect = Offset(padding.left, padding.top) & size;
     final path = Path()
       ..addPolygon(<Offset>[rect.topRight, rect.bottomLeft], false)
       ..addPolygon(<Offset>[rect.topLeft, rect.bottomRight], false);
@@ -60,39 +68,32 @@ class _CrossOverPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_CrossOverPainter oldPainter) {
-    return oldPainter.color != color || oldPainter.strokeWidth != strokeWidth;
+    return oldPainter.color != color || oldPainter.padding != padding;
   }
 
   @override
   bool hitTest(Offset position) => false;
 }
 
-class WithCrossOver extends StatelessWidget {
-  final Widget child;
-  final bool applyCross;
-  final EdgeInsets crossOverPadding;
-  final Color? color;
-  const WithCrossOver({
-    Key? key,
-    required this.child,
-    required this.applyCross,
-    this.crossOverPadding = EdgeInsets.zero,
-    this.color = const Color(0xFF000000),
-  }) : super(key: key);
+// Names are from the Figma component
+enum CrossOverStyle {
+  darkDefault,
+  darkSecondary,
+  lightDefault,
+  lightSecondary,
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        child,
-        if (applyCross)
-          Padding(
-            padding: crossOverPadding,
-            child: CrossOver(
-              color: color ?? const Color(0xFF000000),
-            ),
-          ),
-      ],
-    );
+extension CrossOverColor on CrossOverStyle {
+  Color get color {
+    switch (this) {
+      case CrossOverStyle.darkDefault:
+        return AbiliaColors.black;
+      case CrossOverStyle.darkSecondary:
+        return AbiliaColors.transparentBlack30;
+      case CrossOverStyle.lightDefault:
+        return AbiliaColors.white;
+      case CrossOverStyle.lightSecondary:
+        return AbiliaColors.transparentWhite30;
+    }
   }
 }

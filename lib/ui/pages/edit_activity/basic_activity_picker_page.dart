@@ -25,10 +25,7 @@ class BasicActivityPickerPage extends StatelessWidget {
             (Sortable<BasicActivityData> s) =>
                 s is Sortable<BasicActivityDataItem>
                     ? BasicLibraryItem<BasicActivityData>(sortable: s)
-                    : CrossOver(
-                        fallbackHeight: BasicLibraryItem.imageHeight,
-                        fallbackWidth: BasicLibraryItem.imageWidth,
-                      ),
+                    : const CrossOver(style: CrossOverStyle.darkSecondary),
             translate.noBasicActivities,
           ),
           bottomNavigationBar: BottomNavigation(

@@ -31,6 +31,8 @@ void main() {
 
   final nextDayButtonFinder = find.byIcon(AbiliaIcons.goToNextPage);
   final previusDayButtonFinder = find.byIcon(AbiliaIcons.returnToPreviousPage);
+  bool applyCrossOver() =>
+      (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
 
   final twoTimepillarGeneric = Generic.createNew<MemoplannerSettingData>(
     data: MemoplannerSettingData.fromData(
@@ -686,7 +688,7 @@ void main() {
       // Act
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsNothing);
+      expect(applyCrossOver(), false);
     });
 
     testWidgets('past activity shows CrossOver', (WidgetTester tester) async {
@@ -700,7 +702,7 @@ void main() {
       // Act
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
     testWidgets('past activity with endtime shows CrossOver',
@@ -718,10 +720,10 @@ void main() {
       // Act
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsWidgets);
+      expect(applyCrossOver(), true);
     });
 
-    testWidgets('signed off past activity shows no CrossOver',
+    testWidgets('signed off past activity shows CrossOver',
         (WidgetTester tester) async {
       // Arrange
       activityResponse = () => [
@@ -734,7 +736,7 @@ void main() {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
       // Assert
-      expect(find.byType(CrossOver), findsNothing);
+      expect(applyCrossOver(), true);
     });
   });
 

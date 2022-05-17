@@ -47,6 +47,7 @@ class MonthAppBarStepper extends StatelessWidget
           return CalendarAppBar(
             day: now,
             calendarDayColor: currentMonth ? dayColor : DayColor.noColors,
+            crossedOver: state.occasion == Occasion.past,
             rows: AppBarTitleRows.month(
               currentTime: currentMonth ? now : state.firstDay,
               langCode: Localizations.localeOf(context).toLanguageTag(),

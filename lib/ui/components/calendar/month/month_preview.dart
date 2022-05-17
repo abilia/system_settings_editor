@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:seagull/bloc/all.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/models/all.dart';
 
 class MonthListPreview extends StatelessWidget {
   final List<DayTheme> dayThemes;
@@ -45,6 +45,7 @@ class MonthListPreview extends StatelessWidget {
                       child: MonthDayPreviewHeading(
                         day: dayPickerState.day,
                         isLight: dayTheme.isLight,
+                        occasion: dayPickerState.occasion,
                       ),
                     ),
                     const Expanded(child: MonthPreview()),
@@ -92,23 +93,27 @@ class MonthDayPreviewHeading extends StatelessWidget {
     Key? key,
     required this.day,
     required this.isLight,
+    required this.occasion,
   }) : super(key: key);
 
   final DateTime day;
   final bool isLight;
+  final Occasion occasion;
 
   @override
   Widget build(BuildContext context) {
-    final text =
+    final isPast = occasion == Occasion.past;
+    final dateText =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
+    final previewLayout = layout.monthCalendar.monthPreview;
     return Tts.data(
-      data: text,
+      data: dateText,
       child: GestureDetector(
         onTap: () => DefaultTabController.of(context)?.animateTo(0),
         child: Container(
-          padding: layout.monthCalendar.monthPreview.headingPadding,
-          height: layout.monthCalendar.monthPreview.headingHeight,
+          padding: previewLayout.headingPadding,
+          height: previewLayout.headingHeight,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.vertical(top: radius),
@@ -120,34 +125,62 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     newState is EventsLoaded &&
                     oldState.day != newState.day) ||
                 oldState.runtimeType != newState.runtimeType,
-            builder: (context, activityState) {
-              final fullDayActivies =
-                  (activityState as EventsLoaded).fullDayActivities.length;
+            builder: (context, eventState) {
+              if (eventState is! EventsLoaded) return const SizedBox.shrink();
+              final fullDayActivities = eventState.fullDayActivities.length;
               return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (fullDayActivies > 1)
-                    FullDayStack(
-                      key: TestKey.monthPreviewHeaderFullDayStack,
-                      numberOfActivities: fullDayActivies,
-                      width: layout.monthCalendar.monthPreview
-                          .headingFullDayActivityWidth,
-                      height: layout.monthCalendar.monthPreview
-                          .headingFullDayActivityHeight,
-                      goToActivitiesListOnTap: true,
-                      day: activityState.day,
-                    )
-                  else if (fullDayActivies > 0)
-                    MonthActivityContent(
-                      key: TestKey.monthPreviewHeaderActivity,
-                      activityDay: activityState.fullDayActivities.first,
-                      width: layout.monthCalendar.monthPreview
-                          .headingFullDayActivityWidth,
-                      height: layout.monthCalendar.monthPreview
-                          .headingFullDayActivityHeight,
-                      goToActivityOnTap: true,
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: (fullDayActivities > 0)
+                          ? CrossOver(
+                              style: CrossOverStyle.darkSecondary,
+                              applyCross: isPast,
+                              padding: previewLayout.crossOverPadding,
+                              child: (fullDayActivities > 1)
+                                  ? FullDayStack(
+                                      key: TestKey
+                                          .monthPreviewHeaderFullDayStack,
+                                      numberOfActivities: fullDayActivities,
+                                      width: previewLayout
+                                          .headingFullDayActivityWidth,
+                                      height: previewLayout
+                                          .headingFullDayActivityHeight,
+                                      goToActivitiesListOnTap: true,
+                                      day: eventState.day,
+                                    )
+                                  : MonthActivityContent(
+                                      key: TestKey.monthPreviewHeaderActivity,
+                                      activityDay:
+                                          eventState.fullDayActivities.first,
+                                      width: previewLayout
+                                          .headingFullDayActivityWidth,
+                                      height: previewLayout
+                                          .headingFullDayActivityHeight,
+                                      goToActivityOnTap: true,
+                                    ),
+                            )
+                          : null,
                     ),
-                  Text(text, style: Theme.of(context).textTheme.subtitle1),
+                  ),
+                  CrossOver(
+                    style: isLight
+                        ? CrossOverStyle.lightDefault
+                        : CrossOverStyle.darkDefault,
+                    applyCross: isPast,
+                    fallbackHeight: previewLayout.dateTextCrossOverSize.height,
+                    fallbackWidth: previewLayout.dateTextCrossOverSize.width,
+                    child: Center(
+                      child: Text(
+                        dateText,
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
                 ],
               );
             },

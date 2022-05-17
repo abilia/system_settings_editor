@@ -154,9 +154,12 @@ class _ActivityTopInfo extends StatelessWidget {
 }
 
 class _TimeBox extends StatelessWidget {
-  const _TimeBox(
-      {Key? key, required this.text, required Occasion occasion, this.maxWidth})
-      : current = occasion == Occasion.current,
+  const _TimeBox({
+    Key? key,
+    required this.text,
+    required Occasion occasion,
+    this.maxWidth,
+  })  : current = occasion == Occasion.current,
         past = occasion == Occasion.past,
         future = occasion == Occasion.future,
         super(key: key);
