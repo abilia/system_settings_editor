@@ -107,7 +107,6 @@ class WeekCalendarDayHeading extends StatelessWidget {
         builder: (context, now) => BlocBuilder<DayPickerBloc, DayPickerState>(
           builder: (context, dayPickerState) {
             final selected = dayPickerState.day.isAtSameDay(day);
-            final today = now.isAtSameDay(day);
             final dayTheme = weekdayTheme(
               dayColor: memosettings.calendarDayColor,
               languageCode: Localizations.localeOf(context).languageCode,
@@ -117,7 +116,7 @@ class WeekCalendarDayHeading extends StatelessWidget {
               selected: selected,
               day: day,
               dayTheme: dayTheme,
-              today: today,
+              occasion: day.dayOccasion(now),
             );
           },
         ),
@@ -132,27 +131,30 @@ class WeekCalenderHeadingContent extends StatelessWidget {
     required this.day,
     required this.dayTheme,
     required this.selected,
-    required this.today,
+    required this.occasion,
   }) : super(key: key);
 
   final DateTime day;
   final DayTheme dayTheme;
   final bool selected;
-  final bool today;
+  final Occasion occasion;
 
   @override
   Widget build(BuildContext context) {
     final weekDayFormat =
         DateFormat('EEEE', Localizations.localeOf(context).toLanguageTag());
-    final borderColor = today
+    final borderColor = occasion.isToday
         ? AbiliaColors.red
         : selected
             ? AbiliaColors.black
-            : dayTheme.borderColor;
-    final thickBorder = selected || today;
+            : occasion.isPast
+                ? AbiliaColors.black
+                : dayTheme.borderColor;
+    final thickBorder = selected || occasion.isToday;
     final borderSize =
         thickBorder ? layout.borders.medium : layout.borders.thin;
-    final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1);
+    final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
+        .copyWith(height: 18 / 16);
 
     return Flexible(
       flex: selected ? 77 : 45,
@@ -180,7 +182,7 @@ class WeekCalenderHeadingContent extends StatelessWidget {
               margin: EdgeInsetsDirectional.only(
                   start: borderSize, end: borderSize, top: borderSize),
               decoration: BoxDecoration(
-                color: dayTheme.color,
+                color: occasion.isPast ? AbiliaColors.black : dayTheme.color,
                 borderRadius: BorderRadius.only(
                   topLeft: innerRadiusFromBorderSize(borderSize),
                   topRight: innerRadiusFromBorderSize(borderSize),
@@ -201,16 +203,16 @@ class WeekCalenderHeadingContent extends StatelessWidget {
                     SizedBox(
                       height: layout.weekCalendar.headerHeight,
                       child: DefaultTextStyle(
-                        style: _bodyText1.copyWith(height: 18 / 16),
+                        style: occasion.isPast
+                            ? _bodyText1.copyWith(color: AbiliaColors.white)
+                            : _bodyText1,
                         child: Tts.data(
                           data: '${day.day}, ${weekDayFormat.format(day)}',
                           child: BlocBuilder<ClockBloc, DateTime>(
                             buildWhen: (previous, current) =>
                                 !previous.isAtSameDay(current),
                             builder: (context, now) => CrossOver(
-                              style: dayTheme.isLight
-                                  ? CrossOverStyle.lightDefault
-                                  : CrossOverStyle.darkDefault,
+                              style: CrossOverStyle.lightDefault,
                               padding: layout.weekCalendar.crossOverPadding,
                               applyCross: day.isBefore(now.onlyDays()),
                               child: Center(
@@ -333,6 +335,7 @@ class WeekDayColumn extends StatelessWidget {
             previous.isAtSameDay(day) != current.isAtSameDay(day),
         builder: (context, now) => BlocBuilder<DayPickerBloc, DayPickerState>(
           builder: (context, dayPickerState) {
+            final past = day.isBefore(now.onlyDays());
             final selected = day.isAtSameDay(dayPickerState.day);
             final today = now.isAtSameDay(day);
             final thickBorder = selected || today;
@@ -347,7 +350,9 @@ class WeekDayColumn extends StatelessWidget {
                 ? AbiliaColors.red
                 : selected
                     ? AbiliaColors.black
-                    : dayTheme.borderColor;
+                    : past
+                        ? AbiliaColors.white110
+                        : dayTheme.borderColor;
             return Flexible(
               flex: selected ? 77 : 45,
               child: GestureDetector(
@@ -374,9 +379,11 @@ class WeekDayColumn extends StatelessWidget {
                           end: borderSize,
                           bottom: borderSize),
                       decoration: BoxDecoration(
-                        color: memosettings.weekColor == WeekColor.columns
-                            ? dayTheme.secondaryColor
-                            : AbiliaColors.white110,
+                        color: past
+                            ? AbiliaColors.white110
+                            : memosettings.weekColor == WeekColor.columns
+                                ? dayTheme.secondaryColor
+                                : AbiliaColors.white,
                         borderRadius: BorderRadius.only(
                           bottomLeft: innerRadiusFromBorderSize(borderSize),
                           bottomRight: innerRadiusFromBorderSize(borderSize),
