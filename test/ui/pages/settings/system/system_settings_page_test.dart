@@ -95,6 +95,18 @@ void main() {
     expect(find.byType(ProfilePictureNameAndEmail), findsOneWidget);
   });
 
+  testWidgets('tts', (WidgetTester tester) async {
+    await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.byIcon(AbiliaIcons.powerOffOn),
+        exact: translate.logout);
+    await tester.tap(find.byIcon(AbiliaIcons.powerOffOn));
+    await tester.pumpAndSettle();
+    await tester.verifyTts(find.byType(LogoutButton), exact: translate.logout);
+    await tester.verifyTts(find.text(user.name), exact: user.name);
+    await tester.verifyTts(find.text(user.username), exact: user.username);
+  });
+
   testWidgets('About page', (WidgetTester tester) async {
     await tester.pumpWidget(wrapWithMaterialApp(const SystemSettingsPage()));
     await tester.pumpAndSettle();

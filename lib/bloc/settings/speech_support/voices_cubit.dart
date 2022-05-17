@@ -7,15 +7,17 @@ import 'package:seagull/tts/tts_handler.dart';
 part 'voice_data.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
-  VoicesCubit(
-      {required this.voiceRepository,
-      required this.ttsHandler,
-      required this.locale})
-      : super(VoicesState(
-            voices: List.empty(),
-            downloadingVoice: '',
-            downloadedVoices: List.empty(),
-            selectedVoice: voiceRepository.voiceDb.voice)) {
+  VoicesCubit({
+    required this.voiceRepository,
+    required this.ttsHandler,
+    required this.locale,
+  }) : super(
+          VoicesState(
+              voices: List.empty(),
+              downloadingVoice: '',
+              downloadedVoices: List.empty(),
+              selectedVoice: voiceRepository.voiceDb.voice),
+        ) {
     initialize();
   }
 
@@ -70,9 +72,11 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
-    emit(state.copyWith(
-        downloadedVoices: List.from(state.downloadedVoices)
-          ..remove(voice.name)));
+    emit(
+      state.copyWith(
+        downloadedVoices: List.from(state.downloadedVoices)..remove(voice.name),
+      ),
+    );
   }
 }
 
