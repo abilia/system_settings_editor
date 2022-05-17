@@ -156,6 +156,8 @@ class MonthDayPreviewHeading extends StatelessWidget {
                                       key: TestKey.monthPreviewHeaderActivity,
                                       activityDay:
                                           eventState.fullDayActivities.first,
+                                      isPast: eventState
+                                          .fullDayActivities.first.isPast,
                                       width: previewLayout
                                           .headingFullDayActivityWidth,
                                       height: previewLayout
