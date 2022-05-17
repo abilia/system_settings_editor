@@ -17,7 +17,7 @@ import '../../../../test_helpers/register_fallback_values.dart';
 import '../../../../test_helpers/tts.dart';
 
 void main() {
-  late FakeSettingsDb fakeSettingsDb;
+  late MockSettingsDb mockSettingsDb;
   const user = User(
       id: 1,
       name: 'Slartibartfast',
@@ -29,7 +29,8 @@ void main() {
     await initializeDateFormatting();
     setupFakeTts();
     registerFallbackValues();
-    fakeSettingsDb = FakeSettingsDb();
+    mockSettingsDb = MockSettingsDb();
+    when(() => mockSettingsDb.textToSpeech).thenReturn(true);
     final userDb = MockUserDb();
     when(() => userDb.getUser()).thenReturn(user);
     GetItInitializer()
@@ -58,7 +59,7 @@ void main() {
               BlocProvider<AuthenticationBloc>(
                   create: (context) => FakeAuthenticationBloc()),
               BlocProvider<SettingsCubit>(
-                create: (context) => SettingsCubit(settingsDb: fakeSettingsDb),
+                create: (context) => SettingsCubit(settingsDb: mockSettingsDb),
               ),
               BlocProvider<ActivitiesBloc>(
                 create: (context) => FakeActivitiesBloc(),

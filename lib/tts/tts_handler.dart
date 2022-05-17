@@ -28,11 +28,11 @@ abstract class TtsInterface {
     return acapela;
   }
 
-  Future<void> speak(String text);
+  Future<dynamic> speak(String text);
 
-  Future<void> stop();
+  Future<dynamic> stop();
 
-  Future<void> pause();
+  Future<dynamic> pause();
 
   Future<List<Object?>> get availableVoices;
 }
