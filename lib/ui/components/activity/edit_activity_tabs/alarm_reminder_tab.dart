@@ -32,9 +32,12 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
                   ),
                 ],
               ).pad(m1WithZeroBottom),
-              SizedBox(height: layout.formPadding.groupBottomDistance),
-              const Divider(),
-              RecordSoundWidget(activity: activity).pad(m1WithZeroBottom),
+              if (context.read<WizardCubit>()
+                  is! TemplateActivityWizardCubit) ...[
+                SizedBox(height: layout.formPadding.groupBottomDistance),
+                const Divider(),
+                RecordSoundWidget(activity: activity).pad(m1WithZeroBottom),
+              ],
             ],
           ),
         );

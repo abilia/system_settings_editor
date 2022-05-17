@@ -54,6 +54,11 @@ void main() {
       expect(find.byType(CancelButton), findsOneWidget);
     });
 
+    testWidgets('BUG SGC-1564 Has ScrollArrows', (tester) async {
+      await tester.goToAlarmSettingsPage();
+      expect(find.byType(ScrollArrows), findsOneWidget);
+    });
+
     testWidgets('Select non checkable alarm sound', (tester) async {
       await tester.goToAlarmSettingsPage();
       expect(find.text(Sound.Default.displayName(translate)), findsNWidgets(4));
@@ -116,6 +121,7 @@ void main() {
 
     testWidgets('Select timer alarm sound', (tester) async {
       await tester.goToAlarmSettingsPage();
+      await tester.scrollDown();
       await tester.tap(find.byKey(TestKey.timerAlarmSelector));
       await tester.pumpAndSettle();
       await tester.tap(find.text(Sound.DoorBell.displayName(translate)));

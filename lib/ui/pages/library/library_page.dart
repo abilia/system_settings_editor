@@ -6,9 +6,10 @@ typedef LibraryItemGenerator<T extends SortableData> = Widget Function(
     Sortable<T>);
 
 typedef BasicTemplateItemGenerator<T extends SortableData> = Widget Function(
-  Sortable<SortableData>,
-  Function(),
-  SortableToolbar?,
+  Sortable<T>,
+  GestureTapCallback,
+  SortableToolbar,
+  bool,
 );
 
 class LibraryPage<T extends SortableData> extends StatelessWidget {
@@ -226,106 +227,6 @@ class _SortableLibraryState<T extends SortableData>
         );
       },
     );
-  }
-}
-
-class ListLibrary<T extends SortableData> extends StatelessWidget {
-  final BasicTemplateItemGenerator<T> libraryItemGenerator;
-  final String emptyLibraryMessage;
-
-  const ListLibrary({
-    Key? key,
-    required this.emptyLibraryMessage,
-    required this.libraryItemGenerator,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _controller = ScrollController();
-    return BlocBuilder<SortableArchiveCubit<T>, SortableArchiveState<T>>(
-      builder: (context, archiveState) {
-        final content = archiveState.currentFolderSorted;
-
-        return Column(
-          children: [
-            if (!archiveState.isAtRoot)
-              LibraryHeading<T>(
-                sortableArchiveState: archiveState,
-                rootHeading: '',
-                showOnlyFolders: true,
-              ),
-            Expanded(
-              child: content.isEmpty
-                  ? EmptyLibraryMessage(
-                      emptyLibraryMessage: emptyLibraryMessage,
-                      rootFolder: archiveState.isAtRoot,
-                    )
-                  : ScrollArrows.vertical(
-                      controller: _controller,
-                      child: ListView.separated(
-                        controller: _controller,
-                        padding: m1WithZeroBottom,
-                        itemCount: content.length,
-                        separatorBuilder: (context, index) => SizedBox(
-                            height: layout.formPadding.verticalItemDistance),
-                        itemBuilder: (BuildContext context, int index) {
-                          final Sortable<T> sortable = content[index];
-                          final bool selected =
-                              archiveState.selected?.id == sortable.id;
-                          return libraryItemGenerator(
-                            sortable,
-                            () => sortable.isGroup
-                                ? context
-                                    .read<SortableArchiveCubit<T>>()
-                                    .folderChanged(sortable.id)
-                                : context
-                                    .read<SortableArchiveCubit<T>>()
-                                    .sortableSelected(
-                                        selected ? null : sortable),
-                            selected
-                                ? SortableToolbar(
-                                    disableUp: index == 0,
-                                    disableDown: index == content.length - 1,
-                                    onTapEdit: () {
-                                      // TODO: edit timer/activity
-                                    },
-                                    onTapDelete: () =>
-                                        _checkDeleteItem(context, sortable),
-                                    onTapReorder: (direction) => context
-                                        .read<SortableArchiveCubit<T>>()
-                                        .reorder(direction),
-                                  )
-                                : null,
-                          );
-                        },
-                      ),
-                    ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future _checkDeleteItem(
-    BuildContext context,
-    Sortable sortable,
-  ) async {
-    final translate = Translator.of(context).translate;
-    final result = await showViewDialog<bool>(
-      context: context,
-      builder: (_) => YesNoDialog(
-        heading: translate.delete,
-        headingIcon: AbiliaIcons.deleteAllClear,
-        text: sortable.data is BasicTimerData
-            ? translate.timerDelete
-            : translate.deleteActivity,
-      ),
-    );
-
-    if (result == true) {
-      context.read<SortableArchiveCubit<T>>().delete();
-    }
   }
 }
 

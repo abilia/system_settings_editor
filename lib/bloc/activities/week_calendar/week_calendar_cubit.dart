@@ -43,7 +43,7 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   void goToCurrentWeek() => emit(
       _mapToState(clockBloc.state.firstInWeek(), _activities, clockBloc.state));
 
-  get _activities => activitiesBloc.state is ActivitiesLoaded
+  List<Activity> get _activities => activitiesBloc.state is ActivitiesLoaded
       ? activitiesBloc.state.activities
       : <Activity>[];
 

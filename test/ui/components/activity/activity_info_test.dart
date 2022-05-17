@@ -45,7 +45,7 @@ void main() {
               ),
             ),
             BlocProvider<TimepillarCubit>(
-              create: (context) => FaketimepillarCubit(),
+              create: (context) => FakeTimepillarCubit(),
             ),
             BlocProvider<WakeLockCubit>(
               create: (context) => WakeLockCubit(
@@ -90,7 +90,6 @@ void main() {
     final activity = Activity.createNew(
       title: 'title',
       startTime: startTime,
-      reminderBefore: [],
     );
 
     // Act
@@ -116,7 +115,6 @@ void main() {
       title: 'title',
       startTime: startTime,
       checkable: true,
-      reminderBefore: [],
     );
 
     await tester.pumpWidget(
@@ -143,7 +141,6 @@ void main() {
       title: 'title',
       startTime: startTime,
       checkable: true,
-      reminderBefore: [],
       signedOffDates: [day].map(whaleDateFormat),
     );
     await tester.pumpWidget(
@@ -415,9 +412,8 @@ void main() {
 
       expect(find.byType(ChecklistView), findsOneWidget);
       expect(find.byType(QuestionView), findsOneWidget);
-      expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.checklistQuestionImageKey),
-          warnIfMissed: false);
+      expect(find.byType(FadeInCalendarImage), findsOneWidget);
+      await tester.tap(find.byType(FadeInCalendarImage), warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.byType(FullScreenImage), findsOneWidget);
     });

@@ -47,6 +47,7 @@ class DbActivity extends DbModel<Activity> {
               ? tz.local.name
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
+          calendarId: json['calendarId'] ?? '',
         ),
         revision: json['revision'],
         dirty: 0,
@@ -80,6 +81,7 @@ class DbActivity extends DbModel<Activity> {
               ? tz.local.name
               : dbRow['timezone'],
           extras: Extras.fromJsonString(dbRow['extras']),
+          calendarId: dbRow['calendar_id'] ?? '',
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -110,6 +112,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
+        if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
   @override
@@ -136,6 +139,7 @@ class DbActivity extends DbModel<Activity> {
         'signed_off_dates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
+        'calendar_id': activity.calendarId,
         'revision': revision,
         'dirty': dirty,
       };

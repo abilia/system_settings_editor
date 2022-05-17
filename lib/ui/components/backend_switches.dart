@@ -50,7 +50,7 @@ class BackendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    onTap() => context.read<BaseUrlCubit>().updateBaseUrl(backendUrl);
+    void onTap() => context.read<BaseUrlCubit>().updateBaseUrl(backendUrl);
 
     return GestureDetector(
       onTap: onTap,

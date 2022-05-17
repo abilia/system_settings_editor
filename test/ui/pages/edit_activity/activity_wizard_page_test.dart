@@ -12,6 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -61,7 +62,7 @@ void main() {
   });
 
   Widget wizardPage({
-    bool use24H = false,
+    bool use24 = false,
     BasicActivityDataItem? basicActivityData,
   }) {
     return MaterialApp(
@@ -71,7 +72,7 @@ void main() {
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24H),
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: use24),
         child: FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
@@ -88,9 +89,10 @@ void main() {
                   defaultAlarmTypeSetting:
                       mockMemoplannerSettingsBloc.state.defaultAlarmTypeSetting,
                   basicActivityData: basicActivityData,
+                  calendarId: 'calendarId',
                 ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => ActivityWizardCubit.newActivity(
                   activitiesBloc: context.read<ActivitiesBloc>(),
                   clockBloc: context.read<ClockBloc>(),
@@ -113,13 +115,6 @@ void main() {
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
               ),
-              BlocProvider<TimepillarCubit>(
-                create: (context) => TimepillarCubit(
-                  clockBloc: context.read<ClockBloc>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
-                  dayPickerBloc: context.read<DayPickerBloc>(),
-                ),
-              ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
                   screenTimeoutCallback: Future.value(30.minutes()),
@@ -138,7 +133,7 @@ void main() {
   }
 
   testWidgets('wizard shows all steps', (WidgetTester tester) async {
-    await tester.pumpWidget(wizardPage());
+    await tester.pumpWidget(wizardPage(use24: true));
     await tester.pumpAndSettle();
 
     expect(find.byType(ActivityWizardPage), findsOneWidget);
@@ -164,8 +159,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TimeWiz), findsOneWidget);
-    await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-    await tester.pumpAndSettle();
+    await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
     await tester.tap(find.byType(NextButton));
     await tester.pumpAndSettle();
 
@@ -411,7 +405,7 @@ void main() {
       );
       const title = 'testtitle';
 
-      await tester.pumpWidget(wizardPage());
+      await tester.pumpWidget(wizardPage(use24: true));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), title);
@@ -420,12 +414,12 @@ void main() {
 
       expect(find.byType(TimeWiz), findsOneWidget);
       expect(find.text('--:--'), findsNWidgets(2));
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
+
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
       expect(find.text('13:37'), findsOneWidget);
       expect(find.text('--:--'), findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
-      await tester.pumpAndSettle();
+
+      await tester.enterTime(find.byKey(TestKey.endTimeInput), '1448');
       expect(find.text('--:--'), findsNothing);
       expect(find.text('13:37'), findsOneWidget);
       expect(find.text('14:48'), findsOneWidget);
@@ -455,17 +449,15 @@ void main() {
       );
       const title = 'testtitle';
 
-      await tester.pumpWidget(wizardPage());
+      await tester.pumpWidget(wizardPage(use24: true));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), title);
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1448');
-      await tester.pumpAndSettle();
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1337');
+      await tester.enterTime(find.byKey(TestKey.endTimeInput), '1448');
 
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
@@ -763,7 +755,7 @@ void main() {
 
       await tester.tap(find.text(translate.shortWeekday(today.weekday)));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveButton));
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
@@ -776,9 +768,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SelectAllWeekdaysButton));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.byType(EndDateWizWidget));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(NextButton));
@@ -841,7 +830,7 @@ void main() {
 
       await tester.tap(find.text('${today.day}'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(SaveButton));
+      await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(ErrorDialog), findsOneWidget);
       expect(
@@ -856,9 +845,6 @@ void main() {
       await tester.tap(find.text('31'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(EndDateWizWidget));
-      await tester.pumpAndSettle();
-
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 
@@ -869,6 +855,54 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ErrorDialog), findsNothing);
+    });
+
+    testWidgets('No end date defaults to deselected',
+        (WidgetTester tester) async {
+      // Arrange
+      when(() => mockMemoplannerSettingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(MemoplannerSettings(
+          addActivityTypeAdvanced: false,
+          stepByStep: StepByStepSettings(
+            template: false,
+            datePicker: false,
+            image: false,
+            title: true,
+            type: true,
+            availability: false,
+            checkable: false,
+            removeAfter: false,
+            alarm: false,
+            notes: false,
+            reminders: false,
+          ),
+          addActivity: AddActivitySettings(addRecurringActivity: true),
+        )),
+      );
+
+      // Act
+      await tester.pumpWidget(wizardPage());
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'title');
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.restore));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(NextButton));
+      await tester.pumpAndSettle();
+
+      // Assert
+      final noEndDateSwitchValue = (find
+              .byKey(TestKey.noEndDateSwitch)
+              .evaluate()
+              .first
+              .widget as SwitchField)
+          .value;
+      expect(noEndDateSwitchValue, false);
     });
   });
 
@@ -935,8 +969,7 @@ void main() {
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(TimeWiz), findsOneWidget);
-      await tester.enterText(find.byKey(TestKey.startTimeInput), '1111');
-      await tester.pumpAndSettle();
+      await tester.enterTime(find.byKey(TestKey.startTimeInput), '1111');
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
       expect(find.byType(RemindersWiz), findsOneWidget);
@@ -991,7 +1024,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1029,7 +1062,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsNothing);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsOneWidget);
@@ -1073,7 +1106,7 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byKey(TestKey.infoItemChecklistRadio), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoteRadio), findsNothing);
@@ -1118,9 +1151,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
-      await tester.enterText(
+      await tester.enterTime(
           find.byKey(TestKey.startTimeInput), '1111'); // time wiz
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(NextButton));
       await tester.pumpAndSettle();
 

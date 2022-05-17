@@ -19,31 +19,9 @@ class RecurrenceTab extends StatelessWidget with EditActivityTab {
               bottom: layout.templates.m1.bottom,
             ),
             children: <Widget>[
-              Column(
-                children: [
-                  CollapsableWidget(
-                    collapsed: activity.fullDay,
-                    child:
-                        BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-                      buildWhen: (prev, current) =>
-                          current.saveErrors.isNotEmpty,
-                      builder: (context, wizState) => Column(
-                        children: [
-                          TimeIntervallPicker(
-                            state.timeInterval,
-                            startTimeError: wizState.saveErrors
-                                .contains(SaveError.noStartTime),
-                          ).pad(m1WithZeroBottom),
-                          const Divider().pad(dividerPadding),
-                        ],
-                      ),
-                    ),
-                  ),
-                  RecurrenceWidget(state).pad(m1WithZeroBottom),
-                ],
-              ),
+              RecurrenceWidget(state).pad(m1WithZeroBottom),
               if (recurs.weekly || recurs.monthly)
-                BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
+                BlocBuilder<WizardCubit, WizardState>(
                     buildWhen: (prev, current) => current.saveErrors.isNotEmpty,
                     builder: (context, wizState) {
                       final recurringDataError = wizState.saveErrors

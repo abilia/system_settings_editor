@@ -15,6 +15,7 @@ class TimerWheel extends StatefulWidget {
         lengthInMinutes = null,
         paused = false,
         isPast = false,
+        showTimeText = false,
         super(key: key);
 
   const TimerWheel.nonInteractive({
@@ -28,6 +29,7 @@ class TimerWheel extends StatefulWidget {
         finished = false,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
+        showTimeText = true,
         super(key: key);
 
   const TimerWheel.simplified({
@@ -41,6 +43,7 @@ class TimerWheel extends StatefulWidget {
         finished = false,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
+        showTimeText = false,
         super(key: key);
 
   const TimerWheel.finished({
@@ -54,6 +57,7 @@ class TimerWheel extends StatefulWidget {
         lengthInMinutes = length,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
+        showTimeText = true,
         super(key: key);
 
   final TimerWheelStyle style;
@@ -63,6 +67,7 @@ class TimerWheel extends StatefulWidget {
   final bool paused;
   final bool isPast;
   final bool finished;
+  final bool showTimeText;
 
   @override
   _TimerWheelState createState() => _TimerWheelState();
@@ -100,6 +105,7 @@ class _TimerWheelState extends State<TimerWheel> {
               config: config,
               activeSeconds: widget.activeSeconds,
               finished: widget.finished,
+              showTimeText: widget.showTimeText,
             ),
           ),
         ],
@@ -118,13 +124,13 @@ class _TimerWheelState extends State<TimerWheel> {
     });
   }
 
-  _updateMinutesSelected(int minutes) {
+  void _updateMinutesSelected(int minutes) {
     if (widget.activeSeconds / Duration.secondsPerMinute != minutes) {
       widget.onMinutesSelectedChanged?.call(minutes);
     }
   }
 
-  _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
+  void _onPanDown(DragDownDetails details, TimerWheelConfiguration config) {
     sliderTemporaryLocked = false;
     if (_pointIsOnWheel(details.localPosition, config)) {
       minutesSelectedOnTapDown =
@@ -132,7 +138,7 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
+  void _onPanUpdate(DragUpdateDetails details, TimerWheelConfiguration config) {
     void maybeLockSlider() {
       const controlMargin = 5;
 
@@ -171,7 +177,7 @@ class _TimerWheelState extends State<TimerWheel> {
     }
   }
 
-  _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
+  void _onTapUp(TapUpDetails details, TimerWheelConfiguration config) {
     if (minutesSelectedOnTapDown ==
         _minutesFromPoint(details.localPosition, config)) {
       int desiredMinutesLeft =

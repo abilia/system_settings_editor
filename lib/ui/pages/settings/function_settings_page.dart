@@ -102,6 +102,14 @@ class ToolbarSettingsTab extends StatelessWidget {
               child: Text(t.createActivity),
             ),
             SwitchField(
+              leading: const Icon(AbiliaIcons.stopWatch),
+              value: state.displayNewTimer,
+              onChanged: (v) => context
+                  .read<FunctionSettingsCubit>()
+                  .changeFunctionSettings(state.copyWith(displayNewTimer: v)),
+              child: Text(t.newTimer),
+            ),
+            SwitchField(
               leading: const Icon(AbiliaIcons.day),
               value: true,
               child: Text(t.calendarView),
@@ -145,7 +153,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
     final t = Translator.of(context).translate;
     return BlocBuilder<FunctionSettingsCubit, FunctionSettingsState>(
       builder: (context, state) {
-        onChange(v) => context
+        void onChange(v) => context
             .read<FunctionSettingsCubit>()
             .changeFunctionSettings(state.copyWith(startView: v));
         return _SettingsTab(

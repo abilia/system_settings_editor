@@ -20,6 +20,7 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<LicenseCubit>(blocContext),
       _tryGetBloc<PermissionCubit>(blocContext),
       _tryGetBloc<TimepillarCubit>(blocContext),
+      _tryGetBloc<TimepillarMeasuresCubit>(blocContext),
       _tryGetBloc<TimerCubit>(blocContext),
       _tryGetBloc<TimerAlarmBloc>(blocContext),
       _tryGetBloc<SettingsCubit>(blocContext),

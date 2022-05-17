@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:seagull/models/all.dart';
 
 ///
@@ -8,6 +9,7 @@ const String _sortOrderCharacters =
     '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}';
 const startChar = '!', endChar = '}', startSortOrder = 'O';
 
+@visibleForTesting
 String calculateNextSortOrder(String sortOrder, int step) {
   if (sortOrder.isEmpty) return startSortOrder;
   final i = sortOrder.length - 1;
@@ -39,11 +41,12 @@ String calculateNextSortOrder(String sortOrder, int step) {
 }
 
 extension SortExtension on Iterable<Sortable> {
-  String firstSortOrderInFolder({String folderId = ''}) {
-    final root = where((s) => s.groupId == folderId).toList();
-    root.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-    return root.isEmpty
-        ? startSortOrder
-        : calculateNextSortOrder(root.first.sortOrder, -1);
+  String firstSortOrderForFolder({String folderId = ''}) =>
+      where((s) => s.groupId == folderId).firstSortOrder();
+
+  String firstSortOrder() {
+    if (isEmpty) return startSortOrder;
+    final sorted = toList()..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    return calculateNextSortOrder(sorted.first.sortOrder, -1);
   }
 }

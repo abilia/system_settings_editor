@@ -124,6 +124,9 @@ void main() {
             BlocProvider<MemoplannerSettingBloc>(
               create: (context) => mockMemoplannerSettingBloc,
             ),
+            BlocProvider<TimepillarCubit>(
+              create: (context) => FakeTimepillarCubit(),
+            ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
                 selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -131,8 +134,8 @@ void main() {
                 clockBloc: clockBloc,
               ),
             ),
-            BlocProvider<TimepillarCubit>(
-                create: (context) => FaketimepillarCubit()),
+            BlocProvider<TimepillarMeasuresCubit>(
+                create: (context) => FakeTimepillarMeasuresCubit()),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

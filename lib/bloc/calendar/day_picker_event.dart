@@ -17,6 +17,7 @@ class PreviousDay extends DayPickerEvent {
 }
 
 class CurrentDay extends DayPickerEvent {
+  const CurrentDay();
   @override
   String toString() => 'CurrentDay';
 }

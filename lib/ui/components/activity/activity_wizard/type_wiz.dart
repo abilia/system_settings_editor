@@ -31,7 +31,7 @@ class _TypeWidget extends StatelessWidget {
           builder: (typeContext, state) {
             const _fullDayValue = -1;
             final activity = state.activity;
-            _onChange(int? value) =>
+            void _onChange(int? value) =>
                 context.read<EditActivityCubit>().replaceActivity(
                       activity.copyWith(
                         fullDay: value == _fullDayValue,

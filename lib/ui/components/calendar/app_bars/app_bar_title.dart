@@ -65,25 +65,52 @@ class AppBarTitleRows {
     bool displayPartOfDay = true,
     bool displayDate = true,
     bool compactDay = false,
+    bool currentNight = true,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
     required String langCode,
     required Translated translator,
   }) {
-    final weekday = displayWeekDay ? DateFormat.EEEE(langCode).format(day) : '';
-    final daypart = displayPartOfDay
-        ? _getPartOfDay(
-            currentTime.isAtSameDay(day),
-            currentTime.hour,
-            currentTime.dayPart(dayParts),
-            translator,
-          )
+    final weekday = displayWeekDay
+        ? currentNight
+            ? nightDay(currentTime, dayParts, langCode)
+            : DateFormat.EEEE(langCode).format(day)
         : '';
+    final daypart =
+        (currentTime.dayPart(dayParts) != DayPart.night || currentNight) &&
+                displayPartOfDay
+            ? _getPartOfDay(
+                currentTime.isAtSameDay(day),
+                currentTime.hour,
+                currentTime.dayPart(dayParts),
+                translator,
+              )
+            : '';
     final date = displayDate ? longDate(langCode).format(day) : '';
     final dateShort = displayDate ? shortDate(langCode).format(day) : '';
     return AppBarTitleRows._(weekday + (compactDay ? ', ' + daypart : ''),
         compactDay ? '' : daypart, date, dateShort);
+  }
+
+  static String nightDay(
+    DateTime currentTime,
+    DayParts dayParts,
+    String langCode,
+  ) {
+    final msAfterMidnight =
+        currentTime.difference(currentTime.onlyDays()).inMilliseconds;
+    final beforeMidnight = msAfterMidnight >= dayParts.nightStart;
+    if (beforeMidnight) {
+      String firstDay = DateFormat.E(langCode).format(currentTime);
+      String secondDay = DateFormat.E(langCode).format(currentTime.nextDay());
+      return '$firstDay - $secondDay';
+    } else {
+      String firstDay =
+          DateFormat.E(langCode).format(currentTime.previousDay());
+      String secondDay = DateFormat.E(langCode).format(currentTime);
+      return '$firstDay - $secondDay';
+    }
   }
 
   static String _getPartOfDay(
@@ -137,9 +164,12 @@ class AppBarTitleRows {
     required DateTime currentTime,
     required String langCode,
     required bool showYear,
-  }) =>
-      AppBarTitleRows._(
-        DateFormat.MMMM(langCode).format(currentTime),
-        showYear ? DateFormat.y(langCode).format(currentTime) : '',
-      );
+    required bool showDay,
+  }) {
+    return AppBarTitleRows._(
+      showDay ? DateFormat.EEEE(langCode).format(currentTime) : '',
+      DateFormat.MMMM(langCode).format(currentTime),
+      showYear ? DateFormat.y(langCode).format(currentTime) : '',
+    );
+  }
 }

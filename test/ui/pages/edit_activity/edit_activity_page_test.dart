@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,13 +39,13 @@ void main() {
   late MockTimerCubit mockTimerCubit;
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
 
-  setUpAll(() {
+  setUpAll(() async {
     registerFallbackValues();
+    tz.initializeTimeZones();
+    await initializeDateFormatting();
   });
 
   setUp(() async {
-    tz.initializeTimeZones();
-    await initializeDateFormatting();
     mockSortableBloc = MockSortableBloc();
     when(() => mockSortableBloc.stream).thenAnswer((_) => const Stream.empty());
     mockUserFileCubit = MockUserFileCubit();
@@ -97,12 +96,13 @@ void main() {
                         day: today,
                         defaultAlarmTypeSetting: mockMemoplannerSettingsBloc
                             .state.defaultAlarmTypeSetting,
+                        calendarId: 'calendarId',
                       )
                     : EditActivityCubit.edit(
                         ActivityDay(activity, today),
                       ),
               ),
-              BlocProvider<ActivityWizardCubit>(
+              BlocProvider<WizardCubit>(
                 create: (context) => newActivity
                     ? ActivityWizardCubit.newActivity(
                         activitiesBloc: context.read<ActivitiesBloc>(),
@@ -114,7 +114,12 @@ void main() {
                         activitiesBloc: context.read<ActivitiesBloc>(),
                         clockBloc: context.read<ClockBloc>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        settings: mockMemoplannerSettingsBloc.state,
+                        allowPassedStartTime: context
+                            .read<MemoplannerSettingBloc>()
+                            .state
+                            .settings
+                            .addActivity
+                            .allowPassedStartTime,
                       ),
               ),
               BlocProvider<SortableBloc>.value(value: mockSortableBloc),
@@ -131,13 +136,6 @@ void main() {
               ),
               BlocProvider<PermissionCubit>(
                 create: (context) => PermissionCubit()..checkAll(),
-              ),
-              BlocProvider<TimepillarCubit>(
-                create: (context) => TimepillarCubit(
-                  clockBloc: context.read<ClockBloc>(),
-                  memoSettingsBloc: context.read<MemoplannerSettingBloc>(),
-                  dayPickerBloc: context.read<DayPickerBloc>(),
-                ),
               ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(
@@ -616,7 +614,7 @@ void main() {
       await tester.goToInfoItemTab();
 
       expect(find.byType(InfoItemTab), findsOneWidget);
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       expect(find.byType(SelectInfoTypePage), findsOneWidget);
       expect(find.byKey(TestKey.infoItemNoneRadio), findsOneWidget);
@@ -639,7 +637,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();
@@ -655,7 +653,7 @@ void main() {
 
       expect(find.text(noteText), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
       await tester.pumpAndSettle();
@@ -666,14 +664,14 @@ void main() {
       expect(find.text(q2), findsOneWidget);
       expect(find.text(q3), findsOneWidget);
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoneRadio));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(GreenButton));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();
@@ -696,7 +694,7 @@ void main() {
       Future goToNote(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
         await tester.pumpAndSettle();
@@ -760,7 +758,7 @@ that it is visible in the info item tab
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
 
         expect(find.byType(SelectInfoTypePage), findsOneWidget);
@@ -772,7 +770,7 @@ that it is visible in the info item tab
         await tester.pumpAndSettle();
         expect(find.byType(SelectInfoTypePage), findsNothing);
         expect(find.text(translate.infoType), findsOneWidget);
-        expect(find.text(translate.infoTypeNote), findsOneWidget);
+        expect(find.text(translate.addNote), findsOneWidget);
         expect(find.text(translate.typeSomething), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.edit), findsOneWidget);
       });
@@ -929,7 +927,7 @@ Internal improvements to tests and examples.''';
       Future goToChecklist(WidgetTester tester) async {
         await tester.goToInfoItemTab();
 
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
@@ -973,7 +971,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        expect(find.byKey(TestKey.checklistQuestionImageKey), findsOneWidget);
+        expect(find.byType(FadeInCalendarImage), findsOneWidget);
       });
 
       testWidgets('Can open new question dialog', (WidgetTester tester) async {
@@ -1068,7 +1066,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(TestKey.checklistToolbarDeleteQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.deleteAllClear));
         await tester.pumpAndSettle();
         expect(find.text(questions[0]!), findsNothing);
         expect(find.text(questions[1]!), findsOneWidget);
@@ -1111,7 +1109,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.checklistToolbarDownButton));
+        await tester.tap(find.byIcon(AbiliaIcons.cursorDown));
         await tester.pumpAndSettle();
 
         final newQuestion0y = tester.getCenter(find.text(questions[0]!)).dy;
@@ -1128,7 +1126,7 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[0]!));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);
@@ -1171,9 +1169,11 @@ text''';
         await tester.goToInfoItemTab();
 
         expect(find.text(questions[0]!), findsOneWidget);
+        await tester.scrollDown();
+        await tester.pumpAndSettle();
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.checklistToolbarEditQButton));
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), newQuestionName);
@@ -1354,8 +1354,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       expect(find.text('February 14, 2020'), findsOneWidget);
     });
 
@@ -1372,8 +1370,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       expect(find.text('(Today) February 10, 2020'), findsOneWidget);
       await tester.goToMainTab();
       // Act change start date to 14th
@@ -1405,8 +1401,6 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
@@ -1496,8 +1490,7 @@ text''';
       // Act -- Change input to new start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1526,8 +1519,13 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
-      await tester.showKeyboard(endTimeInputFinder);
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.widgetWithIcon(
+          KeyboardActionButton,
+          AbiliaIcons.cancel,
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1560,11 +1558,11 @@ text''';
       expect(find.text('9:33 AM'), findsNothing);
       expect(find.text('11:55 AM'), findsOneWidget);
 
-      // Act -- Change input to new start time
+      // Act -- Change input to new start time to 09:33
+
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1628,6 +1626,9 @@ text''';
     testWidgets('removing original leaves same value',
         (WidgetTester tester) async {
       // Arrange
+      final clear =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.cancel);
+
       final acivity = Activity.createNew(
           title: '', startTime: DateTime(2000, 11, 22, 3, 44));
       await tester.pumpWidget(
@@ -1640,10 +1641,9 @@ text''';
       // Act -- remove values
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '');
-      await tester.enterText(endTimeInputFinder, '');
-
+      await tester.tap(startTimeInputFinder, warnIfMissed: false);
+      await tester.pumpAndSettle();
+      await tester.tap(clear);
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
@@ -1681,7 +1681,7 @@ text''';
         isFalse,
       );
 
-      await tester.enterText(startTimeInputFinder, '1111');
+      await tester.enterTime(startTimeInputFinder, '1111');
       await tester.pumpAndSettle();
       expect(find.text('11:11'), findsOneWidget);
 
@@ -1694,13 +1694,12 @@ text''';
         isFalse,
       );
 
-      await tester.enterText(endTimeInputFinder, '1112');
+      await tester.enterTime(endTimeInputFinder, '1112');
       await tester.pumpAndSettle();
       expect(find.text('11:12'), findsOneWidget);
 
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
-
       expect(find.byType(TimeInputPage), findsNothing);
       expect(find.text('3:04 AM'), findsNothing);
       expect(find.text('11:11 AM - 11:12 PM'), findsOneWidget);
@@ -1733,22 +1732,23 @@ text''';
 
       // Act -- change time to 01:01
       expect(find.text('13:44'), findsOneWidget);
-
-      await tester.enterText(startTimeInputFinder, '0');
-      expect(find.text('0'), findsOneWidget);
+      await tester.enterTime(startTimeInputFinder, '0');
+      expect(find.text('0'), findsWidgets);
 
       await tester.tap(endTimeInputFinder, warnIfMissed: false);
       await tester.pumpAndSettle();
       expect(find.text('13:44'),
           findsOneWidget); // Time resets when no valid time is entered
 
-      await tester.enterText(endTimeInputFinder, '1111');
+      // Type '1111'
+      await tester.enterTime(startTimeInputFinder, '1111');
       expect(find.text('11:11'), findsOneWidget);
 
-      await tester.enterText(startTimeInputFinder, '0001');
+      // Type '0001'
+      await tester.enterTime(startTimeInputFinder, '0001');
       expect(find.text('00:01'), findsOneWidget);
-      await tester.pumpAndSettle();
 
+      // Tap OK button
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
@@ -1762,6 +1762,7 @@ text''';
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
       );
+
       await tester.pumpWidget(
         createEditActivityPage(
           givenActivity: acivity,
@@ -1770,37 +1771,14 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '9');
-      await tester.pumpAndSettle();
+      await tester.enterTime(startTimeInputFinder, '9');
       expect(find.text('09:--'), findsOneWidget);
-    });
-
-    testWidgets('Keyboard done saves time', (WidgetTester tester) async {
-      final acivity = Activity.createNew(
-        title: '',
-        startTime: DateTime(2020, 2, 20, 10, 00),
-      );
-      await tester.pumpWidget(
-        createEditActivityPage(
-          givenActivity: acivity,
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(timeFieldFinder);
-      await tester.pumpAndSettle();
-
-      await tester.enterText(startTimeInputFinder, '1033');
-      await tester.enterText(endTimeInputFinder, '1111');
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-
-      await tester.pumpAndSettle();
-      expect(startTimeInputFinder, findsNothing);
-      expect(find.text('10:33 AM - 11:11 PM'), findsOneWidget);
     });
 
     testWidgets('Delete key just deletes last digit',
         (WidgetTester tester) async {
+      final delete =
+          find.widgetWithIcon(KeyboardActionButton, AbiliaIcons.delete);
       final acivity = Activity.createNew(
         title: '',
         startTime: DateTime(2020, 2, 20, 10, 00),
@@ -1810,14 +1788,18 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
 
-      await tester.enterText(startTimeInputFinder, '1033');
-      await tester.enterText(endTimeInputFinder, '1111');
+      // Type 1033 in start time input field
+      await tester.enterTime(startTimeInputFinder, '1033');
+
+      // Type 1111 in end time input field
+      await tester.enterTime(endTimeInputFinder, '1111');
 
       await tester.tap(startTimeInputFinder,
           warnIfMissed:
               false); // startTimeInputFinder is below another input widget that catches the tap event
       await tester.pumpAndSettle();
-      await tester.sendKeyEvent(LogicalKeyboardKey.delete);
+
+      await tester.tap(delete);
       await tester.pumpAndSettle();
       expect(find.text('10:3-'), findsOneWidget);
     });
@@ -1864,17 +1846,6 @@ text''';
   });
 
   group('Recurrence', () {
-    testWidgets('Shows time picker widget ', (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(createEditActivityPage(newActivity: true));
-      await tester.pumpAndSettle();
-      // Act
-      await tester.goToRecurrenceTab();
-      // Assert
-      expect(find.byType(RecurrenceTab), findsOneWidget);
-      expect(find.byType(TimeIntervallPicker), findsOneWidget);
-    });
-
     testWidgets('Does not shows time picker widget on fullday ',
         (WidgetTester tester) async {
       // Arrange
@@ -2038,13 +2009,41 @@ text''';
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
       await tester.scrollDown(dy: -250);
-      await tester.tap(find.byType(EndDateWidget));
-      await tester.pumpAndSettle();
 
       // Assert -- date picker visible
       expect(find.byType(EndDateWidget), findsOneWidget);
       expect(find.byType(DatePicker), findsOneWidget);
       expect(find.text(translate.endDate), findsOneWidget);
+    });
+
+    testWidgets('end date defaults to start date', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(createEditActivityPage(
+        newActivity: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to weekly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      await tester.scrollDown(dy: -250);
+
+      // Assert -- end date defaults to start date
+      expect(find.text('(Today) February 10, 2020'), findsOneWidget);
+      final noEndDateSwitchValue = (find
+              .byKey(TestKey.noEndDateSwitch)
+              .evaluate()
+              .first
+              .widget as SwitchField)
+          .value;
+      expect(noEndDateSwitchValue, false);
     });
 
     testWidgets('end date disabled if edit recurring (Bug SGC-354)',
@@ -2102,10 +2101,11 @@ text''';
       // Arrange -- enter start time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
+
       // Arrange -- set weekly recurance
       await tester.goToRecurrenceTab();
       await tester.pumpAndSettle();
@@ -2115,6 +2115,7 @@ text''';
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
+
       // Arrange -- deselect preselect
       await tester.tap(find.text(translate.shortWeekday(startTime.weekday)));
       await tester.goToMainTab();
@@ -2155,10 +2156,10 @@ text''';
       );
       await tester.pumpAndSettle();
 
-      // Act -- Change end time
+      // Act -- Change end time to 17:00
       await tester.tap(find.byType(TimeIntervallPicker));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(TestKey.endTimeInput), '1700');
+      await tester.enterTime(endTimeInputFinder, '1700');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
       await tester.pumpAndSettle();
@@ -2397,11 +2398,10 @@ text''';
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
       final startTimeBefore = '${startTime.hour}${startTime.minute - 1}';
-      await tester.enterText(
+      await tester.enterTime(
         startTimeInputFinder,
         startTimeBefore,
       );
-      await tester.pumpAndSettle();
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
       await tester.tap(find.byType(NextWizardStepButton));
@@ -2571,7 +2571,7 @@ text''';
       // Act -- Change time
       await tester.tap(timeFieldFinder);
       await tester.pumpAndSettle();
-      await tester.enterText(startTimeInputFinder, '0933');
+      await tester.enterTime(startTimeInputFinder, '0933');
       await tester.tap(startTimeAmRadioFinder);
       await tester.pumpAndSettle();
 
@@ -2690,8 +2690,7 @@ text''';
         // Act -- remove values
         await tester.tap(timeFieldFinder);
         await tester.pumpAndSettle();
-
-        await tester.enterText(startTimeInputFinder, '1');
+        await tester.enterTime(startTimeInputFinder, '1');
         await tester.pumpAndSettle();
 
         // Assert
@@ -2866,6 +2865,12 @@ text''';
       await tester.scrollDown(dy: -250);
 
       await tester.verifyTts(find.byType(EndDateWidget),
+          exact: '(Today) February 10, 2020');
+
+      await tester.tap(find.byKey(TestKey.noEndDateSwitch));
+      await tester.pumpAndSettle();
+
+      await tester.verifyTts(find.byType(EndDateWidget),
           exact: translate.noEndDate);
     });
 
@@ -2894,15 +2899,15 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
 
         await tester.verifyTts(find.byKey(TestKey.infoItemNoneRadio),
             exact: translate.infoTypeNone);
         await tester.verifyTts(find.byKey(TestKey.infoItemChecklistRadio),
-            exact: translate.infoTypeChecklist);
+            exact: translate.addChecklist);
         await tester.verifyTts(find.byKey(TestKey.infoItemNoteRadio),
-            exact: translate.infoTypeNote);
+            exact: translate.addNote);
       });
 
       testWidgets('checklist', (WidgetTester tester) async {
@@ -2932,7 +2937,7 @@ text''';
         );
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
-        await tester.tap(find.byKey(TestKey.changeInfoItem));
+        await tester.tap(find.byType(ChangeInfoItemPicker));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(TestKey.infoItemChecklistRadio));
         await tester.pumpAndSettle();
@@ -2972,7 +2977,7 @@ text''';
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.goToInfoItemTab();
-      await tester.tap(find.byKey(TestKey.changeInfoItem));
+      await tester.tap(find.byType(ChangeInfoItemPicker));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.infoItemNoteRadio));
       await tester.pumpAndSettle();

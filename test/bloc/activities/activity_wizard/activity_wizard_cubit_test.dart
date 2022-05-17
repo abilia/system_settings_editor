@@ -18,6 +18,7 @@ void main() {
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
+  const calendarId = 'Some calendar id';
 
   setUpAll(() {
     registerFallbackValues();
@@ -38,15 +39,11 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     expect(activityWizardCubit.state,
-        ActivityWizardState(0, UnmodifiableListView([WizardStep.advance])));
+        WizardState(0, UnmodifiableListView([WizardStep.advance])));
   });
 
   test('Initial new with default settings', () {
@@ -60,7 +57,7 @@ void main() {
 
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         UnmodifiableListView(
           [
@@ -76,7 +73,10 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: EditActivityCubit.newActivity(
-          day: aDay, defaultAlarmTypeSetting: noAlarm),
+        day: aDay,
+        defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
+      ),
       clockBloc: clockBloc,
       settings: const MemoplannerSettingsLoaded(
         MemoplannerSettings(addActivityTypeAdvanced: false),
@@ -85,7 +85,7 @@ void main() {
 
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         UnmodifiableListView(
           [
@@ -108,16 +108,12 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: FakeEditActivityCubit(),
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         UnmodifiableListView(
           [
@@ -133,17 +129,14 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final activityWizardCubit = ActivityWizardCubit.edit(
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     // Act
@@ -152,7 +145,7 @@ void main() {
     // Assert
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
           0,
           UnmodifiableListView([
             WizardStep.advance,
@@ -173,6 +166,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesBloc: mockActivitiesBloc,
@@ -205,7 +199,7 @@ void main() {
     activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         saveErrors: const {
@@ -230,7 +224,7 @@ void main() {
     activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         saveErrors: const {
@@ -252,7 +246,7 @@ void main() {
     activityWizardCubit.next();
     expect(
       activityWizardCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         sucessfullSave: true,
@@ -288,11 +282,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final timeInterval = TimeInterval(
@@ -301,7 +291,7 @@ void main() {
       startDate: aTime,
     );
 
-    final wizState = ActivityWizardState(0, const [WizardStep.advance]);
+    final wizState = WizardState(0, const [WizardStep.advance]);
 
     final expect1 = expectLater(
       editActivityCubit.stream,
@@ -328,6 +318,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -401,7 +392,7 @@ void main() {
     // Assert
     expect(
       wizCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         sucessfullSave: true,
@@ -447,7 +438,7 @@ void main() {
         activitiesBloc: FakeActivitiesBloc(),
         editActivityCubit: editActivityCubit,
         clockBloc: clockBloc,
-        settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+        allowPassedStartTime: true,
       );
 
       // Assert
@@ -479,7 +470,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           const [WizardStep.advance],
           sucessfullSave: true,
@@ -525,11 +516,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       clockBloc: clockBloc,
       editActivityCubit: editActivityCubit,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     // Assert
@@ -559,7 +546,7 @@ void main() {
     wizCubit.next();
     expect(
       wizCubit.state,
-      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
 
     // Assert
@@ -600,7 +587,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     // Assert
@@ -630,7 +617,7 @@ void main() {
     // Assert
     expect(
       wizCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         sucessfullSave: true,
@@ -659,7 +646,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     final expected1 = expectLater(
@@ -709,7 +696,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(MemoplannerSettings()),
+      allowPassedStartTime: true,
     );
 
     final expected1 = expectLater(
@@ -742,6 +729,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -790,7 +778,7 @@ void main() {
 
     expect(
       wizCubit.state,
-      ActivityWizardState(
+      WizardState(
         0,
         const [WizardStep.advance],
         saveErrors: const {SaveError.noRecurringDays},
@@ -807,6 +795,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -862,7 +851,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
@@ -874,7 +863,7 @@ void main() {
 
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -896,6 +885,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -957,7 +947,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
@@ -967,7 +957,7 @@ void main() {
         wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -983,6 +973,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
         final wizCubit = ActivityWizardCubit.newActivity(
           activitiesBloc: mockActivitiesBloc,
@@ -1045,7 +1036,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedStartTimeBeforeNow},
@@ -1055,7 +1046,7 @@ void main() {
         wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -1085,11 +1076,7 @@ void main() {
           activitiesBloc: FakeActivitiesBloc(),
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: true),
-            ),
-          ),
+          allowPassedStartTime: true,
         );
 
         final expectedTimeIntervall = TimeInterval(
@@ -1132,7 +1119,7 @@ void main() {
         // Assert
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {
@@ -1150,7 +1137,7 @@ void main() {
         // Assert
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -1172,6 +1159,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1227,7 +1215,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {SaveError.unconfirmedActivityConflict},
@@ -1238,7 +1226,7 @@ void main() {
         wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -1259,6 +1247,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1312,7 +1301,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             saveErrors: const {
@@ -1325,7 +1314,7 @@ void main() {
         wizCubit.next(warningConfirmed: true);
         expect(
           wizCubit.state,
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.advance],
             sucessfullSave: true,
@@ -1349,11 +1338,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: false),
-            ),
-          ),
+          allowPassedStartTime: false,
         );
 
         // Act
@@ -1384,8 +1369,7 @@ void main() {
 
         expect(
           wizCubit.state,
-          ActivityWizardState(0, const [WizardStep.advance],
-              sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
         );
 
         expect(
@@ -1408,6 +1392,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1456,8 +1441,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, const [WizardStep.advance],
-              sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
         );
         await expected2;
       });
@@ -1471,6 +1455,7 @@ void main() {
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
           defaultAlarmTypeSetting: noAlarm,
+          calendarId: calendarId,
         );
 
         final wizCubit = ActivityWizardCubit.newActivity(
@@ -1530,8 +1515,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, const [WizardStep.advance],
-              sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
         );
 
         await expected2;
@@ -1553,11 +1537,7 @@ void main() {
           activitiesBloc: mockActivitiesBloc,
           editActivityCubit: editActivityCubit,
           clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
-          settings: const MemoplannerSettingsLoaded(
-            MemoplannerSettings(
-              addActivity: AddActivitySettings(allowPassedStartTime: false),
-            ),
-          ),
+          allowPassedStartTime: false,
         );
 
         // Act
@@ -1587,8 +1567,7 @@ void main() {
         wizCubit.next();
         expect(
           wizCubit.state,
-          ActivityWizardState(0, const [WizardStep.advance],
-              sucessfullSave: true),
+          WizardState(0, const [WizardStep.advance], sucessfullSave: true),
         );
 
         expect(
@@ -1614,11 +1593,7 @@ void main() {
       activitiesBloc: FakeActivitiesBloc(),
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final expectedTimeIntervall = TimeInterval(
@@ -1649,7 +1624,7 @@ void main() {
     wizCubit.next();
     expect(
       wizCubit.state,
-      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
   });
 
@@ -1675,11 +1650,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final activityWithNewTitle = activity.copyWith(title: 'new title');
@@ -1736,11 +1707,7 @@ void main() {
       activitiesBloc: mockActivitiesBloc,
       editActivityCubit: editActivityCubit,
       clockBloc: clockBloc,
-      settings: const MemoplannerSettingsLoaded(
-        MemoplannerSettings(
-          addActivity: AddActivitySettings(allowPassedStartTime: false),
-        ),
-      ),
+      allowPassedStartTime: false,
     );
 
     final nextDay = aTime.add(1.days());
@@ -1772,6 +1739,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1785,7 +1753,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           const [
             WizardStep.date,
@@ -1805,6 +1773,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1833,7 +1802,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           const [
             WizardStep.type,
@@ -1852,6 +1821,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1882,7 +1852,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           const [
             WizardStep.title,
@@ -1931,6 +1901,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
 
       final wizCubit = ActivityWizardCubit.newActivity(
@@ -1942,7 +1913,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           allWizStep,
         ),
@@ -1954,6 +1925,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -1966,7 +1938,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           0,
           allWizStep,
         ),
@@ -1977,7 +1949,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           2,
           allWizStep,
           saveErrors: const {SaveError.noTitleOrImage},
@@ -1998,7 +1970,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           7,
           allWizStep,
           saveErrors: const {SaveError.noStartTime},
@@ -2017,7 +1989,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           11,
           allWizStep,
           sucessfullSave: true,
@@ -2030,6 +2002,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2042,7 +2015,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(0, allWizStep),
+        WizardState(0, allWizStep),
       );
 
       editActivityCubit.replaceActivity(activity.copyWith(fullDay: true));
@@ -2051,7 +2024,7 @@ void main() {
       expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(0, const [
+          WizardState(0, const [
             WizardStep.date,
             WizardStep.title,
             WizardStep.image,
@@ -2062,7 +2035,7 @@ void main() {
             WizardStep.connectedFunction,
             WizardStep.recurring,
           ]),
-          ActivityWizardState(0, allWizStep),
+          WizardState(0, allWizStep),
         ]),
       );
     });
@@ -2072,6 +2045,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2090,11 +2064,9 @@ void main() {
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(
-              0, const [...allWizStep, WizardStep.recursMonthly]),
-          ActivityWizardState(
-              0, const [...allWizStep, WizardStep.recursWeekly]),
-          ActivityWizardState(0, allWizStep),
+          WizardState(0, const [...allWizStep, WizardStep.recursMonthly]),
+          WizardState(0, const [...allWizStep, WizardStep.recursWeekly]),
+          WizardState(0, allWizStep),
         ]),
       );
     });
@@ -2104,6 +2076,7 @@ void main() {
       final editActivityCubit = EditActivityCubit.newActivity(
         day: aDay,
         defaultAlarmTypeSetting: noAlarm,
+        calendarId: calendarId,
       );
       final activity = editActivityCubit.state.activity;
 
@@ -2142,11 +2115,11 @@ void main() {
       await expectLater(
         wizCubit.stream,
         emitsInOrder([
-          ActivityWizardState(
+          WizardState(
             0,
             const [WizardStep.time, WizardStep.recurring],
           ),
-          ActivityWizardState(
+          WizardState(
             0,
             const [
               WizardStep.time,
@@ -2163,7 +2136,7 @@ void main() {
 
       expect(
         wizCubit.state,
-        ActivityWizardState(
+        WizardState(
           2,
           const [
             WizardStep.time,
@@ -2171,6 +2144,100 @@ void main() {
             WizardStep.recursWeekly
           ],
           saveErrors: const {SaveError.noRecurringDays},
+          sucessfullSave: false,
+        ),
+      );
+    });
+
+    test(
+        'BUG SGC-1595 '
+        'Saving recuring weekly without any days yeilds warning', () async {
+      // Arrange
+      final editActivityCubit = EditActivityCubit.newActivity(
+        day: aDay,
+        defaultAlarmTypeSetting: noAlarm,
+        calendarId: '',
+      );
+      final activity = editActivityCubit.state.activity;
+
+      final wizCubit = ActivityWizardCubit.newActivity(
+        activitiesBloc: FakeActivitiesBloc(),
+        editActivityCubit: editActivityCubit,
+        clockBloc: clockBloc,
+        settings: const MemoplannerSettingsLoaded(
+          MemoplannerSettings(
+            addActivityTypeAdvanced: false,
+            stepByStep: StepByStepSettings(
+              template: false,
+              title: false,
+              image: false,
+              datePicker: false,
+              type: false,
+              availability: false,
+              checkable: false,
+              removeAfter: false,
+              alarm: false,
+              checklist: false,
+              notes: false,
+              reminders: false,
+            ),
+            addActivity: AddActivitySettings(addRecurringActivity: true),
+          ),
+        ),
+      );
+
+      editActivityCubit.changeDate(nowTime.add(7.days()).onlyDays());
+      editActivityCubit.changeTimeInterval(
+        startTime: const TimeOfDay(hour: 12, minute: 34),
+      );
+      editActivityCubit.replaceActivity(
+        activity.copyWith(
+          title: '-_title_-',
+          recurs: Recurs.weeklyOnDays(
+            const [1, 2, 3, 4, 5, 6, 7],
+            ends: nowTime.add(1.days()).onlyDays(),
+          ),
+        ),
+      );
+
+      await expectLater(
+        wizCubit.stream,
+        emitsInOrder([
+          WizardState(
+            0,
+            const [
+              WizardStep.time,
+              WizardStep.recurring,
+            ],
+          ),
+          WizardState(
+            0,
+            const [
+              WizardStep.time,
+              WizardStep.recurring,
+              WizardStep.recursWeekly,
+              WizardStep.endDate,
+            ],
+          ),
+        ]),
+      );
+
+      wizCubit.next();
+      wizCubit.next();
+      wizCubit.next();
+      wizCubit.next();
+
+      expect(
+        wizCubit.state,
+        WizardState(
+          3,
+          const [
+            WizardStep.time,
+            WizardStep.recurring,
+            WizardStep.recursWeekly,
+            WizardStep.endDate,
+          ],
+          saveErrors: const {SaveError.endDateBeforeStart},
           sucessfullSave: false,
         ),
       );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,8 +9,23 @@ import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
   static Future<TtsInterface> implementation(VoiceDb voiceDb) async {
-    if (Config.isMPGO) return FlutterTtsHandler();
-    final _log = Logger((TtsInterface).toString());
+    if (Config.isMPGO) return await FlutterTtsHandler.implementation();
+    return await AcapelaTtsHandler.implementation(voiceDb);
+  }
+
+  Future<dynamic> speak(String text);
+
+  Future<dynamic> stop();
+
+  Future<dynamic> pause();
+
+  Future<List<Object?>> get availableVoices => Future.value(List.empty());
+}
+
+class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
+  static final Logger _log = Logger((AcapelaTts).toString());
+
+  static Future<AcapelaTtsHandler> implementation(VoiceDb voiceDb) async {
     final acapela = AcapelaTtsHandler();
     bool initialized = await acapela.initialize(
       userId: 0x7a323547,
@@ -23,23 +40,48 @@ abstract class TtsInterface {
       await acapela.setVoice(voiceDb.voice);
       await acapela.setSpeechRate(voiceDb.speechRate);
     }
-    _log.fine('Acapela initialized $initialized');
-
+    _log.fine('Initialized $initialized');
     return acapela;
   }
-
-  Future<dynamic> speak(String text);
-
-  Future<dynamic> stop();
-
-  Future<dynamic> pause();
-
-  Future<List<Object?>> get availableVoices;
 }
 
 class FlutterTtsHandler extends FlutterTts implements TtsInterface {
+  static final Logger _log = Logger((FlutterTts).toString());
+
+  static Future<FlutterTtsHandler> implementation() async {
+    final tts = FlutterTtsHandler();
+
+    if (Platform.isIOS) {
+      await tts.setSharedInstance(true);
+      await tts
+          .setIosAudioCategory(IosTextToSpeechAudioCategory.playAndRecord, [
+        IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+        IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+        IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+        IosTextToSpeechAudioCategoryOptions.defaultToSpeaker
+      ]);
+    }
+
+    await tts.awaitSpeakCompletion(true);
+
+    tts.setStartHandler(() {
+      _log.finest('start');
+    });
+    tts.setCompletionHandler(() {
+      _log.finest('complete');
+    });
+    tts.setProgressHandler(
+        (String text, int startOffset, int endOffset, String word) {
+      _log.finest(text);
+      _log.finest('^'.padLeft(startOffset) + word);
+    });
+    tts.setErrorHandler((msg) {
+      _log.warning('error: $msg');
+    });
+
+    return tts;
+  }
+
   @override
   Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }
-
-class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {}

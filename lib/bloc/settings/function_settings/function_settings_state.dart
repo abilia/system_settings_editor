@@ -4,6 +4,7 @@ class FunctionSettingsState extends Equatable {
   final bool displayWeek,
       displayMonth,
       displayNewActivity,
+      displayNewTimer,
       displayMenu,
       displayMenuInitial;
   final StartView startView;
@@ -18,6 +19,7 @@ class FunctionSettingsState extends Equatable {
     required this.displayWeek,
     required this.displayMonth,
     required this.displayNewActivity,
+    required this.displayNewTimer,
     required this.displayMenu,
     required this.displayMenuInitial,
     required this.timeout,
@@ -55,6 +57,7 @@ class FunctionSettingsState extends Equatable {
         displayWeek: state.displayWeekCalendar,
         displayMonth: state.displayMonthCalendar,
         displayNewActivity: state.displayNewActivity,
+        displayNewTimer: state.displayNewTimer,
         displayMenu: state.settings.functionMenuDisplayMenu,
         displayMenuInitial: state.settings.functionMenuDisplayMenu,
         timeout: state.settings.activityTimeout,
@@ -66,6 +69,7 @@ class FunctionSettingsState extends Equatable {
     bool? displayWeek,
     bool? displayMonth,
     bool? displayNewActivity,
+    bool? displayNewTimer,
     bool? displayMenu,
     int? timeout,
     bool? useScreensaver,
@@ -75,6 +79,7 @@ class FunctionSettingsState extends Equatable {
         displayWeek: displayWeek ?? this.displayWeek,
         displayMonth: displayMonth ?? this.displayMonth,
         displayNewActivity: displayNewActivity ?? this.displayNewActivity,
+        displayNewTimer: displayNewTimer ?? this.displayNewTimer,
         displayMenu: displayMenu ?? this.displayMenu,
         timeout: timeout ?? this.timeout,
         useScreensaver: useScreensaver ?? this.useScreensaver,
@@ -94,6 +99,10 @@ class FunctionSettingsState extends Equatable {
         MemoplannerSettingData.fromData(
           data: displayNewActivity,
           identifier: MemoplannerSettings.functionMenuDisplayNewActivityKey,
+        ),
+        MemoplannerSettingData.fromData(
+          data: displayNewTimer,
+          identifier: MemoplannerSettings.functionMenuDisplayNewTimerKey,
         ),
         MemoplannerSettingData.fromData(
           data: displayMenu,
@@ -118,6 +127,7 @@ class FunctionSettingsState extends Equatable {
         displayWeek,
         displayMonth,
         displayNewActivity,
+        displayNewTimer,
         displayMenu,
         timeout,
         useScreensaver,

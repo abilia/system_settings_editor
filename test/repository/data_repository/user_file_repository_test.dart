@@ -206,7 +206,7 @@ void main() {
 
   test('Missing continues download but does not return userFile', () async {
     final failsOnId = {1, 5};
-    userFiles(int limit) => List.generate(
+    List<UserFile> userFiles(int limit) => List.generate(
           limit,
           (index) => UserFile(
             id: '$index',

@@ -43,7 +43,7 @@ class Layout {
   final DataItemLayout dataItem;
   final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
-  final CheckListLayout checkList;
+  final ChecklistLayout checklist;
   final NoteLayout note;
   final IconTextButtonStyle iconTextButton;
   final IconTextButtonStyle nextButton;
@@ -109,7 +109,7 @@ class Layout {
     this.dataItem = const DataItemLayout(),
     this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
-    this.checkList = const CheckListLayout(),
+    this.checklist = const ChecklistLayout(),
     this.note = const NoteLayout(),
     this.iconTextButton = const IconTextButtonStyle(),
     this.nextButton = const IconTextButtonStyle(
@@ -218,14 +218,13 @@ class MyPhotosLayout {
   final double? childAspectRatio;
   final double fullScreenImageBorderRadius;
   final int crossAxisCount;
-  final EdgeInsets fullScreenImagePadding, addPhotoButtonPadding;
+  final EdgeInsets fullScreenImagePadding;
 
   const MyPhotosLayout({
     this.childAspectRatio,
     this.fullScreenImageBorderRadius = 12,
     this.crossAxisCount = 3,
     this.fullScreenImagePadding = const EdgeInsets.all(12),
-    this.addPhotoButtonPadding = const EdgeInsets.only(top: 10, right: 16),
   });
 }
 
@@ -584,9 +583,12 @@ class TimepillarLayout {
   });
 
   TextStyle textStyle(bool isNight, double zoom) => GoogleFonts.roboto(
-        fontSize: fontSize * zoom,
-        color: isNight ? AbiliaColors.white : AbiliaColors.black,
-        fontWeight: FontWeight.w500,
+        textStyle: TextStyle(
+          fontSize: fontSize * zoom,
+          color: isNight ? AbiliaColors.white : AbiliaColors.black,
+          fontWeight: FontWeight.w500,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
       );
 }
 
@@ -713,9 +715,12 @@ class LibraryPageLayout {
   });
 
   TextStyle headerStyle() => GoogleFonts.roboto(
-        fontSize: headerFontSize,
-        color: AbiliaColors.black,
-        fontWeight: FontWeight.w500,
+        textStyle: TextStyle(
+          fontSize: headerFontSize,
+          color: AbiliaColors.black,
+          fontWeight: FontWeight.w500,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
       );
 }
 
@@ -813,9 +818,13 @@ class ActivityPageLayout {
       checklistPadding;
 
   TextStyle titleStyle() => GoogleFonts.roboto(
-      fontSize: titleFontSize,
-      fontWeight: FontWeight.w400,
-      height: titleLineHeight / titleFontSize);
+        textStyle: TextStyle(
+          fontSize: titleFontSize,
+          fontWeight: FontWeight.w400,
+          height: titleLineHeight / titleFontSize,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
+      );
 
   const ActivityPageLayout({
     this.topInfoHeight = 126,
@@ -848,42 +857,49 @@ class ActivityPageLayout {
   });
 }
 
-class CheckListLayout {
-  final EdgeInsets questionViewPadding,
-      questionImagePadding,
-      questionTitlePadding,
-      questionIconPadding,
-      addNewQButtonPadding,
-      addNewQIconPadding,
-      questionListPadding;
-
-  final double questionImageSize,
-      questionViewHeight,
-      dividerHeight,
-      toolbarButtonSize,
-      dividerIndentation;
-
-  const CheckListLayout({
-    this.questionViewPadding = const EdgeInsets.only(bottom: 6),
-    this.questionImagePadding = const EdgeInsets.only(left: 6),
-    this.questionTitlePadding = const EdgeInsets.only(left: 8, right: 14),
-    this.questionIconPadding = const EdgeInsets.only(right: 12),
+class ChecklistLayout {
+  final ChecklistQuestionLayout question;
+  final EdgeInsets listPadding, addNewQButtonPadding, addNewQIconPadding;
+  const ChecklistLayout({
+    this.question = const ChecklistQuestionLayout(),
+    this.listPadding = const EdgeInsets.all(12),
     this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
     this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
-    this.questionListPadding = const EdgeInsets.fromLTRB(12, 12, 12, 0),
-    this.questionImageSize = 40,
-    this.questionViewHeight = 48,
-    this.dividerHeight = 1,
-    this.dividerIndentation = 12,
-    this.toolbarButtonSize = 40,
   });
+}
+
+class ChecklistQuestionLayout {
+  final EdgeInsets imagePadding, titlePadding, iconPadding;
+  final double imageSize, viewHeight, fontSize, lineHeight;
+
+  const ChecklistQuestionLayout({
+    this.imagePadding = const EdgeInsets.fromLTRB(6, 4, 0, 4),
+    this.titlePadding = const EdgeInsets.fromLTRB(8, 10, 0, 10),
+    this.iconPadding = const EdgeInsets.fromLTRB(14, 12, 12, 12),
+    this.imageSize = 40,
+    this.viewHeight = 48,
+    this.fontSize = 16,
+    this.lineHeight = 28,
+  });
+
+  TextStyle get textStyle => GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontSize: fontSize,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w400,
+          height: lineHeight / fontSize,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
+      );
 }
 
 class NoteLayout {
   final EdgeInsets notePadding;
+  final double lineOffset;
 
   const NoteLayout({
     this.notePadding = const EdgeInsets.fromLTRB(18, 10, 16, 24),
+    this.lineOffset = 2,
   });
 }
 
@@ -926,12 +942,14 @@ class ScreenSaverLayout {
   });
 
   TextStyle get digitalClockTextStyle => GoogleFonts.roboto(
+          textStyle: TextStyle(
         fontSize: digitalClockTextSize,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.w400,
         color: AbiliaColors.white,
         height: digitalClockLineHeight / digitalClockTextSize,
-      );
+        leadingDistribution: TextLeadingDistribution.even,
+      ));
 }
 
 class AlarmSettingsPageLayout {
@@ -956,7 +974,7 @@ class ComponentsLayout {
 }
 
 class PickFieldLayout {
-  final double height;
+  final double height, verticalDistanceText;
   final Size leadingSize;
   final EdgeInsets padding, leadingPadding, imagePadding;
 
@@ -966,6 +984,7 @@ class PickFieldLayout {
     this.padding = const EdgeInsets.only(left: 12, right: 12),
     this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
     this.leadingPadding = const EdgeInsets.only(right: 12),
+    this.verticalDistanceText = 8,
   });
 }
 
@@ -1079,12 +1098,14 @@ class RadioLayout {
 }
 
 class SelectPictureLayout {
-  final double imageSize, padding;
+  final double imageSize, imageSizeLarge, padding, paddingLarge;
   final EdgeInsets removeButtonPadding;
 
   const SelectPictureLayout({
     this.imageSize = 84,
+    this.imageSizeLarge = 119,
     this.padding = 4,
+    this.paddingLarge = 5.67,
     this.removeButtonPadding = const EdgeInsets.fromLTRB(8, 6, 8, 6),
   });
 }
@@ -1095,7 +1116,11 @@ class TimeInputLayout {
       amPmHeight,
       amPmWidth,
       timeDashAlignValue,
-      amPmDistance;
+      amPmDistance,
+      inputKeyboardDistance,
+      keyboardButtonHeight,
+      keyboardButtonWidth,
+      keyboardButtonPadding;
   final EdgeInsets headerClockPadding;
 
   const TimeInputLayout({
@@ -1105,7 +1130,11 @@ class TimeInputLayout {
     this.amPmWidth = 59,
     this.timeDashAlignValue = 14,
     this.amPmDistance = 2,
+    this.inputKeyboardDistance = 44,
     this.headerClockPadding = const EdgeInsets.only(right: 16),
+    this.keyboardButtonHeight = 48,
+    this.keyboardButtonWidth = 80,
+    this.keyboardButtonPadding = 8,
   });
 }
 
@@ -1272,9 +1301,12 @@ class PhotoCalendarLayout {
   });
 
   TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
-        fontSize: small ? clockFontSizeSmall : clockFontSize,
-        fontWeight: FontWeight.w400,
-        height: 75 / 64,
+        textStyle: TextStyle(
+          fontSize: small ? clockFontSizeSmall : clockFontSize,
+          fontWeight: FontWeight.w400,
+          height: 75 / 64,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
       );
 }
 
@@ -1324,20 +1356,21 @@ class PermissionsPageLayout {
 }
 
 class EditTimerLayout {
-  final double inputTimeWidth, textToWheelDistance;
-  final EdgeInsets inputTimePadding;
+  final double inputTimeWidth;
+  final EdgeInsets wheelPadding;
 
   const EditTimerLayout({
     this.inputTimeWidth = 120,
-    this.textToWheelDistance = 40,
-    this.inputTimePadding = const EdgeInsets.symmetric(vertical: 38),
+    this.wheelPadding = const EdgeInsets.only(top: 11),
   });
 }
 
 class ButtonLayout {
   final double baseButtonMinHeight, secondaryActionButtonMinSize;
   final Size redButtonMinSize;
-  final EdgeInsets textButtonInsets, redButtonPadding;
+  final EdgeInsets textButtonInsets,
+      actionButtonIconTextPadding,
+      startBasicTimerPadding;
 
   const ButtonLayout({
     this.baseButtonMinHeight = 64,
@@ -1345,7 +1378,9 @@ class ButtonLayout {
     this.secondaryActionButtonMinSize = 40,
     this.textButtonInsets =
         const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-    this.redButtonPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
+    this.actionButtonIconTextPadding =
+        const EdgeInsets.fromLTRB(10, 10, 20, 10),
+    this.startBasicTimerPadding = const EdgeInsets.fromLTRB(0, 4, 4, 4),
   });
 }
 
@@ -1356,7 +1391,7 @@ class ThemeLayout {
   const ThemeLayout({
     this.circleRadius = 24,
     this.inputPadding =
-        const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
   });
 }
 

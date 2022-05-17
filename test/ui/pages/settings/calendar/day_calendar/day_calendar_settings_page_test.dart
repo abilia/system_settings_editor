@@ -278,6 +278,11 @@ void main() {
           matcher: isFalse,
         );
       });
+
+      testWidgets('BUG SGC-1564 Has ScrollArrows', (tester) async {
+        await tester.goToEyeButtonSwitches();
+        expect(find.byType(ScrollArrows), findsOneWidget);
+      });
     });
   }, skip: !Config.isMP);
 }

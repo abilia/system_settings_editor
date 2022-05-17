@@ -8,7 +8,7 @@ class ErrorPopupListener extends StatelessWidget {
   const ErrorPopupListener({Key? key, required this.child}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
+    return BlocListener<WizardCubit, WizardState>(
       listenWhen: (_, current) => current.saveErrors.isNotEmpty,
       listener: (context, state) async {
         final errors = state.saveErrors;
@@ -27,7 +27,7 @@ class ErrorPopupListener extends StatelessWidget {
     BuildContext context,
   ) async {
     final translate = Translator.of(context).translate;
-    showError(String msg) => showViewDialog(
+    void showError(String msg) => showViewDialog(
           context: context,
           builder: (context) => ErrorDialog(text: msg),
         );
@@ -94,7 +94,7 @@ class ErrorPopupListener extends StatelessWidget {
         if (confirmConflict != true) return;
       }
     }
-    context.read<ActivityWizardCubit>().next(
+    context.read<WizardCubit>().next(
           warningConfirmed: true,
           saveRecurring: saveEvent,
         );
@@ -107,8 +107,7 @@ class PopOnSaveListener extends StatelessWidget {
   const PopOnSaveListener({Key? key, required this.child}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      BlocListener<ActivityWizardCubit, ActivityWizardState>(
+  Widget build(BuildContext context) => BlocListener<WizardCubit, WizardState>(
         listenWhen: (_, current) => current.sucessfullSave == true,
         listener: (context, state) => Navigator.of(context).pop(true),
         child: child,
@@ -127,7 +126,7 @@ class ScrollToErrorPageListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ActivityWizardCubit, ActivityWizardState>(
+    return BlocListener<WizardCubit, WizardState>(
       listenWhen: (_, current) => current.saveErrors.isNotEmpty,
       listener: (context, state) async {
         final errors = state.saveErrors;

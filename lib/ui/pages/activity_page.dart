@@ -222,38 +222,38 @@ class EditActivityButton extends StatelessWidget {
   final ActivityDay activityDay;
 
   @override
-  Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
-    return TextAndOrIconActionButtonLight(
-      Translator.of(context).translate.edit,
-      AbiliaIcons.edit,
-      onPressed: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: authProviders,
-              child: MultiBlocProvider(
+  Widget build(BuildContext context) => TextAndOrIconActionButtonLight(
+        Translator.of(context).translate.edit,
+        AbiliaIcons.edit,
+        onPressed: () {
+          final authProviders = copiedAuthProviders(context);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
                 providers: [
+                  ...authProviders,
                   BlocProvider<EditActivityCubit>(
                     create: (_) => EditActivityCubit.edit(activityDay),
                   ),
-                  BlocProvider(
+                  BlocProvider<WizardCubit>(
                     create: (context) => ActivityWizardCubit.edit(
                       activitiesBloc: context.read<ActivitiesBloc>(),
                       editActivityCubit: context.read<EditActivityCubit>(),
                       clockBloc: context.read<ClockBloc>(),
-                      settings: context.read<MemoplannerSettingBloc>().state,
+                      allowPassedStartTime: context
+                          .read<MemoplannerSettingBloc>()
+                          .state
+                          .settings
+                          .addActivity
+                          .allowPassedStartTime,
                     ),
                   ),
                 ],
                 child: const ActivityWizardPage(),
               ),
+              settings: RouteSettings(name: '$ActivityWizardPage $activityDay'),
             ),
-            settings: RouteSettings(name: '$ActivityWizardPage $activityDay'),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 }

@@ -47,14 +47,18 @@ class CameraButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PermissionCubit, PermissionState>(
-      builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, time) => MenuItemButton(
+    return BlocSelector<PermissionCubit, PermissionState, bool>(
+      selector: (state) =>
+          state.status[Permission.camera]?.isPermanentlyDenied == true,
+      builder: (context, cameraIsPermanentlyDenied) =>
+          BlocSelector<SortableBloc, SortableState, String>(
+        selector: (state) => state is SortablesLoaded
+            ? state.sortables.getMyPhotosFolder()?.id ?? ''
+            : '',
+        builder: (context, myPhotoFolderId) => MenuItemButton(
           icon: AbiliaIcons.cameraPhoto,
           onPressed: () async {
-            if (permissionState
-                    .status[Permission.camera]?.isPermanentlyDenied ==
-                true) {
+            if (cameraIsPermanentlyDenied) {
               await showViewDialog(
                 useSafeArea: false,
                 context: context,
@@ -77,12 +81,9 @@ class CameraButton extends StatelessWidget {
                     selectedImage.id,
                     selectedImage.file.path,
                     DateFormat.yMd(
-                            Localizations.localeOf(context).toLanguageTag())
-                        .format(time),
-                    context
-                        .read<SortableArchiveCubit<ImageArchiveData>>()
-                        .state
-                        .currentFolderId,
+                      Localizations.localeOf(context).toLanguageTag(),
+                    ).format(context.read<ClockBloc>().state),
+                    myPhotoFolderId,
                   ),
                 );
               }

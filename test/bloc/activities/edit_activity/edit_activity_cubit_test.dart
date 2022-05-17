@@ -14,6 +14,7 @@ void main() {
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
+  const calendarId = 'Some-calendar-id';
 
   setUp(() {
     tz.initializeTimeZones();
@@ -34,12 +35,14 @@ void main() {
     // Arrange
     final activity = Activity.createNew(
       title: '',
+      calendarId: calendarId,
       startTime: aTime,
       timezone: tz.local.name,
     );
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
       defaultAlarmTypeSetting: alarmSoundAndVibration,
+      calendarId: calendarId,
     );
     // Act // Assert
     expect(editActivityCubit.state.activity, MatchActivityWithoutId(activity));
@@ -50,6 +53,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aTime,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
     final activity = editActivityCubit.state.activity;
     final activityWithTitle = activity.copyWith(title: 'new title');
@@ -74,6 +78,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
     final activity = editActivityCubit.state.activity;
     final newDate = DateTime(2011, 11, 11, 11, 11);
@@ -99,6 +104,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDate,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final activity = editActivityCubit.state.activity;
@@ -192,6 +198,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final wizCubit = ActivityWizardCubit.newActivity(
@@ -265,7 +272,7 @@ void main() {
     // Assert
     expect(
       wizCubit.state,
-      ActivityWizardState(0, const [WizardStep.advance], sucessfullSave: true),
+      WizardState(0, const [WizardStep.advance], sucessfullSave: true),
     );
     // Assert
     await expect2;
@@ -337,6 +344,7 @@ void main() {
     final editActivityCubit = EditActivityCubit.newActivity(
       day: aDay,
       defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
     );
 
     final in30Days = aTime.add(30.days());

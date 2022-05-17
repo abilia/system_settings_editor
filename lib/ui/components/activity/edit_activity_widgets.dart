@@ -15,11 +15,11 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
         builder: (context, editActivity) =>
             BlocBuilder<EditActivityCubit, EditActivityState>(
           builder: (context, state) =>
-              BlocBuilder<ActivityWizardCubit, ActivityWizardState>(
-            builder: (context, wizState) => NameAndPictureWidget(
+              BlocSelector<WizardCubit, WizardState, Set<SaveError>>(
+            selector: (state) => state.saveErrors,
+            builder: (context, saveErrors) => NameAndPictureWidget(
               selectedImage: state.selectedImage,
-              errorState:
-                  wizState.saveErrors.contains(SaveError.noTitleOrImage),
+              errorState: saveErrors.contains(SaveError.noTitleOrImage),
               text: state.activity.title,
               inputFormatters: [LengthLimitingTextInputFormatter(50)],
               onImageSelected: editActivity.image
@@ -35,10 +35,19 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
                       }
                     }
                   : null,
+              inputHeadingForNameField: _heading(context),
             ),
           ),
         ),
       );
+
+  String _heading(BuildContext context) {
+    final translate = Translator.of(context).translate;
+    final isTemplate =
+        context.read<WizardCubit>() is TemplateActivityWizardCubit;
+    if (isTemplate) return translate.enterNameForBasicActivity;
+    return translate.name;
+  }
 }
 
 class NameAndPictureWidget extends StatelessWidget {
@@ -93,12 +102,9 @@ class NameAndPictureWidget extends StatelessWidget {
 }
 
 class SelectPictureWidget extends StatelessWidget {
-  static final imageSize = layout.selectPicture.imageSize,
-      padding = layout.selectPicture.padding;
   final AbiliaFile selectedImage;
-
   final void Function(AbiliaFile)? onImageSelected;
-  final bool errorState;
+  final bool errorState, isLarge;
   final String? label;
 
   const SelectPictureWidget({
@@ -106,6 +112,7 @@ class SelectPictureWidget extends StatelessWidget {
     required this.selectedImage,
     required this.onImageSelected,
     this.errorState = false,
+    this.isLarge = false,
     this.label,
   }) : super(key: key);
 
@@ -120,6 +127,7 @@ class SelectPictureWidget extends StatelessWidget {
           SubHeading(heading),
           SelectedImageWidget(
             errorState: errorState,
+            isLarge: isLarge,
             onTap: onImageSelected != null ? () => imageClick(context) : null,
             selectedImage: selectedImage,
           ),
@@ -164,50 +172,58 @@ class SelectedImageWidget extends StatelessWidget {
   final GestureTapCallback? onTap;
   final AbiliaFile selectedImage;
 
-  final bool errorState;
-
-  static final innerSize =
-      SelectPictureWidget.imageSize - SelectPictureWidget.padding * 2;
+  final bool errorState, isLarge;
 
   const SelectedImageWidget({
     Key? key,
     required this.selectedImage,
     this.errorState = false,
+    this.isLarge = false,
     this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final disabeld = onTap == null;
+    final disabled = onTap == null;
+    final imageSize = isLarge
+        ? layout.selectPicture.imageSizeLarge
+        : layout.selectPicture.imageSize;
+    final innerSize = imageSize -
+        (isLarge
+                ? layout.selectPicture.paddingLarge
+                : layout.selectPicture.padding) *
+            2;
+
     return SizedBox(
-      width: SelectPictureWidget.imageSize,
-      height: SelectPictureWidget.imageSize,
+      width: imageSize,
+      height: imageSize,
       child: LinedBorder(
         key: TestKey.addPicture,
-        padding: layout.templates.s3,
         errorState: errorState,
         onTap: onTap,
-        child: selectedImage.isNotEmpty
-            ? Opacity(
-                opacity: disabeld ? 0.4 : 1,
-                child: FadeInCalendarImage(
-                  height: innerSize,
+        child: Center(
+          child: selectedImage.isNotEmpty
+              ? Opacity(
+                  opacity: disabled ? 0.4 : 1,
+                  child: FadeInCalendarImage(
+                    height: innerSize,
+                    width: innerSize,
+                    imageFile: selectedImage,
+                  ),
+                )
+              : Container(
+                  decoration: disabled
+                      ? disabledBoxDecoration
+                      : whiteNoBorderBoxDecoration,
                   width: innerSize,
-                  imageFile: selectedImage,
+                  height: innerSize,
+                  child: Icon(
+                    AbiliaIcons.addPhoto,
+                    size: layout.icon.normal,
+                    color: AbiliaColors.black75,
+                  ),
                 ),
-              )
-            : Container(
-                decoration: disabeld
-                    ? disabledBoxDecoration
-                    : whiteNoBorderBoxDecoration,
-                width: innerSize,
-                height: innerSize,
-                child: Icon(
-                  AbiliaIcons.addPhoto,
-                  size: layout.icon.normal,
-                  color: AbiliaColors.black75,
-                ),
-              ),
+        ),
       ),
     );
   }
@@ -256,7 +272,7 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final translator = Translator.of(context).translate;
-    _onChange(v) => context
+    void _onChange(v) => context
         .read<EditActivityCubit>()
         .replaceActivity(activity.copyWith(category: v));
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -556,13 +572,13 @@ class RecurrenceWidget extends StatelessWidget {
                       ),
                     );
               } else {
-                final recurentType = _newType(
+                final recurs = _newRecurs(
                   result,
                   state.timeInterval.startDate,
                 );
                 context.read<EditActivityCubit>().replaceActivity(
                       activity.copyWith(
-                        recurs: recurentType,
+                        recurs: recurs,
                       ),
                     );
               }
@@ -573,14 +589,14 @@ class RecurrenceWidget extends StatelessWidget {
     );
   }
 
-  Recurs _newType(RecurrentType type, DateTime startdate) {
+  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
     switch (type) {
       case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startdate.weekday);
+        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
       case RecurrentType.monthly:
-        return Recurs.monthly(startdate.day);
+        return Recurs.monthly(startDate.day, ends: startDate);
       case RecurrentType.yearly:
-        return Recurs.yearly(startdate);
+        return Recurs.yearly(startDate);
       default:
         return Recurs.not;
     }
@@ -624,6 +640,7 @@ class EndDateWidget extends StatelessWidget {
               ),
             ),
             SwitchField(
+              key: TestKey.noEndDateSwitch,
               leading: Icon(
                 AbiliaIcons.basicActivity,
                 size: layout.icon.small,
@@ -658,6 +675,7 @@ class EndDateWizWidget extends StatelessWidget {
         final activity = state.activity;
         final recurs = activity.recurs;
         return SwitchField(
+          key: TestKey.noEndDateSwitch,
           leading: Icon(
             AbiliaIcons.basicActivity,
             size: layout.icon.small,

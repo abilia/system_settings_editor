@@ -4,10 +4,10 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TimerTimepillardCard extends TimepillarCard {
-  final TimepillarState ts;
   final TimerOccasion timerOccasion;
+  final TimepillarMeasures measures;
   const TimerTimepillardCard({
-    required this.ts,
+    required this.measures,
     required int column,
     required this.timerOccasion,
     required CardPosition cardPosition,
@@ -22,12 +22,12 @@ class TimerTimepillardCard extends TimepillarCard {
       inactive: timerOccasion.isPast,
       showCategoryColor: false,
       category: timerOccasion.category,
-      zoom: ts.zoom,
+      zoom: measures.zoom,
     );
-    final padding = ts.cardPadding
+    final padding = measures.cardPadding
         .subtract(decoration.border?.dimensions ?? EdgeInsets.zero);
     return Positioned(
-      left: column * ts.cardTotalWidth,
+      left: column * measures.cardTotalWidth,
       top: cardPosition.top,
       child: Tts.fromSemantics(
         timer.semanticsProperties(context),
@@ -51,30 +51,38 @@ class TimerTimepillardCard extends TimepillarCard {
           child: Container(
             decoration: decoration,
             height: cardPosition.height,
-            width: ts.cardWidth,
+            width: measures.cardWidth,
             padding: padding,
-            margin: EdgeInsets.only(left: ts.dotSize + ts.hourPadding),
+            margin:
+                EdgeInsets.only(left: measures.dotSize + measures.hourPadding),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Padding(
-                  padding: ts.timerWheelPadding,
+                  padding: measures.timerWheelPadding,
                   child: SizedBox.fromSize(
-                    size: ts.timerWheelSize,
+                    size: measures.timerWheelSize,
                     child: TimerCardWheel(timerOccasion),
                   ),
                 ),
                 if (timer.hasImage)
                   SizedBox(
-                    height: ts.cardMinImageHeight,
+                    height: measures.cardMinImageHeight,
                     child: EventImage.fromEventOccasion(
                       eventOccasion: timerOccasion,
-                      crossPadding: ts.cardPadding,
-                      checkPadding: ts.cardPadding * 2,
+                      crossPadding: measures.cardPadding,
+                      checkPadding: measures.cardPadding * 2,
                     ),
                   )
                 else if (timer.hasTitle)
-                  Text(timer.title),
+                  Text(timer.title)
+                else if (!timer.hasTitle && !timer.hasImage)
+                  timerOccasion.isOngoing
+                      ? TimerTickerBuilder(
+                          timerOccasion.timer,
+                          builder: (context, left) => Text(left.toHMSorMS()),
+                        )
+                      : Text(timerOccasion.timer.pausedAt.toHMSorMS()),
               ],
             ),
           ),

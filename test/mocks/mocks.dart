@@ -42,6 +42,8 @@ class MockBaseUrlDb extends Mock implements BaseUrlDb {}
 
 class MockDeviceDb extends Mock implements DeviceDb {}
 
+class MockCalendarDb extends Mock implements CalendarDb {}
+
 class MockGenericDb extends Mock implements GenericDb {}
 
 class MockSortableDb extends Mock implements SortableDb {}
@@ -77,7 +79,7 @@ class MockMultipartRequestBuilder extends Mock
 class MockMultipartRequest extends Mock implements MultipartRequest {}
 
 class Notification {
-  mockCancelAll() {}
+  void mockCancelAll() {}
 }
 
 class MockConnectivity extends Mock implements Connectivity {}

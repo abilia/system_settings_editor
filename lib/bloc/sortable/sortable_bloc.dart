@@ -138,13 +138,8 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           fileId: event.imageId,
           tags: UnmodifiableSetView(event.tags),
         );
-        final folderContent = currentState.sortables
-            .where((s) => s.groupId == event.folderId)
-            .toList();
-        folderContent.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-        final sortOrder = folderContent.isEmpty
-            ? startSortOrder
-            : calculateNextSortOrder(folderContent.last.sortOrder, 1);
+        final sortOrder = currentState.sortables
+            .firstSortOrderForFolder(folderId: event.folderId);
         final newSortable = Sortable.createNew<ImageArchiveData>(
           data: sortableData,
           groupId: event.folderId,

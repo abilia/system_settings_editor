@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
@@ -14,15 +11,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../fakes/all.dart';
 import '../../mocks/mock_bloc.dart';
 import '../../mocks/mocks.dart';
-
-import '../../test_helpers/register_fallback_values.dart';
-import '../../test_helpers/tts.dart';
 import '../../test_helpers/enter_text.dart';
+import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tap_link.dart';
+import '../../test_helpers/tts.dart';
 import '../../test_helpers/verify_generic.dart';
 
 void main() {
@@ -75,7 +72,7 @@ void main() {
   ActivityResponse activityResponse = () => [];
   SortableResponse sortableResponse = () => [];
   GenericResponse genericResponse = () => [];
-  final initialDay = DateTime(2020, 08, 05);
+  final initialTime = DateTime(2020, 08, 05, 14, 10, 00);
 
   setUpAll(() {
     registerFallbackValues();
@@ -139,7 +136,7 @@ void main() {
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..activityDb = mockActivityDb
-      ..ticker = Ticker.fake(initialTime: initialDay)
+      ..ticker = Ticker.fake(initialTime: initialTime)
       ..fireBasePushService = mockFirebasePushService
       ..client = Fakes.client(
         activityResponse: activityResponse,
@@ -165,730 +162,24 @@ void main() {
   });
 
   group('calendar page', () {
-    group('create new activity', () {
-      testWidgets('New activity', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(CreateNewPage), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.newActivityChoice));
-        await tester.pumpAndSettle();
-        expect(find.byType(EditActivityPage), findsOneWidget);
-      });
-
-      testWidgets('New activity with wizard, default steps',
-          (WidgetTester tester) async {
-        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-          ),
-        );
-        genericResponse = () => [wizardSetting];
-
-        const title = 'title';
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(CreateNewPage), findsOneWidget);
-
-        await tester.tap(find.byKey(TestKey.newActivityChoice));
-        await tester.pumpAndSettle();
-        expect(find.byType(DatePickerWiz), findsOneWidget);
-
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TitleWiz), findsOneWidget);
-
-        await tester.enterText(find.byType(TextField), title);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ImageWiz), findsOneWidget);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        await tester.pumpAndSettle();
-        expect(find.byType(AvailableForWiz), findsOneWidget);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(CheckableWiz), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.checkableRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(RecurringWiz), findsOneWidget); // Recurrance
-        await tester.tap(find.byType(SaveButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
-
-        final captured =
-            verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
-                .captured;
-        final savedActivity = captured.single.single as Activity;
-        expect(savedActivity.title, title);
-        expect(savedActivity.checkable, true);
-      });
-
-      testWidgets('New activity with wizard, custom steps',
-          (WidgetTester tester) async {
-        final wizardSetting = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-          ),
-        );
-        final removeAfter = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: true,
-            identifier: StepByStepSettings.removeAfterKey,
-          ),
-        );
-        final reminderStep = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: true,
-            identifier: StepByStepSettings.remindersKey,
-          ),
-        );
-        final noBasic = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: StepByStepSettings.templateKey,
-          ),
-        );
-        final noImage = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: StepByStepSettings.imageKey,
-          ),
-        );
-        final noDate = Generic.createNew<MemoplannerSettingData>(
-          data: MemoplannerSettingData.fromData(
-            data: false,
-            identifier: StepByStepSettings.dateKey,
-          ),
-        );
-        genericResponse = () => [
-              wizardSetting,
-              removeAfter,
-              reminderStep,
-              noBasic,
-              noImage,
-              noDate,
-            ];
-
-        const title = 'title';
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(CreateNewPage), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.newActivityChoice));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(TitleWiz), findsOneWidget);
-        await tester.enterText(find.byType(TextField), title);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        await tester.pumpAndSettle();
-        expect(find.byType(AvailableForWiz), findsOneWidget);
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(CheckableWiz), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.checkableRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(RemoveAfterWiz), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.removeAfterRadio));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(TimeWiz), findsOneWidget);
-        await tester.enterText(find.byKey(TestKey.startTimeInput), '1337');
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(RemindersWiz), findsOneWidget);
-        final fiveMinutesText = 5.minutes().toDurationString(translate);
-        await tester.tap(find.text(fiveMinutesText));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(RecurringWiz), findsOneWidget);
-        await tester.tap(find.byType(SaveButton));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(ActivityWizardPage), findsNothing);
-        expect(find.byType(Agenda), findsOneWidget);
-
-        final captured =
-            verify(() => mockActivityDb.insertAndAddDirty(captureAny()))
-                .captured;
-        final savedActivity = captured.single.single as Activity;
-        expect(savedActivity.title, title);
-        expect(savedActivity.checkable, true);
-        expect(savedActivity.removeAfter, true);
-        expect(savedActivity.reminders.length, 1);
-        expect(savedActivity.reminders.first, 5.minutes());
-      });
-
-      group('basic activity', () {
-        testWidgets('No option for basic activity when step-by-step',
-            (WidgetTester tester) async {
-          genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-                  ),
-                ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: StepByStepSettings.templateKey,
-                  ),
-                ),
-              ];
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
-        });
-
-        testWidgets('No option for basic activity when option set',
-            (WidgetTester tester) async {
-          genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: EditActivitySettings.templateKey,
-                  ),
-                ),
-              ];
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(find.byKey(TestKey.basicActivityChoice), findsNothing);
-        });
-
-        testWidgets(
-            'New activity - name and title off: only basic activity choice ',
-            (WidgetTester tester) async {
-          genericResponse = () => [
-                Generic.createNew(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: EditActivitySettings.titleKey,
-                  ),
-                ),
-                Generic.createNew(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: EditActivitySettings.imageKey,
-                  ),
-                ),
-              ];
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
-        });
-
-        testWidgets('Empty message when no basic activities',
-            (WidgetTester tester) async {
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          expect(find.text(translate.noBasicActivities), findsOneWidget);
-        });
-
-        testWidgets(
-            'if wizard enabled, title and image disabled and '
-            'one basic activites: No new activity option',
-            (WidgetTester tester) async {
-          genericResponse = () => [
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: MemoplannerSettings.addActivityTypeAdvancedKey,
-                  ),
-                ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: StepByStepSettings.titleKey,
-                  ),
-                ),
-                Generic.createNew<MemoplannerSettingData>(
-                  data: MemoplannerSettingData.fromData(
-                    data: false,
-                    identifier: StepByStepSettings.imageKey,
-                  ),
-                ),
-              ];
-
-          final basicActivity = Sortable.createNew(
-            data: BasicActivityDataItem.createNew(title: 'title'),
-          );
-
-          sortableResponse = () => [basicActivity];
-
-          await tester.pumpWidget(App());
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          expect(find.byKey(TestKey.newActivityChoice), findsNothing);
-          expect(find.byKey(TestKey.basicActivityChoice), findsOneWidget);
-        });
-
-        testWidgets('New activity from basic activity gets correct title',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle';
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          expect(
-              find.byType(SortableLibrary<BasicActivityData>), findsOneWidget);
-          expect(
-              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
-          expect(find.text(title), findsOneWidget);
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
-          expect(find.byType(EditActivityPage), findsOneWidget);
-          final nameAndPicture = find.byType(NameAndPictureWidget);
-          expect(nameAndPicture, findsOneWidget);
-          final nameAndPictureWidget =
-              tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
-          expect(nameAndPictureWidget.text, title);
-        });
-
-        testWidgets(
-            'SGC-860 New activity from basic activity starting 00:00 has no start time',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle';
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(
-                title: title,
-                startTime: Duration.zero,
-              ),
-            ),
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
-          final dateAndTime = tester
-              .widget<TimeIntervallPicker>(find.byType(TimeIntervallPicker));
-          final timeInterval = dateAndTime.timeInterval;
-          expect(timeInterval, TimeInterval(startDate: initialDay));
-          expect(find.text('00:00'), findsNothing);
-        });
-
-        testWidgets('basic activity library navigation',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle', folderTitle = 'folderTitle';
-
-          final folder = Sortable.createNew<BasicActivityDataFolder>(
-            isGroup: true,
-            data: BasicActivityDataFolder.createNew(name: folderTitle),
-          );
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-                data: BasicActivityDataItem.createNew(title: title),
-                groupId: folder.id),
-            folder,
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-
-          //Act
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-
-          // Act Go to basic activity archive
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-
-          // Act Go to into folder
-          await tester.tap(find.byType(LibraryFolder));
-          await tester.pumpAndSettle();
-
-          // Assert no folder, one item, nothing selected, next button disabled
-          expect(find.byType(LibraryFolder), findsNothing);
-          expect(
-              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
-          expect(find.text(title), findsOneWidget);
-          expect(find.text(folderTitle), findsOneWidget);
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNull,
-          );
-
-          // Act - Select item
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-
-          // Assert - Next button enabled
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNotNull,
-          );
-
-          // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
-          await tester.pumpAndSettle();
-
-          // Assert - Next button disabled, no folder
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNull,
-          );
-          expect(find.byType(LibraryFolder), findsOneWidget);
-
-          // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
-          await tester.pumpAndSettle();
-
-          // Assert back at create acitivy page
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(
-            find.byType(SortableLibrary<BasicActivityData>),
-            findsNothing,
-          );
-
-          // Act - Go back
-          await tester.tap(find.byType(CancelButton));
-          await tester.pumpAndSettle();
-
-          // Assert - Back at calendar page
-          expect(find.byType(CalendarPage), findsOneWidget);
-        });
-
-        testWidgets('basic activity library navigation SAVE from edit page',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle';
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(
-                title: title,
-                startTime: const Duration(hours: 11),
-              ),
-            ),
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-
-          //Act
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-
-          // Act Go to basic activity archive
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-
-          expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-          // Act - choose basic activity
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
-
-          expect(find.byType(EditActivityPage), findsOneWidget);
-
-          // Act - save
-          await tester.tap(find.byType(NextWizardStepButton));
-          await tester.pumpAndSettle();
-
-          // Assert - Back at picker page
-          expect(find.byType(BasicActivityPickerPage), findsNothing);
-          expect(find.byType(CalendarPage), findsOneWidget);
-        });
-
-        testWidgets('basic activity library navigation back from edit page',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle';
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-
-          //Act
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-
-          // Act Go to basic activity archive
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-
-          expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-          // Act - Select item
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
-
-          expect(find.byType(EditActivityPage), findsOneWidget);
-
-          // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
-          await tester.pumpAndSettle();
-
-          // Assert - Back at picker page
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(find.byType(BasicActivityPickerPage), findsNothing);
-        });
-
-        testWidgets(
-            'Bug SGC-627 Previous button after selecting a Basic Activity',
-            (WidgetTester tester) async {
-          await initializeDateFormatting();
-          final sortableBlocMock = MockSortableBloc();
-          const title = 'testtitle';
-          when(() => sortableBlocMock.state)
-              .thenReturn(SortablesLoaded(sortables: [
-            Sortable.createNew<BasicActivityDataItem>(
-              data: BasicActivityDataItem.createNew(title: title),
-            ),
-          ]));
-          when(() => sortableBlocMock.stream)
-              .thenAnswer((realInvocation) => const Stream.empty());
-
-          //Act
-          await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-              sortableBloc: sortableBlocMock));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(AddButton));
-          await tester.pumpAndSettle();
-
-          // Act Go to basic activity archive
-          await tester.tap(find.byKey(TestKey.basicActivityChoice));
-          await tester.pumpAndSettle();
-
-          expect(find.byType(BasicActivityPickerPage), findsOneWidget);
-          // Act - Select item
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-
-          // Act - Go back
-          await tester.tap(find.byType(PreviousButton));
-          await tester.pumpAndSettle();
-
-          // Assert - Back at picker page
-          expect(find.byType(CreateNewPage), findsOneWidget);
-          expect(find.byType(BasicActivityPickerPage), findsNothing);
-        });
-      });
-    });
-
-    testWidgets('Can edit activity', (WidgetTester tester) async {
-      const title1 = 'Titel uno';
-      const newTitle = 'A brand new title!';
-
-      final d = initialDay.add(12.hours());
-      final aFinder = find.text(title1);
-
-      final activities = [Activity.createNew(title: title1, startTime: d)];
-      activityResponse = () => activities;
-      when(() => mockActivityDb.getAllNonDeleted())
-          .thenAnswer((_) => Future.value(activities));
-
-      await tester.pumpWidget(App());
-      await tester.pumpAndSettle();
-      await tester.tap(aFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(editActivityButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.ourEnterText(editTitleFieldFinder, newTitle);
-      await tester.tap(saveEditActivityButtonFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(TestKey.activityBackButton));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(ActivityCard), findsOneWidget);
-      expect(find.text(newTitle), findsOneWidget);
-      expect(aFinder, findsNothing);
-    });
-
-    group('add timer', () {
-      testWidgets('from scratch is possible', (WidgetTester tester) async {
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(CreateNewPage), findsOneWidget);
-        await tester.tap(find.byKey(TestKey.newTimerChoice));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerWizardPage), findsOneWidget);
-        expect(find.byType(TimerDurationWiz), findsOneWidget);
-        await tester.tap(find.byType(TextField));
-        await tester.pumpAndSettle();
-        expect(find.byType(EditTimerByTypingPage), findsOneWidget);
-
-        await tester.enterText(find.byKey(TestKey.minutes), '20');
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(SaveButton));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerStartWiz), findsOneWidget);
-
-        await tester.tap(find.byType(StartButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerPage), findsOneWidget);
-        expect(find.text('20 minutes'), findsOneWidget);
-        await tester.tap(find.byIcon(AbiliaIcons.navigationPrevious));
-        await tester.pumpAndSettle();
-        expect(find.byType(CalendarPage), findsOneWidget);
-        expect(find.byType(TimerCard), findsOneWidget);
-        expect(find.text('20 minutes'), findsOneWidget);
-
-        final captured =
-            verify(() => mockTimerDb.insert(captureAny())).captured;
-        final savedTimer = captured.single as AbiliaTimer;
-        expect(savedTimer.duration, 20.minutes());
-        expect(
-            savedTimer.title,
-            const Duration(minutes: 20)
-                .toDurationString(translate, shortMin: false));
-        expect(savedTimer.paused, false);
-        expect(savedTimer.pausedAt, Duration.zero);
-      });
-
-      testWidgets('from basic timer gets correct title',
-          (WidgetTester tester) async {
-        await initializeDateFormatting();
-        final sortableBlocMock = MockSortableBloc();
-        const title = 'Basictajmer';
-        when(() => sortableBlocMock.state)
-            .thenReturn(SortablesLoaded(sortables: [
-          Sortable.createNew<BasicTimerDataItem>(
-            data: BasicTimerDataItem.fromJson(
-                '{"duration":60000,"title":"$title"}'),
-          ),
-        ]));
-        when(() => sortableBlocMock.stream)
-            .thenAnswer((_) => const Stream.empty());
-        await tester.pumpWidget(wrapWithMaterialApp(const CalendarPage(),
-            sortableBloc: sortableBlocMock));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(AddButton));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(TestKey.basicTimerChoice));
-        await tester.pumpAndSettle();
-        expect(find.byType(SortableLibrary<BasicTimerData>), findsOneWidget);
-        expect(find.byType(BasicLibraryItem<BasicTimerData>), findsOneWidget);
-        expect(find.text(title), findsOneWidget);
-        await tester.tap(find.text(title));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(NextButton));
-        await tester.pumpAndSettle();
-        expect(find.byType(TimerWizardPage), findsOneWidget);
-        expect(find.byType(TimerStartWiz), findsOneWidget);
-        final nameAndPicture = find.byType(NameAndPictureWidget);
-        expect(nameAndPicture, findsOneWidget);
-        final nameAndPictureWidget =
-            tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
-        expect(nameAndPictureWidget.text, title);
-      });
-    });
-
     testWidgets('navigation', (WidgetTester tester) async {
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
       await tester.tap(nextDayButtonFinder);
       await tester.pumpAndSettle();
 
       expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
-          initialDay.add(3.days()));
+          initialTime.onlyDays().add(3.days()));
       await tester.tap(find.byType(GoToNowButton));
       await tester.pumpAndSettle();
 
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
     });
 
     testWidgets('Tapping Day in TabBar returns to this week',
@@ -903,7 +194,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
-      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day, initialDay);
+      expect(tester.widget<DayAppBar>(find.byType(DayAppBar)).day,
+          initialTime.onlyDays());
     });
 
     group('Premissions', () {
@@ -1053,7 +345,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddButton));
+      await tester.tap(find.byKey(TestKey.addActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
@@ -1093,7 +385,7 @@ void main() {
 
       // Navigate to EditActivityPage
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(AddButton));
+      await tester.tap(find.byKey(TestKey.addActivityButton));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(TestKey.newActivityChoice));
       await tester.pumpAndSettle();
@@ -1107,7 +399,7 @@ void main() {
       await tester.tap(find.byType(DatePicker));
       await tester.pumpAndSettle();
       await tester.tap(find.ancestor(
-          of: find.text('${initialDay.subtract(1.days()).day}'),
+          of: find.text('${initialTime.subtract(1.days()).day}'),
           matching: find.byKey(TestKey.monthCalendarDay)));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(OkButton));
@@ -1334,7 +626,7 @@ void main() {
     const title1 = 'fulldaytitle1';
     const title2 = 'fullday title 2';
     const title3 = 'full day title 3';
-    final date = initialDay.onlyDays();
+    final date = initialTime.onlyDays();
 
     final day1Finder = find.text(title1);
     final day2Finder = find.text(title2);
@@ -1485,11 +777,11 @@ void main() {
     const fridayTitle = 'f-r-i-d-a-y',
         nextWeekTitle = 'N-e-x-t week title',
         todaytitle = 't-o-d-a-y';
-    final friday = initialDay.addDays(2);
-    final nextWeek = initialDay.nextWeek();
+    final friday = initialTime.addDays(2);
+    final nextWeek = initialTime.nextWeek();
     setUp(() {
       final activities = [
-        FakeActivity.starts(initialDay, title: todaytitle),
+        FakeActivity.starts(initialTime, title: todaytitle),
         FakeActivity.starts(friday, title: fridayTitle),
         FakeActivity.starts(nextWeek, title: nextWeekTitle),
       ];
@@ -1555,7 +847,7 @@ void main() {
 
       final selected = allHeadings.firstWhere((element) => element.selected);
 
-      expect(selected.day, initialDay);
+      expect(selected.day, initialTime.onlyDays());
     });
 
     testWidgets(
@@ -1624,7 +916,7 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPreSelect, isEmpty);
 
-      final d = initialDay.addDays(8).day;
+      final d = initialTime.addDays(8).day;
       await tester.tap(find.text('$d'));
       await tester.pumpAndSettle();
       final selectedHeadingsnextWeekPostSelect = tester.widgetList(
@@ -1654,30 +946,30 @@ void main() {
     testWidgets('Overflow issue during development of SGC-754',
         (WidgetTester tester) async {
       final activities = [
-        FakeActivity.starts(initialDay, title: 'one')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 1))),
-        FakeActivity.starts(initialDay, title: 'two')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 2))),
-        FakeActivity.starts(initialDay, title: 'three')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 3))),
-        FakeActivity.starts(initialDay, title: 'four')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 4))),
-        FakeActivity.starts(initialDay, title: 'five')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 5))),
-        FakeActivity.starts(initialDay, title: 'six')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 6))),
-        FakeActivity.starts(initialDay, title: 'seven')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 7))),
-        FakeActivity.starts(initialDay, title: 'eight')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 8))),
-        FakeActivity.starts(initialDay, title: 'nine')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 9))),
-        FakeActivity.starts(initialDay, title: 'ten')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 10))),
-        FakeActivity.starts(initialDay, title: 'eleven')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 11))),
-        FakeActivity.starts(initialDay, title: 'twelve')
-            .copyWith(startTime: initialDay.add(const Duration(hours: 12))),
+        FakeActivity.starts(initialTime, title: 'one')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 1))),
+        FakeActivity.starts(initialTime, title: 'two')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 2))),
+        FakeActivity.starts(initialTime, title: 'three')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 3))),
+        FakeActivity.starts(initialTime, title: 'four')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 4))),
+        FakeActivity.starts(initialTime, title: 'five')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 5))),
+        FakeActivity.starts(initialTime, title: 'six')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 6))),
+        FakeActivity.starts(initialTime, title: 'seven')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 7))),
+        FakeActivity.starts(initialTime, title: 'eight')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 8))),
+        FakeActivity.starts(initialTime, title: 'nine')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 9))),
+        FakeActivity.starts(initialTime, title: 'ten')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 10))),
+        FakeActivity.starts(initialTime, title: 'eleven')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 11))),
+        FakeActivity.starts(initialTime, title: 'twelve')
+            .copyWith(startTime: initialTime.add(const Duration(hours: 12))),
       ];
       activityResponse = () => activities;
       when(() => mockActivityDb.getAllNonDeleted())
@@ -1735,7 +1027,8 @@ void main() {
 
     testWidgets('SGC-1129 alarm button toggleable',
         (WidgetTester tester) async {
-      final expectedTime = initialDay.nextDay().millisecondsSinceEpoch;
+      final expectedTime =
+          initialTime.onlyDays().nextDay().millisecondsSinceEpoch;
       genericResponse = () => [
             Generic.createNew<MemoplannerSettingData>(
               data: MemoplannerSettingData.fromData(

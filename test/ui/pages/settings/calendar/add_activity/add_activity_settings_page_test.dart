@@ -53,6 +53,11 @@ void main() {
       expect(find.byType(CancelButton), findsOneWidget);
     });
 
+    testWidgets('BUG SGC-1564 Has ScrollArrows', (tester) async {
+      await tester.goToNewActivitySettingsPage();
+      expect(find.byType(ScrollArrows), findsOneWidget);
+    });
+
     group('General tab -', () {
       testWidgets('Allow passed start time', (tester) async {
         await tester.goToNewActivitySettingsPage();

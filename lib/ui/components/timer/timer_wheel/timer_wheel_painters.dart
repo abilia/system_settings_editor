@@ -8,8 +8,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
   TimerWheelBackgroundPainter({
     required this.config,
     required this.lengthInMinutes,
-  }) : assert(
-            !lengthInMinutes.isNegative, 'lengthInMinutes cannot be negative') {
+  }) : assert(!lengthInMinutes.isNegative) {
     _totalTimeSweepRadians = lengthInMinutes >= Duration.minutesPerHour
         ? 0
         : pi *
@@ -68,7 +67,7 @@ class TimerWheelBackgroundPainter extends CustomPainter {
       ..drawPath(inactiveTime, config.inactiveSectionFill)
       ..drawPath(inactiveTime, config.inactiveSectionStroke);
 
-    // If timer is not simplified, also paint section numbers and time left as text
+    // Paint section numbers
     if (config.style != TimerWheelStyle.simplified) {
       for (int i = 0; i < TimerWheelConfiguration.nrOfWheelSections; i++) {
         if (lengthInMinutes >=
@@ -142,7 +141,8 @@ class TimerWheelForegroundPainter extends CustomPainter {
     required this.config,
     required this.activeSeconds,
     required this.finished,
-  }) : assert(!activeSeconds.isNegative, 'secondsLeft cannot be negative') {
+    required this.showTimeText,
+  }) : assert(!activeSeconds.isNegative) {
     _timeLeftSweepRadians = activeSeconds >= Duration.secondsPerHour
         ? -pi * 2 + 0.001
         : -(pi * 2) * (activeSeconds / Duration.secondsPerHour);
@@ -151,6 +151,7 @@ class TimerWheelForegroundPainter extends CustomPainter {
   final TimerWheelConfiguration config;
   final int activeSeconds;
   final bool finished;
+  final bool showTimeText;
   late final double _timeLeftSweepRadians;
 
   @override
@@ -197,30 +198,32 @@ class TimerWheelForegroundPainter extends CustomPainter {
     canvas.drawPath(timeLeft, config.timeLeftFill);
     canvas.drawPath(timeLeft, config.timeLeftStroke);
 
-    // If timer is not simplified, paint section numbers and time left as text
+    // Paint time left as text and slider thumb
     if (config.style != TimerWheelStyle.simplified) {
       // Paint time left as text
-      final durationLeft =
-          finished ? Duration.zero : Duration(seconds: activeSeconds);
-      final timeLeftString =
-          durationLeft.toString().split('.').first.padLeft(8, '0');
+      if (showTimeText) {
+        final durationLeft =
+            finished ? Duration.zero : Duration(seconds: activeSeconds);
+        final timeLeftString =
+            durationLeft.toString().split('.').first.padLeft(8, '0');
 
-      final TextPainter timeLeftText = TextPainter(
-        text: TextSpan(
-          text: timeLeftString,
-          style: config.timeLeftTextStyle,
-        ),
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout();
+        final TextPainter timeLeftText = TextPainter(
+          text: TextSpan(
+            text: timeLeftString,
+            style: config.timeLeftTextStyle,
+          ),
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        )..layout();
 
-      timeLeftText.paint(
-        canvas,
-        Offset(size.width / 2 - timeLeftText.width / 2,
-            size.height / 2 - timeLeftText.height / 2),
-      );
+        timeLeftText.paint(
+          canvas,
+          Offset(size.width / 2 - timeLeftText.width / 2,
+              size.height / 2 - timeLeftText.height / 2),
+        );
+      }
 
-      // If timer is interactive, paint slider thumb
+      // Paint slider thumb
       if (config.style == TimerWheelStyle.interactive) {
         final sliderThumbAngle = -_timeLeftSweepRadians - pi;
         final innerRadius =

@@ -82,8 +82,10 @@ class GetItInitializer {
   set fileStorage(FileStorage fileStorage) => _fileStorage = fileStorage;
 
   SettingsDb? _settingsDb;
-
   set settingsDb(SettingsDb settingsDb) => _settingsDb = settingsDb;
+
+  CalendarDb? _calendarDb;
+  set calendarDb(CalendarDb calendarDb) => _calendarDb = calendarDb;
 
   VoiceDb? _voiceDb;
 
@@ -146,8 +148,8 @@ class GetItInitializer {
     ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
     ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
     ..registerSingleton<SettingsDb>(
-      _settingsDb ?? SettingsDb(_sharedPreferences),
-    )
+        _settingsDb ?? SettingsDb(_sharedPreferences))
+    ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
     ..registerSingleton<FileStorage>(
         _fileStorage ?? FileStorage(_documentsDirectory?.path))
     ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)

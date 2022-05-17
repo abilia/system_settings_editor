@@ -8,7 +8,7 @@ class ActivityTimepillarCard extends TimepillarCard {
   final double textHeight;
   final DayParts dayParts;
   final TimepillarSide timepillarSide;
-  final TimepillarState timepillarState;
+  final TimepillarMeasures measures;
 
   const ActivityTimepillarCard({
     Key? key,
@@ -18,12 +18,11 @@ class ActivityTimepillarCard extends TimepillarCard {
     required this.textHeight,
     required this.dayParts,
     required this.timepillarSide,
-    required this.timepillarState,
+    required this.measures,
   }) : super(column, cardPosition, key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ts = timepillarState;
     final activity = activityOccasion.activity;
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
@@ -34,10 +33,10 @@ class ActivityTimepillarCard extends TimepillarCard {
 
     final endTime = activityOccasion.end;
     final startTime = activityOccasion.start;
-    final dotHeight = cardPosition.dots * ts.dotDistance;
+    final dotHeight = cardPosition.dots * measures.dotDistance;
 
     final right = TimepillarSide.right == timepillarSide;
-    final timepillarInterval = ts.timepillarInterval;
+    final timepillarInterval = measures.timepillarInterval;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.dotsInTimepillar != current.dotsInTimepillar ||
@@ -48,11 +47,11 @@ class ActivityTimepillarCard extends TimepillarCard {
           inactive: inactive,
           showCategoryColor: settings.showCategoryColor,
           category: activity.category,
-          zoom: ts.zoom,
+          zoom: measures.zoom,
         );
         return Positioned(
-          right: right ? null : column * ts.cardTotalWidth,
-          left: right ? column * ts.cardTotalWidth : null,
+          right: right ? null : column * measures.cardTotalWidth,
+          left: right ? column * measures.cardTotalWidth : null,
           top: cardPosition.top,
           child: Tts.fromSemantics(
             activity.semanticsProperties(context),
@@ -77,7 +76,7 @@ class ActivityTimepillarCard extends TimepillarCard {
                         (dotHeight > 0
                             ? (decoration.border?.dimensions.vertical ?? 0)
                             : 0),
-                    width: ts.cardWidth,
+                    width: measures.cardWidth,
                     category: activity.category,
                     showCategoryColor: settings.showCategoryColor,
                   ),
@@ -99,17 +98,19 @@ class ActivityTimepillarCard extends TimepillarCard {
                   },
                   child: Container(
                     margin: right
-                        ? EdgeInsets.only(left: ts.dotSize + ts.hourPadding)
-                        : EdgeInsets.only(right: ts.dotSize + ts.hourPadding),
-                    width: ts.cardWidth,
+                        ? EdgeInsets.only(
+                            left: measures.dotSize + measures.hourPadding)
+                        : EdgeInsets.only(
+                            right: measures.dotSize + measures.hourPadding),
+                    width: measures.cardWidth,
                     decoration: decoration,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        minHeight: ts.activityCardMinHeight,
+                        minHeight: measures.activityCardMinHeight,
                         maxHeight: cardPosition.height,
                       ),
                       child: Padding(
-                        padding: ts.cardPadding,
+                        padding: measures.cardPadding,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -120,17 +121,17 @@ class ActivityTimepillarCard extends TimepillarCard {
                               ),
                             if (hasImage || signedOff || past)
                               Padding(
-                                padding:
-                                    EdgeInsets.only(top: ts.cardPadding.top),
+                                padding: EdgeInsets.only(
+                                    top: measures.cardPadding.top),
                                 child: SizedBox(
                                   height: cardPosition.height -
                                       textHeight -
-                                      ts.cardPadding.vertical -
-                                      ts.cardPadding.top,
+                                      measures.cardPadding.vertical -
+                                      measures.cardPadding.top,
                                   child: EventImage.fromEventOccasion(
                                     eventOccasion: activityOccasion,
-                                    crossPadding: ts.cardPadding,
-                                    checkPadding: ts.cardPadding * 2,
+                                    crossPadding: measures.cardPadding,
+                                    checkPadding: measures.cardPadding * 2,
                                   ),
                                 ),
                               )

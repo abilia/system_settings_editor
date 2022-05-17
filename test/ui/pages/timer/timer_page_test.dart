@@ -105,6 +105,9 @@ void main() {
             ),
             BlocProvider<UserFileCubit>.value(value: mockUserFileCubit),
             BlocProvider<TimerAlarmBloc>.value(value: mockTimerAlarmBloc),
+            BlocProvider<TimepillarCubit>(
+              create: (context) => FakeTimepillarCubit(),
+            ),
             BlocProvider<SettingsCubit>(
               create: (context) => SettingsCubit(
                 settingsDb: FakeSettingsDb(),

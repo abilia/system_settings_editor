@@ -12,4 +12,5 @@ export 'generic_db.dart';
 export 'license_db.dart';
 export 'timer_db.dart';
 export 'device_db.dart';
+export 'calendar_db.dart';
 export 'voice_db.dart';

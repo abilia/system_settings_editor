@@ -5,13 +5,13 @@ import 'package:seagull/utils/all.dart';
 class Timeline extends StatelessWidget {
   final double width;
   final double offset;
-  final TimepillarState timepillarState;
+  final TimepillarMeasures measures;
   final DateTime now;
   const Timeline({
     Key? key,
     required this.now,
     required this.width,
-    required this.timepillarState,
+    required this.measures,
     this.offset = 0,
   }) : super(key: key);
 
@@ -20,11 +20,11 @@ class Timeline extends StatelessWidget {
         duration: transitionDuration,
         top: timeToMidDotPixelDistance(
               now: now,
-              dotDistance: timepillarState.dotDistance,
-              dotSize: timepillarState.dotSize,
+              dotDistance: measures.dotDistance,
+              dotSize: measures.dotSize,
             ) -
             offset +
-            timepillarState.topPadding -
+            measures.topPadding -
             layout.timePillar.timeLineHeight / 2,
         child: Container(
           width: width,

@@ -1,139 +1,145 @@
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
-class ChecklistView extends StatefulWidget {
+class ChecklistView extends StatelessWidget {
   final Checklist checklist;
   final DateTime? day;
-  final Function(Question)? onTap, onTapEdit, onTapDelete;
-  final Function(Question, SortableReorderDirection)? onTapReorder;
+  final Function(Question)? onTap;
   final EdgeInsetsGeometry padding;
-  final bool preview, hasToolbar;
+  final bool preview;
 
   const ChecklistView(
     this.checklist, {
     this.day,
     this.onTap,
     this.padding = EdgeInsets.zero,
-    this.preview = false,
     Key? key,
-  })  : hasToolbar = false,
-        onTapEdit = null,
-        onTapDelete = null,
-        onTapReorder = null,
+  })  : preview = day == null,
         super(key: key);
-
-  const ChecklistView.withToolbar(
-    this.checklist, {
-    this.day,
-    required this.onTapEdit,
-    required this.onTapDelete,
-    required this.onTapReorder,
-    this.padding = EdgeInsets.zero,
-    this.preview = false,
-    Key? key,
-  })  : hasToolbar = true,
-        onTap = null,
-        assert(onTapEdit != null && onTapDelete != null && onTapReorder != null,
-            'All callbacks must be non null'),
-        super(key: key);
-
-  @override
-  _ChecklistViewState createState() => _ChecklistViewState();
-}
-
-class _ChecklistViewState extends State<ChecklistView> {
-  late final ScrollController _controller;
-  int? selectedQuestion;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final _controller = ScrollController();
     return ScrollArrows.vertical(
       controller: _controller,
-      child: ListView.builder(
+      child: ListView.separated(
         controller: _controller,
-        padding: widget.padding,
-        itemCount: widget.checklist.questions.length,
+        padding: padding,
+        itemCount: checklist.questions.length,
         itemBuilder: (context, i) {
-          final question = widget.checklist.questions[i];
-          final day = widget.day;
-          return Stack(
-            children: [
-              QuestionView(
-                question,
-                inactive: widget.preview,
-                signedOff:
-                    day != null && widget.checklist.isSignedOff(question, day),
-                onTap: widget.onTap != null
-                    ? () => widget.onTap?.call(question)
-                    : widget.hasToolbar
-                        ? () => setState(() {
-                              selectedQuestion =
-                                  selectedQuestion == i ? null : i;
-                            })
-                        : null,
-              ),
-              if (widget.hasToolbar && selectedQuestion == i)
-                Positioned.fill(
-                  child: SortableToolbar(
-                    disableUp: i == 0,
-                    disableDown: i == widget.checklist.questions.length - 1,
-                    margin: layout.checkList.questionViewPadding,
-                    onTapEdit: () {
-                      _deselectQuestion();
-                      widget.onTapEdit?.call(question);
-                    },
-                    onTapDelete: () {
-                      _deselectQuestion();
-                      widget.onTapDelete?.call(question);
-                    },
-                    onTapReorder: (direction) {
-                      widget.onTapReorder?.call(question, direction);
-                      final selectedIndex = selectedQuestion;
-
-                      if (widget.onTapReorder != null &&
-                          selectedIndex != null) {
-                        final newSelectedIndex =
-                            direction == SortableReorderDirection.up
-                                ? selectedIndex - 1
-                                : selectedIndex + 1;
-                        if (newSelectedIndex >= 0 &&
-                            newSelectedIndex <
-                                widget.checklist.questions.length) {
-                          selectedQuestion = newSelectedIndex;
-                        }
-                      }
-                    },
-                  ),
-                ),
-            ],
+          final day = this.day;
+          final question = checklist.questions[i];
+          return QuestionView(
+            question,
+            onTap: onTap,
+            signedOff: day != null && checklist.isSignedOff(question, day),
+            inactive: preview,
           );
         },
+        separatorBuilder: (_, __) => SizedBox(
+          height: layout.formPadding.largeVerticalItemDistance,
+        ),
       ),
     );
   }
+}
 
-  void _deselectQuestion() {
-    setState(() => selectedQuestion = null);
+class EditChecklistView extends StatelessWidget {
+  const EditChecklistView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _controller = ScrollController();
+    return ScrollArrows.vertical(
+      controller: _controller,
+      child: BlocSelector<EditChecklistCubit, EditChecklistState, Checklist>(
+        selector: (state) => state.checklist,
+        builder: (context, checklist) => ListView.separated(
+          controller: _controller,
+          padding: layout.checklist.listPadding,
+          itemCount: checklist.questions.length,
+          itemBuilder: (context, i) => EditQuestionView(checklist.questions[i]),
+          separatorBuilder: (_, __) => SizedBox(
+            height: layout.formPadding.largeVerticalItemDistance,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditQuestionView extends StatelessWidget {
+  final Question question;
+
+  const EditQuestionView(
+    this.question, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditChecklistCubit, EditChecklistState>(
+      builder: (context, state) {
+        final selected = state.selected == question;
+        return Stack(
+          children: [
+            QuestionView(
+              question,
+              onTap: context.read<EditChecklistCubit>().select,
+              selected: selected,
+              inactive: true,
+            ),
+            if (selected)
+              Positioned.fill(
+                child: SortableToolbar(
+                  disableUp: state.disableUp,
+                  disableDown: state.disableDown,
+                  onTapEdit: () => _editQuestion(question, context),
+                  onTapDelete: context.read<EditChecklistCubit>().delete,
+                  onTapReorder: context.read<EditChecklistCubit>().reorder,
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editQuestion(
+    final Question oldQuestion,
+    BuildContext context,
+  ) async {
+    final authProviders = copiedAuthProviders(context);
+    final result = await Navigator.of(context).push<ImageAndName>(
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: authProviders,
+          child: EditQuestionPage(
+            question: oldQuestion,
+          ),
+        ),
+      ),
+    );
+
+    if (result != null) {
+      context.read<EditChecklistCubit>().edit(result);
+    }
   }
 }
 
 class QuestionView extends StatelessWidget {
   final Question question;
-  final bool signedOff;
-  final GestureTapCallback? onTap;
-  final bool inactive;
+  final void Function(Question)? onTap;
+  final bool signedOff, inactive, selected;
 
   const QuestionView(
     this.question, {
     this.onTap,
     this.signedOff = false,
     this.inactive = false,
+    this.selected = false,
     Key? key,
   }) : super(key: key);
 
@@ -151,105 +157,95 @@ class QuestionView extends StatelessWidget {
         ),
       ),
     );
+    final onTap = this.onTap;
 
     return Tts.fromSemantics(
-      SemanticsProperties(
-        checked: question.checked,
-        label: question.name,
-      ),
+      SemanticsProperties(checked: question.checked, label: question.name),
       child: AnimatedTheme(
         data: signedOff ? selectedTheme : theme,
         duration: duration,
         child: Builder(
-          builder: (context) => Padding(
-            padding: layout.checkList.questionViewPadding,
-            child: Material(
-              type: MaterialType.transparency,
+          builder: (context) => Material(
+            type: MaterialType.transparency,
+            borderRadius: borderRadius,
+            child: InkWell(
               borderRadius: borderRadius,
-              child: InkWell(
-                borderRadius: borderRadius,
-                onTap: onTap,
-                child: AnimatedContainer(
-                  constraints: BoxConstraints(
-                      minHeight: layout.checkList.questionViewHeight),
-                  duration: duration,
-                  decoration: signedOff
-                      ? boxDecoration.copyWith(
-                          border: Border.all(style: BorderStyle.none))
-                      : boxDecoration,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    textBaseline: TextBaseline.ideographic,
-                    children: [
-                      if (question.hasImage)
-                        InkWell(
-                          borderRadius: borderRadius,
-                          onTap: () => _showImage(
-                            question.fileId,
-                            question.image,
-                            context,
-                          ),
-                          child: Padding(
-                            padding: layout.checkList.questionImagePadding,
-                            child: AnimatedOpacity(
-                              duration: duration,
-                              opacity: signedOff ? 0.5 : 1.0,
-                              child: FadeInCalendarImage(
-                                key: TestKey.checklistQuestionImageKey,
-                                imageFile: AbiliaFile.from(
-                                  id: question.fileId,
-                                  path: question.image,
-                                ),
-                                width: layout.checkList.questionImageSize,
-                                height: layout.checkList.questionImageSize,
-                                fit: BoxFit.contain,
+              onTap: onTap != null ? () => onTap(question) : null,
+              child: AnimatedContainer(
+                constraints: BoxConstraints(
+                    minHeight: layout.checklist.question.viewHeight),
+                duration: duration,
+                decoration: signedOff
+                    ? boxDecoration.copyWith(
+                        border: Border.all(style: BorderStyle.none))
+                    : selected
+                        ? greySelectedBoxDecoration
+                        : boxDecoration,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  textBaseline: TextBaseline.ideographic,
+                  children: [
+                    if (question.hasImage)
+                      InkWell(
+                        borderRadius: borderRadius,
+                        onTap: () => _showImage(
+                          question.fileId,
+                          question.image,
+                          context,
+                        ),
+                        child: Padding(
+                          padding: layout.checklist.question.imagePadding,
+                          child: AnimatedOpacity(
+                            duration: duration,
+                            opacity: signedOff ? 0.5 : 1.0,
+                            child: FadeInCalendarImage(
+                              imageFile: AbiliaFile.from(
+                                id: question.fileId,
+                                path: question.image,
                               ),
+                              width: layout.checklist.question.imageSize,
+                              height: layout.checklist.question.imageSize,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                      if (question.hasTitle)
-                        Expanded(
-                          child: Padding(
-                            padding: layout.checkList.questionTitlePadding,
-                            child: Text(
-                              question.name,
-                              overflow: TextOverflow.fade,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(height: 1.0),
+                      ),
+                    if (question.hasTitle)
+                      Expanded(
+                        child: Padding(
+                          padding: layout.checklist.question.titlePadding,
+                          child: Text(question.name,
+                              style: layout.checklist.question.textStyle),
+                        ),
+                      ),
+                    if (!inactive)
+                      IconTheme(
+                        data: Theme.of(context)
+                            .iconTheme
+                            .copyWith(size: layout.icon.small),
+                        child: Padding(
+                          padding: layout.checklist.question.iconPadding,
+                          child: AnimatedCrossFade(
+                            firstChild: Icon(
+                              AbiliaIcons.checkboxSelected,
+                              color: inactive
+                                  ? AbiliaColors.green40
+                                  : AbiliaColors.green,
                             ),
+                            secondChild: Icon(
+                              AbiliaIcons.checkboxUnselected,
+                              color: inactive
+                                  ? AbiliaColors.white140
+                                  : AbiliaColors.black,
+                            ),
+                            crossFadeState: signedOff
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            duration: duration,
                           ),
                         ),
-                      if (!inactive)
-                        IconTheme(
-                          data: Theme.of(context)
-                              .iconTheme
-                              .copyWith(size: layout.icon.small),
-                          child: Padding(
-                            padding: layout.checkList.questionIconPadding,
-                            child: AnimatedCrossFade(
-                              firstChild: Icon(
-                                AbiliaIcons.checkboxSelected,
-                                color: inactive
-                                    ? AbiliaColors.green40
-                                    : AbiliaColors.green,
-                              ),
-                              secondChild: Icon(
-                                AbiliaIcons.checkboxUnselected,
-                                color: inactive
-                                    ? AbiliaColors.white140
-                                    : AbiliaColors.black,
-                              ),
-                              crossFadeState: signedOff
-                                  ? CrossFadeState.showFirst
-                                  : CrossFadeState.showSecond,
-                              duration: duration,
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
+                      )
+                  ],
                 ),
               ),
             ),
