@@ -1,7 +1,5 @@
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/day_parts.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/datetime.dart';
 
 class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MenuAppBar({Key? key}) : super(key: key);
@@ -13,29 +11,20 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
-        buildWhen: (previous, current) => previous.day != current.day,
-        builder: (context, time) =>
-            BlocBuilder<TimepillarCubit, TimepillarState>(
-          builder: (context, timePillarState) {
-            bool currentNight = timePillarState.showNightCalendar &&
-                time.dayPart(memoSettingsState.dayParts) == DayPart.night;
-            return CalendarAppBar(
-              day: time,
-              calendarDayColor: memoSettingsState.calendarDayColor,
-              rows: AppBarTitleRows.day(
-                displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-                displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-                displayDate: memoSettingsState.activityDisplayDate,
-                currentTime: time,
-                day: time,
-                dayParts: memoSettingsState.dayParts,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-                translator: Translator.of(context).translate,
-                currentNight: currentNight,
-              ),
-              showClock: memoSettingsState.activityDisplayClock,
-            );
-          },
+        builder: (context, time) => CalendarAppBar(
+          day: time,
+          calendarDayColor: memoSettingsState.calendarDayColor,
+          rows: AppBarTitleRows.day(
+            displayWeekDay: memoSettingsState.activityDisplayWeekDay,
+            displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
+            displayDate: memoSettingsState.activityDisplayDate,
+            currentTime: time,
+            day: time,
+            dayParts: memoSettingsState.dayParts,
+            langCode: Localizations.localeOf(context).toLanguageTag(),
+            translator: Translator.of(context).translate,
+          ),
+          showClock: memoSettingsState.activityDisplayClock,
         ),
       ),
     );
