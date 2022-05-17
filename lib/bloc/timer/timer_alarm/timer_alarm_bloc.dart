@@ -51,6 +51,7 @@ class TimerAlarmBloc extends Bloc<TimerAlarmEvent, TimerAlarmState> {
           List.from(state.timers)
             ..remove(first)
             ..add(first.toPast()),
+          first,
         ),
       );
     }
