@@ -16,8 +16,6 @@ class EventImage extends StatelessWidget {
   final BoxFit fit;
   final EdgeInsets? crossPadding;
   final EdgeInsets? checkPadding;
-  final double? crossOverStrokeWidth;
-  final Color? crossOverColor;
 
   static const duration = Duration(milliseconds: 400);
 
@@ -28,8 +26,6 @@ class EventImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.crossPadding,
     this.checkPadding,
-    this.crossOverStrokeWidth,
-    this.crossOverColor,
     Key? key,
   }) : super(key: key);
 
@@ -59,8 +55,6 @@ class EventImage extends StatelessWidget {
               fit: fit,
               crossPadding: crossPadding,
               checkPadding: crossPadding,
-              crossOverStrokeWidth: crossOverStrokeWidth,
-              crossOverColor: crossOverColor,
             );
 
   @override
@@ -88,21 +82,18 @@ class EventImage extends StatelessWidget {
               ),
             ),
           ),
+        if (past)
+          CrossOver(
+            style: CrossOverStyle.darkSecondary,
+            padding:
+                crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
+          ),
         if (signedOff)
           Padding(
             padding:
                 checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
             child: const CheckMark(),
-          )
-        else if (past)
-          Padding(
-            padding:
-                crossPadding ?? layout.eventImageLayout.fallbackCrossPadding,
-            child: CrossOver(
-              strokeWidth: crossOverStrokeWidth,
-              color: crossOverColor,
-            ),
-          )
+          ),
       ],
     );
   }
@@ -427,6 +418,7 @@ class FadeInNetworkImage extends StatelessWidget {
               width: width,
               placeholder: MemoryImage(kTransparentImage),
               imageErrorBuilder: (_, __, ___) => CrossOver(
+                style: CrossOverStyle.darkSecondary,
                 fallbackHeight: height,
                 fallbackWidth: width,
               ),
