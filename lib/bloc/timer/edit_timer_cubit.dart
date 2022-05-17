@@ -43,7 +43,7 @@ class EditTimerCubit extends Cubit<EditTimerState> {
 
   void updateName(String text) => emit(
         state.copyWith(
-          name: text,
+          name: text.trim(),
           autoSetNameToDuration: false,
         ),
       );

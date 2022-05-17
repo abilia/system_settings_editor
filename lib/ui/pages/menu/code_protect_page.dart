@@ -65,30 +65,27 @@ class _CodeProtectPageState extends State<CodeProtectPage> {
         title: translate.enterCode,
         iconData: AbiliaIcons.unlock,
       ),
-      body: Padding(
-        padding: layout.templates.l4,
-        child: Column(
-          children: [
-            PinCodeWidget(
-              controller: controller,
-              onEditingComplete: () {
-                Navigator.of(context).pop(true);
-              },
+      body: Column(
+        children: [
+          PinCodeWidget(
+            controller: controller,
+            onEditingComplete: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+          SizedBox(height: layout.formPadding.groupBottomDistance),
+          Tts(
+            child: Text(
+              '${translate.enterYourCodeToAccess} ${widget.name}',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  ?.copyWith(color: AbiliaColors.black60),
             ),
-            SizedBox(height: layout.formPadding.groupBottomDistance),
-            Tts(
-              child: Text(
-                '${translate.enterYourCodeToAccess} ${widget.name}',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.copyWith(color: AbiliaColors.black60),
-              ),
-            ),
-            const Spacer(),
-            const BottomNavigation(backNavigationWidget: PreviousButton())
-          ],
-        ),
+          ),
+          const Spacer(),
+          const BottomNavigation(backNavigationWidget: PreviousButton())
+        ],
       ),
     );
   }

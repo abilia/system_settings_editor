@@ -41,6 +41,7 @@ class Layout {
   final LibraryPageLayout libraryPage;
   final OngoingTabLayout ongoingFullscreen;
   final DataItemLayout dataItem;
+  final ListDataItemLayout listDataItem;
   final MyPhotosLayout myPhotos;
   final ActivityPageLayout activityPage;
   final ChecklistLayout checklist;
@@ -107,6 +108,7 @@ class Layout {
     this.libraryPage = const LibraryPageLayout(),
     this.ongoingFullscreen = const OngoingTabLayout(),
     this.dataItem = const DataItemLayout(),
+    this.listDataItem = const ListDataItemLayout(),
     this.myPhotos = const MyPhotosLayout(),
     this.activityPage = const ActivityPageLayout(),
     this.checklist = const ChecklistLayout(),
@@ -355,7 +357,8 @@ class ClockLayout {
 }
 
 class FormPaddingLayout {
-  final double verticalItemDistance,
+  final double smallVerticalItemDistance,
+      verticalItemDistance,
       largeVerticalItemDistance,
       groupBottomDistance,
       groupTopDistance,
@@ -366,6 +369,7 @@ class FormPaddingLayout {
       selectorDistance;
 
   const FormPaddingLayout({
+    this.smallVerticalItemDistance = 8,
     this.verticalItemDistance = 8,
     this.largeVerticalItemDistance = 12,
     this.groupBottomDistance = 16,
@@ -508,7 +512,8 @@ class EventCardLayout {
       borderWidth,
       currentBorderWidth,
       timerWheelSize,
-      privateIconSize;
+      privateIconSize,
+      titleSubtitleSpacing;
 
   final EdgeInsets imagePadding;
   final EdgeInsets crossPadding;
@@ -530,12 +535,12 @@ class EventCardLayout {
     this.timerWheelSize = 44,
     this.crossPadding = const EdgeInsets.all(4),
     this.imagePadding = const EdgeInsets.only(left: 4),
-    this.titlePadding =
-        const EdgeInsets.only(left: 8, top: 6, right: 8, bottom: 2),
+    this.titlePadding = const EdgeInsets.only(left: 8, right: 8),
     this.statusesPadding = const EdgeInsets.only(right: 8, bottom: 3),
-    this.timerWheelPadding = const EdgeInsets.only(right: 8),
+    this.timerWheelPadding = const EdgeInsets.only(right: 5),
     this.cardIconPadding = const EdgeInsets.only(right: 4),
     this.privateIconSize = 24,
+    this.titleSubtitleSpacing = 6,
   });
 }
 
@@ -793,6 +798,18 @@ class _DataItemPictureLayout {
   });
 }
 
+/// Called DataItem (list) in Figma
+class ListDataItemLayout {
+  final EdgeInsets folderPadding, imagePadding;
+  final double iconSize;
+
+  const ListDataItemLayout({
+    this.folderPadding = const EdgeInsets.symmetric(horizontal: 6),
+    this.imagePadding = const EdgeInsets.only(left: 4, right: 8),
+    this.iconSize = 24,
+  });
+}
+
 class ActivityPageLayout {
   final double titleFontSize,
       titleLineHeight,
@@ -985,7 +1002,7 @@ class PickFieldLayout {
     this.height = 56,
     this.leadingSize = const Size(48, 48),
     this.padding = const EdgeInsets.only(left: 12, right: 12),
-    this.imagePadding = const EdgeInsets.only(left: 4, right: 12),
+    this.imagePadding = const EdgeInsets.only(right: 8),
     this.leadingPadding = const EdgeInsets.only(right: 12),
     this.verticalDistanceText = 8,
   });
@@ -1013,7 +1030,20 @@ class ListFolderLayout {
 }
 
 class LayoutTemplates {
-  final EdgeInsets m1, m2, m3, m4, m5, s1, s2, s3, s4, l2, l4, bottomNavigation;
+  final EdgeInsets m1,
+      m2,
+      m3,
+      m4,
+      m5,
+      s1,
+      s2,
+      s3,
+      s4,
+      l1,
+      l2,
+      l3,
+      l5,
+      bottomNavigation;
 
   const LayoutTemplates({
     this.s1 = const EdgeInsets.all(12),
@@ -1021,13 +1051,15 @@ class LayoutTemplates {
     this.s3 = const EdgeInsets.all(4),
     this.s4 = const EdgeInsets.symmetric(horizontal: 12),
     this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 24),
+    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 40),
     this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
     this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
     this.m4 = const EdgeInsets.symmetric(horizontal: 24),
     this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
+    this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
     this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
-    this.l4 = const EdgeInsets.symmetric(vertical: 64),
+    this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
+    this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
   });
 }
 
@@ -1277,11 +1309,12 @@ class ActivityAlarmPreviewLayout {
 }
 
 class LogoutLayout {
-  final double profilePictureSize, profileDistance;
+  final double profilePictureSize, profileDistance, topDistance;
 
   const LogoutLayout({
     this.profilePictureSize = 84,
     this.profileDistance = 24,
+    this.topDistance = 64,
   });
 }
 

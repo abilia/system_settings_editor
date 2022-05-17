@@ -33,6 +33,14 @@ class PickField extends StatelessWidget {
     final trailing = this.trailing;
     final trailingText = this.trailingText;
     final secondaryText = this.secondaryText;
+    final decoration = errorState
+        ? whiteErrorBoxDecoration
+        : onTap == null
+            ? disabledBoxDecoration
+            : selected
+                ? greySelectedBoxDecoration
+                : whiteBoxDecoration;
+
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data?.isEmpty == true ? semanticsLabel : text.data,
@@ -45,13 +53,7 @@ class PickField extends StatelessWidget {
           borderRadius: borderRadius,
           child: Ink(
             height: layout.pickField.height,
-            decoration: errorState
-                ? whiteErrorBoxDecoration
-                : onTap == null
-                    ? disabledBoxDecoration
-                    : selected
-                        ? greySelectedBoxDecoration
-                        : whiteBoxDecoration,
+            decoration: decoration,
             padding: padding ?? layout.pickField.padding,
             child: Row(
               children: <Widget>[

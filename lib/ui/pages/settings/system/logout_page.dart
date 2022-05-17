@@ -18,9 +18,10 @@ class LogoutPage extends StatelessWidget {
         label: Config.isMP ? Translator.of(context).translate.system : null,
         iconData: AbiliaIcons.powerOffOn,
       ),
-      body: Padding(
-        padding: layout.templates.l4,
-        child: const Center(child: ProfilePictureNameAndEmail()),
+      body: Center(
+        child: const ProfilePictureNameAndEmail().pad(
+          EdgeInsets.only(top: layout.logout.topDistance),
+        ),
       ),
       bottomNavigationBar: const BottomNavigation(
         backNavigationWidget: CancelButton(),

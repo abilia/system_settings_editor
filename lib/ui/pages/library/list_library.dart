@@ -47,7 +47,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                         padding: m1WithZeroBottom,
                         itemCount: content.length,
                         separatorBuilder: (context, index) => SizedBox(
-                          height: layout.formPadding.verticalItemDistance,
+                          height: layout.formPadding.smallVerticalItemDistance,
                         ),
                         itemBuilder: (BuildContext context, int index) {
                           final Sortable<T> sortable = content[index];

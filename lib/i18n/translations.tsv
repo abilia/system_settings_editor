@@ -131,7 +131,8 @@ editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivi
 enterNameForBasicActivity	Enter name for basic activity						
 timeTo	to	till	til	tot	-	bis	til
 							
-### Timer related							
+### Timer related
+addTimer	Add Timer
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
