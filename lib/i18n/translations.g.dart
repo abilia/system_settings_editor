@@ -279,7 +279,7 @@ abstract class Translated {
 
   final String newTimer = 'New timer';
 
-  final String setDuration = 'Set duration';
+  final String selectDuration = 'Select duration';
 
   final String startTimer = 'Start timer';
 
@@ -1247,7 +1247,7 @@ class SV extends Translated {
   final String newTimer = 'Ny timer';
 
   @override
-  final String setDuration = 'Ange varaktighet';
+  final String selectDuration = 'Välj tidslängd';
 
   @override
   final String startTimer = 'Starta timer';
@@ -2445,7 +2445,7 @@ class DA extends Translated {
   final String newTimer = 'Ny timer';
 
   @override
-  final String setDuration = 'Indstille varighed';
+  final String selectDuration = 'Angiv varighed';
 
   @override
   final String startTimer = 'Start timeren';
@@ -3637,7 +3637,7 @@ class NL extends Translated {
   final String newTimer = 'Nieuwe timer';
 
   @override
-  final String setDuration = 'Duur instellen';
+  final String selectDuration = 'Duur selecteren';
 
   @override
   final String startTimer = 'Start timer';
@@ -4831,7 +4831,7 @@ class FI extends Translated {
   final String newTimer = 'Uusi ajastin';
 
   @override
-  final String setDuration = 'Aseta kesto';
+  final String selectDuration = 'Valitse kesto';
 
   @override
   final String startTimer = 'Käynnistysajastin';
@@ -6027,7 +6027,7 @@ class DE extends Translated {
   final String newTimer = 'Neuer Timer';
 
   @override
-  final String setDuration = 'Dauer einstellen';
+  final String selectDuration = 'Dauer auswählen';
 
   @override
   final String startTimer = 'Timer starten';
@@ -7223,7 +7223,7 @@ class NB extends Translated {
   final String newTimer = 'Ny timer';
 
   @override
-  final String setDuration = 'Angi varighet';
+  final String selectDuration = 'Angi varighet';
 
   @override
   final String startTimer = 'Start timer';

@@ -16,7 +16,7 @@ class EditTimerDurationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.setTime,
+        title: Translator.of(context).translate.selectDuration,
         iconData: AbiliaIcons.clock,
       ),
       body: _TimerInputContent(initialDuration: initialDuration),
@@ -76,10 +76,10 @@ class _TimerInputContentState extends State<_TimerInputContent> {
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.all(layout.formPadding.groupHorizontalDistance),
+                padding: EdgeInsets.all(layout.editTimer.inputTimePadding),
                 child: DefaultTextStyle(
-                  style: (theme.textTheme.headline5 ?? headline5),
+                  style: ((theme.textTheme.headline5 ?? headline5)
+                      .copyWith(height: 1)),
                   child: const Text(':'),
                 ),
               ),
@@ -117,7 +117,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
         const Spacer(),
         BottomNavigation(
           backNavigationWidget: const CancelButton(),
-          forwardNavigationWidget: SaveButton(
+          forwardNavigationWidget: OkButton(
             onPressed: () => onSave(
               context,
               Duration(
