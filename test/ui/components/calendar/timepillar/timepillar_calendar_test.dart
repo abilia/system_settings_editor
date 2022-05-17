@@ -1081,6 +1081,10 @@ void main() {
         // Morning starts at 6. Activity should be visible here.
         mockTicker.add(DateTime(2020, 12, 01, 08, 01));
         await tester.pumpAndSettle();
+        // The timer alarm page should have been triggered here so first close that
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+        await tester.tap(find.byType(CloseButton));
+        await tester.pumpAndSettle();
         expect(find.byType(TimerTimepillardCard), findsOneWidget);
 
         // Forenoon interval starts at 10. Acitivity should not be visible here
