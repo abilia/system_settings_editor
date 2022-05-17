@@ -13,6 +13,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
+        buildWhen: (previous, current) => previous.day != current.day,
         builder: (context, time) =>
             BlocBuilder<TimepillarCubit, TimepillarState>(
           builder: (context, timePillarState) {
