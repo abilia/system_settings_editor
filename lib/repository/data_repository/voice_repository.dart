@@ -53,6 +53,7 @@ class VoiceRepository extends Repository {
       await Future.wait(dls);
       return true;
     } catch (ex) {
+      _log.warning('Download failed: ${ex.toString()}');
       return false;
     }
   }
