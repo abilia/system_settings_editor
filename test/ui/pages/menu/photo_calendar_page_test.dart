@@ -8,6 +8,8 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 
+import 'package:intl/intl.dart';
+
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
@@ -20,6 +22,8 @@ void main() {
       const file2 = 'file2';
       const file3 = 'file3';
       const file4 = 'file4';
+
+      final time = DateTime(2021, 04, 17, 09, 20);
 
       setUp(() async {
         setupPermissions();
@@ -88,7 +92,7 @@ void main() {
 
         GetItInitializer()
           ..sharedPreferences = await FakeSharedPreferences.getInstance()
-          ..ticker = Ticker.fake(initialTime: DateTime(2021, 04, 17, 09, 20))
+          ..ticker = Ticker.fake(initialTime: time)
           ..client = Fakes.client()
           ..database = FakeDatabase()
           ..genericDb = FakeGenericDb()
@@ -139,6 +143,15 @@ void main() {
             as PhotoCalendarImage;
         expect(image3.fileId, isIn([file3, file4]));
         expect(image3.fileId, isNot(image2.fileId));
+      });
+
+      testWidgets(
+          'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screen saver',
+          (tester) async {
+        final locale = Intl.getCurrentLocale();
+        await tester.goToPhotoCalendarPage(pump: true);
+        expect(find.text(DateFormat.EEEE(locale).format(time) + ', morning'),
+            findsOneWidget);
       });
     },
     skip: !Config.isMP,

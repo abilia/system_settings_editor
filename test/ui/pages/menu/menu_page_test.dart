@@ -13,6 +13,7 @@ import 'package:seagull/ui/all.dart';
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
 import '../../../test_helpers/app_pumper.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   late MockSortableDb mockSortableDb;
@@ -135,5 +136,15 @@ void main() {
       // Should probaly also check that the image is saved in UserFileCubit but
       // then we would probably need to mock the whole Cubit
     });
+  });
+
+  testWidgets(
+      'BUG SGC-1655 - Wrong day in header in Menu/photo calendar/screen saver',
+      (tester) async {
+    final locale = Intl.getCurrentLocale();
+    await tester.pumpApp();
+    await tester.tap(find.byType(MenuButton));
+    await tester.pumpAndSettle();
+    expect(find.text(DateFormat.EEEE(locale).format(time)), findsOneWidget);
   });
 }

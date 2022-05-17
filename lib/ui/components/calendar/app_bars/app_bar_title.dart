@@ -65,7 +65,7 @@ class AppBarTitleRows {
     bool displayPartOfDay = true,
     bool displayDate = true,
     bool compactDay = false,
-    bool currentNight = true,
+    bool currentNight = false,
     required DateTime currentTime,
     required DateTime day,
     required DayParts dayParts,
