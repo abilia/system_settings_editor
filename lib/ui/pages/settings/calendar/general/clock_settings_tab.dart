@@ -156,7 +156,7 @@ class PreviewTimePillar extends StatelessWidget {
                           width: measures.timePillarTotalWidth * 3,
                           measures: measures,
                           offset: hoursToPixels(
-                            interval.startTime.hour,
+                            interval.start.hour,
                             measures.dotDistance,
                           ),
                         ),

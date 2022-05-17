@@ -210,23 +210,22 @@ class CardPosition {
     required double minHeight,
     required bool hasSideDots,
   }) {
-    final interval = measures.timepillarInterval;
+    final interval = measures.interval;
     final minuteStartPosition =
         eventOccasion.start.roundToMinute(minutesPerDot, roundingMinute);
     final minuteEndPosition =
         eventOccasion.end.roundToMinute(minutesPerDot, roundingMinute);
-    final startsBeforeInterval =
-        minuteStartPosition.isBefore(interval.startTime);
-    final endsAfterInterval = minuteEndPosition.isAfter(interval.endTime);
+    final startsBeforeInterval = minuteStartPosition.isBefore(interval.start);
+    final endsAfterInterval = minuteEndPosition.isAfter(interval.end);
     final startTime =
-        startsBeforeInterval ? interval.startTime : eventOccasion.start;
+        startsBeforeInterval ? interval.start : eventOccasion.start;
     final topOffset = startsBeforeInterval
         ? 0.0
         : timeToPixels(minuteStartPosition.hour, minuteStartPosition.minute,
                 measures.dotDistance) -
             measures.topOffset(startTime);
 
-    final endTime = endsAfterInterval ? interval.endTime : eventOccasion.end;
+    final endTime = endsAfterInterval ? interval.end : eventOccasion.end;
     final dots = hasSideDots
         ? endTime.difference(startTime).inDots(minutesPerDot, roundingMinute)
         : 0;

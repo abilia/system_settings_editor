@@ -40,8 +40,26 @@ void main() {
 
   late StreamController<DateTime> timeTicker;
 
-  bool applyCrossOver() =>
-      (find.byType(CrossOver).evaluate().first.widget as CrossOver).applyCross;
+  bool appbarCrossOver() => (find
+          .descendant(
+            of: find.byType(CalendarAppBar),
+            matching: find.byType(CrossOver),
+          )
+          .evaluate()
+          .first
+          .widget as CrossOver)
+      .applyCross;
+
+  bool activityCardCrossOver() => (find
+          .descendant(
+            of: find.byType(ActivityCard),
+            matching: find.byType(CrossOver),
+            skipOffstage: false,
+          )
+          .evaluate()
+          .first
+          .widget as CrossOver)
+      .applyCross;
 
   setUp(() async {
     setupPermissions();
@@ -152,14 +170,14 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(applyCrossOver(), false);
+    expect(appbarCrossOver(), false);
     await tester.tap(nextDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(applyCrossOver(), false);
+    expect(appbarCrossOver(), false);
     await tester.tap(previousDayButtonFinder);
     await tester.tap(previousDayButtonFinder);
     await tester.pumpAndSettle();
-    expect(applyCrossOver(), true);
+    expect(appbarCrossOver(), true);
   });
 
   testWidgets('full day shows', (WidgetTester tester) async {
@@ -430,7 +448,7 @@ void main() {
 
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    expect(applyCrossOver(), true);
+    expect(activityCardCrossOver(), true);
   });
 
   testWidgets('signed off past activity shows CrossOver',
@@ -449,7 +467,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Assert
-    expect(applyCrossOver(), true);
+    expect(activityCardCrossOver(), true);
   });
 
   testWidgets('tts', (WidgetTester tester) async {

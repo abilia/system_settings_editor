@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
-
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/events/helper.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -19,70 +16,70 @@ class DayEventsCubit extends Cubit<EventsState> {
     required this.activitiesBloc,
     required this.dayPickerBloc,
     required this.timerAlarmBloc,
-  }) : super(activitiesBloc.state is ActivitiesLoaded
-            ? _mapToState(
-                (activitiesBloc.state as ActivitiesLoaded).activities,
-                timerAlarmBloc.state.timers,
-                dayPickerBloc.state.day,
-                dayPickerBloc.state.occasion,
-              )
-            : const EventsLoading()) {
+  }) : super(
+          activitiesBloc.state is ActivitiesLoaded
+              ? _mapToState(
+                  activitiesBloc.state.activities,
+                  timerAlarmBloc.state.timers,
+                  dayPickerBloc.state.day,
+                  dayPickerBloc.state.occasion,
+                )
+              : EventsLoading(
+                  dayPickerBloc.state.day,
+                  dayPickerBloc.state.occasion,
+                ),
+        ) {
     _activitiesSubscription = activitiesBloc.stream
-        .whereType<ActivitiesLoaded>()
-        .listen(_activitiesUpdated);
-    _dayPickerSubscription = dayPickerBloc.stream.listen(_dayUpdated);
-    _timerSubscription = timerAlarmBloc.stream.listen(_updateState);
+        .listen((state) => _updateState(activities: state.activities));
+    _dayPickerSubscription = dayPickerBloc.stream.listen(
+        ((state) => _updateState(day: state.day, occasion: state.occasion)));
+    _timerSubscription = timerAlarmBloc.stream
+        .listen((state) => _updateState(timers: state.timers));
   }
 
-  void _activitiesUpdated(final ActivitiesLoaded activityState) =>
-      _updateGivenActivities(activityState.activities);
-
-  void _updateState(_) {
-    final activityState = activitiesBloc.state;
-    _updateGivenActivities(
-        activityState is ActivitiesLoaded ? activityState.activities : []);
-  }
-
-  void _updateGivenActivities(final List<Activity> activities) => emit(
-        _mapToState(
-          activities,
-          timerAlarmBloc.state.timers,
-          dayPickerBloc.state.day,
-          dayPickerBloc.state.occasion,
-        ),
-      );
-
-  void _dayUpdated(final DayPickerState state) {
-    final activityState = activitiesBloc.state;
-    if (activityState is ActivitiesLoaded) {
+  void _updateState({
+    List<Activity>? activities,
+    List<TimerOccasion>? timers,
+    DateTime? day,
+    Occasion? occasion,
+  }) =>
       emit(
         _mapToState(
-          activityState.activities,
-          timerAlarmBloc.state.timers,
-          state.day,
-          state.occasion,
+          activities ?? activitiesBloc.state.activities,
+          timers ?? timerAlarmBloc.state.timers,
+          day ?? dayPickerBloc.state.day,
+          occasion ?? dayPickerBloc.state.occasion,
         ),
       );
-    }
-  }
 
   static EventsState _mapToState(
     final Iterable<Activity> activities,
     final Iterable<TimerOccasion> timers,
     final DateTime day,
     final Occasion occasion,
-  ) =>
-      mapToEventsState(
-        dayActivities: activities
-            .expand((activity) => activity.dayActivitiesForDay(day))
-            .toList(),
-        timerOccasions: timers
-            .where((timer) =>
-                timer.start.isAtSameDay(day) || timer.end.isAtSameDay(day))
-            .toList(),
-        occasion: occasion,
-        day: day,
-      );
+  ) {
+    final dayActivities = activities
+        .expand((activity) => activity.dayActivitiesForDay(day))
+        .removeAfterOccasion(occasion)
+        .toList();
+    final fullDayOccasion =
+        occasion == Occasion.past ? Occasion.past : Occasion.future;
+    return EventsState(
+      activities: dayActivities
+          .where((activityDay) => !activityDay.activity.fullDay)
+          .toList(),
+      timers: timers
+          .where((timer) =>
+              timer.start.isAtSameDay(day) || timer.end.isAtSameDay(day))
+          .toList(),
+      fullDayActivities: dayActivities
+          .where((activityDay) => activityDay.activity.fullDay)
+          .map((e) => ActivityOccasion(e.activity, day, fullDayOccasion))
+          .toList(),
+      day: day,
+      occasion: occasion,
+    );
+  }
 
   @override
   Future<void> close() async {

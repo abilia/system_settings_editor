@@ -16,7 +16,7 @@ class TimepillarState extends Equatable {
   });
 
   @override
-  List<Object> get props => [interval, events, calendarType];
+  List<Object> get props => [interval, events, calendarType, occasion];
 
   bool get isToday => occasion == Occasion.current;
 
@@ -24,21 +24,20 @@ class TimepillarState extends Equatable {
       .where(
         (a) =>
             a.start.inRangeWithInclusiveStart(
-              startDate: interval.startTime,
-              endDate: interval.endTime,
+              startDate: interval.start,
+              endDate: interval.end,
             ) ||
-            (a.start.isBefore(interval.startTime) &&
-                a.end.isAfter(interval.startTime)),
+            a.start.isBefore(interval.start) && a.end.isAfter(interval.start),
       )
       .toList();
 }
 
 class TimepillarMeasures extends Equatable {
   final double zoom;
-  final TimepillarInterval timepillarInterval;
+  final TimepillarInterval interval;
   final TimepillarLayout _layout = layout.timePillar;
 
-  TimepillarMeasures(this.timepillarInterval, this.zoom);
+  TimepillarMeasures(this.interval, this.zoom);
 
   // TimepillarCard
   late final double cardMinImageHeight = _layout.card.imageMinHeight * zoom;
@@ -72,27 +71,24 @@ class TimepillarMeasures extends Equatable {
   late final double timePillarWidth = _layout.width * zoom;
   late final double timePillarTotalWidth =
       (_layout.width + _layout.padding * 2) * zoom;
-  late final double timePillarHeight = (timepillarInterval.lengthInHours +
+  late final double timePillarHeight = (interval.lengthInHours +
           // include one extra hour for the last digit after the timepillar
           // (alternatively, adding the font height of the text would also work)
           1) *
       hourHeight;
   late final double topPadding = 2 * hourPadding;
   late final double hourLineWidth = _layout.hourLineWidth * zoom;
-  late final bool intervalSpansMidnight =
-      timepillarInterval.endTime.isDayAfter(timepillarInterval.startTime);
 
   double topOffset(DateTime hour) {
-    if (intervalSpansMidnight &&
-        hour.hour < timepillarInterval.startTime.hour) {
+    if (interval.spansMidnight && hour.hour < interval.start.hour) {
       return hoursToPixels(
-        timepillarInterval.startTime.hour - Duration.hoursPerDay,
+        interval.start.hour - Duration.hoursPerDay,
         dotDistance,
       );
     }
-    return hoursToPixels(timepillarInterval.startTime.hour, dotDistance);
+    return hoursToPixels(interval.start.hour, dotDistance);
   }
 
   @override
-  List<Object> get props => [timepillarInterval, zoom];
+  List<Object> get props => [interval, zoom];
 }

@@ -76,9 +76,11 @@ class TimepillarCubit extends Cubit<TimepillarState> {
       memoState,
       showNightCalendar,
     );
+    final occasion = interval.occasion(now);
     return TimepillarState(
       interval: interval,
       events: _generateEvents(
+        occasion,
         activities,
         timers,
         interval,
@@ -129,28 +131,28 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   }
 
   static List<Event> _generateEvents(
+    Occasion occasion,
     List<Activity> activities,
     List<TimerOccasion> timers,
     TimepillarInterval interval,
   ) {
-    final dayActivities = activities.where((a) => !a.fullDay).expand(
-          (activity) => activity.dayActivitiesForInterval(
-            interval.startTime,
-            interval.endTime,
-          ),
-        );
+    final dayActivities = activities
+        .where((a) => !a.fullDay)
+        .expand((activity) => activity.dayActivitiesForInterval(interval))
+        .removeAfterOccasion(occasion);
+
     final timerOccasions = timers.where(
       (timer) =>
           timer.start.inInclusiveRange(
-            startDate: interval.startTime,
-            endDate: interval.endTime,
+            startDate: interval.start,
+            endDate: interval.end,
           ) ||
           timer.end.inInclusiveRange(
-            startDate: interval.startTime,
-            endDate: interval.endTime,
+            startDate: interval.start,
+            endDate: interval.end,
           ),
     );
-    return {...dayActivities, ...timerOccasions}.toList();
+    return [...dayActivities, ...timerOccasions];
   }
 
   static DayCalendarType _getCalendarType(

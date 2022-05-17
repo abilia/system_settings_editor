@@ -3,10 +3,7 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
 
 class Agenda extends StatefulWidget {
-  static final topPadding = layout.agenda.topPadding,
-      bottomPadding = layout.agenda.bottomPadding;
-
-  final EventsLoaded eventState;
+  final EventsState eventState;
 
   const Agenda({
     Key? key,
@@ -30,7 +27,7 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
           .pastEvents(context.read<ClockBloc>().state)
           .isNotEmpty) {
         scrollController = ScrollController(
-          initialScrollOffset: -Agenda.topPadding,
+          initialScrollOffset: -layout.agenda.topPadding,
           keepScrollOffset: false,
         );
       }
@@ -72,10 +69,9 @@ class _AgendaState extends State<Agenda> with CalendarStateMixin {
                   child: AbiliaScrollBar(
                     controller: scrollController,
                     child: EventList(
-                      state: state,
                       scrollController: scrollController,
-                      bottomPadding: Agenda.bottomPadding,
-                      topPadding: Agenda.topPadding,
+                      bottomPadding: layout.agenda.bottomPadding,
+                      topPadding: layout.agenda.topPadding,
                     ),
                   ),
                 ),
@@ -97,13 +93,10 @@ class EventList extends StatelessWidget {
 
   EventList({
     Key? key,
-    required this.state,
     this.scrollController,
     required this.bottomPadding,
     required this.topPadding,
   }) : super(key: key);
-
-  final EventsLoaded state;
 
   final ScrollController? scrollController;
 
@@ -116,44 +109,46 @@ class EventList extends StatelessWidget {
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
       controller: sc,
-      child: BlocBuilder<ClockBloc, DateTime>(
-        builder: (context, now) {
-          final pastEvents = state.pastEvents(now);
-          final notPastEvents = state.notPastEvents(now);
-          final isTodayAndNoPast = state.isToday && pastEvents.isEmpty;
-          return CustomScrollView(
-            center: state.isToday ? center : null,
-            controller: sc,
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              if (state.events.isEmpty && state.fullDayActivities.isEmpty)
-                SliverNoActivities(key: center)
-              else ...[
-                if (!isTodayAndNoPast)
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: topPadding),
-                    sliver: SliverEventList(
-                      state.pastEvents(now),
-                      state.day,
-                      reversed: state.isToday,
-                      lastMargin: _lastPastPadding(
+      child: BlocBuilder<DayEventsCubit, EventsState>(
+        builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+          builder: (context, now) {
+            final pastEvents = state.pastEvents(now);
+            final notPastEvents = state.notPastEvents(now);
+            final isTodayAndNoPast = state.isToday && pastEvents.isEmpty;
+            return CustomScrollView(
+              center: state.isToday ? center : null,
+              controller: sc,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                if (state.events.isEmpty && state.fullDayActivities.isEmpty)
+                  SliverNoActivities(key: center)
+                else ...[
+                  if (!isTodayAndNoPast)
+                    SliverPadding(
+                      padding: EdgeInsets.only(top: topPadding),
+                      sliver: SliverEventList(
                         pastEvents,
-                        notPastEvents,
+                        state.day,
+                        reversed: state.isToday,
+                        lastMargin: _lastPastPadding(
+                          pastEvents,
+                          notPastEvents,
+                        ),
                       ),
                     ),
+                  SliverPadding(
+                    key: center,
+                    padding: EdgeInsets.only(
+                      top: isTodayAndNoPast ? topPadding : 0.0,
+                      bottom: bottomPadding,
+                    ),
+                    sliver: SliverEventList(notPastEvents, state.day),
                   ),
-                SliverPadding(
-                  key: center,
-                  padding: EdgeInsets.only(
-                    top: isTodayAndNoPast ? topPadding : 0.0,
-                    bottom: bottomPadding,
-                  ),
-                  sliver: SliverEventList(notPastEvents, state.day),
-                ),
+                ],
               ],
-            ],
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
