@@ -61,22 +61,31 @@ class ScreenSaverAppBar extends StatelessWidget {
         builder: (context, memoSettingsState) => Padding(
           padding: layout.screenSaver.titleBarPadding,
           child: BlocBuilder<ClockBloc, DateTime>(
-            builder: (state, time) => AppBarTitle(
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(color: AbiliaColors.white),
-              rows: AppBarTitleRows.day(
-                compactDay: true,
-                displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-                displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-                displayDate: memoSettingsState.activityDisplayDate,
-                currentTime: time,
-                day: time.onlyDays(),
-                dayParts: memoSettingsState.dayParts,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-                translator: Translator.of(context).translate,
-              ),
+            builder: (context, time) =>
+                BlocBuilder<TimepillarCubit, TimepillarState>(
+              builder: (context, timePillarState) {
+                bool currentNight = timePillarState.showNightCalendar &&
+                    time.dayPart(memoSettingsState.dayParts) == DayPart.night;
+                return AppBarTitle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      ?.copyWith(color: AbiliaColors.white),
+                  rows: AppBarTitleRows.day(
+                    compactDay: true,
+                    displayWeekDay: memoSettingsState.activityDisplayWeekDay,
+                    displayPartOfDay:
+                        memoSettingsState.activityDisplayDayPeriod,
+                    displayDate: memoSettingsState.activityDisplayDate,
+                    currentTime: time,
+                    day: time.onlyDays(),
+                    dayParts: memoSettingsState.dayParts,
+                    langCode: Localizations.localeOf(context).toLanguageTag(),
+                    translator: Translator.of(context).translate,
+                    currentNight: currentNight,
+                  ),
+                );
+              },
             ),
           ),
         ),
