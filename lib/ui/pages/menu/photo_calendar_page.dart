@@ -136,24 +136,25 @@ class PhotoCalendarAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) =>
       BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) =>
-            BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, time) => CalendarAppBar(
-            day: time.onlyDays(),
-            calendarDayColor: memoSettingsState.calendarDayColor,
-            rows: AppBarTitleRows.day(
-              displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-              displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-              displayDate: memoSettingsState.activityDisplayDate,
-              currentTime: time,
+        builder: (context, memoSettingsState) {
+          return BlocBuilder<ClockBloc, DateTime>(
+            builder: (context, time) => CalendarAppBar(
               day: time.onlyDays(),
-              dayParts: memoSettingsState.dayParts,
-              langCode: Localizations.localeOf(context).toLanguageTag(),
-              translator: Translator.of(context).translate,
-              compactDay: true,
+              calendarDayColor: memoSettingsState.calendarDayColor,
+              rows: AppBarTitleRows.day(
+                displayWeekDay: memoSettingsState.activityDisplayWeekDay,
+                displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
+                displayDate: memoSettingsState.activityDisplayDate,
+                currentTime: time,
+                day: time.onlyDays(),
+                dayParts: memoSettingsState.dayParts,
+                langCode: Localizations.localeOf(context).toLanguageTag(),
+                translator: Translator.of(context).translate,
+                compactDay: true,
+              ),
+              showClock: false,
             ),
-            showClock: false,
-          ),
-        ),
+          );
+        },
       );
 }

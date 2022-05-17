@@ -61,7 +61,7 @@ class ScreenSaverAppBar extends StatelessWidget {
         builder: (context, memoSettingsState) => Padding(
           padding: layout.screenSaver.titleBarPadding,
           child: BlocBuilder<ClockBloc, DateTime>(
-            builder: (context, time) => AppBarTitle(
+            builder: (state, time) => AppBarTitle(
               style: Theme.of(context)
                   .textTheme
                   .headline4
