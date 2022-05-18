@@ -10,7 +10,6 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final String emptyLibraryMessage;
   final ItemSelected<T>? onTapEdit;
   final bool selectableItems;
-  final Function(Sortable<T>)? onSelected;
 
   const ListLibrary({
     Key? key,
@@ -18,7 +17,6 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     required this.libraryItemGenerator,
     this.onTapEdit,
     this.selectableItems = true,
-    this.onSelected,
   }) : super(key: key);
 
   @override

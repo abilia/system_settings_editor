@@ -35,8 +35,6 @@ class BasicActivityPickerPage extends StatelessWidget {
                   _,
                   __);
             },
-            onSelected: (Sortable<BasicActivityData> selected) =>
-                Navigator.of(context).pop<BasicActivityData>(selected.data),
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: PreviousButton(
