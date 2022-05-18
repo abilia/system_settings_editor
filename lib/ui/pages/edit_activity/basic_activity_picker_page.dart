@@ -34,7 +34,6 @@ class BasicActivityPickerPage extends StatelessWidget {
                   _,
                   __);
             },
-            allowToolBar: false,
             onSelected: (Sortable<BasicActivityData> selected) =>
                 Navigator.of(context).pop<BasicActivityData>(selected.data),
           ),
