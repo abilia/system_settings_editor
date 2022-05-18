@@ -58,18 +58,31 @@ class Weekly extends StatelessWidget with EditActivityTab {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+
     return BlocProvider(
       create: (context) =>
           RecurringWeekCubit(context.read<EditActivityCubit>()),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          errorBordered(
-            const WeekDays(),
-            errorState: errorState,
-          ).pad(m1ItemPadding),
-          const EveryOtherWeekSwitch().pad(m1ItemPadding),
-        ],
+      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+        builder: (context, memoSettingsState) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            errorBordered(
+              WeekDays(
+                dayThemes: List.generate(
+                  DateTime.daysPerWeek,
+                  (d) => weekdayTheme(
+                    dayColor: memoSettingsState.calendarDayColor,
+                    languageCode: languageCode,
+                    weekday: d + 1,
+                  ),
+                ),
+              ),
+              errorState: errorState,
+            ).pad(m1ItemPadding),
+            const EveryOtherWeekSwitch().pad(m1ItemPadding),
+          ],
+        ),
       ),
     );
   }

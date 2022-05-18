@@ -3,6 +3,7 @@ import 'package:seagull/ui/all.dart';
 class SelectableField extends StatelessWidget {
   final Text text;
   final double? heigth, width;
+  final Color? color;
   final bool selected;
   final GestureTapCallback onTap;
 
@@ -11,13 +12,14 @@ class SelectableField extends StatelessWidget {
     required this.selected,
     required this.onTap,
     required this.text,
+    this.color,
     this.heigth,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectableBoxDecoration(selected);
+    final decoration = selectableBox(selected: selected, color: color);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,

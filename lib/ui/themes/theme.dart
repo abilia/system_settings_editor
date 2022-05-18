@@ -248,6 +248,29 @@ Border getCategoryBorder({
 BoxDecoration selectableBoxDecoration(bool selected) =>
     selected ? selectedBoxDecoration : whiteBoxDecoration;
 
+BoxDecoration selectableBox({
+  required bool selected,
+  Color? color,
+}) {
+  color ??= AbiliaColors.white;
+  return selected
+      ? selectedBoxDecorationWithDayColor(color)
+      : whiteBoxDecorationWithDayColor(color);
+}
+
+BoxDecoration selectedBoxDecorationWithDayColor(color) => BoxDecoration(
+      color: color,
+      borderRadius: borderRadius,
+      border: Border.fromBorderSide(
+          BorderSide(color: AbiliaColors.green, width: layout.borders.medium)),
+    );
+
+BoxDecoration whiteBoxDecorationWithDayColor(color) => BoxDecoration(
+      color: color,
+      borderRadius: borderRadius,
+      border: border,
+    );
+
 const rightCategoryActiveColor = AbiliaColors.green,
     rightCategoryInactiveColor = AbiliaColors.green40,
     leftCategoryActiveColor = AbiliaColors.black60,

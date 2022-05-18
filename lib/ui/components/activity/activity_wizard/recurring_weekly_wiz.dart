@@ -6,6 +6,7 @@ class RecurringWeeklyWiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
     final translate = Translator.of(context).translate;
 
     return WizardScaffold(
@@ -17,9 +18,20 @@ class RecurringWeeklyWiz extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: layout.formPadding.groupTopDistance),
-            const Padding(
-              padding: EdgeInsets.zero,
-              child: WeekDays(),
+            BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+              builder: (context, memoSettingsState) => Padding(
+                padding: EdgeInsets.zero,
+                child: WeekDays(
+                  dayThemes: List.generate(
+                    DateTime.daysPerWeek,
+                    (d) => weekdayTheme(
+                      dayColor: memoSettingsState.calendarDayColor,
+                      languageCode: languageCode,
+                      weekday: d + 1,
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: layout.formPadding.groupTopDistance),
             const SelectAllWeekdaysButton(),
