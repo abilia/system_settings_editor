@@ -3,8 +3,8 @@ import 'package:seagull/utils/all.dart';
 
 class ActivityOccasion extends ActivityDay implements EventOccasion {
   @override
-  bool get isPast => occasion == Occasion.past;
-  bool get isCurrent => occasion == Occasion.current && !activity.fullDay;
+  bool get isPast => occasion.isPast;
+  bool get isCurrent => occasion.isCurrent && !activity.fullDay;
 
   @override
   final Occasion occasion;

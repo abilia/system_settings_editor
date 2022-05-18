@@ -34,8 +34,8 @@ class MonthDay extends MonthCalendarDay {
   final int fullDayActivityCount;
   final bool hasActivities;
   final Occasion occasion;
-  bool get isCurrent => occasion == Occasion.current;
-  bool get isPast => occasion == Occasion.past;
+  bool get isCurrent => occasion.isCurrent;
+  bool get isPast => occasion.isPast;
 
   MonthDay(
     this.day,

@@ -43,11 +43,11 @@ class MonthAppBarStepper extends StatelessWidget
       builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
         buildWhen: ((previous, current) => previous.day != current.day),
         builder: (context, now) {
-          final currentMonth = state.occasion == Occasion.current;
+          final currentMonth = state.occasion.isCurrent;
           return CalendarAppBar(
             day: now,
             calendarDayColor: currentMonth ? dayColor : DayColor.noColors,
-            crossedOver: state.occasion == Occasion.past,
+            crossedOver: state.occasion.isPast,
             rows: AppBarTitleRows.month(
               currentTime: currentMonth ? now : state.firstDay,
               langCode: Localizations.localeOf(context).toLanguageTag(),

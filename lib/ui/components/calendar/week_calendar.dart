@@ -143,14 +143,14 @@ class WeekCalenderHeadingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekDayFormat =
         DateFormat('EEEE', Localizations.localeOf(context).toLanguageTag());
-    final borderColor = occasion.isToday
+    final borderColor = occasion.isCurrent
         ? AbiliaColors.red
         : selected
             ? AbiliaColors.black
             : occasion.isPast
                 ? AbiliaColors.black
                 : dayTheme.borderColor;
-    final thickBorder = selected || occasion.isToday;
+    final thickBorder = selected || occasion.isCurrent;
     final borderSize =
         thickBorder ? layout.borders.medium : layout.borders.thin;
     final _bodyText1 = (dayTheme.theme.textTheme.bodyText1 ?? bodyText1)
