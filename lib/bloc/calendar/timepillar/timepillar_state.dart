@@ -18,7 +18,7 @@ class TimepillarState extends Equatable {
   @override
   List<Object> get props => [interval, events, calendarType];
 
-  bool get isToday => occasion == Occasion.current;
+  bool get isToday => occasion.isCurrent;
 
   List<Event> eventsForInterval(TimepillarInterval interval) => events
       .where(

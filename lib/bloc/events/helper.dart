@@ -41,8 +41,7 @@ EventsLoaded _createState({
   final timedActivities =
       activities.where((activityDay) => !activityDay.activity.fullDay).toList();
 
-  final fullDayOccasion =
-      dayOccasion == Occasion.past ? Occasion.past : Occasion.future;
+  final fullDayOccasion = dayOccasion.isPast ? Occasion.past : Occasion.future;
   return EventsLoaded(
     activities: timedActivities,
     timers: timers,
