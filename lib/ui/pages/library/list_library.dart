@@ -9,14 +9,18 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
   final BasicTemplateItemGenerator<T> libraryItemGenerator;
   final String emptyLibraryMessage;
   final ItemSelected<T>? onTapEdit;
+  final bool allowToolBar;
   final bool selectableItems;
+  final Function(Sortable<T>)? onSelected;
 
   const ListLibrary({
     Key? key,
     required this.emptyLibraryMessage,
     required this.libraryItemGenerator,
     this.onTapEdit,
+    this.allowToolBar = true,
     this.selectableItems = true,
+    this.onSelected,
   }) : super(key: key);
 
   @override
@@ -65,18 +69,20 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
                                         .sortableSelected(
                                             selected ? null : sortable)
                                     : {},
-                            SortableToolbar(
-                              disableUp: index == 0,
-                              disableDown: index == content.length - 1,
-                              onTapEdit: onTapEdit != null
-                                  ? () => onTapEdit(context, sortable)
-                                  : null,
-                              onTapDelete: () =>
-                                  _onDeleteItem(context, sortable),
-                              onTapReorder: (direction) => context
-                                  .read<SortableArchiveCubit<T>>()
-                                  .reorder(direction),
-                            ),
+                            allowToolBar
+                                ? SortableToolbar(
+                                    disableUp: index == 0,
+                                    disableDown: index == content.length - 1,
+                                    onTapEdit: onTapEdit != null
+                                        ? () => onTapEdit(context, sortable)
+                                        : null,
+                                    onTapDelete: () =>
+                                        _onDeleteItem(context, sortable),
+                                    onTapReorder: (direction) => context
+                                        .read<SortableArchiveCubit<T>>()
+                                        .reorder(direction),
+                                  )
+                                : const SizedBox(),
                             selected,
                           );
                         },

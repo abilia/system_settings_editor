@@ -12,8 +12,7 @@ class BasicActivityPickerPage extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return BlocBuilder<SortableArchiveCubit<BasicActivityData>,
         SortableArchiveState<BasicActivityData>>(
-      builder: (innerContext, state) {
-        final selected = state.selected;
+      builder: (context, state) {
         return Scaffold(
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.basicActivity,
@@ -21,12 +20,23 @@ class BasicActivityPickerPage extends StatelessWidget {
                 state.allById[state.currentFolderId]?.data.title(translate) ??
                     translate.selectBasicActivity,
           ),
-          body: SortableLibrary<BasicActivityData>(
-            (Sortable<BasicActivityData> s) =>
-                s is Sortable<BasicActivityDataItem>
-                    ? BasicLibraryItem<BasicActivityData>(sortable: s)
-                    : const CrossOver(style: CrossOverStyle.darkSecondary),
-            translate.noBasicActivities,
+          body: ListLibrary<BasicActivityData>(
+            emptyLibraryMessage: translate.noBasicActivities,
+            libraryItemGenerator: (sortable, onTap, _, __) {
+              return BasicTemplatePickField<BasicActivityData>(
+                  sortable,
+                  () => sortable.isGroup
+                      ? context
+                          .read<SortableArchiveCubit<BasicActivityData>>()
+                          .folderChanged(sortable.id)
+                      : Navigator.of(context)
+                          .pop<BasicActivityData>(sortable.data),
+                  _,
+                  __);
+            },
+            allowToolBar: false,
+            onSelected: (Sortable<BasicActivityData> selected) =>
+                Navigator.of(context).pop<BasicActivityData>(selected.data),
           ),
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: PreviousButton(
@@ -35,12 +45,6 @@ class BasicActivityPickerPage extends StatelessWidget {
                   : () => context
                       .read<SortableArchiveCubit<BasicActivityData>>()
                       .navigateUp(),
-            ),
-            forwardNavigationWidget: NextButton(
-              onPressed: selected != null
-                  ? () => Navigator.of(context)
-                      .pop<BasicActivityData>(selected.data)
-                  : null,
             ),
           ),
         );
