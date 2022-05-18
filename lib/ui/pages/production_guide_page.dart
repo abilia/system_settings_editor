@@ -85,11 +85,12 @@ class _DebugRow extends StatelessWidget {
       builder: (context, baseUrl) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-                  onPressed: () =>
-                      context.read<StartGuideCubit>().skipStartGuide(),
-                  child: const Text('Skip start guide'))
-              .pad(const EdgeInsets.only(right: 20)),
+          if (!Config.release)
+            ElevatedButton(
+                    onPressed: () =>
+                        context.read<StartGuideCubit>().skipStartGuide(),
+                    child: const Text('Skip start guide'))
+                .pad(const EdgeInsets.only(right: 20)),
           ElevatedButton(
             onPressed: () {
               showDialog(
