@@ -69,6 +69,7 @@ Future<void> initServices() async {
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
+    ..voiceDb = voiceDb
     ..ttsHandler = await TtsInterface.implementation(voiceDb)
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()

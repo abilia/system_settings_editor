@@ -1,19 +1,23 @@
-import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
-  const SpeechSupportSettingsPage({Key? key}) : super(key: key);
+  const SpeechSupportSettingsPage(
+      {Key? key,
+      required this.textToSpeech,
+      required this.speechRate,
+      required this.voice})
+      : super(key: key);
+
+  final bool textToSpeech;
+  final double speechRate;
+  final String voice;
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final locale = Translator.of(context).locale.toString();
-    bool textToSpeech = context.read<SettingsCubit>().state.textToSpeech;
-    double speechRate = context.read<SpeechSettingsCubit>().state.speechRate;
-    String voice = context.read<SpeechSettingsCubit>().state.voice;
 
     return BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
       builder: (context, state) {
@@ -26,12 +30,11 @@ class SpeechSupportSettingsPage extends StatelessWidget {
           body: BlocSelector<SettingsCubit, SettingsState, bool>(
             selector: (state) => state.textToSpeech,
             builder: (context, textToSpeech) {
-              return BlocSelector<VoicesCubit, VoicesState, String>(
-                  selector: (state) => state.downloadingVoice,
-                  builder: (context, downloadingVoice) {
+              return BlocSelector<VoicesCubit, VoicesState, List<String>>(
+                  selector: (state) => state.downloadingVoices,
+                  builder: (context, downloadingVoices) {
                     return BlocListener<VoicesCubit, VoicesState>(
                       listener: (context, voicesState) async {
-                        voice = voicesState.selectedVoice;
                         await context
                             .read<SpeechSettingsCubit>()
                             .setVoice(voice);
@@ -40,14 +43,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                         data: layout.settingsBasePage.dividerThemeData,
                         child: Padding(
                           padding: layout.settingsBasePage.listPadding,
-                          child: ListView(
+                          child: Column(
                             children: [
-                              TextToSpeechSwitch(
-                                onChanged: !textToSpeech && state.voice.isEmpty
-                                    ? (v) => pushVoicesPage(
-                                        context, locale, state.voice)
-                                    : null,
-                              ).pad(layout.settingsBasePage.itemPadding),
+                              const TextToSpeechSwitch()
+                                  .pad(layout.settingsBasePage.itemPadding),
                               if (textToSpeech) ...[
                                 const Divider(),
                                 Tts(
@@ -58,11 +57,11 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                     Expanded(
                                       child: PickField(
                                         text: Text(state.voice.isEmpty
-                                            ? downloadingVoice.isEmpty
+                                            ? downloadingVoices.isEmpty
                                                 ? t.noVoicesInstalled
                                                 : t.installingVoice
                                             : state.voice),
-                                        onTap: () => pushVoicesPage(
+                                        onTap: () => _pushVoicesPage(
                                             context, locale, state.voice),
                                       ),
                                     ),
@@ -71,24 +70,29 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                         left: layout.formPadding
                                             .largeHorizontalItemDistance,
                                       ),
-                                      child: const TtsTestButton(),
+                                      child: TtsPlayButton(
+                                          tts: state.voice.isNotEmpty
+                                              ? t.speechTest
+                                              : ''),
                                     ),
                                   ],
                                 ).pad(layout.settingsBasePage.itemPadding),
                                 Tts(
                                   child: Text(t.speechRate +
-                                      ' ${state.speechRate.toInt()}'),
+                                      ' ${_speechRateToProgress(state.speechRate).round()}'),
                                 ).pad(layout.settingsBasePage.itemPadding),
                                 AbiliaSlider(
-                                  value: state.speechRate,
-                                  min: 50,
-                                  max: 150,
+                                  value:
+                                      _speechRateToProgress(state.speechRate),
+                                  min: -5,
+                                  max: 5,
                                   leading: const Icon(AbiliaIcons.fastForward),
-                                  onChanged: (v) {
-                                    context
-                                        .read<SpeechSettingsCubit>()
-                                        .setSpeechRate(v);
-                                  },
+                                  onChanged: state.voice.isEmpty
+                                      ? null
+                                      : (v) => context
+                                          .read<SpeechSettingsCubit>()
+                                          .setSpeechRate(
+                                              _progressToSpeechRate(v)),
                                   divisions: 10,
                                 ).pad(layout.settingsBasePage.itemPadding),
                                 const Divider(),
@@ -111,7 +115,6 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                 await context
                     .read<SettingsCubit>()
                     .setTextToSpeech(textToSpeech);
-                await context.read<SpeechSettingsCubit>().setVoice(voice);
                 await context
                     .read<SpeechSettingsCubit>()
                     .setSpeechRate(speechRate);
@@ -129,7 +132,16 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     );
   }
 
-  void pushVoicesPage(BuildContext context, String locale, String voice) async {
+  double _speechRateToProgress(double speechRate) {
+    return ((speechRate - 100) / 10);
+  }
+
+  double _progressToSpeechRate(double progress) {
+    return 100 + progress * 10;
+  }
+
+  void _pushVoicesPage(
+      BuildContext context, String locale, String voice) async {
     final authProviders = copiedAuthProviders(context);
 
     final selectedVoice = await Navigator.of(context).push<String?>(
@@ -138,61 +150,11 @@ class SpeechSupportSettingsPage extends StatelessWidget {
           providers: authProviders,
           child: VoicesPage(initialSelection: voice),
         ),
-        settings:
-            RouteSettings(name: Translator.of(context).translate.textToSpeech),
       ),
     );
     if (selectedVoice != null) {
       context.read<SpeechSettingsCubit>().setVoice(selectedVoice);
-      context.read<SettingsCubit>().setTextToSpeech(true);
-    }
-  }
-}
-
-@visibleForTesting
-class TtsTestButton extends StatefulWidget {
-  const TtsTestButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<TtsTestButton> createState() => _TtsTestButtonState();
-}
-
-class _TtsTestButtonState extends State<TtsTestButton> {
-  bool ttsIsPlaying = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      buildWhen: (previous, current) =>
-          previous.textToSpeech != current.textToSpeech,
-      builder: (context, settingsState) => SizedBox(
-        height: layout.actionButton.size,
-        child: IconActionButton(
-          style: actionButtonStyleDark,
-          onPressed: () => ttsIsPlaying ? _stop() : _play(),
-          child: Icon(
-            ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _play() async {
-    setState(() => ttsIsPlaying = true);
-    Translated t = Translator.of(context).translate;
-    await GetIt.I<TtsInterface>().speak(t.speechTest);
-    if (mounted) {
-      setState(() => ttsIsPlaying = false);
-    }
-  }
-
-  Future<void> _stop() async {
-    await GetIt.I<TtsInterface>().stop();
-    if (mounted) {
-      setState(() => ttsIsPlaying = false);
+      // context.read<SettingsCubit>().setTextToSpeech(true);
     }
   }
 }

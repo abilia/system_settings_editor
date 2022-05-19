@@ -4,7 +4,7 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
 import 'package:seagull/tts/tts_handler.dart';
 
-part '../../../models/settings/speech_support/voice_data.dart';
+part 'package:seagull/models/settings/speech_support/voice_data.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
@@ -15,7 +15,7 @@ class VoicesCubit extends Cubit<VoicesState> {
   }) : super(
           VoicesState(
               voices: List.empty(),
-              downloadingVoice: '',
+              downloadingVoices: List.empty(),
               downloadedVoices: List.empty(),
               selectedVoice: voice),
         ) {
@@ -53,21 +53,25 @@ class VoicesCubit extends Cubit<VoicesState> {
   }
 
   Future<void> downloadVoice(VoiceData voice) async {
-    emit(state.copyWith(downloadingVoice: voice.name));
+    emit(state.copyWith(
+        downloadingVoices: List.from(state.downloadingVoices)
+          ..add(voice.name)));
     bool result = await voiceRepository.downloadVoice(voice);
     if (result) {
       _log.fine('Downloaded voice; ${voice.name}');
     } else {
       _log.warning('Failed downloading file; ${voice.name}');
     }
+    final downloadingVoices = List<String>.from(state.downloadingVoices)
+      ..remove(voice.name);
     if (result) {
       emit(state.copyWith(
           selectedVoice: state.downloadedVoices.isEmpty ? voice.name : null,
-          downloadingVoice: '',
+          downloadingVoices: downloadingVoices,
           downloadedVoices: List.from(state.downloadedVoices)
             ..add(voice.name)));
     } else {
-      emit(state.copyWith(downloadingVoice: ''));
+      emit(state.copyWith(downloadingVoices: downloadingVoices));
     }
   }
 
@@ -84,11 +88,11 @@ class VoicesCubit extends Cubit<VoicesState> {
 class VoicesState extends Equatable {
   final List<VoiceData> voices;
   final String selectedVoice;
-  final String downloadingVoice;
+  final List<String> downloadingVoices;
   final List<String> downloadedVoices;
 
   const VoicesState({
-    required this.downloadingVoice,
+    required this.downloadingVoices,
     required this.downloadedVoices,
     required this.voices,
     required this.selectedVoice,
@@ -98,19 +102,19 @@ class VoicesState extends Equatable {
     List<VoiceData>? voices,
     List<String>? downloadedVoices,
     String? selectedVoice,
-    String? downloadingVoice,
+    List<String>? downloadingVoices,
   }) {
     return VoicesState(
         voices: voices ?? this.voices,
         selectedVoice: selectedVoice ?? this.selectedVoice,
         downloadedVoices: downloadedVoices ?? this.downloadedVoices,
-        downloadingVoice: downloadingVoice ?? this.downloadingVoice);
+        downloadingVoices: downloadingVoices ?? this.downloadingVoices);
   }
 
   @override
   List<Object?> get props => [
         selectedVoice,
-        downloadingVoice,
+        downloadingVoices,
         downloadedVoices,
         voices,
       ];

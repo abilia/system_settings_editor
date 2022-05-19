@@ -6,19 +6,30 @@ import 'package:seagull/ui/all.dart';
 class TtsPlayButton extends StatefulWidget {
   const TtsPlayButton({
     Key? key,
-    required this.controller,
+    this.controller,
     this.padding = EdgeInsets.zero,
+    this.tts,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final EdgeInsets padding;
+  final String? tts;
 
   @override
   State<TtsPlayButton> createState() => _TtsPlayButtonState();
 }
 
 class _TtsPlayButtonState extends State<TtsPlayButton> {
-  bool ttsIsPlaying = false;
+  bool _ttsIsPlaying = false;
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = widget.controller ??
+        TextEditingController.fromValue(
+            TextEditingValue(text: widget.tts ?? ''));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +39,20 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
       builder: (context, settingsState) => SizedBox(
         height: layout.actionButton.size,
         child: AnimatedBuilder(
-          animation: widget.controller,
+          animation: _controller,
           builder: (context, child) {
             return CollapsableWidget(
-              collapsed: !(settingsState.textToSpeech &&
-                  widget.controller.text.isNotEmpty),
+              collapsed:
+                  !(settingsState.textToSpeech && _controller.text.isNotEmpty),
               axis: Axis.horizontal,
               child: Padding(
                 padding: widget.padding,
                 child: IconActionButton(
                   key: TestKey.ttsPlayButton,
                   style: actionButtonStyleDark,
-                  onPressed: () => ttsIsPlaying ? _stop() : _play(),
+                  onPressed: () => _ttsIsPlaying ? _stop() : _play(),
                   child: Icon(
-                    ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
+                    _ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
                   ),
                 ),
               ),
@@ -53,17 +64,17 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
   }
 
   Future<void> _play() async {
-    setState(() => ttsIsPlaying = true);
-    await GetIt.I<TtsInterface>().speak(widget.controller.text);
+    setState(() => _ttsIsPlaying = true);
+    await GetIt.I<TtsInterface>().speak(_controller.text);
     if (mounted) {
-      setState(() => ttsIsPlaying = false);
+      setState(() => _ttsIsPlaying = false);
     }
   }
 
   Future<void> _stop() async {
     await GetIt.I<TtsInterface>().stop();
     if (mounted) {
-      setState(() => ttsIsPlaying = false);
+      setState(() => _ttsIsPlaying = false);
     }
   }
 }

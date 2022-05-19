@@ -1,15 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/settings/settings_cubit.dart';
-import 'package:seagull/i18n/app_localizations.dart';
-import 'package:seagull/ui/components/all.dart';
-import 'package:seagull/ui/dialogs/all.dart';
-import 'package:seagull/ui/themes/layout.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/ui/all.dart';
 
 class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key? key, this.onChanged}) : super(key: key);
-
-  final Function(bool)? onChanged;
+  const TextToSpeechSwitch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +12,7 @@ class TextToSpeechSwitch extends StatelessWidget {
           child: SwitchField(
             value: settingsState.textToSpeech,
             leading: const Icon(AbiliaIcons.speakText),
-            onChanged: onChanged ??
-                (v) {
-                  context.read<SettingsCubit>().setTextToSpeech(v);
-                },
+            onChanged: context.read<SettingsCubit>().setTextToSpeech,
             child: Text(Translator.of(context).translate.textToSpeech),
           ),
         ),

@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:seagull/bloc/settings/speech_support/voices_cubit.dart';
 import 'package:seagull/db/baseurl_db.dart';
-import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/utils/strings.dart';

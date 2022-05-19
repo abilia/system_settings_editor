@@ -221,12 +221,17 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                 ),
               ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => SpeechSettingsCubit(
+                    voiceDb: GetIt.I<VoiceDb>(),
+                    acapelaTts: GetIt.I<TtsInterface>() as AcapelaTtsHandler),
+              ),
               BlocProvider<VoicesCubit>(
                 create: (context) => VoicesCubit(
                   ttsHandler: GetIt.I<TtsInterface>(),
                   voiceRepository: context.read<VoiceRepository>(),
                   locale: GetIt.I<SettingsDb>().language,
-                  voice:  GetIt.I<VoiceDb>().voice,
+                  voice: GetIt.I<VoiceDb>().voice,
                 ),
               ),
             ]

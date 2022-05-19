@@ -30,8 +30,10 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
     bool initialized = await acapela.initialize(
       userId: 0x7a323547,
       password: 0x00302bc1,
-      license:
-          '"5917 0 G52z #COMMERCIAL#Abilia Norway"\nVimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\nV2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\nRK\$@cHvZ!G9GsQ%lnEmu3S##',
+      license: '"5917 0 G52z #COMMERCIAL#Abilia Norway"\n'
+          'VimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\n'
+          'V2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\n'
+          'RK\$@cHvZ!G9GsQ%lnEmu3S##',
       voicesPath: (await getApplicationSupportDirectory()).path,
     );
     if (initialized &&

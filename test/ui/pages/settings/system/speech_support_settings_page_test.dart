@@ -84,14 +84,14 @@ void main() {
       when(() => settingsDb.textToSpeech).thenAnswer((_) => false);
 
       await tester.goToSpeechSettingsPage();
-      expect(find.byType(TtsTestButton), findsNothing);
+      expect(find.byType(TtsPlayButton), findsNothing);
       expect(find.byType(AbiliaSlider), findsNothing);
       expect(find.byType(PickField), findsNothing);
     });
 
     testWidgets('When TTS setting true, tts options available', (tester) async {
       await tester.goToSpeechSettingsPage();
-      expect(find.byType(TtsTestButton), findsOneWidget);
+      expect(find.byType(TtsPlayButton), findsOneWidget);
       expect(find.byType(AbiliaSlider), findsOneWidget);
       expect(find.byType(PickField), findsOneWidget);
     });

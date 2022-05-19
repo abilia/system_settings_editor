@@ -19,14 +19,14 @@ class VoicesPage extends StatelessWidget {
         ),
         body: Padding(
           padding: layout.settingsBasePage.listPadding,
-          child: ListView(
+          child: Column(
             children: state.voices.map((VoiceData voice) {
               final name = voice.name;
               return _VoiceRow(
                 selected: name == state.selectedVoice,
                 voice: voice,
                 downloaded: state.downloadedVoices.contains(name),
-                downloading: state.downloadingVoice == name,
+                downloading: state.downloadingVoices.contains(name),
                 selectedVoice: state.selectedVoice,
                 keep: state.downloadedVoices.length == 1 &&
                     state.downloadedVoices.first == name,
