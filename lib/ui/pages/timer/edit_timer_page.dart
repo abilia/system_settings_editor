@@ -4,9 +4,63 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class EditTimerPage extends StatelessWidget {
-  const EditTimerPage({Key? key, this.startTimer = true}) : super(key: key);
+  const EditTimerPage({Key? key}) : super(key: key);
 
-  final bool startTimer;
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+
+    return BlocBuilder<EditTimerCubit, EditTimerState>(
+      builder: (context, state) => _EditTimerPage(
+        bottomNavigation: BottomNavigation(
+          backNavigationWidget: const PreviousButton(),
+          forwardNavigationWidget: StartButton(
+            onPressed: state.duration.inMinutes > 0
+                ? context.read<EditTimerCubit>().start
+                : () => showViewDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                        text: t.timerInvalidDuration,
+                      ),
+                    ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditBasicTimerPage extends StatelessWidget {
+  const EditBasicTimerPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+
+    return BlocBuilder<EditTimerCubit, EditTimerState>(
+      builder: (context, state) => _EditTimerPage(
+        bottomNavigation: BottomNavigation(
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget: SaveButton(
+              onPressed: state.duration.inMinutes > 0
+                  ? () => context.read<EditTimerCubit>().save(capitalize: true)
+                  : () => showViewDialog(
+                        context: context,
+                        builder: (context) => ErrorDialog(
+                          text: t.timerInvalidDuration,
+                        ),
+                      )),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditTimerPage extends StatelessWidget {
+  const _EditTimerPage({Key? key, required this.bottomNavigation})
+      : super(key: key);
+
+  final BottomNavigation bottomNavigation;
 
   @override
   Widget build(BuildContext context) {
@@ -44,37 +98,8 @@ class EditTimerPage extends StatelessWidget {
               ],
             ),
           ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: startTimer
-                ? PreviousButton(
-                    onPressed: Navigator.of(context).pop,
-                  )
-                : const CancelButton(),
-            forwardNavigationWidget: startTimer
-                ? StartButton(
-                    onPressed: state.duration.inMinutes > 0
-                        ? startTimer
-                            ? context.read<EditTimerCubit>().start
-                            : context.read<EditTimerCubit>().save
-                        : () => _showErrorDialog(context, t),
-                  )
-                : SaveButton(
-                    onPressed: state.duration.inMinutes > 0
-                        ? () => context
-                            .read<EditTimerCubit>()
-                            .save(capitalize: true)
-                        : () => _showErrorDialog(context, t)),
-          ),
+          bottomNavigationBar: bottomNavigation,
         ),
-      ),
-    );
-  }
-
-  void _showErrorDialog(BuildContext context, Translated t) {
-    showViewDialog(
-      context: context,
-      builder: (context) => ErrorDialog(
-        text: t.timerInvalidDuration,
       ),
     );
   }

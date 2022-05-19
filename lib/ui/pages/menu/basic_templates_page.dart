@@ -37,9 +37,8 @@ class BasicTemplatesPage extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigation(
-          backNavigationWidget:
-              CloseButton(onPressed: Navigator.of(context).maybePop),
+        bottomNavigationBar: const BottomNavigation(
+          backNavigationWidget: CloseButton(),
         ),
         floatingActionButton: const AddTemplateButton(
           activityTemplateIndex: 0,
@@ -199,13 +198,12 @@ class AddTemplateButton extends StatelessWidget {
     return AnimatedBuilder(
       animation: tabController,
       builder: (context, _) {
-        return TextAndOrIconActionButtonLight(
+        return TextAndOrIconActionButtonBlack(
           Translator.of(context).translate.add,
           AbiliaIcons.plus,
           onPressed: tabController.index == activityTemplateIndex
               ? () => _addNewActivityTemplate(context)
               : () => _addNewTimerTemplate(context),
-          style: actionButtonStyleBlack,
         );
       },
     );
@@ -267,7 +265,7 @@ class AddTemplateButton extends StatelessWidget {
               ),
             ),
           ],
-          child: const EditTimerPage(startTimer: false),
+          child: const EditBasicTimerPage(),
         ),
       ),
     );
@@ -277,11 +275,7 @@ class AddTemplateButton extends StatelessWidget {
               Sortable.createNew(
                 groupId: sortableState.currentFolderId,
                 sortOrder: sortableState.currentFolderSorted.firstSortOrder(),
-                data: BasicTimerDataItem.createNew(
-                    title: timer.title,
-                    duration: timer.duration,
-                    fileId: timer.fileId,
-                    icon: timer.fileId),
+                data: BasicTimerDataItem.fromTimer(timer),
               ),
             ),
           );
