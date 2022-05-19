@@ -12,7 +12,7 @@ class BasicTimerDataItem extends BasicTimerData {
   BasicTimerDataItem._({
     required this.basicTimerTitle,
     required this.icon,
-    this.fileId = '',
+    required this.fileId,
     this.duration = 0,
   });
 
