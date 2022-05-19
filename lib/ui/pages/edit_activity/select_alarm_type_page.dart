@@ -60,10 +60,7 @@ class SelectAlarmTypeBody extends StatelessWidget {
         controller: scrollController,
         child: ListView(
           controller: scrollController,
-          padding: EdgeInsets.only(
-            top: layout.templates.m1.top,
-            bottom: layout.templates.m1.bottom,
-          ),
+          padding: layout.templates.m1.onlyVertical,
           children: <Widget>[
             ...[
               if (addActivity.showAlarm) AlarmType.soundAndVibration,

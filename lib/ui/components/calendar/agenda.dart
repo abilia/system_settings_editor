@@ -212,7 +212,7 @@ class SliverEventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: m1Horizontal,
+      padding: layout.templates.m1.onlyHorizontal,
       sliver: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
         buildWhen: (previous, current) =>
             previous.showCategories != current.showCategories ||

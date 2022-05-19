@@ -379,35 +379,60 @@ class FormPaddingLayout {
 }
 
 class WeekCalendarLayout {
-  final double activityBorderWidth,
-      currentActivityBorderWidth,
-      dayDistance,
-      headerTopPadding,
-      headerTopPaddingSmall,
-      headerBottomPadding,
-      headerHeight,
-      fullDayHeight,
-      activityDistance;
-  final EdgeInsets crossOverPadding,
-      bodyPadding,
-      activityTextPadding,
-      innerDayPadding;
+  final _WeekDayColumnLayout selectedDay, notSelectedDay;
+
+  final double dayDistance, headerHeight, activityDistance, categoryInset;
+
+  final EdgeInsets crossOverDayHeadingPadding,
+      crossOverActivityPadding,
+      bodyPadding;
+
+  final Radius columnRadius;
 
   const WeekCalendarLayout({
+    this.dayDistance = 2,
+    this.headerHeight = 88,
+    this.activityDistance = 2,
+    this.categoryInset = 0,
+    this.columnRadius = const Radius.circular(8),
+    this.crossOverDayHeadingPadding = const EdgeInsets.fromLTRB(3, 7, 3, 8),
+    this.crossOverActivityPadding = const EdgeInsets.all(5),
+    this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
+    this.selectedDay = const _WeekDayColumnLayout(
+      everyDayFlex: 82,
+      weekdaysFlex: 116,
+      dayColumnBorderWidth: 2,
+    ),
+    this.notSelectedDay = const _WeekDayColumnLayout(
+      everyDayFlex: 48,
+      weekdaysFlex: 64,
+      dayColumnBorderWidth: 1,
+    ),
+  });
+}
+
+class _WeekDayColumnLayout {
+  final int everyDayFlex, weekdaysFlex;
+
+  final double activityBorderWidth,
+      currentActivityBorderWidth,
+      dayColumnBorderWidth;
+
+  final BorderRadius activityRadius;
+
+  final EdgeInsets innerDayPadding;
+
+  const _WeekDayColumnLayout({
+    required this.everyDayFlex,
+    required this.weekdaysFlex,
+    required this.dayColumnBorderWidth,
     this.activityBorderWidth = 1.5,
     this.currentActivityBorderWidth = 3,
-    this.dayDistance = 2,
-    this.headerTopPadding = 4,
-    this.headerTopPaddingSmall = 3,
-    this.headerBottomPadding = 4,
-    this.headerHeight = 44,
-    this.fullDayHeight = 36,
-    this.activityDistance = 2,
-    this.crossOverPadding = const EdgeInsets.fromLTRB(4, 4, 4, 12),
-    this.bodyPadding = const EdgeInsets.fromLTRB(2, 4, 2, 4),
-    this.activityTextPadding = const EdgeInsets.all(3.0),
-    this.innerDayPadding =
-        const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+    this.activityRadius = const BorderRadius.all(Radius.circular(8)),
+    this.innerDayPadding = const EdgeInsets.symmetric(
+      vertical: 6,
+      horizontal: 4,
+    ),
   });
 }
 
