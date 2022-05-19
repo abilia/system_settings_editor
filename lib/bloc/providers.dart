@@ -73,7 +73,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           if (Config.isMP) ...[
             RepositoryProvider<VoiceRepository>(
                 create: (context) => VoiceRepository(
-                    voiceDb: GetIt.I<VoiceDb>(),
                     baseUrlDb: GetIt.I<BaseUrlDb>(),
                     client: GetIt.I<BaseClient>())),
           ],
@@ -227,6 +226,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   ttsHandler: GetIt.I<TtsInterface>(),
                   voiceRepository: context.read<VoiceRepository>(),
                   locale: GetIt.I<SettingsDb>().language,
+                  voice:  GetIt.I<VoiceDb>().voice,
                 ),
               ),
             ]

@@ -1,4 +1,4 @@
-part of 'voices_cubit.dart';
+part of '../../../bloc/settings/speech_support/voices_cubit.dart';
 
 class VoiceData extends Equatable {
   final String name;

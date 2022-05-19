@@ -4,19 +4,20 @@ import 'package:seagull/logging.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
 import 'package:seagull/tts/tts_handler.dart';
 
-part 'voice_data.dart';
+part '../../../models/settings/speech_support/voice_data.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required this.voiceRepository,
     required this.ttsHandler,
     required this.locale,
+    required String voice,
   }) : super(
           VoicesState(
               voices: List.empty(),
               downloadingVoice: '',
               downloadedVoices: List.empty(),
-              selectedVoice: voiceRepository.voiceDb.voice),
+              selectedVoice: voice),
         ) {
     initialize();
   }

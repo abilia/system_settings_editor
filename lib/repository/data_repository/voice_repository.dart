@@ -8,17 +8,16 @@ import 'package:seagull/db/baseurl_db.dart';
 import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/exceptions.dart';
-import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/strings.dart';
 
-class VoiceRepository extends Repository {
+class VoiceRepository {
   VoiceRepository({
-    required BaseClient client,
-    required BaseUrlDb baseUrlDb,
-    required this.voiceDb,
-  }) : super(client, baseUrlDb);
+    required this.client,
+    required this.baseUrlDb,
+  });
 
-  final VoiceDb voiceDb;
+  final BaseClient client;
+  final BaseUrlDb baseUrlDb;
 
   static const String _baseUrl = 'https://handi.se/systemfiles2';
   final _log = Logger((VoiceRepository).toString());
