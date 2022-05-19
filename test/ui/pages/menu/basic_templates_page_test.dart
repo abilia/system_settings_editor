@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull/utils/strings.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/notification_isolate.dart';
@@ -103,35 +104,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNothing);
       expect(find.byType(LibraryHeading<BasicActivityData>), findsOneWidget);
-    });
-
-    testWidgets('Can create sortable activity', (tester) async {
-      const title = 'a brand new title';
-      await tester.goToTemplates();
-      await tester.tap(find.byType(AddTemplateButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(EditActivityPage), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
-      expect(find.byType(DatePicker), findsNothing);
-      expect(find.byType(CancelButton), findsOneWidget);
-      expect(find.byType(PreviousButton), findsNothing);
-
-      await tester.ourEnterText(
-        find.byKey(TestKey.editTitleTextFormField),
-        title,
-      );
-      await tester.tap(find.byType(NextWizardStepButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(EditActivityPage), findsNothing);
-      final captured =
-          verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
-              .captured
-              .last;
-
-      final sortable =
-          (captured as List).single as Sortable<BasicActivityDataItem>;
-      expect(sortable.data.activityTitle, title);
-      expect(sortable.data.name, title);
     });
 
     group('Tool bar', () {
@@ -274,6 +246,79 @@ void main() {
           basicActivity.info,
           '{"info-item":[{"type":"note","data":{"text":"note Text"}}]}',
         );
+      });
+    });
+
+    group('Create Basic templates', () {
+      testWidgets('Can create sortable activity', (tester) async {
+        const title = 'a brand new title';
+        await tester.goToTemplates();
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
+        expect(find.byType(DatePicker), findsNothing);
+        expect(find.byType(CancelButton), findsOneWidget);
+        expect(find.byType(PreviousButton), findsNothing);
+
+        await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField),
+          title,
+        );
+        await tester.tap(find.byType(NextWizardStepButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsNothing);
+        final captured =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .last;
+
+        final sortable =
+            (captured as List).single as Sortable<BasicActivityDataItem>;
+        expect(sortable.data.activityTitle, title);
+        expect(sortable.data.name, title);
+      });
+
+      testWidgets('Can create basic timer', (tester) async {
+        const enteredTitle = 'a basic timer';
+        final duration = const Duration(minutes: 5).inMilliseconds;
+        await tester.goToTemplates();
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsOneWidget);
+        expect(find.byType(SaveButton), findsOneWidget);
+        expect(find.byType(CancelButton), findsOneWidget);
+        expect(find.byType(PreviousButton), findsNothing);
+
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          enteredTitle,
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byIcon(AbiliaIcons.clock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('5'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsNothing);
+        final captured =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .last;
+
+        final sortable = (captured as List).single as Sortable<SortableData>;
+
+        BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
+        expect(data.basicTimerTitle, enteredTitle.capitalize());
+        expect(data.duration, duration);
       });
     });
   });

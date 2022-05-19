@@ -43,12 +43,14 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
     Key? key,
     this.onPressed,
     this.selected = false,
+    this.style,
   }) : super(key: key);
 
   final String text;
   final IconData iconData;
   final VoidCallback? onPressed;
   final bool selected;
+  final ButtonStyle? style;
 
   @override
   Widget build(BuildContext context) => Tts.data(
@@ -57,17 +59,19 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
             ? IconActionButton(
                 onPressed: onPressed,
                 child: Icon(iconData),
-                style: selected
-                    ? actionButtonStyleLightSelected
-                    : actionButtonStyleLight,
+                style: style ??
+                    (selected
+                        ? actionButtonStyleLightSelected
+                        : actionButtonStyleLight),
               )
             : _TextAndIconActionButton(
                 text,
                 iconData,
                 onPressed: onPressed,
-                style: selected
-                    ? textActionButtonStyleLightSelected
-                    : textActionButtonStyleLight,
+                style: style ??
+                    (selected
+                        ? textActionButtonStyleLightSelected
+                        : textActionButtonStyleLight),
               ),
       );
 }

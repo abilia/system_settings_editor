@@ -12,9 +12,22 @@ class BasicTimerDataItem extends BasicTimerData {
   BasicTimerDataItem._({
     required this.basicTimerTitle,
     required this.icon,
-    required this.fileId,
+    this.fileId = '',
     this.duration = 0,
   });
+
+  factory BasicTimerDataItem.createNew({
+    String title = '',
+    Duration duration = Duration.zero,
+    String icon = '',
+    String fileId = '',
+  }) =>
+      BasicTimerDataItem._(
+        basicTimerTitle: title,
+        duration: duration.inMilliseconds,
+        icon: icon,
+        fileId: fileId,
+      );
 
   factory BasicTimerDataItem.fromJson(String data) {
     final sortableData = json.decode(data);

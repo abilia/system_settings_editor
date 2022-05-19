@@ -4,7 +4,9 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class EditTimerPage extends StatelessWidget {
-  const EditTimerPage({Key? key}) : super(key: key);
+  const EditTimerPage({Key? key, this.startTimer = true}) : super(key: key);
+
+  final bool startTimer;
 
   @override
   Widget build(BuildContext context) {
@@ -43,21 +45,36 @@ class EditTimerPage extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: PreviousButton(
-              onPressed: Navigator.of(context).pop,
-            ),
-            forwardNavigationWidget: StartButton(
-              onPressed: state.duration.inMinutes > 0
-                  ? context.read<EditTimerCubit>().start
-                  : () => showViewDialog(
-                        context: context,
-                        builder: (context) => ErrorDialog(
-                          text: t.timerInvalidDuration,
-                        ),
-                      ),
-            ),
+            backNavigationWidget: startTimer
+                ? PreviousButton(
+                    onPressed: Navigator.of(context).pop,
+                  )
+                : const CancelButton(),
+            forwardNavigationWidget: startTimer
+                ? StartButton(
+                    onPressed: state.duration.inMinutes > 0
+                        ? startTimer
+                            ? context.read<EditTimerCubit>().start
+                            : context.read<EditTimerCubit>().save
+                        : () => _showErrorDialog(context, t),
+                  )
+                : SaveButton(
+                    onPressed: state.duration.inMinutes > 0
+                        ? () => context
+                            .read<EditTimerCubit>()
+                            .save(capitalize: true)
+                        : () => _showErrorDialog(context, t)),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showErrorDialog(BuildContext context, Translated t) {
+    showViewDialog(
+      context: context,
+      builder: (context) => ErrorDialog(
+        text: t.timerInvalidDuration,
       ),
     );
   }
