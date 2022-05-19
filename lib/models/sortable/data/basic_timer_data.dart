@@ -16,17 +16,12 @@ class BasicTimerDataItem extends BasicTimerData {
     this.duration = 0,
   });
 
-  factory BasicTimerDataItem.createNew({
-    String title = '',
-    Duration duration = Duration.zero,
-    String icon = '',
-    String fileId = '',
-  }) =>
+  factory BasicTimerDataItem.fromTimer(AbiliaTimer timer) =>
       BasicTimerDataItem._(
-        basicTimerTitle: title,
-        duration: duration.inMilliseconds,
-        icon: icon,
-        fileId: fileId,
+        basicTimerTitle: timer.title,
+        duration: timer.duration.inMilliseconds,
+        icon: timer.image.path,
+        fileId: timer.image.id,
       );
 
   factory BasicTimerDataItem.fromJson(String data) {
