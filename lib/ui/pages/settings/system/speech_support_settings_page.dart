@@ -154,7 +154,6 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     );
     if (selectedVoice != null) {
       context.read<SpeechSettingsCubit>().setVoice(selectedVoice);
-      // context.read<SettingsCubit>().setTextToSpeech(true);
     }
   }
 }
