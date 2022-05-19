@@ -1,13 +1,13 @@
-import 'package:acapela_tts/acapela_tts.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:seagull/db/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 
 part 'speech_settings_state.dart';
 
 class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   final VoiceDb voiceDb;
-  final AcapelaTts acapelaTts;
+  final TtsInterface acapelaTts;
 
   SpeechSettingsCubit({
     required this.voiceDb,
@@ -26,7 +26,7 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   }
 
   Future<void> setVoice(String voice) async {
-    acapelaTts.setVoice(voice);
+    acapelaTts.setVoice({'voice': voice});
     emit(state.copyWith(voice: voice));
     await voiceDb.setVoice(state.voice);
   }

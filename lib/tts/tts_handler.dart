@@ -19,6 +19,10 @@ abstract class TtsInterface {
 
   Future<dynamic> pause();
 
+  Future<dynamic> setVoice(Map<String, String> voice);
+
+  Future<dynamic> setSpeechRate(double speechRate);
+
   Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }
 
@@ -39,7 +43,7 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
     if (initialized &&
         voiceDb.voice.isNotEmpty &&
         (await acapela.availableVoices).isNotEmpty) {
-      await acapela.setVoice(voiceDb.voice);
+      await acapela.setVoice({'voice': voiceDb.voice});
       await acapela.setSpeechRate(voiceDb.speechRate);
     }
     _log.fine('Initialized $initialized');
