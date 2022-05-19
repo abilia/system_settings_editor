@@ -2874,8 +2874,8 @@ text''';
           exact: translate.noEndDate);
     });
 
-    testWidgets('Correct day colors in recurrence tab', (WidgetTester tester) async {
-
+    testWidgets('Correct day colors in recurrence tab',
+        (WidgetTester tester) async {
       void _expectSelectableFieldColor(int dayNum, Color color) {
         expect(
             (find.byType(SelectableField).evaluate().elementAt(dayNum).widget
