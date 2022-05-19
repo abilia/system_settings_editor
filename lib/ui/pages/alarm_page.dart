@@ -147,12 +147,24 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
 
   final ActivityAlarm alarm;
 
+  bool get displayCheckButton {
+    final activityDay = alarm.activityDay;
+    final activity = activityDay.activity;
+    if (activity.checkable && !activityDay.isSignedOff) {
+      if (alarm is ReminderUnchecked) return true;
+      if (alarm is ReminderBefore) return false;
+      if (alarm is EndAlarm) return true;
+      if (alarm is StartAlarm) {
+        if (activity.alarm.onlyStart) return true;
+        if (activity.hasEndTime) return false;
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final translate = Translator.of(context).translate;
-    final activityDay = alarm.activityDay;
-    final displayCheckButton =
-        activityDay.activity.checkable && !activityDay.isSignedOff;
     final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
     return BottomAppBar(
       child: Padding(
@@ -170,11 +182,11 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
               Expanded(
                 child: GreenButton(
                   key: TestKey.activityCheckButton,
-                  text: translate.check,
+                  text: Translator.of(context).translate.check,
                   icon: AbiliaIcons.handiCheck,
                   onPressed: () => checkConfirmationAndRemoveAlarm(
                     context,
-                    activityDay,
+                    alarm.activityDay,
                     alarm: alarm,
                   ),
                 ),
