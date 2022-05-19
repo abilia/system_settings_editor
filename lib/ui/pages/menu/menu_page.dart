@@ -31,7 +31,7 @@ class MenuPage extends StatelessWidget {
                 if (menu.showPhotos) const MyPhotosButton(),
                 if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
                 if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                const BasicTemplatesButton(),
+                if (menu.showBasicTemplates) const BasicTemplatesButton(),
                 if (menu.showSettings) const SettingsButton(),
               ],
             );
@@ -102,8 +102,6 @@ class MyPhotosButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocSelector<SortableBloc, SortableState, String?>(
       selector: (state) => state is SortablesLoaded
           ? state.sortables.getMyPhotosFolder()?.id
@@ -111,14 +109,17 @@ class MyPhotosButton extends StatelessWidget {
       builder: (context, myPhotoFolderId) => MenuItemButton(
         icon: AbiliaIcons.myPhotos,
         onPressed: myPhotoFolderId != null
-            ? () => Navigator.of(context).push(
+            ? () {
+                final authProviders = copiedAuthProviders(context);
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,
                       child: MyPhotosPage(myPhotoFolderId: myPhotoFolderId),
                     ),
                   ),
-                )
+                );
+              }
             : null,
         style: blueButtonStyle,
         text: Translator.of(context).translate.myPhotos,
@@ -132,34 +133,21 @@ class PhotoCalendarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return MenuItemButton(
       icon: AbiliaIcons.photoCalendar,
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: authProviders,
-            child: const PhotoCalendarPage(),
+      onPressed: () {
+        final authProviders = copiedAuthProviders(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: const PhotoCalendarPage(),
+            ),
           ),
-        ),
-      ),
+        );
+      },
       style: blueButtonStyle,
       text: Translator.of(context).translate.photoCalendar,
-    );
-  }
-}
-
-class CountdownButton extends StatelessWidget {
-  const CountdownButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuItemButton(
-      icon: AbiliaIcons.stopWatch,
-      onPressed: () {},
-      style: pinkButtonStyle,
-      text: Translator.of(context).translate.countdown,
     );
   }
 }
@@ -169,18 +157,19 @@ class QuickSettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return MenuItemButton(
       icon: AbiliaIcons.quickSettings,
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: authProviders,
-            child: const QuickSettingsPage(),
+      onPressed: () {
+        final authProviders = copiedAuthProviders(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: const QuickSettingsPage(),
+            ),
           ),
-        ),
-      ),
+        );
+      },
       style: yellowButtonStyle,
       text: Translator.of(context).translate.quickSettingsMenu,
     );
@@ -192,8 +181,6 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
     return BlocSelector<PermissionCubit, PermissionState, bool>(
       selector: (state) => state.importantPermissionMissing,
       builder: (context, importantPermissionMissing) {
@@ -211,6 +198,7 @@ class SettingsButton extends StatelessWidget {
                   name: name,
                 );
                 if (accessGranted) {
+                  final authProviders = copiedAuthProviders(context);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
@@ -292,39 +280,36 @@ class BasicTemplatesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProviders = copiedAuthProviders(context);
-
-    return Stack(
-      children: [
-        MenuItemButton(
-          style: blackButtonStyle,
-          text: Translator.of(context).translate.basicTemplates,
-          icon: AbiliaIcons.favoritesShow,
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => MultiBlocProvider(
-                providers: authProviders,
-                child: MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (context) =>
-                          SortableArchiveCubit<BasicActivityData>(
-                        sortableBloc: BlocProvider.of<SortableBloc>(context),
-                      ),
+    return MenuItemButton(
+      style: blackButtonStyle,
+      text: Translator.of(context).translate.basicTemplates,
+      icon: AbiliaIcons.favoritesShow,
+      onPressed: () {
+        final authProviders = copiedAuthProviders(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+              providers: authProviders,
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) =>
+                        SortableArchiveCubit<BasicActivityData>(
+                      sortableBloc: BlocProvider.of<SortableBloc>(context),
                     ),
-                    BlocProvider(
-                      create: (context) => SortableArchiveCubit<BasicTimerData>(
-                        sortableBloc: BlocProvider.of<SortableBloc>(context),
-                      ),
+                  ),
+                  BlocProvider(
+                    create: (context) => SortableArchiveCubit<BasicTimerData>(
+                      sortableBloc: BlocProvider.of<SortableBloc>(context),
                     ),
-                  ],
-                  child: const BasicTemplatesPage(),
-                ),
+                  ),
+                ],
+                child: const BasicTemplatesPage(),
               ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

@@ -6,6 +6,7 @@ class MenuSettings extends Equatable {
   bool get allDisabled =>
       !showCamera &&
       !showPhotos &&
+      !showBasicTemplates &&
       !showSettings &&
       !photoCalendarEnabled &&
       !quickSettingsEnabled;
@@ -16,20 +17,22 @@ class MenuSettings extends Equatable {
   static const showCameraKey = 'settings_menu_show_camera',
       showPhotosKey = 'settings_menu_show_photos',
       showPhotoCalendarKey = 'settings_menu_show_photo_calendar',
-      showTimersKey = 'settings_menu_show_timers',
+      showBasicTemplatesKey = 'settings_menu_show_basic_template',
       showQuickSettingsKey = 'settings_menu_show_quick_settings',
       showSettingsKey = 'settings_menu_show_settings';
 
   final bool showCamera,
       showPhotos,
-      showSettings,
       showPhotoCalendar,
-      showQuickSettings;
+      showBasicTemplates,
+      showQuickSettings,
+      showSettings;
 
   const MenuSettings({
     this.showCamera = true,
     this.showPhotos = true,
     this.showPhotoCalendar = true,
+    this.showBasicTemplates = true,
     this.showQuickSettings = true,
     this.showSettings = true,
   });
@@ -46,6 +49,9 @@ class MenuSettings extends Equatable {
         showPhotoCalendar: settings.getBool(
           showPhotoCalendarKey,
         ),
+        showBasicTemplates: settings.getBool(
+          showBasicTemplatesKey,
+        ),
         showQuickSettings: settings.getBool(
           showQuickSettingsKey,
         ),
@@ -59,6 +65,7 @@ class MenuSettings extends Equatable {
         showCamera,
         showPhotos,
         showPhotoCalendar,
+        showBasicTemplates,
         showQuickSettings,
         showSettings
       ];
