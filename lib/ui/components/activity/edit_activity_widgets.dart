@@ -719,7 +719,10 @@ class WeekDays extends StatelessWidget {
               ...RecurringWeekState.allWeekdays.map((d) {
                 final dayTheme = dayThemes[d - 1];
                 return SelectableField(
-                  text: Text(translate.shortWeekday(d)),
+                  text: Text(
+                    translate.shortWeekday(d),
+                    style: TextStyle(color: dayTheme.monthSurfaceColor),
+                  ),
                   color: dayTheme.dayColor,
                   selected: state.weekdays.contains(d),
                   onTap: () =>
