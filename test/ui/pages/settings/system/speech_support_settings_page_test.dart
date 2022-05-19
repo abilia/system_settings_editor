@@ -96,16 +96,6 @@ void main() {
       expect(find.byType(PickField), findsOneWidget);
     });
 
-    testWidgets('If voice not set enabling tts shows VoicesPage',
-        (tester) async {
-      when(() => settingsDb.textToSpeech).thenAnswer((_) => false);
-
-      await tester.goToSpeechSettingsPage();
-      await tester.tap(find.byType(TextToSpeechSwitch));
-      await tester.pumpAndSettle();
-      expect(find.byType(VoicesPage), findsOneWidget);
-    });
-
     testWidgets('Tapping voice pickfield shows VoicesPage', (tester) async {
       await tester.goToSpeechSettingsPage();
       await tester.tap(find.byType(PickField));
