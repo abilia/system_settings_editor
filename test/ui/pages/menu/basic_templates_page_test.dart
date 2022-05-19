@@ -288,7 +288,7 @@ void main() {
 
         await tester.tap(find.byType(AddTemplateButton));
         await tester.pumpAndSettle();
-        expect(find.byType(EditTimerPage), findsOneWidget);
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
         expect(find.byType(SaveButton), findsOneWidget);
         expect(find.byType(CancelButton), findsOneWidget);
         expect(find.byType(PreviousButton), findsNothing);
