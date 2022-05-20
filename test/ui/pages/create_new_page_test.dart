@@ -515,14 +515,10 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
-          expect(
-              find.byType(SortableLibrary<BasicActivityData>), findsOneWidget);
-          expect(
-              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
+          expect(find.byType(ListLibrary<BasicActivityData>), findsOneWidget);
+          expect(find.byType(ListDataItem), findsOneWidget);
           expect(find.text(title), findsOneWidget);
           await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
           expect(find.byType(EditActivityPage), findsOneWidget);
           final nameAndPicture = find.byType(NameAndPictureWidget);
@@ -558,8 +554,6 @@ void main() {
           await tester.tap(find.byKey(TestKey.basicActivityChoice));
           await tester.pumpAndSettle();
           await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
           final dateAndTime = tester
               .widget<TimeIntervallPicker>(find.byType(TimeIntervallPicker));
@@ -600,40 +594,21 @@ void main() {
           await tester.pumpAndSettle();
 
           // Act Go to into folder
-          await tester.tap(find.byType(LibraryFolder));
+          await tester.tap(find.byIcon(AbiliaIcons.folder));
           await tester.pumpAndSettle();
 
-          // Assert no folder, one item, nothing selected, next button disabled
-          expect(find.byType(LibraryFolder), findsNothing);
-          expect(
-              find.byType(BasicLibraryItem<BasicActivityData>), findsOneWidget);
+          // Assert no folder, one item, nothing selected
+          expect(find.byIcon(AbiliaIcons.folder), findsNothing);
+          expect(find.byType(BasicTemplatePickField<BasicActivityData>),
+              findsOneWidget);
           expect(find.text(title), findsOneWidget);
-          expect(find.text(folderTitle), findsOneWidget);
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNull,
-          );
-
-          // Act - Select item
-          await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-
-          // Assert - Next button enabled
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNotNull,
-          );
+          expect(find.text(folderTitle), findsNWidgets(2));
 
           // Act - Go back
           await tester.tap(find.byType(PreviousButton));
           await tester.pumpAndSettle();
 
-          // Assert - Next button disabled, no folder
-          expect(
-            tester.widget<NextButton>(find.byType(NextButton)).onPressed,
-            isNull,
-          );
-          expect(find.byType(LibraryFolder), findsOneWidget);
+          expect(find.byIcon(AbiliaIcons.folder), findsOneWidget);
 
           // Act - Go back
           await tester.tap(find.byType(PreviousButton));
@@ -686,8 +661,6 @@ void main() {
           // Act - choose basic activity
           await tester.tap(find.text(title));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
-          await tester.pumpAndSettle();
 
           expect(find.byType(EditActivityPage), findsOneWidget);
 
@@ -728,8 +701,6 @@ void main() {
           expect(find.byType(BasicActivityPickerPage), findsOneWidget);
           // Act - Select item
           await tester.tap(find.text(title));
-          await tester.pumpAndSettle();
-          await tester.tap(find.byType(NextButton));
           await tester.pumpAndSettle();
 
           expect(find.byType(EditActivityPage), findsOneWidget);
