@@ -217,12 +217,14 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
             constraints: const BoxConstraints.expand(),
             child: Column(
               children: <Widget>[
-                TimerTopInfo(timer: timerAlarm.timer),
-                Divider(
-                  height: layout.activityPage.dividerHeight,
-                  endIndent: 0,
-                  indent: layout.activityPage.dividerIndentation,
-                ),
+                if (timer.hasTitle || timer.hasImage) ...[
+                  TimerTopInfo(timer: timer),
+                  Divider(
+                    height: layout.activityPage.dividerHeight,
+                    endIndent: 0,
+                    indent: layout.activityPage.dividerIndentation,
+                  ),
+                ],
                 Expanded(
                   child: Padding(
                     padding: layout.timerPage.mainContentPadding,

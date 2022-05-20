@@ -132,6 +132,12 @@ extension DateTimeExtensions on DateTime {
           ? Occasion.past
           : Occasion.current;
 
+  Occasion dayOccasion(DateTime now) => isAtSameDay(now)
+      ? Occasion.current
+      : isAfter(now)
+          ? Occasion.future
+          : Occasion.past;
+
   DateTime withTime(TimeOfDay? timeOfDay) =>
       copyWith(hour: timeOfDay?.hour, minute: timeOfDay?.minute);
 

@@ -35,7 +35,7 @@ void main() async {
     () => runApp(
       App(
         payload: payload,
-        runStartGuide: shouldRunStartGuide,
+        runStartGuide: false, //shouldRunStartGuide,
         analytics: Config.release,
       ),
     ),
@@ -130,7 +130,7 @@ class App extends StatelessWidget {
                         analytics: analytics,
                       ),
                     )
-                  : const StartGuidePage(),
+                  : const ProductionGuidePage(),
         ),
       );
 }

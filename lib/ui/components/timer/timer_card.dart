@@ -77,22 +77,24 @@ class TimerCard extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: layout.eventCard.titlePadding,
-                        child: Stack(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
+                            if (timerOccasion.timer.hasTitle) ...[
+                              Text(
                                 timerOccasion.timer.title,
-                                style: Theme.of(context).textTheme.subtitle1,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    ?.copyWith(height: 1),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            Align(
-                              alignment: timerOccasion.timer.hasTitle
-                                  ? Alignment.bottomLeft
-                                  : Alignment.centerLeft,
-                              child: TimeLeft(timerOccasion),
-                            ),
+                              SizedBox(
+                                height: layout.eventCard.titleSubtitleSpacing,
+                              ),
+                            ],
+                            TimeLeft(timerOccasion),
                           ],
                         ),
                       ),
@@ -122,7 +124,8 @@ class TimeLeft extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
+      style: (Theme.of(context).textTheme.bodyText1 ?? bodyText1)
+          .copyWith(height: 1),
       overflow: TextOverflow.ellipsis,
       child: timerOccasion.isOngoing
           ? TimerTickerBuilder(

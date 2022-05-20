@@ -90,6 +90,7 @@ class MediumLayout extends Layout {
             fontSize: 12,
           ),
           formPadding: const FormPaddingLayout(
+            smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
             largeVerticalItemDistance: 18,
             groupBottomDistance: 24,
@@ -176,17 +177,19 @@ class MediumLayout extends Layout {
             marginLarge: 16,
             imageSize: 88,
             categorySideOffset: 76,
+            timerWheelSize: 72,
+            timerWheelPadding: EdgeInsets.only(right: 10),
             iconSize: 24.0,
             titleImagePadding: 12,
             borderWidth: 4,
             currentBorderWidth: 6,
             imagePadding: EdgeInsets.only(left: 8),
             crossPadding: EdgeInsets.all(8),
-            titlePadding:
-                EdgeInsets.only(left: 12, top: 12, right: 12, bottom: 16),
+            titlePadding: EdgeInsets.only(left: 12, right: 12),
             statusesPadding: EdgeInsets.only(right: 12, bottom: 8),
             privateIconSize: 36,
             cardIconPadding: EdgeInsets.only(right: 6),
+            titleSubtitleSpacing: 12,
           ),
           timerPage: const TimerPageLayout(
             topInfoHeight: 232,
@@ -282,6 +285,11 @@ class MediumLayout extends Layout {
                   EdgeInsets.only(left: 7, right: 7, bottom: 4, top: 7),
             ),
           ),
+          listDataItem: const ListDataItemLayout(
+            folderPadding: EdgeInsets.only(left: 12, right: 8),
+            imagePadding: EdgeInsets.only(left: 8, right: 12),
+            iconSize: 48,
+          ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
             timeRowPadding: EdgeInsets.only(bottom: 16),
@@ -351,7 +359,7 @@ class MediumLayout extends Layout {
           ),
           pickField: const PickFieldLayout(
             padding: EdgeInsets.only(left: 18, right: 18),
-            imagePadding: EdgeInsets.only(left: 4, right: 12),
+            imagePadding: EdgeInsets.only(left: 0, right: 12),
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
@@ -368,16 +376,20 @@ class MediumLayout extends Layout {
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
           templates: const LayoutTemplates(
-            s1: EdgeInsets.all(18),
+            s1: EdgeInsets.all(16),
+            s2: EdgeInsets.fromLTRB(24, 24, 24, 64),
             s3: EdgeInsets.all(6),
+            s4: EdgeInsets.symmetric(horizontal: 20),
             bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
             m1: EdgeInsets.fromLTRB(24, 36, 24, 64),
             m2: EdgeInsets.fromLTRB(0, 32, 0, 32),
             m3: EdgeInsets.fromLTRB(24, 36, 24, 24),
             m4: EdgeInsets.symmetric(horizontal: 32),
             m5: EdgeInsets.fromLTRB(24, 96, 24, 24),
+            l1: EdgeInsets.fromLTRB(24, 146, 24, 64),
             l2: EdgeInsets.symmetric(horizontal: 32, vertical: 96),
-            l4: EdgeInsets.symmetric(vertical: 96),
+            l3: EdgeInsets.symmetric(horizontal: 24, vertical: 96),
+            l5: EdgeInsets.symmetric(horizontal: 48, vertical: 96),
           ),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
@@ -494,6 +506,7 @@ class MediumLayout extends Layout {
           logout: const LogoutLayout(
             profilePictureSize: 126,
             profileDistance: 35,
+            topDistance: 94,
           ),
           photoCalendar: const PhotoCalendarLayout(
             clockSize: 200,
@@ -526,7 +539,8 @@ class MediumLayout extends Layout {
             deniedVerticalPadding: EdgeInsets.symmetric(vertical: 6),
           ),
           editTimer: const EditTimerLayout(
-            inputTimeWidth: 180,
+            inputTimeWidth: 233,
+            inputTimePadding: 35,
             wheelPadding: EdgeInsets.only(top: 32),
           ),
           button: const ButtonLayout(

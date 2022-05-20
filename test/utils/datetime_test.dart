@@ -241,4 +241,15 @@ void main() {
       expect(DateTime(2020, 10, 07, 23, 59).dayPart(dayParts), DayPart.night);
     });
   });
+
+  group('Occasion', () {
+    test('Correct occasion', () {
+      final day = DateTime(2022, 05, 18);
+      expect(day.dayOccasion(DateTime(2022, 05, 18, 19, 55)), Occasion.current);
+      expect(day.dayOccasion(DateTime(2022, 05, 19, 19, 55)), Occasion.past);
+      expect(day.dayOccasion(DateTime(2022, 05, 18, 23, 59)), Occasion.current);
+      expect(day.dayOccasion(DateTime(2022, 05, 18, 00, 00)), Occasion.current);
+      expect(day.dayOccasion(DateTime(2022, 05, 17, 23, 59)), Occasion.future);
+    });
+  });
 }

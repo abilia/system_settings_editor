@@ -93,24 +93,33 @@ class ActivityCard extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding: layout.eventCard.titlePadding,
-                            child: Stack(children: <Widget>[
-                              if (activity.hasTitle)
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                if (activity.hasTitle) ...[
+                                  Text(
+                                    activity.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        ?.copyWith(height: 1),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(
+                                      height: layout
+                                          .eventCard.titleSubtitleSpacing),
+                                ],
                                 Text(
-                                  activity.title,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              Align(
-                                alignment: activity.hasTitle
-                                    ? Alignment.bottomLeft
-                                    : Alignment.centerLeft,
-                                child: Text(
                                   activity.subtitle(context),
-                                  style: Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.copyWith(height: 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ]),
+                              ],
+                            ),
                           ),
                         ),
                       ],

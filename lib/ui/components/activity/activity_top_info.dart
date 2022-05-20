@@ -157,23 +157,18 @@ class _TimeBox extends StatelessWidget {
   const _TimeBox({
     Key? key,
     required this.text,
-    required Occasion occasion,
+    required this.occasion,
     this.maxWidth,
-  })  : current = occasion == Occasion.current,
-        past = occasion == Occasion.past,
-        future = occasion == Occasion.future,
-        super(key: key);
+  }) : super(key: key);
 
-  final bool current, past, future;
+  final Occasion occasion;
   final String text;
   final double? maxWidth;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context)
-        .textTheme
-        .headline6
-        ?.copyWith(color: past ? AbiliaColors.white140 : AbiliaColors.black);
+    final textStyle = Theme.of(context).textTheme.headline6?.copyWith(
+        color: occasion.isPast ? AbiliaColors.white140 : AbiliaColors.black);
     final maxMaxWidth = layout.activityPage.timeBoxSize.width;
     return Tts.data(
       data: text,
@@ -189,9 +184,9 @@ class _TimeBox extends StatelessWidget {
               maxWidth: min(maxWidth ?? maxMaxWidth, maxMaxWidth),
               maxHeight: layout.activityPage.timeBoxSize.height,
             ),
-            decoration: current
+            decoration: occasion.isCurrent
                 ? _currentBoxDecoration
-                : past
+                : occasion.isPast
                     ? const BoxDecoration()
                     : _futureBoxDecoration,
             child: Center(
@@ -204,7 +199,7 @@ class _TimeBox extends StatelessWidget {
             ),
           ),
           AnimatedOpacity(
-            opacity: past ? 1.0 : 0.0,
+            opacity: occasion.isPast ? 1.0 : 0.0,
             duration: ActivityInfo.animationDuration,
             child: CrossOver(
               fallbackHeight: layout.activityPage.timeCrossOverSize.height,

@@ -32,7 +32,6 @@ class CreateNewPage extends StatelessWidget {
           appBar: _appBar(t, displayNewActivity, displayNewTimer),
           body: Column(
             children: [
-              SizedBox(height: layout.templates.m1.top),
               if (memoplannerSettingsState.newActivityOption &&
                   displayNewActivity)
                 PickField(
@@ -40,13 +39,13 @@ class CreateNewPage extends StatelessWidget {
                   leading: const Icon(AbiliaIcons.basicActivity),
                   text: Text(t.newActivity),
                   onTap: () => navigateToActivityWizard(context, authProviders),
-                ).pad(m1ItemPadding),
+                ).pad(m1WithZeroBottom),
               if (memoplannerSettingsState.basicActivityOption &&
                   displayNewActivity)
                 PickField(
                   key: TestKey.basicActivityChoice,
-                  leading: const Icon(AbiliaIcons.folder),
-                  text: Text(t.selectBasicActivity),
+                  leading: const Icon(AbiliaIcons.basicActivities),
+                  text: Text(t.fromBasicActivity),
                   onTap: () async {
                     final basicActivityData =
                         await Navigator.of(context).push<BasicActivityData>(
@@ -92,8 +91,8 @@ class CreateNewPage extends StatelessWidget {
               if (displayNewTimer)
                 PickField(
                   key: TestKey.basicTimerChoice,
-                  leading: const Icon(AbiliaIcons.folder),
-                  text: Text(t.selectBaseTimer),
+                  leading: const Icon(AbiliaIcons.basicTimers),
+                  text: Text(t.fromBasicTimer),
                   onTap: () async {
                     final timerStarted =
                         await Navigator.of(context).push<AbiliaTimer>(
@@ -147,8 +146,8 @@ class CreateNewPage extends StatelessWidget {
       title: Config.isMPGO || displayNewTimer && displayNewActivity
           ? t.add
           : displayNewActivity
-              ? t.newActivity
-              : t.newTimer,
+              ? t.addActivity
+              : t.addTimer,
     );
   }
 

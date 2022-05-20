@@ -403,6 +403,7 @@ class AbiliaIcons {
       tablet = IconData(0xea8a, fontFamily: fontFamily),
       phoneTablet = IconData(0xea8b, fontFamily: fontFamily),
       basicActivity = IconData(0xea8c, fontFamily: fontFamily),
+      basicActivities = IconData(0xeb38, fontFamily: fontFamily),
       email = IconData(0xea8d, fontFamily: fontFamily),
       error = IconData(0xea8e, fontFamily: fontFamily),
       checkSmall = IconData(0xea8f, fontFamily: fontFamily),

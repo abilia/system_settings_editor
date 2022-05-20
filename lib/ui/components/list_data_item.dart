@@ -1,5 +1,6 @@
 import 'package:seagull/ui/all.dart';
 
+/// Called DataItem (list) in Figma
 class ListDataItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final Widget leading, trailing;
@@ -45,9 +46,9 @@ class ListDataItem extends StatelessWidget {
                     IconTheme(
                       data: Theme.of(context)
                           .iconTheme
-                          .copyWith(size: layout.icon.small),
+                          .copyWith(size: layout.listDataItem.iconSize),
                       child: Padding(
-                        padding: layout.pickField.imagePadding,
+                        padding: layout.listDataItem.imagePadding,
                         child: leading,
                       ),
                     ),

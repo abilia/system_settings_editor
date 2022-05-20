@@ -373,6 +373,7 @@ class MonthDayContainer extends StatelessWidget {
                 else if (d.fullDayActivity != null)
                   MonthActivityContent(
                     activityDay: d.fullDayActivity!,
+                    isPast: d.isPast,
                   ),
                 if (d.isPast)
                   const CrossOver(
@@ -502,6 +503,7 @@ class MonthActivityContent extends StatelessWidget {
   const MonthActivityContent({
     Key? key,
     required this.activityDay,
+    required this.isPast,
     this.width,
     this.height,
     this.goToActivityOnTap = false,
@@ -511,6 +513,7 @@ class MonthActivityContent extends StatelessWidget {
   final double? width;
   final double? height;
   final bool goToActivityOnTap;
+  final bool isPast;
 
   @override
   Widget build(BuildContext context) {
@@ -528,13 +531,17 @@ class MonthActivityContent extends StatelessWidget {
       ),
       child: Center(
         child: activityDay.activity.hasImage
-            ? FadeInAbiliaImage(
-                imageFileId: activityDay.activity.fileId,
-                imageFilePath: activityDay.activity.icon,
-                borderRadius: BorderRadius.zero,
-                height: double.infinity,
-                width: double.infinity,
-                fit: BoxFit.contain,
+            ? AnimatedOpacity(
+                duration: const Duration(milliseconds: 400),
+                opacity: isPast ? 0.5 : 1.0,
+                child: FadeInAbiliaImage(
+                  imageFileId: activityDay.activity.fileId,
+                  imageFilePath: activityDay.activity.icon,
+                  borderRadius: BorderRadius.zero,
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
               )
             : Padding(
                 padding: layout.monthCalendar.activityTextContentPadding,
