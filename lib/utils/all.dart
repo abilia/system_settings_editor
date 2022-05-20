@@ -24,3 +24,4 @@ export 'sortable_util.dart';
 export 'time_of_day.dart';
 export 'analog_time_strings.dart';
 export 'copied_auth_providers.dart';
+export 'iterable_activity_day.dart';

@@ -68,25 +68,25 @@ void main() {
     dayEventsCubitMock = MockDayEventsCubit();
     timepillarCubit = FakeTimepillarCubit();
     final allDayActivities = [
-      Activity.createNew(
-        title: title0,
-        startTime: day,
-      ),
-      Activity.createNew(
-        title: title1,
-        startTime: day,
-      ),
-      Activity.createNew(
-        title: title2,
-        startTime: day,
-      ),
-      Activity.createNew(
-        title: title3,
-        startTime: day,
-      ),
-    ].map((a) => ActivityDay(a, day).toOccasion(day)).toList();
+      title0,
+      title1,
+      title2,
+      title3,
+    ]
+        .map(
+          (t) => ActivityOccasion(
+            Activity.createNew(
+              title: t,
+              startTime: day,
+              fullDay: true,
+            ),
+            day,
+            Occasion.future,
+          ),
+        )
+        .toList();
 
-    final expected = EventsLoaded(
+    final expected = EventsState(
       activities: const [],
       timers: const [],
       fullDayActivities: allDayActivities,

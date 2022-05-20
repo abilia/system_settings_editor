@@ -4,17 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/datetime.dart';
 
-abstract class EventsState extends Equatable {
-  const EventsState();
-  @override
-  List<Object> get props => [];
-}
-
-class EventsLoading extends EventsState {
-  const EventsLoading() : super();
-}
-
-class EventsLoaded extends EventsState {
+class EventsState extends Equatable {
   final UnmodifiableListView<Event> events;
   final UnmodifiableListView<TimerOccasion> timers;
   final UnmodifiableListView<ActivityDay> activities;
@@ -25,7 +15,7 @@ class EventsLoaded extends EventsState {
 
   bool get isToday => occasion == Occasion.current;
 
-  EventsLoaded({
+  EventsState({
     required List<ActivityDay> activities,
     required List<TimerOccasion> timers,
     List<ActivityOccasion> fullDayActivities = const [],
@@ -58,9 +48,21 @@ class EventsLoaded extends EventsState {
       ];
 
   @override
-  String toString() => 'EventsLoaded '
+  String toString() => 'EventsState '
       '$fullDayActivities fullDayActivities, '
       '$activities activities, '
       '$timers timers, '
       '$occasion, ${yMd(day)} }';
+}
+
+class EventsLoading extends EventsState {
+  EventsLoading(
+    DateTime day,
+    Occasion occasion,
+  ) : super(
+          activities: [],
+          timers: [],
+          day: day,
+          occasion: occasion,
+        );
 }

@@ -36,7 +36,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     final dotHeight = cardPosition.dots * measures.dotDistance;
 
     final right = TimepillarSide.right == timepillarSide;
-    final timepillarInterval = measures.timepillarInterval;
+    final timepillarInterval = measures.interval;
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
       buildWhen: (previous, current) =>
           previous.dotsInTimepillar != current.dotsInTimepillar ||
@@ -60,11 +60,11 @@ class ActivityTimepillarCard extends TimepillarCard {
               children: <Widget>[
                 if (settings.dotsInTimepillar)
                   SideDots(
-                    startTime: startTime.isBefore(timepillarInterval.startTime)
-                        ? timepillarInterval.startTime
+                    startTime: startTime.isBefore(timepillarInterval.start)
+                        ? timepillarInterval.start
                         : startTime,
-                    endTime: endTime.isAfter(timepillarInterval.endTime)
-                        ? timepillarInterval.endTime
+                    endTime: endTime.isAfter(timepillarInterval.end)
+                        ? timepillarInterval.end
                         : endTime,
                     dots: cardPosition.dots,
                     dayParts: dayParts,

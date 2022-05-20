@@ -77,23 +77,11 @@ extension RecurringActivityExtension on Activity {
     ];
   }
 
-  List<ActivityDay> dayActivitiesForInterval(
-    DateTime intervalStart,
-    DateTime intervalEnd,
-  ) {
-    final numberOfDays =
-        intervalEnd.onlyDays().difference(intervalStart.onlyDays()).inDays + 1;
-    final days = List.generate(
-      numberOfDays,
-      (i) => DateTime(
-        intervalStart.year,
-        intervalStart.month,
-        intervalStart.day + i,
-      ),
-    );
-
-    return days.expand((day) => dayActivitiesForDay(day)).toList();
-  }
+  List<ActivityDay> dayActivitiesForInterval(TimepillarInterval interval) =>
+      List.generate(
+        interval.daySpan,
+        interval.start.addDays,
+      ).expand(dayActivitiesForDay).toList();
 
   bool recursOnDay(DateTime day) => recurs.recursOnDay(day);
 }

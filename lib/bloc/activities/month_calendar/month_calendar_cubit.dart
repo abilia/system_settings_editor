@@ -147,7 +147,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
 
     final activitiesThatDay = activities
         .expand((activity) => activity.dayActivitiesForDay(day))
-        .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
+        .removeAfter(now)
         .toList();
     if (activitiesThatDay.isEmpty) {
       return MonthDay(day, null, false, 0, occasion);
