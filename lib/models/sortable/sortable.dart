@@ -70,7 +70,7 @@ class Sortable<T extends SortableData> extends DataModel {
       case BasicTimerData:
       case BasicTimerDataItem:
       case BasicTimerDataFolder:
-        return SortableType.basicActivity;
+        return SortableType.basicTimer;
     }
     throw 'no mapping from Type $t and type string';
   }

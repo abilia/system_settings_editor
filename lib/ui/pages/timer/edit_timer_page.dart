@@ -9,28 +9,90 @@ class EditTimerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+
+    return _EditTimerPage(
+      bottomNavigation: BottomNavigation(
+        backNavigationWidget: const PreviousButton(),
+        forwardNavigationWidget:
+            BlocSelector<EditTimerCubit, EditTimerState, Duration>(
+          selector: (state) => state.duration,
+          builder: (context, duration) => StartButton(
+            onPressed: duration.inMinutes > 0
+                ? context.read<EditTimerCubit>().start
+                : () => showViewDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                        text: t.timerInvalidDuration,
+                      ),
+                    ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditBasicTimerPage extends StatelessWidget {
+  const EditBasicTimerPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
+
+    return _EditTimerPage(
+      bottomNavigation: BottomNavigation(
+        backNavigationWidget: const CancelButton(),
+        forwardNavigationWidget:
+            BlocSelector<EditTimerCubit, EditTimerState, Duration>(
+          selector: (state) => state.duration,
+          builder: (context, duration) => SaveButton(
+            onPressed: duration.inMinutes > 0
+                ? () => context.read<EditTimerCubit>().save()
+                : () => showViewDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                        text: t.timerInvalidDuration,
+                      ),
+                    ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditTimerPage extends StatelessWidget {
+  const _EditTimerPage({Key? key, required this.bottomNavigation})
+      : super(key: key);
+
+  final BottomNavigation bottomNavigation;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Translator.of(context).translate;
     return BlocListener<EditTimerCubit, EditTimerState>(
       listener: (context, state) {
         if (state is SavedTimerState) {
           return Navigator.pop(context, state.savedTimer);
         }
       },
-      child: BlocBuilder<EditTimerCubit, EditTimerState>(
-        builder: (context, state) => Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.stopWatch,
-            title: t.newTimer,
-          ),
-          body: Padding(
-            padding: layout.templates.m3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const _TimerInfoInput(),
-                Expanded(
-                  child: TimerWheel.interactive(
-                    lengthInSeconds: state.duration.inSeconds,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AbiliaAppBar(
+          iconData: AbiliaIcons.stopWatch,
+          title: t.newTimer,
+        ),
+        body: Padding(
+          padding: layout.templates.m3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const _TimerInfoInput(),
+              Expanded(
+                child: BlocSelector<EditTimerCubit, EditTimerState, Duration>(
+                  selector: (state) => state.duration,
+                  builder: (context, duration) => TimerWheel.interactive(
+                    lengthInSeconds: duration.inSeconds,
                     onMinutesSelectedChanged: (minutesSelected) {
                       HapticFeedback.selectionClick();
                       context.read<EditTimerCubit>().updateDuration(
@@ -39,25 +101,11 @@ class EditTimerPage extends StatelessWidget {
                     },
                   ).pad(layout.editTimer.wheelPadding),
                 ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: BottomNavigation(
-            backNavigationWidget: PreviousButton(
-              onPressed: Navigator.of(context).pop,
-            ),
-            forwardNavigationWidget: StartButton(
-              onPressed: state.duration.inMinutes > 0
-                  ? context.read<EditTimerCubit>().start
-                  : () => showViewDialog(
-                        context: context,
-                        builder: (context) => ErrorDialog(
-                          text: t.timerInvalidDuration,
-                        ),
-                      ),
-            ),
+              ),
+            ],
           ),
         ),
+        bottomNavigationBar: bottomNavigation,
       ),
     );
   }

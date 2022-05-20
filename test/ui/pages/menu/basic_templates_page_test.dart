@@ -1,12 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:seagull/background/notification_isolate.dart';
 import 'package:seagull/db/sortable_db.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mocks.dart';
@@ -21,6 +20,7 @@ void main() {
 
   const String activityNameOne = 'Basic Activity 1';
   const String activityNameTwo = 'Basic Activity 2';
+  const String timerTitle = 'Basic Timer';
 
   late List<Sortable> initialSortables;
   late SortableDb mockSortableDb;
@@ -45,7 +45,7 @@ void main() {
       ),
       Sortable.createNew<BasicTimerDataItem>(
         data: BasicTimerDataItem.fromJson(
-            '{"duration":60000,"title":"Basic Timer"}'),
+            '{"duration":60000,"title":"$timerTitle"}'),
       ),
     ];
 
@@ -103,35 +103,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(PickField), findsNothing);
       expect(find.byType(LibraryHeading<BasicActivityData>), findsOneWidget);
-    });
-
-    testWidgets('Can create sortable activity', (tester) async {
-      const title = 'a brand new title';
-      await tester.goToTemplates();
-      await tester.tap(find.byType(AddTemplateButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(EditActivityPage), findsOneWidget);
-      expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
-      expect(find.byType(DatePicker), findsNothing);
-      expect(find.byType(CancelButton), findsOneWidget);
-      expect(find.byType(PreviousButton), findsNothing);
-
-      await tester.ourEnterText(
-        find.byKey(TestKey.editTitleTextFormField),
-        title,
-      );
-      await tester.tap(find.byType(NextWizardStepButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(EditActivityPage), findsNothing);
-      final captured =
-          verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
-              .captured
-              .last;
-
-      final sortable =
-          (captured as List).single as Sortable<BasicActivityDataItem>;
-      expect(sortable.data.activityTitle, title);
-      expect(sortable.data.name, title);
     });
 
     group('Tool bar', () {
@@ -274,6 +245,119 @@ void main() {
           basicActivity.info,
           '{"info-item":[{"type":"note","data":{"text":"note Text"}}]}',
         );
+      });
+
+      testWidgets('Can edit timer template', (tester) async {
+        const newTitle = 'new title';
+
+        await tester.goToTemplates();
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(timerTitle));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(AbiliaIcons.edit));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
+
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          newTitle,
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byIcon(AbiliaIcons.clock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('9'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsNothing);
+        final captured =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .last;
+
+        final sortable = (captured as List).single as Sortable<SortableData>;
+
+        BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
+        expect(data.basicTimerTitle, newTitle);
+        expect(data.duration, const Duration(minutes: 19).inMilliseconds);
+      });
+    });
+
+    group('Create Basic templates', () {
+      testWidgets('Can create sortable activity', (tester) async {
+        const title = 'a brand new title';
+        await tester.goToTemplates();
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsOneWidget);
+        expect(find.byIcon(AbiliaIcons.repeat), findsNothing);
+        expect(find.byType(DatePicker), findsNothing);
+        expect(find.byType(CancelButton), findsOneWidget);
+        expect(find.byType(PreviousButton), findsNothing);
+
+        await tester.ourEnterText(
+          find.byKey(TestKey.editTitleTextFormField),
+          title,
+        );
+        await tester.tap(find.byType(NextWizardStepButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditActivityPage), findsNothing);
+        final captured =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .last;
+
+        final sortable =
+            (captured as List).single as Sortable<BasicActivityDataItem>;
+        expect(sortable.data.activityTitle, title);
+        expect(sortable.data.name, title);
+      });
+
+      testWidgets('Can create basic timer', (tester) async {
+        const enteredTitle = 'a basic timer';
+        final duration = const Duration(minutes: 5).inMilliseconds;
+        await tester.goToTemplates();
+        await tester.tap(find.byIcon(AbiliaIcons.stopWatch));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(AddTemplateButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditBasicTimerPage), findsOneWidget);
+        expect(find.byType(SaveButton), findsOneWidget);
+        expect(find.byType(CancelButton), findsOneWidget);
+        expect(find.byType(PreviousButton), findsNothing);
+
+        await tester.ourEnterText(
+          find.byType(AbiliaTextInput),
+          enteredTitle,
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byIcon(AbiliaIcons.clock));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('5'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(OkButton));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(SaveButton));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditTimerPage), findsNothing);
+        final captured =
+            verify(() => mockSortableDb.insertAndAddDirty(captureAny()))
+                .captured
+                .last;
+
+        final sortable = (captured as List).single as Sortable<SortableData>;
+
+        BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
+        expect(data.basicTimerTitle, enteredTitle);
+        expect(data.duration, duration);
       });
     });
   });

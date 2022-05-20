@@ -146,14 +146,14 @@ void main() {
         '}',
       ),
     );
-    expect(s.type, SortableType.basicActivity);
+    expect(s.type, SortableType.basicTimer);
   });
 
   test('Get correct type when BasicTimerDataFolder', () {
     final s = Sortable.createNew(
       data: BasicTimerDataFolder.fromJson('{"title":"title"}'),
     );
-    expect(s.type, SortableType.basicActivity);
+    expect(s.type, SortableType.basicTimer);
   });
 
   test('SGC-1525 Sorting basic timers deletes name (and duration) in list', () {

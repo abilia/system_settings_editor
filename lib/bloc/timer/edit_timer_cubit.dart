@@ -22,14 +22,19 @@ class EditTimerCubit extends Cubit<EditTimerState> {
             : EditTimerState.withBasicTimer(basicTimer));
 
   void start() {
+    final timer = save();
+    timerCubit.addTimer(timer);
+  }
+
+  AbiliaTimer save() {
     final timer = AbiliaTimer.createNew(
       title: state.name,
       fileId: state.image.id,
       duration: state.duration,
       startTime: ticker.time,
     );
-    timerCubit.addTimer(timer);
     emit(SavedTimerState(state, timer));
+    return timer;
   }
 
   void updateDuration(Duration duration) => emit(
