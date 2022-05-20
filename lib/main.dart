@@ -35,7 +35,7 @@ void main() async {
     () => runApp(
       App(
         payload: payload,
-        runStartGuide: false, //shouldRunStartGuide,
+        runStartGuide: shouldRunStartGuide,
         analytics: Config.release,
       ),
     ),
