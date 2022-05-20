@@ -102,9 +102,11 @@ class BasicTemplatesPage extends StatelessWidget {
     );
     if (timer != null) {
       context.read<SortableBloc>().add(
-            SortableUpdated(sortable.copyWith(
-              data: BasicTimerDataItem.fromTimer(timer),
-            )),
+            SortableUpdated(
+              sortable.copyWith(
+                data: BasicTimerDataItem.fromTimer(timer),
+              ),
+            ),
           );
     }
   }
