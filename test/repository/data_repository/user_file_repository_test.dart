@@ -22,11 +22,11 @@ void main() {
   final mockMultiRequestBuilder = MockMultipartRequestBuilder();
   const userId = 1;
   final userFileRepository = UserFileRepository(
-    authToken: Fakes.token,
     baseUrlDb: mockBaseUrlDb,
     fileStorage: mockFileStorage,
     client: mockClient,
     userFileDb: mockUserFileDb,
+    loginDb: MockLoginDb(),
     userId: userId,
     multipartRequestBuilder: mockMultiRequestBuilder,
   );
@@ -156,7 +156,7 @@ void main() {
     when(
       () => mockClient.post(
         '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
-        headers: jsonAuthHeader(Fakes.token),
+        headers: jsonHeader(),
         body: jsonEncode(dirtyFiles.toList()),
       ),
     ).thenAnswer(

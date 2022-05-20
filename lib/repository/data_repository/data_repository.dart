@@ -19,7 +19,6 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
     required this.path,
-    required this.authToken,
     required this.userId,
     required this.db,
     required this.fromJsonToDataModel,
@@ -30,7 +29,6 @@ abstract class DataRepository<M extends DataModel> extends Repository {
         super(client, baseUrlDb);
 
   final DataDb<M> db;
-  final String authToken;
   final int userId;
   final Logger log;
   final String path, postPath;
@@ -65,7 +63,6 @@ abstract class DataRepository<M extends DataModel> extends Repository {
     log.fine('fetching $path for revision $revision');
     final response = await client.get(
       '$baseUrl/api/v1/data/$userId/$path?revision=$revision'.toUri(),
-      headers: authHeader(authToken),
     );
     final decoded = response.json() as List;
     return decoded
@@ -111,7 +108,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   ) async {
     final response = await client.post(
       '$baseUrl/api/v$postApiVersion/data/$userId/$postPath'.toUri(),
-      headers: jsonAuthHeader(authToken),
+      headers: jsonHeader(),
       body: jsonEncode(data.toList()),
     );
 

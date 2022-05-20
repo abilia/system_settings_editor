@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 const prod = 'https://myabilia.com',
     whale = 'https://whale.abilia-gbg.se',
     t1 = 'https://t1.abilia-gbg.se',
-    debug = 'https://debug.abilia-gbg.se';
+    debug = 'http://192.168.1.75:9103';
 const Map<String, String> backendEnvironments = {
   prod: 'Prod',
   whale: 'Whale',
@@ -59,5 +59,4 @@ String profileImageUrl(String baseUrl, String imageFileId, {int size = 400}) =>
 
 Map<String, String> authHeader(String token) => {'X-Auth-Token': token};
 
-Map<String, String> jsonAuthHeader(String token) =>
-    {'X-Auth-Token': token, 'Content-Type': 'application/json'};
+Map<String, String> jsonHeader() => {'Content-Type': 'application/json'};

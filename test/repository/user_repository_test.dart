@@ -38,7 +38,7 @@ void main() {
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
     try {
-      await userRepo.getUserFromApi(Fakes.token);
+      await userRepo.getUserFromApi();
     } catch (e) {
       expect(e, isInstanceOf<UnauthorizedException>());
       return;
@@ -53,7 +53,7 @@ void main() {
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
     try {
-      await userRepo.me(Fakes.token);
+      await userRepo.me();
     } catch (e) {
       expect(e, isInstanceOf<UnauthorizedException>());
       return;
@@ -70,7 +70,7 @@ void main() {
 
     when(() => mockUserDb.getUser()).thenReturn(userInDb);
     // Act
-    final user = await userRepo.me(Fakes.token);
+    final user = await userRepo.me();
     // Assert
     expect(user, userInDb);
   });
@@ -84,7 +84,7 @@ void main() {
     when(() => mockUserDb.getUser()).thenReturn(null);
     // Assert
     try {
-      await userRepo.me(Fakes.token);
+      await userRepo.me();
     } catch (e) {
       expect(e, isInstanceOf<UnauthorizedException>());
       return;
@@ -103,7 +103,7 @@ void main() {
         .thenAnswer((_) => Future.value(Response('body', 200)));
 
     // Act
-    await userRepo.logout(token);
+    await userRepo.logout();
 
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
@@ -123,7 +123,7 @@ void main() {
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
 
     // Act
-    await userRepo.logout(token);
+    await userRepo.logout();
 
     // Assert
     verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),

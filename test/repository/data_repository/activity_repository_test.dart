@@ -51,7 +51,6 @@ void main() {
       client: mockClient,
       activityDb: mockActivityDb,
       userId: userId,
-      authToken: Fakes.token,
     );
   });
 
@@ -82,7 +81,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonAuthHeader(Fakes.token),
+        headers: jsonHeader(),
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -109,7 +108,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonAuthHeader(Fakes.token),
+        headers: jsonHeader(),
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -146,7 +145,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader(),
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(
@@ -169,7 +168,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader(),
           body: jsonEncode(activities),
         ));
     verify(() => mockActivityDb.insert([
@@ -203,7 +202,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader(),
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(

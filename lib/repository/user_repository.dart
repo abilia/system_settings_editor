@@ -73,9 +73,9 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<User> me(String token) async {
+  Future<User> me() async {
     try {
-      final user = await getUserFromApi(token);
+      final user = await getUserFromApi();
       await userDb.insertUser(user);
       return user;
     } on UnauthorizedException {
@@ -93,10 +93,10 @@ class UserRepository extends Repository {
     return user;
   }
 
-  Future<User> getUserFromApi(String token) async {
+  Future<User> getUserFromApi() async {
     final response = await client.get(
-        '$baseUrl/api/v$postApiVersion/entity/me'.toUri(),
-        headers: authHeader(token));
+      '$baseUrl/api/v$postApiVersion/entity/me'.toUri(),
+    );
 
     if (response.statusCode == 200) {
       final responseJson = response.json();
@@ -110,9 +110,7 @@ class UserRepository extends Repository {
 
   Future<List<License>> getLicenses() async {
     try {
-      final token = getToken();
-      if (token == null) throw 'token is null';
-      final fromApi = await getLicensesFromApi(token);
+      final fromApi = await getLicensesFromApi();
       await licenseDb.persistLicenses(fromApi);
     } catch (e) {
       _log.warning('Could not fetch licenses from backend', e);
@@ -120,10 +118,10 @@ class UserRepository extends Repository {
     return licenseDb.getLicenses();
   }
 
-  Future<List<License>> getLicensesFromApi(String token) async {
+  Future<List<License>> getLicensesFromApi() async {
     final response = await client.get(
-        '$baseUrl/api/v$postApiVersion/license/portal/me'.toUri(),
-        headers: authHeader(token));
+      '$baseUrl/api/v$postApiVersion/license/portal/me'.toUri(),
+    );
     if (response.statusCode == 200) {
       return (response.json() as List).map((l) => License.fromJson(l)).toList();
     } else if (response.statusCode == 401) {
@@ -133,13 +131,12 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<void> fetchAndSetCalendar(String token, int userId) async {
+  Future<void> fetchAndSetCalendar(int userId) async {
     try {
       if (await calendarDb.getCalendarId() == null) {
         final response = await client.post(
           '$baseUrl/api/v1/calendar/$userId?type=${CalendarDb.memoType}'
               .toUri(),
-          headers: authHeader(token),
         );
         final calendarType = Calendar.fromJson(response.json());
         await calendarDb.insert(calendarType);
@@ -149,9 +146,9 @@ class UserRepository extends Repository {
     }
   }
 
-  Future<void> logout([String? token]) async {
+  Future<void> logout() async {
     _log.fine('unregister Client');
-    await _unregisterClient(token);
+    await _unregisterClient();
     _log.fine('deleting token');
     await loginDb.deleteToken();
     await loginDb.deleteLoginInfo();
@@ -162,15 +159,11 @@ class UserRepository extends Repository {
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>
       loginDb.persistLoginInfo(loginInfo);
 
-  String? getToken() => loginDb.getToken();
-
-  Future<bool> _unregisterClient([String? token]) async {
+  Future<bool> _unregisterClient() async {
     try {
-      token ??= getToken();
-      if (token == null) throw 'token is null';
       final response = await client.delete(
-          '$baseUrl/api/v$postApiVersion/auth/client'.toUri(),
-          headers: authHeader(token));
+        '$baseUrl/api/v$postApiVersion/auth/client'.toUri(),
+      );
       return response.statusCode == 200;
     } catch (e) {
       _log.warning('can not unregister client: $e');
