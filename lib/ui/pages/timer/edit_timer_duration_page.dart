@@ -78,8 +78,7 @@ class _TimerInputContentState extends State<_TimerInputContent> {
               Padding(
                 padding: EdgeInsets.all(layout.editTimer.inputTimePadding),
                 child: DefaultTextStyle(
-                  style: ((theme.textTheme.headline5 ?? headline5)
-                      .copyWith(height: 1)),
+                  style: theme.textTheme.headline5 ?? headline5,
                   child: const Text(':'),
                 ),
               ),

@@ -96,7 +96,6 @@ class MonthDayPreviewHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPast = occasion == Occasion.past;
     final dateText =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toLanguageTag())
             .format(day);
@@ -127,7 +126,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                       child: (fullDayActivities > 0)
                           ? CrossOver(
                               style: CrossOverStyle.darkSecondary,
-                              applyCross: isPast,
+                              applyCross: occasion.isPast,
                               padding: previewLayout.crossOverPadding,
                               child: (fullDayActivities > 1)
                                   ? FullDayStack(
@@ -161,7 +160,7 @@ class MonthDayPreviewHeading extends StatelessWidget {
                     style: isLight
                         ? CrossOverStyle.lightDefault
                         : CrossOverStyle.darkDefault,
-                    applyCross: isPast,
+                    applyCross: occasion.isPast,
                     fallbackHeight: previewLayout.dateTextCrossOverSize.height,
                     fallbackWidth: previewLayout.dateTextCrossOverSize.width,
                     child: Center(

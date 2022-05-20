@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 class TimerOccasion extends EventOccasion {
   const TimerOccasion(this.timer, Occasion occasion) : super(occasion);
   final AbiliaTimer timer;
-  bool get isOngoing => !timer.paused && occasion == Occasion.current;
+  bool get isOngoing => !timer.paused && occasion.isCurrent;
   TimerOccasion toPast() => TimerOccasion(timer, Occasion.past);
   @override
   EventOccasion toOccasion(DateTime now) => this;

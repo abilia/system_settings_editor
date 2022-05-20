@@ -42,7 +42,7 @@ class ActivityInfoWithDots extends StatelessWidget {
       );
 }
 
-class ActivityInfo extends StatefulWidget {
+class ActivityInfo extends StatelessWidget with ActivityMixin {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
@@ -64,58 +64,41 @@ class ActivityInfo extends StatefulWidget {
   static const animationDuration = Duration(milliseconds: 500);
 
   @override
-  _ActivityInfoState createState() => _ActivityInfoState();
-}
-
-class _ActivityInfoState extends State<ActivityInfo> with ActivityMixin {
-  Activity get activity => widget.activityDay.activity;
-
-  DateTime get day => widget.activityDay.day;
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
-      final occasion = widget.activityDay.toOccasion(now);
-      final showCheckButton =
-          widget.alarm == null && activity.checkable && !occasion.isSignedOff;
-      final verticalPadding = showCheckButton
-          ? layout.activityPage.verticalInfoPaddingCheckable
-          : layout.activityPage.verticalInfoPaddingNonCheckable;
-
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: verticalPadding.top),
-          ActivityTopInfo(
-            widget.activityDay,
-            alarm: widget.alarm,
-          ),
-          Expanded(
-            child: Container(
-              decoration: boxDecoration,
-              child: ActivityContainer(
-                activityDay: widget.activityDay,
-                previewImage: widget.previewImage,
-                alarm: widget.alarm,
-              ),
+    final showCheckButton = alarm == null &&
+        activityDay.activity.checkable &&
+        !activityDay.isSignedOff;
+    final verticalPadding = showCheckButton
+        ? layout.activityPage.verticalInfoPaddingCheckable
+        : layout.activityPage.verticalInfoPaddingNonCheckable;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: verticalPadding.top),
+        ActivityTopInfo(
+          activityDay,
+          alarm: alarm,
+        ),
+        Expanded(
+          child: Container(
+            decoration: boxDecoration,
+            child: ActivityContainer(
+              activityDay: activityDay,
+              previewImage: previewImage,
+              alarm: alarm,
             ),
           ),
-          SizedBox(height: verticalPadding.bottom),
-          if (showCheckButton)
-            Padding(
-              padding: layout.activityPage.checkButtonPadding,
-              child: CheckButton(
-                onPressed: () async {
-                  await checkConfirmation(
-                    context,
-                    occasion,
-                  );
-                },
-              ),
+        ),
+        SizedBox(height: verticalPadding.bottom),
+        if (showCheckButton)
+          Padding(
+            padding: layout.activityPage.checkButtonPadding,
+            child: CheckButton(
+              onPressed: () => checkConfirmation(context, activityDay),
             ),
-        ],
-      );
-    });
+          ),
+      ],
+    );
   }
 }
 

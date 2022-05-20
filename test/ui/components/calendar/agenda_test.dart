@@ -968,13 +968,16 @@ void main() {
 
         final timercardBefore =
             tester.widget<TimerCard>(find.byType(TimerCard));
-
         expect(timercardBefore.timerOccasion.occasion, Occasion.current);
 
         timeTicker.add(now.add(1.minutes() + 1.seconds()));
         await tester.pumpAndSettle();
-        final timercardAfter = tester.widget<TimerCard>(find.byType(TimerCard));
 
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
+        await tester.tap(find.byType(CloseButton));
+        await tester.pumpAndSettle();
+
+        final timercardAfter = tester.widget<TimerCard>(find.byType(TimerCard));
         expect(timercardAfter.timerOccasion.occasion, Occasion.past);
       });
 
@@ -1026,13 +1029,15 @@ void main() {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
 
-        for (var i = 1; i <= duration.inSeconds + 5; i++) {
+        for (var i = 1; i <= duration.inSeconds; i++) {
           timeTicker.add(now.add(i.seconds()));
           await tester.pumpAndSettle();
           final sLeft = '${max(0, duration.inSeconds - i)}'.padLeft(2, '0');
-
           expect(find.text('00:$sLeft'), findsOneWidget);
         }
+        timeTicker.add(now.add(duration).add(1.seconds()));
+        await tester.pumpAndSettle();
+        expect(find.byType(TimerAlarmPage), findsOneWidget);
       });
 
       testWidgets(

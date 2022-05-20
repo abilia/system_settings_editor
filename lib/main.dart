@@ -130,7 +130,7 @@ class App extends StatelessWidget {
                         analytics: analytics,
                       ),
                     )
-                  : const StartGuidePage(),
+                  : const ProductionGuidePage(),
         ),
       );
 }

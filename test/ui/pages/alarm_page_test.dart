@@ -348,4 +348,179 @@ void main() {
       hasLength(unsignedOffActivityReminders.length + 1),
     );
   });
+
+  group('When checkable activity shows check button', () {
+    testWidgets('on Start alarm when activity has no end time',
+        (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(
+          Activity.createNew(startTime: startTime, checkable: true),
+          day,
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+    });
+
+    testWidgets('NOT on Start alarm when activity has end time',
+        (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            duration: 5.minutes(),
+            checkable: true,
+          ),
+          day,
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+    });
+
+    testWidgets('on End alarm', (WidgetTester tester) async {
+      final alarm = EndAlarm(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            duration: 5.minutes(),
+            checkable: true,
+          ),
+          day,
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+    });
+
+    testWidgets(
+        'on Start alarm when activity has '
+        'end time but alarm only at start', (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            duration: 5.minutes(),
+            checkable: true,
+            alarmType:
+                const Alarm(type: AlarmType.silent, onlyStart: true).toInt,
+          ),
+          day,
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+    });
+
+    testWidgets('NOT when that day is signed off', (WidgetTester tester) async {
+      final alarm = StartAlarm(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            checkable: true,
+          ).signOff(day),
+          day,
+        ),
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: alarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: alarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+    });
+
+    testWidgets('NOT on reminders before', (WidgetTester tester) async {
+      final time = 5.minutes();
+      final reminder = ReminderBefore(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            checkable: true,
+            reminderBefore: [time.inMilliseconds],
+          ),
+          day,
+        ),
+        reminder: time,
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: reminder,
+            alarmNavigator: _alarmNavigator,
+            child: ReminderPage(reminder: reminder),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsNothing);
+    });
+
+    testWidgets('on unchecked reminders', (WidgetTester tester) async {
+      final time = 15.minutes();
+      final reminder = ReminderUnchecked(
+        ActivityDay(
+          Activity.createNew(
+            startTime: startTime,
+            checkable: true,
+            reminderBefore: [time.inMilliseconds],
+          ),
+          day,
+        ),
+        reminder: time,
+      );
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: reminder,
+            alarmNavigator: _alarmNavigator,
+            child: ReminderPage(reminder: reminder),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(TestKey.activityCheckButton), findsOneWidget);
+    });
+  });
 }

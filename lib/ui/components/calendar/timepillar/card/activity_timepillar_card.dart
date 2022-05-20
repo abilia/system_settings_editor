@@ -27,7 +27,7 @@ class ActivityTimepillarCard extends TimepillarCard {
     final hasImage = activity.hasImage,
         hasTitle = activity.hasTitle,
         signedOff = activityOccasion.isSignedOff,
-        current = activityOccasion.occasion == Occasion.current,
+        current = activityOccasion.occasion.isCurrent,
         past = activityOccasion.isPast,
         inactive = past || signedOff;
 
@@ -188,7 +188,7 @@ class SideTime extends StatelessWidget {
       default:
         return categoryColor(
           category: category,
-          inactive: occasion == Occasion.past,
+          inactive: occasion.isPast,
           showCategoryColor: showCategoryColor,
         );
     }

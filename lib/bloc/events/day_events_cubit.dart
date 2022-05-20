@@ -62,8 +62,7 @@ class DayEventsCubit extends Cubit<EventsState> {
         .expand((activity) => activity.dayActivitiesForDay(day))
         .removeAfterOccasion(occasion)
         .toList();
-    final fullDayOccasion =
-        occasion == Occasion.past ? Occasion.past : Occasion.future;
+    final fullDayOccasion = occasion.isPast ? Occasion.past : Occasion.future;
     return EventsState(
       activities: dayActivities
           .where((activityDay) => !activityDay.activity.fullDay)

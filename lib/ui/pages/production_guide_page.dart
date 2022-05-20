@@ -4,8 +4,8 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
-class StartGuidePage extends StatelessWidget {
-  const StartGuidePage({Key? key}) : super(key: key);
+class ProductionGuidePage extends StatelessWidget {
+  const ProductionGuidePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class StartGuidePage extends StatelessWidget {
               children: [
                 const _FancyHeader(text: 'Welcome to the start guide!'),
                 const SizedBox(height: 50),
-                if (!Config.release) const _DebugRow(),
+                const _DebugRow(),
                 const SizedBox(height: 50),
                 Row(
                   children: [
@@ -85,11 +85,12 @@ class _DebugRow extends StatelessWidget {
       builder: (context, baseUrl) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-                  onPressed: () =>
-                      context.read<StartGuideCubit>().skipStartGuide(),
-                  child: const Text('Skip start guide'))
-              .pad(const EdgeInsets.only(right: 20)),
+          if (!Config.release)
+            ElevatedButton(
+                    onPressed: () =>
+                        context.read<StartGuideCubit>().skipStartGuide(),
+                    child: const Text('Skip start guide'))
+                .pad(const EdgeInsets.only(right: 20)),
           ElevatedButton(
             onPressed: () {
               showDialog(
