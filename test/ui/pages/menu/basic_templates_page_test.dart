@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:seagull/utils/strings.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/background/notification_isolate.dart';
@@ -317,7 +316,7 @@ void main() {
         final sortable = (captured as List).single as Sortable<SortableData>;
 
         BasicTimerDataItem data = sortable.data as BasicTimerDataItem;
-        expect(data.basicTimerTitle, enteredTitle.capitalize());
+        expect(data.basicTimerTitle, enteredTitle);
         expect(data.duration, duration);
       });
     });

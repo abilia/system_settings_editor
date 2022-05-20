@@ -26,9 +26,9 @@ class EditTimerCubit extends Cubit<EditTimerState> {
     timerCubit.addTimer(timer);
   }
 
-  AbiliaTimer save({bool capitalize = false}) {
+  AbiliaTimer save() {
     final timer = AbiliaTimer.createNew(
-      title: capitalize ? state.name.capitalize() : state.name,
+      title: state.name,
       fileId: state.image.id,
       duration: state.duration,
       startTime: ticker.time,

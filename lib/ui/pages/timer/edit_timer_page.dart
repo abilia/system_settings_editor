@@ -43,7 +43,7 @@ class EditBasicTimerPage extends StatelessWidget {
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: SaveButton(
               onPressed: state.duration.inMinutes > 0
-                  ? () => context.read<EditTimerCubit>().save(capitalize: true)
+                  ? () => context.read<EditTimerCubit>().save()
                   : () => showViewDialog(
                         context: context,
                         builder: (context) => ErrorDialog(
