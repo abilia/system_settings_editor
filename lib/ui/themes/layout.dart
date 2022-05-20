@@ -800,13 +800,16 @@ class _DataItemPictureLayout {
 
 /// Called DataItem (list) in Figma
 class ListDataItemLayout {
-  final EdgeInsets folderPadding, imagePadding;
+  final EdgeInsets folderPadding, imagePadding, textAndSubtitlePadding;
   final double iconSize;
+  final double? secondaryTextHeight;
 
   const ListDataItemLayout({
     this.folderPadding = const EdgeInsets.symmetric(horizontal: 6),
     this.imagePadding = const EdgeInsets.only(left: 4, right: 8),
+    this.textAndSubtitlePadding = const EdgeInsets.only(top: 3, bottom: 7),
     this.iconSize = 24,
+    this.secondaryTextHeight,
   });
 }
 
@@ -994,7 +997,7 @@ class ComponentsLayout {
 }
 
 class PickFieldLayout {
-  final double height, verticalDistanceText;
+  final double height;
   final Size leadingSize;
   final EdgeInsets padding, leadingPadding, imagePadding;
 
@@ -1004,7 +1007,6 @@ class PickFieldLayout {
     this.padding = const EdgeInsets.only(left: 12, right: 12),
     this.imagePadding = const EdgeInsets.only(right: 8),
     this.leadingPadding = const EdgeInsets.only(right: 12),
-    this.verticalDistanceText = 8,
   });
 }
 
