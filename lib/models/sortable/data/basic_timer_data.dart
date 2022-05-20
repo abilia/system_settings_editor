@@ -24,6 +24,13 @@ class BasicTimerDataItem extends BasicTimerData {
         fileId: timer.image.id,
       );
 
+  factory BasicTimerDataItem.createNew() => BasicTimerDataItem._(
+        basicTimerTitle: '',
+        duration: 0,
+        icon: '',
+        fileId: '',
+      );
+
   factory BasicTimerDataItem.fromJson(String data) {
     final sortableData = json.decode(data);
     return BasicTimerDataItem._(

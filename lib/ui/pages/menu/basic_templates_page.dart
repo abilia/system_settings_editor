@@ -34,23 +34,23 @@ class BasicTemplatesPage extends StatelessWidget {
             ListLibrary<BasicTimerData>(
               emptyLibraryMessage: translate.noBasicTimers,
               libraryItemGenerator: BasicTemplatePickField.new,
+              onTapEdit: _onEditTemplateTimer,
             ),
           ],
         ),
         bottomNavigationBar: const BottomNavigation(
           backNavigationWidget: CloseButton(),
         ),
-        floatingActionButton: const AddTemplateButton(
+        floatingActionButton: AddTemplateButton(
           activityTemplateIndex: 0,
+          onNewTimerTemplate: _onEditTemplateTimer,
         ),
       ),
     );
   }
 
   void _onEditTemplateActivity(
-    BuildContext context,
-    Sortable<BasicActivityData> sortable,
-  ) {
+      BuildContext context, Sortable<BasicActivityData> sortable) {
     if (sortable is! Sortable<BasicActivityDataItem>) return;
     final authProviders = copiedAuthProviders(context);
     Navigator.of(context).push(
@@ -76,6 +76,37 @@ class BasicTemplatesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onEditTemplateTimer(
+      BuildContext context, Sortable<BasicTimerData> sortable) async {
+    final authProviders = copiedAuthProviders(context);
+
+    AbiliaTimer? timer = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MultiBlocProvider(
+          providers: [
+            ...authProviders,
+            BlocProvider<EditTimerCubit>(
+              create: (_) => EditTimerCubit(
+                timerCubit: context.read<TimerCubit>(),
+                translate: Translator.of(context).translate,
+                ticker: GetIt.I<Ticker>(),
+                basicTimer: sortable.data as BasicTimerDataItem,
+              ),
+            ),
+          ],
+          child: const EditBasicTimerPage(),
+        ),
+      ),
+    );
+    if (timer != null) {
+      context.read<SortableBloc>().add(
+            SortableUpdated(sortable.copyWith(
+              data: BasicTimerDataItem.fromTimer(timer),
+            )),
+          );
+    }
   }
 }
 
@@ -185,10 +216,12 @@ class _PickFolder extends StatelessWidget {
 
 class AddTemplateButton extends StatelessWidget {
   final int activityTemplateIndex;
+  final Function onNewTimerTemplate;
 
   const AddTemplateButton({
     Key? key,
     required this.activityTemplateIndex,
+    required this.onNewTimerTemplate,
   }) : super(key: key);
 
   @override
@@ -203,7 +236,19 @@ class AddTemplateButton extends StatelessWidget {
           AbiliaIcons.plus,
           onPressed: tabController.index == activityTemplateIndex
               ? () => _addNewActivityTemplate(context)
-              : () => _addNewTimerTemplate(context),
+              : () {
+                  SortableArchiveState state = context
+                      .read<SortableArchiveCubit<BasicTimerData>>()
+                      .state;
+                  onNewTimerTemplate(
+                    context,
+                    Sortable.createNew(
+                      groupId: state.currentFolderId,
+                      sortOrder: state.currentFolderSorted.firstSortOrder(),
+                      data: BasicTimerDataItem.createNew(),
+                    ),
+                  );
+                },
         );
       },
     );
@@ -245,40 +290,5 @@ class AddTemplateButton extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _addNewTimerTemplate(BuildContext context) async {
-    final authProviders = copiedAuthProviders(context);
-    final sortableState =
-        context.read<SortableArchiveCubit<BasicTimerData>>().state;
-
-    AbiliaTimer? timer = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: [
-            ...authProviders,
-            BlocProvider<EditTimerCubit>(
-              create: (_) => EditTimerCubit(
-                timerCubit: context.read<TimerCubit>(),
-                translate: Translator.of(context).translate,
-                ticker: GetIt.I<Ticker>(),
-              ),
-            ),
-          ],
-          child: const EditBasicTimerPage(),
-        ),
-      ),
-    );
-    if (timer != null) {
-      context.read<SortableBloc>().add(
-            SortableUpdated(
-              Sortable.createNew(
-                groupId: sortableState.currentFolderId,
-                sortOrder: sortableState.currentFolderSorted.firstSortOrder(),
-                data: BasicTimerDataItem.fromTimer(timer),
-              ),
-            ),
-          );
-    }
   }
 }
