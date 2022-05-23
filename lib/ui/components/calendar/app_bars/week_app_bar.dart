@@ -12,7 +12,9 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-      builder: (context, memoSettingsState) => BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, memoSettingsState) =>
+          BlocSelector<ClockBloc, DateTime, DateTime>(
+        selector: (state) => state.onlyDays(),
         builder: (context, time) =>
             BlocBuilder<WeekCalendarCubit, WeekCalendarState>(
           buildWhen: (previous, current) =>
