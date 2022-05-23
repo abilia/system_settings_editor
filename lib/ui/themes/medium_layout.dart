@@ -270,7 +270,9 @@ class MediumLayout extends Layout {
           listDataItem: const ListDataItemLayout(
             folderPadding: EdgeInsets.only(left: 12, right: 8),
             imagePadding: EdgeInsets.only(left: 8, right: 12),
+            textAndSubtitlePadding: EdgeInsets.only(top: 6, bottom: 12),
             iconSize: 48,
+            secondaryTextHeight: 24 / 24,
           ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
@@ -345,7 +347,6 @@ class MediumLayout extends Layout {
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
-            verticalDistanceText: 6,
           ),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),

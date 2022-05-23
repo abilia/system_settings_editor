@@ -24,6 +24,9 @@ class ListDataItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secondaryText = this.secondaryText;
+    final textPadding = secondaryText != null
+        ? layout.listDataItem.textAndSubtitlePadding
+        : EdgeInsets.zero;
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data?.isEmpty == true ? semanticsLabel : text.data,
@@ -63,20 +66,19 @@ class ListDataItem extends StatelessWidget {
                                 bodyText1,
                             child: text,
                           ),
-                          if (secondaryText != null) ...[
-                            SizedBox(
-                              height: layout.pickField.verticalDistanceText,
-                            ),
+                          if (secondaryText != null)
                             DefaultTextStyle(
                               overflow: TextOverflow.ellipsis,
                               style: (Theme.of(context).textTheme.caption ??
                                       caption)
-                                  .copyWith(color: AbiliaColors.black60),
+                                  .copyWith(
+                                color: AbiliaColors.black60,
+                                height: layout.listDataItem.secondaryTextHeight,
+                              ),
                               child: secondaryText,
                             ),
-                          ],
                         ],
-                      ),
+                      ).pad(textPadding),
                     ),
                   ],
                 ),
