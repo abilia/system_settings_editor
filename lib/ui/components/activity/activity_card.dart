@@ -6,8 +6,7 @@ import 'package:seagull/utils/all.dart';
 class ActivityCard extends StatelessWidget {
   final ActivityOccasion activityOccasion;
 
-  final bool preview;
-  final bool showCategoryColor;
+  final bool preview, showCategoryColor, showInfoIcons;
 
   static const Duration duration = Duration(seconds: 1);
 
@@ -16,6 +15,7 @@ class ActivityCard extends StatelessWidget {
     required this.activityOccasion,
     this.preview = false,
     this.showCategoryColor = false,
+    this.showInfoIcons = true,
   }) : super(key: key);
 
   @override
@@ -124,14 +124,15 @@ class ActivityCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Padding(
-                        padding: layout.eventCard.statusesPadding,
-                        child: buildInfoIcons(activity, inactive),
+                    if (showInfoIcons)
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Padding(
+                          padding: layout.eventCard.statusesPadding,
+                          child: buildInfoIcons(activity, inactive),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

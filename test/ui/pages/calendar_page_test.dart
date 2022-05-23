@@ -853,6 +853,8 @@ void main() {
     testWidgets(
         'BUG SGC-756 tapping day goes back to that day calendar, then go back to now goes back to now',
         (WidgetTester tester) async {
+      final dayString =
+          '${friday.day}\n${translate.shortWeekday(friday.weekday)}';
       await tester.pumpWidget(App());
       await tester.pumpAndSettle();
 
@@ -862,10 +864,10 @@ void main() {
       await tester.tap(find.byIcon(AbiliaIcons.week));
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
-      await tester.tap(find.text(translate.shortWeekday(friday.weekday)));
+      await tester.tap(find.text(dayString));
       await tester.pumpAndSettle();
       expect(find.byType(WeekCalendar), findsOneWidget);
-      await tester.tap(find.text(translate.shortWeekday(friday.weekday)));
+      await tester.tap(find.text(dayString));
       await tester.pumpAndSettle();
 
       expect(find.byType(Agenda), findsOneWidget);
@@ -916,8 +918,10 @@ void main() {
               widget is WeekCalenderHeadingContent && widget.selected));
       expect(selectedHeadingsnextWeekPreSelect, isEmpty);
 
-      final d = initialTime.addDays(8).day;
-      await tester.tap(find.text('$d'));
+      final _dateTime = initialTime.addDays(8);
+      final d = _dateTime.day;
+      await tester
+          .tap(find.text('$d\n${translate.shortWeekday(_dateTime.weekday)}'));
       await tester.pumpAndSettle();
       final selectedHeadingsnextWeekPostSelect = tester.widgetList(
           find.byWidgetPredicate((widget) =>

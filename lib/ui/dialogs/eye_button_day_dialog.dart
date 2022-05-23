@@ -75,7 +75,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                     ),
                   ],
                   onChanged: (type) => setState(() => calendarType = type),
-                ).pad(m1Horizontal),
+                ).pad(layout.templates.m1.onlyHorizontal),
                 const Divider().pad(dividerPad)
               ],
               CollapsableWidget(
@@ -107,7 +107,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                           ],
                           onChanged: (newDayInterval) =>
                               setState(() => dayInterval = newDayInterval),
-                        ).pad(m1Horizontal),
+                        ).pad(layout.templates.m1.onlyHorizontal),
                         const Divider().pad(dividerPad)
                       ],
                       if (state.settingViewOptionsZoom) ...[
@@ -136,7 +136,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                               timepillarZoom = newZoom;
                             });
                           },
-                        ).pad(m1Horizontal),
+                        ).pad(layout.templates.m1.onlyHorizontal),
                         const Divider().pad(dividerPad)
                       ],
                     ],
@@ -164,7 +164,7 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
                     onChanged: (dots) =>
                         setState(() => dotsInTimePillar = dots),
                   ),
-                ).pad(m1Horizontal),
+                ).pad(layout.templates.m1.onlyHorizontal),
             ],
           ),
         ),

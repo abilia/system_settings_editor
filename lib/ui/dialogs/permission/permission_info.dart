@@ -42,7 +42,7 @@ class PermissionInfoDialog extends StatelessWidget {
             ),
             const Spacer(flex: 32),
             Padding(
-              padding: m1Horizontal,
+              padding: layout.templates.m1.onlyHorizontal,
               child: PermissionSwitch(
                 permission: permission,
                 status: PermissionStatus.permanentlyDenied,
