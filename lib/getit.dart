@@ -126,17 +126,14 @@ class GetItInitializer {
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
   void init() => GetIt.I
-    ..registerSingletonAsync<LoginDb>(
-        () async => _loginDb ?? LoginDb(_sharedPreferences))
-    ..registerSingletonWithDependencies<BaseClient>(
-        () =>
-            _baseClient ??
-            ClientWithDefaultHeaders(
-              _packageInfo.version,
-              loginDb: GetIt.I<LoginDb>(),
-              deviceDb: GetIt.I<DeviceDb>(),
-            ),
-        dependsOn: [LoginDb, DeviceDb])
+    ..registerSingleton<LoginDb>(_loginDb ?? LoginDb(_sharedPreferences))
+    ..registerSingleton<DeviceDb>(_deviceDb ?? DeviceDb(_sharedPreferences))
+    ..registerSingleton<BaseClient>(_baseClient ??
+        ClientWithDefaultHeaders(
+          _packageInfo.version,
+          loginDb: GetIt.I<LoginDb>(),
+          deviceDb: GetIt.I<DeviceDb>(),
+        ))
     ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
     ..registerSingleton<FirebasePushService>(_firebasePushService)
     ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
@@ -145,8 +142,6 @@ class GetItInitializer {
     ..registerSingleton<Database>(_database)
     ..registerSingleton<SeagullLogger>(_seagullLogger)
     ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
-    ..registerSingletonAsync<DeviceDb>(
-        () async => _deviceDb ?? DeviceDb(_sharedPreferences))
     ..registerSingleton<Ticker>(_ticker)
     ..registerSingleton<AlarmNavigator>(_alarmNavigator)
     ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))

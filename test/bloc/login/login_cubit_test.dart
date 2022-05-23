@@ -71,6 +71,8 @@ void main() {
       when(() => mockUserRepository.fetchAndSetCalendar(any()))
           .thenAnswer((_) => Future.value());
 
+      when(() => mockUserRepository.isLoggedIn()).thenReturn(false);
+
       // Act
       authenticationBloc.add(CheckAuthentication());
 
@@ -185,6 +187,7 @@ void main() {
         userRepository: mockedUserRepository,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
+      when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
       when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, name: '', type: '')));
       when(() => mockedUserRepository.getLicensesFromApi())
@@ -196,7 +199,7 @@ void main() {
               ]));
     });
 
-    test('LoginButtonPressed event calls logges in and saves token', () async {
+    test('LoginButtonPressed event loggs in and saves token', () async {
       // Arrange
       const username = 'username',
           password = 'password',

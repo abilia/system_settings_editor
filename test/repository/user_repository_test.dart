@@ -33,8 +33,7 @@ void main() {
   test('if response 401, getUserFromApi throws UnauthorizedException',
       () async {
     // Arrange
-    when(() => mockClient.get('$url/api/v1/entity/me'.toUri(),
-            headers: authHeader(Fakes.token)))
+    when(() => mockClient.get('$url/api/v1/entity/me'.toUri()))
         .thenAnswer((_) => Future.value(Response('body', 401)));
     // Assert
     try {
@@ -64,8 +63,7 @@ void main() {
   test('if response not 401, get user from database (offline case)', () async {
     // Arrange
     const userInDb = User(name: 'name', type: 'type', id: 123);
-    when(() => mockClient.get('$url/api/v1/entity/me'.toUri(),
-            headers: authHeader(Fakes.token)))
+    when(() => mockClient.get('$url/api/v1/entity/me'.toUri()))
         .thenAnswer((_) => Future.value(Response('body', 400)));
 
     when(() => mockUserDb.getUser()).thenReturn(userInDb);
@@ -106,8 +104,7 @@ void main() {
     await userRepo.logout();
 
     // Assert
-    verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
-        headers: authHeader(token)));
+    verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri()));
     verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());
@@ -115,9 +112,8 @@ void main() {
 
   test('exception when logging out', () async {
     // Arrange
-    const token = Fakes.token;
-    when(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
-        headers: authHeader(token))).thenThrow(Exception());
+    when(() => mockClient.delete('$url/api/v1/auth/client'.toUri()))
+        .thenThrow(Exception());
     when(() => mockLoginDb.deleteToken()).thenAnswer((_) async {});
     when(() => mockLoginDb.deleteLoginInfo()).thenAnswer((_) async {});
     when(() => mockUserDb.deleteUser()).thenAnswer((_) async {});
@@ -126,8 +122,7 @@ void main() {
     await userRepo.logout();
 
     // Assert
-    verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri(),
-        headers: authHeader(token)));
+    verify(() => mockClient.delete('$url/api/v1/auth/client'.toUri()));
     verify(() => mockLoginDb.deleteToken());
     verify(() => mockLoginDb.deleteLoginInfo());
     verify(() => mockUserDb.deleteUser());

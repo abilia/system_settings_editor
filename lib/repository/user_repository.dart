@@ -159,6 +159,8 @@ class UserRepository extends Repository {
   Future<void> persistLoginInfo(LoginInfo loginInfo) =>
       loginDb.persistLoginInfo(loginInfo);
 
+  bool isLoggedIn() => loginDb.getToken() != null;
+
   Future<bool> _unregisterClient() async {
     try {
       final response = await client.delete(

@@ -7,7 +7,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
@@ -211,11 +210,9 @@ void main() {
           ),
         ));
 
-    when(() => mockClient.get(
-        '$baseUrl/api/v1'
-                '/data/$userId/activities?revision=$failedRevision'
-            .toUri(),
-        headers: authHeader(Fakes.token))).thenAnswer((_) => (Future.value(
+    when(() => mockClient.get('$baseUrl/api/v1'
+            '/data/$userId/activities?revision=$failedRevision'
+        .toUri())).thenAnswer((_) => (Future.value(
           Response(
             json.encode(
                 [failedActivity.copyWith(revision: failedRevision).toJson()]),

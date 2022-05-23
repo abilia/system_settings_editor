@@ -61,12 +61,20 @@ Future<void> initServices() async {
   }
   final baseUrlDb = BaseUrlDb(preferences);
   await baseUrlDb.initialize();
+  final loginDb = LoginDb(preferences);
+  final deviceDb = DeviceDb(preferences);
+  final packageInfo = await PackageInfo.fromPlatform();
+  final client = ClientWithDefaultHeaders(packageInfo.version,
+      loginDb: loginDb, deviceDb: deviceDb);
   GetItInitializer()
     ..documentsDirectory = documentDirectory
     ..sharedPreferences = preferences
     ..settingsDb = settingsDb
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
+    ..loginDb = loginDb
+    ..deviceDb = deviceDb
+    ..client = client
     ..database = await DatabaseRepository.createSqfliteDb()
     ..ttsHandler = await TtsInterface.implementation()
     ..packageInfo = await PackageInfo.fromPlatform()

@@ -38,10 +38,12 @@ void main() {
       ),
     );
 
-    blocTest('state change to Unauthenticated when app starts',
-        build: () => AuthenticationBloc(userRepository, onLogout: () {}),
-        act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
-        expect: () => [const Unauthenticated()]);
+    blocTest(
+      'state change to Unauthenticated when app starts',
+      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
+      expect: () => [const Unauthenticated()],
+    );
 
     blocTest(
       'state change to AuthenticationAuthenticated when token provided',
@@ -86,6 +88,7 @@ void main() {
     late MockNotification notificationMock;
 
     setUp(() async {
+      notificationMock = MockNotification();
       mockedUserRepository = MockUserRepository();
 
       when(() => mockedUserRepository.logout())
@@ -93,35 +96,10 @@ void main() {
       when(() => mockedUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
-      notificationMock = MockNotification();
-
       when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, type: '', name: '')));
+      when(() => mockedUserRepository.isLoggedIn()).thenReturn(true);
     });
-
-    blocTest(
-      'loggedIn event saves token',
-      build: () => AuthenticationBloc(
-        mockedUserRepository,
-        onLogout: () {
-          notificationMock.mockCancelAll();
-        },
-      ),
-      act: (AuthenticationBloc bloc) => bloc
-        ..add(CheckAuthentication())
-        ..add(
-          const LoggedIn(),
-        ),
-      verify: (bloc) => verify(
-        () => mockedUserRepository.persistLoginInfo(
-          const LoginInfo(
-            token: Fakes.token,
-            endDate: 1111,
-            renewToken: 'renewToken',
-          ),
-        ),
-      ).called(1),
-    );
 
     blocTest(
       'CheckAuthentication event fetches calendar',
@@ -134,6 +112,8 @@ void main() {
 
     blocTest(
       'CheckAuthentication event auth failed, no calendar fethed',
+      setUp: () =>
+          when(() => mockedUserRepository.isLoggedIn()).thenReturn(false),
       build: () => AuthenticationBloc(mockedUserRepository),
       act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
       verify: (bloc) => verifyNever(

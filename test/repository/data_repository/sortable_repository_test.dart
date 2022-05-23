@@ -7,7 +7,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
@@ -89,9 +88,8 @@ void main() {
 
     when(
       () => mockClient.get(
-        '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision'.toUri(),
-        headers: authHeader(Fakes.token),
-      ),
+          '$baseUrl/api/v1/data/$userId/sortableitems?revision=$revision'
+              .toUri()),
     ).thenAnswer(
       (_) => Future.value(
         Response.bytes(

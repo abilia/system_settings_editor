@@ -48,8 +48,12 @@ class AuthenticationBloc
     CheckAuthentication event,
     Emitter<AuthenticationState> emit,
   ) async {
-    final nextState = await _tryGetUser();
-    emit(nextState);
+    if (userRepository.isLoggedIn()) {
+      final nextState = await _tryGetUser();
+      emit(nextState);
+    } else {
+      emit(const Unauthenticated());
+    }
   }
 
   Future _loggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {

@@ -75,9 +75,8 @@ void main() {
 
     when(
       () => mockClient.get(
-        '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'.toUri(),
-        headers: authHeader(Fakes.token),
-      ),
+          '$baseUrl/api/v1/data/$userId/storage/items?revision=$revision'
+              .toUri()),
     ).thenAnswer(
       (_) => Future.value(
         Response(
@@ -94,10 +93,7 @@ void main() {
         .thenAnswer((_) => Future.value(expectedFiles.map((f) => f.model)));
 
     when(
-      () => mockClient.get(
-        fileIdUrl(baseUrl, userId, fileId).toUri(),
-        headers: authHeader(Fakes.token),
-      ),
+      () => mockClient.get(fileIdUrl(baseUrl, userId, fileId).toUri()),
     ).thenAnswer(
       (_) => Future.value(
         Response(

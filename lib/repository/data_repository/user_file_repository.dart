@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:synchronized/extension.dart';
@@ -127,7 +126,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       final request = multipartRequestBuilder.generateFileMultipartRequest(
         uri: uri,
         bytes: bytes,
-        authToken: GetIt.I<LoginDb>().getToken() ?? '',
+        authToken: loginDb.getToken() ?? '',
         sha1: sha1,
       );
       final streamedResponse = await request.send();

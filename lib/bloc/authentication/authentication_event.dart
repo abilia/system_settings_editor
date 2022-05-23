@@ -13,7 +13,6 @@ abstract class AuthenticationEvent extends Equatable {
 class CheckAuthentication extends AuthenticationEvent {}
 
 class LoggedIn extends AuthenticationEvent {
-
   const LoggedIn();
 }
 
