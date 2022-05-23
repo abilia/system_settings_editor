@@ -61,6 +61,7 @@ void main() {
       ..genericDb = mockGenericDb
       ..database = FakeDatabase()
       ..battery = FakeBattery()
+      ..settingsDb = FakeSettingsDb()
       ..init();
   });
 
