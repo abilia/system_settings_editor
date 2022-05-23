@@ -142,6 +142,16 @@ void main() {
     expect(find.byKey(TestKey.goToNowButton), findsNothing);
   });
 
+  testWidgets('Agenda background is dark during night interval',
+      (WidgetTester tester) async {
+    timeTicker.add(now.add(const Duration(hours: 16)));
+    await tester.pumpWidget(App());
+    await tester.pumpAndSettle();
+    Scaffold scaffold = tester
+        .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Scaffold;
+    expect(scaffold.backgroundColor, TimepillarCalendar.nightBackgroundColor);
+  });
+
   testWidgets(
       'Agenda with one activity and a lot of passed activities should show the activity',
       (WidgetTester tester) async {

@@ -36,19 +36,30 @@ class CalendarScaffold extends StatelessWidget {
           old.settingsInaccessible != fresh.settingsInaccessible ||
           old.showCategories != fresh.showCategories ||
           old.displayDayCalendarAppBar != fresh.displayDayCalendarAppBar,
-      builder: (context, settingState) => Scaffold(
-        appBar: settingState.displayDayCalendarAppBar
-            ? const DayCalendarAppBar()
-            : null,
-        floatingActionButton: const FloatingActions(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        body: Stack(
-          children: [
-            const Calendars(),
-            if (settingState.settingsInaccessible)
-              HiddenSetting(settingState.showCategories),
-          ],
-        ),
+      builder: (context, settingState) =>
+          BlocSelector<ClockBloc, DateTime, bool>(
+        selector: (time) =>
+            time.dayPart(settingState.dayParts) == DayPart.night,
+        builder: (context, isNight) {
+          return Scaffold(
+            key: TestKey.calendarBackgroundColor,
+            backgroundColor:
+                isNight ? TimepillarCalendar.nightBackgroundColor : null,
+            appBar: settingState.displayDayCalendarAppBar
+                ? const DayCalendarAppBar()
+                : null,
+            floatingActionButton: const FloatingActions(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.startFloat,
+            body: Stack(
+              children: [
+                const Calendars(),
+                if (settingState.settingsInaccessible)
+                  HiddenSetting(settingState.showCategories),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
