@@ -3,15 +3,15 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class TimepillarInterval extends Equatable {
-  final DateTime startTime, endTime;
+  final DateTime start, end;
   final IntervalPart intervalPart;
 
   TimepillarInterval({
     required DateTime start,
     required DateTime end,
     this.intervalPart = IntervalPart.day,
-  })  : startTime = start.copyWith(minute: 0),
-        endTime = end.copyWith(minute: 0);
+  })  : start = start.copyWith(minute: 0),
+        end = end.copyWith(minute: 0);
 
   factory TimepillarInterval.dayAndNight(DateTime day) => TimepillarInterval(
         start: day,
@@ -19,17 +19,18 @@ class TimepillarInterval extends Equatable {
         intervalPart: IntervalPart.dayAndNight,
       );
 
-  late final int lengthInHours =
-      (endTime.difference(startTime).inMinutes / 60).ceil();
+  late final int lengthInHours = (end.difference(start).inMinutes / 60).ceil();
+  late final bool spansMidnight = end.isDayAfter(start);
+  late final daySpan = spansMidnight ? 2 : 1;
 
-  Occasion occasion(DateTime now) => now.isBefore(startTime)
+  Occasion occasion(DateTime now) => now.isBefore(start)
       ? Occasion.future
-      : now.isAfter(endTime)
+      : now.isAfter(end)
           ? Occasion.past
           : Occasion.current;
 
   @override
-  List<Object> get props => [startTime, endTime, intervalPart];
+  List<Object> get props => [start, end, intervalPart];
 
   @override
   bool get stringify => true;

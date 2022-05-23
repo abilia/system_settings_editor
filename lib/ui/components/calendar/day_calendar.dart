@@ -101,54 +101,45 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
         controller: pageController,
         itemBuilder: (context, index) {
           return BlocBuilder<DayEventsCubit, EventsState>(
-            buildWhen: (oldState, newState) {
-              return (oldState is EventsLoaded &&
-                      newState is EventsLoaded &&
-                      oldState.day == newState.day) ||
-                  oldState.runtimeType != newState.runtimeType;
-            },
             builder: (context, eventState) {
-              if (eventState is EventsLoaded) {
-                if (eventState.day.dayIndex != index) return Container();
-                return Column(
-                  children: <Widget>[
-                    if (eventState.fullDayActivities.isNotEmpty)
-                      FullDayContainer(
-                        fullDayActivities: eventState.fullDayActivities,
-                        day: eventState.day,
-                      ),
-                    Expanded(
-                      child: BlocBuilder<MemoplannerSettingBloc,
-                          MemoplannerSettingsState>(
-                        buildWhen: (previous, current) =>
-                            previous.dayCalendarType != current.dayCalendarType,
-                        builder: (context, memoState) => Stack(
-                          children: [
-                            if (memoState.dayCalendarType ==
-                                DayCalendarType.list)
-                              Agenda(eventState: eventState)
-                            else
-                              TimepillarCalendar(
-                                eventState: eventState,
-                                type: memoState.dayCalendarType,
+              if (eventState.day.dayIndex != index) {
+                return const SizedBox.shrink();
+              }
+              if (eventState is EventsLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return Column(
+                children: <Widget>[
+                  if (eventState.fullDayActivities.isNotEmpty)
+                    FullDayContainer(
+                      fullDayActivities: eventState.fullDayActivities,
+                      day: eventState.day,
+                    ),
+                  Expanded(
+                    child: BlocSelector<MemoplannerSettingBloc,
+                        MemoplannerSettingsState, DayCalendarType>(
+                      selector: (state) => state.dayCalendarType,
+                      builder: (context, dayCalendarType) => Stack(
+                        children: [
+                          if (dayCalendarType == DayCalendarType.list)
+                            Agenda(eventState: eventState)
+                          else
+                            const TimepillarCalendar(),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: layout.commonCalendar.goToNowButtonTop,
                               ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  top: layout.commonCalendar.goToNowButtonTop,
-                                ),
-                                child: const GoToNowButton(),
-                              ),
+                              child: const GoToNowButton(),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
+                  ),
+                ],
+              );
             },
           );
         },

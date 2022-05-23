@@ -71,3 +71,33 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
               ),
       );
 }
+
+class TextAndOrIconActionButtonBlack extends StatelessWidget {
+  const TextAndOrIconActionButtonBlack(
+    this.text,
+    this.iconData, {
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  final String text;
+  final IconData iconData;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => Tts.data(
+        data: text,
+        child: layout.go
+            ? IconActionButton(
+                onPressed: onPressed,
+                child: Icon(iconData),
+                style: actionButtonStyleBlack,
+              )
+            : _TextAndIconActionButton(
+                text,
+                iconData,
+                onPressed: onPressed,
+                style: actionButtonStyleBlack,
+              ),
+      );
+}

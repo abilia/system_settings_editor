@@ -102,19 +102,37 @@ class MediumLayout extends Layout {
             selectorDistance: 3,
           ),
           weekCalendar: const WeekCalendarLayout(
-            activityBorderWidth: 2.25,
-            currentActivityBorderWidth: 4.5,
+            selectedDay: _WeekDayColumnLayout(
+              everyDayFlex: 318,
+              weekdaysFlex: 318,
+              activityBorderWidth: 4,
+              currentActivityBorderWidth: 6,
+              dayColumnBorderWidth: 3,
+              activityRadius: BorderRadius.all(Radius.circular(20)),
+              innerDayPadding: EdgeInsets.symmetric(
+                vertical: 9,
+                horizontal: 8,
+              ),
+            ),
+            notSelectedDay: _WeekDayColumnLayout(
+              everyDayFlex: 79,
+              weekdaysFlex: 119,
+              activityBorderWidth: 2,
+              currentActivityBorderWidth: 6,
+              dayColumnBorderWidth: 2,
+              activityRadius: BorderRadius.all(Radius.circular(12)),
+              innerDayPadding: EdgeInsets.symmetric(
+                vertical: 9,
+                horizontal: 4,
+              ),
+            ),
             dayDistance: 3,
-            headerTopPadding: 6,
-            headerTopPaddingSmall: 4.5,
-            headerBottomPadding: 6,
-            headerHeight: 66,
-            fullDayHeight: 54,
-            activityDistance: 3,
-            crossOverPadding: EdgeInsets.fromLTRB(6, 6, 6, 18),
+            headerHeight: 132,
+            activityDistance: 4,
+            categoryInset: 24,
+            crossOverDayHeadingPadding: EdgeInsets.fromLTRB(6, 6, 6, 18),
+            crossOverActivityPadding: EdgeInsets.all(7),
             bodyPadding: EdgeInsets.fromLTRB(3, 6, 3, 6),
-            activityTextPadding: EdgeInsets.all(4.5),
-            innerDayPadding: EdgeInsets.symmetric(vertical: 9, horizontal: 3),
           ),
           monthCalendar: const MonthCalendarLayout(
             monthContentFlex: 620,
@@ -270,7 +288,9 @@ class MediumLayout extends Layout {
           listDataItem: const ListDataItemLayout(
             folderPadding: EdgeInsets.only(left: 12, right: 8),
             imagePadding: EdgeInsets.only(left: 8, right: 12),
+            textAndSubtitlePadding: EdgeInsets.only(top: 6, bottom: 12),
             iconSize: 48,
+            secondaryTextHeight: 24 / 24,
           ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
@@ -345,7 +365,6 @@ class MediumLayout extends Layout {
             leadingPadding: EdgeInsets.only(right: 18),
             height: 88,
             leadingSize: Size(72, 72),
-            verticalDistanceText: 6,
           ),
           eventImageLayout: const EventImageLayout(
             fallbackCrossPadding: EdgeInsets.all(6),
@@ -521,8 +540,8 @@ class MediumLayout extends Layout {
             deniedVerticalPadding: EdgeInsets.symmetric(vertical: 6),
           ),
           editTimer: const EditTimerLayout(
-            inputTimeWidth: 233,
-            inputTimePadding: 35,
+            inputTimeWidth: 180,
+            inputTimePadding: 24,
             wheelPadding: EdgeInsets.only(top: 32),
           ),
           button: const ButtonLayout(

@@ -51,9 +51,9 @@ class TimePillar extends StatelessWidget {
             ...List.generate(
               interval.lengthInHours,
               (index) {
-                final hourIndex = index + interval.startTime.hour;
+                final hourIndex = index + interval.start.hour;
                 final hour =
-                    interval.startTime.onlyDays().copyWith(hour: hourIndex);
+                    interval.start.onlyDays().copyWith(hour: hourIndex);
                 final isNight = hour.isNight(dayParts);
                 return Hour(
                   hour: formatHour(hour),
@@ -69,12 +69,12 @@ class TimePillar extends StatelessWidget {
             ),
             if (!preview)
               Hour(
-                hour: formatHour(interval.endTime),
+                hour: formatHour(interval.end),
                 dots: SizedBox(
                   width: measures.dotSize,
                   height: measures.dotSize,
                 ),
-                isNight: interval.endTime.subtract(1.hours()).isNight(dayParts),
+                isNight: interval.end.subtract(1.hours()).isNight(dayParts),
                 measures: measures,
               ),
           ],

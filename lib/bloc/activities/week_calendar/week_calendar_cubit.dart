@@ -34,18 +34,14 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     });
   }
 
-  void nextWeek() => emit(_mapToState(
-      state.currentWeekStart.nextWeek(), _activities, clockBloc.state));
+  void nextWeek() => emit(_mapToState(state.currentWeekStart.nextWeek(),
+      activitiesBloc.state.activities, clockBloc.state));
 
-  void previousWeek() => emit(_mapToState(
-      state.currentWeekStart.previousWeek(), _activities, clockBloc.state));
+  void previousWeek() => emit(_mapToState(state.currentWeekStart.previousWeek(),
+      activitiesBloc.state.activities, clockBloc.state));
 
-  void goToCurrentWeek() => emit(
-      _mapToState(clockBloc.state.firstInWeek(), _activities, clockBloc.state));
-
-  List<Activity> get _activities => activitiesBloc.state is ActivitiesLoaded
-      ? activitiesBloc.state.activities
-      : <Activity>[];
+  void goToCurrentWeek() => emit(_mapToState(clockBloc.state.firstInWeek(),
+      activitiesBloc.state.activities, clockBloc.state));
 
   void _updateWeekActivities(List<Activity> activities) => emit(
         _mapToState(
@@ -68,10 +64,10 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   }
 
   static List<ActivityOccasion> occasionsForDay(
-      Iterable<Activity> activities, DateTime weekStart, DateTime now) {
+      Iterable<Activity> activities, DateTime day, DateTime now) {
     return activities
-        .expand((activity) => activity.dayActivitiesForDay(weekStart))
-        .where((a) => !(a.activity.removeAfter && a.end.isDayBefore(now)))
+        .expand((activity) => activity.dayActivitiesForDay(day))
+        .removeAfter(now)
         .map((e) => e.toOccasion(now))
         .toList()
       ..sort((a, b) =>

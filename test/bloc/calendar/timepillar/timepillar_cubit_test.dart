@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
@@ -8,7 +9,6 @@ import 'package:seagull/utils/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
 void main() {
-  late TimepillarCubit timepillarCubit;
   late ClockBloc clockBloc;
   late ActivitiesBloc activitiesBloc;
   late DayPickerBloc dayPickerBloc;
@@ -16,9 +16,6 @@ void main() {
   late TimerAlarmBloc timerAlarmBloc;
   late StreamController<DateTime> clockStream;
   final now = DateTime(2022, 05, 12, 13, 15);
-  final nowActivity = Activity.createNew(startTime: now);
-  final fullDayActivity =
-      Activity.createNew(startTime: now.onlyDays(), fullDay: true);
 
   setUp(() {
     clockStream = StreamController();
@@ -41,22 +38,27 @@ void main() {
     ));
   });
 
-  test('No full day in timepillar state', () {
-    when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded([
+  final nowActivity = Activity.createNew(startTime: now),
+      fullDayActivity = Activity.createNew(
+        startTime: now.onlyDays(),
+        fullDay: true,
+      );
+
+  blocTest<TimepillarCubit, TimepillarState>(
+    'No full day in timepillar state',
+    setUp: () => when(() => activitiesBloc.state).thenReturn(ActivitiesLoaded([
       nowActivity,
       fullDayActivity,
-    ]));
-
-    timepillarCubit = TimepillarCubit(
+    ])),
+    build: () => TimepillarCubit(
       clockBloc: clockBloc,
       activitiesBloc: activitiesBloc,
       dayPickerBloc: dayPickerBloc,
       memoSettingsBloc: memoplannerSettingBloc,
       timerAlarmBloc: timerAlarmBloc,
-    );
-
-    expect(
-      timepillarCubit.state,
+    ),
+    verify: (cubit) => expect(
+      cubit.state,
       TimepillarState(
         interval: TimepillarInterval(
           start: DateTime(2022, 05, 12, 06),
@@ -68,8 +70,48 @@ void main() {
         occasion: Occasion.current,
         showNightCalendar: true,
       ),
-    );
-  });
+    ),
+  );
+
+  final removeAfterRecurring = Activity.createNew(
+        title: 'remove after recurring',
+        startTime: now.subtract(100.days()),
+        recurs: Recurs.everyDay,
+        removeAfter: true,
+      ),
+      removeAfter = Activity.createNew(
+        title: 'remove after',
+        startTime: now.subtract(1.days()),
+        removeAfter: true,
+      );
+
+  blocTest<TimepillarCubit, TimepillarState>(
+    'remove activities that has remove after',
+    setUp: () => when(() => activitiesBloc.state).thenReturn(
+      ActivitiesLoaded([removeAfter, removeAfterRecurring]),
+    ),
+    build: () => TimepillarCubit(
+      clockBloc: clockBloc,
+      activitiesBloc: activitiesBloc,
+      dayPickerBloc: dayPickerBloc,
+      memoSettingsBloc: memoplannerSettingBloc,
+      timerAlarmBloc: timerAlarmBloc,
+    ),
+    act: (cubit) => cubit.previous(),
+    expect: () => [
+      TimepillarState(
+        interval: TimepillarInterval(
+          start: DateTime(2022, 05, 11),
+          end: DateTime(2022, 05, 12),
+          intervalPart: IntervalPart.dayAndNight,
+        ),
+        events: const <Event>[],
+        calendarType: DayCalendarType.oneTimepillar,
+        occasion: Occasion.past,
+        showNightCalendar: true,
+      ),
+    ],
+  );
 
   tearDown(() {
     clockStream.close();

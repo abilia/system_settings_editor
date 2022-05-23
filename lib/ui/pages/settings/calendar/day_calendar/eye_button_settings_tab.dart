@@ -12,12 +12,11 @@ class EyeButtonSettingsTab extends StatelessWidget {
         controller: scrollController,
         child: ListView(
           controller: scrollController,
-          padding: EdgeInsets.only(
-            top: layout.templates.m1.top,
-            bottom: layout.templates.m1.bottom,
-          ),
+          padding: layout.templates.m1.onlyVertical,
           children: [
-            Tts(child: Text(t.viewSettings)).pad(m1Horizontal),
+            Tts(child: Text(t.viewSettings)).pad(
+              layout.templates.m1.onlyHorizontal,
+            ),
             CollapsableWidget(
               collapsed: !state.showTypeOfDisplay,
               child: _buildSelector(

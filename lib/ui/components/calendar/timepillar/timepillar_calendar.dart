@@ -9,14 +9,7 @@ const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
   static const nightBackgroundColor = AbiliaColors.black90;
-  final EventsLoaded eventState;
-  final DayCalendarType type;
-
-  const TimepillarCalendar({
-    Key? key,
-    required this.eventState,
-    required this.type,
-  }) : super(key: key);
+  const TimepillarCalendar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
@@ -25,34 +18,28 @@ class TimepillarCalendar extends StatelessWidget {
           previous.displayTimeline != current.displayTimeline ||
           previous.showCategories != current.showCategories ||
           previous.displayHourLines != current.displayHourLines,
-      builder: (context, memoplannerSettingsState) {
-        return BlocBuilder<TimepillarCubit, TimepillarState>(
-          builder: (context, timepillarState) {
-            return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-              builder: (context, measures) => timepillarState.calendarType ==
-                      DayCalendarType.oneTimepillar
-                  ? OneTimepillarCalendar(
-                      timepillarState: timepillarState,
-                      timepillarMeasures: measures,
-                      dayParts: memoplannerSettingsState.dayParts,
-                      displayTimeline: memoplannerSettingsState.displayTimeline,
-                      showCategories: memoplannerSettingsState.showCategories,
-                      displayHourLines:
-                          memoplannerSettingsState.displayHourLines,
-                    )
-                  : TwoTimepillarCalendar(
-                      timepillarState: timepillarState,
-                      eventState: eventState,
-                      showCategories: memoplannerSettingsState.showCategories,
-                      displayHourLines:
-                          memoplannerSettingsState.displayHourLines,
-                      displayTimeline: memoplannerSettingsState.displayTimeline,
-                      dayParts: memoplannerSettingsState.dayParts,
-                    ),
-            );
-          },
-        );
-      },
+      builder: (context, memoplannerSettingsState) =>
+          BlocBuilder<TimepillarCubit, TimepillarState>(
+        builder: (context, timepillarState) => timepillarState.calendarType ==
+                DayCalendarType.oneTimepillar
+            ? BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
+                builder: (context, measures) => OneTimepillarCalendar(
+                  timepillarState: timepillarState,
+                  timepillarMeasures: measures,
+                  dayParts: memoplannerSettingsState.dayParts,
+                  displayTimeline: memoplannerSettingsState.displayTimeline,
+                  showCategories: memoplannerSettingsState.showCategories,
+                  displayHourLines: memoplannerSettingsState.displayHourLines,
+                ),
+              )
+            : TwoTimepillarCalendar(
+                timepillarState: timepillarState,
+                showCategories: memoplannerSettingsState.showCategories,
+                displayHourLines: memoplannerSettingsState.displayHourLines,
+                displayTimeline: memoplannerSettingsState.displayTimeline,
+                dayParts: memoplannerSettingsState.dayParts,
+              ),
+      ),
     );
   }
 }
@@ -103,8 +90,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
   double get topMargin => widget.topMargin;
   double get bottomMargin => widget.topMargin;
 
-  TimepillarInterval get interval =>
-      widget.timepillarMeasures.timepillarInterval;
+  TimepillarInterval get interval => widget.timepillarMeasures.interval;
 
   @override
   void initState() {
@@ -127,7 +113,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
         ? timeToPixels(now.hour, now.minute, measures.dotDistance) -
             measures.hourHeight * 2 +
             topMargin -
-            hoursToPixels(interval.startTime.hour, measures.dotDistance)
+            hoursToPixels(interval.start.hour, measures.dotDistance)
         : measures.hourHeight * widget.dayParts.morning.inHours;
     return ScrollController(initialScrollOffset: max(scrollOffset, 0));
   }
@@ -248,10 +234,8 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                                 BlocBuilder<ClockBloc, DateTime>(
                                   builder: (context, now) {
                                     if (now.inRangeWithInclusiveStart(
-                                        startDate: measures
-                                            .timepillarInterval.startTime,
-                                        endDate: measures
-                                            .timepillarInterval.endTime)) {
+                                        startDate: measures.interval.start,
+                                        endDate: measures.interval.end)) {
                                       return Timeline(
                                         now: now,
                                         width: boxConstraints.maxWidth,
@@ -346,23 +330,22 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
     TimepillarMeasures measures,
     double topMargin,
   ) {
-    final interval = measures.timepillarInterval;
-    final intervalDay = interval.startTime.onlyDays();
+    final interval = measures.interval;
+    final intervalDay = interval.start.onlyDays();
     return <NightPart>[
-      if (interval.startTime.isBefore(intervalDay.add(dayParts.morning)))
+      if (interval.start.isBefore(intervalDay.add(dayParts.morning)))
         NightPart(
           0,
           hoursToPixels(intervalDay.add(dayParts.morning).hour,
                   measures.dotDistance) +
               topMargin,
         ),
-      if (interval.endTime.isAfter(intervalDay.add(dayParts.night)))
+      if (interval.end.isAfter(intervalDay.add(dayParts.night)))
         NightPart(
             hoursToPixels(intervalDay.add(dayParts.night).hour,
                     measures.dotDistance) +
                 topMargin,
-            hoursToPixels(
-                interval.endTime.hour == 0 ? 24 : interval.endTime.hour,
+            hoursToPixels(interval.end.hour == 0 ? 24 : interval.end.hour,
                 measures.dotDistance))
     ];
   }
