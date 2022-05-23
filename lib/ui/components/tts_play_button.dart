@@ -36,25 +36,21 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
         height: layout.actionButton.size,
         child: AnimatedBuilder(
           animation: _controller,
-          builder: (context, child) {
-            final collapsed =
-                !settingsState.textToSpeech || _controller.text.isEmpty;
-            return CollapsableWidget(
-              collapsed: collapsed,
-              axis: Axis.horizontal,
-              child: Padding(
-                padding: widget.padding,
-                child: IconActionButton(
-                  key: TestKey.ttsPlayButton,
-                  style: actionButtonStyleDark,
-                  onPressed: () => _ttsIsPlaying ? _stop() : _play(),
-                  child: Icon(
-                    _ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-                  ),
+          builder: (context, child) => CollapsableWidget(
+            collapsed: !settingsState.textToSpeech || _controller.text.isEmpty,
+            axis: Axis.horizontal,
+            child: Padding(
+              padding: widget.padding,
+              child: IconActionButton(
+                key: TestKey.ttsPlayButton,
+                style: actionButtonStyleDark,
+                onPressed: () => _ttsIsPlaying ? _stop() : _play(),
+                child: Icon(
+                  _ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
