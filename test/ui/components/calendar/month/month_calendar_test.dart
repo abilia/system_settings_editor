@@ -59,7 +59,6 @@ void main() {
       ..genericDb = mockGenericDb
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..battery = FakeBattery()
-      ..settingsDb = FakeSettingsDb()
       ..init();
   });
 

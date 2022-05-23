@@ -21,7 +21,7 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 import '../../../test_helpers/tts.dart';
 
-Future<void> main() async {
+void main() {
   final startTime = DateTime(2020, 02, 10, 15, 30);
   final today = startTime.onlyDays();
   final startActivity = Activity.createNew(

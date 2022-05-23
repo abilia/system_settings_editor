@@ -83,7 +83,6 @@ void main() {
       ..sortableDb = FakeSortableDb()
       ..database = FakeDatabase()
       ..battery = FakeBattery()
-      ..settingsDb = FakeSettingsDb()
       ..init();
   });
 
