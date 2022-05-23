@@ -47,6 +47,7 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();
+  final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
     documentsDir: documentDirectory.path,
@@ -64,13 +65,15 @@ Future<void> initServices() async {
   await baseUrlDb.initialize();
   GetItInitializer()
     ..documentsDirectory = documentDirectory
+    ..applicationSupportDirectory = applicationSupportDirectory
     ..sharedPreferences = preferences
     ..settingsDb = settingsDb
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
-    ..ttsHandler = await TtsInterface.implementation(voiceDb)
+    ..ttsHandler = await TtsInterface.implementation(
+        voiceDb, applicationSupportDirectory.path)
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();

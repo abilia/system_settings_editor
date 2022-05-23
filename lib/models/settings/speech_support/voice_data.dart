@@ -1,4 +1,4 @@
-part of 'package:seagull/bloc/settings/speech_support/voices_cubit.dart';
+import 'package:equatable/equatable.dart';
 
 class VoiceData extends Equatable {
   final String name;

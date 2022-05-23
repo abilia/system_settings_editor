@@ -8,9 +8,10 @@ import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
-  static Future<TtsInterface> implementation(VoiceDb voiceDb) async {
+  static Future<TtsInterface> implementation(
+      VoiceDb voiceDb, String supportFolder) async {
     if (Config.isMPGO) return await FlutterTtsHandler.implementation();
-    return await AcapelaTtsHandler.implementation(voiceDb);
+    return await AcapelaTtsHandler.implementation(voiceDb, supportFolder);
   }
 
   Future<dynamic> speak(String text);
@@ -29,7 +30,8 @@ abstract class TtsInterface {
 class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
   static final Logger _log = Logger((AcapelaTts).toString());
 
-  static Future<AcapelaTtsHandler> implementation(VoiceDb voiceDb) async {
+  static Future<AcapelaTtsHandler> implementation(
+      VoiceDb voiceDb, String supportFolder) async {
     final acapela = AcapelaTtsHandler();
     bool initialized = await acapela.initialize(
       userId: 0x7a323547,

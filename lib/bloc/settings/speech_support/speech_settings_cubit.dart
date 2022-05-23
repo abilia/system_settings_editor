@@ -20,13 +20,15 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
         );
 
   Future<void> setSpeechRate(double speechRate) async {
-    acapelaTts.setSpeechRate(speechRate);
-    emit(state.copyWith(speechRate: speechRate));
-    await voiceDb.setSpeechRate(state.speechRate);
+    if (state.voice.isNotEmpty) {
+      await acapelaTts.setSpeechRate(speechRate);
+      emit(state.copyWith(speechRate: speechRate));
+      await voiceDb.setSpeechRate(state.speechRate);
+    }
   }
 
   Future<void> setVoice(String voice) async {
-    acapelaTts.setVoice({'voice': voice});
+    await acapelaTts.setVoice({'voice': voice});
     emit(state.copyWith(voice: voice));
     await voiceDb.setVoice(state.voice);
   }

@@ -24,15 +24,11 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
   late TextEditingController _controller;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     _controller = widget.controller ??
         TextEditingController.fromValue(
-            TextEditingValue(text: widget.tts ?? ''));
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+          TextEditingValue(text: widget.tts ?? ''),
+        );
     return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: (previous, current) =>
           previous.textToSpeech != current.textToSpeech,
@@ -41,9 +37,10 @@ class _TtsPlayButtonState extends State<TtsPlayButton> {
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
+            final collapsed =
+                !settingsState.textToSpeech || _controller.text.isEmpty;
             return CollapsableWidget(
-              collapsed:
-                  !(settingsState.textToSpeech && _controller.text.isNotEmpty),
+              collapsed: collapsed,
               axis: Axis.horizontal,
               child: Padding(
                 padding: widget.padding,

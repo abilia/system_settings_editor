@@ -1,10 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
 import 'package:seagull/tts/tts_handler.dart';
-
-part 'package:seagull/models/settings/speech_support/voice_data.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
@@ -14,10 +14,10 @@ class VoicesCubit extends Cubit<VoicesState> {
     required String voice,
   }) : super(
           VoicesState(
-              voices: List.empty(),
-              downloadingVoices: List.empty(),
-              downloadedVoices: List.empty(),
-              selectedVoice: voice),
+            voices: List.empty(),
+            downloadingVoices: List.empty(),
+            downloadedVoices: List.empty(),
+          ),
         ) {
     initialize();
   }
@@ -40,22 +40,20 @@ class VoicesCubit extends Cubit<VoicesState> {
   VoiceData getVoice(String name) =>
       state.voices.firstWhere((voice) => voice.name == name);
 
-  Future<List<String>> _readDownloadedVoices() async {
-    final List<Object?>? voices = await ttsHandler.availableVoices;
-    if (voices != null && !isClosed) {
-      return (voices.map((e) => e.toString())).toList();
-    }
-    return List.empty();
-  }
-
-  void selectVoice(VoiceData voice) {
-    emit(state.copyWith(selectedVoice: voice.name));
-  }
+  Future<List<String>> _readDownloadedVoices() async =>
+      (await ttsHandler.availableVoices)
+          .whereNotNull()
+          .map((e) => '$e')
+          .toList();
 
   Future<void> downloadVoice(VoiceData voice) async {
-    emit(state.copyWith(
-        downloadingVoices: List.from(state.downloadingVoices)
-          ..add(voice.name)));
+    emit(
+      DownloadingState(
+          downloadingVoices: List.from(state.downloadingVoices)
+            ..add(voice.name),
+          downloadedVoices: state.downloadedVoices,
+          voices: state.voices),
+    );
     bool result = await voiceRepository.downloadVoice(voice);
     if (result) {
       _log.fine('Downloaded voice; ${voice.name}');
@@ -65,11 +63,13 @@ class VoicesCubit extends Cubit<VoicesState> {
     final downloadingVoices = List<String>.from(state.downloadingVoices)
       ..remove(voice.name);
     if (result) {
-      emit(state.copyWith(
-          selectedVoice: state.downloadedVoices.isEmpty ? voice.name : null,
-          downloadingVoices: downloadingVoices,
-          downloadedVoices: List.from(state.downloadedVoices)
-            ..add(voice.name)));
+      emit(
+        DownloadedState(
+            downloadingVoices: downloadingVoices,
+            downloadedVoices: List.from(state.downloadedVoices)
+              ..add(voice.name),
+            voices: state.voices),
+      );
     } else {
       emit(state.copyWith(downloadingVoices: downloadingVoices));
     }
@@ -77,17 +77,15 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
-    emit(
-      state.copyWith(
+    emit(DeletedState(
+        downloadingVoices: state.downloadingVoices,
         downloadedVoices: List.from(state.downloadedVoices)..remove(voice.name),
-      ),
-    );
+        voices: state.voices));
   }
 }
 
 class VoicesState extends Equatable {
   final List<VoiceData> voices;
-  final String selectedVoice;
   final List<String> downloadingVoices;
   final List<String> downloadedVoices;
 
@@ -95,27 +93,56 @@ class VoicesState extends Equatable {
     required this.downloadingVoices,
     required this.downloadedVoices,
     required this.voices,
-    required this.selectedVoice,
   });
 
   VoicesState copyWith({
     List<VoiceData>? voices,
     List<String>? downloadedVoices,
-    String? selectedVoice,
     List<String>? downloadingVoices,
   }) {
     return VoicesState(
         voices: voices ?? this.voices,
-        selectedVoice: selectedVoice ?? this.selectedVoice,
         downloadedVoices: downloadedVoices ?? this.downloadedVoices,
         downloadingVoices: downloadingVoices ?? this.downloadingVoices);
   }
 
   @override
   List<Object?> get props => [
-        selectedVoice,
         downloadingVoices,
         downloadedVoices,
         voices,
       ];
+}
+
+class DownloadingState extends VoicesState {
+  const DownloadingState({
+    required List<String> downloadingVoices,
+    required List<String> downloadedVoices,
+    required List<VoiceData> voices,
+  }) : super(
+            downloadingVoices: downloadingVoices,
+            downloadedVoices: downloadedVoices,
+            voices: voices);
+}
+
+class DownloadedState extends VoicesState {
+  const DownloadedState({
+    required List<String> downloadingVoices,
+    required List<String> downloadedVoices,
+    required List<VoiceData> voices,
+  }) : super(
+            downloadingVoices: downloadingVoices,
+            downloadedVoices: downloadedVoices,
+            voices: voices);
+}
+
+class DeletedState extends VoicesState {
+  const DeletedState({
+    required List<String> downloadingVoices,
+    required List<String> downloadedVoices,
+    required List<VoiceData> voices,
+  }) : super(
+            downloadingVoices: downloadingVoices,
+            downloadedVoices: downloadedVoices,
+            voices: voices);
 }

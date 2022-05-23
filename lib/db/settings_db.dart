@@ -34,7 +34,7 @@ class SettingsDb {
   Future setTextToSpeech(bool textToSpeech) =>
       preferences.setBool(_textToSpeechRecord, textToSpeech);
 
-  bool get textToSpeech => _tryGetBool(_textToSpeechRecord, true);
+  bool get textToSpeech => _tryGetBool(_textToSpeechRecord, false);
 
   Future setRightCategoryExpanded(bool expanded) =>
       preferences.setBool(_categoryRightExpanded, expanded);

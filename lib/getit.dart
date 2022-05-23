@@ -14,6 +14,11 @@ import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetItInitializer {
+  Directory? _applicationSupportDirectory;
+
+  set applicationSupportDirectory(Directory applicationSupportDirectory) =>
+      _applicationSupportDirectory = applicationSupportDirectory;
+
   Directory? _documentsDirectory;
 
   set documentsDirectory(Directory documentsDirectory) =>
@@ -129,6 +134,11 @@ class GetItInitializer {
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
+  ApplicationSupportFolder? _applicationSupportFolder;
+
+  set applicationSupportFolder(ApplicationSupportFolder supportFolder) =>
+      _applicationSupportFolder = supportFolder;
+
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
         _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
@@ -157,5 +167,7 @@ class GetItInitializer {
     ..registerSingleton<PackageInfo>(_packageInfo)
     ..registerSingleton<Battery>(_battery)
     ..registerSingleton<TtsInterface>(_ttsHandler)
-    ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences));
+    ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences))
+    ..registerSingleton<ApplicationSupportFolder>(_applicationSupportFolder ??
+        ApplicationSupportFolder(_applicationSupportDirectory?.path));
 }

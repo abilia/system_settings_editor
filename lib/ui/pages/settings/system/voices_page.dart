@@ -1,43 +1,61 @@
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/ui/all.dart';
 
 class VoicesPage extends StatelessWidget {
-  final String initialSelection;
-
-  const VoicesPage({Key? key, required this.initialSelection})
-      : super(key: key);
+  const VoicesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
+    final scrollController = ScrollController();
     return BlocBuilder<VoicesCubit, VoicesState>(
-      builder: (context, state) => Scaffold(
-        appBar: AbiliaAppBar(
-          title: t.textToSpeech,
-          label: t.system,
-          iconData: AbiliaIcons.handiAlarmVibration,
-        ),
-        body: Padding(
-          padding: layout.settingsBasePage.listPadding,
-          child: Column(
-            children: state.voices.map((VoiceData voice) {
-              final name = voice.name;
-              return _VoiceRow(
-                selected: name == state.selectedVoice,
-                voice: voice,
-                downloaded: state.downloadedVoices.contains(name),
-                downloading: state.downloadingVoices.contains(name),
-                selectedVoice: state.selectedVoice,
-                keep: state.downloadedVoices.length == 1 &&
-                    state.downloadedVoices.first == name,
-                firstSelection: initialSelection.isEmpty,
-              );
-            }).toList(),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigation(
-          backNavigationWidget: OkButton(
-            onPressed: () => Navigator.of(context).pop(state.selectedVoice),
+      builder: (context, state) =>
+          BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
+        builder: (context, settingsState) =>
+            BlocListener<VoicesCubit, VoicesState>(
+          listenWhen: (oldState, newState) =>
+              (oldState is DownloadingState && newState is DownloadedState) ||
+              newState is DeletedState,
+          listener: (context, voicesState) {
+            context
+                .read<SpeechSettingsCubit>()
+                .setVoice(voicesState.downloadedVoices.last);
+          },
+          child: Scaffold(
+            appBar: AbiliaAppBar(
+              title: t.textToSpeech,
+              label: t.system,
+              iconData: AbiliaIcons.handiAlarmVibration,
+            ),
+            body: Padding(
+              padding: layout.settingsBasePage.listPadding,
+              child: ScrollArrows.vertical(
+                controller: scrollController,
+                child: ListView(
+                  controller: scrollController,
+                  children: state.voices.map((VoiceData voice) {
+                    final name = voice.name;
+                    final selectedVoice = settingsState.voice;
+                    return _VoiceRow(
+                      selected: name == selectedVoice,
+                      voice: voice,
+                      downloaded: state.downloadedVoices.contains(name),
+                      downloading: state.downloadingVoices.contains(name),
+                      selectedVoice: selectedVoice,
+                      keep: state.downloadedVoices.length == 1 &&
+                          state.downloadedVoices.first == name,
+                      firstSelection: selectedVoice.isEmpty,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            bottomNavigationBar: BottomNavigation(
+              backNavigationWidget: OkButton(
+                onPressed: () => Navigator.of(context).maybePop(),
+              ),
+            ),
           ),
         ),
       ),
@@ -120,9 +138,9 @@ class _VoiceRow extends StatelessWidget {
                   ? RadioField<String>(
                       groupValue: selectedVoice,
                       onChanged: (name) {
-                        if (downloaded && name != null && !selected) {
-                          context.read<VoicesCubit>().selectVoice(voice);
-                        }
+                        context
+                            .read<SpeechSettingsCubit>()
+                            .setVoice(voice.name);
                       },
                       value: voice.name,
                       text: Text('${voice.name}: ${voice.size}MB'),
@@ -169,7 +187,9 @@ class _DisabledVoiceRow extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-          child: Text(name),
+          child: Tts(
+            child: Text(name),
+          ),
         ),
       ),
     );

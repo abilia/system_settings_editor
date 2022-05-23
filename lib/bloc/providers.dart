@@ -73,8 +73,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           if (Config.isMP) ...[
             RepositoryProvider<VoiceRepository>(
                 create: (context) => VoiceRepository(
-                    baseUrlDb: GetIt.I<BaseUrlDb>(),
-                    client: GetIt.I<BaseClient>())),
+                    client: GetIt.I<BaseClient>(),
+                    voicesDir: GetIt.I<ApplicationSupportFolder>().path)),
           ],
         ],
         child: MultiBlocProvider(
