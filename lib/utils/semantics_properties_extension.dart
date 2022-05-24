@@ -10,7 +10,7 @@ extension ActivityExtensions on Activity {
     if (fullDay) return t.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
     if (hasEndTime) {
-      return '${timeFormat(startTime)} ${t.timeTo} ${timeFormat(noneRecurringEnd)}';
+      return '${timeFormat(startTime)} - ${timeFormat(noneRecurringEnd)}';
     }
     return timeFormat(startTime);
   }
