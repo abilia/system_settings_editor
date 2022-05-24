@@ -698,9 +698,7 @@ class EndDateWizWidget extends StatelessWidget {
 class WeekDays extends StatelessWidget {
   const WeekDays({
     Key? key,
-    required this.dayThemes,
   }) : super(key: key);
-  final List<DayTheme> dayThemes;
 
   @override
   Widget build(BuildContext context) {
@@ -716,19 +714,27 @@ class WeekDays extends StatelessWidget {
             spacing: layout.formPadding.horizontalItemDistance,
             runSpacing: layout.formPadding.verticalItemDistance,
             children: [
-              ...RecurringWeekState.allWeekdays.map((d) {
-                final dayTheme = dayThemes[d - 1];
-                return SelectableField(
-                  text: Text(
-                    translate.shortWeekday(d),
-                    style: TextStyle(color: dayTheme.monthSurfaceColor),
+              ...RecurringWeekState.allWeekdays.map(
+                (d) => BlocSelector<MemoplannerSettingBloc,
+                    MemoplannerSettingsState, DayTheme>(
+                  selector: (state) => weekdayTheme(
+                    dayColor: state.calendarDayColor,
+                    languageCode: Localizations.localeOf(context).languageCode,
+                    weekday: d,
                   ),
-                  color: dayTheme.dayColor,
-                  selected: state.weekdays.contains(d),
-                  onTap: () =>
-                      context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
-                );
-              }),
+                  builder: (context, dayTheme) => SelectableField(
+                    text: Text(
+                      translate.shortWeekday(d),
+                      style: TextStyle(color: dayTheme.monthSurfaceColor),
+                    ),
+                    color: dayTheme.dayColor,
+                    selected: state.weekdays.contains(d),
+                    onTap: () => context
+                        .read<RecurringWeekCubit>()
+                        .addOrRemoveWeekday(d),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

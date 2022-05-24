@@ -19,7 +19,9 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selectableBox(selected: selected, color: color);
+    final decoration = selected
+        ? selectedBoxDecoration.copyWith(color: color)
+        : whiteBoxDecoration.copyWith(color: color);
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,

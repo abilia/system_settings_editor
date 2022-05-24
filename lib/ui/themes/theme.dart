@@ -248,16 +248,6 @@ Border getCategoryBorder({
 BoxDecoration selectableBoxDecoration(bool selected) =>
     selected ? selectedBoxDecoration : whiteBoxDecoration;
 
-BoxDecoration selectableBox({
-  required bool selected,
-  Color? color,
-}) {
-  color ??= AbiliaColors.white;
-  return selected
-      ? selectedBoxDecorationWithDayColor(color)
-      : whiteBoxDecorationWithDayColor(color);
-}
-
 BoxDecoration selectedBoxDecorationWithDayColor(color) => BoxDecoration(
       color: color,
       borderRadius: borderRadius,
