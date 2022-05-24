@@ -134,11 +134,6 @@ class GetItInitializer {
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
-  ApplicationSupportFolder? _applicationSupportFolder;
-
-  set applicationSupportFolder(ApplicationSupportFolder supportFolder) =>
-      _applicationSupportFolder = supportFolder;
-
   void init() => GetIt.I
     ..registerSingleton<BaseClient>(
         _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
@@ -167,7 +162,6 @@ class GetItInitializer {
     ..registerSingleton<PackageInfo>(_packageInfo)
     ..registerSingleton<Battery>(_battery)
     ..registerSingleton<TtsInterface>(_ttsHandler)
-    ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences))
-    ..registerSingleton<ApplicationSupportFolder>(_applicationSupportFolder ??
-        ApplicationSupportFolder(_applicationSupportDirectory?.path));
+    ..registerSingleton<VoiceDb>(_voiceDb ??
+        VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''));
 }

@@ -72,9 +72,11 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           if (Config.isMP) ...[
             RepositoryProvider<VoiceRepository>(
-                create: (context) => VoiceRepository(
-                    client: GetIt.I<BaseClient>(),
-                    voicesDir: GetIt.I<ApplicationSupportFolder>().path)),
+              create: (context) => VoiceRepository(
+                client: GetIt.I<BaseClient>(),
+                voiceDb: GetIt.I<VoiceDb>(),
+              ),
+            ),
           ],
         ],
         child: MultiBlocProvider(
@@ -228,10 +230,10 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               ),
               BlocProvider<VoicesCubit>(
                 create: (context) => VoicesCubit(
+                  speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                   ttsHandler: GetIt.I<TtsInterface>(),
                   voiceRepository: context.read<VoiceRepository>(),
                   locale: GetIt.I<SettingsDb>().language,
-                  voice: GetIt.I<VoiceDb>().voice,
                 ),
               ),
             ]

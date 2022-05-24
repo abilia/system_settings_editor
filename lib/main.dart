@@ -60,7 +60,7 @@ Future<void> initServices() async {
   if (currentLocale != null) {
     await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   }
-  final voiceDb = VoiceDb(preferences);
+  final voiceDb = VoiceDb(preferences, applicationSupportDirectory.path);
   final baseUrlDb = BaseUrlDb(preferences);
   await baseUrlDb.initialize();
   GetItInitializer()
@@ -72,8 +72,7 @@ Future<void> initServices() async {
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
     ..voiceDb = voiceDb
-    ..ttsHandler = await TtsInterface.implementation(
-        voiceDb, applicationSupportDirectory.path)
+    ..ttsHandler = await TtsInterface.implementation(voiceDb)
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();

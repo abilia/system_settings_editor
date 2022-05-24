@@ -2,19 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/utils/strings.dart';
 
 class VoiceRepository {
   VoiceRepository({
     required this.client,
-    required this.voicesDir,
+    required this.voiceDb,
   });
 
   final BaseClient client;
-  final String voicesDir;
+  final VoiceDb voiceDb;
 
   static const String _baseUrl = 'https://handi.se/systemfiles2';
   final _log = Logger((VoiceRepository).toString());
@@ -30,18 +30,15 @@ class VoiceRepository {
           .where((jsonVoice) => jsonVoice['type'] == 1)
           .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
           .toList();
-    } else if (statusCode == 401) {
-      throw UnauthorizedException();
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
   }
 
   Future<bool> downloadVoice(VoiceData voice) async {
     try {
       final dls = voice.files.map((file) async {
         final response = await client.get(file.downloadUrl.toUri());
-        final path = voicesDir + file.localPath;
+        final path = voiceDb.applicationSupportDirectory + file.localPath;
         _log.finer('Creating file; $path');
         final f = await File(path).create(recursive: true);
         await f.writeAsBytes(response.bodyBytes);
@@ -49,14 +46,14 @@ class VoiceRepository {
       await Future.wait(dls);
       return true;
     } catch (ex) {
-      _log.warning('Download failed: ${ex.toString()}');
+      _log.warning('Download failed: $ex');
       return false;
     }
   }
 
   Future<void> deleteVoice(VoiceData voice) async {
     final dls = voice.files.map((file) async {
-      final path = voicesDir + file.localPath;
+      final path = voiceDb.applicationSupportDirectory + file.localPath;
       File(path).delete(recursive: true);
     });
     await Future.wait(dls);

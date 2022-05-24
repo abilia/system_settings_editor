@@ -1421,11 +1421,9 @@ class CrossOverLayout {
 }
 
 class SpeechSupportPageLayout {
-  final EdgeInsets loaderPadding;
-  final double loaderStrokeWidth;
-
+  final double loaderStrokeWidth, loaderSize;
   const SpeechSupportPageLayout({
-    this.loaderPadding = const EdgeInsets.all(12),
     this.loaderStrokeWidth = 6,
+    this.loaderSize = 56,
   });
 }

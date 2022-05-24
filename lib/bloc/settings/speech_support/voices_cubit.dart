@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
@@ -8,37 +8,29 @@ import 'package:seagull/tts/tts_handler.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
+    required this.speechSettingsCubit,
     required this.voiceRepository,
     required this.ttsHandler,
-    required this.locale,
-    required String voice,
-  }) : super(
-          VoicesState(
-            voices: List.empty(),
-            downloadingVoices: List.empty(),
-            downloadedVoices: List.empty(),
-          ),
-        ) {
-    initialize();
+    required String locale,
+  }) : super(const VoicesState()) {
+    _initialize(locale);
   }
 
+  final _log = Logger((VoicesCubit).toString());
   final VoiceRepository voiceRepository;
+  final SpeechSettingsCubit speechSettingsCubit;
   final TtsInterface ttsHandler;
 
-  void initialize() async {
+  void _initialize(String locale) async {
     final availableVoices = await voiceRepository.readAvailableVoices(locale);
     final downloadedVoices = await _readDownloadedVoices();
     emit(
-      state.copyWith(
-          voices: availableVoices, downloadedVoices: downloadedVoices),
+      VoicesState(
+        available: availableVoices,
+        downloaded: downloadedVoices,
+      ),
     );
   }
-
-  final String locale;
-  final _log = Logger((VoicesCubit).toString());
-
-  VoiceData getVoice(String name) =>
-      state.voices.firstWhere((voice) => voice.name == name);
 
   Future<List<String>> _readDownloadedVoices() async =>
       (await ttsHandler.availableVoices)
@@ -48,101 +40,70 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(
-      DownloadingState(
-          downloadingVoices: List.from(state.downloadingVoices)
-            ..add(voice.name),
-          downloadedVoices: state.downloadedVoices,
-          voices: state.voices),
+      state.copyWith(
+        downloading: [...state.downloading, voice.name],
+      ),
     );
-    bool result = await voiceRepository.downloadVoice(voice);
-    if (result) {
-      _log.fine('Downloaded voice; ${voice.name}');
-    } else {
+    bool downloadSuccess = await voiceRepository.downloadVoice(voice);
+    final downloadingVoices = [...state.downloading]..remove(voice.name);
+
+    if (!downloadSuccess) {
       _log.warning('Failed downloading file; ${voice.name}');
+      return emit(state.copyWith(downloading: downloadingVoices));
     }
-    final downloadingVoices = List<String>.from(state.downloadingVoices)
-      ..remove(voice.name);
-    if (result) {
-      emit(
-        DownloadedState(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: List.from(state.downloadedVoices)
-              ..add(voice.name),
-            voices: state.voices),
-      );
-    } else {
-      emit(state.copyWith(downloadingVoices: downloadingVoices));
+
+    _log.fine('Downloaded voice; ${voice.name}');
+    if (speechSettingsCubit.state.voice.isEmpty) {
+      await speechSettingsCubit.setVoice(voice.name);
     }
+
+    return emit(
+      state.copyWith(
+        downloaded: [...state.downloaded, voice.name],
+        downloading: downloadingVoices,
+      ),
+    );
   }
 
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
-    emit(DeletedState(
-        downloadingVoices: state.downloadingVoices,
-        downloadedVoices: List.from(state.downloadedVoices)..remove(voice.name),
-        voices: state.voices));
+    final downloaded = [...state.downloaded]..remove(voice.name);
+    if (speechSettingsCubit.state.voice == voice.name) {
+      speechSettingsCubit.setVoice(
+        downloaded.isNotEmpty ? downloaded.first : '',
+      );
+    }
+    return emit(state.copyWith(downloaded: downloaded));
   }
 }
 
 class VoicesState extends Equatable {
-  final List<VoiceData> voices;
-  final List<String> downloadingVoices;
-  final List<String> downloadedVoices;
+  final List<VoiceData> available;
+  final List<String> downloaded;
+  final List<String> downloading;
 
   const VoicesState({
-    required this.downloadingVoices,
-    required this.downloadedVoices,
-    required this.voices,
+    this.downloading = const [],
+    this.downloaded = const [],
+    this.available = const [],
   });
 
   VoicesState copyWith({
-    List<VoiceData>? voices,
-    List<String>? downloadedVoices,
-    List<String>? downloadingVoices,
+    List<VoiceData>? available,
+    List<String>? downloaded,
+    List<String>? downloading,
   }) {
     return VoicesState(
-        voices: voices ?? this.voices,
-        downloadedVoices: downloadedVoices ?? this.downloadedVoices,
-        downloadingVoices: downloadingVoices ?? this.downloadingVoices);
+      available: available ?? this.available,
+      downloaded: downloaded ?? this.downloaded,
+      downloading: downloading ?? this.downloading,
+    );
   }
 
   @override
   List<Object?> get props => [
-        downloadingVoices,
-        downloadedVoices,
-        voices,
+        downloading,
+        downloaded,
+        available,
       ];
-}
-
-class DownloadingState extends VoicesState {
-  const DownloadingState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
-}
-
-class DownloadedState extends VoicesState {
-  const DownloadedState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
-}
-
-class DeletedState extends VoicesState {
-  const DeletedState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
 }
