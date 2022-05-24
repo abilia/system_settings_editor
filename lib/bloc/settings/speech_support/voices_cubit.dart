@@ -69,7 +69,9 @@ class VoicesCubit extends Cubit<VoicesState> {
               ..add(voice.name),
             voices: state.voices),
       );
-      speechSettingsCubit.setVoice(voice.name);
+      if (speechSettingsCubit.state.voice.isEmpty) {
+        await speechSettingsCubit.setVoice(voice.name);
+      }
     } else {
       emit(state.copyWith(downloadingVoices: downloadingVoices));
     }
@@ -77,9 +79,11 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
-    final List<String> downloadedVoices = List.from(state.downloadedVoices)
+    final downloadedVoices = List<String>.from(state.downloadedVoices)
       ..remove(voice.name);
-    speechSettingsCubit.setVoice(downloadedVoices.last);
+    if (speechSettingsCubit.state.voice == voice.name) {
+      await speechSettingsCubit.setVoice(downloadedVoices.first);
+    }
     state.copyWith(
         downloadingVoices: state.downloadingVoices,
         downloadedVoices: downloadedVoices,
