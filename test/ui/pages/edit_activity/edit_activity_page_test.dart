@@ -2874,6 +2874,44 @@ text''';
           exact: translate.noEndDate);
     });
 
+    testWidgets('Correct day colors in recurrence tab',
+        (WidgetTester tester) async {
+      void _expectSelectableFieldColor(int dayNum, Color color) {
+        expect(
+            (find.byType(SelectableField).evaluate().elementAt(dayNum).widget
+                    as SelectableField)
+                .color,
+            color);
+      }
+
+      // Arrange
+      await tester.pumpWidget(
+        createEditActivityPage(
+          newActivity: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.goToRecurrenceTab();
+
+      await tester.tap(find.byIcon(AbiliaIcons.day));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(AbiliaIcons.week));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // Check day colors for Selectable fields: Mon, Tue, Wen, Thu, Fri, Sat, Sun
+      _expectSelectableFieldColor(0, AbiliaColors.green);
+      _expectSelectableFieldColor(1, AbiliaColors.blue);
+      _expectSelectableFieldColor(2, AbiliaColors.white110);
+      _expectSelectableFieldColor(3, AbiliaColors.thursdayBrown);
+      _expectSelectableFieldColor(4, AbiliaColors.yellow);
+      _expectSelectableFieldColor(5, AbiliaColors.pink);
+      _expectSelectableFieldColor(6, AbiliaColors.sundayRed);
+    });
+
     testWidgets('error view', (WidgetTester tester) async {
       // Act press submit
       await tester.pumpWidget(createEditActivityPage(newActivity: true));
