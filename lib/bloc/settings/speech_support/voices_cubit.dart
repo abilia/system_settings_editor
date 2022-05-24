@@ -49,7 +49,7 @@ class VoicesCubit extends Cubit<VoicesState> {
 
     if (!downloadSuccess) {
       _log.warning('Failed downloading file; ${voice.name}');
-      emit(state.copyWith(downloading: downloadingVoices));
+      return emit(state.copyWith(downloading: downloadingVoices));
     }
 
     _log.fine('Downloaded voice; ${voice.name}');
