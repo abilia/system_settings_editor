@@ -72,7 +72,7 @@ class VoicesCubit extends Cubit<VoicesState> {
         downloaded.isNotEmpty) {
       speechSettingsCubit.setVoice(downloaded.first);
     }
-    emit(state.copyWith(downloaded: downloaded));
+    return emit(state.copyWith(downloaded: downloaded));
   }
 }
 
