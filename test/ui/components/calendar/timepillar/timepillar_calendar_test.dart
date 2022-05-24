@@ -1222,6 +1222,16 @@ void main() {
       expect(find.text(dayActivity), findsOneWidget);
     });
 
+    testWidgets('Night view: background is dark', (WidgetTester tester) async {
+      mockTicker.add(DateTime(2022, 04, 27, 00, 30));
+      await tester.pumpWidget(App());
+      await tester.pumpAndSettle();
+      Container background =
+          tester.firstWidget(find.byKey(TestKey.calendarBackgroundColor))
+              as Container;
+      expect(background.color, TimepillarCalendar.nightBackgroundColor);
+    });
+
     testWidgets('SGC-1632 Night view: Header should be dark',
         (WidgetTester tester) async {
       mockTicker.add(DateTime(2022, 04, 27, 00, 30));

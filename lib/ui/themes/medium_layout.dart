@@ -290,7 +290,7 @@ class MediumLayout extends Layout {
             imagePadding: EdgeInsets.only(left: 8, right: 12),
             textAndSubtitlePadding: EdgeInsets.only(top: 6, bottom: 12),
             iconSize: 48,
-            secondaryTextHeight: 24 / 24,
+            secondaryTextHeight: 24 / 20,
           ),
           activityPage: const ActivityPageLayout(
             topInfoHeight: 232,
