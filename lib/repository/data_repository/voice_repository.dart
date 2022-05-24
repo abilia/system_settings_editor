@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
-import 'package:seagull/models/exceptions.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/utils/strings.dart';
 
@@ -31,11 +30,8 @@ class VoiceRepository {
           .where((jsonVoice) => jsonVoice['type'] == 1)
           .map((jsonVoice) => VoiceData.fromJson(jsonVoice))
           .toList();
-    } else if (statusCode == 401) {
-      throw UnauthorizedException();
-    } else {
-      throw Exception(response.body);
     }
+    throw Exception(response.body);
   }
 
   Future<bool> downloadVoice(VoiceData voice) async {
@@ -50,7 +46,7 @@ class VoiceRepository {
       await Future.wait(dls);
       return true;
     } catch (ex) {
-      _log.warning('Download failed: ${ex.toString()}');
+      _log.warning('Download failed: $ex');
       return false;
     }
   }

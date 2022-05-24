@@ -4,15 +4,11 @@ import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage(
-      {Key? key,
-      required this.textToSpeech,
-      required this.speechRate,
-      required this.voice})
+      {Key? key, required this.textToSpeech, required this.speechRate})
       : super(key: key);
 
   final bool textToSpeech;
   final double speechRate;
-  final String voice;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +102,6 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                 await context
                     .read<SpeechSettingsCubit>()
                     .setSpeechRate(speechRate);
-                await context.read<SpeechSettingsCubit>().setVoice(voice);
                 Navigator.of(context).maybePop();
               },
             ),

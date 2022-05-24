@@ -48,8 +48,7 @@ class SystemSettingsPage extends StatelessWidget {
                     textToSpeech:
                         context.read<SettingsCubit>().state.textToSpeech,
                     speechRate:
-                        context.read<SpeechSettingsCubit>().state.speechRate,
-                    voice: context.read<SpeechSettingsCubit>().state.voice),
+                        context.read<SpeechSettingsCubit>().state.speechRate),
               ),
               settings: const RouteSettings(name: 'SpeechSupportSettingsPage'),
             ),
