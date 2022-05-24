@@ -123,7 +123,7 @@ class ClientWithDefaultHeaders extends BaseClient {
       body: jsonEncode(
         {
           'clientId': clientId,
-          'renewToken': loginInfo?.renewToken,
+          'renewToken': loginInfo?.renewToken ?? '',
         },
       ),
       headers: jsonHeader(),
