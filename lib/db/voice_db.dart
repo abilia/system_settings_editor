@@ -9,7 +9,9 @@ class VoiceDb {
 
   final SharedPreferences preferences;
 
-  VoiceDb(this.preferences);
+  final String applicationSupportDirectory;
+
+  VoiceDb(this.preferences, this.applicationSupportDirectory);
 
   Future setSpeechRate(double speechRate) =>
       preferences.setDouble(_speechRate, speechRate);

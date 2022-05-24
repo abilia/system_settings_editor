@@ -67,8 +67,3 @@ class FileStorage {
     return thumb.copy('$_dir$id$fileEnding');
   }
 }
-
-class ApplicationSupportFolder {
-  final String path;
-  ApplicationSupportFolder(String? supportPath) : path = '$supportPath/';
-}

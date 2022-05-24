@@ -2,16 +2,14 @@ import 'dart:io';
 
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
-  static Future<TtsInterface> implementation(
-      VoiceDb voiceDb, String supportFolder) async {
+  static Future<TtsInterface> implementation(VoiceDb voiceDb) async {
     if (Config.isMPGO) return await FlutterTtsHandler.implementation();
-    return await AcapelaTtsHandler.implementation(voiceDb, supportFolder);
+    return await AcapelaTtsHandler.implementation(voiceDb);
   }
 
   Future<dynamic> speak(String text);
@@ -30,8 +28,7 @@ abstract class TtsInterface {
 class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
   static final Logger _log = Logger((AcapelaTts).toString());
 
-  static Future<AcapelaTtsHandler> implementation(
-      VoiceDb voiceDb, String supportFolder) async {
+  static Future<AcapelaTtsHandler> implementation(VoiceDb voiceDb) async {
     final acapela = AcapelaTtsHandler();
     bool initialized = await acapela.initialize(
       userId: 0x7a323547,
@@ -40,7 +37,7 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
           'VimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\n'
           'V2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\n'
           'RK\$@cHvZ!G9GsQ%lnEmu3S##',
-      voicesPath: (await getApplicationSupportDirectory()).path,
+      voicesPath: (voiceDb.applicationSupportDirectory),
     );
     if (initialized &&
         voiceDb.voice.isNotEmpty &&
