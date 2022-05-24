@@ -395,6 +395,7 @@ final ButtonStyle yellowButtonStyle = _ButtonDef(
 ).toStyle();
 
 final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
+  textStyle: MaterialStateProperty.all(abiliaTextTheme.button),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
         states.contains(MaterialState.pressed)) {
