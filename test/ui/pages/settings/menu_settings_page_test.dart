@@ -54,6 +54,7 @@ void main() {
       expect(find.byIcon(AbiliaIcons.cameraPhoto), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.myPhotos), findsWidgets);
       expect(find.byIcon(AbiliaIcons.day), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.favoritesShow), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.menuSetup), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.settings), findsOneWidget);
     });
@@ -97,6 +98,19 @@ void main() {
       );
     });
 
+    testWidgets('change display basic templates is stored', (tester) async {
+      await tester.goToMenuSettingPage();
+      await tester.tap(find.byIcon(AbiliaIcons.favoritesShow));
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+      verifySyncGeneric(
+        tester,
+        genericDb,
+        key: MenuSettings.showBasicTemplatesKey,
+        matcher: isFalse,
+      );
+    });
+
     testWidgets('change display quick settings is stored', (tester) async {
       await tester.goToMenuSettingPage();
       await tester.tap(find.byIcon(AbiliaIcons.menuSetup));
@@ -126,7 +140,7 @@ void main() {
       );
     });
 
-    testWidgets('change display settings to trye shows no popup and is stored',
+    testWidgets('change display settings shows no popup and is stored',
         (tester) async {
       generics = [
         Generic.createNew<MemoplannerSettingData>(
@@ -188,6 +202,7 @@ void main() {
       await tester.goToMenuPage();
       expect(find.byType(CameraButton), findsNothing);
     });
+
     testWidgets('hides MyPhotosButton', (tester) async {
       // Arrange
       generics = [
@@ -214,6 +229,20 @@ void main() {
       ];
       await tester.goToMenuPage();
       expect(find.byType(PhotoCalendarButton), findsNothing);
+    });
+
+    testWidgets('hides BasicTemplatesButton', (tester) async {
+      // Arrange
+      generics = [
+        Generic.createNew<MemoplannerSettingData>(
+          data: MemoplannerSettingData.fromData(
+            data: false,
+            identifier: MenuSettings.showBasicTemplatesKey,
+          ),
+        ),
+      ];
+      await tester.goToMenuPage();
+      expect(find.byType(BasicTemplatesButton), findsNothing);
     });
 
     testWidgets('hides QuickSettingsButton', (tester) async {
@@ -285,7 +314,7 @@ void main() {
       Generic.createNew<MemoplannerSettingData>(
         data: MemoplannerSettingData.fromData(
           data: false,
-          identifier: MenuSettings.showTimersKey,
+          identifier: MenuSettings.showBasicTemplatesKey,
         ),
       ),
       Generic.createNew<MemoplannerSettingData>(

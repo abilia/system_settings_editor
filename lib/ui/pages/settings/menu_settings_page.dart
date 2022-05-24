@@ -14,9 +14,10 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
   late bool camera,
       myPhotos,
       photoCalendar,
+      showBasicTemplates,
       quickSettings,
-      settings,
-      settingsInitial;
+      settings;
+  late final bool settingsInitial;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
     camera = memosettingsState.showCamera;
     myPhotos = memosettingsState.showPhotos;
     photoCalendar = memosettingsState.showPhotoCalendar;
+    showBasicTemplates = memosettingsState.showBasicTemplates;
     quickSettings = memosettingsState.showQuickSettings;
     settingsInitial = settings = memosettingsState.showSettings;
   }
@@ -68,6 +70,10 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                     identifier: MenuSettings.showPhotoCalendarKey,
                   ),
                   MemoplannerSettingData.fromData(
+                    data: showBasicTemplates,
+                    identifier: MenuSettings.showBasicTemplatesKey,
+                  ),
+                  MemoplannerSettingData.fromData(
                     data: quickSettings,
                     identifier: MenuSettings.showQuickSettingsKey,
                   ),
@@ -100,6 +106,12 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
           value: photoCalendar,
           onChanged: (v) => setState(() => photoCalendar = v),
           child: Text(t.photoCalendar.singleLine),
+        ),
+        SwitchField(
+          leading: const Icon(AbiliaIcons.favoritesShow),
+          value: showBasicTemplates,
+          onChanged: (v) => setState(() => showBasicTemplates = v),
+          child: Text(t.basicTemplates.singleLine),
         ),
         SwitchField(
           leading: const Icon(AbiliaIcons.menuSetup),
