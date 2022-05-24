@@ -24,7 +24,7 @@ class VoicesPage extends StatelessWidget {
               controller: scrollController,
               child: ListView(
                 controller: scrollController,
-                children: state.availible.map((VoiceData voice) {
+                children: state.available.map((VoiceData voice) {
                   final name = voice.name;
                   final selectedVoice = settingsState.voice;
                   return _VoiceRow(
