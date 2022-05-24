@@ -45,10 +45,11 @@ class SystemSettingsPage extends StatelessWidget {
               builder: (_) => MultiBlocProvider(
                 providers: copiedAuthProviders(context),
                 child: SpeechSupportSettingsPage(
-                    textToSpeech:
-                        context.read<SettingsCubit>().state.textToSpeech,
-                    speechRate:
-                        context.read<SpeechSettingsCubit>().state.speechRate),
+                  textToSpeech:
+                      context.read<SettingsCubit>().state.textToSpeech,
+                  speechRate:
+                      context.read<SpeechSettingsCubit>().state.speechRate,
+                ),
               ),
               settings: const RouteSettings(name: 'SpeechSupportSettingsPage'),
             ),

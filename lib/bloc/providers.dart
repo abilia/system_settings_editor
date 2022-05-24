@@ -234,7 +234,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   ttsHandler: GetIt.I<TtsInterface>(),
                   voiceRepository: context.read<VoiceRepository>(),
                   locale: GetIt.I<SettingsDb>().language,
-                  voice: GetIt.I<VoiceDb>().voice,
                 ),
               ),
             ]

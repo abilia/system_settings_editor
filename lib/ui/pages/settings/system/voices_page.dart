@@ -24,18 +24,14 @@ class VoicesPage extends StatelessWidget {
               controller: scrollController,
               child: ListView(
                 controller: scrollController,
-                children: state.voices.map((VoiceData voice) {
+                children: state.availible.map((VoiceData voice) {
                   final name = voice.name;
                   final selectedVoice = settingsState.voice;
                   return _VoiceRow(
-                    selected: name == selectedVoice,
                     voice: voice,
-                    downloaded: state.downloadedVoices.contains(name),
-                    downloading: state.downloadingVoices.contains(name),
+                    downloaded: state.downloaded.contains(name),
+                    downloading: state.downloading.contains(name),
                     selectedVoice: selectedVoice,
-                    keep: state.downloadedVoices.length == 1 &&
-                        state.downloadedVoices.first == name,
-                    firstSelection: selectedVoice.isEmpty,
                   );
                 }).toList(),
               ),
@@ -53,23 +49,17 @@ class VoicesPage extends StatelessWidget {
 }
 
 class _VoiceRow extends StatelessWidget {
-  final bool keep;
-  final bool selected;
   final bool downloaded;
   final bool downloading;
   final VoiceData voice;
   final String selectedVoice;
-  final bool firstSelection;
 
   const _VoiceRow({
     Key? key,
-    this.keep = false,
-    required this.selected,
     required this.voice,
     this.downloaded = false,
     this.downloading = false,
     required this.selectedVoice,
-    required this.firstSelection,
   }) : super(key: key);
 
   @override
@@ -80,106 +70,64 @@ class _VoiceRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          CollapsableWidget(
-            axis: Axis.horizontal,
-            collapsed: downloaded,
-            child: Padding(
-              padding: EdgeInsets.only(
+          if (downloaded)
+            IconActionButtonDark(
+              onPressed: () => context.read<VoicesCubit>().deleteVoice(voice),
+              child: const Icon(AbiliaIcons.deleteAllClear),
+            ).pad(
+              EdgeInsets.only(
                 left: layout.formPadding.largeHorizontalItemDistance,
               ),
-              child: downloading
-                  ? SizedBox(
-                      width: layout.actionButton.size,
-                      height: layout.actionButton.size,
-                      child: CircularProgressIndicator(
-                        strokeWidth: pageLayout.loaderStrokeWidth,
-                        valueColor:
-                            const AlwaysStoppedAnimation(AbiliaColors.red),
-                      ).pad(pageLayout.loaderPadding),
-                    )
-                  : IconActionButtonDark(
-                      child: const Icon(AbiliaIcons.download),
-                      onPressed: () async => await context
-                          .read<VoicesCubit>()
-                          .downloadVoice(voice),
-                    ),
-            ),
-          ),
-          CollapsableWidget(
-            axis: Axis.horizontal,
-            collapsed: downloading || !downloaded || firstSelection,
-            child: Padding(
-              padding: EdgeInsets.only(
+            )
+          else if (downloading)
+            SizedBox(
+              width: layout.actionButton.size,
+              height: layout.actionButton.size,
+              child: Center(
+                child: SizedBox(
+                  width: pageLayout.loaderSize,
+                  height: pageLayout.loaderSize,
+                  child: CircularProgressIndicator(
+                    strokeWidth: pageLayout.loaderStrokeWidth,
+                    valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
+                  ),
+                ),
+              ),
+            ).pad(
+              EdgeInsets.only(
                 left: layout.formPadding.largeHorizontalItemDistance,
               ),
-              child: _DeleteButton(
-                voice: voice,
-                enabled: !keep,
+            )
+          else
+            IconActionButtonDark(
+              child: const Icon(AbiliaIcons.download),
+              onPressed: () async =>
+                  await context.read<VoicesCubit>().downloadVoice(voice),
+            ).pad(
+              EdgeInsets.only(
+                left: layout.formPadding.largeHorizontalItemDistance,
               ),
             ),
-          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(
                 left: layout.formPadding.largeHorizontalItemDistance,
               ),
-              child: downloaded
-                  ? RadioField<String>(
-                      groupValue: selectedVoice,
-                      onChanged: (name) {
+              child: RadioField<String>(
+                groupValue: selectedVoice,
+                onChanged: downloaded
+                    ? (name) {
                         context
                             .read<SpeechSettingsCubit>()
                             .setVoice(voice.name);
-                      },
-                      value: voice.name,
-                      text: Text('${voice.name}: ${voice.size}MB'),
-                    )
-                  : _DisabledVoiceRow(name: '${voice.name}: ${voice.size}MB'),
+                      }
+                    : null,
+                value: voice.name,
+                text: Text('${voice.name}: ${voice.size}MB'),
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DeleteButton extends StatelessWidget {
-  const _DeleteButton({Key? key, required this.voice, this.enabled = true})
-      : super(key: key);
-
-  final VoiceData voice;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) => enabled
-      ? IconActionButtonDark(
-          onPressed: () => context.read<VoicesCubit>().deleteVoice(voice),
-          child: const Icon(AbiliaIcons.deleteAllClear),
-        )
-      : const IconActionButtonLight(child: Icon(AbiliaIcons.deleteAllClear));
-}
-
-class _DisabledVoiceRow extends StatelessWidget {
-  final String name;
-
-  const _DisabledVoiceRow({Key? key, required this.name}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: layout.pickField.height,
-      decoration: whiteBoxDecoration,
-      padding: EdgeInsets.only(
-        left: layout.formPadding.largeHorizontalItemDistance,
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-          child: Tts(
-            child: Text(name),
-          ),
-        ),
       ),
     );
   }

@@ -37,7 +37,7 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
           'VimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\n'
           'V2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\n'
           'RK\$@cHvZ!G9GsQ%lnEmu3S##',
-      voicesPath: (voiceDb.applicationSupportDirectory),
+      voicesPath: voiceDb.applicationSupportDirectory,
     );
     if (initialized &&
         voiceDb.voice.isNotEmpty &&

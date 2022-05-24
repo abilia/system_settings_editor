@@ -3,9 +3,11 @@ import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
-  const SpeechSupportSettingsPage(
-      {Key? key, required this.textToSpeech, required this.speechRate})
-      : super(key: key);
+  const SpeechSupportSettingsPage({
+    Key? key,
+    required this.textToSpeech,
+    required this.speechRate,
+  }) : super(key: key);
 
   final bool textToSpeech;
   final double speechRate;
@@ -43,7 +45,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                           Expanded(
                             child: BlocSelector<VoicesCubit, VoicesState,
                                 List<String>>(
-                              selector: (state) => state.downloadingVoices,
+                              selector: (state) => state.downloading,
                               builder: (context, downloadingVoices) =>
                                   PickField(
                                 text: Text(state.voice.isEmpty
@@ -96,24 +98,34 @@ class SpeechSupportSettingsPage extends StatelessWidget {
           bottomNavigationBar: BottomNavigation(
             backNavigationWidget: CancelButton(
               onPressed: () async {
-                await context
-                    .read<SettingsCubit>()
-                    .setTextToSpeech(textToSpeech);
-                await context
-                    .read<SpeechSettingsCubit>()
-                    .setSpeechRate(speechRate);
+                if (!_disabledIfNoDownloadedVoice(context)) {
+                  await context
+                      .read<SettingsCubit>()
+                      .setTextToSpeech(textToSpeech);
+                  await context
+                      .read<SpeechSettingsCubit>()
+                      .setSpeechRate(speechRate);
+                }
                 Navigator.of(context).maybePop();
               },
             ),
-            forwardNavigationWidget: OkButton(
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
+            forwardNavigationWidget: OkButton(onPressed: () {
+              _disabledIfNoDownloadedVoice(context);
+              Navigator.of(context).maybePop();
+            }),
           ),
         );
       },
     );
+  }
+
+  bool _disabledIfNoDownloadedVoice(BuildContext context) {
+    if (context.read<VoicesCubit>().state.downloaded.isEmpty) {
+      context.read<SpeechSettingsCubit>().setVoice('');
+      context.read<SettingsCubit>().setTextToSpeech(false);
+      return true;
+    }
+    return false;
   }
 
   double _speechRateToProgress(double speechRate) {

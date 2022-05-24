@@ -28,7 +28,7 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   }
 
   Future<void> setVoice(String voice) async {
-    await acapelaTts.setVoice({'voice': voice});
+    if (voice.isNotEmpty) await acapelaTts.setVoice({'voice': voice});
     emit(state.copyWith(voice: voice));
     await voiceDb.setVoice(state.voice);
   }
