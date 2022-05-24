@@ -7,6 +7,8 @@ class AbiliaSlider extends StatelessWidget {
   final Widget? leading;
   final double? heigth, width;
   final double value;
+  final int? divisions;
+  final double min, max;
   static final defaultHeight = layout.slider.defaultHeight;
 
   const AbiliaSlider({
@@ -17,6 +19,9 @@ class AbiliaSlider extends StatelessWidget {
     this.heigth,
     this.width,
     this.value = 1.0,
+    this.divisions,
+    this.min = 0,
+    this.max = 1,
   }) : super(key: key);
 
   @override
@@ -49,9 +54,12 @@ class AbiliaSlider extends StatelessWidget {
                 trackHeight: layout.slider.trackHeight,
               ),
               child: Slider(
+                divisions: divisions,
                 onChanged: onChanged,
                 onChangeEnd: onChangeEnd,
                 value: value,
+                min: min,
+                max: max,
               ),
             ),
           ),

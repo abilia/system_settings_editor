@@ -12,6 +12,8 @@ enterNameForTimer	Enter name for timer	Ange namn för timer
 timeIsUp	Time is up	Tiden är slut					
 onlyAppliesToGo	Only applies to MEMOplanner Go						
 selectADayToViewDetails	Select a day to view more details						
+voice	Voice	Röst					
+installingVoice	Installing	Installerar					
 enterCode	Enter code						
 enterYourCodeToAccess	Enter your code to access						
 allPhotos	All photos						

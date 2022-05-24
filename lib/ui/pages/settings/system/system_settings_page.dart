@@ -30,13 +30,31 @@ class SystemSettingsPage extends StatelessWidget {
                     providers: authProviders,
                     child: const CodeProtectSettingsPage(),
                   ),
-                  settings: RouteSettings(name: t.codeProtect),
+                  settings:
+                      const RouteSettings(name: 'CodeProtectSettingsPage'),
                 ),
               );
             }
           },
         ),
-        const TextToSpeechSwitch(),
+        PickField(
+          leading: const Icon(AbiliaIcons.speakText),
+          text: Text(t.textToSpeech),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: copiedAuthProviders(context),
+                child: SpeechSupportSettingsPage(
+                  textToSpeech:
+                      context.read<SettingsCubit>().state.textToSpeech,
+                  speechRate:
+                      context.read<SpeechSettingsCubit>().state.speechRate,
+                ),
+              ),
+              settings: const RouteSettings(name: 'SpeechSupportSettingsPage'),
+            ),
+          ),
+        ),
         PickField(
           leading: const Icon(AbiliaIcons.pastPictureFromWindowsClipboard),
           text: Text(t.androidSettings),

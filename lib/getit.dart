@@ -14,6 +14,11 @@ import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetItInitializer {
+  Directory? _applicationSupportDirectory;
+
+  set applicationSupportDirectory(Directory applicationSupportDirectory) =>
+      _applicationSupportDirectory = applicationSupportDirectory;
+
   Directory? _documentsDirectory;
 
   set documentsDirectory(Directory documentsDirectory) =>
@@ -87,6 +92,10 @@ class GetItInitializer {
   CalendarDb? _calendarDb;
   set calendarDb(CalendarDb calendarDb) => _calendarDb = calendarDb;
 
+  VoiceDb? _voiceDb;
+
+  set voiceDb(VoiceDb voiceDb) => _voiceDb = voiceDb;
+
   late MultipartRequestBuilder _multipartRequestBuilder =
       MultipartRequestBuilder();
 
@@ -152,5 +161,7 @@ class GetItInitializer {
     ..registerSingleton<SyncDelays>(_syncDelay)
     ..registerSingleton<PackageInfo>(_packageInfo)
     ..registerSingleton<Battery>(_battery)
-    ..registerSingleton<TtsInterface>(_ttsHandler);
+    ..registerSingleton<TtsInterface>(_ttsHandler)
+    ..registerSingleton<VoiceDb>(_voiceDb ??
+        VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''));
 }

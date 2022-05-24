@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:acapela_tts/acapela_tts.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:seagull/config.dart';
+import 'package:seagull/db/voice_db.dart';
 import 'package:seagull/logging.dart';
 
 abstract class TtsInterface {
-  static Future<TtsInterface> implementation() async {
+  static Future<TtsInterface> implementation(VoiceDb voiceDb) async {
     if (Config.isMPGO) return await FlutterTtsHandler.implementation();
-    return await AcapelaTtsHandler.implementation();
+    return await AcapelaTtsHandler.implementation(voiceDb);
   }
 
   Future<dynamic> speak(String text);
@@ -16,26 +17,33 @@ abstract class TtsInterface {
   Future<dynamic> stop();
 
   Future<dynamic> pause();
+
+  Future<dynamic> setVoice(Map<String, String> voice);
+
+  Future<dynamic> setSpeechRate(double speechRate);
+
+  Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }
 
 class AcapelaTtsHandler extends AcapelaTts implements TtsInterface {
   static final Logger _log = Logger((AcapelaTts).toString());
 
-  static Future<AcapelaTtsHandler> implementation() async {
+  static Future<AcapelaTtsHandler> implementation(VoiceDb voiceDb) async {
     final acapela = AcapelaTtsHandler();
-    bool initialized = await acapela.setLicense(
-      0x31364e69,
-      0x004dfba3,
-      '"4877 0 iN61 #EVALUATION#Abilia-Solna-Sweden"\n'
-      'Uulz3XChrD9pVq!udAjvoOjtUunooL3FMZa6plK6RhhwiTzf\$Qaorlmwdyh#\n'
-      'X6XAIrmYSRSUMSSNL25d7kHMXTKDS@Nlg2kl@YK4RsFVGPDX\n'
-      'TqUDZO3UZgZhyJFRbfKSpQ##\n',
+    bool initialized = await acapela.initialize(
+      userId: 0x7a323547,
+      password: 0x00302bc1,
+      license: '"5917 0 G52z #COMMERCIAL#Abilia Norway"\n'
+          'VimydOpXm@G7mAD\$VyO!eL%3JVAuNstBxpBi!gMZOXb7CZ6wq3i#\n'
+          'V2%VyjWqtZliBRu%@pga5pAjKcadHfW4JhbwUUi7goHwjpIB\n'
+          'RK\$@cHvZ!G9GsQ%lnEmu3S##',
+      voicesPath: voiceDb.applicationSupportDirectory,
     );
-    List<Object?> voices = await acapela.availableVoices;
-    if (voices.isNotEmpty) {
-      await acapela.setVoice(voices.first.toString());
-    } else {
-      _log.warning('No voices available');
+    if (initialized &&
+        voiceDb.voice.isNotEmpty &&
+        (await acapela.availableVoices).isNotEmpty) {
+      await acapela.setVoice({'voice': voiceDb.voice});
+      await acapela.setSpeechRate(voiceDb.speechRate);
     }
     _log.fine('Initialized $initialized');
     return acapela;
@@ -78,4 +86,7 @@ class FlutterTtsHandler extends FlutterTts implements TtsInterface {
 
     return tts;
   }
+
+  @override
+  Future<List<Object?>> get availableVoices => Future.value(List.empty());
 }

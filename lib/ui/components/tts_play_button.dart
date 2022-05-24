@@ -3,79 +3,91 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 
-class TtsPlayButton extends StatefulWidget {
+class TtsPlayButton extends StatelessWidget {
   const TtsPlayButton({
     Key? key,
-    required this.controller,
+    this.controller,
+    this.padding = EdgeInsets.zero,
+    this.tts = '',
+  }) : super(key: key);
+  final TextEditingController? controller;
+  final EdgeInsets padding;
+  final String tts;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = this.controller;
+    if (controller != null) {
+      return AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) => _TtsPlayButton(
+          text: controller.text,
+          padding: padding,
+        ),
+      );
+    } else {
+      return _TtsPlayButton(
+        text: tts,
+        padding: padding,
+      );
+    }
+  }
+}
+
+class _TtsPlayButton extends StatefulWidget {
+  const _TtsPlayButton({
+    Key? key,
+    required this.text,
     this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final String text;
   final EdgeInsets padding;
 
   @override
-  State<TtsPlayButton> createState() => _TtsPlayButtonState();
+  State<_TtsPlayButton> createState() => _TtsPlayButtonState();
 }
 
-class _TtsPlayButtonState extends State<TtsPlayButton> {
+class _TtsPlayButtonState extends State<_TtsPlayButton> {
   bool ttsIsPlaying = false;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
-      buildWhen: (previous, current) =>
-          previous.textToSpeech != current.textToSpeech,
-      builder: (context, settingsState) => SizedBox(
+    return BlocSelector<SettingsCubit, SettingsState, bool>(
+      selector: (state) => state.textToSpeech,
+      builder: (context, textToSpeech) => SizedBox(
         height: layout.actionButton.size,
-        child: AnimatedBuilder(
-          animation: widget.controller,
-          builder: (context, child) {
-            return CollapsableWidget(
-              collapsed: !(settingsState.textToSpeech &&
-                  widget.controller.text.isNotEmpty),
-              axis: Axis.horizontal,
-              child: Padding(
-                padding: widget.padding,
-                child: IconActionButton(
-                  key: TestKey.ttsPlayButton,
-                  style: actionButtonStyleDark,
-                  onPressed: () async {
-                    if (ttsIsPlaying) {
-                      _stop();
-                    } else {
-                      _play();
-                    }
-                  },
-                  child: Icon(
-                    ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
-                  ),
-                ),
+        child: CollapsableWidget(
+          collapsed: !(textToSpeech && widget.text.isNotEmpty),
+          axis: Axis.horizontal,
+          child: Padding(
+            padding: widget.padding,
+            child: IconActionButton(
+              key: TestKey.ttsPlayButton,
+              style: actionButtonStyleDark,
+              onPressed: () => ttsIsPlaying ? _stop() : _play(),
+              child: Icon(
+                ttsIsPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
   }
 
-  void _play() {
+  Future<void> _play() async {
     setState(() => ttsIsPlaying = true);
-    GetIt.I<TtsInterface>().speak(widget.controller.text).whenComplete(
-      () {
-        if (mounted) {
-          setState(() => ttsIsPlaying = false);
-        }
-      },
-    );
+    await GetIt.I<TtsInterface>().speak(widget.text);
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 
-  void _stop() {
-    GetIt.I<TtsInterface>().stop().whenComplete(
-      () {
-        if (mounted) {
-          setState(() => ttsIsPlaying = false);
-        }
-      },
-    );
+  Future<void> _stop() async {
+    await GetIt.I<TtsInterface>().stop();
+    if (mounted) {
+      setState(() => ttsIsPlaying = false);
+    }
   }
 }

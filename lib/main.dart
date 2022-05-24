@@ -47,6 +47,7 @@ Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final documentDirectory = await getApplicationDocumentsDirectory();
+  final applicationSupportDirectory = await getApplicationSupportDirectory();
   final preferences = await SharedPreferences.getInstance();
   final seagullLogger = SeagullLogger(
     documentsDir: documentDirectory.path,
@@ -59,16 +60,19 @@ Future<void> initServices() async {
   if (currentLocale != null) {
     await settingsDb.setLanguage(currentLocale.split(RegExp('-|_'))[0]);
   }
+  final voiceDb = VoiceDb(preferences, applicationSupportDirectory.path);
   final baseUrlDb = BaseUrlDb(preferences);
   await baseUrlDb.initialize();
   GetItInitializer()
     ..documentsDirectory = documentDirectory
+    ..applicationSupportDirectory = applicationSupportDirectory
     ..sharedPreferences = preferences
     ..settingsDb = settingsDb
     ..baseUrlDb = baseUrlDb
     ..seagullLogger = seagullLogger
     ..database = await DatabaseRepository.createSqfliteDb()
-    ..ttsHandler = await TtsInterface.implementation()
+    ..voiceDb = voiceDb
+    ..ttsHandler = await TtsInterface.implementation(voiceDb)
     ..packageInfo = await PackageInfo.fromPlatform()
     ..syncDelay = const SyncDelays()
     ..init();
