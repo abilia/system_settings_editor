@@ -7,7 +7,8 @@ class AndroidIntentAction {
   static const settings = 'android.settings.SETTINGS',
       manageOverlay = 'android.settings.action.MANAGE_OVERLAY_PERMISSION',
       deviceInfo = 'android.settings.DEVICE_INFO_SETTINGS',
-      wifi = 'android.settings.WIFI_SETTINGS';
+      wifi = 'android.settings.WIFI_SETTINGS',
+      writeSettings = 'android.settings.action.MANAGE_WRITE_SETTINGS';
 }
 
 class AndroidIntents {
@@ -43,6 +44,17 @@ class AndroidIntents {
           Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
           Flag.FLAG_ACTIVITY_NO_HISTORY,
         ],
+      ).launch();
+
+  static Future<void> openWriteSettingsPermissionSettings() => AndroidIntent(
+        action: AndroidIntentAction.writeSettings,
+        flags: [
+          Flag.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS,
+          Flag.FLAG_ACTIVITY_NO_HISTORY,
+        ],
+        data: Uri.encodeFull(
+          'package:${GetIt.I<PackageInfo>().packageName}',
+        ),
       ).launch();
 
   static Future<void> openPlayStore() => AndroidIntent(

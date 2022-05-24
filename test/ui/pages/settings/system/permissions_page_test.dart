@@ -302,7 +302,7 @@ void main() {
           find.byType(NotificationPermissionOffWarningDialog), findsOneWidget);
       await tester.tap(find.byKey(TestKey.okDialog));
       await tester.pumpAndSettle();
-    });
+    }, skip: Config.isMP);
 
     testWidgets('systemAlertWindow denied shows warnings',
         (WidgetTester tester) async {
@@ -334,7 +334,7 @@ void main() {
       expect(find.byType(RequestFullscreenNotificationButton), findsNothing);
       expect(find.text(translate.notificationsWarningHintText), findsNothing);
     });
-  });
+  }, skip: Config.isMP);
 }
 
 extension on WidgetTester {

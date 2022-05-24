@@ -249,7 +249,7 @@ void main() {
         await tester.pumpWidget(App());
         await tester.pumpAndSettle();
         expect(find.byType(OrangeDot), findsOneWidget);
-      });
+      }, skip: Config.isMP);
 
       testWidgets('Denied notifications tts', (WidgetTester tester) async {
         setupPermissions({Permission.notification: PermissionStatus.denied});

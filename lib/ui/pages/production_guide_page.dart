@@ -3,9 +3,34 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
-class ProductionGuidePage extends StatelessWidget {
+class ProductionGuidePage extends StatefulWidget {
   const ProductionGuidePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProductionGuidePage> createState() => _ProductionGuidePageState();
+}
+
+class _ProductionGuidePageState extends State<ProductionGuidePage>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeDependencies();
+    if (state == AppLifecycleState.resumed) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,56 +41,71 @@ class ProductionGuidePage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(32),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const _FancyHeader(text: 'Welcome to the start guide!'),
-                const SizedBox(height: 50),
-                const _DebugRow(),
-                const SizedBox(height: 50),
-                Row(
+            child: FutureBuilder(
+              future: SystemSettingsEditor.canWriteSettings,
+              builder: (context, writeSettingsSnapshot) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: serialIdController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Serial number',
-                        ),
+                    const _FancyHeader(text: 'Welcome to the start guide!'),
+                    const SizedBox(height: 50),
+                    const _DebugRow(),
+                    const SizedBox(height: 50),
+                    if (writeSettingsSnapshot.data != true)
+                      TextButton(
+                        onPressed:
+                            AndroidIntents.openWriteSettingsPermissionSettings,
+                        child: const Text('Grant Write Settings permission'),
+                        style: textButtonStyleDarkGrey,
+                      )
+                    else ...[
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: serialIdController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Serial number',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const ElevatedButton(
+                                  onPressed:
+                                      AndroidIntents.openDeviceInfoSettings,
+                                  child: Text('Fetch from settings')),
+                              ElevatedButton(
+                                  onPressed: () =>
+                                      Clipboard.getData(Clipboard.kTextPlain)
+                                          .then((value) => serialIdController
+                                              .text = value?.text ?? ''),
+                                  child: const Text('Paste from clipboard')),
+                            ],
+                          )
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const ElevatedButton(
-                            onPressed: AndroidIntents.openDeviceInfoSettings,
-                            child: Text('Fetch from settings')),
-                        ElevatedButton(
-                            onPressed: () =>
-                                Clipboard.getData(Clipboard.kTextPlain).then(
-                                    (value) => serialIdController.text =
-                                        value?.text ?? ''),
-                            child: const Text('Paste from clipboard')),
-                      ],
-                    )
+                      const SizedBox(height: 50),
+                      TextButton(
+                        onPressed: () => context
+                            .read<StartGuideCubit>()
+                            .verifySerialId(serialIdController.text),
+                        child: const Text('Verify'),
+                        style: textButtonStyleGreen,
+                      ),
+                      BlocBuilder<StartGuideCubit, StartGuideState>(
+                        builder: (context, startGuideState) =>
+                            startGuideState is VerifySerialIdFailed
+                                ? Text(startGuideState.message)
+                                : const Text(''),
+                      )
+                    ],
                   ],
-                ),
-                const SizedBox(height: 50),
-                TextButton(
-                  onPressed: () => context
-                      .read<StartGuideCubit>()
-                      .verifySerialId(serialIdController.text),
-                  child: const Text('Verify'),
-                  style: textButtonStyleGreen,
-                ),
-                BlocBuilder<StartGuideCubit, StartGuideState>(
-                  builder: (context, startGuideState) =>
-                      startGuideState is VerifySerialIdFailed
-                          ? Text(startGuideState.message)
-                          : const Text(''),
-                )
-              ],
+                );
+              },
             ),
           ),
         ),
