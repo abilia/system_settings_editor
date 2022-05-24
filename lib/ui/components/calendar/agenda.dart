@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class Agenda extends StatefulWidget {
   final EventsState eventState;
@@ -109,47 +110,54 @@ class EventList extends StatelessWidget {
       upCollapseMargin: topPadding,
       downCollapseMargin: bottomPadding,
       controller: sc,
-      child: BlocBuilder<DayEventsCubit, EventsState>(
-        builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
-          builder: (context, now) {
-            final pastEvents = state.pastEvents(now);
-            final notPastEvents = state.notPastEvents(now);
-            final isTodayAndNoPast = state.isToday && pastEvents.isEmpty;
-            return CustomScrollView(
-              center: state.isToday ? center : null,
-              controller: sc,
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                if (state.events.isEmpty && state.fullDayActivities.isEmpty)
-                  SliverNoActivities(key: center)
-                else ...[
-                  if (!isTodayAndNoPast)
-                    SliverPadding(
-                      padding: EdgeInsets.only(top: topPadding),
-                      sliver: SliverEventList(
+      child: Builder(builder: (context) {
+        final eventState = context.watch<DayEventsCubit>().state;
+        final now = context.watch<ClockBloc>().state;
+        final dayPartsSetting = context
+            .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
+
+        final isNight = now.dayPart(dayPartsSetting) == DayPart.night;
+        final pastEvents = eventState.pastEvents(now);
+        final notPastEvents = eventState.notPastEvents(now);
+        final isTodayAndNoPast = eventState.isToday && pastEvents.isEmpty;
+        return Container(
+          key: TestKey.calendarBackgroundColor,
+          color: isNight ? TimepillarCalendar.nightBackgroundColor : null,
+          child: CustomScrollView(
+            center: eventState.isToday ? center : null,
+            controller: sc,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              if (eventState.events.isEmpty &&
+                  eventState.fullDayActivities.isEmpty)
+                SliverNoActivities(key: center)
+              else ...[
+                if (!isTodayAndNoPast)
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: topPadding),
+                    sliver: SliverEventList(
+                      pastEvents,
+                      eventState.day,
+                      reversed: eventState.isToday,
+                      lastMargin: _lastPastPadding(
                         pastEvents,
-                        state.day,
-                        reversed: state.isToday,
-                        lastMargin: _lastPastPadding(
-                          pastEvents,
-                          notPastEvents,
-                        ),
+                        notPastEvents,
                       ),
                     ),
-                  SliverPadding(
-                    key: center,
-                    padding: EdgeInsets.only(
-                      top: isTodayAndNoPast ? topPadding : 0.0,
-                      bottom: bottomPadding,
-                    ),
-                    sliver: SliverEventList(notPastEvents, state.day),
                   ),
-                ],
+                SliverPadding(
+                  key: center,
+                  padding: EdgeInsets.only(
+                    top: isTodayAndNoPast ? topPadding : 0.0,
+                    bottom: bottomPadding,
+                  ),
+                  sliver: SliverEventList(notPastEvents, eventState.day),
+                ),
               ],
-            );
-          },
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 

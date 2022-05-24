@@ -147,9 +147,9 @@ void main() {
     timeTicker.add(now.add(const Duration(hours: 16)));
     await tester.pumpWidget(App());
     await tester.pumpAndSettle();
-    Scaffold scaffold = tester
-        .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Scaffold;
-    expect(scaffold.backgroundColor, TimepillarCalendar.nightBackgroundColor);
+    Container background = tester
+        .firstWidget(find.byKey(TestKey.calendarBackgroundColor)) as Container;
+    expect(background.color, TimepillarCalendar.nightBackgroundColor);
   });
 
   testWidgets(
