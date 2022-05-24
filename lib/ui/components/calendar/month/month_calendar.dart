@@ -411,18 +411,19 @@ class MonthDayViewCompact extends StatelessWidget {
               : BlocProvider.of<DayPickerBloc>(context).add(GoTo(day: day.day));
         },
         child: BlocBuilder<DayPickerBloc, DayPickerState>(
-            builder: (context, dayPickerState) {
-          final dayIsHighlighted =
-              (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
-          final borderRadius = BorderRadius.circular(dayIsHighlighted
-              ? layout.monthCalendar.dayRadiusHighlighted
-              : layout.monthCalendar.dayRadius);
-
-          return BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
+          builder: (context, dayPickerState) =>
+              BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
             buildWhen: (previous, current) =>
                 previous.monthWeekColor != current.monthWeekColor,
             builder: (context, settingState) {
-              final textWithCorrectColor = day.isPast ||
+              final dayIsHighlighted =
+                  (day.isCurrent || dayPickerState.day.isAtSameDay(day.day));
+
+              final borderRadius = BorderRadius.circular(dayIsHighlighted
+                  ? layout.monthCalendar.dayRadiusHighlighted
+                  : layout.monthCalendar.dayRadius);
+
+              final dayTextStyle = day.isPast ||
                       settingState.monthWeekColor == WeekColor.captions
                   ? textStyle.copyWith(color: AbiliaColors.black)
                   : textStyle.copyWith(
@@ -461,7 +462,7 @@ class MonthDayViewCompact extends StatelessWidget {
                     ? layout.monthCalendar.dayViewMarginHighlighted
                     : layout.monthCalendar.dayViewMargin,
                 child: DefaultTextStyle(
-                  style: textWithCorrectColor,
+                  style: dayTextStyle,
                   child: Stack(
                     children: [
                       Center(child: Text('${day.day.day}')),
@@ -485,8 +486,8 @@ class MonthDayViewCompact extends StatelessWidget {
                 ),
               );
             },
-          );
-        }),
+          ),
+        ),
       ),
     );
   }
