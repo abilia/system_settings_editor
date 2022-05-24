@@ -12,49 +12,38 @@ class VoicesPage extends StatelessWidget {
     return BlocBuilder<VoicesCubit, VoicesState>(
       builder: (context, state) =>
           BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
-        builder: (context, settingsState) =>
-            BlocListener<VoicesCubit, VoicesState>(
-          listenWhen: (oldState, newState) =>
-              (oldState is DownloadingState && newState is DownloadedState) ||
-              newState is DeletedState,
-          listener: (context, voicesState) {
-            context
-                .read<SpeechSettingsCubit>()
-                .setVoice(voicesState.downloadedVoices.last);
-          },
-          child: Scaffold(
-            appBar: AbiliaAppBar(
-              title: t.textToSpeech,
-              label: t.system,
-              iconData: AbiliaIcons.handiAlarmVibration,
-            ),
-            body: Padding(
-              padding: layout.settingsBasePage.listPadding,
-              child: ScrollArrows.vertical(
+        builder: (context, settingsState) => Scaffold(
+          appBar: AbiliaAppBar(
+            title: t.textToSpeech,
+            label: t.system,
+            iconData: AbiliaIcons.handiAlarmVibration,
+          ),
+          body: Padding(
+            padding: layout.settingsBasePage.listPadding,
+            child: ScrollArrows.vertical(
+              controller: scrollController,
+              child: ListView(
                 controller: scrollController,
-                child: ListView(
-                  controller: scrollController,
-                  children: state.voices.map((VoiceData voice) {
-                    final name = voice.name;
-                    final selectedVoice = settingsState.voice;
-                    return _VoiceRow(
-                      selected: name == selectedVoice,
-                      voice: voice,
-                      downloaded: state.downloadedVoices.contains(name),
-                      downloading: state.downloadingVoices.contains(name),
-                      selectedVoice: selectedVoice,
-                      keep: state.downloadedVoices.length == 1 &&
-                          state.downloadedVoices.first == name,
-                      firstSelection: selectedVoice.isEmpty,
-                    );
-                  }).toList(),
-                ),
+                children: state.voices.map((VoiceData voice) {
+                  final name = voice.name;
+                  final selectedVoice = settingsState.voice;
+                  return _VoiceRow(
+                    selected: name == selectedVoice,
+                    voice: voice,
+                    downloaded: state.downloadedVoices.contains(name),
+                    downloading: state.downloadingVoices.contains(name),
+                    selectedVoice: selectedVoice,
+                    keep: state.downloadedVoices.length == 1 &&
+                        state.downloadedVoices.first == name,
+                    firstSelection: selectedVoice.isEmpty,
+                  );
+                }).toList(),
               ),
             ),
-            bottomNavigationBar: BottomNavigation(
-              backNavigationWidget: OkButton(
-                onPressed: () => Navigator.of(context).maybePop(),
-              ),
+          ),
+          bottomNavigationBar: BottomNavigation(
+            backNavigationWidget: OkButton(
+              onPressed: () => Navigator.of(context).maybePop(),
             ),
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/settings/speech_support/voice_data.dart';
 import 'package:seagull/repository/data_repository/voice_repository.dart';
@@ -8,6 +8,7 @@ import 'package:seagull/tts/tts_handler.dart';
 
 class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
+    required this.speechSettingsCubit,
     required this.voiceRepository,
     required this.ttsHandler,
     required this.locale,
@@ -22,6 +23,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     initialize();
   }
 
+  final SpeechSettingsCubit speechSettingsCubit;
   final VoiceRepository voiceRepository;
   final TtsInterface ttsHandler;
 
@@ -37,9 +39,6 @@ class VoicesCubit extends Cubit<VoicesState> {
   final String locale;
   final _log = Logger((VoicesCubit).toString());
 
-  VoiceData getVoice(String name) =>
-      state.voices.firstWhere((voice) => voice.name == name);
-
   Future<List<String>> _readDownloadedVoices() async =>
       (await ttsHandler.availableVoices)
           .whereNotNull()
@@ -48,7 +47,7 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(
-      DownloadingState(
+      state.copyWith(
           downloadingVoices: List.from(state.downloadingVoices)
             ..add(voice.name),
           downloadedVoices: state.downloadedVoices,
@@ -64,12 +63,13 @@ class VoicesCubit extends Cubit<VoicesState> {
       ..remove(voice.name);
     if (result) {
       emit(
-        DownloadedState(
+        state.copyWith(
             downloadingVoices: downloadingVoices,
             downloadedVoices: List.from(state.downloadedVoices)
               ..add(voice.name),
             voices: state.voices),
       );
+      speechSettingsCubit.setVoice(voice.name);
     } else {
       emit(state.copyWith(downloadingVoices: downloadingVoices));
     }
@@ -77,10 +77,13 @@ class VoicesCubit extends Cubit<VoicesState> {
 
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
-    emit(DeletedState(
+    final List<String> downloadedVoices = List.from(state.downloadedVoices)
+      ..remove(voice.name);
+    speechSettingsCubit.setVoice(downloadedVoices.last);
+    state.copyWith(
         downloadingVoices: state.downloadingVoices,
-        downloadedVoices: List.from(state.downloadedVoices)..remove(voice.name),
-        voices: state.voices));
+        downloadedVoices: downloadedVoices,
+        voices: state.voices);
   }
 }
 
@@ -112,37 +115,4 @@ class VoicesState extends Equatable {
         downloadedVoices,
         voices,
       ];
-}
-
-class DownloadingState extends VoicesState {
-  const DownloadingState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
-}
-
-class DownloadedState extends VoicesState {
-  const DownloadedState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
-}
-
-class DeletedState extends VoicesState {
-  const DeletedState({
-    required List<String> downloadingVoices,
-    required List<String> downloadedVoices,
-    required List<VoiceData> voices,
-  }) : super(
-            downloadingVoices: downloadingVoices,
-            downloadedVoices: downloadedVoices,
-            voices: voices);
 }
