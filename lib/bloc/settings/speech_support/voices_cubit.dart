@@ -68,9 +68,10 @@ class VoicesCubit extends Cubit<VoicesState> {
   Future<void> deleteVoice(VoiceData voice) async {
     await voiceRepository.deleteVoice(voice);
     final downloaded = [...state.downloaded]..remove(voice.name);
-    if (speechSettingsCubit.state.voice == voice.name &&
-        downloaded.isNotEmpty) {
-      speechSettingsCubit.setVoice(downloaded.first);
+    if (speechSettingsCubit.state.voice == voice.name) {
+      speechSettingsCubit.setVoice(
+        downloaded.isNotEmpty ? downloaded.first : '',
+      );
     }
     return emit(state.copyWith(downloaded: downloaded));
   }
