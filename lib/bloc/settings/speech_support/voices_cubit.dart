@@ -12,7 +12,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     required this.voiceRepository,
     required this.ttsHandler,
     required String locale,
-  }) : super(VoicesState()) {
+  }) : super(const VoicesState()) {
     _initialize(locale);
   }
 
@@ -26,7 +26,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     final downloadedVoices = await _readDownloadedVoices();
     emit(
       VoicesState(
-        availible: availableVoices,
+        available: availableVoices,
         downloaded: downloadedVoices,
       ),
     );
@@ -78,25 +78,23 @@ class VoicesCubit extends Cubit<VoicesState> {
 }
 
 class VoicesState extends Equatable {
-  final List<VoiceData> availible;
+  final List<VoiceData> available;
   final List<String> downloaded;
   final List<String> downloading;
 
-  late final bool downloadning = downloading.isNotEmpty;
-
-  VoicesState({
+  const VoicesState({
     this.downloading = const [],
     this.downloaded = const [],
-    this.availible = const [],
+    this.available = const [],
   });
 
   VoicesState copyWith({
-    List<VoiceData>? availible,
+    List<VoiceData>? available,
     List<String>? downloaded,
     List<String>? downloading,
   }) {
     return VoicesState(
-      availible: availible ?? this.availible,
+      available: available ?? this.available,
       downloaded: downloaded ?? this.downloaded,
       downloading: downloading ?? this.downloading,
     );
@@ -106,6 +104,6 @@ class VoicesState extends Equatable {
   List<Object?> get props => [
         downloading,
         downloaded,
-        availible,
+        available,
       ];
 }
