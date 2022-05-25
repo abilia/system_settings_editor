@@ -25,9 +25,13 @@ class RadioField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selected = value == groupValue;
     final decoration = disabled
         ? disabledBoxDecoration
-        : selectableBoxDecoration(value == groupValue);
+        : selected
+            ? selectedBoxDecoration
+            : whiteBoxDecoration;
+
     final paddingToUse = padding ?? layout.pickField.padding;
     final l = leading;
     return Tts.fromSemantics(
