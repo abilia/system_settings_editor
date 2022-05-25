@@ -5,12 +5,13 @@ import 'package:seagull/ui/components/all.dart';
 import 'package:seagull/utils/all.dart';
 
 extension ActivityExtensions on Activity {
-  String subtitle(BuildContext context) {
+  String subtitle(BuildContext context, [bool tts = false]) {
     final t = Translator.of(context).translate;
     if (fullDay) return t.fullDay;
     final timeFormat = hourAndMinuteFormat(context);
+    final timeBinding = tts ? t.timeTo : '-';
     if (hasEndTime) {
-      return '${timeFormat(startTime)} - ${timeFormat(noneRecurringEnd)}';
+      return '${timeFormat(startTime)} $timeBinding ${timeFormat(noneRecurringEnd)}';
     }
     return timeFormat(startTime);
   }
@@ -19,7 +20,9 @@ extension ActivityExtensions on Activity {
       SemanticsProperties(
         button: true,
         image: hasImage,
-        label: !hasTitle ? subtitle(context) : '$title, ${subtitle(context)}',
+        label: !hasTitle
+            ? subtitle(context, true)
+            : '$title, ${subtitle(context, true)}',
       );
 }
 
