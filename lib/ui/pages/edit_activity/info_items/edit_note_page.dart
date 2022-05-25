@@ -1,3 +1,4 @@
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -22,12 +23,20 @@ class _EditNotePageState extends State<EditNotePage> {
     super.initState();
     _textEditingController = TextEditingController(text: widget.text);
     _textEditingController.addListener(_textEditingListner);
+
+    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+      _textEditingController
+          .addListener(_textEditingController.speakEveryWordListener);
+    }
     _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     _textEditingController.removeListener(_textEditingListner);
+    _textEditingController
+        .removeListener(_textEditingController.speakEveryWordListener);
+
     _textEditingController.dispose();
     _scrollController.dispose();
     super.dispose();

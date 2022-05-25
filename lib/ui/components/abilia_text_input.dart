@@ -1,8 +1,11 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:seagull/bloc/settings/speech_support/speech_settings_cubit.dart';
 
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/text_editing_extension.dart';
 
 class AbiliaTextInput extends StatelessWidget {
   final String initialValue;
@@ -129,25 +132,29 @@ class DefaultTextInputPage extends StatefulWidget {
 
 class _DefaultInputPageState
     extends StateWithFocusOnResume<DefaultTextInputPage> {
-  late TextEditingController controller;
+  late TextEditingController _controller;
   bool _validInput = false;
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text: widget.text);
-    controller.addListener(onTextValueChanged);
-    _validInput = widget.inputValid(controller.text);
+    _controller = TextEditingController(text: widget.text);
+    _controller.addListener(onTextValueChanged);
+    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+      _controller.addListener(_controller.speakEveryWordListener);
+    }
+    _validInput = widget.inputValid(_controller.text);
   }
 
   @override
   void dispose() {
-    controller.removeListener(onTextValueChanged);
-    controller.dispose();
+    _controller.removeListener(onTextValueChanged);
+    _controller.removeListener(_controller.speakEveryWordListener);
+    _controller.dispose();
     super.dispose();
   }
 
   void onTextValueChanged() {
-    final valid = widget.inputValid(controller.text);
+    final valid = widget.inputValid(_controller.text);
     if (valid != _validInput) {
       setState(() {
         _validInput = valid;
@@ -180,7 +187,7 @@ class _DefaultInputPageState
                         Expanded(
                           child: TextField(
                             key: TestKey.input,
-                            controller: controller,
+                            controller: _controller,
                             keyboardType: widget.keyboardType,
                             inputFormatters: widget.inputFormatters,
                             textCapitalization: widget.textCapitalization,
@@ -197,7 +204,7 @@ class _DefaultInputPageState
                           ),
                         ),
                         TtsPlayButton(
-                          controller: controller,
+                          controller: _controller,
                           padding: EdgeInsets.only(
                             left: layout.defaultTextInputPage
                                 .textFieldActionButtonSpacing,
@@ -223,7 +230,7 @@ class _DefaultInputPageState
   }
 
   void _returnNewText() {
-    Navigator.of(context).maybePop(controller.text);
+    Navigator.of(context).maybePop(_controller.text);
   }
 }
 
