@@ -1,7 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class ChecklistView extends StatelessWidget {
   final Checklist checklist;
