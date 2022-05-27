@@ -10,6 +10,7 @@ enterNameForBasicActivity	Enter name for basic activity
 addTimer	Add Timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
+enterTask	Enter task
 onlyAppliesToGo	Only applies to MEMOplanner Go						
 selectADayToViewDetails	Select a day to view more details						
 voice	Voice	Röst					

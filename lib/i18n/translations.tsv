@@ -258,6 +258,7 @@ clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
 selectFromLibrary	Select from library	Välj från bibliotek	Vælg fra bibliotek	Selecteren uit bibliotheek	Valitse kirjastosa	Aus Bibliothek wählen	Velg fra bibliotek
 addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
 task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
+enterTask	Enter task
 							
 ### Quick settings							
 screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke

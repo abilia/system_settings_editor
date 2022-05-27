@@ -43,15 +43,13 @@ class PasswordInput extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        final newPassword =
-                            await Navigator.of(context).push<String>(
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider<PasswordCubit>.value(
-                              value: context.read<PasswordCubit>(),
-                              child: PasswordInputPage(
-                                password: password,
-                                inputHeading: _subheading,
-                              ),
+                        final newPassword = await showAbiliaBottomSheet<String>(
+                          context: context,
+                          child: BlocProvider<PasswordCubit>.value(
+                            value: context.read<PasswordCubit>(),
+                            child: PasswordInputBottomSheet(
+                              password: password,
+                              inputHeading: _subheading,
                             ),
                           ),
                         );
@@ -91,8 +89,8 @@ class PasswordInput extends StatelessWidget {
   }
 }
 
-class PasswordInputPage extends StatefulWidget {
-  const PasswordInputPage({
+class PasswordInputBottomSheet extends StatefulWidget {
+  const PasswordInputBottomSheet({
     Key? key,
     required this.password,
     this.inputHeading,
@@ -102,11 +100,12 @@ class PasswordInputPage extends StatefulWidget {
   final String? inputHeading;
 
   @override
-  _PasswordInputPageState createState() => _PasswordInputPageState();
+  _PasswordInputBottomSheetState createState() =>
+      _PasswordInputBottomSheetState();
 }
 
-class _PasswordInputPageState
-    extends StateWithFocusOnResume<PasswordInputPage> {
+class _PasswordInputBottomSheetState
+    extends StateWithFocusOnResume<PasswordInputBottomSheet> {
   late TextEditingController controller;
   @override
   void initState() {
@@ -124,21 +123,28 @@ class _PasswordInputPageState
   Widget build(BuildContext context) {
     final _subheading =
         widget.inputHeading ?? Translator.of(context).translate.password;
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: Translator.of(context).translate.password,
-        iconData: AbiliaIcons.lock,
-      ),
-      body: BlocBuilder<PasswordCubit, PasswordState>(
-        builder: (context, state) => Column(
-          children: [
-            Tts.fromSemantics(
-              SemanticsProperties(
-                label: _subheading,
-                value: controller.value.text,
-                textField: true,
-                obscured: true,
-              ),
+    final appBar = AbiliaAppBar(
+      title: Translator.of(context).translate.password,
+      iconData: AbiliaIcons.lock,
+      roundedCorners: true,
+    );
+    return BlocBuilder<PasswordCubit, PasswordState>(
+      builder: (context, state) => Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SizedBox(
+            height: appBar.preferredSize.height,
+            child: appBar,
+          ),
+          Tts.fromSemantics(
+            SemanticsProperties(
+              label: _subheading,
+              value: controller.value.text,
+              textField: true,
+              obscured: true,
+            ),
+            child: Container(
+              color: AbiliaColors.white110,
               child: Padding(
                 padding: layout.templates.m1,
                 child: Column(
@@ -168,6 +174,7 @@ class _PasswordInputPageState
                           ),
                         ),
                         HidePasswordButton(
+                          key: TestKey.bottomSheetHidePasswordButton,
                           padding: EdgeInsets.only(
                             left:
                                 layout.formPadding.largeHorizontalItemDistance,
@@ -179,22 +186,21 @@ class _PasswordInputPageState
                 ),
               ),
             ),
-            const Spacer(),
-            BottomNavigation(
-              backNavigationWidget: CancelButton(
-                onPressed: Navigator.of(context).maybePop,
-              ),
-              forwardNavigationWidget: OkButton(
-                key: TestKey.inputOk,
-                onPressed: state.valid
-                    ? () => Navigator.of(context).maybePop(controller.text)
-                    : null,
-              ),
+          ),
+          BottomNavigation(
+            backNavigationWidget: CancelButton(
+              onPressed: Navigator.of(context).maybePop,
             ),
-          ],
-        ),
+            forwardNavigationWidget: OkButton(
+              key: TestKey.inputOk,
+              onPressed: state.valid
+                  ? () => Navigator.of(context).maybePop(controller.text)
+                  : null,
+            ),
+          ),
+        ],
       ),
-    );
+    ).pad(EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom));
   }
 }
 

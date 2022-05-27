@@ -233,14 +233,9 @@ class AddNewQuestionButton extends StatelessWidget {
   }
 
   void _handleNewQuestion(BuildContext context) async {
-    final authProviders = copiedAuthProviders(context);
-    final result = await Navigator.of(context).push<ImageAndName>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: const EditQuestionPage(),
-        ),
-      ),
+    final result = await showAbiliaBottomSheet<ImageAndName>(
+      context: context,
+      child: const EditQuestionBottomSheet(),
     );
 
     if (result != null && result.isNotEmpty) {

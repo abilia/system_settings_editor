@@ -1,7 +1,6 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
@@ -87,16 +86,11 @@ class _CategoryPickField extends StatelessWidget {
             )
           : null,
       onTap: () async {
-        final authProviders = copiedAuthProviders(context);
-        final result = await Navigator.of(context).push<ImageAndName>(
-          MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: authProviders,
-              child: EditCategoryPage(
-                imageAndName: imageAndName,
-                hintText: defaultName,
-              ),
-            ),
+        final result = await showAbiliaBottomSheet<ImageAndName>(
+          context: context,
+          child: EditCategoryBottomSheet(
+            imageAndName: imageAndName,
+            hintText: defaultName,
           ),
         );
         if (result != null) {
