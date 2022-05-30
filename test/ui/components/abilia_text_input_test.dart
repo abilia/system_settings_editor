@@ -46,6 +46,9 @@ void main() {
     when(() => mockSpeechSettingsCubit.state)
         .thenAnswer((_) => const SpeechSettingsState());
 
+    when(() => mockSpeechSettingsCubit.close())
+        .thenAnswer((_) => Future.value());
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
@@ -212,8 +215,6 @@ void main() {
           when(() => mockSpeechSettingsCubit.state).thenAnswer(
               (_) => const SpeechSettingsState(speakEveryWord: true));
 
-          when(() => mockSpeechSettingsCubit.close())
-              .thenAnswer((_) => Future.value());
           const ttsText = 'This is ';
 
           // Act
