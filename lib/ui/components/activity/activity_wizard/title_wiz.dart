@@ -26,7 +26,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
       iconData: AbiliaIcons.edit,
       label: Translator.of(context).translate.newActivity,
       title: t.enterNameForActivity,
-      roundedCorners: true,
+      borderRadius: layout.appBar.borderRadius,
     );
 
     return BlocListener<WizardCubit, WizardState>(

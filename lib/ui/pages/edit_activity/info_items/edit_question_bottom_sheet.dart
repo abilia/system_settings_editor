@@ -28,7 +28,7 @@ class EditQuestionBottomSheet extends StatelessWidget {
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
         title: t.enterTask,
-        roundedCorners: true,
+        borderRadius: layout.appBar.borderRadius,
       ),
     );
   }

@@ -158,7 +158,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
     final appBar = AbiliaAppBar(
       title: widget.inputHeading,
       iconData: widget.icon,
-      roundedCorners: true,
+      borderRadius: layout.appBar.borderRadius,
     );
 
     return Tts.fromSemantics(

@@ -24,7 +24,7 @@ class EditCategoryBottomSheet extends StatelessWidget {
         iconData: AbiliaIcons.phoneLog,
         title: Translator.of(context).translate.editCategory,
         label: Config.isMP ? label : null,
-        roundedCorners: true,
+        borderRadius: layout.appBar.borderRadius,
       ),
     );
   }

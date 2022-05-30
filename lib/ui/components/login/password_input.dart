@@ -126,7 +126,7 @@ class _PasswordInputBottomSheetState
     final appBar = AbiliaAppBar(
       title: Translator.of(context).translate.password,
       iconData: AbiliaIcons.lock,
-      roundedCorners: true,
+      borderRadius: layout.appBar.borderRadius,
     );
     return BlocBuilder<PasswordCubit, PasswordState>(
       builder: (context, state) => Column(
