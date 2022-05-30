@@ -5,14 +5,14 @@ class MediumLayout extends Layout {
       : super(
           radius: 18,
           appBar: const AppBarLayout(
-            largeAppBarHeight: 148,
+            largeAppBarHeight: 200,
             height: 104,
             fontSize: 32,
             horizontalPadding: 16,
             previewWidth: 562.5,
           ),
           actionButton: const ActionButtonLayout(
-            size: 88,
+            size: 120,
             radius: 20,
             spacing: 4,
             padding: EdgeInsets.all(12),
@@ -58,7 +58,7 @@ class MediumLayout extends Layout {
             headline3: 72,
             headline4: 45,
             headline5: 38,
-            headline6: 32,
+            headline6: 48,
             subtitle1: 24,
             subtitle2: 21,
             bodyText1: 24,
@@ -78,8 +78,8 @@ class MediumLayout extends Layout {
             doubleIconLeft: 48,
           ),
           clock: const ClockLayout(
-            height: 124,
-            width: 92,
+            height: 172,
+            width: 172,
             borderWidth: 2,
             centerPointRadius: 8,
             hourNumberScale: 1.5,
