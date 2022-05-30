@@ -108,9 +108,6 @@ final Border transparentBlackBorder = Border.fromBorderSide(
       width: layout.monthCalendar.dayBorderWidth),
 );
 
-final borderOrange = Border.fromBorderSide(
-  BorderSide(color: AbiliaColors.orange40, width: layout.borders.medium),
-);
 final border = Border.fromBorderSide(
   BorderSide(color: AbiliaColors.white140, width: layout.borders.thin),
 );
@@ -180,7 +177,12 @@ final whiteNoBorderBoxDecoration = BoxDecoration(
 final warningBoxDecoration = BoxDecoration(
   color: AbiliaColors.white,
   borderRadius: borderRadius,
-  border: borderOrange,
+  border: Border.fromBorderSide(
+    BorderSide(
+      color: AbiliaColors.orange40,
+      width: layout.borders.medium,
+    ),
+  ),
 );
 const inactiveGrey = AbiliaColors.white110;
 final errorBoxDecoration = BoxDecoration(
@@ -240,22 +242,6 @@ Border getCategoryBorder({
               width: (borderWidth ?? layout.eventCard.borderWidth) * zoom,
             ),
           );
-
-BoxDecoration selectableBoxDecoration(bool selected) =>
-    selected ? selectedBoxDecoration : whiteBoxDecoration;
-
-BoxDecoration selectedBoxDecorationWithDayColor(color) => BoxDecoration(
-      color: color,
-      borderRadius: borderRadius,
-      border: Border.fromBorderSide(
-          BorderSide(color: AbiliaColors.green, width: layout.borders.medium)),
-    );
-
-BoxDecoration whiteBoxDecorationWithDayColor(color) => BoxDecoration(
-      color: color,
-      borderRadius: borderRadius,
-      border: border,
-    );
 
 const rightCategoryActiveColor = AbiliaColors.green,
     rightCategoryInactiveColor = AbiliaColors.green40,

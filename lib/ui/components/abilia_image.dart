@@ -274,6 +274,7 @@ class FullScreenImage extends StatelessWidget {
             backgroundDecoration: backgroundDecoration,
             imageProvider: getProvider(),
             tightMode: tightMode,
+            loadingBuilder: (_, __) => const SizedBox.shrink(),
           );
         });
       }),
