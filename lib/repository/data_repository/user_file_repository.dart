@@ -89,7 +89,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   ) async {
     final response = await client.post(
       '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision'.toUri(),
-      headers: jsonHeader(),
+      headers: jsonHeader,
       body: jsonEncode(userFiles.toList()),
     );
 

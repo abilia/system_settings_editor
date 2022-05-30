@@ -108,7 +108,7 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   ) async {
     final response = await client.post(
       '$baseUrl/api/v$postApiVersion/data/$userId/$postPath'.toUri(),
-      headers: jsonHeader(),
+      headers: jsonHeader,
       body: jsonEncode(data.toList()),
     );
 

@@ -152,7 +152,7 @@ void main() {
     when(
       () => mockClient.post(
         '$baseUrl/api/v1/data/$userId/storage/items/$lastRevision'.toUri(),
-        headers: jsonHeader(),
+        headers: jsonHeader,
         body: jsonEncode(dirtyFiles.toList()),
       ),
     ).thenAnswer(

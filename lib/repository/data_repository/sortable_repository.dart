@@ -39,7 +39,7 @@ class SortableRepository extends DataRepository<Sortable> {
     try {
       final response = await client.get(
         '$baseUrl/api/v1/data/$userId/$postPath/$folder'.toUri(),
-        headers: jsonHeader(),
+        headers: jsonHeader,
       );
       if (response.statusCode == 200) {
         return fromJsonToDataModel(response.json());

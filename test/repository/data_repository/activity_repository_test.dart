@@ -80,7 +80,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonHeader(),
+        headers: jsonHeader,
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -107,7 +107,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonHeader(),
+        headers: jsonHeader,
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -144,7 +144,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonHeader(),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(
@@ -167,7 +167,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonHeader(),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         ));
     verify(() => mockActivityDb.insert([
@@ -201,7 +201,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonHeader(),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(

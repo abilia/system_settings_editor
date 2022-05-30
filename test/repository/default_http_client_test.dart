@@ -55,7 +55,7 @@ void main() {
             'renewToken': oldLoginInfo.renewToken,
           },
         ),
-        headers: jsonHeader(),
+        headers: jsonHeader,
       ),
     ).thenAnswer(
         (_) => Future.value(Response(jsonEncode(newLoginInfo.toJson()), 200)));

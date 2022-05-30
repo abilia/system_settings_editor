@@ -59,4 +59,4 @@ String profileImageUrl(String baseUrl, String imageFileId, {int size = 400}) =>
 
 Map<String, String> authHeader(String token) => {'X-Auth-Token': token};
 
-Map<String, String> jsonHeader() => {'Content-Type': 'application/json'};
+const Map<String, String> jsonHeader = {'Content-Type': 'application/json'};

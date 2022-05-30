@@ -126,7 +126,7 @@ class ClientWithDefaultHeaders extends BaseClient {
           'renewToken': loginInfo?.renewToken ?? '',
         },
       ),
-      headers: jsonHeader(),
+      headers: jsonHeader,
     );
 
     switch (response.statusCode) {
