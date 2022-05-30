@@ -463,9 +463,8 @@ class _WeekDayColumnItems extends StatelessWidget {
                 .toList() ??
             [];
         for (int i = 0; i < activityOccasions.length; i++) {
-          final newCategorySection = i + 1 >= activityOccasions.length
-              ? false
-              : activityOccasions[i + 1].category !=
+          final newCategory = i > 0 &&
+              activityOccasions[i - 1].category !=
                   activityOccasions[i].category;
 
           items.add(
@@ -474,7 +473,7 @@ class _WeekDayColumnItems extends StatelessWidget {
                 showCategories,
                 selected,
                 activityOccasions[i].category,
-                newCategorySection: newCategorySection,
+                newCategory,
               ),
               child: selected && !layout.go
                   ? SizedBox(
@@ -506,9 +505,9 @@ class _WeekDayColumnItems extends StatelessWidget {
   EdgeInsets _categoryPadding(
     bool showCategories,
     selected,
-    int category, {
-    bool newCategorySection = false,
-  }) {
+    int category,
+    bool newCategory,
+  ) {
     final spacing = layout.weekCalendar.activityDistance;
 
     if (!showCategories) {
@@ -517,9 +516,8 @@ class _WeekDayColumnItems extends StatelessWidget {
       );
     }
     return EdgeInsets.only(
-      top: spacing,
-      bottom:
-          !layout.go && selected && newCategorySection ? spacing * 2 : spacing,
+      top: !layout.go && selected && newCategory ? spacing * 2 : spacing,
+      bottom: spacing,
       right: selected && category == Category.left
           ? layout.weekCalendar.categoryInset
           : 0,
