@@ -18,7 +18,8 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
     super.initState();
     activity = context.read<EditActivityCubit>().state.activity;
     controller = TextEditingController(text: activity.title);
-    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+    if (Config.isMP &&
+        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
       controller.addListener(controller.speakEveryWordListener);
     }
   }
@@ -53,6 +54,7 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
                       textCapitalization: TextCapitalization.sentences,
                       style: Theme.of(context).textTheme.bodyText1,
                       autofocus: true,
+                      focusNode: focusNode,
                       onChanged: (s) => context
                           .read<EditActivityCubit>()
                           .replaceActivity(activity.copyWith(title: s)),

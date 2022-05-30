@@ -34,7 +34,8 @@ class _EditImageAndNameState extends State<EditImageAndName> {
     super.initState();
     _imageAndName = widget.imageAndName ?? ImageAndName.empty;
     _textEditController = TextEditingController(text: _imageAndName.name);
-    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+    if (Config.isMP &&
+        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
       _textEditController
           .addListener(_textEditController.speakEveryWordListener);
     }

@@ -24,7 +24,8 @@ class _EditNotePageState extends State<EditNotePage> {
     _textEditingController = TextEditingController(text: widget.text);
     _textEditingController.addListener(_textEditingListner);
 
-    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+    if (Config.isMP &&
+        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
       _textEditingController
           .addListener(_textEditingController.speakEveryWordListener);
     }

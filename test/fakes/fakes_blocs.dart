@@ -159,3 +159,25 @@ class FakeEditActivityCubit extends Fake implements EditActivityCubit {
   @override
   Future<void> close() async {}
 }
+
+class FakeSpeechSettingsCubit extends Fake implements SpeechSettingsCubit {
+  @override
+  Stream<SpeechSettingsState> get stream => const Stream.empty();
+
+  @override
+  SpeechSettingsState get state => const SpeechSettingsState();
+
+  @override
+  Future<void> close() async {}
+}
+
+class FakeVoicesCubit extends Fake implements VoicesCubit {
+  @override
+  Stream<VoicesState> get stream => const Stream.empty();
+
+  @override
+  VoicesState get state => const VoicesState();
+
+  @override
+  Future<void> close() async {}
+}

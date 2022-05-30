@@ -139,7 +139,8 @@ class _DefaultInputPageState
     super.initState();
     _controller = TextEditingController(text: widget.text);
     _controller.addListener(onTextValueChanged);
-    if (context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+    if (Config.isMP &&
+        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
       _controller.addListener(_controller.speakEveryWordListener);
     }
     _validInput = widget.inputValid(_controller.text);
