@@ -123,7 +123,7 @@ class EventImage extends StatelessWidget {
           imagePath: imageFile.path,
           size: ImageThumb.thumbSize,
         ),
-        headers: authHeader(GetIt.I<LoginDb>().getToken() ?? ''),
+        headers: authHeader(GetIt.I<LoginDb>().getToken()),
       );
     }
     return Image.memory(kTransparentImage);
@@ -214,7 +214,7 @@ class PhotoCalendarImage extends StatelessWidget {
                       imageFileId: fileId,
                       imagePath: filePath,
                     ),
-                    headers: authHeader(GetIt.I<LoginDb>().getToken() ?? ''),
+                    headers: authHeader(GetIt.I<LoginDb>().getToken()),
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => errorImage,
                   )
@@ -264,7 +264,7 @@ class FullScreenImage extends StatelessWidget {
                   imageFileId: fileId,
                   imagePath: filePath,
                 ),
-                headers: authHeader(GetIt.I<LoginDb>().getToken() ?? ''),
+                headers: authHeader(GetIt.I<LoginDb>().getToken()),
               );
             }
             return MemoryImage(kTransparentImage);
@@ -430,7 +430,7 @@ class FadeInNetworkImage extends StatelessWidget {
                   imageFileId: imageFileId,
                   size: ImageThumb.thumbSize,
                 ),
-                headers: authHeader(GetIt.I<LoginDb>().getToken() ?? ''),
+                headers: authHeader(GetIt.I<LoginDb>().getToken()),
               ),
               fit: fit,
             )

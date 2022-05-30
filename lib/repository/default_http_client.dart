@@ -106,10 +106,9 @@ class ClientWithDefaultHeaders extends BaseClient {
 
   Future<bool> _hasAccess(String host) async {
     final loginInfo = loginDb.getLoginInfo();
-    final token = loginInfo?.token ?? '';
     final response = await _inner.get(
       '$host/api/v1/entity/me'.toUri(),
-      headers: authHeader(token),
+      headers: authHeader(loginInfo?.token),
     );
     return response.statusCode != 401;
   }
