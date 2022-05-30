@@ -7,6 +7,7 @@ final hm = DateFormat.Hm().format;
 
 extension DateTimeExtensions on DateTime {
   DateTime onlyDays() => DateTime(year, month, day);
+  DateTime onlyHours() => DateTime(year, month, day, hour);
   DateTime onlyMinutes() => DateTime(year, month, day, hour, minute);
   DateTime onlySeconds() => DateTime(year, month, day, hour, minute, second);
 
