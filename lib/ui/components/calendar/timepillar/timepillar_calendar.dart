@@ -8,7 +8,7 @@ import 'package:seagull/utils/all.dart';
 const transitionDuration = Duration(seconds: 1);
 
 class TimepillarCalendar extends StatelessWidget {
-  static const nightBackgroundColor = AbiliaColors.black90;
+  static const nightBackgroundColor = AbiliaColors.black;
   const TimepillarCalendar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -187,6 +187,7 @@ class _OneTimepillarCalendarState extends State<OneTimepillarCalendar>
                   widget.scrollToTimeOffset &&
                   defaultScrollNotificationPredicate(scrollNotification),
               child: Container(
+                key: TestKey.calendarBackgroundColor,
                 color: interval.intervalPart == IntervalPart.night
                     ? TimepillarCalendar.nightBackgroundColor
                     : Theme.of(context).scaffoldBackgroundColor,

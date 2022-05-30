@@ -299,6 +299,8 @@ abstract class Translated {
 
   final String basicTimers = 'Basic timers';
 
+  final String newBasicTimer = 'New basic timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -1288,6 +1290,9 @@ class SV extends Translated {
 
   @override
   final String basicTimers = 'Bastimers';
+
+  @override
+  final String newBasicTimer = 'Ny bastimer';
 
   @override
   final String menu = 'Meny';
