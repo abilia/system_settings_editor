@@ -1,19 +1,17 @@
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AbiliaTextInput extends StatelessWidget {
-  final String initialValue;
-  final bool errorState;
+  final String initialValue, heading, inputHeading;
+  final bool errorState, autoCorrect, wrapWithAuthProviders;
   final TextInputType? keyboardType;
   final Key? formKey;
   final IconData icon;
-  final String heading;
-  final String inputHeading;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
-  final bool autoCorrect;
   final bool Function(String)? inputValid;
   final void Function(String)? onChanged;
 
@@ -32,6 +30,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.maxLines = 1,
     this.autoCorrect = true,
     this.inputValid,
+    this.wrapWithAuthProviders = true,
   }) : super(key: key);
 
   @override
@@ -49,6 +48,9 @@ class AbiliaTextInput extends StatelessWidget {
                 : () async {
                     final newText = await showAbiliaBottomSheet<String>(
                       context: context,
+                      providers: wrapWithAuthProviders
+                          ? copiedAuthProviders(context)
+                          : null,
                       child: DefaultTextInput(
                         inputHeading: inputHeading,
                         icon: icon,

@@ -1,12 +1,11 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 Future<T?> showAbiliaBottomSheet<T>({
   required BuildContext context,
   required Widget child,
+  List<BlocProvider>? providers,
 }) async {
-  final authProviders = copiedAuthProviders(context);
   return await showModalBottomSheet<T>(
     backgroundColor: Colors.transparent,
     isDismissible: false,
@@ -14,9 +13,11 @@ Future<T?> showAbiliaBottomSheet<T>({
     enableDrag: false,
     context: context,
     barrierColor: AbiliaColors.transparentBlack90,
-    builder: (_) => MultiBlocProvider(
-      providers: authProviders,
-      child: child,
-    ),
+    builder: (_) => providers != null && providers.isNotEmpty
+        ? MultiBlocProvider(
+            providers: providers,
+            child: child,
+          )
+        : child,
   );
 }

@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
   const CategoriesSettingsTab({Key? key}) : super(key: key);
@@ -88,6 +89,7 @@ class _CategoryPickField extends StatelessWidget {
       onTap: () async {
         final result = await showAbiliaBottomSheet<ImageAndName>(
           context: context,
+          providers: copiedAuthProviders(context),
           child: EditCategoryBottomSheet(
             imageAndName: imageAndName,
             hintText: defaultName,

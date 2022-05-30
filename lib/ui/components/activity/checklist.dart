@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class ChecklistView extends StatelessWidget {
   final Checklist checklist;
@@ -112,6 +113,7 @@ class EditQuestionView extends StatelessWidget {
   ) async {
     final result = await showAbiliaBottomSheet<ImageAndName>(
       context: context,
+      providers: copiedAuthProviders(context),
       child: EditQuestionBottomSheet(
         question: oldQuestion,
       ),

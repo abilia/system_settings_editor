@@ -235,6 +235,7 @@ class AddNewQuestionButton extends StatelessWidget {
   void _handleNewQuestion(BuildContext context) async {
     final result = await showAbiliaBottomSheet<ImageAndName>(
       context: context,
+      providers: copiedAuthProviders(context),
       child: const EditQuestionBottomSheet(),
     );
 

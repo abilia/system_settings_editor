@@ -215,14 +215,17 @@ class HidePasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PasswordCubit, PasswordState>(
-      builder: (context, state) => CollapsableWidget(
-        collapsed: state.password.isEmpty,
-        padding: padding,
-        axis: Axis.horizontal,
-        child: IconActionButtonDark(
-          onPressed: () => context.read<PasswordCubit>().toggleHidden(),
-          child: Icon(
-            state.hide ? AbiliaIcons.show : AbiliaIcons.hide,
+      builder: (context, state) => SizedBox(
+        height: layout.actionButton.size,
+        child: CollapsableWidget(
+          collapsed: state.password.isEmpty,
+          padding: padding,
+          axis: Axis.horizontal,
+          child: IconActionButtonDark(
+            onPressed: () => context.read<PasswordCubit>().toggleHidden(),
+            child: Icon(
+              state.hide ? AbiliaIcons.show : AbiliaIcons.hide,
+            ),
           ),
         ),
       ),
