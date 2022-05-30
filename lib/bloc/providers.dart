@@ -70,14 +70,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               authToken: authenticatedState.token,
             ),
           ),
-          if (Config.isMP) ...[
-            RepositoryProvider<VoiceRepository>(
-              create: (context) => VoiceRepository(
-                client: GetIt.I<BaseClient>(),
-                voiceDb: GetIt.I<VoiceDb>(),
-              ),
-            ),
-          ],
         ],
         child: MultiBlocProvider(
           providers: [
@@ -223,14 +215,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                 ),
               ),
-              BlocProvider<VoicesCubit>(
-                create: (context) => VoicesCubit(
-                  speechSettingsCubit: context.read<SpeechSettingsCubit>(),
-                  ttsHandler: GetIt.I<TtsInterface>(),
-                  voiceRepository: context.read<VoiceRepository>(),
-                  locale: GetIt.I<SettingsDb>().language,
-                ),
-              ),
             ]
           ],
           child: child,
@@ -272,6 +256,14 @@ class TopLevelBlocsProvider extends StatelessWidget {
             deviceDb: GetIt.I<DeviceDb>(),
           ),
         ),
+        if (Config.isMP) ...[
+          RepositoryProvider<VoiceRepository>(
+            create: (context) => VoiceRepository(
+              client: GetIt.I<BaseClient>(),
+              voiceDb: GetIt.I<VoiceDb>(),
+            ),
+          ),
+        ],
       ],
       child: MultiBlocProvider(
         providers: [
@@ -311,15 +303,24 @@ class TopLevelBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
           ),
-          if (Config.isMP)
+          if (Config.isMP) ...[
             BlocProvider(
               create: (context) => TouchDetectionCubit(),
             ),
-          BlocProvider<SpeechSettingsCubit>(
-            create: (context) => SpeechSettingsCubit(
-                voiceDb: GetIt.I<VoiceDb>(),
-                acapelaTts: GetIt.I<TtsInterface>()),
-          ),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => SpeechSettingsCubit(
+                  voiceDb: GetIt.I<VoiceDb>(),
+                  acapelaTts: GetIt.I<TtsInterface>()),
+            ),
+            BlocProvider<VoicesCubit>(
+              create: (context) => VoicesCubit(
+                speechSettingsCubit: context.read<SpeechSettingsCubit>(),
+                ttsHandler: GetIt.I<TtsInterface>(),
+                voiceRepository: context.read<VoiceRepository>(),
+                locale: GetIt.I<SettingsDb>().language,
+              ),
+            ),
+          ],
         ],
         child: child,
       ),

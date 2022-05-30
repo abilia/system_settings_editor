@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/config.dart';
 import 'package:seagull/repository/all.dart';
 
 import 'fake_db_and_repository.dart';
@@ -33,14 +32,6 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
         BlocProvider<CalendarViewCubit>(
             create: (context) => FakeCalendarViewBloc()),
         BlocProvider<LicenseCubit>(create: (context) => FakeLicenseCubit()),
-        if (Config.isMP) ...[
-          BlocProvider<SpeechSettingsCubit>(
-            create: (context) => FakeSpeechSettingsCubit(),
-          ),
-          BlocProvider<VoicesCubit>(
-            create: (context) => FakeVoicesCubit(),
-          ),
-        ]
       ], child: child),
     );
   }
