@@ -40,42 +40,37 @@ class ClientWithDefaultHeaders extends BaseClient {
 
   @override
   Future<Response> post(Uri url,
-      {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final response =
-        await super.post(url, headers: headers, body: body, encoding: encoding);
-    if (response.statusCode == 401) {
-      _log.info('Got 401 on $url');
-      await _renewToken(url.origin);
-      return super.post(url, headers: headers, body: body, encoding: encoding);
-    }
-    return response;
-  }
+          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
+      _renewOn401(super.post, url,
+          headers: headers, body: body, encoding: encoding);
 
   @override
   Future<Response> put(Uri url,
-      {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final response =
-        await super.put(url, headers: headers, body: body, encoding: encoding);
-    if (response.statusCode == 401) {
-      _log.info('Got 401 on $url');
-      await _renewToken(url.origin);
-      return super.put(url, headers: headers, body: body, encoding: encoding);
-    }
-    return response;
-  }
+          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
+      _renewOn401(super.put, url,
+          headers: headers, body: body, encoding: encoding);
 
   @override
   Future<Response> delete(Uri url,
-      {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
-    final response = await super
-        .delete(url, headers: headers, body: body, encoding: encoding);
-    if (response.statusCode == 401) {
-      _log.info('Got 401 on $url');
-      await _renewToken(url.origin);
-      return super
-          .delete(url, headers: headers, body: body, encoding: encoding);
-    }
-    return response;
+          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
+      _renewOn401(super.delete, url,
+          headers: headers, body: body, encoding: encoding);
+
+  Future<Response> _renewOn401(
+    Future<Response> Function(Uri url,
+            {Map<String, String>? headers, Object? body, Encoding? encoding})
+        request,
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) async {
+    final response =
+        await request(url, headers: headers, body: body, encoding: encoding);
+    if (response.statusCode != 401) return response;
+    _log.info('Got 401 on $response');
+    await _renewToken(url.origin);
+    return request(url, headers: headers, body: body, encoding: encoding);
   }
 
   @override
