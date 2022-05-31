@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 
-import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
@@ -51,18 +50,16 @@ void main() {
             pushToken: any(named: 'pushToken'),
             time: any(named: 'time'),
           )).thenAnswer((_) => Future.value(loginInfo));
-      when(() => mockUserRepository.getToken()).thenReturn('token');
 
-      when(() => mockUserRepository.me(loginInfo.token))
-          .thenAnswer((_) => Future.value(
-                const User(
-                  id: loggedInUserId,
-                  name: 'Test',
-                  type: '',
-                ),
-              ));
+      when(() => mockUserRepository.me()).thenAnswer((_) => Future.value(
+            const User(
+              id: loggedInUserId,
+              name: 'Test',
+              type: '',
+            ),
+          ));
 
-      when(() => mockUserRepository.getLicensesFromApi(any())).thenAnswer(
+      when(() => mockUserRepository.getLicensesFromApi()).thenAnswer(
         (_) => Future.value([
           License(
             endTime: time.add(const Duration(hours: 24)),
@@ -71,8 +68,10 @@ void main() {
           ),
         ]),
       );
-      when(() => mockUserRepository.fetchAndSetCalendar(any(), any()))
+      when(() => mockUserRepository.fetchAndSetCalendar(any()))
           .thenAnswer((_) => Future.value());
+
+      when(() => mockUserRepository.isLoggedIn()).thenReturn(false);
 
       // Act
       authenticationBloc.add(CheckAuthentication());
@@ -107,8 +106,7 @@ void main() {
 
       expect(
         authenticationBloc.state,
-        Authenticated(
-          token: loginInfo.token,
+        const Authenticated(
           userId: loggedInUserId,
           newlyLoggedIn: true,
         ),
@@ -189,10 +187,10 @@ void main() {
         userRepository: mockedUserRepository,
       );
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
-      when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(() => mockedUserRepository.me(any())).thenAnswer(
+      when(() => mockedUserRepository.isLoggedIn()).thenReturn(false);
+      when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, name: '', type: '')));
-      when(() => mockedUserRepository.getLicensesFromApi(any()))
+      when(() => mockedUserRepository.getLicensesFromApi())
           .thenAnswer((_) => Future.value([
                 License(
                     endTime: time.add(const Duration(hours: 24)),
@@ -201,7 +199,7 @@ void main() {
               ]));
     });
 
-    test('LoginButtonPressed event calls logges in and saves token', () async {
+    test('LoginButtonPressed event loggs in and saves token', () async {
       // Arrange
       const username = 'username',
           password = 'password',
@@ -228,7 +226,7 @@ void main() {
             pushToken: any(named: 'pushToken'),
             time: any(named: 'time'),
           ));
-      await untilCalled(() => mockedUserRepository.me(any()));
+      await untilCalled(() => mockedUserRepository.me());
       await untilCalled(() => mockedUserRepository.persistLoginInfo(any()));
     });
   });

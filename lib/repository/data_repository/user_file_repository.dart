@@ -13,6 +13,7 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class UserFileRepository extends DataRepository<UserFile> {
+  final LoginDb loginDb;
   final UserFileDb userFileDb;
   final FileStorage fileStorage;
   final MultipartRequestBuilder multipartRequestBuilder;
@@ -20,16 +21,15 @@ class UserFileRepository extends DataRepository<UserFile> {
   UserFileRepository({
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
-    required String authToken,
     required int userId,
     required this.userFileDb,
+    required this.loginDb,
     required this.fileStorage,
     required this.multipartRequestBuilder,
   }) : super(
           client: client,
           baseUrlDb: baseUrlDb,
           path: 'storage/items',
-          authToken: authToken,
           userId: userId,
           db: userFileDb,
           fromJsonToDataModel: DbUserFile.fromJson,
@@ -89,7 +89,7 @@ class UserFileRepository extends DataRepository<UserFile> {
   ) async {
     final response = await client.post(
       '$baseUrl/api/v1/data/$userId/storage/items/$latestRevision'.toUri(),
-      headers: jsonAuthHeader(authToken),
+      headers: jsonHeader,
       body: jsonEncode(userFiles.toList()),
     );
 
@@ -126,7 +126,7 @@ class UserFileRepository extends DataRepository<UserFile> {
       final request = multipartRequestBuilder.generateFileMultipartRequest(
         uri: uri,
         bytes: bytes,
-        authToken: authToken,
+        authToken: loginDb.getToken() ?? '',
         sha1: sha1,
       );
       final streamedResponse = await request.send();
@@ -175,14 +175,12 @@ class UserFileRepository extends DataRepository<UserFile> {
         imageFileId: id,
         size: size,
       ).toUri(),
-      headers: authHeader(authToken),
     );
   }
 
   Future<void> _handleNonImage(UserFile userFile) async {
     final originalFileResponse = await client.get(
       fileIdUrl(baseUrl, userId, userFile.id).toUri(),
-      headers: authHeader(authToken),
     );
     if (originalFileResponse.statusCode == 200) {
       await fileStorage.storeFile(originalFileResponse.bodyBytes, userFile.id);
@@ -195,7 +193,6 @@ class UserFileRepository extends DataRepository<UserFile> {
   Future<void> _handleImageFile(UserFile userFile) async {
     final originalFileResponse = client.get(
       fileIdUrl(baseUrl, userId, userFile.id).toUri(),
-      headers: authHeader(authToken),
     );
     final thumbResponse = _getImageThumb(userFile.id, ImageThumb.thumbSize);
     final responses = await Future.wait([

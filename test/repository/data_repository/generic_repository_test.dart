@@ -26,7 +26,6 @@ void main() {
     final db = await DatabaseRepository.createInMemoryFfiDb();
     genericDb = GenericDb(db);
     genericRepository = GenericRepository(
-      authToken: Fakes.token,
       baseUrlDb: mockBaseUrlDb,
       client: mockClient,
       genericDb: genericDb,
@@ -185,7 +184,6 @@ void main() {
       final mockBaseUrlDb = MockBaseUrlDb();
       when(() => mockBaseUrlDb.baseUrl).thenReturn('baseUrl');
       genericRepository = GenericRepository(
-        authToken: Fakes.token,
         baseUrlDb: mockBaseUrlDb,
         client: Fakes.client(genericResponse: () => repsonseAll),
         genericDb: genericDb,
