@@ -674,14 +674,10 @@ class TwoTimepillarLayout {
 }
 
 class SettingsBasePageLayout {
-  final EdgeInsets itemPadding, listPadding;
   final DividerThemeData dividerThemeData;
 
   const SettingsBasePageLayout({
-    this.itemPadding = const EdgeInsets.fromLTRB(12, 8, 16, 0),
-    this.listPadding = const EdgeInsets.symmetric(vertical: 16),
     this.dividerThemeData = const DividerThemeData(
-      space: 32,
       thickness: 1,
       endIndent: 12,
     ),
