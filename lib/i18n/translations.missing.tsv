@@ -11,6 +11,7 @@ addTimer	Add Timer	Lägga in timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
 newBasicTimer	New basic timer	Ny bastimer					
+enterTask	Enter task
 onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					
 selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					
 voice	Voice	Röst					

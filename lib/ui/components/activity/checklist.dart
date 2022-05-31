@@ -111,18 +111,13 @@ class EditQuestionView extends StatelessWidget {
     final Question oldQuestion,
     BuildContext context,
   ) async {
-    final authProviders = copiedAuthProviders(context);
-    final result = await Navigator.of(context).push<ImageAndName>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: EditQuestionPage(
-            question: oldQuestion,
-          ),
-        ),
+    final result = await showAbiliaBottomSheet<ImageAndName>(
+      context: context,
+      providers: copiedAuthProviders(context),
+      child: EditQuestionBottomSheet(
+        question: oldQuestion,
       ),
     );
-
     if (result != null) {
       context.read<EditChecklistCubit>().edit(result);
     }

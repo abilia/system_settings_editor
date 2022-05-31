@@ -7,7 +7,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final IconData iconData;
   final Widget? trailing;
   final PreferredSizeWidget? bottom;
-
+  final BorderRadiusGeometry? borderRadius;
   @override
   final Size preferredSize;
 
@@ -18,6 +18,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.iconData,
     this.bottom,
     this.trailing,
+    this.borderRadius,
     double? height,
   })  : preferredSize = Size.fromHeight(height ??
             AbiliaAppBar.height + (bottom?.preferredSize.height ?? 0.0)),
@@ -39,6 +40,7 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).appBarTheme.backgroundColor,
+          borderRadius: borderRadius,
         ),
         child: SafeArea(
           child: (trailing != null || bottom != null)

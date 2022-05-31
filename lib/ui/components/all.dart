@@ -5,6 +5,7 @@ export 'login/all.dart';
 export 'backend_switches.dart';
 export 'profile_picture.dart';
 export 'abilia_app_bar.dart';
+export 'abilia_bottom_sheet.dart';
 export 'abilia_tab_bar.dart';
 export 'full_day_container.dart';
 export 'calendar/all.dart';

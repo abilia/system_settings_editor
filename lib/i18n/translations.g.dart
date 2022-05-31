@@ -505,6 +505,8 @@ abstract class Translated {
 
   final String task = 'Task';
 
+  final String enterTask = 'Enter task';
+
   final String screenBrightness = 'Screen brightness';
 
   final String battery = 'Battery';
