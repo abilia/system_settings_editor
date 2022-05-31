@@ -507,11 +507,11 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_local_notifications
-      ref: "flutter_local_notifications-v9.4.0-fork-2.4"
-      resolved-ref: aa2bfa27bddabfe23871935af8a0ad63d2d101aa
+      ref: "flutter_local_notifications-v9.5.3+1-fork-2.5"
+      resolved-ref: edec818e30f3aaf66fc09b69b5c9b594b9b159d7
       url: "https://github.com/abilia/flutter_local_notifications.git"
     source: git
-    version: "9.4.0"
+    version: "9.5.3+1"
   flutter_local_notifications_linux:
     dependency: transitive
     description:

@@ -17,7 +17,7 @@ void main() {
   late StreamController<DateTime> tickerController;
   late Ticker fakeTicker;
   late TouchDetectionCubit activityDetectionCubit;
-  late Stream<PointerDown> activityDetectedStream;
+  late Stream<Touch> activityDetectedStream;
 
   setUpAll(registerFallbackValues);
   setUp(() {

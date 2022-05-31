@@ -96,8 +96,17 @@ void main() {
               BlocProvider<UserFileCubit>(
                 create: (context) => mockUserFileCubit,
               ),
+              BlocProvider<TouchDetectionCubit>(
+                create: (context) => TouchDetectionCubit(),
+              ),
             ],
-            child: widget,
+            child: Builder(
+              builder: (context) => Listener(
+                onPointerDown:
+                    context.read<TouchDetectionCubit>().onPointerDown,
+                child: widget,
+              ),
+            ),
           ),
         ),
       );
@@ -224,6 +233,7 @@ void main() {
       expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
     });
   });
+
   group('alarm speech automatic playes', () {
     final payload = StartAlarm(ActivityDay(activityWithStartSpeech, day));
 
@@ -243,6 +253,28 @@ void main() {
       expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
       expect(find.byIcon(AbiliaIcons.stop), findsNothing);
       selectNotificationSubject.add(payload);
+      await tester.pumpAndSettle();
+      expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
+      expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
+      await tester.pump(AlarmSpeechCubit.minSpeechDelay);
+    }, skip: Config.isMP);
+
+    testWidgets('speech plays when notification screen is tapped',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        wrapWithMaterialApp(
+          PopAwareAlarmPage(
+            alarm: startAlarm,
+            alarmNavigator: _alarmNavigator,
+            child: AlarmPage(alarm: startAlarm),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(PlayAlarmSpeechButton), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.playSound), findsOneWidget);
+      expect(find.byIcon(AbiliaIcons.stop), findsNothing);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
       expect(find.byIcon(AbiliaIcons.playSound), findsNothing);
       expect(find.byIcon(AbiliaIcons.stop), findsOneWidget);
@@ -345,7 +377,9 @@ void main() {
 
     expect(
       localNotificationLog.where((call) => call.method == 'cancel'),
-      hasLength(unsignedOffActivityReminders.length + 1),
+      hasLength(
+        greaterThanOrEqualTo(unsignedOffActivityReminders.length + 1),
+      ),
     );
   });
 

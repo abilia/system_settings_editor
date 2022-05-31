@@ -115,7 +115,7 @@ class ReminderPage extends StatelessWidget {
   }
 }
 
-class PopAwareAlarmPage extends StatelessWidget {
+class PopAwareAlarmPage extends StatefulWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
   final NotificationAlarm alarm;
@@ -128,14 +128,29 @@ class PopAwareAlarmPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PopAwareAlarmPage> createState() => _PopAwareAlarmPageState();
+}
+
+class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
+  bool isCanceled = false;
+  @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
-          AlarmNavigator.log.fine('onWillPop $alarm');
-          alarmNavigator.removedFromRoutes(alarm);
-          await notificationPlugin.cancel(alarm.hashCode);
+          AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
+          widget.alarmNavigator.removedFromRoutes(widget.alarm);
+          if (!isCanceled) {
+            await notificationPlugin.cancel(widget.alarm.hashCode);
+          }
           return true;
         },
-        child: child,
+        child: BlocListener<TouchDetectionCubit, Touch>(
+          listenWhen: (previous, current) => !isCanceled,
+          listener: (context, state) async {
+            isCanceled = true;
+            await notificationPlugin.cancel(widget.alarm.hashCode);
+          },
+          child: widget.child,
+        ),
       );
 }
 
