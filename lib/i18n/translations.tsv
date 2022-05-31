@@ -97,7 +97,7 @@ timerPaused	Paused	Pausad
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
 							
-### Activity related
+### Activity related							
 activity	Activity	Aktivitet	Aktivitet	Activiteit	Aktiviteetti	Aktivität	Aktivitet
 reminders	Reminders	Påminnelser	Påmindelser	Herinneringen	Muistutukset	Erinnerungen	Påminnelser
 reminder	Reminder	Påminnelse	Påmindelse	Herinnering	Muistutus	Erinnerung	Påminnelse
@@ -131,8 +131,8 @@ editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivi
 enterNameForBasicActivity	Enter name for basic activity						
 timeTo	to	till	til	tot	-	bis	til
 							
-### Timer related
-addTimer	Add Timer
+### Timer related							
+addTimer	Add Timer						
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
@@ -144,6 +144,7 @@ selectBaseTimer	Select basic timer	Välj bastimer	Vælg bastimer	Standaardtimers
 timer	Timer	Timer	Timer	Tijdopnemer	Ajastin	Timer	Tidtaker
 timeIsUp	Time is up	Tiden är slut					
 basicTimers	Basic timers	Bastimers	Standardtimers	Standaard timers	Perusajastimet	Standardtimer	Standardtimere
+newBasicTimer	New basic timer	Ny bastimer					
 							
 ### Miscellaneous							
 menu	Menu	Meny	Menu	Menu	Valikko	Menü	Meny
@@ -400,6 +401,14 @@ noDayColours	No day colours	Inga dagfärger	Ingen dagsfarver	Geen dagkleuren	Ei 
 showCagetories	Show categories	Visa kategorier	Vis kategorier	Categorieën tonen	Näyte kategoriat	Kategorien zeigen	Vis kategorier
 showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Farben zeigen	Vis farger
 editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
+							
+### Speech support settings							
+speakEveryWord	Read out word when space bar is pressed	Uppläsning av varje ord	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
+speechRate	Speech rate	Talhastighet	Talehastighed	Spraaksnelheid	Puhenopeus	Sprechtempo	Talehastighet
+voice	Voice	Röst					
+noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
+installingVoice	Installing	Installerar					
+speechTest	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
 							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse

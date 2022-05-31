@@ -696,7 +696,9 @@ class EndDateWizWidget extends StatelessWidget {
 }
 
 class WeekDays extends StatelessWidget {
-  const WeekDays({Key? key}) : super(key: key);
+  const WeekDays({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -713,11 +715,24 @@ class WeekDays extends StatelessWidget {
             runSpacing: layout.formPadding.verticalItemDistance,
             children: [
               ...RecurringWeekState.allWeekdays.map(
-                (d) => SelectableField(
-                  text: Text(translate.shortWeekday(d)),
-                  selected: state.weekdays.contains(d),
-                  onTap: () =>
-                      context.read<RecurringWeekCubit>().addOrRemoveWeekday(d),
+                (d) => BlocSelector<MemoplannerSettingBloc,
+                    MemoplannerSettingsState, DayTheme>(
+                  selector: (state) => weekdayTheme(
+                    dayColor: state.calendarDayColor,
+                    languageCode: Localizations.localeOf(context).languageCode,
+                    weekday: d,
+                  ),
+                  builder: (context, dayTheme) => SelectableField(
+                    text: Text(
+                      translate.shortWeekday(d),
+                      style: TextStyle(color: dayTheme.monthSurfaceColor),
+                    ),
+                    color: dayTheme.dayColor,
+                    selected: state.weekdays.contains(d),
+                    onTap: () => context
+                        .read<RecurringWeekCubit>()
+                        .addOrRemoveWeekday(d),
+                  ),
                 ),
               ),
             ],

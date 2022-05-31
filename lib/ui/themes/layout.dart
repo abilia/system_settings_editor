@@ -1,7 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
-
-import 'dart:ui' as ui;
 
 part 'go_layout.dart';
 
@@ -84,6 +84,7 @@ class Layout {
   final ThemeLayout theme;
   final DotLayout dot;
   final CrossOverLayout crossOver;
+  final SpeechSupportPageLayout speechSupportPage;
 
   const Layout({
     this.radius = 12,
@@ -155,6 +156,7 @@ class Layout {
     this.theme = const ThemeLayout(),
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
+    this.speechSupportPage = const SpeechSupportPageLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -1466,6 +1468,7 @@ class DotLayout {
 
 class FloatingActionButtonLayout {
   final EdgeInsets padding;
+
   const FloatingActionButtonLayout({this.padding = const EdgeInsets.all(16)});
 }
 
@@ -1474,5 +1477,13 @@ class CrossOverLayout {
 
   const CrossOverLayout({
     this.strokeWidth = 2,
+  });
+}
+
+class SpeechSupportPageLayout {
+  final double loaderStrokeWidth, loaderSize;
+  const SpeechSupportPageLayout({
+    this.loaderStrokeWidth = 6,
+    this.loaderSize = 56,
   });
 }

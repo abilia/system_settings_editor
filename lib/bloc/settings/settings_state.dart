@@ -5,9 +5,8 @@ class SettingsState extends Equatable {
 
   const SettingsState({required this.textToSpeech});
 
-  SettingsState copyWith({bool? textToSpeech}) => SettingsState(
-        textToSpeech: textToSpeech ?? this.textToSpeech,
-      );
+  SettingsState copyWith({bool? textToSpeech}) =>
+      SettingsState(textToSpeech: textToSpeech ?? this.textToSpeech);
 
   @override
   List<Object> get props => [textToSpeech];

@@ -21,9 +21,17 @@ class RadioField<T> extends StatelessWidget {
     this.padding,
   }) : super(key: key);
 
+  bool get disabled => onChanged == null;
+
   @override
   Widget build(BuildContext context) {
-    final decoration = selectableBoxDecoration(value == groupValue);
+    final selected = value == groupValue;
+    final decoration = disabled
+        ? disabledBoxDecoration
+        : selected
+            ? selectedBoxDecoration
+            : whiteBoxDecoration;
+
     final paddingToUse = padding ?? layout.pickField.padding;
     final l = leading;
     return Tts.fromSemantics(
@@ -36,7 +44,7 @@ class RadioField<T> extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onChanged != null ? () => onChanged?.call(value) : null,
+          onTap: disabled ? null : () => onChanged?.call(value),
           borderRadius: borderRadius,
           child: Stack(
             clipBehavior: Clip.none,
@@ -70,12 +78,13 @@ class RadioField<T> extends StatelessWidget {
                   ],
                 ),
               ),
-              PositionedRadio<T>(
-                value: value,
-                groupValue: groupValue,
-                onChanged: onChanged,
-                radioKey: ObjectKey(key),
-              )
+              if (!disabled)
+                PositionedRadio<T>(
+                  value: value,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                  radioKey: ObjectKey(key),
+                )
             ],
           ),
         ),

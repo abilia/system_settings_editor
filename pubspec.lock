@@ -12,11 +12,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.0.5"
-      resolved-ref: e0d8455c305e19b1f6e72fa6fca76de9b985ad59
+      ref: "v1.1.1"
+      resolved-ref: "48fbd57b513bc36efc5abc5ae3f8cc2bd012195f"
       url: "https://github.com/abilia/acapela_tts.git"
     source: git
-    version: "1.0.4"
+    version: "1.0.5"
   analyzer:
     dependency: transitive
     description:
@@ -921,7 +921,7 @@ packages:
       name: photo_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.0"
+    version: "0.14.0"
   platform:
     dependency: transitive
     description:

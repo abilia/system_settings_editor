@@ -602,7 +602,7 @@ void main() {
           expect(find.byType(BasicTemplatePickField<BasicActivityData>),
               findsOneWidget);
           expect(find.text(title), findsOneWidget);
-          expect(find.text(folderTitle), findsNWidgets(2));
+          expect(find.text(folderTitle), findsOneWidget);
 
           // Act - Go back
           await tester.tap(find.byType(PreviousButton));

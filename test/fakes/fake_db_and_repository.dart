@@ -26,6 +26,9 @@ class FakeSettingsDb extends Fake implements SettingsDb {
   @override
   bool get textToSpeech => true;
   @override
+  String get language => 'en';
+
+  @override
   Future setAlwaysUse24HourFormat(bool alwaysUse24HourFormat) async {}
 }
 

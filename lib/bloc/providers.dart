@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
-
 import 'package:battery_plus/battery_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:system_settings_editor/system_settings_editor.dart';
-
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/models/all.dart';
 import 'package:seagull/config.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/logging.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
+import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedBlocsProvider extends StatelessWidget {
   final Authenticated authenticatedState;
@@ -68,6 +67,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               userId: authenticatedState.userId,
             ),
           ),
+          if (Config.isMP) ...[
+            RepositoryProvider<VoiceRepository>(
+              create: (context) => VoiceRepository(
+                client: GetIt.I<BaseClient>(),
+                voiceDb: GetIt.I<VoiceDb>(),
+              ),
+            ),
+          ],
         ],
         child: MultiBlocProvider(
           providers: [
@@ -211,6 +218,19 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   GetIt.I<Ticker>(),
                   context.read<MemoplannerSettingBloc>(),
                   context.read<TouchDetectionCubit>().stream,
+                ),
+              ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => SpeechSettingsCubit(
+                    voiceDb: GetIt.I<VoiceDb>(),
+                    acapelaTts: GetIt.I<TtsInterface>()),
+              ),
+              BlocProvider<VoicesCubit>(
+                create: (context) => VoicesCubit(
+                  speechSettingsCubit: context.read<SpeechSettingsCubit>(),
+                  ttsHandler: GetIt.I<TtsInterface>(),
+                  voiceRepository: context.read<VoiceRepository>(),
+                  locale: GetIt.I<SettingsDb>().language,
                 ),
               ),
             ]

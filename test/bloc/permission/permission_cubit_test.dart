@@ -11,13 +11,13 @@ void main() {
     requestedPermissions.clear();
   });
 
-  test('permission bloc initial state', () {
+  test('initial state', () {
     final permissionCubit = PermissionCubit();
     expect(permissionCubit.state, PermissionState.empty());
     expect(permissionCubit.state.props, [{}]);
   });
 
-  test('creating permission bloc does not call any permissions', () {
+  test('creating cubit does not call any permissions', () {
     setupPermissions();
     PermissionCubit();
     expect(checkedPermissions, isEmpty);
