@@ -3,7 +3,7 @@ import 'package:seagull/models/all.dart';
 const prod = 'https://myabilia.com',
     whale = 'https://whale.abilia-gbg.se',
     t1 = 'https://t1.abilia-gbg.se',
-    debug = 'http://192.168.1.75:9103';
+    debug = 'https://debug.abilia-gbg.se';
 const Map<String, String> backendEnvironments = {
   prod: 'Prod',
   whale: 'Whale',
