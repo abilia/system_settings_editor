@@ -69,19 +69,18 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            if (state.voice.isNotEmpty)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  left: state.voice.isNotEmpty
-                                      ? layout.formPadding
-                                          .largeHorizontalItemDistance
-                                      : 0,
-                                ),
-                                child: TtsPlayButton(
-                                    tts: state.voice.isNotEmpty
-                                        ? t.speechTest
-                                        : ''),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: state.voice.isNotEmpty
+                                    ? layout
+                                        .formPadding.largeHorizontalItemDistance
+                                    : 0,
                               ),
+                              child: TtsPlayButton(
+                                  tts: state.voice.isNotEmpty
+                                      ? t.speechTest
+                                      : ''),
+                            ),
                           ],
                         ).pad(layout.settingsBasePage.itemPadding),
                         Tts(
