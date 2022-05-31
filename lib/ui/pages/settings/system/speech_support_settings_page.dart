@@ -16,7 +16,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final locale = Translator.of(context).locale.toString();
-
+    final textStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(color: AbiliaColors.black75);
     return WillPopScope(
       onWillPop: () async {
         _disabledIfNoDownloadedVoice(context);
@@ -28,7 +31,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
             appBar: AbiliaAppBar(
               title: t.textToSpeech,
               label: t.system,
-              iconData: AbiliaIcons.handiAlarmVibration,
+              iconData: AbiliaIcons.speakText,
             ),
             body: DividerTheme(
               data: layout.settingsBasePage.dividerThemeData,
@@ -37,13 +40,17 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                 child: BlocSelector<SettingsCubit, SettingsState, bool>(
                   selector: (state) => state.textToSpeech,
                   builder: (context, textToSpeech) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const TextToSpeechSwitch()
                           .pad(layout.settingsBasePage.itemPadding),
                       if (textToSpeech) ...[
                         const Divider(),
                         Tts(
-                          child: Text(t.voice),
+                          child: Text(
+                            t.voice,
+                            style: textStyle,
+                          ),
                         ).pad(layout.settingsBasePage.itemPadding),
                         Row(
                           children: [
@@ -62,21 +69,27 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: layout
-                                    .formPadding.largeHorizontalItemDistance,
+                            if (state.voice.isNotEmpty)
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: state.voice.isNotEmpty
+                                      ? layout.formPadding
+                                          .largeHorizontalItemDistance
+                                      : 0,
+                                ),
+                                child: TtsPlayButton(
+                                    tts: state.voice.isNotEmpty
+                                        ? t.speechTest
+                                        : ''),
                               ),
-                              child: TtsPlayButton(
-                                  tts: state.voice.isNotEmpty
-                                      ? t.speechTest
-                                      : ''),
-                            ),
                           ],
                         ).pad(layout.settingsBasePage.itemPadding),
                         Tts(
-                          child: Text(t.speechRate +
-                              ' ${_speechRateToProgress(state.speechRate).round()}'),
+                          child: Text(
+                            t.speechRate +
+                                ' ${_speechRateToProgress(state.speechRate).round()}',
+                            style: textStyle,
+                          ),
                         ).pad(layout.settingsBasePage.itemPadding),
                         AbiliaSlider(
                           value: _speechRateToProgress(state.speechRate),

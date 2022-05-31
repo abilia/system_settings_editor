@@ -409,6 +409,7 @@ voice	Voice	Röst
 noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
 installingVoice	Installing	Installerar					
 speechTest	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
+voices	Voices	Röster		Stemmen	Äänet	Stimmen	
 							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse

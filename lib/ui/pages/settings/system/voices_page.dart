@@ -14,9 +14,9 @@ class VoicesPage extends StatelessWidget {
           BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
         builder: (context, settingsState) => Scaffold(
           appBar: AbiliaAppBar(
-            title: t.textToSpeech,
-            label: t.system,
-            iconData: AbiliaIcons.handiAlarmVibration,
+            title: t.voices,
+            label: t.textToSpeech,
+            iconData: AbiliaIcons.speakText,
           ),
           body: Padding(
             padding: layout.settingsBasePage.listPadding,
