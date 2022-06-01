@@ -21,22 +21,25 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   void initState() {
     super.initState();
-    _textEditingController = TextEditingController(text: widget.text);
+    _textEditingController = AbiliaTextEditingController(
+        text: widget.text,
+        speakEveryWord: Config.isMP &&
+            context.read<SpeechSettingsCubit>().state.speakEveryWord);
     _textEditingController.addListener(_textEditingListner);
 
-    if (Config.isMP &&
-        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
-      _textEditingController
-          .addListener(_textEditingController.speakEveryWordListener);
-    }
+    // if (Config.isMP &&
+    //     context.read<SpeechSettingsCubit>().state.speakEveryWord) {
+    //   _textEditingController
+    //       .addListener(_textEditingController.speakEveryWordListener);
+    // }
     _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     _textEditingController.removeListener(_textEditingListner);
-    _textEditingController
-        .removeListener(_textEditingController.speakEveryWordListener);
+    // _textEditingController
+    //     .removeListener(_textEditingController.speakEveryWordListener);
 
     _textEditingController.dispose();
     _scrollController.dispose();

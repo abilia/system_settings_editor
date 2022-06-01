@@ -33,12 +33,10 @@ class _EditImageAndNameState extends State<EditImageAndName> {
   void initState() {
     super.initState();
     _imageAndName = widget.imageAndName ?? ImageAndName.empty;
-    _textEditController = TextEditingController(text: _imageAndName.name);
-    if (Config.isMP &&
-        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
-      _textEditController
-          .addListener(_textEditController.speakEveryWordListener);
-    }
+    _textEditController = AbiliaTextEditingController(
+        text: _imageAndName.name,
+        speakEveryWord: Config.isMP &&
+            context.read<SpeechSettingsCubit>().state.speakEveryWord);
   }
 
   @override

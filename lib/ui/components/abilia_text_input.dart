@@ -137,19 +137,18 @@ class _DefaultInputPageState
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.text);
+    _controller = AbiliaTextEditingController(
+        text: widget.text,
+        speakEveryWord: Config.isMP &&
+            context.read<SpeechSettingsCubit>().state.speakEveryWord);
     _controller.addListener(onTextValueChanged);
-    if (Config.isMP &&
-        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
-      _controller.addListener(_controller.speakEveryWordListener);
-    }
+
     _validInput = widget.inputValid(_controller.text);
   }
 
   @override
   void dispose() {
     _controller.removeListener(onTextValueChanged);
-    _controller.removeListener(_controller.speakEveryWordListener);
     _controller.dispose();
     super.dispose();
   }

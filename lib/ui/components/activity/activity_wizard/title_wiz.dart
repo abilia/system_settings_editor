@@ -17,11 +17,15 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
   void initState() {
     super.initState();
     activity = context.read<EditActivityCubit>().state.activity;
-    controller = TextEditingController(text: activity.title);
-    if (Config.isMP &&
-        context.read<SpeechSettingsCubit>().state.speakEveryWord) {
-      controller.addListener(controller.speakEveryWordListener);
-    }
+    controller = AbiliaTextEditingController(
+        text: activity.title,
+        speakEveryWord: Config.isMP &&
+            context.read<SpeechSettingsCubit>().state.speakEveryWord);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
