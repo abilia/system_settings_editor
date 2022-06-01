@@ -11,6 +11,7 @@ class DatabaseRepository {
   static const genericTableName = 'generic';
   static const timerTableName = 'timer';
   static const calendarTableName = 'calendar';
+  static const supportPersonTableName = 'support_person';
   @visibleForTesting
   static final initialScript = [
     '''
@@ -100,6 +101,13 @@ class DatabaseRepository {
           main int
         )
   ''';
+  static const String _createSupportPersonTable = '''
+    create table $supportPersonTableName (
+          id text primary key not null,
+          name text,
+          image int
+        )
+  ''';
 
   @visibleForTesting
   static final migrations = <String>[
@@ -108,6 +116,8 @@ class DatabaseRepository {
     _createTimersTable,
     'alter table $activityTableName add column calendar_id text',
     _createCalendarTable,
+    _createSupportPersonTable,
+    'alter table $activityTableName add column secret_exemptions text',
   ];
 
   static Future<Database> createSqfliteDb() async {
@@ -140,7 +150,8 @@ class DatabaseRepository {
       ..delete(userFileTableName)
       ..delete(timerTableName)
       ..delete(genericTableName)
-      ..delete(calendarTableName);
+      ..delete(calendarTableName)
+      ..delete(supportPersonTableName);
     return batch.commit();
   }
 

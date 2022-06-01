@@ -2776,7 +2776,7 @@ text''';
       await tester.scrollDown(dy: -550);
 
       await tester.verifyTts(find.byType(AvailableForWidget),
-          exact: translate.meAndSupportPersons);
+          exact: translate.allSupportPersons);
 
       await tester.tap(find.byType(AvailableForWidget));
       await tester.pumpAndSettle();

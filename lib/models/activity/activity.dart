@@ -3,28 +3,40 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/timezone.dart' as tz;
+import 'package:seagull/utils/all.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:seagull/models/all.dart';
-import 'package:seagull/utils/all.dart';
+part 'activity_extras.dart';
 
-import 'package:seagull/repository/timezone.dart' as tz;
+part 'db_activity.dart';
 
 part 'recurs.dart';
-part 'db_activity.dart';
-part 'activity_extras.dart';
 
 class Activity extends DataModel {
   DateTime endClock(DateTime day) => fullDay
       ? day.nextDay().millisecondBefore()
       : startClock(day).add(duration);
+
   DateTime startClock(DateTime day) =>
       DateTime(day.year, day.month, day.day, startTime.hour, startTime.minute);
+
   bool get hasEndTime => duration.inMinutes > 0;
+
   bool get isRecurring => recurs.isRecurring;
+
   bool get hasImage => fileId.isNotEmpty || icon.isNotEmpty;
+
   bool get hasTitle => title.isNotEmpty;
+
   bool get hasAttachment => infoItem is! NoInfoItem;
+
+  AvailableForType get availableFor => !secret
+      ? AvailableForType.allSupportPersons
+      : secretExemptions.isEmpty
+          ? AvailableForType.onlyMe
+          : AvailableForType.selectedSupportPersons;
 
   Activity signOff(DateTime day) {
     final d = whaleDateFormat(day);
@@ -45,6 +57,7 @@ class Activity extends DataModel {
   final InfoItem infoItem;
   final Recurs recurs;
   final Extras extras;
+  final List secretExemptions;
 
   late final DateTime noneRecurringEnd = startTime.add(duration);
   late final UnmodifiableSetView<Duration> reminders = UnmodifiableSetView(
@@ -74,6 +87,7 @@ class Activity extends DataModel {
     required this.timezone,
     required this.extras,
     required this.calendarId,
+    required this.secretExemptions,
   })  : assert(alarmType >= 0),
         assert(category >= 0),
         super(id);
@@ -97,6 +111,7 @@ class Activity extends DataModel {
     required String timezone,
     Extras extras = Extras.empty,
     required String calendarId,
+    List<String> secretExemptions = const [],
   }) {
     final id = const Uuid().v4();
     return Activity._(
@@ -121,6 +136,7 @@ class Activity extends DataModel {
       timezone: timezone,
       extras: extras,
       calendarId: calendarId,
+      secretExemptions: UnmodifiableListView(secretExemptions),
     );
   }
 
@@ -201,6 +217,7 @@ class Activity extends DataModel {
     String? timezone,
     Extras? extras,
     String? calendarId,
+    Iterable? secretExemptions,
   }) =>
       Activity._(
         id: newId ? const Uuid().v4() : id,
@@ -233,6 +250,9 @@ class Activity extends DataModel {
         timezone: timezone ?? this.timezone,
         extras: extras ?? this.extras,
         calendarId: calendarId ?? this.calendarId,
+        secretExemptions: secretExemptions != null
+            ? UnmodifiableListView(secretExemptions)
+            : this.secretExemptions,
       );
 
   static Recurs _newRecurrence(
@@ -298,4 +318,10 @@ class Activity extends DataModel {
 
   @override
   bool get stringify => true;
+}
+
+enum AvailableForType {
+  onlyMe,
+  allSupportPersons,
+  selectedSupportPersons,
 }

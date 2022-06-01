@@ -11,6 +11,9 @@ addTimer	Add Timer
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
 newBasicTimer	New basic timer	Ny bastimer					
+allSupportPersons	All my support persons	Alla mina stödpersoner					
+selectedSupportPersons	Selected support persons	Utvalda stödpersoner					
+supportPersons	Support Persons	Stödpersoner					
 onlyAppliesToGo	Only applies to MEMOplanner Go						
 selectADayToViewDetails	Select a day to view more details						
 voice	Voice	Röst					

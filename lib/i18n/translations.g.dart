@@ -412,9 +412,13 @@ abstract class Translated {
 
   final String activityAvailableFor = 'Available for';
 
-  final String meAndSupportPersons = 'Me and support persons';
+  final String allSupportPersons = 'All my support persons';
 
   final String onlyMe = 'Only me';
+
+  final String selectedSupportPersons = 'Selected support persons';
+
+  final String supportPersons = 'Support Persons';
 
   final String selectAlarmType = 'Select alarm';
 
@@ -1457,10 +1461,16 @@ class SV extends Translated {
   final String activityAvailableFor = 'Tillgänglig för';
 
   @override
-  final String meAndSupportPersons = 'Mig och stödpersoner';
+  final String allSupportPersons = 'Alla mina stödpersoner';
 
   @override
   final String onlyMe = 'Bara mig';
+
+  @override
+  final String selectedSupportPersons = 'Utvalda stödpersoner';
+
+  @override
+  final String supportPersons = 'Stödpersoner';
 
   @override
   final String selectAlarmType = 'Ange larm';
@@ -2667,9 +2677,6 @@ class DA extends Translated {
   final String activityAvailableFor = 'Fås til';
 
   @override
-  final String meAndSupportPersons = 'Mig og støttepersoner';
-
-  @override
   final String onlyMe = 'Bare mig';
 
   @override
@@ -3870,9 +3877,6 @@ class NL extends Translated {
 
   @override
   final String activityAvailableFor = 'Beschikbaar voor';
-
-  @override
-  final String meAndSupportPersons = 'Mij en ondersteuningspersonen';
 
   @override
   final String onlyMe = 'Mij alleen';
@@ -5077,9 +5081,6 @@ class FI extends Translated {
 
   @override
   final String activityAvailableFor = 'Käytettävissä';
-
-  @override
-  final String meAndSupportPersons = 'Minä ja tukihenkilöt';
 
   @override
   final String onlyMe = 'Vain minä';
@@ -6288,9 +6289,6 @@ class DE extends Translated {
   final String activityAvailableFor = 'Verfügbar für';
 
   @override
-  final String meAndSupportPersons = 'Mich und Hilfspersonen';
-
-  @override
   final String onlyMe = 'Nur für mich';
 
   @override
@@ -7493,9 +7491,6 @@ class NB extends Translated {
 
   @override
   final String activityAvailableFor = 'Tilgjengelig for';
-
-  @override
-  final String meAndSupportPersons = 'Meg og støttepersoner';
 
   @override
   final String onlyMe = 'Bare meg';

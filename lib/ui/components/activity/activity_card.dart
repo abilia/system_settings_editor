@@ -152,7 +152,7 @@ class ActivityCard extends StatelessWidget {
               AbiliaIcons.handiReminder,
             if (activity.hasAttachment) AbiliaIcons.handiInfo,
           ].map((icon) => CardIcon(icon)),
-          if (activity.secret) PrivateIcon(inactive),
+          PrivateIcon(activity.availableFor, inactive),
         ],
       );
 }
@@ -175,15 +175,28 @@ class CardIcon extends StatelessWidget {
 }
 
 class PrivateIcon extends StatelessWidget {
+  final AvailableForType availableFor;
   final bool inactive;
 
   const PrivateIcon(
+    this.availableFor,
     this.inactive, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final IconData icon;
+    switch (availableFor) {
+      case AvailableForType.onlyMe:
+        icon = AbiliaIcons.lock;
+        break;
+      case AvailableForType.allSupportPersons:
+        icon = AbiliaIcons.unlock;
+        break;
+      default:
+        icon = AbiliaIcons.unlock;
+    }
     return AnimatedContainer(
       margin: layout.eventCard.cardIconPadding,
       duration: ActivityCard.duration,
@@ -194,7 +207,7 @@ class PrivateIcon extends StatelessWidget {
         borderRadius: borderRadius,
       ),
       child: Icon(
-        AbiliaIcons.passwordProtection,
+        icon,
         size: layout.eventCard.iconSize,
         color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
       ),

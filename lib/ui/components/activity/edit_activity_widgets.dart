@@ -1,7 +1,12 @@
 import 'package:flutter/services.dart';
-
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
+import 'package:seagull/bloc/support_persons_cubit.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -508,6 +513,8 @@ class AvailableForWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secret = activity.secret;
+    final secretExemptions = activity.secretExemptions;
+
     final translator = Translator.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,24 +522,57 @@ class AvailableForWidget extends StatelessWidget {
         SubHeading(translator.availableFor),
         PickField(
           leading: Icon(
-            secret ? AbiliaIcons.passwordProtection : AbiliaIcons.userGroup,
+            !secret
+                ? AbiliaIcons.unlock
+                : secretExemptions.isEmpty
+                    ? AbiliaIcons.lock
+                    : AbiliaIcons.unlock,
           ),
-          text:
-              Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
+          text: Text(!secret
+              ? translator.allSupportPersons
+              : secretExemptions.isEmpty
+                  ? translator.onlyMe
+                  : translator.selectedSupportPersons),
           onTap: () async {
-            final result = await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AvailableForPage(secret: activity.secret),
-              ),
-            );
-            if (result != null) {
-              context
-                  .read<EditActivityCubit>()
-                  .replaceActivity(activity.copyWith(secret: result));
+            final availableForState = await navigateToAvailableForPage(context);
+            if (availableForState != null) {
+              context.read<EditActivityCubit>().replaceActivity(
+                  activity.copyWith(
+                      secret: availableForState.availableFor !=
+                          AvailableForType.allSupportPersons,
+                      secretExemptions:
+                          availableForState.selectedSupportPersons));
             }
           },
         ),
       ],
+    );
+  }
+
+  Future<AvailableForState?> navigateToAvailableForPage(BuildContext context) {
+    return Navigator.of(context).push<AvailableForState>(
+      MaterialPageRoute(
+        builder: (context) =>
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, authState) =>
+              RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<BaseClient>(),
+              db: SupportPersonsDb(GetIt.I<Database>()),
+              userId: (authState as Authenticated).userId,
+              authToken: authState.token,
+            ),
+            child: BlocProvider<AvailableForCubit>(
+              create: (context) => AvailableForCubit(
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+              )..setAvailableFor(activity.availableFor),
+              child: const AvailableForPage(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:seagull/models/activity/activity.dart';
 import 'package:seagull/ui/all.dart';
 
 class AvailableForWiz extends StatelessWidget {
@@ -17,24 +18,34 @@ class AvailableForWiz extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              RadioField<bool?>(
-                groupValue: state.activity.secret,
+              RadioField<AvailableForType?>(
+                groupValue: state.activity.availableFor,
                 onChanged: (value) => context
                     .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: value)),
-                value: true,
+                    .replaceActivity(state.activity.copyWith(secret: true)),
+                value: AvailableForType.onlyMe,
                 leading: const Icon(AbiliaIcons.passwordProtection),
                 text: Text(translate.onlyMe),
               ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
-              RadioField<bool?>(
-                groupValue: state.activity.secret,
+              RadioField<AvailableForType?>(
+                groupValue: state.activity.availableFor,
                 onChanged: (value) => context
                     .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: value)),
-                value: false,
+                    .replaceActivity(state.activity.copyWith(secret: false)),
+                value: AvailableForType.allSupportPersons,
                 leading: const Icon(AbiliaIcons.userGroup),
-                text: Text(translate.meAndSupportPersons),
+                text: Text(translate.allSupportPersons),
+              ),
+              SizedBox(height: layout.formPadding.verticalItemDistance),
+              RadioField<AvailableForType?>(
+                groupValue: state.activity.availableFor,
+                onChanged: (value) => context
+                    .read<EditActivityCubit>()
+                    .replaceActivity(state.activity.copyWith(secret: true)),
+                value: AvailableForType.selectedSupportPersons,
+                leading: const Icon(AbiliaIcons.userGroup),
+                text: Text(translate.selectedSupportPersons),
               ),
             ],
           ),
