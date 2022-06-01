@@ -1,18 +1,13 @@
 part of 'layout.dart';
 
 class MediumLayout extends Layout {
-  const MediumLayout()
-      : super(
+  const MediumLayout({
+    AppBarLayout? appBar,
+  }) : super(
           radius: 18,
-          appBar: const AppBarLayout(
-            largeAppBarHeight: 200,
-            height: 104,
-            fontSize: 32,
-            horizontalPadding: 16,
-            previewWidth: 562.5,
-          ),
+          appBar: appBar ?? const MediumAppBarLayout(),
           actionButton: const ActionButtonLayout(
-            size: 120,
+            size: 88,
             radius: 20,
             spacing: 4,
             padding: EdgeInsets.all(12),
@@ -58,7 +53,7 @@ class MediumLayout extends Layout {
             headline3: 72,
             headline4: 45,
             headline5: 38,
-            headline6: 48,
+            headline6: 32,
             subtitle1: 24,
             subtitle2: 21,
             bodyText1: 24,
@@ -78,8 +73,8 @@ class MediumLayout extends Layout {
             doubleIconLeft: 48,
           ),
           clock: const ClockLayout(
-            height: 172,
-            width: 172,
+            height: 124,
+            width: 92,
             borderWidth: 2,
             centerPointRadius: 8,
             hourNumberScale: 1.5,
@@ -221,12 +216,9 @@ class MediumLayout extends Layout {
             ),
           ),
           settingsBasePage: const SettingsBasePageLayout(
-            itemPadding: EdgeInsets.fromLTRB(18, 12, 24, 0),
-            listPadding: EdgeInsets.symmetric(vertical: 16),
             dividerThemeData: DividerThemeData(
-              space: 48,
               thickness: 2,
-              endIndent: 18,
+              endIndent: 24,
             ),
           ),
           defaultTextInputPage: const DefaultTextInputPageLayout(

@@ -217,7 +217,7 @@ void main() {
       await tester.enterText(find.byType(TextField), newLeftName);
       await tester.pumpAndSettle();
       expect(find.text(newLeftName), findsWidgets);
-      await tester.tap(find.byType(OkButton));
+      await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
       await tester.pumpAndSettle();
       expect(find.text(translate.left), findsNothing);
       expect(find.text(newLeftName), findsNWidgets(2));
@@ -242,7 +242,7 @@ void main() {
       await tester.enterText(find.byType(TextField), newRightName);
       await tester.pumpAndSettle();
       expect(find.text(newRightName), findsWidgets);
-      await tester.tap(find.byType(OkButton));
+      await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
       await tester.pumpAndSettle();
       expect(find.text(translate.right), findsNothing);
       expect(find.text(newRightName), findsNWidgets(2));
@@ -285,7 +285,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(OkButton));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(OkButton));
+          await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(OkButton));
           await tester.pumpAndSettle();
@@ -326,7 +326,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.byType(OkButton));
           await tester.pumpAndSettle();
-          await tester.tap(find.byType(OkButton));
+          await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
           await tester.pumpAndSettle();
           await tester.tap(find.byType(OkButton));
           await tester.pumpAndSettle();

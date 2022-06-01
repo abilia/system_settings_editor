@@ -456,54 +456,68 @@ class _WeekDayColumnItems extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.currentWeekActivities[day.weekday - 1] !=
           current.currentWeekActivities[day.weekday - 1],
-      builder: (context, state) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ...state.currentWeekActivities[day.weekday - 1]
-                  ?.where((ao) => !ao.activity.fullDay)
-                  .map(
-                    (ao) => Padding(
-                      padding: _categoryPadding(
-                        showCategories,
-                        selected,
-                        ao.category,
+      builder: (context, state) {
+        final List<Widget> items = [];
+        final activityOccasions = state.currentWeekActivities[day.weekday - 1]
+                ?.where((ao) => !ao.activity.fullDay)
+                .toList() ??
+            [];
+        for (int i = 0; i < activityOccasions.length; i++) {
+          final newCategory = i > 0 &&
+              activityOccasions[i - 1].category !=
+                  activityOccasions[i].category;
+
+          items.add(
+            Padding(
+              padding: _categoryPadding(
+                showCategories,
+                selected,
+                activityOccasions[i].category,
+                newCategory,
+              ),
+              child: selected && !layout.go
+                  ? SizedBox(
+                      child: ActivityCard(
+                        activityOccasion: activityOccasions[i],
+                        showCategoryColor: showCategoryColor,
+                        showInfoIcons: false,
                       ),
-                      child: selected && !layout.go
-                          ? SizedBox(
-                              child: ActivityCard(
-                                activityOccasion: ao,
-                                showCategoryColor: showCategoryColor,
-                                showInfoIcons: false,
-                              ),
-                            )
-                          : AspectRatio(
-                              aspectRatio: 1,
-                              child: _WeekActivityContent(
-                                activityOccasion: ao,
-                                selectedDay: selected,
-                              ),
-                            ),
+                    )
+                  : AspectRatio(
+                      aspectRatio: 1,
+                      child: _WeekActivityContent(
+                        activityOccasion: activityOccasions[i],
+                        selectedDay: selected,
+                      ),
                     ),
-                  ) ??
-              [],
-        ],
-      ),
+            ),
+          );
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: items,
+        );
+      },
     );
   }
 
   EdgeInsets _categoryPadding(
     bool showCategories,
-    bool selected,
+    selected,
     int category,
+    bool newCategory,
   ) {
+    final spacing = layout.weekCalendar.activityDistance;
+
     if (!showCategories) {
       return EdgeInsets.symmetric(
-        vertical: layout.weekCalendar.activityDistance,
+        vertical: spacing,
       );
     }
     return EdgeInsets.only(
-      top: layout.weekCalendar.activityDistance,
-      bottom: layout.weekCalendar.activityDistance,
+      top: !layout.go && selected && newCategory ? spacing * 2 : spacing,
+      bottom: spacing,
       right: selected && category == Category.left
           ? layout.weekCalendar.categoryInset
           : 0,

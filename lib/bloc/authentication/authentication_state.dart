@@ -19,21 +19,18 @@ class AuthenticationLoading extends AuthenticationState {
 }
 
 class Authenticated extends AuthenticationState {
-  final String token;
   final int userId;
   final bool newlyLoggedIn;
   const Authenticated({
-    required this.token,
     required this.userId,
     this.newlyLoggedIn = false,
     bool forcedNewState = false,
   }) : super(forcedNewState);
   @override
-  List<Object> get props => [token, userId, newlyLoggedIn, ...super.props];
+  List<Object> get props => [userId, newlyLoggedIn, ...super.props];
 
   @override
   Authenticated _forceNew() => Authenticated(
-        token: token,
         userId: userId,
         newlyLoggedIn: newlyLoggedIn,
         forcedNewState: !forcedNewState,

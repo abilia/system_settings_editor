@@ -299,6 +299,8 @@ abstract class Translated {
 
   final String basicTimers = 'Basic timers';
 
+  final String newBasicTimer = 'New basic timer';
+
   final String menu = 'Menu';
 
   final String cancel = 'Cancel';
@@ -502,6 +504,8 @@ abstract class Translated {
   final String addNew = 'Add new';
 
   final String task = 'Task';
+
+  final String enterTask = 'Enter task';
 
   final String screenBrightness = 'Screen brightness';
 
@@ -779,6 +783,8 @@ abstract class Translated {
 
   final String speechTest = 'Test of speech rate';
 
+  final String voices = 'Voices';
+
   final String codeProtect = 'Code protect';
 
   final String code = 'Code';
@@ -868,14 +874,16 @@ abstract class Translated {
 
   final String allPhotos = 'All photos';
 
-  final String addToPhotoCalendarQuestion = 'Add this photo to Photo-calendar?';
+  final String addToPhotoCalendarQuestion =
+      'Do you want to add this photo to Photo-calendar?';
 
   final String removeFromPhotoCalendarQuestion =
-      'Remove this photo from Photo-calendar?';
+      'Do you want to remove this photo from Photo-calendar?';
 
   final String remove = 'Remove';
 
-  final String doYouWantToDeleteThisPhoto = 'Do you want to delete this photo?';
+  final String doYouWantToDeleteThisPhoto =
+      'Are you sure you want to delete this photo?';
 }
 
 class EN extends Translated {
@@ -1243,6 +1251,9 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
+  final String basicTemplates = 'Basmallar';
+
+  @override
   final String basicActivities = 'Basaktiviteter';
 
   @override
@@ -1252,7 +1263,13 @@ class SV extends Translated {
   final String editBasicActivity = 'Ändra basaktivitet';
 
   @override
+  final String enterNameForBasicActivity = 'Ange namn för basaktivitet';
+
+  @override
   final String timeTo = 'till';
+
+  @override
+  final String addTimer = 'Lägga in timer';
 
   @override
   final String start = 'Starta';
@@ -1286,6 +1303,9 @@ class SV extends Translated {
 
   @override
   final String basicTimers = 'Bastimers';
+
+  @override
+  final String newBasicTimer = 'Ny bastimer';
 
   @override
   final String menu = 'Meny';
@@ -1863,6 +1883,9 @@ class SV extends Translated {
   final String defaults = 'Förval';
 
   @override
+  final String onlyAppliesToGo = 'Gäller endast MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Visa pågående aktivitet i helskärm';
 
@@ -1894,6 +1917,9 @@ class SV extends Translated {
   @override
   final String menuRemovalWarning =
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String selectADayToViewDetails = 'Välj en dag för att se mer detaljer';
 
   @override
   final String topField = 'Toppfält';
@@ -1995,6 +2021,9 @@ class SV extends Translated {
   final String speechTest = 'Test av talhastighet';
 
   @override
+  final String voices = 'Röster';
+
+  @override
   final String codeProtect = 'Kodskydd';
 
   @override
@@ -2008,6 +2037,12 @@ class SV extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Kodskydda Android-inställningar';
+
+  @override
+  final String enterCode = 'Ange kod';
+
+  @override
+  final String enterYourCodeToAccess = 'Ange din kod för att komma åt';
 
   @override
   final String enterNewCode = 'Ange ny kod';
@@ -2113,6 +2148,24 @@ class SV extends Translated {
 
   @override
   final String quickSettingsMenu = 'Snabb-\ninställningar';
+
+  @override
+  final String allPhotos = 'Alla foton';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Vill du lägga in detta foto i fotokalendern?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Vill du ta bort detta foto från fotokalendern?';
+
+  @override
+  final String remove = 'Ta bort';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Är du säker på att du vill ta bort detta foto?';
 }
 
 class DA extends Translated {
@@ -4407,6 +4460,9 @@ class NL extends Translated {
   final String speechTest = 'Test van spraaksnelheid';
 
   @override
+  final String voices = 'Stemmen';
+
+  @override
   final String codeProtect = 'Codebescherming';
 
   @override
@@ -5612,6 +5668,9 @@ class FI extends Translated {
 
   @override
   final String speechTest = 'Puhenopeuden testaus';
+
+  @override
+  final String voices = 'Äänet';
 
   @override
   final String codeProtect = 'Suojakoodi';
@@ -6822,6 +6881,9 @@ class DE extends Translated {
 
   @override
   final String speechTest = 'Test des Sprechtempos';
+
+  @override
+  final String voices = 'Stimmen';
 
   @override
   final String codeProtect = 'Schutz durch Code';

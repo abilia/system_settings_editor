@@ -1,11 +1,11 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class EditCategoryPage extends StatelessWidget {
+class EditCategoryBottomSheet extends StatelessWidget {
   final ImageAndName? imageAndName;
   final String hintText;
 
-  const EditCategoryPage({
+  const EditCategoryBottomSheet({
     this.imageAndName,
     required this.hintText,
     Key? key,
@@ -24,6 +24,7 @@ class EditCategoryPage extends StatelessWidget {
         iconData: AbiliaIcons.phoneLog,
         title: Translator.of(context).translate.editCategory,
         label: Config.isMP ? label : null,
+        borderRadius: layout.appBar.borderRadius,
       ),
     );
   }

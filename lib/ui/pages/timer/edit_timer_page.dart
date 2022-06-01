@@ -11,6 +11,8 @@ class EditTimerPage extends StatelessWidget {
     final t = Translator.of(context).translate;
 
     return _EditTimerPage(
+      title: t.newTimer,
+      icon: AbiliaIcons.stopWatch,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const PreviousButton(),
         forwardNavigationWidget:
@@ -40,6 +42,8 @@ class EditBasicTimerPage extends StatelessWidget {
     final t = Translator.of(context).translate;
 
     return _EditTimerPage(
+      title: t.newBasicTimer,
+      icon: AbiliaIcons.basicTimers,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget:
@@ -62,14 +66,19 @@ class EditBasicTimerPage extends StatelessWidget {
 }
 
 class _EditTimerPage extends StatelessWidget {
-  const _EditTimerPage({Key? key, required this.bottomNavigation})
-      : super(key: key);
+  const _EditTimerPage({
+    Key? key,
+    required this.bottomNavigation,
+    required this.title,
+    required this.icon,
+  }) : super(key: key);
 
   final BottomNavigation bottomNavigation;
+  final String title;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    final t = Translator.of(context).translate;
     return BlocListener<EditTimerCubit, EditTimerState>(
       listener: (context, state) {
         if (state is SavedTimerState) {
@@ -79,8 +88,8 @@ class _EditTimerPage extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.stopWatch,
-          title: t.newTimer,
+          iconData: icon,
+          title: title,
         ),
         body: Padding(
           padding: layout.templates.m3,

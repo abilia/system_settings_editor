@@ -172,7 +172,7 @@ void main() {
           isTrue,
         );
       });
-    }, skip: true); // TODO unskip when photo_view is 0.14.0
+    });
   });
 }
 

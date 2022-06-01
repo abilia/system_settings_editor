@@ -58,6 +58,7 @@ class CreateAccountPage extends StatelessWidget {
         ],
         child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
           builder: (context, state) => Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: layout.templates.m5,
               child: Column(

@@ -22,7 +22,7 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
-  AuthenticationState get state => const Authenticated(token: '', userId: 1);
+  AuthenticationState get state => const Authenticated(userId: 1);
   @override
   Future<void> close() async {}
 }

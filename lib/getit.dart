@@ -134,34 +134,45 @@ class GetItInitializer {
 
   set ttsHandler(TtsInterface ttsHandler) => _ttsHandler = ttsHandler;
 
-  void init() => GetIt.I
-    ..registerSingleton<BaseClient>(
-        _baseClient ?? ClientWithDefaultHeaders(_packageInfo.version))
-    ..registerSingleton<LoginDb>(_loginDb ?? LoginDb(_sharedPreferences))
-    ..registerSingleton<LicenseDb>(_licenseDb ?? LicenseDb(_sharedPreferences))
-    ..registerSingleton<FirebasePushService>(_firebasePushService)
-    ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
-    ..registerSingleton<TimerDb>(_timerDb ?? TimerDb(_database))
-    ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
-    ..registerSingleton<Database>(_database)
-    ..registerSingleton<SeagullLogger>(_seagullLogger)
-    ..registerSingleton<BaseUrlDb>(_baseUrlDb ?? BaseUrlDb(_sharedPreferences))
-    ..registerSingleton<DeviceDb>(_deviceDb ?? DeviceDb(_sharedPreferences))
-    ..registerSingleton<Ticker>(_ticker)
-    ..registerSingleton<AlarmNavigator>(_alarmNavigator)
-    ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
-    ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
-    ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
-    ..registerSingleton<SettingsDb>(
-        _settingsDb ?? SettingsDb(_sharedPreferences))
-    ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
-    ..registerSingleton<FileStorage>(
-        _fileStorage ?? FileStorage(_documentsDirectory?.path))
-    ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
-    ..registerSingleton<SyncDelays>(_syncDelay)
-    ..registerSingleton<PackageInfo>(_packageInfo)
-    ..registerSingleton<Battery>(_battery)
-    ..registerSingleton<TtsInterface>(_ttsHandler)
-    ..registerSingleton<VoiceDb>(_voiceDb ??
-        VoiceDb(_sharedPreferences, _applicationSupportDirectory?.path ?? ''));
+  void init() {
+    final loginDb = _loginDb ?? LoginDb(_sharedPreferences);
+    final deviceDb = _deviceDb ?? DeviceDb(_sharedPreferences);
+    GetIt.I
+      ..registerSingleton<LoginDb>(loginDb)
+      ..registerSingleton<DeviceDb>(deviceDb)
+      ..registerSingleton<BaseClient>(_baseClient ??
+          ClientWithDefaultHeaders(
+            _packageInfo.version,
+            loginDb: loginDb,
+            deviceDb: deviceDb,
+          ))
+      ..registerSingleton<LicenseDb>(
+          _licenseDb ?? LicenseDb(_sharedPreferences))
+      ..registerSingleton<FirebasePushService>(_firebasePushService)
+      ..registerSingleton<ActivityDb>(_activityDb ?? ActivityDb(_database))
+      ..registerSingleton<TimerDb>(_timerDb ?? TimerDb(_database))
+      ..registerSingleton<UserDb>(_userDb ?? UserDb(_sharedPreferences))
+      ..registerSingleton<Database>(_database)
+      ..registerSingleton<SeagullLogger>(_seagullLogger)
+      ..registerSingleton<BaseUrlDb>(
+          _baseUrlDb ?? BaseUrlDb(_sharedPreferences))
+      ..registerSingleton<Ticker>(_ticker)
+      ..registerSingleton<AlarmNavigator>(_alarmNavigator)
+      ..registerSingleton<SortableDb>(_sortableDb ?? SortableDb(_database))
+      ..registerSingleton<GenericDb>(_genericDb ?? GenericDb(_database))
+      ..registerSingleton<UserFileDb>(_userFileDb ?? UserFileDb(_database))
+      ..registerSingleton<SettingsDb>(
+          _settingsDb ?? SettingsDb(_sharedPreferences))
+      ..registerSingleton<CalendarDb>(_calendarDb ?? CalendarDb(_database))
+      ..registerSingleton<FileStorage>(
+          _fileStorage ?? FileStorage(_documentsDirectory?.path))
+      ..registerSingleton<MultipartRequestBuilder>(_multipartRequestBuilder)
+      ..registerSingleton<SyncDelays>(_syncDelay)
+      ..registerSingleton<PackageInfo>(_packageInfo)
+      ..registerSingleton<Battery>(_battery)
+      ..registerSingleton<TtsInterface>(_ttsHandler)
+      ..registerSingleton<VoiceDb>(_voiceDb ??
+          VoiceDb(
+              _sharedPreferences, _applicationSupportDirectory?.path ?? ''));
+  }
 }

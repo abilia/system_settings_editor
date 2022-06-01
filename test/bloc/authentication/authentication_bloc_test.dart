@@ -38,10 +38,12 @@ void main() {
       ),
     );
 
-    blocTest('state change to Unauthenticated when app starts',
-        build: () => AuthenticationBloc(userRepository, onLogout: () {}),
-        act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
-        expect: () => [const Unauthenticated()]);
+    blocTest(
+      'state change to Unauthenticated when app starts',
+      build: () => AuthenticationBloc(userRepository, onLogout: () {}),
+      act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
+      expect: () => [const Unauthenticated()],
+    );
 
     blocTest(
       'state change to AuthenticationAuthenticated when token provided',
@@ -50,18 +52,11 @@ void main() {
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
         ..add(
-          const LoggedIn(
-            loginInfo: LoginInfo(
-              token: Fakes.token,
-              endDate: 1111,
-              renewToken: 'renew',
-            ),
-          ),
+          const LoggedIn(),
         ),
       expect: () => [
         const Unauthenticated(),
         Authenticated(
-          token: Fakes.token,
           userId: Fakes.userId,
           newlyLoggedIn: true,
         ),
@@ -74,19 +69,12 @@ void main() {
       act: (AuthenticationBloc bloc) => bloc
         ..add(CheckAuthentication())
         ..add(
-          const LoggedIn(
-            loginInfo: LoginInfo(
-              token: Fakes.token,
-              endDate: 1111,
-              renewToken: 'renewToken',
-            ),
-          ),
+          const LoggedIn(),
         )
         ..add(const LoggedOut()),
       expect: () => [
         const Unauthenticated(),
         Authenticated(
-          token: Fakes.token,
           userId: Fakes.userId,
           newlyLoggedIn: true,
         ),
@@ -100,68 +88,36 @@ void main() {
     late MockNotification notificationMock;
 
     setUp(() async {
+      notificationMock = MockNotification();
       mockedUserRepository = MockUserRepository();
 
-      when(() => mockedUserRepository.logout(any()))
+      when(() => mockedUserRepository.logout())
           .thenAnswer((_) => Future.value());
       when(() => mockedUserRepository.persistLoginInfo(any()))
           .thenAnswer((_) => Future.value());
       when(() => mockedUserRepository.baseUrl).thenReturn('url');
-      notificationMock = MockNotification();
-
-      when(() => mockedUserRepository.getToken()).thenReturn(Fakes.token);
-      when(() => mockedUserRepository.me(any())).thenAnswer(
+      when(() => mockedUserRepository.me()).thenAnswer(
           (_) => Future.value(const User(id: 0, type: '', name: '')));
+      when(() => mockedUserRepository.isLoggedIn()).thenReturn(true);
     });
-
-    blocTest(
-      'loggedIn event saves token',
-      build: () => AuthenticationBloc(
-        mockedUserRepository,
-        onLogout: () {
-          notificationMock.mockCancelAll();
-        },
-      ),
-      act: (AuthenticationBloc bloc) => bloc
-        ..add(CheckAuthentication())
-        ..add(
-          const LoggedIn(
-            loginInfo: LoginInfo(
-              token: Fakes.token,
-              endDate: 1111,
-              renewToken: 'renewToken',
-            ),
-          ),
-        ),
-      verify: (bloc) => verify(
-        () => mockedUserRepository.persistLoginInfo(
-          const LoginInfo(
-            token: Fakes.token,
-            endDate: 1111,
-            renewToken: 'renewToken',
-          ),
-        ),
-      ).called(1),
-    );
 
     blocTest(
       'CheckAuthentication event fetches calendar',
       build: () => AuthenticationBloc(mockedUserRepository),
       act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
       verify: (bloc) => verify(
-        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
+        () => mockedUserRepository.fetchAndSetCalendar(0),
       ).called(1),
     );
 
     blocTest(
       'CheckAuthentication event auth failed, no calendar fethed',
-      setUp: () {
-        when(() => mockedUserRepository.getToken()).thenReturn(null);
-      },
+      setUp: () =>
+          when(() => mockedUserRepository.isLoggedIn()).thenReturn(false),
       build: () => AuthenticationBloc(mockedUserRepository),
       act: (AuthenticationBloc bloc) => bloc..add(CheckAuthentication()),
       verify: (bloc) => verifyNever(
-        () => mockedUserRepository.fetchAndSetCalendar(any(), any()),
+        () => mockedUserRepository.fetchAndSetCalendar(any()),
       ),
     );
 
@@ -170,16 +126,10 @@ void main() {
       build: () => AuthenticationBloc(mockedUserRepository),
       act: (AuthenticationBloc bloc) => bloc
         ..add(
-          const LoggedIn(
-            loginInfo: LoginInfo(
-              token: Fakes.token,
-              endDate: 1111,
-              renewToken: 'renewToken',
-            ),
-          ),
+          const LoggedIn(),
         ),
       verify: (bloc) => verify(
-        () => mockedUserRepository.fetchAndSetCalendar(Fakes.token, 0),
+        () => mockedUserRepository.fetchAndSetCalendar(0),
       ).called(1),
     );
 
@@ -214,19 +164,19 @@ void main() {
 
     blocTest(
       'unauthed token gets deleted and returns state Unauthenticated',
-      setUp: () => when(() => mockedUserRepository.me(any()))
+      setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
       build: () => AuthenticationBloc(mockedUserRepository, onLogout: () {}),
       act: (AuthenticationBloc bloc) => bloc.add(CheckAuthentication()),
       expect: () => [const Unauthenticated()],
       verify: (bloc) => verify(
-        () => mockedUserRepository.logout(any()),
+        () => mockedUserRepository.logout(),
       ).called(1),
     );
 
     blocTest(
       'logged out cancel all on logout and repo in order',
-      setUp: () => when(() => mockedUserRepository.me(any()))
+      setUp: () => when(() => mockedUserRepository.me())
           .thenAnswer((_) => Future.error(UnauthorizedException())),
       build: () => AuthenticationBloc(mockedUserRepository,
           onLogout: notificationMock.mockCancelAll),

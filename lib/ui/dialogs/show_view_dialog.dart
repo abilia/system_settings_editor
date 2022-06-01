@@ -14,7 +14,7 @@ Future<T?> showViewDialog<T>({
       wrapWithAuthProviders ? copiedAuthProviders(context) : null;
   return showDialog<T>(
     context: context,
-    builder: authProviders != null
+    builder: authProviders != null && authProviders.isNotEmpty
         ? (_) => MultiBlocProvider(
               providers: authProviders,
               child: Builder(builder: builder),

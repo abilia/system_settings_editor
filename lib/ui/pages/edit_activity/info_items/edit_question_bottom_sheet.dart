@@ -1,10 +1,10 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
-class EditQuestionPage extends StatelessWidget {
+class EditQuestionBottomSheet extends StatelessWidget {
   final Question? question;
 
-  const EditQuestionPage({
+  const EditQuestionBottomSheet({
     this.question,
     Key? key,
   }) : super(key: key);
@@ -27,7 +27,8 @@ class EditQuestionPage extends StatelessWidget {
           : null,
       appBar: AbiliaAppBar(
         iconData: AbiliaIcons.phoneLog,
-        title: t.task,
+        title: t.enterTask,
+        borderRadius: layout.appBar.borderRadius,
       ),
     );
   }

@@ -21,7 +21,7 @@ class EditTimerState extends Equatable {
     return EditTimerState(
       duration: basicTimer.duration.milliseconds(),
       name: basicTimer.basicTimerTitle,
-      autoSetNameToDuration: false,
+      autoSetNameToDuration: basicTimer.duration == 0,
       image: basicTimer.hasImage()
           ? AbiliaFile.from(id: basicTimer.fileId, path: basicTimer.icon)
           : AbiliaFile.empty,

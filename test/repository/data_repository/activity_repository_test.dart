@@ -7,7 +7,6 @@ import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
-import '../../fakes/all.dart';
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 
@@ -51,7 +50,6 @@ void main() {
       client: mockClient,
       activityDb: mockActivityDb,
       userId: userId,
-      authToken: Fakes.token,
     );
   });
 
@@ -82,7 +80,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonAuthHeader(Fakes.token),
+        headers: jsonHeader,
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -109,7 +107,7 @@ void main() {
         '$baseUrl/api/v${activityRepo.postApiVersion}'
                 '/data/$userId/activities'
             .toUri(),
-        headers: jsonAuthHeader(Fakes.token),
+        headers: jsonHeader,
         body: jsonEncode(dbActivities),
       ),
     ).thenAnswer(
@@ -146,7 +144,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(
@@ -169,7 +167,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         ));
     verify(() => mockActivityDb.insert([
@@ -203,7 +201,7 @@ void main() {
           '$baseUrl/api/v${activityRepo.postApiVersion}'
                   '/data/$userId/activities'
               .toUri(),
-          headers: jsonAuthHeader(Fakes.token),
+          headers: jsonHeader,
           body: jsonEncode(activities),
         )).thenAnswer((_) => Future.value(
           Response(
@@ -212,11 +210,9 @@ void main() {
           ),
         ));
 
-    when(() => mockClient.get(
-        '$baseUrl/api/v1'
-                '/data/$userId/activities?revision=$failedRevision'
-            .toUri(),
-        headers: authHeader(Fakes.token))).thenAnswer((_) => (Future.value(
+    when(() => mockClient.get('$baseUrl/api/v1'
+            '/data/$userId/activities?revision=$failedRevision'
+        .toUri())).thenAnswer((_) => (Future.value(
           Response(
             json.encode(
                 [failedActivity.copyWith(revision: failedRevision).toJson()]),

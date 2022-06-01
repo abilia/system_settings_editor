@@ -57,9 +57,10 @@ class LoginCubit extends Cubit<LoginState> {
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      final licenses = await userRepository.getLicensesFromApi(loginInfo.token);
+      userRepository.persistLoginInfo(loginInfo);
+      final licenses = await userRepository.getLicensesFromApi();
       if (licenses.anyValidLicense(clockBloc.state)) {
-        authenticationBloc.add(LoggedIn(loginInfo: loginInfo));
+        authenticationBloc.add(const LoggedIn());
         emit(const LoginSucceeded());
       } else {
         emit(state.failure(
