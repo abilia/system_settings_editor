@@ -3,16 +3,20 @@ part of 'layout.dart';
 class MediumLayout extends Layout {
   const MediumLayout({
     AppBarLayout? appBar,
+    LargeActionButtonLayout? actionButton,
+    LargeClockLayout? clockLayout,
+    FontSize? fontSize,
   }) : super(
           radius: 18,
           appBar: appBar ?? const MediumAppBarLayout(),
-          actionButton: const ActionButtonLayout(
-            size: 88,
-            radius: 20,
-            spacing: 4,
-            padding: EdgeInsets.all(12),
-            withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
-          ),
+          actionButton: actionButton ??
+              const ActionButtonLayout(
+                size: 88,
+                radius: 20,
+                spacing: 4,
+                padding: EdgeInsets.all(12),
+                withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
+              ),
           menuPage: const MenuPageLayout(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
             crossAxisSpacing: 24,
@@ -47,21 +51,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: const FontSize(
-            headline1: 144,
-            headline2: 90,
-            headline3: 72,
-            headline4: 45,
-            headline5: 38,
-            headline6: 32,
-            subtitle1: 24,
-            subtitle2: 21,
-            bodyText1: 24,
-            bodyText2: 21,
-            caption: 20,
-            button: 24,
-            overline: 15,
-          ),
+          fontSize: fontSize ?? const MediumFontSize(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,
@@ -72,18 +62,7 @@ class MediumLayout extends Layout {
             doubleIconTop: 30,
             doubleIconLeft: 48,
           ),
-          clock: const ClockLayout(
-            height: 124,
-            width: 92,
-            borderWidth: 2,
-            centerPointRadius: 8,
-            hourNumberScale: 1.5,
-            hourHandLength: 22,
-            minuteHandLength: 30,
-            hourHandWidth: 1.5,
-            minuteHandWidth: 1.5,
-            fontSize: 12,
-          ),
+          clock: clockLayout ?? const MediumClockLayout(),
           formPadding: const FormPaddingLayout(
             smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
