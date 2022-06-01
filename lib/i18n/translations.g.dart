@@ -783,6 +783,8 @@ abstract class Translated {
 
   final String speechTest = 'Test of speech rate';
 
+  final String voices = 'Voices';
+
   final String codeProtect = 'Code protect';
 
   final String code = 'Code';
@@ -2017,6 +2019,9 @@ class SV extends Translated {
 
   @override
   final String speechTest = 'Test av talhastighet';
+
+  @override
+  final String voices = 'Röster';
 
   @override
   final String codeProtect = 'Kodskydd';
@@ -4455,6 +4460,9 @@ class NL extends Translated {
   final String speechTest = 'Test van spraaksnelheid';
 
   @override
+  final String voices = 'Stemmen';
+
+  @override
   final String codeProtect = 'Codebescherming';
 
   @override
@@ -5660,6 +5668,9 @@ class FI extends Translated {
 
   @override
   final String speechTest = 'Puhenopeuden testaus';
+
+  @override
+  final String voices = 'Äänet';
 
   @override
   final String codeProtect = 'Suojakoodi';
@@ -6870,6 +6881,9 @@ class DE extends Translated {
 
   @override
   final String speechTest = 'Test des Sprechtempos';
+
+  @override
+  final String voices = 'Stimmen';
 
   @override
   final String codeProtect = 'Schutz durch Code';
