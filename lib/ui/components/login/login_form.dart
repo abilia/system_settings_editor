@@ -90,6 +90,7 @@ class UsernameInput extends StatelessWidget {
       inputValid: inputValid ?? LoginCubit.usernameValid,
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r'\s'))],
       onChanged: onChanged,
+      wrapWithAuthProviders: false,
     );
   }
 }

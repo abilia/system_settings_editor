@@ -48,9 +48,8 @@ class AuthenticationBloc
     CheckAuthentication event,
     Emitter<AuthenticationState> emit,
   ) async {
-    final token = userRepository.getToken();
-    if (token != null) {
-      final nextState = await _tryGetUser(token);
+    if (userRepository.isLoggedIn()) {
+      final nextState = await _tryGetUser();
       emit(nextState);
     } else {
       emit(const Unauthenticated());
@@ -58,9 +57,7 @@ class AuthenticationBloc
   }
 
   Future _loggedIn(LoggedIn event, Emitter<AuthenticationState> emit) async {
-    await userRepository.persistLoginInfo(event.loginInfo);
-    final nextState =
-        await _tryGetUser(event.loginInfo.token, newlyLoggedIn: true);
+    final nextState = await _tryGetUser(newlyLoggedIn: true);
     emit(nextState);
   }
 
@@ -69,20 +66,18 @@ class AuthenticationBloc
     await _logout();
   }
 
-  Future<AuthenticationState> _tryGetUser(
-    String token, {
+  Future<AuthenticationState> _tryGetUser({
     bool newlyLoggedIn = false,
   }) async {
     try {
-      final user = await userRepository.me(token);
-      await userRepository.fetchAndSetCalendar(token, user.id);
+      final user = await userRepository.me();
+      await userRepository.fetchAndSetCalendar(user.id);
       return Authenticated(
-        token: token,
         userId: user.id,
         newlyLoggedIn: newlyLoggedIn,
       );
     } on UnauthorizedException {
-      await _logout(token: token);
+      await _logout();
       return const Unauthenticated();
     } catch (_) {
       return const Unauthenticated();
@@ -90,12 +85,12 @@ class AuthenticationBloc
     }
   }
 
-  Future _logout({String? token}) async {
+  Future _logout() async {
     try {
       await onLogout?.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }
-    await userRepository.logout(token);
+    await userRepository.logout();
   }
 }

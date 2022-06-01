@@ -982,7 +982,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
-        expect(find.byType(EditQuestionPage), findsOneWidget);
+        expect(find.byType(EditQuestionBottomSheet), findsOneWidget);
       });
 
       testWidgets('Can add new question', (WidgetTester tester) async {
@@ -998,7 +998,7 @@ Internal improvements to tests and examples.''';
         await tester.enterText(find.byType(TextField), questionName);
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsWidgets);
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
@@ -1021,7 +1021,7 @@ Internal improvements to tests and examples.''';
           exact: questionName,
           useTap: true,
         );
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         await tester.scrollDown(dy: -150);
         expect(find.text(questionName), findsOneWidget);
@@ -1037,7 +1037,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
 
         final editViewDialogBefore =
-            tester.widget<GreenButton>(find.byType(GreenButton));
+            tester.widget<OkButton>(find.byKey(TestKey.bottomSheetOKButton));
         expect(editViewDialogBefore.onPressed, isNull);
 
         await tester.enterText(find.byType(TextField), questionName);
@@ -1045,9 +1045,9 @@ Internal improvements to tests and examples.''';
         expect(find.text(questionName), findsWidgets);
 
         final editViewDialogAfter =
-            tester.widget<GreenButton>(find.byType(GreenButton));
+            tester.widget<OkButton>(find.byKey(TestKey.bottomSheetOKButton));
         expect(editViewDialogAfter.onPressed, isNotNull);
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
       });
@@ -1131,7 +1131,7 @@ Internal improvements to tests and examples.''';
 
         await tester.enterText(find.byType(TextField), newQuestionName);
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
 
         expect(find.text(questions[0]!), findsNothing);
@@ -1178,7 +1178,7 @@ text''';
 
         await tester.enterText(find.byType(TextField), newQuestionName);
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
 
         expect(find.text(questions[1]!), findsNothing);
@@ -2189,7 +2189,7 @@ text''';
       expect(namePictureW.onTextEdit, isNull);
       await tester.tap(find.byType(NameInput));
       await tester.pumpAndSettle();
-      expect(find.byType(DefaultTextInputPage), findsNothing);
+      expect(find.byType(DefaultTextInput), findsNothing);
     });
 
     testWidgets('Select image off', (WidgetTester tester) async {

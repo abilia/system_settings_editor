@@ -13,7 +13,6 @@ class GenericRepository extends DataRepository<Generic> {
   GenericRepository({
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
-    required String authToken,
     required int userId,
     required this.genericDb,
   }) : super(
@@ -21,7 +20,6 @@ class GenericRepository extends DataRepository<Generic> {
           baseUrlDb: baseUrlDb,
           path: 'generics',
           postPath: 'generics',
-          authToken: authToken,
           userId: userId,
           db: genericDb,
           fromJsonToDataModel: DbGeneric.fromJson,

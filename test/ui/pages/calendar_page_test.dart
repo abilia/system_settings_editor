@@ -50,7 +50,7 @@ void main() {
         child: AuthenticatedBlocsProvider(
           memoplannerSettingBloc: memoplannerSettingBloc,
           sortableBloc: sortableBloc,
-          authenticatedState: const Authenticated(token: '', userId: 1),
+          authenticatedState: const Authenticated(userId: 1),
           child: MaterialApp(
             theme: abiliaTheme,
             supportedLocales: Translator.supportedLocals,

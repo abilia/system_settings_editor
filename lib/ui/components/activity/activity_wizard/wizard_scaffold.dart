@@ -6,6 +6,8 @@ class WizardScaffold extends StatelessWidget {
   final Widget body;
   final Widget? bottomNavigationBar, appBarTrailing;
   final PreferredSizeWidget? bottom;
+  final bool showAppBar;
+  final Color? backgroundColor;
 
   const WizardScaffold({
     Key? key,
@@ -15,17 +17,22 @@ class WizardScaffold extends StatelessWidget {
     this.bottom,
     this.bottomNavigationBar = const WizardBottomNavigation(),
     this.appBarTrailing,
+    this.showAppBar = true,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AbiliaAppBar(
-          iconData: iconData,
-          label: Translator.of(context).translate.newActivity,
-          title: title,
-          bottom: bottom,
-          trailing: appBarTrailing,
-        ),
+        backgroundColor: backgroundColor,
+        appBar: showAppBar
+            ? AbiliaAppBar(
+                iconData: iconData,
+                label: Translator.of(context).translate.newActivity,
+                title: title,
+                bottom: bottom,
+                trailing: appBarTrailing,
+              )
+            : null,
         body: body,
         bottomNavigationBar: bottomNavigationBar,
       );

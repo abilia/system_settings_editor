@@ -26,24 +26,26 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
   try {
     log.info('Handling background message...');
     await configureLocalTimeZone();
-    final baseUrlDb = BaseUrlDb(preferences);
     final version =
         await PackageInfo.fromPlatform().then((value) => value.version);
-    final client = ClientWithDefaultHeaders(version);
+    final loginDb = LoginDb(preferences);
     final user = UserDb(preferences).getUser();
     final token = LoginDb(preferences).getToken();
     if (user == null || token == null) {
       log.severe('No user or token: {token $token} {user $user}');
       return;
     }
+
+    final client = ClientWithDefaultHeaders(version,
+        loginDb: loginDb, deviceDb: DeviceDb(preferences));
     final database = await DatabaseRepository.createSqfliteDb();
+    final baseUrlDb = BaseUrlDb(preferences);
 
     final activities = await ActivityRepository(
       baseUrlDb: baseUrlDb,
       client: client,
       activityDb: ActivityDb(database),
       userId: user.id,
-      authToken: token,
     ).load();
 
     final fileStorage = FileStorage(documentDirectory.path);
@@ -52,16 +54,15 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       baseUrlDb: baseUrlDb,
       client: client,
       userFileDb: UserFileDb(database),
+      loginDb: loginDb,
       fileStorage: fileStorage,
       userId: user.id,
-      authToken: token,
       multipartRequestBuilder: MultipartRequestBuilder(),
     ).load();
 
     final settingsDb = SettingsDb(preferences);
 
     final generics = await GenericRepository(
-      authToken: token,
       baseUrlDb: baseUrlDb,
       client: client,
       genericDb: GenericDb(database),
@@ -91,7 +92,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       client: client,
       sortableDb: SortableDb(database),
       userId: user.id,
-      authToken: token,
     ).load();
   } catch (e) {
     log.severe('Exception when running background handler', e);

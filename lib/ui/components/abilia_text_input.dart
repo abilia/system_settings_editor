@@ -1,21 +1,17 @@
 import 'dart:io' show Platform;
-
 import 'package:flutter/services.dart';
-
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class AbiliaTextInput extends StatelessWidget {
-  final String initialValue;
-  final bool errorState;
+  final String initialValue, heading, inputHeading;
+  final bool errorState, autoCorrect, wrapWithAuthProviders;
   final TextInputType? keyboardType;
   final Key? formKey;
   final IconData icon;
-  final String heading;
-  final String inputHeading;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
   final int maxLines;
-  final bool autoCorrect;
   final bool Function(String)? inputValid;
   final void Function(String)? onChanged;
 
@@ -34,6 +30,7 @@ class AbiliaTextInput extends StatelessWidget {
     this.maxLines = 1,
     this.autoCorrect = true,
     this.inputValid,
+    this.wrapWithAuthProviders = true,
   }) : super(key: key);
 
   @override
@@ -49,20 +46,22 @@ class AbiliaTextInput extends StatelessWidget {
             onTap: onChanged == null
                 ? null
                 : () async {
-                    final newText = await Navigator.of(context).push<String>(
-                      MaterialPageRoute(
-                        builder: (context) => DefaultTextInputPage(
-                          inputHeading: inputHeading,
-                          icon: icon,
-                          text: initialValue,
-                          heading: heading,
-                          keyboardType: keyboardType,
-                          inputFormatters: inputFormatters,
-                          textCapitalization: textCapitalization,
-                          maxLines: maxLines,
-                          autocorrect: autoCorrect,
-                          inputValid: inputValid ?? (s) => true,
-                        ),
+                    final newText = await showAbiliaBottomSheet<String>(
+                      context: context,
+                      providers: wrapWithAuthProviders
+                          ? copiedAuthProviders(context)
+                          : null,
+                      child: DefaultTextInput(
+                        inputHeading: inputHeading,
+                        icon: icon,
+                        text: initialValue,
+                        heading: heading,
+                        keyboardType: keyboardType,
+                        inputFormatters: inputFormatters,
+                        textCapitalization: textCapitalization,
+                        maxLines: maxLines,
+                        autocorrect: autoCorrect,
+                        inputValid: inputValid ?? (s) => true,
                       ),
                     );
 
@@ -97,8 +96,8 @@ class AbiliaTextInput extends StatelessWidget {
   }
 }
 
-class DefaultTextInputPage extends StatefulWidget {
-  const DefaultTextInputPage({
+class DefaultTextInput extends StatefulWidget {
+  const DefaultTextInput({
     Key? key,
     required this.inputHeading,
     required this.icon,
@@ -127,8 +126,7 @@ class DefaultTextInputPage extends StatefulWidget {
   _DefaultInputPageState createState() => _DefaultInputPageState();
 }
 
-class _DefaultInputPageState
-    extends StateWithFocusOnResume<DefaultTextInputPage> {
+class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
   late TextEditingController controller;
   bool _validInput = false;
   @override
@@ -157,69 +155,75 @@ class _DefaultInputPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AbiliaAppBar(
-        title: widget.inputHeading,
-        iconData: widget.icon,
-      ),
-      body: Tts.fromSemantics(
-        SemanticsProperties(label: widget.heading),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: layout.templates.m1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SubHeading(widget.heading),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            key: TestKey.input,
-                            controller: controller,
-                            keyboardType: widget.keyboardType,
-                            inputFormatters: widget.inputFormatters,
-                            textCapitalization: widget.textCapitalization,
-                            style: Theme.of(context).textTheme.bodyText1,
-                            autofocus: true,
-                            focusNode: focusNode,
-                            onEditingComplete:
-                                _validInput ? _returnNewText : () {},
-                            maxLines: widget.maxLines,
-                            minLines: 1,
-                            smartDashesType: SmartDashesType.disabled,
-                            smartQuotesType: SmartQuotesType.disabled,
-                            autocorrect: widget.autocorrect,
-                          ),
-                        ),
-                        TtsPlayButton(
-                          controller: controller,
-                          padding: EdgeInsets.only(
-                            left: layout.defaultTextInputPage
-                                .textFieldActionButtonSpacing,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            BottomNavigation(
-              backNavigationWidget: const CancelButton(),
-              forwardNavigationWidget: OkButton(
-                key: TestKey.inputOk,
-                onPressed: _validInput ? _returnNewText : null,
-              ),
-            ),
-          ],
-        ),
-      ),
+    final appBar = AbiliaAppBar(
+      title: widget.inputHeading,
+      iconData: widget.icon,
+      borderRadius: layout.appBar.borderRadius,
     );
+
+    return Tts.fromSemantics(
+      SemanticsProperties(label: widget.heading),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: appBar.preferredSize.height,
+            child: appBar,
+          ),
+          Container(
+            color: AbiliaColors.white110,
+            child: Padding(
+              padding: layout.templates.m1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SubHeading(widget.heading),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          key: TestKey.input,
+                          controller: controller,
+                          keyboardType: widget.keyboardType,
+                          inputFormatters: widget.inputFormatters,
+                          textCapitalization: widget.textCapitalization,
+                          style: Theme.of(context).textTheme.bodyText1,
+                          autofocus: true,
+                          focusNode: focusNode,
+                          onEditingComplete:
+                              _validInput ? _returnNewText : () {},
+                          maxLines: widget.maxLines,
+                          minLines: 1,
+                          smartDashesType: SmartDashesType.disabled,
+                          smartQuotesType: SmartQuotesType.disabled,
+                          autocorrect: widget.autocorrect,
+                        ),
+                      ),
+                      TtsPlayButton(
+                        controller: controller,
+                        padding: EdgeInsets.only(
+                          left: layout.defaultTextInputPage
+                              .textFieldActionButtonSpacing,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          BottomNavigation(
+            backNavigationWidget: const CancelButton(),
+            forwardNavigationWidget: OkButton(
+              key: TestKey.inputOk,
+              onPressed: _validInput ? _returnNewText : null,
+            ),
+          ),
+        ],
+      ),
+    ).pad(EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom));
   }
 
   void _returnNewText() {

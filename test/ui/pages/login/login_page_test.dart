@@ -117,7 +117,7 @@ void main() {
     expect(find.byIcon(AbiliaIcons.show), findsWidgets);
 
     // Tap show/hide-button
-    await tester.tap(find.byType(HidePasswordButton));
+    await tester.tap(find.byKey(TestKey.bottomSheetHidePasswordButton));
     await tester.pumpAndSettle();
 
     // Text shows and show/hide-button visible with show icon

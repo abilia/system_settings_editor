@@ -12,6 +12,7 @@ class EditTimerPage extends StatelessWidget {
 
     return _EditTimerPage(
       title: t.newTimer,
+      icon: AbiliaIcons.stopWatch,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const PreviousButton(),
         forwardNavigationWidget:
@@ -42,6 +43,7 @@ class EditBasicTimerPage extends StatelessWidget {
 
     return _EditTimerPage(
       title: t.newBasicTimer,
+      icon: AbiliaIcons.basicTimers,
       bottomNavigation: BottomNavigation(
         backNavigationWidget: const CancelButton(),
         forwardNavigationWidget:
@@ -68,10 +70,12 @@ class _EditTimerPage extends StatelessWidget {
     Key? key,
     required this.bottomNavigation,
     required this.title,
+    required this.icon,
   }) : super(key: key);
 
   final BottomNavigation bottomNavigation;
   final String title;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +88,7 @@ class _EditTimerPage extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AbiliaAppBar(
-          iconData: AbiliaIcons.stopWatch,
+          iconData: icon,
           title: title,
         ),
         body: Padding(
