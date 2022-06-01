@@ -217,27 +217,29 @@ class _AddTab extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onTap,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AutoSizeText(
-                text,
-                minFontSize: 12,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-              SizedBox(height: layout.actionButton.spacing),
-              IconTheme(
-                data: iconTheme,
-                child: Icon(
-                  icon,
-                  size: layout.icon.small,
-                ),
-              ),
-            ],
-          ),
+          child: Padding(
+              padding: layout.actionButton.withTextPadding
+                  .subtract(EdgeInsets.only(top: layout.tabBar.item.border)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AutoSizeText(
+                    text,
+                    minFontSize: 12,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyle,
+                  ),
+                  SizedBox(height: layout.actionButton.spacing),
+                  IconTheme(
+                    data: iconTheme,
+                    child: Icon(
+                      icon,
+                      size: layout.icon.button,
+                    ),
+                  )
+                ],
+              )),
         ),
       ),
     );

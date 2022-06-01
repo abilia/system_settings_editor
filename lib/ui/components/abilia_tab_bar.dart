@@ -13,11 +13,10 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(text),
             SizedBox(height: layout.actionButton.spacing),
-            Icon(iconData),
+            Icon(iconData, size: layout.icon.button),
           ],
         ),
       );
@@ -314,7 +313,8 @@ class _AnimatedTab extends AnimatedWidget {
                 child: collapsedValue == 0.0
                     ? null
                     : Padding(
-                        padding: layout.actionButton.withTextPadding,
+                        padding: layout.actionButton.withTextPadding.subtract(
+                            EdgeInsets.only(top: layout.tabBar.item.border)),
                         child: DefaultTextStyle(
                           maxLines: 1,
                           overflow: TextOverflow.clip,
