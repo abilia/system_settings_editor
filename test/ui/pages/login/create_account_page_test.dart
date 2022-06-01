@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -74,11 +75,9 @@ void main() {
           await tester.pumpAndSettle();
         }
 
-        const toShortUsername = 'ab',
-            username = 'abc',
-            takenUsername = 'taken',
-            toShortPassword = 'abcdefg',
-            password = 'abcdefgh';
+        const toShortUsername = 'ab', username = 'abc', takenUsername = 'taken';
+        final toShortPassword = 'p' * (LoginCubit.minPasswordLenght - 1),
+            password = 'p' * LoginCubit.minPasswordLenght;
 
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));

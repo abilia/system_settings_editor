@@ -43,10 +43,10 @@ void main() {
       const loginInfo =
           LoginInfo(token: 'loginToken', endDate: 1111, renewToken: 'renew');
       const loggedInUserId = 1;
-      const username = 'username', password = 'password';
+      const username = 'username', password = 'my long password';
       when(() => mockUserRepository.authenticate(
-            username: any(named: username),
-            password: any(named: password),
+            username: any(named: 'username'),
+            password: any(named: 'password'),
             pushToken: any(named: 'pushToken'),
             time: any(named: 'time'),
           )).thenAnswer((_) => Future.value(loginInfo));
@@ -202,7 +202,7 @@ void main() {
     test('LoginButtonPressed event loggs in and saves token', () async {
       // Arrange
       const username = 'username',
-          password = 'password',
+          password = 'long enough password',
           fakePushToken = 'pushToken';
       const loginInfo =
           LoginInfo(token: 'loginToken', endDate: 1111, renewToken: 'renew');

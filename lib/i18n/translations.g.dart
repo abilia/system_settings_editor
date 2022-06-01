@@ -70,7 +70,7 @@ abstract class Translated {
 
   final String usernameHint = 'Username (phone number or email)';
 
-  final String passwordHint = 'Password (minimum 8 characters)';
+  final String passwordHint = 'Password (minimum 12 characters)';
 
   final String confirmPassword = 'Confirm password';
 
@@ -78,7 +78,7 @@ abstract class Translated {
       'Username or email is invalid, must contain at least three characters';
 
   final String passwordToShort =
-      'The password must consist of at least 8 characters';
+      'The password must consist of at least 12 characters';
 
   final String passwordMismatch = 'Both passwords must be the same';
 
@@ -960,7 +960,7 @@ class SV extends Translated {
   final String usernameHint = 'Användarnamn (telefonnummer eller e-post)';
 
   @override
-  final String passwordHint = 'Lösenord (minst 8 tecken)';
+  final String passwordHint = 'Lösenord (minst 12 tecken)';
 
   @override
   final String confirmPassword = 'Bekräfta lösenordet';
@@ -970,7 +970,7 @@ class SV extends Translated {
       'Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken';
 
   @override
-  final String passwordToShort = 'Lösenordet måste bestå av minst 8 tecken';
+  final String passwordToShort = 'Lösenordet måste bestå av minst 12 tecken';
 
   @override
   final String passwordMismatch = 'Lösenorden måste vara likadana';
@@ -2236,7 +2236,7 @@ class DA extends Translated {
   final String usernameHint = 'Brugernavn (telefon eller en e-mail)';
 
   @override
-  final String passwordHint = 'Adgangskode (mindst 8 tegn)';
+  final String passwordHint = 'Adgangskode (mindst 12 tegn)';
 
   @override
   final String confirmPassword = 'Bekræft adgangskoden';
@@ -2246,7 +2246,7 @@ class DA extends Translated {
       'Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn';
 
   @override
-  final String passwordToShort = 'Adgangskoden skal bestå af mindst 8 tegn';
+  final String passwordToShort = 'Adgangskoden skal bestå af mindst 12 tegn';
 
   @override
   final String passwordMismatch = 'Begge adgangskoder skal være de samme';
@@ -3442,7 +3442,7 @@ class NL extends Translated {
   final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
 
   @override
-  final String passwordHint = 'Wachtwoord (minimaal 8 tekens)';
+  final String passwordHint = 'Wachtwoord (minimaal 12 tekens)';
 
   @override
   final String confirmPassword = 'Wachtwoord bevestigen';
@@ -3453,7 +3453,7 @@ class NL extends Translated {
 
   @override
   final String passwordToShort =
-      'Het wachtwoord moet ten minste 8 tekens bevatten';
+      'Het wachtwoord moet ten minste 12 tekens bevatten';
 
   @override
   final String passwordMismatch = 'Beide wachtwoorden moeten hetzelfde zijn';
@@ -4649,7 +4649,7 @@ class FI extends Translated {
   final String usernameHint = 'Käyttäjätunnus (puhelin tai sähköpostiosoite)';
 
   @override
-  final String passwordHint = 'Salasanassa (vähintään 8 merkkiä)';
+  final String passwordHint = 'Salasanassa (vähintään 12 merkkiä)';
 
   @override
   final String confirmPassword = 'Vahvista salasana';
@@ -4659,7 +4659,7 @@ class FI extends Translated {
       'Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä';
 
   @override
-  final String passwordToShort = 'Salasanassa on oltava vähintään 8 merkkiä';
+  final String passwordToShort = 'Salasanassa on oltava vähintään 12 merkkiä';
 
   @override
   final String passwordMismatch = 'Molempien salasanojen on oltava samat';
@@ -5855,7 +5855,7 @@ class DE extends Translated {
   final String usernameHint = 'Benutzername (telefon oder E-Mail)';
 
   @override
-  final String passwordHint = 'Passwort (mindestens 8 Zeichen)';
+  final String passwordHint = 'Passwort (mindestens 12 Zeichen)';
 
   @override
   final String confirmPassword = 'Passwort bestätigen';
@@ -5866,7 +5866,7 @@ class DE extends Translated {
 
   @override
   final String passwordToShort =
-      'Das Passwort muss mindestens 8 Zeichen lang sein';
+      'Das Passwort muss mindestens 12 Zeichen lang sein';
 
   @override
   final String passwordMismatch = 'Beide Passwörter müssen identisch sein';
@@ -7065,7 +7065,7 @@ class NB extends Translated {
   final String usernameHint = 'Brukernavn (telefon eller en e-post)';
 
   @override
-  final String passwordHint = 'Passord (minimum 8 tegn)';
+  final String passwordHint = 'Passord (minimum 12 tegn)';
 
   @override
   final String confirmPassword = 'Bekreft passordet';
@@ -7075,7 +7075,7 @@ class NB extends Translated {
       'Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn';
 
   @override
-  final String passwordToShort = 'Passordet må bestå av minst 8 tegn';
+  final String passwordToShort = 'Passordet må bestå av minst 12 tegn';
 
   @override
   final String passwordMismatch = 'Begge passordene må være de samme';

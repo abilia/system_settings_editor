@@ -21,7 +21,7 @@ class Fakes {
       name = 'Testcase user',
       username = 'username',
       type = 'testcase',
-      incorrectPassword = 'wrongwrong',
+      incorrectPassword = 'wrongwrongwrong',
       supportUserName = 'supportUser';
 
   static MockClient client({
