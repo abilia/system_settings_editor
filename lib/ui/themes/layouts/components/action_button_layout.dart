@@ -1,7 +1,7 @@
 import 'package:seagull/ui/all.dart';
 
 class ActionButtonLayout {
-  final double size, largeSize, radius, largeRadius, spacing;
+  final double size, largeSize, radius, largeRadius, spacing, withTextIconSize;
   final EdgeInsets padding, withTextPadding;
 
   const ActionButtonLayout({
@@ -12,6 +12,7 @@ class ActionButtonLayout {
     this.spacing = 0,
     this.padding = const EdgeInsets.all(8),
     this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
+    this.withTextIconSize = 24,
   });
 }
 
@@ -26,7 +27,8 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
           largeRadius: largeRadius ?? 20,
           spacing: 4,
           padding: const EdgeInsets.all(12),
-          withTextPadding: const EdgeInsets.only(left: 6, top: 6, right: 6),
+          withTextPadding: const EdgeInsets.only(left: 12, top: 6, right: 12),
+          withTextIconSize: 48,
         );
 }
 

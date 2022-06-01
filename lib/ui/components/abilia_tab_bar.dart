@@ -13,7 +13,6 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) => Tts.data(
         data: text,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(text),
             SizedBox(height: layout.actionButton.spacing),
@@ -172,9 +171,13 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       offset: widget.offset,
       first: widget.index == 0,
       last: widget.last,
-      beginIconThemeData: iconTheme.copyWith(size: layout.icon.small),
+      beginIconThemeData: iconTheme.copyWith(
+        size: layout.actionButton.withTextIconSize,
+      ),
       endIconThemeData: iconTheme.copyWith(
-          color: AbiliaColors.white, size: layout.icon.small),
+        color: AbiliaColors.white,
+        size: layout.actionButton.withTextIconSize,
+      ),
       beginTextStyle: textStyle,
       endTextStyle: textStyle.copyWith(color: AbiliaColors.white),
       onTap: () {
@@ -314,7 +317,8 @@ class _AnimatedTab extends AnimatedWidget {
                 child: collapsedValue == 0.0
                     ? null
                     : Padding(
-                        padding: layout.actionButton.withTextPadding,
+                        padding: layout.actionButton.withTextPadding
+                            .subtract(padding.onlyTop),
                         child: DefaultTextStyle(
                           maxLines: 1,
                           overflow: TextOverflow.clip,

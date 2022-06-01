@@ -30,7 +30,7 @@ class _TextAndIconActionButton extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: layout.actionButton.spacing),
-            Icon(iconData, size: layout.icon.small),
+            Icon(iconData, size: layout.actionButton.withTextIconSize),
           ],
         ),
       );
@@ -97,7 +97,7 @@ class TextAndOrIconActionButtonBlack extends StatelessWidget {
                 text,
                 iconData,
                 onPressed: onPressed,
-                style: actionButtonStyleBlack,
+                style: textActionButtonStyleBlack,
               ),
       );
 }
