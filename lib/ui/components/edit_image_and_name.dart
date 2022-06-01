@@ -1,7 +1,6 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/text_editing_extension.dart';
+import 'package:seagull/utils/all.dart';
 
 class EditImageAndName extends StatefulWidget {
   final ImageAndName? imageAndName;
@@ -33,10 +32,8 @@ class _EditImageAndNameState extends State<EditImageAndName> {
   void initState() {
     super.initState();
     _imageAndName = widget.imageAndName ?? ImageAndName.empty;
-    _textEditController = AbiliaTextEditingController(
-        text: _imageAndName.name,
-        speakEveryWord: Config.isMP &&
-            context.read<SpeechSettingsCubit>().state.speakEveryWord);
+    _textEditController = SpokenTextEditController.ifApplicable(context,
+        text: _imageAndName.name);
   }
 
   @override

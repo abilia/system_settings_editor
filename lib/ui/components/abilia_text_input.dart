@@ -1,7 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:seagull/bloc/settings/speech_support/speech_settings_cubit.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -134,12 +132,9 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
   @override
   void initState() {
     super.initState();
-    _controller = AbiliaTextEditingController(
-        text: widget.text,
-        speakEveryWord: Config.isMP &&
-            context.read<SpeechSettingsCubit>().state.speakEveryWord);
+    _controller =
+        SpokenTextEditController.ifApplicable(context, text: widget.text);
     _controller.addListener(onTextValueChanged);
-
     _validInput = widget.inputValid(_controller.text);
   }
 
