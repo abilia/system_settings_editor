@@ -380,4 +380,116 @@ void main() {
 
     await expect;
   });
+
+  test(
+      'Setting new recurrence without end date sets the end time one millisecond before midnight on activity date',
+      () async {
+    // Arrange
+    final editActivityCubit = EditActivityCubit.newActivity(
+      day: aDay,
+      defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
+    );
+
+    final activity = editActivityCubit.state.activity;
+
+    final timeInterval = editActivityCubit.state.timeInterval;
+
+    final expectedActivity = activity.copyWith(
+      recurs: Recurs.weeklyOnDay(
+        aDay.weekday,
+        ends: aDay.nextDay().onlyDays().millisecondBefore(),
+      ),
+    );
+
+    final expect = expectLater(
+      editActivityCubit.stream,
+      emits(
+        UnstoredActivityState(
+          expectedActivity,
+          timeInterval,
+        ),
+      ),
+    );
+
+    editActivityCubit.newRecurrence(newType: RecurrentType.weekly);
+
+    await expect;
+  });
+
+  test(
+      'Setting new recurrence with end date sets the end time one millisecond before midnight on end date',
+      () async {
+    // Arrange
+    final editActivityCubit = EditActivityCubit.newActivity(
+      day: aDay,
+      defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
+    );
+
+    final endDate = aDay.addDays(30);
+
+    final activity = editActivityCubit.state.activity;
+
+    final timeInterval = editActivityCubit.state.timeInterval;
+
+    final expectedActivity = activity.copyWith(
+      recurs: Recurs.monthly(
+        endDate.day,
+        ends: endDate.nextDay().onlyDays().millisecondBefore(),
+      ),
+    );
+
+    final expect = expectLater(
+      editActivityCubit.stream,
+      emits(
+        UnstoredActivityState(
+          expectedActivity,
+          timeInterval,
+        ),
+      ),
+    );
+
+    editActivityCubit.newRecurrence(
+        newType: RecurrentType.monthly, newEndDate: endDate);
+    await expect;
+  });
+
+  test('Load recurrence', () async {
+    // Arrange
+    final editActivityCubit = EditActivityCubit.newActivity(
+      day: aDay,
+      defaultAlarmTypeSetting: noAlarm,
+      calendarId: calendarId,
+    );
+
+    final endDate = aDay.addDays(30);
+
+    final activity = editActivityCubit.state.activity;
+
+    final timeInterval = editActivityCubit.state.timeInterval;
+
+    final recurrence = Recurs.monthly(
+      endDate.day,
+      ends: endDate.nextDay().onlyDays().millisecondBefore(),
+    );
+
+    final expectedActivity = activity.copyWith(
+      recurs: recurrence,
+    );
+
+    final expect = expectLater(
+      editActivityCubit.stream,
+      emits(
+        UnstoredActivityState(
+          expectedActivity,
+          timeInterval,
+        ),
+      ),
+    );
+
+    editActivityCubit.loadRecurrence(recurrence);
+
+    await expect;
+  });
 }

@@ -167,6 +167,44 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
+  void loadRecurrence(Recurs recurs) {
+    replaceActivity(
+      state.activity.copyWith(
+        recurs: recurs,
+      ),
+    );
+  }
+
+  void newRecurrence({RecurrentType? newType, DateTime? newEndDate}) {
+    final type = newType ?? state.activity.recurs.recurrance;
+    final endDate = newEndDate ??
+        (state.activity.isRecurring
+            ? state.activity.recurs.end
+            : state.timeInterval.startDate);
+    replaceActivity(
+      state.activity.copyWith(
+        recurs: _newRecurs(
+          type,
+          endDate,
+        ),
+      ),
+    );
+  }
+
+  Recurs _newRecurs(RecurrentType type, DateTime endDate) {
+    final endOfDay = endDate.nextDay().onlyDays().millisecondBefore();
+    switch (type) {
+      case RecurrentType.weekly:
+        return Recurs.weeklyOnDay(endOfDay.weekday, ends: endOfDay);
+      case RecurrentType.monthly:
+        return Recurs.monthly(endOfDay.day, ends: endOfDay);
+      case RecurrentType.yearly:
+        return Recurs.yearly(endOfDay);
+      default:
+        return Recurs.not;
+    }
+  }
+
   InfoItem _newInfoItem(Type infoItemType) {
     switch (infoItemType) {
       case NoteInfoItem:

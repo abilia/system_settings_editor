@@ -566,40 +566,17 @@ class RecurrenceWidget extends StatelessWidget {
             if (result != null) {
               if (state.storedRecurring &&
                   result == state.originalActivity.recurs.recurrance) {
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: state.originalActivity.recurs,
-                      ),
-                    );
-              } else {
-                final recurs = _newRecurs(
-                  result,
-                  state.timeInterval.startDate,
-                );
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: recurs,
-                      ),
-                    );
+                context
+                    .read<EditActivityCubit>()
+                    .loadRecurrence(state.originalActivity.recurs);
+                return;
               }
+              context.read<EditActivityCubit>().newRecurrence(newType: result);
             }
           },
         ),
       ],
     );
-  }
-
-  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
-    switch (type) {
-      case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
-      case RecurrentType.monthly:
-        return Recurs.monthly(startDate.day, ends: startDate);
-      case RecurrentType.yearly:
-        return Recurs.yearly(startDate);
-      default:
-        return Recurs.not;
-    }
   }
 }
 
@@ -628,12 +605,9 @@ class EndDateWidget extends StatelessWidget {
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
-                        : (newDate) =>
-                            context.read<EditActivityCubit>().replaceActivity(
-                                  activity.copyWith(
-                                    recurs: recurs.changeEnd(newDate),
-                                  ),
-                                ),
+                        : (newDate) => context
+                            .read<EditActivityCubit>()
+                            .newRecurrence(newEndDate: newDate),
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                 ],
