@@ -144,15 +144,18 @@ class LoginButton extends StatelessWidget {
             ? ''
             : ' (${backendEnvironments[baseUrl] ?? baseUrl})';
         return BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) => TextButton(
-            style: textButtonStyleGreen,
-            onPressed: state is! LoginLoading
-                ? () {
-                    BlocProvider.of<LoginCubit>(context).loginButtonPressed();
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  }
-                : null,
-            child: Text('${translate.login}$end'),
+          builder: (context, state) => ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: double.infinity),
+            child: TextButton(
+              style: textButtonStyleGreen,
+              onPressed: state is! LoginLoading
+                  ? () {
+                      BlocProvider.of<LoginCubit>(context).loginButtonPressed();
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    }
+                  : null,
+              child: Text('${translate.login}$end'),
+            ),
           ),
         );
       }),
