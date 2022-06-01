@@ -47,7 +47,8 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const _FancyHeader(text: 'Welcome to the start guide!'),
+                    const _FancyHeader(
+                        text: 'Welcome to the production guide!'),
                     const SizedBox(height: 50),
                     const _DebugRow(),
                     const SizedBox(height: 50),
@@ -91,15 +92,15 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                       const SizedBox(height: 50),
                       TextButton(
                         onPressed: () => context
-                            .read<StartGuideCubit>()
+                            .read<ProductionGuideCubit>()
                             .verifySerialId(serialIdController.text),
                         child: const Text('Verify'),
                         style: textButtonStyleGreen,
                       ),
-                      BlocBuilder<StartGuideCubit, StartGuideState>(
-                        builder: (context, startGuideState) =>
-                            startGuideState is VerifySerialIdFailed
-                                ? Text(startGuideState.message)
+                      BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
+                        builder: (context, productionGuideState) =>
+                            productionGuideState is VerifySerialIdFailed
+                                ? Text(productionGuideState.message)
                                 : const Text(''),
                       )
                     ],
@@ -127,9 +128,10 @@ class _DebugRow extends StatelessWidget {
         children: [
           if (!Config.release)
             ElevatedButton(
-                    onPressed: () =>
-                        context.read<StartGuideCubit>().skipStartGuide(),
-                    child: const Text('Skip start guide'))
+                    onPressed: () => context
+                        .read<ProductionGuideCubit>()
+                        .skipProductionGuide(),
+                    child: const Text('Skip production guide'))
                 .pad(const EdgeInsets.only(right: 20)),
           ElevatedButton(
             onPressed: () {

@@ -244,13 +244,13 @@ class TopLevelBlocsProvider extends StatelessWidget {
   const TopLevelBlocsProvider({
     Key? key,
     required this.child,
-    required this.runStartGuide,
+    required this.runProductionGuide,
     this.pushCubit,
   }) : super(key: key);
 
   final Widget child;
   final PushCubit? pushCubit;
-  final bool runStartGuide;
+  final bool runProductionGuide;
 
   @override
   Widget build(BuildContext context) {
@@ -303,9 +303,9 @@ class TopLevelBlocsProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => StartGuideCubit(
+            create: (context) => ProductionGuideCubit(
               deviceRepository: context.read<DeviceRepository>(),
-              runStartGuide: runStartGuide,
+              runProductionGuide: runProductionGuide,
             ),
           ),
           BlocProvider(

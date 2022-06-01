@@ -35,7 +35,7 @@ void main() async {
     () => runApp(
       App(
         payload: payload,
-        runStartGuide: shouldRunStartGuide,
+        runProductionGuide: shouldRunProductionGuide,
         analytics: Config.release,
       ),
     ),
@@ -102,30 +102,30 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
-bool get shouldRunStartGuide =>
+bool get shouldRunProductionGuide =>
     Config.isMP && GetIt.I<DeviceDb>().serialId.isEmpty;
 
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final bool runStartGuide, analytics;
+  final bool runProductionGuide, analytics;
 
   App({
     Key? key,
     this.payload,
     this.pushCubit,
-    this.runStartGuide = false,
+    this.runProductionGuide = false,
     this.analytics = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
-        runStartGuide: runStartGuide,
+        runProductionGuide: runProductionGuide,
         pushCubit: pushCubit,
-        child: BlocBuilder<StartGuideCubit, StartGuideState>(
-          builder: (context, startGuideState) =>
-              startGuideState is StartGuideDone
+        child: BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
+          builder: (context, productionGuideState) =>
+              productionGuideState is ProductionGuideDone
                   ? TopLevelListener(
                       navigatorKey: _navigatorKey,
                       payload: payload,

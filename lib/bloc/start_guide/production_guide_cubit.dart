@@ -2,11 +2,13 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-class StartGuideCubit extends Cubit<StartGuideState> {
-  StartGuideCubit({
+class ProductionGuideCubit extends Cubit<ProductionGuideState> {
+  ProductionGuideCubit({
     required this.deviceRepository,
-    required bool runStartGuide,
-  }) : super(runStartGuide ? StartGuideInitial() : StartGuideDone());
+    required bool runProductionGuide,
+  }) : super(runProductionGuide
+            ? ProductionGuideInitial()
+            : ProductionGuideDone());
 
   final DeviceRepository deviceRepository;
 
@@ -17,7 +19,7 @@ class StartGuideCubit extends Cubit<StartGuideState> {
           await deviceRepository.verifyDevice(serialId, clientId);
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
-        emit(StartGuideDone());
+        emit(ProductionGuideDone());
       } else {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
       }
@@ -27,19 +29,19 @@ class StartGuideCubit extends Cubit<StartGuideState> {
     }
   }
 
-  void skipStartGuide() {
+  void skipProductionGuide() {
     deviceRepository.setSerialId('debugSerialId');
-    emit(StartGuideDone());
+    emit(ProductionGuideDone());
   }
 }
 
-abstract class StartGuideState {}
+abstract class ProductionGuideState {}
 
-class StartGuideDone extends StartGuideState {}
+class ProductionGuideDone extends ProductionGuideState {}
 
-class StartGuideInitial extends StartGuideState {}
+class ProductionGuideInitial extends ProductionGuideState {}
 
-class VerifySerialIdFailed extends StartGuideState {
+class VerifySerialIdFailed extends ProductionGuideState {
   final String message;
 
   VerifySerialIdFailed(this.message);

@@ -55,7 +55,7 @@ void main() {
     });
 
     Widget _wrapWithMaterialApp({Widget? child}) => TopLevelBlocsProvider(
-          runStartGuide: false,
+          runProductionGuide: false,
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: settingBloc,
             authenticatedState: const Authenticated(userId: 1),
