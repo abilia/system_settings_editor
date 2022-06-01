@@ -23,77 +23,71 @@ class ListDataItem extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final bool hasText = text.data?.isNotEmpty ?? false;
     final secondaryText = this.secondaryText;
-    final textPadding = secondaryText != null
+    final textPadding = hasText && secondaryText != null
         ? layout.listDataItem.textAndSubtitlePadding
         : EdgeInsets.zero;
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data?.isEmpty == true ? semanticsLabel : text.data,
+        label: hasText ? text.data : semanticsLabel,
         button: true,
         selected: selected,
       ),
       child: Material(
         color: Colors.transparent,
-        child: Stack(
-          children: [
-            InkWell(
-              onTap: onTap,
-              borderRadius: borderRadius,
-              child: Ink(
-                height: layout.pickField.height,
-                decoration:
-                    selected ? greySelectedBoxDecoration : whiteBoxDecoration,
-                child: Row(
-                  children: <Widget>[
-                    IconTheme(
-                      data: Theme.of(context)
-                          .iconTheme
-                          .copyWith(size: layout.listDataItem.iconSize),
-                      child: Padding(
-                        padding: layout.listDataItem.imagePadding,
-                        child: leading,
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          DefaultTextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText1 ??
-                                bodyText1,
-                            child: text,
-                          ),
-                          if (secondaryText != null)
-                            DefaultTextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              style: (Theme.of(context).textTheme.caption ??
-                                      caption)
-                                  .copyWith(
-                                color: AbiliaColors.black60,
-                                height: layout.listDataItem.secondaryTextHeight,
-                              ),
-                              child: secondaryText,
-                            ),
-                        ],
-                      ).pad(textPadding),
-                    ),
-                  ],
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: borderRadius,
+          child: Ink(
+            height: layout.pickField.height,
+            decoration:
+                selected ? greySelectedBoxDecoration : whiteBoxDecoration,
+            child: Row(
+              children: <Widget>[
+                IconTheme(
+                  data: Theme.of(context)
+                      .iconTheme
+                      .copyWith(size: layout.listDataItem.iconSize),
+                  child: Padding(
+                    padding: layout.listDataItem.imagePadding,
+                    child: leading,
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (hasText)
+                        DefaultTextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1 ??
+                              bodyText1,
+                          child: text,
+                        ),
+                      if (secondaryText != null)
+                        DefaultTextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              (Theme.of(context).textTheme.caption ?? caption)
+                                  .copyWith(
+                            color: AbiliaColors.black60,
+                            height: layout.listDataItem.secondaryTextHeight,
+                          ),
+                          child: secondaryText,
+                        ),
+                    ],
+                  ).pad(textPadding),
+                ),
+                CollapsableWidget(
+                  axis: Axis.horizontal,
+                  collapsed: !alwaysShowTrailing && !selected,
+                  child: trailing,
+                ),
+              ],
             ),
-            Positioned(
-              right: 0,
-              height: layout.pickField.height,
-              child: CollapsableWidget(
-                axis: Axis.horizontal,
-                collapsed: !alwaysShowTrailing && !selected,
-                child: trailing,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

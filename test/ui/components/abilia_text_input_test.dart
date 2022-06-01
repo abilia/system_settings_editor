@@ -29,7 +29,7 @@ void main() {
               create: (context) => mockSpeechSettingsCubit,
             ),
           ],
-          child: widget,
+          child: Material(child: widget),
         ),
       );
 
@@ -65,7 +65,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: '',
@@ -91,7 +91,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: 'Initial Text',
@@ -124,7 +124,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: 'Initial Text',
@@ -150,7 +150,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: '',
@@ -185,7 +185,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: ttsText,
@@ -220,7 +220,7 @@ void main() {
           // Act
           await tester.pumpWidget(
             wrapWithMaterialApp(
-              DefaultTextInputPage(
+              DefaultTextInput(
                 maxLines: 1,
                 icon: AbiliaIcons.edit,
                 text: '',

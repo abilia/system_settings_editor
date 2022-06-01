@@ -169,12 +169,18 @@ class AppBarLayout {
       fontSize,
       previewWidth;
 
+  final BorderRadius borderRadius;
+
   const AppBarLayout({
     this.horizontalPadding = 16,
     this.largeAppBarHeight = 80,
     this.height = 68,
     this.fontSize = 22,
     this.previewWidth = 375,
+    this.borderRadius = const BorderRadius.only(
+      topLeft: Radius.circular(24),
+      topRight: Radius.circular(24),
+    ),
   });
 }
 

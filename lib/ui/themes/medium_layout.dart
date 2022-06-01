@@ -10,6 +10,10 @@ class MediumLayout extends Layout {
             fontSize: 32,
             horizontalPadding: 16,
             previewWidth: 562.5,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(32),
+            ),
           ),
           actionButton: const ActionButtonLayout(
             size: 88,

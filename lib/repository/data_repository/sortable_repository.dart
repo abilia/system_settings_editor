@@ -12,14 +12,12 @@ class SortableRepository extends DataRepository<Sortable> {
   SortableRepository({
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
-    required String authToken,
     required int userId,
     required SortableDb sortableDb,
   }) : super(
           client: client,
           baseUrlDb: baseUrlDb,
           path: 'sortableitems',
-          authToken: authToken,
           userId: userId,
           db: sortableDb,
           fromJsonToDataModel: DbSortable.fromJson,
@@ -41,7 +39,7 @@ class SortableRepository extends DataRepository<Sortable> {
     try {
       final response = await client.get(
         '$baseUrl/api/v1/data/$userId/$postPath/$folder'.toUri(),
-        headers: jsonAuthHeader(authToken),
+        headers: jsonHeader,
       );
       if (response.statusCode == 200) {
         return fromJsonToDataModel(response.json());

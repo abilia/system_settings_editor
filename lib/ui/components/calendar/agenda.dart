@@ -116,7 +116,8 @@ class EventList extends StatelessWidget {
         final dayPartsSetting = context
             .select((MemoplannerSettingBloc bloc) => bloc.state.dayParts);
 
-        final isNight = now.dayPart(dayPartsSetting) == DayPart.night;
+        final isNight = eventState.day.isAtSameDay(now) &&
+            now.dayPart(dayPartsSetting) == DayPart.night;
         final pastEvents = eventState.pastEvents(now);
         final notPastEvents = eventState.notPastEvents(now);
         final isTodayAndNoPast = eventState.isToday && pastEvents.isEmpty;

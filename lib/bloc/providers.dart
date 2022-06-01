@@ -38,7 +38,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               activityDb: GetIt.I<ActivityDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
           RepositoryProvider<UserFileRepository>(
@@ -47,8 +46,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               userFileDb: GetIt.I<UserFileDb>(),
               fileStorage: GetIt.I<FileStorage>(),
+              loginDb: GetIt.I<LoginDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
               multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
             ),
           ),
@@ -58,7 +57,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               sortableDb: GetIt.I<SortableDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
           RepositoryProvider<GenericRepository>(
@@ -67,7 +65,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
         ],

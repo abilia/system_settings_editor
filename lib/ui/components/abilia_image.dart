@@ -123,7 +123,7 @@ class EventImage extends StatelessWidget {
           imagePath: imageFile.path,
           size: ImageThumb.thumbSize,
         ),
-        headers: authHeader(authenicatedState.token),
+        headers: authHeader(GetIt.I<LoginDb>().getToken()),
       );
     }
     return Image.memory(kTransparentImage);
@@ -214,7 +214,7 @@ class PhotoCalendarImage extends StatelessWidget {
                       imageFileId: fileId,
                       imagePath: filePath,
                     ),
-                    headers: authHeader(state.token),
+                    headers: authHeader(GetIt.I<LoginDb>().getToken()),
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => errorImage,
                   )
@@ -264,7 +264,7 @@ class FullScreenImage extends StatelessWidget {
                   imageFileId: fileId,
                   imagePath: filePath,
                 ),
-                headers: authHeader(state.token),
+                headers: authHeader(GetIt.I<LoginDb>().getToken()),
               );
             }
             return MemoryImage(kTransparentImage);
@@ -274,6 +274,7 @@ class FullScreenImage extends StatelessWidget {
             backgroundDecoration: backgroundDecoration,
             imageProvider: getProvider(),
             tightMode: tightMode,
+            loadingBuilder: (_, __) => const SizedBox.shrink(),
           );
         });
       }),
@@ -430,7 +431,7 @@ class FadeInNetworkImage extends StatelessWidget {
                   imageFileId: imageFileId,
                   size: ImageThumb.thumbSize,
                 ),
-                headers: authHeader(state.token),
+                headers: authHeader(GetIt.I<LoginDb>().getToken()),
               ),
               fit: fit,
             )

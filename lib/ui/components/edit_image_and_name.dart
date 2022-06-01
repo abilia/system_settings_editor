@@ -41,12 +41,19 @@ class _EditImageAndNameState extends State<EditImageAndName> {
 
   @override
   Widget build(BuildContext context) {
+    final appbar = widget.appBar;
     final heading = Translator.of(context).translate.name;
-    return Scaffold(
-      appBar: widget.appBar,
-      body: Column(
-        children: <Widget>[
-          Padding(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        if (appbar != null)
+          SizedBox(
+            height: appbar.preferredSize.height,
+            child: appbar,
+          ),
+        Container(
+          color: AbiliaColors.white110,
+          child: Padding(
             padding: layout.templates.m1,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,18 +110,18 @@ class _EditImageAndNameState extends State<EditImageAndName> {
               ],
             ),
           ),
-          const Spacer(),
-          BottomNavigation(
-            useSafeArea: false,
-            backNavigationWidget: const CancelButton(),
-            forwardNavigationWidget: OkButton(
-              onPressed: !widget.allowEmpty && _imageAndName.isEmpty
-                  ? null
-                  : () => Navigator.of(context).maybePop(_imageAndName),
-            ),
+        ),
+        BottomNavigation(
+          useSafeArea: false,
+          backNavigationWidget: const CancelButton(),
+          forwardNavigationWidget: OkButton(
+            key: TestKey.bottomSheetOKButton,
+            onPressed: !widget.allowEmpty && _imageAndName.isEmpty
+                ? null
+                : () => Navigator.of(context).pop(_imageAndName),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ).pad(EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom));
   }
 }

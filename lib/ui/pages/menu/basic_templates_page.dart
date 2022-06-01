@@ -174,6 +174,11 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       ),
       trailing: _trailing,
       alwaysShowTrailing: alwaysShowTrailing,
+      semanticsLabel: data is BasicTimerDataItem
+          ? Duration(milliseconds: data.duration).toDurationString(
+              Translator.of(context).translate,
+              shortMin: false)
+          : null,
     );
   }
 }

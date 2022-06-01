@@ -13,12 +13,7 @@ abstract class AuthenticationEvent extends Equatable {
 class CheckAuthentication extends AuthenticationEvent {}
 
 class LoggedIn extends AuthenticationEvent {
-  final LoginInfo loginInfo;
-
-  const LoggedIn({required this.loginInfo});
-
-  @override
-  List<Object> get props => [loginInfo];
+  const LoggedIn();
 }
 
 enum LoggedOutReason {

@@ -68,6 +68,7 @@ class LoginPage extends StatelessWidget {
             body: SafeArea(
               child: LoginForm(),
             ),
+            resizeToAvoidBottomInset: false,
           ),
         ),
       ),

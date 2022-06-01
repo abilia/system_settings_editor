@@ -5,19 +5,21 @@ timerResume	Do you want to continue the timer?	Vill du fortsätta timern?
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
-basicTemplates	Basic templates						
-enterNameForBasicActivity	Enter name for basic activity						
-addTimer	Add Timer
+basicTemplates	Basic templates	Basmallar					
+enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					
+addTimer	Add Timer	Lägga in timer					
 enterNameForTimer	Enter name for timer	Ange namn för timer					
 timeIsUp	Time is up	Tiden är slut					
-onlyAppliesToGo	Only applies to MEMOplanner Go						
-selectADayToViewDetails	Select a day to view more details						
+newBasicTimer	New basic timer	Ny bastimer					
+enterTask	Enter task
+onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					
+selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					
 voice	Voice	Röst					
 installingVoice	Installing	Installerar					
-enterCode	Enter code						
-enterYourCodeToAccess	Enter your code to access						
-allPhotos	All photos						
-addToPhotoCalendarQuestion	Add this photo to Photo-calendar?						
-removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?						
-remove	Remove						
-doYouWantToDeleteThisPhoto	Do you want to delete this photo?						
+enterCode	Enter code	Ange kod					
+enterYourCodeToAccess	Enter your code to access	Ange din kod för att komma åt					
+allPhotos	All photos	Alla foton					
+addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?					
+removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?					
+remove	Remove	Ta bort					
+doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?					
