@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
-part 'go_layout.dart';
+import 'package:seagull/ui/themes/layouts/all.dart';
 
 part 'large_layout.dart';
 
@@ -13,10 +13,14 @@ late final ui.Size screenSize =
     ui.window.physicalSize / ui.window.devicePixelRatio;
 
 late final Layout layout = screenSize.longestSide > 1500
-    ? const _LargeLayout()
+    ? const LargeLayout()
     : screenSize.longestSide > 1000
         ? const MediumLayout()
         : const _GoLayout();
+
+class _GoLayout extends Layout {
+  const _GoLayout() : super();
+}
 
 class Layout {
   final double radius;
@@ -160,28 +164,6 @@ class Layout {
   });
 
   bool get go => runtimeType == _GoLayout;
-}
-
-class AppBarLayout {
-  final double horizontalPadding,
-      largeAppBarHeight,
-      height,
-      fontSize,
-      previewWidth;
-
-  final BorderRadius borderRadius;
-
-  const AppBarLayout({
-    this.horizontalPadding = 16,
-    this.largeAppBarHeight = 80,
-    this.height = 68,
-    this.fontSize = 22,
-    this.previewWidth = 375,
-    this.borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(24),
-      topRight: Radius.circular(24),
-    ),
-  });
 }
 
 class ActionButtonLayout {

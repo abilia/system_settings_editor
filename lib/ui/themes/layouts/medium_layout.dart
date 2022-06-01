@@ -1,20 +1,11 @@
 part of 'layout.dart';
 
 class MediumLayout extends Layout {
-  const MediumLayout()
-      : super(
+  const MediumLayout({
+    AppBarLayout? appBar,
+  }) : super(
           radius: 18,
-          appBar: const AppBarLayout(
-            largeAppBarHeight: 148,
-            height: 104,
-            fontSize: 32,
-            horizontalPadding: 16,
-            previewWidth: 562.5,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(32),
-              topRight: Radius.circular(32),
-            ),
-          ),
+          appBar: appBar ?? const MediumAppBarLayout(),
           actionButton: const ActionButtonLayout(
             size: 88,
             radius: 20,
