@@ -135,7 +135,11 @@ void main() {
               ),
             ),
             BlocProvider<TimepillarMeasuresCubit>(
-                create: (context) => FakeTimepillarMeasuresCubit()),
+              create: (context) => FakeTimepillarMeasuresCubit(),
+            ),
+            BlocProvider<TouchDetectionCubit>(
+              create: (context) => TouchDetectionCubit(),
+            ),
           ],
           child: MaterialApp(
             supportedLocales: Translator.supportedLocals,

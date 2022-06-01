@@ -12,13 +12,13 @@ class InactivityCubit extends Cubit<InactivityState> {
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
-  late StreamSubscription<PointerDown> _activitySubscription;
+  late StreamSubscription<Touch> _activitySubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
-    Stream<PointerDown> activityDetectedStream,
+    Stream<Touch> activityDetectedStream,
   ) : super(UserTouch(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
     _activitySubscription = activityDetectedStream.listen(

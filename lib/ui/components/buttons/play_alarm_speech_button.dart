@@ -26,7 +26,9 @@ class PlayAlarmSpeechButton extends StatelessWidget {
               alarm: alarm,
               alarmSettings: context.read<MemoplannerSettingBloc>().state.alarm,
               soundCubit: context.read<SoundCubit>(),
-              selectedNotificationStream: selectNotificationSubject,
+              touchStream: context.read<TouchDetectionCubit>().stream,
+              selectedNotificationStream:
+                  Config.isMPGO ? selectNotificationSubject : null,
             ),
             lazy: false,
           ),
