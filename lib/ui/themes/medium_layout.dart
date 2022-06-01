@@ -221,12 +221,9 @@ class MediumLayout extends Layout {
             ),
           ),
           settingsBasePage: const SettingsBasePageLayout(
-            itemPadding: EdgeInsets.fromLTRB(18, 12, 24, 0),
-            listPadding: EdgeInsets.symmetric(vertical: 16),
             dividerThemeData: DividerThemeData(
-              space: 48,
               thickness: 2,
-              endIndent: 18,
+              endIndent: 24,
             ),
           ),
           defaultTextInputPage: const DefaultTextInputPageLayout(
