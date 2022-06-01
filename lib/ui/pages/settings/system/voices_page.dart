@@ -14,12 +14,12 @@ class VoicesPage extends StatelessWidget {
           BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
         builder: (context, settingsState) => Scaffold(
           appBar: AbiliaAppBar(
-            title: t.textToSpeech,
-            label: t.system,
-            iconData: AbiliaIcons.handiAlarmVibration,
+            title: t.voices,
+            label: t.textToSpeech,
+            iconData: AbiliaIcons.speakText,
           ),
           body: Padding(
-            padding: layout.settingsBasePage.listPadding,
+            padding: layout.templates.m1.withoutBottom - m1ItemPadding.onlyTop,
             child: ScrollArrows.vertical(
               controller: scrollController,
               child: ListView(
@@ -65,70 +65,53 @@ class _VoiceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SpeechSupportPageLayout pageLayout = layout.speechSupportPage;
-    return Padding(
-      padding: layout.settingsBasePage.itemPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          if (downloaded)
-            IconActionButtonDark(
-              onPressed: () => context.read<VoicesCubit>().deleteVoice(voice),
-              child: const Icon(AbiliaIcons.deleteAllClear),
-            ).pad(
-              EdgeInsets.only(
-                left: layout.formPadding.largeHorizontalItemDistance,
-              ),
-            )
-          else if (downloading)
-            SizedBox(
-              width: layout.actionButton.size,
-              height: layout.actionButton.size,
-              child: Center(
-                child: SizedBox(
-                  width: pageLayout.loaderSize,
-                  height: pageLayout.loaderSize,
-                  child: CircularProgressIndicator(
-                    strokeWidth: pageLayout.loaderStrokeWidth,
-                    valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                  ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        if (downloaded)
+          IconActionButtonDark(
+            onPressed: () => context.read<VoicesCubit>().deleteVoice(voice),
+            child: const Icon(AbiliaIcons.deleteAllClear),
+          )
+        else if (downloading)
+          SizedBox(
+            width: layout.actionButton.size,
+            height: layout.actionButton.size,
+            child: Center(
+              child: SizedBox(
+                width: pageLayout.loaderSize,
+                height: pageLayout.loaderSize,
+                child: CircularProgressIndicator(
+                  strokeWidth: pageLayout.loaderStrokeWidth,
+                  valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
                 ),
               ),
-            ).pad(
-              EdgeInsets.only(
-                left: layout.formPadding.largeHorizontalItemDistance,
-              ),
-            )
-          else
-            IconActionButtonDark(
-              child: const Icon(AbiliaIcons.download),
-              onPressed: () async =>
-                  await context.read<VoicesCubit>().downloadVoice(voice),
-            ).pad(
-              EdgeInsets.only(
-                left: layout.formPadding.largeHorizontalItemDistance,
-              ),
             ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: layout.formPadding.largeHorizontalItemDistance,
-              ),
-              child: RadioField<String>(
-                groupValue: selectedVoice,
-                onChanged: downloaded
-                    ? (name) {
-                        context
-                            .read<SpeechSettingsCubit>()
-                            .setVoice(voice.name);
-                      }
-                    : null,
-                value: voice.name,
-                text: Text('${voice.name}: ${voice.size}MB'),
-              ),
+          )
+        else
+          IconActionButtonDark(
+            child: const Icon(AbiliaIcons.download),
+            onPressed: () async =>
+                await context.read<VoicesCubit>().downloadVoice(voice),
+          ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: layout.formPadding.largeHorizontalItemDistance,
+            ),
+            child: RadioField<String>(
+              groupValue: selectedVoice,
+              onChanged: downloaded
+                  ? (name) {
+                      context.read<SpeechSettingsCubit>().setVoice(voice.name);
+                    }
+                  : null,
+              value: voice.name,
+              text: Text('${voice.name}: ${voice.size}MB'),
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ).pad(m1ItemPadding.onlyVertical);
   }
 }

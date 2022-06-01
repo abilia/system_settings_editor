@@ -25,12 +25,12 @@ class SettingsBasePage extends StatelessWidget {
       body: DividerTheme(
         data: layout.settingsBasePage.dividerThemeData,
         child: ListView.builder(
-          padding: layout.settingsBasePage.listPadding,
+          padding: layout.templates.m1.onlyTop,
           itemBuilder: (context, i) {
             final w = widgets[i];
             if (w is Divider) return w;
             return Padding(
-              padding: layout.settingsBasePage.itemPadding,
+              padding: i == 0 ? m1ItemPadding.withoutTop : m1ItemPadding,
               child: w,
             );
           },

@@ -16,7 +16,10 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = Translator.of(context).translate;
     final locale = Translator.of(context).locale.toString();
-
+    final textStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(color: AbiliaColors.black75);
     return WillPopScope(
       onWillPop: () async {
         _disabledIfNoDownloadedVoice(context);
@@ -28,80 +31,125 @@ class SpeechSupportSettingsPage extends StatelessWidget {
             appBar: AbiliaAppBar(
               title: t.textToSpeech,
               label: t.system,
-              iconData: AbiliaIcons.handiAlarmVibration,
+              iconData: AbiliaIcons.speakText,
             ),
             body: DividerTheme(
               data: layout.settingsBasePage.dividerThemeData,
-              child: Padding(
-                padding: layout.settingsBasePage.listPadding,
-                child: BlocSelector<SettingsCubit, SettingsState, bool>(
-                  selector: (state) => state.textToSpeech,
-                  builder: (context, textToSpeech) => Column(
-                    children: [
-                      const TextToSpeechSwitch()
-                          .pad(layout.settingsBasePage.itemPadding),
-                      if (textToSpeech) ...[
-                        const Divider(),
-                        Tts(
-                          child: Text(t.voice),
-                        ).pad(layout.settingsBasePage.itemPadding),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: BlocSelector<VoicesCubit, VoicesState,
-                                  List<String>>(
-                                selector: (state) => state.downloading,
-                                builder: (context, downloadingVoices) =>
-                                    PickField(
-                                  text: Text(state.voice.isEmpty
-                                      ? downloadingVoices.isEmpty
-                                          ? t.noVoicesInstalled
-                                          : t.installingVoice
-                                      : state.voice),
-                                  onTap: () => _showVoicesPage(context, locale),
+              child: BlocSelector<SettingsCubit, SettingsState, bool>(
+                selector: (state) => state.textToSpeech,
+                builder: (context, textToSpeech) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const TextToSpeechSwitch().pad(
+                      EdgeInsets.only(
+                            bottom: layout.formPadding.groupBottomDistance,
+                          ) +
+                          layout.templates.m1.onlyHorizontal,
+                    ),
+                    if (textToSpeech) ...[
+                      Divider(height: DividerTheme.of(context).thickness),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Tts(
+                            child: Text(
+                              t.voice,
+                              style: textStyle,
+                            ),
+                          ).pad(
+                            EdgeInsets.only(
+                              bottom: layout.formPadding.verticalItemDistance,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: BlocSelector<VoicesCubit, VoicesState,
+                                    List<String>>(
+                                  selector: (state) => state.downloading,
+                                  builder: (context, downloadingVoices) =>
+                                      PickField(
+                                    text: Text(state.voice.isEmpty
+                                        ? downloadingVoices.isEmpty
+                                            ? t.noVoicesInstalled
+                                            : t.installingVoice
+                                        : state.voice),
+                                    onTap: () =>
+                                        _showVoicesPage(context, locale),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: layout
-                                    .formPadding.largeHorizontalItemDistance,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: state.voice.isNotEmpty
+                                      ? layout.formPadding
+                                          .largeHorizontalItemDistance
+                                      : 0,
+                                ),
+                                child: TtsPlayButton(
+                                    tts: state.voice.isNotEmpty
+                                        ? t.speechTest
+                                        : ''),
                               ),
-                              child: TtsPlayButton(
-                                  tts: state.voice.isNotEmpty
-                                      ? t.speechTest
-                                      : ''),
+                            ],
+                          ),
+                        ],
+                      ).pad(
+                        EdgeInsets.only(
+                              top: layout.formPadding.groupTopDistance,
+                              bottom: layout.formPadding.groupBottomDistance,
+                            ) +
+                            layout.templates.m1.onlyHorizontal,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Tts(
+                            child: Text(
+                              t.speechRate +
+                                  ' ${_speechRateToProgress(state.speechRate).round()}',
+                              style: textStyle,
                             ),
-                          ],
-                        ).pad(layout.settingsBasePage.itemPadding),
-                        Tts(
-                          child: Text(t.speechRate +
-                              ' ${_speechRateToProgress(state.speechRate).round()}'),
-                        ).pad(layout.settingsBasePage.itemPadding),
-                        AbiliaSlider(
-                          value: _speechRateToProgress(state.speechRate),
-                          min: -5,
-                          max: 5,
-                          leading: const Icon(AbiliaIcons.fastForward),
-                          onChanged: state.voice.isEmpty
-                              ? null
-                              : (v) => context
-                                  .read<SpeechSettingsCubit>()
-                                  .setSpeechRate(_progressToSpeechRate(v)),
-                          divisions: 10,
-                        ).pad(layout.settingsBasePage.itemPadding),
-                        const Divider(),
-                        SwitchField(
-                          onChanged: (on) => context
-                              .read<SpeechSettingsCubit>()
-                              .setSpeakEveryWord(on),
-                          value: state.speakEveryWord,
-                          child: Text(t.speakEveryWord),
-                        ).pad(layout.settingsBasePage.itemPadding),
-                      ],
+                          ).pad(
+                            EdgeInsets.only(
+                              bottom: layout.formPadding.verticalItemDistance,
+                            ),
+                          ),
+                          AbiliaSlider(
+                            value: _speechRateToProgress(state.speechRate),
+                            min: -5,
+                            max: 5,
+                            leading: const Icon(AbiliaIcons.fastForward),
+                            onChanged: state.voice.isEmpty
+                                ? null
+                                : (v) => context
+                                    .read<SpeechSettingsCubit>()
+                                    .setSpeechRate(_progressToSpeechRate(v)),
+                            divisions: 10,
+                          ),
+                        ],
+                      ).pad(
+                        EdgeInsets.only(
+                              bottom: layout.formPadding.groupBottomDistance,
+                            ) +
+                            layout.templates.m1.onlyHorizontal,
+                      ),
+                      Divider(height: DividerTheme.of(context).thickness),
+                      SwitchField(
+                        onChanged: (on) => context
+                            .read<SpeechSettingsCubit>()
+                            .setSpeakEveryWord(on),
+                        value: state.speakEveryWord,
+                        child: Text(t.speakEveryWord),
+                      ).pad(
+                        EdgeInsets.only(
+                              top: layout.formPadding.groupTopDistance,
+                            ) +
+                            layout.templates.m1.onlyHorizontal,
+                      ),
                     ],
-                  ),
-                ),
+                  ],
+                ).pad(layout.templates.m1.onlyTop),
               ),
             ),
             bottomNavigationBar: BottomNavigation(
