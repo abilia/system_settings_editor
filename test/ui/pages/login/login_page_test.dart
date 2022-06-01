@@ -15,7 +15,7 @@ import '../../../test_helpers/enter_text.dart';
 import '../../../test_helpers/tts.dart';
 
 void main() {
-  const secretPassword = 'pwfafawfa';
+  const secretPassword = 'pwfafawfapwfafawfa';
   final translate = Locales.language.values.first;
 
   final time = DateTime(2020, 11, 11, 11, 11);
@@ -404,16 +404,17 @@ void main() {
     expect(find.text(testUsername), findsOneWidget);
   });
 
-  testWidgets('password not changed when cancle is pressed',
+  testWidgets('password not changed when cancel is pressed',
       (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
+    const pw = 'some password still there';
 
-    await tester.ourEnterText(find.byType(PasswordInput), Fakes.username);
+    await tester.ourEnterText(find.byType(PasswordInput), pw);
     await tester.tap(find.byIcon(AbiliaIcons.show));
     await tester.pumpAndSettle();
 
-    expect(find.text(Fakes.username), findsOneWidget);
+    expect(find.text(pw), findsOneWidget);
 
     await tester.tap(find.byType(PasswordInput), warnIfMissed: false);
     await tester.pumpAndSettle();
@@ -422,7 +423,7 @@ void main() {
     await tester.tap(find.byType(CancelButton));
     await tester.pumpAndSettle();
     expect(find.byType(LoginPage), findsOneWidget);
-    expect(find.text(Fakes.username), findsOneWidget);
+    expect(find.text(pw), findsOneWidget);
     expect(find.text(secretPassword), findsNothing);
   });
 }
