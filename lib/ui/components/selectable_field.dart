@@ -19,9 +19,12 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasColor = this.color != null;
+    final color = this.color ?? AbiliaColors.white;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final selectedOuterDecoration = selected
-        ? selectedBoxDecoration.copyWith(color: scaffoldBackgroundColor)
+        ? selectedBoxDecoration.copyWith(
+            color: hasColor ? scaffoldBackgroundColor : color)
         : BoxDecoration(
             color: color,
             borderRadius: borderRadius,
