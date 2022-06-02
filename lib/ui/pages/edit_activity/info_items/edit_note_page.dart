@@ -1,4 +1,3 @@
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -21,25 +20,17 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   void initState() {
     super.initState();
-    _textEditingController = AbiliaTextEditingController(
-        text: widget.text,
-        speakEveryWord: Config.isMP &&
-            context.read<SpeechSettingsCubit>().state.speakEveryWord);
+    _textEditingController = SpokenTextEditController.ifApplicable(
+      context,
+      text: widget.text,
+    );
     _textEditingController.addListener(_textEditingListner);
-
-    // if (Config.isMP &&
-    //     context.read<SpeechSettingsCubit>().state.speakEveryWord) {
-    //   _textEditingController
-    //       .addListener(_textEditingController.speakEveryWordListener);
-    // }
     _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
     _textEditingController.removeListener(_textEditingListner);
-    // _textEditingController
-    //     .removeListener(_textEditingController.speakEveryWordListener);
 
     _textEditingController.dispose();
     _scrollController.dispose();
