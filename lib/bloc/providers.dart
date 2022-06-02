@@ -300,10 +300,10 @@ class TopLevelBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
           ),
+          BlocProvider(
+            create: (context) => TouchDetectionCubit(),
+          ),
           if (Config.isMP) ...[
-            BlocProvider(
-              create: (context) => TouchDetectionCubit(),
-            ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => SpeechSettingsCubit(
                   voiceDb: GetIt.I<VoiceDb>(),
