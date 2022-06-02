@@ -75,9 +75,12 @@ void main() {
           await tester.pumpAndSettle();
         }
 
-        const toShortUsername = 'ab', username = 'abc', takenUsername = 'taken';
-        final toShortPassword = 'p' * (LoginCubit.minPasswordLenght - 1),
-            password = 'p' * LoginCubit.minPasswordLenght;
+        const tooShortUsername = 'ab',
+            username = 'abc',
+            takenUsername = 'taken';
+        final tooShortPassword =
+                'p' * (CreateAccountCubit.minPasswordCreateLength - 1),
+            password = 'p' * CreateAccountCubit.minPasswordCreateLength;
 
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));
@@ -85,7 +88,7 @@ void main() {
 
         await _expectErrorDialog(tester, translate.enterUsername);
 
-        await tester.ourEnterText(find.byType(UsernameInput), toShortUsername);
+        await tester.ourEnterText(find.byType(UsernameInput), tooShortUsername);
 
         await _expectErrorDialog(tester, translate.usernameToShort);
 
@@ -94,7 +97,7 @@ void main() {
         await _expectErrorDialog(tester, translate.enterPassword);
 
         await tester.ourEnterText(
-            find.byKey(TestKey.createAccountPassword), toShortPassword);
+            find.byKey(TestKey.createAccountPassword), tooShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordToShort);
 
@@ -105,7 +108,7 @@ void main() {
             matcher: findsNWidgets(2));
 
         await tester.ourEnterText(
-            find.byKey(TestKey.createAccountPasswordConfirm), toShortPassword);
+            find.byKey(TestKey.createAccountPasswordConfirm), tooShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordMismatch);
 
