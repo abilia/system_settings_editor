@@ -8,44 +8,47 @@ class ScreenSaverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InactivityCubit, InactivityState>(
-      listenWhen: (previous, current) => current is UserTouch,
-      listener: (context, state) => Navigator.of(context).pop(),
-      child: BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) =>
-            BlocSelector<ClockBloc, DateTime, bool>(
-          selector: (time) => time.isNight(memoSettingsState.dayParts),
-          builder: (context, isNight) {
-            return Scaffold(
-              backgroundColor: AbiliaColors.black,
-              body: Opacity(
-                opacity: isNight ? 0.3 : 1,
-                child: Column(
-                  children: [
-                    const ScreenSaverAppBar(),
-                    Padding(
-                      padding: layout.screenSaver.clockPadding,
-                      child: Row(
+    return Listener(
+      onPointerDown: (event) => Navigator.of(context).pop(),
+      behavior: HitTestBehavior.translucent,
+      child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
+          DayParts>(
+        selector: (state) => state.dayParts,
+        builder: (context, dayParts) => BlocSelector<ClockBloc, DateTime, bool>(
+          selector: (time) => time.isNight(dayParts),
+          builder: (context, isNight) => Scaffold(
+            backgroundColor: AbiliaColors.black,
+            body: Opacity(
+              opacity: isNight ? 0.3 : 1,
+              child: Column(
+                children: [
+                  const ScreenSaverAppBar(),
+                  Padding(
+                    padding: layout.screenSaver.clockPadding,
+                    child: BlocSelector<MemoplannerSettingBloc,
+                        MemoplannerSettingsState, ClockType>(
+                      selector: (state) => state.clockType,
+                      builder: (context, clockType) => Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (memoSettingsState.clockType != ClockType.digital)
+                          if (clockType != ClockType.digital)
                             Padding(
                               padding: EdgeInsets.only(
                                   right: layout.screenSaver.clockSeparation),
                               child: ScreensaverAnalogClock(isNight: isNight),
                             ),
-                          if (memoSettingsState.clockType != ClockType.analogue)
+                          if (clockType != ClockType.analogue)
                             DigitalClock(
                               style: layout.screenSaver.digitalClockTextStyle,
                             ),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
