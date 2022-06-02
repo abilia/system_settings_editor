@@ -19,9 +19,46 @@ class SelectableField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final decoration = selected
-        ? selectedBoxDecoration.copyWith(color: color)
-        : whiteBoxDecoration.copyWith(color: color);
+    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final selectedOuterDecoration = selected
+        ? selectedBoxDecoration.copyWith(color: scaffoldBackgroundColor)
+        : BoxDecoration(
+            color: color,
+            borderRadius: borderRadius,
+          );
+
+    final outerBoxPadding = selected
+        ? const EdgeInsets.all(
+            3) // TODO add this inset to layout.selectableField
+        : EdgeInsets.zero;
+
+    final innerDecoration = BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.all(
+        innerRadiusFromBorderSize(outerBoxPadding.left),
+      ),
+      border: selected
+          ? null
+          : Border.fromBorderSide(
+              BorderSide(
+                color: AbiliaColors.transparentBlack30,
+                width: layout.borders.thin,
+              ),
+            ),
+    );
+
+    final borderInsets = (selectedOuterDecoration.border?.dimensions ??
+            innerDecoration.border?.dimensions ??
+            EdgeInsets.zero)
+        .resolve(TextDirection.ltr);
+
+    final textPadding = EdgeInsets.only(
+      left: layout.selectableField.textLeftPadding,
+      right: layout.selectableField.textRightPadding,
+    )
+        .subtract(borderInsets.onlyHorizontal)
+        .subtract(outerBoxPadding.onlyHorizontal);
+
     return Tts.fromSemantics(
       SemanticsProperties(
         label: text.data,
@@ -30,7 +67,7 @@ class SelectableField extends StatelessWidget {
         inMutuallyExclusiveGroup: true,
       ),
       child: Material(
-        color: Colors.transparent,
+        type: MaterialType.transparency,
         child: InkWell(
           onTap: onTap,
           borderRadius: borderRadius,
@@ -40,14 +77,15 @@ class SelectableField extends StatelessWidget {
               Ink(
                 height: heigth ?? layout.selectableField.height,
                 width: width,
-                decoration: decoration,
-                padding: EdgeInsets.only(
-                  left: layout.selectableField.textLeftPadding,
-                  right: layout.selectableField.textRightPadding,
-                ),
-                child: Align(
-                  widthFactor: 1,
-                  child: text,
+                decoration: selectedOuterDecoration,
+                padding: outerBoxPadding,
+                child: Ink(
+                  decoration: innerDecoration,
+                  child: Align(
+                    widthFactor: 1,
+                    child: text,
+                  ),
+                  padding: textPadding,
                 ),
               ),
               Positioned(
@@ -56,7 +94,7 @@ class SelectableField extends StatelessWidget {
                 child: Container(
                   padding: layout.selectableField.padding,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
