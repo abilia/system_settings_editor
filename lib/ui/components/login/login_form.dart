@@ -20,7 +20,7 @@ class LoginForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const MEMOplannerLogo(),
+                const ExtendedMEMOplannerLogo(),
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
                   child: Text(
@@ -95,8 +95,8 @@ class UsernameInput extends StatelessWidget {
   }
 }
 
-class MEMOplannerLogo extends StatelessWidget {
-  const MEMOplannerLogo({Key? key}) : super(key: key);
+class ExtendedMEMOplannerLogo extends StatelessWidget {
+  const ExtendedMEMOplannerLogo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -117,15 +117,33 @@ class MEMOplannerLogo extends StatelessWidget {
                     builder: (context) => const BackendSwitchesDialog(),
                   );
                 },
-                child: FadeInImage(
-                  fadeInDuration: const Duration(milliseconds: 50),
-                  fadeInCurve: Curves.linear,
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: AssetImage(
-                    'assets/graphics/${Config.flavor.id}/logo.png',
-                  ),
+                child: const MEMOplannerLogo(
+                  height: 100,
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class MEMOplannerLogo extends StatelessWidget {
+  final double height;
+  const MEMOplannerLogo({
+    Key? key,
+    required this.height,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: FadeInImage(
+        fadeInDuration: const Duration(milliseconds: 50),
+        fadeInCurve: Curves.linear,
+        placeholder: MemoryImage(kTransparentImage),
+        image: const AssetImage(
+          'assets/MEMOplanner_logo.png',
+        ),
       ),
     );
   }

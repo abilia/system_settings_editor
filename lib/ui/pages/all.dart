@@ -13,3 +13,4 @@ export 'fullscreen_activity_page.dart';
 export 'production_guide_page.dart';
 export 'screen_saver_page.dart';
 export 'library/all.dart';
+export 'startup/startup_guide_page.dart';

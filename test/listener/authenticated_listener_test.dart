@@ -68,7 +68,6 @@ void main() {
 
   Widget _authListener() => MaterialApp(
         home: TopLevelBlocsProvider(
-          runProductionGuide: false,
           child: AuthenticatedBlocsProvider(
             authenticatedState: const Authenticated(
               userId: 5,

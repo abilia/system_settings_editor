@@ -35,7 +35,6 @@ void main() async {
     () => runApp(
       App(
         payload: payload,
-        runProductionGuide: shouldRunProductionGuide,
         analytics: Config.release,
       ),
     ),
@@ -109,23 +108,21 @@ class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final bool runProductionGuide, analytics;
+  final bool analytics;
 
   App({
     Key? key,
     this.payload,
     this.pushCubit,
-    this.runProductionGuide = false,
     this.analytics = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
-        runProductionGuide: runProductionGuide,
         pushCubit: pushCubit,
         child: BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
           builder: (context, productionGuideState) =>
-              productionGuideState is ProductionGuideDone
+              productionGuideState is InitializationDone
                   ? TopLevelListener(
                       navigatorKey: _navigatorKey,
                       payload: payload,
@@ -134,7 +131,9 @@ class App extends StatelessWidget {
                         analytics: analytics,
                       ),
                     )
-                  : const ProductionGuidePage(),
+                  : productionGuideState is StartupGuideInitial
+                      ? const StartupGuidePage()
+                      : const ProductionGuidePage(),
         ),
       );
 }

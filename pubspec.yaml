@@ -89,6 +89,7 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/graphics/
     - assets/graphics/memoplanner/
     - assets/graphics/memoplannergo/
