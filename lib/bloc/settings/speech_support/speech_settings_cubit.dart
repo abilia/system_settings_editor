@@ -32,4 +32,9 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
     emit(state.copyWith(voice: voice));
     await voiceDb.setVoice(state.voice);
   }
+
+  Future<void> setSpeakEveryWord(bool speakEveryWord) async {
+    emit(state.copyWith(speakEveryWord: speakEveryWord));
+    await voiceDb.setSpeakEveryWord(speakEveryWord);
+  }
 }

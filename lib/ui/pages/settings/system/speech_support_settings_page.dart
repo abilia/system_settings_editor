@@ -136,6 +136,9 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                       ),
                       Divider(height: DividerTheme.of(context).thickness),
                       SwitchField(
+                        onChanged: (on) => context
+                            .read<SpeechSettingsCubit>()
+                            .setSpeakEveryWord(on),
                         value: state.speakEveryWord,
                         child: Text(t.speakEveryWord),
                       ).pad(
