@@ -186,6 +186,7 @@ class TimeIntervallPicker extends StatelessWidget {
               ),
               errorState: startTimeError,
               onTap: () async {
+                final editActivityCubit = context.read<EditActivityCubit>();
                 final newTimeInterval =
                     await Navigator.of(context).push<TimeInput>(
                   MaterialPageRoute(
@@ -204,10 +205,10 @@ class TimeIntervallPicker extends StatelessWidget {
                 );
 
                 if (newTimeInterval != null) {
-                  context.read<EditActivityCubit>().changeTimeInterval(
-                        startTime: newTimeInterval.startTime,
-                        endTime: newTimeInterval.endTime,
-                      );
+                  editActivityCubit.changeTimeInterval(
+                    startTime: newTimeInterval.startTime,
+                    endTime: newTimeInterval.endTime,
+                  );
                 }
               },
             ),

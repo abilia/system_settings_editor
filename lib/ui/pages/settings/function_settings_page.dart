@@ -38,10 +38,11 @@ class FunctionSettingsPage extends StatelessWidget {
             forwardNavigationWidget: Builder(
               builder: (context) => OkButton(
                 onPressed: () async {
-                  if (context
-                      .read<FunctionSettingsCubit>()
-                      .state
-                      .displayMenuChangedToDisabled) {
+                  final functionSettingsCubit =
+                      context.read<FunctionSettingsCubit>();
+                  final navigator = Navigator.of(context);
+                  if (functionSettingsCubit
+                      .state.displayMenuChangedToDisabled) {
                     final answer = await showViewDialog<bool>(
                       context: context,
                       builder: (context) => YesNoDialog(
@@ -51,8 +52,8 @@ class FunctionSettingsPage extends StatelessWidget {
                     );
                     if (answer != true) return;
                   }
-                  context.read<FunctionSettingsCubit>().save();
-                  Navigator.of(context).pop();
+                  functionSettingsCubit.save();
+                  navigator.pop();
                 },
               ),
             ),

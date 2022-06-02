@@ -161,6 +161,7 @@ class _TimerInfoInput extends StatelessWidget {
                       PickField(
                         onTap: () async {
                           final authProviders = copiedAuthProviders(context);
+                          final editTimerCubit = context.read<EditTimerCubit>();
                           final duration =
                               await Navigator.of(context).push<Duration>(
                             MaterialPageRoute(
@@ -173,9 +174,7 @@ class _TimerInfoInput extends StatelessWidget {
                             ),
                           );
                           if (duration != null) {
-                            context
-                                .read<EditTimerCubit>()
-                                .updateDuration(duration);
+                            editTimerCubit.updateDuration(duration);
                           }
                         },
                         leading: const Icon(AbiliaIcons.clock),

@@ -138,6 +138,8 @@ class SelectPictureWidget extends StatelessWidget {
 
   void imageClick(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
+    final userFileCubit = context.read<UserFileCubit>();
+    final sortableBloc = context.read<SortableBloc>();
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -152,11 +154,11 @@ class SelectPictureWidget extends StatelessWidget {
 
     if (newSelectedImage != null) {
       if (newSelectedImage is UnstoredAbiliaFile) {
-        BlocProvider.of<UserFileCubit>(context).fileAdded(
+        userFileCubit.fileAdded(
           newSelectedImage,
           image: true,
         );
-        BlocProvider.of<SortableBloc>(context).add(
+        sortableBloc.add(
           ImageArchiveImageAdded(
             newSelectedImage.id,
             newSelectedImage.file.path,
@@ -391,6 +393,7 @@ class AlarmWidget extends StatelessWidget {
             onTap: abilityToSelectAlarm
                 ? () async {
                     final authProviders = copiedAuthProviders(context);
+                    final editActivityCubit = context.read<EditActivityCubit>();
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
@@ -403,11 +406,11 @@ class AlarmWidget extends StatelessWidget {
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
                     if (result != null) {
-                      context.read<EditActivityCubit>().replaceActivity(
-                            activity.copyWith(
-                              alarm: activity.alarm.copyWith(type: result),
-                            ),
-                          );
+                      editActivityCubit.replaceActivity(
+                        activity.copyWith(
+                          alarm: activity.alarm.copyWith(type: result),
+                        ),
+                      );
                     }
                   }
                 : null,
@@ -520,14 +523,14 @@ class AvailableForWidget extends StatelessWidget {
           text:
               Text(secret ? translator.onlyMe : translator.meAndSupportPersons),
           onTap: () async {
+            final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AvailableForPage(secret: activity.secret),
               ),
             );
             if (result != null) {
-              context
-                  .read<EditActivityCubit>()
+              editActivityCubit
                   .replaceActivity(activity.copyWith(secret: result));
             }
           },
@@ -556,6 +559,7 @@ class RecurrenceWidget extends StatelessWidget {
           leading: Icon(recurrentType.iconData()),
           text: Text(recurrentType.text(translator)),
           onTap: () async {
+            final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context)
                 .push<RecurrentType>(MaterialPageRoute(
               builder: (_) => SelectRecurrencePage(
@@ -566,21 +570,21 @@ class RecurrenceWidget extends StatelessWidget {
             if (result != null) {
               if (state.storedRecurring &&
                   result == state.originalActivity.recurs.recurrance) {
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: state.originalActivity.recurs,
-                      ),
-                    );
+                editActivityCubit.replaceActivity(
+                  activity.copyWith(
+                    recurs: state.originalActivity.recurs,
+                  ),
+                );
               } else {
                 final recurs = _newRecurs(
                   result,
                   state.timeInterval.startDate,
                 );
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: recurs,
-                      ),
-                    );
+                editActivityCubit.replaceActivity(
+                  activity.copyWith(
+                    recurs: recurs,
+                  ),
+                );
               }
             }
           },
