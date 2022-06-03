@@ -1,5 +1,6 @@
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class EditImageAndName extends StatefulWidget {
   final ImageAndName? imageAndName;
@@ -24,14 +25,15 @@ class EditImageAndName extends StatefulWidget {
 }
 
 class _EditImageAndNameState extends State<EditImageAndName> {
-  late ImageAndName imageAndName;
-  late TextEditingController txtEditController;
+  late ImageAndName _imageAndName;
+  late TextEditingController _textEditController;
 
   @override
   void initState() {
     super.initState();
-    imageAndName = widget.imageAndName ?? ImageAndName.empty;
-    txtEditController = TextEditingController(text: imageAndName.name);
+    _imageAndName = widget.imageAndName ?? ImageAndName.empty;
+    _textEditController = SpokenTextEditController.ifApplicable(context,
+        text: _imageAndName.name);
   }
 
   @override
@@ -54,11 +56,11 @@ class _EditImageAndNameState extends State<EditImageAndName> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SelectPictureWidget(
-                  selectedImage: imageAndName.image,
+                  selectedImage: _imageAndName.image,
                   label: widget.selectPictureLabel,
                   onImageSelected: (selectedImage) => setState(
-                    () => imageAndName =
-                        imageAndName.copyWith(image: selectedImage),
+                    () => _imageAndName =
+                        _imageAndName.copyWith(image: selectedImage),
                   ),
                 ),
                 SizedBox(width: layout.formPadding.groupHorizontalDistance),
@@ -73,7 +75,7 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                           children: [
                             Expanded(
                               child: TextField(
-                                controller: txtEditController,
+                                controller: _textEditController,
                                 decoration:
                                     InputDecoration(hintText: widget.hintText),
                                 textCapitalization:
@@ -83,14 +85,14 @@ class _EditImageAndNameState extends State<EditImageAndName> {
                                 onEditingComplete:
                                     Navigator.of(context).maybePop,
                                 onChanged: (text) => setState(() =>
-                                    imageAndName =
-                                        imageAndName.copyWith(name: text)),
+                                    _imageAndName =
+                                        _imageAndName.copyWith(name: text)),
                                 maxLines: widget.maxLines,
                                 minLines: widget.minLines,
                               ),
                             ),
                             TtsPlayButton(
-                              controller: txtEditController,
+                              controller: _textEditController,
                               padding: EdgeInsets.only(
                                 left: layout
                                     .formPadding.largeHorizontalItemDistance,
@@ -111,9 +113,9 @@ class _EditImageAndNameState extends State<EditImageAndName> {
           backNavigationWidget: const CancelButton(),
           forwardNavigationWidget: OkButton(
             key: TestKey.bottomSheetOKButton,
-            onPressed: !widget.allowEmpty && imageAndName.isEmpty
+            onPressed: !widget.allowEmpty && _imageAndName.isEmpty
                 ? null
-                : () => Navigator.of(context).pop(imageAndName),
+                : () => Navigator.of(context).pop(_imageAndName),
           ),
         ),
       ],

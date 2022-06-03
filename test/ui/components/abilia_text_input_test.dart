@@ -1,16 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
-
 import 'package:seagull/ui/all.dart';
 
 import '../../fakes/all.dart';
+import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
 import '../../test_helpers/tts.dart';
 
 void main() {
+  late SpeechSettingsCubit mockSpeechSettingsCubit;
+
   Widget wrapWithMaterialApp(Widget widget) => MaterialApp(
         supportedLocales: Translator.supportedLocals,
         localizationsDelegates: const [Translator.delegate],
@@ -24,6 +25,9 @@ void main() {
                 settingsDb: FakeSettingsDb(),
               ),
             ),
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => mockSpeechSettingsCubit,
+            ),
           ],
           child: Material(child: widget),
         ),
@@ -35,6 +39,15 @@ void main() {
 
   setUp(() async {
     setupFakeTts();
+
+    mockSpeechSettingsCubit = MockSpeechSettingsCubit();
+    when(() => mockSpeechSettingsCubit.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => mockSpeechSettingsCubit.state)
+        .thenAnswer((_) => const SpeechSettingsState());
+
+    when(() => mockSpeechSettingsCubit.close())
+        .thenAnswer((_) => Future.value());
 
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
@@ -194,6 +207,45 @@ void main() {
             useTap: true,
           );
         },
+      );
+
+      testWidgets(
+        'Speak every word outputs last word in sentence only',
+        (WidgetTester tester) async {
+          when(() => mockSpeechSettingsCubit.state).thenAnswer(
+              (_) => const SpeechSettingsState(speakEveryWord: true));
+
+          const ttsText = 'This is ';
+
+          // Act
+          await tester.pumpWidget(
+            wrapWithMaterialApp(
+              DefaultTextInput(
+                maxLines: 1,
+                icon: AbiliaIcons.edit,
+                text: '',
+                inputValid: (s) => true,
+                autocorrect: false,
+                textCapitalization: TextCapitalization.sentences,
+                inputFormatters: const [],
+                inputHeading: '',
+                heading: '',
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          await tester.enterText(find.byKey(TestKey.input), ttsText);
+          await tester.pumpAndSettle();
+
+          // Assert
+          await tester.verifyTts(
+            find.byKey(TestKey.input),
+            exact: 'is',
+            useTap: true,
+          );
+        },
+        skip: Config.isMPGO,
       );
     });
   });

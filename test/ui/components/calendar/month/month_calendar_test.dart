@@ -6,6 +6,7 @@ import 'package:seagull/repository/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/main.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/tts/tts_handler.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +58,8 @@ void main() {
       ..client = Fakes.client(activityResponse: activityResponse)
       ..database = FakeDatabase()
       ..genericDb = mockGenericDb
+      ..voiceDb = FakeVoiceDb()
+      ..ttsHandler = FlutterTtsHandler()
       ..ticker = Ticker.fake(initialTime: initialDay)
       ..battery = FakeBattery()
       ..init();

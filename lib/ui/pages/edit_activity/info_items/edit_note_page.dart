@@ -20,7 +20,10 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   void initState() {
     super.initState();
-    _textEditingController = TextEditingController(text: widget.text);
+    _textEditingController = SpokenTextEditController.ifApplicable(
+      context,
+      text: widget.text,
+    );
     _textEditingController.addListener(_textEditingListner);
     _scrollController = ScrollController();
   }
@@ -28,6 +31,7 @@ class _EditNotePageState extends State<EditNotePage> {
   @override
   void dispose() {
     _textEditingController.removeListener(_textEditingListner);
+
     _textEditingController.dispose();
     _scrollController.dispose();
     super.dispose();
