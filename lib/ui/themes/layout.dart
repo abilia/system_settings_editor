@@ -76,7 +76,6 @@ class Layout {
   final DialogLayout dialog;
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
-  final PhotoCalendarLayout photoCalendar;
   final SettingsLayout settings;
   final PermissionsPageLayout permissionsPage;
   final EditTimerLayout editTimer;
@@ -148,7 +147,6 @@ class Layout {
     this.dialog = const DialogLayout(),
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
-    this.photoCalendar = const PhotoCalendarLayout(),
     this.settings = const SettingsLayout(),
     this.permissionsPage = const PermissionsPageLayout(),
     this.editTimer = const EditTimerLayout(),
@@ -1347,29 +1345,6 @@ class LogoutLayout {
     this.profileDistance = 24,
     this.topDistance = 64,
   });
-}
-
-class PhotoCalendarLayout {
-  final double clockSize, clockFontSize, clockFontSizeSmall, backButtonPosition;
-  final EdgeInsets clockPadding, digitalClockPadding;
-
-  const PhotoCalendarLayout({
-    this.clockSize = 92,
-    this.clockFontSize = 32,
-    this.clockFontSizeSmall = 32,
-    this.backButtonPosition = 12,
-    this.clockPadding = const EdgeInsets.all(20),
-    this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
-  });
-
-  TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: small ? clockFontSizeSmall : clockFontSize,
-          fontWeight: FontWeight.w400,
-          height: 75 / 64,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
 }
 
 class SettingsLayout {

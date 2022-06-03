@@ -60,7 +60,7 @@ class MediumLayout extends Layout {
             headline1: 144,
             headline2: 90,
             headline3: 72,
-            headline4: 45,
+            headline4: 48,
             headline5: 38,
             headline6: 32,
             subtitle1: 24,
@@ -509,14 +509,6 @@ class MediumLayout extends Layout {
             profilePictureSize: 126,
             profileDistance: 35,
             topDistance: 94,
-          ),
-          photoCalendar: const PhotoCalendarLayout(
-            clockSize: 200,
-            clockFontSize: 72,
-            clockFontSizeSmall: 64,
-            backButtonPosition: 18,
-            clockPadding: EdgeInsets.all(30),
-            digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
           ),
           settings: const SettingsLayout(
             clockHeight: 135,
