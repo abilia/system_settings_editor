@@ -18,9 +18,9 @@ class PhotoCalendarPage extends StatelessWidget {
     );
     final style = GoogleFonts.roboto(
       textStyle: TextStyle(
-        fontSize: tempLayout.digitalClockFontSize,
+        fontSize: layout.photoCalendarLayout.digitalClockFontSize,
         height: 1,
-        fontWeight: tempLayout.digitalClockFontWeight,
+        fontWeight: layout.photoCalendarLayout.digitalClockFontWeight,
         leadingDistribution: TextLeadingDistribution.even,
       ),
     );
@@ -33,7 +33,7 @@ class PhotoCalendarPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                height: tempLayout.clockRowHeight,
+                height: layout.photoCalendarLayout.clockRowHeight,
                 color: theme.color,
                 child: Stack(
                   children: [
@@ -42,24 +42,25 @@ class PhotoCalendarPage extends StatelessWidget {
                       children: [
                         if (state.clockType != ClockType.digital)
                           SizedBox(
-                            height: tempLayout.analogClockSize +
+                            height: layout.photoCalendarLayout.analogClockSize +
                                 layout.clock.borderWidth * 2,
-                            width: tempLayout.analogClockSize,
+                            width: layout.photoCalendarLayout.analogClockSize,
                             child: const FittedBox(child: AnalogClock()),
                           ),
                         if (state.clockType == ClockType.analogueDigital)
-                          SizedBox(width: tempLayout.clockDistance),
+                          SizedBox(
+                              width: layout.photoCalendarLayout.clockDistance),
                         if (state.clockType != ClockType.analogue)
                           DigitalClock(style: style),
                       ],
                     ).pad(
                       state.clockType == ClockType.digital
-                          ? tempLayout.digitalClockPadding
-                          : tempLayout.analogClockPadding,
+                          ? layout.photoCalendarLayout.digitalClockPadding
+                          : layout.photoCalendarLayout.analogClockPadding,
                     ),
                     Positioned(
-                      bottom: tempLayout.backButtonPosition.dy,
-                      right: tempLayout.backButtonPosition.dx,
+                      bottom: layout.photoCalendarLayout.backButtonPosition.dy,
+                      right: layout.photoCalendarLayout.backButtonPosition.dx,
                       child: IconActionButton(
                         onPressed: () {
                           Navigator.of(context)
@@ -121,76 +122,6 @@ class SlideShow extends StatelessWidget {
   }
 }
 
-const bool mediumthing = true;
-
-// PhotoCalendar not implemented in MPGO
-class TEMPPhotoCalendarLayout {
-  final Size appBarSize;
-  final EdgeInsets analogClockPadding, digitalClockPadding;
-  final double clockDistance,
-      clockRowHeight,
-      analogClockSize,
-      digitalClockFontSize;
-  final FontWeight digitalClockFontWeight;
-  final Offset backButtonPosition;
-
-  const TEMPPhotoCalendarLayout({
-    this.appBarSize = const Size.square(0),
-    this.analogClockPadding = EdgeInsets.zero,
-    this.digitalClockPadding = EdgeInsets.zero,
-    this.clockDistance = 0,
-    this.clockRowHeight = 0,
-    this.analogClockSize = 0,
-    this.backButtonPosition = Offset.zero,
-    this.digitalClockFontSize = 0,
-    this.digitalClockFontWeight = FontWeight.normal,
-  });
-}
-
-class MediumPhotoCalendarLayout extends TEMPPhotoCalendarLayout {
-  const MediumPhotoCalendarLayout({
-    Size? appBarSize,
-    EdgeInsets? analogClockPadding,
-    EdgeInsets? digitalClockPadding,
-    double? clockDistance,
-    double? clockRowHeight,
-    double? digitalClockFontSize,
-    double? analogClockSize,
-    FontWeight? digitalClockFontWeight,
-    Offset? backButtonPosition,
-  }) : super(
-          appBarSize: appBarSize ?? const Size.fromHeight(216),
-          analogClockPadding:
-              analogClockPadding ?? const EdgeInsets.only(top: 3),
-          digitalClockPadding:
-              digitalClockPadding ?? const EdgeInsets.only(top: 76),
-          clockDistance: clockDistance ?? 27,
-          clockRowHeight: clockRowHeight ?? 248,
-          digitalClockFontSize: digitalClockFontSize ?? 64,
-          analogClockSize: analogClockSize ?? 200,
-          digitalClockFontWeight: digitalClockFontWeight ?? FontWeight.w400,
-          backButtonPosition: backButtonPosition ?? const Offset(24, 32),
-        );
-}
-
-class LargePhotoCalendarLayout extends MediumPhotoCalendarLayout {
-  const LargePhotoCalendarLayout()
-      : super(
-          clockRowHeight: 384,
-          analogClockSize: 320,
-          analogClockPadding: const EdgeInsets.only(top: 17),
-          digitalClockPadding: const EdgeInsets.only(top: 129),
-          clockDistance: 64,
-          backButtonPosition: const Offset(24, 24),
-          digitalClockFontSize: 112,
-          digitalClockFontWeight: FontWeight.w300,
-        );
-}
-
-final tempLayout = layout.runtimeType == MediumPhotoCalendarLayout
-    ? const MediumPhotoCalendarLayout()
-    : const LargePhotoCalendarLayout();
-
 class PhotoCalendarAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const PhotoCalendarAppBar({
@@ -198,7 +129,7 @@ class PhotoCalendarAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Size get preferredSize => tempLayout.appBarSize;
+  Size get preferredSize => layout.photoCalendarLayout.appBarSize;
 
   @override
   Widget build(BuildContext context) {
