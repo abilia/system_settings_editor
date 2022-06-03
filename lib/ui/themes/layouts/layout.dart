@@ -12,7 +12,7 @@ part 'medium_layout.dart';
 late final ui.Size screenSize =
     ui.window.physicalSize / ui.window.devicePixelRatio;
 
-late final Layout layout = screenSize.longestSide > 1500
+late Layout _layout = screenSize.longestSide > 1500
     ? const LargeLayout()
     : screenSize.longestSide > 1000
         ? const MediumLayout()
@@ -21,6 +21,10 @@ late final Layout layout = screenSize.longestSide > 1500
 class _GoLayout extends Layout {
   const _GoLayout() : super();
 }
+Layout get layout => _layout;
+
+@visibleForTesting
+void layout(Layout layout) => _layout = layout;
 
 class Layout {
   final double radius;
@@ -164,6 +168,8 @@ class Layout {
   });
 
   bool get go => runtimeType == _GoLayout;
+  bool get medium => runtimeType == MediumLayout;
+  bool get large => runtimeType == LargeLayout;
 }
 
 class MenuPageLayout {
