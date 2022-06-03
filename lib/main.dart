@@ -122,7 +122,8 @@ class App extends StatelessWidget {
         pushCubit: pushCubit,
         child: BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
           builder: (context, productionGuideState) =>
-              productionGuideState is InitializationDone
+              productionGuideState is InitializationDone ||
+                      productionGuideState is StartupGuideInitial
                   ? TopLevelListener(
                       navigatorKey: _navigatorKey,
                       payload: payload,
