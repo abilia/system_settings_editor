@@ -166,19 +166,6 @@ class Layout {
   bool get go => runtimeType == _GoLayout;
 }
 
-class ActionButtonLayout {
-  final double size, radius, spacing;
-  final EdgeInsets padding, withTextPadding;
-
-  const ActionButtonLayout({
-    this.size = 48,
-    this.radius = 12,
-    this.spacing = 0,
-    this.padding = const EdgeInsets.all(8),
-    this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
-  });
-}
-
 class MenuPageLayout {
   final EdgeInsets padding;
   final double crossAxisSpacing, mainAxisSpacing;
@@ -266,38 +253,6 @@ class TabItemLayout {
   });
 }
 
-class FontSize {
-  final double headline1,
-      headline2,
-      headline3,
-      headline4,
-      headline5,
-      headline6,
-      subtitle1,
-      subtitle2,
-      bodyText1,
-      bodyText2,
-      caption,
-      button,
-      overline;
-
-  const FontSize({
-    this.headline1 = 96,
-    this.headline2 = 60,
-    this.headline3 = 48,
-    this.headline4 = 34,
-    this.headline5 = 24,
-    this.headline6 = 20,
-    this.subtitle1 = 16,
-    this.subtitle2 = 14,
-    this.bodyText1 = 16,
-    this.bodyText2 = 14,
-    this.caption = 12,
-    this.button = 16,
-    this.overline = 10,
-  });
-}
-
 class IconLayout {
   final double tiny,
       small,
@@ -317,32 +272,6 @@ class IconLayout {
     this.huge = 96,
     this.doubleIconTop = 20,
     this.doubleIconLeft = 32,
-  });
-}
-
-class ClockLayout {
-  final double height,
-      width,
-      borderWidth,
-      centerPointRadius,
-      hourNumberScale,
-      hourHandLength,
-      minuteHandLength,
-      hourHandWidth,
-      minuteHandWidth,
-      fontSize;
-
-  const ClockLayout({
-    this.height = 60,
-    this.width = 48,
-    this.borderWidth = 1,
-    this.centerPointRadius = 4,
-    this.hourNumberScale = 1.5,
-    this.hourHandLength = 11,
-    this.minuteHandLength = 15,
-    this.hourHandWidth = 1,
-    this.minuteHandWidth = 1,
-    this.fontSize = 7,
   });
 }
 
