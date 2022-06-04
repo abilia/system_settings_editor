@@ -344,6 +344,7 @@ class MediumLayout extends Layout {
             s2: EdgeInsets.fromLTRB(24, 24, 24, 64),
             s3: EdgeInsets.all(6),
             s4: EdgeInsets.symmetric(horizontal: 20),
+            s5: EdgeInsets.symmetric(horizontal: 20, vertical: 72),
             bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
             m1: EdgeInsets.fromLTRB(24, 36, 24, 64),
             m2: EdgeInsets.fromLTRB(0, 32, 0, 32),

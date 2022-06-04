@@ -18,6 +18,10 @@ void main() {
   late StreamController<ActivitiesState> activitiesStreamController;
   late Stream<ActivitiesState> activitiesStream;
 
+  late SortableBloc sortableBloc;
+  late StreamController<SortableState> sortableStreamController;
+  late Stream<SortableState> sortableStream;
+
   late MemoplannerSettingBloc memoplannerSettingBloc;
   late StreamController<MemoplannerSettingsState> settingsStreamController;
   late Stream<MemoplannerSettingsState> settingsStream;
@@ -36,6 +40,12 @@ void main() {
     activitiesStream = activitiesStreamController.stream.asBroadcastStream();
     when(() => activitiesBloc.stream)
         .thenAnswer((invocation) => activitiesStream);
+
+    sortableBloc = MockSortableBloc();
+    when(() => sortableBloc.state).thenReturn(SortablesNotLoaded());
+    sortableStreamController = StreamController<SortableState>();
+    sortableStream = sortableStreamController.stream.asBroadcastStream();
+    when(() => sortableBloc.stream).thenAnswer((invocation) => sortableStream);
 
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -62,25 +72,29 @@ void main() {
   tearDown(() {
     GetIt.I.reset();
     activitiesStreamController.close();
+    sortableStreamController.close();
     settingsStreamController.close();
     timerStreamController.close();
   });
 
-  Widget _authListener() => MaterialApp(
+  Widget _authListener({
+    Authenticated state = const Authenticated(userId: 5),
+  }) =>
+      MaterialApp(
         home: TopLevelBlocsProvider(
           runStartGuide: false,
           child: AuthenticatedBlocsProvider(
-            authenticatedState: const Authenticated(
-              userId: 5,
-            ),
+            authenticatedState: state,
             child: MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: activitiesBloc),
+                BlocProvider.value(value: sortableBloc),
                 BlocProvider.value(value: timerCubit),
                 BlocProvider.value(value: memoplannerSettingBloc),
               ],
-              child: const AuthenticatedListener(
-                child: SizedBox.shrink(),
+              child: AuthenticatedListener(
+                newlyLoggedIn: state.newlyLoggedIn,
+                child: const SizedBox.shrink(),
               ),
             ),
           ),
@@ -145,5 +159,65 @@ void main() {
 
     // Assert
     expect(alarmScheduleCalls, 1);
+  });
+
+  group('Starter set', () {
+    testWidgets(
+        'Shows starter set dialog if newly logged in and user has no sortables',
+        (tester) async {
+      // Arrange
+      await tester.pumpWidget(_authListener(
+          state: const Authenticated(userId: 7, newlyLoggedIn: true)));
+
+      await tester.pumpAndSettle();
+      // Act
+      sortableStreamController.add(
+        const SortablesLoaded(sortables: []),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(StartedSetDialog), findsOneWidget);
+    });
+
+    testWidgets(
+        'DONT shows starter set dialog if NOT newly logged in and user has no sortables',
+        (tester) async {
+      // Arrange
+      await tester.pumpWidget(_authListener(
+          state: const Authenticated(userId: 7, newlyLoggedIn: false)));
+
+      await tester.pumpAndSettle();
+      // Act
+      sortableStreamController.add(
+        const SortablesLoaded(sortables: []),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(StartedSetDialog), findsNothing);
+    });
+
+    testWidgets(
+        'DONT Shows starter set dialog if newly logged in BUT user HAS sortables',
+        (tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        _authListener(
+          state: const Authenticated(userId: 7, newlyLoggedIn: true),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      // Act
+      sortableStreamController.add(
+        SortablesLoaded(
+            sortables: [Sortable.createNew(data: const NoteData())]),
+      );
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byType(StartedSetDialog), findsNothing);
+    });
   });
 }
