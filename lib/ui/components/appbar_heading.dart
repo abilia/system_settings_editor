@@ -18,14 +18,10 @@ class AppBarHeading extends StatelessWidget {
     return Tts.data(
       data: label.isEmpty ? text : '$label $text',
       child: IconTheme(
-        data: theme.iconTheme.copyWith(
-          color: AbiliaColors.white,
-        ),
+        data: theme.iconTheme.copyWith(color: AbiliaColors.white),
         child: DefaultTextStyle(
-          style: (theme.textTheme.headline5 ?? headline5).copyWith(
-            color: AbiliaColors.white,
-            fontSize: layout.appBar.fontSize,
-          ),
+          style: (theme.textTheme.headline6 ?? headline6)
+              .copyWith(color: AbiliaColors.white),
           child: Row(
             children: [
               const Spacer(flex: 15),
