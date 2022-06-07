@@ -28,6 +28,20 @@ class PhotoCalendarPage extends StatelessWidget {
       ),
     );
 
+    final _buttonStyle = theme.theme.textButtonTheme.style?.copyWith(
+      minimumSize:
+          MaterialStateProperty.all(Size.square(_layout.backButtonSize)),
+      shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled) ||
+            states.contains(MaterialState.pressed)) {
+          return noBorderShape.copyWith(
+              borderRadius: BorderRadius.circular(_layout.backButtonRadius));
+        }
+        return ligthShapeBorder.copyWith(
+            borderRadius: BorderRadius.circular(_layout.backButtonRadius));
+      }),
+    );
+
     return Theme(
       data: theme.theme,
       child: Scaffold(
@@ -64,6 +78,7 @@ class PhotoCalendarPage extends StatelessWidget {
                       bottom: _layout.backButtonPosition.dy,
                       right: _layout.backButtonPosition.dx,
                       child: IconActionButton(
+                        style: _buttonStyle,
                         onPressed: () {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);

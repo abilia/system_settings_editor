@@ -8,7 +8,9 @@ class MediumPhotoCalendarLayout {
       clockRowHeight,
       analogClockSize,
       digitalClockFontSize,
-      digitalClockFontSizeLarge;
+      digitalClockFontSizeLarge,
+      backButtonSize = 82,
+      backButtonRadius = 20;
   final FontWeight digitalClockFontWeight;
   final Offset backButtonPosition;
 
