@@ -164,6 +164,12 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
     }
   }
 
+  Future<bool> addStarter(String language) async {
+    Future.delayed(
+        const Duration(minutes: 1), () => add(const LoadSortables()));
+    return await sortableRepository.applyTemplate(language);
+  }
+
   @override
   Future<void> close() async {
     await pushSubscription.cancel();

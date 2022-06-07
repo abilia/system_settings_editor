@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -50,5 +51,38 @@ class SortableRepository extends DataRepository<Sortable> {
       log.warning('Could not parse fixed folder $folder', e);
     }
     return null;
+  }
+
+  // TODO exception safet this function
+  Future<bool> applyTemplate(
+    String language, {
+    String name = 'memoplanner',
+  }) async {
+    final temlateResponse = await client.get(
+      '$baseUrl/api/v1/base-data'.toUri(),
+      headers: jsonHeader,
+    );
+    if (temlateResponse.statusCode != 200) {
+      return false;
+    }
+
+    final template = (temlateResponse.json() as List<dynamic>)
+        .exceptionSafeMap(
+          BaseDataTemplate.fromJson,
+          onException: log.logAndReturnNull,
+        )
+        .whereNotNull()
+        .firstWhereOrNull(
+          (t) => t.language == language && t.name.contains(name),
+        );
+
+    if (template == null) return false;
+
+    final applyResponse = await client.post(
+      '$baseUrl/api/v1/entity/$userId/apply-base-data/${template.id}'.toUri(),
+      headers: jsonHeader,
+    );
+
+    return applyResponse.statusCode == 200;
   }
 }
