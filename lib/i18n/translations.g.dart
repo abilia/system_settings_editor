@@ -893,6 +893,10 @@ abstract class Translated {
   final String checkInternetConnection = 'Check your Internet connection';
 
   final String step = 'Step';
+
+  final String downloadVoiceText = 'Download voice for speech support';
+
+  final String finsish = 'Finish';
 }
 
 class EN extends Translated {
@@ -2188,6 +2192,12 @@ class SV extends Translated {
 
   @override
   final String step = 'Steg';
+
+  @override
+  final String downloadVoiceText = 'Ladda ner röst för talstöd';
+
+  @override
+  final String finsish = 'Slutför';
 }
 
 class DA extends Translated {

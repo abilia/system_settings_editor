@@ -57,7 +57,7 @@ class PageTwo extends StatelessWidget {
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
           Text(
-            'Download voice for speech support',
+            t.downloadVoiceText,
             style: abiliaTextTheme.headline6
                 ?.copyWith(color: AbiliaColors.black75),
           ),
@@ -112,7 +112,7 @@ class PageTwo extends StatelessWidget {
                   onPressed: () {
                     context.read<ProductionGuideCubit>().startGuideDone();
                   },
-                  text: 'Finish',
+                  text: t.finsish,
                   icon: AbiliaIcons.ok,
                   style: textButtonStyleGreen,
                 ),
