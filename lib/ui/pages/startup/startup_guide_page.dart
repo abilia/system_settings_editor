@@ -237,9 +237,13 @@ class WelcomePage extends StatelessWidget {
             height: 164,
           ),
           SizedBox(height: layout.formPadding.largeGroupDistance),
-          Text('Welcome!', style: abiliaTextTheme.headline4),
+          Text('Welcome!',
+              style: abiliaTextTheme.headline4
+                  ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.largeHorizontalItemDistance),
-          const Text('This guide will help you get started with MEMOplanner'),
+          Text('This guide will help you get started with MEMOplanner',
+              style: abiliaTextTheme.bodyText2
+                  ?.copyWith(color: AbiliaColors.black75)),
           const SizedBox(height: 64),
           TextButton(
             style: textButtonStyleGreen,
