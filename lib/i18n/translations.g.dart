@@ -884,6 +884,11 @@ abstract class Translated {
 
   final String doYouWantToDeleteThisPhoto =
       'Are you sure you want to delete this photo?';
+
+  final String welcome = 'Welcome!';
+
+  final String welcomeText =
+      'This guide will help you get started with MEMOplanner.';
 }
 
 class EN extends Translated {
@@ -2166,6 +2171,13 @@ class SV extends Translated {
   @override
   final String doYouWantToDeleteThisPhoto =
       'Är du säker på att du vill ta bort detta foto?';
+
+  @override
+  final String welcome = 'Välkommen!';
+
+  @override
+  final String welcomeText =
+      'Den här guiden hjälper dig att komma igång med MEMOplanner.';
 }
 
 class DA extends Translated {
@@ -3372,6 +3384,13 @@ class DA extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\nindstillinger';
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.';
 }
 
 class NL extends Translated {
@@ -4582,6 +4601,13 @@ class NL extends Translated {
 
   @override
   final String quickSettingsMenu = 'Snelle\ninstellingen';
+
+  @override
+  final String welcome = 'Welkom!';
+
+  @override
+  final String welcomeText =
+      'Deze gids helpt u om aan de slag te gaan met MEMOplanner.';
 }
 
 class FI extends Translated {
@@ -5790,6 +5816,13 @@ class FI extends Translated {
 
   @override
   final String quickSettingsMenu = 'Pika-\nasetukset';
+
+  @override
+  final String welcome = 'Tervetuloa!';
+
+  @override
+  final String welcomeText =
+      'Tämä opas auttaa aloittamaan Memoplannerin käytön.';
 }
 
 class DE extends Translated {
@@ -7005,6 +7038,13 @@ class DE extends Translated {
 
   @override
   final String quickSettingsMenu = 'Schnell-\neinstellungen';
+
+  @override
+  final String welcome = 'Willkommen!';
+
+  @override
+  final String welcomeText =
+      'Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.';
 }
 
 class NB extends Translated {
@@ -8208,4 +8248,11 @@ class NB extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.';
 }
