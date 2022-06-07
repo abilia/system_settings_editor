@@ -52,7 +52,7 @@ class PageTwo extends StatelessWidget {
             height: 96,
           ),
           SizedBox(height: layout.startupPageLayout.logoDistance),
-          Text('Step 2/2',
+          Text('${t.step} 2/2',
               style: abiliaTextTheme.bodyText2
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
@@ -98,7 +98,7 @@ class PageTwo extends StatelessWidget {
                         duration: 500.milliseconds(),
                         curve: Curves.easeOutQuad);
                   },
-                  text: 'Previous',
+                  text: t.back,
                   style: textButtonStyleDarkGrey,
                   icon: AbiliaIcons.navigationPrevious,
                 ),
@@ -170,12 +170,12 @@ class PageOne extends StatelessWidget {
             height: 96,
           ),
           SizedBox(height: layout.startupPageLayout.logoDistance),
-          Text('Step 1/2',
+          Text('${t.step} 1/2',
               style: abiliaTextTheme.bodyText2
                   ?.copyWith(color: AbiliaColors.black75)),
           SizedBox(height: layout.formPadding.smallVerticalItemDistance),
           Text(
-            'Check your Internet connection',
+            t.checkInternetConnection,
             style: abiliaTextTheme.headline6
                 ?.copyWith(color: AbiliaColors.black75),
           ),

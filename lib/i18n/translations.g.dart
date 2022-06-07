@@ -889,6 +889,10 @@ abstract class Translated {
 
   final String welcomeText =
       'This guide will help you get started with MEMOplanner.';
+
+  final String checkInternetConnection = 'Check your Internet connection';
+
+  final String step = 'Step';
 }
 
 class EN extends Translated {
@@ -2178,6 +2182,12 @@ class SV extends Translated {
   @override
   final String welcomeText =
       'Den här guiden hjälper dig att komma igång med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Kontrollera din internetanslutning';
+
+  @override
+  final String step = 'Steg';
 }
 
 class DA extends Translated {
@@ -3391,6 +3401,9 @@ class DA extends Translated {
   @override
   final String welcomeText =
       'Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Kontroller din internetforbindelse';
 }
 
 class NL extends Translated {
@@ -4608,6 +4621,9 @@ class NL extends Translated {
   @override
   final String welcomeText =
       'Deze gids helpt u om aan de slag te gaan met MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Controleer uw internetverbinding';
 }
 
 class FI extends Translated {
@@ -5823,6 +5839,9 @@ class FI extends Translated {
   @override
   final String welcomeText =
       'Tämä opas auttaa aloittamaan Memoplannerin käytön.';
+
+  @override
+  final String checkInternetConnection = 'Tarkista Internet-yhteys';
 }
 
 class DE extends Translated {
@@ -7045,6 +7064,10 @@ class DE extends Translated {
   @override
   final String welcomeText =
       'Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.';
+
+  @override
+  final String checkInternetConnection =
+      'Überprüfen Sie Ihre Internetverbindung';
 }
 
 class NB extends Translated {
@@ -8255,4 +8278,7 @@ class NB extends Translated {
   @override
   final String welcomeText =
       'Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Sjekk din Internettforbindelse';
 }
