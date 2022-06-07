@@ -3,21 +3,12 @@ part of 'layout.dart';
 class MediumLayout extends Layout {
   const MediumLayout({
     AppBarLayout? appBar,
-    LargeActionButtonLayout? actionButton,
-    LargeClockLayout? clockLayout,
-    FontSize? fontSize,
-    MediumPhotoCalendarLayout? photoCalendarLayout,
+    ActionButtonLayout? actionButton,
+    ClockLayout? clockLayout,
   }) : super(
           radius: 18,
-          appBar: appBar ?? const MediumAppBarLayout(),
-          actionButton: actionButton ??
-              const ActionButtonLayout(
-                size: 88,
-                radius: 20,
-                spacing: 4,
-                padding: EdgeInsets.all(12),
-                withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
-              ),
+          appBar: appBar ?? const AppBarLayoutMedium(),
+          actionButton: actionButton ?? const ActionButtonLayoutMedium(),
           menuPage: const MenuPageLayout(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
             crossAxisSpacing: 24,
@@ -52,7 +43,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: fontSize ?? const MediumFontSize(),
+          fontSize: const FontSizeMedium(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,
@@ -63,7 +54,7 @@ class MediumLayout extends Layout {
             doubleIconTop: 30,
             doubleIconLeft: 48,
           ),
-          clock: clockLayout ?? const MediumClockLayout(),
+          clock: clockLayout ?? const ClockLayoutMedium(),
           formPadding: const FormPaddingLayout(
             smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
@@ -481,6 +472,14 @@ class MediumLayout extends Layout {
             profileDistance: 35,
             topDistance: 94,
           ),
+          photoCalendar: const PhotoCalendarLayout(
+            clockSize: 200,
+            clockFontSize: 72,
+            clockFontSizeSmall: 64,
+            backButtonPosition: 18,
+            clockPadding: EdgeInsets.all(30),
+            digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
+          ),
           settings: const SettingsLayout(
             clockHeight: 135,
             clockWidth: 108,
@@ -527,7 +526,5 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
-          photoCalendarLayout:
-              photoCalendarLayout ?? const MediumPhotoCalendarLayout(),
         );
 }

@@ -16,8 +16,8 @@ class AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style =
-        this.style ?? Theme.of(context).textTheme.headline6 ?? headline6;
+    final style = this.style ?? layout.appBar.textStyle;
+
     final fontSize = style.fontSize;
     return DefaultTextStyle(
       style: style,

@@ -30,16 +30,15 @@ class FontSize {
   });
 }
 
-class MediumFontSize extends FontSize {
-  const MediumFontSize({
-    double? headline6,
-  }) : super(
+class FontSizeMedium extends FontSize {
+  const FontSizeMedium()
+      : super(
           headline1: 144,
           headline2: 90,
           headline3: 72,
           headline4: 45,
           headline5: 38,
-          headline6: headline6 ?? 32,
+          headline6: 32,
           subtitle1: 24,
           subtitle2: 21,
           bodyText1: 24,
@@ -47,12 +46,5 @@ class MediumFontSize extends FontSize {
           caption: 20,
           button: 24,
           overline: 15,
-        );
-}
-
-class LargeFontSize extends MediumFontSize {
-  const LargeFontSize()
-      : super(
-          headline6: 48,
         );
 }
