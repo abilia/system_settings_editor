@@ -141,8 +141,8 @@ class MEMOplannerLogo extends StatelessWidget {
         fadeInDuration: const Duration(milliseconds: 50),
         fadeInCurve: Curves.linear,
         placeholder: MemoryImage(kTransparentImage),
-        image: const AssetImage(
-          'assets/MEMOplanner_logo.png',
+        image: AssetImage(
+          'assets/graphics/${Config.flavor.id}/logo.png',
         ),
       ),
     );

@@ -120,10 +120,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TopLevelBlocsProvider(
         pushCubit: pushCubit,
-        child: BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
+        child: BlocBuilder<ProductionGuideCubit, StartupState>(
           builder: (context, productionGuideState) =>
-              productionGuideState is InitializationDone ||
-                      productionGuideState is StartupGuideInitial
+              productionGuideState is StartupDone
                   ? TopLevelListener(
                       navigatorKey: _navigatorKey,
                       payload: payload,
@@ -132,7 +131,7 @@ class App extends StatelessWidget {
                         analytics: analytics,
                       ),
                     )
-                  : productionGuideState is StartupGuideInitial
+                  : productionGuideState is StartupGuide
                       ? const StartupGuidePage()
                       : const ProductionGuidePage(),
         ),

@@ -249,3 +249,18 @@ class StartButton extends StatelessWidget {
     );
   }
 }
+
+class FinishButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const FinishButton({this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GreenButton(
+      text: Translator.of(context).translate.start,
+      icon: AbiliaIcons.ok,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
+    );
+  }
+}

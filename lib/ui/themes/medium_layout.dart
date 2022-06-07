@@ -565,5 +565,6 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
+          startupPageLayout: const StartupPageLayoutMedium(),
         );
 }

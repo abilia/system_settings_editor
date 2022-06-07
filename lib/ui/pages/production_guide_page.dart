@@ -97,7 +97,7 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                         child: const Text('Verify'),
                         style: textButtonStyleGreen,
                       ),
-                      BlocBuilder<ProductionGuideCubit, ProductionGuideState>(
+                      BlocBuilder<ProductionGuideCubit, StartupState>(
                         builder: (context, productionGuideState) =>
                             productionGuideState is VerifySerialIdFailed
                                 ? Text(productionGuideState.message)
