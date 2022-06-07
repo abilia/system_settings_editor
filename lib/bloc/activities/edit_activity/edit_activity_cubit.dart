@@ -167,15 +167,20 @@ class EditActivityCubit extends Cubit<EditActivityState> {
     );
   }
 
-  void loadRecurrence(Recurs recurs) {
+  void _loadRecurrence() {
     replaceActivity(
       state.activity.copyWith(
-        recurs: recurs,
+        recurs: state.originalActivity.recurs,
       ),
     );
   }
 
   void newRecurrence({RecurrentType? newType, DateTime? newEndDate}) {
+    if (state.storedRecurring &&
+        newType == state.originalActivity.recurs.recurrance) {
+      _loadRecurrence();
+      return;
+    }
     final type = newType ?? state.activity.recurs.recurrance;
     final endDate = newEndDate ??
         (state.activity.isRecurring

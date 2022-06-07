@@ -564,13 +564,6 @@ class RecurrenceWidget extends StatelessWidget {
               settings: const RouteSettings(name: 'SelectRecurrencePage'),
             ));
             if (result != null) {
-              if (state.storedRecurring &&
-                  result == state.originalActivity.recurs.recurrance) {
-                context
-                    .read<EditActivityCubit>()
-                    .loadRecurrence(state.originalActivity.recurs);
-                return;
-              }
               context.read<EditActivityCubit>().newRecurrence(newType: result);
             }
           },
@@ -622,12 +615,9 @@ class EndDateWidget extends StatelessWidget {
               value: recurs.hasNoEnd,
               onChanged: disabled
                   ? null
-                  : (v) => context.read<EditActivityCubit>().replaceActivity(
-                        activity.copyWith(
-                          recurs: recurs.changeEnd(
+                  : (v) => context.read<EditActivityCubit>().newRecurrence(
+                        newEndDate:
                             v ? Recurs.noEndDate : state.timeInterval.startDate,
-                          ),
-                        ),
                       ),
               child: Text(translate.noEndDate),
             ),
@@ -655,12 +645,8 @@ class EndDateWizWidget extends StatelessWidget {
             size: layout.icon.small,
           ),
           value: recurs.hasNoEnd,
-          onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
-                activity.copyWith(
-                  recurs: recurs.changeEnd(
-                    v ? Recurs.noEndDate : state.timeInterval.startDate,
-                  ),
-                ),
+          onChanged: (v) => context.read<EditActivityCubit>().newRecurrence(
+                newEndDate: v ? Recurs.noEndDate : state.timeInterval.startDate,
               ),
           child: Text(translate.noEndDate),
         );
