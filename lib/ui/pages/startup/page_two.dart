@@ -35,10 +35,25 @@ class PageTwo extends StatelessWidget {
           SizedBox(height: layout.startupPageLayout.textPickDistance),
           SizedBox(
             width: 540,
-            child: PickField(
-              leading: const Icon(AbiliaIcons.speakText),
-              text: Text(t.textToSpeech),
-              onTap: () => _showVoicesPage(context),
+            child: BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
+              builder: (context, state) => PickField(
+                leading: const Icon(AbiliaIcons.speakText),
+                text: Text(t.textToSpeech),
+                trailingText: Text(
+                  state.voice.isEmpty ? 'Not selected' : state.voice,
+                  style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
+                      .copyWith(
+                    color: state.voice.isEmpty
+                        ? AbiliaColors.red
+                        : AbiliaColors.green,
+                  ),
+                ),
+                onTap: () async => await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const VoicesPage(),
+                  ),
+                ),
+              ),
             ),
           ),
           SizedBox(
@@ -88,19 +103,6 @@ class PageTwo extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  void _showVoicesPage(BuildContext context) async {
-    final authProviders = copiedAuthProviders(context);
-
-    await Navigator.of(context).push<String?>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: const VoicesPage(),
-        ),
       ),
     );
   }

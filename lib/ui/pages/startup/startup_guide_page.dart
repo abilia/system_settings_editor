@@ -10,6 +10,7 @@ class StartupGuidePage extends StatelessWidget {
       theme: abiliaTheme,
       home: Scaffold(
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             WelcomePage(
               pageController: pageController,
