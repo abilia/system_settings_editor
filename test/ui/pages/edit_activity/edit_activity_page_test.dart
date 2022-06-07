@@ -1097,6 +1097,9 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
+        await tester.dragFrom(tester.getCenter(find.byType(EditChecklistView)),
+            const Offset(0, -50));
+        await tester.pump();
         await tester.tap(find.text(questions[2]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
