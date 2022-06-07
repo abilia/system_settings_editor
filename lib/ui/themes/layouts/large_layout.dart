@@ -3,9 +3,8 @@ part of 'layout.dart';
 class LargeLayout extends MediumLayout {
   const LargeLayout()
       : super(
-          appBar: const LargeAppBarLayout(),
-          actionButton: const LargeActionButtonLayout(),
-          clockLayout: const LargeClockLayout(),
-          fontSize: const LargeFontSize(),
+          appBar: const AppBarLayoutLarge(),
+          actionButton: const ActionButtonLayoutLarge(),
+          clockLayout: const ClockLayoutLarge(),
         );
 }

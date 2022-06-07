@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
-import 'package:seagull/ui/themes/layouts/all.dart';
+import 'package:seagull/ui/themes/layouts/components/all.dart';
 
 part 'large_layout.dart';
 

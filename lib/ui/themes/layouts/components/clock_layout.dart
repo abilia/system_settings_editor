@@ -24,13 +24,13 @@ class ClockLayout {
   });
 }
 
-class MediumClockLayout extends ClockLayout {
-  const MediumClockLayout({
+class ClockLayoutMedium extends ClockLayout {
+  const ClockLayoutMedium({
     double? height,
     double? width,
   }) : super(
-          height: height ?? 124,
-          width: width ?? 92,
+          height: height ?? 120,
+          width: width ?? 96,
           borderWidth: 2,
           centerPointRadius: 8,
           hourNumberScale: 1.5,
@@ -42,10 +42,10 @@ class MediumClockLayout extends ClockLayout {
         );
 }
 
-class LargeClockLayout extends MediumClockLayout {
-  const LargeClockLayout()
+class ClockLayoutLarge extends ClockLayoutMedium {
+  const ClockLayoutLarge()
       : super(
           height: 172,
-          width: 172,
+          width: 138,
         );
 }

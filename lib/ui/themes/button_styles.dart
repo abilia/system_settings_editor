@@ -60,6 +60,9 @@ final buttonBackgroundGreen = MaterialStateProperty.resolveWith<Color>(
 final noBorderShape = RoundedRectangleBorder(borderRadius: borderRadius);
 final noBorder = MaterialStateProperty.all(noBorderShape);
 
+final largeBorderRadius =
+    BorderRadius.all(Radius.circular(layout.actionButton.largeRadius));
+
 final baseButtonStyle = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
   textStyle: MaterialStateProperty.all(
@@ -193,6 +196,19 @@ final actionButtonStyleDark = _actionButtonStyle.copyWith(
   }),
 );
 
+final actionButtonStyleDarkLarge = actionButtonStyleDark.copyWith(
+  minimumSize: MaterialStateProperty.all(
+    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
+  ),
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) {
+      return noBorderShape.copyWith(borderRadius: largeBorderRadius);
+    }
+    return darkShapeBorder.copyWith(borderRadius: largeBorderRadius);
+  }),
+);
+
 final secondaryActionButtonStyleDark = actionButtonStyleDark.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
@@ -257,6 +273,19 @@ final actionButtonStyleLight = _actionButtonStyle.copyWith(
       return noBorderShape;
     }
     return ligthShapeBorder;
+  }),
+);
+
+final actionButtonStyleLightLarge = actionButtonStyleLight.copyWith(
+  minimumSize: MaterialStateProperty.all(
+    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
+  ),
+  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled) ||
+        states.contains(MaterialState.pressed)) {
+      return noBorderShape.copyWith(borderRadius: largeBorderRadius);
+    }
+    return ligthShapeBorder.copyWith(borderRadius: largeBorderRadius);
   }),
 );
 
