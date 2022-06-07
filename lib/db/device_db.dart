@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 class DeviceDb {
   static const String _serialIdRecord = 'serialIdRecord';
   static const String _clientIdRecord = 'clientIdRecord';
+  static const String _startGuideCompletedRecord = 'startGuideCompletedRecord';
   final SharedPreferences prefs;
 
   const DeviceDb(this.prefs);
@@ -12,6 +13,12 @@ class DeviceDb {
       prefs.setString(_serialIdRecord, serialId);
 
   String get serialId => prefs.getString(_serialIdRecord) ?? '';
+
+  Future<void> setStartGuideCompleted() =>
+      prefs.setString(_startGuideCompletedRecord, 'yes');
+
+  String get startGuideCompleted =>
+      prefs.getString(_startGuideCompletedRecord) ?? '';
 
   Future<String> getClientId() async {
     final clientId = prefs.getString(_clientIdRecord);

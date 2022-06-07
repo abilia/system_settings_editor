@@ -8,7 +8,7 @@ class ProductionGuideCubit extends Cubit<StartupState> {
     required this.deviceRepository,
   }) : super(Config.isMP && deviceRepository.serialId.isEmpty
             ? ProductionGuide()
-            : Config.isMP
+            : Config.isMP && !deviceRepository.isStartGuideCompleted
                 ? StartupGuide()
                 : StartupDone());
 
@@ -36,8 +36,8 @@ class ProductionGuideCubit extends Cubit<StartupState> {
     emit(StartupGuide());
   }
 
-  void startGuideDone() {
-    // TODO set start guide done in shared prefs
+  void startGuideDone() async {
+    await deviceRepository.setStartGuideCompleted();
     emit(StartupDone());
   }
 }
