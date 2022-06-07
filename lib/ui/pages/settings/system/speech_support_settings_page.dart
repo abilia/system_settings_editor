@@ -74,8 +74,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                             ? t.noVoicesInstalled
                                             : t.installingVoice
                                         : state.voice),
-                                    onTap: () =>
-                                        _showVoicesPage(context, locale),
+                                    onTap: () => _showVoicesPage(context),
                                   ),
                                 ),
                               ),
@@ -194,7 +193,7 @@ class SpeechSupportSettingsPage extends StatelessWidget {
     return 100 + progress * 10;
   }
 
-  void _showVoicesPage(BuildContext context, String locale) async {
+  void _showVoicesPage(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
 
     await Navigator.of(context).push<String?>(
