@@ -1,7 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/all.dart';
 
 class StartupGuidePage extends StatelessWidget {
   const StartupGuidePage({Key? key}) : super(key: key);
