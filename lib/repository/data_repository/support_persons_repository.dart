@@ -23,22 +23,27 @@ class SupportPersonsRepository extends Repository {
   final SupportPersonsDb db;
 
   Future<Iterable<SupportPerson>> fetchAllAndInsertIntoDb() async {
-    log.fine('fetching support persons');
-    final response = await client.get(
-      '$baseUrl/api/v1/entity/$userId/roles-to'.toUri(),
-      headers: authHeader(authToken),
-    );
-    final decoded = response.json() as List;
+    try {
+      log.fine('fetching support persons');
+      final response = await client.get(
+        '$baseUrl/api/v1/entity/$userId/roles-to'.toUri(),
+        headers: authHeader(authToken),
+      );
+      final decoded = response.json() as List;
 
-    db.deleteAll();
-    Iterable<SupportPerson> result = decoded.where((element) {
-      return element['role']['id'] == 6;
-    }).map((element) {
-      SupportPerson supportPerson = SupportPerson.fromJson(element['entity']);
-      db.insert(supportPerson);
-      return supportPerson;
-    });
-    return result;
+      db.deleteAll();
+      Iterable<SupportPerson> result = decoded.where((element) {
+        return element['role']['id'] == 6;
+      }).map((element) {
+        SupportPerson supportPerson = SupportPerson.fromJson(element['entity']);
+        db.insert(supportPerson);
+        return supportPerson;
+      });
+      return result;
+    } catch (e) {
+      log.severe('Error when fetching support persons, offline?', e);
+      return loadFromDb();
+    }
   }
 
   Future<Iterable<SupportPerson>> loadFromDb() async {

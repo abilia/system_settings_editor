@@ -1,6 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:seagull/bloc/activities/edit_activity/edit_activity_cubit.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
+import 'package:seagull/bloc/all.dart';
+import 'package:seagull/db/all.dart';
+import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/models/activity/activity.dart';
+import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 import 'package:seagull/ui/all.dart';
 
 class AvailableForWiz extends StatelessWidget {
@@ -13,44 +17,56 @@ class AvailableForWiz extends StatelessWidget {
       builder: (context, state) => WizardScaffold(
         iconData: AbiliaIcons.unlock,
         title: translate.availableFor,
-        body: Padding(
-          padding: layout.templates.m1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              RadioField<AvailableForType?>(
-                groupValue: state.activity.availableFor,
-                onChanged: (value) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: true)),
-                value: AvailableForType.onlyMe,
-                leading: const Icon(AbiliaIcons.passwordProtection),
-                text: Text(translate.onlyMe),
+        body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, authState) =>
+              RepositoryProvider<SupportPersonsRepository>(
+            create: (context) => SupportPersonsRepository(
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              client: GetIt.I<BaseClient>(),
+              db: SupportPersonsDb(GetIt.I<Database>()),
+              userId: (authState as Authenticated).userId,
+              authToken: authState.token,
+            ),
+            child: BlocProvider<AvailableForCubit>(
+              create: (context) => AvailableForCubit(
+                supportPersonsRepository:
+                    context.read<SupportPersonsRepository>(),
+                availableFor: state.activity.availableFor,
+                selectedSupportPersons: state.activity.secretExemptions,
               ),
-              SizedBox(height: layout.formPadding.verticalItemDistance),
-              RadioField<AvailableForType?>(
-                groupValue: state.activity.availableFor,
-                onChanged: (value) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: false)),
-                value: AvailableForType.allSupportPersons,
-                leading: const Icon(AbiliaIcons.userGroup),
-                text: Text(translate.allSupportPersons),
+              child: AvailableForPageBody(
+                onRadioButtonChanged: _onSelected,
+                onSupportPersonChanged: _onSupportPersonChanged,
               ),
-              SizedBox(height: layout.formPadding.verticalItemDistance),
-              RadioField<AvailableForType?>(
-                groupValue: state.activity.availableFor,
-                onChanged: (value) => context
-                    .read<EditActivityCubit>()
-                    .replaceActivity(state.activity.copyWith(secret: true)),
-                value: AvailableForType.selectedSupportPersons,
-                leading: const Icon(AbiliaIcons.userGroup),
-                text: Text(translate.selectedSupportPersons),
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void _onSelected(BuildContext context, AvailableForType? availableFor) {
+    if (availableFor != null) {
+      final activity = context.read<EditActivityCubit>().state.activity;
+      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+          secret: availableFor != AvailableForType.allSupportPersons,
+          secretExemptions:
+              availableFor != AvailableForType.selectedSupportPersons
+                  ? []
+                  : null));
+      context.read<AvailableForCubit>().setAvailableFor(availableFor);
+    }
+  }
+
+  void _onSupportPersonChanged(BuildContext context, int id, bool selected) {
+    final activity = context.read<EditActivityCubit>().state.activity;
+    if (selected && !activity.secretExemptions.contains(id)) {
+      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+          secretExemptions: List.from(activity.secretExemptions)..add(id)));
+    } else if (!selected && activity.secretExemptions.contains(id)) {
+      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+          secretExemptions: List.from(activity.secretExemptions)..remove(id)));
+    }
+    context.read<AvailableForCubit>().selectSupportPerson(id, selected);
   }
 }

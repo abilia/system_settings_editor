@@ -5,11 +5,17 @@ import 'package:seagull/models/support_person.dart';
 import 'package:seagull/repository/data_repository/support_persons_repository.dart';
 
 class AvailableForCubit extends Cubit<AvailableForState> {
-  AvailableForCubit({required this.supportPersonsRepository})
-      : super(const AvailableForState(
-            availableFor: AvailableForType.allSupportPersons,
-            selectedSupportPersons: [],
-            allSupportPersons: [])) {
+  AvailableForCubit({
+    required this.supportPersonsRepository,
+    AvailableForType? availableFor,
+    List<int>? selectedSupportPersons,
+  }) : super(
+          AvailableForState(
+            availableFor: availableFor ?? AvailableForType.allSupportPersons,
+            selectedSupportPersons: selectedSupportPersons ?? const [],
+            allSupportPersons: const [],
+          ),
+        ) {
     initialize();
   }
 
@@ -24,18 +30,20 @@ class AvailableForCubit extends Cubit<AvailableForState> {
 
   final SupportPersonsRepository supportPersonsRepository;
 
-  void setAvailableFor(AvailableForType availableFor) =>
-      emit(state.copyWith(availableFor: availableFor));
+  void setAvailableFor(AvailableForType availableFor) => emit(state.copyWith(
+      availableFor: availableFor,
+      selectedSupportPersons:
+          availableFor != AvailableForType.selectedSupportPersons ? [] : null));
 
-  void selectSupportPerson(SupportPerson supportPerson, bool selected) {
-    if (selected && !state.selectedSupportPersons.contains(supportPerson.id)) {
+  void selectSupportPerson(int id, bool selected) {
+    if (selected && !state.selectedSupportPersons.contains(id)) {
       emit(state.copyWith(
           selectedSupportPersons: List.from(state.selectedSupportPersons)
-            ..add(supportPerson.id)));
-    } else {
+            ..add(id)));
+    } else if (!selected && state.selectedSupportPersons.contains(id)) {
       emit(state.copyWith(
           selectedSupportPersons: List.from(state.selectedSupportPersons)
-            ..remove(supportPerson.id)));
+            ..remove(id)));
     }
   }
 }
@@ -62,6 +70,9 @@ class AvailableForState extends Equatable {
           allSupportPersons: allSupportPersons ?? this.allSupportPersons);
 
   @override
-  List<Object?> get props =>
-      [availableFor, selectedSupportPersons, allSupportPersons];
+  List<Object?> get props => [
+        availableFor,
+        selectedSupportPersons,
+        allSupportPersons,
+      ];
 }

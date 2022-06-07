@@ -9,7 +9,7 @@ class SupportPerson extends Equatable {
   final String image;
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [id, name, image];
 
   @override
   bool? get stringify => true;

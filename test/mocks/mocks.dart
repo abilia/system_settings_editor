@@ -23,6 +23,9 @@ class MockSortableRepository extends Mock implements SortableRepository {}
 
 class MockGenericRepository extends Mock implements GenericRepository {}
 
+class MockSupportPersonsRepository extends Mock
+    implements SupportPersonsRepository {}
+
 // Db
 class MockActivityDb extends Mock implements ActivityDb {}
 

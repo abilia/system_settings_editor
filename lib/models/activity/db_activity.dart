@@ -2,6 +2,7 @@ part of 'activity.dart';
 
 class DbActivity extends DbModel<Activity> {
   Activity get activity => model;
+
   const DbActivity._({
     required Activity activity,
     required int dirty,
@@ -160,9 +161,14 @@ class DbActivity extends DbModel<Activity> {
               .cast<int>() ??
           []);
 
-  static UnmodifiableListView<String> _parseExemptions(
-          String? secretExemptions) =>
-      UnmodifiableListView(secretExemptions?.tryDecodeSignedOffDates() ?? []);
+  static UnmodifiableListView<int> _parseExemptions(String? secretExemptions) =>
+      UnmodifiableListView(secretExemptions
+              ?.split(';')
+              .map(int.tryParse)
+              .where((v) => v != null)
+              .cast<int>() ??
+          []);
+
   @override
   List<Object> get props => [activity, revision, dirty];
 

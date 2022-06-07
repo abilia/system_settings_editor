@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:seagull/bloc/all.dart';
-import 'package:seagull/bloc/support_persons_cubit.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/db/support_persons_db.dart';
 import 'package:seagull/models/all.dart';
@@ -514,7 +513,6 @@ class AvailableForWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final secret = activity.secret;
     final secretExemptions = activity.secretExemptions;
-
     final translator = Translator.of(context).translate;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -526,7 +524,7 @@ class AvailableForWidget extends StatelessWidget {
                 ? AbiliaIcons.unlock
                 : secretExemptions.isEmpty
                     ? AbiliaIcons.lock
-                    : AbiliaIcons.unlock,
+                    : AbiliaIcons.selectedSupport,
           ),
           text: Text(!secret
               ? translator.allSupportPersons
@@ -567,7 +565,9 @@ class AvailableForWidget extends StatelessWidget {
               create: (context) => AvailableForCubit(
                 supportPersonsRepository:
                     context.read<SupportPersonsRepository>(),
-              )..setAvailableFor(activity.availableFor),
+                availableFor: activity.availableFor,
+                selectedSupportPersons: activity.secretExemptions,
+              ),
               child: const AvailableForPage(),
             ),
           ),

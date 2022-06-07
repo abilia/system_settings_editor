@@ -512,7 +512,7 @@ void main() {
       expect(rightCategoryRadio3.groupValue, Category.right);
     });
 
-    testWidgets('Availible for dialog', (WidgetTester tester) async {
+    testWidgets('Available for dialog', (WidgetTester tester) async {
       await tester.pumpWidget(createEditActivityPage());
       await tester.pumpAndSettle();
       await tester.scrollDown();

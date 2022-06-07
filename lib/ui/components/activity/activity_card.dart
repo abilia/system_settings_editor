@@ -187,15 +187,22 @@ class PrivateIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IconData icon;
+    final Color decorationColor;
+    final Color iconColor;
+
     switch (availableFor) {
       case AvailableForType.onlyMe:
         icon = AbiliaIcons.lock;
-        break;
-      case AvailableForType.allSupportPersons:
-        icon = AbiliaIcons.unlock;
+        decorationColor =
+            inactive ? AbiliaColors.white140 : AbiliaColors.black75;
+        iconColor = inactive ? AbiliaColors.white110 : AbiliaColors.white;
         break;
       default:
-        icon = AbiliaIcons.unlock;
+        icon = availableFor == AvailableForType.allSupportPersons
+            ? AbiliaIcons.unlock
+            : AbiliaIcons.selectedSupport;
+        decorationColor = inactive ? AbiliaColors.white110 : AbiliaColors.white;
+        iconColor = inactive ? AbiliaColors.white140 : AbiliaColors.black75;
     }
     return AnimatedContainer(
       margin: layout.eventCard.cardIconPadding,
@@ -203,13 +210,13 @@ class PrivateIcon extends StatelessWidget {
       width: layout.eventCard.privateIconSize,
       height: layout.eventCard.privateIconSize,
       decoration: BoxDecoration(
-        color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
+        color: decorationColor,
         borderRadius: borderRadius,
       ),
       child: Icon(
         icon,
         size: layout.eventCard.iconSize,
-        color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
+        color: iconColor,
       ),
     );
   }
