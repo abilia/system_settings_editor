@@ -19,9 +19,7 @@ class PageOne extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const MEMOplannerLogo(
-            height: 96,
-          ),
+          const MEMOplannerLogo(),
           SizedBox(height: layout.startupPageLayout.logoDistance),
           Text('${t.step} 1/2',
               style: abiliaTextTheme.bodyText2
@@ -33,7 +31,7 @@ class PageOne extends StatelessWidget {
                 ?.copyWith(color: AbiliaColors.black75),
           ),
           SizedBox(height: layout.startupPageLayout.textPickDistance),
-          const WiFiPickField(),
+          const SizedBox(width: 540, child: WiFiPickField()),
           FutureBuilder(
               future: Connectivity().checkConnectivity(),
               builder: ((context, snapshot) =>

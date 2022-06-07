@@ -19,9 +19,7 @@ class PageTwo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const MEMOplannerLogo(
-            height: 96,
-          ),
+          const MEMOplannerLogo(),
           SizedBox(height: layout.startupPageLayout.logoDistance),
           Text('${t.step} 2/2',
               style: abiliaTextTheme.bodyText2

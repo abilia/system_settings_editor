@@ -117,9 +117,7 @@ class ExtendedMEMOplannerLogo extends StatelessWidget {
                     builder: (context) => const BackendSwitchesDialog(),
                   );
                 },
-                child: const MEMOplannerLogo(
-                  height: 100,
-                ),
+                child: const MEMOplannerLogo(),
               ),
       ),
     );
@@ -127,23 +125,30 @@ class ExtendedMEMOplannerLogo extends StatelessWidget {
 }
 
 class MEMOplannerLogo extends StatelessWidget {
-  final double height;
   const MEMOplannerLogo({
     Key? key,
-    required this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: FadeInImage(
-        fadeInDuration: const Duration(milliseconds: 50),
-        fadeInCurve: Curves.linear,
-        placeholder: MemoryImage(kTransparentImage),
-        image: AssetImage(
-          'assets/graphics/${Config.flavor.id}/logo.png',
-        ),
+    return Image(
+      image: AssetImage(
+        'assets/graphics/${Config.flavor.id}/logo.png',
+      ),
+    );
+  }
+}
+
+class MEMOplannerLogoLarge extends StatelessWidget {
+  const MEMOplannerLogoLarge({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      image: AssetImage(
+        'assets/graphics/${Config.flavor.id}/logo_large.png',
       ),
     );
   }

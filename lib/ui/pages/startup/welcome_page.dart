@@ -18,8 +18,7 @@ class WelcomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const MEMOplannerLogo(
-            height: 164,
+          const MEMOplannerLogoLarge(
           ),
           SizedBox(height: layout.formPadding.largeGroupDistance),
           Text(t.welcome,
