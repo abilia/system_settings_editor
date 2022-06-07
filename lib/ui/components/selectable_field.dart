@@ -2,7 +2,7 @@ import 'package:seagull/ui/all.dart';
 
 class SelectableField extends StatelessWidget {
   final Text text;
-  final double? heigth, width;
+  final double? height, width;
   final Color? color;
   final bool selected;
   final GestureTapCallback onTap;
@@ -13,27 +13,24 @@ class SelectableField extends StatelessWidget {
     required this.onTap,
     required this.text,
     this.color,
-    this.heigth,
+    this.height,
     this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bool hasColor = this.color != null;
     final color = this.color ?? AbiliaColors.white;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final selectedOuterDecoration = selected
         ? selectedBoxDecoration.copyWith(
-            color: hasColor ? scaffoldBackgroundColor : color)
+            color: this.color != null ? scaffoldBackgroundColor : color)
         : BoxDecoration(
             color: color,
             borderRadius: borderRadius,
           );
 
-    final outerBoxPadding = selected
-        ? const EdgeInsets.all(
-            3) // TODO add this inset to layout.selectableField
-        : EdgeInsets.zero;
+    final outerBoxPadding =
+        selected ? layout.selectableField.boxPadding : EdgeInsets.zero;
 
     final innerDecoration = BoxDecoration(
       color: color,
@@ -78,7 +75,7 @@ class SelectableField extends StatelessWidget {
             clipBehavior: Clip.none,
             children: <Widget>[
               Ink(
-                height: heigth ?? layout.selectableField.height,
+                height: height ?? layout.selectableField.height,
                 width: width,
                 decoration: selectedOuterDecoration,
                 padding: outerBoxPadding,

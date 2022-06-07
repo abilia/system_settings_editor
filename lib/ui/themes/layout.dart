@@ -1117,6 +1117,7 @@ class SelectableFieldLayout {
       textRightPadding,
       textTopPadding;
   final EdgeInsets padding;
+  final EdgeInsets boxPadding;
 
   const SelectableFieldLayout({
     this.height = 48,
@@ -1126,6 +1127,7 @@ class SelectableFieldLayout {
     this.textRightPadding = 26,
     this.textTopPadding = 10,
     this.padding = const EdgeInsets.all(4),
+    this.boxPadding = const EdgeInsets.all(3),
   });
 }
 
