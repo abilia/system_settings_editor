@@ -6,7 +6,7 @@ class MediumLayout extends Layout {
     LargeActionButtonLayout? actionButton,
     LargeClockLayout? clockLayout,
     FontSize? fontSize,
-    PhotoCalendarLayout? photoCalendarLayout,
+    MediumPhotoCalendarLayout? photoCalendarLayout,
   }) : super(
           radius: 18,
           appBar: appBar ?? const MediumAppBarLayout(),

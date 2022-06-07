@@ -9,6 +9,7 @@ class PhotoCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _layout = layout.photoCalendarLayout;
     final state = context.watch<MemoplannerSettingBloc>().state;
     final currentTime = context.watch<ClockBloc>().state;
     final theme = weekdayTheme(
@@ -18,9 +19,11 @@ class PhotoCalendarPage extends StatelessWidget {
     );
     final style = GoogleFonts.roboto(
       textStyle: TextStyle(
-        fontSize: layout.photoCalendarLayout.digitalClockFontSize,
+        fontSize: state.clockType == ClockType.digital
+            ? _layout.digitalClockFontSizeLarge
+            : _layout.digitalClockFontSize,
         height: 1,
-        fontWeight: layout.photoCalendarLayout.digitalClockFontWeight,
+        fontWeight: _layout.digitalClockFontWeight,
         leadingDistribution: TextLeadingDistribution.even,
       ),
     );
@@ -33,7 +36,7 @@ class PhotoCalendarPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                height: layout.photoCalendarLayout.clockRowHeight,
+                height: _layout.clockRowHeight,
                 color: theme.color,
                 child: Stack(
                   children: [
@@ -42,25 +45,24 @@ class PhotoCalendarPage extends StatelessWidget {
                       children: [
                         if (state.clockType != ClockType.digital)
                           SizedBox(
-                            height: layout.photoCalendarLayout.analogClockSize +
+                            height: _layout.analogClockSize +
                                 layout.clock.borderWidth * 2,
-                            width: layout.photoCalendarLayout.analogClockSize,
+                            width: _layout.analogClockSize,
                             child: const FittedBox(child: AnalogClock()),
                           ),
                         if (state.clockType == ClockType.analogueDigital)
-                          SizedBox(
-                              width: layout.photoCalendarLayout.clockDistance),
+                          SizedBox(width: _layout.clockDistance),
                         if (state.clockType != ClockType.analogue)
                           DigitalClock(style: style),
                       ],
                     ).pad(
                       state.clockType == ClockType.digital
-                          ? layout.photoCalendarLayout.digitalClockPadding
-                          : layout.photoCalendarLayout.analogClockPadding,
+                          ? _layout.digitalClockPadding
+                          : _layout.analogClockPadding,
                     ),
                     Positioned(
-                      bottom: layout.photoCalendarLayout.backButtonPosition.dy,
-                      right: layout.photoCalendarLayout.backButtonPosition.dx,
+                      bottom: _layout.backButtonPosition.dy,
+                      right: _layout.backButtonPosition.dx,
                       child: IconActionButton(
                         onPressed: () {
                           Navigator.of(context)
