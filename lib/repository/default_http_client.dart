@@ -75,10 +75,12 @@ class ClientWithDefaultHeaders extends BaseClient {
 
   @override
   Future<StreamedResponse> send(BaseRequest request) {
-    final token = loginDb.getToken() ?? '';
-    return _inner.send(
-        (request..headers[HttpHeaders.userAgentHeader] = userAgent)
-          ..headers['X-Auth-Token'] = token);
+    request.headers[HttpHeaders.userAgentHeader] = userAgent;
+    if (request.url.path.contains('/api/')) {
+      final token = loginDb.getToken() ?? '';
+      request.headers['X-Auth-Token'] = token;
+    }
+    return _inner.send(request);
   }
 
   Future<void> _renewToken(String host) async {
