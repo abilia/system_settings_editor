@@ -1,6 +1,5 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
-import 'package:seagull/utils/copied_auth_providers.dart';
 
 class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
@@ -73,7 +72,12 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                                             ? t.noVoicesInstalled
                                             : t.installingVoice
                                         : state.voice),
-                                    onTap: () => _showVoicesPage(context),
+                                    onTap: () async =>
+                                        await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => const VoicesPage(),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -193,18 +197,5 @@ class SpeechSupportSettingsPage extends StatelessWidget {
 
   double _progressToSpeechRate(double progress) {
     return 100 + progress * 10;
-  }
-
-  void _showVoicesPage(BuildContext context) async {
-    final authProviders = copiedAuthProviders(context);
-
-    await Navigator.of(context).push<String?>(
-      MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
-          providers: authProviders,
-          child: const VoicesPage(),
-        ),
-      ),
-    );
   }
 }
