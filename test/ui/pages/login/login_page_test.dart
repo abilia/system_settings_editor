@@ -369,14 +369,11 @@ void main() {
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
-  testWidgets('Cant press OK with too short password',
-      (WidgetTester tester) async {
+  testWidgets('Cant press OK with empty password', (WidgetTester tester) async {
     await tester.pumpApp();
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(PasswordInput), warnIfMissed: false);
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(TestKey.input), '7seven7');
     await tester.pumpAndSettle();
     final button = tester.widget<OkButton>(find.byType(OkButton));
     expect(button.onPressed, null);
