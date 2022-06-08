@@ -1,6 +1,7 @@
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
+import 'package:seagull/utils/all.dart';
 
 class TitleWiz extends StatefulWidget {
   const TitleWiz({Key? key}) : super(key: key);
@@ -16,7 +17,8 @@ class _TitleWizState extends StateWithFocusOnResume<TitleWiz> {
   void initState() {
     super.initState();
     activity = context.read<EditActivityCubit>().state.activity;
-    controller = TextEditingController(text: activity.title);
+    controller =
+        SpokenTextEditController.ifApplicable(context, text: activity.title);
   }
 
   @override

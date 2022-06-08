@@ -1,6 +1,6 @@
 name: seagull
 description: The seagull app.
-version: 1.4.0
+version: 4.0.0
 publish_to: none
 
 environment:
@@ -36,7 +36,7 @@ dependencies:
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git
-      ref: flutter_local_notifications-v9.4.0-fork-2.4
+      ref: flutter_local_notifications-v9.5.3+1-fork-2.5
       path: flutter_local_notifications/
   flutter_native_timezone: ^2.0.0
   flutter_ringtone_player: ^3.1.0

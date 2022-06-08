@@ -145,6 +145,12 @@ void main() {
                 ),
               ),
               BlocProvider<TimerCubit>.value(value: mockTimerCubit),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
+              ),
+              BlocProvider<VoicesCubit>(
+                create: (context) => FakeVoicesCubit(),
+              ),
             ],
             child: child!,
           ),
@@ -1091,6 +1097,9 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
+        await tester.dragFrom(tester.getCenter(find.byType(EditChecklistView)),
+            const Offset(0, -50));
+        await tester.pump();
         await tester.tap(find.text(questions[2]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
@@ -2169,6 +2178,36 @@ text''';
       // Assert correct options
       expect(find.byKey(TestKey.thisDayAndForward), findsOneWidget);
       expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
+    });
+
+    testWidgets('changing recurrence type does not change end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+          title: 'Title',
+          startTime: startTime,
+          recurs: Recurs.raw(
+            Recurs.typeWeekly,
+            Recurs.allDaysOfWeek,
+            startTime.add(30.days()).millisecondsSinceEpoch,
+          ));
+
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to monthly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- end date is still 30 days after startTime
+      expect(find.text('March 11, 2020'), findsOneWidget);
     });
   });
 

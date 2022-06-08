@@ -127,25 +127,26 @@ class DefaultTextInput extends StatefulWidget {
 }
 
 class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
-  late TextEditingController controller;
+  late TextEditingController _controller;
   bool _validInput = false;
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text: widget.text);
-    controller.addListener(onTextValueChanged);
-    _validInput = widget.inputValid(controller.text);
+    _controller =
+        SpokenTextEditController.ifApplicable(context, text: widget.text);
+    _controller.addListener(onTextValueChanged);
+    _validInput = widget.inputValid(_controller.text);
   }
 
   @override
   void dispose() {
-    controller.removeListener(onTextValueChanged);
-    controller.dispose();
+    _controller.removeListener(onTextValueChanged);
+    _controller.dispose();
     super.dispose();
   }
 
   void onTextValueChanged() {
-    final valid = widget.inputValid(controller.text);
+    final valid = widget.inputValid(_controller.text);
     if (valid != _validInput) {
       setState(() {
         _validInput = valid;
@@ -185,7 +186,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
                       Expanded(
                         child: TextField(
                           key: TestKey.input,
-                          controller: controller,
+                          controller: _controller,
                           keyboardType: widget.keyboardType,
                           inputFormatters: widget.inputFormatters,
                           textCapitalization: widget.textCapitalization,
@@ -202,7 +203,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
                         ),
                       ),
                       TtsPlayButton(
-                        controller: controller,
+                        controller: _controller,
                         padding: EdgeInsets.only(
                           left: layout.defaultTextInputPage
                               .textFieldActionButtonSpacing,
@@ -227,7 +228,7 @@ class _DefaultInputPageState extends StateWithFocusOnResume<DefaultTextInput> {
   }
 
   void _returnNewText() {
-    Navigator.of(context).maybePop(controller.text);
+    Navigator.of(context).maybePop(_controller.text);
   }
 }
 

@@ -5,7 +5,7 @@ class AbiliaSlider extends StatelessWidget {
   final ValueChanged<double>? onChanged;
   final ValueChanged<double>? onChangeEnd;
   final Widget? leading;
-  final double? heigth, width;
+  final double? height, width;
   final double value;
   final int? divisions;
   final double min, max;
@@ -16,7 +16,7 @@ class AbiliaSlider extends StatelessWidget {
     this.onChanged,
     this.onChangeEnd,
     this.leading,
-    this.heigth,
+    this.height,
     this.width,
     this.value = 1.0,
     this.divisions,
@@ -28,9 +28,10 @@ class AbiliaSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     final leading = this.leading;
     return Container(
-      height: heigth ?? defaultHeight,
+      height: height ?? defaultHeight,
       width: width,
-      decoration: whiteBoxDecoration,
+      decoration:
+          onChanged != null ? whiteBoxDecoration : disabledBoxDecoration,
       padding: EdgeInsets.only(
         left: layout.slider.leftPadding,
         right: layout.slider.rightPadding,

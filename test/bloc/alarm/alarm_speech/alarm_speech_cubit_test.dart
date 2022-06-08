@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
@@ -15,7 +16,6 @@ import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late MockUserFileCubit mockUserFileCubit;
   group('AlarmSpeechCubit', () {
     final startTime = DateTime(2021, 10, 15, 09, 29);
     final day = DateTime(2021, 10, 15);
@@ -59,14 +59,16 @@ void main() {
         MethodChannel('xyz.luan/audioplayers');
     final List<MethodCall> localNotificationLog = <MethodCall>[];
     final List<MethodCall> audioLog = <MethodCall>[];
-
     List<ActiveNotification> activeNotifications = [];
+    late MockUserFileCubit mockUserFileCubit;
+    late StreamController<Touch> touchStream;
 
     setUpAll(() {
       registerFallbackValues();
     });
 
     setUp(() async {
+      touchStream = StreamController<Touch>();
       localNotificationLog.clear();
       localNotificationChannel.setMockMethodCallHandler((methodCall) async {
         localNotificationLog.add(methodCall);
@@ -94,16 +96,17 @@ void main() {
     });
 
     tearDown(() {
+      touchStream.close();
       activeNotifications = [];
       clearNotificationSubject();
     });
 
     blocTest(
-      'emits nothing [] when nothing is added',
+      'emits nothing when nothing is added',
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        selectedNotificationStream: selectNotificationSubject,
+        touchStream: touchStream.stream,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
@@ -118,13 +121,13 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarmNoSound,
         alarmSettings: const AlarmSettings(),
-        selectedNotificationStream: selectNotificationSubject,
+        touchStream: touchStream.stream,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
       ),
-      expect: () => [const AlarmSpeechPlayed()],
+      expect: () => [AlarmSpeechState.played],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -144,6 +147,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
+        touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -151,7 +155,7 @@ void main() {
         ),
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
-      expect: () => [const AlarmSpeechPlayed()],
+      expect: () => [AlarmSpeechState.played],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -171,6 +175,7 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
+        touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
@@ -186,14 +191,32 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
-        selectedNotificationStream: selectNotificationSubject,
+        touchStream: touchStream.stream,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
-      expect: () => [const AlarmSpeechPlayed()],
+      expect: () => [AlarmSpeechState.played],
+      verify: (_) => () {
+        expect(audioLog, hasLength(1));
+        expect(audioLog.single.method, 'play');
+      },
+    );
+
+    blocTest(
+      'emits AlarmPlayed when screen is tapped',
+      build: () => AlarmSpeechCubit(
+        alarm: startAlarm,
+        alarmSettings: const AlarmSettings(),
+        touchStream: (touchStream..add(Touch.down)).stream,
+        soundCubit: SoundCubit(
+          storage: FakeFileStorage(),
+          userFileCubit: mockUserFileCubit,
+        ),
+      ),
+      expect: () => [AlarmSpeechState.played],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -205,13 +228,14 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
+        touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         ),
       ),
-      expect: () => [const AlarmSpeechPlayed()],
+      expect: () => [AlarmSpeechState.played],
       verify: (_) => () {
         expect(audioLog, hasLength(1));
         expect(audioLog.single.method, 'play');
@@ -223,13 +247,13 @@ void main() {
       build: () => AlarmSpeechCubit(
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
-        selectedNotificationStream: selectNotificationSubject,
+        touchStream: touchStream.stream,
         soundCubit: SoundCubit(
           storage: FakeFileStorage(),
           userFileCubit: mockUserFileCubit,
         )..play(speechFile),
       ),
-      expect: () => [const AlarmSpeechPlayed()],
+      expect: () => [AlarmSpeechState.played],
     );
   });
 }

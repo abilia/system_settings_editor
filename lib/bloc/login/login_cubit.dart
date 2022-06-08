@@ -79,7 +79,9 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  static bool usernameValid(String username) => username.length > 2;
+  static const minUsernameLenght = 3;
+  static bool usernameValid(String username) =>
+      username.length >= minUsernameLenght;
 
-  static bool passwordValid(String password) => password.length > 7;
+  static bool passwordValid(String password) => password.isNotEmpty;
 }

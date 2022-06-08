@@ -13,25 +13,18 @@ class PlaySoundButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SoundCubit, SoundState>(
-      buildWhen: (previous, current) =>
-          previous.runtimeType != current.runtimeType ||
-          (previous is SoundPlaying &&
-              current is SoundPlaying &&
-              previous.currentSound != current.currentSound),
-      builder: (context, state) {
-        final isPlaying = state is SoundPlaying && state.currentSound == sound;
-        return IconActionButton(
+  Widget build(BuildContext context) =>
+      BlocSelector<SoundCubit, SoundState, bool>(
+        selector: (state) =>
+            state is SoundPlaying && state.currentSound == sound,
+        builder: (context, isPlaying) => IconActionButton(
           style: buttonStyle ?? actionButtonStyleDark,
-          onPressed: isPlaying
-              ? context.read<SoundCubit>().stopSound
-              : () => context.read<SoundCubit>().play(sound),
+          onPressed: () => isPlaying
+              ? context.read<SoundCubit>().stopSound()
+              : context.read<SoundCubit>().play(sound),
           child: Icon(
             isPlaying ? AbiliaIcons.stop : AbiliaIcons.playSound,
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
 }

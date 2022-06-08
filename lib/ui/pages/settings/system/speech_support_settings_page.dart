@@ -136,6 +136,11 @@ class SpeechSupportSettingsPage extends StatelessWidget {
                       ),
                       Divider(height: DividerTheme.of(context).thickness),
                       SwitchField(
+                        onChanged: state.voice.isEmpty
+                            ? null
+                            : (on) => context
+                                .read<SpeechSettingsCubit>()
+                                .setSpeakEveryWord(on),
                         value: state.speakEveryWord,
                         child: Text(t.speakEveryWord),
                       ).pad(
@@ -175,7 +180,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   }
 
   bool _disabledIfNoDownloadedVoice(BuildContext context) {
-    if (context.read<VoicesCubit>().state.downloaded.isEmpty) {
+    if (context.read<VoicesCubit>().state.downloaded.isEmpty &&
+        context.read<VoicesCubit>().state.downloading.isEmpty) {
       context.read<SpeechSettingsCubit>().setVoice('');
       context.read<SettingsCubit>().setTextToSpeech(false);
       return true;

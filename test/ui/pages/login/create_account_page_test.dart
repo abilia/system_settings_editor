@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull/bloc/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -74,11 +75,12 @@ void main() {
           await tester.pumpAndSettle();
         }
 
-        const toShortUsername = 'ab',
+        const tooShortUsername = 'ab',
             username = 'abc',
-            takenUsername = 'taken',
-            toShortPassword = 'abcdefg',
-            password = 'abcdefgh';
+            takenUsername = 'taken';
+        final tooShortPassword =
+                'p' * (CreateAccountCubit.minPasswordCreateLength - 1),
+            password = 'p' * CreateAccountCubit.minPasswordCreateLength;
 
         await tester.pumpApp();
         await tester.tap(find.byType(GoToCreateAccountButton));
@@ -86,7 +88,7 @@ void main() {
 
         await _expectErrorDialog(tester, translate.enterUsername);
 
-        await tester.ourEnterText(find.byType(UsernameInput), toShortUsername);
+        await tester.ourEnterText(find.byType(UsernameInput), tooShortUsername);
 
         await _expectErrorDialog(tester, translate.usernameToShort);
 
@@ -95,7 +97,7 @@ void main() {
         await _expectErrorDialog(tester, translate.enterPassword);
 
         await tester.ourEnterText(
-            find.byKey(TestKey.createAccountPassword), toShortPassword);
+            find.byKey(TestKey.createAccountPassword), tooShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordToShort);
 
@@ -106,7 +108,7 @@ void main() {
             matcher: findsNWidgets(2));
 
         await tester.ourEnterText(
-            find.byKey(TestKey.createAccountPasswordConfirm), toShortPassword);
+            find.byKey(TestKey.createAccountPasswordConfirm), tooShortPassword);
 
         await _expectErrorDialog(tester, translate.passwordMismatch);
 

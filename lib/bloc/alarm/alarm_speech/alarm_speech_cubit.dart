@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/logging.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/utils/all.dart';
+
+enum AlarmSpeechState { unplayed, played }
 
 class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   static const minSpeechDelay = Duration(milliseconds: 4500);
@@ -18,7 +19,8 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   final NewAlarm alarm;
   final SoundCubit soundCubit;
 
-  late final StreamSubscription<ActivityAlarm?> _notificationSubscription;
+  late final StreamSubscription<ActivityAlarm?>? _notificationSubscription;
+  late final StreamSubscription<Touch> _touchSubscription;
   late final StreamSubscription<SoundState> _speechSubscription;
   late final StreamSubscription _delayedSubscription;
 
@@ -26,8 +28,9 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     required this.alarm,
     required this.soundCubit,
     required AlarmSettings alarmSettings,
-    required Stream<NotificationAlarm> selectedNotificationStream,
-  }) : super(const AlarmSpeechUnplayed()) {
+    required Stream<Touch> touchStream,
+    Stream<NotificationAlarm>? selectedNotificationStream,
+  }) : super(AlarmSpeechState.unplayed) {
     _log.fine('$alarm');
     final speechDelay = _alarmDuration(alarmSettings);
 
@@ -36,8 +39,10 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     _delayedSubscription =
         Stream.fromFuture(Future.delayed(speechDelay)).listen(_maybePlay);
 
+    _touchSubscription = touchStream.take(1).listen(_maybePlay);
+
     _notificationSubscription = selectedNotificationStream
-        .where((event) => event is ActivityAlarm)
+        ?.where((event) => event is ActivityAlarm)
         .cast<ActivityAlarm>()
         .where((notificationAlarm) => notificationAlarm == alarm)
         .listen(_maybePlay);
@@ -45,17 +50,17 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     _speechSubscription = soundCubit.stream
         .whereType<SoundPlaying>()
         .take(1)
-        .listen((_) => emit(const AlarmSpeechPlayed()));
+        .listen((_) => emit(AlarmSpeechState.played));
   }
 
   Future<void> _maybePlay(parameter) async {
     _log.fine('maybePlay $parameter');
-    if (state is AlarmSpeechUnplayed) {
+    if (state == AlarmSpeechState.unplayed) {
       final playNow =
           parameter is! ActivityAlarm || !await _notificationActive();
       if (playNow) {
         _log.fine('playing AlarmSpeech');
-        emit(const AlarmSpeechPlayed());
+        emit(AlarmSpeechState.played);
         soundCubit.play(alarm.speech);
       } else {
         _log.finer('has ongoing notification, ignoring');
@@ -93,23 +98,10 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
 
   @override
   Future<void> close() async {
-    await _notificationSubscription.cancel();
+    await _notificationSubscription?.cancel();
     await _speechSubscription.cancel();
     await _delayedSubscription.cancel();
+    await _touchSubscription.cancel();
     return super.close();
   }
-}
-
-abstract class AlarmSpeechState extends Equatable {
-  const AlarmSpeechState();
-  @override
-  List<Object> get props => [];
-}
-
-class AlarmSpeechUnplayed extends AlarmSpeechState {
-  const AlarmSpeechUnplayed();
-}
-
-class AlarmSpeechPlayed extends AlarmSpeechState {
-  const AlarmSpeechPlayed();
 }
