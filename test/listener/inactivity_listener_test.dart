@@ -46,6 +46,7 @@ void main() {
         )
         ..battery = FakeBattery()
         ..database = FakeDatabase()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 
@@ -246,6 +247,7 @@ void main() {
           stream: clockStreamController.stream,
         )
         ..battery = FakeBattery()
+        ..deviceDb = FakeDeviceDb()
         ..init();
     });
 

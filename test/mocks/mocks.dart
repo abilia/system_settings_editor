@@ -10,6 +10,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/storage/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:mocktail/mocktail.dart';
 
@@ -86,5 +87,7 @@ class Notification {
 class MockConnectivity extends Mock implements Connectivity {}
 
 class MockBattery extends Mock implements Battery {}
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}
 
 class MockSpeechSettingsCubit extends Mock implements SpeechSettingsCubit {}

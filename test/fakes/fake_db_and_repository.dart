@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:mocktail/mocktail.dart';
 import 'package:seagull/db/all.dart';
+import '../mocks/mocks.dart';
 import 'fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -186,4 +186,19 @@ class FakeVoiceDb extends Fake implements VoiceDb {
 
   @override
   double get speechRate => 100;
+}
+
+class FakeDeviceDb extends DeviceDb {
+  FakeDeviceDb() : super(MockSharedPreferences());
+
+  @override
+  Future<String> getClientId() async {
+    return 'clientId';
+  }
+
+  @override
+  String get serialId => 'serialId';
+
+  @override
+  String get startGuideCompleted => 'yes';
 }

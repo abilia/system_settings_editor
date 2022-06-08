@@ -69,6 +69,7 @@ void main() {
       ..database = FakeDatabase()
       ..sortableDb = mockSortableDb
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

@@ -46,6 +46,7 @@ void main() {
       ..database = FakeDatabase()
       ..genericDb = FakeGenericDb()
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

@@ -150,6 +150,7 @@ void main() {
       ..database = FakeDatabase()
       ..battery = FakeBattery()
       ..timerDb = mockTimerDb
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 
