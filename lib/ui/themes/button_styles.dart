@@ -78,6 +78,15 @@ final textButtonStyle = baseButtonStyle.copyWith(
   ),
 );
 
+final startPageButton = ButtonStyle(
+  backgroundColor: buttonBackgroundGreen,
+  shape: noBorder,
+  foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
+  padding: MaterialStateProperty.all(
+    layout.button.textButtonInsets,
+  ),
+);
+
 final textButtonStyleGreen = textButtonStyle.copyWith(
   backgroundColor: buttonBackgroundGreen,
 );

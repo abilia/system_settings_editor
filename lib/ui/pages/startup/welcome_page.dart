@@ -18,9 +18,8 @@ class WelcomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const MEMOplannerLogoLarge(
-          ),
-          SizedBox(height: layout.formPadding.largeGroupDistance),
+          const MEMOplannerLogoLarge(),
+          SizedBox(height: layout.startupPageLayout.welcomeLogoDistance),
           Text(t.welcome,
               style: abiliaTextTheme.headline4
                   ?.copyWith(color: AbiliaColors.black75)),
@@ -28,14 +27,18 @@ class WelcomePage extends StatelessWidget {
           Text(t.welcomeText,
               style: abiliaTextTheme.bodyText2
                   ?.copyWith(color: AbiliaColors.black75)),
-          const SizedBox(height: 64),
-          TextButton(
-            style: textButtonStyleGreen,
-            onPressed: () {
-              pageController.nextPage(
-                  duration: 500.milliseconds(), curve: Curves.easeOutQuad);
-            },
-            child: const Text('Start'),
+          SizedBox(height: layout.startupPageLayout.startButtonDistance),
+          SizedBox(
+            height: layout.startupPageLayout.buttonHeight,
+            width: layout.startupPageLayout.welcomeButtonWidth,
+            child: TextButton(
+              style: startPageButton,
+              onPressed: () {
+                pageController.nextPage(
+                    duration: 500.milliseconds(), curve: Curves.easeOutQuad);
+              },
+              child: Text(t.start),
+            ),
           ),
           const Spacer(),
           Row(

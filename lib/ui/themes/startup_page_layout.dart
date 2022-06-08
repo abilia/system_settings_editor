@@ -1,15 +1,31 @@
 class StartupPageLayout {
   const StartupPageLayout({
+    this.welcomeLogoDistance = 48,
+    this.startButtonDistance = 64,
+    this.welcomeButtonWidth = 412,
+    this.contentWidth = 540,
+    this.buttonHeight = 96,
     this.logoDistance = 32,
     this.textPickDistance = 56,
   });
 
-  final double logoDistance, textPickDistance;
+  final double welcomeLogoDistance,
+      startButtonDistance,
+      welcomeButtonWidth,
+      buttonHeight,
+      contentWidth,
+      logoDistance,
+      textPickDistance;
 }
 
 class StartupPageLayoutMedium extends StartupPageLayout {
   const StartupPageLayoutMedium()
       : super(
+          welcomeLogoDistance: 48,
+          startButtonDistance: 64,
+          welcomeButtonWidth: 412,
+          contentWidth: 540,
+          buttonHeight: 96,
           logoDistance: 32,
           textPickDistance: 56,
         );

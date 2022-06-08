@@ -31,26 +31,35 @@ class PageOne extends StatelessWidget {
                 ?.copyWith(color: AbiliaColors.black75),
           ),
           SizedBox(height: layout.startupPageLayout.textPickDistance),
-          const SizedBox(width: 540, child: WiFiPickField()),
-          FutureBuilder(
+          SizedBox(
+              width: layout.startupPageLayout.contentWidth,
+              child: const WiFiPickField()),
+          StreamBuilder<ConnectivityResult>(
+            stream: Connectivity().onConnectivityChanged,
+            builder: (context, _) => FutureBuilder(
               future: Connectivity().checkConnectivity(),
               builder: ((context, snapshot) =>
                   snapshot.hasData && snapshot.data != ConnectivityResult.none
                       ? Padding(
                           padding: EdgeInsets.only(
                               top: layout.startupPageLayout.textPickDistance),
-                          child: TextButton(
-                            style: textButtonStyleGreen,
-                            onPressed: () {
-                              pageController.nextPage(
-                                duration: 500.milliseconds(),
-                                curve: Curves.easeOutQuad,
-                              );
-                            },
-                            child: Text(t.next),
+                          child: SizedBox(
+                            width: layout.startupPageLayout.contentWidth,
+                            child: TextButton(
+                              style: textButtonStyleGreen,
+                              onPressed: () {
+                                pageController.nextPage(
+                                  duration: 500.milliseconds(),
+                                  curve: Curves.easeOutQuad,
+                                );
+                              },
+                              child: Text(t.next),
+                            ),
                           ),
                         )
-                      : Container())),
+                      : Container()),
+            ),
+          ),
           const Spacer(),
           Row(
             children: const [

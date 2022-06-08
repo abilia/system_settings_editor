@@ -32,7 +32,7 @@ class PageTwo extends StatelessWidget {
           ),
           SizedBox(height: layout.startupPageLayout.textPickDistance),
           SizedBox(
-            width: 540,
+            width: layout.startupPageLayout.contentWidth,
             child: BlocBuilder<SpeechSettingsCubit, SpeechSettingsState>(
               builder: (context, state) => PickField(
                 leading: const Icon(AbiliaIcons.speakText),
