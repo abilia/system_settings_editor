@@ -57,7 +57,9 @@ final buttonBackgroundGreen = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
-final noBorderShape = RoundedRectangleBorder(borderRadius: borderRadius);
+final noBorderShape = RoundedRectangleBorder(
+    borderRadius:
+        BorderRadius.all(Radius.circular(layout.actionButton.radius)));
 final noBorder = MaterialStateProperty.all(noBorderShape);
 
 final largeBorderRadius =
@@ -151,6 +153,9 @@ final _actionButtonStyle = ButtonStyle(
 final actionButtonStyleRed = _actionButtonStyle.copyWith(
   backgroundColor: buttonBackgroundRed,
   foregroundColor: foregroundLight,
+  minimumSize: MaterialStateProperty.all(
+    Size(layout.actionButton.largeSize, layout.actionButton.largeSize),
+  ),
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
