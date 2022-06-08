@@ -3,13 +3,13 @@ import 'package:seagull/config.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 
-class ProductionGuideCubit extends Cubit<StartupState> {
-  ProductionGuideCubit({
+class StartupCubit extends Cubit<StartupState> {
+  StartupCubit({
     required this.deviceRepository,
   }) : super(Config.isMP && deviceRepository.serialId.isEmpty
             ? ProductionGuide()
             : Config.isMP && !deviceRepository.isStartGuideCompleted
-                ? StartupGuide()
+                ? WelcomeGuide()
                 : StartupDone());
 
   final DeviceRepository deviceRepository;
@@ -21,7 +21,7 @@ class ProductionGuideCubit extends Cubit<StartupState> {
           await deviceRepository.verifyDevice(serialId, clientId);
       if (verifiedOk) {
         await deviceRepository.setSerialId(serialId);
-        emit(StartupGuide());
+        emit(WelcomeGuide());
       } else {
         emit(VerifySerialIdFailed('Serial id $serialId not found in myAbilia'));
       }
@@ -33,7 +33,7 @@ class ProductionGuideCubit extends Cubit<StartupState> {
 
   void skipProductionGuide() {
     deviceRepository.setSerialId('debugSerialId');
-    emit(StartupGuide());
+    emit(WelcomeGuide());
   }
 
   void startGuideDone() async {
@@ -46,7 +46,7 @@ abstract class StartupState {}
 
 class StartupDone extends StartupState {}
 
-class StartupGuide extends StartupState {}
+class WelcomeGuide extends StartupState {}
 
 class ProductionGuide extends StartupState {}
 

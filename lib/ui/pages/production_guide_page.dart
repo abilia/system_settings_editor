@@ -92,12 +92,12 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                       const SizedBox(height: 50),
                       TextButton(
                         onPressed: () => context
-                            .read<ProductionGuideCubit>()
+                            .read<StartupCubit>()
                             .verifySerialId(serialIdController.text),
                         child: const Text('Verify'),
                         style: textButtonStyleGreen,
                       ),
-                      BlocBuilder<ProductionGuideCubit, StartupState>(
+                      BlocBuilder<StartupCubit, StartupState>(
                         builder: (context, productionGuideState) =>
                             productionGuideState is VerifySerialIdFailed
                                 ? Text(productionGuideState.message)
@@ -128,9 +128,8 @@ class _DebugRow extends StatelessWidget {
         children: [
           if (!Config.release)
             ElevatedButton(
-                    onPressed: () => context
-                        .read<ProductionGuideCubit>()
-                        .skipProductionGuide(),
+                    onPressed: () =>
+                        context.read<StartupCubit>().skipProductionGuide(),
                     child: const Text('Skip production guide'))
                 .pad(const EdgeInsets.only(right: 20)),
           ElevatedButton(

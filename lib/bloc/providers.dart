@@ -288,7 +288,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => ProductionGuideCubit(
+            create: (context) => StartupCubit(
               deviceRepository: context.read<DeviceRepository>(),
             ),
           ),

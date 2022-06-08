@@ -80,7 +80,7 @@ class PageTwo extends StatelessWidget {
                 width: 264,
                 child: IconAndTextButton(
                   onPressed: () {
-                    context.read<ProductionGuideCubit>().startGuideDone();
+                    context.read<StartupCubit>().startGuideDone();
                   },
                   text: t.finsish,
                   icon: AbiliaIcons.ok,
