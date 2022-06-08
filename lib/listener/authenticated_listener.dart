@@ -111,8 +111,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
           CalendarInactivityListener(),
           ScreenSaverListener(),
           KeepScreenAwakeListener(),
-        ],
-        if (!Platform.isIOS && widget.newlyLoggedIn)
+        ] else if (!Platform.isIOS && widget.newlyLoggedIn)
           FullscreenAlarmPremissionListener(),
       ],
       child: widget.child,

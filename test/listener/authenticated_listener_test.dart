@@ -46,6 +46,8 @@ void main() {
     sortableStreamController = StreamController<SortableState>();
     sortableStream = sortableStreamController.stream.asBroadcastStream();
     when(() => sortableBloc.stream).thenAnswer((invocation) => sortableStream);
+    when(() => sortableBloc.addStarter(any()))
+        .thenAnswer((invocation) => Future.value(true));
 
     memoplannerSettingBloc = MockMemoplannerSettingBloc();
     when(() => memoplannerSettingBloc.state)
@@ -91,6 +93,7 @@ void main() {
                 BlocProvider.value(value: sortableBloc),
                 BlocProvider.value(value: timerCubit),
                 BlocProvider.value(value: memoplannerSettingBloc),
+                BlocProvider<SettingsCubit>(create: (c) => FakeSettingsCubit()),
               ],
               child: AuthenticatedListener(
                 newlyLoggedIn: state.newlyLoggedIn,
@@ -163,21 +166,24 @@ void main() {
 
   group('Starter set', () {
     testWidgets(
-        'Shows starter set dialog if newly logged in and user has no sortables',
-        (tester) async {
+        'Shows starter set dialog if newly logged in and user has no sortables, '
+        'call add when pressed Yes', (tester) async {
       // Arrange
       await tester.pumpWidget(_authListener(
           state: const Authenticated(userId: 7, newlyLoggedIn: true)));
 
       await tester.pumpAndSettle();
       // Act
-      sortableStreamController.add(
-        const SortablesLoaded(sortables: []),
-      );
+      sortableStreamController.add(const SortablesLoaded(sortables: []));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.byType(StartedSetDialog), findsOneWidget);
+      // Act press Yes
+      await tester.tap(find.byType(YesButton));
+      await tester.pumpAndSettle();
+
+      verify(() => sortableBloc.addStarter(any())).called(1);
     });
 
     testWidgets(
@@ -189,9 +195,7 @@ void main() {
 
       await tester.pumpAndSettle();
       // Act
-      sortableStreamController.add(
-        const SortablesLoaded(sortables: []),
-      );
+      sortableStreamController.add(const SortablesLoaded(sortables: []));
       await tester.pumpAndSettle();
 
       // Assert
@@ -212,7 +216,8 @@ void main() {
       // Act
       sortableStreamController.add(
         SortablesLoaded(
-            sortables: [Sortable.createNew(data: const NoteData())]),
+          sortables: [Sortable.createNew(data: const NoteData())],
+        ),
       );
       await tester.pumpAndSettle();
 

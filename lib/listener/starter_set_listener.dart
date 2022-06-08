@@ -15,6 +15,7 @@ class StarterSetListener extends BlocListener<SortableBloc, SortableState> {
             final language = Translator.of(context).locale.languageCode;
             final shouldAdd = await showViewDialog<bool>(
               context: context,
+              barrierDismissible: false,
               builder: (context) => const StartedSetDialog(),
             );
             if (shouldAdd == true) {

@@ -23,14 +23,14 @@ class StartedSetDialog extends StatelessWidget {
                   'assets/graphics/${Config.flavor.id}/starter_set.png',
                 ),
               ),
-              if (Config.isMP) SizedBox(height: 36) else SizedBox(height: 24),
+              SizedBox(height: layout.startedSetDialog.imageHeadingDistance),
               Tts(
                 child: Text(
                   translate.installStarterSet,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
-              if (Config.isMP) SizedBox(height: 16) else SizedBox(height: 9),
+              SizedBox(height: layout.startedSetDialog.headingBodyDistance),
               Tts(
                 child: Text(
                   translate.doYouWantToImportADefaultSet,

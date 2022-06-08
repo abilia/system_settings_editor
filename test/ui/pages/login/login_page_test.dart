@@ -47,6 +47,9 @@ void main() {
             fixed: true,
           ),
         ]));
+    when(() => sortableDb.insertAndAddDirty(any()))
+        .thenAnswer((_) => Future.value(true));
+    when(() => sortableDb.getAllDirty()).thenAnswer((_) => Future.value([]));
 
     GetItInitializer()
       ..sharedPreferences =
@@ -426,10 +429,12 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(FullscreenAlarmInfoDialog), findsOneWidget);
         expect(
-            find.byType(RequestFullscreenNotificationButton), findsOneWidget);
+          find.byType(RequestFullscreenNotificationButton),
+          findsOneWidget,
+        );
         await tester.tap(find.byType(RequestFullscreenNotificationButton));
         expect(requestedPermissions, contains(Permission.systemAlertWindow));
-      });
+      }, skip: Config.isMP);
 
       testWidgets(
           'when fullscreen notification IS granted: show NO FullscreenAlarmInfoDialog',
