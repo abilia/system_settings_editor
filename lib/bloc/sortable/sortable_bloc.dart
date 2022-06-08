@@ -18,6 +18,7 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   static final _log = Logger((SortableBloc).toString());
   final SortableRepository sortableRepository;
   late final StreamSubscription pushSubscription;
+  StreamSubscription? _refreshAfterAddedStarterSetSubscription;
   final SyncBloc syncBloc;
 
   SortableBloc({
@@ -165,14 +166,20 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
   }
 
   Future<bool> addStarter(String language) async {
-    Future.delayed(
-        const Duration(minutes: 1), () => add(const LoadSortables()));
-    return await sortableRepository.applyTemplate(language);
+    final success = await sortableRepository.applyTemplate(language);
+    if (success) {
+      _refreshAfterAddedStarterSetSubscription =
+          Stream.periodic(const Duration(seconds: 10))
+              .take(12)
+              .listen((_) => add(const LoadSortables()));
+    }
+    return success;
   }
 
   @override
   Future<void> close() async {
     await pushSubscription.cancel();
+    await _refreshAfterAddedStarterSetSubscription?.cancel();
     return super.close();
   }
 }

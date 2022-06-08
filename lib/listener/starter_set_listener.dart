@@ -10,6 +10,7 @@ class StarterSetListener extends BlocListener<SortableBloc, SortableState> {
               current is SortablesLoaded &&
               current.sortables.isEmpty,
           listener: (context, state) async {
+            final t = Translator.of(context).translate;
             final sortableBloc = context.read<SortableBloc>();
             final language = Translator.of(context).locale.languageCode;
             final shouldAdd = await showViewDialog<bool>(
@@ -17,9 +18,19 @@ class StarterSetListener extends BlocListener<SortableBloc, SortableState> {
               builder: (context) => const StartedSetDialog(),
             );
             if (shouldAdd == true) {
-              final result = await sortableBloc.addStarter(language);
-              if (!result) {
-                // TODO what?
+              final addedStarterSetSuccessfully =
+                  await sortableBloc.addStarter(language);
+              if (!addedStarterSetSuccessfully) {
+                showViewDialog(
+                  context: context,
+                  wrapWithAuthProviders: false,
+                  builder: (_) => ErrorDialog(
+                    text: t.unknownError,
+                    backNavigationWidget: OkButton(
+                      onPressed: Navigator.of(context).maybePop,
+                    ),
+                  ),
+                );
               }
             }
           },

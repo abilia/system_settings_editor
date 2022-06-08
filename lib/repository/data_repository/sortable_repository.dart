@@ -53,7 +53,6 @@ class SortableRepository extends DataRepository<Sortable> {
     return null;
   }
 
-  // TODO exception safet this function
   Future<bool> applyTemplate(
     String language, {
     String name = 'memoplanner',
@@ -63,10 +62,14 @@ class SortableRepository extends DataRepository<Sortable> {
       headers: jsonHeader,
     );
     if (temlateResponse.statusCode != 200) {
+      log.severe('could not get base-data set '
+          '${temlateResponse.statusCode} '
+          '${temlateResponse.body}');
       return false;
     }
 
-    final template = (temlateResponse.json() as List<dynamic>)
+    final templateResponseJson = temlateResponse.json() as List<dynamic>;
+    final template = templateResponseJson
         .exceptionSafeMap(
           BaseDataTemplate.fromJson,
           onException: log.logAndReturnNull,
@@ -76,13 +79,28 @@ class SortableRepository extends DataRepository<Sortable> {
           (t) => t.language == language && t.name.contains(name),
         );
 
-    if (template == null) return false;
+    if (template == null) {
+      log.severe(
+        'no templates applicable to $language in $templateResponseJson',
+      );
+
+      return false;
+    }
 
     final applyResponse = await client.post(
       '$baseUrl/api/v1/entity/$userId/apply-base-data/${template.id}'.toUri(),
       headers: jsonHeader,
     );
-
-    return applyResponse.statusCode == 200;
+    switch (applyResponse.statusCode) {
+      case 200:
+        log.info('succesfully applied $template to user $userId');
+        return true;
+      case 409:
+        log.warning(
+          'conflict when trying to apply starter set '
+          '${applyResponse.body}',
+        );
+    }
+    return false;
   }
 }
