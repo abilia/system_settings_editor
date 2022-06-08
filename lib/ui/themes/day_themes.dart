@@ -34,8 +34,8 @@ class DayTheme {
     Color color,
     Color secondaryColor, {
     Color? onSurface,
-    background = true,
-    isColor = true,
+    bool background = true,
+    bool isColor = true,
     Color? monthColor,
     Color monthSurfaceColor = AbiliaColors.white,
   }) : this._(
@@ -149,11 +149,15 @@ ThemeData _lightAppBarTheme = abiliaTheme.copyWith(
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
     systemOverlayStyle: SystemUiOverlayStyle.light,
   ),
-  textTheme: abiliaTextTheme.apply(
-    displayColor: AbiliaColors.white,
-    bodyColor: AbiliaColors.white,
-  ),
-  textButtonTheme: TextButtonThemeData(style: actionButtonStyleLight),
+  textTheme: abiliaTextTheme
+      .copyWith(
+        headline6: layout.appBar.textStyle,
+      )
+      .apply(
+        displayColor: AbiliaColors.white,
+        bodyColor: AbiliaColors.white,
+      ),
+  textButtonTheme: TextButtonThemeData(style: actionButtonStyleLightLarge),
 );
 
 ThemeData _darkAppBarTheme = abiliaTheme.copyWith(
@@ -161,5 +165,13 @@ ThemeData _darkAppBarTheme = abiliaTheme.copyWith(
   appBarTheme: abiliaTheme.appBarTheme.copyWith(
     systemOverlayStyle: SystemUiOverlayStyle.dark,
   ),
-  textButtonTheme: TextButtonThemeData(style: actionButtonStyleDark),
+  textTheme: abiliaTextTheme
+      .copyWith(
+        headline6: layout.appBar.textStyle,
+      )
+      .apply(
+        displayColor: AbiliaColors.black,
+        bodyColor: AbiliaColors.black,
+      ),
+  textButtonTheme: TextButtonThemeData(style: actionButtonStyleDarkLarge),
 );
