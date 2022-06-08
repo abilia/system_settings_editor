@@ -967,22 +967,6 @@ void main() {
 
         expect(find.byType(TimerAlarmPage), findsOneWidget);
       });
-
-      testWidgets('timer alarm is shown', (WidgetTester tester) async {
-        final t =
-            AbiliaTimer.createNew(startTime: timerStart, duration: 1.minutes());
-        when(() => mockTimerDb.getAllTimers())
-            .thenAnswer((_) => Future.value([t]));
-        when(() => mockTimerDb.getRunningTimersFrom(any()))
-            .thenAnswer((_) => Future.value([t]));
-
-        await tester.pumpWidget(App());
-        await tester.pumpAndSettle();
-        selectNotificationSubject.add(TimerAlarm(t));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(TimerAlarmPage), findsOneWidget);
-      });
     });
   });
 }
