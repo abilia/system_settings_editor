@@ -20,7 +20,7 @@ class LoginForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const ExtendedMEMOplannerLogo(),
+                const MEMOplannerLogoWithLoginProgress(),
                 SizedBox(height: layout.formPadding.groupBottomDistance),
                 Tts(
                   child: Text(
@@ -95,8 +95,8 @@ class UsernameInput extends StatelessWidget {
   }
 }
 
-class ExtendedMEMOplannerLogo extends StatelessWidget {
-  const ExtendedMEMOplannerLogo({Key? key}) : super(key: key);
+class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
+  const MEMOplannerLogoWithLoginProgress({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
