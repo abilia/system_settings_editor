@@ -1097,6 +1097,7 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
+        await tester.scrollDown();
         await tester.tap(find.text(questions[2]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
