@@ -6,6 +6,6 @@ class LargeLayout extends MediumLayout {
           appBar: const AppBarLayoutLarge(),
           actionButton: const ActionButtonLayoutLarge(),
           clockLayout: const ClockLayoutLarge(),
-          photoCalendarLayout: const LargePhotoCalendarLayout(),
+          photoCalendarLayout: const PhotoCalendarLayoutLarge(),
         );
 }

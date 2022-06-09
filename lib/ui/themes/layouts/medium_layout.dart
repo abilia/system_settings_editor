@@ -5,13 +5,13 @@ class MediumLayout extends Layout {
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
     ClockLayout? clockLayout,
-    MediumPhotoCalendarLayout? photoCalendarLayout,
+    PhotoCalendarLayoutMedium? photoCalendarLayout,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
           photoCalendarLayout:
-              photoCalendarLayout ?? const MediumPhotoCalendarLayout(),
+              photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
           menuPage: const MenuPageLayout(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
             crossAxisSpacing: 24,

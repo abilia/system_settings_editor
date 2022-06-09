@@ -88,7 +88,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
-  final MediumPhotoCalendarLayout photoCalendarLayout;
+  final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
     this.radius = 12,
@@ -160,7 +160,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
-    this.photoCalendarLayout = const MediumPhotoCalendarLayout(),
+    this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
   bool get go => runtimeType == _GoLayout;

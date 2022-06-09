@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
@@ -10,36 +9,16 @@ class PhotoCalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _layout = layout.photoCalendarLayout;
-    final state = context.watch<MemoplannerSettingBloc>().state;
-    final currentTime = context.watch<ClockBloc>().state;
+    final clockType = context
+        .select((MemoplannerSettingBloc settings) => settings.state.clockType);
+    final calendarDayColor = context.select(
+        (MemoplannerSettingBloc settings) => settings.state.calendarDayColor);
+    final weekday =
+        context.select((ClockBloc currentTime) => currentTime.state.weekday);
     final theme = weekdayTheme(
-      dayColor: state.calendarDayColor,
+      dayColor: calendarDayColor,
       languageCode: Localizations.localeOf(context).languageCode,
-      weekday: currentTime.weekday,
-    );
-    final style = GoogleFonts.roboto(
-      textStyle: TextStyle(
-        fontSize: state.clockType == ClockType.digital
-            ? _layout.digitalClockFontSizeLarge
-            : _layout.digitalClockFontSize,
-        height: 1,
-        fontWeight: _layout.digitalClockFontWeight,
-        leadingDistribution: TextLeadingDistribution.even,
-      ),
-    );
-
-    final _buttonStyle = theme.theme.textButtonTheme.style?.copyWith(
-      minimumSize:
-          MaterialStateProperty.all(Size.square(_layout.backButtonSize)),
-      shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled) ||
-            states.contains(MaterialState.pressed)) {
-          return noBorderShape.copyWith(
-              borderRadius: BorderRadius.circular(_layout.backButtonRadius));
-        }
-        return ligthShapeBorder.copyWith(
-            borderRadius: BorderRadius.circular(_layout.backButtonRadius));
-      }),
+      weekday: weekday,
     );
 
     return Theme(
@@ -57,20 +36,22 @@ class PhotoCalendarPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (state.clockType != ClockType.digital)
+                        if (clockType != ClockType.digital)
                           SizedBox(
                             height: _layout.analogClockSize +
                                 layout.clock.borderWidth * 2,
                             width: _layout.analogClockSize,
                             child: const FittedBox(child: AnalogClock()),
                           ),
-                        if (state.clockType == ClockType.analogueDigital)
+                        if (clockType == ClockType.analogueDigital)
                           SizedBox(width: _layout.clockDistance),
-                        if (state.clockType != ClockType.analogue)
-                          DigitalClock(style: style),
+                        if (clockType != ClockType.analogue)
+                          DigitalClock(
+                            style: _layout.textStyle(clockType),
+                          ),
                       ],
                     ).pad(
-                      state.clockType == ClockType.digital
+                      clockType == ClockType.digital
                           ? _layout.digitalClockPadding
                           : _layout.analogClockPadding,
                     ),
@@ -78,7 +59,9 @@ class PhotoCalendarPage extends StatelessWidget {
                       bottom: _layout.backButtonPosition.dy,
                       right: _layout.backButtonPosition.dx,
                       child: IconActionButton(
-                        style: _buttonStyle,
+                        style: theme.isLight
+                            ? actionButtonStyleLight
+                            : actionButtonStyleDark,
                         onPressed: () {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);

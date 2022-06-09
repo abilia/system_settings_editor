@@ -1,20 +1,31 @@
+import 'package:google_fonts/google_fonts.dart';
+import 'package:seagull/models/all.dart';
 import 'package:seagull/ui/all.dart';
 
 // PhotoCalendar not implemented in MPGO
-class MediumPhotoCalendarLayout {
+class PhotoCalendarLayoutMedium {
   final Size appBarSize;
   final EdgeInsets analogClockPadding, digitalClockPadding;
   final double clockDistance,
       clockRowHeight,
       analogClockSize,
       digitalClockFontSize,
-      digitalClockFontSizeLarge,
-      backButtonSize = 82,
-      backButtonRadius = 20;
+      digitalClockFontSizeLarge;
   final FontWeight digitalClockFontWeight;
   final Offset backButtonPosition;
 
-  const MediumPhotoCalendarLayout({
+  TextStyle textStyle(ClockType clockType) => GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontSize: clockType == ClockType.digital
+              ? digitalClockFontSizeLarge
+              : digitalClockFontSize,
+          height: 1,
+          fontWeight: digitalClockFontWeight,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
+      );
+
+  const PhotoCalendarLayoutMedium({
     this.appBarSize = const Size.fromHeight(216),
     this.analogClockPadding = const EdgeInsets.only(top: 3),
     this.digitalClockPadding = const EdgeInsets.only(top: 76),
@@ -28,8 +39,8 @@ class MediumPhotoCalendarLayout {
   });
 }
 
-class LargePhotoCalendarLayout extends MediumPhotoCalendarLayout {
-  const LargePhotoCalendarLayout()
+class PhotoCalendarLayoutLarge extends PhotoCalendarLayoutMedium {
+  const PhotoCalendarLayoutLarge()
       : super(
           clockRowHeight: 384,
           analogClockSize: 320,
