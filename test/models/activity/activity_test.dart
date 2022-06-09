@@ -407,6 +407,7 @@ void main() {
       "textToSpeech": false,
       "showInDayplan": true,
       "calendarId": "36a50dae-bede-4bdb-89ec-10229777c889",
+      "secretExemptions" : "",
       "fileId": ""
 }''';
     final decoded = json.decode(response) as Map<String, dynamic>;

@@ -216,7 +216,7 @@ void main() {
       ),
     );
     expect(find.byType(PrivateIcon), findsOneWidget);
-    expect(find.byIcon(AbiliaIcons.passwordProtection), findsOneWidget);
+    expect(find.byIcon(AbiliaIcons.lock), findsOneWidget);
   });
 
   testWidgets('current activity is not crossed over',

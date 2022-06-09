@@ -49,7 +49,7 @@ class DbActivity extends DbModel<Activity> {
               : json['timezone'],
           extras: Extras.fromJsonString(json['extras']),
           calendarId: json['calendarId'] ?? '',
-          secretExemptions: json['secretExemptions'],
+          secretExemptions: _parseExemptions(json['secretExemptions']),
         ),
         revision: json['revision'],
         dirty: 0,
@@ -115,7 +115,7 @@ class DbActivity extends DbModel<Activity> {
         'revision': revision,
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
-        'secretExemptions': activity.secretExemptions,
+        'secretExemptions': activity.secretExemptions.join(';'),
         if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
       };
 
@@ -144,7 +144,7 @@ class DbActivity extends DbModel<Activity> {
         'timezone': activity.timezone,
         'extras': activity.extras.toJsonString(),
         'calendar_id': activity.calendarId,
-        'secret_exemptions': activity.secretExemptions.join(','),
+        'secret_exemptions': activity.secretExemptions.join(';'),
         'revision': revision,
         'dirty': dirty,
       };

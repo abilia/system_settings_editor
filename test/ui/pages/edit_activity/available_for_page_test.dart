@@ -28,6 +28,7 @@ void main() {
   late MemoplannerSettingBloc mockMemoplannerSettingsBloc;
   late FakeAuthenticationBloc fakeAuthenticationBloc;
   late MockSupportPersonsRepository supportUserRepo;
+  late MockBaseUrlDb mockBaseUrlDb;
 
   setUpAll(() async {
     registerFallbackValues();
@@ -58,10 +59,14 @@ void main() {
     supportUserRepo = MockSupportPersonsRepository();
     when(() => supportUserRepo.load()).thenAnswer((_) =>
         Future.value(const [SupportPerson(id: 0, name: 'Test', image: '')]));
+
+    mockBaseUrlDb = MockBaseUrlDb();
+    when(() => mockBaseUrlDb.baseUrl).thenAnswer((_) => 'mockUrl');
+
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()
       ..database = FakeDatabase()
-      ..baseUrlDb = MockBaseUrlDb()
+      ..baseUrlDb = mockBaseUrlDb
       ..init();
   });
 
@@ -162,7 +167,7 @@ void main() {
           ),
         ),
       ),
-      home: const ActivityWizardPage(),
+      home: const AvailableForPage(),
     );
   }
 
@@ -193,7 +198,7 @@ void main() {
 
     expect(find.byType(SupportPersonsWidget), findsNothing);
 
-    await tester.tap(find.byIcon(AbiliaIcons.unlock));
+    await tester.tap(find.byIcon(AbiliaIcons.unlock).last);
 
     await tester.pumpAndSettle();
 
