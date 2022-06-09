@@ -21,10 +21,11 @@ late Layout _layout = screenSize.longestSide > 1500
 class _GoLayout extends Layout {
   const _GoLayout() : super();
 }
+
 Layout get layout => _layout;
 
 @visibleForTesting
-void layout(Layout layout) => _layout = layout;
+set layout(Layout layout) => _layout = layout;
 
 class Layout {
   final double radius;
