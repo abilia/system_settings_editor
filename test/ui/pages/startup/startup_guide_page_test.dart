@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:seagull/db/all.dart';
 import 'package:seagull/getit.dart';
 import 'package:seagull/ui/all.dart';
@@ -16,10 +17,14 @@ void main() {
       GetItInitializer()
         ..sharedPreferences =
             await FakeSharedPreferences.getInstance(loggedIn: false)
-        ..battery = FakeBattery()
         ..database = FakeDatabase()
         ..deviceDb = deviceDb
         ..init();
+    });
+
+    tearDown(() async {
+      setupPermissions();
+      await GetIt.I.reset();
     });
 
     testWidgets('When empty serial number production guide is shown',
