@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:record/record.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/db/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -88,3 +89,5 @@ class Notification {
 class MockConnectivity extends Mock implements Connectivity {}
 
 class MockBattery extends Mock implements Battery {}
+
+class MockSpeechSettingsCubit extends Mock implements SpeechSettingsCubit {}

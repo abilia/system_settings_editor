@@ -23,13 +23,14 @@ class ListDataItem extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final bool hasText = text.data?.isNotEmpty ?? false;
     final secondaryText = this.secondaryText;
-    final textPadding = secondaryText != null
+    final textPadding = hasText && secondaryText != null
         ? layout.listDataItem.textAndSubtitlePadding
         : EdgeInsets.zero;
     return Tts.fromSemantics(
       SemanticsProperties(
-        label: text.data?.isEmpty == true ? semanticsLabel : text.data,
+        label: hasText ? text.data : semanticsLabel,
         button: true,
         selected: selected,
       ),
@@ -58,12 +59,13 @@ class ListDataItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DefaultTextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            Theme.of(context).textTheme.bodyText1 ?? bodyText1,
-                        child: text,
-                      ),
+                      if (hasText)
+                        DefaultTextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1 ??
+                              bodyText1,
+                          child: text,
+                        ),
                       if (secondaryText != null)
                         DefaultTextStyle(
                           overflow: TextOverflow.ellipsis,

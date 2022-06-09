@@ -145,6 +145,12 @@ void main() {
                 ),
               ),
               BlocProvider<TimerCubit>.value(value: mockTimerCubit),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
+              ),
+              BlocProvider<VoicesCubit>(
+                create: (context) => FakeVoicesCubit(),
+              ),
             ],
             child: child!,
           ),
@@ -982,7 +988,7 @@ Internal improvements to tests and examples.''';
         await tester.tap(find.byIcon(AbiliaIcons.newIcon));
         await tester.pumpAndSettle();
 
-        expect(find.byType(EditQuestionPage), findsOneWidget);
+        expect(find.byType(EditQuestionBottomSheet), findsOneWidget);
       });
 
       testWidgets('Can add new question', (WidgetTester tester) async {
@@ -998,7 +1004,7 @@ Internal improvements to tests and examples.''';
         await tester.enterText(find.byType(TextField), questionName);
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsWidgets);
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
         expect(find.byIcon(AbiliaIcons.checkboxUnselected), findsNothing);
@@ -1021,7 +1027,7 @@ Internal improvements to tests and examples.''';
           exact: questionName,
           useTap: true,
         );
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         await tester.scrollDown(dy: -150);
         expect(find.text(questionName), findsOneWidget);
@@ -1037,7 +1043,7 @@ Internal improvements to tests and examples.''';
         await tester.pumpAndSettle();
 
         final editViewDialogBefore =
-            tester.widget<GreenButton>(find.byType(GreenButton));
+            tester.widget<OkButton>(find.byKey(TestKey.bottomSheetOKButton));
         expect(editViewDialogBefore.onPressed, isNull);
 
         await tester.enterText(find.byType(TextField), questionName);
@@ -1045,9 +1051,9 @@ Internal improvements to tests and examples.''';
         expect(find.text(questionName), findsWidgets);
 
         final editViewDialogAfter =
-            tester.widget<GreenButton>(find.byType(GreenButton));
+            tester.widget<OkButton>(find.byKey(TestKey.bottomSheetOKButton));
         expect(editViewDialogAfter.onPressed, isNotNull);
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
         expect(find.text(questionName), findsOneWidget);
       });
@@ -1091,6 +1097,9 @@ Internal improvements to tests and examples.''';
 
         await tester.tap(find.text(questions[1]!));
         await tester.pumpAndSettle();
+        await tester.dragFrom(tester.getCenter(find.byType(EditChecklistView)),
+            const Offset(0, -50));
+        await tester.pump();
         await tester.tap(find.text(questions[2]!));
         await tester.pumpAndSettle();
         expect(find.byType(SortableToolbar), findsOneWidget);
@@ -1131,7 +1140,7 @@ Internal improvements to tests and examples.''';
 
         await tester.enterText(find.byType(TextField), newQuestionName);
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
 
         expect(find.text(questions[0]!), findsNothing);
@@ -1178,7 +1187,7 @@ text''';
 
         await tester.enterText(find.byType(TextField), newQuestionName);
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(GreenButton));
+        await tester.tap(find.byKey(TestKey.bottomSheetOKButton));
         await tester.pumpAndSettle();
 
         expect(find.text(questions[1]!), findsNothing);
@@ -2170,6 +2179,36 @@ text''';
       expect(find.byKey(TestKey.thisDayAndForward), findsOneWidget);
       expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
     });
+
+    testWidgets('changing recurrence type does not change end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+          title: 'Title',
+          startTime: startTime,
+          recurs: Recurs.raw(
+            Recurs.typeWeekly,
+            Recurs.allDaysOfWeek,
+            startTime.add(30.days()).millisecondsSinceEpoch,
+          ));
+
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to monthly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- end date is still 30 days after startTime
+      expect(find.text('March 11, 2020'), findsOneWidget);
+    });
   });
 
   group('Memoplanner settings -', () {
@@ -2189,7 +2228,7 @@ text''';
       expect(namePictureW.onTextEdit, isNull);
       await tester.tap(find.byType(NameInput));
       await tester.pumpAndSettle();
-      expect(find.byType(DefaultTextInputPage), findsNothing);
+      expect(find.byType(DefaultTextInput), findsNothing);
     });
 
     testWidgets('Select image off', (WidgetTester tester) async {

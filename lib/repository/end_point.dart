@@ -57,7 +57,7 @@ String imageThumbPathUrl({
 String profileImageUrl(String baseUrl, String imageFileId, {int size = 400}) =>
     '$baseUrl/open/v1/file/$imageFileId?size=$size';
 
-Map<String, String> authHeader(String token) => {'X-Auth-Token': token};
+Map<String, String> authHeader(String? token) =>
+    token != null ? {'X-Auth-Token': token} : {};
 
-Map<String, String> jsonAuthHeader(String token) =>
-    {'X-Auth-Token': token, 'Content-Type': 'application/json'};
+const Map<String, String> jsonHeader = {'Content-Type': 'application/json'};

@@ -23,10 +23,10 @@ termsOfUseUrl	intl/terms-of-use	sv/anvandarvillkor	intl/terms-of-use	intl/terms-
 privacyPolicy	privacy policy	personuppgiftspolicy	persondatapolitik	privacybeleid	tietosuojakäytäntö	datenschutzbestimmungen	personvernerklæring
 privacyPolicyUrl	intl/policy-for-the-processing-of-personal-data	sv/personuppgiftspolicy	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	intl/policy-for-the-processing-of-personal-data	nb/personvernerklaering
 usernameHint	Username (phone number or email)	Användarnamn (telefonnummer eller e-post)	Brugernavn (telefon eller en e-mail)	Gebruikersnaam (telefoon of een e-mail)	Käyttäjätunnus (puhelin tai sähköpostiosoite)	Benutzername (telefon oder E-Mail)	Brukernavn (telefon eller en e-post)
-passwordHint	Password (minimum 8 characters)	Lösenord (minst 8 tecken)	Adgangskode (mindst 8 tegn)	Wachtwoord (minimaal 8 tekens)	Salasanassa (vähintään 8 merkkiä)	Passwort (mindestens 8 Zeichen)	Passord (minimum 8 tegn)
+passwordHint	Password (minimum 12 characters)	Lösenord (minst 12 tecken)	Adgangskode (mindst 12 tegn)	Wachtwoord (minimaal 12 tekens)	Salasanassa (vähintään 12 merkkiä)	Passwort (mindestens 12 Zeichen)	Passord (minimum 12 tegn)
 confirmPassword	Confirm password	Bekräfta lösenordet	Bekræft adgangskoden	Wachtwoord bevestigen	Vahvista salasana	Passwort bestätigen	Bekreft passordet
 usernameToShort	Username or email is invalid, must contain at least three characters	Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken	Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn	Gebruikersnaam of e-mail is ongeldig, moet ten minste drie tekens bevatten	Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä	Benutzername oder E-Mail ungültig - Mindestlänge drei Zeichen	Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn
-passwordToShort	The password must consist of at least 8 characters	Lösenordet måste bestå av minst 8 tecken	Adgangskoden skal bestå af mindst 8 tegn	Het wachtwoord moet ten minste 8 tekens bevatten	Salasanassa on oltava vähintään 8 merkkiä	Das Passwort muss mindestens 8 Zeichen lang sein	Passordet må bestå av minst 8 tegn
+passwordToShort	The password must consist of at least 12 characters	Lösenordet måste bestå av minst 12 tecken	Adgangskoden skal bestå af mindst 12 tegn	Het wachtwoord moet ten minste 12 tekens bevatten	Salasanassa on oltava vähintään 12 merkkiä	Das Passwort muss mindestens 12 Zeichen lang sein	Passordet må bestå av minst 12 tegn
 passwordMismatch	Both passwords must be the same	Lösenorden måste vara likadana	Begge adgangskoder skal være de samme	Beide wachtwoorden moeten hetzelfde zijn	Molempien salasanojen on oltava samat	Beide Passwörter müssen identisch sein	Begge passordene må være de samme
 confirmTermsOfUse	Confirm terms of use	Bekräfta användarvillkor	Bekræft brugervilkår	Bevestig de gebruiksvoorwaarden	Vahvista käyttöehdot	Bestätigen Sie die Nutzungsbedingungen	Bekreft brukervilkår
 confirmPrivacyPolicy	Confirm privacy policy	Bekräfta personuppgiftspolicy	Bekræft persondatapolitik	Bevestig privacybeleid	Vahvista tietosuojakäytäntö	Bestätigen Sie die Datenschutzbestimmungen	Bekreft personvernerklæring
@@ -124,15 +124,15 @@ inTimePre	in	om	om	in	&empty&	in	om
 timeAgoPre	&empty&	för	for	&empty&	&empty&	vor	for
 timeAgoPost	ago	sen	siden	geleden	sitten	&empty&	siden
 checklistDoneInfo	All checklist tasks in your activity are completed. Do you want to complete the activity?	Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?	Alle oppgaver er afsluttet.  Vil du merke aktiviteten som færdig?	Alle checklisttaken in uw activiteit zijn voltooid. Wil je de activiteit afmaken?	Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?	Alle Checklistenaufgaben in Ihrer Aktivität sind abgeschlossen. Möchten Sie die Aktivität abschließen?	Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?
-basicTemplates	Basic templates						
+basicTemplates	Basic templates	Basmallar					
 basicActivities	Basic activities	Basaktiviteter	Standardaktiviteter	Standaard activiteiten	Perusaktiviteetit	Standardaktivitäten	Standardaktiviteter
 newBasicActivity	New basic activity	Ny basaktivitet	Ny standardaktivitet	Nieuwe standaardactiviteit	Uusi perusaktiviteetti	Neue Standardaktivität	Ny standardaktivitet
 editBasicActivity	Edit basic activity	Ändra basaktivitet	Rediger standardaktivitet	Standaardactiviteit bewerken	Muokkaa perusaktiviteettia	Standardaktivität bearbeiten	Endre standardaktivitet
-enterNameForBasicActivity	Enter name for basic activity						
+enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					
 timeTo	to	till	til	tot	-	bis	til
 							
 ### Timer related							
-addTimer	Add Timer						
+addTimer	Add Timer	Lägga in timer					
 start	Start	Starta	Start	Begin	Alkaa	Anfang	Start
 newTimer	New timer	Ny timer	Ny timer	Nieuwe timer	Uusi ajastin	Neuer Timer	Ny timer
 selectDuration	Select duration	Välj tidslängd	Angiv varighed	Duur selecteren	Valitse kesto	Dauer auswählen	Angi varighet
@@ -261,6 +261,7 @@ clear	Clear	Rensa	Slet	Verwijderen	Poista	Entfernen	Slette
 selectFromLibrary	Select from library	Välj från bibliotek	Vælg fra bibliotek	Selecteren uit bibliotheek	Valitse kirjastosa	Aus Bibliothek wählen	Velg fra bibliotek
 addNew	Add new	Lägg till ny	Tilføj	Toevoegen	Lisää	Hinzufügen	Legg til
 task	Task	Uppgift	Opgave	Taak	Tehtävä	Aufgabe	Oppgave
+enterTask	Enter task
 							
 ### Quick settings							
 screenBrightness	Screen brightness	Skärmens ljusstyrka	Skærmens lysstyrke	Schermhelderheid	Näytön kirkkaus	Bildschirmhelligkeit	Skjermens lysstyrke
@@ -355,7 +356,7 @@ selectNote	Select note	Välj anteckning	Vælg note	Notitie selecteren	Valitse mu
 selectReminder	Select reminder	Välj påminnelser	Vælg påmindelse	Herinnering selecteren	Valitse muistutus	Erinnerung auswählen	Velg påminnelser
 add	Add	Lägg in	Indsæt	Toevoegen	Lisää	Hinzufügen	Legg inn
 defaults	Defaults	Förval	Forvalg	Voorselectie	Esivalinta	Vorauswahl	Forvalg
-onlyAppliesToGo	Only applies to MEMOplanner Go						
+onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					
 showOngoingActivityInFullScreen	Show ongoing activity in full screen	Visa pågående aktivitet i helskärm	Vis nuværende aktivitet i fuld skærm	Lopende activiteit in volledig scherm tonen	Näytä käynnissä oleva aktiviteetti koko näytössä	Laufende Aktivität im Vollbild zeigen	Vis gjeldende aktivitet i full skjerm
 							
 ## Functions Settings							
@@ -370,7 +371,7 @@ activateScreensaver	Activate Screensaver	Aktivera skärmsläckare	Aktivér pause
 menuRemovalWarning	Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking on the category symbols in the day calendar; left – right – left. This works even if they are hidden.	Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.	Er du sikker på, du vil slette Indstillinger fra menuen? Hvis det er tilfældet, skal du starte Indstillinger ved at trykke på kategorisymbolerne i dagkalenderen; venstre - højre - venstre. Tryk på det tilsvarende område af det, der mangler.	Weet u zeker dat u de instellingen uit het menu wilt verwijderen? Als u dit doet, is het nog steeds mogelijk instellingen te openen door op de categoriesymbolen in de dagkalender te klikken; links â€“ rechts â€“ links. Dit werkt zelfs als ze verborgen zijn.	Haluatko varmasti poistaa asetukset valikosta? Jos haluat, asetuksia on silti mahdollista käyttää napsauttamalla kategoriasymboleja päiväkalenterissa: vasen â€“ oikea â€“ vasen. Tämä toimii, vaikka ne olisi piilotettu.	Möchten Sie die Einstellungen wirklich aus dem Menü entfernen? Wenn Sie es tun, können Sie weiterhin auf die Einstellungen zugreifen, indem Sie die Kategoriesymbole im Tageskalender anklicken; links â€“ rechts â€“ links. Dies funktioniert auch, wenn die Symbole ausgeblendet sind.	Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.
 							
 ## Month Calendar							
-selectADayToViewDetails	Select a day to view more details						
+selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					
 ## Day Calendar Settings							
 topField	Top Field	Toppfält	Topfelt	Bovenste veld	Yläkenttä	Oberstes Feld	Toppfelt
 showBrowseButtons	Show browse buttons	Visa bläddraknappar	Vis bladre-knapper	Toon bladerknoppen	Näytä selauspainikkeet	Suchschaltflächen anzeigen	Vis bla-knapper
@@ -411,6 +412,7 @@ voice	Voice	Röst
 noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
 installingVoice	Installing	Installerar					
 speechTest	Test of speech rate	Test av talhastighet	Test af talehastighed	Test van spraaksnelheid	Puhenopeuden testaus	Test des Sprechtempos	Test av talehastighet
+voices	Voices	Röster		Stemmen	Äänet	Stimmen	
 							
 ### Code protect							
 codeProtect	Code protect	Kodskydd	Kodebeskyttelse	Codebescherming	Suojakoodi	Schutz durch Code	Kodebeskyttelse
@@ -418,8 +420,8 @@ code	Code	Kod	Kode	Code	Koodi	Code	Kode
 codeProtectSettings	Code protect settings	Kodskydda Inställningar	Kodebeskyt indstillinger	Codebeschermingsinstellingen	Suojaa asetukset koodilla	Einstellungen mit Code schützen	Kodebeskytt Innstillinger
 codeProtectThisView	Code protect this view	Kodskydda denna vy	Kodebeskytte denne visning.	Deze weergave met code beschermen	Suojaa tämä näkymä koodilla	Diese Anzeige durch Code schützen	Kodebeskytte denne visning.
 codeProtectAndroidSettings	Code protect Android Settings	Kodskydda Android-inställningar	Kodebeskyt Android-indstillinger	Codebeschermingsinstellingen Android	Suojaa Android-asetukset koodilla	Android-Einstellungen mit Code schützen	Kodebeskytt Android-innstillinger
-enterCode	Enter code						
-enterYourCodeToAccess	Enter your code to access						
+enterCode	Enter code	Ange kod					
+enterYourCodeToAccess	Enter your code to access	Ange din kod för att komma åt					
 enterNewCode	Enter new code	Ange ny kod	Angiv nyt kodeord	Voer nieuwe code in	Anna uusi koodi	Neuen Code eingeben	Angi ny kode
 confirmCode	Confirm code	Bekräfta kod	Bekræft kodeord	Bevestig code	Vahvista koodi	Code bestätigen	Bekreft kode
 incorrectCode	Incorrect code	Felaktig kod	Forkert kodeord	Onjuiste code	Virheellinen koodi	Falscher Code	Feil kode
@@ -459,8 +461,8 @@ photoCalendar	Photo-calendar	Foto-\nkalender	Billede-\nkalender	Foto-\nkalender	
 countdown	Countdown	Nedräkning	Nedtælling	Timers	Ajastin	Countdown	Nedtelling
 quickSettingsMenu	Quick settings	Snabb-\ninställningar	Hurtig-\nindstillinger	Snelle\ninstellingen	Pika-\nasetukset	Schnell-\neinstellungen	Hurtig-\ninnstillinger
 ### Photo calendar							
-allPhotos	All photos						
-addToPhotoCalendarQuestion	Add this photo to Photo-calendar?						
-removeFromPhotoCalendarQuestion	Remove this photo from Photo-calendar?						
-remove	Remove						
-doYouWantToDeleteThisPhoto	Do you want to delete this photo?						
+allPhotos	All photos	Alla foton					
+addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?					
+removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?					
+remove	Remove	Ta bort					
+doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?					

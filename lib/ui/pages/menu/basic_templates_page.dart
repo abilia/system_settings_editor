@@ -81,6 +81,7 @@ class BasicTemplatesPage extends StatelessWidget {
   void _onEditTemplateTimer(
       BuildContext context, Sortable<BasicTimerData> sortable) async {
     final authProviders = copiedAuthProviders(context);
+    final sortableBloc = context.read<SortableBloc>();
 
     AbiliaTimer? timer = await Navigator.of(context).push(
       MaterialPageRoute(
@@ -101,13 +102,13 @@ class BasicTemplatesPage extends StatelessWidget {
       ),
     );
     if (timer != null) {
-      context.read<SortableBloc>().add(
-            SortableUpdated(
-              sortable.copyWith(
-                data: BasicTimerDataItem.fromTimer(timer),
-              ),
-            ),
-          );
+      sortableBloc.add(
+        SortableUpdated(
+          sortable.copyWith(
+            data: BasicTimerDataItem.fromTimer(timer),
+          ),
+        ),
+      );
     }
   }
 }
@@ -174,6 +175,11 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
       ),
       trailing: _trailing,
       alwaysShowTrailing: alwaysShowTrailing,
+      semanticsLabel: data is BasicTimerDataItem
+          ? Duration(milliseconds: data.duration).toDurationString(
+              Translator.of(context).translate,
+              shortMin: false)
+          : null,
     );
   }
 }

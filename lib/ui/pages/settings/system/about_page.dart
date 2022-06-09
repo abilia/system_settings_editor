@@ -78,10 +78,13 @@ class SearchForUpdateButton extends StatelessWidget {
     final translate = Translator.of(context).translate;
     return Tts.data(
       data: translate.searchForUpdate,
-      child: TextButton(
-        style: textButtonStyleGreen,
-        child: Text(translate.searchForUpdate),
-        onPressed: AndroidIntents.openPlayStore,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: double.infinity),
+        child: TextButton(
+          style: textButtonStyleGreen,
+          child: Text(translate.searchForUpdate),
+          onPressed: AndroidIntents.openPlayStore,
+        ),
       ),
     );
   }

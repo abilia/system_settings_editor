@@ -87,22 +87,18 @@ class _CategoryPickField extends StatelessWidget {
             )
           : null,
       onTap: () async {
-        final authProviders = copiedAuthProviders(context);
-        final result = await Navigator.of(context).push<ImageAndName>(
-          MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: authProviders,
-              child: EditCategoryPage(
-                imageAndName: imageAndName,
-                hintText: defaultName,
-              ),
-            ),
+        final generalCalendarSettingsCubit =
+            context.read<GeneralCalendarSettingsCubit>();
+        final result = await showAbiliaBottomSheet<ImageAndName>(
+          context: context,
+          providers: copiedAuthProviders(context),
+          child: EditCategoryBottomSheet(
+            imageAndName: imageAndName,
+            hintText: defaultName,
           ),
         );
         if (result != null) {
-          context
-              .read<GeneralCalendarSettingsCubit>()
-              .changeCategorySettings(onResult(result));
+          generalCalendarSettingsCubit.changeCategorySettings(onResult(result));
         }
       },
     );

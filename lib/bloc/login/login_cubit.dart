@@ -57,9 +57,10 @@ class LoginCubit extends Cubit<LoginState> {
         pushToken: pushToken,
         time: clockBloc.state,
       );
-      final licenses = await userRepository.getLicensesFromApi(loginInfo.token);
+      userRepository.persistLoginInfo(loginInfo);
+      final licenses = await userRepository.getLicensesFromApi();
       if (licenses.anyValidLicense(clockBloc.state)) {
-        authenticationBloc.add(LoggedIn(loginInfo: loginInfo));
+        authenticationBloc.add(const LoggedIn());
         emit(const LoginSucceeded());
       } else {
         emit(state.failure(
@@ -78,7 +79,9 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  static bool usernameValid(String username) => username.length > 2;
+  static const minUsernameLenght = 3;
+  static bool usernameValid(String username) =>
+      username.length >= minUsernameLenght;
 
-  static bool passwordValid(String password) => password.length > 7;
+  static bool passwordValid(String password) => password.isNotEmpty;
 }

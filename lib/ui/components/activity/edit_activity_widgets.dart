@@ -50,7 +50,7 @@ class ActivityNameAndPictureWidget extends StatelessWidget {
     final isTemplate =
         context.read<WizardCubit>() is TemplateActivityWizardCubit;
     if (isTemplate) return translate.enterNameForBasicActivity;
-    return translate.name;
+    return translate.enterNameForActivity;
   }
 }
 
@@ -142,6 +142,8 @@ class SelectPictureWidget extends StatelessWidget {
 
   void imageClick(BuildContext context) async {
     final authProviders = copiedAuthProviders(context);
+    final userFileCubit = context.read<UserFileCubit>();
+    final sortableBloc = context.read<SortableBloc>();
     final newSelectedImage = await Navigator.of(context).push<AbiliaFile>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -156,11 +158,11 @@ class SelectPictureWidget extends StatelessWidget {
 
     if (newSelectedImage != null) {
       if (newSelectedImage is UnstoredAbiliaFile) {
-        BlocProvider.of<UserFileCubit>(context).fileAdded(
+        userFileCubit.fileAdded(
           newSelectedImage,
           image: true,
         );
-        BlocProvider.of<SortableBloc>(context).add(
+        sortableBloc.add(
           ImageArchiveImageAdded(
             newSelectedImage.id,
             newSelectedImage.file.path,
@@ -395,6 +397,7 @@ class AlarmWidget extends StatelessWidget {
             onTap: abilityToSelectAlarm
                 ? () async {
                     final authProviders = copiedAuthProviders(context);
+                    final editActivityCubit = context.read<EditActivityCubit>();
                     final result = await Navigator.of(context)
                         .push<AlarmType>(MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
@@ -407,11 +410,11 @@ class AlarmWidget extends StatelessWidget {
                           const RouteSettings(name: 'SelectAlarmTypePage'),
                     ));
                     if (result != null) {
-                      context.read<EditActivityCubit>().replaceActivity(
-                            activity.copyWith(
-                              alarm: activity.alarm.copyWith(type: result),
-                            ),
-                          );
+                      editActivityCubit.replaceActivity(
+                        activity.copyWith(
+                          alarm: activity.alarm.copyWith(type: result),
+                        ),
+                      );
                     }
                   }
                 : null,
@@ -559,7 +562,6 @@ class AvailableForWidget extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               db: SupportPersonsDb(GetIt.I<Database>()),
               userId: (authState as Authenticated).userId,
-              authToken: authState.token,
             ),
             child: BlocProvider<AvailableForCubit>(
               create: (context) => AvailableForCubit(
@@ -596,6 +598,7 @@ class RecurrenceWidget extends StatelessWidget {
           leading: Icon(recurrentType.iconData()),
           text: Text(recurrentType.text(translator)),
           onTap: () async {
+            final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context)
                 .push<RecurrentType>(MaterialPageRoute(
               builder: (_) => SelectRecurrencePage(
@@ -604,42 +607,12 @@ class RecurrenceWidget extends StatelessWidget {
               settings: const RouteSettings(name: 'SelectRecurrencePage'),
             ));
             if (result != null) {
-              if (state.storedRecurring &&
-                  result == state.originalActivity.recurs.recurrance) {
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: state.originalActivity.recurs,
-                      ),
-                    );
-              } else {
-                final recurs = _newRecurs(
-                  result,
-                  state.timeInterval.startDate,
-                );
-                context.read<EditActivityCubit>().replaceActivity(
-                      activity.copyWith(
-                        recurs: recurs,
-                      ),
-                    );
-              }
+              editActivityCubit.newRecurrence(newType: result);
             }
           },
         ),
       ],
     );
-  }
-
-  Recurs _newRecurs(RecurrentType type, DateTime startDate) {
-    switch (type) {
-      case RecurrentType.weekly:
-        return Recurs.weeklyOnDay(startDate.weekday, ends: startDate);
-      case RecurrentType.monthly:
-        return Recurs.monthly(startDate.day, ends: startDate);
-      case RecurrentType.yearly:
-        return Recurs.yearly(startDate);
-      default:
-        return Recurs.not;
-    }
   }
 }
 
@@ -668,12 +641,9 @@ class EndDateWidget extends StatelessWidget {
                     notBefore: state.timeInterval.startDate,
                     onChange: disabled
                         ? null
-                        : (newDate) =>
-                            context.read<EditActivityCubit>().replaceActivity(
-                                  activity.copyWith(
-                                    recurs: recurs.changeEnd(newDate),
-                                  ),
-                                ),
+                        : (newDate) => context
+                            .read<EditActivityCubit>()
+                            .newRecurrence(newEndDate: newDate),
                   ),
                   SizedBox(height: layout.formPadding.groupBottomDistance),
                 ],
@@ -688,12 +658,9 @@ class EndDateWidget extends StatelessWidget {
               value: recurs.hasNoEnd,
               onChanged: disabled
                   ? null
-                  : (v) => context.read<EditActivityCubit>().replaceActivity(
-                        activity.copyWith(
-                          recurs: recurs.changeEnd(
+                  : (v) => context.read<EditActivityCubit>().newRecurrence(
+                        newEndDate:
                             v ? Recurs.noEndDate : state.timeInterval.startDate,
-                          ),
-                        ),
                       ),
               child: Text(translate.noEndDate),
             ),
@@ -721,12 +688,8 @@ class EndDateWizWidget extends StatelessWidget {
             size: layout.icon.small,
           ),
           value: recurs.hasNoEnd,
-          onChanged: (v) => context.read<EditActivityCubit>().replaceActivity(
-                activity.copyWith(
-                  recurs: recurs.changeEnd(
-                    v ? Recurs.noEndDate : state.timeInterval.startDate,
-                  ),
-                ),
+          onChanged: (v) => context.read<EditActivityCubit>().newRecurrence(
+                newEndDate: v ? Recurs.noEndDate : state.timeInterval.startDate,
               ),
           child: Text(translate.noEndDate),
         );

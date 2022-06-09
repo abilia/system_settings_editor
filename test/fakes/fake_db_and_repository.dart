@@ -176,3 +176,14 @@ class FakeFirebasePushService extends Fake implements FirebasePushService {
   @override
   Future<String?> initPushToken() => Future.value('fakeToken');
 }
+
+class FakeVoiceDb extends Fake implements VoiceDb {
+  @override
+  bool get speakEveryWord => false;
+
+  @override
+  String get voice => '';
+
+  @override
+  double get speechRate => 100;
+}

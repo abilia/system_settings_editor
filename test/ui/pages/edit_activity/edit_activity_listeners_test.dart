@@ -138,6 +138,12 @@ void main() {
               BlocProvider<TimerCubit>(
                 create: (context) => MockTimerCubit(),
               ),
+              BlocProvider<SpeechSettingsCubit>(
+                create: (context) => FakeSpeechSettingsCubit(),
+              ),
+              BlocProvider<VoicesCubit>(
+                create: (context) => FakeVoicesCubit(),
+              ),
             ],
             child: child!,
           ),

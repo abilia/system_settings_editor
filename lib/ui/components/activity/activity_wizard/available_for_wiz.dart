@@ -25,7 +25,6 @@ class AvailableForWiz extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               db: SupportPersonsDb(GetIt.I<Database>()),
               userId: (authState as Authenticated).userId,
-              authToken: authState.token,
             ),
             child: BlocProvider<AvailableForCubit>(
               create: (context) => AvailableForCubit(

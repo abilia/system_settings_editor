@@ -71,7 +71,6 @@ void main() {
           runStartGuide: false,
           child: AuthenticatedBlocsProvider(
             authenticatedState: const Authenticated(
-              token: 'token',
               userId: 5,
             ),
             child: MultiBlocProvider(

@@ -23,6 +23,7 @@ class CreateAccountPage extends StatelessWidget {
           BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is AccountCreated,
             listener: (context, state) async {
+              final navigator = Navigator.of(context);
               await showViewDialog(
                 context: context,
                 wrapWithAuthProviders: false,
@@ -36,7 +37,7 @@ class CreateAccountPage extends StatelessWidget {
                       OkButton(onPressed: Navigator.of(context).maybePop),
                 ),
               );
-              Navigator.of(context).pop(state.username);
+              navigator.pop(state.username);
             },
           ),
           BlocListener<CreateAccountCubit, CreateAccountState>(
@@ -58,6 +59,7 @@ class CreateAccountPage extends StatelessWidget {
         ],
         child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
           builder: (context, state) => Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Padding(
               padding: layout.templates.m5,
               child: Column(

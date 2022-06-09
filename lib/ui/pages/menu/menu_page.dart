@@ -67,22 +67,25 @@ class CameraButton extends StatelessWidget {
                 ),
               );
             } else {
+              final userFileCubit = context.read<UserFileCubit>();
+              final sortableBloc = context.read<SortableBloc>();
+              final name = DateFormat.yMd(
+                Localizations.localeOf(context).toLanguageTag(),
+              ).format(context.read<ClockBloc>().state);
               final image =
                   await ImagePicker().pickImage(source: ImageSource.camera);
               if (image != null) {
                 final selectedImage =
                     UnstoredAbiliaFile.newFile(File(image.path));
-                BlocProvider.of<UserFileCubit>(context).fileAdded(
+                userFileCubit.fileAdded(
                   selectedImage,
                   image: true,
                 );
-                BlocProvider.of<SortableBloc>(context).add(
+                sortableBloc.add(
                   PhotoAdded(
                     selectedImage.id,
                     selectedImage.file.path,
-                    DateFormat.yMd(
-                      Localizations.localeOf(context).toLanguageTag(),
-                    ).format(context.read<ClockBloc>().state),
+                    name,
                     myPhotoFolderId,
                   ),
                 );
@@ -192,14 +195,15 @@ class SettingsButton extends StatelessWidget {
               text: name,
               icon: AbiliaIcons.settings,
               onPressed: () async {
+                final navigator = Navigator.of(context);
+                final authProviders = copiedAuthProviders(context);
                 final accessGranted = await codeProtectAccess(
                   context,
                   restricted: (codeSettings) => codeSettings.protectSettings,
                   name: name,
                 );
                 if (accessGranted) {
-                  final authProviders = copiedAuthProviders(context);
-                  Navigator.of(context).push(
+                  navigator.push(
                     MaterialPageRoute(
                       builder: (_) => MultiBlocProvider(
                         providers: authProviders,

@@ -22,7 +22,7 @@ class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
   @override
   Stream<AuthenticationState> get stream => const Stream.empty();
   @override
-  AuthenticationState get state => const Authenticated(token: '', userId: 1);
+  AuthenticationState get state => const Authenticated(userId: 1);
   @override
   Future<void> close() async {}
 }
@@ -156,6 +156,28 @@ class FakeLicenseCubit extends Fake implements LicenseCubit {
 class FakeEditActivityCubit extends Fake implements EditActivityCubit {
   @override
   Stream<EditActivityState> get stream => const Stream.empty();
+  @override
+  Future<void> close() async {}
+}
+
+class FakeSpeechSettingsCubit extends Fake implements SpeechSettingsCubit {
+  @override
+  Stream<SpeechSettingsState> get stream => const Stream.empty();
+
+  @override
+  SpeechSettingsState get state => const SpeechSettingsState();
+
+  @override
+  Future<void> close() async {}
+}
+
+class FakeVoicesCubit extends Fake implements VoicesCubit {
+  @override
+  Stream<VoicesState> get stream => const Stream.empty();
+
+  @override
+  VoicesState get state => const VoicesState();
+
   @override
   Future<void> close() async {}
 }

@@ -46,7 +46,7 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
       emit(state.failed(CreateAccountFailure.usernameToShort));
     } else if (state.firstPassword.isEmpty) {
       emit(state.failed(CreateAccountFailure.noPassword));
-    } else if (!LoginCubit.passwordValid(state.firstPassword)) {
+    } else if (!CreateAccountCubit.passwordValid(state.firstPassword)) {
       emit(state.failed(CreateAccountFailure.passwordToShort));
     } else if (state.secondPassword.isEmpty) {
       emit(state.failed(CreateAccountFailure.noConfirmPassword));
@@ -79,4 +79,8 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
       }
     }
   }
+
+  static const minPasswordCreateLength = 12;
+  static bool passwordValid(String password) =>
+      password.length >= minPasswordCreateLength;
 }

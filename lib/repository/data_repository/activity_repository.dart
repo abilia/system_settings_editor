@@ -9,7 +9,6 @@ class ActivityRepository extends DataRepository<Activity> {
   ActivityRepository({
     required BaseUrlDb baseUrlDb,
     required BaseClient client,
-    required String authToken,
     required int userId,
     required ActivityDb activityDb,
   }) : super(
@@ -17,7 +16,6 @@ class ActivityRepository extends DataRepository<Activity> {
           baseUrlDb: baseUrlDb,
           path: 'activities',
           postApiVersion: 3,
-          authToken: authToken,
           userId: userId,
           db: activityDb,
           fromJsonToDataModel: DbActivity.fromJson,

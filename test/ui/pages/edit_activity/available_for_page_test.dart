@@ -56,7 +56,7 @@ void main() {
     fakeAuthenticationBloc = FakeAuthenticationBloc();
 
     supportUserRepo = MockSupportPersonsRepository();
-    when(() => supportUserRepo.fetchAllAndInsertIntoDb()).thenAnswer((_) =>
+    when(() => supportUserRepo.load()).thenAnswer((_) =>
         Future.value(const [SupportPerson(id: 0, name: 'Test', image: '')]));
     GetItInitializer()
       ..sharedPreferences = await FakeSharedPreferences.getInstance()

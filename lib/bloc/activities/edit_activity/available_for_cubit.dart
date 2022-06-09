@@ -22,8 +22,7 @@ class AvailableForCubit extends Cubit<AvailableForState> {
   void initialize() async {
     emit(
       state.copyWith(
-        allSupportPersons:
-            await supportPersonsRepository.fetchAllAndInsertIntoDb(),
+        allSupportPersons: await supportPersonsRepository.load(),
       ),
     );
   }

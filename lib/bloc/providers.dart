@@ -38,7 +38,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               activityDb: GetIt.I<ActivityDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
           RepositoryProvider<UserFileRepository>(
@@ -47,8 +46,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               userFileDb: GetIt.I<UserFileDb>(),
               fileStorage: GetIt.I<FileStorage>(),
+              loginDb: GetIt.I<LoginDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
               multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
             ),
           ),
@@ -58,7 +57,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               sortableDb: GetIt.I<SortableDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
           RepositoryProvider<GenericRepository>(
@@ -67,17 +65,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               client: GetIt.I<BaseClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
-              authToken: authenticatedState.token,
             ),
           ),
-          if (Config.isMP) ...[
-            RepositoryProvider<VoiceRepository>(
-              create: (context) => VoiceRepository(
-                client: GetIt.I<BaseClient>(),
-                voiceDb: GetIt.I<VoiceDb>(),
-              ),
-            ),
-          ],
         ],
         child: MultiBlocProvider(
           providers: [
@@ -223,19 +212,6 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                   context.read<TouchDetectionCubit>().stream,
                 ),
               ),
-              BlocProvider<SpeechSettingsCubit>(
-                create: (context) => SpeechSettingsCubit(
-                    voiceDb: GetIt.I<VoiceDb>(),
-                    acapelaTts: GetIt.I<TtsInterface>()),
-              ),
-              BlocProvider<VoicesCubit>(
-                create: (context) => VoicesCubit(
-                  speechSettingsCubit: context.read<SpeechSettingsCubit>(),
-                  ttsHandler: GetIt.I<TtsInterface>(),
-                  voiceRepository: context.read<VoiceRepository>(),
-                  locale: GetIt.I<SettingsDb>().language,
-                ),
-              ),
             ]
           ],
           child: child,
@@ -277,6 +253,14 @@ class TopLevelBlocsProvider extends StatelessWidget {
             deviceDb: GetIt.I<DeviceDb>(),
           ),
         ),
+        if (Config.isMP) ...[
+          RepositoryProvider<VoiceRepository>(
+            create: (context) => VoiceRepository(
+              client: GetIt.I<BaseClient>(),
+              voiceDb: GetIt.I<VoiceDb>(),
+            ),
+          ),
+        ],
       ],
       child: MultiBlocProvider(
         providers: [
@@ -316,10 +300,24 @@ class TopLevelBlocsProvider extends StatelessWidget {
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
           ),
-          if (Config.isMP)
-            BlocProvider(
-              create: (context) => TouchDetectionCubit(),
+          BlocProvider(
+            create: (context) => TouchDetectionCubit(),
+          ),
+          if (Config.isMP) ...[
+            BlocProvider<SpeechSettingsCubit>(
+              create: (context) => SpeechSettingsCubit(
+                  voiceDb: GetIt.I<VoiceDb>(),
+                  acapelaTts: GetIt.I<TtsInterface>()),
             ),
+            BlocProvider<VoicesCubit>(
+              create: (context) => VoicesCubit(
+                speechSettingsCubit: context.read<SpeechSettingsCubit>(),
+                ttsHandler: GetIt.I<TtsInterface>(),
+                voiceRepository: context.read<VoiceRepository>(),
+                locale: GetIt.I<SettingsDb>().language,
+              ),
+            ),
+          ],
         ],
         child: child,
       ),

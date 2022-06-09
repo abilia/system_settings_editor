@@ -210,6 +210,7 @@ class _AlarmDurationSelector extends StatelessWidget {
         PickField(
             text: Text(duration.displayText(t)),
             onTap: () async {
+              final cubit = context.read<AlarmSettingsCubit>();
               final result = await Navigator.of(context).push<AlarmDuration>(
                 MaterialPageRoute(
                   builder: (context) => SelectAlarmDurationPage(
@@ -221,7 +222,6 @@ class _AlarmDurationSelector extends StatelessWidget {
                 ),
               );
               if (result != null && result != duration) {
-                final cubit = context.read<AlarmSettingsCubit>();
                 cubit.changeAlarmSettings(
                     cubit.state.copyWith(alarmDuration: result));
               }

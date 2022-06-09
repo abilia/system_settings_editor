@@ -26,7 +26,7 @@ void main() {
 
   setUp(() {
     supportPersonsRepository = MockSupportPersonsRepository();
-    when(() => supportPersonsRepository.fetchAllAndInsertIntoDb()).thenAnswer(
+    when(() => supportPersonsRepository.load()).thenAnswer(
         (_) => Future.value([testSupportPerson, testSupportPerson2]));
   });
 

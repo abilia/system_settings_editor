@@ -10,24 +10,19 @@ class SupportPersonsRepository extends Repository {
   SupportPersonsRepository({
     required BaseClient client,
     required BaseUrlDb baseUrlDb,
-    required this.authToken,
     required this.userId,
     required this.db,
-  }) : super(client, baseUrlDb) {
-    fetchAllAndInsertIntoDb();
-  }
+  }) : super(client, baseUrlDb);
 
   final int userId;
   final Logger log = Logger((SupportPersonsRepository).toString());
-  final String authToken;
   final SupportPersonsDb db;
 
-  Future<Iterable<SupportPerson>> fetchAllAndInsertIntoDb() async {
+  Future<Iterable<SupportPerson>> load() async {
     try {
       log.fine('fetching support persons');
       final response = await client.get(
         '$baseUrl/api/v1/entity/$userId/roles-to'.toUri(),
-        headers: authHeader(authToken),
       );
       final decoded = response.json() as List;
 

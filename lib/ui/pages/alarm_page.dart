@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -115,7 +116,7 @@ class ReminderPage extends StatelessWidget {
   }
 }
 
-class PopAwareAlarmPage extends StatelessWidget {
+class PopAwareAlarmPage extends StatefulWidget {
   final Widget child;
   final AlarmNavigator alarmNavigator;
   final NotificationAlarm alarm;
@@ -128,14 +129,29 @@ class PopAwareAlarmPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PopAwareAlarmPage> createState() => _PopAwareAlarmPageState();
+}
+
+class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
+  bool isCanceled = false;
+  @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
-          AlarmNavigator.log.fine('onWillPop $alarm');
-          alarmNavigator.removedFromRoutes(alarm);
-          await notificationPlugin.cancel(alarm.hashCode);
+          AlarmNavigator.log.fine('onWillPop ${widget.alarm}');
+          widget.alarmNavigator.removedFromRoutes(widget.alarm);
+          if (!isCanceled) {
+            await notificationPlugin.cancel(widget.alarm.hashCode);
+          }
           return true;
         },
-        child: child,
+        child: BlocListener<TouchDetectionCubit, Touch>(
+          listenWhen: (previous, current) => !isCanceled,
+          listener: (context, state) async {
+            isCanceled = true;
+            await notificationPlugin.cancel(widget.alarm.hashCode);
+          },
+          child: widget.child,
+        ),
       );
 }
 
@@ -165,7 +181,13 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
+    final closeButton = CloseButton(
+      onPressed: () => popAlarm(
+        activityRepository: context.read<ActivityRepository>(),
+        navigator: Navigator.of(context),
+        alarm: alarm,
+      ),
+    );
     return BottomAppBar(
       child: Padding(
         padding: layout.navigationBar.padding,
@@ -274,7 +296,10 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CloseButton(
-            onPressed: () => popAlarm(context, timerAlarm),
+            onPressed: () => popAlarm(
+              navigator: Navigator.of(context),
+              alarm: timerAlarm,
+            ),
           ),
         ),
       ),

@@ -18,7 +18,11 @@ class MEMOplannerLoginFooter extends StatelessWidget {
             ),
           ),
         ),
-        const GoToCreateAccountButton().pad(layout.login.createAccountPadding),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: const GoToCreateAccountButton()
+              .pad(layout.login.createAccountPadding),
+        ),
         Row(
           children: const [
             AbiliaLogo(),
@@ -45,6 +49,7 @@ class GoToCreateAccountButton extends StatelessWidget {
       child: TextButton(
         style: textButtonStyleDarkGrey,
         onPressed: () async {
+          final loginCubit = context.read<LoginCubit>();
           final username = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => CreateAccountPage(
@@ -53,7 +58,7 @@ class GoToCreateAccountButton extends StatelessWidget {
             ),
           );
           if (username != null) {
-            context.read<LoginCubit>().usernameChanged(username);
+            loginCubit.usernameChanged(username);
           }
         },
         child: Text(translate.createAccount),

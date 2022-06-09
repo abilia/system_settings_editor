@@ -70,7 +70,7 @@ abstract class Translated {
 
   final String usernameHint = 'Username (phone number or email)';
 
-  final String passwordHint = 'Password (minimum 8 characters)';
+  final String passwordHint = 'Password (minimum 12 characters)';
 
   final String confirmPassword = 'Confirm password';
 
@@ -78,7 +78,7 @@ abstract class Translated {
       'Username or email is invalid, must contain at least three characters';
 
   final String passwordToShort =
-      'The password must consist of at least 8 characters';
+      'The password must consist of at least 12 characters';
 
   final String passwordMismatch = 'Both passwords must be the same';
 
@@ -509,6 +509,8 @@ abstract class Translated {
 
   final String task = 'Task';
 
+  final String enterTask = 'Enter task';
+
   final String screenBrightness = 'Screen brightness';
 
   final String battery = 'Battery';
@@ -785,6 +787,8 @@ abstract class Translated {
 
   final String speechTest = 'Test of speech rate';
 
+  final String voices = 'Voices';
+
   final String codeProtect = 'Code protect';
 
   final String code = 'Code';
@@ -874,14 +878,16 @@ abstract class Translated {
 
   final String allPhotos = 'All photos';
 
-  final String addToPhotoCalendarQuestion = 'Add this photo to Photo-calendar?';
+  final String addToPhotoCalendarQuestion =
+      'Do you want to add this photo to Photo-calendar?';
 
   final String removeFromPhotoCalendarQuestion =
-      'Remove this photo from Photo-calendar?';
+      'Do you want to remove this photo from Photo-calendar?';
 
   final String remove = 'Remove';
 
-  final String doYouWantToDeleteThisPhoto = 'Do you want to delete this photo?';
+  final String doYouWantToDeleteThisPhoto =
+      'Are you sure you want to delete this photo?';
 }
 
 class EN extends Translated {
@@ -960,7 +966,7 @@ class SV extends Translated {
   final String usernameHint = 'Användarnamn (telefonnummer eller e-post)';
 
   @override
-  final String passwordHint = 'Lösenord (minst 8 tecken)';
+  final String passwordHint = 'Lösenord (minst 12 tecken)';
 
   @override
   final String confirmPassword = 'Bekräfta lösenordet';
@@ -970,7 +976,7 @@ class SV extends Translated {
       'Användarnamn eller e-postadress är ogiltig, måste innehålla minst tre tecken';
 
   @override
-  final String passwordToShort = 'Lösenordet måste bestå av minst 8 tecken';
+  final String passwordToShort = 'Lösenordet måste bestå av minst 12 tecken';
 
   @override
   final String passwordMismatch = 'Lösenorden måste vara likadana';
@@ -1249,6 +1255,9 @@ class SV extends Translated {
       'Alla uppgifter är avklarade. Vill du klarmarkera aktiviteten?';
 
   @override
+  final String basicTemplates = 'Basmallar';
+
+  @override
   final String basicActivities = 'Basaktiviteter';
 
   @override
@@ -1258,7 +1267,13 @@ class SV extends Translated {
   final String editBasicActivity = 'Ändra basaktivitet';
 
   @override
+  final String enterNameForBasicActivity = 'Ange namn för basaktivitet';
+
+  @override
   final String timeTo = 'till';
+
+  @override
+  final String addTimer = 'Lägga in timer';
 
   @override
   final String start = 'Starta';
@@ -1878,6 +1893,9 @@ class SV extends Translated {
   final String defaults = 'Förval';
 
   @override
+  final String onlyAppliesToGo = 'Gäller endast MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Visa pågående aktivitet i helskärm';
 
@@ -1909,6 +1927,9 @@ class SV extends Translated {
   @override
   final String menuRemovalWarning =
       'Vill du verkligen ta bort Inställningar från Menyn? I så fall startas inställningar genom att trycka på kategorisymbolerna i dagkalendern; vänster – höger – vänster. Tryck på motsvarande yta om de saknas.';
+
+  @override
+  final String selectADayToViewDetails = 'Välj en dag för att se mer detaljer';
 
   @override
   final String topField = 'Toppfält';
@@ -2010,6 +2031,9 @@ class SV extends Translated {
   final String speechTest = 'Test av talhastighet';
 
   @override
+  final String voices = 'Röster';
+
+  @override
   final String codeProtect = 'Kodskydd';
 
   @override
@@ -2023,6 +2047,12 @@ class SV extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Kodskydda Android-inställningar';
+
+  @override
+  final String enterCode = 'Ange kod';
+
+  @override
+  final String enterYourCodeToAccess = 'Ange din kod för att komma åt';
 
   @override
   final String enterNewCode = 'Ange ny kod';
@@ -2128,6 +2158,24 @@ class SV extends Translated {
 
   @override
   final String quickSettingsMenu = 'Snabb-\ninställningar';
+
+  @override
+  final String allPhotos = 'Alla foton';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Vill du lägga in detta foto i fotokalendern?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Vill du ta bort detta foto från fotokalendern?';
+
+  @override
+  final String remove = 'Ta bort';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Är du säker på att du vill ta bort detta foto?';
 }
 
 class DA extends Translated {
@@ -2203,7 +2251,7 @@ class DA extends Translated {
   final String usernameHint = 'Brugernavn (telefon eller en e-mail)';
 
   @override
-  final String passwordHint = 'Adgangskode (mindst 8 tegn)';
+  final String passwordHint = 'Adgangskode (mindst 12 tegn)';
 
   @override
   final String confirmPassword = 'Bekræft adgangskoden';
@@ -2213,7 +2261,7 @@ class DA extends Translated {
       'Brugernavn eller e-mail er ugyldig, skal indeholde mindst tre tegn';
 
   @override
-  final String passwordToShort = 'Adgangskoden skal bestå af mindst 8 tegn';
+  final String passwordToShort = 'Adgangskoden skal bestå af mindst 12 tegn';
 
   @override
   final String passwordMismatch = 'Begge adgangskoder skal være de samme';
@@ -3406,7 +3454,7 @@ class NL extends Translated {
   final String usernameHint = 'Gebruikersnaam (telefoon of een e-mail)';
 
   @override
-  final String passwordHint = 'Wachtwoord (minimaal 8 tekens)';
+  final String passwordHint = 'Wachtwoord (minimaal 12 tekens)';
 
   @override
   final String confirmPassword = 'Wachtwoord bevestigen';
@@ -3417,7 +3465,7 @@ class NL extends Translated {
 
   @override
   final String passwordToShort =
-      'Het wachtwoord moet ten minste 8 tekens bevatten';
+      'Het wachtwoord moet ten minste 12 tekens bevatten';
 
   @override
   final String passwordMismatch = 'Beide wachtwoorden moeten hetzelfde zijn';
@@ -4416,6 +4464,9 @@ class NL extends Translated {
   final String speechTest = 'Test van spraaksnelheid';
 
   @override
+  final String voices = 'Stemmen';
+
+  @override
   final String codeProtect = 'Codebescherming';
 
   @override
@@ -4610,7 +4661,7 @@ class FI extends Translated {
   final String usernameHint = 'Käyttäjätunnus (puhelin tai sähköpostiosoite)';
 
   @override
-  final String passwordHint = 'Salasanassa (vähintään 8 merkkiä)';
+  final String passwordHint = 'Salasanassa (vähintään 12 merkkiä)';
 
   @override
   final String confirmPassword = 'Vahvista salasana';
@@ -4620,7 +4671,7 @@ class FI extends Translated {
       'Käyttäjätunnus tai sähköpostiosoite on virheellinen, niissä on oltava vähintään kolme merkkiä';
 
   @override
-  final String passwordToShort = 'Salasanassa on oltava vähintään 8 merkkiä';
+  final String passwordToShort = 'Salasanassa on oltava vähintään 12 merkkiä';
 
   @override
   final String passwordMismatch = 'Molempien salasanojen on oltava samat';
@@ -5620,6 +5671,9 @@ class FI extends Translated {
   final String speechTest = 'Puhenopeuden testaus';
 
   @override
+  final String voices = 'Äänet';
+
+  @override
   final String codeProtect = 'Suojakoodi';
 
   @override
@@ -5813,7 +5867,7 @@ class DE extends Translated {
   final String usernameHint = 'Benutzername (telefon oder E-Mail)';
 
   @override
-  final String passwordHint = 'Passwort (mindestens 8 Zeichen)';
+  final String passwordHint = 'Passwort (mindestens 12 Zeichen)';
 
   @override
   final String confirmPassword = 'Passwort bestätigen';
@@ -5824,7 +5878,7 @@ class DE extends Translated {
 
   @override
   final String passwordToShort =
-      'Das Passwort muss mindestens 8 Zeichen lang sein';
+      'Das Passwort muss mindestens 12 Zeichen lang sein';
 
   @override
   final String passwordMismatch = 'Beide Passwörter müssen identisch sein';
@@ -6827,6 +6881,9 @@ class DE extends Translated {
   final String speechTest = 'Test des Sprechtempos';
 
   @override
+  final String voices = 'Stimmen';
+
+  @override
   final String codeProtect = 'Schutz durch Code';
 
   @override
@@ -7020,7 +7077,7 @@ class NB extends Translated {
   final String usernameHint = 'Brukernavn (telefon eller en e-post)';
 
   @override
-  final String passwordHint = 'Passord (minimum 8 tegn)';
+  final String passwordHint = 'Passord (minimum 12 tegn)';
 
   @override
   final String confirmPassword = 'Bekreft passordet';
@@ -7030,7 +7087,7 @@ class NB extends Translated {
       'Brukernavn eller e-postadresse er ugyldig, må inneholde minst tre tegn';
 
   @override
-  final String passwordToShort = 'Passordet må bestå av minst 8 tegn';
+  final String passwordToShort = 'Passordet må bestå av minst 12 tegn';
 
   @override
   final String passwordMismatch = 'Begge passordene må være de samme';

@@ -58,7 +58,7 @@ void main() {
           runStartGuide: false,
           child: AuthenticatedBlocsProvider(
             memoplannerSettingBloc: settingBloc,
-            authenticatedState: const Authenticated(token: '', userId: 1),
+            authenticatedState: const Authenticated(userId: 1),
             child: BlocProvider<InactivityCubit>(
               create: (context) => inactivityCubit,
               child: MaterialApp(
