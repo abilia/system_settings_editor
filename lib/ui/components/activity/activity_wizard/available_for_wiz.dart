@@ -54,7 +54,6 @@ class AvailableForWiz extends StatelessWidget {
               availableFor != AvailableForType.selectedSupportPersons
                   ? []
                   : null));
-      context.read<AvailableForCubit>().setAvailableFor(availableFor);
     }
   }
 
@@ -67,6 +66,5 @@ class AvailableForWiz extends StatelessWidget {
       context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
           secretExemptions: List.from(activity.secretExemptions)..remove(id)));
     }
-    context.read<AvailableForCubit>().selectSupportPerson(id, selected);
   }
 }

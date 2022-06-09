@@ -45,41 +45,54 @@ class AvailableForPageBody extends StatelessWidget {
       builder: (context, state) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          RadioField<AvailableForType>(
-            groupValue: state.availableFor,
-            onChanged: (value) => _onRadioButtonChanged(context, value),
-            value: AvailableForType.onlyMe,
-            leading: Icon(
-              AbiliaIcons.lock,
-              size: layout.icon.button,
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                layout.templates.m3.left,
+                layout.templates.m3.top,
+                layout.templates.m3.right,
+                layout.formPadding.verticalItemDistance),
+            child: RadioField<AvailableForType>(
+              groupValue: state.availableFor,
+              onChanged: (value) => _onRadioButtonChanged(context, value),
+              value: AvailableForType.onlyMe,
+              leading: Icon(
+                AbiliaIcons.lock,
+                size: layout.icon.button,
+              ),
+              text: Text(translate.onlyMe),
             ),
-            text: Text(translate.onlyMe),
-          ).pad(
-            EdgeInsets.fromLTRB(layout.templates.m1.left,
-                layout.templates.m1.top, layout.templates.m1.right, 0),
           ),
-          SizedBox(height: layout.formPadding.verticalItemDistance),
-          RadioField<AvailableForType>(
-            groupValue: state.availableFor,
-            onChanged: (value) => _onRadioButtonChanged(context, value),
-            value: AvailableForType.allSupportPersons,
-            leading: Icon(
-              AbiliaIcons.unlock,
-              size: layout.icon.button,
+          Padding(
+            padding: EdgeInsets.only(
+                left: layout.templates.m3.left,
+                right: layout.templates.m3.right,
+                bottom: layout.formPadding.verticalItemDistance),
+            child: RadioField<AvailableForType>(
+              groupValue: state.availableFor,
+              onChanged: (value) => _onRadioButtonChanged(context, value),
+              value: AvailableForType.allSupportPersons,
+              leading: Icon(
+                AbiliaIcons.unlock,
+                size: layout.icon.button,
+              ),
+              text: Text(translate.allSupportPersons),
             ),
-            text: Text(translate.allSupportPersons),
-          ).pad(EdgeInsets.symmetric(horizontal: layout.templates.m1.left)),
-          SizedBox(height: layout.formPadding.verticalItemDistance),
-          RadioField<AvailableForType?>(
-            groupValue: state.availableFor,
-            onChanged: (value) => _onRadioButtonChanged(context, value),
-            value: AvailableForType.selectedSupportPersons,
-            leading: Icon(
-              AbiliaIcons.selectedSupport,
-              size: layout.icon.button,
-            ),
-            text: Text(translate.selectedSupportPersons),
-          ).pad(EdgeInsets.symmetric(horizontal: layout.templates.m1.left)),
+          ),
+          Padding(
+              padding: EdgeInsets.only(
+                  left: layout.templates.m3.left,
+                  right: layout.templates.m3.right,
+                  bottom: layout.templates.m3.bottom),
+              child: RadioField<AvailableForType?>(
+                groupValue: state.availableFor,
+                onChanged: (value) => _onRadioButtonChanged(context, value),
+                value: AvailableForType.selectedSupportPersons,
+                leading: Icon(
+                  AbiliaIcons.selectedSupport,
+                  size: layout.icon.button,
+                ),
+                text: Text(translate.selectedSupportPersons),
+              )),
           if (state.availableFor == AvailableForType.selectedSupportPersons)
             Expanded(
               child: SupportPersonsWidget(
@@ -117,36 +130,47 @@ class SupportPersonsWidget extends StatelessWidget {
           return ListView(
             controller: scrollController,
             children: <Widget>[
-              const Divider().pad(EdgeInsets.only(
-                  top: layout.formPadding.groupBottomDistance,
-                  bottom: layout.formPadding.groupTopDistance)),
-              Tts(
-                child: Text(Translator.of(context).translate.supportPersons,
-                    style: subtitle2.copyWith(color: AbiliaColors.black75)),
-              ).pad(EdgeInsets.symmetric(horizontal: layout.templates.m1.left)),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: layout.templates.m3.top,
+                ),
+                child: const Divider(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: layout.templates.m3.left,
+                    right: layout.templates.m3.right),
+                child: Tts(
+                  child: Text(Translator.of(context).translate.supportPersons,
+                      style: bodyText2.copyWith(color: AbiliaColors.black75)),
+                ),
+              ),
               ...state.allSupportPersons
-                  .map((person) => SwitchField(
-                        leading: ProfilePicture(
-                          GetIt.I<BaseUrlDb>().baseUrl,
-                          person.image,
-                          initial: person.name.substring(0, 1).capitalize(),
-                          size: layout.icon.normal,
-                        ).pad(
-                          const EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        value: state.selectedSupportPersons.contains(person.id),
-                        onChanged: (selected) => {
+                  .map(
+                    (person) => SwitchField(
+                      leading: ProfilePicture(
+                        GetIt.I<BaseUrlDb>().baseUrl,
+                        person.image,
+                        initial: person.name.substring(0, 1).capitalize(),
+                        size: layout.icon.normal,
+                      ).pad(
+                        const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      value: state.selectedSupportPersons.contains(person.id),
+                      onChanged: (selected) =>
                           _onSupportPersonChanged(context, person.id, selected),
-                        },
-                        child: Text(person.name),
-                      ).pad(EdgeInsets.fromLTRB(
-                          layout.templates.m1.left,
-                          layout.formPadding.verticalItemDistance,
-                          layout.templates.m1.left,
-                          0)))
+                      child: Text(person.name),
+                    ).pad(
+                      EdgeInsets.only(
+                        left: layout.templates.m3.left,
+                        top: layout.formPadding.verticalItemDistance,
+                        right: layout.templates.m3.right,
+                      ),
+                    ),
+                  )
                   .toList(),
             ],
-          );
+          ).pad(EdgeInsets.only(bottom: layout.templates.m1.bottom));
         },
       ),
     );

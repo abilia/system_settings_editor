@@ -4,12 +4,12 @@ import 'package:seagull/ui/all.dart';
 class ProfilePicture extends StatelessWidget {
   final String baseUrl;
   final String image;
-  final String? initial;
+  final String initial;
   static final radius = layout.logout.profilePictureSize;
   final double? size;
 
   const ProfilePicture(this.baseUrl, this.image,
-      {Key? key, this.initial, this.size})
+      {Key? key, this.initial = '', this.size})
       : super(key: key);
 
   @override
@@ -28,14 +28,14 @@ class ProfilePicture extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              if (initial != null)
+              if (initial.isNotEmpty)
                 Center(
                   child: Text(
-                    initial ?? '',
+                    initial,
                     style: headline6.copyWith(color: AbiliaColors.white),
                   ),
                 ),
-              if (initial == null)
+              if (initial.isEmpty)
                 Icon(
                   AbiliaIcons.contact,
                   color: AbiliaColors.black75,
