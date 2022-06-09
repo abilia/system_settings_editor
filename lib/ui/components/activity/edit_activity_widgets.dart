@@ -535,14 +535,13 @@ class AvailableForWidget extends StatelessWidget {
                   ? translator.onlyMe
                   : translator.selectedSupportPersons),
           onTap: () async {
+            final editActivityCubit = context.read<EditActivityCubit>();
             final availableForState = await navigateToAvailableForPage(context);
             if (availableForState != null) {
-              context.read<EditActivityCubit>().replaceActivity(
-                  activity.copyWith(
-                      secret: availableForState.availableFor !=
-                          AvailableForType.allSupportPersons,
-                      secretExemptions:
-                          availableForState.selectedSupportPersons));
+              editActivityCubit.replaceActivity(activity.copyWith(
+                  secret: availableForState.availableFor !=
+                      AvailableForType.allSupportPersons,
+                  secretExemptions: availableForState.selectedSupportPersons));
             }
           },
         ),
