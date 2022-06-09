@@ -15,7 +15,7 @@ class TimeInputPage extends StatelessWidget {
       appBar: AbiliaAppBar(
         title: Translator.of(context).translate.setTime,
         iconData: AbiliaIcons.clock,
-        height: layout.appBar.largeAppBarHeight,
+        height: layout.appBar.largeHeight,
         trailing: Padding(
           padding: layout.timeInput.headerClockPadding,
           child: AbiliaClock(

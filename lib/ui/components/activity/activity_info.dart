@@ -110,6 +110,7 @@ mixin ActivityMixin {
     ActivityDay activityDay, {
     String? message,
   }) async {
+    final activitiesBloc = context.read<ActivitiesBloc>();
     final check = await showViewDialog<bool>(
       context: context,
       builder: (_) => CheckActivityConfirmDialog(
@@ -118,11 +119,11 @@ mixin ActivityMixin {
       ),
     );
     if (check == true) {
-      context.read<ActivitiesBloc>().add(
-            UpdateActivity(
-              activityDay.activity.signOff(activityDay.day),
-            ),
-          );
+      activitiesBloc.add(
+        UpdateActivity(
+          activityDay.activity.signOff(activityDay.day),
+        ),
+      );
     }
     return check;
   }
@@ -133,6 +134,8 @@ mixin ActivityMixin {
     ActivityAlarm? alarm,
     String? message,
   }) async {
+    final activityRepository = context.read<ActivityRepository>();
+    final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,
       activityDay,
@@ -140,15 +143,23 @@ mixin ActivityMixin {
     );
     if (checked == true && alarm != null) {
       await cancelNotifications(uncheckedReminders(alarm.activityDay));
-      await popAlarm(context, alarm);
+      await popAlarm(
+        activityRepository: activityRepository,
+        navigator: navigator,
+        alarm: alarm,
+      );
     }
   }
 
-  Future popAlarm(BuildContext context, NotificationAlarm alarm) async {
+  Future popAlarm({
+    required NavigatorState navigator,
+    required NotificationAlarm alarm,
+    ActivityRepository? activityRepository,
+  }) async {
     _log.fine('pop Alarm: $alarm');
-    if (!await Navigator.of(context).maybePop()) {
+    if (!await navigator.maybePop()) {
       _log.info('Could not pop (root?) will -> SystemNavigator.pop');
-      await context.read<ActivityRepository>().synchronize();
+      await activityRepository?.synchronize();
       await SystemNavigator.pop();
     }
   }

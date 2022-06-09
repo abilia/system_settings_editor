@@ -111,6 +111,7 @@ class EditQuestionView extends StatelessWidget {
     final Question oldQuestion,
     BuildContext context,
   ) async {
+    final editChecklistCubit = context.read<EditChecklistCubit>();
     final result = await showAbiliaBottomSheet<ImageAndName>(
       context: context,
       providers: copiedAuthProviders(context),
@@ -119,7 +120,7 @@ class EditQuestionView extends StatelessWidget {
       ),
     );
     if (result != null) {
-      context.read<EditChecklistCubit>().edit(result);
+      editChecklistCubit.edit(result);
     }
   }
 }

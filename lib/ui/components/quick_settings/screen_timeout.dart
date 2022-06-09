@@ -18,6 +18,8 @@ class ScreenTimeoutPickField extends StatelessWidget {
               : wakeLockState.screenTimeout.toDurationString(t),
         ),
         onTap: () async {
+          final genericCubit = context.read<GenericCubit>();
+          final wakeLockCubit = context.read<WakeLockCubit>();
           final timeout = await Navigator.of(context).push<Duration>(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
@@ -32,7 +34,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
             ),
           );
           if (timeout != null) {
-            context.read<GenericCubit>().genericUpdated(
+            genericCubit.genericUpdated(
               [
                 MemoplannerSettingData.fromData(
                   data: timeout == Duration.zero,
@@ -40,7 +42,7 @@ class ScreenTimeoutPickField extends StatelessWidget {
                 ),
               ],
             );
-            context.read<WakeLockCubit>().setScreenTimeout(timeout);
+            wakeLockCubit.setScreenTimeout(timeout);
           }
         },
       ),

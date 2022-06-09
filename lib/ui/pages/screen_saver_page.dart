@@ -62,10 +62,8 @@ class ScreenSaverAppBar extends StatelessWidget {
           padding: layout.screenSaver.titleBarPadding,
           child: BlocBuilder<ClockBloc, DateTime>(
             builder: (state, time) => AppBarTitle(
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(color: AbiliaColors.white),
+              style: (Theme.of(context).textTheme.headline4 ?? headline4)
+                  .apply(color: AbiliaColors.white),
               rows: AppBarTitleRows.day(
                 compactDay: true,
                 displayWeekDay: memoSettingsState.activityDisplayWeekDay,

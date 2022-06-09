@@ -2,6 +2,7 @@ import 'package:seagull/bloc/all.dart';
 import 'package:seagull/listener/all.dart';
 import 'package:seagull/logging.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
 
@@ -45,11 +46,15 @@ class AlarmNavigator {
     NotificationAlarm alarm,
   ) async {
     final authProviders = copiedAuthProviders(context);
+    final activityRepository = context.read<ActivityRepository>();
     log.fine('pushAlarm: $alarm');
     final route = AlarmRoute(
-      builder: (_) => MultiBlocProvider(
-        providers: authProviders,
-        child: _alarmPage(alarm),
+      builder: (_) => RepositoryProvider.value(
+        value: activityRepository,
+        child: MultiBlocProvider(
+          providers: authProviders,
+          child: _alarmPage(alarm),
+        ),
       ),
       fullscreenDialog: true,
     );
