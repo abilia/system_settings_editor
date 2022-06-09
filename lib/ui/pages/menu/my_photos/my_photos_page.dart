@@ -143,6 +143,15 @@ class _AddPhotoButton extends StatelessWidget {
                   tabController.index == photoCalendarTabIndex;
               return IconActionButtonBlack(
                 onPressed: () async {
+                  final userFileCubit = context.read<UserFileCubit>();
+                  final sortableBloc = context.read<SortableBloc>();
+                  final name = DateFormat.yMd(
+                    Localizations.localeOf(context).toLanguageTag(),
+                  ).format(time);
+                  final currentFolderId = context
+                      .read<SortableArchiveCubit<ImageArchiveData>>()
+                      .state
+                      .currentFolderId;
                   if (Config.isMP) {
                     if (permissionState
                             .status[Permission.camera]?.isPermanentlyDenied ==
@@ -159,10 +168,12 @@ class _AddPhotoButton extends StatelessWidget {
                         final selectedImage =
                             UnstoredAbiliaFile.newFile(File(image.path));
                         _addImage(
-                          context,
-                          selectedImage,
-                          time,
-                          includeInPhotoCalendar,
+                          userFileCubit: userFileCubit,
+                          sortableBloc: sortableBloc,
+                          selectedImage: selectedImage,
+                          name: name,
+                          currentFolderId: currentFolderId,
+                          includeInPhotoCalendar: includeInPhotoCalendar,
                         );
                       }
                     }
@@ -179,10 +190,12 @@ class _AddPhotoButton extends StatelessWidget {
                     );
                     if (selectedImage != null) {
                       _addImage(
-                        context,
-                        selectedImage,
-                        time,
-                        includeInPhotoCalendar,
+                        userFileCubit: userFileCubit,
+                        selectedImage: selectedImage,
+                        currentFolderId: currentFolderId,
+                        name: name,
+                        includeInPhotoCalendar: includeInPhotoCalendar,
+                        sortableBloc: sortableBloc,
                       );
                     }
                   }
@@ -194,34 +207,27 @@ class _AddPhotoButton extends StatelessWidget {
     );
   }
 
-  void _addImage(
-    BuildContext context,
-    UnstoredAbiliaFile selectedImage,
-    DateTime time,
-    bool includeInPhotoCalendar,
-  ) {
-    context.read<UserFileCubit>().fileAdded(
-          selectedImage,
-          image: true,
-        );
-    context.read<SortableBloc>().add(
-          PhotoAdded(
-            selectedImage.id,
-            selectedImage.file.path,
-            DateFormat.yMd(
-              Localizations.localeOf(context).toLanguageTag(),
-            ).format(time),
-            includeInPhotoCalendar
-                ? myPhotoFolderId
-                : context
-                    .read<SortableArchiveCubit<ImageArchiveData>>()
-                    .state
-                    .currentFolderId,
-            tags: {
-              if (includeInPhotoCalendar) ImageArchiveData.photoCalendarTag
-            },
-          ),
-        );
+  void _addImage({
+    required UserFileCubit userFileCubit,
+    required SortableBloc sortableBloc,
+    required UnstoredAbiliaFile selectedImage,
+    required String name,
+    required String currentFolderId,
+    required bool includeInPhotoCalendar,
+  }) {
+    userFileCubit.fileAdded(
+      selectedImage,
+      image: true,
+    );
+    sortableBloc.add(
+      PhotoAdded(
+        selectedImage.id,
+        selectedImage.file.path,
+        name,
+        includeInPhotoCalendar ? myPhotoFolderId : currentFolderId,
+        tags: {if (includeInPhotoCalendar) ImageArchiveData.photoCalendarTag},
+      ),
+    );
   }
 }
 
