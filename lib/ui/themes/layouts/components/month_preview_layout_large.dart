@@ -34,9 +34,10 @@ class MonthPreviewLayout {
 }
 
 class MonthPreviewLayoutMedium extends MonthPreviewLayout {
-  const MonthPreviewLayoutMedium(
-      {double? height, double? fullDayActivityHeight})
-      : super(
+  const MonthPreviewLayoutMedium({
+    double? height,
+    double? fullDayActivityHeight,
+  }) : super(
           monthPreviewBorderWidth: 2,
           activityListTopPadding: 32,
           activityListBottomPadding: 96,
@@ -54,5 +55,9 @@ class MonthPreviewLayoutMedium extends MonthPreviewLayout {
 }
 
 class MonthPreviewLayoutLarge extends MonthPreviewLayoutMedium {
-  const MonthPreviewLayoutLarge() : super(height: 80);
+  const MonthPreviewLayoutLarge()
+      : super(
+          height: 80,
+          fullDayActivityHeight: 56,
+        );
 }
