@@ -1,12 +1,12 @@
 part of 'layout.dart';
 
 class MediumLayout extends Layout {
-  const MediumLayout(
-      {AppBarLayout? appBar,
-      ActionButtonLayout? actionButton,
-      ClockLayout? clockLayout,
-      MonthCalendarLayout? monthCalendar})
-      : super(
+  const MediumLayout({
+    AppBarLayout? appBar,
+    ActionButtonLayout? actionButton,
+    ClockLayout? clockLayout,
+    MonthCalendarLayout? monthCalendar,
+  }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
