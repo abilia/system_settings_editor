@@ -57,18 +57,18 @@ class SortableRepository extends DataRepository<Sortable> {
     String language, {
     String name = 'memoplanner',
   }) async {
-    final temlateResponse = await client.get(
+    final templateResponse = await client.get(
       '$baseUrl/api/v1/base-data'.toUri(),
       headers: jsonHeader,
     );
-    if (temlateResponse.statusCode != 200) {
+    if (templateResponse.statusCode != 200) {
       log.severe('could not get base-data set '
-          '${temlateResponse.statusCode} '
-          '${temlateResponse.body}');
+          '${templateResponse.statusCode} '
+          '${templateResponse.body}');
       return false;
     }
 
-    final templateResponseJson = temlateResponse.json() as List<dynamic>;
+    final templateResponseJson = templateResponse.json() as List<dynamic>;
     final template = templateResponseJson
         .exceptionSafeMap(
           BaseDataTemplate.fromJson,
