@@ -16,7 +16,7 @@ class TabItem extends StatelessWidget {
           children: [
             Text(text),
             SizedBox(height: layout.actionButton.spacing),
-            Icon(iconData, size: layout.icon.button),
+            Icon(iconData),
           ],
         ),
       );
@@ -171,9 +171,13 @@ class _TabState extends State<_Tab> with SingleTickerProviderStateMixin {
       offset: widget.offset,
       first: widget.index == 0,
       last: widget.last,
-      beginIconThemeData: iconTheme.copyWith(size: layout.icon.small),
+      beginIconThemeData: iconTheme.copyWith(
+        size: layout.actionButton.withTextIconSize,
+      ),
       endIconThemeData: iconTheme.copyWith(
-          color: AbiliaColors.white, size: layout.icon.small),
+        color: AbiliaColors.white,
+        size: layout.actionButton.withTextIconSize,
+      ),
       beginTextStyle: textStyle,
       endTextStyle: textStyle.copyWith(color: AbiliaColors.white),
       onTap: () {
@@ -313,8 +317,8 @@ class _AnimatedTab extends AnimatedWidget {
                 child: collapsedValue == 0.0
                     ? null
                     : Padding(
-                        padding: layout.actionButton.withTextPadding.subtract(
-                            EdgeInsets.only(top: layout.tabBar.item.border)),
+                        padding: layout.actionButton.withTextPadding
+                            .subtract(padding.onlyTop),
                         child: DefaultTextStyle(
                           maxLines: 1,
                           overflow: TextOverflow.clip,

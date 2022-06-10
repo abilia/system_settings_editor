@@ -2179,6 +2179,36 @@ text''';
       expect(find.byKey(TestKey.thisDayAndForward), findsOneWidget);
       expect(find.byKey(TestKey.onlyThisDay), findsOneWidget);
     });
+
+    testWidgets('changing recurrence type does not change end date',
+        (WidgetTester tester) async {
+      // Arrange
+      final activity = Activity.createNew(
+          title: 'Title',
+          startTime: startTime,
+          recurs: Recurs.raw(
+            Recurs.typeWeekly,
+            Recurs.allDaysOfWeek,
+            startTime.add(30.days()).millisecondsSinceEpoch,
+          ));
+
+      await tester.pumpWidget(createEditActivityPage(givenActivity: activity));
+      await tester.pumpAndSettle();
+
+      // Act
+      await tester.goToRecurrenceTab();
+
+      // Act -- Change to monthly
+      await tester.tap(find.byKey(TestKey.changeRecurrence));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(AbiliaIcons.month));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(OkButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- end date is still 30 days after startTime
+      expect(find.text('March 11, 2020'), findsOneWidget);
+    });
   });
 
   group('Memoplanner settings -', () {

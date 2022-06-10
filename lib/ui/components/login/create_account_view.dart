@@ -49,6 +49,7 @@ class GoToCreateAccountButton extends StatelessWidget {
       child: TextButton(
         style: textButtonStyleDarkGrey,
         onPressed: () async {
+          final loginCubit = context.read<LoginCubit>();
           final username = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => CreateAccountPage(
@@ -57,7 +58,7 @@ class GoToCreateAccountButton extends StatelessWidget {
             ),
           );
           if (username != null) {
-            context.read<LoginCubit>().usernameChanged(username);
+            loginCubit.usernameChanged(username);
           }
         },
         child: Text(translate.createAccount),

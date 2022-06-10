@@ -10,11 +10,11 @@ class CalendarAppBar extends StatelessWidget {
   final bool crossedOver;
   final DateTime day;
   final DayColor calendarDayColor;
+  final TextStyle? textStyle;
 
-  static final _emptyAction = SizedBox(width: layout.actionButton.size);
+  static final _emptyAction = SizedBox(width: layout.actionButton.largeSize);
 
-  static final double clockPadding = layout.formPadding.horizontalItemDistance;
-  static final Size size = Size.fromHeight(layout.appBar.largeAppBarHeight);
+  static final size = Size.fromHeight(layout.appBar.largeHeight);
 
   const CalendarAppBar({
     Key? key,
@@ -26,6 +26,7 @@ class CalendarAppBar extends StatelessWidget {
     required this.rows,
     required this.day,
     this.calendarDayColor = DayColor.noColors,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -56,7 +57,9 @@ class CalendarAppBar extends StatelessWidget {
                 children: <Widget>[
                   leftAction ?? _emptyAction,
                   if (!clockSpaceEmpty)
-                    SizedBox(width: clockPadding + layout.actionButton.size),
+                    SizedBox(
+                      width: layout.appBar.clockPadding + layout.clock.width,
+                    ),
                   Flexible(
                     child: CrossOver(
                       style: theme.isLight
@@ -68,13 +71,13 @@ class CalendarAppBar extends StatelessWidget {
                       ),
                       child: Align(
                         alignment: Alignment.center,
-                        child: AppBarTitle(rows: rows),
+                        child: AppBarTitle(rows: rows, style: textStyle),
                       ),
                     ),
                   ),
                   if (!clockSpaceEmpty) ...[
                     clockReplacement ?? const AbiliaClock(),
-                    SizedBox(width: clockPadding)
+                    SizedBox(width: layout.appBar.clockPadding)
                   ],
                   rightAction ??
                       (clockToTheRight ? const AbiliaClock() : _emptyAction),

@@ -1,27 +1,17 @@
 part of 'layout.dart';
 
 class MediumLayout extends Layout {
-  const MediumLayout()
-      : super(
+  const MediumLayout({
+    AppBarLayout? appBar,
+    ActionButtonLayout? actionButton,
+    ClockLayout? clockLayout,
+    PhotoCalendarLayoutMedium? photoCalendarLayout,
+  }) : super(
           radius: 18,
-          appBar: const AppBarLayout(
-            largeAppBarHeight: 148,
-            height: 104,
-            fontSize: 32,
-            horizontalPadding: 16,
-            previewWidth: 562.5,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(32),
-              topRight: Radius.circular(32),
-            ),
-          ),
-          actionButton: const ActionButtonLayout(
-            size: 88,
-            radius: 20,
-            spacing: 4,
-            padding: EdgeInsets.all(12),
-            withTextPadding: EdgeInsets.only(left: 6, top: 6, right: 6),
-          ),
+          appBar: appBar ?? const AppBarLayoutMedium(),
+          actionButton: actionButton ?? const ActionButtonLayoutMedium(),
+          photoCalendarLayout:
+              photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
           menuPage: const MenuPageLayout(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
             crossAxisSpacing: 24,
@@ -56,21 +46,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: const FontSize(
-            headline1: 144,
-            headline2: 90,
-            headline3: 72,
-            headline4: 45,
-            headline5: 38,
-            headline6: 32,
-            subtitle1: 24,
-            subtitle2: 21,
-            bodyText1: 24,
-            bodyText2: 21,
-            caption: 20,
-            button: 24,
-            overline: 15,
-          ),
+          fontSize: const FontSizeMedium(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,
@@ -81,18 +57,7 @@ class MediumLayout extends Layout {
             doubleIconTop: 30,
             doubleIconLeft: 48,
           ),
-          clock: const ClockLayout(
-            height: 124,
-            width: 92,
-            borderWidth: 2,
-            centerPointRadius: 8,
-            hourNumberScale: 1.5,
-            hourHandLength: 22,
-            minuteHandLength: 30,
-            hourHandWidth: 1.5,
-            minuteHandWidth: 1.5,
-            fontSize: 12,
-          ),
+          clock: clockLayout ?? const ClockLayoutMedium(),
           formPadding: const FormPaddingLayout(
             smallVerticalItemDistance: 8,
             verticalItemDistance: 12,
@@ -509,14 +474,6 @@ class MediumLayout extends Layout {
             profilePictureSize: 126,
             profileDistance: 35,
             topDistance: 94,
-          ),
-          photoCalendar: const PhotoCalendarLayout(
-            clockSize: 200,
-            clockFontSize: 72,
-            clockFontSizeSmall: 64,
-            backButtonPosition: 18,
-            clockPadding: EdgeInsets.all(30),
-            digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
           ),
           settings: const SettingsLayout(
             clockHeight: 135,

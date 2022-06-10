@@ -30,7 +30,7 @@ class _TextAndIconActionButton extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: layout.actionButton.spacing),
-            Icon(iconData, size: layout.icon.button),
+            Icon(iconData, size: layout.actionButton.withTextIconSize),
           ],
         ),
       );

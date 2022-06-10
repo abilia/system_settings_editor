@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
-part 'go_layout.dart';
+import 'package:seagull/ui/themes/layouts/components/all.dart';
 
 part 'large_layout.dart';
 
@@ -12,11 +12,20 @@ part 'medium_layout.dart';
 late final ui.Size screenSize =
     ui.window.physicalSize / ui.window.devicePixelRatio;
 
-late final Layout layout = screenSize.longestSide > 1500
-    ? const _LargeLayout()
+late Layout _layout = screenSize.longestSide > 1500
+    ? const LargeLayout()
     : screenSize.longestSide > 1000
         ? const MediumLayout()
         : const _GoLayout();
+
+class _GoLayout extends Layout {
+  const _GoLayout() : super();
+}
+
+Layout get layout => _layout;
+
+@visibleForTesting
+set layout(Layout layout) => _layout = layout;
 
 class Layout {
   final double radius;
@@ -76,7 +85,6 @@ class Layout {
   final DialogLayout dialog;
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
-  final PhotoCalendarLayout photoCalendar;
   final SettingsLayout settings;
   final PermissionsPageLayout permissionsPage;
   final EditTimerLayout editTimer;
@@ -85,6 +93,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
     this.radius = 12,
@@ -148,7 +157,6 @@ class Layout {
     this.dialog = const DialogLayout(),
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
-    this.photoCalendar = const PhotoCalendarLayout(),
     this.settings = const SettingsLayout(),
     this.permissionsPage = const PermissionsPageLayout(),
     this.editTimer = const EditTimerLayout(),
@@ -157,44 +165,12 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
   bool get go => runtimeType == _GoLayout;
-}
-
-class AppBarLayout {
-  final double horizontalPadding,
-      largeAppBarHeight,
-      height,
-      fontSize,
-      previewWidth;
-
-  final BorderRadius borderRadius;
-
-  const AppBarLayout({
-    this.horizontalPadding = 16,
-    this.largeAppBarHeight = 80,
-    this.height = 68,
-    this.fontSize = 22,
-    this.previewWidth = 375,
-    this.borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(24),
-      topRight: Radius.circular(24),
-    ),
-  });
-}
-
-class ActionButtonLayout {
-  final double size, radius, spacing;
-  final EdgeInsets padding, withTextPadding;
-
-  const ActionButtonLayout({
-    this.size = 48,
-    this.radius = 12,
-    this.spacing = 0,
-    this.padding = const EdgeInsets.all(8),
-    this.withTextPadding = const EdgeInsets.only(left: 4, top: 4, right: 4),
-  });
+  bool get medium => runtimeType == MediumLayout;
+  bool get large => runtimeType == LargeLayout;
 }
 
 class MenuPageLayout {
@@ -284,38 +260,6 @@ class TabItemLayout {
   });
 }
 
-class FontSize {
-  final double headline1,
-      headline2,
-      headline3,
-      headline4,
-      headline5,
-      headline6,
-      subtitle1,
-      subtitle2,
-      bodyText1,
-      bodyText2,
-      caption,
-      button,
-      overline;
-
-  const FontSize({
-    this.headline1 = 96,
-    this.headline2 = 60,
-    this.headline3 = 48,
-    this.headline4 = 34,
-    this.headline5 = 24,
-    this.headline6 = 20,
-    this.subtitle1 = 16,
-    this.subtitle2 = 14,
-    this.bodyText1 = 16,
-    this.bodyText2 = 14,
-    this.caption = 12,
-    this.button = 16,
-    this.overline = 10,
-  });
-}
-
 class IconLayout {
   final double tiny,
       small,
@@ -335,32 +279,6 @@ class IconLayout {
     this.huge = 96,
     this.doubleIconTop = 20,
     this.doubleIconLeft = 32,
-  });
-}
-
-class ClockLayout {
-  final double height,
-      width,
-      borderWidth,
-      centerPointRadius,
-      hourNumberScale,
-      hourHandLength,
-      minuteHandLength,
-      hourHandWidth,
-      minuteHandWidth,
-      fontSize;
-
-  const ClockLayout({
-    this.height = 60,
-    this.width = 48,
-    this.borderWidth = 1,
-    this.centerPointRadius = 4,
-    this.hourNumberScale = 1.5,
-    this.hourHandLength = 11,
-    this.minuteHandLength = 15,
-    this.hourHandWidth = 1,
-    this.minuteHandWidth = 1,
-    this.fontSize = 7,
   });
 }
 
@@ -1117,6 +1035,7 @@ class SelectableFieldLayout {
       textRightPadding,
       textTopPadding;
   final EdgeInsets padding;
+  final EdgeInsets boxPadding;
 
   const SelectableFieldLayout({
     this.height = 48,
@@ -1126,6 +1045,7 @@ class SelectableFieldLayout {
     this.textRightPadding = 26,
     this.textTopPadding = 10,
     this.padding = const EdgeInsets.all(4),
+    this.boxPadding = const EdgeInsets.all(3),
   });
 }
 
@@ -1347,29 +1267,6 @@ class LogoutLayout {
     this.profileDistance = 24,
     this.topDistance = 64,
   });
-}
-
-class PhotoCalendarLayout {
-  final double clockSize, clockFontSize, clockFontSizeSmall, backButtonPosition;
-  final EdgeInsets clockPadding, digitalClockPadding;
-
-  const PhotoCalendarLayout({
-    this.clockSize = 92,
-    this.clockFontSize = 32,
-    this.clockFontSizeSmall = 32,
-    this.backButtonPosition = 12,
-    this.clockPadding = const EdgeInsets.all(20),
-    this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
-  });
-
-  TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: small ? clockFontSizeSmall : clockFontSize,
-          fontWeight: FontWeight.w400,
-          height: 75 / 64,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
 }
 
 class SettingsLayout {
