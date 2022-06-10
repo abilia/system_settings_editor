@@ -32,9 +32,11 @@ class AvailableForPage extends StatelessWidget {
 }
 
 class AvailableForPageBody extends StatelessWidget {
-  const AvailableForPageBody(
-      {Key? key, this.onRadioButtonChanged, this.onSupportPersonChanged})
-      : super(key: key);
+  const AvailableForPageBody({
+    Key? key,
+    this.onRadioButtonChanged,
+    this.onSupportPersonChanged,
+  }) : super(key: key);
   final Function? onRadioButtonChanged;
   final Function? onSupportPersonChanged;
 

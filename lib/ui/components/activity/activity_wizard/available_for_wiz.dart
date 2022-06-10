@@ -46,8 +46,9 @@ class AvailableForWiz extends StatelessWidget {
 
   void _onSelected(BuildContext context, AvailableForType? availableFor) {
     if (availableFor != null) {
-      final activity = context.read<EditActivityCubit>().state.activity;
-      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+      final editActivityCubit = context.read<EditActivityCubit>();
+      final activity = editActivityCubit.state.activity;
+      editActivityCubit.replaceActivity(activity.copyWith(
           secret: availableFor != AvailableForType.allSupportPersons,
           secretExemptions:
               availableFor != AvailableForType.selectedSupportPersons
@@ -57,12 +58,13 @@ class AvailableForWiz extends StatelessWidget {
   }
 
   void _onSupportPersonChanged(BuildContext context, int id, bool selected) {
-    final activity = context.read<EditActivityCubit>().state.activity;
+    final editActivityCubit = context.read<EditActivityCubit>();
+    final activity = editActivityCubit.state.activity;
     if (selected && !activity.secretExemptions.contains(id)) {
-      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+      editActivityCubit.replaceActivity(activity.copyWith(
           secretExemptions: List.from(activity.secretExemptions)..add(id)));
     } else if (!selected && activity.secretExemptions.contains(id)) {
-      context.read<EditActivityCubit>().replaceActivity(activity.copyWith(
+      editActivityCubit.replaceActivity(activity.copyWith(
           secretExemptions: List.from(activity.secretExemptions)..remove(id)));
     }
   }

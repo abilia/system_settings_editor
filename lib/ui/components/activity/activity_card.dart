@@ -152,7 +152,7 @@ class ActivityCard extends StatelessWidget {
               AbiliaIcons.handiReminder,
             if (activity.hasAttachment) AbiliaIcons.handiInfo,
           ].map((icon) => CardIcon(icon)),
-          PrivateIcon(activity.availableFor, inactive),
+          AvailableForIcon(activity.availableFor, inactive),
         ],
       );
 }
@@ -174,11 +174,11 @@ class CardIcon extends StatelessWidget {
   }
 }
 
-class PrivateIcon extends StatelessWidget {
+class AvailableForIcon extends StatelessWidget {
   final AvailableForType availableFor;
   final bool inactive;
 
-  const PrivateIcon(
+  const AvailableForIcon(
     this.availableFor,
     this.inactive, {
     Key? key,
@@ -186,23 +186,25 @@ class PrivateIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IconData icon;
     final Color decorationColor;
-    final Color iconColor;
+    final Icon icon;
 
     switch (availableFor) {
       case AvailableForType.onlyMe:
-        icon = AbiliaIcons.lock;
+        icon = Icon(AbiliaIcons.lock,
+            color: inactive ? AbiliaColors.white110 : AbiliaColors.white,
+            size: layout.eventCard.iconSize);
         decorationColor =
             inactive ? AbiliaColors.white140 : AbiliaColors.black75;
-        iconColor = inactive ? AbiliaColors.white110 : AbiliaColors.white;
         break;
       default:
-        icon = availableFor == AvailableForType.allSupportPersons
-            ? AbiliaIcons.unlock
-            : AbiliaIcons.selectedSupport;
+        icon = Icon(
+            availableFor == AvailableForType.allSupportPersons
+                ? AbiliaIcons.unlock
+                : AbiliaIcons.selectedSupport,
+            color: inactive ? AbiliaColors.white140 : AbiliaColors.black75,
+            size: layout.eventCard.iconSize);
         decorationColor = inactive ? AbiliaColors.white110 : AbiliaColors.white;
-        iconColor = inactive ? AbiliaColors.white140 : AbiliaColors.black75;
     }
     return AnimatedContainer(
       margin: layout.eventCard.cardIconPadding,
@@ -213,11 +215,7 @@ class PrivateIcon extends StatelessWidget {
         color: decorationColor,
         borderRadius: borderRadius,
       ),
-      child: Icon(
-        icon,
-        size: layout.eventCard.iconSize,
-        color: iconColor,
-      ),
+      child: icon,
     );
   }
 }
