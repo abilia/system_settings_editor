@@ -15,10 +15,10 @@ class DeviceDb {
   String get serialId => prefs.getString(_serialIdRecord) ?? '';
 
   Future<void> setStartGuideCompleted() =>
-      prefs.setString(_startGuideCompletedRecord, 'yes');
+      prefs.setBool(_startGuideCompletedRecord, true);
 
-  String get startGuideCompleted =>
-      prefs.getString(_startGuideCompletedRecord) ?? '';
+  bool get startGuideCompleted =>
+      prefs.getBool(_startGuideCompletedRecord) ?? false;
 
   Future<String> getClientId() async {
     final clientId = prefs.getString(_clientIdRecord);

@@ -200,5 +200,5 @@ class FakeDeviceDb extends DeviceDb {
   String get serialId => 'serialId';
 
   @override
-  String get startGuideCompleted => 'yes';
+  bool get startGuideCompleted => true;
 }

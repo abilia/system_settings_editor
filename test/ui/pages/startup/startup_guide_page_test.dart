@@ -38,7 +38,7 @@ void main() {
     testWidgets('When non empty serial id welcome page is shown',
         (WidgetTester tester) async {
       when(() => deviceDb.serialId).thenReturn('serialId');
-      when(() => deviceDb.startGuideCompleted).thenReturn('');
+      when(() => deviceDb.startGuideCompleted).thenReturn(false);
       await tester.pumpApp();
       await tester.pumpAndSettle();
       expect(find.byType(WelcomePage), findsOneWidget);
@@ -46,7 +46,7 @@ void main() {
 
     testWidgets('Can navigate to page one', (WidgetTester tester) async {
       when(() => deviceDb.serialId).thenReturn('serialId');
-      when(() => deviceDb.startGuideCompleted).thenReturn('');
+      when(() => deviceDb.startGuideCompleted).thenReturn(false);
       await tester.pumpApp();
       await tester.pumpAndSettle();
       expect(find.byType(WelcomePage), findsOneWidget);

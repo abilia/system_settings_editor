@@ -101,9 +101,6 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
   return null;
 }
 
-bool get shouldRunProductionGuide =>
-    Config.isMP && GetIt.I<DeviceDb>().serialId.isEmpty;
-
 class App extends StatelessWidget {
   final PushCubit? pushCubit;
   final NotificationAlarm? payload;
