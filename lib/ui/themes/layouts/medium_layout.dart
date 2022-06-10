@@ -4,6 +4,7 @@ class MediumLayout extends Layout {
   const MediumLayout({
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
+    TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
   }) : super(
@@ -342,22 +343,7 @@ class MediumLayout extends Layout {
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
-          templates: const LayoutTemplates(
-            s1: EdgeInsets.all(16),
-            s2: EdgeInsets.fromLTRB(24, 24, 24, 64),
-            s3: EdgeInsets.all(6),
-            s4: EdgeInsets.symmetric(horizontal: 20),
-            bottomNavigation: EdgeInsets.fromLTRB(18, 12, 18, 18),
-            m1: EdgeInsets.fromLTRB(24, 36, 24, 64),
-            m2: EdgeInsets.fromLTRB(0, 32, 0, 32),
-            m3: EdgeInsets.fromLTRB(24, 36, 24, 24),
-            m4: EdgeInsets.symmetric(horizontal: 32),
-            m5: EdgeInsets.fromLTRB(24, 96, 24, 24),
-            l1: EdgeInsets.fromLTRB(24, 146, 24, 64),
-            l2: EdgeInsets.symmetric(horizontal: 32, vertical: 96),
-            l3: EdgeInsets.symmetric(horizontal: 24, vertical: 96),
-            l5: EdgeInsets.symmetric(horizontal: 48, vertical: 96),
-          ),
+          templates: templates ?? const TemplatesLayoutMedium(),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
@@ -521,5 +507,6 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
+          starterSetDialog: const StarterSetDialogLayoutMedium(),
         );
 }
