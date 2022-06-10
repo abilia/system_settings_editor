@@ -38,7 +38,7 @@ class AlarmNavigator {
   void _popRoute(String key) {
     final route = _routesOnStack.remove(key);
     if (route != null) {
-      log.shout('route $route with key $key removec');
+      log.fine('route $route with key $key removed');
       route.navigator?.removeRoute(route);
     }
   }
