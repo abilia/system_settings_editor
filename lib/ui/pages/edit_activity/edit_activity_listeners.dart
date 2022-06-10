@@ -54,6 +54,7 @@ class ErrorPopupListener extends StatelessWidget {
     final translate = Translator.of(context).translate;
     SaveRecurring? saveEvent;
     final state = context.read<EditActivityCubit>().state;
+    final wizardCubit = context.read<WizardCubit>();
 
     if (errors.contains(SaveError.storedRecurring)) {
       if (state is StoredActivityState) {
@@ -94,10 +95,10 @@ class ErrorPopupListener extends StatelessWidget {
         if (confirmConflict != true) return;
       }
     }
-    context.read<WizardCubit>().next(
-          warningConfirmed: true,
-          saveRecurring: saveEvent,
-        );
+    wizardCubit.next(
+      warningConfirmed: true,
+      saveRecurring: saveEvent,
+    );
   }
 }
 

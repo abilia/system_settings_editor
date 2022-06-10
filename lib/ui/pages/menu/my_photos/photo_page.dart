@@ -103,6 +103,7 @@ class PhotoPage extends StatelessWidget {
     required Sortable<ImageArchiveData> sortable,
   }) async {
     final translate = Translator.of(context).translate;
+    final sortableBloc = context.read<SortableBloc>();
 
     final result = await showViewDialog<bool>(
       context: context,
@@ -131,13 +132,13 @@ class PhotoPage extends StatelessWidget {
       final tags = sortable.data.tags.toSet();
       if (tags.add(ImageArchiveData.photoCalendarTag) ||
           tags.remove(ImageArchiveData.photoCalendarTag)) {
-        context.read<SortableBloc>().add(
-              SortableUpdated(
-                sortable.copyWith(
-                  data: sortable.data.copyWith(tags: tags),
-                ),
-              ),
-            );
+        sortableBloc.add(
+          SortableUpdated(
+            sortable.copyWith(
+              data: sortable.data.copyWith(tags: tags),
+            ),
+          ),
+        );
       }
     }
   }
@@ -148,6 +149,8 @@ Future _deletePhoto(
   Sortable<ImageArchiveData> sortable,
 ) async {
   final translate = Translator.of(context).translate;
+  final sortableBloc = context.read<SortableBloc>();
+  final navigator = Navigator.of(context);
   final result = await showViewDialog<bool>(
     context: context,
     builder: (_) => YesNoDialog(
@@ -158,9 +161,7 @@ Future _deletePhoto(
   );
 
   if (result == true) {
-    context
-        .read<SortableBloc>()
-        .add(SortableUpdated(sortable.copyWith(deleted: true)));
-    await Navigator.of(context).maybePop();
+    sortableBloc.add(SortableUpdated(sortable.copyWith(deleted: true)));
+    await navigator.maybePop();
   }
 }

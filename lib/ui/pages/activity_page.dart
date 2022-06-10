@@ -132,6 +132,8 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
   ) async {
     final activity = activityDay.activity;
     final authProviders = copiedAuthProviders(context);
+    final navigator = Navigator.of(context);
+    final activitiesBloc = context.read<ActivitiesBloc>();
     final result = await Navigator.of(context).push<Activity>(
       MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -146,10 +148,9 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     );
 
     if (result != null) {
-      final activitiesBloc = context.read<ActivitiesBloc>();
       if (activity.isRecurring ||
           activitiesBloc.state.isPartOfSeries(activity)) {
-        final applyTo = await Navigator.of(context).push<ApplyTo>(
+        final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: Translator.of(context).translate.editRecurringActivity,
@@ -177,6 +178,8 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
     BuildContext context,
     Activity activity,
   ) async {
+    final activitiesBloc = context.read<ActivitiesBloc>();
+    final navigator = Navigator.of(context);
     final shouldDelete = await showViewDialog<bool>(
       context: context,
       builder: (_) => YesNoDialog(
@@ -186,10 +189,9 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       ),
     );
     if (shouldDelete == true) {
-      final activitiesBloc = context.read<ActivitiesBloc>();
       if (activity.isRecurring ||
           activitiesBloc.state.isPartOfSeries(activity)) {
-        final applyTo = await Navigator.of(context).push<ApplyTo>(
+        final applyTo = await navigator.push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: Translator.of(context).translate.deleteRecurringActivity,
@@ -208,7 +210,7 @@ class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
       } else {
         activitiesBloc.add(DeleteActivity(activity));
       }
-      await Navigator.of(context).maybePop();
+      await navigator.maybePop();
     }
   }
 }

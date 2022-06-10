@@ -17,7 +17,8 @@ void main() {
   late StreamController<DateTime> tickerController;
   late Ticker fakeTicker;
   late TouchDetectionCubit activityDetectionCubit;
-  late Stream<Touch> activityDetectedStream;
+  late StreamController<TimerAlarmState> timers;
+  late StreamController<NotificationAlarm?> notificationAlarm;
 
   setUpAll(registerFallbackValues);
   setUp(() {
@@ -30,11 +31,14 @@ void main() {
     fakeTicker =
         Ticker.fake(initialTime: initialTime, stream: tickerController.stream);
     activityDetectionCubit = TouchDetectionCubit();
-    activityDetectedStream = activityDetectionCubit.stream;
+    timers = StreamController<TimerAlarmState>();
+    notificationAlarm = StreamController<NotificationAlarm?>();
   });
 
   tearDown(() {
     tickerController.close();
+    timers.close();
+    notificationAlarm.close();
   });
 
   blocTest<InactivityCubit, InactivityState>(
@@ -43,16 +47,18 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     verify: (c) => expect(
       c.state,
-      UserTouch(initialTime),
+      SomethingHappened(initialTime),
     ),
   );
 
   blocTest<InactivityCubit, InactivityState>(
-    'ticks  calendar inactivity ',
+    'ticks calendar inactivity ',
     setUp: () {
       when(() => settingsBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
@@ -64,7 +70,9 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -88,7 +96,9 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -117,7 +127,9 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     act: (c) {
       tickerController.add(initialTime.add(1.minutes()));
@@ -145,7 +157,9 @@ void main() {
       const Duration(minutes: 6),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     act: (c) async {
       tickerController.add(initialTime.add(59.seconds()));
@@ -154,7 +168,7 @@ void main() {
       tickerController.add(initialTime.add(1.minutes()));
     },
     expect: () => [
-      UserTouch(initialTime.add(59.seconds())),
+      SomethingHappened(initialTime.add(59.seconds())),
     ],
   );
 
@@ -171,7 +185,9 @@ void main() {
       const Duration(minutes: 5),
       fakeTicker,
       settingsBloc,
-      activityDetectedStream,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
     ),
     act: (c) async {
       tickerController.add(initialTime.add(1.minutes()));
@@ -181,5 +197,70 @@ void main() {
       tickerController.add(initialTime.add(5.minutes()));
     },
     expect: () => [CalendarInactivityThresholdReached(initialTime)],
+  );
+
+  final activityAlarm = StartAlarm(ActivityDay(
+    Activity.createNew(
+      startTime: initialTime.add(1.hours()),
+    ),
+    initialTime,
+  ));
+  blocTest<InactivityCubit, InactivityState>(
+    'NotificationAlarm triggers new state',
+    setUp: () {
+      when(() => settingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(activityTimeout: 0),
+        ),
+      );
+    },
+    build: () => InactivityCubit(
+      const Duration(minutes: 5),
+      fakeTicker,
+      settingsBloc,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
+    ),
+    act: (c) {
+      notificationAlarm.add(activityAlarm);
+    },
+    expect: () => [SomethingHappened(activityAlarm.notificationTime)],
+  );
+
+  final timerAlarm = TimerAlarm(
+    AbiliaTimer(
+      id: '123',
+      duration: 1.hours(),
+      startTime: initialTime,
+    ),
+  );
+  blocTest<InactivityCubit, InactivityState>(
+    'TimerAlarm triggers new state',
+    setUp: () {
+      when(() => settingsBloc.state).thenReturn(
+        const MemoplannerSettingsLoaded(
+          MemoplannerSettings(activityTimeout: 0),
+        ),
+      );
+    },
+    build: () => InactivityCubit(
+      const Duration(minutes: 5),
+      fakeTicker,
+      settingsBloc,
+      activityDetectionCubit.stream,
+      notificationAlarm.stream,
+      timers.stream,
+    ),
+    act: (c) async {
+      timers.add(
+        TimerAlarmState(
+          timers: const [],
+          queue: const [],
+          firedAlarm: timerAlarm,
+        ),
+      );
+    },
+    expect: () => [SomethingHappened(timerAlarm.notificationTime)],
   );
 }

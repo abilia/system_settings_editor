@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:seagull/bloc/all.dart';
 
 import 'package:seagull/models/all.dart';
@@ -10,7 +11,7 @@ class CalendarInactivityListener
       : super(
           key: key,
           listenWhen: (previous, current) =>
-              previous is UserTouch && current is! UserTouch,
+              previous is SomethingHappened && current is! SomethingHappened,
           listener: (context, state) {
             context.read<MonthCalendarCubit>().goToCurrentMonth();
             context.read<WeekCalendarCubit>().goToCurrentWeek();
@@ -75,15 +76,15 @@ class ScreenSaverListener
             }
 
             if (state.showScreensaver) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => MultiBlocProvider(
-                    providers: authProviders,
-                    child: const ScreenSaverPage(),
-                  ),
-                  settings: const RouteSettings(name: 'ScreenSaverPage'),
+              final screenSaverRoute = MaterialPageRoute(
+                builder: (context) => MultiBlocProvider(
+                  providers: authProviders,
+                  child: const ScreenSaverPage(),
                 ),
+                settings: const RouteSettings(name: 'ScreenSaverPage'),
               );
+              GetIt.I<AlarmNavigator>().addScreenSaver(screenSaverRoute);
+              Navigator.of(context).push(screenSaverRoute);
             }
           },
         );

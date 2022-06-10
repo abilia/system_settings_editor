@@ -48,20 +48,49 @@ void main() {
     GetIt.I.reset();
   });
 
-  group('Quick settings page', () {
-    testWidgets('All fields are setup correctly', (tester) async {
+  group('MPGO', () {
+    testWidgets('No QuickSettingsButton', (tester) async {
+      await tester.pumpApp();
+      await tester.tap(find.byType(MenuButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(QuickSettingsButton), findsNothing);
+    });
+  }, skip: !Config.isMPGO);
+
+  group('MP', () {
+    testWidgets('All fields are setup correctly medium layout', (tester) async {
+      layout = const MediumLayout();
       await tester.goToQuickSettings();
       expect(find.byType(QuickSettingsPage), findsOneWidget);
+      expect(find.byType(BatteryLevel), findsOneWidget);
+      expect(find.byType(WiFiPickField), findsOneWidget);
       expect(find.byType(AlarmVolumeSlider), findsOneWidget);
       expect(find.byType(MediaVolumeSlider), findsOneWidget);
+      expect(find.byType(BrightnessSlider), findsOneWidget);
       expect(find.byType(KeepOnWhileChargingSwitch), findsOneWidget);
+      expect(find.byType(ScreenTimeoutPickField), findsOneWidget);
       expect(
         tester.widget(find.byKey(TestKey.brightnessSlider)),
         isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
       );
-      expect(find.byType(BatteryLevel), findsOneWidget);
+    });
 
+    testWidgets('All fields are setup correctly large layout', (tester) async {
+      layout = const LargeLayout();
+      await tester.goToQuickSettings();
+      expect(find.byType(QuickSettingsPage), findsOneWidget);
       expect(find.byType(WiFiPickField), findsOneWidget);
+      expect(find.byType(AlarmVolumeSlider), findsOneWidget);
+      expect(find.byType(MediaVolumeSlider), findsOneWidget);
+      expect(find.byType(BrightnessSlider), findsOneWidget);
+      expect(
+        tester.widget(find.byKey(TestKey.brightnessSlider)),
+        isA<AbiliaSlider>().having((t) => t.value, 'value of brightness', 0.5),
+      );
+
+      expect(find.byType(BatteryLevel), findsNothing);
+      expect(find.byType(ScreenTimeoutPickField), findsNothing);
+      expect(find.byType(KeepOnWhileChargingSwitch), findsNothing);
     });
   }, skip: !Config.isMP);
 }

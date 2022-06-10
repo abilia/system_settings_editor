@@ -1,7 +1,7 @@
 import 'package:seagull/ui/all.dart';
 
-class StartedSetDialog extends StatelessWidget {
-  const StartedSetDialog({Key? key}) : super(key: key);
+class StarterSetDialog extends StatelessWidget {
+  const StarterSetDialog({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final translate = Translator.of(context).translate;
@@ -19,14 +19,14 @@ class StartedSetDialog extends StatelessWidget {
               'assets/graphics/${Config.flavor.id}/starter_set.png',
             ),
           ),
-          SizedBox(height: layout.startedSetDialog.imageHeadingDistance),
+          SizedBox(height: layout.starterSetDialog.imageHeadingDistance),
           Tts(
             child: Text(
               translate.installStarterSet,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          SizedBox(height: layout.startedSetDialog.headingBodyDistance),
+          SizedBox(height: layout.starterSetDialog.headingBodyDistance),
           Tts(
             child: Text(
               translate.doYouWantToImportADefaultSet,

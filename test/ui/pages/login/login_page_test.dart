@@ -462,7 +462,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(StartedSetDialog), findsOneWidget);
+        expect(find.byType(StarterSetDialog), findsOneWidget);
       });
 
       testWidgets('when some sortable:  NO StarterSetDialog',
@@ -474,7 +474,7 @@ void main() {
         await tester.pump();
         await tester.tap(find.byType(LoginButton));
         await tester.pumpAndSettle();
-        expect(find.byType(StartedSetDialog), findsNothing);
+        expect(find.byType(StarterSetDialog), findsNothing);
       });
     });
   });

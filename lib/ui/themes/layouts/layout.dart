@@ -12,7 +12,7 @@ part 'medium_layout.dart';
 late final ui.Size screenSize =
     ui.window.physicalSize / ui.window.devicePixelRatio;
 
-late final Layout layout = screenSize.longestSide > 1500
+late Layout _layout = screenSize.longestSide > 1500
     ? const LargeLayout()
     : screenSize.longestSide > 1000
         ? const MediumLayout()
@@ -21,6 +21,11 @@ late final Layout layout = screenSize.longestSide > 1500
 class _GoLayout extends Layout {
   const _GoLayout() : super();
 }
+
+Layout get layout => _layout;
+
+@visibleForTesting
+set layout(Layout layout) => _layout = layout;
 
 class Layout {
   final double radius;
@@ -80,7 +85,6 @@ class Layout {
   final DialogLayout dialog;
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
-  final PhotoCalendarLayout photoCalendar;
   final SettingsLayout settings;
   final PermissionsPageLayout permissionsPage;
   final EditTimerLayout editTimer;
@@ -89,7 +93,8 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
-  final StartedSetDialogLayout startedSetDialog;
+  final StarterSetDialogLayout starterSetDialog;
+  final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
     this.radius = 12,
@@ -153,7 +158,6 @@ class Layout {
     this.dialog = const DialogLayout(),
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
-    this.photoCalendar = const PhotoCalendarLayout(),
     this.settings = const SettingsLayout(),
     this.permissionsPage = const PermissionsPageLayout(),
     this.editTimer = const EditTimerLayout(),
@@ -162,10 +166,13 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
-    this.startedSetDialog = const StartedSetDialogLayout(),
+    this.starterSetDialog = const StarterSetDialogLayout(),
+    this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
   bool get go => runtimeType == _GoLayout;
+  bool get medium => runtimeType == MediumLayout;
+  bool get large => runtimeType == LargeLayout;
 }
 
 class MenuPageLayout {
@@ -1228,29 +1235,6 @@ class LogoutLayout {
     this.profileDistance = 24,
     this.topDistance = 64,
   });
-}
-
-class PhotoCalendarLayout {
-  final double clockSize, clockFontSize, clockFontSizeSmall, backButtonPosition;
-  final EdgeInsets clockPadding, digitalClockPadding;
-
-  const PhotoCalendarLayout({
-    this.clockSize = 92,
-    this.clockFontSize = 32,
-    this.clockFontSizeSmall = 32,
-    this.backButtonPosition = 12,
-    this.clockPadding = const EdgeInsets.all(20),
-    this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
-  });
-
-  TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: small ? clockFontSizeSmall : clockFontSize,
-          fontWeight: FontWeight.w400,
-          height: 75 / 64,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
 }
 
 class SettingsLayout {

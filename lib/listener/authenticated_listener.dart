@@ -50,7 +50,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      await GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
+      GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
           MediaQuery.of(context).alwaysUse24HourFormat);
       context
         ..read<ClockBloc>().setTime(DateTime.now())
@@ -134,14 +134,17 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
     settingsState ??= context.read<MemoplannerSettingBloc>().state;
     if (settingsState is! MemoplannerSettingsNotLoaded &&
         activitiesState is ActivitiesLoaded) {
+      final language = Localizations.localeOf(context).toLanguageTag();
+      final alwaysUse24HourFormat =
+          MediaQuery.of(context).alwaysUse24HourFormat;
       final timers = await GetIt.I<TimerDb>().getRunningTimersFrom(
         DateTime.now(),
       );
       await scheduleAlarmNotificationsIsolated(
         activities: activitiesState.activities,
         timers: timers.toAlarm(),
-        language: Localizations.localeOf(context).toLanguageTag(),
-        alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+        language: language,
+        alwaysUse24HourFormat: alwaysUse24HourFormat,
         settings: settingsState.settings.alarm,
         fileStorage: GetIt.I<FileStorage>(),
       );

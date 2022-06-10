@@ -6,10 +6,13 @@ class MediumLayout extends Layout {
     ActionButtonLayout? actionButton,
     TemplatesLayout? templates,
     ClockLayout? clockLayout,
+    PhotoCalendarLayoutMedium? photoCalendarLayout,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
+          photoCalendarLayout:
+              photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
           menuPage: const MenuPageLayout(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
             crossAxisSpacing: 24,
@@ -458,14 +461,6 @@ class MediumLayout extends Layout {
             profileDistance: 35,
             topDistance: 94,
           ),
-          photoCalendar: const PhotoCalendarLayout(
-            clockSize: 200,
-            clockFontSize: 72,
-            clockFontSizeSmall: 64,
-            backButtonPosition: 18,
-            clockPadding: EdgeInsets.all(30),
-            digitalClockPadding: EdgeInsets.symmetric(vertical: 30),
-          ),
           settings: const SettingsLayout(
             clockHeight: 135,
             clockWidth: 108,
@@ -512,6 +507,6 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
-          startedSetDialog: const StartedSetDialogLayoutMedium(),
+          starterSetDialog: const StarterSetDialogLayoutMedium(),
         );
 }

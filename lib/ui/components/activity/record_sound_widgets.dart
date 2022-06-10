@@ -140,7 +140,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                       }
                     : () async {
                         final authProviders = copiedAuthProviders(context);
+                        final navigator = Navigator.of(context);
                         final soundCubit = context.read<SoundCubit>();
+                        final userFileCubit = context.read<UserFileCubit>();
                         final audio = recordedAudio;
                         final file = audio is UnstoredAbiliaFile
                             ? audio.file
@@ -148,8 +150,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                 ? await soundCubit.resolveFile(recordedAudio)
                                 : null;
 
-                        final result =
-                            await Navigator.of(context).push<AbiliaFile>(
+                        final result = await navigator.push<AbiliaFile>(
                           MaterialPageRoute(
                             builder: (_) => MultiBlocProvider(
                               providers: authProviders,
@@ -171,7 +172,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                           ),
                         );
                         if (result is UnstoredAbiliaFile) {
-                          context.read<UserFileCubit>().fileAdded(result);
+                          userFileCubit.fileAdded(result);
                         }
                         if (result != null) {
                           onResult.call(result);

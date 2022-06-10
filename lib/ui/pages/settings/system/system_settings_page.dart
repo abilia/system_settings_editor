@@ -17,14 +17,15 @@ class SystemSettingsPage extends StatelessWidget {
           leading: const Icon(AbiliaIcons.numericKeyboard),
           text: Text(t.codeProtect),
           onTap: () async {
+            final authProviders = copiedAuthProviders(context);
+            final navigator = Navigator.of(context);
             final accessGranted = await codeProtectAccess(
               context,
               restricted: (codeSettings) => codeSettings.protectCodeProtect,
               name: t.codeProtect,
             );
             if (accessGranted) {
-              final authProviders = copiedAuthProviders(context);
-              Navigator.of(context).push(
+              navigator.push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
                     providers: authProviders,

@@ -86,6 +86,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
           leading: _icon(infoItem),
           text: Text(_text(Translator.of(context).translate, infoItem)),
           onTap: () async {
+            final editActivityCubit = context.read<EditActivityCubit>();
             final result = await Navigator.of(context).push<Type>(
               MaterialPageRoute(
                 builder: (context) => SelectInfoTypePage(
@@ -96,7 +97,7 @@ class ChangeInfoItemPicker extends StatelessWidget {
               ),
             );
             if (result != null) {
-              context.read<EditActivityCubit>().changeInfoItemType(result);
+              editActivityCubit.changeInfoItemType(result);
             }
           },
         ),
@@ -131,6 +132,7 @@ class LibraryButton extends StatelessWidget {
   Widget build(BuildContext context) => IconActionButtonDark(
         onPressed: () async {
           final authProviders = copiedAuthProviders(context);
+          final editActivityCubit = context.read<EditActivityCubit>();
           final infoItem = await Navigator.of(context).push<InfoItem>(
             MaterialPageRoute(
               builder: (_) => MultiBlocProvider(
@@ -142,13 +144,9 @@ class LibraryButton extends StatelessWidget {
             ),
           );
           if (infoItem != null && infoItem != this.infoItem) {
-            context.read<EditActivityCubit>().replaceActivity(
-                  context
-                      .read<EditActivityCubit>()
-                      .state
-                      .activity
-                      .copyWith(infoItem: infoItem),
-                );
+            editActivityCubit.replaceActivity(
+              editActivityCubit.state.activity.copyWith(infoItem: infoItem),
+            );
           }
         },
         child: Icon(
@@ -233,6 +231,7 @@ class AddNewQuestionButton extends StatelessWidget {
   }
 
   void _handleNewQuestion(BuildContext context) async {
+    final editChecklistCubit = context.read<EditChecklistCubit>();
     final result = await showAbiliaBottomSheet<ImageAndName>(
       context: context,
       providers: copiedAuthProviders(context),
@@ -240,7 +239,7 @@ class AddNewQuestionButton extends StatelessWidget {
     );
 
     if (result != null && result.isNotEmpty) {
-      context.read<EditChecklistCubit>().newQuestion(result);
+      editChecklistCubit.newQuestion(result);
     }
   }
 }
@@ -275,6 +274,7 @@ class EditNoteWidget extends StatelessWidget {
     NoteInfoItem infoItem,
   ) async {
     final authProviders = copiedAuthProviders(context);
+    final editActivityCubit = context.read<EditActivityCubit>();
     final result = await Navigator.of(context).push<String>(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => MultiBlocProvider(
@@ -292,13 +292,11 @@ class EditNoteWidget extends StatelessWidget {
       ),
     );
     if (result != null && result != infoItem.text) {
-      context.read<EditActivityCubit>().replaceActivity(
-            context
-                .read<EditActivityCubit>()
-                .state
-                .activity
-                .copyWith(infoItem: NoteInfoItem(result)),
-          );
+      editActivityCubit.replaceActivity(
+        editActivityCubit.state.activity.copyWith(
+          infoItem: NoteInfoItem(result),
+        ),
+      );
     }
   }
 }

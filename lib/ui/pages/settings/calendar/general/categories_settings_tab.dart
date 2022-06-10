@@ -87,6 +87,8 @@ class _CategoryPickField extends StatelessWidget {
             )
           : null,
       onTap: () async {
+        final generalCalendarSettingsCubit =
+            context.read<GeneralCalendarSettingsCubit>();
         final result = await showAbiliaBottomSheet<ImageAndName>(
           context: context,
           providers: copiedAuthProviders(context),
@@ -96,9 +98,7 @@ class _CategoryPickField extends StatelessWidget {
           ),
         );
         if (result != null) {
-          context
-              .read<GeneralCalendarSettingsCubit>()
-              .changeCategorySettings(onResult(result));
+          generalCalendarSettingsCubit.changeCategorySettings(onResult(result));
         }
       },
     );

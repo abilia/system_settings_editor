@@ -1,14 +1,14 @@
-class StartedSetDialogLayout {
+class StarterSetDialogLayout {
   final double imageHeadingDistance, headingBodyDistance;
 
-  const StartedSetDialogLayout({
+  const StarterSetDialogLayout({
     this.imageHeadingDistance = 24,
     this.headingBodyDistance = 9,
   });
 }
 
-class StartedSetDialogLayoutMedium extends StartedSetDialogLayout {
-  const StartedSetDialogLayoutMedium()
+class StarterSetDialogLayoutMedium extends StarterSetDialogLayout {
+  const StarterSetDialogLayoutMedium()
       : super(
           imageHeadingDistance: 36,
           headingBodyDistance: 16,

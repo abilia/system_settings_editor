@@ -16,7 +16,7 @@ class StarterSetListener extends BlocListener<SortableBloc, SortableState> {
             final shouldAdd = await showViewDialog<bool>(
               context: context,
               barrierDismissible: false,
-              builder: (context) => const StartedSetDialog(),
+              builder: (context) => const StarterSetDialog(),
             );
             if (shouldAdd == true) {
               final addedStarterSetSuccessfully =

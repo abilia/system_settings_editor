@@ -178,7 +178,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(StartedSetDialog), findsOneWidget);
+      expect(find.byType(StarterSetDialog), findsOneWidget);
       // Act press Yes
       await tester.tap(find.byType(YesButton));
       await tester.pumpAndSettle();
@@ -199,7 +199,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(StartedSetDialog), findsNothing);
+      expect(find.byType(StarterSetDialog), findsNothing);
     });
 
     testWidgets(
@@ -222,7 +222,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.byType(StartedSetDialog), findsNothing);
+      expect(find.byType(StarterSetDialog), findsNothing);
     });
   });
 }

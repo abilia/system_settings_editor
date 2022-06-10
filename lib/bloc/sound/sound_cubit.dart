@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:rxdart/rxdart.dart';
 import 'package:audioplayers/audioplayers.dart' hide Logger;
 
 import 'package:equatable/equatable.dart';
@@ -41,7 +42,9 @@ class SoundCubit extends Cubit<SoundState> {
       log.warning(event);
       emit(const NoSoundPlaying());
     });
-    audioPositionChanged = audioPlayer.onAudioPositionChanged.listen(
+    audioPositionChanged = audioPlayer.onAudioPositionChanged
+        .throttleTime(const Duration(milliseconds: 50))
+        .listen(
       (position) async {
         final s = state;
         if (s is SoundPlaying) {
