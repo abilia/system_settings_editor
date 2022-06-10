@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+
+class LayoutTemplates {
+  final EdgeInsets m1,
+      m2,
+      m3,
+      m4,
+      m5,
+      s1,
+      s2,
+      s3,
+      s4,
+      l1,
+      l2,
+      l3,
+      l5,
+      bottomNavigation;
+
+  const LayoutTemplates({
+    this.s1 = const EdgeInsets.all(12),
+    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
+    this.s3 = const EdgeInsets.all(4),
+    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
+    this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
+    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 40),
+    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
+    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
+    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
+    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
+    this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
+    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
+    this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
+    this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
+  });
+}
+
+class LayoutTemplatesMedium extends LayoutTemplates {
+  const LayoutTemplatesMedium()
+      : super(
+          s1: const EdgeInsets.all(16),
+          s2: const EdgeInsets.fromLTRB(24, 24, 24, 64),
+          s3: const EdgeInsets.all(6),
+          s4: const EdgeInsets.symmetric(horizontal: 20),
+          bottomNavigation: const EdgeInsets.fromLTRB(18, 12, 18, 18),
+          m1: const EdgeInsets.fromLTRB(24, 36, 24, 64),
+          m2: const EdgeInsets.fromLTRB(0, 32, 0, 32),
+          m3: const EdgeInsets.fromLTRB(24, 36, 24, 24),
+          m4: const EdgeInsets.symmetric(horizontal: 32),
+          m5: const EdgeInsets.fromLTRB(24, 96, 24, 24),
+          l1: const EdgeInsets.fromLTRB(24, 146, 24, 64),
+          l2: const EdgeInsets.symmetric(horizontal: 32, vertical: 96),
+          l3: const EdgeInsets.symmetric(horizontal: 24, vertical: 96),
+          l5: const EdgeInsets.symmetric(horizontal: 48, vertical: 96),
+        );
+}

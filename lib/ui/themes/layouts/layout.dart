@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/all.dart';
 
 import 'package:seagull/ui/themes/layouts/components/all.dart';
+import 'package:seagull/ui/themes/layouts/pages/all.dart';
 
 part 'large_layout.dart';
 
@@ -760,73 +761,6 @@ class ListDataItemLayout {
   });
 }
 
-class ActivityPageLayout {
-  final double titleFontSize,
-      titleLineHeight,
-      titleImageHorizontalSpacing,
-      topInfoHeight,
-      checkButtonHeight,
-      dividerHeight,
-      dividerIndentation,
-      dashWidth,
-      dashSpacing,
-      minTimeBoxWidth,
-      timeBoxCurrentBorderWidth,
-      timeBoxFutureBorderWidth;
-
-  final Size timeBoxSize, timeCrossOverSize;
-
-  final EdgeInsets timeRowPadding,
-      timeBoxPadding,
-      topInfoPadding,
-      imagePadding,
-      verticalInfoPaddingCheckable,
-      verticalInfoPaddingNonCheckable,
-      horizontalInfoPadding,
-      checkButtonPadding,
-      checkButtonContentPadding,
-      checklistPadding;
-
-  TextStyle titleStyle() => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: titleFontSize,
-          fontWeight: FontWeight.w400,
-          height: titleLineHeight / titleFontSize,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
-
-  const ActivityPageLayout({
-    this.topInfoHeight = 126,
-    this.timeRowPadding = const EdgeInsets.only(bottom: 8),
-    this.topInfoPadding =
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-    this.titleImageHorizontalSpacing = 8,
-    this.imagePadding = const EdgeInsets.fromLTRB(12, 0, 12, 12),
-    this.verticalInfoPaddingCheckable =
-        const EdgeInsets.only(top: 16, bottom: 10),
-    this.verticalInfoPaddingNonCheckable =
-        const EdgeInsets.only(top: 16, bottom: 12),
-    this.horizontalInfoPadding = const EdgeInsets.symmetric(horizontal: 12),
-    this.checkButtonPadding = const EdgeInsets.only(bottom: 16),
-    this.checkButtonContentPadding = const EdgeInsets.fromLTRB(10, 10, 20, 10),
-    this.checklistPadding = const EdgeInsets.fromLTRB(18, 12, 12, 0),
-    this.titleFontSize = 24,
-    this.titleLineHeight = 28.13,
-    this.checkButtonHeight = 48,
-    this.dividerHeight = 1,
-    this.dividerIndentation = 12,
-    this.dashWidth = 7,
-    this.dashSpacing = 8,
-    this.timeCrossOverSize = const Size(64, 38),
-    this.timeBoxPadding = const EdgeInsets.all(8),
-    this.timeBoxSize = const Size(92, 52),
-    this.minTimeBoxWidth = 72,
-    this.timeBoxCurrentBorderWidth = 2,
-    this.timeBoxFutureBorderWidth = 1,
-  });
-}
-
 class ChecklistLayout {
   final ChecklistQuestionLayout question;
   final EdgeInsets listPadding, addNewQButtonPadding, addNewQIconPadding;
@@ -836,31 +770,6 @@ class ChecklistLayout {
     this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
     this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
   });
-}
-
-class ChecklistQuestionLayout {
-  final EdgeInsets imagePadding, titlePadding, iconPadding;
-  final double imageSize, viewHeight, fontSize, lineHeight;
-
-  const ChecklistQuestionLayout({
-    this.imagePadding = const EdgeInsets.fromLTRB(6, 4, 0, 4),
-    this.titlePadding = const EdgeInsets.fromLTRB(8, 10, 0, 10),
-    this.iconPadding = const EdgeInsets.fromLTRB(14, 12, 12, 12),
-    this.imageSize = 40,
-    this.viewHeight = 48,
-    this.fontSize = 16,
-    this.lineHeight = 28,
-  });
-
-  TextStyle get textStyle => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: fontSize,
-          fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w400,
-          height: lineHeight / fontSize,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
 }
 
 class NoteLayout {
@@ -978,39 +887,6 @@ class ListFolderLayout {
   });
 }
 
-class LayoutTemplates {
-  final EdgeInsets m1,
-      m2,
-      m3,
-      m4,
-      m5,
-      s1,
-      s2,
-      s3,
-      s4,
-      l1,
-      l2,
-      l3,
-      l5,
-      bottomNavigation;
-
-  const LayoutTemplates({
-    this.s1 = const EdgeInsets.all(12),
-    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
-    this.s3 = const EdgeInsets.all(4),
-    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
-    this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 40),
-    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
-    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
-    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
-    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
-    this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
-    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
-    this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
-    this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
-  });
-}
 
 class BorderLayout {
   final double thin, medium;
@@ -1093,34 +969,6 @@ class SelectPictureLayout {
     this.padding = 4,
     this.paddingLarge = 5.67,
     this.removeButtonPadding = const EdgeInsets.fromLTRB(8, 6, 8, 6),
-  });
-}
-
-class TimeInputLayout {
-  final double width,
-      height,
-      amPmHeight,
-      amPmWidth,
-      timeDashAlignValue,
-      amPmDistance,
-      inputKeyboardDistance,
-      keyboardButtonHeight,
-      keyboardButtonWidth,
-      keyboardButtonPadding;
-  final EdgeInsets headerClockPadding;
-
-  const TimeInputLayout({
-    this.width = 120,
-    this.height = 64,
-    this.amPmHeight = 48,
-    this.amPmWidth = 59,
-    this.timeDashAlignValue = 14,
-    this.amPmDistance = 2,
-    this.inputKeyboardDistance = 44,
-    this.headerClockPadding = const EdgeInsets.only(right: 16),
-    this.keyboardButtonHeight = 48,
-    this.keyboardButtonWidth = 80,
-    this.keyboardButtonPadding = 8,
   });
 }
 
