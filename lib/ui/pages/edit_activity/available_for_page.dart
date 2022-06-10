@@ -49,9 +49,9 @@ class AvailableForPageBody extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(
-                layout.templates.m3.left,
-                layout.templates.m3.top,
-                layout.templates.m3.right,
+                layout.templates.m1.left,
+                layout.templates.m1.top,
+                layout.templates.m1.right,
                 layout.formPadding.verticalItemDistance),
             child: RadioField<AvailableForType>(
               groupValue: state.availableFor,
@@ -66,8 +66,8 @@ class AvailableForPageBody extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: layout.templates.m3.left,
-                right: layout.templates.m3.right,
+                left: layout.templates.m1.left,
+                right: layout.templates.m1.right,
                 bottom: layout.formPadding.verticalItemDistance),
             child: RadioField<AvailableForType>(
               groupValue: state.availableFor,
@@ -82,9 +82,9 @@ class AvailableForPageBody extends StatelessWidget {
           ),
           Padding(
               padding: EdgeInsets.only(
-                  left: layout.templates.m3.left,
-                  right: layout.templates.m3.right,
-                  bottom: layout.templates.m3.bottom),
+                  left: layout.templates.m1.left,
+                  right: layout.templates.m1.right,
+                  bottom: layout.formPadding.verticalItemDistance),
               child: RadioField<AvailableForType?>(
                 groupValue: state.availableFor,
                 onChanged: (value) => _onRadioButtonChanged(context, value),
@@ -95,12 +95,20 @@ class AvailableForPageBody extends StatelessWidget {
                 ),
                 text: Text(translate.selectedSupportPersons),
               )),
-          if (state.availableFor == AvailableForType.selectedSupportPersons)
+          if (state.availableFor ==
+              AvailableForType.selectedSupportPersons) ...[
+            Padding(
+              padding: EdgeInsets.only(
+                top: layout.formPadding.verticalItemDistance,
+              ),
+              child: const Divider(),
+            ),
             Expanded(
               child: SupportPersonsWidget(
                 onSupportPersonChanged: onSupportPersonChanged,
               ),
             ),
+          ],
         ],
       ),
     );
@@ -134,14 +142,9 @@ class SupportPersonsWidget extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(
-                  bottom: layout.templates.m3.top,
-                ),
-                child: const Divider(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: layout.templates.m3.left,
-                    right: layout.templates.m3.right),
+                    left: layout.templates.m1.left,
+                    top: layout.templates.m1.top,
+                    right: layout.templates.m1.right),
                 child: Tts(
                   child: Text(Translator.of(context).translate.supportPersons,
                       style: bodyText2.copyWith(color: AbiliaColors.black75)),
@@ -155,18 +158,17 @@ class SupportPersonsWidget extends StatelessWidget {
                         person.image,
                         initial: person.name.substring(0, 1).capitalize(),
                         size: layout.icon.normal,
-                      ).pad(
-                        const EdgeInsets.symmetric(vertical: 10),
-                      ),
+                      ).pad(layout.supportPerson.iconPadding),
+                      padding: layout.supportPerson.switchFieldPadding,
                       value: state.selectedSupportPersons.contains(person.id),
                       onChanged: (selected) =>
                           _onSupportPersonChanged(context, person.id, selected),
                       child: Text(person.name),
                     ).pad(
                       EdgeInsets.only(
-                        left: layout.templates.m3.left,
+                        left: layout.templates.m1.left,
                         top: layout.formPadding.verticalItemDistance,
-                        right: layout.templates.m3.right,
+                        right: layout.templates.m1.right,
                       ),
                     ),
                   )

@@ -94,6 +94,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final SupportPersonLayout supportPerson;
 
   const Layout({
     this.radius = 12,
@@ -166,6 +167,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.supportPerson = const SupportPersonLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
