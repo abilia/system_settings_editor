@@ -22,18 +22,27 @@ class MenuPage extends StatelessWidget {
             MenuSettings>(
           selector: (state) => state.settings.menu,
           builder: (context, menu) {
-            return GridView.count(
-              crossAxisSpacing: layout.menuPage.crossAxisSpacing,
-              mainAxisSpacing: layout.menuPage.mainAxisSpacing,
-              crossAxisCount: layout.menuPage.crossAxisCount,
-              children: [
-                if (menu.showCamera) const CameraButton(),
-                if (menu.showPhotos) const MyPhotosButton(),
-                if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
-                if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                if (menu.showBasicTemplates) const BasicTemplatesButton(),
-                if (menu.showSettings) const SettingsButton(),
-              ],
+            final buttonWidth = (layout.menuPage.button.width +
+                layout.menuPage.mainAxisSpacing);
+            final maxGridWidth =
+                buttonWidth * layout.menuPage.maxCrossAxisCount;
+            return Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxGridWidth),
+                child: Wrap(
+                  spacing: layout.menuPage.crossAxisSpacing,
+                  runSpacing: layout.menuPage.mainAxisSpacing,
+                  children: [
+                    if (menu.showCamera) const CameraButton(),
+                    if (menu.showPhotos) const MyPhotosButton(),
+                    if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
+                    if (menu.quickSettingsEnabled) const QuickSettingsButton(),
+                    if (menu.showBasicTemplates) const BasicTemplatesButton(),
+                    if (menu.showSettings) const SettingsButton(),
+                  ],
+                ),
+              ),
             );
           },
         ),
@@ -217,8 +226,8 @@ class SettingsButton extends StatelessWidget {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: layout.menuPage.menuItemButton.orangeDotInset,
-                right: layout.menuPage.menuItemButton.orangeDotInset,
+                top: layout.menuPage.button.orangeDotInset,
+                right: layout.menuPage.button.orangeDotInset,
                 child: const OrangeDot(),
               ),
           ],
@@ -244,34 +253,32 @@ class MenuItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = style.textStyle?.resolve({MaterialState.pressed});
-    final fontSize = textStyle?.fontSize;
-    final textHeight = textStyle?.height;
     return Tts.data(
       data: text.singleLine,
-      child: AspectRatio(
-        aspectRatio: 1,
+      child: SizedBox(
+        width: layout.menuPage.button.width,
+        height: layout.menuPage.button.height,
         child: TextButton(
           style: style,
           onPressed: onPressed,
-          child: Column(
-            children: [
-              SizedBox(
-                height: fontSize != null && textHeight != null
-                    ? fontSize * textHeight * 2
-                    : null,
-                child: Text(
+          child: Padding(
+            padding: layout.menuPage.button.padding,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Text(
                   text,
                   textAlign: TextAlign.center,
                 ),
-              ),
-              const Spacer(),
-              Icon(
-                icon,
-                size: layout.menuPage.menuItemButton.size,
-              ),
-              const Spacer(),
-            ],
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Icon(
+                    icon,
+                    size: layout.menuPage.button.iconSize,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

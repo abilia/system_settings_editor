@@ -6,24 +6,15 @@ class MediumLayout extends Layout {
     ActionButtonLayout? actionButton,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
+    MenuPageLayout? menuPage,
+    FontSize? fontSize,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
           photoCalendarLayout:
               photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
-          menuPage: const MenuPageLayout(
-            padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
-            crossAxisCount: 3,
-            menuItemButton: MenuItemButtonLayout(
-              size: 96,
-              borderRadius: 20,
-              orangeDotInset: 6,
-              orangeDotRadius: 9,
-            ),
-          ),
+          menuPage: menuPage ?? const MenuPageLayoutMedium(),
           myPhotos: const MyPhotosLayout(
             crossAxisCount: 3,
             fullScreenImageBorderRadius: 20,
@@ -46,7 +37,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: const FontSizeMedium(),
+          fontSize: fontSize ?? const FontSizeMedium(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,

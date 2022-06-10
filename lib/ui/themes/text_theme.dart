@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/themes/all.dart';
 
+extension MoreTextThemes on TextTheme {
+  TextStyle bodyText3() => bodyText3Def;
+}
+
 final abiliaTextTheme = GoogleFonts.robotoTextTheme(
   TextTheme(
     headline1: headline1,
@@ -84,6 +88,13 @@ final headline1 = TextStyle(
       fontSize: layout.fontSize.bodyText2,
       fontWeight: regular,
       height: 20.0 / 14.0,
+      leadingDistribution: TextLeadingDistribution.even,
+    ),
+    bodyText3Def = TextStyle(
+      color: AbiliaColors.black,
+      fontSize: layout.fontSize.bodyText3,
+      fontWeight: regular,
+      height: layout.fontSize.height.bodyText3,
       leadingDistribution: TextLeadingDistribution.even,
     ),
     caption = TextStyle(
