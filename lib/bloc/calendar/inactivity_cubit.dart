@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:rxdart/rxdart.dart';
+
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
@@ -12,18 +14,28 @@ class InactivityCubit extends Cubit<InactivityState> {
   final MemoplannerSettingBloc settingsBloc;
 
   late StreamSubscription<DateTime> _clockSubscription;
-  late StreamSubscription<Touch> _activitySubscription;
+  late StreamSubscription _activitySubscription;
 
   InactivityCubit(
     this._calendarInactivityTime,
     this.ticker,
     this.settingsBloc,
     Stream<Touch> activityDetectedStream,
-  ) : super(UserTouch(ticker.time)) {
+    Stream<NotificationAlarm?> alarm,
+    Stream<TimerAlarmState> timers,
+  ) : super(SomethingHappened(ticker.time)) {
     _clockSubscription = ticker.minutes.listen(_ticking);
-    _activitySubscription = activityDetectedStream.listen(
-      (state) => emit(UserTouch(ticker.time)),
-    );
+    _activitySubscription = MergeStream(
+      [
+        activityDetectedStream.map((_) => ticker.time),
+        MergeStream(
+          [
+            alarm,
+            timers.map((event) => event.firedAlarm),
+          ],
+        ).whereType<NotificationAlarm>().map((event) => event.notificationTime),
+      ],
+    ).map(SomethingHappened.new).listen(emit);
   }
 
   void _ticking(DateTime time) {
@@ -73,8 +85,8 @@ abstract class _NotFinalState extends InactivityState {
   List<Object> get props => [timeStamp];
 }
 
-class UserTouch extends _NotFinalState {
-  const UserTouch(DateTime timeStamp) : super(timeStamp);
+class SomethingHappened extends _NotFinalState {
+  const SomethingHappened(DateTime timeStamp) : super(timeStamp);
 }
 
 class CalendarInactivityThresholdReached extends _NotFinalState {
