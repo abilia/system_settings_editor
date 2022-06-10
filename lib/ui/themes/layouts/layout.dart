@@ -253,10 +253,12 @@ class TabBarLayout {
 
 class TabItemLayout {
   final double width, border;
+  final EdgeInsets padding;
 
   const TabItemLayout({
     this.width = 64,
     this.border = 1,
+    this.padding = const EdgeInsets.only(left: 4, top: 4, right: 4),
   });
 }
 

@@ -317,7 +317,7 @@ class _AnimatedTab extends AnimatedWidget {
                 child: collapsedValue == 0.0
                     ? null
                     : Padding(
-                        padding: layout.actionButton.withTextPadding
+                        padding: layout.tabBar.item.padding
                             .subtract(padding.onlyTop),
                         child: DefaultTextStyle(
                           maxLines: 1,
