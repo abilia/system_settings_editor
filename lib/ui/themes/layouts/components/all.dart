@@ -4,3 +4,4 @@ export 'action_button_layout.dart';
 export 'font_size_layout.dart';
 export 'month_preview_layout.dart';
 export 'month_calendar_layout.dart';
+export 'photo_calendar_layout.dart';

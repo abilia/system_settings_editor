@@ -94,6 +94,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     Sortable sortable,
   ) async {
     final translate = Translator.of(context).translate;
+    final sortableArchiveCubit = context.read<SortableArchiveCubit<T>>();
     final result = await showViewDialog<bool>(
       context: context,
       builder: (_) => YesNoDialog(
@@ -106,7 +107,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     );
 
     if (result == true) {
-      context.read<SortableArchiveCubit<T>>().delete();
+      sortableArchiveCubit.delete();
     }
   }
 }

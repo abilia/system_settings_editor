@@ -45,6 +45,8 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
           builder: (context) => OkButton(
             onPressed: () async {
               final settingsChangeToDisable = settingsInitial && !settings;
+              final genericCubit = context.read<GenericCubit>();
+              final navigator = Navigator.of(context);
               if (settingsChangeToDisable) {
                 final answer = await showViewDialog<bool>(
                   context: context,
@@ -55,7 +57,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                 );
                 if (answer != true) return;
               }
-              context.read<GenericCubit>().genericUpdated(
+              genericCubit.genericUpdated(
                 [
                   MemoplannerSettingData.fromData(
                     data: camera,
@@ -83,7 +85,7 @@ class _MenuSettingsPageState extends State<MenuSettingsPage> {
                   ),
                 ],
               );
-              Navigator.of(context).pop();
+              navigator.pop();
             },
           ),
         ),

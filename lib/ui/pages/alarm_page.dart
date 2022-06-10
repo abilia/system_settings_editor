@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 import 'package:seagull/ui/all.dart';
 
@@ -180,7 +181,13 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
 
   @override
   Widget build(BuildContext context) {
-    final closeButton = CloseButton(onPressed: () => popAlarm(context, alarm));
+    final closeButton = CloseButton(
+      onPressed: () => popAlarm(
+        activityRepository: context.read<ActivityRepository>(),
+        navigator: Navigator.of(context),
+        alarm: alarm,
+      ),
+    );
     return BottomAppBar(
       child: Padding(
         padding: layout.navigationBar.padding,
@@ -289,7 +296,10 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CloseButton(
-            onPressed: () => popAlarm(context, timerAlarm),
+            onPressed: () => popAlarm(
+              navigator: Navigator.of(context),
+              alarm: timerAlarm,
+            ),
           ),
         ),
       ),

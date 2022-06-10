@@ -21,8 +21,8 @@ class PreviousWizardStepButton extends StatelessWidget {
                   context.read<WizardCubit>() is TemplateActivityWizardCubit
               ? const CancelButton()
               : PreviousButton(
-                  onPressed: () async {
-                    await Navigator.of(context).maybePop();
+                  onPressed: () {
+                    Navigator.of(context).maybePop();
                     context.read<WizardCubit>().previous();
                   },
                 )

@@ -173,6 +173,8 @@ class _TimerBottomBar extends StatelessWidget {
             IconActionButtonLight(
               onPressed: () async {
                 final t = Translator.of(context).translate;
+                final timerCubit = context.read<TimerCubit>();
+                final navigator = Navigator.of(context);
                 final confirmDeletion = await showViewDialog(
                   context: context,
                   builder: (context) => YesNoDialog(
@@ -182,8 +184,8 @@ class _TimerBottomBar extends StatelessWidget {
                   ),
                 );
                 if (confirmDeletion) {
-                  await context.read<TimerCubit>().deleteTimer(timer);
-                  Navigator.pop(context);
+                  await timerCubit.deleteTimer(timer);
+                  navigator.pop();
                 }
               },
               child: const Icon(AbiliaIcons.deleteAllClear),
@@ -212,6 +214,7 @@ class PlayTimerButton extends StatelessWidget {
         style: actionButtonStyleLightSelected,
         onPressed: () async {
           final t = Translator.of(context).translate;
+          final timerCubit = context.read<TimerCubit>();
           final confirmPause = await showViewDialog<bool>(
             context: context,
             builder: (context) => YesNoDialog(
@@ -221,7 +224,7 @@ class PlayTimerButton extends StatelessWidget {
             ),
           );
           if (confirmPause == true) {
-            await context.read<TimerCubit>().startTimer(timer);
+            await timerCubit.startTimer(timer);
           }
         },
         child: const Icon(AbiliaIcons.playSound),
@@ -240,6 +243,7 @@ class PauseTimerButton extends StatelessWidget {
   Widget build(BuildContext context) => IconActionButtonLight(
         onPressed: () async {
           final t = Translator.of(context).translate;
+          final timerCubit = context.read<TimerCubit>();
           final confirmPause = await showViewDialog<bool>(
             context: context,
             builder: (context) => YesNoDialog(
@@ -249,7 +253,7 @@ class PauseTimerButton extends StatelessWidget {
             ),
           );
           if (confirmPause == true) {
-            await context.read<TimerCubit>().pauseTimer(timer);
+            await timerCubit.pauseTimer(timer);
           }
         },
         child: const Icon(AbiliaIcons.pause),

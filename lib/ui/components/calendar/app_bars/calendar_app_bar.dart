@@ -10,6 +10,7 @@ class CalendarAppBar extends StatelessWidget {
   final bool crossedOver;
   final DateTime day;
   final DayColor calendarDayColor;
+  final TextStyle? textStyle;
 
   static final _emptyAction = SizedBox(width: layout.actionButton.largeSize);
 
@@ -25,6 +26,7 @@ class CalendarAppBar extends StatelessWidget {
     required this.rows,
     required this.day,
     this.calendarDayColor = DayColor.noColors,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -69,7 +71,7 @@ class CalendarAppBar extends StatelessWidget {
                       ),
                       child: Align(
                         alignment: Alignment.center,
-                        child: AppBarTitle(rows: rows),
+                        child: AppBarTitle(rows: rows, style: textStyle),
                       ),
                     ),
                   ),

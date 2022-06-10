@@ -12,8 +12,15 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<UserRepository>(
-      create: (context) => FakeUserRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<UserRepository>(
+          create: (context) => FakeUserRepository(),
+        ),
+        RepositoryProvider<ActivityRepository>(
+          create: (context) => FakeActivityRepository(),
+        ),
+      ],
       child: MultiBlocProvider(providers: [
         BlocProvider<AuthenticationBloc>(
             create: (context) => FakeAuthenticationBloc()),

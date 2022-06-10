@@ -38,7 +38,13 @@ class CreateNewPage extends StatelessWidget {
                   key: TestKey.newActivityChoice,
                   leading: const Icon(AbiliaIcons.basicActivity),
                   text: Text(t.newActivity),
-                  onTap: () => navigateToActivityWizard(context, authProviders),
+                  onTap: () => navigateToActivityWizard(
+                    authProviders: authProviders,
+                    navigator: Navigator.of(context),
+                    memoplannerSettingBloc:
+                        context.read<MemoplannerSettingBloc>(),
+                    day: context.read<DayPickerBloc>().state.day,
+                  ),
                 ).pad(m1WithZeroBottom),
               if (memoplannerSettingsState.basicActivityOption &&
                   displayNewActivity)
@@ -47,6 +53,10 @@ class CreateNewPage extends StatelessWidget {
                   leading: const Icon(AbiliaIcons.basicActivities),
                   text: Text(t.fromBasicActivity),
                   onTap: () async {
+                    final navigator = Navigator.of(context);
+                    final memoplannerSettingBloc =
+                        context.read<MemoplannerSettingBloc>();
+                    final day = context.read<DayPickerBloc>().state.day;
                     final basicActivityData =
                         await Navigator.of(context).push<BasicActivityData>(
                       MaterialPageRoute(
@@ -65,10 +75,12 @@ class CreateNewPage extends StatelessWidget {
                       ),
                     );
                     if (basicActivityData is BasicActivityDataItem) {
-                      await navigateToActivityWizard(
-                        context,
-                        authProviders,
-                        basicActivityData,
+                      navigateToActivityWizard(
+                        authProviders: authProviders,
+                        navigator: navigator,
+                        memoplannerSettingBloc: memoplannerSettingBloc,
+                        day: day,
+                        basicActivity: basicActivityData,
                       );
                     }
                   },
@@ -84,9 +96,7 @@ class CreateNewPage extends StatelessWidget {
                   key: TestKey.newTimerChoice,
                   leading: const Icon(AbiliaIcons.stopWatch),
                   text: Text(t.newTimer),
-                  onTap: () async {
-                    navigateToEditTimerPage(context, authProviders);
-                  },
+                  onTap: () => navigateToEditTimerPage(context, authProviders),
                 ).pad(m1WithZeroBottom),
               if (displayNewTimer)
                 PickField(
@@ -94,8 +104,8 @@ class CreateNewPage extends StatelessWidget {
                   leading: const Icon(AbiliaIcons.basicTimers),
                   text: Text(t.fromBasicTimer),
                   onTap: () async {
-                    final timerStarted =
-                        await Navigator.of(context).push<AbiliaTimer>(
+                    final navigator = Navigator.of(context);
+                    final timerStarted = await navigator.push<AbiliaTimer>(
                       MaterialPageRoute(
                         builder: (_) => MultiBlocProvider(
                           providers: [
@@ -120,7 +130,11 @@ class CreateNewPage extends StatelessWidget {
                       ),
                     );
                     if (timerStarted != null) {
-                      navigateToTimerPage(context, authProviders, timerStarted);
+                      navigateToTimerPage(
+                        navigator,
+                        authProviders,
+                        timerStarted,
+                      );
                     }
                   },
                 ).pad(m1ItemPadding),
@@ -154,6 +168,7 @@ class CreateNewPage extends StatelessWidget {
   Future<void> navigateToEditTimerPage(
       BuildContext buildContext, List<BlocProvider> authProviders,
       [BasicTimerDataItem? basicTimer]) async {
+    final navigator = Navigator.of(buildContext);
     final timerStarted = await Navigator.of(buildContext).push(
       _createRoute<AbiliaTimer>(
         MultiBlocProvider(
@@ -171,21 +186,24 @@ class CreateNewPage extends StatelessWidget {
       ),
     );
     if (timerStarted != null) {
-      navigateToTimerPage(buildContext, authProviders, timerStarted);
+      navigateToTimerPage(
+        navigator,
+        authProviders,
+        timerStarted,
+      );
     }
   }
 
   void navigateToTimerPage(
-    BuildContext buildContext,
+    NavigatorState navigator,
     List<BlocProvider> authProviders,
     AbiliaTimer timer,
   ) {
-    Navigator.of(buildContext).pop();
-    final providers = copiedAuthProviders(buildContext);
-    Navigator.of(buildContext).push(
+    navigator.pop();
+    navigator.push(
       MaterialPageRoute(
         builder: (context) => MultiBlocProvider(
-          providers: providers,
+          providers: authProviders,
           child: TimerPage(
             timerOccasion: TimerOccasion(timer, Occasion.current),
             day: timer.startTime.onlyDays(),
@@ -195,23 +213,37 @@ class CreateNewPage extends StatelessWidget {
     );
   }
 
-  Future<void> navigateToActivityWizard(
-      BuildContext context, List<BlocProvider> authProviders,
-      [BasicActivityDataItem? basicActivity]) async {
+  Future<void> navigateToActivityWizardWithContext(
+    BuildContext context,
+    List<BlocProvider> authProviders, [
+    BasicActivityDataItem? basicActivity,
+  ]) =>
+      navigateToActivityWizard(
+        authProviders: authProviders,
+        navigator: Navigator.of(context),
+        memoplannerSettingBloc: context.read<MemoplannerSettingBloc>(),
+        day: context.read<DayPickerBloc>().state.day,
+      );
+
+  Future<void> navigateToActivityWizard({
+    required NavigatorState navigator,
+    required DateTime day,
+    required MemoplannerSettingBloc memoplannerSettingBloc,
+    required List<BlocProvider> authProviders,
+    BasicActivityDataItem? basicActivity,
+  }) async {
     final calendarId = await GetIt.I<CalendarDb>().getCalendarId() ?? '';
-    final activityCreated = await Navigator.of(context).push<bool>(
+    final activityCreated = await navigator.push<bool>(
       _createRoute<bool>(
         MultiBlocProvider(
           providers: [
             ...authProviders,
             BlocProvider<EditActivityCubit>(
               create: (_) => EditActivityCubit.newActivity(
-                day: context.read<DayPickerBloc>().state.day,
+                day: day,
                 calendarId: calendarId,
-                defaultAlarmTypeSetting: context
-                    .read<MemoplannerSettingBloc>()
-                    .state
-                    .defaultAlarmTypeSetting,
+                defaultAlarmTypeSetting:
+                    memoplannerSettingBloc.state.defaultAlarmTypeSetting,
                 basicActivityData: basicActivity,
               ),
             ),
@@ -243,7 +275,7 @@ class CreateNewPage extends StatelessWidget {
         ),
       ),
     );
-    if (activityCreated == true) Navigator.pop(context);
+    if (activityCreated == true) navigator.pop();
   }
 
   Route<T> _createRoute<T>(Widget page) => PageRouteBuilder<T>(

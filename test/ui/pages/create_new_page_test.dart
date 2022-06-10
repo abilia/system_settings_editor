@@ -526,6 +526,7 @@ void main() {
           final nameAndPictureWidget =
               tester.firstWidget(nameAndPicture) as NameAndPictureWidget;
           expect(nameAndPictureWidget.text, title);
+          expect(find.text(title), findsOneWidget);
         });
 
         testWidgets(

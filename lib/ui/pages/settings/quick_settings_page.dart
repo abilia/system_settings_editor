@@ -21,11 +21,12 @@ class QuickSettingsPage extends StatelessWidget {
         child: ListView(
           controller: scrollController,
           children: <Widget>[
-            Padding(
-              padding: layout.templates.m1
-                  .copyWith(bottom: layout.formPadding.groupBottomDistance),
-              child: BatteryLevel(battery: GetIt.I<Battery>()),
-            ),
+            if (!layout.large)
+              Padding(
+                padding: layout.templates.m1
+                    .copyWith(bottom: layout.formPadding.groupBottomDistance),
+                child: BatteryLevel(battery: GetIt.I<Battery>()),
+              ),
             QuickSettingsGroup(children: [
               const WiFiPickField(),
               SizedBox(height: layout.formPadding.verticalItemDistance),
@@ -58,12 +59,13 @@ class QuickSettingsPage extends StatelessWidget {
             const QuickSettingsGroup(children: [
               BrightnessSlider(),
             ]),
-            QuickSettingsGroup(children: [
-              SubHeading(t.screenTimeout),
-              const ScreenTimeoutPickField(),
-              SizedBox(height: layout.formPadding.verticalItemDistance),
-              const KeepOnWhileChargingSwitch(),
-            ]),
+            if (!layout.large)
+              QuickSettingsGroup(children: [
+                SubHeading(t.screenTimeout),
+                const ScreenTimeoutPickField(),
+                SizedBox(height: layout.formPadding.verticalItemDistance),
+                const KeepOnWhileChargingSwitch(),
+              ]),
           ],
         ),
       ),
