@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/all.dart';
@@ -197,7 +198,6 @@ class _AddTab extends StatelessWidget {
       width: layout.tabBar.item.border,
     );
     final isLeft = position == _AddTabPosition.left;
-    final padding = layout.actionButton.withTextPadding;
 
     return SizedBox(
       height: layout.actionButton.size,
@@ -219,25 +219,30 @@ class _AddTab extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-              padding: padding.subtract(EdgeInsets.symmetric(
-                horizontal: padding.horizontal / 2,
-              )),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DefaultTextStyle(
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyle,
-                    child: Text(text),
+            padding: layout.actionButton.withTextPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: textStyle.fontSize,
+                  child: Center(
+                    child: AutoSizeText(
+                      text,
+                      minFontSize: 12,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle,
+                    ),
                   ),
-                  SizedBox(height: layout.actionButton.spacing),
-                  IconTheme(
-                    data: iconTheme,
-                    child: Icon(icon),
-                  )
-                ],
-              )),
+                ),
+                SizedBox(height: layout.actionButton.spacing),
+                IconTheme(
+                  data: iconTheme,
+                  child: Icon(icon),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

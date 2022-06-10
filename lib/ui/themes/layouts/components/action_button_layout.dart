@@ -27,7 +27,7 @@ class ActionButtonLayoutMedium extends ActionButtonLayout {
           largeRadius: largeRadius ?? 20,
           spacing: 4,
           padding: const EdgeInsets.all(12),
-          withTextPadding: const EdgeInsets.only(left: 12, top: 6, right: 12),
+          withTextPadding: const EdgeInsets.only(top: 6, left: 4, right: 4),
           withTextIconSize: 48,
         );
 }
