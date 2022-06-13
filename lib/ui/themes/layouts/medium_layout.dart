@@ -8,7 +8,8 @@ class MediumLayout extends Layout {
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
     ActivityPageLayout? activityPageLayout,
-    ChecklistLayout? checkListLayout,
+    ChecklistLayout? checklist,
+    TimerPageLayout? timerPage,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -163,12 +164,7 @@ class MediumLayout extends Layout {
             cardIconPadding: EdgeInsets.only(right: 6),
             titleSubtitleSpacing: 12,
           ),
-          timerPage: const TimerPageLayout(
-            topInfoHeight: 232,
-            imageSize: 200,
-            imagePadding: 16,
-            topPadding: EdgeInsets.all(16),
-          ),
+          timerPage: timerPage ?? const TimerPageLayoutMedium(),
           timePillar: const TimepillarLayout(
             fontSize: 40,
             width: 80,
@@ -262,12 +258,13 @@ class MediumLayout extends Layout {
             secondaryTextHeight: 24 / 20,
           ),
           activityPage: activityPageLayout ?? const ActivityPageLayoutMedium(),
-          checklist: checkListLayout ?? const ChecklistLayout(
-            question: ChecklistQuestionLayoutMedium(),
-            listPadding: EdgeInsets.all(24),
-            addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
-            addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
-          ),
+          checklist: checklist ??
+              const ChecklistLayout(
+                question: ChecklistQuestionLayoutMedium(),
+                listPadding: EdgeInsets.all(24),
+                addNewQButtonPadding: EdgeInsets.fromLTRB(18, 12, 18, 18),
+                addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
+              ),
           note: const NoteLayout(
             notePadding: EdgeInsets.fromLTRB(27, 15, 24, 36),
             lineOffset: 3,
