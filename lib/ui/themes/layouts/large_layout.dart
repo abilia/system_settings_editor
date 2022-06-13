@@ -8,7 +8,7 @@ class LargeLayout extends MediumLayout {
           templates: const TemplatesLayoutLarge(),
           clockLayout: const ClockLayoutLarge(),
           photoCalendarLayout: const PhotoCalendarLayoutLarge(),
-          activityPageLayout: const ActivityPageLayoutLarge(),
+          activityPage: const ActivityPageLayoutLarge(),
           checklist: const ChecklistLayout(
             question: ChecklistQuestionLayoutLarge(),
             listPadding: EdgeInsets.all(24),
@@ -16,5 +16,6 @@ class LargeLayout extends MediumLayout {
             addNewQIconPadding: EdgeInsets.only(left: 22, right: 16),
           ),
           timerPage: const TimerPageLayoutLarge(),
+          fontSize: const FontSizeLarge(),
         );
 }

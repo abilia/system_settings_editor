@@ -7,9 +7,10 @@ class MediumLayout extends Layout {
     TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
-    ActivityPageLayout? activityPageLayout,
+    ActivityPageLayout? activityPage,
     ChecklistLayout? checklist,
     TimerPageLayout? timerPage,
+    FontSize? fontSize,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -50,7 +51,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: const FontSizeMedium(),
+          fontSize: fontSize ?? const FontSizeMedium(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,
@@ -257,7 +258,7 @@ class MediumLayout extends Layout {
             iconSize: 48,
             secondaryTextHeight: 24 / 20,
           ),
-          activityPage: activityPageLayout ?? const ActivityPageLayoutMedium(),
+          activityPage: activityPage ?? const ActivityPageLayoutMedium(),
           checklist: checklist ??
               const ChecklistLayout(
                 question: ChecklistQuestionLayoutMedium(),
