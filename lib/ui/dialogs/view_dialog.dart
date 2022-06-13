@@ -34,7 +34,7 @@ class ViewDialog extends StatelessWidget {
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: layout.templates.s4,
+          padding: layout.templates.s5,
           child: ClipRRect(
             borderRadius: borderRadius,
             child: Column(

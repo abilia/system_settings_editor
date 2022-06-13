@@ -64,7 +64,7 @@ class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
-  final LayoutTemplates templates;
+  final TemplatesLayout templates;
   final BorderLayout borders;
   final LinedBorderLayout linedBorder;
   final SelectableFieldLayout selectableField;
@@ -93,6 +93,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
@@ -136,7 +137,7 @@ class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
-    this.templates = const LayoutTemplates(),
+    this.templates = const TemplatesLayout(),
     this.borders = const BorderLayout(),
     this.linedBorder = const LinedBorderLayout(),
     this.selectableField = const SelectableFieldLayout(),
@@ -165,6 +166,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
@@ -253,10 +255,12 @@ class TabBarLayout {
 
 class TabItemLayout {
   final double width, border;
+  final EdgeInsets padding;
 
   const TabItemLayout({
     this.width = 64,
     this.border = 1,
+    this.padding = const EdgeInsets.only(left: 4, top: 4, right: 4),
   });
 }
 
@@ -889,40 +893,6 @@ class ListFolderLayout {
     this.imageBorderRadius = 2,
     this.imagePadding = const EdgeInsets.fromLTRB(6, 16, 6, 11),
     this.margin = const EdgeInsets.only(left: 2, right: 6),
-  });
-}
-
-class LayoutTemplates {
-  final EdgeInsets m1,
-      m2,
-      m3,
-      m4,
-      m5,
-      s1,
-      s2,
-      s3,
-      s4,
-      l1,
-      l2,
-      l3,
-      l5,
-      bottomNavigation;
-
-  const LayoutTemplates({
-    this.s1 = const EdgeInsets.all(12),
-    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
-    this.s3 = const EdgeInsets.all(4),
-    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
-    this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 40),
-    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
-    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
-    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
-    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
-    this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
-    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
-    this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
-    this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
   });
 }
 

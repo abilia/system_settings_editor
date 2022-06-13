@@ -884,6 +884,11 @@ abstract class Translated {
 
   final String doYouWantToDeleteThisPhoto =
       'Are you sure you want to delete this photo?';
+
+  final String installStarterSet = 'Install starter set?';
+
+  final String doYouWantToImportADefaultSet =
+      'Do you want to import a default set of data with basic activities, timers, checklists and image archive?';
 }
 
 class EN extends Translated {
@@ -2166,6 +2171,13 @@ class SV extends Translated {
   @override
   final String doYouWantToDeleteThisPhoto =
       'Är du säker på att du vill ta bort detta foto?';
+
+  @override
+  final String installStarterSet = 'Installera startuppsättning?';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?';
 }
 
 class DA extends Translated {
@@ -3372,6 +3384,10 @@ class DA extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\nindstillinger';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?';
 }
 
 class NL extends Translated {
@@ -4582,6 +4598,10 @@ class NL extends Translated {
 
   @override
   final String quickSettingsMenu = 'Snelle\ninstellingen';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?';
 }
 
 class FI extends Translated {
@@ -5790,6 +5810,10 @@ class FI extends Translated {
 
   @override
   final String quickSettingsMenu = 'Pika-\nasetukset';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
 }
 
 class DE extends Translated {
@@ -7005,6 +7029,10 @@ class DE extends Translated {
 
   @override
   final String quickSettingsMenu = 'Schnell-\neinstellungen';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?';
 }
 
 class NB extends Translated {
@@ -7269,6 +7297,9 @@ class NB extends Translated {
   final String timerInvalidDuration = 'Varigheten kan ikke være null.';
 
   @override
+  final String timerDelete = 'Vil du slette timeren?';
+
+  @override
   final String activity = 'Aktivitet';
 
   @override
@@ -7349,6 +7380,9 @@ class NB extends Translated {
       'Alle oppgavene er utført.  Vil du merke aktiviteten som ferdig?';
 
   @override
+  final String basicTemplates = 'Maler';
+
+  @override
   final String basicActivities = 'Standardaktiviteter';
 
   @override
@@ -7358,7 +7392,13 @@ class NB extends Translated {
   final String editBasicActivity = 'Endre standardaktivitet';
 
   @override
+  final String enterNameForBasicActivity = 'Angi navn på standardaktivitet';
+
+  @override
   final String timeTo = 'til';
+
+  @override
+  final String addTimer = 'Legg inn timer';
 
   @override
   final String start = 'Start';
@@ -7373,6 +7413,9 @@ class NB extends Translated {
   final String startTimer = 'Start timer';
 
   @override
+  final String enterNameForTimer = 'Angi navn på timer';
+
+  @override
   final String fromBasicTimer = 'Fra standardtimere';
 
   @override
@@ -7385,7 +7428,13 @@ class NB extends Translated {
   final String timer = 'Tidtaker';
 
   @override
+  final String timeIsUp = 'Tiden er slutt';
+
+  @override
   final String basicTimers = 'Standardtimere';
+
+  @override
+  final String newBasicTimer = 'Ny standardtimer';
 
   @override
   final String menu = 'Meny';
@@ -7691,6 +7740,9 @@ class NB extends Translated {
   final String task = 'Oppgave';
 
   @override
+  final String enterTask = 'Legg inn oppgave';
+
+  @override
   final String screenBrightness = 'Skjermens lysstyrke';
 
   @override
@@ -7963,6 +8015,9 @@ class NB extends Translated {
   final String defaults = 'Forvalg';
 
   @override
+  final String onlyAppliesToGo = 'Gjelder kun MEMOplanner Go';
+
+  @override
   final String showOngoingActivityInFullScreen =
       'Vis gjeldende aktivitet i full skjerm';
 
@@ -7995,6 +8050,9 @@ class NB extends Translated {
   @override
   final String menuRemovalWarning =
       'Ønsker du virkelig å slette Innstillinger fra Menyen? I så fall startes Innstillinger ved å trykke på kategorisymbolene i dagkalenderen; venstre - høyre - venstre. Trykk på tilsvarende område av den savnede.';
+
+  @override
+  final String selectADayToViewDetails = 'Velg en dag for å se mer detaljer';
 
   @override
   final String topField = 'Toppfelt';
@@ -8084,10 +8142,19 @@ class NB extends Translated {
   final String speechRate = 'Talehastighet';
 
   @override
+  final String voice = 'Talesyntese';
+
+  @override
   final String noVoicesInstalled = 'Ingen stemmer er installert';
 
   @override
+  final String installingVoice = 'Installerer';
+
+  @override
   final String speechTest = 'Test av talehastighet';
+
+  @override
+  final String voices = 'Talesynteser';
 
   @override
   final String codeProtect = 'Kodebeskyttelse';
@@ -8103,6 +8170,12 @@ class NB extends Translated {
 
   @override
   final String codeProtectAndroidSettings = 'Kodebeskytt Android-innstillinger';
+
+  @override
+  final String enterCode = 'Angi kode';
+
+  @override
+  final String enterYourCodeToAccess = 'Angi din kode for å få tilgang';
 
   @override
   final String enterNewCode = 'Angi ny kode';
@@ -8208,4 +8281,26 @@ class NB extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
+
+  @override
+  final String allPhotos = 'Alle foto';
+
+  @override
+  final String addToPhotoCalendarQuestion =
+      'Vil du legge inn dette foto i fotokalenderen?';
+
+  @override
+  final String removeFromPhotoCalendarQuestion =
+      'Vil du slette dette foto fra fotokalenderen?';
+
+  @override
+  final String remove = 'Slette';
+
+  @override
+  final String doYouWantToDeleteThisPhoto =
+      'Er du sikker på at du vil slette dette foto?';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?';
 }

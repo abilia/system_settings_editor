@@ -6,6 +6,7 @@ import 'package:seagull/db/all.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../mocks/mocks.dart';
 import '../../test_helpers/register_fallback_values.dart';
@@ -13,7 +14,6 @@ import '../../test_helpers/register_fallback_values.dart';
 void main() {
   const baseUrl = 'url';
   late MockBaseClient mockClient;
-  late MockBaseUrlDb mockBaseUrlDb;
   const userId = 1;
   late SortableRepository sortableRepository;
   late Database db;
@@ -21,14 +21,13 @@ void main() {
   setUpAll(() async {
     registerFallbackValues();
     db = await DatabaseRepository.createInMemoryFfiDb();
+    SharedPreferences.setMockInitialValues({'base-url': baseUrl});
   });
 
   setUp(() async {
-    mockBaseUrlDb = MockBaseUrlDb();
-    when(() => mockBaseUrlDb.baseUrl).thenReturn(baseUrl);
     mockClient = MockBaseClient();
     sortableRepository = SortableRepository(
-      baseUrlDb: mockBaseUrlDb,
+      baseUrlDb: BaseUrlDb(await SharedPreferences.getInstance()),
       client: mockClient,
       sortableDb: SortableDb(db),
       userId: userId,
@@ -256,5 +255,81 @@ void main() {
     // Act
     final folder = await sortableRepository.createUploadsFolder();
     expect(folder, null);
+  });
+
+  test('applyTemplate apply correct template', () async {
+    // Arrange
+    when(() => mockClient.get(any(), headers: any(named: 'headers')))
+        .thenAnswer((_) => Future.value(Response('''
+[
+    {
+        "id": "54fabe78-7a0d-4956-91bd-cefde5664518",
+        "templateId": 256,
+        "name": "memoplanner_sv",
+        "language": "sv"
+    },
+    {
+        "id": "6942900c-ebe0-4b64-a08f-8eb37a2f8737",
+        "templateId": 257,
+        "name": "memoplanner_nb",
+        "language": "nb"
+    },
+    {
+        "id": "0b236c31-a64c-4e33-8869-a71c0b5a3d9d",
+        "templateId": 258,
+        "name": "memoplanner_en",
+        "language": "en"
+    },
+    {
+        "id": "3ab0425c-459b-465f-99ca-c981e6d1e505",
+        "templateId": 259,
+        "name": "memoplanner_da",
+        "language": "da"
+    },
+    {
+        "id": "a0396cb9-dfb7-4761-91d3-3e9118b54fc0",
+        "templateId": 297,
+        "name": "memoplanner_nl",
+        "language": "nl"
+    },
+    {
+        "id": "a767ebec-50db-4f5f-8acf-d653c59c1418",
+        "templateId": 338,
+        "name": "memoplanner_fi",
+        "language": "fi"
+    },
+    {
+        "id": "116d6e8e-1269-4629-ae18-3409f8d6a0dc",
+        "templateId": 358,
+        "name": "memoplanner_de",
+        "language": "de"
+    },
+    {
+        "id": "c5fe7999-0ae0-4383-a15d-7b16b056554e",
+        "templateId": 412,
+        "name": "data",
+        "language": "sv"
+    },
+    {
+        "id": "66cf650a-be48-4c2d-95de-962f25294485",
+        "templateId": 431,
+        "name": "pontusBasData",
+        "language": "en"
+    }
+]
+''', 200)));
+    when(() => mockClient.post(any(), headers: any(named: 'headers')))
+        .thenAnswer((_) => Future.value(Response('', 200)));
+    // Act
+    final f = await sortableRepository.applyTemplate('fi');
+    // Assert
+    expect(f, isTrue);
+    verify(() => mockClient.get(any(), headers: any(named: 'headers')))
+        .called(1);
+    final capturedPost = verify(
+            () => mockClient.post(captureAny(), headers: any(named: 'headers')))
+        .captured
+        .single;
+    expect(capturedPost.path, contains('a767ebec-50db-4f5f-8acf-d653c59c1418'));
   });
 }
