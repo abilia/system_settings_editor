@@ -404,7 +404,7 @@ showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Fa
 editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
 							
 ### Speech support settings							
-speakEveryWord	Read out word when space bar is pressed	Uppläsning av varje ord	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
+speakEveryWord	Read out word when space bar is pressed	Uppläsning av ord vid tryck på mellanslag	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
 speechRate	Speech rate	Talhastighet	Talehastighed	Spraaksnelheid	Puhenopeus	Sprechtempo	Talehastighet
 voice	Voice	Röst					Talesyntese
 noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
