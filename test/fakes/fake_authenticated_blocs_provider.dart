@@ -25,7 +25,7 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
             create: (context) => FakeAuthenticationBloc()),
         BlocProvider<ActivitiesBloc>(create: (context) => FakeActivitiesBloc()),
-        BlocProvider<SettingsCubit>(create: (context) => FakeSettingsBloc()),
+        BlocProvider<SettingsCubit>(create: (context) => FakeSettingsCubit()),
         BlocProvider<PermissionCubit>(create: (context) => PermissionCubit()),
         BlocProvider<SyncBloc>(create: (context) => FakeSyncBloc()),
         BlocProvider<UserFileCubit>(create: (context) => FakeUserFileCubit()),

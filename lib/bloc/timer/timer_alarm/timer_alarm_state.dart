@@ -3,7 +3,7 @@ part of 'timer_alarm_bloc.dart';
 class TimerAlarmState extends Equatable {
   final UnmodifiableListView<TimerOccasion> timers;
   final Queue<TimerOccasion> ongoingQueue;
-  final TimerOccasion? firedAlarm;
+  final TimerAlarm? firedAlarm;
 
   TimerAlarmState.sort(Iterable<TimerOccasion> timers, [this.firedAlarm])
       : ongoingQueue =
