@@ -8,5 +8,7 @@ class LargeLayout extends MediumLayout {
           templates: const TemplatesLayoutLarge(),
           clockLayout: const ClockLayoutLarge(),
           photoCalendarLayout: const PhotoCalendarLayoutLarge(),
+          displaySettings: const DisplaySettingsDialogLayoutLarge(),
+          selector: const SelectorLayoutLarge(),
         );
 }

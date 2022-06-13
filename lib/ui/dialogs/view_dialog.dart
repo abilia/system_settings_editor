@@ -7,6 +7,9 @@ class ViewDialog extends StatelessWidget {
   final Widget body;
   final EdgeInsets? bodyPadding;
   final bool expanded;
+  final double? width;
+  final double? height;
+
   const ViewDialog({
     Key? key,
     this.heading,
@@ -15,6 +18,8 @@ class ViewDialog extends StatelessWidget {
     required this.backNavigationWidget,
     this.forwardNavigationWidget,
     this.bodyPadding,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -35,29 +40,33 @@ class ViewDialog extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: layout.templates.s5,
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (heading != null)
-                  Container(
-                    height: AbiliaAppBar.height,
-                    color: AbiliaColors.black80,
-                    child: Center(child: heading),
-                  ),
-                expanded
-                    ? Flexible(
-                        child: bodyContainer,
-                      )
-                    : bodyContainer,
-                BottomNavigation(
-                  useSafeArea: false,
-                  backNavigationWidget: backNavigationWidget,
-                  forwardNavigationWidget: forwardNavigationWidget,
-                )
-              ],
+          child: SizedBox(
+            height: height,
+            width: width,
+            child: ClipRRect(
+              borderRadius: borderRadius,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (heading != null)
+                    Container(
+                      height: AbiliaAppBar.height,
+                      color: AbiliaColors.black80,
+                      child: Center(child: heading),
+                    ),
+                  expanded
+                      ? Flexible(
+                          child: bodyContainer,
+                        )
+                      : bodyContainer,
+                  BottomNavigation(
+                    useSafeArea: false,
+                    backNavigationWidget: backNavigationWidget,
+                    forwardNavigationWidget: forwardNavigationWidget,
+                  )
+                ],
+              ),
             ),
           ),
         ),

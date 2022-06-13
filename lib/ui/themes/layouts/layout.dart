@@ -95,6 +95,8 @@ class Layout {
   final SpeechSupportPageLayout speechSupportPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
+  final DisplaySettingsDialogLayout displaySettings;
+  final SelectorLayout selector;
 
   const Layout({
     this.radius = 12,
@@ -168,6 +170,8 @@ class Layout {
     this.speechSupportPage = const SpeechSupportPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
+    this.displaySettings = const DisplaySettingsDialogLayout(),
+    this.selector = const SelectorLayout(),
   });
 
   bool get go => runtimeType == _GoLayout;
