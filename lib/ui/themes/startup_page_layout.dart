@@ -6,6 +6,7 @@ class StartupPageLayout {
     this.contentWidth = 540,
     this.buttonHeight = 96,
     this.logoDistance = 32,
+    this.pageTwoButtonWidth = 264,
     this.textPickDistance = 56,
   });
 
@@ -15,6 +16,7 @@ class StartupPageLayout {
       buttonHeight,
       contentWidth,
       logoDistance,
+      pageTwoButtonWidth,
       textPickDistance;
 }
 
@@ -27,6 +29,7 @@ class StartupPageLayoutMedium extends StartupPageLayout {
           contentWidth: 540,
           buttonHeight: 96,
           logoDistance: 32,
+          pageTwoButtonWidth: 264,
           textPickDistance: 56,
         );
 }

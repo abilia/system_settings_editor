@@ -38,7 +38,7 @@ class PageTwo extends StatelessWidget {
                 leading: const Icon(AbiliaIcons.speakText),
                 text: Text(t.textToSpeech),
                 trailingText: Text(
-                  state.voice.isEmpty ? 'Not selected' : state.voice,
+                  state.voice.isEmpty ? t.notSelected : state.voice,
                   style: (Theme.of(context).textTheme.bodyText2 ?? bodyText2)
                       .copyWith(
                     color: state.voice.isEmpty
@@ -61,7 +61,7 @@ class PageTwo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 264,
+                width: layout.startupPageLayout.pageTwoButtonWidth,
                 child: IconAndTextButton(
                   onPressed: () {
                     pageController.previousPage(
@@ -77,7 +77,7 @@ class PageTwo extends StatelessWidget {
                 width: layout.formPadding.horizontalItemDistance,
               ),
               SizedBox(
-                width: 264,
+                width: layout.startupPageLayout.pageTwoButtonWidth,
                 child: IconAndTextButton(
                   onPressed: () {
                     context.read<StartupCubit>().startGuideDone();

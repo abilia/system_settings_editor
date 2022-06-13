@@ -897,6 +897,8 @@ abstract class Translated {
   final String downloadVoiceText = 'Download voice for speech support';
 
   final String finsish = 'Finish';
+
+  final String notSelected = 'Not selected';
 }
 
 class EN extends Translated {
@@ -2198,6 +2200,9 @@ class SV extends Translated {
 
   @override
   final String finsish = 'Slutför';
+
+  @override
+  final String notSelected = 'Inte valt';
 }
 
 class DA extends Translated {
@@ -3414,6 +3419,9 @@ class DA extends Translated {
 
   @override
   final String checkInternetConnection = 'Kontroller din internetforbindelse';
+
+  @override
+  final String notSelected = 'Ikke valgt';
 }
 
 class NL extends Translated {
@@ -4634,6 +4642,9 @@ class NL extends Translated {
 
   @override
   final String checkInternetConnection = 'Controleer uw internetverbinding';
+
+  @override
+  final String notSelected = 'Niet geselecteerd';
 }
 
 class FI extends Translated {
@@ -5852,6 +5863,9 @@ class FI extends Translated {
 
   @override
   final String checkInternetConnection = 'Tarkista Internet-yhteys';
+
+  @override
+  final String notSelected = 'Ei valittu';
 }
 
 class DE extends Translated {
@@ -7078,6 +7092,9 @@ class DE extends Translated {
   @override
   final String checkInternetConnection =
       'Überprüfen Sie Ihre Internetverbindung';
+
+  @override
+  final String notSelected = 'Nicht ausgewählt';
 }
 
 class NB extends Translated {
@@ -8291,4 +8308,7 @@ class NB extends Translated {
 
   @override
   final String checkInternetConnection = 'Sjekk din Internettforbindelse';
+
+  @override
+  final String notSelected = 'Ikke valgt';
 }
