@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:seagull/ui/all.dart';
 import 'package:seagull/utils/android_intents.dart';
 
@@ -8,6 +10,18 @@ class StartupGuidePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageController = PageController();
     return MaterialApp(
+      supportedLocales: Translator.supportedLocals,
+      localizationsDelegates: const [
+        Translator.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) => supportedLocales
+          .firstWhere((l) => l.languageCode == locale?.languageCode,
+              // English should be the first one and also the default.
+              orElse: () => supportedLocales.first),
       theme: abiliaTheme,
       home: Scaffold(
         body: PageView(
