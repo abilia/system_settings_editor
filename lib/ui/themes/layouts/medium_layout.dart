@@ -7,6 +7,7 @@ class MediumLayout extends Layout {
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
     MonthCalendarLayout? monthCalendar,
+    FontSize? fontSize,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -47,7 +48,7 @@ class MediumLayout extends Layout {
             height: 104,
             bottomPadding: 8,
           ),
-          fontSize: const FontSizeMedium(),
+          fontSize: fontSize ?? const FontSizeMedium(),
           icon: const IconLayout(
             tiny: 30,
             small: 36,

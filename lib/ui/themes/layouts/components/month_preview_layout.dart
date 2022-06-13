@@ -35,13 +35,13 @@ class MonthPreviewLayout {
 
 class MonthPreviewLayoutMedium extends MonthPreviewLayout {
   const MonthPreviewLayoutMedium({
-    double? height,
+    double? headingHeight,
     double? fullDayActivityHeight,
   }) : super(
           monthPreviewBorderWidth: 2,
           activityListTopPadding: 32,
           activityListBottomPadding: 96,
-          headingHeight: height ?? 72,
+          headingHeight: headingHeight ?? 72,
           headingFullDayActivityHeight: fullDayActivityHeight ?? 54,
           headingFullDayActivityWidth: 57,
           headingButtonIconSize: 36,
@@ -57,7 +57,7 @@ class MonthPreviewLayoutMedium extends MonthPreviewLayout {
 class MonthPreviewLayoutLarge extends MonthPreviewLayoutMedium {
   const MonthPreviewLayoutLarge()
       : super(
-          height: 80,
+          headingHeight: 80,
           fullDayActivityHeight: 56,
         );
 }
