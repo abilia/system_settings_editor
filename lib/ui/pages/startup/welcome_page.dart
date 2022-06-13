@@ -18,7 +18,9 @@ class WelcomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          const MEMOplannerLogoLarge(),
+          MEMOplannerLogo(
+            height: layout.startupPageLayout.welcomeLogoHeight,
+          ),
           SizedBox(height: layout.startupPageLayout.welcomeLogoDistance),
           Text(t.welcome,
               style: abiliaTextTheme.headline4

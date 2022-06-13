@@ -117,7 +117,9 @@ class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
                     builder: (context) => const BackendSwitchesDialog(),
                   );
                 },
-                child: const MEMOplannerLogo(),
+                child: MEMOplannerLogo(
+                  height: layout.login.logoHeight,
+                ),
               ),
       ),
     );
@@ -126,29 +128,20 @@ class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
 
 class MEMOplannerLogo extends StatelessWidget {
   const MEMOplannerLogo({
+    required this.height,
     Key? key,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage(
-        'assets/graphics/${Config.flavor.id}/logo.png',
-      ),
-    );
-  }
-}
-
-class MEMOplannerLogoLarge extends StatelessWidget {
-  const MEMOplannerLogoLarge({
-    Key? key,
-  }) : super(key: key);
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage(
-        'assets/graphics/${Config.flavor.id}/logo_large.png',
+    return SizedBox(
+      height: height,
+      child: Image(
+        image: AssetImage(
+          'assets/graphics/${Config.flavor.id}/logo.png',
+        ),
       ),
     );
   }

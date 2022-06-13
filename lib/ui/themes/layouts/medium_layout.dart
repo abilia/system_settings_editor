@@ -441,6 +441,7 @@ class MediumLayout extends Layout {
             topFormDistance: 48,
             logoSize: 96,
             progressWidth: 9,
+            logoHeight: 96,
             createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
             loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
             termsPadding: 72,

@@ -8,6 +8,7 @@ class StartupPageLayout {
     this.logoDistance = 32,
     this.pageTwoButtonWidth = 264,
     this.textPickDistance = 56,
+    this.welcomeLogoHeight = 164,
   });
 
   final double welcomeLogoDistance,
@@ -17,7 +18,8 @@ class StartupPageLayout {
       contentWidth,
       logoDistance,
       pageTwoButtonWidth,
-      textPickDistance;
+      textPickDistance,
+      welcomeLogoHeight;
 }
 
 class StartupPageLayoutMedium extends StartupPageLayout {
@@ -31,5 +33,6 @@ class StartupPageLayoutMedium extends StartupPageLayout {
           logoDistance: 32,
           pageTwoButtonWidth: 264,
           textPickDistance: 56,
+          welcomeLogoHeight: 164,
         );
 }
