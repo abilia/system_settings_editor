@@ -43,6 +43,7 @@ class MediumLayout extends Layout {
             item: TabItemLayout(
               width: 118,
               border: 2,
+              padding: EdgeInsets.only(top: 6, left: 12, right: 12),
             ),
             height: 104,
             bottomPadding: 8,
