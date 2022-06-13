@@ -2008,7 +2008,7 @@ class SV extends Translated {
   final String editCategory = 'Redigera kategori';
 
   @override
-  final String speakEveryWord = 'Uppläsning av varje ord';
+  final String speakEveryWord = 'Uppläsning av ord vid tryck på mellanslag';
 
   @override
   final String speechRate = 'Talhastighet';
