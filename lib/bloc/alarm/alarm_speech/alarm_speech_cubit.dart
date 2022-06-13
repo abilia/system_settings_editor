@@ -13,7 +13,7 @@ import 'package:seagull/utils/all.dart';
 enum AlarmSpeechState { unplayed, played }
 
 class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
-  static const minSpeechDelay = Duration(milliseconds: 4500);
+  static const minSpeechDelay = Duration(milliseconds: 3500);
 
   final _log = Logger((AlarmSpeechCubit).toString());
   final NewAlarm alarm;
@@ -27,17 +27,25 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   AlarmSpeechCubit({
     required this.alarm,
     required this.soundCubit,
+    required DateTime Function() now,
     required AlarmSettings alarmSettings,
     required Stream<Touch> touchStream,
     Stream<NotificationAlarm>? selectedNotificationStream,
   }) : super(AlarmSpeechState.unplayed) {
     _log.fine('$alarm');
-    final speechDelay = _alarmDuration(alarmSettings);
-
-    _log.fine('alarm length: $speechDelay');
+    _log.fine('notificationTime: ${alarm.notificationTime}');
+    _log.fine('alarm duration : ${alarmSettings.duration}');
+    final realDuration = _alarmDuration(alarmSettings);
+    _log.fine('real alarm duration : $realDuration');
+    final _now = now();
+    _log.fine('now : $_now');
+    final timeFromAlarmStart = _now.difference(alarm.notificationTime);
+    _log.fine('time from alarm start : $timeFromAlarmStart');
+    final timeUntilSpeech = realDuration - timeFromAlarmStart;
+    _log.info('until speech time: $timeUntilSpeech');
 
     _delayedSubscription =
-        Stream.fromFuture(Future.delayed(speechDelay)).listen(_maybePlay);
+        Stream.fromFuture(Future.delayed(timeUntilSpeech)).listen(_maybePlay);
 
     _touchSubscription = touchStream.take(1).listen(_maybePlay);
 
@@ -90,7 +98,9 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     }
 
     if (Platform.isIOS) {
-      return maxDuration(alarmSettings.duration, iOSMaxAlarmDuration);
+      return alarmSettings.duration < iOSPersistantNotificationMaxDuration
+          ? alarmSettings.duration
+          : iOSPersistantNotificationMaxDuration;
     }
 
     return alarmSettings.duration;

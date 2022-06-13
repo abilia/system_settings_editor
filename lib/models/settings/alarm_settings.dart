@@ -108,4 +108,7 @@ class AlarmSettings extends Equatable {
         showAlarmOnOffSwitch,
         showOngoingActivityInFullScreen,
       ];
+
+  @override
+  bool get stringify => true;
 }
