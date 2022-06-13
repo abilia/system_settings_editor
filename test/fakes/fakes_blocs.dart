@@ -101,7 +101,7 @@ class FakeTimepillarMeasuresCubit extends Fake
   Future<void> close() async {}
 }
 
-class FakeSettingsBloc extends Fake implements SettingsCubit {
+class FakeSettingsCubit extends Fake implements SettingsCubit {
   @override
   Stream<SettingsState> get stream => const Stream.empty();
   @override

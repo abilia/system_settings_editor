@@ -43,9 +43,10 @@ class TopLevelListener extends StatelessWidget {
                     MaterialPageRoute<void>(
                       builder: (_) => AuthenticatedBlocsProvider(
                         authenticatedState: state,
-                        child: const AlarmListener(
+                        child: AlarmListener(
                           child: AuthenticatedListener(
-                            child: CalendarPage(),
+                            newlyLoggedIn: state.newlyLoggedIn,
+                            child: const CalendarPage(),
                           ),
                         ),
                       ),

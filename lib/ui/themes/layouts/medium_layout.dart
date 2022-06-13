@@ -4,6 +4,7 @@ class MediumLayout extends Layout {
   const MediumLayout({
     AppBarLayout? appBar,
     ActionButtonLayout? actionButton,
+    TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
     ActivityPageLayout? activityPageLayout,
@@ -309,7 +310,7 @@ class MediumLayout extends Layout {
             imagePadding: EdgeInsets.fromLTRB(8, 25, 8, 15),
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
-          templates: const LayoutTemplatesMedium(),
+          templates: templates ?? const TemplatesLayoutMedium(),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
@@ -461,5 +462,6 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
+          starterSetDialog: const StarterSetDialogLayoutMedium(),
         );
 }

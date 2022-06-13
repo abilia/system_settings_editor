@@ -9,18 +9,19 @@ Future<T?> showViewDialog<T>({
   Color barrierColor = AbiliaColors.transparentBlack90,
   bool useSafeArea = true,
   bool wrapWithAuthProviders = true,
+  bool barrierDismissible = true,
 }) {
-  final authProviders =
-      wrapWithAuthProviders ? copiedAuthProviders(context) : null;
+  final authProviders = wrapWithAuthProviders
+      ? copiedAuthProviders(context)
+      : [BlocProvider.value(value: context.read<SettingsCubit>())];
   return showDialog<T>(
     context: context,
-    builder: authProviders != null && authProviders.isNotEmpty
-        ? (_) => MultiBlocProvider(
-              providers: authProviders,
-              child: Builder(builder: builder),
-            )
-        : builder,
+    builder: (_) => MultiBlocProvider(
+      providers: authProviders,
+      child: Builder(builder: builder),
+    ),
     useSafeArea: useSafeArea,
     barrierColor: barrierColor,
+    barrierDismissible: barrierDismissible,
   );
 }

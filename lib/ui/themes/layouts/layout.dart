@@ -65,7 +65,7 @@ class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
-  final LayoutTemplates templates;
+  final TemplatesLayout templates;
   final BorderLayout borders;
   final LinedBorderLayout linedBorder;
   final SelectableFieldLayout selectableField;
@@ -94,6 +94,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
@@ -137,7 +138,7 @@ class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
-    this.templates = const LayoutTemplates(),
+    this.templates = const TemplatesLayout(),
     this.borders = const BorderLayout(),
     this.linedBorder = const LinedBorderLayout(),
     this.selectableField = const SelectableFieldLayout(),
@@ -166,6 +167,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
@@ -886,7 +888,6 @@ class ListFolderLayout {
     this.margin = const EdgeInsets.only(left: 2, right: 6),
   });
 }
-
 
 class BorderLayout {
   final double thin, medium;
