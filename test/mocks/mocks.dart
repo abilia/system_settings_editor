@@ -88,6 +88,4 @@ class MockConnectivity extends Mock implements Connectivity {}
 
 class MockBattery extends Mock implements Battery {}
 
-class MockSharedPreferences extends Mock implements SharedPreferences {}
-
 class MockSpeechSettingsCubit extends Mock implements SpeechSettingsCubit {}

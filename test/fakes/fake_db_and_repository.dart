@@ -188,9 +188,7 @@ class FakeVoiceDb extends Fake implements VoiceDb {
   double get speechRate => 100;
 }
 
-class FakeDeviceDb extends DeviceDb {
-  FakeDeviceDb() : super(MockSharedPreferences());
-
+class FakeDeviceDb extends Fake implements DeviceDb {
   @override
   Future<String> getClientId() async {
     return 'clientId';
