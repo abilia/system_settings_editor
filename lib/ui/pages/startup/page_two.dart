@@ -89,17 +89,6 @@ class PageTwo extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
-          Row(
-            children: const [
-              AbiliaLogo(),
-              Spacer(),
-              IconActionButtonDark(
-                onPressed: AndroidIntents.openSettings,
-                child: Icon(AbiliaIcons.settings),
-              ),
-            ],
-          ),
         ],
       ),
     );
