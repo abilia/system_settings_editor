@@ -982,8 +982,6 @@ class ListFolderLayout {
   });
 }
 
-      m7,
-    this.m7 = const EdgeInsets.fromLTRB(12, 160, 12, 12),
 class BorderLayout {
   final double thin, medium;
 

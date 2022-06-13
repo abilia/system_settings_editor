@@ -344,7 +344,6 @@ class MediumLayout extends Layout {
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
           templates: templates ?? const TemplatesLayoutMedium(),
-            m7: EdgeInsets.fromLTRB(24, 320, 24, 24),
           borders: const BorderLayout(thin: 1.5, medium: 3),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
