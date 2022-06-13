@@ -1,7 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/config.dart';
@@ -34,7 +33,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
         providers: [
           RepositoryProvider<ActivityRepository>(
             create: (context) => ActivityRepository(
-              client: GetIt.I<BaseClient>(),
+              client: GetIt.I<ListenableClient>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               activityDb: GetIt.I<ActivityDb>(),
               userId: authenticatedState.userId,
@@ -42,7 +41,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           ),
           RepositoryProvider<UserFileRepository>(
             create: (context) => UserFileRepository(
-              client: GetIt.I<BaseClient>(),
+              client: GetIt.I<ListenableClient>(),
               baseUrlDb: GetIt.I<BaseUrlDb>(),
               userFileDb: GetIt.I<UserFileDb>(),
               fileStorage: GetIt.I<FileStorage>(),
@@ -54,7 +53,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           RepositoryProvider<SortableRepository>(
             create: (context) => SortableRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<BaseClient>(),
+              client: GetIt.I<ListenableClient>(),
               sortableDb: GetIt.I<SortableDb>(),
               userId: authenticatedState.userId,
             ),
@@ -62,7 +61,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
           RepositoryProvider<GenericRepository>(
             create: (context) => GenericRepository(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
-              client: GetIt.I<BaseClient>(),
+              client: GetIt.I<ListenableClient>(),
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
             ),
@@ -240,7 +239,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
         RepositoryProvider<UserRepository>(
           create: (context) => UserRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
-            client: GetIt.I<BaseClient>(),
+            client: GetIt.I<ListenableClient>(),
             loginDb: GetIt.I<LoginDb>(),
             userDb: GetIt.I<UserDb>(),
             licenseDb: GetIt.I<LicenseDb>(),
@@ -251,14 +250,14 @@ class TopLevelBlocsProvider extends StatelessWidget {
         RepositoryProvider<DeviceRepository>(
           create: (context) => DeviceRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
-            client: GetIt.I<BaseClient>(),
+            client: GetIt.I<ListenableClient>(),
             deviceDb: GetIt.I<DeviceDb>(),
           ),
         ),
         if (Config.isMP) ...[
           RepositoryProvider<VoiceRepository>(
             create: (context) => VoiceRepository(
-              client: GetIt.I<BaseClient>(),
+              client: GetIt.I<ListenableClient>(),
               voiceDb: GetIt.I<VoiceDb>(),
             ),
           ),
@@ -278,6 +277,7 @@ class TopLevelBlocsProvider extends StatelessWidget {
                   GetIt.I<FileStorage>().deleteUserFolder(),
                 ],
               ),
+              client: GetIt.I<ListenableClient>(),
             )..add(CheckAuthentication()),
           ),
           BlocProvider<PushCubit>(

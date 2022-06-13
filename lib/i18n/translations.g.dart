@@ -48,6 +48,9 @@ abstract class Translated {
   final String userTypeNotSupported =
       "Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.";
 
+  final String loggedOutMessage =
+      'You have been logged out. Please log in again.';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
@@ -934,6 +937,10 @@ class SV extends Translated {
   @override
   final String userTypeNotSupported =
       'Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.';
+
+  @override
+  final String loggedOutMessage =
+      'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';
