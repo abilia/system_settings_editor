@@ -33,6 +33,7 @@ class FontSize {
 class FontSizeMedium extends FontSize {
   const FontSizeMedium({
     double? subtitle1,
+    double? bodyText1,
   }) : super(
           headline1: 144,
           headline2: 90,
@@ -42,7 +43,7 @@ class FontSizeMedium extends FontSize {
           headline6: 32,
           subtitle1: subtitle1 ?? 24,
           subtitle2: 21,
-          bodyText1: 24,
+          bodyText1: bodyText1 ?? 24,
           bodyText2: 21,
           caption: 20,
           button: 24,
@@ -54,5 +55,6 @@ class FontSizeLarge extends FontSizeMedium {
   const FontSizeLarge()
       : super(
           subtitle1: 32,
+          bodyText1: 28,
         );
 }
