@@ -151,8 +151,11 @@ void main() {
           (tester) async {
         final locale = Intl.getCurrentLocale();
         await tester.goToPhotoCalendarPage(pump: true);
-        expect(find.text(DateFormat.EEEE(locale).format(time) + ', morning'),
-            findsOneWidget);
+        expect(
+          find.text(DateFormat.EEEE(locale).format(time)),
+          findsOneWidget,
+        );
+        expect(find.text('morning'), findsOneWidget);
       });
     },
     skip: !Config.isMP,

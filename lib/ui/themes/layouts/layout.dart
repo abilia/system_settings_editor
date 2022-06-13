@@ -64,7 +64,7 @@ class Layout {
   final PickFieldLayout pickField;
   final EventImageLayout eventImageLayout;
   final ListFolderLayout listFolder;
-  final LayoutTemplates templates;
+  final TemplatesLayout templates;
   final BorderLayout borders;
   final LinedBorderLayout linedBorder;
   final SelectableFieldLayout selectableField;
@@ -85,7 +85,6 @@ class Layout {
   final DialogLayout dialog;
   final ActivityAlarmPreviewLayout activityPreview;
   final LogoutLayout logout;
-  final PhotoCalendarLayout photoCalendar;
   final SettingsLayout settings;
   final PermissionsPageLayout permissionsPage;
   final EditTimerLayout editTimer;
@@ -95,6 +94,8 @@ class Layout {
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
   final StartupPageLayout startupPageLayout;
+  final StarterSetDialogLayout starterSetDialog;
+  final PhotoCalendarLayoutMedium photoCalendarLayout;
 
   const Layout({
     this.radius = 12,
@@ -137,7 +138,7 @@ class Layout {
     this.pickField = const PickFieldLayout(),
     this.eventImageLayout = const EventImageLayout(),
     this.listFolder = const ListFolderLayout(),
-    this.templates = const LayoutTemplates(),
+    this.templates = const TemplatesLayout(),
     this.borders = const BorderLayout(),
     this.linedBorder = const LinedBorderLayout(),
     this.selectableField = const SelectableFieldLayout(),
@@ -158,7 +159,6 @@ class Layout {
     this.dialog = const DialogLayout(),
     this.activityPreview = const ActivityAlarmPreviewLayout(),
     this.logout = const LogoutLayout(),
-    this.photoCalendar = const PhotoCalendarLayout(),
     this.settings = const SettingsLayout(),
     this.permissionsPage = const PermissionsPageLayout(),
     this.editTimer = const EditTimerLayout(),
@@ -168,6 +168,8 @@ class Layout {
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
     this.startupPageLayout = const StartupPageLayout(),
+    this.starterSetDialog = const StarterSetDialogLayout(),
+    this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
 
   bool get go => runtimeType == _GoLayout;
@@ -980,42 +982,8 @@ class ListFolderLayout {
   });
 }
 
-class LayoutTemplates {
-  final EdgeInsets m1,
-      m2,
-      m3,
-      m4,
-      m5,
       m7,
-      s1,
-      s2,
-      s3,
-      s4,
-      l1,
-      l2,
-      l3,
-      l5,
-      bottomNavigation;
-
-  const LayoutTemplates({
-    this.s1 = const EdgeInsets.all(12),
-    this.s2 = const EdgeInsets.fromLTRB(12, 12, 12, 40),
-    this.s3 = const EdgeInsets.all(4),
-    this.s4 = const EdgeInsets.symmetric(horizontal: 12),
-    this.bottomNavigation = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.m1 = const EdgeInsets.fromLTRB(12, 24, 12, 40),
-    this.m2 = const EdgeInsets.fromLTRB(12, 20, 12, 20),
-    this.m3 = const EdgeInsets.fromLTRB(12, 24, 12, 12),
-    this.m4 = const EdgeInsets.symmetric(horizontal: 24),
-    this.m5 = const EdgeInsets.fromLTRB(12, 48, 12, 12),
     this.m7 = const EdgeInsets.fromLTRB(12, 160, 12, 12),
-    this.l1 = const EdgeInsets.fromLTRB(12, 96, 12, 64),
-    this.l2 = const EdgeInsets.symmetric(horizontal: 24, vertical: 64),
-    this.l3 = const EdgeInsets.symmetric(horizontal: 12, vertical: 64),
-    this.l5 = const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
-  });
-}
-
 class BorderLayout {
   final double thin, medium;
 
@@ -1271,29 +1239,6 @@ class LogoutLayout {
     this.profileDistance = 24,
     this.topDistance = 64,
   });
-}
-
-class PhotoCalendarLayout {
-  final double clockSize, clockFontSize, clockFontSizeSmall, backButtonPosition;
-  final EdgeInsets clockPadding, digitalClockPadding;
-
-  const PhotoCalendarLayout({
-    this.clockSize = 92,
-    this.clockFontSize = 32,
-    this.clockFontSizeSmall = 32,
-    this.backButtonPosition = 12,
-    this.clockPadding = const EdgeInsets.all(20),
-    this.digitalClockPadding = const EdgeInsets.symmetric(vertical: 20),
-  });
-
-  TextStyle digitalClockStyle({bool small = true}) => GoogleFonts.roboto(
-        textStyle: TextStyle(
-          fontSize: small ? clockFontSizeSmall : clockFontSize,
-          fontWeight: FontWeight.w400,
-          height: 75 / 64,
-          leadingDistribution: TextLeadingDistribution.even,
-        ),
-      );
 }
 
 class SettingsLayout {

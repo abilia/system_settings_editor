@@ -13,9 +13,11 @@ import 'package:seagull/storage/all.dart';
 import 'package:seagull/utils/all.dart';
 
 class AuthenticatedListener extends StatefulWidget {
+  final bool newlyLoggedIn;
   const AuthenticatedListener({
     Key? key,
     required this.child,
+    required this.newlyLoggedIn,
   }) : super(key: key);
 
   final Widget child;
@@ -104,38 +106,15 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
             builder: (context) => const NotificationPermissionWarningDialog(),
           ),
         ),
+        if (widget.newlyLoggedIn) StarterSetListener(),
         if (Config.isMP) ...[
           CalendarInactivityListener(),
           ScreenSaverListener(),
           KeepScreenAwakeListener(),
-        ],
-        if (!Platform.isIOS) _fullscreenAlarmPremissionListener(context),
+        ] else if (!Platform.isIOS && widget.newlyLoggedIn)
+          FullscreenAlarmPremissionListener(),
       ],
       child: widget.child,
-    );
-  }
-
-  BlocListener<PermissionCubit, PermissionState>
-      _fullscreenAlarmPremissionListener(BuildContext context) {
-    return BlocListener<PermissionCubit, PermissionState>(
-      listenWhen: (previous, current) {
-        if (!previous.status.containsKey(Permission.systemAlertWindow) &&
-            current.status.containsKey(Permission.systemAlertWindow) &&
-            !(current.status[Permission.systemAlertWindow]?.isGranted ??
-                false)) {
-          final authState = context.read<AuthenticationBloc>().state;
-          if (authState is Authenticated) {
-            return authState.newlyLoggedIn;
-          }
-        }
-        return false;
-      },
-      listener: (context, state) => showViewDialog(
-        context: context,
-        builder: (context) => const FullscreenAlarmInfoDialog(
-          showRedirect: true,
-        ),
-      ),
     );
   }
 

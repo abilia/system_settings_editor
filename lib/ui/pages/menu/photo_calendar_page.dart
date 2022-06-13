@@ -8,78 +8,76 @@ class PhotoCalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(
-      builder: (context, currentTime) =>
-          BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, state) {
-          final theme = weekdayTheme(
-            dayColor: state.calendarDayColor,
-            languageCode: Localizations.localeOf(context).languageCode,
-            weekday: currentTime.weekday,
-          );
-          return Theme(
-            data: theme.theme,
-            child: Scaffold(
-              appBar: const PhotoCalendarAppBar(),
-              body: SafeArea(
-                child: Column(
+    final _layout = layout.photoCalendarLayout;
+    final clockType = context
+        .select((MemoplannerSettingBloc settings) => settings.state.clockType);
+    final calendarDayColor = context.select(
+        (MemoplannerSettingBloc settings) => settings.state.calendarDayColor);
+    final weekday =
+        context.select((ClockBloc currentTime) => currentTime.state.weekday);
+    final theme = weekdayTheme(
+      dayColor: calendarDayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: weekday,
+    );
+
+    return Theme(
+      data: theme.theme,
+      child: Scaffold(
+        appBar: const PhotoCalendarAppBar(),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                height: _layout.clockRowHeight,
+                color: theme.color,
+                child: Stack(
                   children: [
-                    Stack(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          color: theme.color,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (state.clockType != ClockType.digital)
-                                Padding(
-                                  padding: layout.photoCalendar.clockPadding,
-                                  child: SizedBox(
-                                    height: layout.photoCalendar.clockSize,
-                                    width: layout.photoCalendar.clockSize,
-                                    child: const FittedBox(
-                                      child: AnalogClock(),
-                                    ),
-                                  ),
-                                ),
-                              if (state.clockType != ClockType.analogue)
-                                Padding(
-                                  padding:
-                                      layout.photoCalendar.digitalClockPadding,
-                                  child: DigitalClock(
-                                    style:
-                                        layout.photoCalendar.digitalClockStyle(
-                                      small: state.clockType ==
-                                          ClockType.analogueDigital,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                        if (clockType != ClockType.digital)
+                          SizedBox(
+                            height: _layout.analogClockSize +
+                                layout.clock.borderWidth * 2,
+                            width: _layout.analogClockSize,
+                            child: const FittedBox(child: AnalogClock()),
                           ),
-                        ),
-                        Positioned(
-                          bottom: layout.photoCalendar.backButtonPosition,
-                          right: layout.photoCalendar.backButtonPosition,
-                          child: IconActionButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                            },
-                            child: const Icon(AbiliaIcons.month),
+                        if (clockType == ClockType.analogueDigital)
+                          SizedBox(width: _layout.clockDistance),
+                        if (clockType != ClockType.analogue)
+                          DigitalClock(
+                            style: _layout.textStyle(clockType),
                           ),
-                        ),
                       ],
+                    ).pad(
+                      clockType == ClockType.digital
+                          ? _layout.digitalClockPadding
+                          : _layout.analogClockPadding,
                     ),
-                    const Expanded(
-                      child: SlideShow(),
-                    )
+                    Positioned(
+                      bottom: _layout.backButtonPosition.dy,
+                      right: _layout.backButtonPosition.dx,
+                      child: IconActionButton(
+                        style: theme.isLight
+                            ? actionButtonStyleLight
+                            : actionButtonStyleDark,
+                        onPressed: () {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
+                        child: const Icon(AbiliaIcons.month),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-          );
-        },
+              const Expanded(
+                child: SlideShow(),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -131,30 +129,28 @@ class PhotoCalendarAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Size get preferredSize => CalendarAppBar.size;
+  Size get preferredSize => layout.photoCalendarLayout.appBarSize;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<MemoplannerSettingBloc, MemoplannerSettingsState>(
-        builder: (context, memoSettingsState) {
-          return BlocBuilder<ClockBloc, DateTime>(
-            builder: (context, time) => CalendarAppBar(
-              day: time.onlyDays(),
-              calendarDayColor: memoSettingsState.calendarDayColor,
-              rows: AppBarTitleRows.day(
-                displayWeekDay: memoSettingsState.activityDisplayWeekDay,
-                displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
-                displayDate: memoSettingsState.activityDisplayDate,
-                currentTime: time,
-                day: time.onlyDays(),
-                dayParts: memoSettingsState.dayParts,
-                langCode: Localizations.localeOf(context).toLanguageTag(),
-                translator: Translator.of(context).translate,
-                compactDay: true,
-              ),
-              showClock: false,
-            ),
-          );
-        },
-      );
+  Widget build(BuildContext context) {
+    final memoSettingsState = context.watch<MemoplannerSettingBloc>().state;
+    final time = context.watch<ClockBloc>().state;
+    return CalendarAppBar(
+      textStyle: Theme.of(context).textTheme.headline4,
+      day: time.onlyDays(),
+      calendarDayColor: memoSettingsState.calendarDayColor,
+      rows: AppBarTitleRows.day(
+        displayWeekDay: memoSettingsState.activityDisplayWeekDay,
+        displayPartOfDay: memoSettingsState.activityDisplayDayPeriod,
+        displayDate: memoSettingsState.activityDisplayDate,
+        currentTime: time,
+        day: time.onlyDays(),
+        dayParts: memoSettingsState.dayParts,
+        langCode: Localizations.localeOf(context).toLanguageTag(),
+        translator: Translator.of(context).translate,
+        compactDay: false,
+      ),
+      showClock: false,
+    );
+  }
 }

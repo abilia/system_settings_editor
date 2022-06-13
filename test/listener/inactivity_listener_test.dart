@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:seagull/background/all.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:seagull/bloc/all.dart';
@@ -32,8 +33,14 @@ void main() {
     late InactivityCubit inactivityCubit;
 
     setUp(() async {
-      inactivityCubit = InactivityCubit(const Duration(minutes: 1), fakeTicker,
-          settingBloc, TouchDetectionCubit().stream);
+      inactivityCubit = InactivityCubit(
+        const Duration(minutes: 1),
+        fakeTicker,
+        settingBloc,
+        TouchDetectionCubit().stream,
+        const Stream.empty(),
+        const Stream.empty(),
+      );
       final mockFirebasePushService = MockFirebasePushService();
       when(() => mockFirebasePushService.initPushToken())
           .thenAnswer((_) => Future.value('fakeToken'));
@@ -205,6 +212,7 @@ void main() {
 
   group('app', () {
     GenericResponse genericResponse = () => [];
+    TimerResponse timerResponse = () => [];
 
     Generic activityTimeoutGeneric([int minutes = 1]) =>
         Generic.createNew<MemoplannerSettingData>(
@@ -231,16 +239,32 @@ void main() {
     final initialTime = DateTime(2022, 03, 14, 13, 27);
 
     late StreamController<DateTime> clockStreamController;
+    late MockFlutterLocalNotificationsPlugin
+        mockFlutterLocalNotificationsPlugin;
 
     setUp(() async {
+      mockFlutterLocalNotificationsPlugin =
+          MockFlutterLocalNotificationsPlugin();
+      when(() => mockFlutterLocalNotificationsPlugin.cancel(any()))
+          .thenAnswer((_) => Future.value());
+      notificationsPluginInstance = mockFlutterLocalNotificationsPlugin;
+      scheduleAlarmNotificationsIsolated = noAlarmScheduler;
       clockStreamController = StreamController<DateTime>();
       final mockGenericDb = MockGenericDb();
       when(() => mockGenericDb.getAllNonDeletedMaxRevision())
           .thenAnswer((_) => Future.value(genericResponse()));
+
+      final mockTimerDb = MockTimerDb();
+      when(() => mockTimerDb.getAllTimers())
+          .thenAnswer((_) => Future.value(timerResponse()));
+      when(() => mockTimerDb.getRunningTimersFrom(any()))
+          .thenAnswer((_) => Future.value(timerResponse()));
+
       GetItInitializer()
         ..sharedPreferences = await FakeSharedPreferences.getInstance()
         ..database = FakeDatabase()
         ..genericDb = mockGenericDb
+        ..timerDb = mockTimerDb
         ..client = Fakes.client()
         ..ticker = Ticker.fake(
           initialTime: initialTime,
@@ -254,6 +278,8 @@ void main() {
     tearDown(() {
       GetIt.I.reset();
       genericResponse = () => [];
+      timerResponse = () => [];
+      clearNotificationSubject();
       clockStreamController.close();
     });
 
@@ -362,6 +388,129 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(DayCalendar), findsNothing);
       expect(find.byType(ScreenSaverPage), findsOneWidget);
+    });
+
+    testWidgets('Timer alarm fire screen does not time out', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            activityTimeoutGeneric(10),
+            useScreensaverGeneric,
+          ];
+
+      final timer = AbiliaTimer.createNew(
+          startTime: initialTime.subtract(30.seconds()), duration: 5.minutes());
+
+      timerResponse = () => [timer];
+
+      // Act -- Tick 5 min
+      await tester.pumpApp();
+      expect(find.byType(DayCalendar), findsOneWidget);
+      clockStreamController.add(initialTime.add(5.minutes()));
+      await tester.pumpAndSettle();
+
+      // Assert -- Timer alarm
+      expect(find.byType(TimerAlarmPage), findsOneWidget);
+
+      // Act -- Tick 6 min
+      await tester.pumpAndSettle();
+      clockStreamController.add(initialTime.add(11.minutes()));
+      await tester.pumpAndSettle();
+
+      // Assert -- still at day calendar
+      expect(find.byType(TimerAlarmPage), findsOneWidget);
+
+      // Act -- tick 5 min since alarm
+      clockStreamController.add(initialTime.add(15.minutes()));
+      await tester.pumpAndSettle();
+      expect(find.byType(TimerAlarmPage), findsNothing);
+      expect(find.byType(ScreenSaverPage), findsOneWidget);
+    });
+
+    testWidgets('Activity alarm fire screen does not time out', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            activityTimeoutGeneric(10),
+            useScreensaverGeneric,
+          ];
+
+      final activityTime = initialTime.add(5.minutes());
+      final startAlarm = StartAlarm(
+        ActivityDay(Activity.createNew(startTime: activityTime),
+            initialTime.onlyDays()),
+      );
+
+      // Act -- tick 5 min, alarm fires
+      await tester.pumpApp();
+      expect(find.byType(DayCalendar), findsOneWidget);
+      clockStreamController.add(activityTime);
+      selectNotificationSubject.add(startAlarm);
+      await tester.pumpAndSettle();
+
+      // Assert -- Timer alarm
+      expect(find.byType(AlarmPage), findsOneWidget);
+
+      // Act -- Tick 5 min
+      await tester.pumpAndSettle();
+      clockStreamController.add(activityTime.add(5.minutes()));
+      await tester.pumpAndSettle();
+
+      // Assert -- still at day calendar
+      expect(find.byType(AlarmPage), findsOneWidget);
+
+      // Act -- tick 5 min since alarm
+      clockStreamController.add(activityTime.add(10.minutes()));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlarmPage), findsNothing);
+      expect(find.byType(ScreenSaverPage), findsOneWidget);
+    });
+
+    testWidgets('Alarm removes screen saver', (tester) async {
+      // Arrange
+      genericResponse = () => [
+            activityTimeoutGeneric(1),
+            useScreensaverGeneric,
+          ];
+      final timer = AbiliaTimer.createNew(
+        startTime: initialTime.subtract(30.seconds()),
+        duration: 5.minutes(),
+      );
+
+      timerResponse = () => [timer];
+
+      // Act -- tick 1 min
+      await tester.pumpApp();
+      expect(find.byType(DayCalendar), findsOneWidget);
+      clockStreamController.add(initialTime.add(1.minutes()));
+      await tester.pumpAndSettle();
+
+      // Assert -- ScreenSaverPage
+      expect(find.byType(ScreenSaverPage), findsOneWidget);
+      expect(find.byType(DayCalendar), findsNothing);
+
+      // Act -- tick 4 min
+      clockStreamController.add(initialTime.add(5.minutes()));
+      await tester.pumpAndSettle();
+
+      // Assert -- TimerAlarm Fired, on timer alarm
+      expect(find.byType(TimerAlarmPage), findsOneWidget);
+      expect(find.byType(ScreenSaverPage), findsNothing);
+
+      // Act -- close TimerAlarmPage
+      await tester.tap(find.byType(CloseButton));
+      await tester.pumpAndSettle();
+
+      // Assert -- no screen saver,
+      expect(find.byType(DayCalendar), findsOneWidget);
+      expect(find.byType(TimerAlarmPage), findsNothing);
+      expect(find.byType(ScreenSaverPage), findsNothing);
+
+      // Assert -- alarm is canceled
+
+      final verification = verify(
+          () => mockFlutterLocalNotificationsPlugin.cancel(captureAny()));
+      expect(verification.callCount, 1);
+      final id = TimerAlarm(timer).hashCode;
+      expect(verification.captured.single, id);
     });
   }, skip: !Config.isMP);
 }
