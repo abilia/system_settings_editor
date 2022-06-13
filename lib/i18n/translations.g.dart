@@ -888,6 +888,11 @@ abstract class Translated {
 
   final String doYouWantToDeleteThisPhoto =
       'Are you sure you want to delete this photo?';
+
+  final String installStarterSet = 'Install starter set?';
+
+  final String doYouWantToImportADefaultSet =
+      'Do you want to import a default set of data with basic activities, timers, checklists and image archive?';
 }
 
 class EN extends Translated {
@@ -2176,6 +2181,13 @@ class SV extends Translated {
   @override
   final String doYouWantToDeleteThisPhoto =
       'Är du säker på att du vill ta bort detta foto?';
+
+  @override
+  final String installStarterSet = 'Installera startuppsättning?';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?';
 }
 
 class DA extends Translated {
@@ -3379,6 +3391,10 @@ class DA extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\nindstillinger';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?';
 }
 
 class NL extends Translated {
@@ -4586,6 +4602,10 @@ class NL extends Translated {
 
   @override
   final String quickSettingsMenu = 'Snelle\ninstellingen';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?';
 }
 
 class FI extends Translated {
@@ -5791,6 +5811,10 @@ class FI extends Translated {
 
   @override
   final String quickSettingsMenu = 'Pika-\nasetukset';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
 }
 
 class DE extends Translated {
@@ -7003,6 +7027,10 @@ class DE extends Translated {
 
   @override
   final String quickSettingsMenu = 'Schnell-\neinstellungen';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?';
 }
 
 class NB extends Translated {
@@ -8203,4 +8231,8 @@ class NB extends Translated {
 
   @override
   final String quickSettingsMenu = 'Hurtig-\ninnstillinger';
+
+  @override
+  final String doYouWantToImportADefaultSet =
+      'Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?';
 }
