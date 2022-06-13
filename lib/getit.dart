@@ -67,7 +67,8 @@ class GetItInitializer {
 
   ListenableClient? _listenableClient;
 
-  set client(ListenableClient listenableClient) => _listenableClient = listenableClient;
+  set client(ListenableClient listenableClient) =>
+      _listenableClient = listenableClient;
 
   SortableDb? _sortableDb;
 
