@@ -21,7 +21,7 @@ class TimerCard extends StatelessWidget {
     final themeData = isPast
         ? abiliaTheme.copyWith(
             textTheme: textTheme.copyWith(
-              labelSmall: layout.eventCard.bodyText4,
+              bodyText1: layout.eventCard.bodyText4,
             ),
             iconTheme: abiliaTheme.iconTheme.copyWith(
               color: AbiliaColors.white140,
@@ -126,7 +126,7 @@ class TimeLeft extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style:
-          (Theme.of(context).textTheme.labelSmall ?? layout.eventCard.bodyText4)
+          (Theme.of(context).textTheme.bodyText1 ?? layout.eventCard.bodyText4)
               .copyWith(height: 1),
       overflow: TextOverflow.ellipsis,
       child: timerOccasion.isOngoing
