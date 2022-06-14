@@ -48,6 +48,9 @@ abstract class Translated {
   final String userTypeNotSupported =
       "Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.";
 
+  final String loggedOutMessage =
+      'You have been logged out. Please log in again.';
+
   final String createAccountHint = 'Don’t have a myAbilia account yet?';
 
   final String createAccount = 'Create Account';
@@ -889,6 +892,21 @@ abstract class Translated {
 
   final String doYouWantToImportADefaultSet =
       'Do you want to import a default set of data with basic activities, timers, checklists and image archive?';
+
+  final String welcome = 'Welcome!';
+
+  final String welcomeText =
+      'This guide will help you get started with MEMOplanner.';
+
+  final String checkInternetConnection = 'Check your Internet connection';
+
+  final String step = 'Step';
+
+  final String downloadVoiceText = 'Download voice for speech support';
+
+  final String finsish = 'Finish';
+
+  final String notSelected = 'Not selected';
 }
 
 class EN extends Translated {
@@ -934,6 +952,10 @@ class SV extends Translated {
   @override
   final String userTypeNotSupported =
       'Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.';
+
+  @override
+  final String loggedOutMessage =
+      'Du har blivit utloggad. Vänligen logga in igen.';
 
   @override
   final String createAccountHint = 'Har du inte ett myAbilia konto än?';
@@ -2008,7 +2030,7 @@ class SV extends Translated {
   final String editCategory = 'Redigera kategori';
 
   @override
-  final String speakEveryWord = 'Uppläsning av varje ord';
+  final String speakEveryWord = 'Uppläsning av ord vid tryck på mellanslag';
 
   @override
   final String speechRate = 'Talhastighet';
@@ -2178,6 +2200,28 @@ class SV extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?';
+
+  @override
+  final String welcome = 'Välkommen!';
+
+  @override
+  final String welcomeText =
+      'Den här guiden hjälper dig att komma igång med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Kontrollera din internetanslutning';
+
+  @override
+  final String step = 'Steg';
+
+  @override
+  final String downloadVoiceText = 'Ladda ner röst för talstöd';
+
+  @override
+  final String finsish = 'Slutför';
+
+  @override
+  final String notSelected = 'Inte valt';
 }
 
 class DA extends Translated {
@@ -3388,6 +3432,19 @@ class DA extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?';
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Kontroller din internetforbindelse';
+
+  @override
+  final String notSelected = 'Ikke valgt';
 }
 
 class NL extends Translated {
@@ -4602,6 +4659,19 @@ class NL extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?';
+
+  @override
+  final String welcome = 'Welkom!';
+
+  @override
+  final String welcomeText =
+      'Deze gids helpt u om aan de slag te gaan met MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Controleer uw internetverbinding';
+
+  @override
+  final String notSelected = 'Niet geselecteerd';
 }
 
 class FI extends Translated {
@@ -5814,6 +5884,19 @@ class FI extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?';
+
+  @override
+  final String welcome = 'Tervetuloa!';
+
+  @override
+  final String welcomeText =
+      'Tämä opas auttaa aloittamaan Memoplannerin käytön.';
+
+  @override
+  final String checkInternetConnection = 'Tarkista Internet-yhteys';
+
+  @override
+  final String notSelected = 'Ei valittu';
 }
 
 class DE extends Translated {
@@ -7033,6 +7116,20 @@ class DE extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?';
+
+  @override
+  final String welcome = 'Willkommen!';
+
+  @override
+  final String welcomeText =
+      'Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.';
+
+  @override
+  final String checkInternetConnection =
+      'Überprüfen Sie Ihre Internetverbindung';
+
+  @override
+  final String notSelected = 'Nicht ausgewählt';
 }
 
 class NB extends Translated {
@@ -8303,4 +8400,17 @@ class NB extends Translated {
   @override
   final String doYouWantToImportADefaultSet =
       'Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?';
+
+  @override
+  final String welcome = 'Velkommen!';
+
+  @override
+  final String welcomeText =
+      'Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.';
+
+  @override
+  final String checkInternetConnection = 'Sjekk din Internettforbindelse';
+
+  @override
+  final String notSelected = 'Ikke valgt';
 }

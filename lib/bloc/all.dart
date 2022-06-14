@@ -29,6 +29,6 @@ export 'events/events_state.dart';
 export 'events/day_events_cubit.dart';
 export 'calendar/inactivity_cubit.dart';
 export 'timer/all.dart';
-export 'start_guide/start_guide_cubit.dart';
+export 'start_guide/startup_cubit.dart';
 export 'sync/base_url_cubit.dart';
 export 'calendar/touch_detection_cubit.dart';

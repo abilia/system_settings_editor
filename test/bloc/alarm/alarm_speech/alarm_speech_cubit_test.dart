@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seagull/background/all.dart';
 import 'package:seagull/bloc/all.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
@@ -104,6 +105,7 @@ void main() {
     blocTest(
       'emits nothing when nothing is added',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
@@ -119,6 +121,7 @@ void main() {
     blocTest(
       'emits AlarmPlayed when Alarm is No Alarm',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarmNoSound,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
@@ -145,6 +148,7 @@ void main() {
         ),
       ],
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
         touchStream: touchStream.stream,
@@ -173,6 +177,7 @@ void main() {
         ),
       ],
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
@@ -189,6 +194,7 @@ void main() {
     blocTest(
       'emits AlarmPlayed after time is up',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(durationMs: 0),
         touchStream: touchStream.stream,
@@ -206,8 +212,29 @@ void main() {
     );
 
     blocTest(
+      'Late started bloc emits after shorter time',
+      build: () => AlarmSpeechCubit(
+        now: () => startTime.add(1.seconds()),
+        alarm: startAlarm,
+        alarmSettings: const AlarmSettings(durationMs: 0),
+        touchStream: touchStream.stream,
+        soundCubit: SoundCubit(
+          storage: FakeFileStorage(),
+          userFileCubit: mockUserFileCubit,
+        ),
+      ),
+      wait: AlarmSpeechCubit.minSpeechDelay - 1.seconds(),
+      expect: () => [AlarmSpeechState.played],
+      verify: (_) => () {
+        expect(audioLog, hasLength(1));
+        expect(audioLog.single.method, 'play');
+      },
+    );
+
+    blocTest(
       'emits AlarmPlayed when screen is tapped',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: (touchStream..add(Touch.down)).stream,
@@ -226,6 +253,7 @@ void main() {
     blocTest(
       'emits AlarmPlayed when notification tapped',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
@@ -245,6 +273,7 @@ void main() {
     blocTest(
       'emits AlarmPlayed bloc played',
       build: () => AlarmSpeechCubit(
+        now: () => startTime,
         alarm: startAlarm,
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,

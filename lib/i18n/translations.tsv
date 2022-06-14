@@ -11,6 +11,7 @@ noConnection	No contact with myAbilia. Check your Internet connection.	Ingen kon
 enterUsername	Enter username	Ange ditt användarnamn	Angiv dit brugernavn	Gebruikersnaam invoeren	Anna käyttäjätunnus	Benutzername eingeben	Angi ditt brukernavn
 enterPassword	Enter password	Ange ditt lösenord	Angiv din adgangskode	Wachtwoord invoeren	Anna salasana	Passwort eingeben	Angi ditt passord
 userTypeNotSupported	Users of type Support person or Admin can't log in to MEMOPlanner Go. Please use myAbilia.	Användare av typen Supportperson eller Admin kan inte logga in i MEMOPlanner Go. Var vänlig använd myAbilia.	Supportere eller Admin-brugere kan ikke logge ind på MEMOplanner Go. Brug venligst myAbilia.	Gebruikers van het type Ondersteuningspersoon of Beheerder kunnen niet inloggen op MEMOPlanner Go. Gebruik myAbilia.	ukihenkilö- tai järjestelmänvalvojatyyppiset käyttäjät eivät voi kirjautua sisään MEMOPlanner Go -palveluun. Käytä myAbiliaa.	Benutzer vom Typ Supportperson oder Admin können sich nicht bei MEMOPlanner Go anmelden. Bitte verwenden Sie myAbilia.	Brukere av typen Støtteperson eller Admin kan ikke logge inn på MEMOplanner Go. Vennligst bruk myAbilia.
+loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.					
 							
 ### Create Account							
 createAccountHint	Don’t have a myAbilia account yet?	Har du inte ett myAbilia konto än?	Har du ikke en myAbilia-konto endnu?	Heeft u nog geen myAbilia-account?	Eikö sinulla ole vielä myAbilia-tiliä?	Sie haben noch kein myAbilia-Konto?	Har du ikke en myAbilia-konto ennå?
@@ -404,7 +405,7 @@ showColours	Show colours	Visa färger	Vis farver	Kleuren tonen	Näytä värit	Fa
 editCategory	Edit category	Redigera kategori	Rediger kategori	Bewerk categorie	Muokkaa kategoriaa	Kategorie bearbeiten	Rediger kategori
 							
 ### Speech support settings							
-speakEveryWord	Read out word when space bar is pressed	Uppläsning av varje ord	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
+speakEveryWord	Read out word when space bar is pressed	Uppläsning av ord vid tryck på mellanslag	Oplæs ord ved mellemrum	Woord voorlezen als er op de spatiebalk wordt gedrukt	Lue sana ääneen, kun välilyöntipainiketta painetaan	Bei gedrückter Leertaste Wort vorlesen	Opplesning av ord ved mellomrom
 speechRate	Speech rate	Talhastighet	Talehastighed	Spraaksnelheid	Puhenopeus	Sprechtempo	Talehastighet
 voice	Voice	Röst					Talesyntese
 noVoicesInstalled	No voices installed	Inga röster är installerade	Der er ikke installeret nogen stemmer	Geen stemmen geïnstalleerd	Ääniä ei ole asennettu	Keine Stimmen installiert	Ingen stemmer er installert
@@ -468,3 +469,12 @@ doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du s�
 ### Starter set							
 installStarterSet	Install starter set?	Installera startuppsättning?					
 doYouWantToImportADefaultSet	Do you want to import a default set of data with basic activities, timers, checklists and image archive?	Vill du importera startuppsättning av basaktiviteter, timers, checklistor och bildarkiv?	Ønsker du at importere startopsætning med standardaktiviteter, standardtimer, tjeklister og billedarkiv?	Wilt u een standaard dataset importeren met standaard activiteiten, timers, checklists en afbeeldingenarchief?	Haluatko tuoda oletustiedot perusaktiviteettien, ajastimien, tarkistusluettelojen ja kuva-arkiston mukana?	Möchten Sie einen Standard-Datenbestand mit Standardaktivitäten, Timern, Checklisten und Bildarchiv importieren?	Ønsker du å importere startoppsett av standardaktiviteter, standardtimere, sjekklister og bildearkiv?
+							
+### Start guide							
+welcome	Welcome!	Välkommen!	Velkommen!	Welkom!	Tervetuloa!	Willkommen!	Velkommen!
+welcomeText	This guide will help you get started with MEMOplanner.	Den här guiden hjälper dig att komma igång med MEMOplanner.	Denne guide vil hjælpe dig med at komme i gang med MEMOplanner.	Deze gids helpt u om aan de slag te gaan met MEMOplanner.	Tämä opas auttaa aloittamaan Memoplannerin käytön.	Dieser Assistent hilft Ihnen bei den ersten Schritten mit MEMOplanner.	Denne guiden vil hjelpe deg å komme i gang med MEMOplanner.
+checkInternetConnection	Check your Internet connection	Kontrollera din internetanslutning	Kontroller din internetforbindelse	Controleer uw internetverbinding	Tarkista Internet-yhteys	Überprüfen Sie Ihre Internetverbindung	Sjekk din Internettforbindelse
+step	Step	Steg					
+downloadVoiceText	Download voice for speech support	Ladda ner röst för talstöd					
+finsish	Finish	Slutför					
+notSelected	Not selected	Inte valt	Ikke valgt	Niet geselecteerd	Ei valittu	Nicht ausgewählt	Ikke valgt

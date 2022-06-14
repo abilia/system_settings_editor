@@ -27,17 +27,18 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
   AlarmSpeechCubit({
     required this.alarm,
     required this.soundCubit,
+    required DateTime Function() now,
     required AlarmSettings alarmSettings,
     required Stream<Touch> touchStream,
     Stream<NotificationAlarm>? selectedNotificationStream,
   }) : super(AlarmSpeechState.unplayed) {
     _log.fine('$alarm');
-    final speechDelay = _alarmDuration(alarmSettings);
-
-    _log.fine('alarm length: $speechDelay');
+    final timeFromAlarmStart = now().difference(alarm.notificationTime);
+    final timeUntilSpeech = _alarmDuration(alarmSettings) - timeFromAlarmStart;
+    _log.info('until speech time: $timeUntilSpeech');
 
     _delayedSubscription =
-        Stream.fromFuture(Future.delayed(speechDelay)).listen(_maybePlay);
+        Stream.fromFuture(Future.delayed(timeUntilSpeech)).listen(_maybePlay);
 
     _touchSubscription = touchStream.take(1).listen(_maybePlay);
 
@@ -90,7 +91,9 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     }
 
     if (Platform.isIOS) {
-      return maxDuration(alarmSettings.duration, iOSMaxAlarmDuration);
+      return alarmSettings.duration < iOSPersistantNotificationMaxDuration
+          ? alarmSettings.duration
+          : iOSPersistantNotificationMaxDuration;
     }
 
     return alarmSettings.duration;

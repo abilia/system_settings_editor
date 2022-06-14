@@ -146,11 +146,13 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
           groupId: event.folderId,
           sortOrder: sortOrder,
         );
+        emit(
+          SortablesLoaded(
+            sortables: currentState.sortables.followedBy([newSortable]),
+          ),
+        );
         await sortableRepository.save([newSortable]);
         syncBloc.add(const SortableSaved());
-        emit(SortablesLoaded(
-          sortables: currentState.sortables.followedBy([newSortable]),
-        ));
       }
     }
   }

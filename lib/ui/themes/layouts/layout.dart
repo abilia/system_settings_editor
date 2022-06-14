@@ -93,6 +93,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
 
@@ -166,6 +167,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
@@ -173,33 +175,6 @@ class Layout {
   bool get go => runtimeType == _GoLayout;
   bool get medium => runtimeType == MediumLayout;
   bool get large => runtimeType == LargeLayout;
-}
-
-class MenuPageLayout {
-  final EdgeInsets padding;
-  final double crossAxisSpacing, mainAxisSpacing;
-  final int crossAxisCount;
-
-  final MenuItemButtonLayout menuItemButton;
-
-  const MenuPageLayout({
-    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
-    this.crossAxisSpacing = 7.5,
-    this.mainAxisSpacing = 7,
-    this.crossAxisCount = 3,
-    this.menuItemButton = const MenuItemButtonLayout(),
-  });
-}
-
-class MenuItemButtonLayout {
-  final double size, borderRadius, orangeDotInset, orangeDotRadius;
-
-  const MenuItemButtonLayout({
-    this.size = 48,
-    this.borderRadius = 12,
-    this.orangeDotInset = 4,
-    this.orangeDotRadius = 6,
-  });
 }
 
 class MyPhotosLayout {
@@ -1066,7 +1041,11 @@ class SwitchFieldLayout {
 }
 
 class LoginLayout {
-  final double topFormDistance, logoSize, progressWidth, termsPadding;
+  final double topFormDistance,
+      logoSize,
+      progressWidth,
+      termsPadding,
+      logoHeight;
   final EdgeInsets createAccountPadding, loginButtonPadding;
 
   const LoginLayout({
@@ -1074,6 +1053,7 @@ class LoginLayout {
     this.logoSize = 64,
     this.progressWidth = 6,
     this.termsPadding = 48,
+    this.logoHeight = 64,
     this.createAccountPadding = const EdgeInsets.fromLTRB(16, 8, 16, 32),
     this.loginButtonPadding = const EdgeInsets.fromLTRB(16, 32, 16, 0),
   });

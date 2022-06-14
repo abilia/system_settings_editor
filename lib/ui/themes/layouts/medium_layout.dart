@@ -7,6 +7,7 @@ class MediumLayout extends Layout {
     TemplatesLayout? templates,
     ClockLayout? clockLayout,
     PhotoCalendarLayoutMedium? photoCalendarLayout,
+    MenuPageLayout? menuPage,
     MonthCalendarLayout? monthCalendar,
     FontSize? fontSize,
     EventCardLayout? eventCard,
@@ -16,18 +17,7 @@ class MediumLayout extends Layout {
           actionButton: actionButton ?? const ActionButtonLayoutMedium(),
           photoCalendarLayout:
               photoCalendarLayout ?? const PhotoCalendarLayoutMedium(),
-          menuPage: const MenuPageLayout(
-            padding: EdgeInsets.symmetric(vertical: 32, horizontal: 46),
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
-            crossAxisCount: 3,
-            menuItemButton: MenuItemButtonLayout(
-              size: 96,
-              borderRadius: 20,
-              orangeDotInset: 6,
-              orangeDotRadius: 9,
-            ),
-          ),
+          menuPage: menuPage ?? const MenuPageLayoutMedium(),
           myPhotos: const MyPhotosLayout(
             crossAxisCount: 3,
             fullScreenImageBorderRadius: 20,
@@ -390,6 +380,7 @@ class MediumLayout extends Layout {
             topFormDistance: 48,
             logoSize: 96,
             progressWidth: 9,
+            logoHeight: 96,
             createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
             loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
             termsPadding: 72,
@@ -456,6 +447,7 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
+          startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
         );
 }
