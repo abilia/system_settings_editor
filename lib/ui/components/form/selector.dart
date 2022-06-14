@@ -92,24 +92,21 @@ class _SelectButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tts.data(
       data: text,
-      child: SizedBox(
-        height: layout.selector.height,
-        child: TextButton(
-          onPressed: onPressed,
-          style: tabButtonStyle(
-            borderRadius: borderRadius,
-            isSelected: value == groupValue,
-          ).copyWith(
-            textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
-            padding: MaterialStateProperty.all(EdgeInsets.only(
-                bottom: layout.formPadding.verticalItemDistance)),
-          ),
-          child: Column(
-            children: [
-              Text(text),
-              Icon(icon, size: layout.selector.iconSize),
-            ],
-          ),
+      child: TextButton(
+        onPressed: onPressed,
+        style: tabButtonStyle(
+          borderRadius: borderRadius,
+          isSelected: value == groupValue,
+        ).copyWith(
+          textStyle: MaterialStateProperty.all(abiliaTextTheme.subtitle2),
+          padding: MaterialStateProperty.all(
+              EdgeInsets.only(bottom: layout.formPadding.verticalItemDistance)),
+        ),
+        child: Column(
+          children: [
+            Text(text),
+            Icon(icon, size: layout.selector.iconSize),
+          ],
         ),
       ),
     );

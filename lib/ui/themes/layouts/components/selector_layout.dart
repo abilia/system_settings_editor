@@ -1,8 +1,7 @@
 class SelectorLayout {
-  final double height, iconSize;
+  final double iconSize;
 
   const SelectorLayout({
-    this.height = 64,
     this.iconSize = 32,
   });
 }
@@ -10,7 +9,6 @@ class SelectorLayout {
 class SelectorLayoutMedium extends SelectorLayout {
   const SelectorLayoutMedium()
       : super(
-          height: 96,
           iconSize: 48,
         );
 }

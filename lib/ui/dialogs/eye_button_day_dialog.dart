@@ -42,8 +42,6 @@ class _EyeButtonDayDialogState extends State<EyeButtonDayDialog> {
         top: layout.formPadding.horizontalItemDistance,
         bottom: layout.formPadding.groupBottomDistance);
     return ViewDialog(
-      width: layout.displaySettings.width,
-      height: layout.displaySettings.height,
       heading: AppBarHeading(
         text: t.display,
         iconData: AbiliaIcons.show,

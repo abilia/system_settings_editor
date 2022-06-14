@@ -96,7 +96,6 @@ class Layout {
   final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
-  final DisplaySettingsDialogLayout displaySettings;
   final SelectorLayout selector;
 
   const Layout({
@@ -172,7 +171,6 @@ class Layout {
     this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
-    this.displaySettings = const DisplaySettingsDialogLayout(),
     this.selector = const SelectorLayout(),
   });
 

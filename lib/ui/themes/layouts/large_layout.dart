@@ -9,7 +9,6 @@ class LargeLayout extends MediumLayout {
           clockLayout: const ClockLayoutLarge(),
           monthCalendar: const MonthCalendarLayoutLarge(),
           photoCalendarLayout: const PhotoCalendarLayoutLarge(),
-          displaySettings: const DisplaySettingsDialogLayoutLarge(),
           selector: const SelectorLayoutLarge(),
           fontSize: const FontSizeLarge(),
         );
