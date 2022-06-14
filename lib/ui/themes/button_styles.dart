@@ -381,7 +381,7 @@ ButtonStyle tabButtonStyle({
             foregroundColor: MaterialStateProperty.all(AbiliaColors.black),
           );
 
-final ButtonStyle blueButtonStyle = _ButtonDef(
+final ButtonStyle blueMenuButtonStyle = _MenuButtonDef(
   background: _StateColors(
     def: AbiliaColors.blue,
     disabled: AbiliaColors.blue,
@@ -398,24 +398,7 @@ final ButtonStyle blueButtonStyle = _ButtonDef(
   ),
 ).toStyle();
 
-final ButtonStyle pinkButtonStyle = _ButtonDef(
-  background: _StateColors(
-    def: AbiliaColors.pink40,
-    disabled: AbiliaColors.pink40,
-    pressed: AbiliaColors.pink40,
-  ),
-  foreGround: _StateColors(
-    def: AbiliaColors.white,
-    disabled: AbiliaColors.white,
-    pressed: AbiliaColors.white,
-  ),
-  shapeBorders: _ShapeBorders(
-    def: menuButtonBorder,
-    pressedOrDisabled: noBorderShape,
-  ),
-).toStyle();
-
-final ButtonStyle yellowButtonStyle = _ButtonDef(
+final ButtonStyle yellowMenuButtonStyle = _MenuButtonDef(
   background: _StateColors(
     def: AbiliaColors.yellow,
     disabled: AbiliaColors.yellow,
@@ -432,17 +415,21 @@ final ButtonStyle yellowButtonStyle = _ButtonDef(
   ),
 ).toStyle();
 
-final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
-  textStyle: MaterialStateProperty.all(layout.menuPage.textStyle),
-  padding: MaterialStateProperty.all(EdgeInsets.zero),
-  shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled) ||
-        states.contains(MaterialState.pressed)) {
-      return noBorderShape;
-    }
-    return menuButtonBorder;
-  }),
-);
+final ButtonStyle blackMenuButtonStyle = _MenuButtonDef(
+  background: _StateColors(
+      def: AbiliaColors.black80,
+      disabled: AbiliaColors.black80,
+      pressed: AbiliaColors.black80),
+  foreGround: _StateColors(
+    def: AbiliaColors.white,
+    disabled: AbiliaColors.white,
+    pressed: AbiliaColors.white,
+  ),
+  shapeBorders: _ShapeBorders(
+    def: menuButtonBorder,
+    pressedOrDisabled: noBorderShape,
+  ),
+).toStyle();
 
 final ButtonStyle keyboardButtonStyle = ButtonStyle(
   textStyle: MaterialStateProperty.all(abiliaTextTheme.headline6),
@@ -495,12 +482,12 @@ final ButtonStyle keyboardActionButtonStyle = keyboardButtonStyle.copyWith(
   ),
 );
 
-class _ButtonDef {
+class _MenuButtonDef {
   final _StateColors foreGround;
   final _StateColors background;
   final _ShapeBorders shapeBorders;
 
-  _ButtonDef({
+  _MenuButtonDef({
     required this.foreGround,
     required this.background,
     required this.shapeBorders,

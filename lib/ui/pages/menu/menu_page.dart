@@ -17,7 +17,7 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
-        padding: layout.menuPage.padding,
+        padding: layout.templates.m2,
         child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
             MenuSettings>(
           selector: (state) => state.settings.menu,
@@ -94,7 +94,7 @@ class CameraButton extends StatelessWidget {
               }
             }
           },
-          style: blueButtonStyle,
+          style: blueMenuButtonStyle,
           text: Translator.of(context).translate.camera,
         ),
       ),
@@ -126,7 +126,7 @@ class MyPhotosButton extends StatelessWidget {
                 );
               }
             : null,
-        style: blueButtonStyle,
+        style: blueMenuButtonStyle,
         text: Translator.of(context).translate.myPhotos,
       ),
     );
@@ -151,7 +151,7 @@ class PhotoCalendarButton extends StatelessWidget {
           ),
         );
       },
-      style: blueButtonStyle,
+      style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,
     );
   }
@@ -175,7 +175,7 @@ class QuickSettingsButton extends StatelessWidget {
           ),
         );
       },
-      style: yellowButtonStyle,
+      style: yellowMenuButtonStyle,
       text: Translator.of(context).translate.quickSettingsMenu,
     );
   }
@@ -193,7 +193,7 @@ class SettingsButton extends StatelessWidget {
         return Stack(
           children: [
             MenuItemButton(
-              style: blackButtonStyle,
+              style: blackMenuButtonStyle,
               text: name,
               icon: AbiliaIcons.settings,
               onPressed: () async {
@@ -284,7 +284,7 @@ class BasicTemplatesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuItemButton(
-      style: blackButtonStyle,
+      style: blackMenuButtonStyle,
       text: Translator.of(context).translate.basicTemplates,
       icon: AbiliaIcons.favoritesShow,
       onPressed: () {

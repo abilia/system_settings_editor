@@ -3,14 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:seagull/ui/themes/colors.dart';
 
 class MenuPageLayout {
-  final EdgeInsets padding;
   final double crossAxisSpacing, mainAxisSpacing;
   final TextStyle _textStyle;
 
   final MenuButtonLayout button;
 
   const MenuPageLayout({
-    this.padding = const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
     this.crossAxisSpacing = 7.5,
     this.mainAxisSpacing = 7,
     this.button = const MenuButtonLayout(),
@@ -35,7 +33,6 @@ class MenuPageLayoutMedium extends MenuPageLayout {
     double? mainAxisSpacing,
     TextStyle? textStyle,
   }) : super(
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
           crossAxisSpacing: crossAxisSpacing ?? 24,
           mainAxisSpacing: mainAxisSpacing ?? 24,
           button: button ?? const MenuButtonLayoutMedium(),
