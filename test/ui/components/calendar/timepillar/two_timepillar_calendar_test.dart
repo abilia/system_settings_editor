@@ -84,6 +84,7 @@ void main() {
       ..userFileDb = FakeUserFileDb()
       ..database = FakeDatabase()
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 

@@ -408,6 +408,7 @@ class MediumLayout extends Layout {
             topFormDistance: 48,
             logoSize: 96,
             progressWidth: 9,
+            logoHeight: 96,
             createAccountPadding: EdgeInsets.fromLTRB(16, 8, 16, 32),
             loginButtonPadding: EdgeInsets.fromLTRB(24, 48, 24, 0),
             termsPadding: 72,
@@ -474,6 +475,7 @@ class MediumLayout extends Layout {
           ),
           fab: const FloatingActionButtonLayout(padding: EdgeInsets.all(24)),
           crossOver: const CrossOverLayout(strokeWidth: 3),
+          startupPage: const StartupPageLayoutMedium(),
           starterSetDialog: const StarterSetDialogLayoutMedium(),
         );
 }
