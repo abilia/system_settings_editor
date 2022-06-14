@@ -16,11 +16,19 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final FutureOr<void> Function()? onLogout;
   final UserRepository userRepository;
+  late final StreamSubscription? _clientSubscription;
 
   AuthenticationBloc(
     this.userRepository, {
     this.onLogout,
+    ListenableClient? client,
   }) : super(const AuthenticationLoading()) {
+    _clientSubscription = client?.messageStream
+        .where((event) => event == HttpMessage.unauthorized)
+        .listen(
+          (event) => add(
+              const LoggedOut(loggedOutReason: LoggedOutReason.unautorized)),
+        );
     on<AuthenticationEvent>(_onAuthenticationEvent, transformer: sequential());
   }
 
@@ -62,8 +70,8 @@ class AuthenticationBloc
   }
 
   Future _loggedOut(LoggedOut event, Emitter<AuthenticationState> emit) async {
-    emit(Unauthenticated(loggedOutReason: event.loggedOutReason));
     await _logout();
+    emit(Unauthenticated(loggedOutReason: event.loggedOutReason));
   }
 
   Future<AuthenticationState> _tryGetUser({
@@ -86,11 +94,18 @@ class AuthenticationBloc
   }
 
   Future _logout() async {
+    if (state is Unauthenticated) return;
     try {
       await onLogout?.call();
     } catch (e) {
       Logger('onLogout').severe('exception when logging out: $e');
     }
     await userRepository.logout();
+  }
+
+  @override
+  Future<void> close() async {
+    await _clientSubscription?.cancel();
+    return super.close();
   }
 }

@@ -256,10 +256,12 @@ class TabBarLayout {
 
 class TabItemLayout {
   final double width, border;
+  final EdgeInsets padding;
 
   const TabItemLayout({
     this.width = 64,
     this.border = 1,
+    this.padding = const EdgeInsets.only(left: 4, top: 4, right: 4),
   });
 }
 
@@ -366,92 +368,6 @@ class _WeekDayColumnLayout {
       vertical: 6,
       horizontal: 4,
     ),
-  });
-}
-
-class MonthCalendarLayout {
-  final int monthContentFlex, monthListPreviewFlex;
-
-  final double monthHeadingHeight,
-      dayRadius,
-      dayRadiusHighlighted,
-      dayBorderWidth,
-      dayBorderWidthHighlighted,
-      dayHeaderHeight,
-      dayHeadingFontSize,
-      fullDayActivityFontSize,
-      weekNumberWidth,
-      hasActivitiesDotRadius;
-
-  final EdgeInsets dayViewPadding,
-      dayViewPaddingHighlighted,
-      dayViewMargin,
-      dayViewMarginHighlighted,
-      dayHeaderPadding,
-      dayContainerPadding,
-      crossOverPadding,
-      hasActivitiesDotPadding,
-      activityTextContentPadding;
-
-  final MonthPreviewLayout monthPreview;
-
-  const MonthCalendarLayout({
-    this.monthContentFlex = 242,
-    this.monthListPreviewFlex = 229,
-    this.monthHeadingHeight = 32,
-    this.dayRadius = 8,
-    this.dayRadiusHighlighted = 10,
-    this.dayBorderWidth = 1,
-    this.dayBorderWidthHighlighted = 4,
-    this.dayHeaderHeight = 24,
-    this.dayHeadingFontSize = 14,
-    this.fullDayActivityFontSize = 12,
-    this.weekNumberWidth = 24,
-    this.hasActivitiesDotRadius = 3,
-    this.dayViewPadding = const EdgeInsets.all(4),
-    this.dayViewPaddingHighlighted = const EdgeInsets.all(6),
-    this.dayViewMargin = const EdgeInsets.all(2),
-    this.dayViewMarginHighlighted = const EdgeInsets.all(0),
-    this.dayHeaderPadding = const EdgeInsets.only(left: 4, top: 7, right: 4),
-    this.dayContainerPadding =
-        const EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 5),
-    this.crossOverPadding = const EdgeInsets.all(3),
-    this.hasActivitiesDotPadding = const EdgeInsets.all(0),
-    this.activityTextContentPadding = const EdgeInsets.all(3),
-    this.monthPreview = const MonthPreviewLayout(),
-  });
-}
-
-class MonthPreviewLayout {
-  final double monthPreviewBorderWidth,
-      activityListTopPadding,
-      activityListBottomPadding,
-      headingHeight,
-      headingFullDayActivityHeight,
-      headingFullDayActivityWidth,
-      headingButtonIconSize;
-
-  final EdgeInsets monthListPreviewPadding,
-      headingPadding,
-      noSelectedDayPadding,
-      crossOverPadding;
-
-  final Size dateTextCrossOverSize;
-
-  const MonthPreviewLayout({
-    this.monthPreviewBorderWidth = 1,
-    this.activityListTopPadding = 12,
-    this.activityListBottomPadding = 64,
-    this.headingHeight = 48,
-    this.headingFullDayActivityHeight = 40,
-    this.headingFullDayActivityWidth = 40,
-    this.headingButtonIconSize = 24,
-    this.monthListPreviewPadding =
-        const EdgeInsets.only(left: 8, top: 14, right: 8),
-    this.headingPadding = const EdgeInsets.only(left: 12, right: 8),
-    this.noSelectedDayPadding = const EdgeInsets.only(top: 32),
-    this.crossOverPadding = const EdgeInsets.all(4),
-    this.dateTextCrossOverSize = const Size(163, 32),
   });
 }
 

@@ -16,7 +16,7 @@ class EditActivityCubit extends Cubit<EditActivityState> {
           StoredActivityState(
               activityDay.activity,
               activityDay.activity.fullDay
-                  ? TimeInterval(startDate: activityDay.activity.startTime)
+                  ? TimeInterval(startDate: activityDay.day)
                   : TimeInterval.fromDateTime(
                       activityDay.activity.startClock(activityDay.day),
                       activityDay.activity.hasEndTime

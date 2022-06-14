@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:seagull/models/all.dart';
+import 'package:seagull/repository/all.dart';
 import 'package:seagull/utils/all.dart';
 
 import 'all.dart';
@@ -24,13 +26,13 @@ class Fakes {
       incorrectPassword = 'wrongwrongwrong',
       supportUserName = 'supportUser';
 
-  static MockClient client({
+  static ListenableMockClient client({
     ActivityResponse? activityResponse,
     SortableResponse? sortableResponse,
     GenericResponse? genericResponse,
     Response Function()? licenseResponse,
   }) =>
-      MockClient(
+      ListenableMockClient(
         (r) {
           final pathSegments = r.url.pathSegments.toSet();
           Response? response;
@@ -171,4 +173,21 @@ class Fakes {
   static Response unsupportedUserTypeResponse = Response('''
   {"status":403,"message":"Clients can only be registered with entities of type 'user'","errorId":217,"errors":[{"code":"WHALE-0156","message":"Clients can only be registered with entities of type 'user'"}]}''',
       403);
+}
+
+class ListenableMockClient extends MockClient implements ListenableClient {
+  ListenableMockClient(MockClientHandler fn) : super(fn);
+  final _stateController = StreamController<HttpMessage>.broadcast();
+
+  @override
+  Stream<HttpMessage> get messageStream => _stateController.stream;
+
+  @override
+  void close() {
+    _stateController.close();
+  }
+
+  void fakeUnauthorized() {
+    _stateController.add(HttpMessage.unauthorized);
+  }
 }

@@ -1,27 +1,28 @@
 _id_	en	sv	da	nl	fi	de	nb
-timerDelete	Do you want to delete the timer?	Vill du ta bort timern?					
+loggedOutMessage	You have been logged out. Please log in again.	Du har blivit utloggad. Vänligen logga in igen.					
+timerDelete	Do you want to delete the timer?	Vill du ta bort timern?					Vil du slette timeren?
 timerPause	Do you want to pause the timer?	Vill du pausa timern?					
 timerResume	Do you want to continue the timer?	Vill du fortsätta timern?					
 timerPaused	Paused	Pausad					
 pause	Pause	Pausa					
 resume	Continue	Fortsätt					
-basicTemplates	Basic templates	Basmallar					
-enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					
-addTimer	Add Timer	Lägga in timer					
-enterNameForTimer	Enter name for timer	Ange namn för timer					
-timeIsUp	Time is up	Tiden är slut					
-newBasicTimer	New basic timer	Ny bastimer					
-enterTask	Enter task
-onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					
-selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					
-voice	Voice	Röst					
-installingVoice	Installing	Installerar					
-voices	Voices	Röster		Stemmen	Äänet	Stimmen	
-enterCode	Enter code	Ange kod					
-enterYourCodeToAccess	Enter your code to access	Ange din kod för att komma åt					
-allPhotos	All photos	Alla foton					
-addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?					
-removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?					
-remove	Remove	Ta bort					
-doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?					
+basicTemplates	Basic templates	Basmallar					Maler
+enterNameForBasicActivity	Enter name for basic activity	Ange namn för basaktivitet					Angi navn på standardaktivitet
+addTimer	Add Timer	Lägga in timer					Legg inn timer
+enterNameForTimer	Enter name for timer	Ange namn för timer					Angi navn på timer
+timeIsUp	Time is up	Tiden är slut					Tiden er slutt
+newBasicTimer	New basic timer	Ny bastimer					Ny standardtimer
+enterTask	Enter task						Legg inn oppgave
+onlyAppliesToGo	Only applies to MEMOplanner Go	Gäller endast MEMOplanner Go					Gjelder kun MEMOplanner Go
+selectADayToViewDetails	Select a day to view more details	Välj en dag för att se mer detaljer					Velg en dag for å se mer detaljer
+voice	Voice	Röst					Talesyntese
+installingVoice	Installing	Installerar					Installerer
+voices	Voices	Röster		Stemmen	Äänet	Stimmen	Talesynteser
+enterCode	Enter code	Ange kod					Angi kode
+enterYourCodeToAccess	Enter your code to access	Ange din kod för att komma åt					Angi din kode for å få tilgang
+allPhotos	All photos	Alla foton					Alle foto
+addToPhotoCalendarQuestion	Do you want to add this photo to Photo-calendar?	Vill du lägga in detta foto i fotokalendern?					Vil du legge inn dette foto i fotokalenderen?
+removeFromPhotoCalendarQuestion	Do you want to remove this photo from Photo-calendar?	Vill du ta bort detta foto från fotokalendern?					Vil du slette dette foto fra fotokalenderen?
+remove	Remove	Ta bort					Slette
+doYouWantToDeleteThisPhoto	Are you sure you want to delete this photo?	Är du säker på att du vill ta bort detta foto?					Er du sikker på at du vil slette dette foto?
 installStarterSet	Install starter set?	Installera startuppsättning?					

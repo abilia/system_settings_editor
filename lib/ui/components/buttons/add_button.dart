@@ -188,10 +188,11 @@ class _AddTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = (Theme.of(context).textTheme.caption ?? caption).copyWith(
       color: AbiliaColors.white,
+      height: 1,
     );
     final iconTheme = IconTheme.of(context).copyWith(
       color: AbiliaColors.white,
-      size: layout.icon.small,
+      size: layout.actionButton.withTextIconSize,
     );
     final borderSide = ligthShapeBorder.side.copyWith(
       width: layout.tabBar.item.border,
@@ -217,26 +218,30 @@ class _AddTab extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onTap,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AutoSizeText(
-                text,
-                minFontSize: 12,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-              SizedBox(height: layout.actionButton.spacing),
-              IconTheme(
-                data: iconTheme,
-                child: Icon(
-                  icon,
-                  size: layout.icon.small,
+          child: Padding(
+            padding: layout.actionButton.withTextPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: textStyle.fontSize,
+                  child: Center(
+                    child: AutoSizeText(
+                      text,
+                      minFontSize: 12,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: layout.actionButton.spacing),
+                IconTheme(
+                  data: iconTheme,
+                  child: Icon(icon),
+                )
+              ],
+            ),
           ),
         ),
       ),
