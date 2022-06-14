@@ -134,7 +134,8 @@ mixin ActivityMixin {
     ActivityAlarm? alarm,
     String? message,
   }) async {
-    final activityRepository = context.read<ActivityRepository>();
+    final activityRepository =
+        alarm != null ? context.read<ActivityRepository>() : null;
     final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,

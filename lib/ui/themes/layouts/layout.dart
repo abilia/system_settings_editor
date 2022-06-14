@@ -94,6 +94,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
+  final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
 
@@ -167,6 +168,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
+    this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });
@@ -965,7 +967,11 @@ class SwitchFieldLayout {
 }
 
 class LoginLayout {
-  final double topFormDistance, logoSize, progressWidth, termsPadding;
+  final double topFormDistance,
+      logoSize,
+      progressWidth,
+      termsPadding,
+      logoHeight;
   final EdgeInsets createAccountPadding, loginButtonPadding;
 
   const LoginLayout({
@@ -973,6 +979,7 @@ class LoginLayout {
     this.logoSize = 64,
     this.progressWidth = 6,
     this.termsPadding = 48,
+    this.logoHeight = 64,
     this.createAccountPadding = const EdgeInsets.fromLTRB(16, 8, 16, 32),
     this.loginButtonPadding = const EdgeInsets.fromLTRB(16, 32, 16, 0),
   });

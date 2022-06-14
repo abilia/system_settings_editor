@@ -70,6 +70,7 @@ void main() {
       ..genericDb = FakeGenericDb()
       ..sortableDb = sortableDb
       ..battery = FakeBattery()
+      ..deviceDb = FakeDeviceDb()
       ..init();
   });
 
