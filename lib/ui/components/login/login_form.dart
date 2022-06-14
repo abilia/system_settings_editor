@@ -105,58 +105,6 @@ class UsernameInput extends StatelessWidget {
   }
 }
 
-class MEMOplannerLogoWithLoginProgress extends StatelessWidget {
-  const MEMOplannerLogoWithLoginProgress({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) => SizedBox(
-        width: layout.login.logoSize,
-        height: layout.login.logoSize,
-        child: state is LoginLoading
-            ? CircularProgressIndicator(
-                valueColor: const AlwaysStoppedAnimation(AbiliaColors.red),
-                strokeWidth: layout.login.progressWidth,
-              )
-            : GestureDetector(
-                onLongPress: () {
-                  context.read<LoginCubit>().clearFailure();
-                  showDialog(
-                    context: context,
-                    builder: (context) => const BackendSwitchesDialog(),
-                  );
-                },
-                child: MEMOplannerLogo(
-                  height: layout.login.logoHeight,
-                ),
-              ),
-      ),
-    );
-  }
-}
-
-class MEMOplannerLogo extends StatelessWidget {
-  const MEMOplannerLogo({
-    required this.height,
-    Key? key,
-  }) : super(key: key);
-
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: Image(
-        image: AssetImage(
-          'assets/graphics/${Config.flavor.id}/logo.png',
-        ),
-      ),
-    );
-  }
-}
-
 class LoginButton extends StatelessWidget {
   const LoginButton({Key? key}) : super(key: key);
 

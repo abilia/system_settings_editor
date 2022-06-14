@@ -93,7 +93,7 @@ class Layout {
   final DotLayout dot;
   final CrossOverLayout crossOver;
   final SpeechSupportPageLayout speechSupportPage;
-  final StartupPageLayout startupPageLayout;
+  final StartupPageLayout startupPage;
   final StarterSetDialogLayout starterSetDialog;
   final PhotoCalendarLayoutMedium photoCalendarLayout;
 
@@ -167,7 +167,7 @@ class Layout {
     this.dot = const DotLayout(),
     this.crossOver = const CrossOverLayout(),
     this.speechSupportPage = const SpeechSupportPageLayout(),
-    this.startupPageLayout = const StartupPageLayout(),
+    this.startupPage = const StartupPageLayout(),
     this.starterSetDialog = const StarterSetDialogLayout(),
     this.photoCalendarLayout = const PhotoCalendarLayoutMedium(),
   });

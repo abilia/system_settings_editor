@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:seagull/db/all.dart';
-import '../mocks/mocks.dart';
+import 'package:test/fake.dart';
 import 'fake_client.dart';
 import 'package:seagull/models/all.dart';
 import 'package:seagull/repository/all.dart';

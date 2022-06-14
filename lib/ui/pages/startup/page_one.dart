@@ -22,7 +22,7 @@ class PageOne extends StatelessWidget {
           MEMOplannerLogo(
             height: layout.login.logoHeight,
           ),
-          SizedBox(height: layout.startupPageLayout.logoDistance),
+          SizedBox(height: layout.startupPage.logoDistance),
           Text('${t.step} 1/2',
               style: abiliaTextTheme.bodyText2
                   ?.copyWith(color: AbiliaColors.black75)),
@@ -32,31 +32,29 @@ class PageOne extends StatelessWidget {
             style: abiliaTextTheme.headline6
                 ?.copyWith(color: AbiliaColors.black75),
           ),
-          SizedBox(height: layout.startupPageLayout.textPickDistance),
+          SizedBox(height: layout.startupPage.textPickDistance),
           SizedBox(
-              width: layout.startupPageLayout.contentWidth,
-              child: const WiFiPickField()),
+            width: layout.startupPage.contentWidth,
+            child: const WiFiPickField(),
+          ),
+          SizedBox(height: layout.startupPage.textPickDistance),
           StreamBuilder<ConnectivityResult>(
             stream: Connectivity().onConnectivityChanged,
             builder: (context, _) => FutureBuilder(
               future: Connectivity().checkConnectivity(),
               builder: ((context, snapshot) =>
                   snapshot.hasData && snapshot.data != ConnectivityResult.none
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                              top: layout.startupPageLayout.textPickDistance),
-                          child: SizedBox(
-                            width: layout.startupPageLayout.contentWidth,
-                            child: TextButton(
-                              style: textButtonStyleGreen,
-                              onPressed: () {
-                                pageController.nextPage(
-                                  duration: 500.milliseconds(),
-                                  curve: Curves.easeOutQuad,
-                                );
-                              },
-                              child: Text(t.next),
-                            ),
+                      ? SizedBox(
+                          width: layout.startupPage.contentWidth,
+                          child: TextButton(
+                            style: textButtonStyleGreen,
+                            onPressed: () {
+                              pageController.nextPage(
+                                duration: 500.milliseconds(),
+                                curve: Curves.easeOutQuad,
+                              );
+                            },
+                            child: Text(t.next),
                           ),
                         )
                       : Container()),
