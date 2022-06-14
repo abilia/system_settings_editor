@@ -68,8 +68,8 @@ class OneTimepillarCalendar extends StatefulWidget {
     double? bottomMargin,
     bool? showCategoryLabels,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
-        topMargin = topMargin ?? layout.timePillar.topMargin,
-        bottomMargin = bottomMargin ?? layout.timePillar.bottomMargin,
+        topMargin = topMargin ?? layout.timepillar.topMargin,
+        bottomMargin = bottomMargin ?? layout.timepillar.bottomMargin,
         super(key: key);
 
   @override
