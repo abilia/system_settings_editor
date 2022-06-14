@@ -40,10 +40,11 @@ class Ticker {
 
   double? ticksPerSecond;
   DateTime? _initialFakeTime;
-  void setFakeTime(DateTime initTime) {
+  void setFakeTime(DateTime initTime, {bool setTicker = true}) {
     _streamController.add(initTime);
     _initialFakeTime = initTime;
-    if (ticksPerSecond == null) {
+    _time = initTime;
+    if (ticksPerSecond == null && setTicker) {
       setFakeTicker(1);
     }
   }

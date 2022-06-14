@@ -17,23 +17,25 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingActions(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       body: Padding(
-        padding: layout.menuPage.padding,
+        padding: layout.templates.m2,
         child: BlocSelector<MemoplannerSettingBloc, MemoplannerSettingsState,
             MenuSettings>(
           selector: (state) => state.settings.menu,
           builder: (context, menu) {
-            return GridView.count(
-              crossAxisSpacing: layout.menuPage.crossAxisSpacing,
-              mainAxisSpacing: layout.menuPage.mainAxisSpacing,
-              crossAxisCount: layout.menuPage.crossAxisCount,
-              children: [
-                if (menu.showCamera) const CameraButton(),
-                if (menu.showPhotos) const MyPhotosButton(),
-                if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
-                if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                if (menu.showBasicTemplates) const BasicTemplatesButton(),
-                if (menu.showSettings) const SettingsButton(),
-              ],
+            return Align(
+              alignment: Alignment.topCenter,
+              child: Wrap(
+                spacing: layout.menuPage.crossAxisSpacing,
+                runSpacing: layout.menuPage.mainAxisSpacing,
+                children: [
+                  if (menu.showCamera) const CameraButton(),
+                  if (menu.showPhotos) const MyPhotosButton(),
+                  if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
+                  if (menu.quickSettingsEnabled) const QuickSettingsButton(),
+                  if (menu.showBasicTemplates) const BasicTemplatesButton(),
+                  if (menu.showSettings) const SettingsButton(),
+                ],
+              ),
             );
           },
         ),
@@ -92,7 +94,7 @@ class CameraButton extends StatelessWidget {
               }
             }
           },
-          style: blueButtonStyle,
+          style: blueMenuButtonStyle,
           text: Translator.of(context).translate.camera,
         ),
       ),
@@ -124,7 +126,7 @@ class MyPhotosButton extends StatelessWidget {
                 );
               }
             : null,
-        style: blueButtonStyle,
+        style: blueMenuButtonStyle,
         text: Translator.of(context).translate.myPhotos,
       ),
     );
@@ -149,7 +151,7 @@ class PhotoCalendarButton extends StatelessWidget {
           ),
         );
       },
-      style: blueButtonStyle,
+      style: blueMenuButtonStyle,
       text: Translator.of(context).translate.photoCalendar,
     );
   }
@@ -173,7 +175,7 @@ class QuickSettingsButton extends StatelessWidget {
           ),
         );
       },
-      style: yellowButtonStyle,
+      style: yellowMenuButtonStyle,
       text: Translator.of(context).translate.quickSettingsMenu,
     );
   }
@@ -191,7 +193,7 @@ class SettingsButton extends StatelessWidget {
         return Stack(
           children: [
             MenuItemButton(
-              style: blackButtonStyle,
+              style: blackMenuButtonStyle,
               text: name,
               icon: AbiliaIcons.settings,
               onPressed: () async {
@@ -217,8 +219,8 @@ class SettingsButton extends StatelessWidget {
             ),
             if (importantPermissionMissing)
               Positioned(
-                top: layout.menuPage.menuItemButton.orangeDotInset,
-                right: layout.menuPage.menuItemButton.orangeDotInset,
+                top: layout.menuPage.button.orangeDotInset,
+                right: layout.menuPage.button.orangeDotInset,
                 child: const OrangeDot(),
               ),
           ],
@@ -244,34 +246,31 @@ class MenuItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = style.textStyle?.resolve({MaterialState.pressed});
-    final fontSize = textStyle?.fontSize;
-    final textHeight = textStyle?.height;
     return Tts.data(
       data: text.singleLine,
-      child: AspectRatio(
-        aspectRatio: 1,
+      child: SizedBox(
+        width: layout.menuPage.button.size,
+        height: layout.menuPage.button.size,
         child: TextButton(
           style: style,
           onPressed: onPressed,
-          child: Column(
-            children: [
-              SizedBox(
-                height: fontSize != null && textHeight != null
-                    ? fontSize * textHeight * 2
-                    : null,
-                child: Text(
+          child: Padding(
+            padding: layout.menuPage.button.padding,
+            child: Column(
+              children: [
+                Text(
                   text,
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              const Spacer(),
-              Icon(
-                icon,
-                size: layout.menuPage.menuItemButton.size,
-              ),
-              const Spacer(),
-            ],
+                const Spacer(),
+                Icon(
+                  icon,
+                  size: layout.menuPage.button.iconSize,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -285,7 +284,7 @@ class BasicTemplatesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuItemButton(
-      style: blackButtonStyle,
+      style: blackMenuButtonStyle,
       text: Translator.of(context).translate.basicTemplates,
       icon: AbiliaIcons.favoritesShow,
       onPressed: () {
