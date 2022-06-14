@@ -21,6 +21,7 @@ class ActivityPageLayout {
       timeBoxPadding,
       topInfoPadding,
       imagePadding,
+      checkPadding,
       verticalInfoPaddingCheckable,
       verticalInfoPaddingNonCheckable,
       horizontalInfoPadding,
@@ -44,6 +45,8 @@ class ActivityPageLayout {
         const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
     this.titleImageHorizontalSpacing = 8,
     this.imagePadding = const EdgeInsets.fromLTRB(12, 0, 12, 12),
+    this.checkPadding =
+        const EdgeInsets.symmetric(horizontal: 55, vertical: 55),
     this.verticalInfoPaddingCheckable =
         const EdgeInsets.only(top: 16, bottom: 10),
     this.verticalInfoPaddingNonCheckable =
@@ -73,6 +76,7 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
     double? topInfoHeight,
     double? titleFontSize,
     double? titleLineHeight,
+    double? horizontalInfoPadding,
     Size? timeCrossOverSize,
     Size? timeBoxSize,
   }) : super(
@@ -88,8 +92,8 @@ class ActivityPageLayoutMedium extends ActivityPageLayout {
           horizontalInfoPadding: const EdgeInsets.symmetric(horizontal: 16),
           checkButtonPadding: const EdgeInsets.only(bottom: 24),
           checklistPadding: const EdgeInsets.fromLTRB(27, 15, 28, 0),
-          titleFontSize: 48, // headline4.2
-          titleLineHeight: 56.25,
+          titleFontSize: titleFontSize ?? 48, // headline4.2
+          titleLineHeight: titleLineHeight ?? 56.25,
           checkButtonHeight: 72,
           checkButtonContentPadding:
               const EdgeInsets.fromLTRB(14.25, 15, 31.75, 15),

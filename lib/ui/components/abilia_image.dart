@@ -37,8 +37,6 @@ class EventImage extends StatelessWidget {
     bool preview = false,
     EdgeInsets? crossPadding,
     EdgeInsets? checkPadding,
-    double? crossOverStrokeWidth,
-    Color? crossOverColor,
   }) =>
       preview
           ? FadeInCalendarImage(
@@ -54,7 +52,7 @@ class EventImage extends StatelessWidget {
               imageSize: imageSize,
               fit: fit,
               crossPadding: crossPadding,
-              checkPadding: crossPadding,
+              checkPadding: checkPadding,
             );
 
   @override
@@ -73,6 +71,8 @@ class EventImage extends StatelessWidget {
               borderRadius: borderRadius,
               child: FadeInImage(
                 fit: fit,
+                width: double.infinity,
+                height: double.infinity,
                 image: getImage(
                   context,
                   event.image,
@@ -92,7 +92,11 @@ class EventImage extends StatelessWidget {
           Padding(
             padding:
                 checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
-            child: const CheckMark(),
+            child: CheckMark(
+              fit: fit,
+              width: double.infinity,
+              height: double.infinity,
+            ),
           ),
       ],
     );
@@ -132,10 +136,12 @@ class EventImage extends StatelessWidget {
 
 class CheckedImageWithImagePopup extends StatelessWidget {
   final ActivityDay activityDay;
+  final EdgeInsets? checkPadding;
 
   const CheckedImageWithImagePopup({
     Key? key,
     required this.activityDay,
+    this.checkPadding,
   }) : super(key: key);
 
   @override
@@ -153,6 +159,7 @@ class CheckedImageWithImagePopup extends StatelessWidget {
         event: activityDay,
         imageSize: ImageSize.original,
         fit: BoxFit.contain,
+        checkPadding: checkPadding,
       ),
     );
   }

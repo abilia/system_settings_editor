@@ -12,6 +12,7 @@ class MediumLayout extends Layout {
     ActivityPageLayout? activityPage,
     ChecklistLayout? checklist,
     TimerPageLayout? timerPage,
+    BorderLayout? borders,
   }) : super(
           radius: 18,
           appBar: appBar ?? const AppBarLayoutMedium(),
@@ -275,7 +276,7 @@ class MediumLayout extends Layout {
             margin: EdgeInsets.only(left: 4, right: 8),
           ),
           templates: templates ?? const TemplatesLayoutMedium(),
-          borders: const BorderLayout(thin: 1.5, medium: 3),
+          borders: borders ?? const BorderLayoutMedium(),
           linedBorder: const LinedBorderLayout(dashSize: 6),
           selectableField: const SelectableFieldLayout(
             height: 72,

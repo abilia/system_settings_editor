@@ -183,9 +183,7 @@ class ActivityContainer extends StatelessWidget {
     final hasAttachment = activity.hasAttachment;
     return Container(
       decoration: BoxDecoration(
-        color: activityDay.isSignedOff
-            ? inactiveGrey
-            : Theme.of(context).cardColor,
+        color: Theme.of(context).cardColor,
         borderRadius: borderRadius,
       ),
       constraints: const BoxConstraints.expand(),
@@ -329,7 +327,10 @@ class TitleAndOrImage extends StatelessWidget {
     final hasTitle = activity.hasTitle;
     final hasAttachment = activity.hasAttachment;
 
-    final checkableImage = CheckedImageWithImagePopup(activityDay: activityDay);
+    final checkableImage = CheckedImageWithImagePopup(
+      activityDay: activityDay,
+      checkPadding: layout.activityPage.checkPadding,
+    );
 
     final title = hasTitle
         ? Tts(

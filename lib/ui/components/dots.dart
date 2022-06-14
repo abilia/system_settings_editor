@@ -9,7 +9,7 @@ final pastSideDotShape = ShapeDecoration(
   shape: CircleBorder(
     side: BorderSide(
       color: AbiliaColors.black,
-      width: layout.borders.thin,
+      width: layout.borders.dotsThin,
     ),
   ),
 );

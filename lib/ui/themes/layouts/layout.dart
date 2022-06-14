@@ -789,15 +789,6 @@ class ListFolderLayout {
   });
 }
 
-class BorderLayout {
-  final double thin, medium;
-
-  const BorderLayout({
-    this.thin = 1,
-    this.medium = 2,
-  });
-}
-
 class LinedBorderLayout {
   final double dashSize;
 

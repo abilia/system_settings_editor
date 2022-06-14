@@ -70,7 +70,6 @@ class TimerCard extends StatelessWidget {
                             eventOccasion: timerOccasion,
                             fit: BoxFit.cover,
                             crossPadding: layout.eventCard.crossPadding,
-                            crossOverColor: AbiliaColors.transparentBlack30,
                           ),
                         ),
                       ),
