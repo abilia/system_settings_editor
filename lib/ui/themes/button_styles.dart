@@ -429,7 +429,7 @@ final ButtonStyle yellowButtonStyle = _ButtonDef(
 ).toStyle();
 
 final ButtonStyle blackButtonStyle = actionButtonStyleBlack.copyWith(
-  textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText3()),
+  textStyle: MaterialStateProperty.all(layout.menuPage.textStyle),
   padding: MaterialStateProperty.all(EdgeInsets.zero),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
@@ -504,7 +504,7 @@ class _ButtonDef {
 
   ButtonStyle toStyle() {
     return _actionButtonStyle.copyWith(
-      textStyle: MaterialStateProperty.all(abiliaTextTheme.bodyText3()),
+      textStyle: MaterialStateProperty.all(layout.menuPage.textStyle),
       padding: MaterialStateProperty.all(EdgeInsets.zero),
       foregroundColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {

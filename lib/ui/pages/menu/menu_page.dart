@@ -22,26 +22,19 @@ class MenuPage extends StatelessWidget {
             MenuSettings>(
           selector: (state) => state.settings.menu,
           builder: (context, menu) {
-            final buttonWidth = (layout.menuPage.button.width +
-                layout.menuPage.mainAxisSpacing);
-            final maxGridWidth =
-                buttonWidth * layout.menuPage.maxCrossAxisCount;
             return Align(
               alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: maxGridWidth),
-                child: Wrap(
-                  spacing: layout.menuPage.crossAxisSpacing,
-                  runSpacing: layout.menuPage.mainAxisSpacing,
-                  children: [
-                    if (menu.showCamera) const CameraButton(),
-                    if (menu.showPhotos) const MyPhotosButton(),
-                    if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
-                    if (menu.quickSettingsEnabled) const QuickSettingsButton(),
-                    if (menu.showBasicTemplates) const BasicTemplatesButton(),
-                    if (menu.showSettings) const SettingsButton(),
-                  ],
-                ),
+              child: Wrap(
+                spacing: layout.menuPage.crossAxisSpacing,
+                runSpacing: layout.menuPage.mainAxisSpacing,
+                children: [
+                  if (menu.showCamera) const CameraButton(),
+                  if (menu.showPhotos) const MyPhotosButton(),
+                  if (menu.photoCalendarEnabled) const PhotoCalendarButton(),
+                  if (menu.quickSettingsEnabled) const QuickSettingsButton(),
+                  if (menu.showBasicTemplates) const BasicTemplatesButton(),
+                  if (menu.showSettings) const SettingsButton(),
+                ],
               ),
             );
           },
@@ -256,26 +249,25 @@ class MenuItemButton extends StatelessWidget {
     return Tts.data(
       data: text.singleLine,
       child: SizedBox(
-        width: layout.menuPage.button.width,
-        height: layout.menuPage.button.height,
+        width: layout.menuPage.button.size,
+        height: layout.menuPage.button.size,
         child: TextButton(
           style: style,
           onPressed: onPressed,
           child: Padding(
             padding: layout.menuPage.button.padding,
-            child: Stack(
-              alignment: Alignment.topCenter,
+            child: Column(
               children: [
                 Text(
                   text,
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Icon(
-                    icon,
-                    size: layout.menuPage.button.iconSize,
-                  ),
+                const Spacer(),
+                Icon(
+                  icon,
+                  size: layout.menuPage.button.iconSize,
                 ),
               ],
             ),
