@@ -62,6 +62,7 @@ class EventImage extends StatelessWidget {
     final inactive = past || signedOff;
     return Stack(
       alignment: Alignment.center,
+      fit: StackFit.expand,
       children: [
         if (event.hasImage)
           AnimatedOpacity(
@@ -71,8 +72,6 @@ class EventImage extends StatelessWidget {
               borderRadius: borderRadius,
               child: FadeInImage(
                 fit: fit,
-                width: double.infinity,
-                height: double.infinity,
                 image: getImage(
                   context,
                   event.image,
@@ -94,8 +93,6 @@ class EventImage extends StatelessWidget {
                 checkPadding ?? layout.eventImageLayout.fallbackCheckPadding,
             child: CheckMark(
               fit: fit,
-              width: double.infinity,
-              height: double.infinity,
             ),
           ),
       ],
