@@ -13,7 +13,7 @@ import 'package:seagull/utils/all.dart';
 enum AlarmSpeechState { unplayed, played }
 
 class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
-  static const minSpeechDelay = Duration(milliseconds: 3500);
+  static const minSpeechDelay = Duration(milliseconds: 4500);
 
   final _log = Logger((AlarmSpeechCubit).toString());
   final NewAlarm alarm;
@@ -33,15 +33,8 @@ class AlarmSpeechCubit extends Cubit<AlarmSpeechState> {
     Stream<NotificationAlarm>? selectedNotificationStream,
   }) : super(AlarmSpeechState.unplayed) {
     _log.fine('$alarm');
-    _log.fine('notificationTime: ${alarm.notificationTime}');
-    _log.fine('alarm duration : ${alarmSettings.duration}');
-    final realDuration = _alarmDuration(alarmSettings);
-    _log.fine('real alarm duration : $realDuration');
-    final _now = now();
-    _log.fine('now : $_now');
-    final timeFromAlarmStart = _now.difference(alarm.notificationTime);
-    _log.fine('time from alarm start : $timeFromAlarmStart');
-    final timeUntilSpeech = realDuration - timeFromAlarmStart;
+    final timeFromAlarmStart = now().difference(alarm.notificationTime);
+    final timeUntilSpeech = _alarmDuration(alarmSettings) - timeFromAlarmStart;
     _log.info('until speech time: $timeUntilSpeech');
 
     _delayedSubscription =
